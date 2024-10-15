@@ -166,7 +166,7 @@ export const VCItemActions = model => {
       (context: any) => {
         const {serviceRefs, wellknownResponse, ...data} = context;
         return {
-          type: 'VC_DOWNLOADED',
+          type: 'VC_ACTIVATED',
           vc: data,
           vcMetadata: context.vcMetadata,
         };

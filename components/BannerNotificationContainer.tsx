@@ -122,7 +122,8 @@ export const BannerNotificationContainer: React.FC<
           testId={'downloadingVcFailedPopup'}
         />
       )}
-      {/* {bannerNotificationController.isDownloadingSuccess && (
+
+      {bannerNotificationController.isDownloadingSuccess && (
         <BannerNotification
           type={BannerStatusType.SUCCESS}
           message={t('MyVcsTab:downloadingVcSuccess')}
@@ -130,7 +131,7 @@ export const BannerNotificationContainer: React.FC<
           key={'downloadingVcSuccessPopup'}
           testId={'downloadingVcSuccessPopup'}
         />
-      )} */}
+      )}
     </>
   );
 };

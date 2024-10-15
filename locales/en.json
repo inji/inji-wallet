@@ -419,7 +419,7 @@
     "generateVcFABDescription": "Tap on  \"+\" below to download your card",
     "downloadCard": "Download Card",
     "downloadingYourCard": "Downloading your card, this can take upto 5 minutes",
-    "downloadingVcSuccess": "Your Card has been downloaded successfully",
+    "downloadingVcSuccess":"Your Card has been downloaded successfully",
     "downloadingVcFailed": "Sorry! Due to technical error we are unable to download your card now. Please try again later.",
     "activated": "Credentials are enabled for online authentication.",
     "noCardsTitle": "No Cards Found!",

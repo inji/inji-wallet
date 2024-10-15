@@ -1,4 +1,4 @@
-import {EventFrom, send, sendParent} from 'xstate';
+import {actions, EventFrom, send, sendParent} from 'xstate';
 import {AppServices} from '../../../shared/GlobalContext';
 import {VCMetamodel} from './VCMetaModel';
 import {VCMetaActions} from './VCMetaActions';
@@ -119,6 +119,9 @@ export const vcMetaMachine =
             },
             VC_DOWNLOADED: {
               actions: ['setDownloadCredentialsSuccess','setDownloadedVc',]
+            },
+            VC_ACTIVATED:{
+              actions: 'setDownloadedVc'
             },
             ADD_VC_TO_IN_PROGRESS_DOWNLOADS: {
               actions: 'addVcToInProgressDownloads',

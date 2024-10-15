@@ -131,7 +131,7 @@ export const API = {
     );
     return response;
   },
-  
+
   fetchAllProperties: async () => {
     const response = await request(
       API_URLS.allProperties.method,
