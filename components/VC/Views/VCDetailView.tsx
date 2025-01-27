@@ -17,12 +17,10 @@ import {
   BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS,
   DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
   Display,
-  KEY_TYPE_FIELD,
   fieldItemIterator,
 } from '../common/VCUtils';
 import {ProfileIcon} from '../../ProfileIcon';
 import {VCFormat} from '../../../shared/VCFormat';
-import {VCItemField} from '../common/VCItemField';
 
 const getProfileImage = (face: any) => {
   if (face) {
@@ -147,12 +145,6 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = props => {
                       wellknownDisplayProperty,
                       props,
                     )}
-                  <VCItemField
-                    key={'keyTypeVcDetailView'}
-                    fieldName={KEY_TYPE_FIELD}
-                    fieldValue={props.keyType}
-                    testID={'keyTypeVcDetailView'}
-                  />
                 </Column>
               </>
             </ImageBackground>
@@ -254,5 +246,4 @@ export interface VCItemDetailsProps {
   onBinding?: () => void;
   activeTab?: Number;
   vcHasImage: boolean;
-  keyType: string;
 }
