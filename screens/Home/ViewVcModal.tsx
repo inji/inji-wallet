@@ -32,7 +32,7 @@ import {
   BannerStatus,
 } from '../../components/BannerNotification';
 import {VCProcessor} from '../../components/VC/common/VCProcessor';
-import { HelpIcon } from '../../components/ui/HelpIcon';
+import {HelpIcon} from '../../components/ui/HelpIcon';
 
 export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
   const {t} = useTranslation('ViewVcModal');
@@ -88,10 +88,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
   const headerRight = flow => {
     return flow === 'downloadedVc' ? (
       <Row align="space-between">
-        <HelpScreen
-          source={'Inji'}
-          triggerComponent={HelpIcon()}
-        />
+        <HelpScreen source={'Inji'} triggerComponent={HelpIcon()} />
         {isVCLoaded(verifiableCredential, fields) ? (
           <Pressable
             onPress={() => props.vcItemActor.send('KEBAB_POPUP')}
@@ -163,9 +160,6 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
           walletBindingResponse={controller.walletBindingResponse}
           activeTab={props.activeTab}
           vcHasImage={profileImage !== undefined}
-          keyType={
-            controller.verifiableCredentialData.vcMetadata.downloadKeyType
-          }
         />
       )}
 

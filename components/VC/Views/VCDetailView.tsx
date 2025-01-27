@@ -17,7 +17,6 @@ import {
   BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS,
   DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
   Display,
-  KEY_TYPE_FIELD,
   fieldItemIterator,
 } from '../common/VCUtils';
 import {VCFormat} from '../../../shared/VCFormat';
@@ -30,12 +29,12 @@ const getProfileImage = (face: any) => {
       <Image source={{uri: face}} style={Theme.Styles.detailedViewImage} />
     );
   }
-  return (
-   <></>
-  );
+  return <></>;
 };
 
-export const VCDetailView: React.FC<VCItemDetailsProps> = (props: VCItemDetailsProps) => {
+export const VCDetailView: React.FC<VCItemDetailsProps> = (
+  props: VCItemDetailsProps,
+) => {
   const {t} = useTranslation('VcDetails');
   const logo = props.verifiableCredentialData.issuerLogo;
   const face = props.verifiableCredentialData.face;
@@ -86,9 +85,11 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (props: VCItemDetailsP
                 Theme.Styles.openCardBgContainer,
                 wellknownDisplayProperty.getBackgroundColor(),
               ]}
-              source={wellknownDisplayProperty.getBackgroundImage(
-                Theme.OpenCard,
-              ) as ImageBackgroundProps}>
+              source={
+                wellknownDisplayProperty.getBackgroundImage(
+                  Theme.OpenCard,
+                ) as ImageBackgroundProps
+              }>
               <Row padding="14 14 0 14" margin="0 0 0 0">
                 <Column crossAlign="center">
                   {getProfileImage(face)}
@@ -145,12 +146,6 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (props: VCItemDetailsP
                       wellknownDisplayProperty,
                       props,
                     )}
-                  <VCItemField
-                    key={'keyTypeVcDetailView'}
-                    fieldName={KEY_TYPE_FIELD}
-                    fieldValue={props.keyType}
-                    testID={'keyTypeVcDetailView'}
-                  />
                 </Column>
               </>
             </ImageBackground>
@@ -252,5 +247,4 @@ export interface VCItemDetailsProps {
   onBinding?: () => void;
   activeTab?: Number;
   vcHasImage: boolean;
-  keyType: string;
 }
