@@ -209,6 +209,9 @@
         "downloadingCredentials": "Downloading Credentials"
       }
     },
+    "offerTitle": "Scan & Download Card",
+    "offerDescription": "Scan a QR code to instantly download your card.",
+    "download":" Download Card",
     "errors": {
       "noInternetConnection": {
         "title": "No internet connection",
@@ -1065,5 +1068,30 @@
     "done": "Done",
     "keyManagementTitle": "Key Management",
     "keyManagementDesc": "Select the key generation method that aligns with your preference, putting you in control of your credential security.\nDrag and arrange the keys, with the top one being your highest priority."
+  },
+  "authWebView": {
+    "title": "“{{wallet}}” Wants to Use “{{domain}}” to Sign In",
+    "message": "This allows the app and website to share information about you.",
+    "cancel": "Cancel",
+    "continue": "Sign In"
+  },
+  "cancelDownloadModal": {
+    "heading": "Do you want to cancel downloading?",
+    "subHeading": "Once cancelled, your card will not be downloaded and you need to reinitiate the download.",
+    "cancel": "No, I’ll wait",
+    "confirm": "Yes, Cancel"
+  },
+  "transactionCodeScreen": {
+    "description": "We’ve sent the transaction code to your registered email Id",
+    "placeholder": "Enter Transaction Code",
+    "verify": "Verify",
+    "emptyCodeError":"Code cannot be empty",
+    "invalidCharacters":"Only letters and numbers are allowed",
+    "TransactionCode": "Transasction Code"
+  },
+  "trustScreen": {
+    "description": "Please make sure this card is from a trusted source before downloading.Once downloaded, it will be saved in your wallet and can be used anytime.",
+    "confirm": "Yes I Trust This",
+    "cancel": "No, Take Me Back"
   }
 }

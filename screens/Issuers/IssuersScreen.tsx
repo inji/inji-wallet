@@ -1,16 +1,20 @@
-import React, {useLayoutEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {FlatList, Pressable} from 'react-native';
-import {Issuer} from '../../components/openId4VCI/Issuer';
-import {Error} from '../../components/ui/Error';
-import {Header} from '../../components/ui/Header';
-import {Button, Column, Row, Text} from '../../components/ui';
-import {Theme} from '../../components/ui/styleUtils';
-import {RootRouteProps} from '../../routes';
-import {HomeRouteProps} from '../../routes/routeTypes';
-import {useIssuerScreenController} from './IssuerScreenController';
-import {Loader} from '../../components/ui/Loader';
-import {isTranslationKeyFound, removeWhiteSpace} from '../../shared/commonUtil';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, Pressable, View } from 'react-native';
+import { Issuer } from '../../components/openId4VCI/Issuer';
+import { Error } from '../../components/ui/Error';
+import { Header } from '../../components/ui/Header';
+import { Button, Column, Row, Text } from '../../components/ui';
+import { Theme } from '../../components/ui/styleUtils';
+import { RootRouteProps } from '../../routes';
+import { HomeRouteProps } from '../../routes/routeTypes';
+import { useIssuerScreenController } from './IssuerScreenController';
+import { Loader } from '../../components/ui/Loader';
+import ScanIcon from '../../assets/scanIcon.svg';
+import {
+  isTranslationKeyFound,
+  removeWhiteSpace,
+} from '../../shared/commonUtil';
 import {
   ErrorMessage,
   getDisplayObjectForCurrentLanguage,
@@ -22,20 +26,24 @@ import {
   sendInteractEvent,
   sendStartEvent,
 } from '../../shared/telemetry/TelemetryUtils';
-import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
-import {MessageOverlay} from '../../components/MessageOverlay';
-import {SearchBar} from '../../components/ui/SearchBar';
-import {SvgImage} from '../../components/ui/svg';
-import {Icon} from 'react-native-elements';
-import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
-import {CredentialTypeSelectionScreen} from './CredentialTypeSelectionScreen';
-
+import { TelemetryConstants } from '../../shared/telemetry/TelemetryConstants';
+import { MessageOverlay } from '../../components/MessageOverlay';
+import { SearchBar } from '../../components/ui/SearchBar';
+import { SvgImage } from '../../components/ui/svg';
+import { Icon } from 'react-native-elements';
+import { BannerNotificationContainer } from '../../components/BannerNotificationContainer';
+import { CredentialTypeSelectionScreen } from './CredentialTypeSelectionScreen';
+import { QrScanner } from '../../components/QrScanner';
+import { IssuersModel } from '../../machines/Issuers/IssuersModel';
+import { AUTH_ROUTES } from '../../routes/routesConstants';
+import { TransactionCodeModal } from './TransactionCodeScreen';
+import { TrustIssuerModal } from './TrustIssuerModal';
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
+  const model = IssuersModel;
   const controller = useIssuerScreenController(props);
-  const {t} = useTranslation('IssuersScreen');
-
+  const { i18n, t } = useTranslation('IssuersScreen');
   const issuers = controller.issuers;
   let [filteredSearchData, setFilteredSearchData] = useState(issuers);
   const [search, setSearch] = useState('');
@@ -62,25 +70,37 @@ export const IssuersScreen: React.FC<
         header: props => (
           <Header
             goBack={props.navigation.goBack}
-            title={t('title')}
+            title={ controller.isQrScanning?t('download'):t('title')}
             testID="issuersScreenHeader"
           />
         ),
       });
     }
 
-    if (controller.isStoring) {
-      props.navigation.goBack();
-    }
   }, [
     controller.loadingReason,
     controller.errorMessageType,
     controller.isStoring,
+    controller.isQrScanning,
   ]);
+
+  if (controller.isStoring) {
+    props.navigation.goBack();
+  }
+  useEffect(() => {
+    if (controller.isAuthEndpointToOpen) {
+      (props.navigation as any).navigate(AUTH_ROUTES.AuthView, {
+        authorizationURL: controller.authEndpount,
+        clientId: controller.selectedIssuer.client_id ?? "wallet",
+        redirectUri: controller.selectedIssuer.redirect_uri ?? "io.mosip.residentapp.inji://oauthredirect",
+        controller: controller,
+      });
+    }
+  }, [controller.isAuthEndpointToOpen]);
 
   const onPressHandler = (id: string, protocol: string) => {
     sendStartEvent(
-      getStartEventData(TelemetryConstants.FlowType.vcDownload, {id: id}),
+      getStartEventData(TelemetryConstants.FlowType.vcDownload, { id: id }),
     );
     sendInteractEvent(
       getInteractEventData(
@@ -102,9 +122,9 @@ export const IssuersScreen: React.FC<
     return (
       controller.errorMessageType === ErrorMessage.TECHNICAL_DIFFICULTIES ||
       controller.errorMessageType ===
-        ErrorMessage.CREDENTIAL_TYPE_DOWNLOAD_FAILURE ||
+      ErrorMessage.CREDENTIAL_TYPE_DOWNLOAD_FAILURE ||
       controller.errorMessageType ===
-        ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED
+      ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED
     );
   }
 
@@ -140,7 +160,7 @@ export const IssuersScreen: React.FC<
     const filteredData = issuers.filter(item => {
       if (
         getDisplayObjectForCurrentLanguage(item.display)
-          ?.title.toLowerCase()
+          ?.name.toLowerCase()
           .includes(searchText.toLowerCase())
       ) {
         return getDisplayObjectForCurrentLanguage(item.display);
@@ -172,9 +192,22 @@ export const IssuersScreen: React.FC<
         primaryButtonText="goBack"
         primaryButtonEvent={controller.RESET_VERIFY_ERROR}
         primaryButtonTestID="goBack"
-        customStyles={{marginTop: '30%'}}
+        customStyles={{ marginTop: '30%' }}
       />
     );
+  }
+  if (controller.isConsentRequested) {
+    return issuerTrustConsentComponent();
+  }
+  if (controller.isTxCodeRequested) {
+    return <TransactionCodeModal
+      visible={controller.isTxCodeRequested}
+      onDismiss={controller.CANCEL}
+      onVerify={controller.TX_CODE_RECEIVED}
+      inputMode= {controller.txCodeDisplayDetails.inputMode}
+      description={controller.txCodeDisplayDetails.description}
+      length={controller.txCodeDisplayDetails.length}
+    />
   }
 
   if (controller.isBiometricsCancelled) {
@@ -217,7 +250,7 @@ export const IssuersScreen: React.FC<
         primaryButtonTestID="tryAgain"
         primaryButtonText={
           controller.errorMessageType != ErrorMessage.TECHNICAL_DIFFICULTIES &&
-          controller.errorMessageType !=
+            controller.errorMessageType !=
             ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED
             ? 'tryAgain'
             : undefined
@@ -235,6 +268,24 @@ export const IssuersScreen: React.FC<
         subTitle={t(`loaders.subTitle.${controller.loadingReason}`)}
       />
     );
+  }
+ 
+
+  if (controller.isQrScanning) {
+    return qrScannerComponent();
+  }
+  function qrScannerComponent() {
+    return (
+      <Column crossAlign="center">
+        <QrScanner
+          onQrFound={controller.QR_CODE_SCANNED}
+        />
+      </Column>
+    );
+  }
+  
+  function issuerTrustConsentComponent() {
+    return <TrustIssuerModal isVisible={true} issuerLogo={controller.issuerLogo} issuerName={controller.issuerName} onConfirm={controller.ON_CONSENT_GIVEN} onCancel={controller.CANCEL} />
   }
 
   return (
@@ -279,11 +330,19 @@ export const IssuersScreen: React.FC<
             }}>
             {t('description')}
           </Text>
+          {search === '' && <View style={{ height: 85 }}><Issuer defaultLogo={ScanIcon} displayDetails={{
+            title: t('offerTitle'),
+            locale: i18n.language,
+            description: t('offerDescription'),
+          }} onPress={
+            controller.SCAN_CREDENTIAL_OFFER_QR_CODE
+          } testID={'credentalOfferButton'} /></View>}
+
           <Column scroll style={Theme.IssuersScreenStyles.issuersContainer}>
             {controller.issuers.length > 0 && (
               <FlatList
                 data={filteredSearchData}
-                renderItem={({item}) => (
+                renderItem={({ item }) => (
                   <Issuer
                     testID={removeWhiteSpace(item.issuer_id)}
                     key={item.issuer_id}
@@ -306,3 +365,5 @@ export const IssuersScreen: React.FC<
     </React.Fragment>
   );
 };
+
+

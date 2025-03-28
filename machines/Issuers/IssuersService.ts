@@ -1,6 +1,5 @@
 import NetInfo from '@react-native-community/netinfo';
 import {NativeModules} from 'react-native';
-import {authorize} from 'react-native-app-auth';
 import Cloud from '../../shared/CloudBackupAndRestoreUtils';
 import {CACHED_API} from '../../shared/api';
 import {
@@ -8,21 +7,16 @@ import {
   generateKeyPair,
 } from '../../shared/cryptoutil/cryptoUtil';
 import {
-  constructAuthorizationConfiguration,
   constructIssuerMetaData,
   constructProofJWT,
   hasKeyPair,
-  OIDCErrors,
   updateCredentialInformation,
-  vcDownloadTimeout,
   verifyCredentialData,
 } from '../../shared/openId4VCI/Utils';
-import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
-import {
-  getImpressionEventData,
-  sendImpressionEvent,
-} from '../../shared/telemetry/TelemetryUtils';
 import {VciClient} from '../../shared/vciClient/VciClient';
+import {issuerType} from './IssuersMachine';
+import {setItem} from '../store';
+import {API_CACHED_STORAGE_KEYS} from '../../shared/constants';
 
 export const IssuersService = () => {
   return {
@@ -30,106 +24,196 @@ export const IssuersService = () => {
       return await Cloud.isSignedInAlready();
     },
     downloadIssuersList: async () => {
-      return await CACHED_API.fetchIssuers();
+      const trustedIssuersList = await CACHED_API.fetchIssuers();
+      return trustedIssuersList;
     },
     checkInternet: async () => await NetInfo.fetch(),
     downloadIssuerWellknown: async (context: any) => {
       const wellknownResponse = await CACHED_API.fetchIssuerWellknownConfig(
-        context.selectedIssuer.issuer_id,
-        context.selectedIssuer.credential_issuer_host,
+        context.selectedIssuer.id,
+        context.selectedIssuer.credential_issuer_host
+          ? context.selectedIssuer.credential_issuer_host
+          : context.selectedIssuer.credential_issuer,
       );
       return wellknownResponse;
     },
-    downloadCredentialTypes: async (context: any) => {
+    getCredentialTypes: async (context: any) => {
       const credentialTypes = [];
-      for (const key in context.selectedIssuer
-        .credential_configurations_supported) {
-        credentialTypes.push({
-          id: key,
-          ...context.selectedIssuer.credential_configurations_supported[key],
-        });
-      }
-      if (credentialTypes.length == 0)
-        throw new Error(
-          `No credential type found for issuer ${context.selectedIssuer.issuer_id}`,
-        );
+      const selectedIssuer = context.selectedIssuer;
 
-      return credentialTypes;
-    },
-    fetchAuthorizationEndpoint: async (context: any) => {
-      const wellknownResponse = context.selectedIssuerWellknownResponse;
-      const credentialIssuer = wellknownResponse['credential_issuer'];
-      const authorizationServers = wellknownResponse[
-        'authorization_servers'
-      ] || [credentialIssuer];
+      const keys =
+        selectedIssuer.credential_configuration_ids ??
+        Object.keys(selectedIssuer.credential_configurations_supported);
 
-      const SUPPORTED_GRANT_TYPES = ['authorization_code'];
-      const DEFAULT_AUTHORIZATION_SERVER_SUPPORTED_GRANT_TYPES = [
-        'authorization_code',
-        'implicit',
-      ];
-
-      for (const server of authorizationServers) {
-        try {
-          const authorizationServersMetadata =
-            await CACHED_API.fetchIssuerAuthorizationServerMetadata(server);
-
-          if (
-            (
-              authorizationServersMetadata?.['grant_types_supported'] ||
-              DEFAULT_AUTHORIZATION_SERVER_SUPPORTED_GRANT_TYPES
-            ).some(grant => SUPPORTED_GRANT_TYPES.includes(grant))
-          ) {
-            return authorizationServersMetadata['authorization_endpoint'];
-          }
-        } catch (error) {
-          console.error(`Failed to fetch metadata for ${server}:`, error);
+      for (const key of keys) {
+        if (selectedIssuer.credential_configurations_supported[key]) {
+          credentialTypes.push({
+            id: key,
+            ...selectedIssuer.credential_configurations_supported[key],
+          });
         }
       }
 
-      throw new Error(
-        OIDCErrors.AUTHORIZATION_ENDPOINT_DISCOVERY.FAILED_TO_FETCH_AUTHORIZATION_ENDPOINT,
-      );
+      if (credentialTypes.length === 0) {
+        throw new Error(
+          `No credential type found for issuer ${selectedIssuer.issuer_id}`,
+        );
+      }
+      return credentialTypes;
     },
 
-    downloadCredential: async (context: any) => {
-      const downloadTimeout = await vcDownloadTimeout();
-      const accessToken: string = context.tokenResponse?.accessToken;
-      const proofJWT = await constructProofJWT(
-        context.publicKey,
-        context.privateKey,
-        accessToken,
-        context.selectedIssuer,
-        context.keyType,
-      );
-      let credential = await VciClient.downloadCredential(
+    downloadCredential: (context: any) => async (sendBack: any) => {
+      const navigateToAuthView = (authorizationEndpoint: string) => {
+        sendBack({
+          type: 'AUTH_ENDPOINT_RECEIVED',
+          authEndpoint: authorizationEndpoint,
+        });
+      };
+      const getProofJwt=  async (accessToken: string, cNonce: string) => {
+        sendBack({
+          type: 'PROOF_REQUEST',
+          accessToken: accessToken,
+          cNonce: cNonce,
+        })
+      }
+      const credential = await VciClient.requestCredentialFromTrustedIssuer(
         constructIssuerMetaData(
           context.selectedIssuer,
           context.selectedCredentialType,
-          downloadTimeout,
-        ),
-        proofJWT,
-        accessToken,
-      );
-
-      console.info(`VC download via ${context.selectedIssuerId} is successful`);
-      return await updateCredentialInformation(context, credential);
-    },
-    invokeAuthorization: async (context: any) => {
-      sendImpressionEvent(
-        getImpressionEventData(
-          TelemetryConstants.FlowType.vcDownload,
-          context.selectedIssuer.issuer_id +
-            TelemetryConstants.Screens.webViewPage,
-        ),
-      );
-      return await authorize(
-        constructAuthorizationConfiguration(
-          context.selectedIssuer,
           context.selectedCredentialType.scope,
         ),
+        {
+          clientId: context.selectedIssuer.client_id,
+          redirectUri: context.selectedIssuer.redirect_uri,
+        },
+        getProofJwt,
+        navigateToAuthView,
       );
+      return updateCredentialInformation(context, credential);
     },
+    sendTxCode: async (context: any) => {
+      await VciClient.client.sendTxCodeFromJS(context.txCode);
+    },
+
+    sendConsentGiven: async () => {
+      await VciClient.client.sendIssuerTrustResponseFromJS(true);
+    },
+
+    sendConsentNotGiven: async () => {
+      await VciClient.client.sendIssuerTrustResponseFromJS(false);
+    },
+
+    downloadCredentialFromOffer: (context: any) => async (sendBack: any) => {
+      const navigateToAuthView = (authorizationEndpoint: string) => {
+        sendBack({
+          type: 'AUTH_ENDPOINT_RECEIVED',
+          authEndpoint: authorizationEndpoint,
+        });
+      };
+      const getSignedProofJwt = async (
+        accessToken: string,
+        cNonce: string | null,
+        issuerMetadata: object,
+        credentialConfigurationId: string,
+      ) => {
+        console.log("issuerMetadata::", issuerMetadata);
+        let issuer = issuerMetadata as issuerType;
+        issuer.issuer_id = issuer.credential_issuer;
+        await setItem(
+          API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(issuer.issuer_id),
+          issuer,
+          '',
+        );
+
+        let credentialTypes: Array<{id: string; [key: string]: any}> = [];
+        if (
+          issuer.credential_configurations_supported[credentialConfigurationId]
+        ) {
+          credentialTypes.push({
+            id: credentialConfigurationId,
+            ...issuer.credential_configurations_supported[
+              credentialConfigurationId
+            ],
+          });
+          sendBack({
+            type: 'PROOF_REQUEST',
+            accessToken: accessToken,
+            cNonce: cNonce,
+            issuerMetadata: issuerMetadata,
+            issuer: issuer,
+            credentialTypes: credentialTypes,
+          });
+        }
+      };
+
+      const getTxCode = async (
+        inputMode: string | undefined,
+        description: string | undefined,
+        length: number | undefined,
+      ) => {
+        sendBack({
+          type: 'TX_CODE_REQUEST',
+          inputMode: inputMode,
+          description: description,
+          length: length,
+        });
+      };
+
+      const requesTrustIssuerConsent = async (issuerMetadata: object) => {
+        const issuerMetadataObject = issuerMetadata as issuerType;
+
+        sendBack({
+          type: 'TRUST_ISSUER_CONSENT_REQUEST',
+          issuerMetadata: issuerMetadataObject,
+        });
+      };
+
+      const credential = await VciClient.requestCredentialByOffer(
+        context.qrData,
+        getTxCode,
+        getSignedProofJwt,
+        navigateToAuthView,
+        requesTrustIssuerConsent,
+      );
+      return credential;
+    },
+    updateCredential: async (context: any) => {
+      const credential = await updateCredentialInformation(
+        context,
+        context.credential,
+      );
+      return credential;
+    },
+
+    constructProof: async (context: any) => {
+      const issuerMeta = context.selectedIssuer;
+      const proofJWT = await constructProofJWT(
+        context.publicKey,
+        context.privateKey,
+        context.accessToken,
+        issuerMeta,
+        context.keyType,
+        true,
+        context.cNonce,
+      );
+      await VciClient.client.sendProofFromJS(proofJWT);
+      return proofJWT;
+    },
+    constructProofForTrustedIssuers: async (context: any) => {
+      const issuerMeta = context.selectedIssuer;
+      const proofJWT = await constructProofJWT(
+        context.publicKey,
+        context.privateKey,
+        context.accessToken,
+        issuerMeta,
+        context.keyType,
+        false,
+        context.cNonce,
+      );
+      await VciClient.client.sendProofFromJS(proofJWT);
+      return proofJWT;
+    },
+
 
     getKeyOrderList: async () => {
       const {RNSecureKeystoreModule} = NativeModules;
@@ -165,6 +249,7 @@ export const IssuersService = () => {
       if (!verificationResult.isVerified) {
         throw new Error(verificationResult.verificationErrorCode);
       }
+
       return verificationResult;
     },
   };

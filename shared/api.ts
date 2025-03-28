@@ -41,6 +41,7 @@ export const API_URLS: ApiUrls = {
     buildURL: (authorizationServerUrl: string): string =>
       `${authorizationServerUrl}/.well-known/oauth-authorization-server`,
   },
+
   allProperties: {
     method: 'GET',
     buildURL: (): `/${string}` => '/v1/mimoto/allProperties',
@@ -115,6 +116,14 @@ export const API = {
     );
     return response.response.issuers || [];
   },
+
+  fetchIssuerConfig: async (issuerId: string) => {
+    const response = await request(
+      API_URLS.issuerConfig.method,
+      API_URLS.issuerConfig.buildURL(issuerId),
+    );
+    return response.response;
+  },
   fetchIssuerWellknownConfig: async (credentialIssuer: string) => {
     const response = await request(
       API_URLS.issuerWellknownConfig.method,
@@ -122,17 +131,7 @@ export const API = {
     );
     return response;
   },
-  fetchAuthorizationServerMetadata: async (authorizationServerUrl: string) => {
-    const response = await request(
-      API_URLS.authorizationServerMetadataConfig.method,
-      API_URLS.authorizationServerMetadataConfig.buildURL(
-        authorizationServerUrl,
-      ),
-      undefined,
-      '',
-    );
-    return response;
-  },
+  
   fetchAllProperties: async () => {
     const response = await request(
       API_URLS.allProperties.method,

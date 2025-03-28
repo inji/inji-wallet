@@ -97,6 +97,7 @@ export interface CredentialTypes {
   proof_types_supported: Object;
   credential_definition: {
     type: Object[];
+    context:string[]
     credentialSubject: CredentialSubject;
   };
   doctype: string;

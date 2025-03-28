@@ -15,6 +15,7 @@ import {RequestLayout} from '../screens/Request/RequestLayout';
 import {SplashScreen} from '../screens/SplashScreen';
 import {RequestStackParamList} from './routesConstants';
 import {KeyManagementScreen} from '../screens/Settings/KeyManagementScreen';
+import AuthWebViewScreen from '../screens/AuthWebViewScreen';
 
 export const baseRoutes: Screen[] = [
   {
@@ -27,6 +28,10 @@ export const baseRoutes: Screen[] = [
   {
     name: 'KeyManagement',
     component: KeyManagementScreen,
+  },
+  {
+    name:'AuthView',
+    component:AuthWebViewScreen
   },
   {
     name: 'Language',

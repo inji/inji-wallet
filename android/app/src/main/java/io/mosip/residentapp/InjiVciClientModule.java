@@ -11,27 +11,30 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-
+import com.google.gson.Gson;
 import java.util.Objects;
+import io.mosip.residentapp.VCIClientCallbackBridge;
+import io.mosip.residentapp.VCIClientBridge;
 
 import io.mosip.vciclient.VCIClient;
 import io.mosip.vciclient.constants.CredentialFormat;
+import io.mosip.vciclient.credentialOffer.CredentialOffer;
+import io.mosip.vciclient.credentialOffer.CredentialOfferService;
 import io.mosip.vciclient.credentialResponse.CredentialResponse;
-import io.mosip.vciclient.dto.IssuerMetaData;
 import io.mosip.vciclient.proof.jwt.JWTProof;
-
+import io.mosip.vciclient.proof.Proof;
+import io.mosip.vciclient.issuerMetadata.IssuerMetadata;
+import io.mosip.vciclient.clientMetadata.ClientMetadata;
 
 public class InjiVciClientModule extends ReactContextBaseJavaModule {
     private VCIClient vciClient;
+    private final ReactApplicationContext reactContext;
 
     public InjiVciClientModule(@Nullable ReactApplicationContext reactContext) {
         super(reactContext);
-    }
 
-    @ReactMethod
-    public void init(String appId) {
-        Log.d("InjiVciClientModule", "Initializing InjiVciClientModule with " + appId);
-        vciClient = new VCIClient(appId);
+        this.reactContext = reactContext;
+        VCIClientBridge.reactContext = this.reactContext;
     }
 
     @NonNull
@@ -41,42 +44,68 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void requestCredential(ReadableMap issuerMetaData, String jwtProofValue, String accessToken, Promise promise) {
-        try {
-            IssuerMetaData constructedIssuerMetadata ;
-            String issuerMetadataCredentialFormat = issuerMetaData.getString("credentialFormat");
-            if(Objects.equals(issuerMetadataCredentialFormat, CredentialFormat.LDP_VC.getValue())){
-                constructedIssuerMetadata =  new IssuerMetaData(
-                        issuerMetaData.getString("credentialAudience"),
-                        issuerMetaData.getString("credentialEndpoint"),
-                        issuerMetaData.getInt("downloadTimeoutInMilliSeconds"),
-                        convertReadableArrayToStringArray(issuerMetaData.getArray("credentialType")),
-                        CredentialFormat.LDP_VC,null,null);
-            } else if (Objects.equals(issuerMetadataCredentialFormat, CredentialFormat.MSO_MDOC.getValue())) {
-                constructedIssuerMetadata =  new IssuerMetaData(
-                        issuerMetaData.getString("credentialAudience"),
-                        issuerMetaData.getString("credentialEndpoint"),
-                        issuerMetaData.getInt("downloadTimeoutInMilliSeconds"),
-                        null,
-                        CredentialFormat.MSO_MDOC, issuerMetaData.getString("doctype"),
-                        issuerMetaData.getMap("claims").toHashMap());
-            } else {
-                throw new IllegalStateException("Unexpected value: " + issuerMetadataCredentialFormat);
-            }
-
-            CredentialResponse response = vciClient.requestCredential(constructedIssuerMetadata, new JWTProof(jwtProofValue)
-                    , accessToken);
-            promise.resolve(response.toJsonString());
-        } catch (Exception exception) {
-            promise.reject(exception);
-        }
+    public void init(String appId) {
+        Log.d("InjiVciClientModule", "Initializing InjiVciClientModule with " + appId);
+        vciClient = new VCIClient(appId,reactContext);
     }
 
-    private String[] convertReadableArrayToStringArray(ReadableArray readableArray) {
-        String[] stringArray = new String[readableArray.size()];
-        for (int i = 0; i < readableArray.size(); i++) {
-            stringArray[i] = readableArray.getString(i);
-        }
-        return stringArray;
+    @ReactMethod
+    public void sendProofFromJS(String jwt) {
+        VCIClientCallbackBridge.completeProof(jwt);
+    }
+
+    @ReactMethod
+    public void sendAuthCodeFromJS(String authCode) {
+        VCIClientCallbackBridge.completeAuthCode(authCode);
+    }
+
+    @ReactMethod
+    public void sendTxCodeFromJS(String txCode) {
+        VCIClientCallbackBridge.completeTxCode(txCode);
+    }
+
+    @ReactMethod
+    public void sendIssuerTrustResponseFromJS(Boolean trusted) {
+        VCIClientCallbackBridge.completeIssuerTrustResponse(trusted);
+    }
+
+    @ReactMethod
+    public void requestCredentialByOffer(String credentialOffer,String clientMetadataJson, Promise promise) {
+        new Thread(() -> {
+            try {
+                ClientMetadata clientMetadata= new Gson().fromJson(
+                    clientMetadataJson, ClientMetadata.class);
+                CredentialResponse response = VCIClientBridge.requestCredentialByOfferSync(vciClient, credentialOffer,clientMetadata);
+                reactContext.runOnUiQueueThread(() -> {
+                    promise.resolve(response != null ? response.toJsonString() : null);
+                });
+            } catch (Exception e) {
+                reactContext.runOnUiQueueThread(() -> {
+                    promise.reject("OFFER_FLOW_FAILED", e.getMessage(), e);
+                });
+            }
+        }).start();
+    }
+
+    @ReactMethod
+    public void requestCredentialFromTrustedIssuer(String resolvedIssuerMetaJson, String clientMetadataJson, Promise promise) {
+        new Thread(() -> {
+            try {
+                IssuerMetadata issuerMetaData = new Gson().fromJson(
+                        resolvedIssuerMetaJson, IssuerMetadata.class);
+                ClientMetadata clientMetadata= new Gson().fromJson(
+                    clientMetadataJson, ClientMetadata.class);
+
+                CredentialResponse response = VCIClientBridge.requestCredentialFromTrustedIssuerSync(vciClient, issuerMetaData,clientMetadata);
+
+                reactContext.runOnUiQueueThread(() -> {
+                    promise.resolve(response != null ? response.toJsonString() : null);
+                });
+            } catch (Exception e) {
+                reactContext.runOnUiQueueThread(() -> {
+                    promise.reject("TRUSTED_ISSUER_FAILED", e.getMessage(), e);
+                });
+            }
+        }).start();
     }
 }

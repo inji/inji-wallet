@@ -50,7 +50,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
     } else if (
       props.verifiableCredentialData.vcMetadata.format === VCFormat.mso_mdoc
     ) {
-      const namespaces = verifiableCredential['issuerSigned']['nameSpaces'];
+      const namespaces = verifiableCredential['issuerSigned']?.['nameSpaces'] ?? verifiableCredential['nameSpaces']??{};
       Object.keys(namespaces).forEach(namespace => {
         (namespaces[namespace] as Array<Object>).forEach(element => {
           availableFieldNames.push(
@@ -119,7 +119,8 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                   margin={'0 0 0 24'}
                   style={{flex: 1}}>
                   {fieldItemIterator(
-                    props.fields,
+                   props.fields,
+                   props.wellknownFieldsFlag,
                     verifiableCredential,
                     props.wellknown,
                     wellknownDisplayProperty,
@@ -141,6 +142,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                   {shouldShowHrLine(verifiableCredential) &&
                     fieldItemIterator(
                       DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
+                      props.wellknownFieldsFlag,
                       verifiableCredential,
                       props.wellknown,
                       wellknownDisplayProperty,
@@ -240,6 +242,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
 export interface VCItemDetailsProps {
   fields: any[];
   wellknown: any;
+  wellknownFieldsFlag: boolean;
   credential: VerifiableCredential | Credential;
   verifiableCredentialData: VerifiableCredentialData;
   walletBindingResponse?: WalletBindingResponse;

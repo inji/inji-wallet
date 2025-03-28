@@ -1,5 +1,5 @@
 {
-  "originHash" : "178f6c7c607eeb08b99a4966015d08339500de64791888a2e79d6b7afae53659",
+  "originHash" : "2d4bd4f2ff41823478f56a65a061c28a141105b8447f22a9d1cef51048d33e76",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-openid4vp-ios-swift",
       "state" : {
-        "branch" : "release-0.3.x",
-        "revision" : "58ac61a84fdef03b7a1cc9e6f4ba3c4bfd57fe61"
+        "branch" : "develop",
+        "revision" : "c83527449f97c07e6f0a0bec239f9afe477bf216"
       }
     },
     {
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-vci-client-ios-swift",
       "state" : {
-        "branch" : "release-0.3.x",
-        "revision" : "02f367bd2527f249145393a533f5175918c1fc8a"
+        "branch" : "develop",
+        "revision" : "8a39bbf7805af4c615904090a027fa472e5f4534"
       }
     },
     {
@@ -76,10 +76,10 @@
     {
       "identity" : "pixelpass-ios-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mosip/pixelpass-ios-swift",
+      "location" : "https://github.com/mosip/pixelpass-ios-swift/",
       "state" : {
         "branch" : "develop",
-        "revision" : "760438e38e01bd9deb170585f37d7c05c5c1785a"
+        "revision" : "78a8b507f5bd0046e273e3ba962696b44aea0e33"
       }
     },
     {
@@ -128,5 +128,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

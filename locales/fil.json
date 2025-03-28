@@ -208,6 +208,9 @@
         "downloadingCredentials": "Nagda-download ng Mga Kredensyal"
       }
     },
+    "offerTitle": "I-scan at I-download ang Card",
+    "offerDescription": "I-scan ang QR code para agad ma-download ang iyong card.",
+    "download": "I-download ang Card",
     "errors": {
       "noInternetConnection": {
         "title": "Pakisuri ang iyong koneksyon at subukang muli",
@@ -1048,5 +1051,30 @@
     "done": "Tapos na",
     "keyManagementTitle": "Pamamahala ng Key",
     "keyManagementDesc": "Piliin ang paraan ng paggawa ng key na naaayon sa iyong kagustuhan, nagbibigay sa iyo ng kontrol sa seguridad ng iyong kredensyal.\nI-drag at ayusin ang mga key, kung saan ang nasa itaas ay ang may pinakamataas na priyoridad."
+  },
+  "authWebView": {
+    "title": "Gustong gamitin ng \"{{wallet}}\" ang \"{{domain}}\" para mag-sign in",
+    "message": "Pinapayagan nitong magbahagi ng impormasyon ang app at website tungkol sa iyo.",
+    "cancel": "Kanselahin",
+    "continue": "Mag-sign In"
+  },
+  "cancelDownloadModal": {
+    "heading": "Gusto mo bang kanselahin ang pag-download?",
+    "subHeading": "Kapag nakansela, hindi madadownload ang iyong card at kailangan mong simulan muli.",
+    "cancel": "Hindi, maghihintay ako",
+    "confirm": "Oo, Kanselahin"
+  },
+  "transactionCodeScreen": {
+    "description": "Ipinadala na namin ang transaction code sa iyong rehistradong email",
+    "placeholder": "Ilagay ang Transaction Code",
+    "verify": "I-verify",
+    "emptyCodeError": "Hindi puwedeng walang laman ang code",
+    "invalidCharacters": "Mga letra at numero lamang ang pinapayagan",
+    "TransactionCode": "Transaction Code"
+  },
+  "trustScreen": {
+    "description": "Siguraduhin na galing ito sa pinagkakatiwalaang source bago i-download. Kapag na-download, ito'y mase-save sa iyong wallet at maaaring magamit kahit kailan.",
+    "confirm": "Oo, Pinagkakatiwalaan Ko Ito",
+    "cancel": "Hindi, Bumalik Tayo"
   }
 }

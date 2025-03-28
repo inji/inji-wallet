@@ -10,17 +10,13 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1E55C2072DB12044009DF38B /* IntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E55C2062DB12044009DF38B /* IntentData.swift */; };
 		1E55C20B2DB120C2009DF38B /* RNDeepLinkIntentModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E55C20A2DB120C2009DF38B /* RNDeepLinkIntentModule.swift */; };
-		1E55C20D2DB120E7009DF38B /* RNDeepLinkIntentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E55C20C2DB120E7009DF38B /* RNDeepLinkIntentModule.m */; };
 		1E6875E92CA554E80086D870 /* OpenID4VP in Frameworks */ = {isa = PBXBuildFile; productRef = 1E6875E82CA554E80086D870 /* OpenID4VP */; };
 		1E6875EB2CA554FD0086D870 /* RNOpenID4VPModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E6875EA2CA554FD0086D870 /* RNOpenID4VPModule.m */; };
 		1E6875ED2CA5550F0086D870 /* RNOpenID4VPModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6875EC2CA5550F0086D870 /* RNOpenID4VPModule.swift */; };
 		1EED69F92DA913D30042EAFC /* IntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EED69F82DA913D30042EAFC /* IntentData.swift */; };
 		1EED69FB2DA914130042EAFC /* RNDeepLinkIntentModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EED69FA2DA914130042EAFC /* RNDeepLinkIntentModule.swift */; };
 		1EED69FD2DA914D00042EAFC /* RNDeepLinkIntentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EED69FC2DA914D00042EAFC /* RNDeepLinkIntentModule.m */; };
-		34873E472CD8DAF3004DE734 /* VCIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 34873E462CD8DAF3004DE734 /* VCIClient */; };
-		34873E4D2CD8DD11004DE734 /* pixelpass in Frameworks */ = {isa = PBXBuildFile; productRef = 34873E4C2CD8DD11004DE734 /* pixelpass */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		717E6FEC33D6D8A2F9B01CBC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1D23B9CD47CFD7F3C87D202F /* PrivacyInfo.xcprivacy */; };
 		73295844242A4AD3AA52D0BE /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98B96A488E54CBDB286B26F /* noop-file.swift */; };
@@ -38,6 +34,8 @@
 		9C7CDF3E2C7CBEDE00243A9A /* RNSecureKeystoreModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7CDF3D2C7CBEDE00243A9A /* RNSecureKeystoreModule.swift */; };
 		9C7CDF432C7CC13500243A9A /* RNSecureKeystoreModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7CDF422C7CC13500243A9A /* RNSecureKeystoreModule.m */; };
 		9CCCA19E2CF87A8400D5A461 /* securekeystore in Frameworks */ = {isa = PBXBuildFile; productRef = 9CCCA19D2CF87A8400D5A461 /* securekeystore */; };
+		9CFB37492DDDC9A000C199A8 /* pixelpass in Frameworks */ = {isa = PBXBuildFile; productRef = 9CFB37482DDDC9A000C199A8 /* pixelpass */; };
+		9CFB374C2DDDC9B500C199A8 /* VCIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 9CFB374B2DDDC9B500C199A8 /* VCIClient */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		E86208152C0335C5007C3E24 /* RNVCIClientModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86208142C0335C5007C3E24 /* RNVCIClientModule.swift */; };
@@ -72,9 +70,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Inji/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Inji/main.m; sourceTree = "<group>"; };
 		1D23B9CD47CFD7F3C87D202F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Inji/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		1E55C2062DB12044009DF38B /* IntentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentData.swift; sourceTree = "<group>"; };
 		1E55C20A2DB120C2009DF38B /* RNDeepLinkIntentModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNDeepLinkIntentModule.swift; sourceTree = "<group>"; };
-		1E55C20C2DB120E7009DF38B /* RNDeepLinkIntentModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDeepLinkIntentModule.m; sourceTree = "<group>"; };
 		1E6875EA2CA554FD0086D870 /* RNOpenID4VPModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNOpenID4VPModule.m; sourceTree = "<group>"; };
 		1E6875EC2CA5550F0086D870 /* RNOpenID4VPModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNOpenID4VPModule.swift; sourceTree = "<group>"; };
 		1EED69F82DA913D30042EAFC /* IntentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentData.swift; sourceTree = "<group>"; };
@@ -127,11 +123,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34873E472CD8DAF3004DE734 /* VCIClient in Frameworks */,
+				9CFB374C2DDDC9B500C199A8 /* VCIClient in Frameworks */,
 				9C4850432C3E5873002ECBD5 /* ios-tuvali-library in Frameworks */,
 				1E6875E92CA554E80086D870 /* OpenID4VP in Frameworks */,
 				9CCCA19E2CF87A8400D5A461 /* securekeystore in Frameworks */,
-				34873E4D2CD8DD11004DE734 /* pixelpass in Frameworks */,
+				9CFB37492DDDC9A000C199A8 /* pixelpass in Frameworks */,
 				96905EF65AED1B983A6B3ABC /* libPods-Inji.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -208,6 +204,7 @@
 				D65327D7A22EEC0BE12398D9 /* Pods */,
 				D7E4C46ADA2E9064B798F356 /* ExpoModulesProviders */,
 				462CE07025BF40E9952DCDA0 /* Resources */,
+				9CFB37462DDDC83900C199A8 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -228,6 +225,14 @@
 				FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */,
 			);
 			name = Inji;
+			sourceTree = "<group>";
+		};
+		9CFB37462DDDC83900C199A8 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				1E55C20A2DB120C2009DF38B /* RNDeepLinkIntentModule.swift */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
@@ -309,9 +314,9 @@
 			packageProductDependencies = (
 				9C4850422C3E5873002ECBD5 /* ios-tuvali-library */,
 				1E6875E82CA554E80086D870 /* OpenID4VP */,
-				34873E462CD8DAF3004DE734 /* VCIClient */,
-				34873E4C2CD8DD11004DE734 /* pixelpass */,
 				9CCCA19D2CF87A8400D5A461 /* securekeystore */,
+				9CFB37482DDDC9A000C199A8 /* pixelpass */,
+				9CFB374B2DDDC9B500C199A8 /* VCIClient */,
 			);
 			productName = Inji;
 			productReference = 13B07F961A680F5B00A75B9A /* Inji.app */;
@@ -340,11 +345,11 @@
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			packageReferences = (
-				34873E4B2CD8DD11004DE734 /* XCRemoteSwiftPackageReference "pixelpass-ios-swift" */,
-				34873E452CD8DAF3004DE734 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */,
 				9C4850412C3E5873002ECBD5 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */,
 				1E6875E72CA554E80086D870 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */,
 				9CCCA19C2CF87A8400D5A461 /* XCRemoteSwiftPackageReference "secure-keystore-ios-swift" */,
+				9CFB37472DDDC99F00C199A8 /* XCRemoteSwiftPackageReference "pixelpass-ios-swift" */,
+				9CFB374A2DDDC9B500C199A8 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */,
 			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
@@ -592,12 +597,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Inji/Inji.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = V2ABX7953Z;
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = V2ABX7953Z;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -829,22 +833,6 @@
 				kind = branch;
 			};
 		};
-		34873E452CD8DAF3004DE734 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mosip/inji-vci-client-ios-swift";
-			requirement = {
-				branch = develop;
-				kind = branch;
-			};
-		};
-		34873E4B2CD8DD11004DE734 /* XCRemoteSwiftPackageReference "pixelpass-ios-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mosip/pixelpass-ios-swift";
-			requirement = {
-				branch = develop;
-				kind = branch;
-			};
-		};
 		9C4850412C3E5873002ECBD5 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/tuvali-ios-swift/";
@@ -861,6 +849,22 @@
 				version = 0.3.0;
 			};
 		};
+		9CFB37472DDDC99F00C199A8 /* XCRemoteSwiftPackageReference "pixelpass-ios-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mosip/pixelpass-ios-swift/";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+		9CFB374A2DDDC9B500C199A8 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mosip/inji-vci-client-ios-swift";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -868,16 +872,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1E6875E72CA554E80086D870 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */;
 			productName = OpenID4VP;
-		};
-		34873E462CD8DAF3004DE734 /* VCIClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 34873E452CD8DAF3004DE734 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */;
-			productName = VCIClient;
-		};
-		34873E4C2CD8DD11004DE734 /* pixelpass */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 34873E4B2CD8DD11004DE734 /* XCRemoteSwiftPackageReference "pixelpass-ios-swift" */;
-			productName = pixelpass;
 		};
 		9C4850422C3E5873002ECBD5 /* ios-tuvali-library */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -888,6 +882,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9CCCA19C2CF87A8400D5A461 /* XCRemoteSwiftPackageReference "secure-keystore-ios-swift" */;
 			productName = securekeystore;
+		};
+		9CFB37482DDDC9A000C199A8 /* pixelpass */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9CFB37472DDDC99F00C199A8 /* XCRemoteSwiftPackageReference "pixelpass-ios-swift" */;
+			productName = pixelpass;
+		};
+		9CFB374B2DDDC9B500C199A8 /* VCIClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9CFB374A2DDDC9B500C199A8 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */;
+			productName = VCIClient;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
