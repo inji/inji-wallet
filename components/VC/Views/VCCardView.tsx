@@ -69,7 +69,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
       credentialConfigurationId,
       vcMetadata: { format },
     } = verifiableCredentialData;
-    if (vcMetadata) {
+    if (vcMetadata.issuerHost) {
       getCredentialIssuersWellKnownConfig(
         issuer,
         CARD_VIEW_DEFAULT_FIELDS,

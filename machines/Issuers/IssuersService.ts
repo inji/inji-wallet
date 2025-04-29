@@ -30,7 +30,7 @@ export const IssuersService = () => {
     checkInternet: async () => await NetInfo.fetch(),
     downloadIssuerWellknown: async (context: any) => {
       const wellknownResponse = await CACHED_API.fetchIssuerWellknownConfig(
-        context.selectedIssuer.id,
+        context.selectedIssuer.issuer_id,
         context.selectedIssuer.credential_issuer_host
           ? context.selectedIssuer.credential_issuer_host
           : context.selectedIssuer.credential_issuer,
