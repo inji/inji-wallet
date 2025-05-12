@@ -298,12 +298,12 @@ export async function createSignatureECR1(
     {format: 'compact', fields: header},
     {key, reference: false},
   );
-  const jws = await signer.update(JSON.stringify(payload), 'base64').final();
-  const parts = jws.split('.');
-  if (parts.length !== 3) {
+  const jwt = await signer.update(JSON.stringify(payload), 'base64').final();
+  const jwtParts = jwt.split('.');
+  if (jwtParts.length !== 3) {
     throw new Error('Invalid JWS format');
   }
-  return parts[2];
+  return jwtParts[2];
 }
 
 export function replaceCharactersInB64(encodedB64: string) {
