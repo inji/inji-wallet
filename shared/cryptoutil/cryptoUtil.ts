@@ -1,6 +1,6 @@
+import 'react-native-get-random-values';
 import {RSA} from 'react-native-rsa-native';
 import forge from 'node-forge';
-import jose from 'node-jose';
 import {
   BIOMETRIC_CANCELLED,
   DEBUG_MODE_ENABLED,
@@ -16,8 +16,8 @@ import base64url from 'base64url';
 import {hmac} from '@noble/hashes/hmac';
 import {sha256} from '@noble/hashes/sha256';
 import {sha512} from '@noble/hashes/sha512';
-import 'react-native-get-random-values';
 import * as secp from '@noble/secp256k1';
+import {p256} from '@noble/curves/p256';
 import * as ed from '@noble/ed25519';
 import base64 from 'react-native-base64';
 import {KeyTypes} from './KeyTypes';
@@ -89,13 +89,11 @@ export async function generateKeyPairECR1() {
       privateKey: '',
     };
   }
-  const keystore = jose.JWK.createKeyStore();
-  const key = await keystore.generate('EC', 'P-256');
-  const jwkPublicKey = key.toJSON(); // Public key JWK
-  const jwkPrivateKey = key.toJSON(true); // Private key JWK (include private part)
+  const privKey = p256.utils.randomPrivateKey();
+  const pubKey = p256.getPublicKey(privKey, false);
   return {
-    publicKey: JSON.stringify(jwkPublicKey),
-    privateKey: JSON.stringify(jwkPrivateKey),
+    publicKey: Buffer.from(pubKey).toString('base64'),
+    privateKey: Buffer.from(privKey).toString('base64'),
   };
 }
 
@@ -192,11 +190,8 @@ export async function getJWT(
     const preHash = header64 + '.' + payLoad64;
     const signature64 = await createSignature(
       privateKey,
-      alias,
       preHash,
       keyType,
-      header,
-      payLoad,
     );
     return header64 + '.' + payLoad64 + '.' + signature64;
   } catch (error) {
@@ -208,29 +203,22 @@ export async function getJWT(
   }
 }
 
-export async function createSignature(
-  privateKey,
-  alias,
-  preHash,
-  keyType: string,
-  header,
-  payload,
-) {
+export async function createSignature(privateKey, payload, keyType: string) {
   switch (keyType) {
     case KeyTypes.RS256:
-      return createSignatureRSA(privateKey, preHash);
+      return createSignatureRSA(privateKey, payload);
     case KeyTypes.ES256:
-      return createSignatureECR1(privateKey, header, payload, preHash);
+      return createSignatureECR1(privateKey, payload);
     case KeyTypes.ES256K:
-      return createSignatureECK1(privateKey, preHash);
+      return createSignatureECK1(privateKey, payload);
     case KeyTypes.ED25519:
-      return createSignatureED(privateKey, preHash);
+      return createSignatureED(privateKey, payload);
     default:
       break;
   }
 }
 
-export async function createSignatureRSA(privateKey: string, preHash: string) {
+export async function createSignatureRSA(privateKey: string, payload: string) {
   let signature64;
 
   if (!isHardwareKeystoreExists) {
@@ -240,12 +228,12 @@ export async function createSignatureRSA(privateKey: string, preHash: string) {
       signature64 = await RNSecureKeystoreModule.sign(
         KeyTypes.RS256,
         KeyTypes.RS256,
-        preHash,
+        payload,
       );
     else {
       const key = forge.pki.privateKeyFromPem(privateKey);
       const md = forge.md.sha256.create();
-      md.update(preHash, 'utf8');
+      md.update(payload, 'utf8');
 
       const signature = key.sign(md);
       signature64 = encodeB64(signature);
@@ -254,24 +242,19 @@ export async function createSignatureRSA(privateKey: string, preHash: string) {
   return replaceCharactersInB64(signature64);
 }
 
-export async function createSignatureECK1(privateKey, prehash) {
-  const sha = sha256(prehash);
+export async function createSignatureECK1(privateKey, payload) {
+  const sha = sha256(payload);
   const sign = await secp.signAsync(sha, privateKey, {lowS: false});
   return base64url(Buffer.from(sign.toCompactRawBytes()));
 }
 
-export async function createSignatureED(privateKey, prehash) {
-  const messageBytes = new TextEncoder().encode(prehash);
+export async function createSignatureED(privateKey, payload) {
+  const messageBytes = new TextEncoder().encode(payload);
   const privateKeyUint8 = Uint8Array.from(privateKey);
   const sign = await ed.signAsync(messageBytes, privateKeyUint8);
   return replaceCharactersInB64(Buffer.from(sign).toString('base64'));
 }
-export async function createSignatureECR1(
-  privateKey,
-  header,
-  payload,
-  preHash,
-) {
+export async function createSignatureECR1(privateKey, payload) {
   if (!isHardwareKeystoreExists) {
     throw Error;
   } else {
@@ -279,7 +262,7 @@ export async function createSignatureECR1(
       let signature64 = await RNSecureKeystoreModule.sign(
         KeyTypes.ES256,
         KeyTypes.ES256,
-        preHash,
+        payload,
       );
       const base64DeodedSignature = base64.decode(
         signature64.replace(/\n/g, ''),
@@ -291,19 +274,12 @@ export async function createSignatureECR1(
       return replaceCharactersInB64(signature64);
     }
   }
+  const sha = sha256(payload);
 
-  const key = await jose.JWK.asKey(JSON.parse(privateKey));
-
-  const signer = await jose.JWS.createSign(
-    {format: 'compact', fields: header},
-    {key, reference: false},
-  );
-  const jws = await signer.update(JSON.stringify(payload), 'base64').final();
-  const jwsParts = jws.split('.');
-  if (jwsParts.length !== 3) {
-    throw new Error('Invalid JWS format');
-  }
-  return jwsParts[2];
+  const sign = await p256.sign(sha, Buffer.from(privateKey, 'base64'), {
+    lowS: false,
+  });
+  return base64url(Buffer.from(sign.toCompactRawBytes()));
 }
 
 export function replaceCharactersInB64(encodedB64: string) {
@@ -438,8 +414,12 @@ export async function fetchKeyPair(keyType: any) {
         const keyPair = await RNSecureKeystoreModule.retrieveGenericKey(
           keyType,
         );
-        const publicKey = keyPair[1];
-        const privateKey = keyPair[0];
+        let publicKey = keyPair[1];
+        let privateKey = keyPair[0];
+        if (keyType == KeyTypes.ES256) {
+          publicKey = Buffer.from(publicKey, 'base64');
+          privateKey = Buffer.from(privateKey, 'base64');
+        }
         return {
           publicKey: publicKey,
           privateKey: privateKey,

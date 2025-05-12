@@ -108,11 +108,8 @@ export const openID4VPServices = () => {
                   const key = await fetchKeyPair(mdocAuthenticationAlgorithm);
                   const signature = await createSignature(
                     key.privateKey,
-                    '',
                     payload,
                     mdocAuthenticationAlgorithm,
-                    '',
-                    payload,
                   );
 
                   if (signature) {
