@@ -1,4 +1,3 @@
-import {isClientValidationRequired} from '../../shared/openID4VP/OpenID4VP';
 import {VCShareFlowType} from '../../shared/Utils';
 
 export const openID4VPGuards = () => {
@@ -26,7 +25,7 @@ export const openID4VPGuards = () => {
       const hasImage = Object.values(context.selectedVCs)
         .flatMap(vc => vc)
         .some(
-          vc => vc.verifiableCredential?.credential?.credentialSubject.face,
+          vc => vc.verifiableCredential?.credential?.credentialSubject?.face,
         );
       return !!hasImage;
     },

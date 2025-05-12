@@ -881,6 +881,10 @@
       "noImage": {
         "title": "Isang Error ang Naganap!",
         "message": "Ang pag-verify ng mukha ay nangangailangan ng larawan sa napiling (mga) kredensyal. Pakigamit ang opsyong Ibahagi o pumili ng kredensyal na may kasamang larawan."
+      },
+      "duplicateMdocCredential": {
+        "title": "May Naganap na Error!",
+        "message": "Maaari ka lamang magbahagi ng isang Mobile Driving License o dokumento sa bawat pagkakataon. Mangyaring pumili lamang ng isa upang magpatuloy."
       }
     },
     "loaders": {

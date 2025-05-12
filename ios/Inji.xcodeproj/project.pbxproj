@@ -834,7 +834,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/pixelpass-ios-swift";
 			requirement = {
-				branch = "release-0.6.x";
+				branch = develop;
 				kind = branch;
 			};
 		};

@@ -192,7 +192,11 @@ export function useSendVPScreen() {
     errorModal.title = t('errors.invalidQrCode.title');
     errorModal.message = t('errors.invalidQrCode.message');
     generateAndStoreLogMessage('INVALID_AUTH_REQUEST');
-  } else if (error.startsWith('send vp')) {
+  } else if (error.startsWith('send vp - Duplicate Mdoc Credentials')) {
+    errorModal.title = t('errors.duplicateMdocCredential.title');
+    errorModal.message = t('errors.duplicateMdocCredential.message');
+    errorModal.showRetryButton = false;
+  }else if (error.startsWith('send vp')) {
     errorModal.title = t('errors.genericError.title');
     errorModal.message = t('errors.genericError.message');
     errorModal.showRetryButton = true;

@@ -7,8 +7,6 @@ import {
   VerifiableCredential,
   VerifiableCredentialData,
 } from '../VCMetaMachine/vc';
-import {VCFormat} from '../../../shared/VCFormat';
-import {VCProcessor} from '../../../components/VC/common/VCProcessor';
 
 type State = StateFrom<typeof VCItemMachine>;
 

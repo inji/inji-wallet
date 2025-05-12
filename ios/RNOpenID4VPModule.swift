@@ -70,6 +70,8 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
             switch FormatType(rawValue: credentialFormat) {
             case .ldp_vc:
               result[.ldp_vc] = credentialsArray
+            case .mso_mdoc:
+              result[.mso_mdoc] = credentialsArray
             default:
               reject("OPENID4VP", "Credential format is not supported for OVP", nil)
             }
@@ -98,16 +100,16 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   }
   
   @objc
-  func shareVerifiablePresentation(_ vpResponsesMetadata: [String: Any], resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+  func shareVerifiablePresentation(_ vpTokenSigningResults: [String: Any], resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
       do {
-        var formattedVPResponsesMetadata: [FormatType: VPResponseMetadata] = [:]
+        var formattedVPTokenSigningResults: [FormatType: VPTokenSigningResult] = [:]
         
-        for (credentialFormat, vpResponseMetadata) in vpResponsesMetadata {
+        for (credentialFormat, vpTokenSigningResult) in vpTokenSigningResults {
           switch credentialFormat {
           case FormatType.ldp_vc.rawValue:
-            guard let vpResponse = vpResponseMetadata as? [String:Any] else {
-              reject("OPENID4VP", "Invalid vp response meta format", nil)
+            guard let vpResponse = vpTokenSigningResult as? [String:Any] else {
+              reject("OPENID4VP", "Invalid VP token signing result format", nil)
               return
             }
             guard let jws = vpResponse["jws"] as! String?,
@@ -115,17 +117,35 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
                   let publicKey = vpResponse["publicKey"] as! String?,
                   let domain = vpResponse["domain"] as! String?
             else {
-              reject("OPENID4VP", "Invalid vp response metadata", nil)
+              reject("OPENID4VP", "Invalid VP token signing result", nil)
               return
             }
             
-            formattedVPResponsesMetadata[FormatType.ldp_vc] = LdpVPResponseMetadata(jws: jws, signatureAlgorithm: signatureAlgorithm, publicKey: publicKey, domain: domain)
+            formattedVPTokenSigningResults[FormatType.ldp_vc] = LdpVPTokenSigningResult(jws: jws, signatureAlgorithm: signatureAlgorithm, publicKey: publicKey, domain: domain)
+          case FormatType.mso_mdoc.rawValue:
+            var docTypeToDeviceAuthentication : [String: DeviceAuthentication] = [:]
+            guard let vpResponse = vpTokenSigningResult as? [String:[String: String]] else {
+              reject("OPENID4VP", "Invalid VP token signing result format", nil)
+              return
+            }
+            for (docType, deviceAuthentication) in vpResponse {
+              guard let signature = deviceAuthentication["signature"],
+                    let algorithm = deviceAuthentication["mdocAuthenticationAlgorithm"] else {
+                reject("OPENID4VP", "Invalid VP token signing result provided for mdoc format", nil)
+                return
+              }
+              
+              docTypeToDeviceAuthentication[docType] = DeviceAuthentication(signature: signature, algorithm: algorithm)
+            }
+            formattedVPTokenSigningResults[.mso_mdoc] = MdocVPTokenSigningResult(docTypeToDeviceAuthentication: docTypeToDeviceAuthentication)
+            
+            
           default:
-            reject("OPENID4VP", "Invalid vp response meta format", nil)
+            reject("OPENID4VP", "Invalid VP response meta format", nil)
           }
         }
         
-        let response = try await openID4VP?.shareVerifiablePresentation(vpResponsesMetadata: formattedVPResponsesMetadata)
+        let response = try await openID4VP?.shareVerifiablePresentation(vpTokenSigningResults: formattedVPTokenSigningResults)
         
         resolve(response)
       } catch {

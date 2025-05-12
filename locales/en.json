@@ -890,6 +890,10 @@
       "noImage": {
         "title": "An Error Occured!",
         "message": "Face verification requires a photo in the selected credential(s). Please use the Share option or select a credential that includes an image."
+      },
+      "duplicateMdocCredential": {
+        "title": "An Error Occured!",
+        "message": "You can share only one Mobile Driving License or document at a time. Please select just one to continue."
       }
     },
     "loaders": {

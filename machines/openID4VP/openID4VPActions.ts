@@ -12,12 +12,17 @@ import {VCShareFlowType} from '../../shared/Utils';
 import {ActivityLogEvents} from '../activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
 import {OpenID4VP} from '../../shared/openID4VP/OpenID4VP';
+import {VCFormat} from '../../shared/VCFormat';
+import {
+  getIssuerAuthenticationAlorithmForMdocVC,
+  getMdocAuthenticationAlorithm,
+} from '../../components/VC/common/VCUtils';
 
 // TODO - get this presentation definition list which are alias for scope param
 // from the verifier end point after the endpoint is created and exposed.
 
 export const openID4VPActions = (model: any) => {
-  let requestedClaimsByVerifier;
+  let result;
   return {
     setAuthenticationResponse: model.assign({
       authenticationResponse: (_, event) => event.data,
@@ -33,59 +38,11 @@ export const openID4VPActions = (model: any) => {
 
     getVcsMatchingAuthRequest: model.assign({
       vcsMatchingAuthRequest: (context, event) => {
-        let vcs = event.vcs;
-        let matchingVCs = {} as Record<string, [VC]>;
-        let presentationDefinition =
-          context.authenticationResponse['presentation_definition'];
-        let anyInputDescriptorHasFormatOrConstraints = false;
-        requestedClaimsByVerifier = new Set();
-        vcs.forEach(vc => {
-          presentationDefinition['input_descriptors'].forEach(
-            inputDescriptor => {
-              const format =
-                inputDescriptor.format ?? presentationDefinition.format;
-              anyInputDescriptorHasFormatOrConstraints =
-                anyInputDescriptorHasFormatOrConstraints ||
-                format !== undefined ||
-                inputDescriptor.constraints.fields !== undefined;
-
-              const isMatchingConstraints = isVCMatchingRequestConstraints(
-                inputDescriptor.constraints,
-                vc.verifiableCredential.credential,
-                requestedClaimsByVerifier,
-              );
-
-              const areMatchingFormatAndProofType =
-                areVCFormatAndProofTypeMatchingRequest(
-                  format,
-                  vc.format,
-                  vc?.verifiableCredential?.credential?.proof?.type,
-                );
-
-              if (inputDescriptor.constraints.fields && format) {
-                if (isMatchingConstraints && areMatchingFormatAndProofType) {
-                  matchingVCs[inputDescriptor.id]?.push(vc) ||
-                    (matchingVCs[inputDescriptor.id] = [vc]);
-                }
-              } else if (
-                isMatchingConstraints ||
-                areMatchingFormatAndProofType
-              ) {
-                matchingVCs[inputDescriptor.id]?.push(vc) ||
-                  (matchingVCs[inputDescriptor.id] = [vc]);
-              }
-            },
-          );
-        });
-        if (!anyInputDescriptorHasFormatOrConstraints) {
-          matchingVCs[presentationDefinition['input_descriptors'][0].id] = vcs;
-        }
-        if (Object.keys(matchingVCs).length === 0) {
-          OpenID4VP.sendErrorToVerifier(OVP_ERROR_MESSAGES.NO_MATCHING_VCS);
-        }
-        return matchingVCs;
+        result = getVcsMatchingAuthRequest(context, event);
+        return result.matchingVCs;
       },
-      requestedClaims: () => Array.from(requestedClaimsByVerifier).join(','),
+      requestedClaims: () => result.requestedClaimsByVerifier,
+
       purpose: context => {
         const response = context.authenticationResponse;
         const pd = response['presentation_definition'];
@@ -281,45 +238,163 @@ export const openID4VPActions = (model: any) => {
   };
 };
 
+function getVcsMatchingAuthRequest(context, event) {
+  const vcs = event.vcs;
+  const matchingVCs: Record<string, any[]> = {};
+  const requestedClaimsByVerifier = new Set<string>();
+  const presentationDefinition =
+    context.authenticationResponse['presentation_definition'];
+  const inputDescriptors = presentationDefinition['input_descriptors'];
+  let hasFormatOrConstraints = false;
+  vcs.forEach(vc => {
+    inputDescriptors.forEach(inputDescriptor => {
+      const format = inputDescriptor.format ?? presentationDefinition.format;
+      hasFormatOrConstraints =
+        hasFormatOrConstraints ||
+        format !== undefined ||
+        inputDescriptor.constraints.fields !== undefined;
+
+      const areMatchingFormatAndProofType =
+        areVCFormatAndProofTypeMatchingRequest(format, vc);
+      if (areMatchingFormatAndProofType == false) {
+        return;
+      }
+      const isMatchingConstraints = isVCMatchingRequestConstraints(
+        inputDescriptor.constraints,
+        vc,
+        requestedClaimsByVerifier,
+      );
+
+      let shouldInclude = false;
+      if (inputDescriptor.constraints.fields && format) {
+        shouldInclude = isMatchingConstraints && areMatchingFormatAndProofType;
+      } else {
+        shouldInclude = isMatchingConstraints || areMatchingFormatAndProofType;
+      }
+
+      if (shouldInclude) {
+        if (!matchingVCs[inputDescriptor.id]) {
+          matchingVCs[inputDescriptor.id] = [];
+        }
+        matchingVCs[inputDescriptor.id].push(vc);
+      }
+    });
+  });
+
+  if (!hasFormatOrConstraints && inputDescriptors.length > 0) {
+    matchingVCs[inputDescriptors[0].id] = vcs;
+  }
+
+  if (Object.keys(matchingVCs).length === 0) {
+    OpenID4VP.sendErrorToVerifier(OVP_ERROR_MESSAGES.NO_MATCHING_VCS);
+  }
+
+  return {
+    matchingVCs,
+    requestedClaims: Array.from(requestedClaimsByVerifier).join(','),
+    purpose: presentationDefinition.purpose ?? '',
+  };
+}
+
 function areVCFormatAndProofTypeMatchingRequest(
-  format: Record<string, any>,
-  vcFormatType: string,
-  vcProofType: string,
+  requestFormat: Record<string, any> | undefined,
+  vc: any,
 ): boolean {
-  if (!format) {
+  if (!requestFormat) {
     return false;
   }
-  return Object.entries(format).some(
-    ([type, value]) =>
-      type === vcFormatType && value.proof_type.includes(vcProofType),
-  );
+
+  const vcFormatType = vc.format;
+
+  if (vcFormatType === VCFormat.ldp_vc) {
+    const vcProofType = vc?.verifiableCredential?.credential?.proof?.type;
+    return Object.entries(requestFormat).some(
+      ([type, value]) =>
+        type === vcFormatType && value.proof_type.includes(vcProofType),
+    );
+  }
+
+  if (vcFormatType === VCFormat.mso_mdoc) {
+    const issuerAuth =
+      vc.verifiableCredential.processedCredential.issuerSigned.issuerAuth;
+    const issuerAuthenticationAlgorithm =
+      getIssuerAuthenticationAlorithmForMdocVC(issuerAuth[0]['1']);
+    const mdocAuthenticationAlgorithm = getMdocAuthenticationAlorithm(
+      issuerAuth[2],
+    );
+
+    return Object.entries(requestFormat).some(
+      ([type, value]) =>
+        type === vcFormatType &&
+        value.alg.includes(issuerAuthenticationAlgorithm) &&
+        value.alg.includes(mdocAuthenticationAlgorithm),
+    );
+  }
+
+  return false;
 }
 
 function isVCMatchingRequestConstraints(
-  constraints,
-  credential,
-  requestedClaimsByVerifier,
+  constraints: any,
+  credential: any,
+  requestedClaimsByVerifier: Set<string>,
 ): boolean {
   if (!constraints.fields) {
     return false;
   }
-  for (const field of constraints.fields) {
-    for (const path of field.path) {
+  return constraints.fields.every(field => {
+    return field.path.some(path => {
       const pathArray = JSONPath.toPathArray(path);
-      requestedClaimsByVerifier.add(pathArray[pathArray.length - 1]);
-      const valueMatchingPath = JSONPath({
+      const claimName = pathArray[pathArray.length - 1];
+      requestedClaimsByVerifier.add(claimName);
+      const processedCredential = fetchCredentialBasedOnFormat(credential);
+      const jsonPathMatches = JSONPath({
         path: path,
-        json: credential,
-      })[0];
-
-      if (
-        valueMatchingPath !== undefined &&
-        field.filter?.type === typeof valueMatchingPath &&
-        String(valueMatchingPath).includes(field.filter?.pattern)
-      ) {
-        return true;
+        json: processedCredential,
+      });
+      if (!jsonPathMatches || jsonPathMatches.length === 0) {
+        return false;
       }
+      return jsonPathMatches.some(match => {
+        if (!field.filter) {
+          return true;
+        }
+        return (
+          field.filter.type === undefined || field.filter.type === typeof match
+        );
+      });
+    });
+  });
+}
+
+function fetchCredentialBasedOnFormat(vc: any) {
+  const format = vc.format;
+  let credential;
+  switch (format.toString()) {
+    case VCFormat.ldp_vc: {
+      credential = vc.verifiableCredential.credential;
+      break;
+    }
+    case VCFormat.mso_mdoc: {
+      credential = getProcessedDataForMdoc(
+        vc.verifiableCredential.processedCredential,
+      );
+      break;
     }
   }
-  return false;
+  return credential;
+}
+
+function getProcessedDataForMdoc(processedCredential: any) {
+  const namespaces = processedCredential.issuerSigned.nameSpaces;
+  const processedData = {...namespaces};
+  for (const ns in processedData) {
+    const elementsArray = processedData[ns];
+    const asObject: Record<string, any> = {};
+    elementsArray.forEach((item: any) => {
+      asObject[item.elementIdentifier] = item.elementValue;
+    });
+    processedData[ns] = asObject;
+  }
+  return processedData;
 }
