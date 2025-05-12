@@ -108,7 +108,7 @@ export const IntroSlidersScreen: React.FC<RootRouteProps> = props => {
                 maxHeight: 60,
                 width: '100%',
                 paddingHorizontal: 10,
-                marginBottom: 280,
+                marginBottom: 400,
               }}
               showsVerticalScrollIndicator={true}
               persistentScrollbar={true}>

@@ -180,6 +180,52 @@ export function useSendVPScreen() {
   });
 
   const claimsAsString = '[' + requestedClaimsByVerifier + ']';
+  if (noCredentialsMatchingVPRequest) {
+    errorModal.title = t('errors.noMatchingCredentials.title');
+    errorModal.message = t('errors.noMatchingCredentials.message', {
+      claims: claimsAsString,
+    });
+    generateAndStoreLogMessage(
+      'NO_CREDENTIAL_MATCHING_REQUEST',
+      claimsAsString,
+    );
+  } else if (
+    error.includes('Verifier authentication was unsuccessful') ||
+    error.startsWith('api error')
+  ) {
+    errorModal.title = t('errors.invalidVerifier.title');
+    errorModal.message = t('errors.invalidVerifier.message');
+    generateAndStoreLogMessage('VERIFIER_AUTHENTICATION_FAILED');
+  } else if (error.includes('credential mismatch detected')) {
+    errorModal.title = t('errors.credentialsMismatch.title');
+    errorModal.message = t('errors.credentialsMismatch.message', {
+      claims: claimsAsString,
+    });
+    generateAndStoreLogMessage(
+      'CREDENTIAL_MISMATCH_FROM_KEBAB',
+      claimsAsString,
+    );
+  } else if (error.includes('none of the selected VC has image')) {
+    errorModal.title = t('errors.noImage.title');
+    errorModal.message = t('errors.noImage.message');
+    generateAndStoreLogMessage('NO_SELECTED_VC_HAS_IMAGE');
+  } else if (error.startsWith('vc validation')) {
+    errorModal.title = t('errors.invalidQrCode.title');
+    errorModal.message = t('errors.invalidQrCode.message');
+    generateAndStoreLogMessage('INVALID_AUTH_REQUEST');
+  } else if (error.startsWith('send vp - Duplicate Mdoc Credentials')) {
+    errorModal.title = t('errors.duplicateMdocCredential.title');
+    errorModal.message = t('errors.duplicateMdocCredential.message');
+    errorModal.showRetryButton = false;
+  } else if (error.startsWith('send vp')) {
+    errorModal.title = t('errors.genericError.title');
+    errorModal.message = t('errors.genericError.message');
+    errorModal.showRetryButton = true;
+  } else if (error !== '') {
+    errorModal.title = t('errors.genericError.title');
+    errorModal.message = t('errors.genericError.message');
+    generateAndStoreLogMessage('TECHNICAL_ERROR');
+  }
 
   useEffect(() => {
     if (noCredentialsMatchingVPRequest && !hasLoggedErrorRef.current) {

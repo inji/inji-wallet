@@ -1,5 +1,8 @@
 import {CACHED_API} from '../../shared/api';
-import {fetchKeyPair} from '../../shared/cryptoutil/cryptoUtil';
+import {
+  createSignature,
+  fetchKeyPair,
+} from '../../shared/cryptoutil/cryptoUtil';
 import {getJWK, hasKeyPair} from '../../shared/openId4VCI/Utils';
 import base64url from 'base64url';
 import {
@@ -9,8 +12,9 @@ import {
   OpenID4VP_Domain,
   OpenID4VP_Proof_Sign_Algo_Suite,
 } from '../../shared/openID4VP/OpenID4VP';
-import {VCFormat} from "../../shared/VCFormat";
+import {VCFormat} from '../../shared/VCFormat';
 import {KeyTypes} from '../../shared/cryptoutil/KeyTypes';
+import {getMdocAuthenticationAlorithm} from '../../components/VC/common/VCUtils';
 
 export const openID4VPServices = () => {
   return {
@@ -42,35 +46,96 @@ export const openID4VPServices = () => {
     },
 
     sendVP: (context: any) => async () => {
-      const vpTokens = await OpenID4VP.constructUnsignedVPToken(
+      const unSignedVpTokens = await OpenID4VP.constructUnsignedVPToken(
         context.selectedVCs,
       );
 
-      let vpResponsesMetadata: Record<string, any> = {}
-      for (const formatType in vpTokens){
-        const value = vpTokens[formatType]
-        if(formatType === VCFormat.ldp_vc.valueOf()){
+      let vpTokenSigningResultMap: Record<any, any> = {};
+      for (const formatType in unSignedVpTokens) {
+        const credentials = unSignedVpTokens[formatType];
+
+        if (formatType === VCFormat.ldp_vc.valueOf()) {
           const proofJWT = await constructProofJWT(
-              context.publicKey,
-              context.privateKey,
-              value,
-              context.keyType,
+            context.publicKey,
+            context.privateKey,
+            credentials,
+            context.keyType,
           );
 
-          vpResponsesMetadata[formatType] = {
+          vpTokenSigningResultMap[formatType] = {
             jws: proofJWT,
             signatureAlgorithm: OpenID4VP_Proof_Sign_Algo_Suite,
             publicKey:
-                'did:jwk:' +
-                base64url(
-                    JSON.stringify(await getJWK(context.publicKey, KeyTypes.ED25519)),
+              'did:jwk:' +
+              base64url(
+                JSON.stringify(
+                  await getJWK(context.publicKey, KeyTypes.ED25519),
                 ),
+              ),
             domain: OpenID4VP_Domain,
-          }
+          };
+        } else if (formatType === VCFormat.mso_mdoc.valueOf()) {
+          const signedData: Record<string, any> = {};
+
+          const mdocCredentialsByDocType = Object.values(context.selectedVCs)
+            .flat()
+            .reduce((acc, credential) => {
+              if (credential.format === 'mso_mdoc') {
+                const docType =
+                  credential?.verifiableCredential?.processedCredential
+                    ?.docType;
+                if (docType) {
+                  acc[docType] = credential;
+                }
+              }
+              return acc;
+            }, {});
+
+          await Promise.all(
+            Object.entries(credentials.docTypeToDeviceAuthenticationBytes).map(
+              async ([docType, payload]) => {
+                const cred = mdocCredentialsByDocType[docType];
+
+                if (!cred) return;
+
+                const mdocAuthenticationAlgorithm =
+                  getMdocAuthenticationAlorithm(
+                    cred.verifiableCredential.processedCredential.issuerSigned
+                      .issuerAuth[2],
+                  );
+
+                if (mdocAuthenticationAlgorithm === KeyTypes.ES256.valueOf()) {
+                  const key = await fetchKeyPair(mdocAuthenticationAlgorithm);
+                  const signature = await createSignature(
+                    key.privateKey,
+                    '',
+                    payload,
+                    mdocAuthenticationAlgorithm,
+                    '',
+                    payload,
+                  );
+
+                  if (signature) {
+                    signedData[docType] = {
+                      signature,
+                      mdocAuthenticationAlgorithm,
+                    };
+                  }
+                } else {
+                  throw new Error(
+                    `Unsupported algorithm: ${mdocAuthenticationAlgorithm}`,
+                  );
+                }
+              },
+            ),
+          );
+
+          vpTokenSigningResultMap[formatType] = signedData;
         }
       }
-
-      return await OpenID4VP.shareVerifiablePresentation(vpResponsesMetadata);
+      return await OpenID4VP.shareVerifiablePresentation(
+        vpTokenSigningResultMap,
+      );
     },
   };
 };

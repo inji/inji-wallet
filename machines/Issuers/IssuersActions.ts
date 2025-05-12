@@ -177,16 +177,12 @@ export const IssuersActions = (model: any) => {
     storeVerifiableCredentialData: send(
       (context: any) => {
         const vcMetadata = context.vcMetadata;
-        const {
-          verifiableCredential: {
-            processedCredential,
-            ...filteredVerifiableCredential
-          },
-          ...rest
-        } = context.credentialWrapper;
+        const credentialWrapper = context.credentialWrapper;
         const storableData = {
-          ...rest,
-          verifiableCredential: filteredVerifiableCredential,
+          ...credentialWrapper,
+          verifiableCredential: {
+            ...credentialWrapper.verifiableCredential,
+          },
         };
         return StoreEvents.SET(vcMetadata.getVcKey(), {
           ...storableData,

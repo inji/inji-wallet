@@ -178,10 +178,6 @@ platform :ios do
     s = "s/wallet.mobileid/#{map_flavour_tosuffix}/g"
     sh("sed -i '' -e #{s} ../Inji.xcodeproj/project.pbxproj")
 
-    # replace Product name
-    p = "s|PRODUCT_NAME = Inji|PRODUCT_NAME = \"#{generate_app_name}\"|"
-    sh ("sed -i '' -e '#{p}' ../Inji.xcodeproj/project.pbxproj")
-
     # update app display name
     update_info_plist(
       plist_path: 'Inji/Info.plist',
@@ -218,12 +214,12 @@ platform :ios do
     )
 
     # copy IPA to the folder
-    sh("cp -R '../#{generate_app_name}.ipa' '#{output_directory}'")
+    sh("cp -R '../Inji.ipa' '#{output_directory}'")
 
     pilot(
        app_identifier: "#{generate_app_bundle_id}",
        api_key: api_key,
-       ipa: "./#{generate_app_name}.ipa",
+       ipa: "./Inji.ipa",
        changelog: "#{TESTFLIGHT_BETA_APP_DESCRIPTION}",
        localized_build_info: {
           "default": {

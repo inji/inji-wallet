@@ -264,8 +264,10 @@ android {
 dependencies {
     implementation("io.mosip:inji-openid4vp:0.3.0-SNAPSHOT"){
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
+        exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
         exclude group: 'io.mosip', module: 'vcverifier-jar'
         exclude group: 'com.google.crypto.tink', module: 'tink'
+        exclude group: 'com.augustcellars.cose', module:'cose-java'
     }
     implementation("com.facebook.react:react-android")
     implementation 'com.facebook.soloader:soloader:0.10.1+'

@@ -299,7 +299,7 @@ export const getCredentialTypeFromWellKnown = (
 export class Display {
   private readonly textColor: string | undefined = undefined;
   private readonly backgroundColor: {backgroundColor: string};
-  private readonly backgroundImage: { uri: string } | undefined = undefined;
+  private readonly backgroundImage: {uri: string} | undefined = undefined;
 
   private defaultBackgroundColor = Theme.Colors.whiteBackgroundColor;
 
@@ -336,3 +336,34 @@ export class Display {
     return this.backgroundImage ?? defaultBackgroundImage;
   }
 }
+
+export function getIssuerAuthenticationAlorithmForMdocVC(
+  proofType: any,
+): string {
+  return PROOF_TYPE_ALGORITHM_MAP[proofType] || '';
+}
+
+export function getMdocAuthenticationAlorithm(issuerAuth: any): string {
+  const deviceKey = issuerAuth?.deviceKeyInfo?.deviceKey;
+
+  if (!deviceKey) return '';
+
+  const keyType = deviceKey['1'];
+  const curve = deviceKey['-1'];
+
+  return keyType === ProtectedAlgorithm.EC2 && curve === ProtectedCurve.P256
+    ? 'ES256'
+    : '';
+}
+
+const ProtectedAlgorithm = {
+  EC2: 2,
+};
+
+const ProtectedCurve = {
+  P256: 1,
+};
+
+const PROOF_TYPE_ALGORITHM_MAP = {
+  [-7]: 'ES256',
+};
