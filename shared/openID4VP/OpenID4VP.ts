@@ -41,9 +41,7 @@ export class OpenID4VP {
   }
 
   static async constructUnsignedVPToken(selectedVCs: Record<string, VC[]>) {
-    let updatedSelectedVCs = this.stringifyValues(
-      this.processSelectedVCs(selectedVCs),
-    );
+    let updatedSelectedVCs = this.processSelectedVCs(selectedVCs);
 
     const unSignedVpTokens =
       await OpenID4VP.InjiOpenID4VP.constructUnsignedVPToken(
@@ -64,30 +62,12 @@ export class OpenID4VP {
     OpenID4VP.InjiOpenID4VP.sendErrorToVerifier(error);
   }
 
-  private static stringifyValues = (
-    data: Record<string, Record<string, Array<any>>>,
-  ): Record<string, Record<string, string[]>> => {
-    const result = {};
-    for (const [outerKey, innerObject] of Object.entries(data)) {
-      result[outerKey] = {};
-      for (const [innerKey, array] of Object.entries(innerObject)) {
-        if (innerKey === VCFormat.ldp_vc.valueOf())
-          result[outerKey][innerKey] = array.map(item => JSON.stringify(item));
-        else result[outerKey][innerKey] = array;
-      }
-    }
-    return result;
-  };
-
   private static processSelectedVCs(selectedVCs: Record<string, VC[]>) {
     const selectedVcsData: SelectedCredentialsForVPSharing = {};
     Object.entries(selectedVCs).forEach(([inputDescriptorId, vcsArray]) => {
       vcsArray.forEach(vcData => {
         const credentialFormat = vcData.vcMetadata.format;
-        //TODO: this should be done irrespective of the format.
-        if (credentialFormat === VCFormat.mso_mdoc.valueOf()) {
-          vcData = vcData.verifiableCredential.credential;
-        }
+        vcData = vcData.verifiableCredential.credential;
         if (!selectedVcsData[inputDescriptorId]) {
           selectedVcsData[inputDescriptorId] = {};
         }

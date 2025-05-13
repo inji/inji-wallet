@@ -95,7 +95,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void constructUnsignedVPToken(ReadableMap selectedVCs, Promise promise) {
         try {
-            Map<String, Map<FormatType, List<String>>> selectedVCsMap = parseSelectedVCs(selectedVCs);
+            Map<String, Map<FormatType, List<Object>>> selectedVCsMap = parseSelectedVCs(selectedVCs);
             Map<FormatType, UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedVCsMap);
             promise.resolve(toJsonString(vpTokens));
         } catch (Exception e) {
@@ -164,11 +164,11 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         return verifiers;
     }
 
-    private Map<String, Map<FormatType, List<String>>> parseSelectedVCs(ReadableMap selectedVCs) {
+    private Map<String, Map<FormatType, List<Object>>> parseSelectedVCs(ReadableMap selectedVCs) {
         if (selectedVCs == null) {
             return Collections.emptyMap();
         }
-        Map<String, Map<FormatType, List<String>>> selectedVCsMap = new HashMap<>();
+        Map<String, Map<FormatType, List<Object>>> selectedVCsMap = new HashMap<>();
         ReadableMapKeySetIterator iterator = selectedVCs.keySetIterator();
         while (iterator.hasNextKey()) {
             String inputDescriptorId = iterator.nextKey();
@@ -176,7 +176,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             if (formatMap == null) {
                 continue;
             }
-            Map<FormatType, List<String>> formatTypeCredentialsMap = new EnumMap<>(FormatType.class);
+            Map<FormatType, List<Object>> formatTypeCredentialsMap = new EnumMap<>(FormatType.class);
             ReadableMapKeySetIterator formatIterator = formatMap.keySetIterator();
 
             while (formatIterator.hasNextKey()) {
@@ -187,7 +187,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                 }
                 FormatType formatType = getFormatType(formatStr);
                 if (formatType != null) {
-                    List<String> vcsList = convertReadableArrayToList(vcsArray);
+                    List<Object> vcsList = convertReadableArrayToListOfCredential(formatType, vcsArray);
                     formatTypeCredentialsMap.put(formatType, vcsList);
                 }
             }
@@ -247,6 +247,30 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                     }
                 }
                 return new MdocVPTokenSigningResult(signatureData);
+            }
+            default:
+                return null;
+        }
+    }
+
+    private List<Object> convertReadableArrayToListOfCredential(FormatType formatType, ReadableArray credentialList) {
+        switch (formatType) {
+            case LDP_VC: {
+                List<Object> ldpVcList = new ArrayList<>();
+                for (int i = 0; i < credentialList.size(); i++) {
+                    ReadableMap credentialMap = credentialList.getMap(i);
+                    ldpVcList.add(credentialMap.toHashMap());
+                }
+                return ldpVcList;
+            }
+            case MSO_MDOC: {
+                List<Object> mdocVcList = new ArrayList<>();
+                for (int i = 0; i < credentialList.size(); i++) {
+                    String credential = credentialList.getString(i);
+                    mdocVcList.add(credential);
+                }
+                return mdocVcList;
+
             }
             default:
                 return null;
