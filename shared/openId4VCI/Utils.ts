@@ -19,7 +19,7 @@ import {
   VerifiableCredential,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import getAllConfigurations, {CACHED_API} from '../api';
-import {isIOS} from '../constants';
+import {isAndroid, isIOS} from '../constants';
 import {getJWT} from '../cryptoutil/cryptoUtil';
 import {isMockVC} from '../Utils';
 import {
@@ -329,14 +329,21 @@ async function getJWKRSA(publicKey): Promise<any> {
   return publicKeyJWKString.toJSON();
 }
 async function getJWKECR1(publicKey): Promise<any> {
-  const x = base64url(Buffer.from(publicKey.slice(1, 33))); // Skip the first byte (0x04) in the uncompressed public key
-  const y = base64url(Buffer.from(publicKey.slice(33,65)));
-  const jwk = {
-    kty: 'EC',
-    crv: 'P-256',
-    x: x,
-    y: y,
-  };
+  let jwk = {};
+  if (isAndroid()) {
+    const publicKeyJWKString = await jose.JWK.asKey(publicKey, 'pem');
+    jwk = publicKeyJWKString.toJSON();
+  } else {
+    const x = base64url(Buffer.from(publicKey.slice(1, 33))); // Skip the first byte (0x04) in the uncompressed public key
+    const y = base64url(Buffer.from(publicKey.slice(33, 65)));
+    jwk = {
+      kty: 'EC',
+      crv: 'P-256',
+      x: x,
+      y: y,
+    };
+  }
+
   return jwk;
 }
 function getJWKECK1(publicKey): any {
