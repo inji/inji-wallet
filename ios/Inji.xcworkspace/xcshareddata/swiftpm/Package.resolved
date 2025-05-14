@@ -52,7 +52,7 @@
       "location" : "https://github.com/mosip/inji-openid4vp-ios-swift",
       "state" : {
         "branch" : "develop",
-        "revision" : "820875cccb546d8c5aa666fcad9f910609091f44"
+        "revision" : "925c7e979b718aa493fa2bb57634e5481cfd00c4"
       }
     },
     {
@@ -79,7 +79,7 @@
       "location" : "https://github.com/mosip/pixelpass-ios-swift",
       "state" : {
         "branch" : "develop",
-        "revision" : "17361f74c582a0b92744dc386439b0f0b68c58fc"
+        "revision" : "760438e38e01bd9deb170585f37d7c05c5c1785a"
       }
     },
     {
