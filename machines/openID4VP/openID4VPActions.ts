@@ -41,7 +41,7 @@ export const openID4VPActions = (model: any) => {
         result = getVcsMatchingAuthRequest(context, event);
         return result.matchingVCs;
       },
-      requestedClaims: () => result.requestedClaimsByVerifier,
+      requestedClaims: () => result.requestedClaims,
 
       purpose: context => {
         const response = context.authenticationResponse;

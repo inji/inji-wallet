@@ -7,7 +7,7 @@ apply plugin: "com.facebook.react"
 apply plugin: "org.sonarqube"
 
 configurations.all {
-    resolutionStrategy.force 'androidx.activity:activity-ktx:1.7.1','androidx.activity:activity:1.7.0', 'com.fasterxml.jackson.core:jackson-core:2.14.0'
+    resolutionStrategy.force 'androidx.activity:activity-ktx:1.7.1', 'androidx.activity:activity:1.7.0', 'com.fasterxml.jackson.core:jackson-core:2.14.0'
     all*.exclude module: 'bcprov-jdk15to18'
     all*.exclude module: 'bcutil-jdk18on'
     all*.exclude module: 'bcprov-jdk15on'
@@ -257,12 +257,13 @@ android {
         resources {
             excludes += "META-INF/*"
             excludes += "META-INF/spring/aot.factories"
-         }
+        }
     }
 }
 
 dependencies {
     implementation("io.mosip:inji-openid4vp:0.3.0-SNAPSHOT"){
+        changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
         exclude group: 'io.mosip', module: 'vcverifier-jar'
@@ -276,7 +277,7 @@ dependencies {
     implementation("io.mosip:tuvali:0.5.2-SNAPSHOT")
     implementation("io.mosip:inji-vci-client:0.3.0-SNAPSHOT")
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("io.mosip:vcverifier-aar:1.3.0-SNAPSHOT"){
+    implementation("io.mosip:vcverifier-aar:1.3.0-SNAPSHOT") {
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
     }
 
