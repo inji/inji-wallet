@@ -895,9 +895,9 @@
       "duplicateMdocCredential": {
         "title": "An Error Occured!",
         "message": "You can share only one Mobile Driving License or document at a time. Please select just one to continue."
-      }
+      },
+      "additionalMessage": "Please go back to the verifier app."
     },
-    "additionalMessage": "Please go back to the verifier app.",
     "loaders": {
       "loading": "Loading...",
       "subTitle": {

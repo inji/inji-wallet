@@ -886,9 +886,9 @@
       "duplicateMdocCredential": {
         "title": "May Naganap na Error!",
         "message": "Maaari ka lamang magbahagi ng isang Mobile Driving License o dokumento sa bawat pagkakataon. Mangyaring pumili lamang ng isa upang magpatuloy."
-      }
+      },
+      "additionalMessage": "Mangyaring bumalik sa verifier app."
     },
-    "additionalMessage": "Mangyaring bumalik sa verifier app.",
     "loaders": {
       "loading": "Naglo-load...",
       "subTitle": {
