@@ -19,6 +19,7 @@ import {SvgImage} from '../../components/ui/svg';
 import {DataBackupAndRestore} from './DataBackupAndRestore';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {SettingsKeyManagementScreen} from './SettingsKeyManagement';
+import {isIOS} from '../../shared/constants';
 
 const LanguageSetting: React.FC = () => {
   const {t} = useTranslation('SettingScreen');
@@ -157,7 +158,7 @@ export const SettingScreen: React.FC<
 
           <AboutInji appId={controller.appId} />
 
-          <DataBackupAndRestore />
+          {isIOS() && <DataBackupAndRestore />}
           <SettingsKeyManagementScreen controller={controller} />
 
           {CREDENTIAL_REGISTRY_EDIT === 'true' && (
