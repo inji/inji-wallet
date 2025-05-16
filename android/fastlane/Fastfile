@@ -51,7 +51,7 @@ end
 
 desc "Verify Release Build for Android"
 lane :android_build_release do
-  gradle(task: "assembleResidentappRelease")
+  gradle(task: "assembleCompassRelease")
 end
 
 desc "Verify Debug Build for Android"

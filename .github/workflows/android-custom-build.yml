@@ -63,4 +63,4 @@ jobs:
         SCRIPT_NAME: './android-build.sh'
         UPLOAD_TO_ACTIONS: 'true'
         ANDROID_ARTIFACT_NAME: ${{ inputs.buildName }}
-        ANDROID_ARTIFACT_PATH: "android/app/build/outputs/apk/residentapp/${{ inputs.type }}/Inji_universal.apk"
+        ANDROID_ARTIFACT_PATH: "android/app/build/outputs/apk/compass/${{ inputs.type }}/Inji_universal.apk"
