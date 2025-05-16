@@ -419,8 +419,10 @@ export function useSendVPScreen() {
     GO_TO_HOME: () => {
       openID4VPService.send(OpenID4VPEvents.RESET_ERROR());
       scanService.send(ScanEvents.RESET());
-      navigation.navigate(BOTTOM_TAB_ROUTES.home, {screen: 'HomeScreen'});
-      changeTabBarVisible('flex');
+      setTimeout(() => {
+        navigation.navigate(BOTTOM_TAB_ROUTES.home, {screen: 'HomeScreen'});
+        changeTabBarVisible('flex');
+      }, 0);
     },
     SELECT_VC_ITEM:
       (vcKey: string, inputDescriptorId: string) =>
