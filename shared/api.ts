@@ -3,6 +3,7 @@ import {
   API_CACHED_STORAGE_KEYS,
   changeCrendetialRegistry,
   COMMON_PROPS_KEY,
+  DEFAULT_CACHE_TTL,
 } from './constants';
 import {INITIAL_CONFIG} from './InitialConfig';
 import {getItem, setItem} from '../machines/store';
@@ -16,6 +17,24 @@ import {
 } from './telemetry/TelemetryUtils';
 import {TelemetryConstants} from './telemetry/TelemetryConstants';
 import NetInfo from '@react-native-community/netinfo';
+
+const createCacheObject = (response: any) => {
+  const currentTime = Date.now();
+  const expiryTime = currentTime + DEFAULT_CACHE_TTL;
+
+  return {
+    response,
+    expiry: expiryTime,
+  };
+};
+
+const isCacheValid = (cachedData: any) => {
+  if (!cachedData.expiry) {
+    return false;
+  }
+  const currentTime = Date.now();
+  return currentTime < cachedData.expiry;
+};
 
 export const API_URLS: ApiUrls = {
   trustedVerifiersList: {
@@ -232,14 +251,21 @@ async function generateCacheAPIFunctionWithCachePreference(
   onErrorHardCodedValue?: any,
 ) {
   try {
-    const response = await getItem(cacheKey, null, '');
+    const cachedData = await getItem(cacheKey, null, '');
 
-    if (response) {
-      return response;
+    if (cachedData && isCacheValid(cachedData)) {
+      console.log('valid cache found ');
+      return cachedData.response;
     } else {
       const response = await fetchCall();
-      setItem(cacheKey, response, '').then(() =>
-        console.log('Cached response for ' + cacheKey),
+      const cacheObject = createCacheObject(response);
+      setItem(cacheKey, cacheObject, '').then(() =>
+        console.log(
+          'Cached response for ' +
+            cacheKey +
+            ' with expiry: ' +
+            new Date(cacheObject.expiry).toISOString(),
+        ),
       );
 
       return response;
@@ -247,11 +273,11 @@ async function generateCacheAPIFunctionWithCachePreference(
   } catch (error) {
     console.warn(`Failed to load due to network issue in cache preferred api call.
      cache key:${cacheKey} and has onErrorHardCodedValue:${
-      onErrorHardCodedValue != undefined
+      onErrorHardCodedValue !== undefined
     }`);
     console.log(error);
 
-    if (onErrorHardCodedValue != undefined) {
+    if (onErrorHardCodedValue !== undefined) {
       return onErrorHardCodedValue;
     } else {
       throw error;
@@ -266,25 +292,32 @@ async function generateCacheAPIFunctionWithAPIPreference(
 ) {
   try {
     const response = await fetchCall();
-    setItem(cacheKey, response, '').then(() =>
-      console.log('Cached response for ' + cacheKey),
+    const cacheObject = createCacheObject(response);
+    setItem(cacheKey, cacheObject, '').then(() =>
+      console.log(
+        'Cached response for ' +
+          cacheKey +
+          ' with expiry: ' +
+          new Date(cacheObject.expiry).toISOString(),
+      ),
     );
     return response;
   } catch (error) {
     console.warn(`Failed to load due to network issue in API preferred api call.
      cache key:${cacheKey} and has onErrorHardCodedValue:${
-      onErrorHardCodedValue != undefined
+      onErrorHardCodedValue !== undefined
     }`);
 
     console.error(`The error in fetching api ${cacheKey}`, error);
-    var response = null;
+    var cachedData = null;
     if (!(await NetInfo.fetch()).isConnected) {
-      response = await getItem(cacheKey, null, '');
+      cachedData = await getItem(cacheKey, null, '');
     }
-    if (response) {
-      return response;
+
+    if (cachedData && isCacheValid(cachedData)) {
+      return cachedData.response;
     } else {
-      if (response == null) {
+      if (cachedData == null) {
         throw error;
       } else if (onErrorHardCodedValue != undefined) {
         return onErrorHardCodedValue;

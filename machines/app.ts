@@ -20,6 +20,7 @@ import {
   changeEsignetUrl,
   ESIGNET_BASE_URL,
   isAndroid,
+  changeCacheTTL,
   MIMOTO_BASE_URL,
   SETTINGS_STORE_KEY,
 } from '../shared/constants';
@@ -40,6 +41,7 @@ import {
   checkAllKeyPairs,
   generateKeyPairsAndStoreOrder,
 } from '../shared/cryptoutil/cryptoUtil';
+import getAllConfigurations from '../shared/api';
 
 const DeepLinkIntent = NativeModules.DeepLinkIntent;
 
@@ -510,6 +512,7 @@ export const appMachine = model.createMachine(
       },
 
       generateKeyPairsAndStoreOrder: async () => {
+        updateCacheTTLFromConfig();
         return await generateKeyPairsAndStoreOrder();
       },
       checkNetworkState: () => callback => {
@@ -531,6 +534,18 @@ interface AppInfo {
 }
 
 type State = StateFrom<typeof appMachine>;
+
+const updateCacheTTLFromConfig = async () => {
+  const response = await getAllConfigurations(undefined, false);
+  console.log(response);
+  if (response?.cacheTTL && typeof response.cacheTTL === 'number') {
+    changeCacheTTL(response.cacheTTL);
+  } else {
+    console.log(
+      'something  went wrong and the ttl is not set according to config',
+    );
+  }
+};
 
 export function selectAppInfo(state: State) {
   return state.context.info;
