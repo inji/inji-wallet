@@ -117,7 +117,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        assertTrue(mockCertifyLoginPage.isInvalidIndividualIdTextDisplayed(),"verify if invalid individual id is displayed");
+        softAssert.assertTrue(mockCertifyLoginPage.isInvalidIndividualIdTextDisplayed(),"verify if invalid individual id is displayed");
+        softAssert.assertAll();
     }
 
     @Test
@@ -165,7 +166,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         otpVerification.enterOtpForEsignet(TestDataReader.readData("invalidOtp"), Target.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
 
-        assertTrue(mockCertifyLoginPage.isInvalidOtpMessageDisplayed(), "Verify if invalid otp text is displayed");
+        softAssert.assertTrue(mockCertifyLoginPage.isInvalidOtpMessageDisplayed(), "Verify if invalid otp text is displayed");
+        softAssert.assertAll();
     }
 
     @Test
