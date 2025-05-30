@@ -115,7 +115,8 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
         OtpVerificationPage otpVerification= mockCertifyLoginPage.setEnterIdTextBox(uin);
 
         mockCertifyLoginPage.clickOnGetOtpButton();
-        assertTrue(mockCertifyLoginPage.isInvalidIndividualIdTextDisplayed(),"verify if invalid individual id is displayed");
+        softAssert.assertTrue(mockCertifyLoginPage.isInvalidIndividualIdTextDisplayed(),"verify if invalid individual id is displayed");
+        softAssert.assertAll();
     }
 
     @Test
@@ -161,7 +162,8 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
 
         otpVerification.enterOtpForEsignet(TestDataReader.readData("invalidOtp"), Target.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
-        assertTrue(mockCertifyLoginPage.isInvalidOtpMessageDisplayed(), "Verify if invalid otp text is displayed");
+        softAssert.assertTrue(mockCertifyLoginPage.isInvalidOtpMessageDisplayed(), "Verify if invalid otp text is displayed");
+        softAssert.assertAll();
     }
 
     @Test
