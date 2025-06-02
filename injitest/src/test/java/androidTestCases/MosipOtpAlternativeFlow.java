@@ -54,7 +54,8 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         otpVerification.enterOtpForEsignet(TestDataReader.readData("invalidOtp"), Target.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
-        assertTrue(otpVerification.invalidOtpMessageForEsignetDisplayed(), "Verify if OTP is invalid message is displayed");
+        softAssert.assertTrue(otpVerification.invalidOtpMessageForEsignetDisplayed(), "Verify if OTP is invalid message is displayed");
+        softAssert.assertAll();
     }
 
     @Test

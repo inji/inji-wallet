@@ -51,8 +51,8 @@ public class MosipOtpAlternativeFlow extends IosBaseTest {
         otpVerification.enterOtpForEsignet(TestDataReader.readData("invalidOtp"), Target.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
-        assertTrue(otpVerification.invalidOtpMessageForEsignetDisplayed(), "Verify if OTP is invalid message is displayed");
-    }
+        softAssert.assertTrue(otpVerification.invalidOtpMessageForEsignetDisplayed(), "Verify if OTP is invalid message is displayed");
+        softAssert.assertAll();    }
 
     @Test
     public void activateVcFromDetailedViewPage() throws InterruptedException {

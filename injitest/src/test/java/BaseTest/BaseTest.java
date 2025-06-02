@@ -6,12 +6,14 @@ import inji.api.BaseTestCase;
 import io.appium.java_client.AppiumDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
+import org.testng.asserts.SoftAssert;
 
 public class BaseTest {
     protected AppiumDriver driver;
-
+    protected SoftAssert softAssert = new SoftAssert();
     @BeforeSuite(alwaysRun = true)
     public void beforeSuite() {
+
           BaseTestCase.intiateUINGenration();
         try {
             Thread.sleep(9000);
