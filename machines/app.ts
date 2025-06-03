@@ -156,6 +156,16 @@ export const appMachine = model.createMachine(
               src: 'generateKeyPairsAndStoreOrder',
               onDone: [
                 {
+                  target: 'fetchConfig',
+                },
+              ],
+            },
+          },
+          fetchConfig:{
+            invoke: {
+              src: 'fetchAndUpdateCacheTTLFromConfig',
+              onDone : [
+                {
                   target: 'checkKeyPairs',
                 },
               ],
@@ -512,9 +522,13 @@ export const appMachine = model.createMachine(
       },
 
       generateKeyPairsAndStoreOrder: async () => {
-        updateCacheTTLFromConfig();
         return await generateKeyPairsAndStoreOrder();
       },
+
+      fetchAndUpdateCacheTTLFromConfig: async () =>{
+        return await updateCacheTTLFromConfig();
+      },
+
       checkNetworkState: () => callback => {
         return NetInfo.addEventListener(state => {
           if (state.isConnected) {
