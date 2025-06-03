@@ -12,7 +12,7 @@ import {KeyTypes} from './cryptoutil/KeyTypes';
 export let MIMOTO_BASE_URL = MIMOTO_HOST;
 export let ESIGNET_BASE_URL = ESIGNET_HOST;
 export let DEBUG_MODE_ENABLED = DEBUG_MODE === 'true';
-export let DEFAULT_CACHE_TTL = 60 * 60 * 1000;
+export let CACHE_TTL = 60 * 60 * 1000;
 
 export const LIVENESS_CHECK = LIVENESS_DETECTION === 'true';
 export const LIVENESS_THRESHOLD = 0.4;
@@ -21,7 +21,7 @@ export const changeCrendetialRegistry = (host: string) =>
   (MIMOTO_BASE_URL = host);
 export const changeEsignetUrl = (host: string) => (ESIGNET_BASE_URL = host);
 
-export const changeCacheTTL = (ttl: number) => (DEFAULT_CACHE_TTL = ttl);
+export const updateCacheTTL = (ttl: number) => (CACHE_TTL = ttl);
 
 export const COMMON_PROPS_KEY: string =
   'CommonPropsKey-' + '6964d04a-9268-11ed-a1eb-0242ac120002';

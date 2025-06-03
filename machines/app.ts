@@ -20,7 +20,7 @@ import {
   changeEsignetUrl,
   ESIGNET_BASE_URL,
   isAndroid,
-  changeCacheTTL,
+  updateCacheTTL,
   MIMOTO_BASE_URL,
   SETTINGS_STORE_KEY,
 } from '../shared/constants';
@@ -537,11 +537,13 @@ type State = StateFrom<typeof appMachine>;
 
 const updateCacheTTLFromConfig = async () => {
   const response = await getAllConfigurations(undefined, false);
-  console.log(response);
-  if (response?.cacheTTL && typeof response.cacheTTL === 'number') {
-    changeCacheTTL(response.cacheTTL);
+  if (
+    response?.cacheTTLInMilliSeconds &&
+    typeof response.cacheTTLInMilliSeconds === 'number'
+  ) {
+    updateCacheTTL(response.cacheTTLInMilliSeconds);
   } else {
-    console.log(
+    console.warn(
       'something  went wrong and the ttl is not set according to config',
     );
   }
