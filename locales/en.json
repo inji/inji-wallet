@@ -1073,7 +1073,7 @@
     "title": "“{{wallet}}” Wants to Use “{{domain}}” to Sign In",
     "message": "This allows the app and website to share information about you.",
     "cancel": "Cancel",
-    "continue": "Sign In"
+    "continue": "Continue"
   },
   "cancelDownloadModal": {
     "heading": "Do you want to cancel downloading?",

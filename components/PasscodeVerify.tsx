@@ -22,7 +22,7 @@ export const PasscodeVerify: React.FC<PasscodeVerifyProps> = props => {
     }
   }, [isVerified]);
 
-  return <PinInput testID={props.testID} length={MAX_PIN} onDone={verify} />;
+  return <PinInput testID={props.testID} length={MAX_PIN} onDone={verify} autosubmit={true} />;
 
   async function verify(value: string) {
     try {

@@ -1056,7 +1056,7 @@
     "title": "Gustong gamitin ng \"{{wallet}}\" ang \"{{domain}}\" para mag-sign in",
     "message": "Pinapayagan nitong magbahagi ng impormasyon ang app at website tungkol sa iyo.",
     "cancel": "Kanselahin",
-    "continue": "Mag-sign In"
+    "continue": "Magpatuloy"
   },
   "cancelDownloadModal": {
     "heading": "Gusto mo bang kanselahin ang pag-download?",
