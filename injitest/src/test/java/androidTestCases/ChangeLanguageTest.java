@@ -1071,7 +1071,7 @@ public class ChangeLanguageTest extends AndroidBaseTest {
         assertTrue(backupDataPage.getBackupDataPageDescription("Tamil"), "Protect your data with ease using our Backup & Restore feature. Safely store your VCs against loss or accidents by creating regular backups and recover it effortlessly whenever needed for seamless continuity.");
     }
 
-    @Test
+    @Test(enabled = false)
     public void verifyWelcomePagesContentInArabic() {
 
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(driver);

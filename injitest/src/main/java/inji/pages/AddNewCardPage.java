@@ -82,11 +82,14 @@ public class AddNewCardPage extends BasePage{
     @iOSXCUITFindBy(accessibility = "issuerSearchBar")
     private WebElement IssuerSearchBar;
 
-    @AndroidFindBy(accessibility = "issuerHeading-Mock(Collab)")
-    @iOSXCUITFindBy(accessibility = "issuerHeading-Mock(Collab)")
+    @AndroidFindBy(accessibility = "issuerHeading-Mock")
+    @iOSXCUITFindBy(accessibility = "issuerHeading-Mock")
     private WebElement downloadViaMock;
 
-
+    @AndroidFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+    @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+    private WebElement continuePopupButton;
+	
     public AddNewCardPage(AppiumDriver driver) {
         super(driver);
     }
@@ -196,10 +199,16 @@ public class AddNewCardPage extends BasePage{
         return this.isElementDisplayed(downloadViaSunbird);
     }
     public SunbirdLoginPage clickOnDownloadViaSunbird(){
+		if (isElementDisplayed(continuePopupButton)){
+            clickOnElement(continuePopupButton);
+        }
         clickOnElement(downloadViaSunbird);
         return new SunbirdLoginPage(driver);
     }
     public void clickOnCredentialTypeHeadingInsuranceCredential(){
+		if (isElementDisplayed(continuePopupButton)){
+            clickOnElement(continuePopupButton);
+        }
         if(isElementDisplayed(credentialTypeHeadingInsuranceCredential)) {
             clickOnElement(credentialTypeHeadingInsuranceCredential);
         }

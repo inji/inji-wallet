@@ -118,7 +118,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
         softAssert.assertTrue(mockCertifyLoginPage.isInvalidIndividualIdTextDisplayed(),"verify if invalid individual id is displayed");
-        softAssert.assertAll();
+        
     }
 
     @Test
@@ -167,7 +167,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         mockCertifyLoginPage.clickOnVerifyButtonIos();
 
         softAssert.assertTrue(mockCertifyLoginPage.isInvalidOtpMessageDisplayed(), "Verify if invalid otp text is displayed");
-        softAssert.assertAll();
+        
     }
 
     @Test

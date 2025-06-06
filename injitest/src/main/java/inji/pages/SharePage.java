@@ -88,6 +88,9 @@ public class SharePage extends BasePage {
     @iOSXCUITFindBy(accessibility = "sharingStatusTitle")
     private WebElement cameraAccessLostPage;
 
+    @AndroidFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+    @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+    private WebElement continuePopupButton;
 
     public SharePage(AppiumDriver driver) {
         super(driver);
@@ -118,6 +121,9 @@ public class SharePage extends BasePage {
     }
 
     public SharePage acceptPermissionPopupCameraIos() {
+		 if(isElementDisplayed(continuePopupButton)){
+            clickOnElement(continuePopupButton);
+        }
         if (isElementDisplayed(okButtonIos)) {
             clickOnElement(okButtonIos);
             if(isElementDisplayed(AllowButtonIos)){

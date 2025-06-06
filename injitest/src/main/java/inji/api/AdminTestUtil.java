@@ -270,10 +270,10 @@ public class AdminTestUtil extends BaseTestCase {
 		String currentDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
 
 		requestJson.put("policyNumber", "1207205246");
-		requestJson.put("policyName", "automationtest3");
+		requestJson.put("policyName", "automationtest4");
 		requestJson.put("policyExpiresOn", "2033-04-20T20:48:17.684Z");
 		requestJson.put("policyIssuedOn", "2023-04-20T20:48:17.684Z");
-		requestJson.put("fullName", "automationtest3");
+		requestJson.put("fullName", "automationtest4");
 		requestJson.put("dob", currentDate);
 
 		benefitsArray.put("Critical Surgery");

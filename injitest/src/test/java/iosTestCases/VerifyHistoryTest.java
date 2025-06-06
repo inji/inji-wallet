@@ -12,6 +12,7 @@ import org.testng.asserts.SoftAssert;
 import static inji.api.AdminTestUtil.fullName;
 import static inji.api.AdminTestUtil.policyNumber;
 import static inji.api.BaseTestCase.uin;
+import static inji.api.BaseTestCase.perpetualVid;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -329,8 +330,8 @@ public class VerifyHistoryTest extends IosBaseTest {
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
-        String vid = TestDataReader.readData("vid");
-        OtpVerificationPage otpVerification= esignetLoginPage.setEnterIdTextBox(vid);
+        //String vid = TestDataReader.readData("vid");
+        OtpVerificationPage otpVerification= esignetLoginPage.setEnterIdTextBox(perpetualVid);
 
         esignetLoginPage.clickOnGetOtpButton();
 
@@ -363,8 +364,8 @@ public class VerifyHistoryTest extends IosBaseTest {
 
         HistoryPage historyPage = moreOptionsPage.clickOnCloseButton().clickOnHistoryButton();
         assertTrue(historyPage.isHistoryPageLoaded(), "Verify if history page is displayed");
-        assertTrue(historyPage.verifyActivationSuccessfulRecordInHistory(vid, Target.IOS));
-        assertTrue(historyPage.verifyHistory(vid, Target.IOS),"verify if download history is displayed");
+        assertTrue(historyPage.verifyActivationSuccessfulRecordInHistory(perpetualVid, Target.IOS));
+        assertTrue(historyPage.verifyHistory(perpetualVid, Target.IOS),"verify if download history is displayed");
     }
 
     @Test

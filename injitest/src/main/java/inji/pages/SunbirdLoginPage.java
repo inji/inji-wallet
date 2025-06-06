@@ -180,6 +180,10 @@ public class SunbirdLoginPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "Done")
     private WebElement setButton;
 
+    @AndroidFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+    @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+    private WebElement continuePopupButton;
+
     public SunbirdLoginPage(AppiumDriver driver) {
         super(driver);
     }
@@ -189,6 +193,10 @@ public class SunbirdLoginPage extends BasePage {
     }
 
     public void enterPolicyNumberTextBox(String PolicyNo) {
+
+        if (isElementDisplayed(continuePopupButton)){
+            clickOnElement(continuePopupButton);
+        }
         sendKeysToTextBox(enterPolicyTextBox, PolicyNo);
     }
 

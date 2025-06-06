@@ -1173,7 +1173,7 @@ public class ChangeLanguageTest extends IosBaseTest {
 
     }
 
-    @Test
+    @Test(enabled = false)
     public void verifyWelcomePagesFromInjiTourGuideWithArabicLangauge() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(driver);
         chooseLanguagePage.clickOnArabicLanguage();

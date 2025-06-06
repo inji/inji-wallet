@@ -90,6 +90,10 @@ public class MockCertifyLoginPage extends BasePage {
     @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"Invalid Individual ID\"]")
     @iOSXCUITFindBy(accessibility = "Invalid Individual ID")
     private WebElement invalidIndividualIdText;
+	
+	@AndroidFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+    @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+    private WebElement continuePopupButton;
 
 
     public MockCertifyLoginPage(AppiumDriver driver) {
@@ -117,6 +121,9 @@ public class MockCertifyLoginPage extends BasePage {
     }
 
     public void clickOnEsignetLoginWithOtpButton() {
+		if (isElementDisplayed(continuePopupButton)){
+            clickOnElement(continuePopupButton);
+        }
         if(isElementDisplayed(esignetLoginButton)) {
             clickOnElement(esignetLoginButton);
         }

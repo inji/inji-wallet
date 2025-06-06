@@ -86,6 +86,10 @@ public class EsignetLoginPage extends BasePage {
     @AndroidFindBy(accessibility = "credentialTypeHeading-MOSIPVerifiableCredential")
     @iOSXCUITFindBy(accessibility = "credentialTypeHeading-MOSIPVerifiableCredential")
     private WebElement credentialTypeHeadingMOSIPVerifiableCredential;
+	
+	@AndroidFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+    @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+    private WebElement continuePopupButton;
 
 
     public EsignetLoginPage(AppiumDriver driver) {
@@ -113,6 +117,9 @@ public class EsignetLoginPage extends BasePage {
     }
 
     public void clickOnEsignetLoginWithOtpButton() {
+		if(isElementDisplayed(continuePopupButton)){
+            clickOnElement(continuePopupButton);
+        }
         if(isElementDisplayed(esignetLoginButton,2)) {
             clickOnElement(esignetLoginButton);
         }
