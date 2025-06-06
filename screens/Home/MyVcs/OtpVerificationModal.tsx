@@ -126,6 +126,7 @@ export const OtpVerificationModal: React.FC<
             testID="otpVerificationPinInput"
             length={6}
             onDone={handleEnteredOtp}
+            autosubmit={true}
           />
           <Column crossAlign="center">
             <Text

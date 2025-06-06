@@ -57,5 +57,8 @@ export const IssuersGuards = () => {
       const errorMessage = event.data.message;
       return errorMessage === ErrorMessage.GENERIC;
     },
+    isCredentialOfferFlow: (context: any) => {
+      return context.isCredentialOfferFlow
+    }
   };
 };

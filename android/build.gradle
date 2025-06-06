@@ -14,11 +14,13 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        mavenLocal()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:8.2")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
 }
 
@@ -26,7 +28,9 @@ buildscript {
 // @generated begin expo-camera-import - expo prebuild (DO NOT MODIFY) sync-f244f4f3d8bf7229102e8f992b525b8602c74770
 def expoCameraMavenPath = new File(["node", "--print", "require.resolve('expo-camera/package.json')"].execute(null, rootDir).text.trim(), "../android/maven")
 allprojects { repositories { 
+    mavenLocal()
     maven{url("https://oss.sonatype.org/content/repositories/snapshots/")}
+    maven{url("https://central.sonatype.com/repository/maven-snapshots/")}
     maven { url(expoCameraMavenPath) }
     mavenCentral()
     maven {url("https://repo.danubetech.com/repository/maven-public/")}

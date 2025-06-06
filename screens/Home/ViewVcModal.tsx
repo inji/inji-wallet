@@ -69,7 +69,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
 
   let [fields, setFields] = useState([]);
   const [wellknown, setWellknown] = useState(null);
-
+  const [wellknownFieldsFlag, setWellknownFieldsFlag] = useState(false);
   const verifiableCredentialData = controller.verifiableCredentialData;
 
   useEffect(() => {
@@ -82,6 +82,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
     ).then(response => {
       setWellknown(response.matchingCredentialIssuerMetadata);
       setFields(response.fields);
+      setWellknownFieldsFlag(response.wellknownFieldsFlag);
     });
   }, [verifiableCredentialData?.wellKnown]);
 
@@ -152,6 +153,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
       ) : (
         <VcDetailsContainer
           fields={fields}
+          wellknownFieldsFlag={wellknownFieldsFlag}
           wellknown={wellknown}
           credential={verifiableCredential}
           credentialWrapper={controller.credential}

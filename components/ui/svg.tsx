@@ -98,6 +98,11 @@ export class SvgImage {
     );
   }
 
+  static defaultIssuerLogo(defaultLogo: any) {
+    const DefaultLogo=defaultLogo
+    return <DefaultLogo/>
+  }
+
   static starIcon() {
     return (
       <StarIcon
@@ -593,7 +598,7 @@ export class SvgImage {
 }
 
 function getIssuerLogo(props: displayType) {
-  return {uri: props.logo.url};
+  return {uri: props.logo.url || props.logo.uri};
 }
 
 interface LogoProps {

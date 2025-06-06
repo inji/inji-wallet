@@ -21,10 +21,12 @@ export const Text: React.FC<TextProps> = (props: TextProps) => {
       {...testIDProps(props.testID)}
       style={textStyles}
       numberOfLines={props.numLines}
+      onTextLayout={props.onTextLayout}
       ellipsizeMode={props.ellipsizeMode}
       accessible={props.accessible}
       onPress={props.onPress}>
       {props.children}
+      
     </RNText>
   );
 };
@@ -43,4 +45,5 @@ interface TextProps {
   style?: StyleProp<TextStyle>;
   accessible?: boolean | true;
   onPress?: () => void;
+  onTextLayout?: (e: any) => void;
 }

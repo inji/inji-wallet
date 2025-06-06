@@ -1,32 +1,29 @@
 import {
   ErrorMessage,
+  getDisplayObjectForCurrentLanguage,
   Issuers_Key_Ref,
   OIDCErrors,
   selectCredentialRequestKey,
 } from '../../shared/openId4VCI/Utils';
-import {
-  MY_VCS_STORE_KEY,
-  REQUEST_TIMEOUT,
-  isIOS,
-  EXPIRED_VC_ERROR_CODE,
-} from '../../shared/constants';
-import {assign, send} from 'xstate';
-import {StoreEvents} from '../store';
-import {BackupEvents} from '../backupAndRestore/backup/backupMachine';
-import {getVCMetadata, VCMetadata} from '../../shared/VCMetadata';
-import {isHardwareKeystoreExists} from '../../shared/cryptoutil/cryptoUtil';
-import {ActivityLogEvents} from '../activityLog';
+import { EXPIRED_VC_ERROR_CODE, MY_VCS_STORE_KEY, REQUEST_TIMEOUT, isIOS } from '../../shared/constants';
+import { assign, send } from 'xstate';
+import { StoreEvents } from '../store';
+import { BackupEvents } from '../backupAndRestore/backup/backupMachine';
+import { getVCMetadata, VCMetadata } from '../../shared/VCMetadata';
+import { isHardwareKeystoreExists } from '../../shared/cryptoutil/cryptoUtil';
+import { ActivityLogEvents } from '../activityLog';
 import {
   getEndEventData,
   getImpressionEventData,
   sendEndEvent,
   sendImpressionEvent,
 } from '../../shared/telemetry/TelemetryUtils';
-import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
-import {NativeModules} from 'react-native';
-import {KeyTypes} from '../../shared/cryptoutil/KeyTypes';
-import {VCActivityLog} from '../../components/ActivityLogEvent';
-import {isNetworkError} from '../../shared/Utils';
+import { TelemetryConstants } from '../../shared/telemetry/TelemetryConstants';
+import { NativeModules } from 'react-native';
+import { KeyTypes } from '../../shared/cryptoutil/KeyTypes';
+import { VCActivityLog } from '../../components/ActivityLogEvent';
+import { isNetworkError } from '../../shared/Utils';
+import { issuerType } from './IssuersMachine';
 
 const {RNSecureKeystoreModule} = NativeModules;
 export const IssuersActions = (model: any) => {
@@ -36,7 +33,7 @@ export const IssuersActions = (model: any) => {
         new VCMetadata({
           ...context.vcMetadata,
           isVerified: true,
-          isExpired: event.data.verificationErrorCode == EXPIRED_VC_ERROR_CODE,
+           isExpired: event.data.verificationErrorCode == EXPIRED_VC_ERROR_CODE,
         }),
     }),
     resetVerificationResult: assign({
@@ -48,7 +45,7 @@ export const IssuersActions = (model: any) => {
         }),
     }),
     setIssuers: model.assign({
-      issuers: (_: any, event: any) => event.data,
+      issuers: (_: any, event: any) => event.data as issuerType[],
     }),
     setNoInternet: model.assign({
       errorMessage: () => ErrorMessage.NO_INTERNET,
@@ -230,9 +227,10 @@ export const IssuersActions = (model: any) => {
     }),
 
     setSelectedIssuers: model.assign({
-      selectedIssuer: (context: any, event: any) =>
-        context.issuers.find(issuer => issuer.issuer_id === event.id),
-    }),
+      selectedIssuer: (context: any, event: any) => {
+          return context.issuers.find(issuer => issuer.issuer_id === event.id);
+        }
+      }),
 
     updateIssuerFromWellknown: model.assign({
       selectedIssuer: (context: any, event: any) => ({
@@ -241,24 +239,125 @@ export const IssuersActions = (model: any) => {
         credential_endpoint: event.data.credential_endpoint,
         credential_configurations_supported:
           event.data.credential_configurations_supported,
+        display: event.data.display,
+        authorization_servers: event.data.authorization_servers,
       }),
     }),
-
-    updateAuthorizationEndpoint: model.assign({
-      selectedIssuer: (context: any, event: any) => ({
-        ...context.selectedIssuer,
-        authorizationEndpoint: event.data,
-      }),
+    setCredential: model.assign({
+      credential: (_: any, event: any) => event.data,
+    }),
+    setQrData: model.assign({
+      qrData: (_: any, event: any) => event.data,
+    }),
+    setCredentialOfferIssuer: model.assign({
+      selectedIssuer: (_:any,event: any) => {
+        console.log("issuer::", event.issuer);
+        return event.issuer;
+      },
+    }),
+    setAccessToken: model.assign({
+      accessToken: (_: any, event: any) => {
+        return event.accessToken;
+      },
+    }),
+    setCNonce: model.assign({
+      cNonce: (_: any, event: any) => {
+        return event.cNonce;
+      },
+    }),
+    setOfferCredentialTypeContexts: model.assign({
+      selectedCredentialType: (context: any, event: any) => {
+        return event.credentialTypes[0];
+      },
+      supportedCredentialTypes: (context: any, event: any) => {
+        return event.credentialTypes;
+      },
+      accessToken: (context: any, event: any) => {
+        return event.accessToken;
+      },
+      cNonce: (context: any, event: any) => {
+        return event.cNonce;
+      },
+    }),
+    setRequestTxCode: model.assign({
+      isTransactionCodeRequested: (_: any, event: any) => {
+        return true;
+      },
     }),
 
+    resetRequestTxCode: model.assign({
+      isTransactionCodeRequested: (_: any, event: any) => {
+        return false;
+      },
+    }),
+    setCredentialOfferIssuerWellknownResponse: model.assign({
+      selectedIssuerWellknownResponse: (_: any, event: any) => {
+        return event.issuerMetadata;
+      },
+      wellknownKeyTypes: (_: any, event: any) => {
+        const credType = Object.entries(event.credentialTypes)[0][1];
+        const proofTypesSupported = credType.proof_types_supported;
+        if (proofTypesSupported?.jwt) {
+          return proofTypesSupported.jwt
+            .proof_signing_alg_values_supported as string[];
+        } else {
+          return [KeyTypes.RS256] as string[];
+        }
+      },
+    }),
     updateSelectedIssuerWellknownResponse: model.assign({
       selectedIssuerWellknownResponse: (_: any, event: any) => event.data,
     }),
     setSelectedIssuerId: model.assign({
       selectedIssuerId: (_: any, event: any) => event.id,
     }),
-    setTokenResponse: model.assign({
-      tokenResponse: (_: any, event: any) => event.data,
+    setTxCode: model.assign({
+      txCode: (_: any, event: any) => {
+        return event.txCode;
+      },
+    }),
+    setRequestConsentToTrustIssuer: model.assign({
+      isConsentRequested: (_: any, event: any) => {
+        return true;
+      },
+    }),
+    setTxCodeDisplayDetails: model.assign({
+      txCodeInputMode: (_: any, event: any) => event.inputMode,
+      txCodeDescription: (_: any, event: any) => event.description,
+      txCodeLength: (_: any, event: any) => event.length,
+    }),
+
+    setIssuerDisplayDetails: model.assign({
+      issuerLogo: (_: any, event: any) => {
+        const display = getDisplayObjectForCurrentLanguage(
+          event.issuerMetadata.display,
+        );
+        return display.logo.url;
+      },
+      issuerName: (_: any, event: any) => {
+        const display = getDisplayObjectForCurrentLanguage(
+          event.issuerMetadata.display,
+        );
+        return display.name;
+      },
+    }),
+
+    setFlowType: model.assign({
+      isCredentialOfferFlow: (_: any, event: any) => {
+        return true;
+      },
+    }),
+
+    resetFlowType: model.assign({
+      isCredentialOfferFlow: (_: any, event: any) => {
+        return false;
+      },
+    }),
+
+    resetRequestConsentToTrustIssuer: model.assign({
+      isConsentRequested: (_: any, event: any) => {
+        return false;
+      },
     }),
     setVerifiableCredential: model.assign({
       verifiableCredential: (_: any, event: any) => {
@@ -337,6 +436,10 @@ export const IssuersActions = (model: any) => {
 
     resetVerificationErrorMessage: model.assign({
       verificationErrorMessage: () => '',
+    }),
+
+    resetQrData: model.assign({
+      qrData: () => '',
     }),
 
     sendDownloadingFailedToVcMeta: send(

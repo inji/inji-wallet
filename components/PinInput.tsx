@@ -11,13 +11,17 @@ export const PinInput: React.FC<PinInputProps> = props => {
   const [focusedIndex, setFocusedIndex] = useState(0);
 
   useEffect(() => {
-    if (props.onDone && values.filter(Boolean).length === inputRefs.length) {
-      props.onDone(values.join(''));
+    const current = values.join('');
+    props.onChange?.(current);
+  
+    if (props.autosubmit && props.onDone && values.filter(Boolean).length === inputRefs.length) {
+      props.onDone(current);
     }
-  }, [state]);
+  }, [values]);  
+  
 
   return (
-    <Row width="100%" testID={props.testID} removeClippedSubviews={true}>
+    <Row width={`${(100 / 6) * props.length}%`} testID={props.testID} removeClippedSubviews={true}>
       {inputRefs.map((input, index) => (
         <TextInput
           contextMenuHidden={true}
@@ -53,4 +57,6 @@ interface PinInputProps {
   testID?: string;
   length: number;
   onDone?: (value: string) => void;
+  onChange?: (value: string) => void;
+  autosubmit?: boolean;
 }

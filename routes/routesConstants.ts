@@ -1,3 +1,4 @@
+import {t} from 'xstate';
 import {MainBottomTabParamList} from './routeTypes';
 
 export const BOTTOM_TAB_ROUTES = {
@@ -23,6 +24,10 @@ export const SETTINGS_ROUTES = {
   KeyManagement: 'KeyManagement' as keyof SettingsStackParamList,
 };
 
+export const AUTH_ROUTES = {
+  AuthView: 'AuthView' as keyof AuthStackParamList,
+};
+
 export type ScanStackParamList = {
   ScanScreen: undefined;
   SendVcScreen: undefined;
@@ -37,4 +42,10 @@ export type RequestStackParamList = {
 
 export type SettingsStackParamList = {
   Keymanagement: undefined;
+};
+
+export type AuthStackParamList = {
+  authorizationEndpoint: string;
+  clientId: string;
+  redirectUri: string;
 };

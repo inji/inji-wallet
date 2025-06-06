@@ -102,6 +102,7 @@ export const PasscodeScreen: React.FC<PasscodeRouteProps> = props => {
           testID="setPasscodePin"
           length={MAX_PIN}
           onDone={setPasscode}
+          autosubmit={true}
         />
       </Column>
     ) : (

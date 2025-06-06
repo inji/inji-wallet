@@ -5,6 +5,8 @@ plugins {
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 apply plugin: "org.sonarqube"
+apply plugin: 'kotlin-android'
+
 
 configurations.all {
     resolutionStrategy.force 'androidx.activity:activity-ktx:1.7.1', 'androidx.activity:activity:1.7.0', 'com.fasterxml.jackson.core:jackson-core:2.14.0'
@@ -262,6 +264,9 @@ android {
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("io.mosip:inji-openid4vp:0.3.0-SNAPSHOT"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
@@ -275,7 +280,7 @@ dependencies {
     implementation("io.mosip:pixelpass-aar:0.7.0-SNAPSHOT")
     implementation("io.mosip:secure-keystore:0.3.0")
     implementation("io.mosip:tuvali:0.5.2")
-    implementation("io.mosip:inji-vci-client:0.3.0-SNAPSHOT")
+    implementation("io.mosip:inji-vci-client:0.4.0-SNAPSHOT")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("io.mosip:vcverifier-aar:1.3.0-SNAPSHOT") {
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'

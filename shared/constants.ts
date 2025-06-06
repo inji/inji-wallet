@@ -81,6 +81,12 @@ export const SUPPORTED_KEY_TYPES = {
   'ECC R1': KeyTypes.ES256,
   RSA: KeyTypes.RS256,
 };
+export const KEY_TYPE_TO_JWT_ALG = {
+  [KeyTypes.ED25519]: 'EdDSA',
+  [KeyTypes.ES256K]: 'ES256K',
+  [KeyTypes.ES256]: 'ES256',
+  [KeyTypes.RS256]: 'RS256',
+};
 
 export function isAndroid(): boolean {
   return Platform.OS === 'android';

@@ -16,16 +16,16 @@ export const CredentialTypeSelectionScreen: React.FC<
 > = props => {
   const controller = useIssuerScreenController(props);
   const {t} = useTranslation('IssuersScreen');
-  const selectedIssuerDisplayObject = getDisplayObjectForCurrentLanguage(
-    controller.selectedIssuer.display,
-  );
+  const selectedIssuerDisplayObject = controller.selectedIssuer.display
+    ? getDisplayObjectForCurrentLanguage(controller.selectedIssuer.display)
+    : {};
 
   return (
     <Modal
       testID="credentialTypeSelectionScreen"
       isVisible={controller.isSelectingCredentialType}
       arrowLeft={true}
-      headerTitle={selectedIssuerDisplayObject.name}
+      headerTitle={selectedIssuerDisplayObject?.name}
       headerElevation={2}
       onDismiss={() => controller.CANCEL()}>
       <Column style={Theme.IssuersScreenStyles.issuerListOuterContainer}>

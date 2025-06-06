@@ -19,7 +19,7 @@ import {
   VerifiableCredential,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import getAllConfigurations, {CACHED_API} from '../api';
-import {isAndroid, isIOS} from '../constants';
+import {isAndroid, isIOS, KEY_TYPE_TO_JWT_ALG} from '../constants';
 import {getJWT} from '../cryptoutil/cryptoUtil';
 import {isMockVC} from '../Utils';
 import {
@@ -34,7 +34,6 @@ import {KeyTypes} from '../cryptoutil/KeyTypes';
 import {VCFormat} from '../VCFormat';
 import {UnsupportedVcFormat} from '../error/UnsupportedVCFormat';
 import {VCMetadata} from '../VCMetadata';
-import {UUID} from '../Utils';
 
 export const Protocols = {
   OpenId4VCI: 'OpenId4VCI',
@@ -71,7 +70,7 @@ export const isActivationNeeded = (issuer: string) => {
 export const Issuers_Key_Ref = 'OpenId4VCI_KeyPair';
 
 export const updateCredentialInformation = async (
-  context,
+  context: any,
   credential: VerifiableCredential,
 ): Promise<CredentialWrapper> => {
   let processedCredential;
@@ -81,14 +80,23 @@ export const updateCredentialInformation = async (
       context.selectedCredentialType.format,
     );
   }
-  const verifiableCredential = {
-    ...credential,
-    credentialConfigurationId: context.selectedCredentialType.id,
-    issuerLogo: getDisplayObjectForCurrentLanguage(
-      context.selectedIssuer.display,
-    )?.logo,
-    processedCredential,
-  };
+  let verifiableCredential;
+  try {
+    verifiableCredential = {
+      ...credential,
+      credentialConfigurationId: context.selectedCredentialType.id,
+      issuerLogo: getDisplayObjectForCurrentLanguage(
+        context.selectedIssuer.display,
+      )?.logo,
+      processedCredential,
+    };
+  } catch (e) {
+    console.error(
+      'Error occurred while processing credential for rendering',
+      e,
+    );
+  }
+
   return {
     verifiableCredential,
     format: context.selectedCredentialType.format,
@@ -111,26 +119,12 @@ export const getDisplayObjectForCurrentLanguage = (
     obj => obj[languageKey] == currentLanguage,
   )[0];
   if (!displayType) {
-    displayType = display.filter(obj => obj[languageKey] === 'en')[0];
+    displayType =
+      display.filter(obj => obj[languageKey] === 'en')[0] ||
+      display.filter(obj => obj[languageKey] === 'en-US')[0] ||
+      display[0];
   }
   return displayType;
-};
-
-export const constructAuthorizationConfiguration = (
-  selectedIssuer: issuerType,
-  supportedScope: string,
-) => {
-  return {
-    issuer: selectedIssuer.issuer_id,
-    clientId: selectedIssuer.client_id,
-    scopes: [supportedScope],
-    redirectUrl: selectedIssuer.redirect_uri,
-    additionalParameters: {ui_locales: i18n.language},
-    serviceConfiguration: {
-      authorizationEndpoint: selectedIssuer.authorizationEndpoint,
-      tokenEndpoint: selectedIssuer.token_endpoint,
-    },
-  };
 };
 
 export const getCredentialIssuersWellKnownConfig = async (
@@ -141,6 +135,7 @@ export const getCredentialIssuersWellKnownConfig = async (
   issuerHost: string,
 ) => {
   let fields: string[] = defaultFields;
+  let wellknownFieldsFlag = false;
   let matchingWellknownDetails: any;
   const wellknownResponse = await CACHED_API.fetchIssuerWellknownConfig(
     issuer!,
@@ -169,9 +164,13 @@ export const getCredentialIssuersWellKnownConfig = async (
             );
           });
         } else if (format === VCFormat.ldp_vc) {
-          fields = Object.keys(
+          const ldpFields = Object.keys(
             matchingWellknownDetails.credential_definition.credentialSubject,
           );
+          if (ldpFields.length > 0) {
+            fields = ldpFields;
+            wellknownFieldsFlag = true;
+          }
         } else {
           console.error(`Unsupported credential format - ${format} found`);
           throw new UnsupportedVcFormat(format);
@@ -186,12 +185,15 @@ export const getCredentialIssuersWellKnownConfig = async (
     return {
       matchingCredentialIssuerMetadata: matchingWellknownDetails,
       fields: fields,
+      wellknownFieldsFlag: false,
     };
   }
   return {
     matchingCredentialIssuerMetadata: matchingWellknownDetails,
     wellknownResponse,
     fields: fields,
+    wellknownFieldsFlag:
+      wellknownFieldsFlag || matchingWellknownDetails?.order?.length > 0,
   };
 };
 
@@ -217,6 +219,7 @@ export const getDetailedViewFields = async (
   return {
     matchingCredentialIssuerMetadata: response.matchingCredentialIssuerMetadata,
     fields: updatedFieldsList,
+    wellknownFieldsFlag: response.wellknownFieldsFlag,
     wellknownResponse: response.wellknownResponse,
   };
 };
@@ -245,7 +248,8 @@ export const OIDCErrors = {
 
   AUTHORIZATION_ENDPOINT_DISCOVERY: {
     GRANT_TYPE_NOT_SUPPORTED: 'Grant type not supported by Wallet',
-    FAILED_TO_FETCH_AUTHORIZATION_ENDPOINT: 'Failed to fetch authorization endpoint or grant type not supported by wallet',
+    FAILED_TO_FETCH_AUTHORIZATION_ENDPOINT:
+      'Failed to fetch authorization endpoint or grant type not supported by wallet',
   },
 };
 
@@ -267,17 +271,24 @@ export async function constructProofJWT(
   accessToken: string,
   selectedIssuer: issuerType,
   keyType: string,
+  isCredentialOfferFlow: boolean,
+  cNonce?: string,
 ): Promise<string> {
+  const jwk = await getJWK(publicKey, keyType);
   const jwtHeader = {
-    alg: keyType,
-    jwk: await getJWK(publicKey, keyType),
+    alg: KEY_TYPE_TO_JWT_ALG[keyType],
     typ: 'openid4vci-proof+jwt',
   };
+  if (isCredentialOfferFlow) {
+    jwtHeader['kid'] = `did:jwk:${base64url(JSON.stringify(jwk))}#0`;
+  } else {
+    jwtHeader['jwk'] = jwk;
+  }
   const decodedToken = jwtDecode(accessToken);
   const jwtPayload = {
     iss: selectedIssuer.client_id,
-    nonce: decodedToken.c_nonce,
-    aud: selectedIssuer.credential_audience,
+    nonce: cNonce ?? decodedToken.c_nonce,
+    aud: selectedIssuer.credential_audience ?? selectedIssuer.credential_issuer,
     iat: Math.floor(new Date().getTime() / 1000),
     exp: Math.floor(new Date().getTime() / 1000) + 18000,
   };
@@ -312,7 +323,7 @@ export const getJWK = async (publicKey, keyType) => {
     }
     return {
       ...publicKeyJWK,
-      alg: keyType,
+      alg: KEY_TYPE_TO_JWT_ALG[keyType],
       use: 'sig',
     };
   } catch (e) {
@@ -387,23 +398,30 @@ export function selectCredentialRequestKey(
       return keyOrder[index];
     }
   }
-  return '';
+  return KeyTypes.ED25519;
 }
 
 export const constructIssuerMetaData = (
   selectedIssuer: issuerType,
   selectedCredentialType: CredentialTypes,
-  downloadTimeout: Number,
+  scope: string,
 ): Object => {
   const issuerMeta: Object = {
     credentialAudience: selectedIssuer.credential_audience,
     credentialEndpoint: selectedIssuer.credential_endpoint,
-    downloadTimeoutInMilliSeconds: downloadTimeout,
-    credentialFormat: selectedCredentialType.format,
+    credentialFormat: isIOS()
+      ? selectedCredentialType.format
+      : selectedCredentialType.format.toUpperCase(),
+    authorizationServers: selectedIssuer['authorization_servers'],
+    tokenEndpoint: selectedIssuer.token_endpoint,
+    scope: scope,
   };
   if (selectedCredentialType.format === VCFormat.ldp_vc) {
     issuerMeta['credentialType'] = selectedCredentialType?.credential_definition
       ?.type ?? ['VerifiableCredential'];
+    if (selectedCredentialType?.credential_definition['@context'])
+      issuerMeta['context'] =
+        selectedCredentialType?.credential_definition['@context'];
   } else if (selectedCredentialType.format === VCFormat.mso_mdoc) {
     issuerMeta['doctype'] = selectedCredentialType.doctype;
     issuerMeta['claims'] = selectedCredentialType.claims;

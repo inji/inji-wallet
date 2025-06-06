@@ -154,7 +154,7 @@ export const getFieldName = (
       }
     }
   }
-  return i18n.t(`VcDetails:${field}`);
+  return field;
 };
 
 export function getAddressFields() {
@@ -181,17 +181,72 @@ function getFullAddress(credential: CredentialSubject) {
     .filter(Boolean)
     .join(', ');
 }
+const renderFieldRecursively = (
+  key: string,
+  value: any,
+  fieldNameColor: string,
+  fieldValueColor: string,
+  parentKey = '',
+  depth = 0
+): JSX.Element[] => {
+  const fullKey = parentKey ? `${parentKey}.${key}` : key;
+
+  if (value === null || value === undefined) return [];
+
+  if (Array.isArray(value)) {
+    return value.flatMap((item, index) =>
+      renderFieldRecursively(`${key}[${index}]`, item, fieldNameColor,fieldValueColor,parentKey, depth + 1)
+    );
+  } else if (typeof value === 'object') {
+    return Object.entries(value).flatMap(([childKey, childValue]) =>
+      renderFieldRecursively(childKey, childValue, fieldNameColor,fieldValueColor,fullKey, depth + 1)
+    );
+  } else {
+    let displayValue = String(value);
+    // Truncate base64 if it's an image data URI or very long string
+    if (displayValue.startsWith('data:image') || displayValue.length > 100) {
+      displayValue = displayValue.slice(0, 60) + '...';
+    }
+
+    return [
+      <Row
+        key={`extra-${fullKey}`}
+        style={{
+          flexDirection: 'row',
+          flex: 1,
+          paddingLeft: depth * 12, // Indent nested levels
+        }}
+        align="space-between"
+        margin="0 8 15 0"
+      >
+        <VCItemField
+          key={`extra-${fullKey}`}
+          fieldName={fullKey}
+          fieldValue={displayValue}
+          fieldNameColor={fieldNameColor}
+          fieldValueColor={fieldValueColor}
+          testID={`extra-${fullKey}`}
+        />
+      </Row>,
+    ];
+  }
+};
+
 
 export const fieldItemIterator = (
   fields: any[],
+  wellknownFieldsFlag: boolean,
   verifiableCredential: VerifiableCredential | Credential,
   wellknown: any,
   display: Display,
   props: VCItemDetailsProps,
-) => {
+): JSX.Element[] => {
   const fieldNameColor = display.getTextColor(Theme.Colors.DetailsLabel);
   const fieldValueColor = display.getTextColor(Theme.Colors.Details);
-  return fields.map(field => {
+
+  const renderedFields = new Set<string>();
+
+  const renderedMainFields = fields.map(field => {
     const fieldName = getFieldName(
       field,
       wellknown,
@@ -205,16 +260,20 @@ export const fieldItemIterator = (
       display,
       props.verifiableCredentialData.vcMetadata.format,
     );
+    renderedFields.add(field);
+
     if (
       (field === 'credentialRegistry' &&
         CREDENTIAL_REGISTRY_EDIT === 'false') ||
       !fieldValue
-    )
-      return;
+    ) {
+      return null;
+    }
+
     return (
       <Row
         key={field}
-        style={{flexDirection: 'row', flex: 1}}
+        style={{ flexDirection: 'row', flex: 1 }}
         align="space-between"
         margin="0 8 15 0">
         <VCItemField
@@ -228,13 +287,83 @@ export const fieldItemIterator = (
       </Row>
     );
   });
+
+  let renderedExtraFields: JSX.Element[] = [];
+
+  if (!wellknownFieldsFlag) {
+    const renderedAll: JSX.Element[] = [];
+
+    //  Extra fields from credentialSubject
+    const credentialSubjectFields =
+      (verifiableCredential.credentialSubject as Record<string, any>) || {};
+
+    const renderedSubjectFields = Object.entries(credentialSubjectFields)
+      .filter(([key]) => !renderedFields.has(key))
+      .flatMap(([key, value]) =>
+        renderFieldRecursively(key, value, fieldNameColor, fieldValueColor)
+      );
+
+    renderedAll.push(...renderedSubjectFields);
+
+    //  Render fields from nameSpaces (mso_mdoc)
+    const nameSpaces: Record<string, any> =
+      verifiableCredential.nameSpaces ??
+      verifiableCredential.issuerSigned?.nameSpaces ??
+      verifiableCredential.issuerAuth?.nameSpaces ??
+      {};
+
+    const renderedNamespaceFields = Object.entries(nameSpaces).flatMap(
+      ([namespace, entries]) => {
+        if (!Array.isArray(entries)) return [];
+
+        return [
+
+          <VCItemField
+            key={`ns-title-${namespace}`}
+            fieldName={(namespace)}
+            fieldValue=""
+            fieldNameColor={fieldNameColor}
+            fieldValueColor={fieldValueColor}
+            testID={`ns-title-${namespace}`}
+          />,
+          ...entries.flatMap((entry, index) => [
+            <VCItemField
+              key={`entry-heading-${namespace}-${index}`}
+              fieldName={"--"}
+              fieldValue=""
+              fieldNameColor={fieldNameColor}
+              fieldValueColor={fieldValueColor}
+              testID={`entry-heading-${namespace}-${index}`}
+            />,
+            ...Object.entries(entry).flatMap(([key, value]) =>
+              renderFieldRecursively(
+                key,
+                value,
+                fieldNameColor,
+                fieldValueColor,
+                `${namespace}[${index}]`,
+                1
+              )
+            ),
+          ]),
+        ];
+      }
+    );
+
+    renderedAll.push(...renderedNamespaceFields);
+    renderedExtraFields = renderedAll;
+  }
+
+  return [...renderedMainFields, ...renderedExtraFields];
 };
+
+
 
 export const isVCLoaded = (
   verifiableCredential: Credential | null,
   fields: string[],
 ) => {
-  return verifiableCredential != null && fields.length > 0;
+  return verifiableCredential != null
 };
 
 export const getMosipLogo = () => {
