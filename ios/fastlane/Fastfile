@@ -117,6 +117,7 @@ platform :ios do
       app_identifier: "#{generate_app_bundle_id}",
       git_basic_authorization: Base64.strict_encode64("#{GIT_AUTHORIZATION}"),
       readonly: false,
+      force: true,
       keychain_name: keychain_name,
       keychain_password: keychain_password,
       api_key: api_key
@@ -197,6 +198,7 @@ platform :ios do
       app_identifier: "#{generate_app_bundle_id}",
       git_basic_authorization: Base64.strict_encode64("#{GIT_AUTHORIZATION}"),
       readonly: false,
+      force: true,
       keychain_name: keychain_name,
       keychain_password: keychain_password,
       api_key: api_key
