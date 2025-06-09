@@ -116,11 +116,11 @@ public class EsignetLoginPage extends BasePage {
     }
 
     public void clickOnEsignetLoginWithOtpButton() {
-		if(isElementDisplayed(continuePopupButton)){
-            clickOnElement(continuePopupButton);
+        if(isElementDisplayed(continuePopupButton)){
+             clickOnElement(continuePopupButton);
         }
         if(isElementDisplayed(esignetLoginButton,2)) {
-            clickOnElement(esignetLoginButton);
+             clickOnElement(esignetLoginButton);
         }
     }
 

@@ -122,10 +122,10 @@ public class SharePage extends BasePage {
 
     public SharePage acceptPermissionPopupCameraIos() {
 		 if(isElementDisplayed(continuePopupButton)){
-            clickOnElement(continuePopupButton);
+             clickOnElement(continuePopupButton);
         }
         if (isElementDisplayed(okButtonIos)) {
-            clickOnElement(okButtonIos);
+             clickOnElement(okButtonIos);
             if(isElementDisplayed(AllowButtonIos)){
                 clickOnElement(AllowButtonIos);
             }

@@ -91,7 +91,7 @@ public class MockCertifyLoginPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "Invalid Individual ID")
     private WebElement invalidIndividualIdText;
 	
-	@AndroidFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+    @AndroidFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
     @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
     private WebElement continuePopupButton;
 
