@@ -13,6 +13,10 @@ import {
 import {VCFormat} from '../../shared/VCFormat';
 import {KeyTypes} from '../../shared/cryptoutil/KeyTypes';
 import {getMdocAuthenticationAlorithm} from '../../components/VC/common/VCUtils';
+import {isIOS} from '../../shared/constants';
+import { canonicalize } from '../../shared/Utils';
+
+
 
 const signatureSuite = 'JsonWebSignature2020';
 
@@ -54,17 +58,30 @@ export const openID4VPServices = () => {
         holderId,
         signatureSuite,
       );
-
       let vpTokenSigningResultMap: Record<any, any> = {};
       for (const formatType in unSignedVpTokens) {
         const credentials = unSignedVpTokens[formatType];
-
+        let proof;
         if (formatType === VCFormat.ldp_vc.valueOf()) {
-          const proof = await constructDetachedJWT(
-            context.privateKey,
-            credentials.dataToSign,
-            context.keyType,
-          );
+          if (isIOS()) {
+            const canonicalizedDataToSign = await canonicalize(
+              JSON.parse(credentials.dataToSign),
+            );
+            if (!canonicalizedDataToSign) {
+              throw new Error('Canonicalized data to sign is undefined');
+            }
+            proof = await constructDetachedJWT(
+              context.privateKey,
+              canonicalizedDataToSign,
+              context.keyType,
+            );
+          } else {
+            proof = await constructDetachedJWT(
+              context.privateKey,
+              credentials.dataToSign,
+              context.keyType,
+            );
+          }
 
           vpTokenSigningResultMap[formatType] = {
             jws: proof,
