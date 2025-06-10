@@ -6,7 +6,7 @@ import {
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {createSignatureED, encodeB64} from '../cryptoutil/cryptoUtil';
 import getAllConfigurations from '../api';
-import {parseJSON} from '../Utils';
+import {base64ToByteArray, parseJSON} from '../Utils';
 import {walletMetadata} from './walletMetadata';
 
 export const OpenID4VP_Proof_Sign_Algo = 'EdDSA';
@@ -85,6 +85,7 @@ export class OpenID4VP {
 export async function constructDetachedJWT(
   privateKey: any,
   vpToken: string,
+  keyType: string,
 ): Promise<string> {
   const jwtHeader = {
     alg: OpenID4VP_Proof_Sign_Algo,
@@ -113,22 +114,4 @@ export async function getWalletMetadata() {
   }
   const walletMetadata = JSON.parse(config.walletMetadata);
   return walletMetadata;
-}
-
-function base64ToByteArray(base64String) {
-  try {
-    let cleanBase64 = base64String.trim();
-    cleanBase64 = cleanBase64.replace(/-/g, '+').replace(/_/g, '/');
-    while (cleanBase64.length % 4) {
-      cleanBase64 += '=';
-    }
-    const binaryString = atob(cleanBase64);
-    const byteArray = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      byteArray[i] = binaryString.charCodeAt(i);
-    }
-    return byteArray;
-  } catch (error) {
-    throw new Error('Invalid Base64 string: ' + error.message);
-  }
 }
