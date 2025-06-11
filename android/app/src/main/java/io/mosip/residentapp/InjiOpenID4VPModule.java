@@ -82,8 +82,9 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             AuthorizationRequest authRequest = openID4VP.authenticateVerifier(
                     urlEncodedAuthorizationRequest,
                     verifierList,
-                    walletMetadataObj,
-                    shouldValidateClient);
+                    shouldValidateClient,
+                    walletMetadataObj
+            );
 
             String authRequestJson = gson.toJson(authRequest, AuthorizationRequest.class);
             promise.resolve(authRequestJson);
