@@ -122,26 +122,23 @@ public class WelcomePage extends BasePage {
                 boolean isEnglishMatch  = (actualText.equalsIgnoreCase("Keep your digital credential with you at all times. Inji helps you manage and use them effectively. To get started, add cards to your profile.")==true) ? true : false;
                 return isEnglishMatch ;
             case "Tamil":
-                boolean isTamilMatch  = (actualText.equalsIgnoreCase("உங்கள் டிஜிட்டல் நற்சான்றிதழை எப்போதும் உங்களுடன் வைத்திருக்கவும். ")==true) ? true : false;
+                boolean isTamilMatch  = (actualText.equalsIgnoreCase("உங்கள் டிஜிட்டல் நற்சான்றிதழை எப்போதும் உங்களுடன் வைத்திருக்கவும். அவற்றை திறம்பட நிர்வகிக்கவும் பயன்படுத்தவும் இன்ஜி உதவுகிறது. தொடங்குவதற்கு, உங்கள் சுயவிவரத்தில் கார்டுகளைச் சேர்க்கவும்.")==true) ? true : false;
                 return isTamilMatch ;
             case "Filipino":
-                boolean isFilipinoMatch  = (actualText.equalsIgnoreCase("Panatilihin ang iyong digital na kredensyal sa iyo sa lahat ng oras. ")==true) ? true : false;
+                boolean isFilipinoMatch  = (actualText.equalsIgnoreCase("Panatilihin ang iyong digital na kredensyal sa iyo sa lahat ng oras. Tinutulungan ka ng Inji na pamahalaan at gamitin ang mga ito nang epektibo. Upang makapagsimula, magdagdag ng mga card sa iyong profile.")==true) ? true : false;
                 return isFilipinoMatch ;
             case "Hindi":
-                boolean isHindiMatch  = (actualText.equalsIgnoreCase("अपना डिजिटल क्रेडेंशियल हर समय अपने पास रखें। ")==true) ? true : false;
+                boolean isHindiMatch  = (actualText.equalsIgnoreCase("अपने डिजिटल क्रेडेंशियल को हमेशा अपने पास रखें। Inji आपको उन्हें प्रभावी ढंग से प्रबंधित करने और उपयोग करने में मदद करता है। आरंभ करने के लिए, अपनी प्रोफ़ाइल में कार्ड जोड़ें।")==true) ? true : false;
                 return isHindiMatch ;
             case "Kannada":
-                boolean isKannadaMatch  = (actualText.equalsIgnoreCase("ನಿಮ್ಮ ಡಿಜಿಟಲ್ ರುಜುವಾತುಗಳನ್ನು ಯಾವಾಗಲೂ ನಿಮ್ಮೊಂದಿಗೆ ಇರಿಸಿಕೊಳ್ಳಿ. ")==true) ? true : false;
+                boolean isKannadaMatch  = (actualText.equalsIgnoreCase("ನಿಮ್ಮ ಡಿಜಿಟಲ್ ರುಜುವಾತುಗಳನ್ನು ಯಾವಾಗಲೂ ನಿಮ್ಮೊಂದಿಗೆ ಇರಿಸಿಕೊಳ್ಳಿ. ಅವುಗಳನ್ನು ಪರಿಣಾಮಕಾರಿಯಾಗಿ ನಿರ್ವಹಿಸಲು ಮತ್ತು ಬಳಸಲು ಇಂಜಿ ನಿಮಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ. ಪ್ರಾರಂಭಿಸಲು, ನಿಮ್ಮ ಪ್ರೊಫೈಲ್\u200Cಗೆ ಕಾರ್ಡ್\u200Cಗಳನ್ನು ಸೇರಿಸಿ.")==true) ? true : false;
                 return isKannadaMatch ;
             case "Arabic":
-                boolean isArabicMatch  = (actualText.equalsIgnoreCase("احتفظ ببيانات اعتمادك الرقمية معك في جميع الأوقات. ")==true) ? true : false;
+                boolean isArabicMatch  = (actualText.equalsIgnoreCase("احتفظ ببياناتك الرقمية معك دائمًا. يساعدك Inji على إدارتها واستخدامها بفعالية. للبدء، أضف بطاقات إلى ملفك الشخصي.")==true) ? true : false;
                 return isArabicMatch ;
 
         }
         return false;
     }
-
-
-
 
 }
