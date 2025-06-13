@@ -82,8 +82,9 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             AuthorizationRequest authRequest = openID4VP.authenticateVerifier(
                     urlEncodedAuthorizationRequest,
                     verifierList,
-                    walletMetadataObj,
-                    shouldValidateClient);
+                    shouldValidateClient,
+                    walletMetadataObj
+            );
 
             String authRequestJson = gson.toJson(authRequest, AuthorizationRequest.class);
             promise.resolve(authRequestJson);
@@ -93,10 +94,10 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void constructUnsignedVPToken(ReadableMap selectedVCs, Promise promise) {
+    public void constructUnsignedVPToken(ReadableMap selectedVCs, String holderId, String signatureSuite, Promise promise) {
         try {
             Map<String, Map<FormatType, List<Object>>> selectedVCsMap = parseSelectedVCs(selectedVCs);
-            Map<FormatType, UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedVCsMap);
+            Map<FormatType, UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedVCsMap, holderId, signatureSuite);
             promise.resolve(toJsonString(vpTokens));
         } catch (Exception e) {
             promise.reject(e);
@@ -224,11 +225,10 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     private VPTokenSigningResult createVPTokenSigningResult(FormatType formatType, ReadableMap metadata) {
         switch (formatType) {
             case LDP_VC: {
-                String jws = requireNonNullString(metadata, "jws");
-                String signatureAlgorithm = requireNonNullString(metadata, "signatureAlgorithm");
-                String publicKey = requireNonNullString(metadata, "publicKey");
-                String domain = requireNonNullString(metadata, "domain");
-                return new LdpVPTokenSigningResult(jws, signatureAlgorithm, publicKey, domain);
+                String jws =metadata.getString("jws");
+                String proofValue =metadata.getString("proofValue");
+                String signatureAlgorithm =metadata.getString("signatureAlgorithm");
+                return new LdpVPTokenSigningResult(jws, proofValue, signatureAlgorithm );
             }
             case MSO_MDOC: {
                 Map<String, DeviceAuthentication> signatureData = new HashMap<>();

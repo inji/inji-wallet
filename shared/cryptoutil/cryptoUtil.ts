@@ -188,11 +188,7 @@ export async function getJWT(
     const header64 = encodeB64(JSON.stringify(header));
     const payLoad64 = encodeB64(forge.util.encodeUtf8(JSON.stringify(payLoad)));
     const preHash = header64 + '.' + payLoad64;
-    const signature64 = await createSignature(
-      privateKey,
-      preHash,
-      keyType,
-    );
+    const signature64 = await createSignature(privateKey, preHash, keyType);
     return header64 + '.' + payLoad64 + '.' + signature64;
   } catch (error) {
     console.error('Exception Occurred While Constructing JWT ', error);
@@ -211,8 +207,10 @@ export async function createSignature(privateKey, payload, keyType: string) {
       return createSignatureECR1(privateKey, payload);
     case KeyTypes.ES256K:
       return createSignatureECK1(privateKey, payload);
-    case KeyTypes.ED25519:
-      return createSignatureED(privateKey, payload);
+    case KeyTypes.ED25519: {
+      const payloadBytes = new TextEncoder().encode(payload);
+      return createSignatureED(privateKey, payloadBytes);
+    }
     default:
       break;
   }
@@ -248,12 +246,12 @@ export async function createSignatureECK1(privateKey, payload) {
   return base64url(Buffer.from(sign.toCompactRawBytes()));
 }
 
-export async function createSignatureED(privateKey, payload) {
-  const messageBytes = new TextEncoder().encode(payload);
+export async function createSignatureED(privateKey, payloadBytes) {
   const privateKeyUint8 = Uint8Array.from(privateKey);
-  const sign = await ed.signAsync(messageBytes, privateKeyUint8);
+  const sign = await ed.signAsync(payloadBytes, privateKeyUint8);
   return replaceCharactersInB64(Buffer.from(sign).toString('base64'));
 }
+
 export async function createSignatureECR1(privateKey, payload) {
   if (!isHardwareKeystoreExists) {
     throw Error;
