@@ -1,7 +1,5 @@
 import {NativeModules, NativeEventEmitter} from 'react-native';
 import {__AppId} from '../GlobalVariables';
-import {constructProofJWT} from '../openId4VCI/Utils';
-import {issuerType} from '../../machines/Issuers/IssuersMachine';
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 
 const emitter = new NativeEventEmitter(NativeModules.InjiVciClient);

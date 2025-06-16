@@ -193,6 +193,7 @@ export const IssuersService = () => {
         context.accessToken,
         issuerMeta,
         context.keyType,
+        context.wellknownKeyTypes,
         true,
         context.cNonce,
       );
@@ -207,6 +208,7 @@ export const IssuersService = () => {
         context.accessToken,
         issuerMeta,
         context.keyType,
+        context.wellknownKeyTypes,
         false,
         context.cNonce,
       );

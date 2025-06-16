@@ -88,6 +88,16 @@ export const KEY_TYPE_TO_JWT_ALG = {
   [KeyTypes.RS256]: 'RS256',
 };
 
+export const ED25519_PROOF_SIGNING_ALGO = 'Ed25519';
+
+export const JWT_ALG_TO_KEY_TYPE = {
+  EdDSA: KeyTypes.ED25519,
+  Ed25519: KeyTypes.ED25519,
+  ES256K: KeyTypes.ES256K,
+  ES256: KeyTypes.ES256,
+  RS256: KeyTypes.RS256,
+}
+
 export function isAndroid(): boolean {
   return Platform.OS === 'android';
 }
