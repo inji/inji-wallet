@@ -82,8 +82,8 @@ public class AddNewCardPage extends BasePage{
     @iOSXCUITFindBy(accessibility = "issuerSearchBar")
     private WebElement IssuerSearchBar;
 
-    @AndroidFindBy(accessibility = "issuerHeading-Mock(Collab)")
-    @iOSXCUITFindBy(accessibility = "issuerHeading-Mock(Collab)")
+    @AndroidFindBy(accessibility = "issuerHeading-Mock")
+    @iOSXCUITFindBy(accessibility = "issuerHeading-Mock")
     private WebElement downloadViaMock;
 
 
