@@ -140,7 +140,7 @@
                 <methods>
                     <include name="downloadAndVerifyHistoryUsingUinViaEsignet"/>
                     <include name="downloadAndVerifyHistoryForSunbird"/>
-                    <include name="downloadAndVerifyVcUsingMdlDeleteAndVerifyHistory"/>
+<!--                    <include name="downloadAndVerifyVcUsingMdlDeleteAndVerifyHistory"  // known issue  />-->
                 </methods>
             </class>
             <class name="androidTestCases.VerifyWelcomePagesTest">

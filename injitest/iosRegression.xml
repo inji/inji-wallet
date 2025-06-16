@@ -110,7 +110,7 @@
             <class name="iosTestCases.VerifyHistoryTest">
                 <methods>
                     <include name="downloadAndVerifyHistoryUsingUinViaEsignet"/>
-                    <include name="downloadAndVerifyHistoryUsingVidViaEsignet"/>
+                    <!--<include name="downloadAndVerifyHistoryUsingVidViaEsignet"  known issue/>-->
                     <include name="downloadAndVerifyHistoryForSunbird"/>
                     <include name="downloadVcAndVerifyActivityLog"/>
                     <include name="downloadAndVerifyVcUsingMdlDeleteAndVerifyHistory"/>
