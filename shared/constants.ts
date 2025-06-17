@@ -21,7 +21,10 @@ export const changeCrendetialRegistry = (host: string) =>
   (MIMOTO_BASE_URL = host);
 export const changeEsignetUrl = (host: string) => (ESIGNET_BASE_URL = host);
 
-export const updateCacheTTL = (ttl: number) => (CACHE_TTL = ttl);
+export const updateCacheTTL = (ttl: number) => {
+  console.info(`Updated CACHE_TTL as per config: ${ttl} ms`);
+  CACHE_TTL = ttl;
+};
 
 export const COMMON_PROPS_KEY: string =
   'CommonPropsKey-' + '6964d04a-9268-11ed-a1eb-0242ac120002';

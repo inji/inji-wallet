@@ -4,6 +4,7 @@ import {
   changeCrendetialRegistry,
   COMMON_PROPS_KEY,
   CACHE_TTL,
+  updateCacheTTL,
 } from './constants';
 import {INITIAL_CONFIG} from './InitialConfig';
 import {getItem, setItem} from '../machines/store';
@@ -18,25 +19,21 @@ import {
 import {TelemetryConstants} from './telemetry/TelemetryConstants';
 import NetInfo from '@react-native-community/netinfo';
 
-let firstCall = true;
-const createCacheObject = (response: any, ttlFromConfig?: number) => {
+const createCacheObject = (response: any) => {
   const currentTime = Date.now();
-  const expiryTime = ttlFromConfig
-    ? currentTime + ttlFromConfig
-    : currentTime + CACHE_TTL;
-
   return {
     response,
-    expiry: expiryTime,
+    cachedTime: currentTime,
   };
 };
 
 const isCacheValid = (cachedData: any) => {
-  if (!cachedData.expiry) {
+  if (!cachedData?.cachedTime || typeof cachedData.cachedTime !== 'number') {
     return false;
   }
   const currentTime = Date.now();
-  return currentTime < cachedData.expiry;
+  const expiryTime = Number(cachedData.cachedTime) + CACHE_TTL;
+  return currentTime < expiryTime;
 };
 
 export const API_URLS: ApiUrls = {
@@ -255,19 +252,13 @@ async function generateCacheAPIFunctionWithCachePreference(
 ) {
   try {
     const cachedData = await getItem(cacheKey, null, '');
-
     if (cachedData && isCacheValid(cachedData)) {
       return cachedData.response;
     } else {
       const response = await fetchCall();
       const cacheObject = createCacheObject(response);
       setItem(cacheKey, cacheObject, '').then(() =>
-        console.info(
-          'Cached response for ' +
-            cacheKey +
-            ' with expiry: ' +
-            new Date(cacheObject.expiry).toISOString(),
-        ),
+        console.info('Cached response for ' + cacheKey),
       );
 
       return response;
@@ -295,29 +286,14 @@ async function generateCacheAPIFunctionWithAPIPreference(
   let cacheObject;
   try {
     const response = await fetchCall();
-    if (firstCall) {
-      if (
-        response?.cacheTTLInMilliSeconds &&
-        typeof response.cacheTTLInMilliSeconds === 'number'
-      ) {
-        cacheObject = createCacheObject(
-          response,
-          response.cacheTTLInMilliSeconds,
-        );
-        firstCall = false;
-      } else {
-        cacheObject = createCacheObject(response);
+    if (response) {
+      if (response?.cacheTTLInMilliSeconds) {
+        updateCacheTTL(Number(response.cacheTTLInMilliSeconds));
       }
-    } else {
       cacheObject = createCacheObject(response);
     }
     setItem(cacheKey, cacheObject, '').then(() =>
-      console.info(
-        'Cached response for ' +
-          cacheKey +
-          ' with expiry: ' +
-          new Date(cacheObject.expiry).toISOString(),
-      ),
+      console.info('Cached response for ' + cacheKey),
     );
     return response;
   } catch (error) {

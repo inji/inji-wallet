@@ -161,12 +161,23 @@ export const appMachine = model.createMachine(
               ],
             },
           },
-          fetchConfig:{
+          fetchConfig: {
             invoke: {
               src: 'fetchAndUpdateCacheTTLFromConfig',
-              onDone : [
+              onDone: [
                 {
                   target: 'checkKeyPairs',
+                },
+              ],
+              onError: [
+                {
+                  actions: [
+                    (_, event) =>
+                      console.info(
+                        'Error in fetching config, using hardcoded cacheTTL',
+                        JSON.stringify(event, null, 4),
+                      ),
+                  ],
                 },
               ],
             },
@@ -525,7 +536,7 @@ export const appMachine = model.createMachine(
         return await generateKeyPairsAndStoreOrder();
       },
 
-      fetchAndUpdateCacheTTLFromConfig: async () =>{
+      fetchAndUpdateCacheTTLFromConfig: async () => {
         return await updateCacheTTLFromConfig();
       },
 
@@ -551,14 +562,9 @@ type State = StateFrom<typeof appMachine>;
 
 const updateCacheTTLFromConfig = async () => {
   const response = await getAllConfigurations(undefined, false);
-  if (
-    response?.cacheTTLInMilliSeconds &&
-    typeof response.cacheTTLInMilliSeconds === 'number'
-  ) {
-    updateCacheTTL(response.cacheTTLInMilliSeconds);
-  } else {
-    console.warn(
-      'something  went wrong and the ttl is not set according to config',
+  if (response && response.cacheTTLInMilliSeconds) {
+    console.info(
+      'All Properties API is called and updated the cacheTTL based on config/OnErrorHardCodedValue',
     );
   }
 };
