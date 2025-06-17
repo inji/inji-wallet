@@ -171,13 +171,7 @@ export const appMachine = model.createMachine(
               ],
               onError: [
                 {
-                  actions: [
-                    (_, event) =>
-                      console.info(
-                        'Error in fetching config, using hardcoded cacheTTL',
-                        JSON.stringify(event, null, 4),
-                      ),
-                  ],
+                  target: 'checkKeyPairs',
                 },
               ],
             },

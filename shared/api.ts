@@ -253,6 +253,7 @@ async function generateCacheAPIFunctionWithCachePreference(
   try {
     const cachedData = await getItem(cacheKey, null, '');
     if (cachedData && isCacheValid(cachedData)) {
+      console.info('Returned cached response for' + cacheKey);
       return cachedData.response;
     } else {
       const response = await fetchCall();
@@ -286,12 +287,13 @@ async function generateCacheAPIFunctionWithAPIPreference(
   let cacheObject;
   try {
     const response = await fetchCall();
-    if (response) {
-      if (response?.cacheTTLInMilliSeconds) {
-        updateCacheTTL(Number(response.cacheTTLInMilliSeconds));
-      }
-      cacheObject = createCacheObject(response);
+    if (!response) {
+      throw new Error('Received Empty response in fetch call');
     }
+    if (response?.cacheTTLInMilliSeconds) {
+      updateCacheTTL(Number(response.cacheTTLInMilliSeconds));
+    }
+    cacheObject = createCacheObject(response);
     setItem(cacheKey, cacheObject, '').then(() =>
       console.info('Cached response for ' + cacheKey),
     );
@@ -301,23 +303,17 @@ async function generateCacheAPIFunctionWithAPIPreference(
      cache key:${cacheKey} and has onErrorHardCodedValue:${
       onErrorHardCodedValue != undefined
     }`);
-
     console.error(`The error in fetching api ${cacheKey}`, error);
     var cachedData = null;
     if (!(await NetInfo.fetch()).isConnected) {
       cachedData = await getItem(cacheKey, null, '');
     }
-
     if (cachedData && isCacheValid(cachedData)) {
       return cachedData.response;
+    } else if (onErrorHardCodedValue != undefined) {
+      return onErrorHardCodedValue;
     } else {
-      if (cachedData == null) {
-        throw error;
-      } else if (onErrorHardCodedValue != undefined) {
-        return onErrorHardCodedValue;
-      } else {
-        throw error;
-      }
+      throw error;
     }
   }
 }
