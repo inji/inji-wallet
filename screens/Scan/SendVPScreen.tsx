@@ -421,6 +421,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         textButtonEvent={handleTextButtonEvent}
         customImageStyles={{paddingBottom: 0, marginBottom: -6}}
         customStyles={{marginTop: '30%'}}
+        exitAppWithTimer={controller.isOVPViaDeepLink}
         testID={'vpShareError'}
       />
     </React.Fragment>
