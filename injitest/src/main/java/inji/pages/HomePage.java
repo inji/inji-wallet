@@ -31,9 +31,9 @@ public class HomePage extends BasePage {
     @AndroidFindBy(accessibility = "ellipsis")
     private WebElement moreOptionsButton;
 
-    @iOSXCUITFindBy(accessibility = "iconIcon")
-    @AndroidFindBy(accessibility = "iconIcon")
-    private WebElement iconIconButton;
+    @iOSXCUITFindBy(accessibility = "close")
+    @AndroidFindBy(accessibility = "close")
+    private WebElement closeButton;
 
     @iOSXCUITFindBy(xpath = "(//XCUIElementTypeOther[@name=\"ellipsis\"])[2]")
     @AndroidFindBy(xpath = "(//android.view.ViewGroup[@content-desc=\"ellipsis\"])[2]")
@@ -828,7 +828,7 @@ public class HomePage extends BasePage {
     }
 
     public void clickOnCrossIconButton() {
-        clickOnElement(iconIconButton);
+        clickOnElement(closeButton);
     }
 
 }
