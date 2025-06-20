@@ -153,49 +153,13 @@ public class HomePage extends BasePage {
     @iOSXCUITFindBy(accessibility = "verificationStatus")
     private WebElement verificationStatus;
 
-    @AndroidFindBy(accessibility = "1next")
-    @iOSXCUITFindBy(accessibility = "1next")
-    private WebElement firstNextButton;
+    @AndroidFindBy(accessibility = "copilot-next-action")
+    @iOSXCUITFindBy(accessibility = "copilot-next-action")
+    private WebElement nextButton;
 
-    @AndroidFindBy(accessibility = "2next")
-    @iOSXCUITFindBy(accessibility = "2next")
-    private WebElement secondNextButton;
-
-    @AndroidFindBy(accessibility = "3next")
-    @iOSXCUITFindBy(accessibility = "3next")
-    private WebElement thirdNextButton;
-
-    @AndroidFindBy(accessibility = "4next")
-    @iOSXCUITFindBy(accessibility = "4next")
-    private WebElement forthNextButton;
-
-    @AndroidFindBy(accessibility = "5done")
-    @iOSXCUITFindBy(accessibility = "5done")
-    private WebElement fifthDoneButton;
-
-    @AndroidFindBy(accessibility = "5next")
-    @iOSXCUITFindBy(accessibility = "5next")
-    private WebElement fifthNextButton;
-
-    @AndroidFindBy(accessibility = "2previous")
-    @iOSXCUITFindBy(accessibility = "2previous")
-    private WebElement  secondPreviousButton;
-
-    @AndroidFindBy(accessibility = "3previous")
-    @iOSXCUITFindBy(accessibility = "3previous")
-    private WebElement  thirdPreviousButton;
-
-    @AndroidFindBy(accessibility = "4previous")
-    @iOSXCUITFindBy(accessibility = "4previous")
-    private WebElement forthPreviousButton;
-
-    @AndroidFindBy(accessibility = "5previous")
-    @iOSXCUITFindBy(accessibility = "5previous")
-    private WebElement fifthPreviousButton;
-
-    @AndroidFindBy(accessibility = "6done")
-    @iOSXCUITFindBy(accessibility = "6done")
-    private WebElement doneButton;
+    @AndroidFindBy(accessibility = "copilot-prev-action")
+    @iOSXCUITFindBy(accessibility = "copilot-prev-action")
+    private WebElement previousButton;
 
     @AndroidFindBy(accessibility = "helpTitle")
     @iOSXCUITFindBy(accessibility = "helpTitle")
@@ -764,61 +728,28 @@ public class HomePage extends BasePage {
         return false;
     }
 
-
-    public void clickOnFirstNextButton() {
-        clickOnElement(firstNextButton);
-    }
-    public void clickOnSecondNextButton() {
-        clickOnElement(secondNextButton);
-    }
-    public void clickOnThirdNextButton() {
-        clickOnElement(thirdNextButton);
+    public void clickOnNextButton() {
+        clickOnElement(nextButton);
     }
 
-    public void clickOnForthNextButton() {
-        clickOnElement(forthNextButton);
-    }
-
-    public void clickOnFifthDoneButton() {
-        clickOnElement(fifthDoneButton);
-    }
-
-    public void clickOnFifthNextButton() {
-        clickOnElement(fifthNextButton);
-    }
-    public void clickOnFifthPreviousButton() {
-        clickOnElement(fifthPreviousButton);
-    }
-    public void clickOnForthPreviousButton() {
-        clickOnElement(forthPreviousButton);
-    }
-
-    public void clickOnThirdPreviousButton() {
-        clickOnElement(thirdPreviousButton);
-    }
-
-    public void clickOnSecondPreviousButton() {
-        clickOnElement(secondPreviousButton);
+    public void clickOnPreviousButton() {
+        clickOnElement(previousButton);
     }
 
     public void clickOnDoneButton() {
-        if(isElementDisplayed(doneButton))
-            clickOnElement(doneButton);
+        if(isElementDisplayed(nextButton))
+            clickOnElement(nextButton);
     }
 
     public void clickOnNextButtonForInjiTour() {
-        if(isElementDisplayed(firstNextButton)) {
-            clickOnElement(firstNextButton);
-            clickOnElement(secondNextButton);
-            clickOnElement(thirdNextButton);
-            clickOnElement(forthNextButton);
-            clickOnElement(fifthDoneButton);
+        if(isElementDisplayed(nextButton)) {
+            clickOnElement(nextButton);
         }
     }
 
     public boolean isCredentialTypeValueDisplayed() {
-        if(isElementDisplayed(doneButton)){
-            clickOnElement(doneButton);
+        if(isElementDisplayed(nextButton)){
+            clickOnElement(nextButton);
         }
         return this.isElementDisplayed(credentialTypeValue);
 

@@ -70,7 +70,7 @@ export const CopilotTooltip = () => {
             />
           ) : (
             <Button
-              testID={`copilot-next-action`}
+              testID={'copilot-next-action'}
               title={t('next')}
               type="gradient"
               styles={Theme.Styles.copilotButton}
