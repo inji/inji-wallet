@@ -744,6 +744,10 @@ public class HomePage extends BasePage {
     public void clickOnNextButtonForInjiTour() {
         if(isElementDisplayed(nextButton)) {
             clickOnElement(nextButton);
+            clickOnElement(nextButton);
+            clickOnElement(nextButton);
+            clickOnElement(nextButton);
+            clickOnElement(nextButton);
         }
     }
 
