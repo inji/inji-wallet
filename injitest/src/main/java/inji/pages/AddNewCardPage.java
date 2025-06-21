@@ -62,8 +62,8 @@ public class AddNewCardPage extends BasePage{
     @iOSXCUITFindBy(accessibility = "credentialTypeValue")
     private WebElement credentialTypeValue;
 
-    @AndroidFindBy(accessibility = "6stepCount")
-    @iOSXCUITFindBy(accessibility = "6stepCount")
+    @AndroidFindBy(accessibility = "copilot-next-action")
+    @iOSXCUITFindBy(accessibility = "copilot-next-action")
     private WebElement DoneButton;
 
     @AndroidFindBy(accessibility = "issuerHeading-MockMdl")
