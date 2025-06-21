@@ -157,8 +157,8 @@ public class SunbirdLoginPage extends BasePage {
     @AndroidFindBy(xpath = "//android.view.ViewGroup[@resource-id=\"statusIcon\"]")
     private WebElement statusIcon;
 
-    @AndroidFindBy(accessibility = "6done")
-    @iOSXCUITFindBy(accessibility = "6done")
+    @AndroidFindBy(accessibility = "copilot-next-action")
+    @iOSXCUITFindBy(accessibility = "copilot-next-action")
     private WebElement doneButton;
 
     @AndroidFindBy(xpath = "//*[contains(@text,'Login failed')]")
