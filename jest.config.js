@@ -28,11 +28,11 @@ module.exports = {
   // Not quite sure about the reason.
   testRegex: '(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$',
   coveragePathIgnorePatterns: [
-    "node_modules",
-    "test-config",
-    "interfaces",
-    "jestGlobalMocks.ts",
-    "__mocks__/*"
+    'node_modules',
+    'test-config',
+    'interfaces',
+    'jestGlobalMocks.ts',
+    '__mocks__/*',
   ],
   transformIgnorePatterns: [
     'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)',
@@ -53,6 +53,7 @@ module.exports = {
     '<rootDir>/__mocks__/@noble/mock-ed25519.js',
     '<rootDir>/__mocks__/react-native-base64.js',
     '<rootDir>__mocks__/mockCrytoUtil.js',
+    '<rootDir>__mocks__/text-encoder.js',
     // https://github.com/react-native-google-signin/google-signin?tab=readme-ov-file#jest-module-mock
     '<rootDir>/node_modules/@react-native-google-signin/google-signin/jest/build/setup.js',
   ],
