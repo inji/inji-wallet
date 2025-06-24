@@ -1,8 +1,13 @@
+import {sha256} from '@noble/hashes/sha256';
 import {VCMetadata} from './VCMetadata';
 import {NETWORK_REQUEST_FAILED} from './constants';
 import {groupBy} from './javascript';
 import {Issuers} from './openId4VCI/Utils';
 import {v4 as uuid} from 'uuid';
+import {utf8ToBytes} from '@noble/hashes/utils';
+import {Buffer} from 'buffer';
+import base64url from 'base64url';
+import jsonld from 'jsonld';
 
 export const getVCsOrderedByPinStatus = (vcMetadatas: VCMetadata[]) => {
   const [pinned, unpinned] = groupBy(
@@ -75,6 +80,54 @@ export const formatTextWithGivenLimit = (value: string, limit: number = 15) => {
 };
 
 export enum DEEPLINK_FLOWS {
-    QR_LOGIN = 'qrLoginFlow',
-    OVP = 'ovpFlow',
+  QR_LOGIN = 'qrLoginFlow',
+  OVP = 'ovpFlow',
+}
+
+export function base64ToByteArray(base64String) {
+  try {
+    let cleanBase64 = base64String.trim();
+    cleanBase64 = cleanBase64.replace(/-/g, '+').replace(/_/g, '/');
+    while (cleanBase64.length % 4) {
+      cleanBase64 += '=';
+    }
+    const binaryString = atob(cleanBase64);
+    const byteArray = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      byteArray[i] = binaryString.charCodeAt(i);
+    }
+    return byteArray;
+  } catch (error) {
+    throw new Error('Invalid Base64 string: ' + error.message);
+  }
+}
+
+export async function canonicalize(unsignedVp: any) {
+  try {
+    const jsonldProof = {...unsignedVp['proof']};
+    jsonldProof['@context'] = unsignedVp['@context'];
+    const jsonldObjectClone = {...unsignedVp};
+    if ('proof' in jsonldObjectClone) {
+      delete jsonldObjectClone.proof;
+    }
+    const expandedJsonldObject = await jsonld.expand(jsonldObjectClone);
+    let normalizedJsonldObject = await jsonld.canonize(expandedJsonldObject, {
+      algorithm: 'URDNA2015',
+    });
+
+    const expandedJsonldProof = await jsonld.expand(jsonldProof);
+    let normalizedJsonldProof = await jsonld.canonize(expandedJsonldProof, {
+      algorithm: 'URDNA2015',
+    });
+
+    const canonicalizationResult = Buffer.alloc(64);
+    Buffer.concat([
+      //noble sha256 deprecated need to use alternative library
+      sha256(utf8ToBytes(normalizedJsonldProof)),
+      sha256(utf8ToBytes(normalizedJsonldObject)),
+    ]).copy(canonicalizationResult, 0);
+    return base64url(canonicalizationResult);
+  } catch (err) {
+    console.error('Canonization failed:', err);
+  }
 }

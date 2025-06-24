@@ -4,16 +4,11 @@ import {
   SelectedCredentialsForVPSharing,
   VC,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {getJWT} from '../cryptoutil/cryptoUtil';
-import {getJWK} from '../openId4VCI/Utils';
+import {createSignatureED, encodeB64} from '../cryptoutil/cryptoUtil';
 import getAllConfigurations from '../api';
-import {parseJSON} from '../Utils';
+import {base64ToByteArray, parseJSON} from '../Utils';
 import {walletMetadata} from './walletMetadata';
-import {VCFormat} from '../VCFormat';
 
-export const OpenID4VP_Key_Ref = 'OpenID4VP_KeyPair';
-export const OpenID4VP_Proof_Sign_Algo_Suite = 'Ed25519Signature2020';
-export const OpenID4VP_Domain = 'OpenID4VP';
 export const OpenID4VP_Proof_Sign_Algo = 'EdDSA';
 
 export class OpenID4VP {
@@ -40,12 +35,18 @@ export class OpenID4VP {
     return JSON.parse(authenticationResponse);
   }
 
-  static async constructUnsignedVPToken(selectedVCs: Record<string, VC[]>) {
+  static async constructUnsignedVPToken(
+    selectedVCs: Record<string, VC[]>,
+    holderId,
+    signatureAlgorithm,
+  ) {
     let updatedSelectedVCs = this.processSelectedVCs(selectedVCs);
 
     const unSignedVpTokens =
       await OpenID4VP.InjiOpenID4VP.constructUnsignedVPToken(
         updatedSelectedVCs,
+        holderId,
+        signatureAlgorithm,
       );
     return parseJSON(unSignedVpTokens);
   }
@@ -81,37 +82,24 @@ export class OpenID4VP {
   }
 }
 
-export async function constructProofJWT(
-  publicKey: any,
+export async function constructDetachedJWT(
   privateKey: any,
-  vpToken: Object,
+  vpToken: string,
   keyType: string,
 ): Promise<string> {
   const jwtHeader = {
     alg: OpenID4VP_Proof_Sign_Algo,
-    jwk: await getJWK(publicKey, keyType),
+    crit: ['b64'],
+    b64: false,
   };
+  const header64 = encodeB64(JSON.stringify(jwtHeader));
+  const headerBytes = new TextEncoder().encode(header64);
+  const vpTokenBytes = base64ToByteArray(vpToken);
+  const payloadBytes = new Uint8Array([...headerBytes, 46, ...vpTokenBytes]);
 
-  const jwtPayload = createJwtPayload(vpToken);
+  const signature = await createSignatureED(privateKey, payloadBytes);
 
-  return await getJWT(
-    jwtHeader,
-    jwtPayload,
-    OpenID4VP_Key_Ref,
-    privateKey,
-    keyType,
-  );
-}
-
-function createJwtPayload(vpToken: {[key: string]: any}) {
-  const {'@context': context, type, verifiableCredential, id, holder} = vpToken;
-  return {
-    '@context': context,
-    type,
-    verifiableCredential,
-    id,
-    holder,
-  };
+  return header64 + '..' + signature;
 }
 
 export async function isClientValidationRequired() {

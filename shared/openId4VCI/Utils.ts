@@ -19,7 +19,13 @@ import {
   VerifiableCredential,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import getAllConfigurations, {CACHED_API} from '../api';
-import {isAndroid, isIOS, KEY_TYPE_TO_JWT_ALG} from '../constants';
+import {
+  ED25519_PROOF_SIGNING_ALGO,
+  isAndroid,
+  isIOS,
+  JWT_ALG_TO_KEY_TYPE,
+  KEY_TYPE_TO_JWT_ALG,
+} from '../constants';
 import {getJWT} from '../cryptoutil/cryptoUtil';
 import {isMockVC} from '../Utils';
 import {
@@ -271,35 +277,40 @@ export async function constructProofJWT(
   accessToken: string,
   selectedIssuer: issuerType,
   keyType: string,
+  proofSigningAlgosSupported: string[] = [],
   isCredentialOfferFlow: boolean,
   cNonce?: string,
 ): Promise<string> {
   const jwk = await getJWK(publicKey, keyType);
-  const jwtHeader = {
-    alg: KEY_TYPE_TO_JWT_ALG[keyType],
-    typ: 'openid4vci-proof+jwt',
-  };
-  if (isCredentialOfferFlow) {
-    jwtHeader['kid'] = `did:jwk:${base64url(JSON.stringify(jwk))}#0`;
-  } else {
-    jwtHeader['jwk'] = jwk;
-  }
   const decodedToken = jwtDecode(accessToken);
-  const jwtPayload = {
-    iss: selectedIssuer.client_id,
-    nonce: cNonce ?? decodedToken.c_nonce,
-    aud: selectedIssuer.credential_audience ?? selectedIssuer.credential_issuer,
-    iat: Math.floor(new Date().getTime() / 1000),
-    exp: Math.floor(new Date().getTime() / 1000) + 18000,
+  const nonce = cNonce ?? decodedToken?.c_nonce;
+
+  const alg =
+    keyType === KeyTypes.ED25519
+      ? resolveEd25519Alg(proofSigningAlgosSupported)
+      : KEY_TYPE_TO_JWT_ALG[keyType];
+
+  if (!alg) {
+    throw new Error(`Unsupported algorithm for keyType: ${keyType}`);
+  }
+
+  const jwtHeader: Record<string, any> = {
+    alg,
+    typ: 'openid4vci-proof+jwt',
+    ...(isCredentialOfferFlow
+      ? {kid: `did:jwk:${base64url(JSON.stringify(jwk))}#0`}
+      : {jwk}),
   };
 
-  return await getJWT(
-    jwtHeader,
-    jwtPayload,
-    Issuers_Key_Ref,
-    privateKey,
-    keyType,
-  );
+  const jwtPayload = {
+    iss: selectedIssuer.client_id,
+    nonce,
+    aud: selectedIssuer.credential_audience ?? selectedIssuer.credential_issuer,
+    iat: Math.floor(Date.now() / 1000),
+    exp: Math.floor(Date.now() / 1000) + 18000,
+  };
+
+  return getJWT(jwtHeader, jwtPayload, Issuers_Key_Ref, privateKey, keyType);
 }
 
 export const getJWK = async (publicKey, keyType) => {
@@ -323,7 +334,6 @@ export const getJWK = async (publicKey, keyType) => {
     }
     return {
       ...publicKeyJWK,
-      alg: KEY_TYPE_TO_JWT_ALG[keyType],
       use: 'sig',
     };
   } catch (e) {
@@ -388,16 +398,20 @@ export async function hasKeyPair(keyType: any): Promise<boolean> {
 }
 
 export function selectCredentialRequestKey(
-  keyTypes: string[],
-  keyOrder: object,
-) {
-  const lowerCaseKeyTypes = keyTypes.map(key => key.toLowerCase());
+  proofSigningAlgosSupported: string[],
+  keyOrder: Record<string, string>,
+): string {
+  const supportedKeyTypes = proofSigningAlgosSupported
+    .map(algo => JWT_ALG_TO_KEY_TYPE[algo])
+    .filter(Boolean);
 
   for (const index in keyOrder) {
-    if (lowerCaseKeyTypes.includes(keyOrder[index].toLowerCase())) {
-      return keyOrder[index];
+    const keyType = keyOrder[index];
+    if (supportedKeyTypes.includes(keyType)) {
+      return keyType;
     }
   }
+
   return KeyTypes.ED25519;
 }
 
@@ -471,4 +485,11 @@ export async function verifyCredentialData(
       verificationErrorCode: VerificationErrorType.NO_ERROR,
     };
   }
+}
+function resolveEd25519Alg(proofSigningAlgosSupported: string[]) {
+  return proofSigningAlgosSupported.includes(
+    KEY_TYPE_TO_JWT_ALG[KeyTypes.ED25519],
+  )
+    ? KEY_TYPE_TO_JWT_ALG[KeyTypes.ED25519]
+    : ED25519_PROOF_SIGNING_ALGO;
 }

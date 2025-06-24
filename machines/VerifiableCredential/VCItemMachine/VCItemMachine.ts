@@ -350,29 +350,11 @@ export const VCItemMachine = model.createMachine(
                   ],
                 },
               },
-
-              updatingPrivateKey: {
-                invoke: {
-                  src: 'updatePrivateKey',
-                  onDone: {
-                    target: 'updatingContextVariables',
-                  },
-                  onError: {
-                    actions: [
-                      'setErrorAsWalletBindingError',
-                      'sendWalletBindingErrorEvent',
-                      'logWalletBindingFailure',
-                    ],
-                    target: 'showingWalletBindingError',
-                  },
-                },
-              },
               updatingContextVariables: {
                 entry: [
                   'setThumbprintForWalletBindingId',
                   'storeContext',
                   'resetPrivateKey',
-                  'storeVcInContext',
                   'unSetError',
                   'sendActivationSuccessEvent',
                   'logWalletBindingSuccess',

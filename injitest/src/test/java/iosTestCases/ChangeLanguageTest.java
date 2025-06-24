@@ -301,23 +301,23 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsHeaderDisplayed("Filipino"), "Verify if help and frequently asked quations header displayed");
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsDescriptionDisplayed("Filipino"), "Verify if help and frequently asked quations description displayed");
-        homePage.clickOnFirstNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForDownloadCardHeaderDisplayed("Filipino"), "Verify if download card header text displayed");
         assertTrue(homePage.verifyLanguageForDownloadCardDescriptionDisplayed("Filipino"), "Verify if download card description displayed");
-        homePage.clickOnSecondNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForShareCardHeaderDisplayed("Filipino"), "Verify if share card header text displayed");
         assertTrue(homePage.verifyLanguageForShareCardDescriptionDisplayed("Filipino"), "Verify if share card description displayed");
-        homePage.clickOnThirdNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAccesstoHistoryHeaderDisplayed("Filipino"), "Verify if access to history header text displayed");
         assertTrue(homePage.verifyLanguageForaccesstoHistoryDescriptionDisplayed("Filipino"), "Verify if access to history description displayed");
-        homePage.clickOnForthNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAppSettingsHeaderDisplayed("Filipino"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyLanguageForAppSettingsDescriptionDisplayed("Filipino"), "Verify if app settings description displayed");
-        homePage.clickOnFifthDoneButton();
+        homePage.clickOnNextButton();
         assertEquals(homePage.getShareButton(), "Ibahagi");
     }
 
@@ -353,23 +353,23 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsHeaderDisplayed("Hindi"), "Verify if help and frequently asked quations header displayed");
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsDescriptionDisplayed("Hindi"), "Verify if help and frequently asked quations description displayed");
-        homePage.clickOnFirstNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForDownloadCardHeaderDisplayed("Hindi"), "Verify if download card header text displayed");
         assertTrue(homePage.verifyLanguageForDownloadCardDescriptionDisplayed("Hindi"), "Verify if download card description displayed");
-        homePage.clickOnSecondNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForShareCardHeaderDisplayed("Hindi"), "Verify if share card header text displayed");
         assertTrue(homePage.verifyLanguageForShareCardDescriptionDisplayed("Hindi"), "Verify if share card description displayed");
-        homePage.clickOnThirdNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAccesstoHistoryHeaderDisplayed("Hindi"), "Verify if access to history header text displayed");
         assertTrue(homePage.verifyLanguageForaccesstoHistoryDescriptionDisplayed("Hindi"), "Verify if access to history description displayed");
-        homePage.clickOnForthNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAppSettingsHeaderDisplayed("Hindi"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyLanguageForAppSettingsDescriptionDisplayed("Hindi"), "Verify if app settings description displayed");
-        homePage.clickOnFifthDoneButton();
+        homePage.clickOnNextButton();
         assertEquals(homePage.getShareButton(), "शेयर करना");
     }
 
@@ -405,23 +405,23 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsHeaderDisplayed("Tamil"), "Verify if help and frequently asked quations header displayed");
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsDescriptionDisplayed("Tamil"), "Verify if help and frequently asked quations description displayed");
-        homePage.clickOnFirstNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForDownloadCardHeaderDisplayed("Tamil"), "Verify if download card header text displayed");
         assertTrue(homePage.verifyLanguageForDownloadCardDescriptionDisplayed("Tamil"), "Verify if download card description displayed");
-        homePage.clickOnSecondNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForShareCardHeaderDisplayed("Tamil"), "Verify if share card header text displayed");
         assertTrue(homePage.verifyLanguageForShareCardDescriptionDisplayed("Tamil"), "Verify if share card description displayed");
-        homePage.clickOnThirdNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAccesstoHistoryHeaderDisplayed("Tamil"), "Verify if access to history header text displayed");
         assertTrue(homePage.verifyLanguageForaccesstoHistoryDescriptionDisplayed("Tamil"), "Verify if access to history description displayed");
-        homePage.clickOnForthNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAppSettingsHeaderDisplayed("Tamil"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyLanguageForAppSettingsDescriptionDisplayed("Tamil"), "Verify if app settings description displayed");
-        homePage.clickOnFifthDoneButton();
+        homePage.clickOnNextButton();
         assertEquals(homePage.getShareButton(), "பகிர்");
 
     }
@@ -458,23 +458,23 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsHeaderDisplayed("Kannada"), "Verify if help and frequently asked quations header displayed");
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsDescriptionDisplayed("Kannada"), "Verify if help and frequently asked quations description displayed");
-        homePage.clickOnFirstNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForDownloadCardHeaderDisplayed("Kannada"), "Verify if download card header text displayed");
         assertTrue(homePage.verifyLanguageForDownloadCardDescriptionDisplayed("Kannada"), "Verify if download card description displayed");
-        homePage.clickOnSecondNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForShareCardHeaderDisplayed("Kannada"), "Verify if share card header text displayed");
         assertTrue(homePage.verifyLanguageForShareCardDescriptionDisplayed("Kannada"), "Verify if share card description displayed");
-        homePage.clickOnThirdNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAccesstoHistoryHeaderDisplayed("Kannada"), "Verify if access to history header text displayed");
         assertTrue(homePage.verifyLanguageForaccesstoHistoryDescriptionDisplayed("Kannada"), "Verify if access to history description displayed");
-        homePage.clickOnForthNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAppSettingsHeaderDisplayed("Kannada"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyLanguageForAppSettingsDescriptionDisplayed("Kannada"), "Verify if app settings description displayed");
-        homePage.clickOnFifthDoneButton();
+        homePage.clickOnNextButton();
         assertEquals(homePage.getShareButton(), "ಹಂಚಿಕೊಳ್ಳಿ");
     }
     @Test
@@ -951,23 +951,23 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsHeaderDisplayed("English"), "Verify if help and frequently asked quations header displayed");
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsDescriptionDisplayed("English"), "Verify if help and frequently asked quations description displayed");
-        homePage.clickOnFirstNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForDownloadCardHeaderDisplayed("English"), "Verify if download card header text displayed");
         assertTrue(homePage.verifyLanguageForDownloadCardDescriptionDisplayed("English"), "Verify if download card description displayed");
-        homePage.clickOnSecondNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForShareCardHeaderDisplayed("English"), "Verify if share card header text displayed");
         assertTrue(homePage.verifyLanguageForShareCardDescriptionDisplayed("English"), "Verify if share card description displayed");
-        homePage.clickOnThirdNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAccesstoHistoryHeaderDisplayed("English"), "Verify if access to history header text displayed");
         assertTrue(homePage.verifyLanguageForaccesstoHistoryDescriptionDisplayed("English"), "Verify if access to history description displayed");
-        homePage.clickOnForthNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAppSettingsHeaderDisplayed("English"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyLanguageForAppSettingsDescriptionDisplayed("English"), "Verify if app settings description displayed");
-        homePage.clickOnFifthDoneButton();
+        homePage.clickOnNextButton();
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
@@ -1001,23 +1001,23 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsHeaderDisplayed("Hindi"), "Verify if help and frequently asked quations header displayed");
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsDescriptionDisplayed("Hindi"), "Verify if help and frequently asked quations description displayed");
-        homePage.clickOnFirstNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForDownloadCardHeaderDisplayed("Hindi"), "Verify if download card header text displayed");
         assertTrue(homePage.verifyLanguageForDownloadCardDescriptionDisplayed("Hindi"), "Verify if download card description displayed");
-        homePage.clickOnSecondNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForShareCardHeaderDisplayed("Hindi"), "Verify if share card header text displayed");
         assertTrue(homePage.verifyLanguageForShareCardDescriptionDisplayed("Hindi"), "Verify if share card description displayed");
-        homePage.clickOnThirdNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAccesstoHistoryHeaderDisplayed("Hindi"), "Verify if access to history header text displayed");
         assertTrue(homePage.verifyLanguageForaccesstoHistoryDescriptionDisplayed("Hindi"), "Verify if access to history description displayed");
-        homePage.clickOnForthNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAppSettingsHeaderDisplayed("Hindi"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyLanguageForAppSettingsDescriptionDisplayed("Hindi"), "Verify if app settings description displayed");
-        homePage.clickOnFifthDoneButton();
+        homePage.clickOnNextButton();
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
@@ -1051,23 +1051,23 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsHeaderDisplayed("Kannada"), "Verify if help and frequently asked quations header displayed");
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsDescriptionDisplayed("Kannada"), "Verify if help and frequently asked quations description displayed");
-        homePage.clickOnFirstNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForDownloadCardHeaderDisplayed("Kannada"), "Verify if download card header text displayed");
         assertTrue(homePage.verifyLanguageForDownloadCardDescriptionDisplayed("Kannada"), "Verify if download card description displayed");
-        homePage.clickOnSecondNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForShareCardHeaderDisplayed("Kannada"), "Verify if share card header text displayed");
         assertTrue(homePage.verifyLanguageForShareCardDescriptionDisplayed("Kannada"), "Verify if share card description displayed");
-        homePage.clickOnThirdNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAccesstoHistoryHeaderDisplayed("Kannada"), "Verify if access to history header text displayed");
         assertTrue(homePage.verifyLanguageForaccesstoHistoryDescriptionDisplayed("Kannada"), "Verify if access to history description displayed");
-        homePage.clickOnForthNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAppSettingsHeaderDisplayed("Kannada"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyLanguageForAppSettingsDescriptionDisplayed("Kannada"), "Verify if app settings description displayed");
-        homePage.clickOnFifthDoneButton();
+        homePage.clickOnNextButton();
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
@@ -1101,23 +1101,23 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsHeaderDisplayed("Tamil"), "Verify if help and frequently asked quations header displayed");
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsDescriptionDisplayed("Tamil"), "Verify if help and frequently asked quations description displayed");
-        homePage.clickOnFirstNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForDownloadCardHeaderDisplayed("Tamil"), "Verify if download card header text displayed");
         assertTrue(homePage.verifyLanguageForDownloadCardDescriptionDisplayed("Tamil"), "Verify if download card description displayed");
-        homePage.clickOnSecondNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForShareCardHeaderDisplayed("Tamil"), "Verify if share card header text displayed");
         assertTrue(homePage.verifyLanguageForShareCardDescriptionDisplayed("Tamil"), "Verify if share card description displayed");
-        homePage.clickOnThirdNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAccesstoHistoryHeaderDisplayed("Tamil"), "Verify if access to history header text displayed");
         assertTrue(homePage.verifyLanguageForaccesstoHistoryDescriptionDisplayed("Tamil"), "Verify if access to history description displayed");
-        homePage.clickOnForthNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAppSettingsHeaderDisplayed("Tamil"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyLanguageForAppSettingsDescriptionDisplayed("Tamil"), "Verify if app settings description displayed");
-        homePage.clickOnFifthDoneButton();
+        homePage.clickOnNextButton();
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
@@ -1151,23 +1151,23 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsHeaderDisplayed("Filipino"), "Verify if help and frequently asked quations header displayed");
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsDescriptionDisplayed("Filipino"), "Verify if help and frequently asked quations description displayed");
-        homePage.clickOnFirstNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForDownloadCardHeaderDisplayed("Filipino"), "Verify if download card header text displayed");
         assertTrue(homePage.verifyLanguageForDownloadCardDescriptionDisplayed("Filipino"), "Verify if download card description displayed");
-        homePage.clickOnSecondNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForShareCardHeaderDisplayed("Filipino"), "Verify if share card header text displayed");
         assertTrue(homePage.verifyLanguageForShareCardDescriptionDisplayed("Filipino"), "Verify if share card description displayed");
-        homePage.clickOnThirdNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAccesstoHistoryHeaderDisplayed("Filipino"), "Verify if access to history header text displayed");
         assertTrue(homePage.verifyLanguageForaccesstoHistoryDescriptionDisplayed("Filipino"), "Verify if access to history description displayed");
-        homePage.clickOnForthNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAppSettingsHeaderDisplayed("Filipino"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyLanguageForAppSettingsDescriptionDisplayed("Filipino"), "Verify if app settings description displayed");
-        homePage.clickOnFifthDoneButton();
+        homePage.clickOnNextButton();
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
@@ -1201,23 +1201,23 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsHeaderDisplayed("Arabic"), "Verify if help and frequently asked quations header displayed");
         assertTrue(homePage.verifyLanguageForHelpAndFrequentlyAskedQuationsDescriptionDisplayed("Arabic"), "Verify if help and frequently asked quations description displayed");
-        homePage.clickOnFirstNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForDownloadCardHeaderDisplayed("Arabic"), "Verify if download card header text displayed");
         assertTrue(homePage.verifyLanguageForDownloadCardDescriptionDisplayed("Arabic"), "Verify if download card description displayed");
-        homePage.clickOnSecondNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForShareCardHeaderDisplayed("Arabic"), "Verify if share card header text displayed");
         assertTrue(homePage.verifyLanguageForShareCardDescriptionDisplayed("Arabic"), "Verify if share card description displayed");
-        homePage.clickOnThirdNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAccesstoHistoryHeaderDisplayed("Arabic"), "Verify if access to history header text displayed");
         assertTrue(homePage.verifyLanguageForaccesstoHistoryDescriptionDisplayed("Arabic"), "Verify if access to history description displayed");
-        homePage.clickOnForthNextButton();
+        homePage.clickOnNextButton();
 
         assertTrue(homePage.verifyLanguageForAppSettingsHeaderDisplayed("Arabic"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyLanguageForAppSettingsDescriptionDisplayed("Arabic"), "Verify if app settings description displayed");
-        homePage.clickOnFifthDoneButton();
+        homePage.clickOnNextButton();
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 

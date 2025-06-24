@@ -1,5 +1,10 @@
 import React from 'react';
-import {I18nManager, Modal as RNModal, View} from 'react-native';
+import {
+  I18nManager,
+  Modal as RNModal,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {Column, Row, Text} from '.';
 import {useSendVcScreen} from '../../screens/Scan/SendVcScreenController';
@@ -9,23 +14,23 @@ import testIDProps from '../../shared/commonUtil';
 import {BackButton} from './backButton/BackButton';
 
 export const Modal: React.FC<ModalProps> = ({
-                                              testID,
-                                              isVisible,
-                                              requester,
-                                              showClose = true,
-                                              showHeader = true,
-                                              modalStyle = Theme.ModalStyles.defaultModal,
-                                              onDismiss,
-                                              headerTitle,
-                                              headerElevation,
-                                              headerLabel,
-                                              headerLabelColor,
-                                              headerRight,
-                                              headerLeft,
-                                              arrowLeft,
-                                              onShow,
-                                              children,
-                                            }) => {
+  testID,
+  isVisible,
+  requester,
+  showClose = true,
+  showHeader = true,
+  modalStyle = Theme.ModalStyles.defaultModal,
+  onDismiss,
+  headerTitle,
+  headerElevation,
+  headerLabel,
+  headerLabelColor,
+  headerRight,
+  headerLeft,
+  arrowLeft,
+  onShow,
+  children,
+}) => {
   const controller = useSendVcScreen();
 
   return (
@@ -83,13 +88,11 @@ export const Modal: React.FC<ModalProps> = ({
               {headerRight != null ||
                 arrowLeft ||
                 (showClose && (
-                  <Icon
+                  <TouchableOpacity
                     {...testIDProps('close')}
-                    name="close"
-                    onPress={onDismiss}
-                    color={Theme.Colors.Details}
-                    size={27}
-                  />
+                    onPress={onDismiss}>
+                    <Icon name="close" color={Theme.Colors.Details} size={27} />
+                  </TouchableOpacity>
                 ))}
               {headerRight && headerRight}
             </View>

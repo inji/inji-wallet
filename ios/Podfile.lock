@@ -196,7 +196,7 @@ PODS:
   - Permission-LocationWhenInUse (3.8.4):
     - RNPermissions
   - PromisesObjC (2.4.0)
-  - Protobuf (3.29.1)
+  - Protobuf (3.29.2)
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -1957,7 +1957,7 @@ SPEC CHECKSUMS:
   Permission-LocationAccuracy: a38ddb5c5d0b8e656f3c86e4a500f9bb88bc099d
   Permission-LocationWhenInUse: 24d97eeb25d8ff9f2232e070f792eeb1360ccaf0
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
-  Protobuf: 0c5a9e64f38aed73b5d1ff88a20112ce195cf909
+  Protobuf: ba5d83b2201386fec27d484c099cac510ea5c169
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: 3afceddffa65aee666dafd6f0116f1d975db1584
   RCTRequired: ec1239bc9d8bf63e10fb92bd8b26171a9258e0c1

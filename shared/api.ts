@@ -3,6 +3,8 @@ import {
   API_CACHED_STORAGE_KEYS,
   changeCrendetialRegistry,
   COMMON_PROPS_KEY,
+  CACHE_TTL,
+  updateCacheTTL,
 } from './constants';
 import {INITIAL_CONFIG} from './InitialConfig';
 import {getItem, setItem} from '../machines/store';
@@ -16,6 +18,23 @@ import {
 } from './telemetry/TelemetryUtils';
 import {TelemetryConstants} from './telemetry/TelemetryConstants';
 import NetInfo from '@react-native-community/netinfo';
+
+const createCacheObject = (response: any) => {
+  const currentTime = Date.now();
+  return {
+    response,
+    cachedTime: currentTime,
+  };
+};
+
+const isCacheValid = (cachedData: any) => {
+  if (!cachedData?.cachedTime || typeof cachedData.cachedTime !== 'number') {
+    return false;
+  }
+  const currentTime = Date.now();
+  const expiryTime = Number(cachedData.cachedTime) + CACHE_TTL;
+  return currentTime < expiryTime;
+};
 
 export const API_URLS: ApiUrls = {
   trustedVerifiersList: {
@@ -231,14 +250,15 @@ async function generateCacheAPIFunctionWithCachePreference(
   onErrorHardCodedValue?: any,
 ) {
   try {
-    const response = await getItem(cacheKey, null, '');
-
-    if (response) {
-      return response;
+    const cachedData = await getItem(cacheKey, null, '');
+    if (cachedData && isCacheValid(cachedData)) {
+      console.info('Returned cached response for' + cacheKey);
+      return cachedData.response;
     } else {
       const response = await fetchCall();
-      setItem(cacheKey, response, '').then(() =>
-        console.log('Cached response for ' + cacheKey),
+      const cacheObject = createCacheObject(response);
+      setItem(cacheKey, cacheObject, '').then(() =>
+        console.info('Cached response for ' + cacheKey),
       );
 
       return response;
@@ -263,10 +283,18 @@ async function generateCacheAPIFunctionWithAPIPreference(
   fetchCall: (...props: any[]) => any,
   onErrorHardCodedValue?: any,
 ) {
+  let cacheObject;
   try {
     const response = await fetchCall();
-    setItem(cacheKey, response, '').then(() =>
-      console.log('Cached response for ' + cacheKey),
+    if (!response) {
+      throw new Error('Received Empty response in fetch call');
+    }
+    if (response?.cacheTTLInMilliSeconds) {
+      updateCacheTTL(Number(response.cacheTTLInMilliSeconds));
+    }
+    cacheObject = createCacheObject(response);
+    setItem(cacheKey, cacheObject, '').then(() =>
+      console.info('Cached response for ' + cacheKey),
     );
     return response;
   } catch (error) {
@@ -274,22 +302,17 @@ async function generateCacheAPIFunctionWithAPIPreference(
      cache key:${cacheKey} and has onErrorHardCodedValue:${
       onErrorHardCodedValue != undefined
     }`);
-
     console.error(`The error in fetching api ${cacheKey}`, error);
-    var response = null;
+    var cachedData = null;
     if (!(await NetInfo.fetch()).isConnected) {
-      response = await getItem(cacheKey, null, '');
+      cachedData = await getItem(cacheKey, null, '');
     }
-    if (response) {
-      return response;
+    if (cachedData && isCacheValid(cachedData)) {
+      return cachedData.response;
+    } else if (onErrorHardCodedValue != undefined) {
+      return onErrorHardCodedValue;
     } else {
-      if (response == null) {
-        throw error;
-      } else if (onErrorHardCodedValue != undefined) {
-        return onErrorHardCodedValue;
-      } else {
-        throw error;
-      }
+      throw error;
     }
   }
 }

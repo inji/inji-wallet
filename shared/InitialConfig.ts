@@ -18,5 +18,6 @@ export const INITIAL_CONFIG = {
     aboutInjiUrl: 'https://docs.mosip.io/inji/inji-wallet/inji-mobile',
     faceSdkModelUrl: '',
     openId4VCIDownloadVCTimeout: '30000',
+    cacheTTLInMilliSeconds: '3600000',
   },
 };

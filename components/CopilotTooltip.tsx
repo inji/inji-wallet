@@ -52,7 +52,7 @@ export const CopilotTooltip = () => {
           controller.CURRENT_STEP === KEY_MANAGEMENT_STEP ||
           (controller.isFinalStep && controller.isInitialDownloading) ? null : (
             <Button
-              testID={`${controller.CURRENT_STEP}previous`}
+              testID={'copilot-prev-action'}
               title={t('previous')}
               type="outline"
               styles={Theme.Styles.copilotButton}
@@ -62,7 +62,7 @@ export const CopilotTooltip = () => {
           {controller.isLastStep ||
           controller.CURRENT_STEP === KEY_MANAGEMENT_STEP ? (
             <Button
-              testID={`${controller.CURRENT_STEP}done`}
+              testID={'copilot-next-action'}
               title={t('done')}
               type="gradient"
               styles={Theme.Styles.copilotButton}
@@ -70,7 +70,7 @@ export const CopilotTooltip = () => {
             />
           ) : (
             <Button
-              testID={`${controller.CURRENT_STEP}next`}
+              testID={'copilot-next-action'}
               title={t('next')}
               type="gradient"
               styles={Theme.Styles.copilotButton}

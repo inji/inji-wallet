@@ -20,6 +20,7 @@ import {
   changeEsignetUrl,
   ESIGNET_BASE_URL,
   isAndroid,
+  updateCacheTTL,
   MIMOTO_BASE_URL,
   SETTINGS_STORE_KEY,
 } from '../shared/constants';
@@ -40,6 +41,7 @@ import {
   checkAllKeyPairs,
   generateKeyPairsAndStoreOrder,
 } from '../shared/cryptoutil/cryptoUtil';
+import getAllConfigurations from '../shared/api';
 
 const DeepLinkIntent = NativeModules.DeepLinkIntent;
 
@@ -153,6 +155,21 @@ export const appMachine = model.createMachine(
             invoke: {
               src: 'generateKeyPairsAndStoreOrder',
               onDone: [
+                {
+                  target: 'fetchConfig',
+                },
+              ],
+            },
+          },
+          fetchConfig: {
+            invoke: {
+              src: 'fetchAndUpdateCacheTTLFromConfig',
+              onDone: [
+                {
+                  target: 'checkKeyPairs',
+                },
+              ],
+              onError: [
                 {
                   target: 'checkKeyPairs',
                 },
@@ -512,6 +529,11 @@ export const appMachine = model.createMachine(
       generateKeyPairsAndStoreOrder: async () => {
         return await generateKeyPairsAndStoreOrder();
       },
+
+      fetchAndUpdateCacheTTLFromConfig: async () => {
+        return await updateCacheTTLFromConfig();
+      },
+
       checkNetworkState: () => callback => {
         return NetInfo.addEventListener(state => {
           if (state.isConnected) {
@@ -531,6 +553,15 @@ interface AppInfo {
 }
 
 type State = StateFrom<typeof appMachine>;
+
+const updateCacheTTLFromConfig = async () => {
+  const response = await getAllConfigurations(undefined, false);
+  if (response && response.cacheTTLInMilliSeconds) {
+    console.info(
+      'All Properties API is called and updated the cacheTTL based on config/OnErrorHardCodedValue',
+    );
+  }
+};
 
 export function selectAppInfo(state: State) {
   return state.context.info;

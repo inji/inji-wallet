@@ -42,11 +42,7 @@ export const Error: React.FC<ErrorProps> = props => {
   const [triggerExitFlow, setTriggerExitFlow] = useState(false);
 
   useEffect(() => {
-    if (
-      props.isVisible &&
-      props.textButtonText === undefined &&
-      props.primaryButtonText === undefined
-    ) {
+    if (props.exitAppWithTimer) {
       const timeout = setTimeout(
         () => {
           setTriggerExitFlow(true);
@@ -56,7 +52,7 @@ export const Error: React.FC<ErrorProps> = props => {
 
       return () => clearTimeout(timeout);
     }
-  }, [props.isVisible, props.textButtonText, props.primaryButtonText]);
+  }, [props.exitAppWithTimer]);
 
   useEffect(() => {
     if (triggerExitFlow) {
@@ -219,4 +215,5 @@ export interface ErrorProps {
   textButtonEvent?: () => void;
   primaryButtonTestID?: string;
   textButtonTestID?: string;
+  exitAppWithTimer?: boolean;
 }

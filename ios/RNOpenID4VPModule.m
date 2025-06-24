@@ -13,6 +13,8 @@ RCT_EXTERN_METHOD(authenticateVerifier:(NSString *)urlEncodedAuthorizationReques
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(constructUnsignedVPToken:(id)credentialsMap
+                  holderId:(NSString *)holderId
+                  signatureSuite:(NSString *)signatureSuite
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
