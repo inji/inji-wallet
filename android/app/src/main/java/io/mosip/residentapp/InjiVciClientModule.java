@@ -46,7 +46,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void init(String appId) {
         Log.d("InjiVciClientModule", "Initializing InjiVciClientModule with " + appId);
-        vciClient = new VCIClient(appId,reactContext);
+        vciClient = new VCIClient(appId);
     }
 
     @ReactMethod

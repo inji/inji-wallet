@@ -45,6 +45,7 @@ export const IssuersModel = createModel(
     txCodeDescription: '' as string,
     txCodeLength: null as number | null,
     isCredentialOfferFlow: false as boolean,
+    credentialOfferIssuerMetadata: {} as object,
   },
   {
     events: IssuersEvents,

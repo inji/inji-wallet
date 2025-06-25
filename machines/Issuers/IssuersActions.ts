@@ -5,25 +5,30 @@ import {
   OIDCErrors,
   selectCredentialRequestKey,
 } from '../../shared/openId4VCI/Utils';
-import { EXPIRED_VC_ERROR_CODE, MY_VCS_STORE_KEY, REQUEST_TIMEOUT, isIOS } from '../../shared/constants';
-import { assign, send } from 'xstate';
-import { StoreEvents } from '../store';
-import { BackupEvents } from '../backupAndRestore/backup/backupMachine';
-import { getVCMetadata, VCMetadata } from '../../shared/VCMetadata';
-import { isHardwareKeystoreExists } from '../../shared/cryptoutil/cryptoUtil';
-import { ActivityLogEvents } from '../activityLog';
+import {
+  EXPIRED_VC_ERROR_CODE,
+  MY_VCS_STORE_KEY,
+  REQUEST_TIMEOUT,
+  isIOS,
+} from '../../shared/constants';
+import {assign, send} from 'xstate';
+import {StoreEvents} from '../store';
+import {BackupEvents} from '../backupAndRestore/backup/backupMachine';
+import {getVCMetadata, VCMetadata} from '../../shared/VCMetadata';
+import {isHardwareKeystoreExists} from '../../shared/cryptoutil/cryptoUtil';
+import {ActivityLogEvents} from '../activityLog';
 import {
   getEndEventData,
   getImpressionEventData,
   sendEndEvent,
   sendImpressionEvent,
 } from '../../shared/telemetry/TelemetryUtils';
-import { TelemetryConstants } from '../../shared/telemetry/TelemetryConstants';
-import { NativeModules } from 'react-native';
-import { KeyTypes } from '../../shared/cryptoutil/KeyTypes';
-import { VCActivityLog } from '../../components/ActivityLogEvent';
-import { isNetworkError } from '../../shared/Utils';
-import { issuerType } from './IssuersMachine';
+import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
+import {NativeModules} from 'react-native';
+import {KeyTypes} from '../../shared/cryptoutil/KeyTypes';
+import {VCActivityLog} from '../../components/ActivityLogEvent';
+import {isNetworkError} from '../../shared/Utils';
+import {issuerType} from './IssuersMachine';
 
 const {RNSecureKeystoreModule} = NativeModules;
 export const IssuersActions = (model: any) => {
@@ -33,7 +38,7 @@ export const IssuersActions = (model: any) => {
         new VCMetadata({
           ...context.vcMetadata,
           isVerified: true,
-           isExpired: event.data.verificationErrorCode == EXPIRED_VC_ERROR_CODE,
+          isExpired: event.data.verificationErrorCode == EXPIRED_VC_ERROR_CODE,
         }),
     }),
     resetVerificationResult: assign({
@@ -228,9 +233,9 @@ export const IssuersActions = (model: any) => {
 
     setSelectedIssuers: model.assign({
       selectedIssuer: (context: any, event: any) => {
-          return context.issuers.find(issuer => issuer.issuer_id === event.id);
-        }
-      }),
+        return context.issuers.find(issuer => issuer.issuer_id === event.id);
+      },
+    }),
 
     updateIssuerFromWellknown: model.assign({
       selectedIssuer: (context: any, event: any) => ({
@@ -250,8 +255,7 @@ export const IssuersActions = (model: any) => {
       qrData: (_: any, event: any) => event.data,
     }),
     setCredentialOfferIssuer: model.assign({
-      selectedIssuer: (_:any,event: any) => {
-        console.log("issuer::", event.issuer);
+      selectedIssuer: (_: any, event: any) => {
         return event.issuer;
       },
     }),
@@ -326,19 +330,26 @@ export const IssuersActions = (model: any) => {
       txCodeDescription: (_: any, event: any) => event.description,
       txCodeLength: (_: any, event: any) => event.length,
     }),
-
-    setIssuerDisplayDetails: model.assign({
-      issuerLogo: (_: any, event: any) => {
-        const display = getDisplayObjectForCurrentLanguage(
-          event.issuerMetadata.display,
-        );
-        return display.logo.url;
+    setCredentialOfferIssuerMetadata: model.assign({
+      credentialOfferIssuerMetadata: (_: any, event: any) => {
+        return event.issuerMetadata;
       },
-      issuerName: (_: any, event: any) => {
-        const display = getDisplayObjectForCurrentLanguage(
-          event.issuerMetadata.display,
-        );
-        return display.name;
+    }),
+    setIssuerDisplayDetails: model.assign({
+      issuerLogo: (context: any, _: any) => {
+        const displayArray = context.credentialOfferIssuerMetadata?.display;
+        const display = displayArray
+          ? getDisplayObjectForCurrentLanguage(displayArray)
+          : undefined;
+
+        return display?.logo?.url ?? '';
+      },
+      issuerName: (context: any, _: any) => {
+        const displayArray = context.credentialOfferIssuerMetadata?.display;
+        const display = displayArray
+          ? getDisplayObjectForCurrentLanguage(displayArray)
+          : undefined;
+        return display?.name ?? '';
       },
     }),
 

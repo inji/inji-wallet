@@ -161,12 +161,10 @@ export const IssuersMachine = model.createMachine(
             target: '.waitingForTxCode',
           },
           TRUST_ISSUER_CONSENT_REQUEST: {
-            actions: [
-              'setRequestConsentToTrustIssuer',
-              'setIssuerDisplayDetails',
-            ],
-            target: '.credentialOfferDownloadConsent',
+            actions: ['setCredentialOfferIssuerMetadata'],
+            target: '.checkingIssuerTrust',
           },
+
           CANCEL: {
             actions: [
               'resetLoadingReason',
@@ -179,6 +177,24 @@ export const IssuersMachine = model.createMachine(
         },
         states: {
           idle: {},
+          checkingIssuerTrust: {
+            invoke: {
+              src: 'checkIssuerIdInStoredTrustedIssuers',
+              onDone: [
+                {
+                  cond: 'isIssuerIdInTrustedIssuers',
+                  target: 'sendConsentGiven',
+                },
+                {
+                  actions: [
+                    'setRequestConsentToTrustIssuer',
+                    'setIssuerDisplayDetails',
+                  ],
+                  target: 'credentialOfferDownloadConsent',
+                },
+              ],
+            },
+          },
           credentialOfferDownloadConsent: {
             description:
               'waits for the user to give consent to download the credential offer',
@@ -213,7 +229,7 @@ export const IssuersMachine = model.createMachine(
             invoke: {
               src: 'sendConsentGiven',
               onDone: {
-                target: '#issuersMachine.credentialDownloadFromOffer.idle',
+                target: '.updatingTrustedIssuerList',
               },
               onError: {
                 actions: [
@@ -223,6 +239,31 @@ export const IssuersMachine = model.createMachine(
                   'resetRequestConsentToTrustIssuer',
                 ],
                 target: '#issuersMachine.selectingIssuer',
+              },
+            },
+            states: {
+              updatingTrustedIssuerList: {
+                invoke: {
+                  src: 'checkIssuerIdInStoredTrustedIssuers',
+                  onDone: [
+                    {
+                      cond: 'isIssuerIdInTrustedIssuers',
+                      target:
+                        '#issuersMachine.credentialDownloadFromOffer.idle',
+                    },
+                    {
+                      target: 'addingIssuerToTrustedIssuers',
+                    },
+                  ],
+                },
+              },
+              addingIssuerToTrustedIssuers: {
+                invoke: {
+                  src: 'addIssuerToTrustedIssuers',
+                  onDone: {
+                    target: '#issuersMachine.credentialDownloadFromOffer.idle',
+                  },
+                },
               },
             },
           },
@@ -378,7 +419,7 @@ export const IssuersMachine = model.createMachine(
               'updateIssuerFromWellknown',
               'updateSelectedIssuerWellknownResponse',
             ],
-            target: 'getCredentialTypes'
+            target: 'getCredentialTypes',
           },
           onError: {
             actions: ['setNetworkOrTechnicalError', 'resetLoadingReason'],
