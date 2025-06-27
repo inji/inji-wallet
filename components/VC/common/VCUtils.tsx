@@ -7,6 +7,7 @@ import {
 } from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
 import i18n, {getLocalizedField} from '../../../i18n';
 import {Row} from '../../ui';
+import {Text} from 'react-native';
 import {VCItemField} from './VCItemField';
 import React from 'react';
 import {Theme} from '../../ui/styleUtils';
@@ -20,6 +21,7 @@ import {
 } from '../../../shared/openId4VCI/Utils';
 import {VCFormat} from '../../../shared/VCFormat';
 import {displayType} from '../../../machines/Issuers/IssuersMachine';
+import { Image } from 'react-native-elements/dist/image/Image';
 
 export const CARD_VIEW_DEFAULT_FIELDS = ['fullName'];
 export const DETAIL_VIEW_DEFAULT_FIELDS = [
@@ -34,9 +36,7 @@ export const DETAIL_VIEW_DEFAULT_FIELDS = [
 //todo UIN & VID to be removed once we get the fields in the wellknown endpoint
 export const CARD_VIEW_ADD_ON_FIELDS = ['UIN', 'VID'];
 export const DETAIL_VIEW_ADD_ON_FIELDS = [
-  'status',
-  'credentialRegistry',
-  'idType',
+ 'status','idType','credentialRegistry'
 ];
 
 export const DETAIL_VIEW_BOTTOM_SECTION_FIELDS = [
@@ -154,7 +154,7 @@ export const getFieldName = (
       }
     }
   }
-  return field;
+  return formatKeyLabel(field);
 };
 
 export function getAddressFields() {
@@ -181,6 +181,15 @@ function getFullAddress(credential: CredentialSubject) {
     .filter(Boolean)
     .join(', ');
 }
+const formatKeyLabel = (key: string): string => {
+  return key
+    .replace(/\[\d+\]/g, '') // Remove [0], [1], etc.
+    .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase → spaced
+    .split(/[_\s]+/) // snake_case → spaced
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
 const renderFieldRecursively = (
   key: string,
   value: any,
@@ -190,46 +199,101 @@ const renderFieldRecursively = (
   depth = 0
 ): JSX.Element[] => {
   const fullKey = parentKey ? `${parentKey}.${key}` : key;
+  const shortKey = fullKey.split('.').pop()?.replace(/\[\d+\]/g, '') ?? key;
 
   if (value === null || value === undefined) return [];
 
+  // Handle arrays
   if (Array.isArray(value)) {
-    return value.flatMap((item, index) =>
-      renderFieldRecursively(`${key}[${index}]`, item, fieldNameColor,fieldValueColor,parentKey, depth + 1)
-    );
-  } else if (typeof value === 'object') {
-    return Object.entries(value).flatMap(([childKey, childValue]) =>
-      renderFieldRecursively(childKey, childValue, fieldNameColor,fieldValueColor,fullKey, depth + 1)
-    );
-  } else {
-    let displayValue = String(value);
-    // Truncate base64 if it's an image data URI or very long string
-    if (displayValue.startsWith('data:image') || displayValue.length > 100) {
-      displayValue = displayValue.slice(0, 60) + '...';
-    }
-
-    return [
-      <Row
-        key={`extra-${fullKey}`}
+    const label = formatKeyLabel(key); 
+    return value.flatMap((item, index) => [
+      <Text
+        key={`section-${fullKey}-${index}`}
         style={{
-          flexDirection: 'row',
-          flex: 1,
-          paddingLeft: depth * 12, // Indent nested levels
+          paddingLeft: depth * 12,
+          fontWeight: '600',
+          marginTop: 8,
+          marginBottom: 4,
+          color: fieldNameColor,
         }}
-        align="space-between"
-        margin="0 8 15 0"
       >
-        <VCItemField
-          key={`extra-${fullKey}`}
-          fieldName={fullKey}
-          fieldValue={displayValue}
-          fieldNameColor={fieldNameColor}
-          fieldValueColor={fieldValueColor}
-          testID={`extra-${fullKey}`}
-        />
-      </Row>,
-    ];
+        • {label} {value.length > 1 ? index + 1 : ''}
+      </Text>,
+      ...renderFieldRecursively(
+        `${key}[${index}]`,
+        item,
+        fieldNameColor,
+        fieldValueColor,
+        parentKey,
+        depth + 1
+      ),
+    ]);
   }
+
+  // Handle objects
+  if (typeof value === 'object') {
+    return Object.entries(value).flatMap(([childKey, childValue]) =>
+      renderFieldRecursively(
+        childKey,
+        childValue,
+        fieldNameColor,
+        fieldValueColor,
+        fullKey,
+        depth + 1
+      )
+    );
+  }
+
+  // Handle primitive values
+  let displayValue: string | JSX.Element = String(value);
+
+  // Image rendering
+  if (typeof value === 'string' && value.startsWith('data:image')) {
+    displayValue = (
+      <Image
+        source={{ uri: value }}
+        style={{ width: 100, height: 100, borderRadius: 8 }}
+        resizeMode="contain"
+      />
+    );
+  } else if (value?.startsWith?.('http') && key.toLowerCase().includes('image')) {
+    displayValue = (
+      <Image
+        source={{ uri: value }}
+        style={{ width: 100, height: 100, borderRadius: 8 }}
+        resizeMode="contain"
+      />
+    );
+  } else if (/^\d{4}-\d{2}-\d{2}T/.test(displayValue)) {
+    const date = new Date(displayValue);
+    displayValue = date.toLocaleString();
+  } else if (displayValue.length > 100) {
+    displayValue = displayValue.slice(0, 60) + '...';
+  }
+
+  const label = formatKeyLabel(shortKey);
+
+  return [
+    <Row
+      key={`extra-${fullKey}`}
+      style={{
+        flexDirection: 'row',
+        flex: 1,
+        paddingLeft: depth * 12,
+      }}
+      align="space-between"
+      margin="0 8 15 0"
+    >
+      <VCItemField
+        key={`extra-${fullKey}`}
+        fieldName={label}
+        fieldValue={displayValue}
+        fieldNameColor={fieldNameColor}
+        fieldValueColor={fieldValueColor}
+        testID={`extra-${fullKey}`}
+      />
+    </Row>,
+  ];
 };
 
 
