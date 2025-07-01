@@ -106,7 +106,7 @@ export const IssuersService = () => {
     checkIssuerIdInStoredTrustedIssuers: async (context: any) => {
       const {RNSecureKeystoreModule} = NativeModules;
       try {
-        return RNSecureKeystoreModule.hasAlias(
+        return await RNSecureKeystoreModule.hasAlias(
           context.credentialOfferIssuerMetadata.credential_issuer,
         );
       } catch (error) {

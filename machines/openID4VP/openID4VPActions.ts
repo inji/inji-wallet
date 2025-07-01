@@ -303,7 +303,6 @@ function areVCFormatAndProofTypeMatchingRequest(
   if (!requestFormat) {
     return false;
   }
-
   const vcFormatType = vc.format;
 
   if (vcFormatType === VCFormat.ldp_vc) {
@@ -315,20 +314,26 @@ function areVCFormatAndProofTypeMatchingRequest(
   }
 
   if (vcFormatType === VCFormat.mso_mdoc) {
-    const issuerAuth =
-      vc.verifiableCredential.processedCredential.issuerSigned.issuerAuth;
-    const issuerAuthenticationAlgorithm =
-      getIssuerAuthenticationAlorithmForMdocVC(issuerAuth[0]['1']);
-    const mdocAuthenticationAlgorithm = getMdocAuthenticationAlorithm(
-      issuerAuth[2],
-    );
+    try {
+      const issuerAuth =
+        vc.verifiableCredential.processedCredential.issuerSigned?.issuerAuth ??
+        vc.verifiableCredential.processedCredential.issuerAuth;
+      const issuerAuthenticationAlgorithm =
+        getIssuerAuthenticationAlorithmForMdocVC(issuerAuth[0]['1']);
+      const mdocAuthenticationAlgorithm = getMdocAuthenticationAlorithm(
+        issuerAuth[2],
+      );
 
-    return Object.entries(requestFormat).some(
-      ([type, value]) =>
-        type === vcFormatType &&
-        value.alg.includes(issuerAuthenticationAlgorithm) &&
-        value.alg.includes(mdocAuthenticationAlgorithm),
-    );
+      return Object.entries(requestFormat).some(
+        ([type, value]) =>
+          type === vcFormatType &&
+          value.alg.includes(issuerAuthenticationAlgorithm) &&
+          value.alg.includes(mdocAuthenticationAlgorithm),
+      );
+    } catch (error) {
+      console.error('Error in processing mdoc VC format:', error);
+      return false;
+    }
   }
 
   return false;
@@ -386,7 +391,9 @@ function fetchCredentialBasedOnFormat(vc: any) {
 }
 
 function getProcessedDataForMdoc(processedCredential: any) {
-  const namespaces = processedCredential.issuerSigned.nameSpaces;
+  const namespaces =
+    processedCredential.issuerSigned?.nameSpaces ??
+    processedCredential.nameSpaces;
   const processedData = {...namespaces};
   for (const ns in processedData) {
     const elementsArray = processedData[ns];

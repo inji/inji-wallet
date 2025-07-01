@@ -21,7 +21,7 @@ import {
 } from '../../../shared/openId4VCI/Utils';
 import {VCFormat} from '../../../shared/VCFormat';
 import {displayType} from '../../../machines/Issuers/IssuersMachine';
-import { Image } from 'react-native-elements/dist/image/Image';
+import {Image} from 'react-native-elements/dist/image/Image';
 
 export const CARD_VIEW_DEFAULT_FIELDS = ['fullName'];
 export const DETAIL_VIEW_DEFAULT_FIELDS = [
@@ -36,7 +36,9 @@ export const DETAIL_VIEW_DEFAULT_FIELDS = [
 //todo UIN & VID to be removed once we get the fields in the wellknown endpoint
 export const CARD_VIEW_ADD_ON_FIELDS = ['UIN', 'VID'];
 export const DETAIL_VIEW_ADD_ON_FIELDS = [
- 'status','idType','credentialRegistry'
+  'status',
+  'idType',
+  'credentialRegistry',
 ];
 
 export const DETAIL_VIEW_BOTTOM_SECTION_FIELDS = [
@@ -196,16 +198,20 @@ const renderFieldRecursively = (
   fieldNameColor: string,
   fieldValueColor: string,
   parentKey = '',
-  depth = 0
+  depth = 0,
 ): JSX.Element[] => {
   const fullKey = parentKey ? `${parentKey}.${key}` : key;
-  const shortKey = fullKey.split('.').pop()?.replace(/\[\d+\]/g, '') ?? key;
+  const shortKey =
+    fullKey
+      .split('.')
+      .pop()
+      ?.replace(/\[\d+\]/g, '') ?? key;
 
   if (value === null || value === undefined) return [];
 
   // Handle arrays
   if (Array.isArray(value)) {
-    const label = formatKeyLabel(key); 
+    const label = formatKeyLabel(key);
     return value.flatMap((item, index) => [
       <Text
         key={`section-${fullKey}-${index}`}
@@ -215,8 +221,7 @@ const renderFieldRecursively = (
           marginTop: 8,
           marginBottom: 4,
           color: fieldNameColor,
-        }}
-      >
+        }}>
         • {label} {value.length > 1 ? index + 1 : ''}
       </Text>,
       ...renderFieldRecursively(
@@ -225,7 +230,7 @@ const renderFieldRecursively = (
         fieldNameColor,
         fieldValueColor,
         parentKey,
-        depth + 1
+        depth + 1,
       ),
     ]);
   }
@@ -239,8 +244,8 @@ const renderFieldRecursively = (
         fieldNameColor,
         fieldValueColor,
         fullKey,
-        depth + 1
-      )
+        depth + 1,
+      ),
     );
   }
 
@@ -251,16 +256,19 @@ const renderFieldRecursively = (
   if (typeof value === 'string' && value.startsWith('data:image')) {
     displayValue = (
       <Image
-        source={{ uri: value }}
-        style={{ width: 100, height: 100, borderRadius: 8 }}
+        source={{uri: value}}
+        style={{width: 100, height: 100, borderRadius: 8}}
         resizeMode="contain"
       />
     );
-  } else if (value?.startsWith?.('http') && key.toLowerCase().includes('image')) {
+  } else if (
+    value?.startsWith?.('http') &&
+    key.toLowerCase().includes('image')
+  ) {
     displayValue = (
       <Image
-        source={{ uri: value }}
-        style={{ width: 100, height: 100, borderRadius: 8 }}
+        source={{uri: value}}
+        style={{width: 100, height: 100, borderRadius: 8}}
         resizeMode="contain"
       />
     );
@@ -282,8 +290,7 @@ const renderFieldRecursively = (
         paddingLeft: depth * 12,
       }}
       align="space-between"
-      margin="0 8 15 0"
-    >
+      margin="0 8 15 0">
       <VCItemField
         key={`extra-${fullKey}`}
         fieldName={label}
@@ -295,7 +302,6 @@ const renderFieldRecursively = (
     </Row>,
   ];
 };
-
 
 export const fieldItemIterator = (
   fields: any[],
@@ -337,7 +343,7 @@ export const fieldItemIterator = (
     return (
       <Row
         key={field}
-        style={{ flexDirection: 'row', flex: 1 }}
+        style={{flexDirection: 'row', flex: 1}}
         align="space-between"
         margin="0 8 15 0">
         <VCItemField
@@ -364,7 +370,7 @@ export const fieldItemIterator = (
     const renderedSubjectFields = Object.entries(credentialSubjectFields)
       .filter(([key]) => !renderedFields.has(key))
       .flatMap(([key, value]) =>
-        renderFieldRecursively(key, value, fieldNameColor, fieldValueColor)
+        renderFieldRecursively(key, value, fieldNameColor, fieldValueColor),
       );
 
     renderedAll.push(...renderedSubjectFields);
@@ -381,37 +387,26 @@ export const fieldItemIterator = (
         if (!Array.isArray(entries)) return [];
 
         return [
-
           <VCItemField
             key={`ns-title-${namespace}`}
-            fieldName={(namespace)}
+            fieldName={namespace}
             fieldValue=""
             fieldNameColor={fieldNameColor}
             fieldValueColor={fieldValueColor}
             testID={`ns-title-${namespace}`}
           />,
-          ...entries.flatMap((entry, index) => [
-            <VCItemField
-              key={`entry-heading-${namespace}-${index}`}
-              fieldName={"--"}
-              fieldValue=""
-              fieldNameColor={fieldNameColor}
-              fieldValueColor={fieldValueColor}
-              testID={`entry-heading-${namespace}-${index}`}
-            />,
-            ...Object.entries(entry).flatMap(([key, value]) =>
-              renderFieldRecursively(
-                key,
-                value,
-                fieldNameColor,
-                fieldValueColor,
-                `${namespace}[${index}]`,
-                1
-              )
+          ...entries.flatMap((entry, index) =>
+            renderFieldRecursively(
+              entry.elementIdentifier,
+              entry.elementValue,
+              fieldNameColor,
+              fieldValueColor,
+              namespace,
+              1,
             ),
-          ]),
+          ),
         ];
-      }
+      },
     );
 
     renderedAll.push(...renderedNamespaceFields);
@@ -421,13 +416,11 @@ export const fieldItemIterator = (
   return [...renderedMainFields, ...renderedExtraFields];
 };
 
-
-
 export const isVCLoaded = (
   verifiableCredential: Credential | null,
   fields: string[],
 ) => {
-  return verifiableCredential != null
+  return verifiableCredential != null;
 };
 
 export const getMosipLogo = () => {
