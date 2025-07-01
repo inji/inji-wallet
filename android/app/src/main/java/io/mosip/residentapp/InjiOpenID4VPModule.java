@@ -74,10 +74,10 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void authenticateVerifier(String urlEncodedAuthorizationRequest,
-            ReadableArray trustedVerifiers,
-            ReadableMap walletMetadata,
-            Boolean shouldValidateClient,
-            Promise promise) {
+                                     ReadableArray trustedVerifiers,
+                                     ReadableMap walletMetadata,
+                                     Boolean shouldValidateClient,
+                                     Promise promise) {
         try {
             WalletMetadata walletMetadataObj = parseWalletMetadata(walletMetadata);
             List<Verifier> verifierList = parseVerifiers(trustedVerifiers);
@@ -177,7 +177,8 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                 extractStringListOrNull(walletMetadata, "client_id_schemes_supported"),
                 extractStringListOrNull(walletMetadata, "request_object_signing_alg_values_supported"),
                 extractStringListOrNull(walletMetadata, "authorization_encryption_alg_values_supported"),
-                extractStringListOrNull(walletMetadata, "authorization_encryption_enc_values_supported"));
+                extractStringListOrNull(walletMetadata, "authorization_encryption_enc_values_supported")
+        );
     }
 
     private List<Verifier> parseVerifiers(ReadableArray verifiersArray) {
@@ -271,7 +272,8 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                         String algorithm = requireNonNullString(deviceAuthenticationMap, "mdocAuthenticationAlgorithm");
                         DeviceAuthentication deviceAuthentication = new DeviceAuthentication(
                                 signature = signature,
-                                algorithm = algorithm);
+                                algorithm = algorithm
+                        );
                         signatureData.put(docType, deviceAuthentication);
                     }
                 }
