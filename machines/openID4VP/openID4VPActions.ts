@@ -168,8 +168,8 @@ export const openID4VPActions = (model: any) => {
 
     setSendVPShareError: model.assign({
       error: (_, event) => {
-        console.error('Error:', event.data.message);
-        return 'send vp - ' + event.data.message;
+        console.error('Error:', event.data.message, event.data.code);
+        return 'send vp-' + event.data.message + '-' + event.data.code;
       },
     }),
 

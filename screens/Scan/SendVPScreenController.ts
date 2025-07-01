@@ -229,13 +229,9 @@ export function useSendVPScreen() {
     errorModal.title = t('errors.invalidRequestURI.title');
     errorModal.message = t('errors.invalidRequestURI.message');
     generateAndStoreLogMessage('INVALID_REQUEST_URI_METHOD');
-  } else if (error.startsWith('send vp - Duplicate Mdoc Credentials')) {
-    errorModal.title = t('errors.duplicateMdocCredential.title');
-    errorModal.message = t('errors.duplicateMdocCredential.message');
-    errorModal.showRetryButton = false;
   } else if (error.startsWith('send vp')) {
-    errorModal.title = t('errors.genericError.title');
-    errorModal.message = t('errors.genericError.message');
+    errorModal.title = t('errors.sendVPError.title');
+    errorModal.message = t('errors.sendVPError.message');
     errorModal.showRetryButton = true;
   } else if (error !== '') {
     errorModal.title = t('errors.genericError.title');

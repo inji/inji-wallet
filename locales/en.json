@@ -905,8 +905,12 @@
         "message": "Due to technical error, we are unable to share the card. Click on retry to re-share or click on Home to exit the sharing process."
       },
       "invalidQrCode": {
-        "title": "Invalid QR code",
+        "title": "Request can’t be processed",
         "message": "The QR code is invalid because some required information is missing. Please ask the verifier to provide a valid QR code to share your credentials."
+      },
+      "sendVPError": {
+        "title": "Something Went Wrong",
+        "message": "Message: We couldn't share your card due to a technical issue. Click Retry to try again, or go to Home to exit."
       },
       "noImage": {
         "title": "An Error Occured!",
