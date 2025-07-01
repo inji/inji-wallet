@@ -74,10 +74,10 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void authenticateVerifier(String urlEncodedAuthorizationRequest,
-            ReadableArray trustedVerifiers,
-            ReadableMap walletMetadata,
-            Boolean shouldValidateClient,
-            Promise promise) {
+                                     ReadableArray trustedVerifiers,
+                                     ReadableMap walletMetadata,
+                                     Boolean shouldValidateClient,
+                                     Promise promise) {
         try {
             WalletMetadata walletMetadataObj = parseWalletMetadata(walletMetadata);
             List<Verifier> verifierList = parseVerifiers(trustedVerifiers);
@@ -85,8 +85,9 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             AuthorizationRequest authRequest = openID4VP.authenticateVerifier(
                     urlEncodedAuthorizationRequest,
                     verifierList,
-                    walletMetadataObj,
-                    shouldValidateClient);
+                    shouldValidateClient,
+                    walletMetadataObj
+            );
 
             String authRequestJson = gson.toJson(authRequest, AuthorizationRequest.class);
             promise.resolve(authRequestJson);
@@ -101,10 +102,10 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void constructUnsignedVPToken(ReadableMap selectedVCs, Promise promise) {
+    public void constructUnsignedVPToken(ReadableMap selectedVCs, String holderId, String signatureSuite, Promise promise) {
         try {
             Map<String, Map<FormatType, List<Object>>> selectedVCsMap = parseSelectedVCs(selectedVCs);
-            Map<FormatType, UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedVCsMap);
+            Map<FormatType, UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedVCsMap, holderId, signatureSuite);
             promise.resolve(toJsonString(vpTokens));
         } catch (Exception e) {
             if (e instanceof OpenID4VPExceptions) {
@@ -176,7 +177,8 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                 extractStringListOrNull(walletMetadata, "client_id_schemes_supported"),
                 extractStringListOrNull(walletMetadata, "request_object_signing_alg_values_supported"),
                 extractStringListOrNull(walletMetadata, "authorization_encryption_alg_values_supported"),
-                extractStringListOrNull(walletMetadata, "authorization_encryption_enc_values_supported"));
+                extractStringListOrNull(walletMetadata, "authorization_encryption_enc_values_supported")
+        );
     }
 
     private List<Verifier> parseVerifiers(ReadableArray verifiersArray) {
@@ -254,11 +256,10 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     private VPTokenSigningResult createVPTokenSigningResult(FormatType formatType, ReadableMap metadata) {
         switch (formatType) {
             case LDP_VC: {
-                String jws = requireNonNullString(metadata, "jws");
-                String signatureAlgorithm = requireNonNullString(metadata, "signatureAlgorithm");
-                String publicKey = requireNonNullString(metadata, "publicKey");
-                String domain = requireNonNullString(metadata, "domain");
-                return new LdpVPTokenSigningResult(jws, signatureAlgorithm, publicKey, domain);
+                String jws =metadata.getString("jws");
+                String proofValue =metadata.getString("proofValue");
+                String signatureAlgorithm =metadata.getString("signatureAlgorithm");
+                return new LdpVPTokenSigningResult(jws, proofValue, signatureAlgorithm );
             }
             case MSO_MDOC: {
                 Map<String, DeviceAuthentication> signatureData = new HashMap<>();
@@ -271,7 +272,8 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                         String algorithm = requireNonNullString(deviceAuthenticationMap, "mdocAuthenticationAlgorithm");
                         DeviceAuthentication deviceAuthentication = new DeviceAuthentication(
                                 signature = signature,
-                                algorithm = algorithm);
+                                algorithm = algorithm
+                        );
                         signatureData.put(docType, deviceAuthentication);
                     }
                 }
