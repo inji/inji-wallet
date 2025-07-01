@@ -59,8 +59,8 @@ export class OpenID4VP {
     );
   }
 
-  static sendErrorToVerifier(error: string) {
-    OpenID4VP.InjiOpenID4VP.sendErrorToVerifier(error);
+  static sendErrorToVerifier(errorMessage: string, errorCode: string) {
+    OpenID4VP.InjiOpenID4VP.sendErrorToVerifier(errorMessage, errorCode);
   }
 
   private static processSelectedVCs(selectedVCs: Record<string, VC[]>) {
