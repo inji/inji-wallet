@@ -1,16 +1,16 @@
 # OpenID4VP - Online Sharing
 
-The Inji Wallet supports OpenID4VP specification draft 21 and this document provides a comprehensive overview of the process of sending a Verifiable Presentation to Verifiers who request them online. It adheres to the OpenID4VP [specification](https://openid.net/specs/openid-4-verifiable-presentations-1_0-21.html) which outlines the standards for
+The Inji Wallet supports OpenID4VP specification draft 21 and draft 23. This document provides a comprehensive overview of the process of sending a Verifiable Presentation to Verifiers who request them online. It adheres to the OpenID4VP [draft 21 specification](https://openid.net/specs/openid-4-verifiable-presentations-1_0-21.html) and [draft 23 specification](https://openid.net/specs/openid-4-verifiable-presentations-1_0-23.html) which outlines the standards for
 requesting and presenting Verifiable Credentials.
 
 ## Overview
 
-- The implementation follows OpenID for Verifiable Presentations - draft 21. [Specification](https://openid.net/specs/openid-4-verifiable-presentations-1_0-21.html).
+- The implementation follows OpenID for Verifiable Presentations Specification.
 
 - Below are the fields we expect in the Authorization Request:
 
   - client_id
-  - client_id_scheme (Optional | Default value : pre-registered)
+  - client_id_scheme (Optional | Default value : pre-registered) [For Draft 21]
   - presentation_definition/presentation_definition_uri
   - response_type
   - response_mode
@@ -19,14 +19,14 @@ requesting and presenting Verifiable Credentials.
   - response_uri
   - client_metadata (Optional)
 
-  **Note** : **_request_uri_** is also supported as part of this version.
-
   The specification also allows the Verifier to send Authorizaton Request by reference. It uses the paramters `request_uri` and `request_uri_method` (Optional) to send the authorization request as a URL reference. This can help reduce the size of the QR code and improve security by not exposing sensitive information.
+
+  **Note** : Sharing **_wallet metadata_** is supported as part of this version. It can be shared to the verifier when the verifier sends Authorization request by reference and `request_uri_method` is **POST**.
 
   - When request_uri is passed as part of the authorization request parameters, below are the expected fields:
 
     - client_id
-    - client_id_scheme
+    - client_id_scheme [For Draft 21]
     - request_uri
     - request_uri_method (Optional | Default value : get)
 
@@ -72,6 +72,7 @@ The implementation of this feature involves the following steps:
 ## Verifiable Credential Format Supported for Sharing:
 
 - ldp_vc
+- mso_mdoc
 
 ## Functionalities
 
@@ -88,15 +89,15 @@ The implementation of this feature involves the following steps:
 
 - Wallet reads the authorization request and sends the list of matching verifiable credentials to the library.
 - Library receives the list of verifiable credentials(VC's) from the Wallet which are selected by the end user based on the credentials requested.
-- Constructs the verifiable presentation and send it to wallet for generating Json Web Signature (JWS).
-- Wallet signs the verifiable presentation and sends the JWS along with the details to the library.
-- Library receives the signed Verifiable presentation and sends a POST request with generated vp_token and presentation_submission to the Verifier response_uri endpoint.
+- Constructs the unsigned verifiable presentation token data and send it to wallet for generating signature.
+- Wallet signs on the unsigned verifiable presentation token data and sends the signature along with other details to the library.
+- Library receives the signature and create response data and sends a POST request with generated vp_token and presentation_submission to the Verifier response_uri endpoint.
 
 ```mermaid
 sequenceDiagram
     participant Verifier as 🔍 Verifier
     participant Wallet as 📱 Wallet
-    participant Library as 📚 Native Library
+    participant Library as 📚 OpenId4VP Library
 
     Note over Verifier: Generate QR Code with<br/>Authorization Request
     Wallet -->> Verifier: Scan QR Code
@@ -119,9 +120,9 @@ sequenceDiagram
 
     activate Wallet
     Note over Wallet: Sign VP Token
-    Note over Wallet: Construct JWS Token
+    Note over Wallet: Construct Signature
     deactivate Wallet
-    Wallet-->>Library: Send Signed JWS Token
+    Wallet-->>Library: Send Signature
 
     activate Library
     Note over Library: Construct Proof Object
@@ -130,3 +131,6 @@ sequenceDiagram
 
     Library-->>Verifier: HTTP POST Request with:<br/>1. VP Token<br/>2. Presentation Submission<br/>3. State
 ```
+
+**Note:** Currently wallet binding is only supported for VCs signed with signature suite **_Ed25519Signature2020_**.
+The wallet binding is a feature that allows the Verifier to ensure that the Verifiable Presentation is being presented by the same Wallet that holds the Verifiable Credentials.
