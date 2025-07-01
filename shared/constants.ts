@@ -173,3 +173,8 @@ export const OVP_ERROR_MESSAGES = {
   NO_MATCHING_VCS: 'No matching credentials found to fulfill the request.',
   DECLINED: 'The user has declined to share their credentials at this time.',
 };
+
+export const OVP_ERROR_CODE = {
+  NO_MATCHING_VCS: 'invalid_transaction_data',
+  DECLINED: 'access_denied',
+};

@@ -155,7 +155,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   }
   
   @objc
-  func sendErrorToVerifier(_ error: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+  func sendErrorToVerifier(_ error: String,_ errorCode: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
       enum VerifierError: Error {
         case customError(String)
