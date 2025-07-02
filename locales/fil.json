@@ -876,7 +876,7 @@
       },
       "genericError": {
         "title": "Oops! Isang Error ang Naganap.",
-        "message": "Dahil sa teknikal na error, hindi namin maibahagi ang card. Mag-click sa subukang muli upang muling ibahagi o mag-click sa Home upang lumabas sa proseso ng pagbabahagi."
+        "message": "Nagkaroon ng teknikal na problema habang pinoproseso ang iyong kahilingan. Maaari mong subukang muli pagkatapos ng ilang sandali."
       },
             "vpFormatsNotSupported": {
         "title": "Hindi Suportadong Kahilingan",

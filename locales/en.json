@@ -902,7 +902,7 @@
 
       "genericError": {
         "title": "Oops! An Error Occured.",
-        "message": "Due to technical error, we are unable to share the card. Click on retry to re-share or click on Home to exit the sharing process."
+        "message": "There was a technical issue while processing your request. You can try again in a moment."
       },
       "invalidQrCode": {
         "title": "Request can’t be processed",
