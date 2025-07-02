@@ -23,6 +23,8 @@ import com.google.gson.GsonBuilder;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions.AccessDenied;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions.InvalidTransactionData;
+import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
+import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -138,10 +140,10 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         OpenID4VPExceptions exception;
 
         switch (errorCode) {
-            case "access_denied":
+            case ACCESS_DENIED:
                 exception = new OpenID4VPExceptions.AccessDenied(errorMessage, "InjiOpenID4VPModule");
                 break;
-            case "invalid_transaction_data":
+            case INVALID_TRANSACTION_DATA:
                 exception = new OpenID4VPExceptions.InvalidTransactionData(errorMessage, "InjiOpenID4VPModule");
                 break;
             default:
