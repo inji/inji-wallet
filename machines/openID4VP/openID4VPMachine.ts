@@ -382,7 +382,14 @@ export const openID4VPMachine = model.createMachine(
         },
       },
       shareVPDeclineStatusToVerifier: {
-        entry: ['shareDeclineStatus', sendParent('DISMISS')],
+        entry: [
+          'shareDeclineStatus',
+        ],
+        after: {
+          200: {
+            actions: sendParent('DISMISS'),
+          },
+        },
       },
       showError: {
         on: {
