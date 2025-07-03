@@ -320,6 +320,15 @@ export function useSendVPScreen() {
       });
       generateAndStoreLogMessage('TECHNICAL_ERROR');
       hasLoggedErrorRef.current = true;
+    } else if (error === '') {
+      setErrorModalData({
+        show: false,
+        title: '',
+        message: '',
+        additionalMessage: '',
+        showRetryButton: false,
+      });
+      hasLoggedErrorRef.current = false;
     }
   }, [error, noCredentialsMatchingVPRequest]);
 
