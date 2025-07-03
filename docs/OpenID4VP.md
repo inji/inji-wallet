@@ -97,7 +97,7 @@ The implementation of this feature involves the following steps:
 sequenceDiagram
     participant Verifier as 🔍 Verifier
     participant Wallet as 📱 Wallet
-    participant Library as 📚 Native Library
+    participant Library as 📚 OpenId4VP Library
 
     Note over Verifier: Generate QR Code with<br/>Authorization Request
     Wallet -->> Verifier: Scan QR Code
