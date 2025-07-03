@@ -344,6 +344,7 @@ export const openID4VPMachine = model.createMachine(
             {
               cond: 'isShareWithSelfie',
               actions: [
+                'resetError',
                 send({
                   type: 'LOG_ACTIVITY',
                   logType: 'SHARED_WITH_FACE_VERIFIACTION',
@@ -354,6 +355,7 @@ export const openID4VPMachine = model.createMachine(
             },
             {
               actions: [
+                'resetError',
                 send({
                   type: 'LOG_ACTIVITY',
                   logType: 'SHARED_SUCCESSFULLY',
