@@ -17,6 +17,7 @@ import {VciClient} from '../../shared/vciClient/VciClient';
 import {issuerType} from './IssuersMachine';
 import {setItem} from '../store';
 import {API_CACHED_STORAGE_KEYS} from '../../shared/constants';
+import { createCacheObject } from '../../shared/Utils';
 
 export const IssuersService = () => {
   return {
@@ -143,9 +144,10 @@ export const IssuersService = () => {
       ) => {
         let issuer = issuerMetadata as issuerType;
         issuer.issuer_id = issuer.credential_issuer;
+        const wellknownCacheObject= createCacheObject(issuer)
         await setItem(
           API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(issuer.issuer_id),
-          issuer,
+          wellknownCacheObject,
           '',
         );
 

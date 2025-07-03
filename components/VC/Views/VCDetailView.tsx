@@ -142,7 +142,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                   {shouldShowHrLine(verifiableCredential) &&
                     fieldItemIterator(
                       DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
-                      props.wellknownFieldsFlag,
+                      true,
                       verifiableCredential,
                       props.wellknown,
                       wellknownDisplayProperty,
