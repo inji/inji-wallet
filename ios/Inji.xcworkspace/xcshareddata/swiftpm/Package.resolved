@@ -1,5 +1,5 @@
 {
-  "originHash" : "161c6a286884aae25ee061305af96695aa9e894caaf9bc77c25908725ec6520d",
+  "originHash" : "5737403c0b9f43f503dc98794e8805e76575a62d145e75f6c4c953bff4223584",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-openid4vp-ios-swift",
       "state" : {
-        "branch" : "develop",
-        "revision" : "87cbc23f3a868461814247cb97283d17a3db0f7b"
+        "branch" : "release-0.3.x",
+        "revision" : "3e963ec60e4beb77f020eb1230df019c45c74f56"
       }
     },
     {
