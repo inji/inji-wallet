@@ -404,26 +404,28 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           />
         </>
       )}
-      <Error
-        isModal
-        alignActionsOnEnd
-        showClose={false}
-        isVisible={controller.errorModal.show}
-        title={controller.errorModal.title}
-        message={controller.errorModal.message}
-        additionalMessage={getAdditionalMessage()}
-        image={SvgImage.PermissionDenied()}
-        primaryButtonTestID={'retry'}
-        primaryButtonText={getPrimaryButtonText()}
-        primaryButtonEvent={controller.RETRY}
-        textButtonTestID={'home'}
-        textButtonText={getTextButtonText()}
-        textButtonEvent={handleTextButtonEvent}
-        customImageStyles={{paddingBottom: 0, marginBottom: -6}}
-        customStyles={{marginTop: '30%'}}
-        exitAppWithTimer={controller.isOVPViaDeepLink}
-        testID={'vpShareError'}
-      />
+      {controller.errorModal.show && (
+        <Error
+          isModal
+          alignActionsOnEnd
+          showClose={false}
+          isVisible={controller.errorModal.show}
+          title={controller.errorModal.title}
+          message={controller.errorModal.message}
+          additionalMessage={getAdditionalMessage()}
+          image={SvgImage.PermissionDenied()}
+          primaryButtonTestID={'retry'}
+          primaryButtonText={getPrimaryButtonText()}
+          primaryButtonEvent={controller.RETRY}
+          textButtonTestID={'home'}
+          textButtonText={getTextButtonText()}
+          textButtonEvent={handleTextButtonEvent}
+          customImageStyles={{paddingBottom: 0, marginBottom: -6}}
+          customStyles={{marginTop: '30%'}}
+          exitAppWithTimer={controller.isOVPViaDeepLink}
+          testID={'vpShareError'}
+        />
+      )}
     </React.Fragment>
   );
 };
