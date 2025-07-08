@@ -883,13 +883,34 @@
         "title": "An Error Occured!",
         "message": "Credential mismatch detected. Ensure you have selected the right one containing the following claims: {{claims}} and try again."
       },
+      "vpFormatsNotSupported":{
+        "title":"Unsupported Request",
+        "message":"This request isn't supported. Please ask the verifier to try another way"
+      },
+      "invalidRequestURI":{
+        "title":"Request Not Allowed",
+        "message":"The verifier used a method that’s not supported. Please ask them to update and try again."
+      },
+      "invalidPresentationDefinitionURI":{
+        "title":"Something went wrong with the request",
+        "message":"The information needed to share your credentials is not in the right format. Please ask the verifier to provide the correct details."
+      },
+      "invalidPresentationDefinitionRef":{
+        "title":"Problem with Response",
+        "message":"The response from the verifier is invalid. Please ask the verifier to check and provide right details."
+      },
+
       "genericError": {
         "title": "Oops! An Error Occured.",
-        "message": "Due to technical error, we are unable to share the card. Click on retry to re-share or click on Home to exit the sharing process."
+        "message": "There was a technical issue while processing your request. You can try again in a moment."
       },
       "invalidQrCode": {
-        "title": "Invalid QR code",
+        "title": "Request can’t be processed",
         "message": "The QR code is invalid because some required information is missing. Please ask the verifier to provide a valid QR code to share your credentials."
+      },
+      "sendVPError": {
+        "title": "Something Went Wrong",
+        "message": "Message: We couldn't share your card due to a technical issue. Click Retry to try again, or go to Home to exit."
       },
       "noImage": {
         "title": "An Error Occured!",

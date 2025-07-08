@@ -382,16 +382,23 @@ export const openID4VPMachine = model.createMachine(
         },
       },
       shareVPDeclineStatusToVerifier: {
-        entry: ['shareDeclineStatus', sendParent('DISMISS')],
+        entry: [
+          'shareDeclineStatus',
+        ],
+        after: {
+          200: {
+            actions: sendParent('DISMISS'),
+          },
+        },
       },
       showError: {
         on: {
           RETRY: {
-            actions: ['incrementOpenID4VPRetryCount'],
+            actions: ['resetError', 'incrementOpenID4VPRetryCount'],
             target: 'sendingVP',
           },
           RESET_RETRY_COUNT: {
-            actions: 'resetOpenID4VPRetryCount',
+            actions: ['resetError', 'resetOpenID4VPRetryCount'],
           },
           RESET_ERROR: {
             actions: 'resetError',

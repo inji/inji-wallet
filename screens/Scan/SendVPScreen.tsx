@@ -9,6 +9,7 @@ import {
   isIOS,
   LIVENESS_CHECK,
   OVP_ERROR_MESSAGES,
+  OVP_ERROR_CODE,
 } from '../../shared/constants';
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {
@@ -46,7 +47,10 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     if (controller.errorModal.show && controller.isOVPViaDeepLink) {
       const timeout = setTimeout(
         () => {
-          OpenID4VP.sendErrorToVerifier(OVP_ERROR_MESSAGES.NO_MATCHING_VCS);
+          OpenID4VP.sendErrorToVerifier(
+            OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
+            OVP_ERROR_CODE.NO_MATCHING_VCS,
+          );
           setTriggerExitFlow(true);
         },
         isIOS() ? 4000 : 2000,
@@ -103,9 +107,12 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   });
 
   const handleDismiss = () => {
+    OpenID4VP.sendErrorToVerifier(
+      OVP_ERROR_MESSAGES.DECLINED,
+      OVP_ERROR_CODE.DECLINED,
+    );
     if (controller.isOVPViaDeepLink) {
       controller.GO_TO_HOME();
-      OpenID4VP.sendErrorToVerifier(OVP_ERROR_MESSAGES.DECLINED);
       BackHandler.exitApp();
     } else {
       controller.DISMISS();
@@ -113,9 +120,12 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   };
 
   const handleRejectButtonEvent = () => {
+    OpenID4VP.sendErrorToVerifier(
+      OVP_ERROR_MESSAGES.DECLINED,
+      OVP_ERROR_CODE.DECLINED,
+    );
     if (controller.isOVPViaDeepLink) {
       controller.GO_TO_HOME();
-      OpenID4VP.sendErrorToVerifier(OVP_ERROR_MESSAGES.DECLINED);
       BackHandler.exitApp();
     } else {
       controller.CANCEL();
@@ -199,7 +209,10 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const getPrimaryButtonEvent = () => {
     if (controller.showConfirmationPopup && controller.isOVPViaDeepLink) {
       return () => {
-        OpenID4VP.sendErrorToVerifier(OVP_ERROR_MESSAGES.DECLINED);
+        OpenID4VP.sendErrorToVerifier(
+          OVP_ERROR_MESSAGES.DECLINED,
+          OVP_ERROR_CODE.DECLINED,
+        );
         controller.GO_TO_HOME();
         BackHandler.exitApp();
       };
@@ -404,26 +417,28 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           />
         </>
       )}
-      <Error
-        isModal
-        alignActionsOnEnd
-        showClose={false}
-        isVisible={controller.errorModal.show}
-        title={controller.errorModal.title}
-        message={controller.errorModal.message}
-        additionalMessage={getAdditionalMessage()}
-        image={SvgImage.PermissionDenied()}
-        primaryButtonTestID={'retry'}
-        primaryButtonText={getPrimaryButtonText()}
-        primaryButtonEvent={controller.RETRY}
-        textButtonTestID={'home'}
-        textButtonText={getTextButtonText()}
-        textButtonEvent={handleTextButtonEvent}
-        customImageStyles={{paddingBottom: 0, marginBottom: -6}}
-        customStyles={{marginTop: '30%'}}
-        exitAppWithTimer={controller.isOVPViaDeepLink}
-        testID={'vpShareError'}
-      />
+      {controller.errorModal.show && (
+        <Error
+          isModal
+          alignActionsOnEnd
+          showClose={false}
+          isVisible={controller.errorModal.show}
+          title={controller.errorModal.title}
+          message={controller.errorModal.message}
+          additionalMessage={getAdditionalMessage()}
+          image={SvgImage.PermissionDenied()}
+          primaryButtonTestID={'retry'}
+          primaryButtonText={getPrimaryButtonText()}
+          primaryButtonEvent={controller.RETRY}
+          textButtonTestID={'home'}
+          textButtonText={getTextButtonText()}
+          textButtonEvent={handleTextButtonEvent}
+          customImageStyles={{paddingBottom: 0, marginBottom: -6}}
+          customStyles={{marginTop: '30%'}}
+          exitAppWithTimer={controller.isOVPViaDeepLink}
+          testID={'vpShareError'}
+        />
+      )}
     </React.Fragment>
   );
 };

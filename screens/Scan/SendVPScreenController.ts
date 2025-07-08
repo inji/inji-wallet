@@ -209,17 +209,29 @@ export function useSendVPScreen() {
     errorModal.title = t('errors.noImage.title');
     errorModal.message = t('errors.noImage.message');
     generateAndStoreLogMessage('NO_SELECTED_VC_HAS_IMAGE');
-  } else if (error.startsWith('vc validation')) {
+  } else if (error.includes('invalid_request_uri_method')) {
+    errorModal.title = t('errors.invalidRequestURI.title');
+    errorModal.message = t('errors.invalidRequestURI.message');
+    generateAndStoreLogMessage('INVALID_REQUEST_URI_METHOD');
+  } else if (error.includes('invalid_request')) {
     errorModal.title = t('errors.invalidQrCode.title');
     errorModal.message = t('errors.invalidQrCode.message');
     generateAndStoreLogMessage('INVALID_AUTH_REQUEST');
-  } else if (error.startsWith('send vp - Duplicate Mdoc Credentials')) {
-    errorModal.title = t('errors.duplicateMdocCredential.title');
-    errorModal.message = t('errors.duplicateMdocCredential.message');
-    errorModal.showRetryButton = false;
+  } else if (error.includes('vp_formats_not_supported')) {
+    errorModal.title = t('errors.vpFormatsNotSupported.title');
+    errorModal.message = t('errors.vpFormatsNotSupported.message');
+    generateAndStoreLogMessage('VP_FORMATS_NOT_SUPPORTED');
+  } else if (error.includes('invalid_presentation_definition_uri')) {
+    errorModal.title = t('errors.invalidPresentationDefinitionURI.title');
+    errorModal.message = t('errors.invalidPresentationDefinitionURI.message');
+    generateAndStoreLogMessage('INVALID_PRESENTATION_DEFINITION_URI');
+  } else if (error.includes('invalid_presentation_definition_reference')) {
+    errorModal.title = t('errors.invalidPresentationDefinitionRef.title');
+    errorModal.message = t('errors.invalidPresentationDefinitionRef.message');
+    generateAndStoreLogMessage('INVALID_PRESENTATION_DEFINITION_REFERENCE');
   } else if (error.startsWith('send vp')) {
-    errorModal.title = t('errors.genericError.title');
-    errorModal.message = t('errors.genericError.message');
+    errorModal.title = t('errors.sendVPError.title');
+    errorModal.message = t('errors.sendVPError.message');
     errorModal.showRetryButton = true;
   } else if (error !== '') {
     errorModal.title = t('errors.genericError.title');
@@ -320,6 +332,15 @@ export function useSendVPScreen() {
       });
       generateAndStoreLogMessage('TECHNICAL_ERROR');
       hasLoggedErrorRef.current = true;
+    } else if (error === '') {
+      setErrorModalData({
+        show: false,
+        title: '',
+        message: '',
+        additionalMessage: '',
+        showRetryButton: false,
+      });
+      hasLoggedErrorRef.current = false;
     }
   }, [error, noCredentialsMatchingVPRequest]);
 

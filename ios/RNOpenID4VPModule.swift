@@ -4,13 +4,13 @@ import React
 
 @objc(InjiOpenID4VP)
 class RNOpenId4VpModule: NSObject, RCTBridgeModule {
-  
+
   private var openID4VP: OpenID4VP?
-  
+
   static func moduleName() -> String {
     return "InjiOpenID4VP"
   }
-  
+
   @objc
   func `init`(_ appId: String) {
     openID4VP = OpenID4VP(traceabilityId: appId)
@@ -154,7 +154,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   }
 
   @objc
-  func sendErrorToVerifier(_ error: String,
+  func sendErrorToVerifier(_ error: String, _ errorCode: String,
                            resolver resolve: @escaping RCTPromiseResolveBlock,
                            rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {

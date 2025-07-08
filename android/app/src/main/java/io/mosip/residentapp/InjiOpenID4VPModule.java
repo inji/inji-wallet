@@ -1,6 +1,5 @@
 package io.mosip.residentapp;
 
-
 import static io.mosip.openID4VP.authorizationResponse.AuthorizationResponseUtilsKt.toJsonString;
 import static io.mosip.openID4VP.constants.FormatType.LDP_VC;
 import static io.mosip.openID4VP.constants.FormatType.MSO_MDOC;
@@ -20,6 +19,12 @@ import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
+import io.mosip.openID4VP.exceptions.OpenID4VPExceptions.AccessDenied;
+import io.mosip.openID4VP.exceptions.OpenID4VPExceptions.InvalidTransactionData;
+import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
+import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,7 +94,12 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             String authRequestJson = gson.toJson(authRequest, AuthorizationRequest.class);
             promise.resolve(authRequestJson);
         } catch (Exception e) {
-            promise.reject(e);
+            if (e instanceof OpenID4VPExceptions) {
+                OpenID4VPExceptions ex = (OpenID4VPExceptions) e;
+                promise.reject(ex.getErrorCode(), ex.getMessage());
+            } else {
+                promise.reject(e);
+            }
         }
     }
 
@@ -100,7 +110,12 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             Map<FormatType, UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedVCsMap, holderId, signatureSuite);
             promise.resolve(toJsonString(vpTokens));
         } catch (Exception e) {
-            promise.reject(e);
+            if (e instanceof OpenID4VPExceptions) {
+                OpenID4VPExceptions ex = (OpenID4VPExceptions) e;
+                promise.reject(ex.getErrorCode(), ex.getMessage());
+            } else {
+                promise.reject(e);
+            }
         }
     }
 
@@ -111,15 +126,33 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             String response = openID4VP.shareVerifiablePresentation(authContainer);
             promise.resolve(response);
         } catch (Exception e) {
-            promise.reject(e);
+            if (e instanceof OpenID4VPExceptions) {
+                OpenID4VPExceptions ex = (OpenID4VPExceptions) e;
+                promise.reject(ex.getErrorCode(), ex.getMessage());
+            } else {
+                promise.reject(e);
+            }
         }
     }
 
     @ReactMethod
-    public void sendErrorToVerifier(String errorMessage) {
-        openID4VP.sendErrorToVerifier(new Exception(errorMessage));
-    }
+    public void sendErrorToVerifier(String errorMessage, String errorCode) {
+        OpenID4VPExceptions exception;
 
+        switch (errorCode) {
+            case ACCESS_DENIED:
+                exception = new OpenID4VPExceptions.AccessDenied(errorMessage, "InjiOpenID4VPModule");
+                break;
+            case INVALID_TRANSACTION_DATA:
+                exception = new OpenID4VPExceptions.InvalidTransactionData(errorMessage, "InjiOpenID4VPModule");
+                break;
+            default:
+                exception = new OpenID4VPExceptions.GenericFailure(errorMessage, "InjiOpenID4VPModule");
+                break;
+        }
+
+        openID4VP.sendErrorToVerifier(exception);
+    }
 
     private WalletMetadata parseWalletMetadata(ReadableMap walletMetadata) {
         Boolean presentationDefinitionUriSupported = walletMetadata.hasKey("presentation_definition_uri_supported")

@@ -1,10 +1,14 @@
 import {VCActivityLog} from './ActivityLogEvent';
 
 describe('ActivityLog', () => {
-  let instance: { timestamp: any; };
+  let instance: {timestamp: any};
 
   beforeEach(() => {
     instance = new VCActivityLog();
+    jest.mock('jsonld', () => ({
+      compact: jest.fn(),
+      expand: jest.fn(),
+    }));
   });
 
   it('Activity log instance should have a timestamp set', () => {
@@ -16,28 +20,32 @@ describe('getActionText', () => {
   let activityLog;
   let mockIl18nfn;
   let wellknown = {
-    "credential_configurations_supported": {
-      "mockId": {
-        "display": [
+    credential_configurations_supported: {
+      mockId: {
+        display: [
           {
-            "name": "fake VC",
-            "locale": "en",
-            "logo": {
-              "url": "https://mosip.github.io/inji-config/logos/mosipid-logo.png",
-              "alt_text": "a square logo of a MOSIP"
+            name: 'fake VC',
+            locale: 'en',
+            logo: {
+              url: 'https://mosip.github.io/inji-config/logos/mosipid-logo.png',
+              alt_text: 'a square logo of a MOSIP',
             },
-            "background_color": "#1A0983",
-            "background_image": {
-              "uri": "https://mosip.github.io/inji-config/logos/mosipid-logo.png"
+            background_color: '#1A0983',
+            background_image: {
+              uri: 'https://mosip.github.io/inji-config/logos/mosipid-logo.png',
             },
-            "text_color": "#000000"
-          }
+            text_color: '#000000',
+          },
         ],
-      }
-    }
-  }
+      },
+    },
+  };
   beforeEach(() => {
     mockIl18nfn = jest.fn();
+    jest.mock('jsonld', () => ({
+      compact: jest.fn(),
+      expand: jest.fn(),
+    }));
     activityLog = new VCActivityLog({
       id: 'mockId',
       credentialConfigurationId: 'mockId',
@@ -58,7 +66,7 @@ describe('getActionText', () => {
     });
     activityLog.getActionText(mockIl18nfn, wellknown);
     expect(mockIl18nfn).toHaveBeenCalledWith('mockType', {
-      idType: 'fake VC'
+      idType: 'fake VC',
     });
     expect(mockIl18nfn).toHaveBeenCalledTimes(1);
     // TODO: assert the returned string

@@ -68,11 +68,11 @@ export const openID4VPServices = () => {
             }
             dataToSign = canonicalized;
           }
-            let proof = await constructDetachedJWT(
-              context.privateKey,
-              dataToSign,
-              context.keyType,
-            )
+          let proof = await constructDetachedJWT(
+            context.privateKey,
+            dataToSign,
+            context.keyType,
+          );
           vpTokenSigningResultMap[formatType] = {
             jws: proof,
             proofValue: null,
@@ -105,7 +105,9 @@ export const openID4VPServices = () => {
                 const mdocAuthenticationAlgorithm =
                   getMdocAuthenticationAlorithm(
                     cred.verifiableCredential.processedCredential.issuerSigned
-                      .issuerAuth[2],
+                      ?.issuerAuth?.[2] ??
+                      cred.verifiableCredential.processedCredential
+                        ?.issuerAuth?.[2],
                   );
 
                 if (mdocAuthenticationAlgorithm === KeyTypes.ES256.valueOf()) {

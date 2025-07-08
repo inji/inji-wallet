@@ -18,14 +18,9 @@ import {
 } from './telemetry/TelemetryUtils';
 import {TelemetryConstants} from './telemetry/TelemetryConstants';
 import NetInfo from '@react-native-community/netinfo';
+import { createCacheObject } from './Utils';
 
-const createCacheObject = (response: any) => {
-  const currentTime = Date.now();
-  return {
-    response,
-    cachedTime: currentTime,
-  };
-};
+
 
 const isCacheValid = (cachedData: any) => {
   if (!cachedData?.cachedTime || typeof cachedData.cachedTime !== 'number') {

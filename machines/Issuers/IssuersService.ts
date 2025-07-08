@@ -17,6 +17,7 @@ import {VciClient} from '../../shared/vciClient/VciClient';
 import {issuerType} from './IssuersMachine';
 import {setItem} from '../store';
 import {API_CACHED_STORAGE_KEYS} from '../../shared/constants';
+import { createCacheObject } from '../../shared/Utils';
 
 export const IssuersService = () => {
   return {
@@ -69,13 +70,13 @@ export const IssuersService = () => {
           authEndpoint: authorizationEndpoint,
         });
       };
-      const getProofJwt=  async (accessToken: string, cNonce: string) => {
+      const getProofJwt = async (accessToken: string, cNonce: string) => {
         sendBack({
           type: 'PROOF_REQUEST',
           accessToken: accessToken,
           cNonce: cNonce,
-        })
-      }
+        });
+      };
       const credential = await VciClient.requestCredentialFromTrustedIssuer(
         constructIssuerMetaData(
           context.selectedIssuer,
@@ -103,6 +104,31 @@ export const IssuersService = () => {
       await VciClient.client.sendIssuerTrustResponseFromJS(false);
     },
 
+    checkIssuerIdInStoredTrustedIssuers: async (context: any) => {
+      const {RNSecureKeystoreModule} = NativeModules;
+      try {
+        return await RNSecureKeystoreModule.hasAlias(
+          context.credentialOfferIssuerMetadata.credential_issuer,
+        );
+      } catch (error) {
+        console.error(
+          `Error while checking issuer ID in trusted issuers:`,
+          error,
+        );
+        return false;
+      }
+    },
+    addIssuerToTrustedIssuers: async (context: any) => {
+      const {RNSecureKeystoreModule} = NativeModules;
+      try {
+        await RNSecureKeystoreModule.storeData(
+          context.credentialOfferIssuerMetadata.credential_issuer,
+          JSON.stringify(context.credentialOfferIssuerMetadata),
+        );
+      } catch {
+        console.error('Error updating issuer trust in keystore');
+      }
+    },
     downloadCredentialFromOffer: (context: any) => async (sendBack: any) => {
       const navigateToAuthView = (authorizationEndpoint: string) => {
         sendBack({
@@ -116,12 +142,12 @@ export const IssuersService = () => {
         issuerMetadata: object,
         credentialConfigurationId: string,
       ) => {
-        console.log("issuerMetadata::", issuerMetadata);
         let issuer = issuerMetadata as issuerType;
         issuer.issuer_id = issuer.credential_issuer;
+        const wellknownCacheObject= createCacheObject(issuer)
         await setItem(
           API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(issuer.issuer_id),
-          issuer,
+          wellknownCacheObject,
           '',
         );
 
@@ -184,7 +210,6 @@ export const IssuersService = () => {
       );
       return credential;
     },
-
     constructProof: async (context: any) => {
       const issuerMeta = context.selectedIssuer;
       const proofJWT = await constructProofJWT(
@@ -215,7 +240,6 @@ export const IssuersService = () => {
       await VciClient.client.sendProofFromJS(proofJWT);
       return proofJWT;
     },
-
 
     getKeyOrderList: async () => {
       const {RNSecureKeystoreModule} = NativeModules;

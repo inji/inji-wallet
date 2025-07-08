@@ -1,6 +1,7 @@
 import {assign} from 'xstate';
 import {send, sendParent} from 'xstate/lib/actions';
 import {
+  OVP_ERROR_CODE,
   OVP_ERROR_MESSAGES,
   SHOW_FACE_AUTH_CONSENT_SHARE_FLOW,
 } from '../../shared/constants';
@@ -153,8 +154,8 @@ export const openID4VPActions = (model: any) => {
 
     setAuthenticationError: model.assign({
       error: (_, event) => {
-        console.error('Error:', event.data.message);
-        return 'vc validation - ' + event.data.message;
+        console.error('Error:', event.data.message, event.data.code);
+        return event.data.code;
       },
     }),
 
@@ -167,8 +168,8 @@ export const openID4VPActions = (model: any) => {
 
     setSendVPShareError: model.assign({
       error: (_, event) => {
-        console.error('Error:', event.data.message);
-        return 'send vp - ' + event.data.message;
+        console.error('Error:', event.data.message, event.data.code);
+        return 'send vp-' + event.data.message + '-' + event.data.code;
       },
     }),
 
@@ -217,7 +218,10 @@ export const openID4VPActions = (model: any) => {
     ),
 
     shareDeclineStatus: () => {
-      OpenID4VP.sendErrorToVerifier(OVP_ERROR_MESSAGES.DECLINED);
+      OpenID4VP.sendErrorToVerifier(
+        OVP_ERROR_MESSAGES.DECLINED,
+        OVP_ERROR_CODE.DECLINED,
+      );
     },
 
     setIsFaceVerificationRetryAttempt: model.assign({
@@ -286,7 +290,10 @@ function getVcsMatchingAuthRequest(context, event) {
   }
 
   if (Object.keys(matchingVCs).length === 0) {
-    OpenID4VP.sendErrorToVerifier(OVP_ERROR_MESSAGES.NO_MATCHING_VCS);
+    OpenID4VP.sendErrorToVerifier(
+      OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
+      OVP_ERROR_CODE.NO_MATCHING_VCS,
+    );
   }
 
   return {
@@ -303,7 +310,6 @@ function areVCFormatAndProofTypeMatchingRequest(
   if (!requestFormat) {
     return false;
   }
-
   const vcFormatType = vc.format;
 
   if (vcFormatType === VCFormat.ldp_vc) {
@@ -315,20 +321,26 @@ function areVCFormatAndProofTypeMatchingRequest(
   }
 
   if (vcFormatType === VCFormat.mso_mdoc) {
-    const issuerAuth =
-      vc.verifiableCredential.processedCredential.issuerSigned.issuerAuth;
-    const issuerAuthenticationAlgorithm =
-      getIssuerAuthenticationAlorithmForMdocVC(issuerAuth[0]['1']);
-    const mdocAuthenticationAlgorithm = getMdocAuthenticationAlorithm(
-      issuerAuth[2],
-    );
+    try {
+      const issuerAuth =
+        vc.verifiableCredential.processedCredential.issuerSigned?.issuerAuth ??
+        vc.verifiableCredential.processedCredential.issuerAuth;
+      const issuerAuthenticationAlgorithm =
+        getIssuerAuthenticationAlorithmForMdocVC(issuerAuth[0]['1']);
+      const mdocAuthenticationAlgorithm = getMdocAuthenticationAlorithm(
+        issuerAuth[2],
+      );
 
-    return Object.entries(requestFormat).some(
-      ([type, value]) =>
-        type === vcFormatType &&
-        value.alg.includes(issuerAuthenticationAlgorithm) &&
-        value.alg.includes(mdocAuthenticationAlgorithm),
-    );
+      return Object.entries(requestFormat).some(
+        ([type, value]) =>
+          type === vcFormatType &&
+          value.alg.includes(issuerAuthenticationAlgorithm) &&
+          value.alg.includes(mdocAuthenticationAlgorithm),
+      );
+    } catch (error) {
+      console.error('Error in processing mdoc VC format:', error);
+      return false;
+    }
   }
 
   return false;
@@ -386,7 +398,9 @@ function fetchCredentialBasedOnFormat(vc: any) {
 }
 
 function getProcessedDataForMdoc(processedCredential: any) {
-  const namespaces = processedCredential.issuerSigned.nameSpaces;
+  const namespaces =
+    processedCredential.issuerSigned?.nameSpaces ??
+    processedCredential.nameSpaces;
   const processedData = {...namespaces};
   for (const ns in processedData) {
     const elementsArray = processedData[ns];

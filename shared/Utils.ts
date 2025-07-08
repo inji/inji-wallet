@@ -131,3 +131,11 @@ export async function canonicalize(unsignedVp: any) {
     console.error('Canonization failed:', err);
   }
 }
+
+export const createCacheObject = (response: any) => {
+  const currentTime = Date.now();
+  return {
+    response,
+    cachedTime: currentTime,
+  };
+};

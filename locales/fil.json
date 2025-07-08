@@ -876,11 +876,31 @@
       },
       "genericError": {
         "title": "Oops! Isang Error ang Naganap.",
-        "message": "Dahil sa teknikal na error, hindi namin maibahagi ang card. Mag-click sa subukang muli upang muling ibahagi o mag-click sa Home upang lumabas sa proseso ng pagbabahagi."
+        "message": "Nagkaroon ng teknikal na problema habang pinoproseso ang iyong kahilingan. Maaari mong subukang muli pagkatapos ng ilang sandali."
+      },
+            "vpFormatsNotSupported": {
+        "title": "Hindi Suportadong Kahilingan",
+        "message": "Ang kahilingang ito ay hindi suportado. Pakiusap, sabihan ang tagapagsuri na subukan sa ibang paraan."
+      },
+      "invalidRequestURI": {
+        "title": "Hindi Pinapayagang Kahilingan",
+        "message": "Gumamit ang tagapagsuri ng hindi suportadong paraan. Pakiusap, sabihan sila na i-update at subukan muli."
+      },
+      "invalidPresentationDefinitionURI": {
+        "title": "May mali sa kahilingan",
+        "message": "Ang impormasyong kailangan upang maibahagi ang iyong credentials ay nasa maling format. Pakiusap, sabihan ang tagapagsuri na ibigay ang tamang detalye."
+      },
+      "invalidPresentationDefinitionRef": {
+        "title": "Problema sa Tugon",
+        "message": "Ang tugon mula sa tagapagsuri ay hindi wasto. Pakiusap, sabihan silang i-check at ibigay ang tamang detalye."
       },
       "invalidQrCode": {
-        "title": "Di-wastong QR code",
+        "title": "Hindi maiproseso ang iyong kahilingan",
         "message": "Di-wasto ang QR code dahil nawawala ang ilang kinakailangang impormasyon. Mangyaring hilingin sa verifier na magbigay ng wastong QR code upang ibahagi ang iyong mga kredensyal."
+      },
+      "sendVPError": {
+        "title": "May Nangyaring Mali",
+        "message": "Mensahe: Hindi namin naibahagi ang iyong card dahil sa isang teknikal na isyu. I-click ang Retry para subukang muli, o pumunta sa Home upang lumabas."
       },
       "noImage": {
         "title": "Isang Error ang Naganap!",
