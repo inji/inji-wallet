@@ -6,7 +6,7 @@ import React
 class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
   private var openID4VP: OpenID4VP?
-  
+
   private let moduleClassName = "RNOpenId4VpModule"
 
 
@@ -161,25 +161,27 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
     }
   }
 
-  @objc
-  func sendErrorToVerifier(_ error: String, _ errorCode: String,
-                           resolver resolve: @escaping RCTPromiseResolveBlock,
-                           rejecter reject: @escaping RCTPromiseRejectBlock) {
+@objc
+func sendErrorToVerifier(_ error: String, _ errorCode: String,
+                         resolver resolve: @escaping RCTPromiseResolveBlock,
+                         rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
-      let exception: OpenID4VPException
+        let exception: OpenID4VPException = {
             switch errorCode {
             case OpenID4VPErrorCodes.accessDenied:
-                exception = AccessDenied(message: errorMessage, className: moduleClassName)
+                return AccessDenied(message: error, className: moduleClassName)
             case OpenID4VPErrorCodes.invalidTransactionData:
-                exception = InvalidTransactionData(message: errorMessage, className: moduleClassName)
+                return InvalidTransactionData(message: error, className: moduleClassName)
             default:
-                exception = GenericFailure(message: errorMessage, className: moduleClassName)
+                return GenericFailure(message: error, className: moduleClassName)
             }
+        }()
 
-            await openID4VP?.sendErrorToVerifier(error: exception)
-      resolve(true)
+        await openID4VP?.sendErrorToVerifier(error: exception)
+        resolve(true)
     }
-  }
+}
+
 
   func toJsonString(jsonObject: AuthorizationRequest) throws -> String {
     let encoder = JSONEncoder()
@@ -195,7 +197,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   static func requiresMainQueueSetup() -> Bool {
     return true
   }
-  
+
   func rejectWithOpenID4VPError(_ error: Error, reject: RCTPromiseRejectBlock) {
       if let openidError = error as? OpenID4VPException {
           reject(openidError.errorCode, openidError.message, openidError)
