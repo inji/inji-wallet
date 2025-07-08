@@ -6,6 +6,9 @@ import React
 class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
   private var openID4VP: OpenID4VP?
+  
+  private let moduleClassName = "RNOpenId4VpModule"
+
 
   static func moduleName() -> String {
     return "InjiOpenID4VP"
@@ -52,7 +55,8 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
         let response = try toJsonString(jsonObject: authenticationResponse)
         resolve(response)
       } catch {
-        reject("OPENID4VP", error.localizedDescription, error)
+        rejectWithOpenID4VPError(error, reject: reject)
+
       }
     }
   }
@@ -100,7 +104,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           reject("ERROR", "Failed to serialize JSON", nil)
         }
       } catch {
-        reject("OPENID4VP", error.localizedDescription, error)
+        rejectWithOpenID4VPError(error, reject: reject)
       }
     }
   }
@@ -143,7 +147,8 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
             formattedVPTokenSigningResults[.mso_mdoc] = MdocVPTokenSigningResult(docTypeToDeviceAuthentication: docTypeToDeviceAuthentication)
 
           default:
-            reject("OPENID4VP", "Credential format not supported", nil)
+            let error = GenericFailure(message: "Credential format '\(credentialFormat)' is not supported", className: moduleClassName)
+            rejectWithOpenID4VPError(error, reject: reject)
             return
           }
         }
@@ -151,7 +156,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
         let response = try await openID4VP?.shareVerifiablePresentation(vpTokenSigningResults: formattedVPTokenSigningResults)
         resolve(response)
       } catch {
-        reject("OPENID4VP", error.localizedDescription, error)
+        rejectWithOpenID4VPError(error, reject: reject)
       }
     }
   }
@@ -161,10 +166,17 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
                            resolver resolve: @escaping RCTPromiseResolveBlock,
                            rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
-      enum VerifierError: Error {
-        case customError(String)
-      }
-      await openID4VP?.sendErrorToVerifier(error: VerifierError.customError(error))
+      let exception: OpenID4VPException
+            switch errorCode {
+            case OpenID4VPErrorCodes.accessDenied:
+                exception = AccessDenied(message: errorMessage, className: moduleClassName)
+            case OpenID4VPErrorCodes.invalidTransactionData:
+                exception = InvalidTransactionData(message: errorMessage, className: moduleClassName)
+            default:
+                exception = GenericFailure(message: errorMessage, className: moduleClassName)
+            }
+
+            await openID4VP?.sendErrorToVerifier(error: exception)
       resolve(true)
     }
   }
@@ -183,6 +195,17 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   static func requiresMainQueueSetup() -> Bool {
     return true
   }
+  
+  func rejectWithOpenID4VPError(_ error: Error, reject: RCTPromiseRejectBlock) {
+      if let openidError = error as? OpenID4VPException {
+          reject(openidError.errorCode, openidError.message, openidError)
+      } else {
+          let fallback = GenericFailure(message: error.localizedDescription, className: "RNOpenId4VpModule")
+          reject(fallback.errorCode, fallback.message, fallback)
+      }
+  }
+
+
 }
 
 struct EncodableWrapper: Encodable {
