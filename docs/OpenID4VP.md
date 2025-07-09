@@ -132,5 +132,5 @@ sequenceDiagram
     Library-->>Verifier: HTTP POST Request with:<br/>1. VP Token<br/>2. Presentation Submission<br/>3. State
 ```
 
-**Note:** Currently wallet binding is only supported for VCs signed with signature suite **_Ed25519Signature2020_**.
-The wallet binding is a feature that allows the Verifier to ensure that the Verifiable Presentation is being presented by the same Wallet that holds the Verifiable Credentials.
+**Note:** Currently holder binding is only supported for VCs signed with signature suite **_Ed25519Signature2020_**.
+The holder binding is a feature that allows the Verifier to ensure that the Verifiable Presentation is being presented by the same holder that holds the Verifiable Credentials.
