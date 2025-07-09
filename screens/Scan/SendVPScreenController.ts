@@ -179,12 +179,16 @@ export function useSendVPScreen() {
     showRetryButton: false,
   });
 
+  const isClaimsEmpty =
+  !requestedClaimsByVerifier || requestedClaimsByVerifier.trim() === '';
   const claimsAsString = '[' + requestedClaimsByVerifier + ']';
   if (noCredentialsMatchingVPRequest) {
-    errorModal.title = t('errors.noMatchingCredentials.title');
-    errorModal.message = t('errors.noMatchingCredentials.message', {
-      claims: claimsAsString,
-    });
+    errorModal.title = isClaimsEmpty
+    ? t('errors.noMatchingCredentialsWithMissingClaims.title')
+    : t('errors.noMatchingCredentials.title');
+    errorModal.message = isClaimsEmpty
+      ? t('errors.noMatchingCredentialsWithMissingClaims.message')
+      : t('errors.noMatchingCredentials.message', { claims: claimsAsString });
     generateAndStoreLogMessage(
       'NO_CREDENTIAL_MATCHING_REQUEST',
       claimsAsString,

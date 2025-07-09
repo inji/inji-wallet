@@ -866,6 +866,10 @@
         "title": "Walang nakitang katugmang mga kredensyal!",
         "message": "Ang verifier ay humiling ng mga kredensyal batay sa mga sumusunod na claim: {{claims}}. Paki-download ang kaukulang mga kredensyal at subukang muli ang proseso ng pagbabahagi."
       },
+      "noMatchingCredentialsWithMissingClaims": {
+        "title": "Walang tumutugmang kredensyal na nahanap!",
+        "message": "Wala kaming nahanap na kredensyal sa iyong wallet na tumutugma sa kahilingang ito. Maaaring kailanganin mong i-download ang tamang kredensyal o subukan muli mamaya."
+      },
       "invalidVerifier": {
         "title": "Isang Error ang Naganap!",
         "message": "Hindi nakikilala ang verifier. Mangyaring kumuha ng wastong QR code mula sa verifier."

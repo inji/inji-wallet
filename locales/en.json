@@ -875,6 +875,10 @@
         "title": "No matching credentials found!",
         "message": "The verifier has requested credentials based on the following claims: {{claims}}. Please download the corresponding credentials and retry the sharing process."
       },
+      "noMatchingCredentialsWithMissingClaims":{
+        "title":"No matching credentials found!",
+        "message": "We Couldn't find any credentials in your wallet that match this request.You may need to download the right credentials or try again later"
+      },
       "invalidVerifier": {
         "title": "An Error Occured!",
         "message": "The verifier is not recognized. Please obtain a valid QR code from the verifier."
