@@ -864,7 +864,11 @@
     "errors": {
       "noMatchingCredentials": {
         "title": "Walang nakitang katugmang mga kredensyal!",
-        "message": "Ang verifier ay humiling ng mga kredensyal batay sa mga sumusunod na claim: {{claims}}. Paki-download ang kaukulang mga kredensyal at subukang muli ang proseso ng pagbabahagi."
+        "message": "Ang verifier ay humiling ng mga kredensyal batay sa mga sumusunod na claim: [{{claims}}]. Paki-download ang kaukulang mga kredensyal at subukang muli ang proseso ng pagbabahagi."
+      },
+      "noMatchingCredentialsWithMissingClaims": {
+        "title": "Walang tumutugmang kredensyal na nahanap!",
+        "message": "Wala kaming nahanap na kredensyal sa iyong wallet na tumutugma sa kahilingang ito. Maaaring kailanganin mong i-download ang tamang kredensyal o subukan muli mamaya."
       },
       "invalidVerifier": {
         "title": "Isang Error ang Naganap!",
@@ -872,7 +876,7 @@
       },
       "credentialsMismatch": {
         "title": "Isang Error ang Naganap!",
-        "message": "May nakitang hindi pagkakatugma ng kredensyal. Tiyaking napili mo ang tama na naglalaman ng mga sumusunod na claim: {{claims}} at subukang muli."
+        "message": "May nakitang hindi pagkakatugma ng kredensyal. Tiyaking napili mo ang tama na naglalaman ng mga sumusunod na claim: [{{claims}}] at subukang muli."
       },
       "genericError": {
         "title": "Oops! Isang Error ang Naganap.",

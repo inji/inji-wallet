@@ -873,7 +873,11 @@
     "errors": {
       "noMatchingCredentials": {
         "title": "No matching credentials found!",
-        "message": "The verifier has requested credentials based on the following claims: {{claims}}. Please download the corresponding credentials and retry the sharing process."
+        "message": "The verifier has requested credentials based on the following claims: [{{claims}}]. Please download the corresponding credentials and retry the sharing process."
+      },
+      "noMatchingCredentialsWithMissingClaims":{
+        "title":"No matching credentials found!",
+        "message": "We Couldn't find any credentials in your wallet that match this request.You may need to download the right credentials or try again later"
       },
       "invalidVerifier": {
         "title": "An Error Occured!",
@@ -881,7 +885,7 @@
       },
       "credentialsMismatch": {
         "title": "An Error Occured!",
-        "message": "Credential mismatch detected. Ensure you have selected the right one containing the following claims: {{claims}} and try again."
+        "message": "Credential mismatch detected. Ensure you have selected the right one containing the following claims: [{{claims}}] and try again."
       },
       "vpFormatsNotSupported":{
         "title":"Unsupported Request",

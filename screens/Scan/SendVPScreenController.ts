@@ -179,15 +179,18 @@ export function useSendVPScreen() {
     showRetryButton: false,
   });
 
-  const claimsAsString = '[' + requestedClaimsByVerifier + ']';
+  const isClaimsEmpty =
+  !requestedClaimsByVerifier || requestedClaimsByVerifier.trim() === '';
   if (noCredentialsMatchingVPRequest) {
-    errorModal.title = t('errors.noMatchingCredentials.title');
-    errorModal.message = t('errors.noMatchingCredentials.message', {
-      claims: claimsAsString,
-    });
+    errorModal.title = isClaimsEmpty
+    ? t('errors.noMatchingCredentialsWithMissingClaims.title')
+    : t('errors.noMatchingCredentials.title');
+    errorModal.message = isClaimsEmpty
+      ? t('errors.noMatchingCredentialsWithMissingClaims.message')
+      : t('errors.noMatchingCredentials.message', { claims: requestedClaimsByVerifier });
     generateAndStoreLogMessage(
       'NO_CREDENTIAL_MATCHING_REQUEST',
-      claimsAsString,
+      requestedClaimsByVerifier,
     );
   } else if (
     error.includes('Verifier authentication was unsuccessful') ||
@@ -199,11 +202,11 @@ export function useSendVPScreen() {
   } else if (error.includes('credential mismatch detected')) {
     errorModal.title = t('errors.credentialsMismatch.title');
     errorModal.message = t('errors.credentialsMismatch.message', {
-      claims: claimsAsString,
+      claims: requestedClaimsByVerifier,
     });
     generateAndStoreLogMessage(
       'CREDENTIAL_MISMATCH_FROM_KEBAB',
-      claimsAsString,
+      requestedClaimsByVerifier,
     );
   } else if (error.includes('none of the selected VC has image')) {
     errorModal.title = t('errors.noImage.title');
@@ -241,18 +244,24 @@ export function useSendVPScreen() {
 
   useEffect(() => {
     if (noCredentialsMatchingVPRequest && !hasLoggedErrorRef.current) {
+      const isClaimsEmpty =
+        !requestedClaimsByVerifier || requestedClaimsByVerifier.trim() === '';
       setErrorModalData({
         show: true,
-        title: t('errors.noMatchingCredentials.title'),
-        message: t('errors.noMatchingCredentials.message', {
-          claims: claimsAsString,
-        }),
+        title: isClaimsEmpty
+        ? t('errors.noMatchingCredentialsWithMissingClaims.title')
+        : t('errors.noMatchingCredentials.title'),
+        message: isClaimsEmpty
+        ? t('errors.noMatchingCredentialsWithMissingClaims.message')
+        : t('errors.noMatchingCredentials.message', {
+            claims: requestedClaimsByVerifier,
+          }),
         additionalMessage: getAdditionalMessage(),
         showRetryButton: false,
       });
       generateAndStoreLogMessage(
         'NO_CREDENTIAL_MATCHING_REQUEST',
-        claimsAsString,
+        requestedClaimsByVerifier,
       );
       hasLoggedErrorRef.current = true;
     } else if (
@@ -277,14 +286,14 @@ export function useSendVPScreen() {
         show: true,
         title: t('errors.credentialsMismatch.title'),
         message: t('errors.credentialsMismatch.message', {
-          claims: claimsAsString,
+          claims: requestedClaimsByVerifier,
         }),
         additionalMessage: getAdditionalMessage(),
         showRetryButton: false,
       });
       generateAndStoreLogMessage(
         'CREDENTIAL_MISMATCH_FROM_KEBAB',
-        claimsAsString,
+        requestedClaimsByVerifier,
       );
       hasLoggedErrorRef.current = true;
     } else if (
