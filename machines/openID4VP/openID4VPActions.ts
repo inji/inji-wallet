@@ -251,26 +251,23 @@ function getVcsMatchingAuthRequest(context, event) {
   const inputDescriptors = presentationDefinition['input_descriptors'];
   let hasFormatOrConstraints = false;
   
-  inputDescriptors.forEach(inputDescriptor => {
-    if (inputDescriptor.constraints && inputDescriptor.constraints.fields) {
-      inputDescriptor.constraints.fields.forEach(field => {
-        if (field.path) {
-          field.path.forEach(path => {
-            try {
-              const pathArray = JSONPath.toPathArray(path);
-              const claimName = pathArray[pathArray.length - 1];
-              requestedClaimsByVerifier.add(claimName);
-            } catch (error) {
-              console.error(`Error processing path ${path}:`, error);
-            }
-          });
-        }
-      });
-    }
-  });
-  
   vcs.forEach(vc => {
     inputDescriptors.forEach(inputDescriptor => {
+      if (inputDescriptor.constraints && inputDescriptor.constraints.fields) {
+          inputDescriptor.constraints.fields.forEach(field => {
+            if (field.path) {
+              field.path.forEach(path => {
+                try {
+                  const pathArray = JSONPath.toPathArray(path);
+                  const claimName = pathArray[pathArray.length - 1];
+                  requestedClaimsByVerifier.add(claimName);
+                } catch (error) {
+                  console.error(`Error processing path ${path}:`, error);
+                }
+              });
+            }
+          });
+      }
       const format = inputDescriptor.format ?? presentationDefinition.format;
       hasFormatOrConstraints =
         hasFormatOrConstraints ||
@@ -285,7 +282,6 @@ function getVcsMatchingAuthRequest(context, event) {
       const isMatchingConstraints = isVCMatchingRequestConstraints(
         inputDescriptor.constraints,
         vc,
-        requestedClaimsByVerifier,
       );
 
       let shouldInclude = false;
@@ -368,16 +364,12 @@ function areVCFormatAndProofTypeMatchingRequest(
 function isVCMatchingRequestConstraints(
   constraints: any,
   credential: any,
-  requestedClaimsByVerifier: Set<string>,
 ): boolean {
   if (!constraints.fields) {
     return false;
   }
   return constraints.fields.every(field => {
     return field.path.some(path => {
-      const pathArray = JSONPath.toPathArray(path);
-      const claimName = pathArray[pathArray.length - 1];
-      requestedClaimsByVerifier.add(claimName);
       const processedCredential = fetchCredentialBasedOnFormat(credential);
       const jsonPathMatches = JSONPath({
         path: path,
