@@ -95,41 +95,33 @@ The implementation of this feature involves the following steps:
 
 ```mermaid
 sequenceDiagram
-    participant Verifier as 🔍 Verifier
-    participant Wallet as 📱 Wallet
-    participant Library as 📚 OpenId4VP Library
+  participant VP as 🔍 Verifier
+  participant W as 📱 Wallet
+  participant Lib as 📚 OpenId4VP Library
 
-    Note over Verifier: Generate QR Code with<br/>Authorization Request
-    Wallet -->> Verifier: Scan QR Code
-    Wallet -->> Library: Forward Authorization Request
+  Note over VP: Generate QR Code with<br/>Authorization Request
+  W ->> VP: Scan QR Code and get<br/>Authorization Request
+  W ->> Lib: Forward Authorization Request<br/>(authenticateVerifier api)
 
-    activate Library
-    Note over Library: Validates Request based on client id scheme
-    Note over Library: Validate Required Fields<br/>and Values
-    deactivate Library
-    Library-->>Wallet: Return Validated Authorization
+  Note over Lib: Validates Request based on client id scheme
+  Note over Lib: Validate Required Fields<br/>and Values
+  Lib-->>W: Return Validated Authorization Request
 
 
-    activate Wallet
-    Note over Wallet: Display Matching VCs<br/>to User
-    deactivate Wallet
+  Note over W: Process Authorization Request<br/>and Display Matching VCs
 
-    Wallet-->>Library: Send Selected VCs<br/>with User Consent
-    Note over Library: Construct VP Token
-    Library-->>Wallet: Return VP Token
+  W->>Lib: Send Selected VCs with User Consent<br/>(constructUnsignedVPToken api)
+  Note over Lib: Construct unsigned VP Token for each vc format
+  Note over Lib: Construct Proof Object without Signature
+  Note over Lib: Attach Proof to unsigned VP Token
+  Lib-->>W: Return unsigned VP Token mapped with vc format
 
-    activate Wallet
-    Note over Wallet: Sign VP Token
-    Note over Wallet: Construct Signature
-    deactivate Wallet
-    Wallet-->>Library: Send Signature
+  Note over W: For ldp_vc format, create detached JWT<br/>by signing the data
+  Note over W: For mso_mdoc format, create signature<br/>by signed the data
+  W->>Lib: Send signed data<br/>(shareVerifiablePresentation api)
 
-    activate Library
-    Note over Library: Construct Proof Object
-    Note over Library: Attach Proof to VP Token
-    deactivate Library
 
-    Library-->>Verifier: HTTP POST Request with:<br/>1. VP Token<br/>2. Presentation Submission<br/>3. State
+  Lib->>VP: HTTP POST Request with:<br/>1. VP Token<br/>2. Presentation Submission<br/>3. State
 ```
 
 **Note:** Currently holder binding is only supported for VCs signed with signature suite **_Ed25519Signature2020_**.
