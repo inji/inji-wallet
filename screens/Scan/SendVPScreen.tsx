@@ -28,7 +28,7 @@ import {SvgImage} from '../../components/ui/svg';
 import {Loader} from '../../components/ui/Loader';
 import {Icon} from 'react-native-elements';
 import {ScanLayoutProps} from '../../routes/routeTypes';
-import {OpenID4VP} from '../../shared/openID4VP/OpenID4VP';
+import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {GlobalContext} from '../../shared/GlobalContext';
 import {APP_EVENTS} from '../../machines/app';
 import {useScanScreen} from './ScanScreenController';
@@ -47,7 +47,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     if (controller.errorModal.show && controller.isOVPViaDeepLink) {
       const timeout = setTimeout(
         () => {
-          OpenID4VP.sendErrorToVerifier(
+          OpenID4VP.getInstance().sendErrorToVerifier(
             OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
             OVP_ERROR_CODE.NO_MATCHING_VCS,
           );
@@ -107,7 +107,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   });
 
   const handleDismiss = () => {
-    OpenID4VP.sendErrorToVerifier(
+    OpenID4VP.getInstance().sendErrorToVerifier(
       OVP_ERROR_MESSAGES.DECLINED,
       OVP_ERROR_CODE.DECLINED,
     );
@@ -120,7 +120,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   };
 
   const handleRejectButtonEvent = () => {
-    OpenID4VP.sendErrorToVerifier(
+    OpenID4VP.getInstance().sendErrorToVerifier(
       OVP_ERROR_MESSAGES.DECLINED,
       OVP_ERROR_CODE.DECLINED,
     );
@@ -209,7 +209,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const getPrimaryButtonEvent = () => {
     if (controller.showConfirmationPopup && controller.isOVPViaDeepLink) {
       return () => {
-        OpenID4VP.sendErrorToVerifier(
+        OpenID4VP.getInstance().sendErrorToVerifier(
           OVP_ERROR_MESSAGES.DECLINED,
           OVP_ERROR_CODE.DECLINED,
         );

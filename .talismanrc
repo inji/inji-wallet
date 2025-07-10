@@ -399,3 +399,6 @@ fileignoreconfig:
   - filename: machines/openID4VP/openID4VPModel.ts
     checksum: 5d1ed430f84852d6c85bc439c47641cfb5b19cbd1a03faf8918429685db51e07
     version: ""
+  - filename: shared/openID4VP/OpenID4VPHelper.ts
+    checksum: 2ab5f935ea3d1ec4d109d8614c2246f40e284594288566338f185611470e6928
+    version: "1.0"

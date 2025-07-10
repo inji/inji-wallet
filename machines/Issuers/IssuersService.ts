@@ -13,11 +13,11 @@ import {
   updateCredentialInformation,
   verifyCredentialData,
 } from '../../shared/openId4VCI/Utils';
-import {VciClient} from '../../shared/vciClient/VciClient';
+import VciClient from '../../shared/vciClient/VciClient';
 import {issuerType} from './IssuersMachine';
 import {setItem} from '../store';
 import {API_CACHED_STORAGE_KEYS} from '../../shared/constants';
-import { createCacheObject } from '../../shared/Utils';
+import {createCacheObject} from '../../shared/Utils';
 
 export const IssuersService = () => {
   return {
@@ -77,31 +77,32 @@ export const IssuersService = () => {
           cNonce: cNonce,
         });
       };
-      const credential = await VciClient.requestCredentialFromTrustedIssuer(
-        constructIssuerMetaData(
-          context.selectedIssuer,
-          context.selectedCredentialType,
-          context.selectedCredentialType.scope,
-        ),
-        {
-          clientId: context.selectedIssuer.client_id,
-          redirectUri: context.selectedIssuer.redirect_uri,
-        },
-        getProofJwt,
-        navigateToAuthView,
-      );
+      const credential =
+        await VciClient.getInstance().requestCredentialFromTrustedIssuer(
+          constructIssuerMetaData(
+            context.selectedIssuer,
+            context.selectedCredentialType,
+            context.selectedCredentialType.scope,
+          ),
+          {
+            clientId: context.selectedIssuer.client_id,
+            redirectUri: context.selectedIssuer.redirect_uri,
+          },
+          getProofJwt,
+          navigateToAuthView,
+        );
       return updateCredentialInformation(context, credential);
     },
     sendTxCode: async (context: any) => {
-      await VciClient.client.sendTxCodeFromJS(context.txCode);
+      await VciClient.getInstance().sendTxCode(context.txCode);
     },
 
     sendConsentGiven: async () => {
-      await VciClient.client.sendIssuerTrustResponseFromJS(true);
+      await VciClient.getInstance().sendIssuerConsent(true);
     },
 
     sendConsentNotGiven: async () => {
-      await VciClient.client.sendIssuerTrustResponseFromJS(false);
+      await VciClient.getInstance().sendIssuerConsent(false);
     },
 
     checkIssuerIdInStoredTrustedIssuers: async (context: any) => {
@@ -144,7 +145,7 @@ export const IssuersService = () => {
       ) => {
         let issuer = issuerMetadata as issuerType;
         issuer.issuer_id = issuer.credential_issuer;
-        const wellknownCacheObject= createCacheObject(issuer)
+        const wellknownCacheObject = createCacheObject(issuer);
         await setItem(
           API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(issuer.issuer_id),
           wellknownCacheObject,
@@ -194,7 +195,7 @@ export const IssuersService = () => {
         });
       };
 
-      const credential = await VciClient.requestCredentialByOffer(
+      const credential = await VciClient.getInstance().requestCredentialByOffer(
         context.qrData,
         getTxCode,
         getSignedProofJwt,
@@ -222,7 +223,7 @@ export const IssuersService = () => {
         true,
         context.cNonce,
       );
-      await VciClient.client.sendProofFromJS(proofJWT);
+      await VciClient.getInstance().sendProof(proofJWT);
       return proofJWT;
     },
     constructProofForTrustedIssuers: async (context: any) => {
@@ -237,7 +238,7 @@ export const IssuersService = () => {
         false,
         context.cNonce,
       );
-      await VciClient.client.sendProofFromJS(proofJWT);
+      await VciClient.getInstance().sendProof(proofJWT);
       return proofJWT;
     },
 
