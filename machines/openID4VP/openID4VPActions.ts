@@ -12,7 +12,7 @@ import {JSONPath} from 'jsonpath-plus';
 import {VCShareFlowType} from '../../shared/Utils';
 import {ActivityLogEvents} from '../activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
-import {OpenID4VP} from '../../shared/openID4VP/OpenID4VP';
+import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {VCFormat} from '../../shared/VCFormat';
 import {
   getIssuerAuthenticationAlorithmForMdocVC,
@@ -218,7 +218,7 @@ export const openID4VPActions = (model: any) => {
     ),
 
     shareDeclineStatus: () => {
-      OpenID4VP.sendErrorToVerifier(
+      OpenID4VP.getInstance().sendErrorToVerifier(
         OVP_ERROR_MESSAGES.DECLINED,
         OVP_ERROR_CODE.DECLINED,
       );
@@ -290,7 +290,7 @@ function getVcsMatchingAuthRequest(context, event) {
   }
 
   if (Object.keys(matchingVCs).length === 0) {
-    OpenID4VP.sendErrorToVerifier(
+    OpenID4VP.getInstance().sendErrorToVerifier(
       OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
       OVP_ERROR_CODE.NO_MATCHING_VCS,
     );

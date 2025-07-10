@@ -5,16 +5,16 @@ import {
 } from '../../shared/cryptoutil/cryptoUtil';
 import {getJWK, hasKeyPair} from '../../shared/openId4VCI/Utils';
 import base64url from 'base64url';
-import {
-  constructDetachedJWT,
-  isClientValidationRequired,
-  OpenID4VP,
-} from '../../shared/openID4VP/OpenID4VP';
+import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {VCFormat} from '../../shared/VCFormat';
 import {KeyTypes} from '../../shared/cryptoutil/KeyTypes';
 import {getMdocAuthenticationAlorithm} from '../../components/VC/common/VCUtils';
 import {isIOS} from '../../shared/constants';
 import {canonicalize} from '../../shared/Utils';
+import {
+  constructDetachedJWT,
+  isClientValidationRequired,
+} from '../../shared/openID4VP/OpenID4VPHelper';
 
 const signatureSuite = 'JsonWebSignature2020';
 
@@ -29,8 +29,7 @@ export const openID4VPServices = () => {
     },
 
     getAuthenticationResponse: (context: any) => async () => {
-      OpenID4VP.initialize();
-      const serviceRes = await OpenID4VP.authenticateVerifier(
+      const serviceRes = await OpenID4VP.getInstance().authenticateVerifier(
         context.urlEncodedAuthorizationRequest,
         context.trustedVerifiers,
       );
@@ -48,10 +47,12 @@ export const openID4VPServices = () => {
     },
 
     sendVP: (context: any) => async () => {
+      const openid = OpenID4VP.getInstance();
+
       const jwk = await getJWK(context.publicKey, context.keyType);
       const holderId = 'did:jwk:' + base64url(JSON.stringify(jwk)) + '#0';
 
-      const unSignedVpTokens = await OpenID4VP.constructUnsignedVPToken(
+      const unSignedVpTokens = await openid.constructUnsignedVPToken(
         context.selectedVCs,
         holderId,
         signatureSuite,
@@ -136,9 +137,7 @@ export const openID4VPServices = () => {
           vpTokenSigningResultMap[formatType] = signedData;
         }
       }
-      return await OpenID4VP.shareVerifiablePresentation(
-        vpTokenSigningResultMap,
-      );
+      return await openid.shareVerifiablePresentation(vpTokenSigningResultMap);
     },
   };
 };
