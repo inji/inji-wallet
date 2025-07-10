@@ -29,9 +29,7 @@ export const openID4VPServices = () => {
     },
 
     getAuthenticationResponse: (context: any) => async () => {
-      const openid = OpenID4VP.getInstance();
-      openid.initialize();
-      const serviceRes = await openid.authenticateVerifier(
+      const serviceRes = await OpenID4VP.getInstance().authenticateVerifier(
         context.urlEncodedAuthorizationRequest,
         context.trustedVerifiers,
       );

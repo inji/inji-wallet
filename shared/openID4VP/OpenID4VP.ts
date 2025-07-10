@@ -14,17 +14,15 @@ class OpenID4VP {
   private static instance: OpenID4VP;
   private InjiOpenID4VP = NativeModules.InjiOpenID4VP;
 
-  private constructor() {}
+  private constructor() {
+    this.InjiOpenID4VP.init(__AppId.getValue());
+  }
 
   public static getInstance(): OpenID4VP {
     if (!OpenID4VP.instance) {
       OpenID4VP.instance = new OpenID4VP();
     }
     return OpenID4VP.instance;
-  }
-
-  initialize() {
-    this.InjiOpenID4VP.init(__AppId.getValue());
   }
 
   async authenticateVerifier(

@@ -1,4 +1,3 @@
-// shared/vciClient/VciClient.ts
 import {NativeModules, NativeEventEmitter} from 'react-native';
 import {__AppId} from '../GlobalVariables';
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
