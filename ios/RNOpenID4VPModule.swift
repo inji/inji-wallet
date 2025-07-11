@@ -12,14 +12,19 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   }
 
   @objc
-  func `init`(_ appId: String) {
-    openID4VP = OpenID4VP(traceabilityId: appId)
+  func `initSdk`(_ appId: String, walletMetadata: AnyObject?,resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+    do {
+      let walletMetadataObject = try getWalletMetadataFromDict(walletMetadata, reject: reject)
+      openID4VP = OpenID4VP(traceabilityId: appId, walletMetadata: walletMetadataObject)
+      resolve(true)
+    } catch {
+      reject("OPENID4VP", error.localizedDescription, error)
+    }
   }
-
+  
   @objc
   func authenticateVerifier(_ urlEncodedAuthorizationRequest: String,
                             trustedVerifierJSON: AnyObject,
-                            walletMetadata: AnyObject?,
                             shouldValidateClient: Bool,
                             resolver resolve: @escaping RCTPromiseResolveBlock,
                             rejecter reject: @escaping RCTPromiseRejectBlock) {
@@ -38,12 +43,10 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           return Verifier(clientId: clientId, responseUris: responseUris)
         }
 
-        let walletMetadataObject = try getWalletMetadataFromDict(walletMetadata as Any, reject: reject)
-
         let authenticationResponse: AuthorizationRequest = try await openID4VP!.authenticateVerifier(
           urlEncodedAuthorizationRequest: urlEncodedAuthorizationRequest,
           trustedVerifierJSON: trustedVerifiersList,
-          shouldValidateClient: shouldValidateClient, walletMetadata: walletMetadataObject
+          shouldValidateClient: shouldValidateClient
         )
 
         let response = try toJsonString(jsonObject: authenticationResponse)
@@ -204,23 +207,39 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
     reject("OPENID4VP", "Invalid wallet metadata format", nil)
     throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Wallet Metadata"])
   }
-
-  var vpFormatsSupported: [String: VPFormatSupported] = [:]
+  
+  var vpFormatsSupported: [FormatType: VPFormatSupported] = [:]
   if let vpFormatsSupportedDict = metadata["vp_formats_supported"] as? [String: Any],
      let ldpVcDict = vpFormatsSupportedDict["ldp_vc"] as? [String: Any] {
     let algValuesSupported = ldpVcDict["alg_values_supported"] as? [String]
-    vpFormatsSupported["ldp_vc"] = VPFormatSupported(algValuesSupported: algValuesSupported)
+    vpFormatsSupported[.ldp_vc] = VPFormatSupported(algValuesSupported: algValuesSupported)
   } else {
-    vpFormatsSupported["ldp_vc"] = VPFormatSupported(algValuesSupported: nil)
+    vpFormatsSupported[.ldp_vc] = VPFormatSupported(algValuesSupported: nil)
   }
-
+  
   let walletMetadataObject = try WalletMetadata(
     presentationDefinitionURISupported: metadata["presentation_definition_uri_supported"] as? Bool,
     vpFormatsSupported: vpFormatsSupported,
-    clientIdSchemesSupported: metadata["client_id_schemes_supported"] as? [String],
-    requestObjectSigningAlgValuesSupported: metadata["request_object_signing_alg_values_supported"] as? [String],
-    authorizationEncryptionAlgValuesSupported: metadata["authorization_encryption_alg_values_supported"] as? [String],
-    authorizationEncryptionEncValuesSupported: metadata["authorization_encryption_enc_values_supported"] as? [String]
+    clientIdSchemesSupported: mapStringsToEnum(metadata["client_id_schemes_supported"] as? [String] ?? [], ofType: ClientIdScheme.self),
+    requestObjectSigningAlgValuesSupported: mapStringsToEnum(metadata["request_object_signing_alg_values_supported"] as? [String] ?? [], ofType: RequestSigningAlgorithm.self),
+    authorizationEncryptionAlgValuesSupported: mapStringsToEnum(metadata["authorization_encryption_alg_values_supported"] as? [String] ?? [], ofType: KeyManagementAlgorithm.self),
+    authorizationEncryptionEncValuesSupported: mapStringsToEnum(metadata["authorization_encryption_enc_values_supported"] as? [String] ?? [], ofType: ContentEncryptionAlgorithm.self)
   )
   return walletMetadataObject
+}
+
+func mapStringsToEnum<T: RawRepresentable & CaseIterable>(
+  _ input: [String],
+  ofType: T.Type
+) throws -> [T] where T.RawValue == String {
+  return try input.map { str in
+    guard let match = T.allCases.first(where: { $0.rawValue.lowercased() == str.lowercased() }) else {
+      throw NSError(
+        domain: "EnumMappingError",
+        code: 1001,
+        userInfo: [NSLocalizedDescriptionKey: "Invalid value '\(str)' for enum \(T.self)"]
+      )
+    }
+    return match
+  }
 }

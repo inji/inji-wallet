@@ -14,13 +14,18 @@ class OpenID4VP {
   private static instance: OpenID4VP;
   private InjiOpenID4VP = NativeModules.InjiOpenID4VP;
 
-  private constructor() {
-    this.InjiOpenID4VP.init(__AppId.getValue());
+  private constructor(walletMetadata: any) {
+    this.InjiOpenID4VP.initSdk(__AppId.getValue(), walletMetadata);
   }
 
   public static getInstance(): OpenID4VP {
     if (!OpenID4VP.instance) {
-      OpenID4VP.instance = new OpenID4VP();
+      OpenID4VP.instance = new OpenID4VP(walletMetadata);
+      getWalletMetadata()
+        .then(data => {
+          return new OpenID4VP(data || walletMetadata);
+        })
+        .catch(() => new OpenID4VP(walletMetadata));
     }
     return OpenID4VP.instance;
   }
@@ -30,13 +35,11 @@ class OpenID4VP {
     trustedVerifiersList: any,
   ) {
     const shouldValidateClient = await isClientValidationRequired();
-    const metadata = (await getWalletMetadata()) || walletMetadata;
 
     const authenticationResponse =
       await this.InjiOpenID4VP.authenticateVerifier(
         urlEncodedAuthorizationRequest,
         trustedVerifiersList,
-        metadata,
         shouldValidateClient,
       );
     return JSON.parse(authenticationResponse);
