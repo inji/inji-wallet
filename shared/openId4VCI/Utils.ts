@@ -27,7 +27,6 @@ import {
   KEY_TYPE_TO_JWT_ALG,
 } from '../constants';
 import {getJWT} from '../cryptoutil/cryptoUtil';
-import {isMockVC} from '../Utils';
 import {
   VerificationErrorMessage,
   VerificationErrorType,
