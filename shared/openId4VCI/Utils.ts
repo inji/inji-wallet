@@ -470,21 +470,12 @@ export function getMatchingCredentialIssuerMetadata(
 export async function verifyCredentialData(
   credential: Credential,
   credentialFormat: string,
-  issuerId: string,
 ) {
-  if (credentialFormat === VCFormat.mso_mdoc || !isMockVC(issuerId)) {
     const verificationResult = await verifyCredential(
       credential,
       credentialFormat,
     );
     return verificationResult;
-  } else {
-    return {
-      isVerified: true,
-      verificationMessage: VerificationErrorMessage.NO_ERROR,
-      verificationErrorCode: VerificationErrorType.NO_ERROR,
-    };
-  }
 }
 function resolveEd25519Alg(proofSigningAlgosSupported: string[]) {
   return proofSigningAlgosSupported.includes(

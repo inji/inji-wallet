@@ -196,7 +196,6 @@ export const VCItemServices = model => {
         const verificationResult = await verifyCredentialData(
           getVerifiableCredential(context.verifiableCredential),
           context.selectedCredentialType.format,
-          context.selectedIssuerId
         );
          if(!verificationResult.isVerified) {
             throw new Error(verificationResult.verificationErrorCode);
