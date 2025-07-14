@@ -14,10 +14,13 @@ import {
   verifyCredentialData,
 } from '../../shared/openId4VCI/Utils';
 import VciClient from '../../shared/vciClient/VciClient';
-import {issuerType} from './IssuersMachine';
+import {displayType, issuerType} from './IssuersMachine';
 import {setItem} from '../store';
 import {API_CACHED_STORAGE_KEYS} from '../../shared/constants';
 import {createCacheObject} from '../../shared/Utils';
+import {selectSelectedIssuer} from './IssuersSelectors';
+import {sendTo} from 'xstate/lib/actions';
+import { IssuerWellknownResponse } from '../VerifiableCredential/VCMetaMachine/vc';
 
 export const IssuersService = () => {
   return {
@@ -30,11 +33,8 @@ export const IssuersService = () => {
     },
     checkInternet: async () => await NetInfo.fetch(),
     downloadIssuerWellknown: async (context: any) => {
-      const wellknownResponse = await CACHED_API.fetchIssuerWellknownConfig(
-        context.selectedIssuer.issuer_id,
-        context.selectedIssuer.credential_issuer_host
-          ? context.selectedIssuer.credential_issuer_host
-          : context.selectedIssuer.credential_issuer,
+      const wellknownResponse = await VciClient.getInstance().getIssuerMetadata(
+        context.selectedIssuer.credential_issuer_host,
       );
       return wellknownResponse;
     },
@@ -70,26 +70,35 @@ export const IssuersService = () => {
           authEndpoint: authorizationEndpoint,
         });
       };
-      const getProofJwt = async (accessToken: string, cNonce: string) => {
+      const getProofJwt = async (
+        credentialIssuer: string,
+        cNonce: string | null,
+        proofSigningAlgosSupported: string[] | null,
+      ) => {
         sendBack({
           type: 'PROOF_REQUEST',
-          accessToken: accessToken,
+          credentialIssuer: credentialIssuer,
           cNonce: cNonce,
+          proofSigningAlgosSupported: proofSigningAlgosSupported,
         });
       };
-      const credential =
+      const getTokenResponse = (tokenRequest: object) => {
+        sendBack({
+          type: 'TOKEN_REQUEST',
+          tokenRequest: tokenRequest,
+        });
+      };
+      const {credential} =
         await VciClient.getInstance().requestCredentialFromTrustedIssuer(
-          constructIssuerMetaData(
-            context.selectedIssuer,
-            context.selectedCredentialType,
-            context.selectedCredentialType.scope,
-          ),
+          context.selectedIssuer.credential_issuer_host,
+          context.selectedCredentialType.id,
           {
             clientId: context.selectedIssuer.client_id,
             redirectUri: context.selectedIssuer.redirect_uri,
           },
           getProofJwt,
           navigateToAuthView,
+          getTokenResponse,
         );
       return updateCredentialInformation(context, credential);
     },
@@ -109,7 +118,7 @@ export const IssuersService = () => {
       const {RNSecureKeystoreModule} = NativeModules;
       try {
         return await RNSecureKeystoreModule.hasAlias(
-          context.credentialOfferIssuerMetadata.credential_issuer,
+          context.credentialOfferCredentialIssuer,
         );
       } catch (error) {
         console.error(
@@ -123,8 +132,8 @@ export const IssuersService = () => {
       const {RNSecureKeystoreModule} = NativeModules;
       try {
         await RNSecureKeystoreModule.storeData(
-          context.credentialOfferIssuerMetadata.credential_issuer,
-          JSON.stringify(context.credentialOfferIssuerMetadata),
+          context.credentialOfferCredentialIssuer,
+          'trusted',
         );
       } catch {
         console.error('Error updating issuer trust in keystore');
@@ -138,39 +147,37 @@ export const IssuersService = () => {
         });
       };
       const getSignedProofJwt = async (
-        accessToken: string,
+        credentialIssuer: string,
         cNonce: string | null,
-        issuerMetadata: object,
-        credentialConfigurationId: string,
+        proofSigningAlgosSupported: string[] | null,
       ) => {
-        let issuer = issuerMetadata as issuerType;
-        issuer.issuer_id = issuer.credential_issuer;
-        const wellknownCacheObject = createCacheObject(issuer);
-        await setItem(
-          API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(issuer.issuer_id),
-          wellknownCacheObject,
-          '',
-        );
+        // const issuerMetadata =await VciClient.getInstance().getIssuerMetadata(credentialIssuer) as issuerType;
+        // const wellknownCacheObject = createCacheObject(
+        //   issuerMetadata
+        // );
+        // await setItem(
+        //   API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(credentialIssuer),
+        //   wellknownCacheObject,
+        //   '',
+        // );
 
-        let credentialTypes: Array<{id: string; [key: string]: any}> = [];
-        if (
-          issuer.credential_configurations_supported[credentialConfigurationId]
-        ) {
-          credentialTypes.push({
-            id: credentialConfigurationId,
-            ...issuer.credential_configurations_supported[
-              credentialConfigurationId
-            ],
-          });
-          sendBack({
-            type: 'PROOF_REQUEST',
-            accessToken: accessToken,
-            cNonce: cNonce,
-            issuerMetadata: issuerMetadata,
-            issuer: issuer,
-            credentialTypes: credentialTypes,
-          });
-        }
+        // let credentialTypes: Array<{id: string; [key: string]: any}> = [];
+        // if (
+        //   issuerMetadata.credential_configurations_supported[credentialConfigurationId]
+        // ) {
+        // credentialTypes.push({
+        //   id: credentialConfigurationId,
+        //   ...issuer.credential_configurations_supported[
+        //     credentialConfigurationId
+        //   ],
+        // });
+        sendBack({
+          type: 'PROOF_REQUEST',
+          cNonce: cNonce,
+          issuer: credentialIssuer,
+          proofSigningAlgosSupported: proofSigningAlgosSupported,
+        });
+        //}
       };
 
       const getTxCode = async (
@@ -186,24 +193,52 @@ export const IssuersService = () => {
         });
       };
 
-      const requesTrustIssuerConsent = async (issuerMetadata: object) => {
-        const issuerMetadataObject = issuerMetadata as issuerType;
+      const requesTrustIssuerConsent = async (
+        credentialIssuer: string,
+        issuerDisplay: object[],
+      ) => {
+        const issuerDisplayObject = issuerDisplay as displayType[];
 
         sendBack({
           type: 'TRUST_ISSUER_CONSENT_REQUEST',
-          issuerMetadata: issuerMetadataObject,
+          issuerDisplay: issuerDisplayObject,
+          credentialIssuer: credentialIssuer,
+        });
+      };
+      const getTokenResponse = (tokenRequest: object) => {
+        sendBack({
+          type: 'TOKEN_REQUEST',
+          tokenRequest: tokenRequest,
         });
       };
 
-      const credential = await VciClient.getInstance().requestCredentialByOffer(
-        context.qrData,
-        getTxCode,
-        getSignedProofJwt,
-        navigateToAuthView,
-        requesTrustIssuerConsent,
-      );
+      const {credential} =
+        await VciClient.getInstance().requestCredentialByOffer(
+          context.qrData,
+          getTxCode,
+          getSignedProofJwt,
+          navigateToAuthView,
+          getTokenResponse,
+          requesTrustIssuerConsent,
+        );
       return credential;
     },
+    sendTokenRequest: async (context: any) => {
+      const tokenRequestObject = context.tokenRequest;
+      return await sendTokenRequest(tokenRequestObject);
+    },
+    sendTokenResponse: async (context: any) => {
+      const tokenResponse = context.tokenResponse;
+      if (!tokenResponse) {
+        throw new Error(
+          'Could not send token response, tokenResponse is undefined or null',
+        );
+      }
+      return await VciClient.getInstance().sendTokenResponse(
+        JSON.stringify(tokenResponse),
+      );
+    },
+
     updateCredential: async (context: any) => {
       const credential = await updateCredentialInformation(
         context,
@@ -211,13 +246,26 @@ export const IssuersService = () => {
       );
       return credential;
     },
+    cacheIssuerWellknown: async (context: any) => {
+      const credentialIssuer = context.selectedIssuer.credential_issuer;
+      const wellknownCacheObject = createCacheObject(
+        (await VciClient.getInstance().getIssuerMetadata(
+          credentialIssuer,
+        )) as issuerType,
+      );
+      await setItem(
+        API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(credentialIssuer),
+        wellknownCacheObject,
+        '',
+      );
+    },
     constructProof: async (context: any) => {
       const issuerMeta = context.selectedIssuer;
       const proofJWT = await constructProofJWT(
         context.publicKey,
         context.privateKey,
-        context.accessToken,
-        issuerMeta,
+        context.credentialOfferCredentialIssuer,
+        null,
         context.keyType,
         context.wellknownKeyTypes,
         true,
@@ -231,8 +279,8 @@ export const IssuersService = () => {
       const proofJWT = await constructProofJWT(
         context.publicKey,
         context.privateKey,
-        context.accessToken,
-        issuerMeta,
+        context.selectedIssuer.credential_issuer_host,
+        context.selectedIssuer.client_id,
         context.keyType,
         context.wellknownKeyTypes,
         false,
@@ -280,3 +328,49 @@ export const IssuersService = () => {
     },
   };
 };
+async function sendTokenRequest(tokenRequestObject: any) {
+  if (!tokenRequestObject?.tokenEndpoint) {
+    throw new Error('tokenEndpoint is required');
+  }
+
+  const formBody = new URLSearchParams();
+
+  formBody.append('grant_type', tokenRequestObject.grantType);
+
+  if (tokenRequestObject.authCode) {
+    formBody.append('code', tokenRequestObject.authCode);
+  }
+  if (tokenRequestObject.preAuthorizedCode) {
+    formBody.append(
+      'pre-authorized_code',
+      tokenRequestObject.preAuthorizedCode,
+    );
+  }
+  if (tokenRequestObject.txCode) {
+    formBody.append('tx_code', tokenRequestObject.txCode);
+  }
+  if (tokenRequestObject.clientId) {
+    formBody.append('client_id', tokenRequestObject.clientId);
+  }
+  if (tokenRequestObject.redirectUri) {
+    formBody.append('redirect_uri', tokenRequestObject.redirectUri);
+  }
+  if (tokenRequestObject.codeVerifier) {
+    formBody.append('code_verifier', tokenRequestObject.codeVerifier);
+  }
+
+  const response = await fetch(tokenRequestObject.tokenEndpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: formBody.toString(),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Token request failed: ${response.status} ${errorText}`);
+  }
+
+  return await response.json();
+}

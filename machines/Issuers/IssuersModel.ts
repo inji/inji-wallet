@@ -18,7 +18,7 @@ export const IssuersModel = createModel(
     qrData: '' as string,
     selectedIssuer: {} as issuerType,
     selectedIssuerWellknownResponse: {} as IssuerWellknownResponse,
-    tokenResponse: {} as AuthorizeResult,
+    tokenResponse: {} as object,
     errorMessage: '' as string,
     loadingReason: 'displayIssuers' as string,
     verifiableCredential: null as VerifiableCredential | null,
@@ -46,6 +46,7 @@ export const IssuersModel = createModel(
     txCodeLength: null as number | null,
     isCredentialOfferFlow: false as boolean,
     credentialOfferIssuerMetadata: {} as object,
+    credentialOfferCredentialIssuer: {} as string,
   },
   {
     events: IssuersEvents,

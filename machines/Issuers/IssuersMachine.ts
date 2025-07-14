@@ -4,6 +4,7 @@ import {IssuersActions} from './IssuersActions';
 import {IssuersService} from './IssuersService';
 import {IssuersGuards} from './IssuersGuards';
 import {CredentialTypes} from '../VerifiableCredential/VCMetaMachine/vc';
+import { sendTo } from 'xstate/lib/actions';
 
 const model = IssuersModel;
 
@@ -120,7 +121,7 @@ export const IssuersMachine = model.createMachine(
                 authEndpointToOpen: false,
               }),
             ],
-            target: 'proccessingCredential',
+            target: 'cachingIssuerWellknown',
           },
           onError: [
             {
@@ -140,11 +141,15 @@ export const IssuersMachine = model.createMachine(
           ],
         },
         on: {
+          TOKEN_REQUEST:{
+            actions:['setTokenRequestObject'],
+            target: '.tokenRequest',
+          },
           PROOF_REQUEST: {
             actions: [
-              'setCredentialOfferIssuer',
-              'setCredentialOfferIssuerWellknownResponse',
-              'setOfferCredentialTypeContexts',
+              'setCNonce',
+              'setWellknwonKeyTypes',
+              'setSelectedCredentialIssuer',
             ],
             target: '.keyManagement',
           },
@@ -161,10 +166,9 @@ export const IssuersMachine = model.createMachine(
             target: '.waitingForTxCode',
           },
           TRUST_ISSUER_CONSENT_REQUEST: {
-            actions: ['setCredentialOfferIssuerMetadata'],
+            actions: ['setIssuerDisplayDetails', 'setSelectedCredentialIssuer'],
             target: '.checkingIssuerTrust',
           },
-
           CANCEL: {
             actions: [
               'resetLoadingReason',
@@ -177,6 +181,41 @@ export const IssuersMachine = model.createMachine(
         },
         states: {
           idle: {},
+          tokenRequest: {
+            invoke:{
+              src: 'sendTokenRequest',
+              onDone: {
+                actions: ["setTokenResponseObject"],
+                target: 'sendTokenResponse',
+              },
+              onError: {
+                actions: [
+                  'resetCredentialOfferIssuer',
+                  'resetLoadingReason',
+                  'resetQrData',
+                  'resetRequestTxCode',
+                ],
+                target: '#issuersMachine.error',
+              },
+            }
+          },
+          sendTokenResponse: {
+            invoke: {
+              src: 'sendTokenResponse',
+              onDone: {
+                target: '#issuersMachine.credentialDownloadFromOffer.idle',
+              },
+              onError: {
+                actions: [
+                  'resetCredentialOfferIssuer',
+                  'resetLoadingReason',
+                  'resetQrData',
+                  'resetRequestTxCode',
+                ],
+                target: '#issuersMachine.error'
+              },
+            },
+          },
           checkingIssuerTrust: {
             invoke: {
               src: 'checkIssuerIdInStoredTrustedIssuers',
@@ -186,10 +225,7 @@ export const IssuersMachine = model.createMachine(
                   target: 'sendConsentGiven',
                 },
                 {
-                  actions: [
-                    'setRequestConsentToTrustIssuer',
-                    'setIssuerDisplayDetails',
-                  ],
+                  actions: ['setRequestConsentToTrustIssuer'],
                   target: 'credentialOfferDownloadConsent',
                 },
               ],
@@ -396,6 +432,23 @@ export const IssuersMachine = model.createMachine(
           },
         },
       },
+      cachingIssuerWellknown: {
+        invoke: {
+          src: 'cacheIssuerWellknown',
+          onDone: {
+            actions: [
+              'setCredentialOfferIssuer',
+              'setCredentialOfferIssuerWellknownResponse',
+              'setOfferCredentialTypeContexts',
+            ],
+            target: 'proccessingCredential',
+          },
+          onError: {
+            actions: ['resetLoadingReason'],
+            target: 'error',
+          },
+        },
+      },
       proccessingCredential: {
         invoke: {
           src: 'updateCredential',
@@ -507,8 +560,16 @@ export const IssuersMachine = model.createMachine(
               }),
             ],
           },
+          TOKEN_REQUEST:{
+            actions:['setTokenRequestObject'],
+            target: '.tokenRequest',
+          },
           PROOF_REQUEST: {
-            actions: ['setAccessToken', 'setCNonce'],
+            actions: [
+              'setCNonce',
+              'setWellknwonKeyTypes',
+              'setSelectedCredentialIssuer',
+            ],
             target: '.keyManagement',
           },
           CANCEL: {
@@ -519,6 +580,41 @@ export const IssuersMachine = model.createMachine(
         initial: 'idle',
         states: {
           idle: {},
+          tokenRequest: {
+            invoke:{
+              src: 'sendTokenRequest',
+              onDone: {
+                actions: ["setTokenResponseObject"],
+                target: 'sendTokenResponse',
+              },
+              onError: {
+                actions: [
+                  'resetCredentialOfferIssuer',
+                  'resetLoadingReason',
+                  'resetQrData',
+                  'resetRequestTxCode',
+                ],
+                target: '#issuersMachine.error',
+              },
+            }
+          },
+          sendTokenResponse: {
+            invoke: {
+              src: 'sendTokenResponse',
+              onDone: {
+                target: '#issuersMachine.credentialDownloadFromOffer.idle',
+              },
+              onError: {
+                actions: [
+                  'resetCredentialOfferIssuer',
+                  'resetLoadingReason',
+                  'resetQrData',
+                  'resetRequestTxCode',
+                ],
+                target: '#issuersMachine.error'
+              },
+            },
+          },
           constructProof: {
             invoke: {
               src: 'constructProofForTrustedIssuers',

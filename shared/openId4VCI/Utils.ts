@@ -273,16 +273,16 @@ export enum ErrorMessage {
 export async function constructProofJWT(
   publicKey: any,
   privateKey: any,
-  accessToken: string,
-  selectedIssuer: issuerType,
+  selectedIssuer: string,
+  client_id: string?,
   keyType: string,
   proofSigningAlgosSupported: string[] = [],
   isCredentialOfferFlow: boolean,
   cNonce?: string,
 ): Promise<string> {
   const jwk = await getJWK(publicKey, keyType);
-  const decodedToken = jwtDecode(accessToken);
-  const nonce = cNonce ?? decodedToken?.c_nonce;
+
+  const nonce = cNonce
 
   const alg =
     keyType === KeyTypes.ED25519
@@ -302,9 +302,9 @@ export async function constructProofJWT(
   };
 
   const jwtPayload = {
-    iss: selectedIssuer.client_id,
+    iss: client_id,
     nonce,
-    aud: selectedIssuer.credential_audience ?? selectedIssuer.credential_issuer,
+    aud: selectedIssuer,
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000) + 18000,
   };

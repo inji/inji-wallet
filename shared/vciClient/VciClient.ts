@@ -9,30 +9,48 @@ class VciClient {
   private InjiVciClient = NativeModules.InjiVciClient;
 
   private constructor() {
+    console.log('Initializing VciClient with AppId:', __AppId.getValue());
     this.InjiVciClient.init(__AppId.getValue());
   }
 
   static getInstance(): VciClient {
     if (!VciClient.instance) {
+      console.log('Creating new VciClient instance.');
       VciClient.instance = new VciClient();
     }
     return VciClient.instance;
   }
 
   async sendProof(jwt: string) {
+    console.log('sendProof called with JWT:', jwt);
     this.InjiVciClient.sendProofFromJS(jwt);
   }
 
   async sendAuthCode(authCode: string) {
+    console.log('sendAuthCode called with authCode:', authCode);
     this.InjiVciClient.sendAuthCodeFromJS(authCode);
   }
 
   async sendTxCode(code: string) {
+    console.log('sendTxCode called with code:', code);
     this.InjiVciClient.sendTxCodeFromJS(code);
   }
 
   async sendIssuerConsent(consent: boolean) {
+    console.log('sendIssuerConsent called with consent:', consent);
     this.InjiVciClient.sendIssuerTrustResponseFromJS(consent);
+  }
+
+  async sendTokenResponse(json: string) {
+    console.log('sendTokenResponse called with JSON:', json);
+    this.InjiVciClient.sendTokenResponseFromJS(json);
+  }
+
+  async getIssuerMetadata(issuerUri: string): Promise<object> {
+    console.log('getIssuerMetadata called with issuerUri:', issuerUri);
+    const response = await this.InjiVciClient.getIssuerMetadata(issuerUri);
+    console.log('Issuer metadata response received:', response);
+    return JSON.parse(response);
   }
 
   async requestCredentialByOffer(
@@ -43,105 +61,192 @@ class VciClient {
       length: number | undefined,
     ) => void,
     getProofJwt: (
-      accessToken: string,
+      credentialIssuer: string,
       cNonce: string | null,
-      issuerMetadata: object,
-      credentialConfigurationId: string,
+      proofSigningAlgosSupported: string[] | null,
     ) => void,
     navigateToAuthView: (authorizationEndpoint: string) => void,
-    requestTrustIssuerConsent: (issuerMetadata: object) => void,
-  ): Promise<VerifiableCredential> {
+    requestTokenResponse: (tokenRequest: object) => void,
+    requestTrustIssuerConsent: (
+      credentialIssuer: string,
+      issuerDisplay: object[],
+    ) => void,
+  ): Promise<any> {
+    console.log(
+      'requestCredentialByOffer called with credentialOffer:',
+      credentialOffer,
+    );
+
     const proofListener = emitter.addListener(
       'onRequestProof',
-      ({accessToken, cNonce, issuerMetadata, credentialConfigurationId}) => {
-        getProofJwt(
-          accessToken,
+      ({credentialIssuer, cNonce, proofSigningAlgosSupported}) => {
+        console.log('onRequestProof triggered with data:', {
+          credentialIssuer,
           cNonce,
-          JSON.parse(issuerMetadata),
-          credentialConfigurationId,
-        );
+          proofSigningAlgosSupported,
+        });
+        getProofJwt(credentialIssuer, cNonce, proofSigningAlgosSupported);
       },
     );
 
     const authListener = emitter.addListener(
       'onRequestAuthCode',
-      ({authorizationEndpoint}) => {
-        navigateToAuthView(authorizationEndpoint);
+      ({authorizationUrl}) => {
+        console.log(
+          'onRequestAuthCode triggered with authorizationUrl:',
+          authorizationUrl,
+        );
+        navigateToAuthView(authorizationUrl);
       },
     );
 
     const txCodeListener = emitter.addListener(
       'onRequestTxCode',
       ({inputMode, description, length}) => {
+        console.log('onRequestTxCode triggered with data:', {
+          inputMode,
+          description,
+          length,
+        });
         getTxCode(inputMode, description, length);
+      },
+    );
+
+    const tokenResponseListener = emitter.addListener(
+      'onRequestTokenResponse',
+      tokenRequest => {
+        console.log(
+          'onRequestTokenResponse triggered with tokenRequest:',
+          tokenRequest,
+        );
+        requestTokenResponse(tokenRequest);
       },
     );
 
     const trustIssuerListener = emitter.addListener(
       'onCheckIssuerTrust',
-      ({issuerMetadata}) => {
-        requestTrustIssuerConsent(JSON.parse(issuerMetadata));
+      ({credentialIssuer, issuerDisplay}) => {
+        console.log('onCheckIssuerTrust triggered with data:', {
+          credentialIssuer,
+          issuerDisplay,
+        });
+        requestTrustIssuerConsent(credentialIssuer, issuerDisplay);
       },
     );
 
     let response = '';
     try {
+      const clientMetadata = {
+        clientId: 'wallet',
+        redirectUri: 'io.mosip.residentapp.inji://oauthredirect',
+      };
+      console.log('Outgoing client metadata:', clientMetadata);
+
       response = await this.InjiVciClient.requestCredentialByOffer(
         credentialOffer,
-        JSON.stringify({
-          clientId: 'wallet',
-          redirectUri: 'io.mosip.residentapp.inji://oauthredirect',
-        }),
+        JSON.stringify(clientMetadata),
       );
+      console.log('Credential response received:', response);
     } catch (error) {
       console.error('Error requesting credential by offer:', error);
       throw error;
     } finally {
+      console.log('Removing listeners after requestCredentialByOffer.');
       proofListener.remove();
       authListener.remove();
       txCodeListener.remove();
+      tokenResponseListener.remove();
       trustIssuerListener.remove();
     }
 
-    return JSON.parse(response) as VerifiableCredential;
+    const parsedResponse = JSON.parse(response);
+    return {
+      credential: parsedResponse.credential as VerifiableCredential,
+      credentialConfigurationIdMap:
+        parsedResponse.credentialConfigurationIdMap ?? {},
+    };
   }
 
   async requestCredentialFromTrustedIssuer(
-    resolvedIssuerMetaData: object,
+    credentialIssuerUri: string,
+    credentialConfigurationId: string,
     clientMetadata: object,
-    getProofJwt: (accessToken: string, cNonce: string) => void,
+    getProofJwt: (
+      credentialIssuer: string,
+      cNonce: string | null,
+      proofSigningAlgosSupported: string[] | null,
+    ) => void,
     navigateToAuthView: (authorizationEndpoint: string) => void,
-  ): Promise<VerifiableCredential> {
+    requestTokenResponse: (tokenRequest: object) => void,
+  ): Promise<any> {
+    console.log('requestCredentialFromTrustedIssuer called with data:', {
+      credentialIssuerUri,
+      credentialConfigurationId,
+      clientMetadata,
+    });
+
     const proofListener = emitter.addListener(
       'onRequestProof',
-      ({accessToken, cNonce}) => {
-        getProofJwt(accessToken, cNonce);
-        proofListener.remove();
+      ({credentialIssuer, cNonce, proofSigningAlgosSupported}) => {
+        console.log('onRequestProof triggered with data:', {
+          credentialIssuer,
+          cNonce,
+          proofSigningAlgosSupported,
+        });
+        getProofJwt(credentialIssuer, cNonce, proofSigningAlgosSupported);
       },
     );
 
     const authListener = emitter.addListener(
       'onRequestAuthCode',
       ({authorizationEndpoint}) => {
+        console.log(
+          'onRequestAuthCode triggered with authorizationEndpoint:',
+          authorizationEndpoint,
+        );
         navigateToAuthView(authorizationEndpoint);
+      },
+    );
+
+    const tokenResponseListener = emitter.addListener(
+      'onRequestTokenResponse',
+      tokenRequest => {
+        console.log(
+          'onRequestTokenResponse triggered with tokenRequest:',
+          tokenRequest,
+        );
+        requestTokenResponse(tokenRequest);
       },
     );
 
     let response = '';
     try {
+      console.log('Outgoing client metadata:', clientMetadata);
+
       response = await this.InjiVciClient.requestCredentialFromTrustedIssuer(
-        JSON.stringify(resolvedIssuerMetaData),
+        credentialIssuerUri,
+        credentialConfigurationId,
         JSON.stringify(clientMetadata),
       );
+      console.log('Credential response received:', response);
     } catch (error) {
       console.error('Error requesting credential from trusted issuer:', error);
       throw error;
     } finally {
+      console.log(
+        'Removing listeners after requestCredentialFromTrustedIssuer.',
+      );
       proofListener.remove();
       authListener.remove();
+      tokenResponseListener.remove();
     }
 
-    return JSON.parse(response) as VerifiableCredential;
+    const parsedResponse = JSON.parse(response);
+    return {
+      credential: parsedResponse.credential as VerifiableCredential,
+      credentialConfigurationIdMap:
+        parsedResponse.credentialConfigurationIdMap ?? {},
+    };
   }
 }
 

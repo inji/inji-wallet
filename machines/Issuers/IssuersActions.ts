@@ -298,15 +298,25 @@ export const IssuersActions = (model: any) => {
       selectedIssuerWellknownResponse: (_: any, event: any) => {
         return event.issuerMetadata;
       },
+    }),
+    setWellknwonKeyTypes: model.assign({
       wellknownKeyTypes: (_: any, event: any) => {
-        const credType = Object.entries(event.credentialTypes)[0][1];
-        const proofTypesSupported = credType.proof_types_supported;
-        if (proofTypesSupported?.jwt) {
-          return proofTypesSupported.jwt
-            .proof_signing_alg_values_supported as string[];
-        } else {
-          return [KeyTypes.RS256] as string[];
-        }
+        return event.data?.proofSigningAlgosSupported;
+      },
+    }),
+    setSelectedCredentialIssuer: model.assign({
+      credentialOfferCredentialIssuer: (_: any, event: any) => {
+        return event.issuer;
+      }
+    }),
+    setTokenRequestObject: model.assign({
+      tokenRequestObject: (_: any, event: any) => {
+        return event.tokenRequest;
+      },
+    }),
+    setTokenResponseObject: model.assign({
+      tokenResponse: (_: any, event: any) => {
+        return event.data;
       },
     }),
     updateSelectedIssuerWellknownResponse: model.assign({
@@ -330,22 +340,17 @@ export const IssuersActions = (model: any) => {
       txCodeDescription: (_: any, event: any) => event.description,
       txCodeLength: (_: any, event: any) => event.length,
     }),
-    setCredentialOfferIssuerMetadata: model.assign({
-      credentialOfferIssuerMetadata: (_: any, event: any) => {
-        return event.issuerMetadata;
-      },
-    }),
     setIssuerDisplayDetails: model.assign({
-      issuerLogo: (context: any, _: any) => {
-        const displayArray = context.credentialOfferIssuerMetadata?.display;
+      issuerLogo: (_: any, event: any) => {
+        const displayArray = event.issuerDisplay
         const display = displayArray
           ? getDisplayObjectForCurrentLanguage(displayArray)
           : undefined;
 
         return display?.logo?.url ?? '';
       },
-      issuerName: (context: any, _: any) => {
-        const displayArray = context.credentialOfferIssuerMetadata?.display;
+      issuerName: (_: any, event: any) => {
+        const displayArray = event.issuerDisplay;
         const display = displayArray
           ? getDisplayObjectForCurrentLanguage(displayArray)
           : undefined;
