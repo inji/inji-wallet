@@ -224,20 +224,20 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
   let walletMetadataObject = try WalletMetadata(
     presentationDefinitionURISupported: metadata["presentation_definition_uri_supported"] as? Bool,
     vpFormatsSupported: vpFormatsSupported,
-    clientIdSchemesSupported: mapStringsToEnum(metadata["client_id_schemes_supported"] as? [String] ?? [], ofType: ClientIdScheme.self),
-    requestObjectSigningAlgValuesSupported: mapStringsToEnum(metadata["request_object_signing_alg_values_supported"] as? [String] ?? [], ofType: RequestSigningAlgorithm.self),
-    authorizationEncryptionAlgValuesSupported: mapStringsToEnum(metadata["authorization_encryption_alg_values_supported"] as? [String] ?? [], ofType: KeyManagementAlgorithm.self),
-    authorizationEncryptionEncValuesSupported: mapStringsToEnum(metadata["authorization_encryption_enc_values_supported"] as? [String] ?? [], ofType: ContentEncryptionAlgorithm.self)
+    clientIdSchemesSupported: mapStringsToEnum(metadata["client_id_schemes_supported"] as? [String] ?? [], using: ClientIdScheme.fromValue),
+    requestObjectSigningAlgValuesSupported: mapStringsToEnum(metadata["request_object_signing_alg_values_supported"] as? [String] ?? [], using: RequestSigningAlgorithm.fromValue),
+    authorizationEncryptionAlgValuesSupported: mapStringsToEnum(metadata["authorization_encryption_alg_values_supported"] as? [String] ?? [], using: KeyManagementAlgorithm.fromValue),
+    authorizationEncryptionEncValuesSupported: mapStringsToEnum(metadata["authorization_encryption_enc_values_supported"] as? [String] ?? [], using: ContentEncryptionAlgorithm.fromValue)
   )
   return walletMetadataObject
 }
 
-func mapStringsToEnum<T: RawRepresentable & CaseIterable>(
+func mapStringsToEnum<T: RawRepresentable>(
   _ input: [String],
-  ofType: T.Type
+  using fromValue: (String) -> T?
 ) throws -> [T] where T.RawValue == String {
   return try input.map { str in
-    guard let match = T.allCases.first(where: { $0.rawValue.lowercased() == str.lowercased() }) else {
+    guard let match = fromValue(str) else {
       throw NSError(
         domain: "EnumMappingError",
         code: 1001,
