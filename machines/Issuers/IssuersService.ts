@@ -270,8 +270,7 @@ export const IssuersService = () => {
     verifyCredential: async (context: any) => {
       const verificationResult = await verifyCredentialData(
         context.verifiableCredential?.credential,
-        context.selectedCredentialType.format,
-        context.selectedIssuerId,
+        context.selectedCredentialType.format
       );
       if (!verificationResult.isVerified) {
         throw new Error(verificationResult.verificationErrorCode);
