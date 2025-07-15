@@ -213,6 +213,10 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
      let ldpVcDict = vpFormatsSupportedDict["ldp_vc"] as? [String: Any] {
     let algValuesSupported = ldpVcDict["alg_values_supported"] as? [String]
     vpFormatsSupported[.ldp_vc] = VPFormatSupported(algValuesSupported: algValuesSupported)
+    if let mdocDict = vpFormatsSupportedDict["mso_mdoc"] as? [String: Any] {
+      let mdocAlgValuesSupported = mdocDict["alg_values_supported"] as? [String]
+      vpFormatsSupported[.mso_mdoc] = VPFormatSupported(algValuesSupported: mdocAlgValuesSupported)
+    }
   } else {
     vpFormatsSupported[.ldp_vc] = VPFormatSupported(algValuesSupported: nil)
   }
