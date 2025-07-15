@@ -33,22 +33,27 @@ export function useOvpErrorModal({
   });
 
   useEffect(() => {
-    const claimsAsString = `[${requestedClaimsByVerifier}]`;
+    const isClaimsEmpty =
+      !requestedClaimsByVerifier || requestedClaimsByVerifier.trim() === '';
     const additionalMessage = getAdditionalMessage();
 
     if (noCredentialsMatchingVPRequest) {
       setErrorModal({
         show: true,
-        title: t('errors.noMatchingCredentials.title'),
-        message: t('errors.noMatchingCredentials.message', {
-          claims: claimsAsString,
-        }),
+        title: isClaimsEmpty
+          ? t('errors.noMatchingCredentialsWithMissingClaims.title')
+          : t('errors.noMatchingCredentials.title'),
+        message: isClaimsEmpty
+          ? t('errors.noMatchingCredentialsWithMissingClaims.message')
+          : t('errors.noMatchingCredentials.message', {
+              claims: requestedClaimsByVerifier,
+            }),
         additionalMessage,
         showRetryButton: false,
       });
       generateAndStoreLogMessage(
         'NO_CREDENTIAL_MATCHING_REQUEST',
-        claimsAsString,
+        requestedClaimsByVerifier,
       );
     } else if (
       error.includes('Verifier authentication was unsuccessful') ||
@@ -67,14 +72,14 @@ export function useOvpErrorModal({
         show: true,
         title: t('errors.credentialsMismatch.title'),
         message: t('errors.credentialsMismatch.message', {
-          claims: claimsAsString,
+          claims: requestedClaimsByVerifier,
         }),
         additionalMessage,
         showRetryButton: false,
       });
       generateAndStoreLogMessage(
         'CREDENTIAL_MISMATCH_FROM_KEBAB',
-        claimsAsString,
+        requestedClaimsByVerifier,
       );
     } else if (error.includes('none of the selected VC has image')) {
       setErrorModal({
