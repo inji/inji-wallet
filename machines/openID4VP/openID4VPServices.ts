@@ -29,11 +29,10 @@ export const openID4VPServices = () => {
     },
 
     getAuthenticationResponse: (context: any) => async () => {
-      const serviceRes = await OpenID4VP.getInstance().authenticateVerifier(
+      return await OpenID4VP.authenticateVerifier(
         context.urlEncodedAuthorizationRequest,
         context.trustedVerifiers,
       );
-      return serviceRes;
     },
 
     getKeyPair: async (context: any) => {
@@ -47,12 +46,10 @@ export const openID4VPServices = () => {
     },
 
     sendVP: (context: any) => async () => {
-      const openid = OpenID4VP.getInstance();
-
       const jwk = await getJWK(context.publicKey, context.keyType);
       const holderId = 'did:jwk:' + base64url(JSON.stringify(jwk)) + '#0';
 
-      const unSignedVpTokens = await openid.constructUnsignedVPToken(
+      const unSignedVpTokens = await OpenID4VP.constructUnsignedVPToken(
         context.selectedVCs,
         holderId,
         signatureSuite,
@@ -137,7 +134,9 @@ export const openID4VPServices = () => {
           vpTokenSigningResultMap[formatType] = signedData;
         }
       }
-      return await openid.shareVerifiablePresentation(vpTokenSigningResultMap);
+      return await OpenID4VP.shareVerifiablePresentation(
+        vpTokenSigningResultMap,
+      );
     },
   };
 };

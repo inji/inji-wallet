@@ -47,7 +47,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     if (controller.errorModal.show && controller.isOVPViaDeepLink) {
       const timeout = setTimeout(
         () => {
-          OpenID4VP.getInstance().sendErrorToVerifier(
+          OpenID4VP.sendErrorToVerifier(
             OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
             OVP_ERROR_CODE.NO_MATCHING_VCS,
           );
@@ -107,7 +107,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   });
 
   const handleDismiss = () => {
-    OpenID4VP.getInstance().sendErrorToVerifier(
+    OpenID4VP.sendErrorToVerifier(
       OVP_ERROR_MESSAGES.DECLINED,
       OVP_ERROR_CODE.DECLINED,
     );
@@ -120,7 +120,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   };
 
   const handleRejectButtonEvent = () => {
-    OpenID4VP.getInstance().sendErrorToVerifier(
+    OpenID4VP.sendErrorToVerifier(
       OVP_ERROR_MESSAGES.DECLINED,
       OVP_ERROR_CODE.DECLINED,
     );
@@ -209,7 +209,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const getPrimaryButtonEvent = () => {
     if (controller.showConfirmationPopup && controller.isOVPViaDeepLink) {
       return () => {
-        OpenID4VP.getInstance().sendErrorToVerifier(
+        OpenID4VP.sendErrorToVerifier(
           OVP_ERROR_MESSAGES.DECLINED,
           OVP_ERROR_CODE.DECLINED,
         );
