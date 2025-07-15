@@ -402,5 +402,5 @@ fileignoreconfig:
   - filename: shared/openID4VP/OpenID4VPHelper.ts
     checksum: 2ab5f935ea3d1ec4d109d8614c2246f40e284594288566338f185611470e6928
   - filename: components/VC/common/VCUtils.tsx
-    checksum: ef4a29cbdc07ecaa4ee32be3b333a8f866ae6636293eabdd6905bc3fe8381f18
+    checksum: 221b56a2aeb73f39677cdb7c7528bfe17e49092ce785431d20b2cdfffb96d9cf
     version: "1.0"

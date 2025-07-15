@@ -2,7 +2,7 @@ import {StateFrom} from 'xstate';
 import {VCMetadata} from '../../../shared/VCMetadata';
 import {VCItemMachine} from './VCItemMachine';
 import {
-  findFaceField,
+  getFaceField,
   getMosipLogo,
 } from '../../../components/VC/common/VCUtils';
 import {
@@ -51,16 +51,14 @@ export function selectVerifiableCredentialData(
   const credentialSubject =
     state.context.verifiableCredential?.credential?.credentialSubject ?? {};
 
-  const faceFieldInCredentialSubject =
-    findFaceField(credentialSubject) ??
+  const faceField =
+    getFaceField(credentialSubject) ??
     state.context.credential?.biometrics?.face;
 
   return {
     vcMetadata: vcMetadata,
     format: vcMetadata.format,
-    face:
-      faceFieldInCredentialSubject ??
-      state.context.credential?.biometrics?.face,
+    face: faceField ?? state.context.credential?.biometrics?.face,
     issuerLogo:
       state.context.verifiableCredential?.issuerLogo ?? getMosipLogo(),
     wellKnown: state.context.verifiableCredential?.wellKnown,

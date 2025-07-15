@@ -159,7 +159,11 @@ export const getFieldName = (
   return formatKeyLabel(field);
 };
 
-const EXCLUDED_FIELDS = ['id', 'face', 'photo', 'picture', 'portrait', 'image'];
+const ID = ['id'];
+
+const IMAGE_KEYS = ['face', 'photo', 'picture', 'portrait', 'image'];
+
+const EXCLUDED_FIELDS_FOR_RENDERING = [...ID, ...IMAGE_KEYS];
 
 const shouldExcludeField = (field: string): boolean => {
   const normalized = field.includes('~')
@@ -171,12 +175,10 @@ const shouldExcludeField = (field: string): boolean => {
         ?.replace(/\[\d+\]/g, '') ?? field
     : field;
 
-  return EXCLUDED_FIELDS.includes(normalized);
+  return EXCLUDED_FIELDS_FOR_RENDERING.includes(normalized);
 };
 
-const IMAGE_KEYS = ['face', 'photo', 'picture', 'portrait', 'image'];
-
-export function findFaceField(obj: any): string | null {
+export function getFaceField(obj: any): string | null {
   if (typeof obj !== 'object' || obj === null) return null;
 
   for (const [key, value] of Object.entries(obj)) {
@@ -186,7 +188,7 @@ export function findFaceField(obj: any): string | null {
     }
 
     if (typeof value === 'object') {
-      const found = findFaceField(value);
+      const found = getFaceField(value);
       if (found) return found;
     }
   }
