@@ -250,6 +250,7 @@ function getVcsMatchingAuthRequest(context, event) {
     context.authenticationResponse['presentation_definition'];
   const inputDescriptors = presentationDefinition['input_descriptors'];
   let hasFormatOrConstraints = false;
+
   vcs.forEach(vc => {
     inputDescriptors.forEach(inputDescriptor => {
       const format = inputDescriptor.format ?? presentationDefinition.format;
@@ -261,6 +262,23 @@ function getVcsMatchingAuthRequest(context, event) {
       const areMatchingFormatAndProofType =
         areVCFormatAndProofTypeMatchingRequest(format, vc);
       if (areMatchingFormatAndProofType == false) {
+        inputDescriptors.forEach(inputDescriptor => {
+          if (inputDescriptor.constraints?.fields) {
+            inputDescriptor.constraints.fields.forEach(field => {
+              if (field.path) {
+                field.path.forEach(path => {
+                  try {
+                    const pathArray = JSONPath.toPathArray(path);
+                    const claimName = pathArray[pathArray.length - 1];
+                    requestedClaimsByVerifier.add(claimName);
+                  } catch (error) {
+                    console.error('Error parsing path:', path, error);
+                  }
+                });
+              }
+            });
+          }
+        });
         return;
       }
       const isMatchingConstraints = isVCMatchingRequestConstraints(
