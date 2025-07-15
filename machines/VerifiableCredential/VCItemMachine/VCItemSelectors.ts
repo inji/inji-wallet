@@ -58,7 +58,7 @@ export function selectVerifiableCredentialData(
   return {
     vcMetadata: vcMetadata,
     format: vcMetadata.format,
-    face: faceField ?? state.context.credential?.biometrics?.face,
+    face: faceField,
     issuerLogo:
       state.context.verifiableCredential?.issuerLogo ?? getMosipLogo(),
     wellKnown: state.context.verifiableCredential?.wellKnown,
