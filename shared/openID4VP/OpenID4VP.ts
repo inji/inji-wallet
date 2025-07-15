@@ -4,7 +4,7 @@ import {
   SelectedCredentialsForVPSharing,
   VC,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {walletMetadata} from './walletMetadata';
+import {fallbackWalletMetadata} from './fallbackWalletMetadata';
 import {getWalletMetadata, isClientValidationRequired} from './OpenID4VPHelper';
 import {parseJSON} from '../Utils';
 
@@ -18,26 +18,24 @@ class OpenID4VP {
     this.InjiOpenID4VP.initSdk(__AppId.getValue(), walletMetadata);
   }
 
-  public static getInstance(): OpenID4VP {
+  private static async getInstance(): Promise<OpenID4VP> {
     if (!OpenID4VP.instance) {
+      const walletMetadata =
+        (await getWalletMetadata()) || fallbackWalletMetadata;
       OpenID4VP.instance = new OpenID4VP(walletMetadata);
-      getWalletMetadata()
-        .then(data => {
-          return new OpenID4VP(data || walletMetadata);
-        })
-        .catch(() => new OpenID4VP(walletMetadata));
     }
     return OpenID4VP.instance;
   }
 
-  async authenticateVerifier(
+  static async authenticateVerifier(
     urlEncodedAuthorizationRequest: string,
     trustedVerifiersList: any,
   ) {
     const shouldValidateClient = await isClientValidationRequired();
+    const openID4VP = await OpenID4VP.getInstance();
 
     const authenticationResponse =
-      await this.InjiOpenID4VP.authenticateVerifier(
+      await openID4VP.InjiOpenID4VP.authenticateVerifier(
         urlEncodedAuthorizationRequest,
         trustedVerifiersList,
         shouldValidateClient,
@@ -45,30 +43,37 @@ class OpenID4VP {
     return JSON.parse(authenticationResponse);
   }
 
-  async constructUnsignedVPToken(
+  static async constructUnsignedVPToken(
     selectedVCs: Record<string, VC[]>,
     holderId: string,
     signatureAlgorithm: string,
   ) {
-    const updatedSelectedVCs = this.processSelectedVCs(selectedVCs);
-    const unSignedVpTokens = await this.InjiOpenID4VP.constructUnsignedVPToken(
-      updatedSelectedVCs,
-      holderId,
-      signatureAlgorithm,
-    );
+    const openID4VP = await OpenID4VP.getInstance();
+
+    const updatedSelectedVCs = openID4VP.processSelectedVCs(selectedVCs);
+    const unSignedVpTokens =
+      await openID4VP.InjiOpenID4VP.constructUnsignedVPToken(
+        updatedSelectedVCs,
+        holderId,
+        signatureAlgorithm,
+      );
     return parseJSON(unSignedVpTokens);
   }
 
-  async shareVerifiablePresentation(
+  static async shareVerifiablePresentation(
     vpTokenSigningResultMap: Record<string, any>,
   ) {
-    return await this.InjiOpenID4VP.shareVerifiablePresentation(
+    const openID4VP = await OpenID4VP.getInstance();
+
+    return await openID4VP.InjiOpenID4VP.shareVerifiablePresentation(
       vpTokenSigningResultMap,
     );
   }
 
-  sendErrorToVerifier(errorMessage: string, errorCode: string) {
-    this.InjiOpenID4VP.sendErrorToVerifier(errorMessage, errorCode);
+  static sendErrorToVerifier(errorMessage: string, errorCode: string) {
+    OpenID4VP.getInstance().then(openID4VP => {
+      openID4VP.InjiOpenID4VP.sendErrorToVerifier(errorMessage, errorCode);
+    });
   }
 
   private processSelectedVCs(selectedVCs: Record<string, VC[]>) {
