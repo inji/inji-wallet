@@ -116,7 +116,7 @@ export function useOvpErrorModal({
         additionalMessage,
         showRetryButton: false,
       });
-      generateAndStoreLogMessage('VP_FORMATS_NOT_SUPPORTED');
+      generateAndStoreLogMessage('REQUEST_COULD_NOT_BE_PROCESSED');
     } else if (error.includes('invalid_presentation_definition_uri')) {
       setErrorModal({
         show: true,
@@ -134,7 +134,16 @@ export function useOvpErrorModal({
         additionalMessage,
         showRetryButton: false,
       });
-      generateAndStoreLogMessage('INVALID_PRESENTATION_DEFINITION_REFERENCE');
+      generateAndStoreLogMessage('REQUEST_COULD_NOT_BE_PROCESSED');
+    } else if (error.includes('invalid_client')) {
+      setErrorModal({
+        show: true,
+        title: t('errors.invalidQrCode.title'),
+        message: t('errors.invalidQrCode.message'),
+        additionalMessage,
+        showRetryButton: false,
+      });
+      generateAndStoreLogMessage('REQUEST_COULD_NOT_BE_PROCESSED');
     } else if (error.startsWith('send vp')) {
       setErrorModal({
         show: true,
@@ -143,6 +152,7 @@ export function useOvpErrorModal({
         additionalMessage,
         showRetryButton: true,
       });
+      generateAndStoreLogMessage('SEND_VP');
     } else if (error !== '') {
       setErrorModal({
         show: true,
