@@ -19,7 +19,7 @@
       "SHARED_SUCCESSFULLY": "Matagumpay na naibahagi ang Pagtatanghal ng Kredensyal.",
       "SHARED_WITH_FACE_VERIFIACTION": "Matagumpay ang pag-verify sa mukha, at matagumpay na naibahagi ang Credential Presentation.",
       "VERIFIER_AUTHENTICATION_FAILED": "Nabigong i-authenticate ang Serbisyo sa Pag-verify sa panahon ng pagbabahagi ng VP.",
-      "USER_DECLINED_CONSENT": "Tinanggihan ng user ang pahintulot para sa pagbabahagi ng Credential Presentation.",
+      "USER_DECLINED_CONSENT": "பயனர் சான்றுகள் பகிர்வுக்கு ஒப்புதலை நிராகரித்தார்.",
       "SHARED_AFTER_RETRY": "Ang Pagtatanghal ng Kredensyal ay matagumpay na naibahagi pagkatapos ng muling pagsubok.",
       "SHARED_WITH_FACE_VERIFICATION_AFTER_RETRY": "Matagumpay ang pag-verify sa mukha, at matagumpay na naibahagi ang Credential Presentation pagkatapos ng muling pagsubok.",
       "SHARING_FAILED": "Nabigo ang pagbabahagi ng Credential Presentation dahil sa teknikal na error.",

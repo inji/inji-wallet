@@ -19,7 +19,7 @@
       "SHARED_SUCCESSFULLY": "Credential Presentation is shared successfully.",
       "SHARED_WITH_FACE_VERIFIACTION": "Face verification is successful, and the Credential Presentation is shared successfully.",
       "VERIFIER_AUTHENTICATION_FAILED": "Failed to authenticate the Verification Service during VP sharing.",
-      "USER_DECLINED_CONSENT": "User declined consent for Credential Presentation sharing.",
+      "USER_DECLINED_CONSENT": "User declined consent for credential presentation sharing.",
       "SHARED_AFTER_RETRY": "Credential Presentation is shared successfully after a retry.",
       "SHARED_WITH_FACE_VERIFICATION_AFTER_RETRY": "Face verification is successful, and the Credential Presentation is shared successfully after a retry.",
       "SHARING_FAILED": "Credential Presentation sharing failed due to technical error.",
