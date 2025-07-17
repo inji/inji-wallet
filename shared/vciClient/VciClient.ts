@@ -114,7 +114,7 @@ class VciClient {
 
     const tokenResponseListener = emitter.addListener(
       'onRequestTokenResponse',
-      tokenRequest => {
+      ({tokenRequest}) => {
         console.log(
           'onRequestTokenResponse triggered with tokenRequest:',
           tokenRequest,

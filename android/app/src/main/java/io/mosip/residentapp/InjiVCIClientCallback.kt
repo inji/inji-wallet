@@ -71,8 +71,7 @@ object VCIClientCallbackBridge {
     ) {
         val params =
             Arguments.createMap().apply {
-                //TODO: Should this be named to "tokenRequest"?
-                putString("payload", Gson().toJson(payload))
+                putString("tokenRequest", Gson().toJson(payload))
             }
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
             .emit("onRequestTokenResponse", params)
