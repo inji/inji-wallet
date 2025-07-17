@@ -7,8 +7,6 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
   private var openID4VP: OpenID4VP?
 
-  private let moduleClassName = "RNOpenId4VpModule"
-
 
   static func moduleName() -> String {
     return "InjiOpenID4VP"
@@ -147,7 +145,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
             formattedVPTokenSigningResults[.mso_mdoc] = MdocVPTokenSigningResult(docTypeToDeviceAuthentication: docTypeToDeviceAuthentication)
 
           default:
-            let error = GenericFailure(message: "Credential format '\(credentialFormat)' is not supported", className: moduleClassName)
+            let error = GenericFailure(message: "Credential format '\(credentialFormat)' is not supported", className: Self.moduleName())
             rejectWithOpenID4VPError(error, reject: reject)
             return
           }
@@ -169,11 +167,11 @@ func sendErrorToVerifier(_ error: String, _ errorCode: String,
         let exception: OpenID4VPException = {
             switch errorCode {
             case OpenID4VPErrorCodes.accessDenied:
-                return AccessDenied(message: error, className: moduleClassName)
+                return AccessDenied(message: error, className: Self.moduleName())
             case OpenID4VPErrorCodes.invalidTransactionData:
-                return InvalidTransactionData(message: error, className: moduleClassName)
+                return InvalidTransactionData(message: error, className: Self.moduleName())
             default:
-                return GenericFailure(message: error, className: moduleClassName)
+                return GenericFailure(message: error, className: Self.moduleName())
             }
         }()
 
@@ -202,7 +200,7 @@ func sendErrorToVerifier(_ error: String, _ errorCode: String,
       if let openidError = error as? OpenID4VPException {
           reject(openidError.errorCode, openidError.message, openidError)
       } else {
-          let fallback = GenericFailure(message: error.localizedDescription, className: "RNOpenId4VpModule")
+          let fallback = GenericFailure(message: error.localizedDescription, className: Self.moduleName())
           reject(fallback.errorCode, fallback.message, fallback)
       }
   }
