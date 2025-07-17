@@ -79,13 +79,13 @@ class VciClient {
 
     const proofListener = emitter.addListener(
       'onRequestProof',
-      ({credentialIssuer, cNonce, proofSigningAlgosSupported}) => {
+      ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
         console.log('onRequestProof triggered with data:', {
           credentialIssuer,
           cNonce,
-          proofSigningAlgosSupported,
+          proofSigningAlgorithmsSupported,
         });
-        getProofJwt(credentialIssuer, cNonce, proofSigningAlgosSupported);
+        getProofJwt(credentialIssuer, cNonce, proofSigningAlgorithmsSupported);
       },
     );
 
@@ -187,30 +187,30 @@ class VciClient {
 
     const proofListener = emitter.addListener(
       'onRequestProof',
-      ({credentialIssuer, cNonce, proofSigningAlgosSupported}) => {
+      ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
         console.log('onRequestProof triggered with data:', {
           credentialIssuer,
           cNonce,
-          proofSigningAlgosSupported,
+          proofSigningAlgorithmsSupported,
         });
-        getProofJwt(credentialIssuer, cNonce, proofSigningAlgosSupported);
+        getProofJwt(credentialIssuer, cNonce, proofSigningAlgorithmsSupported);
       },
     );
 
     const authListener = emitter.addListener(
       'onRequestAuthCode',
-      ({authorizationEndpoint}) => {
+      ({authorizationUrl}) => {
         console.log(
           'onRequestAuthCode triggered with authorizationEndpoint:',
-          authorizationEndpoint,
+          authorizationUrl,
         );
-        navigateToAuthView(authorizationEndpoint);
+        navigateToAuthView(authorizationUrl);
       },
     );
 
     const tokenResponseListener = emitter.addListener(
       'onRequestTokenResponse',
-      tokenRequest => {
+      ({tokenRequest}) => {
         console.log(
           'onRequestTokenResponse triggered with tokenRequest:',
           tokenRequest,

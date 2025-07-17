@@ -171,6 +171,7 @@ export const IssuersService = () => {
         //     credentialConfigurationId
         //   ],
         // });
+        console.log('getSignedProofJwt called with:', proofSigningAlgosSupported)
         sendBack({
           type: 'PROOF_REQUEST',
           cNonce: cNonce,
@@ -224,8 +225,8 @@ export const IssuersService = () => {
       return credential;
     },
     sendTokenRequest: async (context: any) => {
-      const tokenRequestObject = context.tokenRequest;
-      return await sendTokenRequest(tokenRequestObject);
+      const tokenRequestObject = context.tokenRequestObject;
+      return await sendTokenRequest(tokenRequestObject,context.selectedIssuer?.token_endpoint);
     },
     sendTokenResponse: async (context: any) => {
       const tokenResponse = context.tokenResponse;
@@ -328,7 +329,11 @@ export const IssuersService = () => {
     },
   };
 };
-async function sendTokenRequest(tokenRequestObject: any) {
+async function sendTokenRequest(tokenRequestObject: any, proxyTokenEndpoint:any = null) {
+  console.log('sendTokenRequest called with:', tokenRequestObject);
+  if(proxyTokenEndpoint){
+    tokenRequestObject.tokenEndpoint = proxyTokenEndpoint;
+  }
   if (!tokenRequestObject?.tokenEndpoint) {
     throw new Error('tokenEndpoint is required');
   }
@@ -340,10 +345,10 @@ async function sendTokenRequest(tokenRequestObject: any) {
   if (tokenRequestObject.authCode) {
     formBody.append('code', tokenRequestObject.authCode);
   }
-  if (tokenRequestObject.preAuthorizedCode) {
+  if (tokenRequestObject.preAuthCode) {
     formBody.append(
       'pre-authorized_code',
-      tokenRequestObject.preAuthorizedCode,
+      tokenRequestObject.preAuthCode,
     );
   }
   if (tokenRequestObject.txCode) {
@@ -358,7 +363,7 @@ async function sendTokenRequest(tokenRequestObject: any) {
   if (tokenRequestObject.codeVerifier) {
     formBody.append('code_verifier', tokenRequestObject.codeVerifier);
   }
-
+  console.log("token ::",formBody.toString());
   const response = await fetch(tokenRequestObject.tokenEndpoint, {
     method: 'POST',
     headers: {
@@ -369,8 +374,10 @@ async function sendTokenRequest(tokenRequestObject: any) {
 
   if (!response.ok) {
     const errorText = await response.text();
+    console.error('Token request failed with status:', response.status, errorText);
     throw new Error(`Token request failed: ${response.status} ${errorText}`);
   }
-
-  return await response.json();
+  const tokenResponse = await response.json();
+  console.log('Token request successful, response:', tokenResponse);
+  return tokenResponse 
 }

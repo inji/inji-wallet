@@ -47,6 +47,7 @@ export const IssuersModel = createModel(
     isCredentialOfferFlow: false as boolean,
     credentialOfferIssuerMetadata: {} as object,
     credentialOfferCredentialIssuer: {} as string,
+    tokenRequestObject: {} as object,
   },
   {
     events: IssuersEvents,

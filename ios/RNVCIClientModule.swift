@@ -60,7 +60,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                         try await self.getProofContinuationHook(
                             credentialIssuer: credentialIssuer,
                             cNonce: cNonce,
-                            proofSigningAlgosSupported: algos
+                            proofSigningAlgorithmsSupported: algos
                         )
                     },
                     onCheckIssuerTrust: { credentialIssuer, issuerDisplay in
@@ -96,7 +96,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                 let clientMeta = try parseClientMetadata(from: clientMetadata)
 
                 let response = try await vciClient.requestCredentialFromTrustedIssuer(
-                    credentialIssuerUri: credentialIssuerUri,
+                    credentialIssuer: credentialIssuerUri,
                     credentialConfigurationId: credentialConfigurationId,
                     clientMetadata: clientMeta,
                     authorizeUser: { authUrl in
@@ -109,7 +109,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                         try await self.getProofContinuationHook(
                             credentialIssuer: credentialIssuer,
                             cNonce: cNonce,
-                            proofSigningAlgosSupported: algos
+                            proofSigningAlgorithmsSupported: algos
                         )
                     }
                 )
@@ -134,7 +134,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                     return
                 }
 
-                let metadata = try await vciClient.getIssuerMetadata(credentialIssuerUri: credentialIssuerUri)
+              let metadata = try await vciClient.getIssuerMetadata(credentialIssuer: credentialIssuerUri)
 
                 let data = try JSONSerialization.data(withJSONObject: metadata, options: [])
                 guard let jsonString = String(data: data, encoding: .utf8) else {
@@ -188,7 +188,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     private func getProofContinuationHook(
         credentialIssuer: String,
         cNonce: String?,
-        proofSigningAlgosSupported: [String]
+        proofSigningAlgorithmsSupported: [String]
     ) async throws -> String {
         if let bridge = RCTBridge.current() {
             bridge.eventDispatcher().sendAppEvent(
@@ -196,7 +196,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                 body: [
                     "credentialIssuer": credentialIssuer,
                     "cNonce": cNonce ?? NSNull(),
-                    "proofSigningAlgosSupported": proofSigningAlgosSupported
+                    "proofSigningAlgorithmsSupported": proofSigningAlgorithmsSupported
                 ]
             )
         }
@@ -208,11 +208,11 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
     private func getTokenResponseHook(tokenRequest: TokenRequest) async throws -> TokenResponse {
         if let bridge = RCTBridge.current() {
-            let payload: [String: Any] = [
+            let tokenRequest: [String: Any] = [
                 "grantType": tokenRequest.grantType.rawValue,
                 "tokenEndpoint": tokenRequest.tokenEndpoint,
                 "authCode": tokenRequest.authCode ?? NSNull(),
-                "preAuthorizedCode": tokenRequest.preAuthorizedCode ?? NSNull(),
+                "preAuthCode": tokenRequest.preAuthCode ?? NSNull(),
                 "txCode": tokenRequest.txCode ?? NSNull(),
                 "clientId": tokenRequest.clientId ?? NSNull(),
                 "redirectUri": tokenRequest.redirectUri ?? NSNull(),
@@ -221,7 +221,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
             bridge.eventDispatcher().sendAppEvent(
                 withName: "onRequestTokenResponse",
-                body: payload
+                body: ["tokenRequest":tokenRequest]
             )
         }
 

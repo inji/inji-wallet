@@ -301,7 +301,7 @@ export const IssuersActions = (model: any) => {
     }),
     setWellknwonKeyTypes: model.assign({
       wellknownKeyTypes: (_: any, event: any) => {
-        return event.data?.proofSigningAlgosSupported;
+        return event.proofSigningAlgosSupported;
       },
     }),
     setSelectedCredentialIssuer: model.assign({
@@ -311,6 +311,7 @@ export const IssuersActions = (model: any) => {
     }),
     setTokenRequestObject: model.assign({
       tokenRequestObject: (_: any, event: any) => {
+        console.log("----",event.tokenRequest);
         return event.tokenRequest;
       },
     }),
