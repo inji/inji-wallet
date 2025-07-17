@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-openid4vp-ios-swift",
       "state" : {
-        "branch" : "release-0.3.x",
-        "revision" : "3e963ec60e4beb77f020eb1230df019c45c74f56"
+        "branch" : "develop",
+        "revision" : "879995bc2b858b0d1c6265c2d38d81f60b4e4611"
       }
     },
     {
