@@ -9,22 +9,11 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
 import com.google.gson.Gson;
-import java.util.Objects;
-import io.mosip.residentapp.VCIClientCallbackBridge;
-import io.mosip.residentapp.VCIClientBridge;
 
 import io.mosip.vciclient.VCIClient;
-import io.mosip.vciclient.constants.CredentialFormat;
-import io.mosip.vciclient.credentialOffer.CredentialOffer;
-import io.mosip.vciclient.credentialOffer.CredentialOfferService;
-import io.mosip.vciclient.credentialResponse.CredentialResponse;
-import io.mosip.vciclient.proof.jwt.JWTProof;
-import io.mosip.vciclient.proof.Proof;
-import io.mosip.vciclient.issuerMetadata.IssuerMetadata;
-import io.mosip.vciclient.clientMetadata.ClientMetadata;
+import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata;
+import io.mosip.vciclient.credential.response.CredentialResponse;
 
 public class InjiVciClientModule extends ReactContextBaseJavaModule {
     private VCIClient vciClient;
@@ -88,15 +77,13 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void requestCredentialFromTrustedIssuer(String resolvedIssuerMetaJson, String clientMetadataJson, Promise promise) {
+    public void requestCredentialFromTrustedIssuer(String credentialIssuer, String credentialConfigurationId, String clientMetadataJson, Promise promise) {
         new Thread(() -> {
             try {
-                IssuerMetadata issuerMetaData = new Gson().fromJson(
-                        resolvedIssuerMetaJson, IssuerMetadata.class);
                 ClientMetadata clientMetadata= new Gson().fromJson(
                     clientMetadataJson, ClientMetadata.class);
 
-                CredentialResponse response = VCIClientBridge.requestCredentialFromTrustedIssuerSync(vciClient, issuerMetaData,clientMetadata);
+                CredentialResponse response = VCIClientBridge.requestCredentialFromTrustedIssuerSync(vciClient, credentialIssuer, credentialConfigurationId,clientMetadata);
 
                 reactContext.runOnUiQueueThread(() -> {
                     promise.resolve(response != null ? response.toJsonString() : null);

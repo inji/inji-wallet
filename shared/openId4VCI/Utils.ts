@@ -274,7 +274,7 @@ export async function constructProofJWT(
   publicKey: any,
   privateKey: any,
   selectedIssuer: string,
-  client_id: string?,
+  client_id: string | undefined,
   keyType: string,
   proofSigningAlgosSupported: string[] = [],
   isCredentialOfferFlow: boolean,
@@ -282,7 +282,7 @@ export async function constructProofJWT(
 ): Promise<string> {
   const jwk = await getJWK(publicKey, keyType);
 
-  const nonce = cNonce
+  const nonce = cNonce;
 
   const alg =
     keyType === KeyTypes.ED25519
