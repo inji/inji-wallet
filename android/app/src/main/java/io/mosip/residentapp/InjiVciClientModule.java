@@ -11,6 +11,8 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.google.gson.Gson;
 
+import java.util.Map;
+
 import io.mosip.vciclient.VCIClient;
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata;
 import io.mosip.vciclient.credential.response.CredentialResponse;
@@ -56,6 +58,23 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendIssuerTrustResponseFromJS(Boolean trusted) {
         VCIClientCallbackBridge.completeIssuerTrustResponse(trusted);
+    }
+
+    @ReactMethod
+    public void getIssuerMetadata(String credentialIssuer, Promise promise) {
+        new Thread(() -> {
+            try {
+                Map<String, Object> issuerMetadata = vciClient.getIssuerMetadata(credentialIssuer);
+                reactContext.runOnUiQueueThread(() -> {
+                    String json = new Gson().toJson(issuerMetadata, Map.class);
+                    promise.resolve(json);
+                });
+            } catch (Exception e) {
+                reactContext.runOnUiQueueThread(() -> {
+                    promise.reject("GET_ISSUER_METADATA_FAILED", e.getMessage(), e);
+                });
+            }
+        }).start();
     }
 
     @ReactMethod
