@@ -161,9 +161,12 @@ class VciClient {
 
     const parsedResponse = JSON.parse(response);
     return {
-      credential: parsedResponse.credential as VerifiableCredential,
-      credentialConfigurationIdMap:
-        parsedResponse.credentialConfigurationIdMap ?? {},
+      credential: {
+        credential: parsedResponse.credential,
+      } as VerifiableCredential,
+      credentialConfigurationId:
+        parsedResponse.credentialConfigurationId ?? {},
+      credentialIssuer: parsedResponse.credentialIssuer ?? '',
     };
   }
 
@@ -243,9 +246,12 @@ class VciClient {
 
     const parsedResponse = JSON.parse(response);
     return {
-      credential: parsedResponse.credential as VerifiableCredential,
-      credentialConfigurationIdMap:
-        parsedResponse.credentialConfigurationIdMap ?? {},
+      credential: {
+        credential: parsedResponse.credential,
+      } as VerifiableCredential,
+      credentialConfigurationId:
+        parsedResponse.credentialConfigurationId ?? {},
+      credentialIssuer: parsedResponse.credentialIssuer ?? '',
     };
   }
 }

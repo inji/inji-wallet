@@ -584,7 +584,7 @@ export const IssuersMachine = model.createMachine(
             invoke:{
               src: 'sendTokenRequest',
               onDone: {
-                actions: ["setTokenResponseObject"],
+                actions: ["setTokenResponseObject","setAccessToken"],
                 target: 'sendTokenResponse',
               },
               onError: {
@@ -602,7 +602,7 @@ export const IssuersMachine = model.createMachine(
             invoke: {
               src: 'sendTokenResponse',
               onDone: {
-                target: '#issuersMachine.credentialDownloadFromOffer.idle',
+                target: '#issuersMachine.downloadCredentials.idle',
               },
               onError: {
                 actions: [

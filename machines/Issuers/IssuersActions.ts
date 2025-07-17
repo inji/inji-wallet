@@ -261,7 +261,7 @@ export const IssuersActions = (model: any) => {
     }),
     setAccessToken: model.assign({
       accessToken: (_: any, event: any) => {
-        return event.accessToken;
+        return event.data.access_token;
       },
     }),
     setCNonce: model.assign({

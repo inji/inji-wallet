@@ -100,6 +100,7 @@ export const IssuersService = () => {
           navigateToAuthView,
           getTokenResponse,
         );
+        console.log('downloadCredential called with:', credential);
       return updateCredentialInformation(context, credential);
     },
     sendTxCode: async (context: any) => {
@@ -267,6 +268,7 @@ export const IssuersService = () => {
         context.privateKey,
         context.credentialOfferCredentialIssuer,
         null,
+        null,
         context.keyType,
         context.wellknownKeyTypes,
         true,
@@ -282,6 +284,7 @@ export const IssuersService = () => {
         context.privateKey,
         context.selectedIssuer.credential_issuer_host,
         context.selectedIssuer.client_id,
+        context.accessToken,
         context.keyType,
         context.wellknownKeyTypes,
         false,
