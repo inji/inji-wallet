@@ -249,7 +249,7 @@ export const IssuersActions = (model: any) => {
       }),
     }),
     setCredential: model.assign({
-      credential: (_: any, event: any) => event.data,
+      credential: (_: any, event: any) => event.data.credential,
     }),
     setQrData: model.assign({
       qrData: (_: any, event: any) => event.data,
@@ -270,10 +270,28 @@ export const IssuersActions = (model: any) => {
         return event.cNonce;
       },
     }),
+    setCredentialConfigurationId: model.assign({
+      credentialConfigurationId: (_: any, event: any) => {
+        return event.data.credentialConfigurationId;
+      },
+    }),
     setOfferCredentialTypeContexts: model.assign({
       selectedCredentialType: (context: any, event: any) => {
-        return event.credentialTypes[0];
-      },
+        let credentialTypes: Array<{id: string; [key: string]: any}> = [];
+        const credentialConfigurationId =
+          context.credentialConfigurationId
+        const issuerMetadata = context.selectedIssuerWellknownResponse;
+        if (
+          issuerMetadata.credential_configurations_supported[credentialConfigurationId]
+        ) {
+        credentialTypes.push({
+          id: credentialConfigurationId,
+          ...issuerMetadata.credential_configurations_supported[
+            credentialConfigurationId
+          ],
+        });
+        return credentialTypes[0];
+      }}}),
       supportedCredentialTypes: (context: any, event: any) => {
         return event.credentialTypes;
       },
@@ -283,7 +301,7 @@ export const IssuersActions = (model: any) => {
       cNonce: (context: any, event: any) => {
         return event.cNonce;
       },
-    }),
+    
     setRequestTxCode: model.assign({
       isTransactionCodeRequested: (_: any, event: any) => {
         return true;
@@ -296,8 +314,11 @@ export const IssuersActions = (model: any) => {
       },
     }),
     setCredentialOfferIssuerWellknownResponse: model.assign({
+      selectedIssuer: (_: any, event: any) => {
+        return event.data
+      },
       selectedIssuerWellknownResponse: (_: any, event: any) => {
-        return event.issuerMetadata;
+        return event.data;
       },
     }),
     setWellknwonKeyTypes: model.assign({

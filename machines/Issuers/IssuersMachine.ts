@@ -117,6 +117,7 @@ export const IssuersMachine = model.createMachine(
           onDone: {
             actions: [
               'setCredential',
+              'setCredentialConfigurationId',
               model.assign({
                 authEndpointToOpen: false,
               }),

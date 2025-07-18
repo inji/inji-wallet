@@ -36,6 +36,17 @@ export const IssuersService = () => {
       const wellknownResponse = await VciClient.getInstance().getIssuerMetadata(
         context.selectedIssuer.credential_issuer_host,
       );
+      console.log("caching=-------")
+      const wellknownCacheObject = createCacheObject(
+        wellknownResponse
+      );
+      await setItem(
+        API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(
+          context.selectedIssuer.credential_issuer_host,
+        ),
+        wellknownCacheObject,
+        '',
+      );
       return wellknownResponse;
     },
     getCredentialTypes: async (context: any) => {
@@ -172,14 +183,13 @@ export const IssuersService = () => {
         //     credentialConfigurationId
         //   ],
         // });
-        console.log('getSignedProofJwt called with:', proofSigningAlgosSupported)
+        console.log('getSignedProofJwt called with:', proofSigningAlgosSupported,credentialIssuer)
         sendBack({
           type: 'PROOF_REQUEST',
           cNonce: cNonce,
           issuer: credentialIssuer,
           proofSigningAlgosSupported: proofSigningAlgosSupported,
         });
-        //}
       };
 
       const getTxCode = async (
@@ -214,7 +224,7 @@ export const IssuersService = () => {
         });
       };
 
-      const {credential} =
+      const credentialResponse =
         await VciClient.getInstance().requestCredentialByOffer(
           context.qrData,
           getTxCode,
@@ -223,7 +233,7 @@ export const IssuersService = () => {
           getTokenResponse,
           requesTrustIssuerConsent,
         );
-      return credential;
+      return credentialResponse;
     },
     sendTokenRequest: async (context: any) => {
       const tokenRequestObject = context.tokenRequestObject;
@@ -249,17 +259,19 @@ export const IssuersService = () => {
       return credential;
     },
     cacheIssuerWellknown: async (context: any) => {
-      const credentialIssuer = context.selectedIssuer.credential_issuer;
+      const credentialIssuer = context.credentialOfferCredentialIssuer;
+      const issuerMetadata=(await VciClient.getInstance().getIssuerMetadata(
+        credentialIssuer,
+      )) as issuerType
       const wellknownCacheObject = createCacheObject(
-        (await VciClient.getInstance().getIssuerMetadata(
-          credentialIssuer,
-        )) as issuerType,
+        issuerMetadata,
       );
       await setItem(
         API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(credentialIssuer),
         wellknownCacheObject,
         '',
       );
+      return issuerMetadata
     },
     constructProof: async (context: any) => {
       const issuerMeta = context.selectedIssuer;

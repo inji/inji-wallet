@@ -281,6 +281,7 @@ export async function constructProofJWT(
   isCredentialOfferFlow: boolean,
   cNonce?: string,
 ): Promise<string> {
+  console.log("Constructing proof JWT with", selectedIssuer,"   ", client_id," ",proofSigningAlgosSupported," ",cNonce,"  ", keyType, isCredentialOfferFlow);
   const jwk = await getJWK(publicKey, keyType);
 
   const decodedToken = cNonce ?? jwtDecode(accessToken);
@@ -304,7 +305,7 @@ export async function constructProofJWT(
   };
 
   const jwtPayload = {
-    iss: client_id,
+    ...(client_id ? { iss: client_id } : {}),
     nonce,
     aud: selectedIssuer,
     iat: Math.floor(Date.now() / 1000),

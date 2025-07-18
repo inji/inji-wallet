@@ -48,6 +48,7 @@ export const IssuersModel = createModel(
     credentialOfferIssuerMetadata: {} as object,
     credentialOfferCredentialIssuer: {} as string,
     tokenRequestObject: {} as object,
+    credentialConfigurationId: '' as string,
   },
   {
     events: IssuersEvents,
