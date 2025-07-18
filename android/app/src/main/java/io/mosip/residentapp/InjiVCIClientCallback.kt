@@ -50,7 +50,7 @@ object VCIClientCallbackBridge {
                 putString("credentialIssuer", credentialIssuer)
                 if (cNonce != null) putString("cNonce", cNonce)
                 val json = Gson().toJson(proofSigningAlgorithmsSupported)
-                putString("proofSigningAlgosSupported", json)
+                putString("proofSigningAlgorithmsSupported", json)
             }
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
             .emit("onRequestProof", params)

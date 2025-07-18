@@ -266,7 +266,7 @@ export const IssuersActions = (model: any) => {
     }),
     setCNonce: model.assign({
       cNonce: (_: any, event: any) => {
-        console.log("data received in setCNonce", event);
+        console.log('data received in setCNonce', event);
         return event.cNonce;
       },
     }),
@@ -302,17 +302,17 @@ export const IssuersActions = (model: any) => {
     }),
     setWellknwonKeyTypes: model.assign({
       wellknownKeyTypes: (_: any, event: any) => {
-        return event.proofSigningAlgosSupported;
+        return parseJSON(event.proofSigningAlgosSupported);
       },
     }),
     setSelectedCredentialIssuer: model.assign({
       credentialOfferCredentialIssuer: (_: any, event: any) => {
         return event.issuer;
-      }
+      },
     }),
     setTokenRequestObject: model.assign({
       tokenRequestObject: (_: any, event: any) => {
-        console.log("----",event.tokenRequest);
+        console.log('----', event.tokenRequest);
         return parseJSON(event.tokenRequest);
       },
     }),
@@ -344,7 +344,7 @@ export const IssuersActions = (model: any) => {
     }),
     setIssuerDisplayDetails: model.assign({
       issuerLogo: (_: any, event: any) => {
-        const displayArray = event.issuerDisplay
+        const displayArray = event.issuerDisplay;
         const display = displayArray
           ? getDisplayObjectForCurrentLanguage(displayArray)
           : undefined;
