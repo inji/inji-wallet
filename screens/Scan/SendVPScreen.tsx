@@ -125,6 +125,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
       OVP_ERROR_MESSAGES.DECLINED,
       OVP_ERROR_CODE.DECLINED,
     );
+    controller.generateAndStoreLogMessage('USER_DECLINED_CONSENT');
     if (controller.isOVPViaDeepLink) {
       controller.GO_TO_HOME();
       BackHandler.exitApp();
@@ -138,6 +139,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
       OVP_ERROR_MESSAGES.DECLINED,
       OVP_ERROR_CODE.DECLINED,
     );
+    controller.generateAndStoreLogMessage('USER_DECLINED_CONSENT');
     if (controller.isOVPViaDeepLink) {
       controller.GO_TO_HOME();
       BackHandler.exitApp();
