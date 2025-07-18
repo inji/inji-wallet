@@ -909,7 +909,7 @@
       },
       "sendVPError": {
         "title": "May Nangyaring Mali",
-        "message": "Mensahe: Hindi namin naibahagi ang iyong card dahil sa isang teknikal na isyu. I-click ang Retry para subukang muli, o pumunta sa Home upang lumabas."
+        "message": "Nagkaroon ng teknikal na problema habang ibinabahagi ang iyong card. Pindutin ang \"Subukang Muli\" para subukang muli o bumalik sa \"Home\"."
       },
       "noImage": {
         "title": "Isang Error ang Naganap!",

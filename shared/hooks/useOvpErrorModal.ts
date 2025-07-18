@@ -152,7 +152,7 @@ export function useOvpErrorModal({
         additionalMessage,
         showRetryButton: true,
       });
-      generateAndStoreLogMessage('SEND_VP');
+      generateAndStoreLogMessage('SEND_VP_ERROR');
     } else if (error !== '') {
       setErrorModal({
         show: true,

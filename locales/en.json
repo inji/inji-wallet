@@ -918,7 +918,7 @@
       },
       "sendVPError": {
         "title": "Something Went Wrong",
-        "message": "Message: We couldn't share your card due to a technical issue. Click Retry to try again, or go to Home to exit."
+        "message": "There was a technical issue while sharing your card. Tap \"Retry\" to try again or go back to \"Home\"."
       },
       "noImage": {
         "title": "An Error Occured!",
