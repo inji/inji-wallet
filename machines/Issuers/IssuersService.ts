@@ -338,6 +338,7 @@ async function sendTokenRequest(tokenRequestObject: any, proxyTokenEndpoint:any 
     tokenRequestObject.tokenEndpoint = proxyTokenEndpoint;
   }
   if (!tokenRequestObject?.tokenEndpoint) {
+    console.error("tokenEndpoint is not provided in tokenRequestObject");
     throw new Error('tokenEndpoint is required');
   }
 
@@ -382,5 +383,5 @@ async function sendTokenRequest(tokenRequestObject: any, proxyTokenEndpoint:any 
   }
   const tokenResponse = await response.json();
   console.log('Token request successful, response:', tokenResponse);
-  return tokenResponse 
+  return tokenResponse
 }

@@ -43,13 +43,13 @@ object VCIClientCallbackBridge {
         context: ReactApplicationContext,
         credentialIssuer: String,
         cNonce: String?,
-        proofSigningAlgosSupported: List<String>,
+        proofSigningAlgorithmsSupported: List<String>,
     ) {
         val params =
             Arguments.createMap().apply {
                 putString("credentialIssuer", credentialIssuer)
                 if (cNonce != null) putString("cNonce", cNonce)
-                val json = Gson().toJson(proofSigningAlgosSupported)
+                val json = Gson().toJson(proofSigningAlgorithmsSupported)
                 putString("proofSigningAlgosSupported", json)
             }
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
@@ -59,7 +59,7 @@ object VCIClientCallbackBridge {
     fun emitRequestAuthCode(context: ReactApplicationContext, authorizationEndpoint: String) {
         val params =
             Arguments.createMap().apply {
-                putString("authorizationEndpoint", authorizationEndpoint)
+                putString("authorizationUrl", authorizationEndpoint)
             }
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
             .emit("onRequestAuthCode", params)
@@ -122,6 +122,12 @@ object VCIClientCallbackBridge {
     fun completeTxCode(code: String) {
         deferredTxCode?.complete(code)
         deferredTxCode = null
+    }
+
+    @JvmStatic
+    fun completeTokenResponse(tokenResponse: TokenResponse) {
+        deferredTokenResponse?.complete(tokenResponse)
+        deferredTokenResponse = null
     }
 
     @JvmStatic

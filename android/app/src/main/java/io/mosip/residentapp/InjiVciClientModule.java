@@ -16,6 +16,7 @@ import java.util.Map;
 import io.mosip.vciclient.VCIClient;
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata;
 import io.mosip.vciclient.credential.response.CredentialResponse;
+import io.mosip.vciclient.token.TokenResponse;
 
 public class InjiVciClientModule extends ReactContextBaseJavaModule {
     private VCIClient vciClient;
@@ -58,6 +59,12 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendIssuerTrustResponseFromJS(Boolean trusted) {
         VCIClientCallbackBridge.completeIssuerTrustResponse(trusted);
+    }
+
+    @ReactMethod
+    public void sendTokenResponseFromJS(String tokenResponseJson) {
+        TokenResponse tokenResponse = new Gson().fromJson(tokenResponseJson, TokenResponse.class);
+        VCIClientCallbackBridge.completeTokenResponse(tokenResponse);
     }
 
     @ReactMethod

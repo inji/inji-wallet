@@ -589,6 +589,7 @@ export const IssuersMachine = model.createMachine(
               },
               onError: {
                 actions: [
+                  (_context, event, _meta)=> console.error("Error sending token request in downloadCredentials", event),
                   'resetCredentialOfferIssuer',
                   'resetLoadingReason',
                   'resetQrData',
@@ -606,6 +607,7 @@ export const IssuersMachine = model.createMachine(
               },
               onError: {
                 actions: [
+                  (_context, event, _meta)=> console.error("Error sending token response in downloadCredentials", event),
                   'resetCredentialOfferIssuer',
                   'resetLoadingReason',
                   'resetQrData',

@@ -27,7 +27,7 @@ import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {NativeModules} from 'react-native';
 import {KeyTypes} from '../../shared/cryptoutil/KeyTypes';
 import {VCActivityLog} from '../../components/ActivityLogEvent';
-import {isNetworkError} from '../../shared/Utils';
+import {isNetworkError, parseJSON} from '../../shared/Utils';
 import {issuerType} from './IssuersMachine';
 
 const {RNSecureKeystoreModule} = NativeModules;
@@ -266,6 +266,7 @@ export const IssuersActions = (model: any) => {
     }),
     setCNonce: model.assign({
       cNonce: (_: any, event: any) => {
+        console.log("data received in setCNonce", event);
         return event.cNonce;
       },
     }),
@@ -312,7 +313,7 @@ export const IssuersActions = (model: any) => {
     setTokenRequestObject: model.assign({
       tokenRequestObject: (_: any, event: any) => {
         console.log("----",event.tokenRequest);
-        return event.tokenRequest;
+        return parseJSON(event.tokenRequest);
       },
     }),
     setTokenResponseObject: model.assign({

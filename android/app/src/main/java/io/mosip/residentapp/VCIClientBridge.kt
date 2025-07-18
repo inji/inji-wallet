@@ -6,6 +6,8 @@ import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata
 import io.mosip.vciclient.credential.response.CredentialResponse
 import io.mosip.vciclient.token.TokenRequest
 import io.mosip.vciclient.token.TokenResponse
+import io.mosip.vciclient.types.AuthorizeUserCallback
+import io.mosip.vciclient.types.ProofJwtCallback
 import kotlinx.coroutines.runBlocking
 
 object VCIClientBridge {
@@ -64,23 +66,24 @@ object VCIClientBridge {
         )
     }
 
-    private fun authorizeUserCallback(): suspend (authorizationUrl: String) -> String =
+    private fun authorizeUserCallback(): AuthorizeUserCallback =
         { endpoint ->
             VCIClientCallbackBridge.createAuthCodeDeferred()
             VCIClientCallbackBridge.emitRequestAuthCode(reactContext, endpoint)
             VCIClientCallbackBridge.awaitAuthCode()
         }
 
-    private fun getProofJwtCallback(): suspend (String, String?, List<String>) -> String =
+    private fun getProofJwtCallback(): ProofJwtCallback =
         { credentialIssuer: String,
           cNonce: String?,
-          proofSigningAlgosSupported: List<String> ->
+          proofSigningAlgorithmsSupported: List<String> ->
+            println("getProofJwtCallback called with issuer: $credentialIssuer, cNonce: $cNonce, proofSigningAlgorithmsSupported: $proofSigningAlgorithmsSupported")
             VCIClientCallbackBridge.createProofDeferred()
             VCIClientCallbackBridge.emitRequestProof(
                 reactContext,
                 credentialIssuer,
                 cNonce,
-                proofSigningAlgosSupported
+                proofSigningAlgorithmsSupported
             )
             VCIClientCallbackBridge.awaitProof()
         }
