@@ -214,7 +214,7 @@ export const IssuersService = () => {
         sendBack({
           type: 'TRUST_ISSUER_CONSENT_REQUEST',
           issuerDisplay: issuerDisplayObject,
-          credentialIssuer: credentialIssuer,
+          issuer: credentialIssuer,
         });
       };
       const getTokenResponse = (tokenRequest: object) => {

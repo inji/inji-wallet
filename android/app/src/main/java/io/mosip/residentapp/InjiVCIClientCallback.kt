@@ -98,7 +98,7 @@ object VCIClientCallbackBridge {
         val params =
             Arguments.createMap().apply {
 //TODO: Convert Gson construction to singleton pattern
-                putString("credentialIssuer", Gson().toJson(credentialIssuer))
+                putString("credentialIssuer", credentialIssuer)
                 putString("issuerDisplay", Gson().toJson(issuerDisplay))
             }
 

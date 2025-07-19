@@ -190,13 +190,15 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         cNonce: String?,
         proofSigningAlgorithmsSupported: [String]
     ) async throws -> String {
+        let jsonData = try JSONSerialization.data(withJSONObject: proofSigningAlgorithmsSupported, options: [])
+        let jsonString = String(data: jsonData, encoding: .utf8) ?? "{}"
         if let bridge = RCTBridge.current() {
             bridge.eventDispatcher().sendAppEvent(
                 withName: "onRequestProof",
                 body: [
                     "credentialIssuer": credentialIssuer,
-                    "cNonce": cNonce ?? NSNull(),
-                    "proofSigningAlgorithmsSupported": proofSigningAlgorithmsSupported
+                    "cNonce": cNonce,
+                    "proofSigningAlgorithmsSupported": jsonString
                 ]
             )
         }
@@ -240,12 +242,15 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         credentialIssuer: String,
         issuerDisplay: [[String: Any]]
     ) async throws -> Bool {
+        // Convert issuerDisplay to JSON string
+        let jsonData = try JSONSerialization.data(withJSONObject: issuerDisplay, options: [])
+        let jsonString = String(data: jsonData, encoding: .utf8) ?? "[]"
         if let bridge = RCTBridge.current() {
             bridge.eventDispatcher().sendAppEvent(
                 withName: "onCheckIssuerTrust",
                 body: [
                     "credentialIssuer": credentialIssuer,
-                    "issuerDisplay": issuerDisplay
+                    "issuerDisplay": jsonString
                 ]
             )
         }

@@ -94,7 +94,7 @@ object VCIClientBridge {
                 "grantType" to tokenRequest.grantType.value,
                 "tokenEndpoint" to tokenRequest.tokenEndpoint,
                 "authCode" to tokenRequest.authCode,
-                "preAuthorizedCode" to tokenRequest.preAuthCode,
+                "preAuthCode" to tokenRequest.preAuthCode,
                 "txCode" to tokenRequest.txCode,
                 "clientId" to tokenRequest.clientId,
                 "redirectUri" to tokenRequest.redirectUri,

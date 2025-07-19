@@ -323,7 +323,7 @@ export const IssuersActions = (model: any) => {
     }),
     setWellknwonKeyTypes: model.assign({
       wellknownKeyTypes: (_: any, event: any) => {
-        return parseJSON(event.proofSigningAlgosSupported);
+        return event.proofSigningAlgosSupported;
       },
     }),
     setSelectedCredentialIssuer: model.assign({

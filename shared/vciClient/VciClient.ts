@@ -85,7 +85,7 @@ class VciClient {
           cNonce,
           proofSigningAlgorithmsSupported,
         });
-        getProofJwt(credentialIssuer, cNonce, proofSigningAlgorithmsSupported);
+        getProofJwt(credentialIssuer, cNonce, JSON.parse(proofSigningAlgorithmsSupported));
       },
     );
 
@@ -130,7 +130,7 @@ class VciClient {
           credentialIssuer,
           issuerDisplay,
         });
-        requestTrustIssuerConsent(credentialIssuer, issuerDisplay);
+        requestTrustIssuerConsent(credentialIssuer, JSON.parse(issuerDisplay));
       },
     );
 
@@ -160,6 +160,7 @@ class VciClient {
     }
 
     const parsedResponse = JSON.parse(response);
+    console.log('Parsed response:', JSON.stringify(parsedResponse));
     return {
       credential: {
         credential: parsedResponse.credential,
@@ -196,7 +197,7 @@ class VciClient {
           cNonce,
           proofSigningAlgorithmsSupported,
         });
-        getProofJwt(credentialIssuer, cNonce, proofSigningAlgorithmsSupported);
+        getProofJwt(credentialIssuer, cNonce, JSON.parse(proofSigningAlgorithmsSupported));
       },
     );
 
