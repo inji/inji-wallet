@@ -430,7 +430,7 @@ export const IssuersActions = (model: any) => {
             type: 'VC_DOWNLOADED',
             timestamp: Date.now(),
             deviceName: '',
-            issuer: context.selectedIssuerId,
+            issuer: context.selectedIssuer.credential_issuer_host ?? context.credentialOfferCredentialIssuer,
             credentialConfigurationId: context.selectedCredentialType.id,
           }),
           context.selectedIssuerWellknownResponse,
