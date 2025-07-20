@@ -25,7 +25,6 @@ import {
 } from '../../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {NativeModules} from 'react-native';
-import {KeyTypes} from '../../shared/cryptoutil/KeyTypes';
 import {VCActivityLog} from '../../components/ActivityLogEvent';
 import {isNetworkError, parseJSON} from '../../shared/Utils';
 import {issuerType} from './IssuersMachine';
@@ -52,9 +51,6 @@ export const IssuersActions = (model: any) => {
     setIssuers: model.assign({
       issuers: (_: any, event: any) => event.data as issuerType[],
     }),
-    setNoInternet: model.assign({
-      errorMessage: () => ErrorMessage.NO_INTERNET,
-    }),
     setLoadingReasonAsDisplayIssuers: model.assign({
       loadingReason: 'displayIssuers',
     }),
@@ -75,7 +71,7 @@ export const IssuersActions = (model: any) => {
           return proofTypesSupported.jwt
             .proof_signing_alg_values_supported as string[];
         } else {
-          return [KeyTypes.RS256] as string[];
+          return [] as string[];
         }
       },
     }),
@@ -84,17 +80,6 @@ export const IssuersActions = (model: any) => {
     }),
     resetSelectedCredentialType: model.assign({
       selectedCredentialType: {},
-    }),
-    setNetworkOrTechnicalError: model.assign({
-      errorMessage: (_: any, event: any) => {
-        console.error(
-          `Error occurred during ${event} flow`,
-          event.data.message,
-        );
-        return isNetworkError(event.data.message)
-          ? ErrorMessage.NO_INTERNET
-          : ErrorMessage.TECHNICAL_DIFFICULTIES;
-      },
     }),
     setCredentialTypeListDownloadFailureError: model.assign({
       errorMessage: (_: any, event: any) => {
@@ -109,8 +94,11 @@ export const IssuersActions = (model: any) => {
       errorMessage: (_: any, event: any) => {
         console.error(`Error occurred while ${event} -> `, event.data.message);
         const error = event.data.message;
-        if (isNetworkError(error)) {
+        if (error.includes('No internet')) {
           return ErrorMessage.NO_INTERNET;
+        }
+        if (isNetworkError(error)) {
+          return ErrorMessage.NETWORK_REQUEST_FAILED;
         }
         if (error.includes(REQUEST_TIMEOUT)) {
           return ErrorMessage.REQUEST_TIMEDOUT;
@@ -125,9 +113,6 @@ export const IssuersActions = (model: any) => {
         }
         return ErrorMessage.GENERIC;
       },
-    }),
-    setOIDCConfigError: model.assign({
-      errorMessage: (_: any, event: any) => event.data.toString(),
     }),
     resetError: model.assign({
       errorMessage: '',
@@ -236,17 +221,21 @@ export const IssuersActions = (model: any) => {
         return context.issuers.find(issuer => issuer.issuer_id === event.id);
       },
     }),
-
+    resetSelectedIssuer: model.assign({
+      selectedIssuer: () => ({} as issuerType),
+    }),
     updateIssuerFromWellknown: model.assign({
       selectedIssuer: (context: any, event: any) => ({
         ...context.selectedIssuer,
-        credential_audience: event.data.credential_issuer,
         credential_endpoint: event.data.credential_endpoint,
         credential_configurations_supported:
           event.data.credential_configurations_supported,
         display: event.data.display,
         authorization_servers: event.data.authorization_servers,
       }),
+      selectedIssuerWellknownResponse: (_: any, event: any) => {
+        return event.data;
+      },
     }),
     setCredential: model.assign({
       credential: (_: any, event: any) => event.data.credential,
@@ -278,30 +267,33 @@ export const IssuersActions = (model: any) => {
     setOfferCredentialTypeContexts: model.assign({
       selectedCredentialType: (context: any, event: any) => {
         let credentialTypes: Array<{id: string; [key: string]: any}> = [];
-        const credentialConfigurationId =
-          context.credentialConfigurationId
+        const credentialConfigurationId = context.credentialConfigurationId;
         const issuerMetadata = context.selectedIssuerWellknownResponse;
         if (
-          issuerMetadata.credential_configurations_supported[credentialConfigurationId]
-        ) {
-        credentialTypes.push({
-          id: credentialConfigurationId,
-          ...issuerMetadata.credential_configurations_supported[
+          issuerMetadata.credential_configurations_supported[
             credentialConfigurationId
-          ],
-        });
-        return credentialTypes[0];
-      }}}),
-      supportedCredentialTypes: (context: any, event: any) => {
-        return event.credentialTypes;
+          ]
+        ) {
+          credentialTypes.push({
+            id: credentialConfigurationId,
+            ...issuerMetadata.credential_configurations_supported[
+              credentialConfigurationId
+            ],
+          });
+          return credentialTypes[0];
+        }
       },
-      accessToken: (context: any, event: any) => {
-        return event.accessToken;
-      },
-      cNonce: (context: any, event: any) => {
-        return event.cNonce;
-      },
-    
+    }),
+    supportedCredentialTypes: (context: any, event: any) => {
+      return event.credentialTypes;
+    },
+    accessToken: (context: any, event: any) => {
+      return event.accessToken;
+    },
+    cNonce: (context: any, event: any) => {
+      return event.cNonce;
+    },
+
     setRequestTxCode: model.assign({
       isTransactionCodeRequested: (_: any, event: any) => {
         return true;
@@ -315,7 +307,7 @@ export const IssuersActions = (model: any) => {
     }),
     setCredentialOfferIssuerWellknownResponse: model.assign({
       selectedIssuer: (_: any, event: any) => {
-        return event.data
+        return event.data;
       },
       selectedIssuerWellknownResponse: (_: any, event: any) => {
         return event.data;
@@ -341,9 +333,6 @@ export const IssuersActions = (model: any) => {
       tokenResponse: (_: any, event: any) => {
         return event.data;
       },
-    }),
-    updateSelectedIssuerWellknownResponse: model.assign({
-      selectedIssuerWellknownResponse: (_: any, event: any) => event.data,
     }),
     setSelectedIssuerId: model.assign({
       selectedIssuerId: (_: any, event: any) => event.id,
@@ -381,13 +370,13 @@ export const IssuersActions = (model: any) => {
       },
     }),
 
-    setFlowType: model.assign({
+    setCredentialOfferFlowType: model.assign({
       isCredentialOfferFlow: (_: any, event: any) => {
         return true;
       },
     }),
 
-    resetFlowType: model.assign({
+    resetCredentialOfferFlowType: model.assign({
       isCredentialOfferFlow: (_: any, event: any) => {
         return false;
       },
@@ -430,7 +419,9 @@ export const IssuersActions = (model: any) => {
             type: 'VC_DOWNLOADED',
             timestamp: Date.now(),
             deviceName: '',
-            issuer: context.selectedIssuer.credential_issuer_host ?? context.credentialOfferCredentialIssuer,
+            issuer:
+              context.selectedIssuer.credential_issuer_host ??
+              context.credentialOfferCredentialIssuer,
             credentialConfigurationId: context.selectedCredentialType.id,
           }),
           context.selectedIssuerWellknownResponse,
@@ -469,8 +460,10 @@ export const IssuersActions = (model: any) => {
     },
 
     updateVerificationErrorMessage: assign({
-      verificationErrorMessage: (_, event: any) =>
-        (event.data as Error).message,
+      verificationErrorMessage: (_, event: any) => {
+        console.log('Error occurred while verifying VC: ', event.data.message);
+        return (event.data as Error).message;
+      },
     }),
 
     resetVerificationErrorMessage: model.assign({

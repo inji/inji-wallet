@@ -1,26 +1,22 @@
 import NetInfo from '@react-native-community/netinfo';
-import {NativeModules} from 'react-native';
+import { NativeModules } from 'react-native';
 import Cloud from '../../shared/CloudBackupAndRestoreUtils';
-import {CACHED_API} from '../../shared/api';
+import { CACHED_API } from '../../shared/api';
 import {
   fetchKeyPair,
   generateKeyPair,
 } from '../../shared/cryptoutil/cryptoUtil';
 import {
-  constructIssuerMetaData,
   constructProofJWT,
   hasKeyPair,
   updateCredentialInformation,
   verifyCredentialData,
 } from '../../shared/openId4VCI/Utils';
 import VciClient from '../../shared/vciClient/VciClient';
-import {displayType, issuerType} from './IssuersMachine';
-import {setItem} from '../store';
-import {API_CACHED_STORAGE_KEYS} from '../../shared/constants';
-import {createCacheObject} from '../../shared/Utils';
-import {selectSelectedIssuer} from './IssuersSelectors';
-import {sendTo} from 'xstate/lib/actions';
-import { IssuerWellknownResponse } from '../VerifiableCredential/VCMetaMachine/vc';
+import { displayType, issuerType } from './IssuersMachine';
+import { setItem } from '../store';
+import { API_CACHED_STORAGE_KEYS } from '../../shared/constants';
+import { createCacheObject } from '../../shared/Utils';
 
 export const IssuersService = () => {
   return {
@@ -33,13 +29,10 @@ export const IssuersService = () => {
     },
     checkInternet: async () => await NetInfo.fetch(),
     downloadIssuerWellknown: async (context: any) => {
-      const wellknownResponse = await VciClient.getInstance().getIssuerMetadata(
+      const wellknownResponse = (await VciClient.getInstance().getIssuerMetadata(
         context.selectedIssuer.credential_issuer_host,
-      );
-      console.log("caching=-------")
-      const wellknownCacheObject = createCacheObject(
-        wellknownResponse
-      );
+      )) as issuerType;
+      const wellknownCacheObject = createCacheObject(wellknownResponse);
       await setItem(
         API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(
           context.selectedIssuer.credential_issuer_host,
@@ -50,12 +43,12 @@ export const IssuersService = () => {
       return wellknownResponse;
     },
     getCredentialTypes: async (context: any) => {
-      const credentialTypes = [];
+      const credentialTypes: Array<{id: string; [key: string]: any}> = [];
       const selectedIssuer = context.selectedIssuer;
 
-      const keys =
-        selectedIssuer.credential_configuration_ids ??
-        Object.keys(selectedIssuer.credential_configurations_supported);
+      const keys = Object.keys(
+        selectedIssuer.credential_configurations_supported,
+      );
 
       for (const key of keys) {
         if (selectedIssuer.credential_configurations_supported[key]) {
@@ -111,7 +104,6 @@ export const IssuersService = () => {
           navigateToAuthView,
           getTokenResponse,
         );
-        console.log('downloadCredential called with:', credential);
       return updateCredentialInformation(context, credential);
     },
     sendTxCode: async (context: any) => {
@@ -163,27 +155,6 @@ export const IssuersService = () => {
         cNonce: string | null,
         proofSigningAlgosSupported: string[] | null,
       ) => {
-        // const issuerMetadata =await VciClient.getInstance().getIssuerMetadata(credentialIssuer) as issuerType;
-        // const wellknownCacheObject = createCacheObject(
-        //   issuerMetadata
-        // );
-        // await setItem(
-        //   API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(credentialIssuer),
-        //   wellknownCacheObject,
-        //   '',
-        // );
-
-        // let credentialTypes: Array<{id: string; [key: string]: any}> = [];
-        // if (
-        //   issuerMetadata.credential_configurations_supported[credentialConfigurationId]
-        // ) {
-        // credentialTypes.push({
-        //   id: credentialConfigurationId,
-        //   ...issuer.credential_configurations_supported[
-        //     credentialConfigurationId
-        //   ],
-        // });
-        console.log('getSignedProofJwt called with:', proofSigningAlgosSupported,credentialIssuer)
         sendBack({
           type: 'PROOF_REQUEST',
           cNonce: cNonce,
@@ -237,7 +208,10 @@ export const IssuersService = () => {
     },
     sendTokenRequest: async (context: any) => {
       const tokenRequestObject = context.tokenRequestObject;
-      return await sendTokenRequest(tokenRequestObject,context.selectedIssuer?.token_endpoint);
+      return await sendTokenRequest(
+        tokenRequestObject,
+        context.selectedIssuer?.token_endpoint,
+      );
     },
     sendTokenResponse: async (context: any) => {
       const tokenResponse = context.tokenResponse;
@@ -260,21 +234,18 @@ export const IssuersService = () => {
     },
     cacheIssuerWellknown: async (context: any) => {
       const credentialIssuer = context.credentialOfferCredentialIssuer;
-      const issuerMetadata=(await VciClient.getInstance().getIssuerMetadata(
+      const issuerMetadata = (await VciClient.getInstance().getIssuerMetadata(
         credentialIssuer,
-      )) as issuerType
-      const wellknownCacheObject = createCacheObject(
-        issuerMetadata,
-      );
+      )) as issuerType;
+      const wellknownCacheObject = createCacheObject(issuerMetadata);
       await setItem(
         API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(credentialIssuer),
         wellknownCacheObject,
         '',
       );
-      return issuerMetadata
+      return issuerMetadata;
     },
     constructProof: async (context: any) => {
-      const issuerMeta = context.selectedIssuer;
       const proofJWT = await constructProofJWT(
         context.publicKey,
         context.privateKey,
@@ -289,7 +260,7 @@ export const IssuersService = () => {
       await VciClient.getInstance().sendProof(proofJWT);
       return proofJWT;
     },
-    constructProofForTrustedIssuers: async (context: any) => {
+    constructAndSendProofForTrustedIssuers: async (context: any) => {
       const issuerMeta = context.selectedIssuer;
       const proofJWT = await constructProofJWT(
         context.publicKey,
@@ -334,23 +305,25 @@ export const IssuersService = () => {
     verifyCredential: async (context: any) => {
       const verificationResult = await verifyCredentialData(
         context.verifiableCredential?.credential,
-        context.selectedCredentialType.format
+        context.selectedCredentialType.format,
       );
       if (!verificationResult.isVerified) {
         throw new Error(verificationResult.verificationErrorCode);
       }
-
       return verificationResult;
     },
   };
 };
-async function sendTokenRequest(tokenRequestObject: any, proxyTokenEndpoint:any = null) {
+async function sendTokenRequest(
+  tokenRequestObject: any,
+  proxyTokenEndpoint: any = null,
+) {
   console.log('sendTokenRequest called with:', tokenRequestObject);
-  if(proxyTokenEndpoint){
+  if (proxyTokenEndpoint) {
     tokenRequestObject.tokenEndpoint = proxyTokenEndpoint;
   }
   if (!tokenRequestObject?.tokenEndpoint) {
-    console.error("tokenEndpoint is not provided in tokenRequestObject");
+    console.error('tokenEndpoint is not provided in tokenRequestObject');
     throw new Error('tokenEndpoint is required');
   }
 
@@ -362,10 +335,7 @@ async function sendTokenRequest(tokenRequestObject: any, proxyTokenEndpoint:any 
     formBody.append('code', tokenRequestObject.authCode);
   }
   if (tokenRequestObject.preAuthCode) {
-    formBody.append(
-      'pre-authorized_code',
-      tokenRequestObject.preAuthCode,
-    );
+    formBody.append('pre-authorized_code', tokenRequestObject.preAuthCode);
   }
   if (tokenRequestObject.txCode) {
     formBody.append('tx_code', tokenRequestObject.txCode);
@@ -379,7 +349,7 @@ async function sendTokenRequest(tokenRequestObject: any, proxyTokenEndpoint:any 
   if (tokenRequestObject.codeVerifier) {
     formBody.append('code_verifier', tokenRequestObject.codeVerifier);
   }
-  console.log("token ::",formBody.toString());
+  console.log('token ::', formBody.toString());
   const response = await fetch(tokenRequestObject.tokenEndpoint, {
     method: 'POST',
     headers: {
@@ -390,10 +360,14 @@ async function sendTokenRequest(tokenRequestObject: any, proxyTokenEndpoint:any 
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('Token request failed with status:', response.status, errorText);
+    console.error(
+      'Token request failed with status:',
+      response.status,
+      errorText,
+    );
     throw new Error(`Token request failed: ${response.status} ${errorText}`);
   }
   const tokenResponse = await response.json();
   console.log('Token request successful, response:', tokenResponse);
-  return tokenResponse
+  return tokenResponse;
 }

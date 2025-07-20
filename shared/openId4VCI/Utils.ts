@@ -268,6 +268,7 @@ export enum ErrorMessage {
   TECHNICAL_DIFFICULTIES = 'technicalDifficulty',
   CREDENTIAL_TYPE_DOWNLOAD_FAILURE = 'credentialTypeListDownloadFailure',
   AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED = 'authorizationGrantTypeNotSupportedByWallet',
+  NETWORK_REQUEST_FAILED = 'Network request failed'
 }
 
 export async function constructProofJWT(
@@ -416,34 +417,6 @@ export function selectCredentialRequestKey(
 
   return KeyTypes.ED25519;
 }
-
-export const constructIssuerMetaData = (
-  selectedIssuer: issuerType,
-  selectedCredentialType: CredentialTypes,
-  scope: string,
-): Object => {
-  const issuerMeta: Object = {
-    credentialAudience: selectedIssuer.credential_audience,
-    credentialEndpoint: selectedIssuer.credential_endpoint,
-    credentialFormat: isIOS()
-      ? selectedCredentialType.format
-      : selectedCredentialType.format.toUpperCase(),
-    authorizationServers: selectedIssuer['authorization_servers'],
-    tokenEndpoint: selectedIssuer.token_endpoint,
-    scope: scope,
-  };
-  if (selectedCredentialType.format === VCFormat.ldp_vc) {
-    issuerMeta['credentialType'] = selectedCredentialType?.credential_definition
-      ?.type ?? ['VerifiableCredential'];
-    if (selectedCredentialType?.credential_definition['@context'])
-      issuerMeta['context'] =
-        selectedCredentialType?.credential_definition['@context'];
-  } else if (selectedCredentialType.format === VCFormat.mso_mdoc) {
-    issuerMeta['doctype'] = selectedCredentialType.doctype;
-    issuerMeta['claims'] = selectedCredentialType.claims;
-  }
-  return issuerMeta;
-};
 
 export function getMatchingCredentialIssuerMetadata(
   wellknown: any,
