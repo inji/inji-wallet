@@ -217,6 +217,10 @@
         "title": "No internet connection",
         "message": "Please check your connection and retry"
       },
+      "networkRequestFailed":{
+        "title": "Network request failed",
+        "message": "We are unable to precess your request at the moment."
+      },
       "biometricsCancelled": {
         "title": "Do you want to cancel download?",
         "message": "Biometric confirmation is required to continue downloading the card."

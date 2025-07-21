@@ -260,7 +260,7 @@ export enum ErrorMessage {
   TECHNICAL_DIFFICULTIES = 'technicalDifficulty',
   CREDENTIAL_TYPE_DOWNLOAD_FAILURE = 'credentialTypeListDownloadFailure',
   AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED = 'authorizationGrantTypeNotSupportedByWallet',
-  NETWORK_REQUEST_FAILED = 'Network request failed',
+  NETWORK_REQUEST_FAILED = 'networkRequestFailed',
 }
 
 export async function constructProofJWT(

@@ -216,6 +216,10 @@
         "title": "Pakisuri ang iyong koneksyon at subukang muli",
         "message": "Mangyaring kumonekta sa internet at subukang muli."
       },
+      "networkRequestFailed": {
+        "title": "Nabigo ang kahilingan sa network",
+        "message": "Hindi namin maiproseso ang iyong kahilingan sa ngayon."
+      },
       "biometricsCancelled": {
         "title": "Gusto mo bang kanselahin ang pag-download?",
         "message": "Kinakailangan ang biometric confirmation para magpatuloy sa pag-download ng card."
@@ -882,7 +886,7 @@
         "title": "Oops! Isang Error ang Naganap.",
         "message": "Nagkaroon ng teknikal na problema habang pinoproseso ang iyong kahilingan. Maaari mong subukang muli pagkatapos ng ilang sandali."
       },
-            "vpFormatsNotSupported": {
+      "vpFormatsNotSupported": {
         "title": "Hindi Suportadong Kahilingan",
         "message": "Ang kahilingang ito ay hindi suportado. Pakiusap, sabihan ang tagapagsuri na subukan sa ibang paraan."
       },
