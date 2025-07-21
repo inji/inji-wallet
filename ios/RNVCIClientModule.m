@@ -13,14 +13,14 @@ RCT_EXTERN_METHOD(requestCredentialByOffer:(NSString *)credentialOffer
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 // Requests a credential from a trusted issuer using issuer URI, configuration ID, and client metadata (all as strings)
-RCT_EXTERN_METHOD(requestCredentialFromTrustedIssuer:(NSString *)credentialIssuerUri
+RCT_EXTERN_METHOD(requestCredentialFromTrustedIssuer:(NSString *)credentialIssuer
                   credentialConfigurationId:(NSString *)credentialConfigurationId
                   clientMetadata:(NSString *)clientMetadata
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 // Gets issuer metadata (discovery)
-RCT_EXTERN_METHOD(getIssuerMetadata:(NSString *)credentialIssuerUri
+RCT_EXTERN_METHOD(getIssuerMetadata:(NSString *)credentialIssuer
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

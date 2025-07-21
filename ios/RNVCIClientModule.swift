@@ -80,7 +80,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
     @objc
     func requestCredentialFromTrustedIssuer(
-        _ credentialIssuerUri: String,
+        _ credentialIssuer: String,
         credentialConfigurationId: String,
         clientMetadata: String,
         resolver resolve: @escaping RCTPromiseResolveBlock,
@@ -96,7 +96,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                 let clientMeta = try parseClientMetadata(from: clientMetadata)
 
                 let response = try await vciClient.requestCredentialFromTrustedIssuer(
-                    credentialIssuer: credentialIssuerUri,
+                    credentialIssuer: credentialIssuer,
                     credentialConfigurationId: credentialConfigurationId,
                     clientMetadata: clientMeta,
                     authorizeUser: { authUrl in
@@ -123,7 +123,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   
     @objc
     func getIssuerMetadata(
-        _ credentialIssuerUri: String,
+        _ credentialIssuer: String,
         resolver resolve: @escaping RCTPromiseResolveBlock,
         rejecter reject: @escaping RCTPromiseRejectBlock
     ) {
@@ -134,7 +134,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                     return
                 }
 
-              let metadata = try await vciClient.getIssuerMetadata(credentialIssuer: credentialIssuerUri)
+              let metadata = try await vciClient.getIssuerMetadata(credentialIssuer: credentialIssuer)
 
                 let data = try JSONSerialization.data(withJSONObject: metadata, options: [])
                 guard let jsonString = String(data: data, encoding: .utf8) else {
