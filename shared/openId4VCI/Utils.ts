@@ -1,6 +1,5 @@
 import base64url from 'base64url';
 import i18next from 'i18next';
-import jwtDecode from 'jwt-decode';
 import jose from 'node-jose';
 import {NativeModules} from 'react-native';
 import {vcVerificationBannerDetails} from '../../components/BannerNotificationContainer';
@@ -10,11 +9,9 @@ import {
   DETAIL_VIEW_ADD_ON_FIELDS,
   getCredentialTypeFromWellKnown,
 } from '../../components/VC/common/VCUtils';
-import i18n from '../../i18n';
-import {displayType, issuerType} from '../../machines/Issuers/IssuersMachine';
+import {displayType} from '../../machines/Issuers/IssuersMachine';
 import {
   Credential,
-  CredentialTypes,
   CredentialWrapper,
   VerifiableCredential,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
@@ -22,16 +19,11 @@ import getAllConfigurations, {CACHED_API} from '../api';
 import {
   ED25519_PROOF_SIGNING_ALGO,
   isAndroid,
-  isIOS,
   JWT_ALG_TO_KEY_TYPE,
   KEY_TYPE_TO_JWT_ALG,
 } from '../constants';
 import {getJWT} from '../cryptoutil/cryptoUtil';
-import {
-  VerificationErrorMessage,
-  VerificationErrorType,
-  verifyCredential,
-} from '../vcjs/verifyCredential';
+import {verifyCredential} from '../vcjs/verifyCredential';
 import {getVerifiableCredential} from '../../machines/VerifiableCredential/VCItemMachine/VCItemSelectors';
 import {getErrorEventData, sendErrorEvent} from '../telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../telemetry/TelemetryConstants';
@@ -268,7 +260,7 @@ export enum ErrorMessage {
   TECHNICAL_DIFFICULTIES = 'technicalDifficulty',
   CREDENTIAL_TYPE_DOWNLOAD_FAILURE = 'credentialTypeListDownloadFailure',
   AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED = 'authorizationGrantTypeNotSupportedByWallet',
-  NETWORK_REQUEST_FAILED = 'Network request failed'
+  NETWORK_REQUEST_FAILED = 'Network request failed',
 }
 
 export async function constructProofJWT(
@@ -282,9 +274,21 @@ export async function constructProofJWT(
   isCredentialOfferFlow: boolean,
   cNonce?: string,
 ): Promise<string> {
-  console.log("Constructing proof JWT with", selectedIssuer,"   ", client_id," ",proofSigningAlgosSupported," ",cNonce,"  ", keyType, isCredentialOfferFlow);
+  console.log(
+    'Constructing proof JWT with',
+    selectedIssuer,
+    '   ',
+    client_id,
+    ' ',
+    proofSigningAlgosSupported,
+    ' ',
+    cNonce,
+    '  ',
+    keyType,
+    isCredentialOfferFlow,
+  );
   const jwk = await getJWK(publicKey, keyType);
-  const nonce = cNonce
+  const nonce = cNonce;
   const alg =
     keyType === KeyTypes.ED25519
       ? resolveEd25519Alg(proofSigningAlgosSupported)
@@ -303,7 +307,7 @@ export async function constructProofJWT(
   };
 
   const jwtPayload = {
-    ...(client_id ? { iss: client_id } : {}),
+    ...(client_id ? {iss: client_id} : {}),
     nonce,
     aud: selectedIssuer,
     iat: Math.floor(Date.now() / 1000),
@@ -411,8 +415,7 @@ export function selectCredentialRequestKey(
       return keyType;
     }
   }
-
-  return KeyTypes.ED25519;
+  return keyOrder[0];
 }
 
 export function getMatchingCredentialIssuerMetadata(
@@ -443,11 +446,11 @@ export async function verifyCredentialData(
   credential: Credential,
   credentialFormat: string,
 ) {
-    const verificationResult = await verifyCredential(
-      credential,
-      credentialFormat,
-    );
-    return verificationResult;
+  const verificationResult = await verifyCredential(
+    credential,
+    credentialFormat,
+  );
+  return verificationResult;
 }
 function resolveEd25519Alg(proofSigningAlgosSupported: string[]) {
   return proofSigningAlgosSupported.includes(
