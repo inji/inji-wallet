@@ -228,7 +228,6 @@ export function useSendVPScreen() {
     requestedClaimsByVerifier,
     getAdditionalMessage,
     overlayDetails,
-    // @ts-ignore
     generateAndStoreLogMessage,
     scanScreenError: useSelector(scanService, selectIsSendingVPError),
     vcsMatchingAuthRequest,
