@@ -20,6 +20,24 @@
       }
     },
     {
+      "identity" : "base58swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/keefertaylor/Base58Swift.git",
+      "state" : {
+        "revision" : "ce8ba8aa893f7e209e9c99c35ee61d6f1235881d",
+        "version" : "2.1.7"
+      }
+    },
+    {
+      "identity" : "bigint",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/attaswift/BigInt.git",
+      "state" : {
+        "revision" : "018a5925f60f9e0523edd261de394a0898fe95b7",
+        "version" : "3.1.0"
+      }
+    },
+    {
       "identity" : "crcswift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ivanesik/CrcSwift.git",
@@ -52,7 +70,7 @@
       "location" : "https://github.com/mosip/inji-openid4vp-ios-swift",
       "state" : {
         "branch" : "develop",
-        "revision" : "879995bc2b858b0d1c6265c2d38d81f60b4e4611"
+        "revision" : "f82e0b386bfea949c8a7eed1c746b74e5a8551e3"
       }
     },
     {
@@ -101,6 +119,15 @@
       }
     },
     {
+      "identity" : "siphash",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/attaswift/SipHash",
+      "state" : {
+        "revision" : "e325083424688055363bbfcb7f1a440d7d7a1bae",
+        "version" : "1.2.2"
+      }
+    },
+    {
       "identity" : "swiftcbor",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/valpackett/SwiftCBOR",
@@ -128,5 +155,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

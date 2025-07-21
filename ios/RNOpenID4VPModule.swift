@@ -22,7 +22,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
       reject("OPENID4VP", error.localizedDescription, error)
     }
   }
-  
+
   @objc
   func authenticateVerifier(_ urlEncodedAuthorizationRequest: String,
                             trustedVerifierJSON: AnyObject,
@@ -145,7 +145,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
             formattedVPTokenSigningResults[.mso_mdoc] = MdocVPTokenSigningResult(docTypeToDeviceAuthentication: docTypeToDeviceAuthentication)
 
           default:
-            let error = GenericFailure(message: "Credential format '\(credentialFormat)' is not supported", className: Self.moduleName())
+            let error = NSError(domain: "Credential format '\(credentialFormat)' is not supported", code: 0)
             rejectWithOpenID4VPError(error, reject: reject)
             return
           }
@@ -200,8 +200,8 @@ func sendErrorToVerifier(_ error: String, _ errorCode: String,
       if let openidError = error as? OpenID4VPException {
           reject(openidError.errorCode, openidError.message, openidError)
       } else {
-          let fallback = GenericFailure(message: error.localizedDescription, className: Self.moduleName())
-          reject(fallback.errorCode, fallback.message, fallback)
+        let nsError = NSError(domain: error.localizedDescription, code: 0)
+        reject("ERR_UNKNOWN", nsError.localizedDescription, nsError)
       }
   }
 
@@ -230,7 +230,7 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
     reject("OPENID4VP", "Invalid wallet metadata format", nil)
     throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Wallet Metadata"])
   }
-  
+
   var vpFormatsSupported: [FormatType: VPFormatSupported] = [:]
   if let vpFormatsSupportedDict = metadata["vp_formats_supported"] as? [String: Any],
      let ldpVcDict = vpFormatsSupportedDict["ldp_vc"] as? [String: Any] {
@@ -243,7 +243,7 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
   } else {
     vpFormatsSupported[.ldp_vc] = VPFormatSupported(algValuesSupported: nil)
   }
-  
+
   let walletMetadataObject = try WalletMetadata(
     presentationDefinitionURISupported: metadata["presentation_definition_uri_supported"] as? Bool,
     vpFormatsSupported: vpFormatsSupported,
