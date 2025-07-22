@@ -29,16 +29,27 @@ import {VerifyIdentityOverlay} from '../VerifyIdentityOverlay';
 import {VCShareFlowType} from '../../shared/Utils';
 import {APP_EVENTS} from '../../machines/app';
 import {GlobalContext} from '../../shared/GlobalContext';
+import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
 
 export const ScanScreen: React.FC = () => {
   const {t} = useTranslation('ScanScreen');
   const scanScreenController = useScanScreen();
   const sendVcScreenController = useSendVcScreen();
   const sendVPScreenController = useSendVPScreen();
+  const [errorModal] = useOvpErrorModal({
+    error: sendVPScreenController.error,
+    noCredentialsMatchingVPRequest:
+      sendVPScreenController.noCredentialsMatchingVPRequest,
+    requestedClaimsByVerifier: sendVPScreenController.requestedClaimsByVerifier,
+    getAdditionalMessage: sendVPScreenController.getAdditionalMessage,
+    generateAndStoreLogMessage:
+      sendVPScreenController.generateAndStoreLogMessage,
+    t,
+  });
   const [isBluetoothOn, setIsBluetoothOn] = useState(false);
   const showErrorModal =
     sendVPScreenController.scanScreenError ||
-    (sendVPScreenController.errorModal.show &&
+    (errorModal.show &&
       (sendVPScreenController.flowType ===
         VCShareFlowType.MINI_VIEW_SHARE_OPENID4VP ||
         sendVPScreenController.flowType ===
@@ -277,7 +288,7 @@ export const ScanScreen: React.FC = () => {
 
   const getPrimaryButtonText = () => {
     if (
-      sendVPScreenController.errorModal.showRetryButton &&
+      errorModal.showRetryButton &&
       sendVPScreenController.openID4VPRetryCount < 3
     ) {
       return t('ScanScreen:status.retry');
@@ -366,8 +377,8 @@ export const ScanScreen: React.FC = () => {
           alignActionsOnEnd
           showClose={false}
           isVisible={showErrorModal}
-          title={sendVPScreenController.errorModal.title}
-          message={sendVPScreenController.errorModal.message}
+          title={errorModal.title}
+          message={errorModal.message}
           image={SvgImage.PermissionDenied()}
           primaryButtonTestID={'retry'}
           primaryButtonText={getPrimaryButtonText()}

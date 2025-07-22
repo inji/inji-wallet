@@ -5,16 +5,16 @@ import {
 } from '../../shared/cryptoutil/cryptoUtil';
 import {getJWK, hasKeyPair} from '../../shared/openId4VCI/Utils';
 import base64url from 'base64url';
-import {
-  constructDetachedJWT,
-  isClientValidationRequired,
-  OpenID4VP,
-} from '../../shared/openID4VP/OpenID4VP';
+import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {VCFormat} from '../../shared/VCFormat';
 import {KeyTypes} from '../../shared/cryptoutil/KeyTypes';
 import {getMdocAuthenticationAlorithm} from '../../components/VC/common/VCUtils';
 import {isIOS} from '../../shared/constants';
 import {canonicalize} from '../../shared/Utils';
+import {
+  constructDetachedJWT,
+  isClientValidationRequired,
+} from '../../shared/openID4VP/OpenID4VPHelper';
 
 const signatureSuite = 'JsonWebSignature2020';
 
@@ -29,12 +29,10 @@ export const openID4VPServices = () => {
     },
 
     getAuthenticationResponse: (context: any) => async () => {
-      OpenID4VP.initialize();
-      const serviceRes = await OpenID4VP.authenticateVerifier(
+      return await OpenID4VP.authenticateVerifier(
         context.urlEncodedAuthorizationRequest,
         context.trustedVerifiers,
       );
-      return serviceRes;
     },
 
     getKeyPair: async (context: any) => {

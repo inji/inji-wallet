@@ -159,6 +159,43 @@ export const getFieldName = (
   return formatKeyLabel(field);
 };
 
+const ID = ['id'];
+
+const IMAGE_KEYS = ['face', 'photo', 'picture', 'portrait', 'image'];
+
+const EXCLUDED_FIELDS_FOR_RENDERING = [...ID, ...IMAGE_KEYS];
+
+const shouldExcludeField = (field: string): boolean => {
+  const normalized = field.includes('~')
+    ? field.split('~')[1]
+    : field.includes('.') || field.includes('[')
+    ? field
+        .split('.')
+        .pop()
+        ?.replace(/\[\d+\]/g, '') ?? field
+    : field;
+
+  return EXCLUDED_FIELDS_FOR_RENDERING.includes(normalized);
+};
+
+export function getFaceField(obj: any): string | null {
+  if (typeof obj !== 'object' || obj === null) return null;
+
+  for (const [key, value] of Object.entries(obj)) {
+    const normalizedKey = key.toLowerCase();
+    if (IMAGE_KEYS.includes(normalizedKey) && typeof value === 'string') {
+      return value;
+    }
+
+    if (typeof value === 'object') {
+      const found = getFaceField(value);
+      if (found) return found;
+    }
+  }
+
+  return null;
+}
+
 export function getAddressFields() {
   return [
     'addressLine1',
@@ -206,6 +243,8 @@ const renderFieldRecursively = (
       .split('.')
       .pop()
       ?.replace(/\[\d+\]/g, '') ?? key;
+
+  if (shouldExcludeField(shortKey)) return [];
 
   if (value === null || value === undefined) return [];
 

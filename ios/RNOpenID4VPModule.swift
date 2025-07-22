@@ -7,19 +7,25 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
   private var openID4VP: OpenID4VP?
 
+
   static func moduleName() -> String {
     return "InjiOpenID4VP"
   }
 
   @objc
-  func `init`(_ appId: String) {
-    openID4VP = OpenID4VP(traceabilityId: appId)
+  func `initSdk`(_ appId: String, walletMetadata: AnyObject?,resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+    do {
+      let walletMetadataObject = try getWalletMetadataFromDict(walletMetadata, reject: reject)
+      openID4VP = OpenID4VP(traceabilityId: appId, walletMetadata: walletMetadataObject)
+      resolve(true)
+    } catch {
+      reject("OPENID4VP", error.localizedDescription, error)
+    }
   }
 
   @objc
   func authenticateVerifier(_ urlEncodedAuthorizationRequest: String,
                             trustedVerifierJSON: AnyObject,
-                            walletMetadata: AnyObject?,
                             shouldValidateClient: Bool,
                             resolver resolve: @escaping RCTPromiseResolveBlock,
                             rejecter reject: @escaping RCTPromiseRejectBlock) {
@@ -38,18 +44,17 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           return Verifier(clientId: clientId, responseUris: responseUris)
         }
 
-        let walletMetadataObject = try getWalletMetadataFromDict(walletMetadata as Any, reject: reject)
-
         let authenticationResponse: AuthorizationRequest = try await openID4VP!.authenticateVerifier(
           urlEncodedAuthorizationRequest: urlEncodedAuthorizationRequest,
           trustedVerifierJSON: trustedVerifiersList,
-          shouldValidateClient: shouldValidateClient, walletMetadata: walletMetadataObject
+          shouldValidateClient: shouldValidateClient
         )
 
         let response = try toJsonString(jsonObject: authenticationResponse)
         resolve(response)
       } catch {
-        reject("OPENID4VP", error.localizedDescription, error)
+        rejectWithOpenID4VPError(error, reject: reject)
+
       }
     }
   }
@@ -97,7 +102,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           reject("ERROR", "Failed to serialize JSON", nil)
         }
       } catch {
-        reject("OPENID4VP", error.localizedDescription, error)
+        rejectWithOpenID4VPError(error, reject: reject)
       }
     }
   }
@@ -140,7 +145,8 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
             formattedVPTokenSigningResults[.mso_mdoc] = MdocVPTokenSigningResult(docTypeToDeviceAuthentication: docTypeToDeviceAuthentication)
 
           default:
-            reject("OPENID4VP", "Credential format not supported", nil)
+            let error = NSError(domain: "Credential format '\(credentialFormat)' is not supported", code: 0)
+            rejectWithOpenID4VPError(error, reject: reject)
             return
           }
         }
@@ -148,23 +154,32 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
         let response = try await openID4VP?.shareVerifiablePresentation(vpTokenSigningResults: formattedVPTokenSigningResults)
         resolve(response)
       } catch {
-        reject("OPENID4VP", error.localizedDescription, error)
+        rejectWithOpenID4VPError(error, reject: reject)
       }
     }
   }
 
-  @objc
-  func sendErrorToVerifier(_ error: String, _ errorCode: String,
-                           resolver resolve: @escaping RCTPromiseResolveBlock,
-                           rejecter reject: @escaping RCTPromiseRejectBlock) {
+@objc
+func sendErrorToVerifier(_ error: String, _ errorCode: String,
+                         resolver resolve: @escaping RCTPromiseResolveBlock,
+                         rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
-      enum VerifierError: Error {
-        case customError(String)
-      }
-      await openID4VP?.sendErrorToVerifier(error: VerifierError.customError(error))
-      resolve(true)
+        let exception: OpenID4VPException = {
+            switch errorCode {
+            case OpenID4VPErrorCodes.accessDenied:
+                return AccessDenied(message: error, className: Self.moduleName())
+            case OpenID4VPErrorCodes.invalidTransactionData:
+                return InvalidTransactionData(message: error, className: Self.moduleName())
+            default:
+                return GenericFailure(message: error, className: Self.moduleName())
+            }
+        }()
+
+        await openID4VP?.sendErrorToVerifier(error: exception)
+        resolve(true)
     }
-  }
+}
+
 
   func toJsonString(jsonObject: AuthorizationRequest) throws -> String {
     let encoder = JSONEncoder()
@@ -180,6 +195,17 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   static func requiresMainQueueSetup() -> Bool {
     return true
   }
+
+  func rejectWithOpenID4VPError(_ error: Error, reject: RCTPromiseRejectBlock) {
+      if let openidError = error as? OpenID4VPException {
+          reject(openidError.errorCode, openidError.message, openidError)
+      } else {
+        let nsError = NSError(domain: error.localizedDescription, code: 0)
+        reject("ERR_UNKNOWN", nsError.localizedDescription, nsError)
+      }
+  }
+
+
 }
 
 struct EncodableWrapper: Encodable {
@@ -205,22 +231,42 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
     throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Wallet Metadata"])
   }
 
-  var vpFormatsSupported: [String: VPFormatSupported] = [:]
+  var vpFormatsSupported: [FormatType: VPFormatSupported] = [:]
   if let vpFormatsSupportedDict = metadata["vp_formats_supported"] as? [String: Any],
      let ldpVcDict = vpFormatsSupportedDict["ldp_vc"] as? [String: Any] {
     let algValuesSupported = ldpVcDict["alg_values_supported"] as? [String]
-    vpFormatsSupported["ldp_vc"] = VPFormatSupported(algValuesSupported: algValuesSupported)
+    vpFormatsSupported[.ldp_vc] = VPFormatSupported(algValuesSupported: algValuesSupported)
+    if let mdocDict = vpFormatsSupportedDict["mso_mdoc"] as? [String: Any] {
+      let mdocAlgValuesSupported = mdocDict["alg_values_supported"] as? [String]
+      vpFormatsSupported[.mso_mdoc] = VPFormatSupported(algValuesSupported: mdocAlgValuesSupported)
+    }
   } else {
-    vpFormatsSupported["ldp_vc"] = VPFormatSupported(algValuesSupported: nil)
+    vpFormatsSupported[.ldp_vc] = VPFormatSupported(algValuesSupported: nil)
   }
 
   let walletMetadataObject = try WalletMetadata(
     presentationDefinitionURISupported: metadata["presentation_definition_uri_supported"] as? Bool,
     vpFormatsSupported: vpFormatsSupported,
-    clientIdSchemesSupported: metadata["client_id_schemes_supported"] as? [String],
-    requestObjectSigningAlgValuesSupported: metadata["request_object_signing_alg_values_supported"] as? [String],
-    authorizationEncryptionAlgValuesSupported: metadata["authorization_encryption_alg_values_supported"] as? [String],
-    authorizationEncryptionEncValuesSupported: metadata["authorization_encryption_enc_values_supported"] as? [String]
+    clientIdSchemesSupported: mapStringsToEnum(metadata["client_id_schemes_supported"] as? [String] ?? [], using: ClientIdScheme.fromValue),
+    requestObjectSigningAlgValuesSupported: mapStringsToEnum(metadata["request_object_signing_alg_values_supported"] as? [String] ?? [], using: RequestSigningAlgorithm.fromValue),
+    authorizationEncryptionAlgValuesSupported: mapStringsToEnum(metadata["authorization_encryption_alg_values_supported"] as? [String] ?? [], using: KeyManagementAlgorithm.fromValue),
+    authorizationEncryptionEncValuesSupported: mapStringsToEnum(metadata["authorization_encryption_enc_values_supported"] as? [String] ?? [], using: ContentEncryptionAlgorithm.fromValue)
   )
   return walletMetadataObject
+}
+
+func mapStringsToEnum<T: RawRepresentable>(
+  _ input: [String],
+  using fromValue: (String) -> T?
+) throws -> [T] where T.RawValue == String {
+  return try input.map { str in
+    guard let match = fromValue(str) else {
+      throw NSError(
+        domain: "EnumMappingError",
+        code: 1001,
+        userInfo: [NSLocalizedDescriptionKey: "Invalid value '\(str)' for enum \(T.self)"]
+      )
+    }
+    return match
+  }
 }

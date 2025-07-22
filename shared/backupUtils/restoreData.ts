@@ -164,7 +164,7 @@ async function handlePreviousBackup(
 
         //verify the credential and update the metadata
         const verifiableCredential = vcData.verifiableCredential?.credential || vcData.verifiableCredential;
-        const verificationResult = await verifyCredentialData(verifiableCredential, vcData.vcMetadata.format, vcData.vcMetadata.issuer)
+        const verificationResult = await verifyCredentialData(verifiableCredential, vcData.vcMetadata.format)
         const isVerified = verificationResult.isVerified;
         
         vcData.vcMetadata.timestamp = timestamp;
