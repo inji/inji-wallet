@@ -173,6 +173,10 @@
                     <include name="downloadAndVerifyVcUsingUinViaMockIdentity"/>
                     <include name="downloadAndVerifyVcUsingMockIdentity"/>
                     <include name="downloadAndVerifyVcUsingEsignet"/>
+<!--                    <include name="downloadAndVerifyVcUsingUinViaSunbirdWithEECK1DownloadAndDelete"/>-->
+<!--                    <include name="downloadAndVerifyVcUsingUinViaSunbirdWithEECR1"/>-->
+<!--                    <include name="downloadAndVerifyVcUsingUinViaMdlWithEECR1"/>-->
+                 <!--   need to be tested-->
                 </methods>
             </class>
         </classes>
