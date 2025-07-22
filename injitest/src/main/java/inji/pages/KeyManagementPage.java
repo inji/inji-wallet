@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class KeyManagementPage extends BasePage {
-    @AndroidFindBy(accessibility = "7done")
+    @AndroidFindBy(accessibility = "copilot-next-action")
     @iOSXCUITFindBy(accessibility = "copilot-next-action")
     private WebElement stepCountButton;
 

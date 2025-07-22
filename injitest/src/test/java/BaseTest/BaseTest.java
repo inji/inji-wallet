@@ -14,7 +14,6 @@ public class BaseTest {
     protected SoftAssert softAssert = new SoftAssert();
     @BeforeSuite(alwaysRun = true)
     public void beforeSuite() {
-//        FetchErrorMessages.fetchAndPrintErrors();
           BaseTestCase.intiateUINGenration();
         try {
             Thread.sleep(9000);
