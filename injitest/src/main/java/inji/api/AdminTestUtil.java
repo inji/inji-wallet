@@ -340,13 +340,13 @@ public class AdminTestUtil extends BaseTestCase {
 
 			if (responseJson.has("build") && responseJson.getJSONObject("build").has("version")) {
 				version = responseJson.getJSONObject("build").getString("version");
-				System.out.println("✅ Version fetched: " + version);
+				System.out.println("Version fetched: " + version);
 			} else {
-				System.err.println("❌ Version not found in response.");
+				System.err.println("Version not found in response.");
 			}
 
 		} catch (Exception e) {
-			System.err.println("❌ Error fetching version: " + e.getMessage());
+			System.err.println("Error fetching version: " + e.getMessage());
 		}
 
 		return version;
