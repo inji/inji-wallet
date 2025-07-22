@@ -9,47 +9,38 @@ class VciClient {
   private InjiVciClient = NativeModules.InjiVciClient;
 
   private constructor() {
-    console.log('Initializing VciClient with AppId:', __AppId.getValue());
     this.InjiVciClient.init(__AppId.getValue());
   }
 
   static getInstance(): VciClient {
     if (!VciClient.instance) {
-      console.log('Creating new VciClient instance.');
       VciClient.instance = new VciClient();
     }
     return VciClient.instance;
   }
 
   async sendProof(jwt: string) {
-    console.log('sendProof called with JWT:', jwt);
     this.InjiVciClient.sendProofFromJS(jwt);
   }
 
   async sendAuthCode(authCode: string) {
-    console.log('sendAuthCode called with authCode:', authCode);
     this.InjiVciClient.sendAuthCodeFromJS(authCode);
   }
 
   async sendTxCode(code: string) {
-    console.log('sendTxCode called with code:', code);
     this.InjiVciClient.sendTxCodeFromJS(code);
   }
 
   async sendIssuerConsent(consent: boolean) {
-    console.log('sendIssuerConsent called with consent:', consent);
     this.InjiVciClient.sendIssuerTrustResponseFromJS(consent);
   }
 
   async sendTokenResponse(json: string) {
-    console.log('sendTokenResponse called with JSON:', json);
     this.InjiVciClient.sendTokenResponseFromJS(json);
   }
 
   async getIssuerMetadata(issuerUri: string): Promise<object> {
-    console.log('getIssuerMetadata called with issuerUri:', issuerUri);
     const response = await this.InjiVciClient.getIssuerMetadata(issuerUri);
-    console.log('Issuer metadata response received:', response);
     return JSON.parse(response);
   }
 
@@ -72,19 +63,10 @@ class VciClient {
       issuerDisplay: object[],
     ) => void,
   ): Promise<any> {
-    console.log(
-      'requestCredentialByOffer called with credentialOffer:',
-      credentialOffer,
-    );
 
     const proofListener = emitter.addListener(
       'onRequestProof',
       ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
-        console.log('onRequestProof triggered with data:', {
-          credentialIssuer,
-          cNonce,
-          proofSigningAlgorithmsSupported,
-        });
         getProofJwt(credentialIssuer, cNonce, JSON.parse(proofSigningAlgorithmsSupported));
       },
     );
@@ -92,10 +74,6 @@ class VciClient {
     const authListener = emitter.addListener(
       'onRequestAuthCode',
       ({authorizationUrl}) => {
-        console.log(
-          'onRequestAuthCode triggered with authorizationUrl:',
-          authorizationUrl,
-        );
         navigateToAuthView(authorizationUrl);
       },
     );
@@ -103,11 +81,6 @@ class VciClient {
     const txCodeListener = emitter.addListener(
       'onRequestTxCode',
       ({inputMode, description, length}) => {
-        console.log('onRequestTxCode triggered with data:', {
-          inputMode,
-          description,
-          length,
-        });
         getTxCode(inputMode, description, length);
       },
     );
@@ -115,10 +88,6 @@ class VciClient {
     const tokenResponseListener = emitter.addListener(
       'onRequestTokenResponse',
       ({tokenRequest}) => {
-        console.log(
-          'onRequestTokenResponse triggered with tokenRequest:',
-          tokenRequest,
-        );
         requestTokenResponse(tokenRequest);
       },
     );
@@ -126,10 +95,6 @@ class VciClient {
     const trustIssuerListener = emitter.addListener(
       'onCheckIssuerTrust',
       ({credentialIssuer, issuerDisplay}) => {
-        console.log('onCheckIssuerTrust triggered with data:', {
-          credentialIssuer,
-          issuerDisplay,
-        });
         requestTrustIssuerConsent(credentialIssuer, JSON.parse(issuerDisplay));
       },
     );
@@ -140,18 +105,14 @@ class VciClient {
         clientId: 'wallet',
         redirectUri: 'io.mosip.residentapp.inji://oauthredirect',
       };
-      console.log('Outgoing client metadata:', clientMetadata);
-
       response = await this.InjiVciClient.requestCredentialByOffer(
         credentialOffer,
         JSON.stringify(clientMetadata),
       );
-      console.log('Credential response received:', response);
     } catch (error) {
       console.error('Error requesting credential by offer:', error);
       throw error;
     } finally {
-      console.log('Removing listeners after requestCredentialByOffer.');
       proofListener.remove();
       authListener.remove();
       txCodeListener.remove();
@@ -160,7 +121,6 @@ class VciClient {
     }
 
     const parsedResponse = JSON.parse(response);
-    console.log('Parsed response:', JSON.stringify(parsedResponse));
     return {
       credential: {
         credential: parsedResponse.credential,
@@ -183,20 +143,9 @@ class VciClient {
     navigateToAuthView: (authorizationEndpoint: string) => void,
     requestTokenResponse: (tokenRequest: object) => void,
   ): Promise<any> {
-    console.log('requestCredentialFromTrustedIssuer called with data:', {
-      credentialIssuerUri,
-      credentialConfigurationId,
-      clientMetadata,
-    });
-
     const proofListener = emitter.addListener(
       'onRequestProof',
       ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
-        console.log('onRequestProof triggered with data:', {
-          credentialIssuer,
-          cNonce,
-          proofSigningAlgorithmsSupported,
-        });
         getProofJwt(credentialIssuer, cNonce, JSON.parse(proofSigningAlgorithmsSupported));
       },
     );
@@ -204,10 +153,6 @@ class VciClient {
     const authListener = emitter.addListener(
       'onRequestAuthCode',
       ({authorizationUrl}) => {
-        console.log(
-          'onRequestAuthCode triggered with authorizationEndpoint:',
-          authorizationUrl,
-        );
         navigateToAuthView(authorizationUrl);
       },
     );
@@ -225,21 +170,15 @@ class VciClient {
 
     let response = '';
     try {
-      console.log('Outgoing client metadata:', clientMetadata);
-
       response = await this.InjiVciClient.requestCredentialFromTrustedIssuer(
         credentialIssuerUri,
         credentialConfigurationId,
         JSON.stringify(clientMetadata),
       );
-      console.log('Credential response received:', response);
     } catch (error) {
       console.error('Error requesting credential from trusted issuer:', error);
       throw error;
     } finally {
-      console.log(
-        'Removing listeners after requestCredentialFromTrustedIssuer.',
-      );
       proofListener.remove();
       authListener.remove();
       tokenResponseListener.remove();

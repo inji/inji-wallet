@@ -274,19 +274,6 @@ export async function constructProofJWT(
   isCredentialOfferFlow: boolean,
   cNonce?: string,
 ): Promise<string> {
-  console.log(
-    'Constructing proof JWT with',
-    selectedIssuer,
-    '   ',
-    client_id,
-    ' ',
-    proofSigningAlgosSupported,
-    ' ',
-    cNonce,
-    '  ',
-    keyType,
-    isCredentialOfferFlow,
-  );
   const jwk = await getJWK(publicKey, keyType);
   const nonce = cNonce;
   const alg =

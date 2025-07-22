@@ -318,7 +318,6 @@ async function sendTokenRequest(
   tokenRequestObject: any,
   proxyTokenEndpoint: any = null,
 ) {
-  console.log('sendTokenRequest called with:', tokenRequestObject);
   if (proxyTokenEndpoint) {
     tokenRequestObject.tokenEndpoint = proxyTokenEndpoint;
   }
@@ -349,7 +348,6 @@ async function sendTokenRequest(
   if (tokenRequestObject.codeVerifier) {
     formBody.append('code_verifier', tokenRequestObject.codeVerifier);
   }
-  console.log('token ::', formBody.toString());
   const response = await fetch(tokenRequestObject.tokenEndpoint, {
     method: 'POST',
     headers: {
@@ -368,6 +366,5 @@ async function sendTokenRequest(
     throw new Error(`Token request failed: ${response.status} ${errorText}`);
   }
   const tokenResponse = await response.json();
-  console.log('Token request successful, response:', tokenResponse);
   return tokenResponse;
 }

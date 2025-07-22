@@ -255,7 +255,6 @@ export const IssuersActions = (model: any) => {
     }),
     setCNonce: model.assign({
       cNonce: (_: any, event: any) => {
-        console.log('data received in setCNonce', event);
         return event.cNonce;
       },
     }),
@@ -325,7 +324,6 @@ export const IssuersActions = (model: any) => {
     }),
     setTokenRequestObject: model.assign({
       tokenRequestObject: (_: any, event: any) => {
-        console.log('----', event.tokenRequest);
         return parseJSON(event.tokenRequest);
       },
     }),
@@ -461,7 +459,6 @@ export const IssuersActions = (model: any) => {
 
     updateVerificationErrorMessage: assign({
       verificationErrorMessage: (_, event: any) => {
-        console.log('Error occurred while verifying VC: ', event.data.message);
         return (event.data as Error).message;
       },
     }),
