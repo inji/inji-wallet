@@ -8,8 +8,7 @@ import org.testng.annotations.Test;
 
 import static inji.api.AdminTestUtil.fullName;
 import static inji.api.AdminTestUtil.policyNumber;
-import static inji.api.BaseTestCase.getOtp;
-import static inji.api.BaseTestCase.uin;
+import static inji.api.BaseTestCase.*;
 import static org.testng.Assert.assertTrue;
 
 public class MosipOtpAlternativeFlowForHistoryAndPin extends AndroidBaseTest {

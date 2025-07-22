@@ -270,10 +270,10 @@ public class AdminTestUtil extends BaseTestCase {
 		String currentDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
 
 		requestJson.put("policyNumber", "1207205246");
-		requestJson.put("policyName", "automationtest4");
+		requestJson.put("policyName", "automationtest3");
 		requestJson.put("policyExpiresOn", "2033-04-20T20:48:17.684Z");
 		requestJson.put("policyIssuedOn", "2023-04-20T20:48:17.684Z");
-		requestJson.put("fullName", "automationtest4");
+		requestJson.put("fullName", "automationtest3");
 		requestJson.put("dob", currentDate);
 
 		benefitsArray.put("Critical Surgery");
@@ -324,6 +324,32 @@ public class AdminTestUtil extends BaseTestCase {
 		}
 
 		return "";
+	}
+
+	public static String fetchVersion() {
+		Response response = null;
+		String version = "";
+
+		try {
+			String url = ConfigManager.getEsignetActuatorUrl();
+
+			response = RestClient.getRequest(url);
+
+			JSONObject responseJson = new JSONObject(response.asString());
+			System.out.println("responseJson = " + responseJson);
+
+			if (responseJson.has("build") && responseJson.getJSONObject("build").has("version")) {
+				version = responseJson.getJSONObject("build").getString("version");
+				System.out.println("✅ Version fetched: " + version);
+			} else {
+				System.err.println("❌ Version not found in response.");
+			}
+
+		} catch (Exception e) {
+			System.err.println("❌ Error fetching version: " + e.getMessage());
+		}
+
+		return version;
 	}
 	public static void initialize() {
 		if (!initialized) {

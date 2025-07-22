@@ -62,7 +62,7 @@ public class OtpVerificationPage extends BasePage {
     private WebElement waitPopupButton;
 
 
-    @AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"OTP is invalid\")")
+    @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id=\"error-banner-message\"]")
     @iOSXCUITFindBy(accessibility = "OTP is invalid")
     private WebElement invalidOtpMessageforEsignet;
 
@@ -90,8 +90,8 @@ public class OtpVerificationPage extends BasePage {
         return this.isElementDisplayed(invalidOtpMessage);
     }
 
-    public boolean invalidOtpMessageForEsignetDisplayed() {
-        return this.isElementDisplayed(invalidOtpMessageforEsignet);
+    public String invalidOtpMessageForEsignetDisplayed() {
+        return getTextFromLocator(invalidOtpMessageforEsignet);
     }
 
     public boolean somethingWetWrongInVcActivationDisplayed() {

@@ -4,11 +4,14 @@ import BaseTest.AndroidBaseTest;
 import inji.api.BaseTestCase;
 import inji.constants.Target;
 import inji.pages.*;
+import inji.utils.FetchErrorMessages;
 import inji.utils.TestDataReader;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import static inji.api.BaseTestCase.uin;
+import static inji.utils.GlobelConstants.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -115,7 +118,7 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
         OtpVerificationPage otpVerification= mockCertifyLoginPage.setEnterIdTextBox(uin);
 
         mockCertifyLoginPage.clickOnGetOtpButton();
-        softAssert.assertTrue(mockCertifyLoginPage.isInvalidIndividualIdTextDisplayed(),"verify if invalid individual id is displayed");
+        Assert.assertEquals(mockCertifyLoginPage.isInvalidIndividualIdTextDisplayed(), FetchErrorMessages.errorMap.get(invalid_individual_id));
        
     }
 
@@ -162,8 +165,8 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
 
         otpVerification.enterOtpForEsignet(TestDataReader.readData("invalidOtp"), Target.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
-        softAssert.assertTrue(mockCertifyLoginPage.isInvalidOtpMessageDisplayed(), "Verify if invalid otp text is displayed");
-       
+        Assert.assertEquals(mockCertifyLoginPage.isInvalidOtpMessageDisplayed(), FetchErrorMessages.otpMap.get(auth_failed));
+
     }
 
     @Test

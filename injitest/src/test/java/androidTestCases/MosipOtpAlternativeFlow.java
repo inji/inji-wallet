@@ -3,14 +3,15 @@ package androidTestCases;
 import BaseTest.AndroidBaseTest;
 import inji.constants.Target;
 import inji.pages.*;
+import inji.utils.FetchErrorMessages;
 import inji.utils.TestDataReader;
 import inji.utils.UpdateNetworkSettings;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import static inji.api.BaseTestCase.getOtp;
-import static inji.api.BaseTestCase.uin;
+import static inji.api.BaseTestCase.*;
+import static inji.utils.GlobelConstants.invalidOtpErrorMessage;
 import static org.testng.Assert.*;
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -54,8 +55,9 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         otpVerification.enterOtpForEsignet(TestDataReader.readData("invalidOtp"), Target.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
-        softAssert.assertTrue(otpVerification.invalidOtpMessageForEsignetDisplayed(), "Verify if OTP is invalid message is displayed");
-        
+        Assert.assertEquals(otpVerification.invalidOtpMessageForEsignetDisplayed(), FetchErrorMessages.otpMap.get(invalidOtpErrorMessage));
+
+
     }
 
     @Test

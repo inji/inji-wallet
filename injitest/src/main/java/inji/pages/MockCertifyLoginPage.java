@@ -60,7 +60,7 @@ public class MockCertifyLoginPage extends BasePage {
     @AndroidFindBy(accessibility = "loaderSubTitle")
     private WebElement settingUpTextOrDownloadingCredentials;
 
-    @AndroidFindBy(xpath = "//*[@text=\"OTP is invalid\"]")
+    @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id=\"error-banner-message\"]")
     private WebElement invalidOtpText;
 
     @AndroidFindBy(uiAutomator = "UiSelector().className(\"android.widget.TextView\").instance(1)")
@@ -87,7 +87,7 @@ public class MockCertifyLoginPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "credentialTypeHeading-MOSIPVerifiableCredential")
     private WebElement credentialTypeHeadingMOSIPVerifiableCredential;
 
-    @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"Invalid Individual ID\"]")
+    @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id=\"error-banner-message\"]")
     @iOSXCUITFindBy(accessibility = "Invalid Individual ID")
     private WebElement invalidIndividualIdText;
 	
@@ -160,8 +160,8 @@ public class MockCertifyLoginPage extends BasePage {
         clickOnElement(verifyButton);
     }
 
-    public boolean isInvalidOtpMessageDisplayed() {
-        return this.isElementDisplayed(invalidOtpText);
+    public String isInvalidOtpMessageDisplayed() {
+        return getTextFromLocator(invalidOtpText);
     }
 
     public boolean  verifyLanguageLoginHeaderTextDisplayed(String language){
@@ -234,7 +234,7 @@ public class MockCertifyLoginPage extends BasePage {
         }
     }
 
-    public boolean isInvalidIndividualIdTextDisplayed(){
-        return isElementDisplayed(invalidIndividualIdText);
+    public String isInvalidIndividualIdTextDisplayed(){
+        return getTextFromLocator(invalidIndividualIdText);
     }
 }

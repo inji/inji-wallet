@@ -7,6 +7,7 @@ import inji.pages.*;
 import inji.utils.IosUtil;
 import inji.utils.TestDataReader;
 import inji.utils.UpdateNetworkSettings;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -51,7 +52,7 @@ public class MosipOtpAlternativeFlow extends IosBaseTest {
         otpVerification.enterOtpForEsignet(TestDataReader.readData("invalidOtp"), Target.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
-        softAssert.assertTrue(otpVerification.invalidOtpMessageForEsignetDisplayed(), "Verify if OTP is invalid message is displayed");
+        Assert.assertEquals(otpVerification.invalidOtpMessageForEsignetDisplayed(), "Verify if OTP is invalid message is displayed");
       
     }
 

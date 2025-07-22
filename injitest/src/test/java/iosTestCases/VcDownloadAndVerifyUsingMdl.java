@@ -4,10 +4,14 @@ import BaseTest.IosBaseTest;
 import inji.api.BaseTestCase;
 import inji.constants.Target;
 import inji.pages.*;
+import inji.utils.FetchErrorMessages;
 import inji.utils.TestDataReader;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import static inji.utils.GlobelConstants.invalidOtpErrorMessage;
+import static inji.utils.GlobelConstants.invalid_individual_id;
 import static org.testng.Assert.*;
 
 public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
@@ -117,7 +121,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        softAssert.assertTrue(mockCertifyLoginPage.isInvalidIndividualIdTextDisplayed(),"verify if invalid individual id is displayed");
+        Assert.assertEquals(mockCertifyLoginPage.isInvalidIndividualIdTextDisplayed(), FetchErrorMessages.errorMap.get(invalid_individual_id));
         
     }
 
@@ -166,7 +170,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         otpVerification.enterOtpForEsignet(TestDataReader.readData("invalidOtp"), Target.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
 
-        softAssert.assertTrue(mockCertifyLoginPage.isInvalidOtpMessageDisplayed(), "Verify if invalid otp text is displayed");
+        Assert.assertEquals(mockCertifyLoginPage.isInvalidOtpMessageDisplayed(), FetchErrorMessages.otpMap.get(invalidOtpErrorMessage));
         
     }
 

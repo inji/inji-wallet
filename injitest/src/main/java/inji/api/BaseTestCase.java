@@ -1,5 +1,6 @@
 package inji.api;
 
+import inji.utils.FetchErrorMessages;
 import inji.utils.UinGenerationUtil;
 import io.restassured.response.Response;
 import org.apache.log4j.PropertyConfigurator;
@@ -9,10 +10,7 @@ import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 
 public class BaseTestCase {
@@ -20,6 +18,9 @@ public class BaseTestCase {
 	public static String environment;
 	public static List<String> languageList = new ArrayList<>();
 	public static String ApplnURI;
+
+	private static final String[] uinArray = new String[5];
+	private static final Random random = new Random();
 	public static String ApplnURIForKeyCloak;
 	public static String testLevel;
 	protected static MockSMTPListener mockSMTPListener = null;
@@ -46,6 +47,11 @@ public class BaseTestCase {
 	public static String uinPhone;
 
 	public static String uin="";
+	public static String uin2="";
+	public static String uin3="";
+	public static String uin4="";
+	public static String uin5="";
+
 	public static String perpetualVid="";
 	public static String onetimeuseVid="";
 	public static String temporaryVid="";
@@ -59,7 +65,18 @@ public class BaseTestCase {
 	}
 
 	public static void intiateUINGenration() {
+
+
 		uin = AdminTestUtil.generateUIN();
+		FetchErrorMessages.fetchAndPrintErrors();
+			for (int i = 0; i < uinArray.length; i++) {
+				uinArray[i] = AdminTestUtil.generateUIN();
+
+				System.out.println(uinArray[i]);
+			}
+
+		System.out.println(uinArray);
+
 		insuranceUrl= ConfigManager.getiam_Insurance_path();
 		InsuranceNum= AdminTestUtil.generateInsurance();
 
@@ -72,6 +89,12 @@ public class BaseTestCase {
 //			mockSMTPListener.run();
 		}
 	}
+
+	public static String getRandomUIN() {
+		int index = random.nextInt(uinArray.length);
+		return uinArray[index];
+	}
+
 
 	public static String getOSType() {
 		String type = System.getProperty("os.name");

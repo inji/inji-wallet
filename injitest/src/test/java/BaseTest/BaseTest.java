@@ -3,6 +3,7 @@ package BaseTest;
 
 import inji.api.AdminTestUtil;
 import inji.api.BaseTestCase;
+import inji.utils.FetchErrorMessages;
 import io.appium.java_client.AppiumDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
@@ -13,7 +14,7 @@ public class BaseTest {
     protected SoftAssert softAssert = new SoftAssert();
     @BeforeSuite(alwaysRun = true)
     public void beforeSuite() {
-
+//        FetchErrorMessages.fetchAndPrintErrors();
           BaseTestCase.intiateUINGenration();
         try {
             Thread.sleep(9000);

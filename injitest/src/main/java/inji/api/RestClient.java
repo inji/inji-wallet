@@ -6,6 +6,8 @@ import io.restassured.config.RestAssuredConfig;
 import io.restassured.response.Response;
 import org.testng.log4testng.Logger;
 
+import javax.ws.rs.core.MediaType;
+
 import static io.restassured.RestAssured.given;
 
 public class RestClient {
@@ -24,6 +26,25 @@ public class RestClient {
 				.all().extract().response();
 		RESTCLIENT_LOGGER.info("REST-ASSURED: The response from the request is: " + getResponse.asString());
 		RESTCLIENT_LOGGER.info("REST-ASSURED: The response Time is: " + getResponse.time());
+		return getResponse;
+	}
+
+	public static Response getRequest(String url) {
+		RESTCLIENT_LOGGER.info("REST-ASSURED: Sending a GET request to " + url);
+
+		Response getResponse = given()
+				.config(config)
+				.relaxedHTTPSValidation()
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.log().all()
+				.when().get(url)
+				.then().log().all()
+				.extract().response();
+
+		RESTCLIENT_LOGGER.info("REST-ASSURED: The response from the request is: " + getResponse.asString());
+		RESTCLIENT_LOGGER.info("REST-ASSURED: The response Time is: " + getResponse.time());
+
 		return getResponse;
 	}
 

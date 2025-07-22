@@ -92,6 +92,12 @@ public class ConfigManager {
 
 	private static final String REPORT_EXPIRATION_IN_DAYS = "reportExpirationInDays";
 
+	private static final String esignetErrorsUrl = "esignetErrorsUrl";
+
+	private static final String esignetActuatorUrl = "esignetActuatorUrl";
+
+	private static String esignet_actuator_url;
+	private static String esignet_error_url;
 	private static String idrepo_client_secret;
 	private static String idrepo_client_id;
 	private static String idrepo_app_id;
@@ -247,6 +253,10 @@ public class ConfigManager {
 		iam_realm_id = getValueForKey(IAM_REALM_ID);
 		iam_users_to_create = getValueForKey(IAM_USERS_TO_CREATE);
 		iam_users_password = getValueForKey(IAM_USERS_PASSWORD);
+
+		esignet_error_url = getValueForKey(esignetErrorsUrl);
+
+		esignet_actuator_url = getValueForKey(esignetActuatorUrl);
 
 		usePreConfiguredOtp = System.getenv(USEPRECONFIGOTP) == null ? propsKernel.getProperty(USEPRECONFIGOTP)
 				: System.getenv(USEPRECONFIGOTP);
@@ -565,6 +575,14 @@ public class ConfigManager {
 
 	public static String getIAMUsersPassword() {
 		return iam_users_password;
+	}
+
+	public static String getEsignetErrorsUrl() {
+		return esignet_error_url;
+	}
+
+	public static String getEsignetActuatorUrl() {
+		return esignet_actuator_url;
 	}
 
 	public static String getUsePreConfiguredOtp() {

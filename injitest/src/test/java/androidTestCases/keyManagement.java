@@ -207,4 +207,195 @@ public class keyManagement extends AndroidBaseTest {
 //        assertTrue(keyManagementPage.compareListOfKeys());
     }
 
+
+    @Test
+    public void downloadAndVerifyVcUsingUinViaSunbirdWithEECK1DownloadAndDelete() throws InterruptedException {
+        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(driver);
+
+        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
+        WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
+
+        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
+        AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
+
+        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
+        SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
+
+        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), Target.ANDROID);
+
+        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), Target.ANDROID);
+
+        homePage.clickOnNextButtonForInjiTour();
+        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
+
+        SettingsPage settingsPage = homePage.clickOnSettingIcon();
+        settingsPage.clickOnKeyManagement();
+        Thread.sleep(3000);
+        KeyManagementPage keyManagementPage = new KeyManagementPage(driver);
+        keyManagementPage.clickOnDoneButton();
+        Thread.sleep(3000);
+
+        IosUtil.dragAndDrop(driver, keyManagementPage.getTheCoordinatesECCk1TextText(), keyManagementPage.getTheCoordinatesED25519Text());
+        keyManagementPage.clickOnSaveKeyOrderingPreferenceButton();
+
+        assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
+        keyManagementPage.clickOnArrowleftButton();
+
+        homePage.clickOnHomeButton();
+        AddNewCardPage addNewCardPage = homePage.downloadCard();
+
+        SunbirdLoginPage sunbirdLoginPage = addNewCardPage.clickOnDownloadViaSunbird();
+        addNewCardPage.clickOnCredentialTypeHeadingInsuranceCredential();
+        EsignetLoginPage esignetLoginPage = new EsignetLoginPage(driver);
+        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+
+        sunbirdLoginPage.enterPolicyNumberTextBox(policyNumber);
+        sunbirdLoginPage.enterFullNameTextBox(fullName);
+        sunbirdLoginPage.enterDateOfBirthTextBox();
+        sunbirdLoginPage.clickOnloginButton();
+
+        addNewCardPage.clickOnDoneButton();
+        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
+
+        MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
+        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
+
+        PleaseConfirmPopupPage pleaseConfirmPopupPage = moreOptionsPage.clickOnRemoveFromWallet();
+        assertTrue(pleaseConfirmPopupPage.isPleaseConfirmPopupPageLoaded(), "Verify if pop up page is displayed");
+
+        pleaseConfirmPopupPage.clickOnConfirmButton();
+        assertEquals(homePage.verifyLanguageForNoVCDownloadedPageLoaded(), "Bring your digital identity");
+        homePage.downloadCard();
+        addNewCardPage.clickOnDownloadViaSunbird();
+        addNewCardPage.clickOnCredentialTypeHeadingInsuranceCredential();
+        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+
+        sunbirdLoginPage.enterPolicyNumberTextBox(policyNumber);
+        sunbirdLoginPage.enterFullNameTextBox(fullName);
+        sunbirdLoginPage.enterDateOfBirthTextBox();
+        sunbirdLoginPage.clickOnloginButton();
+
+        addNewCardPage.clickOnDoneButton();
+        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
+
+
+    }
+
+    @Test
+    public void downloadAndVerifyVcUsingUinViaSunbirdWithEECR1() throws InterruptedException {
+        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(driver);
+
+        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
+        WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
+
+        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
+        AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
+
+        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
+        SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
+
+        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), Target.ANDROID);
+
+        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), Target.ANDROID);
+
+        homePage.clickOnNextButtonForInjiTour();
+        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
+
+        SettingsPage settingsPage = homePage.clickOnSettingIcon();
+        settingsPage.clickOnKeyManagement();
+        Thread.sleep(3000);
+        KeyManagementPage keyManagementPage = new KeyManagementPage(driver);
+        keyManagementPage.clickOnDoneButton();
+        Thread.sleep(3000);
+
+        IosUtil.dragAndDrop(driver, keyManagementPage.getTheCoordinatesECCR1TextText(), keyManagementPage.getTheCoordinatesED25519Text());
+        keyManagementPage.clickOnSaveKeyOrderingPreferenceButton();
+
+        assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
+        keyManagementPage.clickOnArrowleftButton();
+
+        homePage.clickOnHomeButton();
+        AddNewCardPage addNewCardPage = homePage.downloadCard();
+
+        SunbirdLoginPage sunbirdLoginPage = addNewCardPage.clickOnDownloadViaSunbird();
+        addNewCardPage.clickOnCredentialTypeHeadingInsuranceCredential();
+        EsignetLoginPage esignetLoginPage = new EsignetLoginPage(driver);
+        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+
+        sunbirdLoginPage.enterPolicyNumberTextBox(policyNumber);
+        sunbirdLoginPage.enterFullNameTextBox(fullName);
+        sunbirdLoginPage.enterDateOfBirthTextBox();
+        sunbirdLoginPage.clickOnloginButton();
+
+        assertTrue(sunbirdLoginPage.isSunbirdCardIsActive(), "Verify if download sunbird displayed active");
+        assertTrue(sunbirdLoginPage.isSunbirdCardLogoIsDisplayed(), "Verify if download sunbird logo displayed");
+//        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(), TestDataReader.readData("fullNameSunbird"));
+        sunbirdLoginPage.openDetailedSunbirdVcView();
+        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(), TestDataReader.readData("fullNameSunbird"));
+//        assertTrue(keyManagementPage.compareListOfKeys());
+
+    }
+
+    @Test
+    public void downloadAndVerifyVcUsingUinViaMdlWithEECR1() throws InterruptedException {
+        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(driver);
+
+        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
+        WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
+
+        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
+        AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
+
+        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
+        SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
+
+        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), Target.ANDROID);
+
+        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), Target.ANDROID);
+
+        homePage.clickOnNextButtonForInjiTour();
+        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
+
+        SettingsPage settingsPage = homePage.clickOnSettingIcon();
+        settingsPage.clickOnKeyManagement();
+        Thread.sleep(3000);
+        KeyManagementPage keyManagementPage = new KeyManagementPage(driver);
+        keyManagementPage.clickOnDoneButton();
+        Thread.sleep(3000);
+
+        IosUtil.dragAndDrop(driver, keyManagementPage.getTheCoordinatesECCR1TextText(), keyManagementPage.getTheCoordinatesED25519Text());
+        keyManagementPage.clickOnSaveKeyOrderingPreferenceButton();
+
+        assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
+        keyManagementPage.clickOnArrowleftButton();
+
+        homePage.clickOnHomeButton();
+        AddNewCardPage addNewCardPage = homePage.downloadCard();
+
+        SunbirdLoginPage sunbirdLoginPage = addNewCardPage.clickOnDownloadViaSunbird();
+        addNewCardPage.clickOnCredentialTypeHeadingInsuranceCredential();
+        EsignetLoginPage esignetLoginPage = new EsignetLoginPage(driver);
+        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+
+        sunbirdLoginPage.enterPolicyNumberTextBox(policyNumber);
+        sunbirdLoginPage.enterFullNameTextBox(fullName);
+        sunbirdLoginPage.enterDateOfBirthTextBox();
+        sunbirdLoginPage.clickOnloginButton();
+
+        assertTrue(sunbirdLoginPage.isSunbirdCardIsActive(), "Verify if download sunbird displayed active");
+        assertTrue(sunbirdLoginPage.isSunbirdCardLogoIsDisplayed(), "Verify if download sunbird logo displayed");
+//        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(), TestDataReader.readData("fullNameSunbird"));
+        sunbirdLoginPage.openDetailedSunbirdVcView();
+        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(), TestDataReader.readData("fullNameSunbird"));
+//        assertTrue(keyManagementPage.compareListOfKeys());
+
+    }
+
+
 }
