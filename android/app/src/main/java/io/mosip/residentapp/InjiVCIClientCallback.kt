@@ -26,7 +26,7 @@ object VCIClientCallbackBridge {
 
     fun createTokenResponseDeferred(): CompletableDeferred<TokenResponse> {
         deferredTokenResponse = CompletableDeferred()
-        return CompletableDeferred()
+        return deferredTokenResponse!!
     }
 
     fun createTxCodeDeferred(): CompletableDeferred<String> {

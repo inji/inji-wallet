@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-vci-client-ios-swift/",
       "state" : {
-        "branch" : "develop",
-        "revision" : "8a39bbf7805af4c615904090a027fa472e5f4534"
+        "branch" : "release-0.4.x",
+        "revision" : "56359149fbfa61e4fd334df21bf2116e05b4d02d"
       }
     },
     {
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/pixelpass-ios-swift/",
       "state" : {
-        "branch" : "develop",
-        "revision" : "78a8b507f5bd0046e273e3ba962696b44aea0e33"
+        "branch" : "release-0.6.x",
+        "revision" : "78faea2ff48626ef9a6d198123bcf7b299acefd1"
       }
     },
     {
@@ -103,9 +103,9 @@
     {
       "identity" : "swiftcbor",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/valpackett/SwiftCBOR",
+      "location" : "https://github.com/abhip2565/SwiftCBOR",
       "state" : {
-        "revision" : "04ccff117f6549121d5721ec84fdf0162122b90e",
+        "revision" : "cc4e195a0ea2dce88f2fd6c6d73b2504e3c884fd",
         "version" : "0.5.0"
       }
     },

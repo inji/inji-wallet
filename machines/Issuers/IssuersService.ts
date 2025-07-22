@@ -1,7 +1,7 @@
 import NetInfo from '@react-native-community/netinfo';
 import { NativeModules } from 'react-native';
 import Cloud from '../../shared/CloudBackupAndRestoreUtils';
-import { CACHED_API } from '../../shared/api';
+import getAllConfigurations, { CACHED_API } from '../../shared/api';
 import {
   fetchKeyPair,
   generateKeyPair,
@@ -17,6 +17,7 @@ import { displayType, issuerType } from './IssuersMachine';
 import { setItem } from '../store';
 import { API_CACHED_STORAGE_KEYS } from '../../shared/constants';
 import { createCacheObject } from '../../shared/Utils';
+import { VerificationResult } from '../../shared/vcjs/verifyCredential';
 
 export const IssuersService = () => {
   return {
@@ -251,7 +252,6 @@ export const IssuersService = () => {
         context.privateKey,
         context.credentialOfferCredentialIssuer,
         null,
-        null,
         context.keyType,
         context.wellknownKeyTypes,
         true,
@@ -267,7 +267,6 @@ export const IssuersService = () => {
         context.privateKey,
         context.selectedIssuer.credential_issuer_host,
         context.selectedIssuer.client_id,
-        context.accessToken,
         context.keyType,
         context.wellknownKeyTypes,
         false,
@@ -302,18 +301,31 @@ export const IssuersService = () => {
       return context.keyType;
     },
 
-    verifyCredential: async (context: any) => {
+    verifyCredential: async (context: any): Promise<VerificationResult> => {
+      const { isCredentialOfferFlow, verifiableCredential, selectedCredentialType } = context;
+      if (isCredentialOfferFlow) {
+        const configurations = await getAllConfigurations();
+        if (configurations.disableCredentialOfferVcVerification) {
+          return {
+            isVerified: true,
+            verificationMessage: '',
+            verificationErrorCode: '',
+          };
+        }
+      }
       const verificationResult = await verifyCredentialData(
-        context.verifiableCredential?.credential,
-        context.selectedCredentialType.format,
+        verifiableCredential?.credential,
+        selectedCredentialType.format,
       );
       if (!verificationResult.isVerified) {
         throw new Error(verificationResult.verificationErrorCode);
       }
+    
       return verificationResult;
-    },
-  };
-};
+    }
+    
+}
+}
 async function sendTokenRequest(
   tokenRequestObject: any,
   proxyTokenEndpoint: any = null,

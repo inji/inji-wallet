@@ -8,6 +8,7 @@ import {
 import {
   EXPIRED_VC_ERROR_CODE,
   MY_VCS_STORE_KEY,
+  NO_INTERNET,
   REQUEST_TIMEOUT,
   isIOS,
 } from '../../shared/constants';
@@ -94,7 +95,7 @@ export const IssuersActions = (model: any) => {
       errorMessage: (_: any, event: any) => {
         console.error(`Error occurred while ${event} -> `, event.data.message);
         const error = event.data.message;
-        if (error.includes('No internet')) {
+        if (error.includes(NO_INTERNET)) {
           return ErrorMessage.NO_INTERNET;
         }
         if (isNetworkError(error)) {
@@ -263,7 +264,7 @@ export const IssuersActions = (model: any) => {
         return event.data.credentialConfigurationId;
       },
     }),
-    setOfferCredentialTypeContexts: model.assign({
+    setCredentialOfferCredentialType: model.assign({
       selectedCredentialType: (context: any, event: any) => {
         let credentialTypes: Array<{id: string; [key: string]: any}> = [];
         const credentialConfigurationId = context.credentialConfigurationId;

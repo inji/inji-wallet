@@ -268,7 +268,6 @@ export async function constructProofJWT(
   privateKey: any,
   selectedIssuer: string,
   client_id: string | null,
-  accessToken: string | null,
   keyType: string,
   proofSigningAlgosSupported: string[] = [],
   isCredentialOfferFlow: boolean,

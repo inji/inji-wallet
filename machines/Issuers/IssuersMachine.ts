@@ -118,12 +118,11 @@ export const IssuersMachine = model.createMachine(
             actions: [
               'setCredential',
               'setCredentialConfigurationId',
-              'resetCredentialOfferFlowType',
               model.assign({
                 authEndpointToOpen: false,
               }),
             ],
-            target: 'cachingIssuerWellknown',
+            target: 'cachingCredentialOfferIssuerWellknown',
           },
           onError: [
             {
@@ -417,14 +416,14 @@ export const IssuersMachine = model.createMachine(
           },
         },
       },
-      cachingIssuerWellknown: {
+      cachingCredentialOfferIssuerWellknown: {
         invoke: {
           src: 'cacheIssuerWellknown',
           onDone: {
             actions: [
               'setCredentialOfferIssuer',
               'setCredentialOfferIssuerWellknownResponse',
-              'setOfferCredentialTypeContexts',
+              'setCredentialOfferCredentialType',
             ],
             target: 'proccessingCredential',
           },
@@ -441,14 +440,11 @@ export const IssuersMachine = model.createMachine(
             actions: [
               'setVerifiableCredential',
               'setCredentialWrapper',
-              'sendSuccessEndEvent',
-              'setVerificationResult', // to be modified after verification is implemented for external issuers
             ],
-            target: 'storing',
+            target: 'verifyingCredential',
           },
         },
       },
-
       downloadIssuerWellknown: {
         invoke: {
           src: 'downloadIssuerWellknown',
@@ -712,7 +708,7 @@ export const IssuersMachine = model.createMachine(
         invoke: {
           src: 'verifyCredential',
           onDone: {
-            actions: ['sendSuccessEndEvent', 'setVerificationResult'],
+            actions: ['sendSuccessEndEvent', 'setVerificationResult','resetCredentialOfferFlowType',],
             target: 'storing',
           },
           onError: [

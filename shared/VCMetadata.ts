@@ -130,7 +130,7 @@ export function parseMetadatas(metadataStrings: object[]) {
 
 export const getVCMetadata = (context: object, keyType: string) => {
   const issuer = context.selectedIssuer.credential_issuer_host ?? context.selectedIssuer.credential_issuer;
-  const credentialId = `${UUID.generate()}_${issuer}`;//need to get the credentialId from the issuername or issuerhost
+  const credentialId = `${UUID.generate()}_${issuer}`;
 
   return VCMetadata.fromVC({
     requestId: credentialId,
