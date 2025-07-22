@@ -208,7 +208,7 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
     throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Wallet Metadata"])
   }
   
-  var vpFormatsSupported: [FormatType: VPFormatSupported] = [:]
+  var vpFormatsSupported: [VPFormatType: VPFormatSupported] = [:]
   if let vpFormatsSupportedDict = metadata["vp_formats_supported"] as? [String: Any],
      let ldpVcDict = vpFormatsSupportedDict["ldp_vc"] as? [String: Any] {
     let algValuesSupported = ldpVcDict["alg_values_supported"] as? [String]
@@ -222,7 +222,7 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
   }
   
   let walletMetadataObject = try WalletMetadata(
-    presentationDefinitionURISupported: metadata["presentation_definition_uri_supported"] as? Bool,
+    presentationDefinitionURISupported: metadata["presentation_definition_uri_supported"] as? Bool ?? true,
     vpFormatsSupported: vpFormatsSupported,
     clientIdSchemesSupported: mapStringsToEnum(metadata["client_id_schemes_supported"] as? [String] ?? [], using: ClientIdScheme.fromValue),
     requestObjectSigningAlgValuesSupported: mapStringsToEnum(metadata["request_object_signing_alg_values_supported"] as? [String] ?? [], using: RequestSigningAlgorithm.fromValue),
