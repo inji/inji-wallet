@@ -4,7 +4,7 @@ import {
   SelectedCredentialsForVPSharing,
   VC,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {fallbackWalletMetadata} from './fallbackWalletMetadata';
+import {walletMetadata} from './walletMetadata';
 import {getWalletMetadata, isClientValidationRequired} from './OpenID4VPHelper';
 import {parseJSON} from '../Utils';
 
@@ -20,9 +20,9 @@ class OpenID4VP {
 
   private static async getInstance(): Promise<OpenID4VP> {
     if (!OpenID4VP.instance) {
-      const walletMetadata =
-        (await getWalletMetadata()) || fallbackWalletMetadata;
-      OpenID4VP.instance = new OpenID4VP(walletMetadata);
+      const walletMetadataConfig =
+        (await getWalletMetadata()) || walletMetadata;
+      OpenID4VP.instance = new OpenID4VP(walletMetadataConfig);
     }
     return OpenID4VP.instance;
   }

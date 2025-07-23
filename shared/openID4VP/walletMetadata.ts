@@ -1,4 +1,4 @@
-export const fallbackWalletMetadata = {
+export const walletMetadata = {
   presentation_definition_uri_supported: true,
   vp_formats_supported: {
     ldp_vc: {
