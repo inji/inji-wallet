@@ -248,7 +248,8 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
     clientIdSchemesSupported: mapStringsToEnum(metadata["client_id_schemes_supported"] as? [String] ?? [], using: ClientIdScheme.fromValue),
     requestObjectSigningAlgValuesSupported: mapStringsToEnum(metadata["request_object_signing_alg_values_supported"] as? [String] ?? [], using: RequestSigningAlgorithm.fromValue),
     authorizationEncryptionAlgValuesSupported: mapStringsToEnum(metadata["authorization_encryption_alg_values_supported"] as? [String] ?? [], using: KeyManagementAlgorithm.fromValue),
-    authorizationEncryptionEncValuesSupported: mapStringsToEnum(metadata["authorization_encryption_enc_values_supported"] as? [String] ?? [], using: ContentEncryptionAlgorithm.fromValue)
+    authorizationEncryptionEncValuesSupported: mapStringsToEnum(metadata["authorization_encryption_enc_values_supported"] as? [String] ?? [], using: ContentEncryptionAlgorithm.fromValue),
+    responseTypesSupported: mapStringsToEnum(metadata["response_types_supported"] as? [String] ?? [], using: ResponseType.fromValue)
   )
   return walletMetadataObject
 }
