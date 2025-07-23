@@ -5,17 +5,17 @@ import {Theme} from '../../components/ui/styleUtils';
 import {useTranslation} from 'react-i18next';
 
 export const TrustIssuerModal = ({
-  isVisible,
-  issuerLogo,
-  issuerName,
-  onConfirm,
-  onCancel,
+    isVisible,
+    issuerLogo,
+    issuerName,
+    onConfirm,
+    onCancel,
 }: {
-  isVisible: boolean;
-  issuerLogo: any;
-  issuerName: string;
-  onConfirm: () => void;
-  onCancel: () => void;
+    isVisible: boolean;
+    issuerLogo: any;
+    issuerName: string;
+    onConfirm: () => void;
+    onCancel: () => void;
 }) => {
   const {t} = useTranslation('trustScreen');
   return (
