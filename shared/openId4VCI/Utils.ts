@@ -38,7 +38,7 @@ export const Protocols = {
 };
 
 export const Issuers = {
-  MosipOtp: '',
+  MosipOtp: 'MosipOtp',
   Mosip: 'Mosip',
 };
 
