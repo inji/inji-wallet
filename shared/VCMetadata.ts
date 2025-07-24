@@ -132,7 +132,9 @@ export const getVCMetadata = (context: object, keyType: string) => {
   const issuerHost =
     context.selectedIssuer.credential_issuer_host ??
     context.selectedIssuer.credential_issuer;
-  const issuer = context.selectedIssuer.issuer_id;
+  const issuer =
+    context.selectedIssuer.issuer_id ??
+    context.selectedIssuer.credential_issuer;
 
   const credentialId = `${UUID.generate()}_${issuerHost}`;
 
