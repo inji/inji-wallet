@@ -33,5 +33,6 @@ export const IssuersEvents = {
   TX_CODE_REQUEST: () => ({}),
   TX_CODE_RECEIVED: (txCode: string) => ({txCode}),
   ON_CONSENT_GIVEN: () => ({}),
-  TRUST_ISSUER_CONSENT_REQUEST: (issuerMetadata: object) => ({issuerMetadata})
+  TRUST_ISSUER_CONSENT_REQUEST: (issuerMetadata: object) => ({issuerMetadata}),
+  TOKEN_REQUEST: (tokenRequest: object) => ({tokenRequest}),
 };

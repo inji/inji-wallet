@@ -1,6 +1,6 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useSelector} from '@xstate/react';
-import {useContext, useEffect, useRef, useState} from 'react';
+import {useCallback, useContext, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ActorRefFrom} from 'xstate';
 import {Theme} from '../../components/ui/styleUtils';
@@ -151,207 +151,29 @@ export function useSendVPScreen() {
     selectIsOVPViaDeeplink,
   );
 
-  const getAdditionalMessage = () => {
+  const getAdditionalMessage = useCallback(() => {
     return isOVPViaDeepLink && isIOS() ? t('errors.additionalMessage') : '';
-  };
+  }, [isOVPViaDeepLink, t]);
 
-  function generateAndStoreLogMessage(logType: string, errorInfo?: string) {
-    activityLogService.send(
-      ActivityLogEvents.LOG_ACTIVITY(
-        VPShareActivityLog.getLogFromObject({
-          timestamp: Date.now(),
-          type: logType,
-          info: errorInfo,
-        }),
-      ),
-    );
-  }
+  const generateAndStoreLogMessage = useCallback(
+    (logType: string, errorInfo?: string) => {
+      activityLogService.send(
+        ActivityLogEvents.LOG_ACTIVITY(
+          VPShareActivityLog.getLogFromObject({
+            timestamp: Date.now(),
+            type: logType,
+            info: errorInfo,
+          }),
+        ),
+      );
+    },
+    [activityLogService],
+  );
+
   const requestedClaimsByVerifier = useSelector(
     openID4VPService,
     selectRequestedClaimsByVerifier,
   );
-
-  const [errorModal, setErrorModalData] = useState({
-    show: false,
-    title: '',
-    message: '',
-    additionalMessage: '',
-    showRetryButton: false,
-  });
-
-  const isClaimsEmpty =
-  !requestedClaimsByVerifier || requestedClaimsByVerifier.trim() === '';
-  if (noCredentialsMatchingVPRequest) {
-    errorModal.title = isClaimsEmpty
-    ? t('errors.noMatchingCredentialsWithMissingClaims.title')
-    : t('errors.noMatchingCredentials.title');
-    errorModal.message = isClaimsEmpty
-      ? t('errors.noMatchingCredentialsWithMissingClaims.message')
-      : t('errors.noMatchingCredentials.message', { claims: requestedClaimsByVerifier });
-    generateAndStoreLogMessage(
-      'NO_CREDENTIAL_MATCHING_REQUEST',
-      requestedClaimsByVerifier,
-    );
-  } else if (
-    error.includes('Verifier authentication was unsuccessful') ||
-    error.startsWith('api error')
-  ) {
-    errorModal.title = t('errors.invalidVerifier.title');
-    errorModal.message = t('errors.invalidVerifier.message');
-    generateAndStoreLogMessage('VERIFIER_AUTHENTICATION_FAILED');
-  } else if (error.includes('credential mismatch detected')) {
-    errorModal.title = t('errors.credentialsMismatch.title');
-    errorModal.message = t('errors.credentialsMismatch.message', {
-      claims: requestedClaimsByVerifier,
-    });
-    generateAndStoreLogMessage(
-      'CREDENTIAL_MISMATCH_FROM_KEBAB',
-      requestedClaimsByVerifier,
-    );
-  } else if (error.includes('none of the selected VC has image')) {
-    errorModal.title = t('errors.noImage.title');
-    errorModal.message = t('errors.noImage.message');
-    generateAndStoreLogMessage('NO_SELECTED_VC_HAS_IMAGE');
-  } else if (error.includes('invalid_request_uri_method')) {
-    errorModal.title = t('errors.invalidRequestURI.title');
-    errorModal.message = t('errors.invalidRequestURI.message');
-    generateAndStoreLogMessage('INVALID_REQUEST_URI_METHOD');
-  } else if (error.includes('invalid_request')) {
-    errorModal.title = t('errors.invalidQrCode.title');
-    errorModal.message = t('errors.invalidQrCode.message');
-    generateAndStoreLogMessage('INVALID_AUTH_REQUEST');
-  } else if (error.includes('vp_formats_not_supported')) {
-    errorModal.title = t('errors.vpFormatsNotSupported.title');
-    errorModal.message = t('errors.vpFormatsNotSupported.message');
-    generateAndStoreLogMessage('VP_FORMATS_NOT_SUPPORTED');
-  } else if (error.includes('invalid_presentation_definition_uri')) {
-    errorModal.title = t('errors.invalidPresentationDefinitionURI.title');
-    errorModal.message = t('errors.invalidPresentationDefinitionURI.message');
-    generateAndStoreLogMessage('INVALID_PRESENTATION_DEFINITION_URI');
-  } else if (error.includes('invalid_presentation_definition_reference')) {
-    errorModal.title = t('errors.invalidPresentationDefinitionRef.title');
-    errorModal.message = t('errors.invalidPresentationDefinitionRef.message');
-    generateAndStoreLogMessage('INVALID_PRESENTATION_DEFINITION_REFERENCE');
-  } else if (error.startsWith('send vp')) {
-    errorModal.title = t('errors.sendVPError.title');
-    errorModal.message = t('errors.sendVPError.message');
-    errorModal.showRetryButton = true;
-  } else if (error !== '') {
-    errorModal.title = t('errors.genericError.title');
-    errorModal.message = t('errors.genericError.message');
-    generateAndStoreLogMessage('TECHNICAL_ERROR');
-  }
-
-  useEffect(() => {
-    if (noCredentialsMatchingVPRequest && !hasLoggedErrorRef.current) {
-      const isClaimsEmpty =
-        !requestedClaimsByVerifier || requestedClaimsByVerifier.trim() === '';
-      setErrorModalData({
-        show: true,
-        title: isClaimsEmpty
-        ? t('errors.noMatchingCredentialsWithMissingClaims.title')
-        : t('errors.noMatchingCredentials.title'),
-        message: isClaimsEmpty
-        ? t('errors.noMatchingCredentialsWithMissingClaims.message')
-        : t('errors.noMatchingCredentials.message', {
-            claims: requestedClaimsByVerifier,
-          }),
-        additionalMessage: getAdditionalMessage(),
-        showRetryButton: false,
-      });
-      generateAndStoreLogMessage(
-        'NO_CREDENTIAL_MATCHING_REQUEST',
-        requestedClaimsByVerifier,
-      );
-      hasLoggedErrorRef.current = true;
-    } else if (
-      (error.includes('Verifier authentication was unsuccessful') ||
-        error.startsWith('api error')) &&
-      !hasLoggedErrorRef.current
-    ) {
-      setErrorModalData({
-        show: true,
-        title: t('errors.invalidVerifier.title'),
-        message: t('errors.invalidVerifier.message'),
-        additionalMessage: getAdditionalMessage(),
-        showRetryButton: false,
-      });
-      generateAndStoreLogMessage('VERIFIER_AUTHENTICATION_FAILED');
-      hasLoggedErrorRef.current = true;
-    } else if (
-      error.includes('credential mismatch detected') &&
-      !hasLoggedErrorRef.current
-    ) {
-      setErrorModalData({
-        show: true,
-        title: t('errors.credentialsMismatch.title'),
-        message: t('errors.credentialsMismatch.message', {
-          claims: requestedClaimsByVerifier,
-        }),
-        additionalMessage: getAdditionalMessage(),
-        showRetryButton: false,
-      });
-      generateAndStoreLogMessage(
-        'CREDENTIAL_MISMATCH_FROM_KEBAB',
-        requestedClaimsByVerifier,
-      );
-      hasLoggedErrorRef.current = true;
-    } else if (
-      error.includes('none of the selected VC has image') &&
-      !hasLoggedErrorRef.current
-    ) {
-      setErrorModalData({
-        show: true,
-        title: t('errors.noImage.title'),
-        message: t('errors.noImage.message'),
-        additionalMessage: getAdditionalMessage(),
-        showRetryButton: false,
-      });
-      generateAndStoreLogMessage('NO_SELECTED_VC_HAS_IMAGE');
-      hasLoggedErrorRef.current = true;
-    } else if (
-      error.startsWith('vc validation') &&
-      !hasLoggedErrorRef.current
-    ) {
-      setErrorModalData({
-        show: true,
-        title: t('errors.invalidQrCode.title'),
-        message: t('errors.invalidQrCode.message'),
-        additionalMessage: getAdditionalMessage(),
-        showRetryButton: false,
-      });
-      generateAndStoreLogMessage('INVALID_AUTH_REQUEST');
-      hasLoggedErrorRef.current = true;
-    } else if (error.startsWith('send vp') && !hasLoggedErrorRef.current) {
-      setErrorModalData({
-        show: true,
-        title: t('errors.genericError.title'),
-        message: t('errors.genericError.message'),
-        additionalMessage: getAdditionalMessage(),
-        showRetryButton: true,
-      });
-      hasLoggedErrorRef.current = true;
-    } else if (error !== '' && !hasLoggedErrorRef.current) {
-      setErrorModalData({
-        show: true,
-        title: t('errors.genericError.title'),
-        message: t('errors.genericError.message'),
-        additionalMessage: getAdditionalMessage(),
-        showRetryButton: false,
-      });
-      generateAndStoreLogMessage('TECHNICAL_ERROR');
-      hasLoggedErrorRef.current = true;
-    } else if (error === '') {
-      setErrorModalData({
-        show: false,
-        title: '',
-        message: '',
-        additionalMessage: '',
-        showRetryButton: false,
-      });
-      hasLoggedErrorRef.current = false;
-    }
-  }, [error, noCredentialsMatchingVPRequest]);
 
   let overlayDetails: Omit<VPShareOverlayProps, 'isVisible'> | null = null;
   let vpVerifierName = useSelector(
@@ -401,18 +223,12 @@ export function useSendVPScreen() {
     checkIfAnyVCHasImage,
     checkIfAllVCsHasImage,
     getSelectedVCs,
-    errorModal,
+    error,
+    noCredentialsMatchingVPRequest,
+    requestedClaimsByVerifier,
+    getAdditionalMessage,
     overlayDetails,
-    RESET_LOGGED_ERROR: () => {
-      hasLoggedErrorRef.current = false;
-      setErrorModalData({
-        show: false,
-        title: '',
-        message: '',
-        additionalMessage: '',
-        showRetryButton: false,
-      });
-    },
+    generateAndStoreLogMessage,
     scanScreenError: useSelector(scanService, selectIsSendingVPError),
     vcsMatchingAuthRequest,
     userSelectedVCs: useSelector(openID4VPService, selectSelectedVCs),

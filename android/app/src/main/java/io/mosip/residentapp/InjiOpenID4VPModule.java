@@ -99,12 +99,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             String authRequestJson = gson.toJson(authRequest, AuthorizationRequest.class);
             promise.resolve(authRequestJson);
         } catch (Exception e) {
-            if (e instanceof OpenID4VPExceptions) {
-                OpenID4VPExceptions ex = (OpenID4VPExceptions) e;
-                promise.reject(ex.getErrorCode(), ex.getMessage());
-            } else {
-                promise.reject(e);
-            }
+            rejectWithOpenID4VPExceptions(e, promise);
         }
     }
 
@@ -115,12 +110,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             Map<FormatType, UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedVCsMap, holderId, signatureSuite);
             promise.resolve(toJsonString(vpTokens));
         } catch (Exception e) {
-            if (e instanceof OpenID4VPExceptions) {
-                OpenID4VPExceptions ex = (OpenID4VPExceptions) e;
-                promise.reject(ex.getErrorCode(), ex.getMessage());
-            } else {
-                promise.reject(e);
-            }
+            rejectWithOpenID4VPExceptions(e, promise);
         }
     }
 
@@ -131,12 +121,17 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             String response = openID4VP.shareVerifiablePresentation(authContainer);
             promise.resolve(response);
         } catch (Exception e) {
-            if (e instanceof OpenID4VPExceptions) {
-                OpenID4VPExceptions ex = (OpenID4VPExceptions) e;
-                promise.reject(ex.getErrorCode(), ex.getMessage());
-            } else {
-                promise.reject(e);
-            }
+            rejectWithOpenID4VPExceptions(e, promise);
+        }
+    }
+
+    @ReactMethod
+    private static void rejectWithOpenID4VPExceptions(Exception e, Promise promise) {
+        if (e instanceof OpenID4VPExceptions) {
+            OpenID4VPExceptions ex = (OpenID4VPExceptions) e;
+            promise.reject(ex.getErrorCode(), ex.getMessage(), ex);
+        } else {
+            promise.reject("ERR_UNKNOWN", e.getMessage(), e);
         }
     }
 
@@ -349,7 +344,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         } else if (MSO_MDOC.getValue().equals(formatStr)) {
             return MSO_MDOC;
         }
-        throw new UnsupportedOperationException("Credential format not supported: " + formatStr);
+        throw new UnsupportedOperationException("Credential format '" + formatStr + "' is not supported");
     }
 
     private List<String> convertReadableArrayToList(ReadableArray readableArray) {

@@ -32,11 +32,21 @@ import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {GlobalContext} from '../../shared/GlobalContext';
 import {APP_EVENTS} from '../../machines/app';
 import {useScanScreen} from './ScanScreenController';
+import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
   const controller = useSendVPScreen();
   const scanScreenController = useScanScreen();
+
+  const [errorModal, resetErrorModal] = useOvpErrorModal({
+    error: controller.error,
+    noCredentialsMatchingVPRequest: controller.noCredentialsMatchingVPRequest,
+    requestedClaimsByVerifier: controller.requestedClaimsByVerifier,
+    getAdditionalMessage: controller.getAdditionalMessage,
+    generateAndStoreLogMessage: controller.generateAndStoreLogMessage,
+    t,
+  });
 
   const vcsMatchingAuthRequest = controller.vcsMatchingAuthRequest;
 
@@ -44,7 +54,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const [triggerExitFlow, setTriggerExitFlow] = useState(false);
 
   useEffect(() => {
-    if (controller.errorModal.show && controller.isOVPViaDeepLink) {
+    if (errorModal.show && controller.isOVPViaDeepLink) {
       const timeout = setTimeout(
         () => {
           OpenID4VP.sendErrorToVerifier(
@@ -58,11 +68,11 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
       return () => clearTimeout(timeout);
     }
-  }, [controller.errorModal.show, controller.isOVPViaDeepLink]);
+  }, [errorModal.show, controller.isOVPViaDeepLink]);
 
   useEffect(() => {
     if (triggerExitFlow) {
-      controller.RESET_LOGGED_ERROR();
+      RESET_LOGGED_ERROR();
       controller.GO_TO_HOME();
       controller.RESET_RETRY_COUNT();
       appService.send(APP_EVENTS.RESET_AUTHORIZATION_REQUEST());
@@ -106,11 +116,16 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     }
   });
 
+  const RESET_LOGGED_ERROR = () => {
+    resetErrorModal();
+  };
+
   const handleDismiss = () => {
     OpenID4VP.sendErrorToVerifier(
       OVP_ERROR_MESSAGES.DECLINED,
       OVP_ERROR_CODE.DECLINED,
     );
+    controller.generateAndStoreLogMessage('USER_DECLINED_CONSENT');
     if (controller.isOVPViaDeepLink) {
       controller.GO_TO_HOME();
       BackHandler.exitApp();
@@ -124,6 +139,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
       OVP_ERROR_MESSAGES.DECLINED,
       OVP_ERROR_CODE.DECLINED,
     );
+    controller.generateAndStoreLogMessage('USER_DECLINED_CONSENT');
     if (controller.isOVPViaDeepLink) {
       controller.GO_TO_HOME();
       BackHandler.exitApp();
@@ -135,12 +151,9 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const getAdditionalMessage = () => {
     if (
       controller.isOVPViaDeepLink &&
-      !(
-        controller.errorModal.showRetryButton &&
-        controller.openID4VPRetryCount < 3
-      )
+      !(errorModal.showRetryButton && controller.openID4VPRetryCount < 3)
     ) {
-      return controller.errorModal.additionalMessage;
+      return errorModal.additionalMessage;
     }
     return undefined;
   };
@@ -221,8 +234,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   };
 
   const getPrimaryButtonText = () => {
-    return controller.errorModal.showRetryButton &&
-      controller.openID4VPRetryCount < 3
+    return errorModal.showRetryButton && controller.openID4VPRetryCount < 3
       ? t('ScanScreen:status.retry')
       : undefined;
   };
@@ -417,14 +429,14 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           />
         </>
       )}
-      {controller.errorModal.show && (
+      {errorModal.show && (
         <Error
           isModal
           alignActionsOnEnd
           showClose={false}
-          isVisible={controller.errorModal.show}
-          title={controller.errorModal.title}
-          message={controller.errorModal.message}
+          isVisible={errorModal.show}
+          title={errorModal.title}
+          message={errorModal.message}
           additionalMessage={getAdditionalMessage()}
           image={SvgImage.PermissionDenied()}
           primaryButtonTestID={'retry'}

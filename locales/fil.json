@@ -19,8 +19,7 @@
       "SHARED_SUCCESSFULLY": "Matagumpay na naibahagi ang Pagtatanghal ng Kredensyal.",
       "SHARED_WITH_FACE_VERIFIACTION": "Matagumpay ang pag-verify sa mukha, at matagumpay na naibahagi ang Credential Presentation.",
       "VERIFIER_AUTHENTICATION_FAILED": "Nabigong i-authenticate ang Serbisyo sa Pag-verify sa panahon ng pagbabahagi ng VP.",
-      "INVALID_AUTH_REQUEST": "Ang QR code ay may di-wasto o nawawalang data. Tingnan sa serbisyo ng pag-verify.",
-      "USER_DECLINED_CONSENT": "Tinanggihan ng user ang pahintulot para sa pagbabahagi ng Credential Presentation.",
+      "USER_DECLINED_CONSENT": "பயனர் சான்றுகள் பகிர்வுக்கு ஒப்புதலை நிராகரித்தார்.",
       "SHARED_AFTER_RETRY": "Ang Pagtatanghal ng Kredensyal ay matagumpay na naibahagi pagkatapos ng muling pagsubok.",
       "SHARED_WITH_FACE_VERIFICATION_AFTER_RETRY": "Matagumpay ang pag-verify sa mukha, at matagumpay na naibahagi ang Credential Presentation pagkatapos ng muling pagsubok.",
       "SHARING_FAILED": "Nabigo ang pagbabahagi ng Credential Presentation dahil sa teknikal na error.",
@@ -31,7 +30,13 @@
       "NO_SELECTED_VC_HAS_IMAGE": "Nabigo ang pagbabahagi ng Pagtatanghal ng Kredensyal dahil walang larawan ng mukha ang mga napiling nabe-verify na kredensyal.",
       "CREDENTIAL_MISMATCH_FROM_KEBAB": "Ang hindi pagkakatugma ng Pagtatanghal ng Mga Kredensyal ay naganap sa panahon ng pagbabahagi mula sa menu, batay sa mga hiniling na claim: {{info}}.",
       "NO_CREDENTIAL_MATCHING_REQUEST": "Walang nakitang mga kredensyal na tumutugma sa kahilingan ng serbisyo sa pag-verify batay sa mga ibinigay na claim: {{info}}.",
-      "TECHNICAL_ERROR": "Hindi matuloy ang pagbabahagi ng Kredensyal na Presentasyon dahil sa teknikal na error."
+      "TECHNICAL_ERROR": "May nangyaring mali habang pinoproseso ang iyong kahilingan.",
+      "INVALID_REQUEST_URI_METHOD": "Hindi naibahagi ang kredensyal — Gumamit ang verifier ng pamamaraang hindi suportado.",
+      "INVALID_AUTH_REQUEST": "Nabigong maibahagi ang kredensyal — May kulang o maling impormasyon sa kahilingan.",
+      "REQUEST_COULD_NOT_BE_PROCESSED": "Hindi naibahagi ang kredensyal — Hindi naproseso ang kahilingan dahil sa teknikal na isyu.",
+      "INVALID_PRESENTATION_DEFINITION_URI": "Hindi naibahagi ang kredensyal — Mali ang format ng datos sa kahilingan ng verifier.",
+      "SEND_VP_ERROR": "Nabigong maibahagi ang kredensyal dahil sa teknikal na isyu."
+
     }
   },
   "DeviceInfoList": {
@@ -215,6 +220,10 @@
       "noInternetConnection": {
         "title": "Pakisuri ang iyong koneksyon at subukang muli",
         "message": "Mangyaring kumonekta sa internet at subukang muli."
+      },
+      "networkRequestFailed": {
+        "title": "Nabigo ang kahilingan sa network",
+        "message": "Hindi namin maiproseso ang iyong kahilingan sa ngayon."
       },
       "biometricsCancelled": {
         "title": "Gusto mo bang kanselahin ang pag-download?",
@@ -882,7 +891,7 @@
         "title": "Oops! Isang Error ang Naganap.",
         "message": "Nagkaroon ng teknikal na problema habang pinoproseso ang iyong kahilingan. Maaari mong subukang muli pagkatapos ng ilang sandali."
       },
-            "vpFormatsNotSupported": {
+      "vpFormatsNotSupported": {
         "title": "Hindi Suportadong Kahilingan",
         "message": "Ang kahilingang ito ay hindi suportado. Pakiusap, sabihan ang tagapagsuri na subukan sa ibang paraan."
       },
@@ -904,7 +913,7 @@
       },
       "sendVPError": {
         "title": "May Nangyaring Mali",
-        "message": "Mensahe: Hindi namin naibahagi ang iyong card dahil sa isang teknikal na isyu. I-click ang Retry para subukang muli, o pumunta sa Home upang lumabas."
+        "message": "Nagkaroon ng teknikal na problema habang ibinabahagi ang iyong card. Pindutin ang \"Subukang Muli\" para subukang muli o bumalik sa \"Home\"."
       },
       "noImage": {
         "title": "Isang Error ang Naganap!",

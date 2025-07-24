@@ -7,6 +7,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
   private var openID4VP: OpenID4VP?
 
+
   static func moduleName() -> String {
     return "InjiOpenID4VP"
   }
@@ -21,7 +22,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
       reject("OPENID4VP", error.localizedDescription, error)
     }
   }
-  
+
   @objc
   func authenticateVerifier(_ urlEncodedAuthorizationRequest: String,
                             trustedVerifierJSON: AnyObject,
@@ -52,7 +53,8 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
         let response = try toJsonString(jsonObject: authenticationResponse)
         resolve(response)
       } catch {
-        reject("OPENID4VP", error.localizedDescription, error)
+        rejectWithOpenID4VPError(error, reject: reject)
+
       }
     }
   }
@@ -100,7 +102,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           reject("ERROR", "Failed to serialize JSON", nil)
         }
       } catch {
-        reject("OPENID4VP", error.localizedDescription, error)
+        rejectWithOpenID4VPError(error, reject: reject)
       }
     }
   }
@@ -143,7 +145,8 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
             formattedVPTokenSigningResults[.mso_mdoc] = MdocVPTokenSigningResult(docTypeToDeviceAuthentication: docTypeToDeviceAuthentication)
 
           default:
-            reject("OPENID4VP", "Credential format not supported", nil)
+            let error = NSError(domain: "Credential format '\(credentialFormat)' is not supported", code: 0)
+            rejectWithOpenID4VPError(error, reject: reject)
             return
           }
         }
@@ -151,23 +154,32 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
         let response = try await openID4VP?.shareVerifiablePresentation(vpTokenSigningResults: formattedVPTokenSigningResults)
         resolve(response)
       } catch {
-        reject("OPENID4VP", error.localizedDescription, error)
+        rejectWithOpenID4VPError(error, reject: reject)
       }
     }
   }
 
-  @objc
-  func sendErrorToVerifier(_ error: String, _ errorCode: String,
-                           resolver resolve: @escaping RCTPromiseResolveBlock,
-                           rejecter reject: @escaping RCTPromiseRejectBlock) {
+@objc
+func sendErrorToVerifier(_ error: String, _ errorCode: String,
+                         resolver resolve: @escaping RCTPromiseResolveBlock,
+                         rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
-      enum VerifierError: Error {
-        case customError(String)
-      }
-      await openID4VP?.sendErrorToVerifier(error: VerifierError.customError(error))
-      resolve(true)
+        let exception: OpenID4VPException = {
+            switch errorCode {
+            case OpenID4VPErrorCodes.accessDenied:
+                return AccessDenied(message: error, className: Self.moduleName())
+            case OpenID4VPErrorCodes.invalidTransactionData:
+                return InvalidTransactionData(message: error, className: Self.moduleName())
+            default:
+                return GenericFailure(message: error, className: Self.moduleName())
+            }
+        }()
+
+        await openID4VP?.sendErrorToVerifier(error: exception)
+        resolve(true)
     }
-  }
+}
+
 
   func toJsonString(jsonObject: AuthorizationRequest) throws -> String {
     let encoder = JSONEncoder()
@@ -183,6 +195,17 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   static func requiresMainQueueSetup() -> Bool {
     return true
   }
+
+  func rejectWithOpenID4VPError(_ error: Error, reject: RCTPromiseRejectBlock) {
+      if let openidError = error as? OpenID4VPException {
+          reject(openidError.errorCode, openidError.message, openidError)
+      } else {
+        let nsError = NSError(domain: error.localizedDescription, code: 0)
+        reject("ERR_UNKNOWN", nsError.localizedDescription, nsError)
+      }
+  }
+
+
 }
 
 struct EncodableWrapper: Encodable {
@@ -207,7 +230,7 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
     reject("OPENID4VP", "Invalid wallet metadata format", nil)
     throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Wallet Metadata"])
   }
-  
+
   var vpFormatsSupported: [FormatType: VPFormatSupported] = [:]
   if let vpFormatsSupportedDict = metadata["vp_formats_supported"] as? [String: Any],
      let ldpVcDict = vpFormatsSupportedDict["ldp_vc"] as? [String: Any] {
@@ -220,7 +243,7 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
   } else {
     vpFormatsSupported[.ldp_vc] = VPFormatSupported(algValuesSupported: nil)
   }
-  
+
   let walletMetadataObject = try WalletMetadata(
     presentationDefinitionURISupported: metadata["presentation_definition_uri_supported"] as? Bool,
     vpFormatsSupported: vpFormatsSupported,

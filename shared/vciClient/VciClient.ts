@@ -35,6 +35,15 @@ class VciClient {
     this.InjiVciClient.sendIssuerTrustResponseFromJS(consent);
   }
 
+  async sendTokenResponse(json: string) {
+    this.InjiVciClient.sendTokenResponseFromJS(json);
+  }
+
+  async getIssuerMetadata(issuerUri: string): Promise<object> {
+    const response = await this.InjiVciClient.getIssuerMetadata(issuerUri);
+    return JSON.parse(response);
+  }
+
   async requestCredentialByOffer(
     credentialOffer: string,
     getTxCode: (
@@ -43,30 +52,29 @@ class VciClient {
       length: number | undefined,
     ) => void,
     getProofJwt: (
-      accessToken: string,
+      credentialIssuer: string,
       cNonce: string | null,
-      issuerMetadata: object,
-      credentialConfigurationId: string,
+      proofSigningAlgosSupported: string[] | null,
     ) => void,
     navigateToAuthView: (authorizationEndpoint: string) => void,
-    requestTrustIssuerConsent: (issuerMetadata: object) => void,
-  ): Promise<VerifiableCredential> {
+    requestTokenResponse: (tokenRequest: object) => void,
+    requestTrustIssuerConsent: (
+      credentialIssuer: string,
+      issuerDisplay: object[],
+    ) => void,
+  ): Promise<any> {
+
     const proofListener = emitter.addListener(
       'onRequestProof',
-      ({accessToken, cNonce, issuerMetadata, credentialConfigurationId}) => {
-        getProofJwt(
-          accessToken,
-          cNonce,
-          JSON.parse(issuerMetadata),
-          credentialConfigurationId,
-        );
+      ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
+        getProofJwt(credentialIssuer, cNonce, JSON.parse(proofSigningAlgorithmsSupported));
       },
     );
 
     const authListener = emitter.addListener(
       'onRequestAuthCode',
-      ({authorizationEndpoint}) => {
-        navigateToAuthView(authorizationEndpoint);
+      ({authorizationUrl}) => {
+        navigateToAuthView(authorizationUrl);
       },
     );
 
@@ -77,21 +85,29 @@ class VciClient {
       },
     );
 
+    const tokenResponseListener = emitter.addListener(
+      'onRequestTokenResponse',
+      ({tokenRequest}) => {
+        requestTokenResponse(tokenRequest);
+      },
+    );
+
     const trustIssuerListener = emitter.addListener(
       'onCheckIssuerTrust',
-      ({issuerMetadata}) => {
-        requestTrustIssuerConsent(JSON.parse(issuerMetadata));
+      ({credentialIssuer, issuerDisplay}) => {
+        requestTrustIssuerConsent(credentialIssuer, JSON.parse(issuerDisplay));
       },
     );
 
     let response = '';
     try {
+      const clientMetadata = {
+        clientId: 'wallet',
+        redirectUri: 'io.mosip.residentapp.inji://oauthredirect',
+      };
       response = await this.InjiVciClient.requestCredentialByOffer(
         credentialOffer,
-        JSON.stringify({
-          clientId: 'wallet',
-          redirectUri: 'io.mosip.residentapp.inji://oauthredirect',
-        }),
+        JSON.stringify(clientMetadata),
       );
     } catch (error) {
       console.error('Error requesting credential by offer:', error);
@@ -100,37 +116,59 @@ class VciClient {
       proofListener.remove();
       authListener.remove();
       txCodeListener.remove();
+      tokenResponseListener.remove();
       trustIssuerListener.remove();
     }
 
-    return JSON.parse(response) as VerifiableCredential;
+    const parsedResponse = JSON.parse(response);
+    return {
+      credential: {
+        credential: parsedResponse.credential,
+      } as VerifiableCredential,
+      credentialConfigurationId:
+        parsedResponse.credentialConfigurationId ?? {},
+      credentialIssuer: parsedResponse.credentialIssuer ?? '',
+    };
   }
 
   async requestCredentialFromTrustedIssuer(
-    resolvedIssuerMetaData: object,
+    credentialIssuerUri: string,
+    credentialConfigurationId: string,
     clientMetadata: object,
-    getProofJwt: (accessToken: string, cNonce: string) => void,
+    getProofJwt: (
+      credentialIssuer: string,
+      cNonce: string | null,
+      proofSigningAlgosSupported: string[] | null,
+    ) => void,
     navigateToAuthView: (authorizationEndpoint: string) => void,
-  ): Promise<VerifiableCredential> {
+    requestTokenResponse: (tokenRequest: object) => void,
+  ): Promise<any> {
     const proofListener = emitter.addListener(
       'onRequestProof',
-      ({accessToken, cNonce}) => {
-        getProofJwt(accessToken, cNonce);
-        proofListener.remove();
+      ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
+        getProofJwt(credentialIssuer, cNonce, JSON.parse(proofSigningAlgorithmsSupported));
       },
     );
 
     const authListener = emitter.addListener(
       'onRequestAuthCode',
-      ({authorizationEndpoint}) => {
-        navigateToAuthView(authorizationEndpoint);
+      ({authorizationUrl}) => {
+        navigateToAuthView(authorizationUrl);
+      },
+    );
+
+    const tokenResponseListener = emitter.addListener(
+      'onRequestTokenResponse',
+      ({tokenRequest}) => {
+        requestTokenResponse(tokenRequest);
       },
     );
 
     let response = '';
     try {
       response = await this.InjiVciClient.requestCredentialFromTrustedIssuer(
-        JSON.stringify(resolvedIssuerMetaData),
+        credentialIssuerUri,
+        credentialConfigurationId,
         JSON.stringify(clientMetadata),
       );
     } catch (error) {
@@ -139,9 +177,18 @@ class VciClient {
     } finally {
       proofListener.remove();
       authListener.remove();
+      tokenResponseListener.remove();
     }
 
-    return JSON.parse(response) as VerifiableCredential;
+    const parsedResponse = JSON.parse(response);
+    return {
+      credential: {
+        credential: parsedResponse.credential,
+      } as VerifiableCredential,
+      credentialConfigurationId:
+        parsedResponse.credentialConfigurationId ?? {},
+      credentialIssuer: parsedResponse.credentialIssuer ?? '',
+    };
   }
 }
 

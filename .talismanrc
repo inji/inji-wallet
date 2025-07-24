@@ -341,7 +341,7 @@ fileignoreconfig:
   - filename: android/app/src/main/java/io/mosip/residentapp/InjiVciClientModule.java
     checksum: 17f55840bab193bc353034445ba4fce53e1ce466e95f616c15a1351f8d2f23bc
   - filename: ios/Inji.xcworkspace/xcshareddata/swiftpm/Package.resolved
-    checksum: 785f2a3390ffd7b93974f449132008c7c1b8b6d1e8deaba7b1d0737be1b5f2f4
+    checksum: 81d8398a4f4b052c3fb10d92f0e0af398d09095d9f882cc35335c43630c6c371
   - filename: injitest/src/main/resources/Vids.json
     checksum: 8bcffed7a6dd565ae695e1b29de0655e10bd5c5420af2718defd593a687b8817
   - filename: injitest/src/main/java/inji/utils/UpdateNetworkSettings.java
@@ -398,7 +398,8 @@ fileignoreconfig:
     checksum: 6600a3d75033af4d702dd8c9663e12ad7c2c096a529bac2771bb856cc75a5ed0
   - filename: machines/openID4VP/openID4VPModel.ts
     checksum: 5d1ed430f84852d6c85bc439c47641cfb5b19cbd1a03faf8918429685db51e07
-    version: ""
+  - filename: shared/hooks/useOvpErrorModal.ts
+    checksum: dc83cf9d688fda587cfb10e738b966694794181f233dd1b6f5cf3f818dae412d
   - filename: shared/openID4VP/OpenID4VPHelper.ts
     checksum: 2ab5f935ea3d1ec4d109d8614c2246f40e284594288566338f185611470e6928
   - filename: components/VC/common/VCUtils.tsx

@@ -2,10 +2,12 @@ package io.mosip.residentapp
 
 import com.facebook.react.bridge.ReactApplicationContext
 import io.mosip.vciclient.VCIClient
-import io.mosip.vciclient.clientMetadata.ClientMetadata
-import io.mosip.vciclient.credentialResponse.CredentialResponse
-import io.mosip.vciclient.issuerMetadata.IssuerMetadata
-import io.mosip.residentapp.VCIClientBridge
+import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata
+import io.mosip.vciclient.credential.response.CredentialResponse
+import io.mosip.vciclient.token.TokenRequest
+import io.mosip.vciclient.token.TokenResponse
+import io.mosip.vciclient.constants.AuthorizeUserCallback
+import io.mosip.vciclient.constants.ProofJwtCallback
 import kotlinx.coroutines.runBlocking
 
 object VCIClientBridge {
@@ -18,62 +20,94 @@ object VCIClientBridge {
             client: VCIClient,
             offer: String,
             clientMetaData: ClientMetadata
-    ): CredentialResponse? = runBlocking {
+    ): CredentialResponse = runBlocking {
         client.requestCredentialByCredentialOffer(
                 credentialOffer = offer,
                 clientMetadata = clientMetaData,
-                getTxCode = { inputMode, description, length ->
-                    VCIClientCallbackBridge.createTxCodeDeferred()
-                    VCIClientCallbackBridge.emitRequestTxCode(VCIClientBridge.reactContext,
-                            inputMode,
-                            description,
-                            length
-                    )
-                    VCIClientCallbackBridge.awaitTxCode()
-                },
-                getProofJwt = { accessToken, cNonce, issuerMetadata, credentialConfigurationId ->
-                    VCIClientCallbackBridge.createProofDeferred()
-                    VCIClientCallbackBridge.emitRequestProof(
-                            VCIClientBridge.reactContext,
-                            accessToken,
-                            cNonce,
-                            issuerMetadata,
-                            credentialConfigurationId
-                    )
-                    VCIClientCallbackBridge.awaitProof()
-                },
-                getAuthCode = { endpoint ->
-                    VCIClientCallbackBridge.createAuthCodeDeferred()
-                    VCIClientCallbackBridge.emitRequestAuthCode(VCIClientBridge.reactContext, endpoint)
-                    VCIClientCallbackBridge.awaitAuthCode()
-                },
-                onCheckIssuerTrust = { issuerMetadata ->
-                    VCIClientCallbackBridge.createIsuerTrustResponseDeferred()
-                    VCIClientCallbackBridge.emitRequestIssuerTrust(reactContext, issuerMetadata)
-                    VCIClientCallbackBridge.awaitIssuerTrustResponse()
-                }
+                getTxCode = getTxCodeCallback(),
+                authorizeUser = authorizeUserCallback(),
+                getTokenResponse = getTokenResponseCallback(),
+                getProofJwt = getProofJwtCallback(),
+                onCheckIssuerTrust = onCheckIssuerTrustCallback()
         )
     }
 
     @JvmStatic
     fun requestCredentialFromTrustedIssuerSync(
             client: VCIClient,
-            resolvedIssuerMetaData: IssuerMetadata,
+            credentialIssuer: String,
+            credentialConfigurationId: String,
             clientMetaData: ClientMetadata
-    ): CredentialResponse? = runBlocking {
+    ): CredentialResponse = runBlocking {
         client.requestCredentialFromTrustedIssuer(
-            issuerMetadata = resolvedIssuerMetaData,
-                clientMetadata = clientMetaData,
-                getProofJwt = { accessToken, cNonce, _, _ ->
-                    VCIClientCallbackBridge.createProofDeferred()
-                    VCIClientCallbackBridge.emitRequestProof(reactContext, accessToken, cNonce)
-                    VCIClientCallbackBridge.awaitProof()
-                },
-                getAuthCode = { authorizationEndpoint ->
-                    VCIClientCallbackBridge.createAuthCodeDeferred()
-                    VCIClientCallbackBridge.emitRequestAuthCode(reactContext, authorizationEndpoint)
-                    VCIClientCallbackBridge.awaitAuthCode()
-                }
+                credentialIssuer,
+                credentialConfigurationId,
+                clientMetaData,
+                authorizeUser = authorizeUserCallback(),
+                getTokenResponse = getTokenResponseCallback(),
+                getProofJwt = getProofJwtCallback(),
         )
     }
+
+    private fun authorizeUserCallback(): AuthorizeUserCallback = { endpoint ->
+        VCIClientCallbackBridge.createAuthCodeDeferred()
+        VCIClientCallbackBridge.emitRequestAuthCode(reactContext, endpoint)
+        VCIClientCallbackBridge.awaitAuthCode()
+    }
+
+    private fun getProofJwtCallback(): ProofJwtCallback =
+            {
+                    credentialIssuer: String,
+                    cNonce: String?,
+                    proofSigningAlgorithmsSupported: List<String> ->
+                VCIClientCallbackBridge.createProofDeferred()
+                VCIClientCallbackBridge.emitRequestProof(
+                        reactContext,
+                        credentialIssuer,
+                        cNonce,
+                        proofSigningAlgorithmsSupported
+                )
+                VCIClientCallbackBridge.awaitProof()
+            }
+
+    private fun getTokenResponseCallback(): suspend (tokenRequest: TokenRequest) -> TokenResponse =
+            { tokenRequest ->
+                val payload: Map<String, Any?> =
+                        mapOf(
+                                "grantType" to tokenRequest.grantType.value,
+                                "tokenEndpoint" to tokenRequest.tokenEndpoint,
+                                "authCode" to tokenRequest.authCode,
+                                "preAuthCode" to tokenRequest.preAuthCode,
+                                "txCode" to tokenRequest.txCode,
+                                "clientId" to tokenRequest.clientId,
+                                "redirectUri" to tokenRequest.redirectUri,
+                                "codeVerifier" to tokenRequest.codeVerifier
+                        )
+                VCIClientCallbackBridge.createTokenResponseDeferred()
+                VCIClientCallbackBridge.emitTokenRequest(reactContext, payload)
+                VCIClientCallbackBridge.awaitTokenResponse()
+            }
+
+    private fun getTxCodeCallback(): suspend (String?, String?, Int?) -> String =
+            { inputMode, description, length ->
+                VCIClientCallbackBridge.createTxCodeDeferred()
+                VCIClientCallbackBridge.emitRequestTxCode(
+                        reactContext,
+                        inputMode,
+                        description,
+                        length
+                )
+                VCIClientCallbackBridge.awaitTxCode()
+            }
+
+    private fun onCheckIssuerTrustCallback(): suspend (String, List<Map<String, Any>>) -> Boolean =
+            { credentialIssuer, issuerDisplay ->
+                VCIClientCallbackBridge.createIssuerTrustResponseDeferred()
+                VCIClientCallbackBridge.emitRequestIssuerTrust(
+                        reactContext,
+                        credentialIssuer,
+                        issuerDisplay
+                )
+                VCIClientCallbackBridge.awaitIssuerTrustResponse()
+            }
 }

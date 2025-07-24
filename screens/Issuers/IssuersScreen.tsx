@@ -38,6 +38,7 @@ import { IssuersModel } from '../../machines/Issuers/IssuersModel';
 import { AUTH_ROUTES } from '../../routes/routesConstants';
 import { TransactionCodeModal } from './TransactionCodeScreen';
 import { TrustIssuerModal } from './TrustIssuerModal';
+import i18next from 'i18next';
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
@@ -49,7 +50,7 @@ export const IssuersScreen: React.FC<
   const [search, setSearch] = useState('');
   const [tapToSearch, setTapToSearch] = useState(false);
   const [clearSearchIcon, setClearSearchIcon] = useState(false);
-  const showFullScreenError = controller.isError && controller.errorMessageType;
+  const showFullScreenError = controller.isError
 
   const isVerificationFailed = controller.verificationErrorMessage !== '';
 
@@ -57,7 +58,8 @@ export const IssuersScreen: React.FC<
 
   const verificationErrorMessage = isTranslationKeyFound(translationKey, t)
     ? t(translationKey)
-    : t(`errors.verificationFailed.ERR_GENERIC`);
+  : t('errors.verificationFailed.ERR_GENERIC');
+
 
   useLayoutEffect(() => {
     if (controller.loadingReason || showFullScreenError) {
@@ -124,7 +126,8 @@ export const IssuersScreen: React.FC<
       controller.errorMessageType ===
       ErrorMessage.CREDENTIAL_TYPE_DOWNLOAD_FAILURE ||
       controller.errorMessageType ===
-      ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED
+      ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED ||
+      controller.errorMessageType === ErrorMessage.NETWORK_REQUEST_FAILED
     );
   }
 

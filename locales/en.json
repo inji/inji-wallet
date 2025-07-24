@@ -19,8 +19,7 @@
       "SHARED_SUCCESSFULLY": "Credential Presentation is shared successfully.",
       "SHARED_WITH_FACE_VERIFIACTION": "Face verification is successful, and the Credential Presentation is shared successfully.",
       "VERIFIER_AUTHENTICATION_FAILED": "Failed to authenticate the Verification Service during VP sharing.",
-      "INVALID_AUTH_REQUEST": "QR code has invalid or missing data. Check with the verification service.",
-      "USER_DECLINED_CONSENT": "User declined consent for Credential Presentation sharing.",
+      "USER_DECLINED_CONSENT": "User declined consent for credential presentation sharing.",
       "SHARED_AFTER_RETRY": "Credential Presentation is shared successfully after a retry.",
       "SHARED_WITH_FACE_VERIFICATION_AFTER_RETRY": "Face verification is successful, and the Credential Presentation is shared successfully after a retry.",
       "SHARING_FAILED": "Credential Presentation sharing failed due to technical error.",
@@ -31,7 +30,12 @@
       "NO_SELECTED_VC_HAS_IMAGE": "Credential Presentation sharing failed as the selected verifiable credentials lack a face image.",
       "CREDENTIAL_MISMATCH_FROM_KEBAB": "Credentials Presentation mismatch occurred during sharing from the menu, based on requested claims: {{info}}.",
       "NO_CREDENTIAL_MATCHING_REQUEST": "No credentials were found that match the verification service's request based on the provided claims: {{info}}.",
-      "TECHNICAL_ERROR": "Credential Presentation sharing could not proceed due to technical error."
+      "TECHNICAL_ERROR": "Something went wrong while processing your request.",
+      "INVALID_REQUEST_URI_METHOD": "Credential not shared— The verifier used a method that isn’t supported.",
+      "INVALID_AUTH_REQUEST" : "Credential sharing failed — The request had missing or incorrect information.",
+      "REQUEST_COULD_NOT_BE_PROCESSED" : "Credential not shared — Request couldn’t be processed due to a technical issue.",
+      "INVALID_PRESENTATION_DEFINITION_URI": "Credential not shared — The verifier’s request had incorrect data format.",
+      "SEND_VP_ERROR": "Credential sharing failed due to a technical issue."
     }
   },
   "DeviceInfoList": {
@@ -216,6 +220,10 @@
       "noInternetConnection": {
         "title": "No internet connection",
         "message": "Please check your connection and retry"
+      },
+      "networkRequestFailed":{
+        "title": "Network request failed",
+        "message": "We are unable to precess your request at the moment."
       },
       "biometricsCancelled": {
         "title": "Do you want to cancel download?",
@@ -914,7 +922,7 @@
       },
       "sendVPError": {
         "title": "Something Went Wrong",
-        "message": "Message: We couldn't share your card due to a technical issue. Click Retry to try again, or go to Home to exit."
+        "message": "There was a technical issue while sharing your card. Tap \"Retry\" to try again or go back to \"Home\"."
       },
       "noImage": {
         "title": "An Error Occured!",

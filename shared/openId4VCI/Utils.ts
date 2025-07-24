@@ -1,6 +1,5 @@
 import base64url from 'base64url';
 import i18next from 'i18next';
-import jwtDecode from 'jwt-decode';
 import jose from 'node-jose';
 import {NativeModules} from 'react-native';
 import {vcVerificationBannerDetails} from '../../components/BannerNotificationContainer';
@@ -10,11 +9,9 @@ import {
   DETAIL_VIEW_ADD_ON_FIELDS,
   getCredentialTypeFromWellKnown,
 } from '../../components/VC/common/VCUtils';
-import i18n from '../../i18n';
-import {displayType, issuerType} from '../../machines/Issuers/IssuersMachine';
+import {displayType} from '../../machines/Issuers/IssuersMachine';
 import {
   Credential,
-  CredentialTypes,
   CredentialWrapper,
   VerifiableCredential,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
@@ -22,16 +19,11 @@ import getAllConfigurations, {CACHED_API} from '../api';
 import {
   ED25519_PROOF_SIGNING_ALGO,
   isAndroid,
-  isIOS,
   JWT_ALG_TO_KEY_TYPE,
   KEY_TYPE_TO_JWT_ALG,
 } from '../constants';
 import {getJWT} from '../cryptoutil/cryptoUtil';
-import {
-  VerificationErrorMessage,
-  VerificationErrorType,
-  verifyCredential,
-} from '../vcjs/verifyCredential';
+import {verifyCredential} from '../vcjs/verifyCredential';
 import {getVerifiableCredential} from '../../machines/VerifiableCredential/VCItemMachine/VCItemSelectors';
 import {getErrorEventData, sendErrorEvent} from '../telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../telemetry/TelemetryConstants';
@@ -268,22 +260,21 @@ export enum ErrorMessage {
   TECHNICAL_DIFFICULTIES = 'technicalDifficulty',
   CREDENTIAL_TYPE_DOWNLOAD_FAILURE = 'credentialTypeListDownloadFailure',
   AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED = 'authorizationGrantTypeNotSupportedByWallet',
+  NETWORK_REQUEST_FAILED = 'networkRequestFailed',
 }
 
 export async function constructProofJWT(
   publicKey: any,
   privateKey: any,
-  accessToken: string,
-  selectedIssuer: issuerType,
+  selectedIssuer: string,
+  client_id: string | null,
   keyType: string,
   proofSigningAlgosSupported: string[] = [],
   isCredentialOfferFlow: boolean,
   cNonce?: string,
 ): Promise<string> {
   const jwk = await getJWK(publicKey, keyType);
-  const decodedToken = jwtDecode(accessToken);
-  const nonce = cNonce ?? decodedToken?.c_nonce;
-
+  const nonce = cNonce;
   const alg =
     keyType === KeyTypes.ED25519
       ? resolveEd25519Alg(proofSigningAlgosSupported)
@@ -302,9 +293,9 @@ export async function constructProofJWT(
   };
 
   const jwtPayload = {
-    iss: selectedIssuer.client_id,
+    ...(client_id ? {iss: client_id} : {}),
     nonce,
-    aud: selectedIssuer.credential_audience ?? selectedIssuer.credential_issuer,
+    aud: selectedIssuer,
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000) + 18000,
   };
@@ -410,37 +401,8 @@ export function selectCredentialRequestKey(
       return keyType;
     }
   }
-
-  return KeyTypes.ED25519;
+  return keyOrder[0];
 }
-
-export const constructIssuerMetaData = (
-  selectedIssuer: issuerType,
-  selectedCredentialType: CredentialTypes,
-  scope: string,
-): Object => {
-  const issuerMeta: Object = {
-    credentialAudience: selectedIssuer.credential_audience,
-    credentialEndpoint: selectedIssuer.credential_endpoint,
-    credentialFormat: isIOS()
-      ? selectedCredentialType.format
-      : selectedCredentialType.format.toUpperCase(),
-    authorizationServers: selectedIssuer['authorization_servers'],
-    tokenEndpoint: selectedIssuer.token_endpoint,
-    scope: scope,
-  };
-  if (selectedCredentialType.format === VCFormat.ldp_vc) {
-    issuerMeta['credentialType'] = selectedCredentialType?.credential_definition
-      ?.type ?? ['VerifiableCredential'];
-    if (selectedCredentialType?.credential_definition['@context'])
-      issuerMeta['context'] =
-        selectedCredentialType?.credential_definition['@context'];
-  } else if (selectedCredentialType.format === VCFormat.mso_mdoc) {
-    issuerMeta['doctype'] = selectedCredentialType.doctype;
-    issuerMeta['claims'] = selectedCredentialType.claims;
-  }
-  return issuerMeta;
-};
 
 export function getMatchingCredentialIssuerMetadata(
   wellknown: any,
@@ -470,11 +432,11 @@ export async function verifyCredentialData(
   credential: Credential,
   credentialFormat: string,
 ) {
-    const verificationResult = await verifyCredential(
-      credential,
-      credentialFormat,
-    );
-    return verificationResult;
+  const verificationResult = await verifyCredential(
+    credential,
+    credentialFormat,
+  );
+  return verificationResult;
 }
 function resolveEd25519Alg(proofSigningAlgosSupported: string[]) {
   return proofSigningAlgosSupported.includes(

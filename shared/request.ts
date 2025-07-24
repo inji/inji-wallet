@@ -4,6 +4,8 @@ import {
 } from '../machines/VerifiableCredential/VCMetaMachine/vc';
 import {__AppId} from './GlobalVariables';
 import {MIMOTO_BASE_URL, REQUEST_TIMEOUT} from './constants';
+import NetInfo from '@react-native-community/netinfo';
+import { ErrorMessage } from './openId4VCI/Utils';
 
 export type HTTP_METHOD = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
 
@@ -11,6 +13,14 @@ export class BackendResponseError extends Error {
   constructor(name: string, message: string) {
     super(message);
     this.name = name;
+  }
+}
+
+async function assertInternetConnection() {
+  const net = await NetInfo.fetch();
+  if (!net.isConnected || net.isInternetReachable === false) {
+    console.info('No internet');
+    throw new Error('No internet connection');
   }
 }
 
@@ -22,66 +32,81 @@ export async function request(
   headers: Record<string, string> = {
     'Content-Type': 'application/json',
   },
-  timeoutMillis?: undefined | number,
+  timeoutMillis?: number | undefined,
 ) {
-  if (path.includes('v1/mimoto')) headers['X-AppId'] = __AppId.getValue();
+  if (path.includes('v1/mimoto')) {
+    headers['X-AppId'] = __AppId.getValue();
+  }
+
+  const requestUrl = path.startsWith('https://') ? path : host + path;
   let response;
-  const requestUrl = path.indexOf('https://') != -1 ? path : host + path;
-  if (timeoutMillis === undefined) {
-    response = await fetch(requestUrl, {
-      method,
-      headers,
-      body: body ? JSON.stringify(body) : undefined,
-    });
-  } else {
-    console.log(`making a web request to ${requestUrl}`);
-    let controller = new AbortController();
-    setTimeout(() => {
-      controller.abort();
-    }, timeoutMillis);
-    try {
+
+  try {
+    if (timeoutMillis === undefined) {
       response = await fetch(requestUrl, {
         method,
         headers,
         body: body ? JSON.stringify(body) : undefined,
-        signal: controller.signal,
       });
-    } catch (error) {
-      console.error(
-        `Error occurred while making request: ${host + path}: ${error}`,
-      );
-      if (error.name === 'AbortError') {
-        throw new Error(REQUEST_TIMEOUT);
+    } else {
+      console.info(`Making a web request to ${requestUrl}`);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMillis);
+
+      try {
+        response = await fetch(requestUrl, {
+          method,
+          headers,
+          body: body ? JSON.stringify(body) : undefined,
+          signal: controller.signal,
+        });
+      } catch (error: any) {
+        clearTimeout(timeoutId);
+        console.error(`Request failed: ${requestUrl}:`, error);
+
+        if (error.name === 'AbortError') {
+          throw new Error(REQUEST_TIMEOUT);
+        }
+
+        await assertInternetConnection();
+        throw error;
       }
-      throw error;
     }
+  } catch (error: any) {
+    console.error(`Failed to fetch from ${requestUrl}:`, error);
+    await assertInternetConnection();
+    throw error;
   }
 
-  const jsonResponse = await response.json();
+  
+  let jsonResponse;
+  try {
+    jsonResponse = await response.json();
+  } catch (jsonError) {
+    console.warn(`Failed to parse JSON from ${requestUrl}`, jsonError);
+    throw new Error(ErrorMessage.NETWORK_REQUEST_FAILED+' Invalid JSON response');
+  }
+
 
   if (response.status >= 400) {
-    let backendUrl = host + path;
-    let errorMessage =
+    const backendUrl = host + path;
+    const errorMessage =
       jsonResponse.message ||
       (typeof jsonResponse.error === 'object'
         ? JSON.stringify(jsonResponse.error)
         : jsonResponse.error);
+
     console.error(
       `The backend API ${backendUrl} returned error code ${response.status} with message --> ${errorMessage}`,
     );
     throw new Error(errorMessage);
   }
 
+  
   if (jsonResponse.errors && jsonResponse.errors.length) {
-    let backendUrl = host + path;
-    const {errorCode, errorMessage} = jsonResponse.errors.shift();
+    const { errorCode, errorMessage } = jsonResponse.errors.shift();
     console.error(
-      'The backend API ' +
-        backendUrl +
-        ' returned error response --> error code is : ' +
-        errorCode +
-        ' error message is : ' +
-        errorMessage,
+      `The backend API ${requestUrl} returned structured error --> error code: ${errorCode}, message: ${errorMessage}`,
     );
     throw new BackendResponseError(errorCode, errorMessage);
   }

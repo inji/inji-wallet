@@ -20,6 +20,24 @@
       }
     },
     {
+      "identity" : "base58swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/keefertaylor/Base58Swift.git",
+      "state" : {
+        "revision" : "ce8ba8aa893f7e209e9c99c35ee61d6f1235881d",
+        "version" : "2.1.7"
+      }
+    },
+    {
+      "identity" : "bigint",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/attaswift/BigInt.git",
+      "state" : {
+        "revision" : "018a5925f60f9e0523edd261de394a0898fe95b7",
+        "version" : "3.1.0"
+      }
+    },
+    {
       "identity" : "crcswift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ivanesik/CrcSwift.git",
@@ -52,7 +70,7 @@
       "location" : "https://github.com/mosip/inji-openid4vp-ios-swift",
       "state" : {
         "branch" : "develop",
-        "revision" : "879995bc2b858b0d1c6265c2d38d81f60b4e4611"
+        "revision" : "b93f78c94cd7632f2a80e869520788abd1378621"
       }
     },
     {
@@ -60,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-vci-client-ios-swift/",
       "state" : {
-        "branch" : "develop",
-        "revision" : "8a39bbf7805af4c615904090a027fa472e5f4534"
+        "branch" : "release-0.4.x",
+        "revision" : "56359149fbfa61e4fd334df21bf2116e05b4d02d"
       }
     },
     {
@@ -78,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/pixelpass-ios-swift/",
       "state" : {
-        "branch" : "develop",
-        "revision" : "78a8b507f5bd0046e273e3ba962696b44aea0e33"
+        "branch" : "release-0.6.x",
+        "revision" : "78faea2ff48626ef9a6d198123bcf7b299acefd1"
       }
     },
     {
@@ -101,11 +119,20 @@
       }
     },
     {
+      "identity" : "siphash",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/attaswift/SipHash",
+      "state" : {
+        "revision" : "e325083424688055363bbfcb7f1a440d7d7a1bae",
+        "version" : "1.2.2"
+      }
+    },
+    {
       "identity" : "swiftcbor",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/valpackett/SwiftCBOR",
+      "location" : "https://github.com/abhip2565/SwiftCBOR",
       "state" : {
-        "revision" : "04ccff117f6549121d5721ec84fdf0162122b90e",
+        "revision" : "cc4e195a0ea2dce88f2fd6c6d73b2504e3c884fd",
         "version" : "0.5.0"
       }
     },
@@ -128,5 +155,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

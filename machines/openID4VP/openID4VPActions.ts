@@ -218,7 +218,7 @@ export const openID4VPActions = (model: any) => {
     ),
 
     shareDeclineStatus: () => {
-      OpenID4VP.getInstance().sendErrorToVerifier(
+      OpenID4VP.sendErrorToVerifier(
         OVP_ERROR_MESSAGES.DECLINED,
         OVP_ERROR_CODE.DECLINED,
       );
@@ -308,7 +308,7 @@ function getVcsMatchingAuthRequest(context, event) {
   }
 
   if (Object.keys(matchingVCs).length === 0) {
-    OpenID4VP.getInstance().sendErrorToVerifier(
+    OpenID4VP.sendErrorToVerifier(
       OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
       OVP_ERROR_CODE.NO_MATCHING_VCS,
     );
