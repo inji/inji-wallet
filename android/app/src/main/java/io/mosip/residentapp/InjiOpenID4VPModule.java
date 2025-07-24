@@ -163,7 +163,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
         Map<VPFormatType, VPFormatSupported> vpFormatsSupportedMap = parseVpFormatsSupported(walletMetadata);
 
-        WalletMetadata walletMetadata1 = new WalletMetadata(
+        return  new WalletMetadata(
                 presentationDefinitionUriSupported,
                 vpFormatsSupportedMap,
                 convertReadableArrayToEnumList(walletMetadata, "client_id_schemes_supported", ClientIdScheme.Companion::fromValue),
@@ -172,8 +172,6 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                 convertReadableArrayToEnumList(walletMetadata, "authorization_encryption_enc_values_supported", ContentEncryptionAlgorithm.Companion::fromValue),
                 convertReadableArrayToEnumList(walletMetadata, "response_type_supported", ResponseType.Companion::fromValue)
         );
-        System.out.println("Wallet Metadata: " + walletMetadata1);
-        return walletMetadata1;
     }
 
     private Map<VPFormatType, VPFormatSupported> parseVpFormatsSupported(ReadableMap walletMetadata) {
