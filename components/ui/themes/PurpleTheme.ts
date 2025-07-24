@@ -678,8 +678,8 @@ export const PurpleTheme = {
     },
     introSliderHeader: {
       marginTop: isIOS()
-        ? Constants.statusBarHeight + 40
-        : StatusBar.currentHeight + 40,
+          ? Constants.statusBarHeight + 40
+          : StatusBar.currentHeight + 40,
       width: '100%',
       marginBottom: 50,
     },
@@ -2007,6 +2007,7 @@ export const PurpleTheme = {
       backgroundColor: '#fff',
       borderRadius: 20,
       width: '100%',
+      height: 470,
       padding: 20,
       alignItems: 'center',
     },
@@ -2030,31 +2031,57 @@ export const PurpleTheme = {
       color: '#666',
       textAlign: 'center',
       lineHeight: 20,
-      marginBottom: 24,
+      marginBottom: 16,
+    },
+    infoContainer: {
+      width: '100%',
+      marginBottom: 10,
+    },
+    infoItem: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      marginBottom: 6,
+      paddingHorizontal: 4,
+    },
+    info: {
+      fontSize: 14,
+      color: '#666',
+      marginRight: 8,
+      marginTop: 1,
+    },
+    infoText: {
+      flex: 1,
+      fontSize: 14,
+      color: '#666',
+      lineHeight: 18,
+    },
+    buttonText: {
+      textAlign: 'center',
+      flexWrap: 'wrap',
     },
   }),
 
   AuthWebViewScreenStyle: StyleSheet.create({
     header: {
-        height: 56,
-        paddingHorizontal: 16,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: '#F5F5F5',
-        borderBottomWidth: 1,
-        borderColor: '#E0E0E0',
+      height: 56,
+      paddingHorizontal: 16,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: '#F5F5F5',
+      borderBottomWidth: 1,
+      borderColor: '#E0E0E0',
     },
     headerText: {
-        fontSize: 18,
-        fontWeight: '500',
+      fontSize: 18,
+      fontWeight: '500',
     },
     loader: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
-}),
+  }),
 
   ICON_SMALL_SIZE: 16,
   ICON_MID_SIZE: 22,
@@ -2095,7 +2122,7 @@ export const PurpleTheme = {
     }
 
     const [top, end, bottom, start] =
-      typeof values === 'string' ? values.split(' ').map(Number) : values;
+        typeof values === 'string' ? values.split(' ').map(Number) : values;
 
     return {
       [`${type}Top`]: top,

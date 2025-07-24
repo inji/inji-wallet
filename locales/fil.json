@@ -1106,8 +1106,13 @@
     "TransactionCode": "Transaction Code"
   },
   "trustScreen": {
-    "description": "Siguraduhin na galing ito sa pinagkakatiwalaang source bago i-download. Kapag na-download, ito'y mase-save sa iyong wallet at maaaring magamit kahit kailan.",
-    "confirm": "Oo, Pinagkakatiwalaan Ko Ito",
-    "cancel": "Hindi, Bumalik Tayo"
+    "description": "Siguraduhin mong kilala mo o pinagkakatiwalaan mo ang issuer na ito. Kapag pinagkatiwalaan mo sila:",
+    "infoPoints": [
+      "Ang card ay ligtas na mase-save sa iyong wallet.",
+      "Ang issuer na ito ay idagdag sa iyong trusted list.",
+      "Hindi mo na kailangang muling suriin ang tiwala kapag magda-download mula sa kanila sa susunod."
+    ],
+    "confirm": "Oo, Pinagkakatiwalaan Ko ang Issuer na Ito",
+    "cancel": "Hindi, Ibalik Mo Ako"
   }
 }

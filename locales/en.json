@@ -1123,8 +1123,13 @@
     "TransactionCode": "Transasction Code"
   },
   "trustScreen": {
-    "description": "Please make sure this card is from a trusted source before downloading.Once downloaded, it will be saved in your wallet and can be used anytime.",
-    "confirm": "Yes I Trust This",
+    "description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",
+    "infoPoints": [
+      "The card will be securely saved in your wallet.",
+      "This issuer will be added to your trusted list.",
+      "You won't need to review trust again when downloading from them next time."
+    ],
+    "confirm": "Yes, I Trust This Issuer",
     "cancel": "No, Take Me Back"
   }
 }
