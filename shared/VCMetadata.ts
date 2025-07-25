@@ -11,7 +11,7 @@ import {isMosipVC, UUID} from './Utils';
 import {getCredentialType} from '../components/VC/common/VCUtils';
 
 const VC_KEY_PREFIX = 'VC';
-const VC_ITEM_STORE_KEY_REGEX = '^VC_[a-zA-Z0-9_-]+_(https?:\\/\\/[^\\s]+)$';
+const VC_ITEM_STORE_KEY_REGEX = '^VC_[a-zA-Z0-9_-]+$';
 
 /** TODO: two identifiers requestId and id
  * we have 2 fields in metadata - id, requestID
