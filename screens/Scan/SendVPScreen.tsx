@@ -226,8 +226,14 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           OVP_ERROR_MESSAGES.DECLINED,
           OVP_ERROR_CODE.DECLINED,
         );
-        controller.GO_TO_HOME();
-        BackHandler.exitApp();
+        controller.overlayDetails?.primaryButtonEvent();
+        setTimeout(
+          () => {
+            controller.GO_TO_HOME();
+            BackHandler.exitApp();
+          },
+          isIOS() ? 400 : 200,
+        );
       };
     }
     return controller.overlayDetails?.primaryButtonEvent;
