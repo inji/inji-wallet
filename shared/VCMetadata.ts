@@ -11,7 +11,7 @@ import {isMosipVC, UUID} from './Utils';
 import {getCredentialType} from '../components/VC/common/VCUtils';
 
 const VC_KEY_PREFIX = 'VC';
-const VC_ITEM_STORE_KEY_REGEX = '^VC_[a-zA-Z0-9_-]+$';
+const VC_ITEM_STORE_KEY_REGEX = '^VC_[a-zA-Z0-9_-]+_(https?:\\/\\/[^\\s]+)$';
 
 /** TODO: two identifiers requestId and id
  * we have 2 fields in metadata - id, requestID
@@ -136,7 +136,12 @@ export const getVCMetadata = (context: object, keyType: string) => {
     context.selectedIssuer.issuer_id ??
     context.selectedIssuer.credential_issuer;
 
-  const credentialId = `${UUID.generate()}_${issuerHost}`;
+  const credentialId = `${UUID.generate()}_${getIssuerName(issuerHost)}`;
+
+  function getIssuerName(issuerHost: string): string {
+    const url = new URL(issuerHost);
+    return url.hostname.split('.')[0];
+  }
 
   return VCMetadata.fromVC({
     requestId: credentialId,
