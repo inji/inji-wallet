@@ -179,6 +179,29 @@
                  <!--   need to be tested-->
                 </methods>
             </class>
+            <class name="androidTestCases.VcDownloadAndVerifyUsingLandRegistryTest">
+                <methods>
+                    <include name="downloadAndVerifyVcUsingUinViaLand"/>
+                    <include name="downloadAndVerifyVcUsingUinViaLandStatementCredential"/>
+                    <include name="downloadAndVerifyVcUsingUinViaLandStatementVCDM2"/>
+                    <include name="downloadAndVerifyVcUsingUinViaLandStatementRegistrationReceiptOfTheRuralProperty"/>
+                    <include name="downloadAndVerifyVcUsingUinViaLandStatementVCDM1"/>
+                </methods>
+            </class>
+            <class name="androidTestCases.CredentialRegistryTest">
+                <methods>
+                    <include name="downloadAndVerifyVcInNewEnv"/>
+                    <include name="cancelChangeEnvAndVerify"/>
+                    <include name="downloadAndVerifyVcInInvalidEnv"/>
+                    <include name="downloadAndVerifyVcInNewEnvForEsignet"/>
+                    <include name="downloadAndVerifyVcInInvalidEnvForEsignet"/>
+                    <include name="downloadAndVerifyVcInInvalidEnvForEsignetInFillpino"/>
+                    <include name="downloadAndVerifyVcInNewEnvForMdl"/>
+                    <include name="downloadAndVerifyVcInNewEnvForMock"/>
+                    <include name="downloadAndVerifyVcInNewEnvForLandStatementCredential"/>
+                </methods>
+            </class>
+
         </classes>
     </test>
 </suite>

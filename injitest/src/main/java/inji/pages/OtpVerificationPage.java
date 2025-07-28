@@ -66,6 +66,10 @@ public class OtpVerificationPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "OTP is invalid")
     private WebElement invalidOtpMessageforEsignet;
 
+    @AndroidFindBy(xpath = "//android.widget.Button[@text=\"Get OTP\"]")
+    @iOSXCUITFindBy(accessibility = "Get OTP")
+    private WebElement getOtpButton;
+
     public OtpVerificationPage(AppiumDriver driver) {
         super(driver);
     }
@@ -77,6 +81,12 @@ public class OtpVerificationPage extends BasePage {
     public HomePage enterOtp(String otp, Target os) {
         SetPasscode setPasscode = new SetPasscode(driver);
         setPasscode.enterPasscode(otp, os);
+        return new HomePage(driver);
+    }
+
+    public HomePage enterOtpFor(String otp, Target os) {
+        SetPasscode setPasscode = new SetPasscode(driver);
+        setPasscode.enterPasscodeotp(otp, os);
         return new HomePage(driver);
     }
 
@@ -144,5 +154,9 @@ public class OtpVerificationPage extends BasePage {
 
     public boolean verifyotpVerificationDescriptionDisplayed() {
         return this.isElementDisplayed(otpVerificationDescription);
+    }
+
+    public void clickOnGetOtpButton() {
+        clickOnElement(getOtpButton);
     }
 }

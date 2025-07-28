@@ -16,7 +16,7 @@ public class RetrieveIdPage extends BasePage {
     @AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Allow\")")
     private WebElement allowButton;
 
-    @AndroidFindBy(accessibility = "idInputModalIndividualId")
+    @AndroidFindBy(xpath = "//android.widget.EditText[@resource-id=\"Otp_mosip-vid\"]")
     @iOSXCUITFindBy(accessibility = "idInputModalIndividualId")
     private WebElement enterIdTextBox;
 
@@ -83,7 +83,9 @@ public class RetrieveIdPage extends BasePage {
     }
 
     public RetrieveIdPage setEnterIdTextBox(String uinOrVid) {
-        clickOnElement(generateCardButton);
+        if(isElementDisplayed(generateCardButton)) {
+            clickOnElement(generateCardButton);
+        }
         sendKeysToTextBox(enterIdTextBox, uinOrVid);
         return this;
     }
@@ -95,7 +97,7 @@ public class RetrieveIdPage extends BasePage {
         return this;
     }
     public OtpVerificationPage clickOnGenerateCardButton() {
-        this.clickOnElement(generateCardButton);
+//        this.clickOnElement(generateCardButton);
         return new OtpVerificationPage(driver);
     }
 

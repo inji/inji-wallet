@@ -58,6 +58,25 @@ public class AddNewCardPage extends BasePage{
     @iOSXCUITFindBy(accessibility = "credentialTypeHeading-MosipVerifiableCredential")
     private WebElement credentialTypeHeadingMOSIPVerifiableCredential;
 
+    @AndroidFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM1.0")
+    @iOSXCUITFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM1.0")
+    private WebElement credentialTypeHeadingLandStatementCredential;
+
+    @AndroidFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM2.0")
+    @iOSXCUITFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM2.0")
+    private WebElement credentialTypeHeadingLandStatementCredential2;
+
+
+    @AndroidFindBy(accessibility = "credentialTypeHeading-RegistrationReceiptCredential_VCDM2.0")
+    @iOSXCUITFindBy(accessibility = "credentialTypeHeading-RegistrationReceiptCredential_VCDM2.0")
+    private WebElement credentialTypeHeadingRegistrationReceiptCredential_VCDM2;
+
+    @AndroidFindBy(accessibility = "credentialTypeHeading-RegistrationReceiptCredential_VCDM1.0")
+    @iOSXCUITFindBy(accessibility = "credentialTypeHeading-RegistrationReceiptCredential_VCDM1.0")
+    private WebElement credentialTypeHeadingRegistrationReceiptCredentialVCDM1;
+
+
+
     @AndroidFindBy(accessibility = "credentialTypeValue")
     @iOSXCUITFindBy(accessibility = "credentialTypeValue")
     private WebElement credentialTypeValue;
@@ -89,6 +108,10 @@ public class AddNewCardPage extends BasePage{
     @AndroidFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
     @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
     private WebElement continuePopupButton;
+
+    @AndroidFindBy(accessibility = "issuerHeading-Land")
+    @iOSXCUITFindBy(accessibility = "issuerHeading-Land")
+    private WebElement downloadViaLand;
 	
     public AddNewCardPage(AppiumDriver driver) {
         super(driver);
@@ -150,6 +173,37 @@ public class AddNewCardPage extends BasePage{
         }
         return new EsignetLoginPage(driver);
     }
+
+    public EsignetLoginPage clickOnDownloadViaLand(){
+        clickOnElement(downloadViaLand);
+        return new EsignetLoginPage(driver);
+    }
+
+    public void clickOnLandStatementCredential01(){
+        if(isElementDisplayed(credentialTypeHeadingLandStatementCredential)){
+            clickOnElement(credentialTypeHeadingLandStatementCredential);
+        }
+    }
+
+    public void clickOncredentialTypeHeadingLandStatementCredential2(){
+        if(isElementDisplayed(credentialTypeHeadingLandStatementCredential2)){
+            clickOnElement(credentialTypeHeadingLandStatementCredential2);
+        }
+    }
+
+    public void clickOncredentialTypeHeadingRegistrationReceiptCredential_VCDM2(){
+        if(isElementDisplayed(credentialTypeHeadingRegistrationReceiptCredential_VCDM2)){
+            clickOnElement(credentialTypeHeadingRegistrationReceiptCredential_VCDM2);
+        }
+    }
+
+    public void clickOncredentialTypeHeadingRegistrationReceiptCredentialVCDM1(){
+        if(isElementDisplayed(credentialTypeHeadingRegistrationReceiptCredentialVCDM1)){
+            clickOnElement(credentialTypeHeadingRegistrationReceiptCredentialVCDM1);
+        }
+    }
+
+
 
     public void clickOnContinueButtonInSigninPopupIos(){
         if(isElementDisplayed(continueButton))
@@ -239,6 +293,11 @@ public class AddNewCardPage extends BasePage{
         }
         return new MockCertifyLoginPage(driver);
     }
+
+    public void ClickOnContinueButton(){
+        clickOnElement(continuePopupButton);
+    }
+
 
     public void  clickOnDownloadViaMock() {
         if (isElementDisplayed(IssuerSearchBar)) {

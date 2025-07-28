@@ -43,6 +43,19 @@ public class SetPasscode extends BasePage {
         return new ConfirmPasscode(driver);
     }
 
+    public ConfirmPasscode enterPasscodeotp(String passcode, Target os) {
+        char[] arr = passcode.toCharArray();
+        switch (os) {
+            case ANDROID:
+                enterOtpAndroidotp(arr);
+                break;
+            case IOS:
+                enterOtpIos(arr);
+                break;
+        }
+        return new ConfirmPasscode(driver);
+    }
+
     public void enterPasscodeForEsignet(String passcode, Target os) {
         char[] array = passcode.toCharArray();
         switch (os) {
@@ -70,6 +83,12 @@ public class SetPasscode extends BasePage {
         }
     }
 
+    private void enterOtpAndroidotp(char[] arr) {
+        for (int i = 1; i <= 6; i++) {
+            String locator = "(//*[@resource-id=\"otp_verify_input\"]/android.view.View/android.widget.EditText[" + i + "])";
+            driver.findElement(By.xpath(locator)).sendKeys(String.valueOf(arr[i - 1]));
+        }
+    }
 
     private void enterOtpIosForEsignet(char[] arr) {
         if (isElementDisplayed(inputOtp)) {
