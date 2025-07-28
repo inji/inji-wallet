@@ -139,8 +139,13 @@ export const getVCMetadata = (context: object, keyType: string) => {
   const credentialId = `${UUID.generate()}_${getIssuerName(issuerHost)}`;
 
   function getIssuerName(issuerHost: string): string {
-    const url = new URL(issuerHost);
-    return url.hostname.split('.')[0];
+    try {
+      const url = new URL(issuerHost);
+      return url.hostname.split('.')[0];
+    }catch (error) {
+      // Fallback to issuerHost if URL parsing fails
+      return issuerHost;
+    }
   }
 
   return VCMetadata.fromVC({
