@@ -129,8 +129,24 @@ export function parseMetadatas(metadataStrings: object[]) {
 }
 
 export const getVCMetadata = (context: object, keyType: string) => {
-  const issuer = context.selectedIssuer.credential_issuer;
-  const credentialId = `${UUID.generate()}_${issuer}`;
+  const issuerHost =
+    context.selectedIssuer.credential_issuer_host ??
+    context.selectedIssuer.credential_issuer;
+  const issuer =
+    context.selectedIssuer.issuer_id ??
+    context.selectedIssuer.credential_issuer;
+
+  const credentialId = `${UUID.generate()}_${getIssuerName(issuerHost)}`;
+
+  function getIssuerName(issuerHost: string): string {
+    try {
+      const url = new URL(issuerHost);
+      return url.hostname.split('.')[0];
+    }catch (error) {
+      // Fallback to issuerHost if URL parsing fails
+      return issuerHost;
+    }
+  }
 
   return VCMetadata.fromVC({
     requestId: credentialId,
@@ -147,7 +163,7 @@ export const getVCMetadata = (context: object, keyType: string) => {
     format: context['credentialWrapper'].format,
     downloadKeyType: keyType,
     credentialType: getCredentialType(context.selectedCredentialType),
-    issuerHost: context.selectedIssuer.credential_issuer_host ?? context.selectedIssuer.credential_issuer,
+    issuerHost: issuerHost,
   });
 };
 

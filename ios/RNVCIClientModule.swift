@@ -4,10 +4,13 @@ import VCIClient
 
 @objc(InjiVciClient)
 class RNVCIClientModule: NSObject, RCTBridgeModule {
+    
     private var vciClient: VCIClient?
+    
     private var pendingProofContinuation: ((String) -> Void)?
     private var pendingAuthCodeContinuation: ((String) -> Void)?
     private var pendingTxCodeContinuation: ((String) -> Void)?
+    private var pendingTokenResponseContinuation: ((String) -> Void)?
     private var pendingIssuerTrustDecision: ((Bool) -> Void)?
 
     static func moduleName() -> String {
@@ -18,6 +21,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     func `init`(_ traceabilityId: String) {
         vciClient = VCIClient(traceabilityId: traceabilityId)
     }
+
+    // MARK: - Public API
 
     @objc
     func requestCredentialByOffer(
@@ -45,19 +50,24 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                             length: length
                         )
                     },
-                    getProofJwt: { accessToken, cNonce, issuerMetadata, credentialConfigId in
-                        try await self.getProofContinuationHook(
-                            accessToken: accessToken,
-                            cNonce: cNonce,
-                            issuerMetadata: issuerMetadata,
-                            credentialConfigId: credentialConfigId
-                        )
-                    },
-                    getAuthCode: { authUrl in
+                    authorizeUser: { authUrl in
                         try await self.getAuthCodeContinuationHook(authUrl: authUrl)
                     },
-                    onCheckIssuerTrust: { issuerMetadata in
-                        try await self.getIssuerTrustDecisionHook(issuerMetadata: issuerMetadata)
+                    getTokenResponse: { tokenRequest in
+                        try await self.getTokenResponseHook(tokenRequest: tokenRequest)
+                    },
+                    getProofJwt: { credentialIssuer, cNonce, algos in
+                        try await self.getProofContinuationHook(
+                            credentialIssuer: credentialIssuer,
+                            cNonce: cNonce,
+                            proofSigningAlgorithmsSupported: algos
+                        )
+                    },
+                    onCheckIssuerTrust: { credentialIssuer, issuerDisplay in
+                        try await self.getIssuerTrustDecisionHook(
+                            credentialIssuer: credentialIssuer,
+                            issuerDisplay: issuerDisplay
+                        )
                     }
                 )
 
@@ -70,7 +80,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
     @objc
     func requestCredentialFromTrustedIssuer(
-        _ issuerMetadata: String,
+        _ credentialIssuer: String,
+        credentialConfigurationId: String,
         clientMetadata: String,
         resolver resolve: @escaping RCTPromiseResolveBlock,
         rejecter reject: @escaping RCTPromiseRejectBlock
@@ -82,22 +93,24 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                     return
                 }
 
-                let issuer = try parseIssuerMeta(from: issuerMetadata)
                 let clientMeta = try parseClientMetadata(from: clientMetadata)
 
                 let response = try await vciClient.requestCredentialFromTrustedIssuer(
-                    issuerMetadata: issuer,
+                    credentialIssuer: credentialIssuer,
+                    credentialConfigurationId: credentialConfigurationId,
                     clientMetadata: clientMeta,
-                    getProofJwt: { accessToken, cNonce, issuerMetadata, credentialConfigId in
-                        try await self.getProofContinuationHook(
-                            accessToken: accessToken,
-                            cNonce: cNonce,
-                            issuerMetadata: issuerMetadata,
-                            credentialConfigId: credentialConfigId
-                        )
-                    },
-                    getAuthCode: { authUrl in
+                    authorizeUser: { authUrl in
                         try await self.getAuthCodeContinuationHook(authUrl: authUrl)
+                    },
+                    getTokenResponse: { tokenRequest in
+                        try await self.getTokenResponseHook(tokenRequest: tokenRequest)
+                    },
+                    getProofJwt: { credentialIssuer, cNonce, algos in
+                        try await self.getProofContinuationHook(
+                            credentialIssuer: credentialIssuer,
+                            cNonce: cNonce,
+                            proofSigningAlgorithmsSupported: algos
+                        )
                     }
                 )
 
@@ -107,54 +120,51 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
             }
         }
     }
+  
+    @objc
+    func getIssuerMetadata(
+        _ credentialIssuer: String,
+        resolver resolve: @escaping RCTPromiseResolveBlock,
+        rejecter reject: @escaping RCTPromiseRejectBlock
+    ) {
+        Task {
+            do {
+                guard let vciClient = vciClient else {
+                    reject(nil, "VCIClient not initialized", nil)
+                    return
+                }
 
-    private func getProofContinuationHook(
-        accessToken: String,
-        cNonce: String?,
-        issuerMetadata: [String: Any]?,
-        credentialConfigId: String?
-    ) async throws -> String {
-        var issuerMetadataJson: String = ""
+              let metadata = try await vciClient.getIssuerMetadata(credentialIssuer: credentialIssuer)
 
-        if let issuerMetadata = issuerMetadata {
-            if let data = try? JSONSerialization.data(withJSONObject: issuerMetadata, options: []),
-               let jsonString = String(data: data, encoding: .utf8) {
-                issuerMetadataJson = jsonString
+                let data = try JSONSerialization.data(withJSONObject: metadata, options: [])
+                guard let jsonString = String(data: data, encoding: .utf8) else {
+                    throw NSError(domain: "JSONEncodingError", code: 0)
+                }
+
+                resolve(jsonString)
+            } catch {
+                reject(nil, error.localizedDescription, nil)
             }
         }
-
-        if let bridge = RCTBridge.current() {
-            let payload: [String: Any] = [
-                "accessToken": accessToken,
-                "cNonce": cNonce ?? NSNull(),
-                "issuerMetadata": issuerMetadataJson,
-                "credentialConfigurationId": credentialConfigId ?? NSNull(),
-            ]
-            bridge.eventDispatcher().sendAppEvent(withName: "onRequestProof", body: payload)
-        }
-
-        return try await withCheckedThrowingContinuation { continuation in
-            self.pendingProofContinuation = { jwt in continuation.resume(returning: jwt) }
-        }
     }
 
-    private func getAuthCodeContinuationHook(authUrl: String) async throws -> String {
-        if let bridge = RCTBridge.current() {
-            bridge.eventDispatcher().sendAppEvent(withName: "onRequestAuthCode", body: ["authorizationEndpoint": authUrl])
-        }
 
-        return try await withCheckedThrowingContinuation { continuation in
-            self.pendingAuthCodeContinuation = { code in continuation.resume(returning: code) }
-        }
-    }
+    // MARK: - Callbacks to JS
 
-    private func getTxCodeHook(inputMode: String?, description: String?, length: Int? ) async throws -> String {
+    private func getTxCodeHook(
+        inputMode: String?,
+        description: String?,
+        length: Int?
+    ) async throws -> String {
         if let bridge = RCTBridge.current() {
-            bridge.eventDispatcher().sendAppEvent(withName: "onRequestTxCode", body: [
-                "inputMode": inputMode,
-                "description": description,
-                "length": length
-            ])
+            bridge.eventDispatcher().sendAppEvent(
+                withName: "onRequestTxCode",
+                body: [
+                    "inputMode": inputMode,
+                    "description": description,
+                    "length": length
+                ]
+            )
         }
 
         return try await withCheckedThrowingContinuation { continuation in
@@ -162,21 +172,95 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         }
     }
 
-    private func getIssuerTrustDecisionHook(issuerMetadata: [String: Any]) async throws -> Bool {
-        var metadataJson = ""
-        if let data = try? JSONSerialization.data(withJSONObject: issuerMetadata, options: []),
-           let string = String(data: data, encoding: .utf8) {
-            metadataJson = string
+    private func getAuthCodeContinuationHook(authUrl: String) async throws -> String {
+        if let bridge = RCTBridge.current() {
+            bridge.eventDispatcher().sendAppEvent(
+                withName: "onRequestAuthCode",
+                body: ["authorizationUrl": authUrl]
+            )
         }
 
+        return try await withCheckedThrowingContinuation { continuation in
+            self.pendingAuthCodeContinuation = { code in continuation.resume(returning: code) }
+        }
+    }
+
+    private func getProofContinuationHook(
+        credentialIssuer: String,
+        cNonce: String?,
+        proofSigningAlgorithmsSupported: [String]
+    ) async throws -> String {
+        let jsonData = try JSONSerialization.data(withJSONObject: proofSigningAlgorithmsSupported, options: [])
+        let jsonString = String(data: jsonData, encoding: .utf8) ?? "{}"
         if let bridge = RCTBridge.current() {
-            bridge.eventDispatcher().sendAppEvent(withName: "onCheckIssuerTrust", body: ["issuerMetadata": metadataJson])
+            bridge.eventDispatcher().sendAppEvent(
+                withName: "onRequestProof",
+                body: [
+                    "credentialIssuer": credentialIssuer,
+                    "cNonce": cNonce,
+                    "proofSigningAlgorithmsSupported": jsonString
+                ]
+            )
+        }
+
+        return try await withCheckedThrowingContinuation { continuation in
+            self.pendingProofContinuation = { jwt in continuation.resume(returning: jwt) }
+        }
+    }
+
+    private func getTokenResponseHook(tokenRequest: TokenRequest) async throws -> TokenResponse {
+        if let bridge = RCTBridge.current() {
+            let tokenRequest: [String: Any] = [
+                "grantType": tokenRequest.grantType.rawValue,
+                "tokenEndpoint": tokenRequest.tokenEndpoint,
+                "authCode": tokenRequest.authCode ?? NSNull(),
+                "preAuthCode": tokenRequest.preAuthCode ?? NSNull(),
+                "txCode": tokenRequest.txCode ?? NSNull(),
+                "clientId": tokenRequest.clientId ?? NSNull(),
+                "redirectUri": tokenRequest.redirectUri ?? NSNull(),
+                "codeVerifier": tokenRequest.codeVerifier ?? NSNull()
+            ]
+
+            bridge.eventDispatcher().sendAppEvent(
+                withName: "onRequestTokenResponse",
+                body: ["tokenRequest":tokenRequest]
+            )
+        }
+
+        let json = try await withCheckedThrowingContinuation { continuation in
+            self.pendingTokenResponseContinuation = { json in continuation.resume(returning: json) }
+        }
+
+        guard let data = json.data(using: .utf8) else {
+            throw NSError(domain: "Invalid JSON", code: 0)
+        }
+
+        return try JSONDecoder().decode(TokenResponse.self, from: data)
+    }
+
+    private func getIssuerTrustDecisionHook(
+        credentialIssuer: String,
+        issuerDisplay: [[String: Any]]
+    ) async throws -> Bool {
+        // Convert issuerDisplay to JSON string
+        let jsonData = try JSONSerialization.data(withJSONObject: issuerDisplay, options: [])
+        let jsonString = String(data: jsonData, encoding: .utf8) ?? "[]"
+        if let bridge = RCTBridge.current() {
+            bridge.eventDispatcher().sendAppEvent(
+                withName: "onCheckIssuerTrust",
+                body: [
+                    "credentialIssuer": credentialIssuer,
+                    "issuerDisplay": jsonString
+                ]
+            )
         }
 
         return try await withCheckedThrowingContinuation { continuation in
             self.pendingIssuerTrustDecision = { decision in continuation.resume(returning: decision) }
         }
     }
+
+    // MARK: - Receivers from JS
 
     @objc(sendProofFromJS:)
     func sendProofFromJS(_ jwt: String) {
@@ -196,24 +280,25 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         pendingTxCodeContinuation = nil
     }
 
+    @objc(sendTokenResponseFromJS:)
+    func sendTokenResponseFromJS(_ json: String) {
+        pendingTokenResponseContinuation?(json)
+        pendingTokenResponseContinuation = nil
+    }
+
     @objc(sendIssuerTrustResponseFromJS:)
     func sendIssuerTrustResponseFromJS(_ trusted: Bool) {
         pendingIssuerTrustDecision?(trusted)
         pendingIssuerTrustDecision = nil
     }
 
-    private func parseClientMetadata(from jsonString: String) throws -> ClientMetaData {
+    // MARK: - JSON Parsing
+
+    private func parseClientMetadata(from jsonString: String) throws -> ClientMetadata {
         guard let data = jsonString.data(using: .utf8) else {
             throw NSError(domain: "Invalid JSON string for clientMetadata", code: 0)
         }
-        return try JSONDecoder().decode(ClientMetaData.self, from: data)
-    }
-
-    private func parseIssuerMeta(from jsonString: String) throws -> IssuerMetadata {
-        guard let data = jsonString.data(using: .utf8) else {
-            throw NSError(domain: "Invalid JSON string for issuerMetadata", code: 0)
-        }
-        return try JSONDecoder().decode(IssuerMetadata.self, from: data)
+        return try JSONDecoder().decode(ClientMetadata.self, from: data)
     }
 
     @objc static func requiresMainQueueSetup() -> Bool {

@@ -1,15 +1,14 @@
-import {createModel} from 'xstate/lib/model';
-import {AuthorizeResult} from 'react-native-app-auth';
+import { createModel } from 'xstate/lib/model';
 import {
   CredentialTypes,
   CredentialWrapper,
   IssuerWellknownResponse,
   VerifiableCredential,
 } from '../VerifiableCredential/VCMetaMachine/vc';
-import {AppServices} from '../../shared/GlobalContext';
-import {VCMetadata} from '../../shared/VCMetadata';
-import {IssuersEvents} from './IssuersEvents';
-import {issuerType} from './IssuersMachine';
+import { AppServices } from '../../shared/GlobalContext';
+import { VCMetadata } from '../../shared/VCMetadata';
+import { IssuersEvents } from './IssuersEvents';
+import { issuerType } from './IssuersMachine';
 
 export const IssuersModel = createModel(
   {
@@ -18,7 +17,7 @@ export const IssuersModel = createModel(
     qrData: '' as string,
     selectedIssuer: {} as issuerType,
     selectedIssuerWellknownResponse: {} as IssuerWellknownResponse,
-    tokenResponse: {} as AuthorizeResult,
+    tokenResponse: {} as object,
     errorMessage: '' as string,
     loadingReason: 'displayIssuers' as string,
     verifiableCredential: null as VerifiableCredential | null,
@@ -45,7 +44,9 @@ export const IssuersModel = createModel(
     txCodeDescription: '' as string,
     txCodeLength: null as number | null,
     isCredentialOfferFlow: false as boolean,
-    credentialOfferIssuerMetadata: {} as object,
+    credentialOfferCredentialIssuer: {} as string,
+    tokenRequestObject: {} as object,
+    credentialConfigurationId: '' as string,
   },
   {
     events: IssuersEvents,

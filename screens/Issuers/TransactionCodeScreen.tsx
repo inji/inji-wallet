@@ -113,7 +113,7 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                           }`,
                         )}
                       </Text>
-                      {textLineCount >= maxLines && <Text
+                      {textLineCount > maxLines && <Text
                         onPress={() => setShowFullDescription(prev => !prev)}
                         style={Theme.TransactionCodeScreenStyle.showMoreButton}
                       >

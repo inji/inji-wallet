@@ -1,5 +1,6 @@
-export const fallbackWalletMetadata = {
-  presentation_definition_uri_supported: false,
+export const walletMetadata = {
+  response_types_supported: ['vp_token'],
+  presentation_definition_uri_supported: true,
   vp_formats_supported: {
     ldp_vc: {
       alg_values_supported: [

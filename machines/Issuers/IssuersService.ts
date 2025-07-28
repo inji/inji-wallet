@@ -1,23 +1,23 @@
 import NetInfo from '@react-native-community/netinfo';
-import {NativeModules} from 'react-native';
+import { NativeModules } from 'react-native';
 import Cloud from '../../shared/CloudBackupAndRestoreUtils';
-import {CACHED_API} from '../../shared/api';
+import getAllConfigurations, { CACHED_API } from '../../shared/api';
 import {
   fetchKeyPair,
   generateKeyPair,
 } from '../../shared/cryptoutil/cryptoUtil';
 import {
-  constructIssuerMetaData,
   constructProofJWT,
   hasKeyPair,
   updateCredentialInformation,
   verifyCredentialData,
 } from '../../shared/openId4VCI/Utils';
 import VciClient from '../../shared/vciClient/VciClient';
-import {issuerType} from './IssuersMachine';
-import {setItem} from '../store';
-import {API_CACHED_STORAGE_KEYS} from '../../shared/constants';
-import {createCacheObject} from '../../shared/Utils';
+import { displayType, issuerType } from './IssuersMachine';
+import { setItem } from '../store';
+import { API_CACHED_STORAGE_KEYS } from '../../shared/constants';
+import { createCacheObject } from '../../shared/Utils';
+import { VerificationResult } from '../../shared/vcjs/verifyCredential';
 
 export const IssuersService = () => {
   return {
@@ -30,21 +30,26 @@ export const IssuersService = () => {
     },
     checkInternet: async () => await NetInfo.fetch(),
     downloadIssuerWellknown: async (context: any) => {
-      const wellknownResponse = await CACHED_API.fetchIssuerWellknownConfig(
-        context.selectedIssuer.issuer_id,
-        context.selectedIssuer.credential_issuer_host
-          ? context.selectedIssuer.credential_issuer_host
-          : context.selectedIssuer.credential_issuer,
+      const wellknownResponse = (await VciClient.getInstance().getIssuerMetadata(
+        context.selectedIssuer.credential_issuer_host,
+      )) as issuerType;
+      const wellknownCacheObject = createCacheObject(wellknownResponse);
+      await setItem(
+        API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(
+          context.selectedIssuer.credential_issuer_host,
+        ),
+        wellknownCacheObject,
+        '',
       );
       return wellknownResponse;
     },
     getCredentialTypes: async (context: any) => {
-      const credentialTypes = [];
+      const credentialTypes: Array<{id: string; [key: string]: any}> = [];
       const selectedIssuer = context.selectedIssuer;
 
-      const keys =
-        selectedIssuer.credential_configuration_ids ??
-        Object.keys(selectedIssuer.credential_configurations_supported);
+      const keys = Object.keys(
+        selectedIssuer.credential_configurations_supported,
+      );
 
       for (const key of keys) {
         if (selectedIssuer.credential_configurations_supported[key]) {
@@ -70,26 +75,35 @@ export const IssuersService = () => {
           authEndpoint: authorizationEndpoint,
         });
       };
-      const getProofJwt = async (accessToken: string, cNonce: string) => {
+      const getProofJwt = async (
+        credentialIssuer: string,
+        cNonce: string | null,
+        proofSigningAlgosSupported: string[] | null,
+      ) => {
         sendBack({
           type: 'PROOF_REQUEST',
-          accessToken: accessToken,
+          credentialIssuer: credentialIssuer,
           cNonce: cNonce,
+          proofSigningAlgosSupported: proofSigningAlgosSupported,
         });
       };
-      const credential =
+      const getTokenResponse = (tokenRequest: object) => {
+        sendBack({
+          type: 'TOKEN_REQUEST',
+          tokenRequest: tokenRequest,
+        });
+      };
+      const {credential} =
         await VciClient.getInstance().requestCredentialFromTrustedIssuer(
-          constructIssuerMetaData(
-            context.selectedIssuer,
-            context.selectedCredentialType,
-            context.selectedCredentialType.scope,
-          ),
+          context.selectedIssuer.credential_issuer_host,
+          context.selectedCredentialType.id,
           {
             clientId: context.selectedIssuer.client_id,
             redirectUri: context.selectedIssuer.redirect_uri,
           },
           getProofJwt,
           navigateToAuthView,
+          getTokenResponse,
         );
       return updateCredentialInformation(context, credential);
     },
@@ -109,7 +123,7 @@ export const IssuersService = () => {
       const {RNSecureKeystoreModule} = NativeModules;
       try {
         return await RNSecureKeystoreModule.hasAlias(
-          context.credentialOfferIssuerMetadata.credential_issuer,
+          context.credentialOfferCredentialIssuer,
         );
       } catch (error) {
         console.error(
@@ -123,8 +137,8 @@ export const IssuersService = () => {
       const {RNSecureKeystoreModule} = NativeModules;
       try {
         await RNSecureKeystoreModule.storeData(
-          context.credentialOfferIssuerMetadata.credential_issuer,
-          JSON.stringify(context.credentialOfferIssuerMetadata),
+          context.credentialOfferCredentialIssuer,
+          'trusted',
         );
       } catch {
         console.error('Error updating issuer trust in keystore');
@@ -138,39 +152,16 @@ export const IssuersService = () => {
         });
       };
       const getSignedProofJwt = async (
-        accessToken: string,
+        credentialIssuer: string,
         cNonce: string | null,
-        issuerMetadata: object,
-        credentialConfigurationId: string,
+        proofSigningAlgosSupported: string[] | null,
       ) => {
-        let issuer = issuerMetadata as issuerType;
-        issuer.issuer_id = issuer.credential_issuer;
-        const wellknownCacheObject = createCacheObject(issuer);
-        await setItem(
-          API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(issuer.issuer_id),
-          wellknownCacheObject,
-          '',
-        );
-
-        let credentialTypes: Array<{id: string; [key: string]: any}> = [];
-        if (
-          issuer.credential_configurations_supported[credentialConfigurationId]
-        ) {
-          credentialTypes.push({
-            id: credentialConfigurationId,
-            ...issuer.credential_configurations_supported[
-              credentialConfigurationId
-            ],
-          });
-          sendBack({
-            type: 'PROOF_REQUEST',
-            accessToken: accessToken,
-            cNonce: cNonce,
-            issuerMetadata: issuerMetadata,
-            issuer: issuer,
-            credentialTypes: credentialTypes,
-          });
-        }
+        sendBack({
+          type: 'PROOF_REQUEST',
+          cNonce: cNonce,
+          issuer: credentialIssuer,
+          proofSigningAlgosSupported: proofSigningAlgosSupported,
+        });
       };
 
       const getTxCode = async (
@@ -186,24 +177,55 @@ export const IssuersService = () => {
         });
       };
 
-      const requesTrustIssuerConsent = async (issuerMetadata: object) => {
-        const issuerMetadataObject = issuerMetadata as issuerType;
+      const requesTrustIssuerConsent = async (
+        credentialIssuer: string,
+        issuerDisplay: object[],
+      ) => {
+        const issuerDisplayObject = issuerDisplay as displayType[];
 
         sendBack({
           type: 'TRUST_ISSUER_CONSENT_REQUEST',
-          issuerMetadata: issuerMetadataObject,
+          issuerDisplay: issuerDisplayObject,
+          issuer: credentialIssuer,
+        });
+      };
+      const getTokenResponse = (tokenRequest: object) => {
+        sendBack({
+          type: 'TOKEN_REQUEST',
+          tokenRequest: tokenRequest,
         });
       };
 
-      const credential = await VciClient.getInstance().requestCredentialByOffer(
-        context.qrData,
-        getTxCode,
-        getSignedProofJwt,
-        navigateToAuthView,
-        requesTrustIssuerConsent,
-      );
-      return credential;
+      const credentialResponse =
+        await VciClient.getInstance().requestCredentialByOffer(
+          context.qrData,
+          getTxCode,
+          getSignedProofJwt,
+          navigateToAuthView,
+          getTokenResponse,
+          requesTrustIssuerConsent,
+        );
+      return credentialResponse;
     },
+    sendTokenRequest: async (context: any) => {
+      const tokenRequestObject = context.tokenRequestObject;
+      return await sendTokenRequest(
+        tokenRequestObject,
+        context.selectedIssuer?.token_endpoint,
+      );
+    },
+    sendTokenResponse: async (context: any) => {
+      const tokenResponse = context.tokenResponse;
+      if (!tokenResponse) {
+        throw new Error(
+          'Could not send token response, tokenResponse is undefined or null',
+        );
+      }
+      return await VciClient.getInstance().sendTokenResponse(
+        JSON.stringify(tokenResponse),
+      );
+    },
+
     updateCredential: async (context: any) => {
       const credential = await updateCredentialInformation(
         context,
@@ -211,13 +233,25 @@ export const IssuersService = () => {
       );
       return credential;
     },
+    cacheIssuerWellknown: async (context: any) => {
+      const credentialIssuer = context.credentialOfferCredentialIssuer;
+      const issuerMetadata = (await VciClient.getInstance().getIssuerMetadata(
+        credentialIssuer,
+      )) as issuerType;
+      const wellknownCacheObject = createCacheObject(issuerMetadata);
+      await setItem(
+        API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(credentialIssuer),
+        wellknownCacheObject,
+        '',
+      );
+      return issuerMetadata;
+    },
     constructProof: async (context: any) => {
-      const issuerMeta = context.selectedIssuer;
       const proofJWT = await constructProofJWT(
         context.publicKey,
         context.privateKey,
-        context.accessToken,
-        issuerMeta,
+        context.credentialOfferCredentialIssuer,
+        null,
         context.keyType,
         context.wellknownKeyTypes,
         true,
@@ -226,13 +260,13 @@ export const IssuersService = () => {
       await VciClient.getInstance().sendProof(proofJWT);
       return proofJWT;
     },
-    constructProofForTrustedIssuers: async (context: any) => {
+    constructAndSendProofForTrustedIssuers: async (context: any) => {
       const issuerMeta = context.selectedIssuer;
       const proofJWT = await constructProofJWT(
         context.publicKey,
         context.privateKey,
-        context.accessToken,
-        issuerMeta,
+        context.selectedIssuer.credential_issuer_host,
+        context.selectedIssuer.client_id,
         context.keyType,
         context.wellknownKeyTypes,
         false,
@@ -267,16 +301,82 @@ export const IssuersService = () => {
       return context.keyType;
     },
 
-    verifyCredential: async (context: any) => {
+    verifyCredential: async (context: any): Promise<VerificationResult> => {
+      const { isCredentialOfferFlow, verifiableCredential, selectedCredentialType } = context;
+      if (isCredentialOfferFlow) {
+        const configurations = await getAllConfigurations();
+        if (configurations.disableCredentialOfferVcVerification) {
+          return {
+            isVerified: true,
+            verificationMessage: '',
+            verificationErrorCode: '',
+          };
+        }
+      }
       const verificationResult = await verifyCredentialData(
-        context.verifiableCredential?.credential,
-        context.selectedCredentialType.format
+        verifiableCredential?.credential,
+        selectedCredentialType.format,
       );
       if (!verificationResult.isVerified) {
         throw new Error(verificationResult.verificationErrorCode);
       }
-
+    
       return verificationResult;
+    }
+    
+}
+}
+async function sendTokenRequest(
+  tokenRequestObject: any,
+  proxyTokenEndpoint: any = null,
+) {
+  if (proxyTokenEndpoint) {
+    tokenRequestObject.tokenEndpoint = proxyTokenEndpoint;
+  }
+  if (!tokenRequestObject?.tokenEndpoint) {
+    console.error('tokenEndpoint is not provided in tokenRequestObject');
+    throw new Error('tokenEndpoint is required');
+  }
+
+  const formBody = new URLSearchParams();
+
+  formBody.append('grant_type', tokenRequestObject.grantType);
+
+  if (tokenRequestObject.authCode) {
+    formBody.append('code', tokenRequestObject.authCode);
+  }
+  if (tokenRequestObject.preAuthCode) {
+    formBody.append('pre-authorized_code', tokenRequestObject.preAuthCode);
+  }
+  if (tokenRequestObject.txCode) {
+    formBody.append('tx_code', tokenRequestObject.txCode);
+  }
+  if (tokenRequestObject.clientId) {
+    formBody.append('client_id', tokenRequestObject.clientId);
+  }
+  if (tokenRequestObject.redirectUri) {
+    formBody.append('redirect_uri', tokenRequestObject.redirectUri);
+  }
+  if (tokenRequestObject.codeVerifier) {
+    formBody.append('code_verifier', tokenRequestObject.codeVerifier);
+  }
+  const response = await fetch(tokenRequestObject.tokenEndpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-  };
-};
+    body: formBody.toString(),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(
+      'Token request failed with status:',
+      response.status,
+      errorText,
+    );
+    throw new Error(`Token request failed: ${response.status} ${errorText}`);
+  }
+  const tokenResponse = await response.json();
+  return tokenResponse;
+}

@@ -19,11 +19,9 @@ import {VCProcessor} from '../common/VCProcessor';
 
 export const VCCardView: React.FC<VCItemProps> = ({
   vcMetadata,
-  margin,
   selectable,
   selected,
   onPress,
-  onShow,
   isDownloading,
   isPinned,
   flow,
@@ -58,7 +56,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
         setVc(processedData);
       }
     }
-
+   
     loadVc();
   }, [isDownloading, controller.credential]);
 
@@ -71,7 +69,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
     } = verifiableCredentialData;
     if (vcMetadata.issuerHost) {
       getCredentialIssuersWellKnownConfig(
-        issuer,
+        vcMetadata.issuerHost,
         CARD_VIEW_DEFAULT_FIELDS,
         credentialConfigurationId,
         format,

@@ -1,3 +1,4 @@
+import 'react-native-get-random-values';
 import React, {useContext, useEffect, useState} from 'react';
 import {AppLayout} from './screens/AppLayout';
 import {useFont} from './shared/hooks/useFont';

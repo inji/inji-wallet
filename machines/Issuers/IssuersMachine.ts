@@ -12,7 +12,7 @@ export const Issuer_Tab_Ref_Id = 'issuersMachine';
 
 export const IssuersMachine = model.createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QEtawK5gE6wLIEMBjAC2QDswA6CVABwBt8BPASTUxwGIIB7Cy8gDceAayqoM2PEVL8asBszaScCIT0L4ALsj4BtAAwBdQ0cShaPWMh19zIAB6IATAE4AbAA5KBzwFZPTwAWAHZ-MNcggBoQJkR3P2cfTwSARncDNxTXAF8cmIkOaRJyKnlFVnYpTmwsHixKRS0AM3qAWwEqnAISuTpGSpVYNTJhTVsyU1N7S2sJ+ycENy9kgOCwvwjo2MQAZlSQylSPY5Cg50DPVxC8gq7i2Spa+s4AFQAlAE0AfQBBAHFfiwAHLTJAgWY2XRkBaIIIGXaUAJ+SIIoKhZzOdzbOIIY6Ivzw3xnfzuTEXW4gQpSHqPSjPLBvL5-QEgvSpMzgyHzcGLXZeJKbTwGBK7C6pILuXYxXGuTxJELOEKpPypfzOAyJSnU7oyUr0rB1RkfH4AoGg5ycixWKF2XmIRUyuGpZyIq6u3ZBfbuVzpbX3Wn6hmcd4AUQAyqHXt9Q+93gB5d5g61zaGwhD8xVIsIivxizwSqVOvEGEKuSi7TXojL+dG7G75KkBvX8WBgehgQg6MhQZQcTjhgDCv2B30HYYAIqHga8WL8ADLfeMAMWXse+AEV3mP41PkxCbTzQIs3AFVoFQuErjjEGqQn5KM4vUFPPtIq5Mu5-UNA63253u17LpOAneMAHVgXneNfgnb4WAnfduTTe0EDJBFKFcDxzkyIJNguYssRWY4lTLPxCV2T1vyKX8qDbDsu3IICVAHUN51DQdXlDWCWHDcMAFVY0Qw9kOPeJnGLc5QiRF90XODI1SCKiaRbKhCCwSAwDIHR8HoCceAAdzIegeHwCBlzqNp42aZpsG4PhxFGURxGbXpVPUiBNO03SDKMkyzIsqybKwEYxm0aEpmMGZhLtUSlkibxfDWS8hUiAjrgMSh-FLAwVRCGsRSU3VXMoNSNK05AdL0wzjNM8yeEs6zbIZRpGBadpOh-FSSvczyKu86q-LqhqgpCjQwv0YwhNTGLHBcDwEv8C8Ni2Ysy3LeViSle8DDlL9Gx1B59VKjzysqnyav8+rAqaw16ha7RWiwDoDpo7qyq8qrfNqgLGuC9RxnCyaOSi6aYRQ5YFqS5brwk1IMpCM4DgSPx3Dyr09ruTriuO3qzoG76rt+zgAAUExXb4ww3ATw1eKbbTB2LUgOYtC1SSgQl2QlCUwnbAj8QrDv4HHTv6r7LuG2zfj414AAkY2BCdifjEFozDQdQxYAA1Li6aPWaMw1B8zmcF0UkCZYJN9ShcIMUsgmOTIxVcfn9pculhY+87Bp+oK3gADR3KcKdDKmI1pyKuWihn9aZkJi0CNmAmI-wXT8UtUgF16Pb6z6LqG66GjbMgIFeBxB3jDy7P4dQxA66iuuzvGxfz37KCLkuy4rsBRoBiaTAjlN6fTNPESfE37yCOVVXlVa5SOLF60rXZnaXzOG56kXc+9wmgrbzSO-LyvmqaR7nrdo6N89-HxYLvfi9Lw-u-+8bJkmgeD1B4f0PceT4TWr0Z47AQCEAwQRpKvlcMvJmyNnBr2xpfHOXsCYSwaGIJgBAyD4BgG0Tye8tDhn-F2SAABpMATAq4OWELXF6693qIOvi3XeaCMFYLADgrSeCCH0S0CQshPcX4RStB-IeKFFQZSrF4PM5wXSpGlEA2Oo9QGulVMvdwao4HuwQU3POPtsCUGYfgTB2DcFtnwYQnhEBSHkOPq1U+ddlLwLodo7eKD9FkJYcYjhpiuEAV4UwfhExBEgxEbFCG551hXlSvItUiJrhnGxMENUBZdgaIvk40WOid56IMUYthuCYBaCscTfAyAsBDSsbALQ9QwAUIEI5ah58hZaIyS42+OTWHsK0JQApRSSllIshUqp6kAmA37kIpCM0TyhHcBWeUZxFQSlTizA4ijzic1kScfwqSmnpK3sgtp7jDEdPyWAQpZDimlPKWQyp1Sai3QaCfdqNDHEnSvs3XRqDDm5M6d005vTLkDOuUMp+jle6vzGcEvWiwxE+EJJIz0JsTZyNxC6H+7N5QmzkmcSBGdXZY00bspBN9W7tM8V0np5y+lXKYDc9SdyjT3Tak9exRUCWvPoe8rJnz0FHLJb8s5TALn9PqoM6pIy+7snGVHdMbgwjhOSiteReZEQZGcCjVGk8fQu0xvXF5uMWn7JJV845HCKWCqpYCmlwL6V3Uecy55bL9V7OJUw41fKzVCupbSkFoVAmTUtJCkSMdOZgPrJPBGeYV6vhZvsQ41Z6xM1VEqc42y3KEoYR8txPLvm4PQG2LAg5DGEHbB2CAAAhXQOCtBYGQIQJkppWSgnfhM6O0KNSwslP4BFMjkW3n2GAi4SKVTomdh4VNb12XOMNa67NJqul5uwIWsgxb6ClorfVU5Na61hkjNGWMCYkzNuleDea8roZRJRSA7w9tVQHBAfyHKDYdUOMdZvIljDsluryaazS2BtBgH+YyXg1d6nOXxWkydBqXWftne639WB-2AfFeC3WQbFh3gfJPTF-I06ZExCzNViIyy23IrIqsKS8W6tfW8zJrjSXfq6YQPglSsDoC7MTOoPBmi1JrmBqjEGnXvszfRn5TGyAsbY1oDjPAuPIaCZHT+4NpmzOTQs+2aqY3oWOFtZezslRknHY3KDH7uUeIYyVZj1bJPSa4zah5tinmNLTZB51Jms1mdE5Z1j7HOPNDk2-KVinQnXEhktSJN48Sc28MRnKmxnZhALOO3g18+zYDAiWkQZAfI8dAyywWZQiWpawOl1dmWfL+YhQpkJ+sto+HvYipU1xNgSTVWA+86Qdqugxbi59rL9TJbFkVkr9AyuGTs4yuxDr+uFa6MN0bZAKuocmXsAU2ZhSinFJKXtGYyKPjw-e+EKRYGUZfdN6+g5mmvCYLQOAOWqF8dO3IIlF30lXZu8MZ+frKuDyhbeNVSRxT-ZFAcK4sMzg+Fwh+JmemMZNnA0987l3ru3ZsQ9Rz8OCuI9e8jj7oKBEBcDctjMy9MqqhRkdz0ngywReXpsHw2InyRBfNiJLz2kfvfrSyc0S3W1-cSI+AsQO1ERBa6jSgZJdiBARK6WRuFx10QAoxF7kG3s1OHMCdW84efpjhuJIBkv+QVglGKbKCRNXy-MUr9nNTIxsQ4lxMck5pyzgXN8V4nxiahm1yhJmevcQJtHu1x2b50RPrh-x-gImTGnJ8UQyxZC7tOTy69KPXiY-mL8Yto9QX9ZikOGWLw1PXx-2ZkAp8cNHzYsgfE7msOpuR6-T87xGf4-WPuRN9HEeqCp66c37hmfPujO94zaej5PQUQRr6SsngCJ5SSGslEKMDhqgKidvrDfYPmY9RakVQLbnAcoUn+v3fG8nIFZ6y13qs+Beq+h0frovT1jLGRmfZeJTeFRrmOLUpMTavD49k-TfH5bfAFXfK1W5VHJlM+DHdzXlLfP5SlUAtoUVYZQfCVbPW-PYJUdmeaIvT0dOOOMvfYAHe8E2K4YIKHcdHvflQDL1a1SAybJzWAnNH9c-HfZAvfVAvHL7SVQnXnPERIbwB-CfZ-afAiSeNmaXbac4OUV8Kg0-Vg2gy-eg9vO1aArvZgudGgxA4VDg8Arg31IfANKrX7BADwJIWOZfLwXwMecQpmDCZeUsAIW2OGOvJg6ghdAtItEtSAddKtLdTnM0NkDA0wvPHAwveKfA5UQg3EZRcsCNWRMkCXVGNwmAjw-NJdFdNdStTdWtEMCMKMGMOMRMYfGOQQsfR-SfF-AiH+B8YIPMHKA3CIeQoAk5CgBDHhQDRPBpNIhQ8leDRDHQ6-PgnXe-cfJ-KfXwAiMeR8ZnT0Vwcva4VnLHSDWAboh7dfTHMWZXfVXHQw9Am-UwtwSXM9cLYsfYNUJELKNRBYsjJYtffLagNndJNYhgzvAAp4lY3Y4YkwtDW8K4NmY4RIH+dZMifwAifYa9UBZ2JGcvPKZY7Y5pV41Qhze1JggbC6HYkWPYsaHg4GX4onMJRKMLFKCLE2CUDCH0QIBJNRXCMPY-T4xEl48bNQ5PLqDEvyLEryHEsFKYYwn7P4uKFYYkiJUk4sPMNmL0NEMkSBb0ek9E541YzgdXTXUok8U9EUhVGGMvC4eI+UL0M4IkRIP-Bkjk0yLkvqWASgTwzInw8tHI6tPIk0LnYIw4wUtVBIeeSeFGX-SNAiFUGZSeJ2aXCidVBEzEpE60jI7w1dXwh0gIndQo-dEokI9052ULUUxVWIyXGZB9DmdIDmWScdQQbAZAZoJgK3dJdYtk4qEsmtcsysyDH4gUonT0IiKUTCciBGe2c410Q4H0H0LCRUM2eUmAusssisnsC0nSFk1E9Qj48chsqc5pZs4RUIztI4Ds52A0xGc42OCHGw1Gfkb0RSB416RcycqAac+gWctHNEsc0spcq8lctAlDfEls-gts7wdIXTLs3csvSIB8J2KnOGSIWRCjXrR44gQxCADsTWQcTWR82tF+ZcEpegdAOlRM6MbWd4FgZcH4ZMw9N0onNRNOWFXMc4YUe2bbNwW2I4O8bCMib0+XIZRiashk2lRiVcltdMNREnJUCiRFBOX0c4kUDKU4XwF0TESUZ2cdZAWCtXeMXAYmNiTiBCVMonAM8sDwHafEJmXXbbdEKnJEfTBIUkXCY7SC16eSjsZUkcVUjS-gxICSb08XJmW2H+MIZUF2RsLLDyeAcEY-EYlCAAWlcBZhFAPNtmiuiqZiS36CUHuGCtimcrL2CAF0SBww1FthTTPK6gZGStz1p2tmCDFDIjUXAvcHFOOArACFwiDOVHSEsv-02L3m4UYiK0Kr5BCyRE1AlFCF1w1Vnx9HZmVFLHrCp0VBNKYKM1cw+S6viHCqAU2HERfH5GCFdDJDlzyr1TfQzS5QEAUoWqWBSIrHRnlEgVfC1QI0yGtkgSVExF8HlDkJ2uow5Vo1vnbgfi7mOvzAwjyjIkAp-lor8Hjg8HZlAU5hNg1U1AgpaseNmqEwOp72OvRDZjVRzGRBAp7PkRFG0tlKnixFCH5EM2aTmuRr6M4RbysVRquEfCFE1EWmVBxpRVyjuouP0qdnrFJvTU5To0ppAN0JQLAGOt9ySB-nhFCF9B-gRBiL+wWIwklC9A1ElEas8B5pcyRv5taI4RtJjOyI3UdMIFpvLHrDTjhmmVltfxRVDIrERSX3igZw1sE32u1o8zaL-U6J0NFuxDAR2gTRRh2hynw3kTcCSEiClAN0eugWdr2r5oOR1sYy82s182OsxEuNwkrEVBNkyEVDlrxDDsVsjtfGjr9FerO0G1mwyyy0Ml+vRFJwDIpxfGp1FxmQupAQXiyh63htejNIgGvNVwCo-PTA8ERGymILzAvFARazzGtjI0lwLACE5mmpgIVwYmXOxxu1FvKMysoqp1py9FhmMpASnhARRByhaPdq0l+qWtiOktGrIhFGXmFEF0vrgKb3T371b2OqpwIkJEOHVH8AWMSSlDfpYP6LYKQOFuOo5gynhC2sNgS2uAhOMq9Cnx-mdnInVvLo3yvvnWjOXTtL8NyONoJP4OMtjhVuFzFEzAhLpwjSUTzDyhSLAa0JgHaMGPNVKVFrVTZlfHPqa0yDlBQbjUcJkKvUf3DM5KRNFtKqOBhylDJ2RBZmuBmUwk9Gh35HUdHI0L7uvKtJspFrIZlXTjq1zuDt8FCGmJRAwmhJFGev4akfNMjL1sIdjPtMNq3TToonLHREENkRRFwjzAhIOGtlAUCDLHH0X2LMfMvOvN+qfHEv9tkWUUIj3LcHovdEaISCwnHWguLjgoQqQrBVQuQHQvUl+oS3F0ZwerIkrE1FEpynF3Sn5AuEuB0Y+M4p7FRttkRCwx2h-hB2tr2BVGi22gyE5jRElDkqOuMZ92Z2tgyEgUSEVHiwiyMoSiVDwlkQOFVFZwoFFsVDAVwOJuIMXpcpSFGvvDMtAVhryDyCAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QEtawK5gE6wLIEMBjAC2QDswA6CVABwBt8BPASTUxwGIIB7Cy8gDceAayqoM2PEVL8asBszaScCIT0L4ALsj4BtAAwBdQ0cShaPWMh19zIAB6IATAE4AbAA5KBzwFZPTwAWAHZ-MNcggBoQJkR3P2cfTwSARncDNxTXAF8cmIkOaRJyKnlFVnYpTmwsHixKRS0AM3qAWwEqnAISuTpGSpVYNTJhTVsyU1N7S2sJ+ycENy9kgOCwvwjo2MQAZlSQylSPY5Cg50DPVxC8gq7i2Spa+s4AFQAlAE0AfQBBAHFfiwAHLTJAgWY2XRkBaIIIGXaUAJ+SIIoKhZzOdzbOIIY6Ivzw3xnfzuTEXW4gQpSHqPSjPLBvL5-QEgvSpMzgyHzcGLXZeJKbTwGBK7C6pILuXYxXGuTxJELOEKpPypfzOAyJSnU7oyUr0rB1RkfH4AoGg5ycixWKF2XmIRUyuGpZyIq6u3ZBfbuVzpbX3Wn6hlM02s0G7K0Qm080B8kLuQ5CgwhPx+dypVK7flOhC7ZOUDWYkJo3xk-1DQP8YPvACiAGUa69vjX3u8APLvMHWubQ2G5hOCsIivxizwSqU51LJ1yUPOEyW+ee7G75KkBvX8WBgehgQg6MhQZQcTh1gDCv2B31PtYAIjXga8WL8ADLfNsAMXfLe+AEV3le2zvLsox7O1YxcVwAlWQJQnCK4cUQNUUwLL0gk8fZIlcTJ3HLIpKyoLcdz3chDy6TgbzbAB1YFnzbX4b2+Fgb2A7le3tBAyQRShXA8c5MiCTYLhzLEVmOJUQkgwksyCXCaQ3Ajt13fdSJUE8a2fGtT1eGsGJYOs6wAVRbFjozY8COOcHNzlCJE0PRc4MjVGTVx1B59QAd3wKED3feofywOtNDITg-wAu9vjPC9gR0kzQJhdjlz8ShJU8FMrOXdxZzcYssV2fwDFSWTdV6KhPO8qBfKwfzAvwYLz2BU91Ni214vMxLkq8NKdgQASM24-xINy-LCpc9cSsoQgsEgMAyB0fB6BvHh3LIegeHwCB3zqNo22aZpsG4PhxFGURxDGulJum2bkHmxbltW9bNp4bbduwEYxm0aEpmMGZTLAxwILQ6D1jgyJhOuAxKHy4sVXjXwRSKtz+AuiAZrmhalpWtaNq2na9sZBlGkYFp2k6Ct5ImqaUaum6Mfu7Gntx171HGT7jGamN-qWDxvEXGCNi2HMJJneViSlFMDDlHDRrJ8bkdR670burHHuevGakNepCe0VosA6Vz8Ipy60duzGHpxl6sDejQPv0NmOR+uK+2WHn-D5kGEJ6qdKBCM4DgSNN4y9KW7hl87KflmmlbNhmLbeNsAGl72+WsfyMutXnZszObcfNgn5eVXDy-lIJzMUwlnY4g9cZxMwllcQ7w8m5epxXTfp1X9oABXbD9k5rVP6wz76uV+1rOYzEJJ0lVJvd2QlCR4iXAj8BGDeb43aeV821d+AzXgACWbYEb07tsQSbWtGpYAA1GLh+7Fq+zFTVvfOF0UkCZYrN9ZK-AMZMgjHEyGKSCq8m7hxbibOmKtGbGgABphRrH3Ae6dM5-UWBPHMgQZ4BDEv4F0f9lRgNlhAjeUd26wKZAZdOjF9JGX-KeNswIGwPmQWnIekZWLoL2FiGcSZNiF3Qj6PwpdXTeHTO6Aq-IUTYmIWHI2CsoFbxjmreqjVnxoLHnGAS3FlxejcEXYRoiggzh9MWeMIR+Temcg3OSJCFGRzbjAi2lAtAnTIO8MAABHTAsAtAHX4OoMQpNG72KpmQpx29sCuPcZ4nxcAtBWxZrbEw98QKPwSjZOehcuq4mcOcGcPEy6Yl8PKdCcj9Tr0UZvaOHcGhuLEB47xvj-EEyaDrPWZ1KmkOqeQ5xeMYmNLiS0pJNtJhszSVwrRewskokSsJEcSVNiZmuBqT+5TpahPkeE3pkSVHRK3GQCArxYlwEsGQLcASjrCGCfrcBDjW7QKiQ0Q5xzTkKD4FuUZEwvqcNHk-TYRxnAiO6sCueSJlS7FWaUi4uwKlIx6Y4p5+yXkzTeUMs5nywDqyNFrYmusQl2O2RHR5yi6mUFeScjFHyLlgG+azVJfzHYJUBQQhZkEfCQuhesuFmyiXdIeUo2psCJrEF3CIEiR5sCvCwOgPxVyBDHVuV0hFgqakUJcSQcVkqugyrlYk5mYzfkOwyeZASmVOogrySiJKyYVmKhhRs2xxViWQPVf06JWrCASoPFKrAer5W8ECUq06ocBU7KRWSkVXqfUqQ4AGg1x1knjJMPbEezKzVpkoJa4SCQggQvtWsspvLnWIyoFUyNwrNWIvoLAoVEBTxYtmpwNRTVJn-PYoSJIKVckuFhkcExiQSk8vheWmt9aPUNArbWi29bG20ubUwgCzD7xNn+Dfe8mi+xdo6qlK1EFMSQ3QlcB1I6+UuvDSSidzyKVovnYcrQwIeBaH+MgQQM0FVBNDVsy9bq+k3tefe1GT6X1vpmvSlJW6EorDsvM0F-aJSDWHcW0dhsI2kqrQMwDTbQPvuCkG65J1CUXtVeh69KLb1HKA7NV9eGIMpqg+ZFESRq7c17bmRc2a1RKmQ7C1D07yPkuwwu3DH62lEw6cRstaGr3uoA3enDtHwOGp+RMplprOaQVMcC3NhIC1QtPSh890mBNyYo8Jh9SmyCUHQLQCAH0DwJsgH658qB-EEcVTc79-LSOyf-eZhTImrM2bsw5qATmIAubc-R416aNO4nSJ6ZKhceNFthTERY5rs17v4+OszQnAuWbA9Z2z9nlIRai4Gw6nmiN3LCX5vZBWqOKeKyFsrJEKtdFc34mLdt1McwS1KfNJjilpfQhluEWbLW5bVf5prDaWt4coOtGgvrdU8E60MT9IapNrzy3NkVFnUbBZWzqlQJzNtFF64yk1HM+SFwLGx-deIAiZRG6lx1Ja1xht83+xrIqyrKUqq8BwjaUYtovOoxj2dwWbARGy7qGFEQZnlIqMbX26uuoici8lgOSLA9BzwcHrwEGMPCpfGsG7mLtozTDpZxZ9g6cR-iI43G0efZm2R-Lh20Ug7B9ijzX7dv3K5wdlxlLCco2u9DxYwLhaqjTEz3EWYLjezOEO9HnOGs4550cvnRPsXie1iTTHv7sdRvF7zyXdKVMMply4FEkMFdkme1mQIBZ1fkg58Zvbs3-suLEEwAgZB8AwDaKjW9Wg6yKT3JAeOYAmDba88L+rf2dcB4T8H0PYBw+zUj9HoiWg48J+lzTjTiwHU+EJF4Ecb8a7Sm6hPREGpzhzxWRIrXaeLcDMD1nsPEetxR5j0XiA8fE9G-xZ0n7Y6-fp575n2q2fc9aHz8P4vTBS-9azrL7mQNYJClBo3tUiJrhnGxMENUY4Mcqpn6L-38+g+L-73nmAWgx+dy8lgFWY+-H1AF9VoXU3X7c3TDaJXvJ-HPCPV-d-T-b-BPX-KaTfW7bfFwUITKPKJUDECUBHBLA4ZvAwVvVUKFCRFeH3EXbXbvMAhfEPZ-FfaAhPD-ZAL-LaH-NxKaHFTWdpE3G-GTLvUAhocAmgyAl-MAN-Bg2Alg+Atgm3JNI1NTZA7hBASvTUFKWvGuevScESb2eUGuByM4QuEaUtX3O-OfKgx-IQ5fSgegpgRg5gp6Vgv-DghoLgglIA2-Cg-gygQQpfKA0QmApguApgBAmQ96VTVNLfRQ7KF2NYffAWRvEcREDIYFdwBMExYRTvEAjVB-PvYQugvw8QgIyQoI6QpwvFSTNw3gzIydLw6gnwkQsQmwiQ+wqQv-aXS0BQ6ZPEOefNPRU-EcSCIuScfYQ4dEMWDMVUTA5wDI3ZUwgQ2o2gmzLcLAU8WqQgbcHcCAAAIV0HDy0CwGQEIBDBZHNHtyUI1Cr1UM9HUMzCGIlALHlEzBVHRC02Dm+x-WAJmMoLmPMLqJXzlWwBWLIDWPoA2O2KelEP2MONrAbCbBbHbE7DLzuwghWF5mBgPw9gOF8GShVAngZ0cnrjeJ83cL4KyLMJyMsJgAoCwG0DAH8MZEFx2wqNMzF2yIgIpJmmwBpLpKQLiyRLxD3WS10OkX-nJE0JHG9iwhUP2DnC9GmMrVJO+PJIj0IE+T2PQD3E7jqB4GaCT1qx4OZPvzJLZOVNVNlQ1K1OaB5Ifj5PyXjFnFRywMASV0QjzGRw8GXChUGnjCmLINTyqJvW8IWJVIuTVPNJ4G1NKJcKn3eOJP9Io0DNyImlNPVK0E1PDMtNt0g0RJQK5nLlRNiPgiGKggkn-hhkgjCDHH4w3DjWwEonWJEDIAxl1OVWnwmmrL9TrJBIbIxitPSRtLOAuJzW6nRGXFnAyEiAcgKmCCrN6BrKwE7PoG7OWkjIk24NbM0FnI7PrMbOWl7KmSdgHJUKHNxAEmuB8AGLEkcmnN9LpFoDqEIDWLQBIlPBrWbO8xIyoDvI0EfOsAPBfIeT3I7XMnyQhnPy9HY1CEyGzUsXsixCnJsUJI-OoHVS3K7J3PwwAMZJ4N4HIVQsXPQsAtp0WDFk5QRHUKVGuE2CsmBXzRTHSAljEUxEMMQukxwrbjwqXOCgn3KOwpQq6AXM4sIvLz2AFAhWFFFHFElAb2V1TALEyCVBLBSB9KMPJlf3-PQ1eCYFoDgDfJTzpDUprU0u0uGEzIY2zMiL0x7WezQiuGSgGnRDgqclQwMoeSMp0u4rXJjKsNEPUpJTcpMtkLCNOJot3Qgp4ltWxBFGrivIQoqJco0q0p0pNGOLZHMs6JCqspzAmMOAdQwkcuvJUvGkIiUmfMMsSohwajbQiM6KnEskRyEQrn0WTGHDSNQ2KuIj-LKu0rUg0i0h0ivFvFXSfFfFeE+E7hrFOIzDquV0hQ91VGAQwnRAJIqLYrpl8pblgF0pWvVXWrRgCtCLtzSqdkET335kLOZzVCRHynTGrlrmuFQ1Wqxl2oVk2o8tcN4vIWevmn2utiCqOvYjVB-mOESBSLb1TH8GEn2G8HhEHT9nyT9gep2prVeo1mcNXPetbMevWi+voB+uTSmDTWtJzOdlOvdmEgzHzQ8DlBSDQnTAEmWo+rbhxpRtxSjL0v1CxobWRraOquOpRNdjRLiNxBHBni9DRDJELm9AZsxqRoeU2t3gPiPhPjPlYQpyp2Cv8Fov9jHExFTChVLiDg9wEi9zPUKrpE5uZrjkTkvBTnYQ1r03jHBpdGBX6NLnnCdyxAxG9zNo5tlvQ02u7jbF7ltsHlOLFHSGS3CrJBdv1sR0NswI129pYoNgtuRoqqh3+uAt33zLOsPzyQuBnDCHyT0SJESFIJ9rkD9pJVgEGRmmGQSS2sZrWuRtrqaXiR61MtiyJsUM9EOGyTg2V09EyiwhMRFDKXQnLuTvJlTrltbvrvlTeujKJOQs+pboaTruaQSSEr5N7tnDmXY17r4XTBVAFECDnkRtXtnspXeXOUuQZOT22svv9so3RQ3ppS+U7vkN5JzLnkOBwJmQkiRGPrTHHvPpvN9qfurpfqpTftvsN1RrKM8uXpnufuvupTge3p-tZWdNzH6J8GAdPonovqZpbuDL8TNNTItMbplsgY2qTJDIobTO1MwcUK9BnhrglgHr2DwZFHGMIbAYrrKCrrobIdDMofTJXONwxq8pQagdEcYYtJYc6LYYLCnByVdyyG4gIKwn4cnsfpIdnvkZTKYZ1MXvZsrtob2vofIeMcUc-vCI6L7BUY4fUdET-i0dHt0eIebtnv+OWNWPWMgDBN2MhKOLNFSt5vYmSKShdEHWjr1tcHJqzXeywjFCzDTFeP0Z8efr8cBOBNBJ2IhIOM4GhMbGbFbA7GCsgmiLdnRMhpSDHOTCls9HRG8aepboTMsMHwLyUnX2oZkeEasc6YH1EJ6dj1HxL3sbDrzAlOPMQAAFo0I2nsaOn5jEzum18Jnx8EG2asn2nZ7hm88NnC918lGn4ZmJI5mEB5mPBlmuaDm1n2SGjbDAjgj+nkHBmXqaifiFjrCXmijgizmEp9hvY1GuHrnbnwGLGDHn7Dm8jnmmi2gHD2CzG9mVmHmfnEy-nEXkWQjfrDrIm2oQXlROH2MbnMmm79nYXHnfCEXCjmjijHDUXKX0XqXMWnm6TXnpDpdCa+yf7iWwX2NAUhQCE7nmbvmlT6jOWAWSjmWaGYWoG4XvK6W7CkWWjECpn2jv6e6BXSXnthWwhRWoWhHLGvmlXcmAmQSgnCm9jinkrwnQRM7OYxQkoEwntJwDhOUda9GWX7m2XJW-ili8nAmtibXQnSnYSKmETCXnXgVoL3XG9AGRXgUxXVn2XfCqSuSCj6TMKH7fXxWlXKTOSi9uSpmnW+QQWoU852MDg+FDWU3jXKB319jmgmBSqHl3mkLm3kBW3230MgW2oUojgpRwrwLfZRFRyfQfReJFQP5pavLu3e3OqO25WF3sAe223l3+2y2Y2+Qh3EtR3lxx2LrDgCDfAsRLEpR0hYqeDF3N2oAcbJHJ9zGqA72+2SUeXd2ZlRIR3IIx3AEwYdEQFUo1HAEsxUNiBaoIAdxr5Txr513mgDixl3wvJ6B0B2CI3vhb53gWB3wfg4TKny34gVQIZNQWqLgCCbjQVJTWdUo+JUxB02q2CSJO3pMECSIB3OZ0woUPcVd34xxfRS4RQIZThfBnb8l0jG3kBoPsVGFcBO4NJtJqcv2XsfRuJxz8QMxarpK4Q0JEwlQUjkRsQtQpOZP06qrHHO1prdOOVj7-4UiwhlRSDVxGyUZ4BwQ3DLOzUcxFn3G-5-4oqsxYnchG3ygBg-V3Pu7OjEhhJgh7jEhpENR-5zhUMGQvPnWoUkpYMXbj6sx3Asrjg97ggF5lwMwyxG32rlI-V0v7ty4-5VQlrarUjhJ4xC6SXLFHPFQfXWy8cfI-IAogoavEADArIUQZ47ORQEwQPuuvKDTZihuOIPYzhT2r85RAEi7r91z9tDSGhpOdwFuL30Cg4C5DES5G9CxktRsk6mTtvZi57N6-EFuRvE3y53t2dTap6-TPjPC0HYGsUnvJwtNuIUt3ujNBHKjvuFTRVtU1tztZVHvtXOjnu8lsDLuPsPubvZ8viIf5o60dqcMAfQUxQWMQfeMnVPusdIfqijtZoQMrNCfrUCpgeruMf9TbvseafRMx59z2J4RxE90p4eJgfJiKaJQUvG25uOfCtjtWtSswtLtsBustAGfEIhs0fQe+MJf2efvpeaNWtTtYf40Nt4eR8IuVf+SVRmf0eweKezcqeb1euKp6h9cUYFvFnPBc10J1eyfNvZvteoeJd+c3e0JYvPWilrfNfwfJfPC4WFuEugGXbJRR6a4PfG9ONixJQsQJQKO1Q5SMMoelXjnemtmFu0IZxgUhxkQQOAOj9AURstOMwQFlw8-BMRVC38jGj6W1XGWpoFupqkgUiYaJJ0gMhlxNDq5uIk-n5JRlRc+teseY+aW88LWgSQ3gminCBS-bLEoCoCDYZlxU+Et0msoCEbrabxeo--fqj2-M2S3s2+-sR81SWT6JYCpMRx+WMpKi4SkyuW-ucM902eeIxmGW1IHcU+v8PMGjlqqKhJ453CfpEClDf8NQv-CXu2X4rbkMYbvDwFZB9igUMw9nKbk51QxfkHycAX8g+xrRYD8uw5QaKzinCTdHOKoO5hxXQoLcWmTuE+kpU9CpQ86cILQgXByhShhozlHyl1TgBUCCuWYLjPQIc7Tc2qw+d9i3Dcp99Eg3gBLucECCWI-2OnT2KlG9hLw4cKIAqKmzlpgDTElzAXt1Hmb8gSecoZ2mSCHqgJQunzb6gIBk4Hc7UpFBSi6F8ChBhIcuDxjo1AYzcPmprVwevTbotJzeSoHjiPSCEXAiGzgsIbjWgY31-uiPPsMjwPSi1tGY9BIQI1t7QtsmcjZMiAOaDm99gUFOIXkLPohCkKsjOhiv3ybWtwStrTfhkKiZZgZw6IVQZmBRACQRwkNT1jDU0GFwvQNqEwf62NKzQDuPseNlc3mbH4kQpZBAeYjCCTDFWS-FfEX3GZj5ohPoGeNUK8ZJCFWdDdviqy5Z-5ohqUREDDXiG1CNhZwrYYsQBKWsCmrQyEhUJUKBCahiQ8Hg0KGbPCi21JO-p3ywAVDAayUXIccPB5vst2JKNgSBSOCcNMwroEGtQOVwugZwKOauFIgSC8QIOUHGDnBwQ5IcJgKHZAGh174dC2oFZbNPkmrhdcRw-8V3KWWzTgwbBlwVKEx3qAkRS+-8W4biI8DpgKypcFUN4B9h-xR+f8FphS1bJ7cwAffWmh1E4aJBFQ5ZD2OiHdyZAUwioR4nRURoUA++ioSmp1FCBBdxQ1lZUT7BTAJBhQ8IEcHkDyBAA */
     predictableActionArguments: true,
     preserveActionOrder: true,
     id: Issuer_Tab_Ref_Id,
@@ -59,7 +59,7 @@ export const IssuersMachine = model.createMachine(
             },
             {
               cond: 'isCredentialOfferFlow',
-              actions: ['setLoadingReasonAsSettingUp', 'resetError'],
+              actions: ['resetError', 'resetCredentialOfferFlowType'],
               target: 'selectingIssuer',
             },
             {
@@ -68,7 +68,7 @@ export const IssuersMachine = model.createMachine(
             },
           ],
           RESET_ERROR: {
-            actions: 'resetError',
+            actions: ['resetError', 'resetCredentialOfferFlowType'],
             target: 'selectingIssuer',
           },
         },
@@ -111,28 +111,20 @@ export const IssuersMachine = model.createMachine(
       },
 
       credentialDownloadFromOffer: {
+        entry: ['setCredentialOfferFlowType', 'resetSelectedIssuer'],
         invoke: {
           src: 'downloadCredentialFromOffer',
           onDone: {
             actions: [
               'setCredential',
+              'setCredentialConfigurationId',
               model.assign({
                 authEndpointToOpen: false,
               }),
             ],
-            target: 'proccessingCredential',
+            target: 'cachingCredentialOfferIssuerWellknown',
           },
           onError: [
-            {
-              cond: 'isGenericError',
-              actions: [
-                'resetSelectedCredentialType',
-                'setError',
-                'resetLoadingReason',
-                'sendDownloadingFailedToVcMeta',
-              ],
-              target: 'error',
-            },
             {
               actions: ['setError', 'resetLoadingReason'],
               target: 'error',
@@ -140,11 +132,15 @@ export const IssuersMachine = model.createMachine(
           ],
         },
         on: {
+          TOKEN_REQUEST: {
+            actions: ['setTokenRequestObject'],
+            target: '.tokenRequest',
+          },
           PROOF_REQUEST: {
             actions: [
-              'setCredentialOfferIssuer',
-              'setCredentialOfferIssuerWellknownResponse',
-              'setOfferCredentialTypeContexts',
+              'setCNonce',
+              'setWellknwonKeyTypes',
+              'setSelectedCredentialIssuer',
             ],
             target: '.keyManagement',
           },
@@ -161,22 +157,49 @@ export const IssuersMachine = model.createMachine(
             target: '.waitingForTxCode',
           },
           TRUST_ISSUER_CONSENT_REQUEST: {
-            actions: ['setCredentialOfferIssuerMetadata'],
+            actions: ['setIssuerDisplayDetails', 'setSelectedCredentialIssuer'],
             target: '.checkingIssuerTrust',
           },
-
           CANCEL: {
-            actions: [
-              'resetLoadingReason',
-              'resetQrData',
-              'resetRequestTxCode',
-              'resetRequestConsentToTrustIssuer',
-            ],
+            actions: ['resetLoadingReason'],
             target: '#issuersMachine.selectingIssuer',
           },
         },
         states: {
           idle: {},
+          tokenRequest: {
+            invoke: {
+              src: 'sendTokenRequest',
+              onDone: {
+                actions: ['setTokenResponseObject'],
+                target: 'sendTokenResponse',
+              },
+              onError: {
+                actions: [
+                  'setError',
+                  'resetLoadingReason',
+                  'resetRequestConsentToTrustIssuer',
+                ],
+                target: '#issuersMachine.error',
+              },
+            },
+          },
+          sendTokenResponse: {
+            invoke: {
+              src: 'sendTokenResponse',
+              onDone: {
+                target: '#issuersMachine.credentialDownloadFromOffer.idle',
+              },
+              onError: {
+                actions: [
+                  'setError',
+                  'resetLoadingReason',
+                  'sendDownloadingFailedToVcMeta',
+                ],
+                target: '#issuersMachine.error',
+              },
+            },
+          },
           checkingIssuerTrust: {
             invoke: {
               src: 'checkIssuerIdInStoredTrustedIssuers',
@@ -186,10 +209,7 @@ export const IssuersMachine = model.createMachine(
                   target: 'sendConsentGiven',
                 },
                 {
-                  actions: [
-                    'setRequestConsentToTrustIssuer',
-                    'setIssuerDisplayDetails',
-                  ],
+                  actions: ['setRequestConsentToTrustIssuer'],
                   target: 'credentialOfferDownloadConsent',
                 },
               ],
@@ -211,7 +231,6 @@ export const IssuersMachine = model.createMachine(
                 actions: [
                   'setLoadingReasonAsDownloadingCredentials',
                   'resetRequestConsentToTrustIssuer',
-                  'setQrData',
                 ],
                 target: 'sendConsentGiven',
               },
@@ -233,12 +252,11 @@ export const IssuersMachine = model.createMachine(
               },
               onError: {
                 actions: [
-                  'resetCredentialOfferIssuer',
                   'resetLoadingReason',
-                  'resetQrData',
+                  'setError',
                   'resetRequestConsentToTrustIssuer',
                 ],
-                target: '#issuersMachine.selectingIssuer',
+                target: '#issuersMachine.error',
               },
             },
             states: {
@@ -255,12 +273,18 @@ export const IssuersMachine = model.createMachine(
                       target: 'addingIssuerToTrustedIssuers',
                     },
                   ],
+                  onError: {
+                    target: 'addingIssuerToTrustedIssuers',
+                  },
                 },
               },
               addingIssuerToTrustedIssuers: {
                 invoke: {
                   src: 'addIssuerToTrustedIssuers',
                   onDone: {
+                    target: '#issuersMachine.credentialDownloadFromOffer.idle',
+                  },
+                  onError: {
                     target: '#issuersMachine.credentialDownloadFromOffer.idle',
                   },
                 },
@@ -272,8 +296,8 @@ export const IssuersMachine = model.createMachine(
               CANCEL: {
                 actions: [
                   'resetLoadingReason',
-                  'resetQrData',
                   'resetRequestTxCode',
+                  'sendDownloadingFailedToVcMeta',
                 ],
                 target: '#issuersMachine.selectingIssuer',
               },
@@ -291,12 +315,12 @@ export const IssuersMachine = model.createMachine(
               },
               onError: {
                 actions: [
-                  'resetCredentialOfferIssuer',
                   'resetLoadingReason',
-                  'resetQrData',
                   'resetRequestTxCode',
+                  'setError',
+                  'sendDownloadingFailedToVcMeta',
                 ],
-                target: '#issuersMachine.selectingIssuer',
+                target: '#issuersMachine.error',
               },
             },
           },
@@ -312,12 +336,11 @@ export const IssuersMachine = model.createMachine(
                   },
                   onError: {
                     actions: [
-                      'resetSelectedCredentialType',
                       'setError',
                       'resetLoadingReason',
                       'sendDownloadingFailedToVcMeta',
                     ],
-                    target: '#issuersMachine.selectingIssuer',
+                    target: '#issuersMachine.error',
                   },
                 },
               },
@@ -336,12 +359,11 @@ export const IssuersMachine = model.createMachine(
                     {
                       cond: 'isKeyTypeNotFound',
                       actions: [
-                        'resetSelectedCredentialType',
                         'setError',
                         'resetLoadingReason',
                         'sendDownloadingFailedToVcMeta',
                       ],
-                      target: '#issuersMachine.selectingIssuer',
+                      target: '#issuersMachine.error',
                     },
                     {
                       target: 'generateKeyPair',
@@ -352,7 +374,6 @@ export const IssuersMachine = model.createMachine(
               userCancelledBiometric: {
                 on: {
                   TRY_AGAIN: {
-                    actions: ['setLoadingReasonAsDownloadingCredentials'],
                     target: 'getKeyPairFromKeystore',
                   },
                   RESET_ERROR: {
@@ -383,16 +404,32 @@ export const IssuersMachine = model.createMachine(
                   },
                   onError: {
                     actions: [
-                      'resetSelectedCredentialType',
                       'setError',
                       'resetLoadingReason',
                       'sendDownloadingFailedToVcMeta',
                     ],
-                    target: '#issuersMachine.selectingIssuer',
+                    target: '#issuersMachine.error',
                   },
                 },
               },
             },
+          },
+        },
+      },
+      cachingCredentialOfferIssuerWellknown: {
+        invoke: {
+          src: 'cacheIssuerWellknown',
+          onDone: {
+            actions: [
+              'setCredentialOfferIssuer',
+              'setCredentialOfferIssuerWellknownResponse',
+              'setCredentialOfferCredentialType',
+            ],
+            target: 'proccessingCredential',
+          },
+          onError: {
+            actions: ['resetLoadingReason'],
+            target: 'error',
           },
         },
       },
@@ -403,38 +440,27 @@ export const IssuersMachine = model.createMachine(
             actions: [
               'setVerifiableCredential',
               'setCredentialWrapper',
-              'sendSuccessEndEvent',
-              'setVerificationResult', // to be modified after verification is implemented for external issuers
             ],
-            target: 'storing',
+            target: 'verifyingCredential',
           },
         },
       },
-
       downloadIssuerWellknown: {
         invoke: {
           src: 'downloadIssuerWellknown',
           onDone: {
-            actions: [
-              'updateIssuerFromWellknown',
-              'updateSelectedIssuerWellknownResponse',
-            ],
+            actions: ['updateIssuerFromWellknown'],
             target: 'getCredentialTypes',
           },
           onError: {
-            actions: ['setNetworkOrTechnicalError', 'resetLoadingReason'],
+            actions: ['setError', 'resetLoadingReason'],
             target: 'error',
           },
         },
       },
 
       getCredentialTypes: {
-        on: {
-          TRY_AGAIN: {
-            actions: ['downloadIssuerWellknown'],
-            target: 'idle',
-          },
-        },
+        description: 'fetches the supported credential types from the issuer',
         invoke: {
           src: 'getCredentialTypes',
           onDone: {
@@ -452,6 +478,10 @@ export const IssuersMachine = model.createMachine(
       },
 
       selectingCredentialType: {
+        description: 'waits for the user to select a credential type',
+        entry: model.assign({
+          authEndpointToOpen: () => false,
+        }),
         on: {
           CANCEL: {
             target: 'displayIssuers',
@@ -483,16 +513,6 @@ export const IssuersMachine = model.createMachine(
               target: '.userCancelledBiometric',
             },
             {
-              cond: 'isGenericError',
-              actions: [
-                'resetSelectedCredentialType',
-                'setError',
-                'resetLoadingReason',
-                'sendDownloadingFailedToVcMeta',
-              ],
-              target: 'selectingIssuer',
-            },
-            {
               actions: ['setError', 'resetLoadingReason'],
               target: 'error',
             },
@@ -507,8 +527,12 @@ export const IssuersMachine = model.createMachine(
               }),
             ],
           },
+          TOKEN_REQUEST: {
+            actions: ['setTokenRequestObject'],
+            target: '.tokenRequest',
+          },
           PROOF_REQUEST: {
-            actions: ['setAccessToken', 'setCNonce'],
+            actions: ['setCNonce', 'setWellknwonKeyTypes'],
             target: '.keyManagement',
           },
           CANCEL: {
@@ -519,9 +543,50 @@ export const IssuersMachine = model.createMachine(
         initial: 'idle',
         states: {
           idle: {},
+          tokenRequest: {
+            invoke: {
+              src: 'sendTokenRequest',
+              onDone: {
+                actions: ['setTokenResponseObject', 'setAccessToken'],
+                target: 'sendTokenResponse',
+              },
+              onError: {
+                actions: [
+                  'setError',
+                  (_context, event, _meta) =>
+                    console.error(
+                      'Error sending token request in downloadCredentials',
+                      event,
+                    ),
+                  'resetLoadingReason',
+                ],
+                target: '#issuersMachine.error',
+              },
+            },
+          },
+          sendTokenResponse: {
+            invoke: {
+              src: 'sendTokenResponse',
+              onDone: {
+                target: '#issuersMachine.downloadCredentials.idle',
+              },
+              onError: {
+                actions: [
+                  'setError',
+                  (_context, event, _meta) =>
+                    console.error(
+                      'Error sending token response in downloadCredentials',
+                      event,
+                    ),
+                  'resetLoadingReason',
+                ],
+                target: '#issuersMachine.error',
+              },
+            },
+          },
           constructProof: {
             invoke: {
-              src: 'constructProofForTrustedIssuers',
+              src: 'constructAndSendProofForTrustedIssuers',
               onDone: {
                 target: '#issuersMachine.downloadCredentials.idle',
               },
@@ -532,7 +597,6 @@ export const IssuersMachine = model.createMachine(
                 },
                 {
                   actions: [
-                    'resetSelectedCredentialType',
                     'setError',
                     'resetLoadingReason',
                     'sendDownloadingFailedToVcMeta',
@@ -565,12 +629,11 @@ export const IssuersMachine = model.createMachine(
                   },
                   onError: {
                     actions: [
-                      'resetSelectedCredentialType',
                       'setError',
                       'resetLoadingReason',
                       'sendDownloadingFailedToVcMeta',
                     ],
-                    target: '#issuersMachine.selectingIssuer',
+                    target: '#issuersMachine.error',
                   },
                 },
               },
@@ -590,12 +653,11 @@ export const IssuersMachine = model.createMachine(
                     {
                       cond: 'isKeyTypeNotFound',
                       actions: [
-                        'resetSelectedCredentialType',
                         'setError',
                         'resetLoadingReason',
                         'sendDownloadingFailedToVcMeta',
                       ],
-                      target: '#issuersMachine.selectingIssuer',
+                      target: '#issuersMachine.error',
                     },
                     {
                       target: 'generateKeyPair',
@@ -624,7 +686,16 @@ export const IssuersMachine = model.createMachine(
                       'setLoadingReasonAsDownloadingCredentials',
                       'storeKeyPair',
                     ],
-                    target: '#issuersMachine.downloadCredentials',
+                    target:
+                      '#issuersMachine.downloadCredentials.constructProof',
+                  },
+                  onError: {
+                    actions: [
+                      'setError',
+                      'resetLoadingReason',
+                      'sendDownloadingFailedToVcMeta',
+                    ],
+                    target: '#issuersMachine.error',
                   },
                 },
               },
@@ -637,7 +708,7 @@ export const IssuersMachine = model.createMachine(
         invoke: {
           src: 'verifyCredential',
           onDone: {
-            actions: ['sendSuccessEndEvent', 'setVerificationResult'],
+            actions: ['sendSuccessEndEvent', 'setVerificationResult','resetCredentialOfferFlowType',],
             target: 'storing',
           },
           onError: [
@@ -662,6 +733,7 @@ export const IssuersMachine = model.createMachine(
         on: {
           RESET_VERIFY_ERROR: {
             actions: ['resetVerificationErrorMessage'],
+            target: 'selectingIssuer',
           },
         },
       },
@@ -681,6 +753,7 @@ export const IssuersMachine = model.createMachine(
           onDone: {
             cond: 'isSignedIn',
             actions: ['sendBackupEvent'],
+            target: 'done',
           },
         },
       },
@@ -732,17 +805,13 @@ export interface issuerType {
   credential_issuer: string;
   protocol: string;
   client_id: string;
-  '.well-known': string;
   redirect_uri: string;
   token_endpoint: string;
-  proxy_token_endpoint: string;
   credential_endpoint: string;
-  credential_audience: string;
   credential_configurations_supported: object;
   display: [displayType];
   credentialTypes: [CredentialTypes];
   authorizationEndpoint: string;
-  grants: object;
   credential_issuer_host: string;
   authorization_servers: [string];
 }

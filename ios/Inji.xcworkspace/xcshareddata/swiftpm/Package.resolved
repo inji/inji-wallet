@@ -1,5 +1,5 @@
 {
-  "originHash" : "5737403c0b9f43f503dc98794e8805e76575a62d145e75f6c4c953bff4223584",
+  "originHash" : "327f856a9787c0e4bf4517bc1e50ff1e45a4aee6adcc4233b1e042d022a881f0",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/CryptoSwift.git",
       "state" : {
-        "revision" : "729e01bc9b9dab466ac85f21fb9ee2bc1c61b258",
-        "version" : "1.8.4"
+        "revision" : "132f5b209cd0251067f29cdb59c97d9f8a63252a",
+        "version" : "1.8.5"
       }
     },
     {
@@ -67,19 +67,19 @@
     {
       "identity" : "inji-openid4vp-ios-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mosip/inji-openid4vp-ios-swift",
+      "location" : "https://github.com/mosip/inji-openid4vp-ios-swift.git",
       "state" : {
-        "branch" : "develop",
-        "revision" : "b93f78c94cd7632f2a80e869520788abd1378621"
+        "branch" : "release-0.4.x",
+        "revision" : "27c07b6294333adee624a4bc6b3b14506b9dae3e"
       }
     },
     {
       "identity" : "inji-vci-client-ios-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mosip/inji-vci-client-ios-swift/",
+      "location" : "https://github.com/mosip/inji-vci-client-ios-swift",
       "state" : {
-        "branch" : "develop",
-        "revision" : "8a39bbf7805af4c615904090a027fa472e5f4534"
+        "branch" : "release-0.4.x",
+        "revision" : "e4e5e57bccf3a42f094b27047c68c7ce77bc03b3"
       }
     },
     {
@@ -96,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/pixelpass-ios-swift/",
       "state" : {
-        "branch" : "develop",
-        "revision" : "78a8b507f5bd0046e273e3ba962696b44aea0e33"
+        "branch" : "release-0.6.x",
+        "revision" : "78faea2ff48626ef9a6d198123bcf7b299acefd1"
       }
     },
     {
@@ -130,9 +130,9 @@
     {
       "identity" : "swiftcbor",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/valpackett/SwiftCBOR",
+      "location" : "https://github.com/abhip2565/SwiftCBOR",
       "state" : {
-        "revision" : "04ccff117f6549121d5721ec84fdf0162122b90e",
+        "revision" : "cc4e195a0ea2dce88f2fd6c6d73b2504e3c884fd",
         "version" : "0.5.0"
       }
     },

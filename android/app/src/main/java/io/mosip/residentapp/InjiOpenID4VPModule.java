@@ -22,9 +22,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import io.mosip.openID4VP.constants.ClientIdScheme;
-import io.mosip.openID4VP.constants.ContentEncrytionAlgorithm;
+import io.mosip.openID4VP.constants.ContentEncryptionAlgorithm;
 import io.mosip.openID4VP.constants.KeyManagementAlgorithm;
 import io.mosip.openID4VP.constants.RequestSigningAlgorithm;
+import io.mosip.openID4VP.constants.ResponseType;
+import io.mosip.openID4VP.constants.VPFormatType;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
 
 import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
@@ -159,23 +161,21 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                 ? walletMetadata.getBoolean("presentation_definition_uri_supported")
                 : null;
 
-        Map<FormatType, VPFormatSupported> vpFormatsSupportedMap = parseVpFormatsSupported(walletMetadata);
+        Map<VPFormatType, VPFormatSupported> vpFormatsSupportedMap = parseVpFormatsSupported(walletMetadata);
 
-        ContentEncrytionAlgorithm algorithm = ContentEncrytionAlgorithm.Companion.fromValue("value");
-        WalletMetadata walletMetadata1 = new WalletMetadata(
+        return  new WalletMetadata(
                 presentationDefinitionUriSupported,
                 vpFormatsSupportedMap,
                 convertReadableArrayToEnumList(walletMetadata, "client_id_schemes_supported", ClientIdScheme.Companion::fromValue),
                 convertReadableArrayToEnumList(walletMetadata, "request_object_signing_alg_values_supported", RequestSigningAlgorithm.Companion::fromValue),
                 convertReadableArrayToEnumList(walletMetadata, "authorization_encryption_alg_values_supported", KeyManagementAlgorithm.Companion::fromValue),
-                convertReadableArrayToEnumList(walletMetadata, "authorization_encryption_enc_values_supported", ContentEncrytionAlgorithm.Companion::fromValue)
+                convertReadableArrayToEnumList(walletMetadata, "authorization_encryption_enc_values_supported", ContentEncryptionAlgorithm.Companion::fromValue),
+                convertReadableArrayToEnumList(walletMetadata, "response_type_supported", ResponseType.Companion::fromValue)
         );
-        System.out.println("Wallet Metadata: " + walletMetadata1);
-        return walletMetadata1;
     }
 
-    private Map<FormatType, VPFormatSupported> parseVpFormatsSupported(ReadableMap walletMetadata) {
-        Map<FormatType, VPFormatSupported> vpFormatsSupportedMap = new HashMap<>();
+    private Map<VPFormatType, VPFormatSupported> parseVpFormatsSupported(ReadableMap walletMetadata) {
+        Map<VPFormatType, VPFormatSupported> vpFormatsSupportedMap = new HashMap<>();
         if (walletMetadata.hasKey("vp_formats_supported")) {
             ReadableMap vpFormatsMap = walletMetadata.getMap("vp_formats_supported");
             if (vpFormatsMap != null) {
@@ -197,14 +197,13 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     }
 
 
-    private void addVpFormatSupported(ReadableMap vpFormatsMap, String key, Map<FormatType, VPFormatSupported> vpFormatsSupportedMap) {
+    private void addVpFormatSupported(ReadableMap vpFormatsMap, String key, Map<VPFormatType, VPFormatSupported> vpFormatsSupportedMap) {
         if (vpFormatsMap.hasKey(key)) {
             ReadableMap formatMap = vpFormatsMap.getMap(key);
             if (formatMap != null && formatMap.hasKey("alg_values_supported")) {
                 ReadableArray algArray = formatMap.getArray("alg_values_supported");
                 List<String> algValuesList = algArray != null ? convertReadableArrayToList(algArray) : null;
-
-                vpFormatsSupportedMap.put(FormatType.Companion.fromValue(key), new VPFormatSupported(algValuesList));
+                vpFormatsSupportedMap.put(VPFormatType.Companion.fromValue(key), new VPFormatSupported(algValuesList));
             }
         }
     }
@@ -212,7 +211,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
 
     private List<Verifier> parseVerifiers(ReadableArray verifiersArray) {
-        List<Verifier> verifiers = new ArrayList<>();
+        List<Verifier> verifiers = new ArrayList();
 
         for (int i = 0; i < verifiersArray.size(); i++) {
             ReadableMap verifierMap = verifiersArray.getMap(i);

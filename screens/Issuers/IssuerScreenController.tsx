@@ -12,17 +12,14 @@ import {
   selectSelectedIssuer,
   selectSelectingCredentialType,
   selectStoring,
-  selectVerificationErrorMessage,
-  selectIsNonGenericError,
-  selectIsQrScanning,
-  selectCredentialOfferData,
+  selectVerificationErrorMessage, selectIsQrScanning,
   selectAuthWebViewStatus,
   selectAuthEndPoint,
   selectIsTxCodeRequested,
   selectIsConsentRequested,
   selectIssuerLogo,
   selectIssuerName,
-  selectTxCodeDisplayDetails,
+  selectTxCodeDisplayDetails
 } from '../../machines/Issuers/IssuersSelectors';
 import { ActorRefFrom } from 'xstate';
 import { BOTTOM_TAB_ROUTES } from '../../routes/routesConstants';
@@ -40,10 +37,10 @@ export function useIssuerScreenController({ route, navigation }) {
 
   return {
     issuers: useSelector(service, selectIssuers),
-    issuerLogo: useSelector(service,selectIssuerLogo),
-    issuerName: useSelector(service,selectIssuerName),
-    isTxCodeRequested: useSelector(service,selectIsTxCodeRequested),
-    txCodeDisplayDetails: useSelector(service,selectTxCodeDisplayDetails),
+    issuerLogo: useSelector(service, selectIssuerLogo),
+    issuerName: useSelector(service, selectIssuerName),
+    isTxCodeRequested: useSelector(service, selectIsTxCodeRequested),
+    txCodeDisplayDetails: useSelector(service, selectTxCodeDisplayDetails),
     authEndpount: useSelector(service, selectAuthEndPoint),
     selectedIssuer: useSelector(service, selectSelectedIssuer),
     errorMessageType: useSelector(service, selectErrorMessageType),
@@ -51,7 +48,6 @@ export function useIssuerScreenController({ route, navigation }) {
     isBiometricsCancelled: useSelector(service, selectIsBiometricCancelled),
     isDone: useSelector(service, selectIsDone),
     isIdle: useSelector(service, selectIsIdle),
-    isNonGenericError: useSelector(service, selectIsNonGenericError),
     loadingReason: useSelector(service, selectLoadingReason),
     isStoring: useSelector(service, selectStoring),
     isQrScanning: useSelector(service, selectIsQrScanning),
@@ -61,9 +57,8 @@ export function useIssuerScreenController({ route, navigation }) {
       selectSelectingCredentialType,
     ),
     isConsentRequested: useSelector(
-     service,selectIsConsentRequested
+      service, selectIsConsentRequested
     ),
-    credentialOfferData: useSelector(service, selectCredentialOfferData),
     supportedCredentialTypes: useSelector(
       service,
       selectSupportedCredentialTypes,

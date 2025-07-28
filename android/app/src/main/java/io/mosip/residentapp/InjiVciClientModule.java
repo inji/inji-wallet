@@ -9,22 +9,14 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
 import com.google.gson.Gson;
-import java.util.Objects;
-import io.mosip.residentapp.VCIClientCallbackBridge;
-import io.mosip.residentapp.VCIClientBridge;
+
+import java.util.Map;
 
 import io.mosip.vciclient.VCIClient;
-import io.mosip.vciclient.constants.CredentialFormat;
-import io.mosip.vciclient.credentialOffer.CredentialOffer;
-import io.mosip.vciclient.credentialOffer.CredentialOfferService;
-import io.mosip.vciclient.credentialResponse.CredentialResponse;
-import io.mosip.vciclient.proof.jwt.JWTProof;
-import io.mosip.vciclient.proof.Proof;
-import io.mosip.vciclient.issuerMetadata.IssuerMetadata;
-import io.mosip.vciclient.clientMetadata.ClientMetadata;
+import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata;
+import io.mosip.vciclient.credential.response.CredentialResponse;
+import io.mosip.vciclient.token.TokenResponse;
 
 public class InjiVciClientModule extends ReactContextBaseJavaModule {
     private VCIClient vciClient;
@@ -70,6 +62,29 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void sendTokenResponseFromJS(String tokenResponseJson) {
+        TokenResponse tokenResponse = new Gson().fromJson(tokenResponseJson, TokenResponse.class);
+        VCIClientCallbackBridge.completeTokenResponse(tokenResponse);
+    }
+
+    @ReactMethod
+    public void getIssuerMetadata(String credentialIssuer, Promise promise) {
+        new Thread(() -> {
+            try {
+                Map<String, Object> issuerMetadata = vciClient.getIssuerMetadata(credentialIssuer);
+                reactContext.runOnUiQueueThread(() -> {
+                    String json = new Gson().toJson(issuerMetadata, Map.class);
+                    promise.resolve(json);
+                });
+            } catch (Exception e) {
+                reactContext.runOnUiQueueThread(() -> {
+                    promise.reject("GET_ISSUER_METADATA_FAILED", e.getMessage(), e);
+                });
+            }
+        }).start();
+    }
+
+    @ReactMethod
     public void requestCredentialByOffer(String credentialOffer,String clientMetadataJson, Promise promise) {
         new Thread(() -> {
             try {
@@ -88,15 +103,13 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void requestCredentialFromTrustedIssuer(String resolvedIssuerMetaJson, String clientMetadataJson, Promise promise) {
+    public void requestCredentialFromTrustedIssuer(String credentialIssuer, String credentialConfigurationId, String clientMetadataJson, Promise promise) {
         new Thread(() -> {
             try {
-                IssuerMetadata issuerMetaData = new Gson().fromJson(
-                        resolvedIssuerMetaJson, IssuerMetadata.class);
                 ClientMetadata clientMetadata= new Gson().fromJson(
                     clientMetadataJson, ClientMetadata.class);
 
-                CredentialResponse response = VCIClientBridge.requestCredentialFromTrustedIssuerSync(vciClient, issuerMetaData,clientMetadata);
+                CredentialResponse response = VCIClientBridge.requestCredentialFromTrustedIssuerSync(vciClient, credentialIssuer, credentialConfigurationId,clientMetadata);
 
                 reactContext.runOnUiQueueThread(() -> {
                     promise.resolve(response != null ? response.toJsonString() : null);

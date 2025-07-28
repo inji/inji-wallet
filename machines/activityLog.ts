@@ -157,7 +157,7 @@ export const activityLogMachine =
         setAllWellknownConfigResponse: model.assign({
           wellKnownIssuerMap: (_, event) => {
             Object.entries(event.response).forEach(([key, value]) => {
-              event.response[key] = parseJSON(value);
+              event.response[key] = parseJSON(value).response;
             });
 
             return event.response as Record<string, Object>;
