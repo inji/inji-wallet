@@ -10,6 +10,7 @@ import {ActivityLogEvents} from '../../activityLog';
 import {BackupEvents} from '../../backupAndRestore/backup/backupMachine';
 import {StoreEvents} from '../../store';
 import {vcVerificationBannerDetails} from '../../../components/BannerNotificationContainer';
+import {VC} from './vc';
 
 export const VCMetaActions = (model: any) => {
   return {
@@ -220,7 +221,14 @@ export const VCMetaActions = (model: any) => {
     }),
 
     setWalletBindingSuccess: model.assign({
-      walletBindingSuccess: true,
+      walletBindingSuccess: () => true,
+      myVcs: (
+        context: {myVcs: {[x: string]: VC}},
+        event: {vcKey: string; vc: VC},
+      ) => {
+        context.myVcs[event.vcKey] = event.vc;
+        return context.myVcs;
+      },
     }),
     resetWalletBindingSuccess: model.assign({
       walletBindingSuccess: false,
