@@ -146,7 +146,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         assertTrue(credentialRegistryPage.isCredentialRegistryErrorMessageDisplayed(), "Verify if error message is displayed");
     }
 //
-//    @Test
+//    @Test   // require otp flow for this test
 //    public void generateUinInNewEnv() throws InterruptedException {
 //        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(driver);
 //
@@ -200,7 +200,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 //        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 //    }
 //
-//    @Test
+//    @Test // require otp flow for this test
 //    public void retrivingUinInOtherEnv() throws InterruptedException {
 //        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(driver);
 //
@@ -244,7 +244,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 //        assertTrue(retrieveIdPage.isAidIsNotReadyYetErrorDisplayed(), "Verify if aid is not ready displayed");
 //    }
 //
-//    @Test
+//    @Test // require otp flow for this test
 //    public void downloadAndVerifyVcInTwoEnv() throws InterruptedException {
 //        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(driver);
 //
@@ -314,7 +314,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 ////        assertTrue(homePage.isSecondNameDisplayed(TestDataReader.readData("fullName")), "Verify if full name is displayed");
 //    }
 //
-//    @Test
+//    @Test // require otp flow for this test
 //    public void downloadVcAndActivateItInOtherEnv() throws InterruptedException {
 //        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(driver);
 //
@@ -519,7 +519,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
     }
 
 
-//    @Test
+//    @Test // require otp flow for this test
 //    public void downloadVcInNewEnvAndVerifyInDetailedVcViewPage() throws InterruptedException {
 //        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(driver);
 //
@@ -715,7 +715,6 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         EsignetLoginPage esignetLoginPage = new EsignetLoginPage(driver);
         addNewCardPage.ClickOnContinueButton();
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-
 
         assertTrue(esignetLoginPage.isEnterYourVidTextDisplayed(), "Verify if enter your vid text is displayed");
         OtpVerificationPage otpVerification= esignetLoginPage.setEnterIdTextBox(TestDataReader.readData("Mock"));
