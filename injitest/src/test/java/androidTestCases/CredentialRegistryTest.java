@@ -48,12 +48,10 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
         addNewCardPage.ClickOnContinueButton();
-//        assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");
          retrieveIdPage.setEnterIdTextBox(TestDataReader.readData("newuin"));
         OtpVerificationPage otpVerification = new OtpVerificationPage(driver);
 
         otpVerification.clickOnGetOtpButton();
-//        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
         otpVerification.enterOtpFor(BaseTestCase.getOtp(), Target.ANDROID);
         EsignetLoginPage esignetLoginPage = new EsignetLoginPage(driver);
         esignetLoginPage.clickOnVerifyButton();
@@ -76,8 +74,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
-//        assertTrue(detailedVcViewPage.isCredentialRegistryTextDisplayed(),"Verify if is credential registry text displayed");
-//        assertEquals(detailedVcViewPage.getCredentialRegistryValue(), TestDataReader.readData("newEnv"), "Verify changed env is displayed in detailed vc");
+
     }
 
     @Test
@@ -419,7 +416,6 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 
         EsignetLoginPage esignetLoginPage =  addNewCardPage.clickOnDownloadViaEsignet();
         addNewCardPage.ClickOnContinueButton();
-//        assertTrue(esignetLoginPage.isEsignetLoginPageDisplayed(), "Verify if esignet login page displayed");
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
 
@@ -436,13 +432,11 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
         detailedVcViewPage.clickOnQrCodeButton();
-//        assertTrue(detailedVcViewPage.isQrCodeDisplayed(), "Verify if QR Code header is displayed");
 
         detailedVcViewPage.clickOnQrCrossIcon();
         assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed");
         assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed Vc view page is displayed");
         assertEquals(detailedVcViewPage.getNameInDetailedVcView(), TestDataReader.readData("fullName"), "Verify if full name is displayed");
-        //assertEquals(detailedVcViewPage.getDateOfBirthInDetailedVcView(), TestDataReader.readData("dateOfBirth"), "Verify if date of birth is displayed");
         assertEquals(detailedVcViewPage.getGenderInDetailedVcView(), TestDataReader.readData("gender"), "Verify if gender is displayed");
         assertEquals(detailedVcViewPage.getIdTypeValueInDetailedVcView(), TestDataReader.readData("idType"), "Verify if id type is displayed");
         assertEquals(detailedVcViewPage.getStatusInDetailedVcView(), TestDataReader.readData("status"), "Verify if status is displayed");
@@ -659,7 +653,6 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 
         EsignetLoginPage esignetLoginPage = new EsignetLoginPage(driver);
                 addNewCardPage.ClickOnContinueButton();
-//        assertTrue(esignetLoginPage.isEsignetLoginPageDisplayed(), "Verify if esignet login page displayed");
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
 
@@ -676,7 +669,6 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
         detailedVcViewPage.clickOnQrCodeButton();
-//        assertTrue(detailedVcViewPage.isQrCodeDisplayed(), "Verify if QR Code header is displayed");
 
         detailedVcViewPage.clickOnQrCrossIcon();
         assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed");
@@ -722,7 +714,6 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 
         EsignetLoginPage esignetLoginPage = new EsignetLoginPage(driver);
         addNewCardPage.ClickOnContinueButton();
-//        assertTrue(esignetLoginPage.isEsignetLoginPageDisplayed(), "Verify if esignet login page displayed");
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
 
@@ -739,7 +730,6 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
         detailedVcViewPage.clickOnQrCodeButton();
-//        assertTrue(detailedVcViewPage.isQrCodeDisplayed(), "Verify if QR Code header is displayed");
 
         detailedVcViewPage.clickOnQrCrossIcon();
         assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed");
@@ -787,7 +777,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 
         EsignetLoginPage esignetLoginPage = new EsignetLoginPage(driver);
         addNewCardPage.ClickOnContinueButton();
-//        assertTrue(esignetLoginPage.isEsignetLoginPageDisplayed(), "Verify if esignet login page displayed");
+
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
 
@@ -795,7 +785,6 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         OtpVerificationPage otpVerification= esignetLoginPage.setEnterIdTextBox(TestDataReader.readData("LandRegistary"));
 
         esignetLoginPage.clickOnGetOtpButton();
-//        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
         otpVerification.enterOtpForEsignet(TestDataReader.readData("otp"), Target.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
@@ -804,7 +793,6 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
         detailedVcViewPage.clickOnQrCodeButton();
-//        assertTrue(detailedVcViewPage.isQrCodeDisplayed(), "Verify if QR Code header is displayed");
 
         detailedVcViewPage.clickOnQrCrossIcon();
         assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed");
