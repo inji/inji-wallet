@@ -280,7 +280,7 @@ fileignoreconfig:
   - filename: injitest/src/test/java/androidTestCases/ActivateVcTest.java
     checksum: ef35bd00dfa77e62018f11fa5ae8864720b1abdfa5da04dc429c046c72bab7c8
   - filename: machines/VerifiableCredential/VCMetaMachine/VCMetaActions.ts
-    checksum: 5ff9b2a0ad8b7f38b95ad84ec2006b8aecf119c678fadebb18de4ffffd966da8
+    checksum: 3bf2453601a0be8a762570a56aa881f703e55f7b3eb6c61faf99218bb75e6c48
   - filename: injitest/src/test/java/androidTestCases/DeletingVcTest.java
     checksum: 8ce5adb75377348b48613c06fa759a63b9f0f9dc20d51218bbe13c4bf1f93d5d
   - filename: injitest/src/test/java/androidTestCases/GenerateUinOrVidTest.java
@@ -373,7 +373,9 @@ fileignoreconfig:
   - filename: components/FaceScanner/LivenessDetection.tsx
     checksum: d4140a42ee9ca0f7c90e490f762d181a723fd9dd20db891cbbe53bfbd8f81632
   - filename: machines/VerifiableCredential/VCItemMachine/VCItemActions.ts
-    checksum: bc11e275227ccf93c5e869b47bb2b63454758983b8fc0e105004fefa1b169091
+    checksum: 511f6f95c0491ad16b03236cd7cc3ef5f4a89d336be1a0202f3f0aaf9e29497d
+  - filename: machines/VerifiableCredential/VCMetaMachine/VCMetaEvents.ts
+    checksum: 9143fde5bb626a35406a104eaa6d110c5e771dbf450cf23fab09271512adf493
   - filename: machines/app.ts
     checksum: 5da59bb384d04e29c7745d773108903fa144275c57edc1aca1898fcae7baea84
   - filename: shared/cryptoutil/signFormatConverter.ts

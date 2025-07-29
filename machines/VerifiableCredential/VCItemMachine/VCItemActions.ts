@@ -124,7 +124,7 @@ export const VCItemActions = model => {
     setContext: model.assign((context, event) => {
       const vcMetadata = VCMetadata.fromVC(context.vcMetadata);
       if (!vcMetadata.id) {
-          const credId = UUID.generate();
+        const credId = UUID.generate();
         vcMetadata.id = `${credId}_${vcMetadata.issuer}`;
       }
       return {
@@ -270,8 +270,17 @@ export const VCItemActions = model => {
     unSetBindingTransactionId: assign({bindingTransactionId: () => ''}),
     sendWalletBindingSuccess: send(
       context => {
+        const {
+          serviceRefs,
+          isMachineInKebabPopupState,
+          verificationStatus,
+          showVerificationStatusBanner,
+          ...data
+        } = context;
         return {
           type: 'WALLET_BINDING_SUCCESS',
+          vcKey: context.vcMetadata.getVcKey(),
+          vc: data,
         };
       },
       {
@@ -449,7 +458,6 @@ export const VCItemActions = model => {
     }),
     logDownloaded: send(
       (context: any) => {
-        const {serviceRefs, ...data} = context;
         return ActivityLogEvents.LOG_ACTIVITY(
           VCActivityLog.getLogFromObject({
             _vcKey: context.vcMetadata.getVcKey(),
