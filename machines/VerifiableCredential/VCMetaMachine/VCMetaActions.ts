@@ -223,7 +223,7 @@ export const VCMetaActions = (model: any) => {
     setWalletBindingSuccess: model.assign({
       walletBindingSuccess: () => true,
       myVcs: (
-        context: {myVcs: {[x: string]: VC}},
+        context: {myVcs: {[vcKey: string]: VC}},
         event: {vcKey: string; vc: VC},
       ) => {
         context.myVcs[event.vcKey] = event.vc;
