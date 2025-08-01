@@ -2,13 +2,13 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "33.0.0"
+        buildToolsVersion = "35.0.0"
         minSdkVersion = 24
-        compileSdkVersion = 34
-        targetSdkVersion = 34
+        compileSdkVersion = 35
+        targetSdkVersion = 35
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
         ndkVersion = "21.4.7075529"
-        kotlinVersion = "1.9.0"
+        kotlinVersion = "1.9.22"
     }
     repositories {
         google()
@@ -17,7 +17,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.2")
+        classpath("com.android.tools.build:gradle:8.4.0")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
@@ -27,7 +27,7 @@ buildscript {
 
 // @generated begin expo-camera-import - expo prebuild (DO NOT MODIFY) sync-f244f4f3d8bf7229102e8f992b525b8602c74770
 def expoCameraMavenPath = new File(["node", "--print", "require.resolve('expo-camera/package.json')"].execute(null, rootDir).text.trim(), "../android/maven")
-allprojects { repositories { 
+allprojects { repositories {
     maven{url("https://central.sonatype.com/repository/maven-snapshots/")}
     maven { url(expoCameraMavenPath) }
     mavenCentral()
@@ -42,5 +42,5 @@ allprojects { repositories {
         }
     }
     }
-} 
+}
 // @generated end expo-camera-import
