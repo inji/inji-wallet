@@ -1,0 +1,9 @@
+
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/android"
+    schedule:
+      interval: "daily"
+    target-branch: "develop"
+    open-pull-requests-limit: 50
