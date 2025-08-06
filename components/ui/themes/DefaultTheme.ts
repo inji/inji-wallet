@@ -2081,6 +2081,62 @@ export const DefaultTheme = {
     },
   }),
 
+  DisclosureOverlayStyles: StyleSheet.create({
+    overlay:{
+      padding: 0,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      width: '100%',
+      position: 'absolute',
+      bottom: 0,
+      backgroundColor: '#fff',
+    },
+    outerView:{
+      padding: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: Colors.LightGrey,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    listView:{
+      marginHorizontal: 16,
+      marginVertical: 6,
+      padding: 12,
+      borderRadius: 10,
+      borderWidth: 1,
+    },
+    noteView:{
+      marginHorizontal: 16,
+      marginBottom: 30,
+      padding: 12,
+      borderRadius: 8,
+      backgroundColor: '#FFFBEB',
+      borderColor: '#FEE685',
+      borderWidth: 1,
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+    }
+  }),
+  DisclosureInfo: StyleSheet.create({
+    view:{
+      marginTop: -16,
+      marginBottom:16,
+      marginHorizontal: 10,
+      padding: 12,
+      backgroundColor: '#EFF6FF',
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: '#BEDBFF',
+    },
+    text:{
+      fontSize: 14,
+      fontFamily: 'Inter_400Regular',
+      color: 'black',
+      flex: 1,
+    }
+  }),
+
   ICON_SMALL_SIZE: 16,
   ICON_MID_SIZE: 22,
   ICON_LARGE_SIZE: 33,

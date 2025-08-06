@@ -32,8 +32,8 @@
       "NO_CREDENTIAL_MATCHING_REQUEST": "No credentials were found that match the verification service's request based on the provided claims: {{info}}.",
       "TECHNICAL_ERROR": "Something went wrong while processing your request.",
       "INVALID_REQUEST_URI_METHOD": "Credential not shared— The verifier used a method that isn’t supported.",
-      "INVALID_AUTH_REQUEST" : "Credential sharing failed — The request had missing or incorrect information.",
-      "REQUEST_COULD_NOT_BE_PROCESSED" : "Credential not shared — Request couldn’t be processed due to a technical issue.",
+      "INVALID_AUTH_REQUEST": "Credential sharing failed — The request had missing or incorrect information.",
+      "REQUEST_COULD_NOT_BE_PROCESSED": "Credential not shared — Request couldn’t be processed due to a technical issue.",
       "INVALID_PRESENTATION_DEFINITION_URI": "Credential not shared — The verifier’s request had incorrect data format.",
       "SEND_VP_ERROR": "Credential sharing failed due to a technical issue."
     }
@@ -112,7 +112,12 @@
         "message": "Something went wrong while saving Card to the store."
       }
     },
-    "shareQRCode": "Share QR Code"
+    "shareQRCode": "Share QR Code",
+    "disclosureNote": "Your card includes specific details marked by the issuer as selectively shareable. These can be shared independently during credential presentation. Other fields not listed here can only be shared as part of the full credential, if requested by the verifier.",
+    "disclosureNoteTitle": "Please note",
+    "disclosedFieldsDescription":"Information you choose to share",
+    "disclosedFieldsTitle":"Information you choose to share",
+    "disclosureInfoNote":"Fields next to this icon indicate that the information can be shared selectively."
   },
   "HomeScreenKebabPopUp": {
     "title": "More Options",
@@ -215,13 +220,13 @@
     },
     "offerTitle": "Scan & Download Card",
     "offerDescription": "Scan a QR code to instantly download your card.",
-    "download":" Download Card",
+    "download": " Download Card",
     "errors": {
       "noInternetConnection": {
         "title": "No internet connection",
         "message": "Please check your connection and retry"
       },
-      "networkRequestFailed":{
+      "networkRequestFailed": {
         "title": "Network request failed",
         "message": "We are unable to precess your request at the moment."
       },
@@ -883,8 +888,8 @@
         "title": "No matching credentials found!",
         "message": "The verifier has requested credentials based on the following claims: [{{claims}}]. Please download the corresponding credentials and retry the sharing process."
       },
-      "noMatchingCredentialsWithMissingClaims":{
-        "title":"No matching credentials found!",
+      "noMatchingCredentialsWithMissingClaims": {
+        "title": "No matching credentials found!",
         "message": "We Couldn't find any credentials in your wallet that match this request.You may need to download the right credentials or try again later"
       },
       "invalidVerifier": {
@@ -895,23 +900,22 @@
         "title": "An Error Occured!",
         "message": "Credential mismatch detected. Ensure you have selected the right one containing the following claims: [{{claims}}] and try again."
       },
-      "vpFormatsNotSupported":{
-        "title":"Unsupported Request",
-        "message":"This request isn't supported. Please ask the verifier to try another way"
+      "vpFormatsNotSupported": {
+        "title": "Unsupported Request",
+        "message": "This request isn't supported. Please ask the verifier to try another way"
       },
-      "invalidRequestURI":{
-        "title":"Request Not Allowed",
-        "message":"The verifier used a method that’s not supported. Please ask them to update and try again."
+      "invalidRequestURI": {
+        "title": "Request Not Allowed",
+        "message": "The verifier used a method that’s not supported. Please ask them to update and try again."
       },
-      "invalidPresentationDefinitionURI":{
-        "title":"Something went wrong with the request",
-        "message":"The information needed to share your credentials is not in the right format. Please ask the verifier to provide the correct details."
+      "invalidPresentationDefinitionURI": {
+        "title": "Something went wrong with the request",
+        "message": "The information needed to share your credentials is not in the right format. Please ask the verifier to provide the correct details."
       },
-      "invalidPresentationDefinitionRef":{
-        "title":"Problem with Response",
-        "message":"The response from the verifier is invalid. Please ask the verifier to check and provide right details."
+      "invalidPresentationDefinitionRef": {
+        "title": "Problem with Response",
+        "message": "The response from the verifier is invalid. Please ask the verifier to check and provide right details."
       },
-
       "genericError": {
         "title": "Oops! An Error Occured.",
         "message": "There was a technical issue while processing your request. You can try again in a moment."
@@ -1118,8 +1122,8 @@
     "description": "We’ve sent the transaction code to your registered email Id",
     "placeholder": "Enter Transaction Code",
     "verify": "Verify",
-    "emptyCodeError":"Code cannot be empty",
-    "invalidCharacters":"Only letters and numbers are allowed",
+    "emptyCodeError": "Code cannot be empty",
+    "invalidCharacters": "Only letters and numbers are allowed",
     "TransactionCode": "Transasction Code"
   },
   "trustScreen": {

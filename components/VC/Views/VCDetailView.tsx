@@ -1,6 +1,8 @@
-import React from 'react';
-import {useTranslation} from 'react-i18next';
-import {Image, ImageBackground, ImageBackgroundProps, View} from 'react-native';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Feather  from 'react-native-vector-icons/Feather';
+import { Image, ImageBackground, ImageBackgroundProps, TouchableOpacity, View } from 'react-native';
 import {
   Credential,
   CredentialWrapper,
@@ -8,25 +10,26 @@ import {
   VerifiableCredentialData,
   WalletBindingResponse,
 } from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {Button, Column, Row, Text} from '../../ui';
-import {Theme} from '../../ui/styleUtils';
-import {QrCodeOverlay} from '../../QrCodeOverlay';
-import {SvgImage} from '../../ui/svg';
-import {isActivationNeeded} from '../../../shared/openId4VCI/Utils';
+import { Button, Column, Row, Text } from '../../ui';
+import { Theme } from '../../ui/styleUtils';
+import { QrCodeOverlay } from '../../QrCodeOverlay';
+import { SvgImage } from '../../ui/svg';
+import { isActivationNeeded } from '../../../shared/openId4VCI/Utils';
 import {
   BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS,
   DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
   Display,
   fieldItemIterator,
 } from '../common/VCUtils';
-import {VCFormat} from '../../../shared/VCFormat';
-import {VCItemField} from '../common/VCItemField';
+import { VCFormat } from '../../../shared/VCFormat';
+
 import testIDProps from '../../../shared/commonUtil';
+import { ShareableInfoModal } from './ShareableInfoModal';
 
 const getProfileImage = (face: any) => {
   if (face) {
     return (
-      <Image source={{uri: face}} style={Theme.Styles.detailedViewImage} />
+      <Image source={{ uri: face }} style={Theme.Styles.detailedViewImage} />
     );
   }
   return <></>;
@@ -35,7 +38,7 @@ const getProfileImage = (face: any) => {
 export const VCDetailView: React.FC<VCItemDetailsProps> = (
   props: VCItemDetailsProps,
 ) => {
-  const {t} = useTranslation('VcDetails');
+  const { t } = useTranslation('VcDetails');
   const logo = props.verifiableCredentialData.issuerLogo;
   const face = props.verifiableCredentialData.face;
   const verifiableCredential = props.credential;
@@ -50,7 +53,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
     } else if (
       props.verifiableCredentialData.vcMetadata.format === VCFormat.mso_mdoc
     ) {
-      const namespaces = verifiableCredential['issuerSigned']?.['nameSpaces'] ?? verifiableCredential['nameSpaces']??{};
+      const namespaces = verifiableCredential['issuerSigned']?.['nameSpaces'] ?? verifiableCredential['nameSpaces'] ?? {};
       Object.keys(namespaces).forEach(namespace => {
         (namespaces[namespace] as Array<Object>).forEach(element => {
           availableFieldNames.push(
@@ -69,7 +72,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
 
     return false;
   };
-
+  const [shareModalVisible, setShareModalVisible] = useState(false);
   return (
     <>
       <Column scroll>
@@ -117,10 +120,10 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                 <Column
                   align="space-evenly"
                   margin={'0 0 0 24'}
-                  style={{flex: 1}}>
+                  style={{ flex: 1 }}>
                   {fieldItemIterator(
-                   props.fields,
-                   props.wellknownFieldsFlag,
+                    props.fields,
+                    props.wellknownFieldsFlag,
                     verifiableCredential,
                     props.wellknown,
                     wellknownDisplayProperty,
@@ -149,6 +152,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                       props,
                     )}
                 </Column>
+                {(props.credential.disclosedKeys != null) && (<DisclosureInfoNote />)}
               </>
             </ImageBackground>
           </Column>
@@ -194,7 +198,6 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                       </Text>
                     </Column>
                   </Row>
-
                   <Button
                     testID="enableVerification"
                     title={t('enableVerification')}
@@ -235,7 +238,60 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
               ))}
           </View>
         )}
+      {
+        (props.credential.disclosedKeys != null) && (<View
+
+          style={{
+            padding: 16,
+            backgroundColor: Theme.Colors.DetailedViewBackground,
+            borderTopWidth: 1,
+            borderTopColor: Theme.Colors.lightGreyBackgroundColor,
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity
+            onPress={() => setShareModalVisible(true)}
+            testID="viewShareableInfoLink"
+            style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <Feather name="eye" size={20} color={"#007AFF"} />
+            <Text
+              style={{
+                color: '#007AFF',
+                fontSize: 16,
+                fontFamily: 'Inter_500Medium',
+              }}>
+              {t('View Shareable Information')}
+            </Text>
+          </TouchableOpacity>
+        </View>)}
+
+      <ShareableInfoModal
+        isVisible={shareModalVisible}
+        onDismiss={() => setShareModalVisible(false)}
+        disclosedPaths={Array.from(props.credential.disclosedKeys ?? {}) || []}
+      />
+
     </>
+  );
+};
+
+export const DisclosureInfoNote = () => {
+  const { t } = useTranslation('VcDetails');
+  return (
+    <View
+      style={Theme.DisclosureInfo.view}>
+      <Row align="flex-start">
+        <Icon
+          name="share-square-o"
+          size={18}
+          color={Theme.Colors.DetailsLabel}
+          style={{ marginTop: 2, marginRight: 8 }}
+        />
+        <Text
+          style={Theme.DisclosureInfo.text}>
+          {t('disclosureInfoNote')}
+        </Text>
+      </Row>
+    </View>
   );
 };
 

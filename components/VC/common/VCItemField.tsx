@@ -5,15 +5,18 @@ import {Theme} from '../../ui/styleUtils';
 import React from 'react';
 import {SvgImage} from '../../ui/svg';
 import {useTranslation} from 'react-i18next';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const VCItemFieldName = ({
   fieldName,
   testID,
   fieldNameColor: textColor = Theme.Colors.DetailsLabel,
+  isDisclosed = false,
 }: {
   fieldName: string;
   testID: string;
   fieldNameColor?: string;
+  isDisclosed?: boolean;
 }) => {
   const {t} = useTranslation('ViewVcModal');
   return (
@@ -79,6 +82,9 @@ export const VCItemFieldName = ({
           }
         />
       )}
+      {isDisclosed && (
+      <Icon name="share-square-o" size={10} color="#666" style={{marginLeft:5, marginTop:3}} />
+      )}
     </Row>
   );
 };
@@ -119,4 +125,5 @@ interface VCItemFieldProps {
   testID: string;
   fieldNameColor?: string;
   fieldValueColor?: string;
+  isDisclosed?: boolean;
 }

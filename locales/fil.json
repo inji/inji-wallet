@@ -36,7 +36,6 @@
       "REQUEST_COULD_NOT_BE_PROCESSED": "Hindi naibahagi ang kredensyal — Hindi naproseso ang kahilingan dahil sa teknikal na isyu.",
       "INVALID_PRESENTATION_DEFINITION_URI": "Hindi naibahagi ang kredensyal — Mali ang format ng datos sa kahilingan ng verifier.",
       "SEND_VP_ERROR": "Nabigong maibahagi ang kredensyal dahil sa teknikal na isyu."
-
     }
   },
   "DeviceInfoList": {
@@ -113,7 +112,12 @@
         "message": "Nagkaproblema habang sine-save ang Card sa tindahan."
       }
     },
-    "shareQRCode": "Ibahagi ang QR Code"
+    "shareQRCode": "Ibahagi ang QR Code",
+    "disclosureNote": "May mga tiyak na detalye sa iyong card na minarkahan ng issuer bilang pili lang na maaaring ibahagi. Maaaring ibahagi ang mga ito nang paisa-isa habang ipinapakita ang kredensyal. Ang ibang mga field na hindi nakalista rito ay maaari lamang ibahagi bilang bahagi ng buong kredensyal, kung hihilingin ito ng tagapagsuri.",
+    "disclosureNoteTitle": "Pakitandaan",
+    "disclosedFieldsDescription": "Impormasyon na pinili mong ibahagi",
+    "disclosedFieldsTitle": "Impormasyon na pinili mong ibahagi",
+    "disclosureInfoNote": "Ang mga field na katabi ng icon na ito ay nagpapahiwatig na maaaring piliing ibahagi ang impormasyon."
   },
   "HomeScreenKebabPopUp": {
     "title": "Higit pang mga Opsyon",

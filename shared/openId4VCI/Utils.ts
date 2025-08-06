@@ -77,6 +77,12 @@ export const updateCredentialInformation = async (
       context.selectedCredentialType.format,
     );
   }
+  if( context.selectedCredentialType.format === VCFormat.vc_sd_jwt) {
+    processedCredential = await VCProcessor.processForRendering(
+      credential,
+      context.selectedCredentialType.format,
+    )
+  }
   let verifiableCredential;
   try {
     verifiableCredential = {
@@ -168,7 +174,16 @@ export const getCredentialIssuersWellKnownConfig = async (
             fields = ldpFields;
             wellknownFieldsFlag = true;
           }
-        } else {
+        }
+        else if( format === VCFormat.vc_sd_jwt) {
+          const sdJwtFields = flattenClaimPaths(matchingWellknownDetails.claims);
+
+          if (sdJwtFields.length > 0) {
+            fields = sdJwtFields;
+            wellknownFieldsFlag = true
+          }
+        }
+        else {
           console.error(`Unsupported credential format - ${format} found`);
           throw new UnsupportedVcFormat(format);
         }
@@ -193,6 +208,28 @@ export const getCredentialIssuersWellKnownConfig = async (
       wellknownFieldsFlag || matchingWellknownDetails?.order?.length > 0,
   };
 };
+const flattenClaimPaths = (
+  claims: Record<string, any>,
+  prefix = '',
+): string[] => {
+  return Object.entries(claims).flatMap(([key, value]) => {
+    const currentPath = prefix ? `${prefix}.${key}` : key;
+
+    if (
+      value &&
+      typeof value === 'object' &&
+      !Array.isArray(value) &&
+      Object.keys(value).some(k => typeof value[k] === 'object')
+    ) {
+      // Has nested objects inside, so recurse
+      return flattenClaimPaths(value, currentPath);
+    } else {
+      // Either a primitive or an empty object or a leaf with no metadata
+      return [currentPath];
+    }
+  });
+};
+
 
 export const getDetailedViewFields = async (
   issuer: string,

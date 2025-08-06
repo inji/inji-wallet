@@ -5,24 +5,24 @@ import {
   IssuerWellknownResponse,
   VerifiableCredential,
 } from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
-import i18n, {getLocalizedField} from '../../../i18n';
-import {Row} from '../../ui';
-import {Text} from 'react-native';
-import {VCItemField} from './VCItemField';
+import i18n, { getLocalizedField } from '../../../i18n';
+import { Row } from '../../ui';
+import { Text } from 'react-native';
+import { VCItemField } from './VCItemField';
 import React from 'react';
-import {Theme} from '../../ui/styleUtils';
-import {CREDENTIAL_REGISTRY_EDIT} from 'react-native-dotenv';
-import {VCVerification} from '../../VCVerification';
-import {MIMOTO_BASE_URL} from '../../../shared/constants';
-import {VCItemDetailsProps} from '../Views/VCDetailView';
+import { Theme } from '../../ui/styleUtils';
+import { CREDENTIAL_REGISTRY_EDIT } from 'react-native-dotenv';
+import { VCVerification } from '../../VCVerification';
+import { MIMOTO_BASE_URL } from '../../../shared/constants';
+import { VCItemDetailsProps } from '../Views/VCDetailView';
 import {
   getDisplayObjectForCurrentLanguage,
   getMatchingCredentialIssuerMetadata,
 } from '../../../shared/openId4VCI/Utils';
-import {VCFormat} from '../../../shared/VCFormat';
-import {displayType} from '../../../machines/Issuers/IssuersMachine';
-import {Image} from 'react-native-elements/dist/image/Image';
-
+import { VCFormat } from '../../../shared/VCFormat';
+import { displayType } from '../../../machines/Issuers/IssuersMachine';
+import { Image } from 'react-native-elements/dist/image/Image';
+import Icon from 'react-native-vector-icons/FontAwesome';
 export const CARD_VIEW_DEFAULT_FIELDS = ['fullName'];
 export const DETAIL_VIEW_DEFAULT_FIELDS = [
   'fullName',
@@ -110,6 +110,50 @@ export const getFieldValue = (
           );
         }
       }
+      else if (format === VCFormat.vc_sd_jwt) {
+        const fieldParts = field.split('.');
+        let value: any = verifiableCredential?.fullResolvedPayload;
+
+        for (let i = 0; i < fieldParts.length; i++) {
+          const part = fieldParts[i];
+
+          if (!value) break;
+
+          value = value[part];
+
+          // If we hit an array and we still have more path to go...
+          if (Array.isArray(value) && i < fieldParts.length - 1) {
+            const remainingPath = fieldParts.slice(i + 1);
+            value = value.map(item => {
+              let inner = item;
+              for (const p of remainingPath) {
+                inner = inner?.[p];
+              }
+              return inner;
+            });
+            break;
+          }
+        }
+
+        if (Array.isArray(value) && typeof value[0] !== 'object') {
+          return value.join(', ');
+        }
+
+        if (Array.isArray(value) && typeof value[0] === 'object') {
+          if ('language' in value[0] &&
+            'value' in value[0]) {
+            return getLocalizedField(value)
+          }
+          else
+            return null;
+        }
+
+        if (typeof value === 'object' && !Array.isArray(value)) {
+          return null;
+        }
+
+        return getLocalizedField(value);
+      }
     }
   }
 };
@@ -155,6 +199,29 @@ export const getFieldName = (
         }
       }
     }
+    else if (format === VCFormat.vc_sd_jwt) {
+      const pathParts = field.split('.');
+      let currentObj = wellknown.claims;
+      for (const part of pathParts) {
+        if (!currentObj || typeof currentObj !== 'object') break;
+        currentObj = currentObj[part];
+      }
+
+      if (
+        currentObj &&
+        typeof currentObj === 'object' &&
+        currentObj.display &&
+        Array.isArray(currentObj.display)
+      ) {
+        const newFieldObj = currentObj.display.map((obj: any) => ({
+          language: obj.locale,
+          value: obj.name,
+        }));
+        return getLocalizedField(newFieldObj);
+      }
+
+      return formatKeyLabel(pathParts[pathParts.length - 1]);
+    }
   }
   return formatKeyLabel(field);
 };
@@ -163,17 +230,17 @@ const ID = ['id'];
 
 const IMAGE_KEYS = ['face', 'photo', 'picture', 'portrait', 'image'];
 
-const EXCLUDED_FIELDS_FOR_RENDERING = [...ID, ...IMAGE_KEYS];
+const EXCLUDED_FIELDS_FOR_RENDERING = [...ID, ...IMAGE_KEYS, 'cnf'];
 
 const shouldExcludeField = (field: string): boolean => {
   const normalized = field.includes('~')
     ? field.split('~')[1]
     : field.includes('.') || field.includes('[')
-    ? field
+      ? field
         .split('.')
         .pop()
         ?.replace(/\[\d+\]/g, '') ?? field
-    : field;
+      : field;
 
   return EXCLUDED_FIELDS_FOR_RENDERING.includes(normalized);
 };
@@ -236,14 +303,16 @@ const renderFieldRecursively = (
   fieldValueColor: string,
   parentKey = '',
   depth = 0,
+  renderedFields: Set<string>,
+  disclosedKeys: Set<string> = new Set(),
 ): JSX.Element[] => {
   const fullKey = parentKey ? `${parentKey}.${key}` : key;
-  const shortKey =
+  let shortKey =
     fullKey
       .split('.')
       .pop()
       ?.replace(/\[\d+\]/g, '') ?? key;
-
+  if (renderedFields.has(fullKey)) return [];
   if (shouldExcludeField(shortKey)) return [];
 
   if (value === null || value === undefined) return [];
@@ -251,27 +320,47 @@ const renderFieldRecursively = (
   // Handle arrays
   if (Array.isArray(value)) {
     const label = formatKeyLabel(key);
-    return value.flatMap((item, index) => [
-      <Text
-        key={`section-${fullKey}-${index}`}
-        style={{
-          paddingLeft: depth * 12,
-          fontWeight: '600',
-          marginTop: 8,
-          marginBottom: 4,
-          color: fieldNameColor,
-        }}>
-        • {label} {value.length > 1 ? index + 1 : ''}
-      </Text>,
-      ...renderFieldRecursively(
-        `${key}[${index}]`,
-        item,
-        fieldNameColor,
-        fieldValueColor,
-        parentKey,
-        depth + 1,
-      ),
-    ]);
+    const arrayFullKey = fullKey;
+    const isArrayDisclosed = disclosedKeys.has(arrayFullKey);
+
+    return value.flatMap((item, index) => {
+      const itemKey = `${key}[${index}]`;
+      const itemFullKey = parentKey ? `${parentKey}.${itemKey}` : itemKey;
+      const isItemDisclosed = disclosedKeys.has(itemFullKey);
+      const showDisclosureIcon = isArrayDisclosed || isItemDisclosed;
+
+      return [
+        <Row
+          key={`section-${itemFullKey}`}
+          align="flex-start"
+          style={{
+            marginTop: 8,
+            marginBottom: 4,
+          }}>
+          <Text
+            style={{
+              paddingLeft: depth * 12,
+              fontWeight: '600',
+              color: fieldNameColor,
+            }}>
+            • {label} {value.length > 1 ? index + 1 : ''}
+          </Text>
+          {showDisclosureIcon && (
+            <Icon name="share-square-o" size={14} color="#666" style={{marginLeft:2}} />
+          )}
+        </Row>,
+        ...renderFieldRecursively(
+          itemKey,
+          item,
+          fieldNameColor,
+          fieldValueColor,
+          parentKey,
+          depth + 1,
+          renderedFields,
+          disclosedKeys
+        ),
+      ];
+    });
   }
 
   // Handle objects
@@ -284,6 +373,8 @@ const renderFieldRecursively = (
         fieldValueColor,
         fullKey,
         depth + 1,
+        renderedFields,
+        disclosedKeys
       ),
     );
   }
@@ -295,8 +386,8 @@ const renderFieldRecursively = (
   if (typeof value === 'string' && value.startsWith('data:image')) {
     displayValue = (
       <Image
-        source={{uri: value}}
-        style={{width: 100, height: 100, borderRadius: 8}}
+        source={{ uri: value }}
+        style={{ width: 100, height: 100, borderRadius: 8 }}
         resizeMode="contain"
       />
     );
@@ -306,20 +397,47 @@ const renderFieldRecursively = (
   ) {
     displayValue = (
       <Image
-        source={{uri: value}}
-        style={{width: 100, height: 100, borderRadius: 8}}
+        source={{ uri: value }}
+        style={{ width: 100, height: 100, borderRadius: 8 }}
         resizeMode="contain"
       />
     );
+  } else if (
+    typeof value === 'number' &&
+    ['iat', 'nbf', 'exp'].includes(shortKey.toLowerCase())
+  ) {
+    displayValue = new Date(value * 1000).toLocaleString();
+  } else if (
+    typeof value === 'string' &&
+    /^\d+$/.test(value) &&
+    ['iat', 'nbf', 'exp'].includes(shortKey.toLowerCase())
+  ) {
+    const timestamp = parseInt(value, 10);
+    displayValue = new Date(timestamp * 1000).toLocaleString();
   } else if (/^\d{4}-\d{2}-\d{2}T/.test(displayValue)) {
     const date = new Date(displayValue);
     displayValue = date.toLocaleString();
-  } else if (displayValue.length > 100) {
+  }
+  else if (displayValue.length > 100) {
     displayValue = displayValue.slice(0, 60) + '...';
   }
 
-  const label = formatKeyLabel(shortKey);
+  const publicKeyLabelMap: Record<string, string> = {
+    iss: 'Issuer',
+    sub: 'Subject',
+    aud: 'Audience',
+    exp: 'Expires At',
+    nbf: 'Not Before',
+    iat: 'Issued At',
+    jti: 'JWT ID',
+    vct: 'Verifiable Credential Type',
+  };
 
+  if (shortKey in publicKeyLabelMap) {
+    shortKey = publicKeyLabelMap[shortKey];
+  }
+  const label = formatKeyLabel(shortKey);
+  const isDisclosed = disclosedKeys.has(fullKey);
   return [
     <Row
       key={`extra-${fullKey}`}
@@ -337,6 +455,7 @@ const renderFieldRecursively = (
         fieldNameColor={fieldNameColor}
         fieldValueColor={fieldValueColor}
         testID={`extra-${fullKey}`}
+        isDisclosed={isDisclosed}
       />
     </Row>,
   ];
@@ -352,7 +471,7 @@ export const fieldItemIterator = (
 ): JSX.Element[] => {
   const fieldNameColor = display.getTextColor(Theme.Colors.DetailsLabel);
   const fieldValueColor = display.getTextColor(Theme.Colors.Details);
-
+  const disclosedKeys = verifiableCredential.disclosedKeys || new Set<string>();
   const renderedFields = new Set<string>();
 
   const renderedMainFields = fields.map(field => {
@@ -369,6 +488,10 @@ export const fieldItemIterator = (
       display,
       props.verifiableCredentialData.vcMetadata.format,
     );
+
+    if (fieldValue == null) {
+      return null;
+    }
     renderedFields.add(field);
 
     if (
@@ -379,10 +502,11 @@ export const fieldItemIterator = (
       return null;
     }
 
+    const isDisclosed = disclosedKeys.has(field);
     return (
       <Row
         key={field}
-        style={{flexDirection: 'row', flex: 1}}
+        style={{ flexDirection: 'row', flex: 1 }}
         align="space-between"
         margin="0 8 15 0">
         <VCItemField
@@ -392,24 +516,24 @@ export const fieldItemIterator = (
           fieldNameColor={fieldNameColor}
           fieldValueColor={fieldValueColor}
           testID={field}
+          isDisclosed={isDisclosed}
         />
       </Row>
     );
   });
 
   let renderedExtraFields: JSX.Element[] = [];
-
-  if (!wellknownFieldsFlag) {
+  if (!wellknownFieldsFlag || verifiableCredential.fullResolvedPayload) {
     const renderedAll: JSX.Element[] = [];
 
     //  Extra fields from credentialSubject
     const credentialSubjectFields =
-      (verifiableCredential.credentialSubject as Record<string, any>) || {};
-
+      (verifiableCredential.credentialSubject as Record<string, any>) || verifiableCredential.fullResolvedPayload || {};
+    console.log("displayed keys:", disclosedKeys);
     const renderedSubjectFields = Object.entries(credentialSubjectFields)
       .filter(([key]) => !renderedFields.has(key))
       .flatMap(([key, value]) =>
-        renderFieldRecursively(key, value, fieldNameColor, fieldValueColor),
+        renderFieldRecursively(key, value, fieldNameColor, fieldValueColor, '', 0, renderedFields, disclosedKeys),
       );
 
     renderedAll.push(...renderedSubjectFields);
@@ -442,6 +566,8 @@ export const fieldItemIterator = (
               fieldValueColor,
               namespace,
               1,
+              renderedFields,
+              disclosedKeys
             ),
           ),
         ];
@@ -522,8 +648,8 @@ export const getCredentialTypeFromWellKnown = (
 
 export class Display {
   private readonly textColor: string | undefined = undefined;
-  private readonly backgroundColor: {backgroundColor: string};
-  private readonly backgroundImage: {uri: string} | undefined = undefined;
+  private readonly backgroundColor: { backgroundColor: string };
+  private readonly backgroundImage: { uri: string } | undefined = undefined;
 
   private defaultBackgroundColor = Theme.Colors.whiteBackgroundColor;
 
@@ -552,7 +678,7 @@ export class Display {
     return this.textColor ?? defaultColor;
   }
 
-  getBackgroundColor(): {backgroundColor: string} {
+  getBackgroundColor(): { backgroundColor: string } {
     return this.backgroundColor;
   }
 

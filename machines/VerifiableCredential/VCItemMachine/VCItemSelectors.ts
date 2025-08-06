@@ -10,6 +10,7 @@ import {
   VerifiableCredential,
   VerifiableCredentialData,
 } from '../VCMetaMachine/vc';
+import {VCFormat} from '../../../shared/VCFormat';
 
 type State = StateFrom<typeof VCItemMachine>;
 
@@ -47,10 +48,29 @@ export function selectVerifiableCredentialData(
   state: State,
 ): VerifiableCredentialData {
   const vcMetadata = new VCMetadata(state.context.vcMetadata);
-
-  const credentialSubject =
-    state.context.verifiableCredential?.credential?.credentialSubject ?? {};
-
+  const verifiableCredential = state.context.verifiableCredential;
+  let credentialSubject = {};
+  if (state.context?.format === VCFormat.ldp_vc) {
+    credentialSubject =
+      verifiableCredential?.credential?.credentialSubject ?? {};
+  } else if (state.context?.format === VCFormat.mso_mdoc) {
+    const nameSpaces =
+      verifiableCredential?.processedCredential?.issuerSigned?.nameSpaces ??
+      verifiableCredential?.processedCredential?.nameSpaces ??
+      {};
+    credentialSubject = Object.values(nameSpaces)
+      .flat()
+      .reduce((acc, item) => {
+        const key = item.elementIdentifier;
+        const value = item.elementValue;
+        acc[key] = value;
+        return acc;
+      }, {} as Record<string, any>);
+  } else if (state.context?.format === VCFormat.vc_sd_jwt) {
+    credentialSubject =
+      verifiableCredential?.processedCredential?.fullResolvedPayload ?? {};
+  }
+  console.log('context vc:', state.context);
   const faceField =
     getFaceField(credentialSubject) ??
     state.context.credential?.biometrics?.face;

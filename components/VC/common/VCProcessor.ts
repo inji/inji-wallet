@@ -3,6 +3,7 @@ import {VerifiableCredential} from '../../../machines/VerifiableCredential/VCMet
 import {VCFormat} from '../../../shared/VCFormat';
 import {getVerifiableCredential} from '../../../machines/VerifiableCredential/VCItemMachine/VCItemSelectors';
 import {parseJSON} from '../../../shared/Utils';
+import base64url from 'base64url';
 
 const {RNPixelpassModule} = NativeModules;
 
@@ -21,6 +22,141 @@ export class VCProcessor {
         );
       return parseJSON(decodedString);
     }
+    if(vcFormat === VCFormat.vc_sd_jwt) {
+      const { fullResolvedPayload, disclosedKeys, publicKeys } =
+        reconstructSdJwtFromCompact(vcData.credential.toString());
+      return {fullResolvedPayload,disclosedKeys,publicKeys};
+    }
     return getVerifiableCredential(vcData);
   }
+}
+
+/*
+Transforms SD-JWT into a fully reconstructable JSON object
+Input: full SD-JWT string (with disclosures appended)
+Output:
+- fullResolvedPayload: resolved JSON with all disclosed claims
+- disclosedKeys: Set of keys that were disclosed via disclosures (as full JSON paths)
+- publicKeys: Set of keys that were present in JWT payload directly (non-selectively-disclosable)
+*/
+
+import jwtDecode from 'jwt-decode';
+import { sha256 } from '@noble/hashes/sha2';
+
+export function reconstructSdJwtFromCompact(
+  sdJwtCompact: string,
+  hashAlg: 'sha-256' | string = 'sha-256'
+): {
+  fullResolvedPayload: Record<string, any>;
+  disclosedKeys: Set<string>;
+  publicKeys: Set<string>;
+} {
+  const sdJwtPublicKeys = ["iss", "sub", "aud", "exp", "nbf", "iat", "jti"];
+  console.log('Starting SD-JWT reconstruction...');
+  const disclosedKeys = new Set<string>();
+  const publicKeys = new Set<string>();
+  const digestToDisclosure: Record<string, any[]> = {};
+
+  // Split SD-JWT into parts: [jwt, disclosure1, disclosure2, ...]
+  const parts = sdJwtCompact.trim().split('~');
+  console.log('Split SD-JWT into parts:', parts);
+  const jwt = parts[0];
+  const disclosures = parts.slice(1);
+  const payload: any = jwtDecode(jwt);
+  console.log('Decoded JWT payload:', payload);
+
+  // Parse disclosures
+  for (const disclosureB64 of disclosures) {
+    if(disclosureB64.length>0) {
+    console.log('Processing disclosure:', disclosureB64);
+    const decodedB64 = disclosureB64.replace(/-/g, '+').replace(/_/g, '/');
+    const decoded = JSON.parse(Buffer.from(decodedB64, 'base64').toString('utf-8'));
+    console.log('Decoded disclosure:', decoded);
+    const digestInput = disclosureB64
+    console.log('Digest input for disclosure:', digestInput);
+    const digest = base64url(Buffer.from(sha256(digestInput)));
+    console.log('Computed digest for disclosure:', digest);
+    digestToDisclosure[digest] = decoded;
+    }
+  }
+
+  //Parse the JWT payload
+  function recurse(value: any, path: string = ''): any {
+    console.log('Recursing value:', value, 'at path:', path);
+    if (Array.isArray(value)) {
+      return value.flatMap((item, index) => {
+        const currentPath = `${path}[${index}]`;
+        console.log('Processing array item at path:', currentPath);
+        if (
+          typeof item === 'object' &&
+          item !== null &&
+          Object.keys(item).length === 1 &&
+          '...' in item
+        ) {
+          const digest = item['...'];
+          console.log('Found digest in array item:', digest);
+          const disclosure = digestToDisclosure[digest];
+          if (!disclosure || disclosure.length !== 2) {
+            console.log('Disclosure not found or invalid for digest:', digest);
+            return [];
+          }
+          disclosedKeys.add(currentPath);
+          console.log('Added disclosed key:', currentPath);
+          return [recurse(disclosure[1], currentPath)];
+        } else {
+          return [recurse(item, currentPath)];
+        }
+      });
+    }
+
+    if (typeof value === 'object' && value !== null) {
+      console.log('Processing object at path:', path);
+      let result: Record<string, any> = {};
+
+      const sdDigests: string[] = value._sd || [];
+      console.log('Processing _sd digests:', sdDigests);
+      for (const digest of sdDigests) {
+        const disclosure = digestToDisclosure[digest];
+        if (!disclosure || disclosure.length !== 3) {
+          console.log('Disclosure not found or invalid for digest:', digest);
+          continue;
+        }
+        const [_, claimName, claimValue] = disclosure;
+        console.log('Processing disclosure claim:', claimName, claimValue);
+        if (claimName === '_sd' || claimName === '...') continue;
+        if (claimName in value) throw new Error('Overwriting existing key');
+        const fullPath = path ? `${path}.${claimName}` : claimName;
+        disclosedKeys.add(fullPath);
+        console.log('Added disclosed key:', fullPath);
+        result[claimName] = recurse(claimValue, fullPath);
+      }
+
+      for (const [k, v] of Object.entries(value)) {
+        if (k === '_sd') continue;
+        const fullPath = path ? `${path}.${k}` : k;
+        console.log('Processing key:', k, 'at path:', fullPath);
+        result[k] = recurse(v, fullPath);
+      }
+
+      return result;
+    }
+
+    return value;
+  }
+
+  // Track public (non-selectively-disclosable) claims
+  for (const key of Object.keys(payload)) {
+    if (key !== '_sd' && key !== '_sd_alg' &&  sdJwtPublicKeys.includes(key)) {
+      publicKeys.add(key);
+      console.log('Added public key:', key);
+    }
+  }
+
+  const fullResolvedPayload = recurse(payload);
+  console.log('Full resolved payload:', fullResolvedPayload);
+  delete fullResolvedPayload['_sd_alg'];
+  console.log('Removed _sd_alg from payload.');
+
+  console.log('Reconstruction complete. Returning results.');
+  return { fullResolvedPayload, disclosedKeys, publicKeys };
 }
