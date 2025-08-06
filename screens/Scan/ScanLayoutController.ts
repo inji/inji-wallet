@@ -117,15 +117,20 @@ export function useScanLayout() {
   const GOTO_HOME = () => {
     scanService.send(ScanEvents.DISMISS());
     changeTabBarVisible('flex');
-    navigation.navigate(BOTTOM_TAB_ROUTES.home);
+    setTimeout(() => {
+      navigation.navigate(BOTTOM_TAB_ROUTES.home);
+    }, 1);
   };
   const GOTO_HISTORY = () => {
     scanService.send(ScanEvents.GOTO_HISTORY());
     changeTabBarVisible('flex');
     navigation.navigate(BOTTOM_TAB_ROUTES.history);
   };
-  const RETRY_VERIFICATION = () =>
-    scanService.send(ScanEvents.RETRY_VERIFICATION());
+  const RETRY_VERIFICATION = () => {
+    setTimeout(() => {
+      scanService.send(ScanEvents.RETRY_VERIFICATION());
+    }, 1);
+  };
 
   const isInvalid = useSelector(scanService, selectIsInvalid);
   const isConnecting = useSelector(scanService, selectIsConnecting);
