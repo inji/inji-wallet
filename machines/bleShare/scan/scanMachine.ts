@@ -797,9 +797,11 @@ export const scanMachine =
                 DISMISS: [
                   {
                     cond: 'isFlowTypeSimpleShare',
+                    actions: ['resetBleError'],
                     target: 'selectingVc',
                   },
                   {
+                    actions: ['resetBleError'],
                     target: 'cancelling',
                   },
                 ],
