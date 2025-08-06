@@ -155,6 +155,10 @@ export const ScanActions = (model: any) => {
       bleError: (_context, event) => event.bleError,
     }),
 
+    resetBleError: assign({
+      bleError: {},
+    }),
+
     setSelectedVc: assign({
       selectedVc: (_context, event) => event.vc,
     }),
