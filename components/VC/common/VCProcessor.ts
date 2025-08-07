@@ -4,6 +4,8 @@ import {VCFormat} from '../../../shared/VCFormat';
 import {getVerifiableCredential} from '../../../machines/VerifiableCredential/VCItemMachine/VCItemSelectors';
 import {parseJSON} from '../../../shared/Utils';
 import base64url from 'base64url';
+import jwtDecode from 'jwt-decode';
+import { sha256,sha384 ,sha512} from '@noble/hashes/sha2';
 
 const {RNPixelpassModule} = NativeModules;
 
@@ -40,12 +42,23 @@ Output:
 - publicKeys: Set of keys that were present in JWT payload directly (non-selectively-disclosable)
 */
 
-import jwtDecode from 'jwt-decode';
-import { sha256 } from '@noble/hashes/sha2';
+
+function hashDigest(alg: string, input: string): Uint8Array {
+  switch (alg) {
+    case 'sha-256':
+      return sha256(input);
+    case 'sha-384':
+        return sha384(input);
+    case 'sha-512':
+        return sha512(input);
+    default:
+      throw new Error(`Unsupported _sd_alg: ${alg}`);
+  }
+}
+
 
 export function reconstructSdJwtFromCompact(
   sdJwtCompact: string,
-  hashAlg: 'sha-256' | string = 'sha-256'
 ): {
   fullResolvedPayload: Record<string, any>;
   disclosedKeys: Set<string>;
@@ -65,6 +78,8 @@ export function reconstructSdJwtFromCompact(
   const payload: any = jwtDecode(jwt);
   console.log('Decoded JWT payload:', payload);
 
+  const sdAlg = payload._sd_alg || 'sha-256';
+
   // Parse disclosures
   for (const disclosureB64 of disclosures) {
     if(disclosureB64.length>0) {
@@ -74,7 +89,7 @@ export function reconstructSdJwtFromCompact(
     console.log('Decoded disclosure:', decoded);
     const digestInput = disclosureB64
     console.log('Digest input for disclosure:', digestInput);
-    const digest = base64url(Buffer.from(sha256(digestInput)));
+    const digest = base64url(Buffer.from(hashDigest(sdAlg,digestInput)));
     console.log('Computed digest for disclosure:', digest);
     digestToDisclosure[digest] = decoded;
     }
