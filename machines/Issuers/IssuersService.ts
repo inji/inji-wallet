@@ -1,7 +1,7 @@
 import NetInfo from '@react-native-community/netinfo';
-import { NativeModules } from 'react-native';
+import {NativeModules} from 'react-native';
 import Cloud from '../../shared/CloudBackupAndRestoreUtils';
-import getAllConfigurations, { CACHED_API } from '../../shared/api';
+import getAllConfigurations, {CACHED_API} from '../../shared/api';
 import {
   fetchKeyPair,
   generateKeyPair,
@@ -30,17 +30,21 @@ export const IssuersService = () => {
     },
     checkInternet: async () => await NetInfo.fetch(),
     downloadIssuerWellknown: async (context: any) => {
-      const wellknownResponse = (await VciClient.getInstance().getIssuerMetadata(
-        context.selectedIssuer.credential_issuer_host,
-      )) as issuerType;
-      const wellknownCacheObject = createCacheObject(wellknownResponse);
-      await setItem(
-        API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(
+      const wellknownResponse =
+        (await VciClient.getInstance().getIssuerMetadata(
           context.selectedIssuer.credential_issuer_host,
-        ),
-        wellknownCacheObject,
-        '',
-      );
+        )) as issuerType;
+      if (wellknownResponse) {
+        const wellknownCacheObject = createCacheObject(wellknownResponse);
+        await setItem(
+          API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(
+            context.selectedIssuer.credential_issuer_host,
+          ),
+          wellknownCacheObject,
+          '',
+        );
+      }
+
       return wellknownResponse;
     },
     getCredentialTypes: async (context: any) => {
@@ -238,12 +242,14 @@ export const IssuersService = () => {
       const issuerMetadata = (await VciClient.getInstance().getIssuerMetadata(
         credentialIssuer,
       )) as issuerType;
-      const wellknownCacheObject = createCacheObject(issuerMetadata);
-      await setItem(
-        API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(credentialIssuer),
-        wellknownCacheObject,
-        '',
-      );
+      if (issuerMetadata) {
+        const wellknownCacheObject = createCacheObject(issuerMetadata);
+        await setItem(
+          API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(credentialIssuer),
+          wellknownCacheObject,
+          '',
+        );
+      }
       return issuerMetadata;
     },
     constructProof: async (context: any) => {

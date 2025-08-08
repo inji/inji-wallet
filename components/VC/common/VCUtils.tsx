@@ -456,8 +456,7 @@ export const fieldItemIterator = (
 };
 
 export const isVCLoaded = (
-  verifiableCredential: Credential | null,
-  fields: string[],
+  verifiableCredential: Credential | null
 ) => {
   return verifiableCredential != null;
 };

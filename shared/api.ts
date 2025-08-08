@@ -251,6 +251,9 @@ async function generateCacheAPIFunctionWithCachePreference(
       return cachedData.response;
     } else {
       const response = await fetchCall();
+      if(!response) {
+        throw new Error('Received Empty response in fetch call');
+      }
       const cacheObject = createCacheObject(response);
       setItem(cacheKey, cacheObject, '').then(() =>
         console.info('Cached response for ' + cacheKey),
