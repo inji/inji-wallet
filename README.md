@@ -23,8 +23,8 @@ Be sure to have the following build tools installed before proceeding:
 ### Android
 
 - [Java 17](https://openjdk.org/projects/jdk/17/)
-- [Gradle 8.2](https://gradle.org/install/)
-- [Android SDK](https://developer.android.com/)
+- [Gradle 8.6](https://gradle.org/install/)
+- [Android SDK](https://developer.android.com/). Make sure to install Android SDK Build-Tools - `35.0.0` from SDK Manager.
 - minSdkVersion = 24
 - compileSdkVersion = 35
 - targetSdkVersion = 35
