@@ -76,7 +76,9 @@ export const VCCardView: React.FC<VCItemProps> = ({
         vcMetadata.issuerHost,
       )
         .then(response => {
+          if(response && response.matchingCredentialIssuerMetadata) {
           setWellknown(response.matchingCredentialIssuerMetadata);
+          }
           setFields(response.fields);
         })
         .catch(error => {
@@ -88,7 +90,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
     }
   }, [verifiableCredentialData]);
 
-  if (!isVCLoaded(controller.credential, fields) || !wellknown || !vc) {
+  if (!isVCLoaded(controller.credential) || !wellknown || !vc) {
     return <VCCardSkeleton />;
   }
   
