@@ -73,7 +73,7 @@ async function verifyCredentialForIos(
   verifiableCredential: Credential,
   credentialFormat: string,
 ): Promise<VerificationResult> {
-  if (credentialFormat === VCFormat.mso_mdoc) {
+  if (credentialFormat === VCFormat.mso_mdoc || credentialFormat === VCFormat.vc_sd_jwt) {
     return createSuccessfulVerificationResult();
   }
   /*

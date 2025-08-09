@@ -7,6 +7,7 @@ import {VCProcessor} from '../../components/VC/common/VCProcessor';
 import {
   BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS,
   DETAIL_VIEW_ADD_ON_FIELDS,
+  DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
   getCredentialTypeFromWellKnown,
 } from '../../components/VC/common/VCUtils';
 import {displayType} from '../../machines/Issuers/IssuersMachine';
@@ -258,7 +259,13 @@ export const getDetailedViewFields = async (
   };
 };
 
-export const removeBottomSectionFields = fields => {
+export const removeBottomSectionFields = (fields, format) => {
+  if (format === VCFormat.vc_sd_jwt) {
+    return fields.filter(
+      fieldName => !DETAIL_VIEW_BOTTOM_SECTION_FIELDS.includes(fieldName),
+    );
+  }
+
   return fields.filter(
     fieldName =>
       !BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS.includes(fieldName) &&

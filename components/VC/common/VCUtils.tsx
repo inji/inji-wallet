@@ -151,9 +151,8 @@ export const getFieldValue = (
         if (typeof value === 'object' && !Array.isArray(value)) {
           return null;
         }
-
-        return getLocalizedField(value);
-      }
+        return getLocalizedField(value?.toString());
+      }      
     }
   }
 };
@@ -467,6 +466,7 @@ export const fieldItemIterator = (
   verifiableCredential: VerifiableCredential | Credential,
   wellknown: any,
   display: Display,
+  isBottomSectionFields: boolean,
   props: VCItemDetailsProps,
 ): JSX.Element[] => {
   const fieldNameColor = display.getTextColor(Theme.Colors.DetailsLabel);
@@ -523,7 +523,8 @@ export const fieldItemIterator = (
   });
 
   let renderedExtraFields: JSX.Element[] = [];
-  if (!wellknownFieldsFlag || verifiableCredential.fullResolvedPayload) {
+  DETAIL_VIEW_BOTTOM_SECTION_FIELDS.forEach(item => renderedFields.add(item));
+  if (!wellknownFieldsFlag || verifiableCredential.fullResolvedPayload && !isBottomSectionFields) {
     const renderedAll: JSX.Element[] = [];
 
     //  Extra fields from credentialSubject

@@ -62,6 +62,11 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
         });
       });
     }
+    else if (
+      props.verifiableCredentialData.vcMetadata.format === VCFormat.vc_sd_jwt
+    ) {
+      availableFieldNames = Object.keys(verifiableCredential?.fullResolvedPayload);
+    }
     for (const fieldName of availableFieldNames) {
       if (
         BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS.includes(fieldName)
@@ -127,6 +132,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                     verifiableCredential,
                     props.wellknown,
                     wellknownDisplayProperty,
+                    false,
                     props,
                   )}
                 </Column>
@@ -149,6 +155,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                       verifiableCredential,
                       props.wellknown,
                       wellknownDisplayProperty,
+                      true,
                       props,
                     )}
                 </Column>
