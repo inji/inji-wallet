@@ -249,8 +249,7 @@ export const getDetailedViewFields = async (
 
   let updatedFieldsList = response.fields.concat(DETAIL_VIEW_ADD_ON_FIELDS);
 
-  updatedFieldsList = removeBottomSectionFields(updatedFieldsList);
-
+  updatedFieldsList = removeBottomSectionFields(updatedFieldsList,format);
   return {
     matchingCredentialIssuerMetadata: response.matchingCredentialIssuerMetadata,
     fields: updatedFieldsList,

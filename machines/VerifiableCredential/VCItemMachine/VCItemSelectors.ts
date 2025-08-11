@@ -70,7 +70,6 @@ export function selectVerifiableCredentialData(
     credentialSubject =
       verifiableCredential?.processedCredential?.fullResolvedPayload ?? {};
   }
-  console.log('context vc:', state.context);
   const faceField =
     getFaceField(credentialSubject) ??
     state.context.credential?.biometrics?.face;

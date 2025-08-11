@@ -61,7 +61,6 @@ async function verifyCredentialForAndroid(
     typeof verifiableCredential === 'string'
       ? verifiableCredential
       : JSON.stringify(verifiableCredential);
-
   const vcVerifierResult = await vcVerifier.verifyCredentials(
     credentialString,
     credentialFormat,

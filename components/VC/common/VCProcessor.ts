@@ -65,43 +65,34 @@ export function reconstructSdJwtFromCompact(
   publicKeys: Set<string>;
 } {
   const sdJwtPublicKeys = ["iss", "sub", "aud", "exp", "nbf", "iat", "jti"];
-  console.log('Starting SD-JWT reconstruction...');
   const disclosedKeys = new Set<string>();
   const publicKeys = new Set<string>();
   const digestToDisclosure: Record<string, any[]> = {};
 
   // Split SD-JWT into parts: [jwt, disclosure1, disclosure2, ...]
   const parts = sdJwtCompact.trim().split('~');
-  console.log('Split SD-JWT into parts:', parts);
   const jwt = parts[0];
   const disclosures = parts.slice(1);
   const payload: any = jwtDecode(jwt);
-  console.log('Decoded JWT payload:', payload);
 
   const sdAlg = payload._sd_alg || 'sha-256';
 
   // Parse disclosures
   for (const disclosureB64 of disclosures) {
     if(disclosureB64.length>0) {
-    console.log('Processing disclosure:', disclosureB64);
     const decodedB64 = disclosureB64.replace(/-/g, '+').replace(/_/g, '/');
     const decoded = JSON.parse(Buffer.from(decodedB64, 'base64').toString('utf-8'));
-    console.log('Decoded disclosure:', decoded);
     const digestInput = disclosureB64
-    console.log('Digest input for disclosure:', digestInput);
     const digest = base64url(Buffer.from(hashDigest(sdAlg,digestInput)));
-    console.log('Computed digest for disclosure:', digest);
     digestToDisclosure[digest] = decoded;
     }
   }
 
   //Parse the JWT payload
   function recurse(value: any, path: string = ''): any {
-    console.log('Recursing value:', value, 'at path:', path);
     if (Array.isArray(value)) {
       return value.flatMap((item, index) => {
         const currentPath = `${path}[${index}]`;
-        console.log('Processing array item at path:', currentPath);
         if (
           typeof item === 'object' &&
           item !== null &&
@@ -109,14 +100,11 @@ export function reconstructSdJwtFromCompact(
           '...' in item
         ) {
           const digest = item['...'];
-          console.log('Found digest in array item:', digest);
           const disclosure = digestToDisclosure[digest];
           if (!disclosure || disclosure.length !== 2) {
-            console.log('Disclosure not found or invalid for digest:', digest);
             return [];
           }
           disclosedKeys.add(currentPath);
-          console.log('Added disclosed key:', currentPath);
           return [recurse(disclosure[1], currentPath)];
         } else {
           return [recurse(item, currentPath)];
@@ -125,31 +113,25 @@ export function reconstructSdJwtFromCompact(
     }
 
     if (typeof value === 'object' && value !== null) {
-      console.log('Processing object at path:', path);
       let result: Record<string, any> = {};
 
       const sdDigests: string[] = value._sd || [];
-      console.log('Processing _sd digests:', sdDigests);
       for (const digest of sdDigests) {
         const disclosure = digestToDisclosure[digest];
         if (!disclosure || disclosure.length !== 3) {
-          console.log('Disclosure not found or invalid for digest:', digest);
           continue;
         }
         const [_, claimName, claimValue] = disclosure;
-        console.log('Processing disclosure claim:', claimName, claimValue);
         if (claimName === '_sd' || claimName === '...') continue;
         if (claimName in value) throw new Error('Overwriting existing key');
         const fullPath = path ? `${path}.${claimName}` : claimName;
         disclosedKeys.add(fullPath);
-        console.log('Added disclosed key:', fullPath);
         result[claimName] = recurse(claimValue, fullPath);
       }
 
       for (const [k, v] of Object.entries(value)) {
         if (k === '_sd') continue;
         const fullPath = path ? `${path}.${k}` : k;
-        console.log('Processing key:', k, 'at path:', fullPath);
         result[k] = recurse(v, fullPath);
       }
 
@@ -163,15 +145,10 @@ export function reconstructSdJwtFromCompact(
   for (const key of Object.keys(payload)) {
     if (key !== '_sd' && key !== '_sd_alg' &&  sdJwtPublicKeys.includes(key)) {
       publicKeys.add(key);
-      console.log('Added public key:', key);
     }
   }
 
   const fullResolvedPayload = recurse(payload);
-  console.log('Full resolved payload:', fullResolvedPayload);
   delete fullResolvedPayload['_sd_alg'];
-  console.log('Removed _sd_alg from payload.');
-
-  console.log('Reconstruction complete. Returning results.');
   return { fullResolvedPayload, disclosedKeys, publicKeys };
 }

@@ -488,7 +488,6 @@ export const fieldItemIterator = (
       display,
       props.verifiableCredentialData.vcMetadata.format,
     );
-
     if (fieldValue == null) {
       return null;
     }
@@ -530,7 +529,6 @@ export const fieldItemIterator = (
     //  Extra fields from credentialSubject
     const credentialSubjectFields =
       (verifiableCredential.credentialSubject as Record<string, any>) || verifiableCredential.fullResolvedPayload || {};
-    console.log("displayed keys:", disclosedKeys);
     const renderedSubjectFields = Object.entries(credentialSubjectFields)
       .filter(([key]) => !renderedFields.has(key))
       .flatMap(([key, value]) =>
