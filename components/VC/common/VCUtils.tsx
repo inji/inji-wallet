@@ -110,7 +110,7 @@ export const getFieldValue = (
           );
         }
       }
-      else if (format === VCFormat.vc_sd_jwt) {
+      else if (format === VCFormat.vc_sd_jwt || format === VCFormat.dc_sd_jwt) {
         const fieldParts = field.split('.');
         let value: any = verifiableCredential?.fullResolvedPayload;
 
@@ -198,7 +198,7 @@ export const getFieldName = (
         }
       }
     }
-    else if (format === VCFormat.vc_sd_jwt) {
+    else if (format === VCFormat.vc_sd_jwt || format === VCFormat.dc_sd_jwt) {
       const pathParts = field.split('.');
       let currentObj = wellknown.claims;
       for (const part of pathParts) {

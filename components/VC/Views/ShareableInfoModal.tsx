@@ -106,10 +106,10 @@ export const ShareableInfoModal: React.FC<ShareableInfoModalProps> = ({
           style={Theme.DisclosureOverlayStyles.outerView}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 17, textAlign: 'left', fontFamily: 'Inter_600SemiBold', paddingTop: 20 }}>
+            <Text style={Theme.DisclosureOverlayStyles.titleText}>
               {t('disclosedFieldsTitle')}
             </Text>
-            <Text style={{ fontSize: 13, textAlign: 'left', marginTop: 4, color: "#747474" }}>
+            <Text style={Theme.DisclosureOverlayStyles.titleDescription}>
               {t('disclosedFieldsDescription')}
             </Text>
           </View>
@@ -168,24 +168,12 @@ export const ShareableInfoModal: React.FC<ShareableInfoModalProps> = ({
           />
           <View style={{ flex: 1 }}>
             <Text
-              style={{
-                fontSize: 14,
-                fontFamily: 'Inter_600SemiBold',
-                color: '#973C00',
-                marginBottom: 5,
-              }}
+              style={Theme.DisclosureOverlayStyles.noteTitleText}
             >
               {t('disclosureNoteTitle')}
             </Text>
             <Text
-              style={{
-                fontSize: 13,
-                color: '#973C00',
-                fontFamily: 'Inter_400Regular',
-                lineHeight: 18,
-                textAlign: 'left',
-                marginLeft: -25
-              }}
+              style={Theme.DisclosureOverlayStyles.noteDescriptionText}
             >
               {t('disclosureNote')}
             </Text>

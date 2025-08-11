@@ -24,7 +24,7 @@ export class VCProcessor {
         );
       return parseJSON(decodedString);
     }
-    if(vcFormat === VCFormat.vc_sd_jwt) {
+    if(vcFormat === VCFormat.vc_sd_jwt || vcFormat === VCFormat.dc_sd_jwt) {
       const { fullResolvedPayload, disclosedKeys, publicKeys } =
         reconstructSdJwtFromCompact(vcData.credential.toString());
       return {fullResolvedPayload,disclosedKeys,publicKeys};
@@ -79,7 +79,7 @@ export function reconstructSdJwtFromCompact(
 
   // Parse disclosures
   for (const disclosureB64 of disclosures) {
-    if(disclosureB64.length>0) {
+    if(disclosureB64.length > 0) {
     const decodedB64 = disclosureB64.replace(/-/g, '+').replace(/_/g, '/');
     const decoded = JSON.parse(Buffer.from(decodedB64, 'base64').toString('utf-8'));
     const digestInput = disclosureB64
@@ -89,7 +89,7 @@ export function reconstructSdJwtFromCompact(
   }
 
   //Parse the JWT payload
-  function recurse(value: any, path: string = ''): any {
+  function resolveDisclosures(value: any, path: string = ''): any {
     if (Array.isArray(value)) {
       return value.flatMap((item, index) => {
         const currentPath = `${path}[${index}]`;
@@ -105,9 +105,9 @@ export function reconstructSdJwtFromCompact(
             return [];
           }
           disclosedKeys.add(currentPath);
-          return [recurse(disclosure[1], currentPath)];
+          return [resolveDisclosures(disclosure[1], currentPath)];
         } else {
-          return [recurse(item, currentPath)];
+          return [resolveDisclosures(item, currentPath)];
         }
       });
     }
@@ -126,13 +126,13 @@ export function reconstructSdJwtFromCompact(
         if (claimName in value) throw new Error('Overwriting existing key');
         const fullPath = path ? `${path}.${claimName}` : claimName;
         disclosedKeys.add(fullPath);
-        result[claimName] = recurse(claimValue, fullPath);
+        result[claimName] = resolveDisclosures(claimValue, fullPath);
       }
 
       for (const [k, v] of Object.entries(value)) {
         if (k === '_sd') continue;
         const fullPath = path ? `${path}.${k}` : k;
-        result[k] = recurse(v, fullPath);
+        result[k] = resolveDisclosures(v, fullPath);
       }
 
       return result;
@@ -148,7 +148,7 @@ export function reconstructSdJwtFromCompact(
     }
   }
 
-  const fullResolvedPayload = recurse(payload);
+  const fullResolvedPayload = resolveDisclosures(payload);
   delete fullResolvedPayload['_sd_alg'];
   return { fullResolvedPayload, disclosedKeys, publicKeys };
 }

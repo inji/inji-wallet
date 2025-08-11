@@ -66,7 +66,7 @@ export function selectVerifiableCredentialData(
         acc[key] = value;
         return acc;
       }, {} as Record<string, any>);
-  } else if (state.context?.format === VCFormat.vc_sd_jwt) {
+  } else if (state.context?.format === VCFormat.vc_sd_jwt || state.context?.format === VCFormat.dc_sd_jwt) {
     credentialSubject =
       verifiableCredential?.processedCredential?.fullResolvedPayload ?? {};
   }

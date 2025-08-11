@@ -78,7 +78,7 @@ export const updateCredentialInformation = async (
       context.selectedCredentialType.format,
     );
   }
-  if( context.selectedCredentialType.format === VCFormat.vc_sd_jwt) {
+  if( context.selectedCredentialType.format === VCFormat.vc_sd_jwt || context.selectedCredentialType.format === VCFormat.dc_sd_jwt) {
     processedCredential = await VCProcessor.processForRendering(
       credential,
       context.selectedCredentialType.format,
@@ -176,7 +176,7 @@ export const getCredentialIssuersWellKnownConfig = async (
             wellknownFieldsFlag = true;
           }
         }
-        else if( format === VCFormat.vc_sd_jwt) {
+        else if( format === VCFormat.vc_sd_jwt || format === VCFormat.dc_sd_jwt) {
           const sdJwtFields = flattenClaimPaths(matchingWellknownDetails.claims);
 
           if (sdJwtFields.length > 0) {
@@ -259,7 +259,7 @@ export const getDetailedViewFields = async (
 };
 
 export const removeBottomSectionFields = (fields, format) => {
-  if (format === VCFormat.vc_sd_jwt) {
+  if (format === VCFormat.vc_sd_jwt || format === VCFormat.dc_sd_jwt) {
     return fields.filter(
       fieldName => !DETAIL_VIEW_BOTTOM_SECTION_FIELDS.includes(fieldName),
     );

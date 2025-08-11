@@ -672,8 +672,8 @@ export const DefaultTheme = {
     },
     introSliderHeader: {
       marginTop: isIOS()
-          ? Constants.statusBarHeight + 40
-          : StatusBar.currentHeight + 40,
+        ? Constants.statusBarHeight + 40
+        : StatusBar.currentHeight + 40,
       width: '100%',
       marginBottom: 50,
     },
@@ -2082,7 +2082,7 @@ export const DefaultTheme = {
   }),
 
   DisclosureOverlayStyles: StyleSheet.create({
-    overlay:{
+    overlay: {
       padding: 0,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
@@ -2091,7 +2091,7 @@ export const DefaultTheme = {
       bottom: 0,
       backgroundColor: '#fff',
     },
-    outerView:{
+    outerView: {
       padding: 16,
       borderBottomWidth: 1,
       borderBottomColor: Colors.LightGrey,
@@ -2099,14 +2099,14 @@ export const DefaultTheme = {
       alignItems: 'center',
       justifyContent: 'space-between',
     },
-    listView:{
+    listView: {
       marginHorizontal: 16,
       marginVertical: 6,
       padding: 12,
       borderRadius: 10,
       borderWidth: 1,
     },
-    noteView:{
+    noteView: {
       marginHorizontal: 16,
       marginBottom: 30,
       padding: 12,
@@ -2116,12 +2116,38 @@ export const DefaultTheme = {
       borderWidth: 1,
       flexDirection: 'row',
       alignItems: 'flex-start',
+    },
+    titleText: {
+      fontSize: 17,
+      textAlign: 'left',
+      fontFamily: 'Inter_600SemiBold',
+      paddingTop: 20,
+    },
+    titleDescription: {
+      fontSize: 13,
+      textAlign: 'left',
+      marginTop: 4,
+      color: '#747474',
+    },
+    noteTitleText: {
+      fontSize: 14,
+      fontFamily: 'Inter_600SemiBold',
+      color: '#973C00',
+      marginBottom: 5,
+    },
+    noteDescriptionText:{
+      fontSize: 13,
+      color: '#973C00',
+      fontFamily: 'Inter_400Regular',
+      lineHeight: 18,
+      textAlign: 'left',
+      marginLeft: -25
     }
   }),
   DisclosureInfo: StyleSheet.create({
-    view:{
+    view: {
       marginTop: -16,
-      marginBottom:16,
+      marginBottom: 16,
       marginHorizontal: 10,
       padding: 12,
       backgroundColor: '#EFF6FF',
@@ -2129,12 +2155,12 @@ export const DefaultTheme = {
       borderWidth: 1,
       borderColor: '#BEDBFF',
     },
-    text:{
+    text: {
       fontSize: 14,
       fontFamily: 'Inter_400Regular',
       color: 'black',
       flex: 1,
-    }
+    },
   }),
 
   ICON_SMALL_SIZE: 16,
@@ -2176,7 +2202,7 @@ export const DefaultTheme = {
     }
 
     const [top, end, bottom, start] =
-        typeof values === 'string' ? values.split(' ').map(Number) : values;
+      typeof values === 'string' ? values.split(' ').map(Number) : values;
 
     return {
       [`${type}Top`]: top,

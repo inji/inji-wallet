@@ -2117,6 +2117,32 @@ export const PurpleTheme = {
       borderWidth: 1,
       flexDirection: 'row',
       alignItems: 'flex-start',
+    },
+    titleText: {
+      fontSize: 17,
+      textAlign: 'left',
+      fontFamily: 'Inter_600SemiBold',
+      paddingTop: 20,
+    },
+    titleDescription: {
+      fontSize: 13,
+      textAlign: 'left',
+      marginTop: 4,
+      color: '#747474',
+    },
+    noteTitleText: {
+      fontSize: 14,
+      fontFamily: 'Inter_600SemiBold',
+      color: '#973C00',
+      marginBottom: 5,
+    },
+    noteDescriptionText:{
+      fontSize: 13,
+      color: '#973C00',
+      fontFamily: 'Inter_400Regular',
+      lineHeight: 18,
+      textAlign: 'left',
+      marginLeft: -25
     }
   }),
   DisclosureInfo: StyleSheet.create({
