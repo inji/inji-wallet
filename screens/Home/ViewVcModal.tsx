@@ -83,6 +83,8 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
       setWellknown(response.matchingCredentialIssuerMetadata);
       setFields(response.fields);
       setWellknownFieldsFlag(response.wellknownFieldsFlag);
+    }).catch(error => {
+      console.error('Error fetching well-known fields:', error);
     });
   }, [verifiableCredentialData?.wellKnown]);
 
@@ -90,7 +92,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
     return flow === 'downloadedVc' ? (
       <Row align="space-between">
         <HelpScreen source={'Inji'} triggerComponent={HelpIcon()} />
-        {isVCLoaded(verifiableCredential, fields) ? (
+        {isVCLoaded(verifiableCredential) ? (
           <Pressable
             onPress={() => props.vcItemActor.send('KEBAB_POPUP')}
             accessible={false}>
@@ -148,7 +150,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
         />
       )}
 
-      {!isVCLoaded(verifiableCredential, fields) ? (
+      {!isVCLoaded(verifiableCredential) ? (
         <ActivityIndicator />
       ) : (
         <VcDetailsContainer

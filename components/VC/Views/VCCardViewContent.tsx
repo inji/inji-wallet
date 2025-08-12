@@ -21,7 +21,7 @@ import {useTranslation} from 'react-i18next';
 import testIDProps from '../../../shared/commonUtil';
 
 
-export const VCCardViewContent: React.FC<VCItemContentProps> = ({isPinned = false, context, credential, verifiableCredentialData, fields, wellknown, generatedOn, selectable, selected, service, onPress, isDownloading, flow, walletBindingResponse, KEBAB_POPUP, DISMISS, isKebabPopUp, vcMetadata, isInitialLaunch}) => {
+export const VCCardViewContent: React.FC<VCItemContentProps> = ({isPinned = false, credential, verifiableCredentialData, wellknown, selectable, selected, service, onPress, flow, walletBindingResponse, KEBAB_POPUP, DISMISS, isKebabPopUp, vcMetadata, isInitialLaunch}) => {
   const wellknownDisplayProperty = new Display(wellknown);
     const vcSelectableButton =
     selectable &&
@@ -92,7 +92,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({isPinned = fals
             </Row>
           </Column>
 
-          {isVCLoaded(credential, fields) && (
+          {isVCLoaded(credential) && (
             <Image
               {...testIDProps('issuerLogo')}
               src={issuerLogo?.url}

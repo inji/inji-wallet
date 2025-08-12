@@ -82,6 +82,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
           setFields(response.fields);
         })
         .catch(error => {
+          setWellknown({"fallback":"true"});
           console.error(
             'Error occurred while fetching wellknown for viewing VC ',
             error,
@@ -97,19 +98,15 @@ export const VCCardView: React.FC<VCItemProps> = ({
   const CardViewContent = () => (
     <VCCardViewContent
       vcMetadata={vcMetadata}
-      context={controller.context}
       walletBindingResponse={controller.walletBindingResponse}
       credential={vc}
       verifiableCredentialData={verifiableCredentialData}
-      fields={fields}
       wellknown={wellknown}
-      generatedOn={formattedDate}
       selectable={selectable}
       selected={selected}
       service={service}
       isPinned={isPinned}
       onPress={() => onPress(service)}
-      isDownloading={isDownloading}
       flow={flow}
       isKebabPopUp={controller.isKebabPopUp}
       DISMISS={controller.DISMISS}
