@@ -115,7 +115,7 @@ android {
         applicationId 'io.mosip.residentapp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionName "0.18.0"
+        versionName "0.19.0"
         versionCode 1
         manifestPlaceholders = [
                 APP_NAME             : APP_NAME,
@@ -277,10 +277,10 @@ dependencies {
     }
     implementation("com.facebook.react:react-android")
     implementation 'com.facebook.soloader:soloader:0.10.1+'
-    implementation("io.mosip:pixelpass-aar:0.7.0-SNAPSHOT")
+    implementation("io.mosip:pixelpass-aar:0.7.0")
     implementation("io.mosip:secure-keystore:0.3.0")
     implementation("io.mosip:tuvali:0.5.2")
-    implementation("io.mosip:inji-vci-client-aar:0.4.0-SNAPSHOT")
+    implementation("io.mosip:inji-vci-client-aar:0.5.0-SNAPSHOT")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("io.mosip:vcverifier-aar:1.4.0-SNAPSHOT") {
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
