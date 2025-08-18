@@ -20,19 +20,19 @@ public class UnlockApplicationPage extends BasePage {
     }
 
     public boolean isUnlockApplicationPageLoaded() {
-        return this.isElementDisplayed(unlockApplicationButton);
+        return isElementVisible(unlockApplicationButton, "Check if Unlock Application button is displayed");
     }
 
     public boolean isUnlockApplicationPageLoadedInArabic() {
-        return this.isElementDisplayed(unlockApplicationButtonInArabic);
+        return isElementVisible(unlockApplicationButtonInArabic, "Check if Unlock Application button is displayed in Arabic");
     }
 
     public EnterYourPasscodePage clickOnUnlockApplicationButton() {
-        clickOnElement(unlockApplicationButton);
+        click(unlockApplicationButton, "Click on Unlock Application button");
         return new EnterYourPasscodePage(driver);
     }
 
     public boolean isUnlockApplicationDisplayed() {
-        return this.isElementDisplayed(unlockApplicationButton, 5);
+        return isElementVisible(unlockApplicationButton, 5, "Check if Unlock Application button is displayed within 5 seconds");
     }
 }

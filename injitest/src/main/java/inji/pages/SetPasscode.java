@@ -1,12 +1,13 @@
 package inji.pages;
 
-import inji.constants.Target;
+import inji.constants.PlatformType;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public class SetPasscode extends BasePage {
 
@@ -21,16 +22,15 @@ public class SetPasscode extends BasePage {
     @iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"eSignet\"]/XCUIElementTypeOther[6]/XCUIElementTypeTextField[1]")
     private WebElement inputOtp;
 
-
     public SetPasscode(AppiumDriver driver) {
         super(driver);
     }
 
     public boolean isSetPassCodePageLoaded() {
-        return this.isElementDisplayed(setPasscodeHeader);
+        return isElementVisible(setPasscodeHeader, "Check if 'Set Passcode' page header is visible");
     }
 
-    public ConfirmPasscode enterPasscode(String passcode, Target os) {
+    public ConfirmPasscode enterPasscode(String passcode, PlatformType os) {
         char[] arr = passcode.toCharArray();
         switch (os) {
             case ANDROID:
@@ -43,7 +43,7 @@ public class SetPasscode extends BasePage {
         return new ConfirmPasscode(driver);
     }
 
-    public ConfirmPasscode enterPasscodeotp(String passcode, Target os) {
+    public ConfirmPasscode enterPasscodeotp(String passcode, PlatformType os) {
         char[] arr = passcode.toCharArray();
         switch (os) {
             case ANDROID:
@@ -56,30 +56,45 @@ public class SetPasscode extends BasePage {
         return new ConfirmPasscode(driver);
     }
 
-    public void enterPasscodeForEsignet(String passcode, Target os) {
+    public void enterPasscodeForEsignet(String passcode, PlatformType os) {
         char[] array = passcode.toCharArray();
         switch (os) {
             case ANDROID:
-                enterOtpAndroidForEsignet(array);
+                enterOtpAndroidForeSignet(array);
                 break;
             case IOS:
-                enterOtpIosForEsignet(array);
+                enterOtpIosForeSignet(array);
                 break;
         }
         new ConfirmPasscode(driver);
     }
 
-    private void enterOtpAndroid(char[] arr) {
-        for (int i = 1; i <= 6; i++) {
-            String locator = "(//*[@class='android.widget.EditText'])[" + i + "]";
-            driver.findElement(By.xpath(locator)).sendKeys(String.valueOf(arr[i - 1]));
+    private void enterOtpAndroid(char[] otpDigits) {
+        List<WebElement> passcodeInputs = waitForAllInputs(By.className("android.widget.EditText"), otpDigits.length);
+
+        if (passcodeInputs.size() < otpDigits.length) {
+            throw new IllegalStateException("Not enough input fields to enter passcode");
+        }
+
+        for (int i = 0; i < otpDigits.length; i++) {
+//            WebElement input = passcodeInputs.get(i);
+//            waitUntilElementIsVisible(input, 5);
+            passcodeInputs.get(i).sendKeys(String.valueOf(otpDigits[i]));
         }
     }
 
-    private void enterOtpIos(char[] arr) {
-        for (int i = 1; i <= 6; i++) {
-            String locator = "(//*[@type='XCUIElementTypeSecureTextField'])[" + i + "]";
-            driver.findElement(By.xpath(locator)).sendKeys(String.valueOf(arr[i - 1]));
+    private void enterOtpIos(char[] otpDigits) {
+        List<WebElement> passcodeInputs = waitForAllInputs(By.xpath("//*[@type='XCUIElementTypeSecureTextField']"), otpDigits.length);
+
+
+        if (passcodeInputs.size() < otpDigits.length) {
+            throw new IllegalStateException("Not enough input fields to enter passcode on iOS.");
+        }
+
+        for (int i = 0; i < otpDigits.length; i++) {
+//            WebElement input = passcodeInputs.get(i);
+//            waitUntilElementIsVisible(input, 5);
+            passcodeInputs.get(i).sendKeys(String.valueOf(otpDigits[i]));
         }
     }
 
@@ -90,40 +105,42 @@ public class SetPasscode extends BasePage {
         }
     }
 
-    private void enterOtpIosForEsignet(char[] arr) {
-        if (isElementDisplayed(inputOtp)) {
-            for (int i = 1; i <= 6; i++) {
-                String locator = "//XCUIElementTypeOther[@name=\"eSignet\"]/XCUIElementTypeOther[6]/XCUIElementTypeTextField[" + i + "]";
-                driver.findElement(By.xpath(locator)).sendKeys(String.valueOf(arr[i - 1]));
-            }
-        } else {
-            for (int i = 1; i <= 6; i++) {
-                String locator = "//XCUIElementTypeOther[@name=\"eSignet\"]/XCUIElementTypeOther[7]/XCUIElementTypeTextField[" + i + "]";
-                driver.findElement(By.xpath(locator)).sendKeys(String.valueOf(arr[i - 1]));
+    private void enterOtpIosForeSignet(char[] arr) {
+        String baseXpath = isElementVisible(inputOtp)
+                ? "//XCUIElementTypeOther[@name=\"eSignet\"]/XCUIElementTypeOther[6]/XCUIElementTypeTextField"
+                : "//XCUIElementTypeOther[@name=\"eSignet\"]/XCUIElementTypeOther[7]/XCUIElementTypeTextField";
 
-            }
+        List<WebElement> fields = driver.findElements(By.xpath(baseXpath));
+
+        if (fields.size() < arr.length) {
+            throw new IllegalStateException("Not enough input fields to enter OTP on iOS eSignet.");
+        }
+
+        for (int i = 0; i < arr.length; i++) {
+            fields.get(i).sendKeys(String.valueOf(arr[i]));
+        }
+    }
+
+    private void enterOtpAndroidForeSignet(char[] arr) {
+        String baseXpath = isElementVisible(inputOtp)
+                ? "//android.view.View[contains(@resource-id, \"otp_verify_input\")]//android.widget.EditText"
+                : "//*[@class='android.widget.EditText']";
+
+        List<WebElement> fields = driver.findElements(By.xpath(baseXpath));
+
+        if (fields.size() < arr.length) {
+            throw new IllegalStateException("Not enough input fields to enter OTP on Android Esignet.");
+        }
+
+        // In the else branch of original logic, indexing started from 2nd element
+        int startIndex = isElementVisible(inputOtp) ? 0 : 2;
+
+        for (int i = 0; i < arr.length; i++) {
+            fields.get(i + (startIndex - (isElementVisible(inputOtp) ? 0 : 2))).sendKeys(String.valueOf(arr[i]));
         }
     }
 
     private void clickOnDoneButton() {
-        if (isElementDisplayed(doneButton, 3)) {
-            clickOnElement(doneButton);
-        }
-    }
-    private void enterOtpAndroidForEsignet(char[] arr) {
-        if (isElementDisplayed(inputOtp)) {
-            for (int i = 1; i <= 6; i++) {
-                String locator = "//android.view.View[contains(@resource-id, \"otp_verify_input\")]//android.widget.EditText[" + i + "]";
-                driver.findElement(By.xpath(locator)).sendKeys(String.valueOf(arr[i - 1]));
-            }
-        } else {
-            for (int i = 2; i <= 8; i++) {
-                int index = i - 2;
-                if (index < arr.length) {
-                    String locator = "(//*[@class='android.widget.EditText'])[" + i + "]";
-                    driver.findElement(By.xpath(locator)).sendKeys(String.valueOf(arr[index]));
-                }
-            }
-        }
+        click(doneButton, "Click on 'Done' button after entering passcode");
     }
 }

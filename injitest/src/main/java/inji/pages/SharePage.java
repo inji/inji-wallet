@@ -5,8 +5,6 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.WebElement;
 
-import inji.utils.IosUtil;
-
 public class SharePage extends BasePage {
 
     @AndroidFindBy(accessibility = "camera")
@@ -15,15 +13,19 @@ public class SharePage extends BasePage {
     @AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Bluetooth\")")
     private WebElement bluetoothPopUp;
 
-    @AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Allow\")")
+    @AndroidFindBy(id = "com.android.permissioncontroller:id/permission_allow_button")
     @iOSXCUITFindBy(accessibility = "OK")
-    private WebElement allowButton;
+    private WebElement nearbyAllowButton;
+
+    @AndroidFindBy(id = "android:id/button1")
+    @iOSXCUITFindBy(accessibility = "OK")
+    private WebElement bluetoothTurnOn;
 
     @AndroidFindBy(xpath = "//android.widget.Button[@resource-id=\"com.android.permissioncontroller:id/permission_allow_foreground_only_button\"]")
     @iOSXCUITFindBy(accessibility = "OK")
     private WebElement cameraPopupAndroid;
 
-    @AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Deny\")")
+    @AndroidFindBy(id = "com.android.permissioncontroller:id/permission_deny_button")
     private WebElement denyButton;
 
     @AndroidFindBy(accessibility = "noShareableVcs")
@@ -55,6 +57,7 @@ public class SharePage extends BasePage {
 
     @iOSXCUITFindBy(xpath = "//*[@name=\"Allow\"]")
     private WebElement AllowButtonIos;
+
     @iOSXCUITFindBy(accessibility = "Don’t Allow")
     @AndroidFindBy(xpath = "//android.widget.Button[@resource-id=\"com.android.permissioncontroller:id/permission_deny_button\"]")
     private WebElement dontAllowButtonIos;
@@ -88,6 +91,10 @@ public class SharePage extends BasePage {
     @iOSXCUITFindBy(accessibility = "sharingStatusTitle")
     private WebElement cameraAccessLostPage;
 
+    @AndroidFindBy(accessibility = "allowNearbyDevicesPermissionButton")
+    @iOSXCUITFindBy(accessibility = "allowNearbyDevicesPermissionButton")
+    private WebElement allowNearbyDevicesButton;
+
     @AndroidFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
     @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
     private WebElement continuePopupButton;
@@ -97,125 +104,102 @@ public class SharePage extends BasePage {
     }
 
     public SharePage acceptPermissionPopupBluetooth() {
-        if (isElementDisplayed(allowButton)) {
-            clickOnElement(allowButton);
-        }
+        click(nearbyAllowButton, "Click on Nearby Allow Button");
+        click(bluetoothTurnOn, "Click on Bluetooth Turn On Button");
         return this;
     }
 
     public SharePage acceptPermissionPopupCamera() {
-        if (isElementDisplayed(cameraPopupAndroid)) {
-            clickOnElement(cameraPopupAndroid);
-        }
+        click(cameraPopupAndroid, "Click on Camera Permission Popup (Android)");
         return this;
     }
 
     public SharePage acceptPermissionPopupBluetoothIos() {
-        if (isElementDisplayed(okButtonIos)) {
-            clickOnElement(okButtonIos);
-            if(isElementDisplayed(AllowButtonIos)){
-                clickOnElement(AllowButtonIos);
-            }
-        }
+        click(okButtonIos, "Click on OK Button (iOS)");
+        click(AllowButtonIos, "Click on Allow Button (iOS)");
         return this;
     }
 
-    public SharePage acceptPermissionPopupCameraIos() {
-		 if(isElementDisplayed(continuePopupButton)){
-             clickOnElement(continuePopupButton);
-        }
-        if (isElementDisplayed(okButtonIos)) {
-             clickOnElement(okButtonIos);
-            if(isElementDisplayed(AllowButtonIos)){
-                clickOnElement(AllowButtonIos);
-            }
-        }
-        return this;
+    public void acceptPermissionPopupCameraIos() {
+        click(continuePopupButton, "Click on Continue Popup Button (iOS)");
+        click(okButtonIos, "Click on OK Button (iOS)");
+        click(AllowButtonIos, "Click on Allow Button (iOS)");
     }
 
-    public SharePage denyPermissionPopupBluetooth() {
-        if (isElementDisplayed(denyButton)) {
-            clickOnElement(denyButton);
-        }
-        return this;
+    public void denyPermissionPopupBluetooth() {
+        click(denyButton, "Click on Deny Button for Bluetooth Permission");
     }
 
-    public SharePage denyPermissionPopupBluetoothIos() {
-        if (isElementDisplayed(bluetoothPopUpIos)) {
-            clickOnElement(dontAllowButtonIos);
-        }
-        return this;
+    public void denyPermissionPopupBluetoothIos() {
+        click(dontAllowButtonIos, "Click on Don't Allow Button (iOS Bluetooth)");
     }
 
     public SharePage denyPermissionPopupCameraIos() {
-        if (isElementDisplayed(cameraPopUpIos)) {
-            clickOnElement(dontAllowButtonIos);
-        }
+        click(dontAllowButtonIos, "Click on Don't Allow Button (iOS Camera)");
         return this;
     }
 
     public boolean isCameraOpen() {
-        return isElementDisplayed(camera);
+        return isElementVisible(camera, "Check if Camera is Open");
     }
 
     public boolean isNoShareableCardsMessageDisplayed() {
-        return isElementDisplayed(noShareableCards);
+        return isElementVisible(noShareableCards, "Check if No Shareable Cards Message is Displayed");
+    }
+
+    public boolean isAllowNearbyDevicesButtonDisplayed() {
+        return isElementVisible(allowNearbyDevicesButton, "Check if Allow Nearby Devices Button is Displayed");
     }
 
     public String isBluetoothIsTurnedOffMessageDisplayed() {
-        return getTextFromLocator(bluetoothIsTurnedOffMessage);
+        return getText(bluetoothIsTurnedOffMessage, "Get Bluetooth is Turned Off Message");
     }
 
     public String isEnableBluetoothButtonButtonDisplayed() {
-        return getTextFromLocator(enableBluetoothButton);
+        return getText(enableBluetoothButton, "Get Enable Bluetooth Button Text");
     }
 
     public boolean isCameraPageLoaded() {
-        return this.isElementEnabled(holdCameraSteady,30);
+        return isElementEnabled(holdCameraSteady, "Check if Camera Page is Loaded (Hold Camera Steady)");
     }
 
     public boolean isFlipCameraClickable() {
-        return this.isElementEnabled(flipCamera,30);
+        return isElementEnabled(flipCamera, "Check if Flip Camera Button is Clickable");
     }
 
     public void clickOnDenyCameraPopupButton() {
-        if (isElementDisplayed(dontAllowButtonIos)) {
-            clickOnElement(dontAllowButtonIos);
-        }
+        click(dontAllowButtonIos, "Click on Don't Allow Camera Access Button (iOS)");
     }
 
-    public boolean isCameraDisabledPopUpDisplayed(){
-        return isElementDisplayed(cameraAccessDisabledPopup);
-    }
-    public void clickOnPopupCloseButton(){
-        clickOnElement(closePopupButton);
+    public boolean isCameraDisabledPopUpDisplayed() {
+        return isElementVisible(cameraAccessDisabledPopup, "Check if Camera Access Disabled Popup is Displayed");
     }
 
-    public void clickOnAllowLocationPopupButton(){
-        if(isElementDisplayed(locationAccessPopup))
-            clickOnElement(locationAccessPopup);
+    public void clickOnPopupCloseButton() {
+        click(closePopupButton, "Click on Close Button of Popup");
     }
 
-    public void clickOnAllowGallaryAccessButton(){
-        if(isElementDisplayed(gallaryAccessPopup))
-            clickOnElement(gallaryAccessPopup);
+    public void clickOnAllowLocationPopupButton() {
+        click(locationAccessPopup, "Click on Allow Location Popup Button");
+    }
+
+    public void clickOnAllowGallaryAccessButton() {
+        click(gallaryAccessPopup, "Click on Allow Gallery Access Button");
     }
 
     public boolean isCameraDisabledToasterLoaded() {
-        return isElementDisplayed(cameraDisabledToaster);
+        return isElementVisible(cameraDisabledToaster, "Check if Camera Disabled Toaster is Loaded");
     }
 
-    public void clickOnCameraDisabledToasterClose(){
-        if(isElementDisplayed(cameraDisabledToasterClose))
-            clickOnElement(cameraDisabledToasterClose);
+    public void clickOnCameraDisabledToasterClose() {
+        click(cameraDisabledToasterClose, "Click on Close Button of Camera Disabled Toaster");
     }
 
-    public void clickOnDontAllowCameraAccessButton(){
-        if(isElementDisplayed(cameraDontAllowAccessPopup))
-            clickOnElement(cameraDontAllowAccessPopup);
+    public void clickOnDontAllowCameraAccessButton() {
+        click(cameraDontAllowAccessPopup, "Click on Don't Allow Camera Access Popup");
     }
 
     public boolean isCameraAccessLostPageLoaded() {
-        return isElementDisplayed(cameraAccessLostPage);
+        return isElementVisible(cameraAccessLostPage, "Check if Camera Access Lost Page is Loaded");
     }
 }

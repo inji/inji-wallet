@@ -3,8 +3,8 @@
 # =============================
 # Add your BrowserStack userName and accessKey here or set BROWSERSTACK_USERNAME and
 # BROWSERSTACK_ACCESS_KEY as env variables
-userName: user_Name
-accessKey: secret_Key
+userName:
+accessKey:
 
 # ======================
 # BrowserStack Reporting
@@ -29,7 +29,7 @@ buildIdentifier: '#${BUILD_NUMBER}' # Supports strings along with either/both ${
 # OR
 # app: 'bs://<app-id>' # App URL returned when uploading the app to BrowserStack manually
 # Visit https://www.browserstack.com/docs/app-automate/appium/set-up-tests/specify-app for more options
-app: bs://296e4801c21dcb8e77034a366587e0c39642c373 # BrowserStack Sample App
+app: bs://ae452a9b5f63f2244ba48b6b9553a7c12d6405e7 # BrowserStack Sample App
 
 # =======================================
 # Platforms (Browsers / Devices to test)
@@ -40,9 +40,6 @@ platforms:
     - platformName: ios
       deviceName: iPhone 13 Pro
       platformVersion: 15
-    - platformName: ios
-      deviceName: iPhone 15 Pro Max
-      platformVersion: 17
 
 # =======================
 # Parallels per Platform
@@ -78,3 +75,5 @@ debug: false # <boolean> # Set to true if you need screenshots for every seleniu
 networkLogs: false # <boolean> Set to true to enable HAR logs capturing
 consoleLogs: errors # <string> Remote browser's console debug levels to be printed (Default: errors)
 # Available options are `disable`, `errors`, `warnings`, `info`, `verbose` (Default: errors)
+
+interactiveDebugging: true

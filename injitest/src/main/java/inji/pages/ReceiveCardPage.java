@@ -4,8 +4,6 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import org.openqa.selenium.WebElement;
 
-import inji.utils.IosUtil;
-
 public class ReceiveCardPage extends BasePage {
     @AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Allow\")")
     private WebElement allowButton;
@@ -25,29 +23,32 @@ public class ReceiveCardPage extends BasePage {
     @AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"com.oplus.wirelesssettings:id/alertTitle\")")
     private WebElement bluetoothPopUp;
 
+    @AndroidFindBy(id = "com.android.permissioncontroller:id/permission_allow_button")
+    private WebElement nearbyAllowButton;
+
     public ReceiveCardPage(AppiumDriver driver) {
         super(driver);
     }
 
     public void clickOnAllowButton() {
-        if (isElementDisplayed(allowButton)) {
-            clickOnElement(allowButton);
-        }
+        click(nearbyAllowButton, "Click on Nearby Devices Allow button");
+        click(allowButton, "Click on Location Allow button");
     }
+
     public boolean isReceiveCardHeaderDisplayed() {
-        return this.isElementDisplayed(receiveCardHeader);
+        return isElementVisible(receiveCardHeader, "Verify 'Receive Card' header is displayed");
     }
 
     public boolean isReceiveCardHeaderInFilipinoLanguageDisplayed() {
-        return this.isElementDisplayed(receiveCardHeaderInFilipinoLanguage);
+        return isElementVisible(receiveCardHeaderInFilipinoLanguage, "Verify 'Receive Card' header is displayed in Filipino language");
     }
 
     public boolean isWaitingForConnectionDisplayed() {
-        return this.isElementDisplayed(waitingForConnection);
+        return isElementVisible(waitingForConnection, "Verify 'Waiting for connection' message is displayed");
     }
 
     public boolean isQrCodeEnabled() {
-        return this.isElementEnabled(qrCode,30);
+        return isElementEnabled(qrCode, "Verify QR code is enabled and visible");
     }
 
 }

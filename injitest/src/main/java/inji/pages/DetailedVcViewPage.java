@@ -4,10 +4,9 @@ import inji.utils.IosUtil;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-public class DetailedVcViewPage extends BasePage{
+public class DetailedVcViewPage extends BasePage {
     @AndroidFindBy(accessibility = "idDetailsHeader")
     @iOSXCUITFindBy(accessibility = "idDetailsHeader")
     private WebElement detailedVcViewPageTitle;
@@ -104,115 +103,106 @@ public class DetailedVcViewPage extends BasePage{
     }
 
     public boolean isDetailedVcViewPageLoaded() {
-        return this.isElementDisplayed(detailedVcViewPageTitle);
+        return isElementVisible(detailedVcViewPageTitle, "Check if Detailed VC View page title is visible");
     }
 
     public String getNameInDetailedVcView() {
-        return getTextFromLocator(fullNameValue);
+        return getText(fullNameValue, "Get the full name displayed in Detailed VC View");
     }
 
     public String getGenderInDetailedVcView() {
-        return getTextFromLocator(genderValue);
+        return getText(genderValue, "Get the gender value displayed in Detailed VC View");
     }
 
     public String getDateOfBirthInDetailedVcView() {
-        return getTextFromLocator(dateOfBirthValue);
+        return getText(dateOfBirthValue, "Get the date of birth value displayed in Detailed VC View");
     }
 
     public String getIdTypeValueInDetailedVcView() {
-        return getTextFromLocator(idTypeValue);
+        return getText(idTypeValue, "Get the ID type value displayed in Detailed VC View");
     }
 
     public String getStatusInDetailedVcView() {
-        return getTextFromLocator(statusValue);
+        return getText(statusValue, "Get the status value displayed in Detailed VC View");
     }
 
     public String getUinInDetailedVcView() {
-        return getTextFromLocator(uinNumberValue);
+        return getText(uinNumberValue, "Get the UIN value displayed in Detailed VC View");
     }
 
     public String getGeneratedOnValueInDetailedVcView() {
-        return getTextFromLocator(generatedOnValue);
+        return getText(generatedOnValue, "Get the generated-on timestamp from Detailed VC View");
     }
 
     public String getPhoneInDetailedVcView() {
-        return getTextFromLocator(phoneNumberValue);
+        return getText(phoneNumberValue, "Get the phone number displayed in Detailed VC View");
     }
 
     public String getEmailInDetailedVcView() {
-        return getTextFromLocator(emailIdValue);
+        return getText(emailIdValue, "Get the email ID displayed in Detailed VC View");
     }
 
     public boolean isActivateButtonDisplayed() {
-        return this.isElementDisplayed(activateButton);
+        return isElementVisible(activateButton, "Check if the 'Activate' button is visible");
     }
 
-    public PleaseConfirmPopupPage clickOnActivateButtonAndroid(){
-//        IosUtil.scrollToElement(driver,58,712,160,129);
-        clickOnElement(activateButton);
+    public PleaseConfirmPopupPage clickOnActivateButtonAndroid() {
+        click(activateButton, "Click on the 'Activate' button on Android");
         return new PleaseConfirmPopupPage(driver);
     }
 
-    public PleaseConfirmPopupPage clickOnActivateButtonIos(){
-        IosUtil.scrollToElement(driver,58,712,160,129);
-        clickOnElement(activeButtonIos);
+    public PleaseConfirmPopupPage clickOnActivateButtonIos() {
+        IosUtil.scrollToElement(driver, 58, 712, 160, 129);
+        click(activeButtonIos, "Scroll and click on the 'Activate' button on iOS");
         return new PleaseConfirmPopupPage(driver);
     }
 
     public boolean isProfileAuthenticatedDisplayed() {
-        return this.isElementDisplayed(profileAuthenticated);
+        return isElementVisible(profileAuthenticated, "Check if the 'Profile Authenticated' indicator is displayed");
     }
 
     public HomePage clickOnBackArrow() {
-        clickOnElement(backArrow);
+        click(backArrow, "Click on the back arrow to return to the Home page");
         return new HomePage(driver);
     }
 
     public HomePage clickOnArrowleft() {
-        clickOnElement(arrowleft);
+        click(arrowleft, "Click on the left arrow to return to the Home page");
         return new HomePage(driver);
     }
 
     public HomePage clickOnQrCrossIcon() {
-        if (isElementDisplayed(qrCloseIcon)){
-            clickOnElement(qrCloseIcon);
-        }
+        click(qrCloseIcon, "Click on the QR code close icon to return to Home page");
         return new HomePage(driver);
     }
 
     public HomePage clickOnCrossIcon() {
-        if(isElementDisplayed(crossIcon)) {
-            clickOnElement(crossIcon);
-        }
+        click(crossIcon, "Click on the cross icon to close the Detailed VC View");
         return new HomePage(driver);
     }
 
     public void clickOnQrCodeButton() {
-        if(isElementDisplayed(detailedVcViewPageQr)) {
-            clickOnElement(detailedVcViewPageQr);
-        }
+        click(detailedVcViewPageQr, "Click on the QR code button on Detailed VC View page");
         new PleaseConfirmPopupPage(driver);
     }
 
     public boolean isQrCodeDisplayed() {
-        return isElementDisplayed(qrCodeHeader);
+        return isElementVisible(qrCodeHeader, "Check if the QR code is displayed on Detailed VC View");
     }
 
     public boolean isCredentialRegistryTextDisplayed() {
-        return this.isElementDisplayed(credentialRegistryText);
+        return isElementVisible(credentialRegistryText, "Check if Credential Registry label text is visible");
     }
 
     public String getCredentialRegistryValue() {
-        return getTextFromLocator(credentialRegistryValue);
+        return getText(credentialRegistryValue, "Get the value shown for Credential Registry in Detailed VC View");
     }
 
     public boolean isEsignetLogoDisplayed() {
-        return isElementDisplayed(esignetLogo);
+        return isElementVisible(esignetLogo, "Check if the Esignet logo is displayed");
     }
 
     public void clickOnMoreOptionsInDetails() {
-        clickOnElement(moreOptionsButton);
+        click(moreOptionsButton, "Click on the 'More Options' button in Detailed VC View");
     }
-
-
 }

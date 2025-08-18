@@ -42,13 +42,12 @@ public class ChooseLanguagePage extends BasePage {
     private WebElement arabicLanguage;
 
 
-
     public ChooseLanguagePage(AppiumDriver driver) {
         super(driver);
     }
 
     public boolean isChooseLanguagePageLoaded() {
-        boolean temp = isElementDisplayed(chooseLanguageText);
+        boolean temp = isElementVisible(chooseLanguageText);
         if (!temp) {
             AndroidUtil.invokeAppFromBackGroundAndroid();
         }
@@ -56,39 +55,35 @@ public class ChooseLanguagePage extends BasePage {
     }
 
     public WelcomePage clickOnSavePreference() {
-        clickOnElement(savePreferenceText);
+        click(savePreferenceText, "Click on 'Save Preference' to confirm language selection");
         return new WelcomePage(driver);
     }
 
-    public ChooseLanguagePage clickOnUnlockApplication() {
-        clickOnElement(unlockApplications);
-        return this;
+    public void clickOnUnlockApplication() {
+        click(unlockApplications, "Click on 'Unlock Application' to proceed to login or onboarding");
     }
 
     public boolean isUnlockApplicationDisplayed() {
-        return this.isElementDisplayed(unlockApplications);
+        return isElementVisible(unlockApplications, "Check if 'Unlock Application' option is visible on the screen");
     }
 
-    public void clickOnFilipinoLangauge(){
-        clickOnElement(filipinoLanguage);
+    public void clickOnFilipinoLangauge() {
+        click(filipinoLanguage, "Select 'Filipino' as the preferred language");
     }
 
-    public void clickOnHindiLanguage(){
-        clickOnElement(hindiLanguage);
+    public void clickOnHindiLanguage() {
+        click(hindiLanguage, "Select 'Hindi' as the preferred language");
     }
 
-    public void clickOnKannadaLanguage(){
-        clickOnElement(KannadaLanguage);
+    public void clickOnKannadaLanguage() {
+        click(KannadaLanguage, "Select 'Kannada' as the preferred language");
     }
 
-    public void clickOnTamilLanguage(){
-        clickOnElement(tamilLanguage);
+    public void clickOnTamilLanguage() {
+        click(tamilLanguage, "Select 'Tamil' as the preferred language");
     }
 
-    public void clickOnArabicLanguage(){
-        clickOnElement(arabicLanguage);
+    public void clickOnArabicLanguage() {
+        click(arabicLanguage, "Select 'Arabic' as the preferred language");
     }
-
-
-
 }

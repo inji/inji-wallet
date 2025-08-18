@@ -33,27 +33,23 @@ public class AppUnlockMethodPage extends BasePage {
 
     public boolean isAppUnlockMethodPageLoaded() {
         return true;
-		
-		// temp fix
     }
 
     public SetPasscode clickOnUsePasscode() {
-        if (isElementDisplayed(usePasscodeButton)) {
-            this.clickOnElement(usePasscodeButton);
-        }
+        click(usePasscodeButton, "Click on 'Use Passcode' button to proceed");
         return new SetPasscode(driver);
     }
 
     public String getDescriptionText() {
-        return this.getTextFromLocator(descriptionText);
+        return getText(descriptionText, "Get the description text displayed on the passcode screen");
     }
 
     public String getPasswordTypeDescriptionText() {
-        return this.getTextFromLocator(passwordTypeDescriptionText);
+        return getText(passwordTypeDescriptionText, "Get the description text related to password type");
     }
 
     public boolean isUseBiometricsButton() {
-        return this.isElementDisplayed(useBiometricsButton);
+        return isElementVisible(useBiometricsButton, "Check if the 'Use Biometrics' button is visible");
     }
 
 }

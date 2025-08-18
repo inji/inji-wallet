@@ -19,16 +19,16 @@ public class PleaseConfirmPopupPage extends BasePage {
     }
 
     public boolean isPleaseConfirmPopupPageLoaded() {
-        return this.isElementDisplayed(yesButton);
+        return this.isElementVisible(yesButton);
     }
 
     public OtpVerificationPage clickOnConfirmButton() {
-        clickOnElement(yesButton);
+        click(yesButton, "Click on Yes button to confirm");
         return new OtpVerificationPage(driver);
     }
 
     public void clickOnNoButton() {
-        clickOnElement(noButton);
+        click(noButton, "Click on No button to cancel confirmation");
         new OtpVerificationPage(driver);
     }
 

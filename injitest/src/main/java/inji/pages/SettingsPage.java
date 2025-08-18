@@ -1,17 +1,14 @@
 package inji.pages;
 
-import inji.constants.Target;
 import inji.utils.IosUtil;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.WebElement;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SettingsPage extends BasePage {
 
@@ -50,13 +47,13 @@ public class SettingsPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "kn")
     private WebElement kannadaLanguageButton;
 
-
     @AndroidFindBy(xpath = "//*[contains(@text,'Wika')]")
     @iOSXCUITFindBy(accessibility = "languageTitle")
     private WebElement wikaButton;
 
     @AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"listItemTitle\")")
-    @iOSXCUITFindBy(accessibility = "languages")
+//    @iOSXCUITFindBy(accessibility = "languages")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='languages']/XCUIElementTypeOther")
     private List<WebElement> languages;
 
     @AndroidFindBy(accessibility = "aboutInjiTitle")
@@ -102,154 +99,159 @@ public class SettingsPage extends BasePage {
     @AndroidFindBy(accessibility = "keyManagement")
     private WebElement keyManagement;
 
-
     public SettingsPage(AppiumDriver driver) {
         super(driver);
     }
 
     public boolean isSettingPageLoaded() {
-        return this.isElementDisplayed(settingsTittle);
+        return isElementVisible(settingsTittle, "Checking if Settings page title is visible");
     }
 
     public boolean isSettingPageLoadedInFilipion() {
-        return this.isElementDisplayed(settingsTittle);
+        return isElementVisible(settingsTittle, "Checking if Settings page title is visible in Filipino");
     }
 
     public UnlockApplicationPage clickOnLogoutButton() {
-        IosUtil.scrollToElement(driver,100,800,100,200);
-        clickOnElement(logoutButton);
+        IosUtil.scrollToElement(driver, 100, 800, 100, 200);
+        click(logoutButton, "Clicking on Logout button");
         return new UnlockApplicationPage(driver);
     }
 
     public SettingsPage clickOnLanguage() {
-        clickOnElement(languageButton);
+        click(languageButton, "Clicking on Language button");
         return this;
     }
 
     public void clickOnEnglishLanguage() {
-        clickOnElement(englishLanguageButton);
+        click(englishLanguageButton, "Clicking on English Language button");
     }
 
     public void clickOnFilipinoLanguage() {
-        clickOnElement(filipinoLanguageButton);
+        click(filipinoLanguageButton, "Clicking on Filipino Language button");
     }
 
     public void clickOnTamilLanguage() {
-        clickOnElement(tamilLanguageButton);
+        click(tamilLanguageButton, "Clicking on Tamil Language button");
     }
 
     public void clickOnHindiLanguage() {
-        clickOnElement(hindiLanguageButton);
+        click(hindiLanguageButton, "Clicking on Hindi Language button");
     }
 
     public void clickOnKannadaLanguage() {
-        clickOnElement(kannadaLanguageButton);
+        click(kannadaLanguageButton, "Clicking on Kannada Language button");
     }
 
     public boolean verifyFilipinoLanguage() {
-        return this.isElementDisplayed(wikaButton);
+        return isElementVisible(wikaButton, "Verifying if Wika button is visible for Filipino language");
     }
 
     public boolean verifyTamilLanguage() {
-        return this.isElementDisplayed(languageButton);
+        return isElementVisible(languageButton, "Verifying if Language button is visible for Tamil language");
     }
 
     public boolean verifyHindiLanguage() {
-        return this.isElementDisplayed(languageButton);
+        return isElementVisible(languageButton, "Verifying if Language button is visible for Hindi language");
     }
 
     public boolean verifyKannadaLanguage() {
-        return this.isElementDisplayed(languageButton);
+        return isElementVisible(languageButton, "Verifying if Language button is visible for Kannada language");
     }
 
     public boolean verifyLanguagesInLanguageFilter(String os) {
-        List<String> expectedLanguages=null;
-        List<String> actualLanguages= null;
-        if(os.equals("IOS")){
-            expectedLanguages = Arrays.asList("English \uE5CA Filipino عربى हिंदी ಕನ್ನಡ தமிழ்");
-        } else if (os.equals("ANDROID")) {
-            expectedLanguages = Arrays.asList("English", "Filipino","عربى", "हिंदी", "ಕನ್ನಡ", "தமிழ்");
+        List<String> expectedLanguages;
+
+        if (os.equalsIgnoreCase("IOS")) {
+            expectedLanguages = Arrays.asList("English", "Filipino", "عربى", "हिंदी", "ಕನ್ನಡ", "தமிழ்");
+        } else if (os.equalsIgnoreCase("ANDROID")) {
+            expectedLanguages = Arrays.asList("English", "Filipino", "عربى", "हिंदी", "ಕನ್ನಡ", "தமிழ்");
+        } else {
+            throw new IllegalArgumentException("Unsupported OS: " + os);
         }
-        actualLanguages = languages.stream()
+
+        List<String> actualLanguages = languages.stream()
                 .map(WebElement::getText)
-                .collect(Collectors.toList());
+                .map(text -> text.replaceAll("[^\\p{L}\\p{M}\\s]", "").trim())
+                .toList();
+
         return new HashSet<>(expectedLanguages).equals(new HashSet<>(actualLanguages));
     }
 
     public SettingsPage clickOnAboutInji() {
-        clickOnElement(aboutInji);
+        click(aboutInji, "Clicking on About Inji option");
         return this;
     }
 
     public boolean isTuvaliVersionPresent() {
-        return this.isElementDisplayed(tuvaliVersion);
+        return isElementVisible(tuvaliVersion, "Checking if Tuvali version is displayed");
     }
 
     public void clickOnInjiTourGuide() {
-        clickOnElement(injiTourGuide);
+        click(injiTourGuide, "Clicking on Inji Tour Guide");
     }
 
     public boolean isReceivedCardsPresent() {
-        return this.isElementDisplayed(receivedCards);
+        return isElementVisible(receivedCards, "Checking if Received Cards section is visible");
     }
 
     public CredentialRegistryPage clickOnCredentialRegistry() {
-        clickOnElement(credentialRegistryText);
+        click(credentialRegistryText, "Clicking on Credential Registry");
         return new CredentialRegistryPage(driver);
     }
 
     public ReceiveCardPage clickOnReceiveCard() {
-        clickOnElement(receiveCardText);
+        click(receiveCardText, "Clicking on Receive Card");
         return new ReceiveCardPage(driver);
     }
 
     public ReceiveCardPage clickOnReceiveCardFilipinoLanguage() {
-        clickOnElement(receiveCardInfilipinoLanguageText);
+        click(receiveCardInfilipinoLanguageText, "Clicking on Receive Card (Filipino Language)");
         return new ReceiveCardPage(driver);
     }
 
     public AboutInjiPage clickOnAbouInji() {
-        clickOnElement(aboutInji);
+        click(aboutInji, "Clicking on About Inji");
         return new AboutInjiPage(driver);
     }
 
     public SettingsPage clickOnBackArrow() {
-        clickOnElement(backButton);
+        click(backButton, "Clicking on Back Arrow");
         return this;
     }
+
     public UnlockApplicationPage clickOnlanguageButtonInArabic() {
-        clickOnElement(languageButtonInArabic);
+        click(languageButtonInArabic, "Clicking on Language Button in Arabic");
         return new UnlockApplicationPage(driver);
     }
-
 
     public UnlockApplicationPage clickOnArabicLanguageButton() {
-        clickOnElement(arabicLanguageButton);
+        click(arabicLanguageButton, "Clicking on Arabic Language Button");
         return new UnlockApplicationPage(driver);
     }
 
-    public boolean isdataBackupAndRestoreDisplayed() {
-        return this.isElementDisplayed(dataBackupAndRestore);
+    public boolean isDataBackupAndRestoreDisplayed() {
+        return isElementVisible(dataBackupAndRestore, "Checking if Data Backup and Restore option is visible");
     }
 
     public BackupAndRestorePage clickOnDataBackupAndRestoreButton() {
-        clickOnElement(dataBackupAndRestore);
+        click(dataBackupAndRestore, "Clicking on Data Backup and Restore button");
         return new BackupAndRestorePage(driver);
     }
 
-    public boolean isNewlableDisplayed() {
-        return this.isElementDisplayed(newlable);
-    }
-    public String  getDataBackupAndRestoreText(){
-        return getTextFromLocator(dataBackupAndRestore);
+    public boolean isNewLableDisplayed() {
+        return isElementVisible(newlable, "Checking if 'New' label is displayed");
     }
 
-    public String getreceiveCardText(){
-        return getTextFromLocator(receiveCardText);
+    public String getDataBackupAndRestoreText() {
+        return getText(dataBackupAndRestore); // Consider adding description if `getText()` supports it
+    }
+
+    public String getReceiveCardText() {
+        return getText(receiveCardText); // Consider adding description if `getText()` supports it
     }
 
     public KeyManagementPage clickOnKeyManagement() {
-        clickOnElement(keyManagement);
+        click(keyManagement, "Clicking on Key Management");
         return new KeyManagementPage(driver);
     }
 }

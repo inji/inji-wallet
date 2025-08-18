@@ -6,7 +6,7 @@
     </suite-files>
 	<test verbose="2" preserve-order="true" name="ios">
         <classes>
-            <class name="iosTestCases.ChangeLanguageTest">
+            <class name="inji.testcases.iosTestCases.ChangeLanguageTest">
                 <methods>
                     <include name="changeLanguageToHindiAndVerifyEsignetPage"/>
                     <include name="changeLanguageToTamilAndVerifyEsignetPage"/>

@@ -6,7 +6,8 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.WebElement;
 
-import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MockCertifyLoginPage extends BasePage {
 
@@ -16,7 +17,7 @@ public class MockCertifyLoginPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "Continue")
     private WebElement iosContinueButton;
 
-    @AndroidFindBy(xpath = "//*[contains(@text,'Login with OTP')]")
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"Login with OTP\"]")
     @iOSXCUITFindBy(accessibility = "Login with OTP")
     private WebElement esignetLoginButton;
 
@@ -90,7 +91,7 @@ public class MockCertifyLoginPage extends BasePage {
     @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id=\"error-banner-message\"]")
     @iOSXCUITFindBy(accessibility = "Invalid Individual ID")
     private WebElement invalidIndividualIdText;
-	
+
     @AndroidFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
     @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
     private WebElement continuePopupButton;
@@ -101,140 +102,114 @@ public class MockCertifyLoginPage extends BasePage {
     }
 
     public boolean isLoadingPageTextLoaded() {
-        return this.isElementDisplayed(loadingPageHeader);
+        return isElementVisible(loadingPageHeader, "Checking if the Loading page header is displayed");
     }
 
     public boolean isSettingUpTextDisplayed() {
-        return this.isElementDisplayed(settingUpTextOrDownloadingCredentials);
+        return isElementVisible(settingUpTextOrDownloadingCredentials, "Checking if 'Setting up' text is displayed");
     }
 
     public boolean isDownloadingCredentialsTextDisplayed() {
-        return this.isElementDisplayed(settingUpTextOrDownloadingCredentials);
+        return isElementVisible(settingUpTextOrDownloadingCredentials, "Checking if 'Downloading credentials' text is displayed");
     }
 
     public boolean isOtpHasSendMessageDisplayed() {
-        return this.isElementDisplayed(otpSendMessage);
+        return isElementVisible(otpSendMessage, "Checking if OTP sent message is displayed");
     }
 
     public boolean isEsignetLoginPageDisplayed() {
-        return this.isElementDisplayed(esignetLoginHeader);
+        return isElementVisible(esignetLoginHeader, "Checking if Esignet login page header is displayed");
     }
 
     public void clickOnEsignetLoginWithOtpButton() {
-		if (isElementDisplayed(continuePopupButton)){
-            clickOnElement(continuePopupButton);
-        }
-        if(isElementDisplayed(esignetLoginButton)) {
-            clickOnElement(esignetLoginButton);
-        }
+        click(continuePopupButton, "Clicking on Continue button in popup");
+        click(esignetLoginButton, "Clicking on Esignet Login with OTP button");
     }
 
     public OtpVerificationPage setEnterIdTextBox(String uinOrVid) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        sendKeysToTextBox(enterIdTextBox, uinOrVid);
+        enterText(enterIdTextBox, uinOrVid, "Entering UIN or VID in the input textbox: " + uinOrVid);
         return new OtpVerificationPage(driver);
     }
 
     public boolean isEnterYourVidTextDisplayed() {
-        return this.isElementDisplayed(enterYourVidTextHeader);
+        return isElementVisible(enterYourVidTextHeader, "Checking if 'Enter your VID' text is displayed");
     }
 
     public boolean isProgressingLogoDisplayed() {
-        return redirectingPage.isDisplayed();
+        return redirectingPage.isDisplayed(); // Consider replacing with isElementVisible() for consistency
     }
 
     public void clickOnGetOtpButton() {
-        clickOnElement(getOtpButton);
+        click(getOtpButton, "Clicking on Get OTP button");
     }
 
     public void clickOnVerifyButton() {
         ((HidesKeyboard) driver).hideKeyboard();
-        clickOnElement(verifyButton);
+        click(verifyButton, "Clicking on Verify button after hiding keyboard");
     }
 
     public void clickOnVerifyButtonIos() {
-        clickOnElement(verifyButton);
+        click(verifyButton, "Clicking on Verify button (iOS specific)");
     }
 
-    public String isInvalidOtpMessageDisplayed() {
-        return getTextFromLocator(invalidOtpText);
+    public String getInvalidOtpMessage() {
+        return getText(invalidOtpText, "Fetching the error message for 'Invalid OTP'");
     }
 
-    public boolean  verifyLanguageLoginHeaderTextDisplayed(String language){
-        String actualText = getTextFromLocator(loginTextHeader);
+    private static final Map<String, Map<String, String>> LANGUAGE_TEXT_MAP = new HashMap<>();
 
-        switch (language) {
-            case "English":
-                boolean isEnglishMatch  = (actualText.equalsIgnoreCase("Login")==true) ? true : false;
-                return isEnglishMatch ;
-            case "Tamil":
-                boolean isTamilMatch  = (actualText.equalsIgnoreCase("eSignet மூலம் உள்நுழையவும்")==true) ? true : false;
-                return isTamilMatch ;
-            case "Kannada":
-                boolean isKannadaMatch  = (actualText.equalsIgnoreCase("ಇಸಿಗ್ನೆಟ್ ಮೂಲಕ ಲಾಗಿನ್ ಮಾಡಿ")==true) ? true : false;
-                return isKannadaMatch ;
-            case "Hindi":
-                boolean isHindiMatch  = (actualText.equalsIgnoreCase("ईसिग्नेट से लॉगिन करें")==true) ? true : false;
-                return isHindiMatch ;
-            case "HindiIos":
-                boolean isHindiMatchIos  = (actualText.equalsIgnoreCase("ईसिग्नेट से लॉगिन करें")==true) ? true : false;
-                return isHindiMatchIos ;
-            case "Arabic":
-                boolean isArabicMatch  = (actualText.equalsIgnoreCase("تسجيل الدخول باستخدام eSignet")==true) ? true : false;
-                return isArabicMatch ;
-        }
-        return false;
+    static {
+        Map<String, String> loginHeaderTitle = new HashMap<>();
+        loginHeaderTitle.put("English", "Login");
+        loginHeaderTitle.put("Tamil", "eSignet மூலம் உள்நுழையவும்");
+        loginHeaderTitle.put("Kannada", "ಇಸಿಗ್ನೆಟ್ ಮೂಲಕ ಲಾಗಿನ್ ಮಾಡಿ");
+        loginHeaderTitle.put("Hindi", "ईसिग्नेट से लॉगिन करें");
+        loginHeaderTitle.put("HindiIos", "ईसिग्नेट से लॉगिन करें");
+        loginHeaderTitle.put("Arabic", "تسجيل الدخول باستخدام eSignet");
+        LANGUAGE_TEXT_MAP.put("LoginHeaderTitle", loginHeaderTitle);
+
+        Map<String, String> pleaseEnterUIN = new HashMap<>();
+        pleaseEnterUIN.put("English", "Please enter your UIN/VID");
+        pleaseEnterUIN.put("Tamil", "உங்கள் UIN/VIDஐ உள்ளிடவும்");
+        pleaseEnterUIN.put("TamilIos", "உங்கள் UIN/VIDஐ உள்ளிடவும்");
+        pleaseEnterUIN.put("Kannada", "ದಯವಿಟ್ಟು ನಿಮ್ಮ UIN/VID ಅನ್ನು ನಮೂದಿಸಿ");
+        pleaseEnterUIN.put("Hindi", "कृपया अपना यूआईएन/वीआईडी \u200B\u200Bदर्ज करें");
+        pleaseEnterUIN.put("HindiIos", "अपना यूआईएन या वीआईडी \u200B\u200Bदर्ज करें");
+        pleaseEnterUIN.put("Arabic", "الرجاء إدخال UIN/VID الخاص بك");
+        LANGUAGE_TEXT_MAP.put("PleaseEnterUIN", pleaseEnterUIN);
     }
 
-    public boolean  verifyLanguagePleaseEnterUinHeaderTextDisplayed(String language){
-        String actualText = getTextFromLocator(pleaseEnterUinHeaderText);
+    public boolean verifyLanguageText(String key, String language, String actualText) {
+        Map<String, String> languageMap = LANGUAGE_TEXT_MAP.get(key);
+        if (languageMap == null) return false;
 
-        switch (language) {
-            case "English":
-                boolean isEnglishMatch  = (actualText.equalsIgnoreCase("Please enter your UIN/VID")==true) ? true : false;
-                return isEnglishMatch ;
-            case "Tamil":
-                boolean isTamilMatch  = (actualText.equalsIgnoreCase("உங்கள் UIN/VIDஐ உள்ளிடவும்")==true) ? true : false;
-                return isTamilMatch ;
-            case "TamilIos":
-                boolean isTamilMatchIos  = (actualText.equalsIgnoreCase("உங்கள் UIN/VIDஐ உள்ளிடவும்")==true) ? true : false;
-                return isTamilMatchIos ;
-            case "Kannada":
-                boolean isKannadaMatch  = (actualText.equalsIgnoreCase("ದಯವಿಟ್ಟು ನಿಮ್ಮ UIN/VID ಅನ್ನು ನಮೂದಿಸಿ")==true) ? true : false;
-                return isKannadaMatch ;
-            case "Hindi":
-                boolean isHindiMatch  = (actualText.equalsIgnoreCase("कृपया अपना यूआईएन/वीआईडी \u200B\u200Bदर्ज करें")==true) ? true : false;
-                return isHindiMatch ;
-            case "HindiIos":
-                boolean isHindiMatchIos  = (actualText.equalsIgnoreCase("अपना यूआईएन या वीआईडी \u200B\u200Bदर्ज करें")==true) ? true : false;
-                return isHindiMatchIos ;
-            case "Arabic":
-                boolean isArabicMatch  = (actualText.equalsIgnoreCase("الرجاء إدخال UIN/VID الخاص بك")==true) ? true : false;
-                return isArabicMatch ;
-        }
-        return false;
+        String expectedText = languageMap.get(language);
+        if (expectedText == null) return false;
+
+        return actualText.equalsIgnoreCase(expectedText);
+    }
+
+    public boolean verifyLoginHeaderTitle(String language) {
+        return verifyLanguageText("LoginHeaderTitle", language, getText(loginTextHeader));
+    }
+
+    public boolean verifyPleaseEnterUinHeader(String language) {
+        return verifyLanguageText("PleaseEnterUIN", language, getText(pleaseEnterUinHeaderText));
     }
 
     public void clickOnCloseButton() {
-        clickOnElement(CloseTab);
+        click(CloseTab, "Clicking on Close tab button");
     }
 
-    public String getText(){
-        System.out.println(getTextFromLocator(enterIdTextBox));
-        return getTextFromLocator(enterIdTextBox);
+    public String getText() {
+        return getText(enterIdTextBox, "Getting text from the UIN/VID input box");
     }
 
     public void clickOnCredentialTypeHeadingMOSIPVerifiableCredential() {
-        if (isElementDisplayed(credentialTypeHeadingMOSIPVerifiableCredential)) {
-            clickOnElement(credentialTypeHeadingMOSIPVerifiableCredential);
-        }
+        click(credentialTypeHeadingMOSIPVerifiableCredential, "Clicking on 'MOSIP Verifiable Credential' credential type heading");
     }
 
-    public String isInvalidIndividualIdTextDisplayed(){
-        return getTextFromLocator(invalidIndividualIdText);
+    public String getInvalidIndividualIdMessage() {
+        return getText(invalidIndividualIdText, "Getting the error message for 'Invalid Individual ID'");
     }
 }

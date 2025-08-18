@@ -4,15 +4,21 @@ import inji.utils.IosUtil;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
-
 import org.openqa.selenium.WebElement;
 
 import java.time.LocalDate;
 import java.time.Month;
 
 public class SunbirdLoginPage extends BasePage {
-    LocalDate currentDate = LocalDate.now();
-    Month currentMonth = currentDate.getMonth();
+
+    private final Month currentMonth = LocalDate.now().getMonth();
+    private final BasePage basePage;
+
+    public SunbirdLoginPage(AppiumDriver driver) {
+        super(driver);
+        basePage = new BasePage(driver);
+    }
+
     @AndroidFindBy(xpath = "//*[contains(@text,'Login with KBA')]")
     private WebElement loginWithKBA;
 
@@ -22,7 +28,7 @@ public class SunbirdLoginPage extends BasePage {
 
     @AndroidFindBy(xpath = "//android.widget.EditText[@resource-id=\"_form_fullName\"]")
     @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeTextField[`name == \"Please fill in this field\"`][2]")
-    private WebElement enterFullnameTextBox;
+    private WebElement enterFullNameTextBox;
 
     @AndroidFindBy(uiAutomator = "UiSelector().className(\"android.widget.Spinner\")")
     @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeOther[`name == \"Please fill in this field\"`]")
@@ -41,6 +47,7 @@ public class SunbirdLoginPage extends BasePage {
 
     @iOSXCUITFindBy(xpath = "//XCUIElementTypeCollectionView//XCUIElementTypeButton[@name=\"Monday, 1 January\"]")
     private WebElement dateOfBirthSecond;
+
     @iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"January 2025\"]")
     private WebElement January2025;
 
@@ -51,13 +58,14 @@ public class SunbirdLoginPage extends BasePage {
     @AndroidFindBy(xpath = "//android.widget.Button[@text=\"Login\"]")
     @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeButton[`name == \"Login\"`]")
     private WebElement loginButtonSecond;
+
     @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Previous month\"]")
     @iOSXCUITFindBy(accessibility = "Previous Month")
     private WebElement previousMonth;
 
     @AndroidFindBy(accessibility = "Next month")
     @iOSXCUITFindBy(accessibility = "Next month")
-    private WebElement nextmonth;
+    private WebElement nextMonth;
 
     @AndroidFindBy(accessibility = "wallet-activated-icon")
     @iOSXCUITFindBy(accessibility = "wallet-activated-icon")
@@ -108,7 +116,7 @@ public class SunbirdLoginPage extends BasePage {
 
     @AndroidFindBy(accessibility = "dobValue")
     @iOSXCUITFindBy(accessibility = "dobValue")
-    private WebElement dateofBirthValue;
+    private WebElement dateOfBirthValue;
 
     @AndroidFindBy(accessibility = "mobileValue")
     @iOSXCUITFindBy(accessibility = "mobileValue")
@@ -140,7 +148,7 @@ public class SunbirdLoginPage extends BasePage {
 
     @AndroidFindBy(accessibility = "credentialTypeItem-LifeInsuranceCredential_ldp")
     @iOSXCUITFindBy(accessibility = "credentialTypeItem-LifeInsuranceCredential_ldp")
-    private WebElement credentialTypeItemLifeInsuranceCredentialldp;
+    private WebElement credentialTypeItemLifeInsuranceCredentialLdp;
 
     @AndroidFindBy(accessibility = "arrow-left")
     @iOSXCUITFindBy(accessibility = "goBack")
@@ -162,11 +170,11 @@ public class SunbirdLoginPage extends BasePage {
     private WebElement doneButton;
 
     @AndroidFindBy(xpath = "//*[contains(@text,'Login failed')]")
-    private WebElement LoginFailedDueTOInValidCredentials;
+    private WebElement loginFailedInvalidCredentials;
 
     @AndroidFindBy(xpath = "//*[@resource-id=\"android:id/date_picker_header_year\"]")
 //    @iOSXCUITFindBy(accessibility = "Show year picker")
-    private WebElement pickeYear;
+    private WebElement pickerYear;
 
     @AndroidFindBy(xpath = "//*[@resource-id=\"android:id/text1\" and @text=\"2023\"]")
     @iOSXCUITFindBy(accessibility = "issuerSearchBar")
@@ -184,172 +192,135 @@ public class SunbirdLoginPage extends BasePage {
     @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
     private WebElement continuePopupButton;
 
-    public SunbirdLoginPage(AppiumDriver driver) {
-        super(driver);
-    }
-    BasePage basePage = new BasePage(driver);
-    public void clickOnloginWithKbaButton() {
-        clickOnElement(loginWithKBA);
+    public void clickOnLoginWithKbaButton() {
+        click(loginWithKBA, "Click on 'Login with KBA' button");
     }
 
-    public void enterPolicyNumberTextBox(String PolicyNo) {
-
-        if (isElementDisplayed(continuePopupButton)){
-            clickOnElement(continuePopupButton);
-        }
-        sendKeysToTextBox(enterPolicyTextBox, PolicyNo);
+    public void enterPolicyNumber(String policyNo) {
+        click(continuePopupButton, "Click on continue button in popup before entering policy number");
+        enterText(enterPolicyTextBox, policyNo, "Enter policy number: " + policyNo);
     }
 
-    public void enterFullNameTextBox(String fullname) {
-        sendKeysToTextBox(enterFullnameTextBox, fullname);
+    public void enterFullName(String fullName) {
+        enterText(enterFullNameTextBox, fullName, "Enter full name: " + fullName);
     }
 
-    public void selectYear(){
-        if(isElementDisplayed(pickeYear)){
-            clickOnElement(pickeYear);
-            if(currentMonth.getValue() > 6) {
-                if (isElementDisplayed(select2023Year)) {
-                    clickOnElement(select2023Year);
-                }
-            }else{
-                clickOnElement(select2024Year);
-            }
-
-        }
-    }
-    public void enterDateOfBirthTextBox() {
-        clickOnElement(enterDateOfBirthTextBox);
-if (isElementDisplayed(setButton)){
-    clickOnElement(setButton);
-}
-
-    }
-
-    public void clickOnloginButton() throws InterruptedException {
-
-        int retryCount = 0;
-        while (isElementDisplayed(loginButton) && retryCount < 5) {
-            clickOnElement(loginButton);
-            if (isElementDisplayed(LoginFailedDueTOInValidCredentials)) {
-                retryCount++;
+    public void selectYear() {
+        if (isElementVisible(pickerYear, "Checking if year picker is visible")) {
+            click(pickerYear, "Click on year picker");
+            if (currentMonth.getValue() > 6 && isElementVisible(select2023Year, "Check if 2023 year is visible")) {
+                click(select2023Year, "Select year 2023");
             } else {
+                click(select2024Year, "Select year 2024");
+            }
+        }
+    }
+
+    public void enterDateOfBirth() {
+        click(enterDateOfBirthTextBox, "Click on date of birth input field");
+        click(setButton, "Click on set button to confirm date of birth");
+    }
+
+    public void clickOnLoginButton() {
+        int retryCount = 0;
+        while (isElementVisible(loginButton) && retryCount < 5) {
+            click(loginButton, "Click on login button (Attempt " + (retryCount + 1) + ")");
+            if (!isElementVisible(loginFailedInvalidCredentials)) {
                 break;
             }
+            retryCount++;
+            sleep(1000);
         }
-        if(isElementDisplayed(loginButtonSecond)){
-            clickOnElement(loginButtonSecond);
+        if (isElementVisible(loginButtonSecond)) {
+            click(loginButtonSecond, "Click on fallback login button");
         }
-    }
-    public boolean isSunbirdCardIsActive() {
-        if(isElementDisplayed(doneButton))
-            clickOnElement(doneButton);
-        basePage.retryToGetElement(activatedStatus);
-        return this.isElementDisplayed(activatedStatus);
     }
 
-    public boolean isSunbirdCardLogoIsDisplayed() {
-        if(isElementDisplayed(sunbirdSquareLogo)){
-            basePage.retryToGetElement(sunbirdSquareLogo);
-            return true;
-        } else if (isElementDisplayed(sunbirdLogo)) {
-            basePage.retryToGetElement(sunbirdLogo);
-            return true;
-        }
-        else {
-            return false;
-        }
+    public boolean isSunbirdCardActive() {
+        click(doneButton, "Click on Done button after login");
+        return isElementVisible(activatedStatus, "Check if Sunbird card is active (status visible)");
+    }
+
+    public boolean isSunbirdCardLogoDisplayed() {
+        return isElementVisible(sunbirdSquareLogo, "Check if Sunbird square logo is displayed") ||
+                isElementVisible(sunbirdLogo, "Check if Sunbird logo is displayed");
     }
 
     public String getFullNameForSunbirdCard() {
-        basePage.retryToGetElement(fullName);
-        return this.getTextFromLocator(fullName);
+        return getText(fullName, "Fetch full name from Sunbird card");
     }
+
     public String getFullNameForSunbirdCardForDetailView() {
-        basePage.retryToGetElement(fullNameInDetailView);
-        return this.getTextFromLocator(fullNameInDetailView);
+        return getText(fullNameInDetailView, "Fetch full name from detailed Sunbird card view");
     }
+
     public String getPolicyNameForSunbirdCard() {
-        basePage.retryToGetElement(policyName);
-        return this.getTextFromLocator(policyName);
+        return getText(policyName, "Fetch policy name from Sunbird card");
     }
 
     public String getPolicyNumberForSunbirdCard() {
-        basePage.retryToGetElement(policyNumber);
-        return this.getTextFromLocator(policyNumber);
+        return getText(policyNumber, "Fetch policy number from Sunbird card");
     }
 
     public String getPhoneNumberForSunbirdCard() {
-        basePage.retryToGetElement(phoneNumber);
-        return this.getTextFromLocator(phoneNumber);
+        return getText(phoneNumber, "Fetch phone number from Sunbird card");
     }
 
-//    public String getDateofBirthValueForSunbirdCard() {
-//        basePage.retryToGetElement(dateofBirthValue);
-//        return this.getTextFromLocator(dateofBirthValue);
-//    }
-
-    public boolean isDateofBirthValueForSunbirdCardDisplayed() {
-        return  isElementDisplayed(dateofBirthValue);
+    public boolean isDateOfBirthValueForSunbirdCardDisplayed() {
+        return isElementVisible(dateOfBirthValue, "Check if date of birth is displayed on Sunbird card");
     }
 
     public String getGenderValueForSunbirdCard() {
-        basePage.retryToGetElement(gender);
-        return this.getTextFromLocator(gender);
+        return getText(gender, "Fetch gender value from Sunbird card");
     }
 
     public String getEmailIdValueForSunbirdCard() {
-        IosUtil.scrollToElement(driver,100,800,100,200);
-        basePage.retryToGetElement(emailIdValue);
-        return this.getTextFromLocator(emailIdValue);
+        IosUtil.scrollToElement(driver, 100, 800, 100, 200);
+        return basePage.retryGetText(emailIdValue, "Fetch email ID from Sunbird card (scrolled)");
     }
 
     public String getStatusValueForSunbirdCard() {
-        basePage.retryToGetElement(status);
-        return this.getTextFromLocator(status);
+        return getText(status, "Fetch status value from Sunbird card");
     }
 
     public String getIdTypeValueForSunbirdCard() {
-        basePage.retryToGetElement(idType);
-        return this.getTextFromLocator(idType);
+        return getText(idType, "Fetch ID type from Sunbird card");
     }
 
-    public void clickOnContinueButtonInSigninPopupIos(){
-        clickOnElement(continueButton);
+    public void clickOnContinueButtonInSignInPopupIos() {
+        click(continueButton, "Click on continue button in sign-in popup (iOS)");
     }
 
     public void openDetailedSunbirdVcView() {
-        basePage.retryToGetElement(credentialTypeValue);
-        clickOnElement(credentialTypeValue);
+        click(credentialTypeValue, "Open detailed view of Sunbird VC");
     }
 
     public boolean isSunbirdRCInsuranceVerifiableCredentialHeaderDisplayed() {
-        basePage.retryToGetElement(credentialTypeSelectionScreen);
-        return this.isElementDisplayed(credentialTypeSelectionScreen);
+        return isElementVisible(credentialTypeSelectionScreen, "Check if RC Insurance header is visible");
     }
 
     public boolean isMosipInsuranceDisplayed() {
-        basePage.retryToGetElement(credentialTypeItemInsuranceCredential);
-        return this.isElementDisplayed(credentialTypeItemInsuranceCredential);
+        return isElementVisible(credentialTypeItemInsuranceCredential, "Check if MOSIP Insurance VC is displayed");
     }
 
     public void clickOnMosipInsurance() {
-        this.clickOnElement(credentialTypeItemInsuranceCredential);
+        click(credentialTypeItemInsuranceCredential, "Click on MOSIP Insurance VC item");
     }
 
     public void clickOnBackArrow() {
-        this.clickOnElement(arrowLeft);
+        click(arrowLeft, "Click on back arrow icon");
     }
 
     public boolean isPolicyExpiresOnValueDisplayed() {
-        return this.isElementDisplayed(policyExpiresOnValue);
+        return isElementVisible(policyExpiresOnValue, "Check if 'Policy Expires On' value is visible");
     }
 
-    public boolean isbenefitsValueDisplayed() {
-        return this.isElementDisplayed(benefitsValue);
+    public boolean isBenefitsValueDisplayed() {
+        return isElementVisible(benefitsValue, "Check if benefits value is visible");
     }
 
     public boolean isStatusIconDisplayed() {
-        return this.isElementDisplayed(statusIcon);
+        return isElementVisible(statusIcon, "Check if status icon is displayed");
     }
 
 }

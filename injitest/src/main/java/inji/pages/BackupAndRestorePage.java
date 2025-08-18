@@ -125,193 +125,188 @@ public class BackupAndRestorePage extends BasePage {
     public BackupAndRestorePage(AppiumDriver driver) {
         super(driver);
     }
-    BasePage basePage = new BasePage(driver);
 
     public void clickOnProceedButton() {
-        clickOnElement(proceedButton);
+        click(proceedButton, "Click on the Proceed button");
     }
 
     public boolean isBackupProcessInfoDisplayed() {
-        return this.isElementDisplayed(backupProcessInfo);
+        return isElementVisible(backupProcessInfo, "Check if backup process info is displayed");
     }
 
     public boolean isCloudInfoDisplayed() {
-        return this.isElementDisplayed(cloudInfo);
+        return isElementVisible(cloudInfo, "Check if cloud info is displayed");
     }
 
     public void clickOnAddAnotherAccount() {
-        clickOnElement(addAnotherAccount);
+        click(addAnotherAccount, "Click on 'Add Another Account' option");
     }
 
-    public void enterEmailTextBox(String fullname) {
-
-        sendKeysToTextBox(enterEmail, fullname);
+    public void enterEmailTextBox(String fullName) {
+        enterText(enterEmail, fullName, "Enter email in the email text box");
     }
 
-    public void enterPasswordTextBox(String fullname) {
-
-        basePage.retryToGetElement(enterPassword);
-        sendKeysToTextBox(enterPassword, fullname);
+    public void enterPasswordTextBox(String password) {
+        enterText(enterPassword, password, "Enter password in the password text box");
     }
 
     public void clickOnAgreeButton() {
-        clickOnElement(agreeButton);
+        click(agreeButton, "Click on Agree button");
     }
 
     public void clickOnRestoreButton() {
-        clickOnElement(restoreButton);
+        click(restoreButton, "Click on Restore button");
     }
 
     public void clickOnBackUpButton() {
-        clickOnElement(BackupButton);
+        click(BackupButton, "Click on Backup button");
     }
 
-    public boolean islastBackupTimeDisplayed() {
-        return this.isElementDisplayed(lastBackupTime,40);
+    public boolean isLastBackupTimeDisplayed() {
+        return isElementVisible(lastBackupTime, 40, "Check if last backup time is displayed");
     }
 
     public boolean isDataBackupSuccessPopupDisplayed() {
-        return this.retryElementVisible(dataBackupSuccessPopup);
+        return retryVisible(dataBackupSuccessPopup, "Check if Data Backup Success popup is displayed");
     }
 
     public void clickOnCloseButton() {
-        clickOnElement(closeButton);
+        click(closeButton, "Click on Close button");
     }
 
     public void clickOnArrowLeftButton() {
-        basePage.retryToGetElement(arrowLeftButton);
-        clickOnElement(arrowLeftButton);
+        click(arrowLeftButton, "Click on Left Arrow button");
     }
 
     public void clickOnNextButton() {
-        clickOnElement(nextButton);
+        click(nextButton, "Click on Next button");
     }
 
     public void clickOnCancelButton() {
-        clickOnElement(cancelButton);
+        click(cancelButton, "Click on Cancel button");
     }
 
     public boolean isAssociatedAccountEmailDisplayed() {
-        return this.isElementDisplayed(associatedAccountEmail);
+        return isElementVisible(associatedAccountEmail, "Check if associated account email is displayed");
     }
 
     public boolean isRestoreBackupSuccessPopUpDisplayed() {
-        return this.retryElementVisible(restoreBackupSuccessPopUp);
+        return retryVisible(restoreBackupSuccessPopUp, "Check if Restore Backup Success popup is displayed");
     }
 
     public boolean isPermissionDeniedHeaderDisplayed() {
-        return this.isElementDisplayed(permissionDeniedHeader);
+        return isElementVisible(permissionDeniedHeader, "Check if Permission Denied header is displayed");
     }
 
-
     public boolean isErrorMessageDescriptionDisplayed() {
-        return this.isElementDisplayed(errorMessageDescription);
+        return isElementVisible(errorMessageDescription, "Check if error message description is displayed");
     }
 
     public boolean isErrorHelpTextDisplayed() {
-        return this.isElementDisplayed(errorHelpText);
+        return isElementVisible(errorHelpText, "Check if error help text is displayed");
     }
 
     public void clickOnAllowAccessButton() {
-        clickOnElement(allowAccessButton);
+        click(allowAccessButton, "Click on Allow Access button");
     }
 
     public void clickOnGoBackButton() {
-        clickOnElement(goBackButton);
+        click(goBackButton, "Click on Go Back button");
     }
 
     public boolean isChooseAccountHeaderDisplayed() {
-        return this.isElementDisplayed(chooseAccountHeader);
+        return isElementVisible(chooseAccountHeader, "Check if Choose Account header is displayed");
     }
 
     public boolean isLastBackupSectionHeaderDisplayed() {
-        return this.isElementDisplayed(lastBackupSectionHeader , 50);
+        return isElementVisible(lastBackupSectionHeader, 50, "Check if Last Backup section header is displayed");
     }
 
     public boolean isAccountSectionHeaderDisplayed() {
-        return this.isElementDisplayed(AccountSectionHeader);
+        return isElementVisible(AccountSectionHeader, "Check if Account section header is displayed");
     }
 
     public boolean isStorageInfoDisplayed() {
-        return this.isElementDisplayed(storageInfo);
+        return isElementVisible(storageInfo, "Check if storage info is displayed");
     }
 
     public boolean isAssociatedAccountDisplayed() {
-        return this.isElementDisplayed(associatedAccount);
+        return isElementVisible(associatedAccount, "Check if associated account is displayed");
     }
 
     public boolean isRestoreSectionHeaderDisplayed() {
-        return this.isElementDisplayed(restoreSectionHeader);
+        return isElementVisible(restoreSectionHeader, "Check if Restore section header is displayed");
     }
 
     public boolean isRestoreFailurePopupHeaderDisplayed() {
-        return this.isElementDisplayed(restoreFailurePopup);
+        return isElementVisible(restoreFailurePopup, "Check if Restore Failure popup header is displayed");
     }
 
-    public String  getLastBackupSectionHeaderText(){
-        return getTextFromLocator(lastBackupSectionHeader);
+    public String getLastBackupSectionHeaderText() {
+        return getText(lastBackupSectionHeader, "Get text of Last Backup section header");
     }
 
-    public String  getAccountSectionHeaderText(){
-        return getTextFromLocator(AccountSectionHeader);
+    public String getAccountSectionHeaderText() {
+        return getText(AccountSectionHeader, "Get text of Account section header");
     }
 
-    public String  getStorageInfoText(){
-        return getTextFromLocator(storageInfo);
+    public String getStorageInfoText() {
+        return getText(storageInfo, "Get text of storage info");
     }
 
-    public String  getRestoreInfoText(){
-        return getTextFromLocator(restoreInfo);
+    public String getRestoreInfoText() {
+        return getText(restoreInfo, "Get text of restore info");
     }
 
-    public String  getBackupAndRestoreHeaderText(){
-        return getTextFromLocator(backupAndRestoreHeader);
+    public String getBackupAndRestoreHeaderText() {
+        return getText(backupAndRestoreHeader, "Get text of Backup and Restore header");
     }
+
     public boolean isHelpButtonDisplayed() {
-        return this.isElementDisplayed(helpButton,30);
+        return isElementVisible(helpButton, 30, "Check if Help button is displayed");
     }
 
     public void clickOnHelpButton() {
-        clickOnElement(helpButton);
+        click(helpButton, "Click on Help button");
     }
 
     public void clickOnEmailHeader() {
-        if(isElementDisplayed(selectAccount)) {
-            clickOnElement(selectAccount);
-        }
+        click(selectAccount, "Click on email account header to select it");
     }
 
-    public boolean  isBackupFQADisplayed() throws InterruptedException {
-        String context= driver.getPageSource();
-        return context.contains("Why should I take a backup?") && context.contains("What is data backup? ") && context.contains("How to backup to your google account?");
+    public boolean isBackupFQADisplayed() {
+        String pageSource = driver.getPageSource();
+        return pageSource.contains("Why should I take a backup?")
+                && pageSource.contains("What is data backup? ")
+                && pageSource.contains("How to backup to your google account?");
     }
 
     public boolean isDataBackupInProgressTextDisplayed() {
-        return this.isElementDisplayed(dataBackupInProgressText,30);
+        return isElementVisible(dataBackupInProgressText, 30, "Check if Data Backup In Progress text is displayed");
     }
 
     public boolean isDataBackupInProgressTextDisappear() {
-        return this.isElementDisplayed(dataBackupInProgressText, 20);
+        return isElementVisible(dataBackupInProgressText, 20, "Check if Data Backup In Progress text disappeared");
     }
 
-    public String getDataBackupInProgressText(){
-        return getTextFromLocator(dataBackupInProgressText);
+    public String getDataBackupInProgressText() {
+        return getText(dataBackupInProgressText, "Get text of Data Backup In Progress popup");
     }
 
-    public String getDataBackupSuccessPopupText(){
-        return getTextFromLocator(dataBackupSuccessPopup);
+    public String getDataBackupSuccessPopupText() {
+        return getText(dataBackupSuccessPopup, "Get text of Data Backup Success popup");
     }
 
-    public String getRestoreBackupSuccessPopUpText(){
-        return getTextFromLocator(restoreBackupSuccessPopUp);
+    public String getRestoreBackupSuccessPopUpText() {
+        return getText(restoreBackupSuccessPopUp, "Get text of Restore Backup Success popup");
     }
 
-    public String getRestoreInProgressPopupText(){
-        return getTextFromLocator(restoreInProgressPopupText);
+    public String getRestoreInProgressPopupText() {
+        return getText(restoreInProgressPopupText, "Get text of Restore In Progress popup");
     }
 
     public boolean isRestoreInProgressPopupTextDisplayed() {
-        return this.isElementDisplayed(restoreInProgressPopupText, 20);
+        return isElementVisible(restoreInProgressPopupText, 20, "Check if Restore In Progress popup is displayed");
     }
 
 }

@@ -5,6 +5,9 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.WebElement;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class QuickAccessPage extends BasePage {
 
     @AndroidFindBy(accessibility = "introTitle-four")
@@ -26,73 +29,54 @@ public class QuickAccessPage extends BasePage {
     public QuickAccessPage(AppiumDriver driver) {
         super(driver);
     }
-    BasePage basePage = new BasePage(driver);
 
+    private static final Map<String, Map<String, String>> LANGUAGE_TEXT_MAP = new HashMap<>();
 
+    static {
+        Map<String, String> quickAccessText = new HashMap<>();
+        quickAccessText.put("English", "Quick Access");
+        quickAccessText.put("Tamil", "விரைவான அணுகல்");
+        quickAccessText.put("Kannada", "ತ್ವರಿತ ಪ್ರವೇಶ");
+        quickAccessText.put("Hindi", "त्वरित ऐक्सेस");
+        quickAccessText.put("Arabic", "الوصول السريع");
+        quickAccessText.put("Filipino", "Mabilis na pagpasok");
+        LANGUAGE_TEXT_MAP.put("QuickAccessText", quickAccessText);
 
-    public boolean  verifyLanguageforQuickAccessTextPageLoaded(String language){
-        String actualText = getTextFromLocator(quickAccessText);
-
-        switch (language) {
-            case "English":
-                boolean isEnglishMatch  = (actualText.equalsIgnoreCase("Quick Access")==true) ? true : false;
-                return isEnglishMatch ;
-            case "Tamil":
-                boolean isTamilMatch  = (actualText.equalsIgnoreCase("விரைவான அணுகல்")==true) ? true : false;
-                return isTamilMatch ;
-            case "Kannada":
-                boolean isKannadaMatch  = (actualText.equalsIgnoreCase("ತ್ವರಿತ ಪ್ರವೇಶ")==true) ? true : false;
-                return isKannadaMatch ;
-            case "Hindi":
-                boolean isHindiMatch  = (actualText.equalsIgnoreCase("त्वरित ऐक्सेस")==true) ? true : false;
-                return isHindiMatch ;
-            case "Arabic":
-                boolean isArabicMatch  = (actualText.equalsIgnoreCase("الوصول السريع")==true) ? true : false;
-                return isArabicMatch ;
-            case "Filipino":
-                boolean isFilipinoMatch  = (actualText.equalsIgnoreCase("Mabilis na pagpasok")==true) ? true : false;
-                return isFilipinoMatch ;
-
-        }
-        return false;
+        Map<String, String> quickAccessDescription = new HashMap<>();
+        quickAccessDescription.put("English", "Authenticate yourself with ease using the stored digital credential.");
+        quickAccessDescription.put("Tamil", "சேமிக்கப்பட்ட டிஜிட்டல் நற்சான்றிதழைப் பயன்படுத்தி உங்களை எளிதாக அங்கீகரிக்கவும்.");
+        quickAccessDescription.put("Kannada", "ಸಂಗ್ರಹಿಸಿದ ಡಿಜಿಟಲ್ ರುಜುವಾತುಗಳನ್ನು ಬಳಸಿಕೊಂಡು ಸುಲಭವಾಗಿ ನಿಮ್ಮನ್ನು ದೃಢೀಕರಿಸಿ.");
+        quickAccessDescription.put("Hindi", "संग्रहीत डिजिटल क्रेडेंशियल का उपयोग करके आसानी से स्वयं को प्रमाणित करें।");
+        quickAccessDescription.put("Arabic", "قم بالمصادقة على نفسك بسهولة باستخدام بيانات الاعتماد الرقمية المخزنة.");
+        quickAccessDescription.put("Filipino", "I-authenticate ang iyong sarili nang madali gamit ang nakaimbak na digital na kredensyal.");
+        LANGUAGE_TEXT_MAP.put("QuickAccessDescription", quickAccessDescription);
     }
 
-    public boolean  getQuickAccessDescription(String language){
-        String actualText = getTextFromLocator(quickAccessDescription);
+    public boolean verifyLanguageText(String key, String language, String actualText) {
+        Map<String, String> languageMap = LANGUAGE_TEXT_MAP.get(key);
+        if (languageMap == null) return false;
 
-        switch (language) {
-            case "English":
-                boolean isEnglishMatch  = (actualText.equalsIgnoreCase("Authenticate yourself with ease using the stored digital credential.")==true) ? true : false;
-                return isEnglishMatch ;
-            case "Tamil":
-                boolean isTamilMatch  = (actualText.equalsIgnoreCase("சேமிக்கப்பட்ட டிஜிட்டல் நற்சான்றிதழைப் பயன்படுத்தி உங்களை எளிதாக அங்கீகரிக்கவும்.")==true) ? true : false;
-                return isTamilMatch ;
-            case "Kannada":
-                boolean isKannadaMatch  = (actualText.equalsIgnoreCase("ಸಂಗ್ರಹಿಸಿದ ಡಿಜಿಟಲ್ ರುಜುವಾತುಗಳನ್ನು ಬಳಸಿಕೊಂಡು ಸುಲಭವಾಗಿ ನಿಮ್ಮನ್ನು ದೃಢೀಕರಿಸಿ.")==true) ? true : false;
-                return isKannadaMatch ;
-            case "Hindi":
-                boolean isHindiMatch  = (actualText.equalsIgnoreCase("संग्रहीत डिजिटल क्रेडेंशियल का उपयोग करके आसानी से स्वयं को प्रमाणित करें।")==true) ? true : false;
-                return isHindiMatch ;
-            case "Arabic":
-                boolean isArabicMatch  = (actualText.equalsIgnoreCase("قم بالمصادقة على نفسك بسهولة باستخدام بيانات الاعتماد الرقمية المخزنة.")==true) ? true : false;
-                return isArabicMatch ;
-            case "Filipino":
-                boolean isFilipinoMatch  = (actualText.equalsIgnoreCase("I-authenticate ang iyong sarili nang madali gamit ang nakaimbak na digital na kredensyal.")==true) ? true : false;
-                return isFilipinoMatch ;
+        String expectedText = languageMap.get(language);
+        if (expectedText == null) return false;
 
-        }
-        return false;
+        return actualText.equalsIgnoreCase(expectedText);
+    }
+
+    public boolean verifyQuickAccessTitle(String language) {
+        return verifyLanguageText("QuickAccessText", language, getText(quickAccessText));
+    }
+
+    public boolean VerifyQuickAccessDescription(String language) {
+        return verifyLanguageText("QuickAccessDescription", language, getText(quickAccessDescription));
     }
 
     public AppUnlockMethodPage clickOnNextButton() {
-        this.clickOnElement(nextButton);
+        click(nextButton, "Click on Next button to proceed to App Unlock Method page");
         return new AppUnlockMethodPage(driver);
     }
 
     public Boolean isHoldPhoneSteadyMessageDisplayed() {
-        return isElementDisplayed(holdPhoneSteadyMessage);
+        return isElementVisible(holdPhoneSteadyMessage, "Verify 'Hold phone steady' message is displayed");
     }
-
-
 
 }

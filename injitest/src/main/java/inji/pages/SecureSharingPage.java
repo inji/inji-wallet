@@ -5,6 +5,9 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.WebElement;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SecureSharingPage extends BasePage {
 
     @AndroidFindBy(accessibility = "introTitle-two")
@@ -31,81 +34,59 @@ public class SecureSharingPage extends BasePage {
     public SecureSharingPage(AppiumDriver driver) {
         super(driver);
     }
-    BasePage basePage = new BasePage(driver);
 
-//    public String  verifyLanguageforSecureSharingPageLoaded(){
-//        basePage.retryToGetElement(secureSharingText);
-//        return getTextFromLocator(secureSharingText);
-//
-//    }
+    private static final Map<String, Map<String, String>> LANGUAGE_TEXT_MAP = new HashMap<>();
 
+    static {
+        Map<String, String> secureSharingText = new HashMap<>();
+        secureSharingText.put("English", "Secure Sharing");
+        secureSharingText.put("Tamil", "பாதுகாப்பான பகிர்வு");
+        secureSharingText.put("Kannada", "ಸುರಕ್ಷಿತ ಹಂಚಿಕೆ");
+        secureSharingText.put("Hindi", "सुरक्षित साझाकरण");
+        secureSharingText.put("Arabic", "المشاركة الآمنة");
+        secureSharingText.put("Filipino", "Ligtas na Pagbabahagi");
+        LANGUAGE_TEXT_MAP.put("SecureSharingText", secureSharingText);
 
-    public boolean  verifyLanguageforSecureSharingPageLoaded(String language){
-        String actualText = getTextFromLocator(secureSharingText);
-
-        switch (language) {
-            case "English":
-                boolean isEnglishMatch  = (actualText.equalsIgnoreCase("Secure Sharing")==true) ? true : false;
-                return isEnglishMatch ;
-            case "Tamil":
-                boolean isTamilMatch  = (actualText.equalsIgnoreCase("பாதுகாப்பான பகிர்வு")==true) ? true : false;
-                return isTamilMatch ;
-            case "Kannada":
-                boolean isKannadaMatch  = (actualText.equalsIgnoreCase("ಸುರಕ್ಷಿತ ಹಂಚಿಕೆ")==true) ? true : false;
-                return isKannadaMatch ;
-            case "Hindi":
-                boolean isHindiMatch  = (actualText.equalsIgnoreCase("सुरक्षित साझाकरण")==true) ? true : false;
-                return isHindiMatch ;
-            case "Arabic":
-                boolean isArabicMatch  = (actualText.equalsIgnoreCase("المشاركة الآمنة")==true) ? true : false;
-                return isArabicMatch ;
-            case "Filipino":
-                boolean isFilipinoMatch  = (actualText.equalsIgnoreCase("Ligtas na Pagbabahagi")==true) ? true : false;
-                return isFilipinoMatch ;
-
-        }
-        return false;
+        Map<String, String> secureSharingDescription = new HashMap<>();
+        secureSharingDescription.put("English", "Share your cards securely in a hassle free way and avail various services.");
+        secureSharingDescription.put("Tamil", "தொந்தரவு இல்லாத வகையில் உங்கள் கார்டுகளைப் பாதுகாப்பாகப் பகிர்ந்து, பல்வேறு சேவைகளைப் பெறுங்கள்.");
+        secureSharingDescription.put("Kannada", "ನಿಮ್ಮ ಕಾರ್ಡ್‌ಗಳನ್ನು ಜಗಳ ಮುಕ್ತ ರೀತಿಯಲ್ಲಿ ಸುರಕ್ಷಿತವಾಗಿ ಹಂಚಿಕೊಳ್ಳಿ ಮತ್ತು ವಿವಿಧ ಸೇವೆಗಳನ್ನು ಪಡೆದುಕೊಳ್ಳಿ.");
+        secureSharingDescription.put("Hindi", "परेशानी मुक्त तरीके से अपने कार्ड सुरक्षित रूप से साझा करें और विभिन्न सेवाओं का लाभ उठाएं।");
+        secureSharingDescription.put("Arabic", "شارك بطاقاتك بأمان وبطريقة خالية من المتاعب واستفد من الخدمات المتنوعة.");
+        secureSharingDescription.put("Filipino", "Ibahagi ang iyong mga card nang ligtas sa isang walang problemang paraan at mag-avail ng iba't ibang serbisyo.");
+        LANGUAGE_TEXT_MAP.put("SecureSharingDescription", secureSharingDescription);
     }
 
-    public boolean  getSecureSharingDescription(String language){
-        String actualText = getTextFromLocator(secureSharingDescription);
+    public boolean verifyLanguageText(String key, String language, String actualText) {
+        Map<String, String> languageMap = LANGUAGE_TEXT_MAP.get(key);
+        if (languageMap == null) return false;
 
-        switch (language) {
-            case "English":
-                boolean isEnglishMatch  = (actualText.equalsIgnoreCase("Share your cards securely in a hassle free way and avail various services.")==true) ? true : false;
-                return isEnglishMatch ;
-            case "Tamil":
-                boolean isTamilMatch  = (actualText.equalsIgnoreCase("தொந்தரவு இல்லாத வகையில் உங்கள் கார்டுகளைப் பாதுகாப்பாகப் பகிர்ந்து, பல்வேறு சேவைகளைப் பெறுங்கள்.")==true) ? true : false;
-                return isTamilMatch ;
-            case "Kannada":
-                boolean isKannadaMatch  = (actualText.equalsIgnoreCase("ನಿಮ್ಮ ಕಾರ್ಡ್\u200Cಗಳನ್ನು ಜಗಳ ಮುಕ್ತ ರೀತಿಯಲ್ಲಿ ಸುರಕ್ಷಿತವಾಗಿ ಹಂಚಿಕೊಳ್ಳಿ ಮತ್ತು ವಿವಿಧ ಸೇವೆಗಳನ್ನು ಪಡೆದುಕೊಳ್ಳಿ.")==true) ? true : false;
-                return isKannadaMatch ;
-            case "Hindi":
-                boolean isHindiMatch  = (actualText.equalsIgnoreCase("परेशानी मुक्त तरीके से अपने कार्ड सुरक्षित रूप से साझा करें और विभिन्न सेवाओं का लाभ उठाएं।")==true) ? true : false;
-                return isHindiMatch ;
-            case "Arabic":
-                boolean isArabicMatch  = (actualText.equalsIgnoreCase("شارك بطاقاتك بأمان وبطريقة خالية من المتاعب واستفد من الخدمات المتنوعة.")==true) ? true : false;
-                return isArabicMatch ;
-            case "Filipino":
-                boolean isFilipinoMatch  = (actualText.equalsIgnoreCase("Ibahagi ang iyong mga card nang ligtas sa isang walang problemang paraan at mag-avail ng iba't ibang serbisyo.")==true) ? true : false;
-                return isFilipinoMatch ;
+        String expectedText = languageMap.get(language);
+        if (expectedText == null) return false;
 
-        }
-        return false;
+        return actualText.equalsIgnoreCase(expectedText);
+    }
+
+
+    public boolean verifyLanguageForSecureSharingPageLoaded(String language) {
+        return verifyLanguageText("SecureSharingText", language, getText(secureSharingText));
+    }
+
+    public boolean getSecureSharingDescription(String language) {
+        return verifyLanguageText("SecureSharingDescription", language, getText(secureSharingDescription));
     }
 
     public void clickOnNextButton() {
-        this.clickOnElement(nextButton);
+        click(nextButton, "Click on 'Next' button to proceed to App Unlock Method Page");
         new AppUnlockMethodPage(driver);
     }
 
     public Boolean isRequesterHeaderTextDisplayed() {
-        return isElementDisplayed(RequesterHeader);
+        return isElementVisible(RequesterHeader, "Check if 'Requester' header text is displayed");
     }
 
     public Boolean isPleaseSelectIdTextDisplayed() {
-        return isElementDisplayed(pleaseSelectId);
+        return isElementVisible(pleaseSelectId, "Check if 'Please select ID' text is displayed");
     }
-
 
 }

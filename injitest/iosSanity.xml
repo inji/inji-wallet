@@ -6,28 +6,28 @@
 	</listeners>
 	<test verbose="2" preserve-order="true" name="ios">
 		<classes>
-			<class name="iosTestCases.UnlockWithPasscodeTest">
+			<class name="inji.testcases.iosTestCases.UnlockWithPasscodeTest">
 				<methods>
 					<include name="logoutAndLoginWithPasscode" />
 					<include name="loginWithInvalidPasscode" />
 				</methods>
 			</class>
-			<class name="iosTestCases.ActivateVcTest">
+			<class name="inji.testcases.iosTestCases.ActivateVcTest">
 				<methods>
 					<include name="downloadAndActiveVcUsingUinViaEsignet" />
 				</methods>
 			</class>
-			<class name="iosTestCases.ChangeLanguageTest">
+			<class name="inji.testcases.iosTestCases.ChangeLanguageTest">
 				<methods>
 					<include name="changeLanguageToArabic" />
 				</methods>
 			</class>
-			<class name="iosTestCases.PinVcTest">
+			<class name="inji.testcases.iosTestCases.PinVcTest">
 				<methods>
 					<include name="downloadVcViaEsignetAndPinUnpin" />
 				</methods>
 			</class>
-			<class name="iosTestCases.AboutInjiTest">
+			<class name="inji.testcases.iosTestCases.AboutInjiTest">
 				<methods>
 					<include name="verifyAppId"/>
 				</methods>
@@ -43,7 +43,7 @@
 		<!--</listeners>-->
 		<!--<test verbose="2" preserve-order="true" name="ios">-->
 		<!--	<classes>-->
-		<!--		<class name="iosTestCases.UnlockWithPasscodeTest">-->
+		<!--		<class name="inji.testcases.iosTestCases.UnlockWithPasscodeTest">-->
 		<!--			<methods>-->
 		<!--				<include name="logoutAndLoginWithPasscode" />-->
 		<!--				<include name="loginWithInvalidPasscode" />-->
@@ -55,27 +55,27 @@
 		<!--				<include name="downloadMultipleVcUsingDifferentUin" />-->
 		<!--			</methods>-->
 		<!--		</class>-->
-		<!--		<class name="iosTestCases.VcDownloadAndVerifyUsingVidTest">-->
+		<!--		<class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingVidTest">-->
 		<!--			<methods>-->
 		<!--				<include name="downloadAndVerifyVcUsingVid" />-->
 		<!--			</methods>-->
 		<!--		</class>-->
-		<!--		<class name="iosTestCases.GenerateUinOrVidTest">-->
+		<!--		<class name="inji.testcases.iosTestCases.GenerateUinOrVidTest">-->
 		<!--			<methods>-->
 		<!--				<include name="generateUinOrVidUsingAid" />-->
 		<!--			</methods>-->
 		<!--		</class>-->
-		<!--		<class name="iosTestCases.ActivateVcTest">-->
+		<!--		<class name="inji.testcases.iosTestCases.ActivateVcTest">-->
 		<!--			<methods>-->
 		<!--				<include name="activateVc" />-->
 		<!--			</methods>-->
 		<!--		</class>-->
-		<!--		<class name="iosTestCases.ChangeLanguageTest">-->
+		<!--		<class name="inji.testcases.iosTestCases.ChangeLanguageTest">-->
 		<!--			<methods>-->
 		<!--				<include name="changeLanguageToArabic" />-->
 		<!--			</methods>-->
 		<!--		</class>-->
-		<!--		<class name="iosTestCases.PinVcTest">-->
+		<!--		<class name="inji.testcases.iosTestCases.PinVcTest">-->
 		<!--			<methods>-->
 		<!--				<include name="pinVc" />-->
 		<!--				<include name="downloadVcViaEsignetAndPinUnpin" />-->

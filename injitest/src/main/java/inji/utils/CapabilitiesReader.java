@@ -33,7 +33,7 @@ public class CapabilitiesReader {
 
     public static DesiredCapabilities getDesiredCapabilities(String capabilityName, String capsContentRootLocation) {
         String jsonLocation = System.getProperty("user.dir") + "/" + capsContentRootLocation;
-        HashMap<String, Object>  caps = null;
+        HashMap<String, Object> caps = null;
         try {
             caps = convertCapsToHashMap(capabilityName, jsonLocation);
         } catch (Exception e) {

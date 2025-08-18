@@ -35,11 +35,11 @@ public class HelpPage extends BasePage {
     }
 
     public boolean isHelpPageLoaded() {
-        return this.isElementDisplayed(helpText);
+        return isElementVisible(helpText, "Checking if 'Help' page is loaded");
     }
 
     public void exitHelpPage() {
-        this.clickOnElement(crossIcon);
+        click(crossIcon, "Clicking on 'Close' icon to exit Help page");
     }
 
     public void scrollPerformInHelpPage() {
@@ -51,19 +51,19 @@ public class HelpPage extends BasePage {
     }
 
     public boolean isBiometricIsChangeTextDescription() {
-        return this.isElementDisplayed(biometricIsChangeTextDescription);
+        return isElementVisible(biometricIsChangeTextDescription, "Checking if 'Biometric is Changed' description text is displayed");
     }
+
     public void clickOnBackButton() {
         driver.navigate().back();
     }
 
     public boolean isWhatIsShareWithSelfieTextdHeader() {
-
-        return this.isElementDisplayed(whatIsShareWithSelfieTextdHeader);
+        return isElementVisible(whatIsShareWithSelfieTextdHeader, "Checking if 'What is Share with Selfie' header is displayed");
     }
 
-    public void clickOnCrossButton(){
-        clickOnElement(crossIcon);
+    public void clickOnCrossButton() {
+        click(crossIcon, "Clicking on 'Cross' button to close the popup or screen");
     }
 }
 

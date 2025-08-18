@@ -37,7 +37,7 @@ public class TestDataReader {
             case "idType":
                 return "MOSIP National ID";
             case "gender":
-                return "MLEeng";
+                return "MLE";
             case "genderVidEsignet":
                 return "MLE";
             case "status":
@@ -75,9 +75,9 @@ public class TestDataReader {
             case "invalidenv":
                 return "https://api.dev3.mosip";
             case "fullNameSunbird":
-                return "automationtest3";
+                return "Aman Shahi";
             case "policyNameSunbird":
-                return "automationtest3";
+                return "Start Insurance Gold Premium";
             case "policyNumberSunbird":
                 return "1207205246";
             case "idTypeSunbird":
@@ -91,7 +91,7 @@ public class TestDataReader {
             case "genderValueSunbird":
                 return "Male";
             case "emailIdValueSunbird":
-                return "abcd@gmail.com";
+                return "automation@gmail.com";
             case "statusValueSunbird":
                 return "Valid";
             case "statusValueSunbirdForVaild":

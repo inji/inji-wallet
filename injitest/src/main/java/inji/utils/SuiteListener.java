@@ -19,12 +19,12 @@ public class SuiteListener implements ISuiteListener {
 
     @Override
     public void onFinish(ISuite suite) {
-        if (suite.getName().equalsIgnoreCase("androidSanity")|| suite.getName().equalsIgnoreCase("iosSanity")) {
+        if (suite.getName().equalsIgnoreCase("androidSanity") || suite.getName().equalsIgnoreCase("iosSanity")) {
             boolean hasFailures = suite.getResults().values().stream()
                     .anyMatch(result -> result.getTestContext().getFailedTests().size() > 0);
 
             if (hasFailures) {
-               System.exit(1);
+                System.exit(1);
                 System.out.println("Sanity suite has failures. Skipping Regression suite.");
             } else {
                 System.out.println("Sanity suite passed. Proceeding with Regression suite.");

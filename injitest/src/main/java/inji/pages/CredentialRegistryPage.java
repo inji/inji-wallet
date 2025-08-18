@@ -51,44 +51,45 @@ public class CredentialRegistryPage extends BasePage {
     }
 
     public boolean isCredentialRegistryTextBoxHeaderDisplayed() {
-        return this.isElementDisplayed(credentialRegistryTextBoxHeader);
+        return isElementVisible(credentialRegistryTextBoxHeader, "Check if the Credential Registry TextBox header is displayed");
     }
 
     public boolean isCredentialRegistryErrorMessageDisplayed() {
-        return this.isElementDisplayed(credentialRegistryErrorMessage);
+        return isElementVisible(credentialRegistryErrorMessage, "Check if the Credential Registry error message is displayed");
     }
 
     public boolean isCredentialRegistryTextBoxHeaderInFilipinoDisplayed() {
-        return this.isElementDisplayed(credentialRegistryTextBoxHeaderInFilipino);
+        return isElementVisible(credentialRegistryTextBoxHeaderInFilipino, "Check if the Credential Registry TextBox header is displayed in Filipino");
     }
 
     public boolean isCredentialRegistryTextBoxHeaderForEsignetInFilipinoDisplayed() {
-        return this.isElementDisplayed(credentialRegistryEsignetTextBoxHeader);
+        return isElementVisible(credentialRegistryEsignetTextBoxHeader, "Check if the Credential Registry Esignet TextBox header is displayed in Filipino");
     }
 
     public CredentialRegistryPage setEnterIdTextBox(String text) {
-        clearTextBoxAndSendKeys(credentialRegistryTextBox, text);
+        clearAndSendKeys(credentialRegistryTextBox, text, "Enter ID into the Credential Registry TextBox");
         return this;
     }
 
     public CredentialRegistryPage enterUrlToEsignetHostTextBox(String text) {
-        clearTextBoxAndSendKeys(credentialRegistryEsignetTextBox, text);
+        clearAndSendKeys(credentialRegistryEsignetTextBox, text, "Enter Esignet host URL into the TextBox");
         return this;
     }
 
     public CredentialRegistryPage clickOnSaveButton() {
-        clickOnElement(saveButton);
+        click(saveButton, "Click on the 'Save' button");
         return this;
     }
 
     public CredentialRegistryPage clickOnCancelButton() {
-        clickOnElement(cancelButton);
+        click(cancelButton, "Click on the 'Cancel' button");
         return this;
     }
 
     public void clickOnBackArrow() {
-        clickOnElement(backArrow);
+        click(backArrow, "Click on the back arrow to return to the previous screen");
     }
+
 
     public String checkEnvNotChanged() {
         return credentialRegistryTextBox.getText();

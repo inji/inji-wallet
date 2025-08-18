@@ -1,6 +1,6 @@
 package inji.pages;
 
-import inji.constants.Target;
+import inji.constants.PlatformType;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -17,10 +17,10 @@ public class EnterYourPasscodePage extends BasePage {
     }
 
     public boolean isEnterYourPasscodePageLoaded() {
-        return this.isElementDisplayed(enterYourPasscodeText);
+        return isElementVisible(enterYourPasscodeText, "Entering the Passcode Text");
     }
 
-    public void enterPasscodeOnPasscodePage(String passcode, Target os) {
+    public void enterPasscodeOnPasscodePage(String passcode, PlatformType os) {
         SetPasscode setPasscode = new SetPasscode(driver);
         setPasscode.enterPasscode(passcode, os);
         new HomePage(driver);

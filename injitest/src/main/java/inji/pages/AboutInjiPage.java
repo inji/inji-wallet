@@ -1,12 +1,16 @@
 package inji.pages;
 
+import com.aventstack.extentreports.Status;
+import inji.utils.ExtentReportManager;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class AboutInjiPage extends BasePage {
-    BasePage basePage = new BasePage(driver);
     @AndroidFindBy(accessibility = "aboutInji")
     @iOSXCUITFindBy(accessibility = "aboutInji")
     private WebElement aboutInjiHeader;
@@ -36,54 +40,56 @@ public class AboutInjiPage extends BasePage {
     @iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText)[12]")
     public WebElement tuvaliVesion;
 
-
-    public boolean isAppIdVisible() {
-        String appId = getTextFromLocator(appID);
-        return appId.length() == 15;
-    }
-
-    public boolean isTuvaliVesionVisible() {
-        String tuvaliVersion = getTextFromLocator(tuvaliVesion);
-        if (tuvaliVersion.contains("0.5.0")) {
-            return true;
-        } else
-            return false;
-    }
-
     public AboutInjiPage(AppiumDriver driver) {
         super(driver);
     }
 
+    public boolean isAppIdVisible() {
+        String appId = getText(appID, "Fetch App ID text");
+        return appId.length() == 15;
+    }
+
+    public boolean isTuvaliVesionVisible() {
+        String tuvaliVersion = getText(tuvaliVesion, "Fetch Tuvali version text");
+        return tuvaliVersion.contains("0.5.0");
+    }
+
     public boolean isAboutInjiHeaderDisplayed() {
-        return this.isElementDisplayed(aboutInjiHeader);
+        return isElementVisible(aboutInjiHeader, "Check if 'About Inji' header is visible");
     }
 
     public String getAboutInjiHeader() {
-        basePage.retryToGetElement(aboutInjiHeader);
-        return this.getTextFromLocator(aboutInjiHeader);
+        return getText(aboutInjiHeader, "Get 'About Inji' header text");
     }
+
     public boolean isAppIdCopiedTextDisplayed() {
-        return this.isElementDisplayed(copied);
+        return isElementVisible(copied, "Check if 'App ID Copied' text is visible");
     }
 
     public boolean isCopyTextDisplayed() {
-        return this.isElementDisplayed(copy);
+        return isElementVisible(copy, "Check if 'Copy' text is visible");
     }
 
-    public boolean isMosipUrlIsDisplayedInChrome() throws InterruptedException {
-        String context = driver.getPageSource();
-        return context.contains("Inji") || context.contains("inji");
+    public boolean isMosipUrlDisplayedInChrome() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        try {
+            ExtentReportManager.getTest().log(Status.INFO, "Verifying whether the URL reached the browser");
+            return wait.until(driver -> driver.getPageSource().toLowerCase().contains("inji"));
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public void clickOnCopyText() {
-        clickOnElement(copy);
+        click(copy, "Click on 'Copy' text/button");
     }
 
     public void clickOnBackButton() {
-        clickOnElement(copy);
+        click(copy, "Click on 'Back' button");
     }
 
     public void clickOnClickHereButton() {
-        clickOnElement(clickHereButton);
+        click(clickHereButton, "Click on 'Click Here' button");
     }
+
 }

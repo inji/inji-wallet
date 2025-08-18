@@ -6,29 +6,29 @@
 	</listeners>
 	<test verbose="2" preserve-order="true" name="android">
 		<classes>
-			<class name="androidTestCases.UnlockWithPasscodeTest">
+			<class name="inji.testcases.androidTestCases.UnlockWithPasscodeTest">
 				<methods>
 					<include name="logoutAndLoginWithPasscode" />
 					<include name="loginWithInvalidPasscode" />
 				</methods>
 			</class>
-			<class name="androidTestCases.ActivateVcTest">
+			<class name="inji.testcases.androidTestCases.ActivateVcTest">
 				<methods>
 					<include name="downloadAndActiveVcUsingUinViaEsignet" />
 				</methods>
 			</class>
-			<class name="androidTestCases.ChangeLanguageTest">
+			<class name="inji.testcases.androidTestCases.ChangeLanguageTest">
 				<methods>
 					<include name="changeLanguageToArabic" />
 				</methods>
 			</class>
-			<class name="androidTestCases.PinVcTest">
+			<class name="inji.testcases.androidTestCases.PinVcTest">
 				<methods>
 					<include name="downloadVcViaEsignetAndPinUnpin" />
 					<include name="downloadVcViaEsignetAndPinUnpin" />
 				</methods>
 			</class>
-			<class name="androidTestCases.AboutInjiTest">
+			<class name="inji.testcases.androidTestCases.AboutInjiTest">
 				<methods>
 					<include name="verifyAppId"/>
 				</methods>
@@ -44,39 +44,39 @@
         </listeners>
         <test verbose="2" preserve-order="true" name="android">
             <classes>
-                <class name="androidTestCases.UnlockWithPasscodeTest">
+                <class name="inji.testcases.androidTestCases.UnlockWithPasscodeTest">
                     <methods>
                         <include name="logoutAndLoginWithPasscode" />
                         <include name="loginWithInvalidPasscode" />
                     </methods>
                 </class>
-                <class name="androidTestCases.VcDownloadAndVerifyUsingUinTest">
+                <class name="inji.testcases.androidTestCases.VcDownloadAndVerifyUsingUinTest">
                     <methods>
                         <include name="downloadAndVerifyVcUsingUin" />
                         <include name="downloadMultipleVcUsingDifferentUin" />
                     </methods>
                 </class>
-                <class name="androidTestCases.VcDownloadAndVerifyUsingVidTest">
+                <class name="inji.testcases.androidTestCases.VcDownloadAndVerifyUsingVidTest">
                     <methods>
                         <include name="downloadAndVerifyVcUsingVid" />
                     </methods>
                 </class>
-                <class name="androidTestCases.GenerateUinOrVidTest">
+                <class name="inji.testcases.androidTestCases.GenerateUinOrVidTest">
                     <methods>
                         <include name="generateUinOrVidUsingAid" />
                     </methods>
                 </class>
-                <class name="androidTestCases.ActivateVcTest">
+                <class name="inji.testcases.androidTestCases.ActivateVcTest">
                     <methods>
                         <include name="activateVc" />
                     </methods>
                 </class>
-                <class name="androidTestCases.ChangeLanguageTest">
+                <class name="inji.testcases.androidTestCases.ChangeLanguageTest">
                     <methods>
                         <include name="changeLanguageToArabic" />
                     </methods>
                 </class>
-                <class name="androidTestCases.PinVcTest">
+                <class name="inji.testcases.androidTestCases.PinVcTest">
                     <methods>
                         <include name="pinVc" />
                         <include name="VerifyCameraOpenAfterPinVc" />

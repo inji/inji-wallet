@@ -23,36 +23,33 @@ public class GenerateUinOrVidPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "getIdButton")
     private WebElement networkErrorMesseage;
 
-
-
     public GenerateUinOrVidPage(AppiumDriver driver) {
         super(driver);
     }
 
     public boolean isGenerateUinOrVidPageLoaded() {
-        return this.isElementDisplayed(retrieveUinVidText);
+        return isElementVisible(retrieveUinVidText, "Checking if 'Generate UIN or VID' page is loaded");
     }
 
     public String getRetrieveUinVidText() {
-        return this.getTextFromLocator(retrieveUinVidText);
+        return getText(retrieveUinVidText, "Getting text from 'Retrieve UIN/VID' header");
     }
 
     public GenerateUinOrVidPage enterApplicationID(String applicationId) {
-        sendKeysToTextBox(applicationIdTextBox, applicationId);
+        enterText(applicationIdTextBox, applicationId, "Entering Application ID");
         return this;
     }
 
     public OtpVerificationPage clickOnGetUinOrVidButton() {
-        clickOnElement(getUinOrVidButton);
+        click(getUinOrVidButton, "Clicking on 'Get UIN/VID' button");
         return new OtpVerificationPage(driver);
     }
 
     public String getGenerateUinOrVidPageTextloaded() {
-        return this.getTextFromLocator(retrieveUinVidText);
+        return getText(retrieveUinVidText, "Getting 'Generate UIN/VID Page' header text");
     }
 
     public boolean isNetworkRequesFailedDisplayed() {
-        return this.isElementDisplayed(networkErrorMesseage);
+        return isElementVisible(networkErrorMesseage, "Checking if 'Network Request Failed' message is displayed");
     }
-
 }

@@ -9,7 +9,6 @@ import io.appium.java_client.touch.offset.ElementOption;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
@@ -30,7 +29,7 @@ public class IosUtil {
 
     }
 
-    public static void swipeOrScroll(AppiumDriver driver)  {
+    public static void swipeOrScroll(AppiumDriver driver) {
         Dimension size = driver.manage().window().getSize();
         int startX = 68;
         int startY = 927;
@@ -78,14 +77,16 @@ public class IosUtil {
         Sequence sequence = new Sequence(finger, 1)
                 .addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), centerOfElement))
                 .addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
-                .addAction(new Pause(finger,Duration.ofMillis(1000)))
+                .addAction(new Pause(finger, Duration.ofMillis(1000)))
                 .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
         driver.perform(Collections.singleton(sequence));
 
     }
 
-    public static void enableAirplaneMode(){}
+    public static void enableAirplaneMode() {
+    }
 
-    public static void disableAirplaneMode(){}
+    public static void disableAirplaneMode() {
+    }
 }

@@ -3,7 +3,7 @@
 <suite name="esignet">
 	<test verbose="2" preserve-order="true" name="android">
         <classes>
-            <class name="androidTestCases.ChangeLanguageTest">
+            <class name="inji.testcases.androidTestCases.ChangeLanguageTest">
                 <methods>
                     <include name="changeLanguageToHindiAndVerifyEsignetPage"/>
                     <include name="changeLanguageToTamilAndVerifyEsignetPage"/>

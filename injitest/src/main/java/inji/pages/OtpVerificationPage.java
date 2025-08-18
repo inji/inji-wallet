@@ -1,8 +1,7 @@
 package inji.pages;
 
-import inji.constants.Target;
+import inji.constants.PlatformType;
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.HidesKeyboard;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.WebElement;
@@ -61,10 +60,9 @@ public class OtpVerificationPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "wait")
     private WebElement waitPopupButton;
 
-
     @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id=\"error-banner-message\"]")
-    @iOSXCUITFindBy(accessibility = "OTP is invalid")
-    private WebElement invalidOtpMessageforEsignet;
+    @iOSXCUITFindBy(accessibility = "Please enter valid OTP.")
+    private WebElement invalidOtpMessageForeSignet;
 
     @AndroidFindBy(xpath = "//android.widget.Button[@text=\"Get OTP\"]")
     @iOSXCUITFindBy(accessibility = "Get OTP")
@@ -75,88 +73,85 @@ public class OtpVerificationPage extends BasePage {
     }
 
     public boolean isOtpVerificationPageLoaded() {
-        return this.isElementDisplayed(otpVerificationText);
+        return isElementVisible(otpVerificationText, "Verify OTP Verification page is loaded");
     }
 
-    public HomePage enterOtp(String otp, Target os) {
+    public HomePage enterOtp(String otp, PlatformType os) {
         SetPasscode setPasscode = new SetPasscode(driver);
         setPasscode.enterPasscode(otp, os);
         return new HomePage(driver);
     }
 
-    public HomePage enterOtpFor(String otp, Target os) {
-        SetPasscode setPasscode = new SetPasscode(driver);
-        setPasscode.enterPasscodeotp(otp, os);
-        return new HomePage(driver);
-    }
-
-    public HomePage enterOtpForEsignet(String otp, Target os) {
+    public HomePage enterOtpForeSignet(String otp, PlatformType os) {
         SetPasscode setPasscode = new SetPasscode(driver);
         setPasscode.enterPasscodeForEsignet(otp, os);
         return new HomePage(driver);
     }
 
-    public boolean invalidOtpMessageDisplayed() {
-        return this.isElementDisplayed(invalidOtpMessage);
+    public HomePage enterOtpFor(String otp, PlatformType os) {
+        SetPasscode setPasscode = new SetPasscode(driver);
+        setPasscode.enterPasscodeotp(otp, os);
+        return new HomePage(driver);
     }
 
-    public String invalidOtpMessageForEsignetDisplayed() {
-        return getTextFromLocator(invalidOtpMessageforEsignet);
+    public boolean invalidOtpMessageDisplayed() {
+        return isElementVisible(invalidOtpMessage, "Verify invalid OTP message is displayed");
+    }
+
+    public String getInvalidOtpMessageForEsignet() {
+        return getText(invalidOtpMessageForeSignet, "Getting the invalid OTP message for ESignet Login");
     }
 
     public boolean somethingWetWrongInVcActivationDisplayed() {
-        return this.isElementDisplayed(invalidOtpMessageInVcActivation);
+        return isElementVisible(invalidOtpMessageInVcActivation, "Verify VC activation error message is displayed");
     }
 
     public boolean isCancelButtonDisplayed() {
-        return this.isElementDisplayed(cancelButton);
+        return isElementVisible(cancelButton, "Verify Cancel button is displayed");
     }
 
     public MoreOptionsPage clickOnCancelButton() {
-        clickOnElement(cancelButton);
+        click(cancelButton, "Click on Cancel button");
         return new MoreOptionsPage(driver);
     }
 
     public void clickOnCrossIcon() {
-        clickOnElement(crossIcon);
+        click(crossIcon, "Click on Cross icon");
     }
 
     public void clickOnCancelPopupButton() {
-        clickOnElement(cancelPopupButton);
+        click(cancelPopupButton, "Click on Cancel in confirmation popup");
     }
 
     public boolean vidNotAvailableDisplayed() {
-        return this.isElementDisplayed(vidNotAvailableMessage);
+        return isElementVisible(vidNotAvailableMessage, "Verify VID not available message is displayed");
     }
 
     public boolean verifyResendCodeButtonDisplayedEnabled() {
-        return this.isElementEnabled(resendCodeButton,30);
+        return isElementEnabled(resendCodeButton, "Verify Resend Code button is displayed and enabled");
     }
 
     public void clickOnResendButton() {
-        if(isElementEnabled(resendCodeButton,30)) {
-//            ((HidesKeyboard) driver).hideKeyboard();
-            clickOnElement(resendCode);
-        }
+        click(resendCode, "Click on Resend Code button");
     }
 
     public boolean confirmPopupHeaderDisplayed() {
-        return this.isElementDisplayed(confirmationPopupHeader);
+        return isElementVisible(confirmationPopupHeader, "Verify confirmation popup header is displayed");
     }
 
-    public void WatingTimeForVerificationTimerComplete() {
-        this.WaitTillElementVisible(otpVerificationTimer, 186);
+    public void WaitingTimeForVerificationTimerComplete() {
+        waitUntilElementIsInvisible(otpVerificationTimer, 186, "Wait for OTP verification timer to disappear");
     }
 
     public boolean verifyOtpVerificationTimerDisplayedAfterClickOnResend() {
-        return this.isElementDisplayed(otpVerificationTimer);
+        return isElementVisible(otpVerificationTimer, "Verify OTP verification timer is displayed after clicking Resend");
     }
 
-    public boolean verifyotpVerificationDescriptionDisplayed() {
-        return this.isElementDisplayed(otpVerificationDescription);
+    public boolean verifyOtpVerificationDescriptionDisplayed() {
+        return isElementVisible(otpVerificationDescription, "Verify OTP verification description is displayed");
     }
 
     public void clickOnGetOtpButton() {
-        clickOnElement(getOtpButton);
+        click(getOtpButton, "Click on get OTP");
     }
 }

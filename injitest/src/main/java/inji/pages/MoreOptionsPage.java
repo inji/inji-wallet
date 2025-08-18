@@ -62,58 +62,56 @@ public class MoreOptionsPage extends BasePage {
     }
 
     public boolean isMoreOptionsPageLoaded() {
-        return this.isElementDisplayed(moreOptionsText);
+        return isElementVisible(moreOptionsText, "Checking if 'More Options' page is loaded");
     }
 
     public PleaseConfirmPopupPage clickOnRemoveFromWallet() {
         IosUtil.scrollToElement(driver, 59, 755, 119, 20);
-        clickOnElement(removeFromWalletButton);
+        click(removeFromWalletButton, "Clicking on 'Remove from Wallet' button");
         return new PleaseConfirmPopupPage(driver);
     }
 
     public void clickOnPinOrUnPinCard() {
-        clickOnElement(pinOrUnPinCardButton);
+        click(pinOrUnPinCardButton, "Clicking on 'Pin/Unpin Card' button");
     }
 
     public HistoryPage clickOnViewActivityLog() {
         IosUtil.scrollToElement(driver, 171, 2149, 625, 1944);
-        clickOnElement(viewActivityLogButton);
+        click(viewActivityLogButton, "Clicking on 'View Activity Log' button");
         return new HistoryPage(driver);
     }
 
     public PleaseConfirmPopupPage clickOnActivationPending() {
-        clickOnElement(activationPending);
+        click(activationPending, "Clicking on 'Activation Pending' card");
         return new PleaseConfirmPopupPage(driver);
     }
 
     public boolean isVcActivatedForOnlineLogin() {
-        return this.isElementDisplayed(activatedForOnlineLoginButton);
+        return isElementVisible(activatedForOnlineLoginButton, "Checking if VC is activated for online login");
     }
 
     public HomePage clickOnCloseButton() {
-        if(isElementDisplayed(closeButton)) {
-            clickOnElement(closeButton);
-        }
+        click(closeButton, "Clicking on 'Close' button from More Options page");
         return new HomePage(driver);
     }
 
     public boolean isSomethingIsWrongPopupVisible() {
-        return this.isElementDisplayed(somethingIsWrongPopup);
+        return isElementVisible(somethingIsWrongPopup, "Checking if 'Something went wrong' popup is displayed");
     }
 
     public boolean isVcActivatedDisplayed() {
-        return this.isElementDisplayed(activatedForOnlineLoginButton);
+        return isElementVisible(activatedForOnlineLoginButton, "Checking if VC is shown as activated");
     }
 
     public void clickOnActivationButton() {
-        clickOnElement(enableVerification);
+        click(enableVerification, "Clicking on 'Enable Verification' button");
     }
 
     public void clickOnDetailsViewActivationButton() {
-        clickOnElement(activationPending);
+        click(activationPending, "Clicking on 'Activation Pending' from details view");
     }
 
     public void clickOnShareVcWithSelfieFromKebabButton() {
-        clickOnElement(shareVcWithSelfieFromKebab);
+        click(shareVcWithSelfieFromKebab, "Clicking on 'Share VC with Selfie' from kebab menu");
     }
 }

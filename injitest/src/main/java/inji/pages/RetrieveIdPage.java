@@ -1,6 +1,6 @@
 package inji.pages;
 
-import inji.constants.Target;
+import inji.constants.PlatformType;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -68,97 +68,93 @@ public class RetrieveIdPage extends BasePage {
     }
 
     public boolean isRetrieveIdPageLoaded() {
-        return this.isElementDisplayed(retrieveIdText);
+        return isElementVisible(retrieveIdText, "Verify 'Retrieve ID' page is loaded");
     }
 
     public boolean isInfoIconDisplayed() {
-        return this.isElementDisplayed(infoIcon);
+        return isElementVisible(infoIcon, "Verify info icon is displayed on 'Retrieve ID' page");
     }
+
     public void clickInfoIcon() {
-        clickOnElement(infoIcon);
+        click(infoIcon, "Click on info icon");
     }
 
     public String getRetrieveIdPageHeader() {
-        return this.getTextFromLocator(retrieveIdText);
+        return getText(retrieveIdText, "Get text of 'Retrieve ID' page header");
     }
 
     public RetrieveIdPage setEnterIdTextBox(String uinOrVid) {
-        if(isElementDisplayed(generateCardButton)) {
-            clickOnElement(generateCardButton);
-        }
-        sendKeysToTextBox(enterIdTextBox, uinOrVid);
+        click(generateCardButton, "Click on 'Generate Card' button before entering ID");
+        enterText(enterIdTextBox, uinOrVid, "Enter UIN or VID");
         return this;
     }
 
     public RetrieveIdPage acceptPermissionPopupBluetooth() {
-        if (isElementDisplayed(allowButton)) {
-            clickOnElement(allowButton);
-        }
+        click(allowButton, "Click on Bluetooth permission allow button");
         return this;
     }
+
     public OtpVerificationPage clickOnGenerateCardButton() {
-//        this.clickOnElement(generateCardButton);
+        click(generateCardButton, "Click on 'Generate Card' button");
         return new OtpVerificationPage(driver);
     }
 
     public GenerateUinOrVidPage clickOnGetItNowText() {
-        this.clickOnElement(getItNowText);
+        click(getItNowText, "Click on 'Get it now' text link");
         return new GenerateUinOrVidPage(driver);
     }
 
     public String verifyGetItTextDisplayed() {
-        return this.getTextFromLocator(getItNowText);
+        return getText(getItNowText, "Get text of 'Get it now' link");
     }
 
     public boolean verifyDownloadIdPageGuideMessage() {
-        return this.isElementDisplayed(downloadIdGuideMessage);
+        return isElementVisible(downloadIdGuideMessage, "Verify guide message for downloading ID is visible");
     }
 
     public boolean isInvalidUinMassageLoaded() {
-        return this.isElementDisplayed(invalidUin);
+        return isElementVisible(invalidUin, "Verify 'Invalid UIN' error message is displayed");
     }
 
     public boolean isAidIsNotReadyYetErrorDisplayed() {
-        return this.isElementDisplayed(aidIsNotReadyYetMessage);
+        return isElementVisible(aidIsNotReadyYetMessage, "Verify 'AID is not ready yet' error is displayed");
     }
 
-    public RetrieveIdPage clickOnVid(Target os) {
-        int maxRetries = 3;
+    public RetrieveIdPage clickOnVid(PlatformType os) {
+        final int maxRetries = 3;
 
-        switch (os) {
-            case ANDROID:
-                clickOnElement(spinnerButton);
-                for (int i = 0; i < maxRetries; i++) {
-                    try {
-                        clickOnElement(vidDropDownValueAndroid);
-                        return this;
-                    } catch (StaleElementReferenceException e) {
-                        if (i == maxRetries - 1) {
-                            throw e;
-                        }
+        if (os == PlatformType.ANDROID) {
+            click(spinnerButton, "Click on ID type dropdown");
+            for (int i = 0; i < maxRetries; i++) {
+                try {
+                    click(vidDropDownValueAndroid, "Select VID from dropdown (Android)");
+                    break;
+                } catch (StaleElementReferenceException e) {
+                    if (i == maxRetries - 1) {
+                        throw new RuntimeException("Failed to click on VID dropdown after retries", e);
                     }
                 }
-                break;
-            case IOS:
-                try {
-                    sendKeysToTextBox(vidDropDownValueIos, "VID");
-                } catch (StaleElementReferenceException e) {
-
-                }
-                break;
+            }
+        } else if (os == PlatformType.IOS) {
+            try {
+                enterText(vidDropDownValueIos, "VID", "Enter VID into dropdown (iOS)");
+            } catch (StaleElementReferenceException e) {
+                throw new RuntimeException("Failed to enter VID on iOS due to stale element", e);
+            }
         }
+
         return this;
     }
 
     public boolean isIncorrectInputFormatErrorUinMessageDisplayed() {
-        return isElementDisplayed(inputFormatErrorMessageUin);
+        return isElementVisible(inputFormatErrorMessageUin, "Verify incorrect input format error for UIN is displayed");
     }
 
     public boolean isIncorrectInputFormatErrorVidMessageDisplayed() {
-        return isElementDisplayed(inputFormatErrorMessageVid);
+        return isElementVisible(inputFormatErrorMessageVid, "Verify incorrect input format error for VID is displayed");
     }
 
     public boolean isIncorrectInputFormatErrorAidMessageDisplayed() {
-        return isElementDisplayed(inputFormatErrorMessageAid);
+        return isElementVisible(inputFormatErrorMessageAid, "Verify incorrect input format error for AID is displayed");
     }
 }

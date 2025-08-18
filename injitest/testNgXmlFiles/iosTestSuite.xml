@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Ios Test Suite" parallel="methods" thread-count="1">
+    <listeners>
+        <listener class-name="inji.utils.ThreadCountListener" />
+        <listener class-name="inji.utils.BrowserStackStatusListener" />
+    </listeners>
+    <!-- Ios Tests -->
+    <test verbose="2" preserve-order="true" name="ios">
+        <classes>
+            <class name="inji.testcases.iosTestCases.AboutInjiTest">
+                <methods>
+                    <include name="copyAppId"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.MosipOtpAlternativeFlow">
+                <methods>
+                    <include name="verifyInvalidOtpMessage"/>
+                    <include name="activateVcFromDetailedViewPage"/>
+                    <include name="verifyActiveVcAndWaitForOtpTimeOut"/>
+                    <include name="cancelDeleteVc"/>
+                    <include name="DownloadingDeletedVc"/>
+                    <include name="deleteDownloadedVcInOfflineMode"/>
+                    <include name="verifyVcIssuerListWithoutNetwork"/>
+<!--                                        <include name="VerifyCameraOpenAfterPinVc"/>      // out of scope -->
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.MosipOtpAlternativeFlowForHistoryAndPin">
+                <methods>
+                    <include name="pinVcInDetailedVcView"/>
+                    <include name="verifyActivationFailedRecordInHistory"/>
+                    <include name="verifyActivationFailedRecordInHistoryFromDetailedView"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.ActivateVcTest">
+                <methods>
+                    <include name="noPreDownloadedVCAndNoHistoryInFreshInstallation"/>
+                    <include name="downloadAndActiveVcUsingUinViaEsignet"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.ChangeLanguageTest">
+                <methods>
+                    <include name="changeLanguage"/>
+                    <include name="languageShouldBeInNativeLanguages"/>
+                    <include name="changeLanguageToArabic"/>
+                    <include name="changeLanguageToFilipionAndcheckInjiTour"/>
+                    <include name="changeLanguageToHindiAndcheckInjiTour"/>
+                    <include name="changeLanguageToTamilAndcheckInjiTour"/>
+                    <include name="changeLanguageToKannadAndcheckInjiTour"/>
+                    <include name="downloadVcAndChnageLangaugeVerifyVcViaSunbird"/>
+                    <include name="verifyWelcomePagesFromInjiTourGuideEnglish"/>
+                    <include name="verifyWelcomePagesFromInjiTourGuideHindi"/>
+                    <include name="verifyWelcomePagesFromInjiTourGuideKaanda"/>
+                    <include name="verifyWelcomePagesFromInjiTourGuideTamil"/>
+                    <include name="verifyWelcomePagesFromInjiTourGuideWithFilipinoLangauge"/>
+                    <include name="verifyWelcomePagesFromInjiTourGuideWithArabicLangauge"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.DeletingVcTest">
+                <methods>
+                    <include name="deleteVcAndVerifyInHistoryForEsignet"/>
+                    <include name="deleteVcAndVerifyInHistoryForSunbird"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.ShareVcTest">
+                <methods>
+                    <include name="noCardsAvailableToShare"/>
+                    <include name="verifyReceivedCardTabPresent"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.NoNetworkIosTest">
+                <methods>
+                    <include name="setupPasscodeAndDownloadCardWithoutInternet"/>
+                    <include name="verifyListOfLanguagesInOfflineMode"/>
+                    <include name="verifyHelpPageOfflineMode"/>
+                    <include name="verifyRecivedCardOffline"/>
+                    <include name="downloadCardWithoutInternetRetryWithInternet"/>
+                    <include name="verifyVcIssuerListWithoutNetwork"/>
+                    <include name="DownloadVcWithEsignetWithoutNetwork"/>
+                    <include name="openQrOffline"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.UnlockWithPasscodeTest">
+                <methods>
+                    <include name="logoutAndLoginWithPasscode"/>
+                    <include name="loginWithInvalidPasscode"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingEsignetTest">
+                <methods>
+                    <include name="downloadAndVerifyVcUsingUinViaEsignet"/>
+                    <include name="downloadAndVerifyVcUsingVidViaEsignet"/>
+                    <include name="denyPopupforEsignetLoginWebPage"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingSunbirdTest">
+                <methods>
+                    <include name="downloadAndVerifyVcUsingUinViaSunbird"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.VerifyHelpPageTest">
+                <methods>
+                    <include name="verifyHelpPage"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.VerifyHistoryTest">
+                <methods>
+                    <include name="downloadAndVerifyHistoryUsingUinViaEsignet"/>
+                    <include name="downloadAndVerifyHistoryUsingVidViaEsignet"/>
+                    <include name="downloadAndVerifyHistoryForSunbird"/>
+                    <include name="downloadVcAndVerifyActivityLog"/>
+                    <include name="downloadAndVerifyVcUsingMdlDeleteAndVerifyHistory"/>
+                    <include name="downloadAndVerifyVcUsingMockDeleteAndVerifyHistory"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.VerifyWelcomePagesTest">
+                <methods>
+                    <include name="verifyWelcomePagesContent"/>
+                    <include name="verifyWelcomePagesFromInjiTourGuide"/>
+                    <include name="verifyClickOnBackFromInjiTourGuide"/>
+                    <include name="verifyWelcomePagesFromInjiTourGuideForFirstCard"/>
+                    <include name="verifyWelcomePagesFromInjiTourGuideAfterDeleteTheCard"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.KeyManagmentTest">
+                <methods>
+                    <include name="downloadAndVerifyVcUsingUinViaEsignet"/>
+                    <include name="downloadAndVerifyVcUsingUinViaMock"/>
+                    <include name="downloadAndVerifyVcUsingUinViaSunbird"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.AboutInjiTest">
+                <methods>
+                    <include name="copyAppId"/>
+                    <include name="verifyAppId"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingMdl">
+                <methods>
+                    <include name="downloadAndVerifyVcUsingMdl"/>
+                    <include name="downloadAndVerifyVcUsingInvalidCredentials"/>
+                    <include name="downloadAndVerifyVcUsingInvalidOtp"/>
+                    <include name="downloadAndVerifyVcUsingViaMdlAndPinAndUnpin"/>
+                    <include name="downloadAndVerifyVcUsingViaMdlMultipleTimes"/>
+                </methods>
+            </class>
+
+        </classes>
+    </test>
+</suite>
+
+        <!--<suite name="All Test Suite">
+        &lt;!&ndash;<listeners>
+            <listener class-name="inji.utils.SuiteListener" />
+        </listeners>&ndash;&gt;
+        <test verbose="2" preserve-order="true" name="android">
+                <class name="inji.testcases.iosTestCases.ActivateVcTest">
+                    <methods>
+                        <include name="activateVc"/>
+                        <include name="noPreDownloadedVCAndNoHistoryInFreshInstallation"/>
+                        <include name="verifyInvalidOtpMessage"/>
+                        <include name="activateVcFromDetailedViewPage"/>
+                        <include name="verifyActiveVcAndWaitForOtpTimeOut"/>
+                        <include name="downloadAndActiveVcUsingUinViaEsignet"/>
+                    </methods>
+                </class>
+                <class name="inji.testcases.iosTestCases.ChangeLanguageTest">
+                    <methods>
+                        <include name="changeLanguage"/>
+                        <include name="languageShouldBeInNativeLanguages"/>
+                        <include name="verifyTuvaliVersion"/>
+                        <include name="changeLanguageToArabic"/>
+                        <include name="changeLanguageToFilipionAndSearchIssuer"/>
+                        <include name="changeLanguageToFilipionAndSearchIssuerEnterIncompleteName"/>
+                        <include name="changeLanguageToHindiAndSearchIssuer"/>
+                        <include name="changeLanguageToFilipionAndcheckInjiTour"/>
+                        <include name="changeLanguageToHindiAndcheckInjiTour"/>
+                        <include name="changeLanguageToTamilAndcheckInjiTour"/>
+                        <include name="changeLanguageToKannadAndcheckInjiTour"/>
+                        <include name="DownladvcAndVerifyInArabicAndHindiLanguage"/>
+                        <include name="DownloadAndVerifyVcInArabic"/>
+                        <include name="downloadVcAndChnageLangaugeVerifyVcViaSunbird"/>
+                    </methods>
+                </class>
+                <class name="inji.testcases.iosTestCases.DeletingVcTest">
+                    <methods>
+                        <include name="deleteVcAndVerifyInHistory"/>
+                        <include name="cancelDeleteVc"/>
+                        <include name="DownloadingDeletedVc"/>
+                        <include name="deleteVcAndVerifyInHistoryForEsignet"/>
+                        <include name="deleteVcAndVerifyInHistoryForSunbird"/>
+                    </methods>
+                </class>
+                <class name="inji.testcases.iosTestCases.GenerateUinOrVidTest">
+                    <methods>
+                        <include name="generateUinOrVidUsingAid"/>
+                        <include name="goBackToGenerateUinOrVidUsingAidFromOtpVerificationPage"/>
+                        <include name="generateUinOrVidUsingInvalidAid"/>
+                    </methods>
+                </class>
+                <class name="inji.testcases.iosTestCases.PinVcTest">
+                    <methods>
+                        <include name="pinVc"/>
+                        <include name="VerifyCameraOpenAfterPinVc"/>
+                        <include name="downloadVcViaEsignetAndPinUnpin"/>
+                        <include name="verifyMessageAfterDenyBluetoothPopup"/>
+                        <include name="pinEsignetVcMultipleTimes"/>
+                        <include name="pinMosipVcMultipleTimes"/>
+                        <include name="pinVcInDetailedVcView"/>
+                    </methods>
+                </class>
+                <class name="inji.testcases.iosTestCases.ShareVcTest">
+                    <methods>
+                        <include name="noCardsAvailableToShare"/>
+                        <include name="verifyReceivedCardTabPresent"/>
+                    </methods>
+                </class>
+                <class name="inji.testcases.iosTestCases.NoNetworkIosTest">
+                    <methods>
+                        <include name="setupPasscodeAndDownloadCardWithoutInternet"/>
+                        <include name="openCameraOnFlightMode"/>
+                        <include name="activateVcWithoutInternet"/>
+                        <include name="verifyListOfLanguagesInOfflineMode"/>
+                        <include name="verifyHelpPageOfflineMode"/>
+                        <include name="deleteDownloadedVcInOfflineMode"/>
+                        <include name="openQrOffline"/>
+                        <include name="verifyRecivedCardOffline"/>
+                        <include name="downloadCardWithoutInternetRetryWithInternet"/>
+                        <include name="verifyVcIssuerListWithoutNetwork"/>
+                        <include name="DownloadVcWithUinWithoutNetwork"/>
+                        <include name="DownloadVcWithEsignetWithoutNetwork"/>
+                        <include name="verifyGetUinHeaderOffline"/>
+                    </methods>
+                </class>
+                <class name="inji.testcases.iosTestCases.UnlockWithPasscodeTest">
+                    <methods>
+                        <include name="logoutAndLoginWithPasscode"/>
+                        <include name="loginWithInvalidPasscode"/>
+                    </methods>
+                </class>
+                <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingEsignetTest">
+                    <methods>
+                        <include name="downloadAndVerifyVcUsingUinViaEsignet"/>
+                        <include name="downloadAndVerifyVcUsingVidViaEsignet"/>
+                        <include name="denyPopupforEsignetLoginWebPage"/>
+                        &lt;!&ndash;                    <include name="downloadMultipleVcViaEsignet"/>  invalid testcase &ndash;&gt;
+
+                    </methods>
+                </class>
+                <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingSunbirdTest">
+                    <methods>
+                        <include name="downloadAndVerifyVcUsingUinViaSunbird"/>
+                    </methods>
+                </class>
+                <class name="iosTestCases.VcDownloadAndVerifyUsingUinTest">
+                    <methods>
+                        <include name="downloadAndVerifyVcUsingUin"/>
+                        <include name="downloadMultipleVcUsingDifferentUin"/>
+                        <include name="downloadWithEmptyUin"/>
+                        <include name="generateMultipleVcWithSameUin"/>
+                        <include name="verifyInvalidUinErrorMessage"/>
+                        <include name="verifyOtpTimeOutAndGoBack"/>
+                        <include name="downloadMultipleCardsAndVerifySearch"/>
+                        <include name="downloadCardsAndVerifySearch"/>
+                    </methods>
+                </class>
+                <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingVidTest">
+                    <methods>
+                        <include name="downloadAndVerifyVcUsingVid"/>
+                        <include name="downloadTwoVcDeleteOneUsingVid"/>
+                        <include name="verifyInvalidVidErrorMessage"/>
+                        <include name="downloadAndVerifyVcUsingRevokeVid"/>
+                    </methods>
+                </class>
+                <class name="inji.testcases.iosTestCases.VerifyHelpPageTest">
+                    <methods>
+                        <include name="verifyHelpPage"/>
+                    </methods>
+                </class>
+                <class name="inji.testcases.iosTestCases.VerifyHistoryTest">
+                    <methods>
+                        <include name="downloadVcAndVerifyHistory"/>
+                        <include name="verifyActivationFailedRecordInHistory"/>
+                        <include name="verifyActivationFailedRecordInHistoryFromDetailedView"/>
+                        <include name="activateVcAndVerifyInHistory"/>
+                        <include name="downloadAndVerifyHistoryUsingUinViaEsignet"/>
+                        <include name="downloadAndVerifyHistoryUsingVidViaEsignet"/>
+                        <include name="downloadAndVerifyHistoryForSunbird"/>
+                        <include name="downloadVcAndVerifyActivityLog"/>
+                    </methods>
+                </class>
+                <class name="inji.testcases.iosTestCases.VerifyWelcomePagesTest">
+                    <methods>
+                        <include name="verifyWelcomePagesContent"/>
+                        <include name="verifyWelcomePagesFromInjiTourGuide"/>
+                        <include name="verifyGoBackFromInjiTourGuide"/>
+                        <include name="verifyClickOnBackFromInjiTourGuide"/>
+                    </methods>
+                </class>
+            </classes>
+        </test>
+        </suite>-->
