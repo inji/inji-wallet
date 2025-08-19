@@ -837,8 +837,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/pixelpass-ios-swift/";
 			requirement = {
-				branch = "release-0.6.x";
-				kind = branch;
+				kind = exactVersion;
+				version = 0.6.3;
 			};
 		};
 		9CCCA19C2CF87A8400D5A461 /* XCRemoteSwiftPackageReference "secure-keystore-ios-swift" */ = {
@@ -853,16 +853,16 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/inji-openid4vp-ios-swift.git";
 			requirement = {
-				branch = "release-0.4.x";
-				kind = branch;
+				kind = exactVersion;
+				version = 0.4.0;
 			};
 		};
 		C3F18B1B2E320C9A007DBE73 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/inji-vci-client-ios-swift";
 			requirement = {
-				branch = "release-0.4.x";
-				kind = branch;
+				kind = exactVersion;
+				version = 0.4.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
