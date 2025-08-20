@@ -5,6 +5,7 @@ import inji.annotations.NeedsUIN;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.IosBaseTest;
+import inji.utils.InjiWalletUtil;
 import inji.utils.IosUtil;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
