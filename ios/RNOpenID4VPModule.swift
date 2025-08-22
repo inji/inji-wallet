@@ -37,10 +37,13 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
         let trustedVerifiersList: [Verifier] = try verifierMeta.map { verifierDict in
           guard let clientId = verifierDict["client_id"] as? String,
-                let responseUris = verifierDict["response_uris"] as? [String] else {
+                let responseUris = verifierDict["response_uris"] as? [String], 
+                  let clientMetadata = verifierDict["client_metadata"] else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Verifier data"])
           }
-          return Verifier(clientId: clientId, responseUris: responseUris)
+          let encoded = try JSONSerialization.data(withJSONObject: clientMetadata)
+          let clientMetadataObject = try ClientMetadata.deserializeAndValidate(clientMetadata: encoded)
+          return Verifier(clientId: clientId, responseUris: responseUris,clientMetadata: clientMetadataObject)
         }
 
         let authenticationResponse: AuthorizationRequest = try await openID4VP!.authenticateVerifier(
