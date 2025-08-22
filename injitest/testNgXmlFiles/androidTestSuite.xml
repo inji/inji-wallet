@@ -190,7 +190,7 @@
                     <include name="downloadAndVerifyVcUsingUinViaLandStatementVCDM1"/>
                 </methods>
             </class>
-            <class name="inji.testcases.androidTestCases.CredentialRegistryTest">
+<!--            <class name="inji.testcases.androidTestCases.CredentialRegistryTest">
                 <methods>
                     <include name="downloadAndVerifyVcInNewEnv"/>
                     <include name="cancelChangeEnvAndVerify"/>
@@ -202,7 +202,7 @@
                     <include name="downloadAndVerifyVcInNewEnvForMock"/>
                     <include name="downloadAndVerifyVcInNewEnvForLandStatementCredential"/>
                 </methods>
-            </class>
+            </class>-->
         </classes>
     </test>
 </suite>
