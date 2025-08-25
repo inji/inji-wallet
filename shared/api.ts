@@ -177,13 +177,13 @@ export const CACHED_API = {
     }),
 
   fetchIssuerWellknownConfig: (
-    issuerId: string,
+    issuerCacheKey: string,
     credentialIssuer: string,
     isCachePreferred: boolean = false,
   ) =>
     generateCacheAPIFunction({
       isCachePreferred,
-      cacheKey: API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(issuerId),
+      cacheKey: API_CACHED_STORAGE_KEYS.fetchIssuerWellknownConfig(issuerCacheKey),
       fetchCall: API.fetchIssuerWellknownConfig.bind(null, credentialIssuer),
     }),
 

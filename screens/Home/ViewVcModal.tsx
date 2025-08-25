@@ -74,7 +74,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
 
   useEffect(() => {
     getDetailedViewFields(
-      verifiableCredentialData.issuer as string,
+      verifiableCredentialData.vcMetadata.issuerHost as string,
       verifiableCredentialData.credentialConfigurationId,
       DETAIL_VIEW_DEFAULT_FIELDS,
       verifiableCredentialData.vcMetadata.format,
