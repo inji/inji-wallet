@@ -17,10 +17,13 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
+import com.facebook.react.bridge.ReadableType;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import io.mosip.openID4VP.authorizationRequest.clientMetadata.ClientMetadata;
+import io.mosip.openID4VP.authorizationRequest.clientMetadata.ClientMetadataSerializer;
 import io.mosip.openID4VP.constants.ClientIdScheme;
 import io.mosip.openID4VP.constants.ContentEncryptionAlgorithm;
 import io.mosip.openID4VP.constants.KeyManagementAlgorithm;
@@ -31,6 +34,9 @@ import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
 
 import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
 import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,6 +58,7 @@ import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.ldp.L
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.DeviceAuthentication;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.MdocVPTokenSigningResult;
 import io.mosip.openID4VP.constants.FormatType;
+import kotlinx.serialization.json.Json;
 
 public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     private static final String TAG = "InjiOpenID4VPModule";
