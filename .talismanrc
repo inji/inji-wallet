@@ -393,7 +393,7 @@ fileignoreconfig:
   - filename: machines/openID4VP/openID4VPMachine.typegen.ts
     checksum: a87664e146d420fb3140a0f6579980aaf82041928b502f8b301b4ebff048351c
   - filename: ios/RNOpenID4VPModule.swift
-    checksum: 4bd3c69556b86024cd15490deafb0d8c6b760ebcfc486f68da5575d63b315d14
+    checksum: 2ba3a4dbebea54840c5b42c0a464cecdc5c86bf2d78376aface12e67d73bf951
   - filename: assets/InjiHomeLogoSmall.svg
     checksum: 9f29c9b0b91eba7fd7f5f4d1f78f9b6f96ef2c850c1346d712058a438d01036a
   - filename: assets/InjiHomeLogo.svg
