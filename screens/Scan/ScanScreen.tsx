@@ -11,11 +11,7 @@ import {QrLogin} from '../QrLogin/QrLogin';
 import {useScanScreen} from './ScanScreenController';
 import BluetoothStateManager from 'react-native-bluetooth-state-manager';
 import {BackHandler, Linking} from 'react-native';
-import {
-  isIOS,
-  LIVENESS_CHECK,
-  OVP_ERROR_MESSAGES,
-} from '../../shared/constants';
+import {isIOS, LIVENESS_CHECK} from '../../shared/constants';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {SharingStatusModal} from './SharingStatusModal';
 import {SvgImage} from '../../components/ui/svg';

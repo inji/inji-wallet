@@ -177,7 +177,7 @@ func sendErrorToVerifier(_ error: String, _ errorCode: String,
     return try verifiers.map { verifierDict in
       guard let clientId = verifierDict["client_id"] as? String,
             let responseUris = verifierDict["response_uris"] as? [String] else {
-        throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Verifier data"])
+        throw NSError(domain: "OpenID4VP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Verifier data"])
       }
       
       var clientMetadata: ClientMetadata? = nil
