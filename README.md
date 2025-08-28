@@ -6,7 +6,9 @@ It offers a secure, trustworthy, and dependable mobile Verifiable Credentials wa
 - Download and store Verifiable Credentials
 - Share Verifiable Credentials
 - Enable users to log in to relying parties with their credential
-- Generate a QR code for the credential to be shared offline with relying parties.
+- Generate a QR code for the credential to be shared offline with relying parties
+
+>  ℹ️ Signature verification is currently bypassed for **MSO mDoc** and **SD-JWT** credential formats in iOS, as the [vc-verifier](https://github.com/mosip/vc-verifier) library is not yet available for iOS. This allows seamless testing and interoperability across platforms.
 
 for more details refer [here](https://docs.mosip.io/inji/inji-wallet/overview)
 
