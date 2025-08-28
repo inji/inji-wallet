@@ -69,8 +69,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-openid4vp-ios-swift.git",
       "state" : {
-        "branch" : "release-0.4.x",
-        "revision" : "788a408c65a4aae296e8a0a32352c6d8abf369d0"
+        "revision" : "788a408c65a4aae296e8a0a32352c6d8abf369d0",
+        "version" : "0.4.0"
       }
     },
     {
@@ -96,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/pixelpass-ios-swift/",
       "state" : {
-        "branch" : "release-0.6.x",
-        "revision" : "78faea2ff48626ef9a6d198123bcf7b299acefd1"
+        "revision" : "78faea2ff48626ef9a6d198123bcf7b299acefd1",
+        "version" : "0.6.3"
       }
     },
     {
