@@ -1,5 +1,5 @@
 {
-  "originHash" : "327f856a9787c0e4bf4517bc1e50ff1e45a4aee6adcc4233b1e042d022a881f0",
+  "originHash" : "bd49ad34603719982e9870b9c91029153382881ca862d2ef237c01f2691a7906",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -79,7 +79,7 @@
       "location" : "https://github.com/mosip/inji-vci-client-ios-swift",
       "state" : {
         "branch" : "release-0.5.x",
-        "revision" : "839f5825dcfd6278da4983e5c56a858f6b51e9d4"
+        "revision" : "6e76c7516f81c7af96cfd573339de2f1128e10eb"
       }
     },
     {
