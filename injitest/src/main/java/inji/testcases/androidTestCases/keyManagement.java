@@ -45,7 +45,7 @@ public class keyManagement extends AndroidBaseTest {
         IosUtil.dragAndDrop(getDriver(), keyManagementPage.getTheCoordinatesForRSA(), keyManagementPage.getTheCoordinatesED25519Text());
         keyManagementPage.clickOnSaveKeyOrderingPreferenceButton();
 
-//        assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
+        assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
         keyManagementPage.clickOnArrowleftButton();
 
         homePage.clickOnHomeButton();
@@ -170,7 +170,7 @@ public class keyManagement extends AndroidBaseTest {
         IosUtil.dragAndDrop(getDriver(), keyManagementPage.getTheCoordinatesForRSA(), keyManagementPage.getTheCoordinatesED25519Text());
         keyManagementPage.clickOnSaveKeyOrderingPreferenceButton();
 
-//        assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
+        assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
         keyManagementPage.clickOnArrowleftButton();
 
         homePage.clickOnHomeButton();
@@ -364,7 +364,7 @@ public class keyManagement extends AndroidBaseTest {
         IosUtil.dragAndDrop(getDriver(), keyManagementPage.getTheCoordinatesECCR1TextText(), keyManagementPage.getTheCoordinatesED25519Text());
         keyManagementPage.clickOnSaveKeyOrderingPreferenceButton();
 
-//        assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
+        assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
         keyManagementPage.clickOnArrowleftButton();
 
         homePage.clickOnHomeButton();
