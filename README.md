@@ -8,8 +8,6 @@ It offers a secure, trustworthy, and dependable mobile Verifiable Credentials wa
 - Enable users to log in to relying parties with their credential
 - Generate a QR code for the credential to be shared offline with relying parties
 
->  ℹ️ Signature verification is currently bypassed for **MSO mDoc** and **SD-JWT** credential formats in iOS, as the [vc-verifier](https://github.com/mosip/vc-verifier) library is not yet available for iOS. This allows seamless testing and interoperability across platforms.
-
 for more details refer [here](https://docs.mosip.io/inji/inji-wallet/overview)
 
 ## Setup PreRequisites
@@ -88,6 +86,38 @@ More info here:
 
 - [React Native - Publishing to the App Store](https://reactnative.dev/docs/publishing-to-app-store)
 - [Apple Developer - Distributing Your App for Beta Testing and Releases](https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases)
+
+
+## VC Verification Support
+
+### Android
+
+There is kotlin library [vc-verifier](https://github.com/mosip/vc-verifier) which is used for signature verification for ldp_vc, mso_mdoc and vc+sd-jwt/dc+sd-jwt credential formats.
+
+Following are the details about support for different credential formats:
+* For ldp_vc,
+  * RSA(PS256 & RS256), EdDSA and ECDSA(ES256 & ES256K) signature algorithms are supported.
+* For mso_mdoc,
+  * only ECDSA(ES256) signature algorithm is supported.
+* For vc+sd-jwt/dc+sd-jwt,
+  * only ECDSA(ES256 & ES256K) signature algorithm is supported.
+
+
+### iOS
+
+🚨 There is no library available for iOS for signature verification that can support all credential formats ldp_vc, mso_mdoc and vc+sd-jwt/dc+sd-jwt.
+So we have by-passed verification to allow seamless testing and interoperability across platforms.
+
+Following are the details about support and bypass for different credential formats:
+* For ldp_vc,
+  * RSA(PS256 & RS256) signature algorithm is supported and verified using digital bazaar library.
+  * Other algorithms like ECDSA and EdDSA are not supported and vc verification is by-passed.
+* For mso_mdoc,
+  * vc verification is by-passed.
+* For vc+sd-jwt/dc+sd-jwt,
+  * vc verification is by-passed.
+
+
 
 ### Note 
 
