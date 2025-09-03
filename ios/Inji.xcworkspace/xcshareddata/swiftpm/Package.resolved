@@ -1,5 +1,5 @@
 {
-  "originHash" : "327f856a9787c0e4bf4517bc1e50ff1e45a4aee6adcc4233b1e042d022a881f0",
+  "originHash" : "c3844489a23dbcf439613c201c59f062197f3989a2a05916a746ff9bb94009a4",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -71,6 +71,15 @@
       "state" : {
         "branch" : "develop",
         "revision" : "ca4935478360f45dd20444eac5d6bae9affc6d36"
+      }
+    },
+    {
+      "identity" : "inji-vc-renderer-ios-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tw-mosip/inji-vc-renderer-ios-swift.git",
+      "state" : {
+        "branch" : "injimob-3499-svg-rendering",
+        "revision" : "b34c19ab27d2beaee2f6fc7c1283280394250b66"
       }
     },
     {
