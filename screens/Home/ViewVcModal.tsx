@@ -33,6 +33,7 @@ import {
 } from '../../components/BannerNotification';
 import {VCProcessor} from '../../components/VC/common/VCProcessor';
 import {HelpIcon} from '../../components/ui/HelpIcon';
+import VcRenderer from '../../shared/vcRenderer/VcRenderer';
 
 export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
   const {t} = useTranslation('ViewVcModal');
@@ -40,6 +41,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
   const profileImage = controller.verifiableCredentialData.face;
   const verificationStatus = controller.verificationStatus;
   const [verifiableCredential, setVerifiableCredential] = useState(null);
+  const [svgTemplate, setSvgTemplate] = useState<string[] | null>(null);
 
   useEffect(() => {
     async function processVC() {
@@ -54,6 +56,21 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
 
     processVC();
   }, [controller.credential]);
+
+  useEffect(() => {
+    const fetchSvg = async () => {
+      try {
+        const vcJsonString = JSON.stringify(controller.credential.credential);
+        const result = await VcRenderer.getInstance().renderSvg(vcJsonString);
+        setSvgTemplate(result);
+      } catch (err) {
+        console.error(':::::Failed to fetch SVG:', err);
+        setSvgTemplate(null);
+      }
+    };
+
+    fetchSvg();
+  }, [controller.credential.credential]);
 
   useEffect(() => {
     if (controller.isVerificationInProgress) {
@@ -79,13 +96,15 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
       DETAIL_VIEW_DEFAULT_FIELDS,
       verifiableCredentialData.vcMetadata.format,
       verifiableCredentialData.vcMetadata.issuerHost,
-    ).then(response => {
-      setWellknown(response.matchingCredentialIssuerMetadata);
-      setFields(response.fields);
-      setWellknownFieldsFlag(response.wellknownFieldsFlag);
-    }).catch(error => {
-      console.error('Error fetching well-known fields:', error);
-    });
+    )
+      .then(response => {
+        setWellknown(response.matchingCredentialIssuerMetadata);
+        setFields(response.fields);
+        setWellknownFieldsFlag(response.wellknownFieldsFlag);
+      })
+      .catch(error => {
+        console.error('Error fetching well-known fields:', error);
+      });
   }, [verifiableCredentialData?.wellKnown]);
 
   const headerRight = flow => {
@@ -164,6 +183,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
           walletBindingResponse={controller.walletBindingResponse}
           activeTab={props.activeTab}
           vcHasImage={profileImage !== undefined}
+          svgTemplate={svgTemplate}
         />
       )}
 
