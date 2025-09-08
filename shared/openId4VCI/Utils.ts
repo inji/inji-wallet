@@ -132,7 +132,7 @@ export const getDisplayObjectForCurrentLanguage = (
 };
 
 export const getCredentialIssuersWellKnownConfig = async (
-  issuer: string | undefined,
+  issuerCacheKey: string | undefined,
   defaultFields: string[],
   credentialConfigurationId: string,
   format: string,
@@ -142,7 +142,7 @@ export const getCredentialIssuersWellKnownConfig = async (
   let wellknownFieldsFlag = false;
   let matchingWellknownDetails: any;
   const wellknownResponse = await CACHED_API.fetchIssuerWellknownConfig(
-    issuer!,
+    issuerCacheKey!,
     issuerHost,
     true,
   );
@@ -233,14 +233,14 @@ const flattenClaimPaths = (
 
 
 export const getDetailedViewFields = async (
-  issuer: string,
+  issuerCacheKey: string,
   credentialConfigurationId: string,
   defaultFields: string[],
   format: string,
   issuerHost: string,
 ) => {
   let response = await getCredentialIssuersWellKnownConfig(
-    issuer,
+    issuerCacheKey,
     defaultFields,
     credentialConfigurationId,
     format,

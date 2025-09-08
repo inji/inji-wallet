@@ -17,10 +17,13 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
+import com.facebook.react.bridge.ReadableType;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import io.mosip.openID4VP.authorizationRequest.clientMetadata.ClientMetadata;
+import io.mosip.openID4VP.authorizationRequest.clientMetadata.ClientMetadataSerializer;
 import io.mosip.openID4VP.constants.ClientIdScheme;
 import io.mosip.openID4VP.constants.ContentEncryptionAlgorithm;
 import io.mosip.openID4VP.constants.KeyManagementAlgorithm;
@@ -31,6 +34,9 @@ import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
 
 import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
 import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,6 +58,7 @@ import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.ldp.L
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.DeviceAuthentication;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.MdocVPTokenSigningResult;
 import io.mosip.openID4VP.constants.FormatType;
+import kotlinx.serialization.json.Json;
 
 public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     private static final String TAG = "InjiOpenID4VPModule";
@@ -218,12 +225,90 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             String clientId = verifierMap.getString("client_id");
             ReadableArray responseUris = verifierMap.getArray("response_uris");
             List<String> responseUriList = convertReadableArrayToList(responseUris);
-
-            verifiers.add(new Verifier(clientId, responseUriList));
+            ClientMetadata clientMetadata = null;
+            if (verifierMap.hasKey("client_metadata") && !verifierMap.isNull("client_metadata")) {
+                try {
+                    ReadableMap metadataMap = verifierMap.getMap("client_metadata");
+                    String metadataJsonString = readableMapToJson(metadataMap).toString();
+                    clientMetadata = Json.Default.decodeFromString(ClientMetadataSerializer.INSTANCE, metadataJsonString);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+    
+            verifiers.add(new Verifier(clientId, responseUriList, clientMetadata));
         }
 
         return verifiers;
     }
+    private static JSONObject readableMapToJson(ReadableMap readableMap) {
+        JSONObject jsonObject = new JSONObject();
+        ReadableMapKeySetIterator iterator = readableMap.keySetIterator();
+    
+        while (iterator.hasNextKey()) {
+            String key = iterator.nextKey();
+            ReadableType type = readableMap.getType(key);
+            try {
+                switch (type) {
+                    case String:
+                        jsonObject.put(key, readableMap.getString(key));
+                        break;
+                    case Number:
+                        jsonObject.put(key, readableMap.getDouble(key));
+                        break;
+                    case Boolean:
+                        jsonObject.put(key, readableMap.getBoolean(key));
+                        break;
+                    case Map:
+                        jsonObject.put(key, readableMapToJson(readableMap.getMap(key)));
+                        break;
+                    case Array:
+                        jsonObject.put(key, readableArrayToJson(readableMap.getArray(key)));
+                        break;
+                    case Null:
+                        jsonObject.put(key, JSONObject.NULL);
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    
+        return jsonObject;
+    }
+    
+    private static JSONArray readableArrayToJson(ReadableArray readableArray) {
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < readableArray.size(); i++) {
+            ReadableType type = readableArray.getType(i);
+            try {
+                switch (type) {
+                    case String:
+                        jsonArray.put(readableArray.getString(i));
+                        break;
+                    case Number:
+                        jsonArray.put(readableArray.getDouble(i));
+                        break;
+                    case Boolean:
+                        jsonArray.put(readableArray.getBoolean(i));
+                        break;
+                    case Map:
+                        jsonArray.put(readableMapToJson(readableArray.getMap(i)));
+                        break;
+                    case Array:
+                        jsonArray.put(readableArrayToJson(readableArray.getArray(i)));
+                        break;
+                    case Null:
+                        jsonArray.put(JSONObject.NULL);
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return jsonArray;
+    }
+    
 
     private Map<String, Map<FormatType, List<Object>>> parseSelectedVCs(ReadableMap selectedVCs) {
         if (selectedVCs == null) {

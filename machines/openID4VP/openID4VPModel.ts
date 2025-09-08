@@ -76,4 +76,5 @@ interface VerifierType {
   client_id: string;
   redirect_uri: string;
   response_uri: string;
+  client_metadata?: object;
 }

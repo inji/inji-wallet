@@ -4,7 +4,7 @@ This document provides a comprehensive overview of the process for downloading a
 
 ### Scope
 - SD-JWT VC download, verification, and rendering in Inji Wallet.
-- vc+sd-jwt/dc+sd-jwt credential format for SD-JWT. All non-normative examples are referred for `vc+sd-jwt` format.
+- `vc+sd-jwt` / `dc+sd-jwt` credential format for SD-JWT. All non-normative examples are referred for `vc+sd-jwt` format.
 - Cryptographic Key Binding - JWK is being used for cryptographic key binding in SD-JWT VC.
 
 
@@ -31,14 +31,18 @@ sequenceDiagram
   Note over W: Cache the Issuer Metadata for future use
   Note over W: User selects one of the supported credentials
   W ->> VCI_Lib: 5. Request Credential from Issuer
-  VCI_Lib -->> W: 6. Authorize user for credential request and get authorization code and access token
-  W ->> VCI_Lib: 7. Provide authorization code and access token
+  VCI_Lib -->> W: 6. Authorize user for credential request and get authorization code
+  W ->> VCI_Lib: 7. Provide authorization code
+  VCI_Lib -->> W: 8. Get access token to access credential endpoint from authorized wallet
+  W ->> VCI_Lib: 9. Provide access token
+  W ->> VCI_Lib: 11. Provide jwt proof
+  VCI_Lib -->> W: 10. Get jwt proof - proof of possession to bind the credential to wallet
+  VCI_Lib ->> Issuer: 12. Credential Request
   Note over VCI_Lib: Construct the request body for credential request
-  VCI_Lib ->> Issuer: 8. Credential Request
-  Issuer -->> VCI_Lib: 9. Return vc+sd-jwt format specific Credential response
-  VCI_Lib -->> W: 10. Return vc+sd-jwt Credential
-  W ->> VCVerifier: 11. Verify sd-jwt Credential
-  VCVerifier -->> W: 12. Return Verification Result
+  Issuer -->> VCI_Lib: 13. Return vc+sd-jwt format specific Credential response
+  VCI_Lib -->> W: 14. Return vc+sd-jwt Credential
+  W ->> VCVerifier: 15. Verify sd-jwt Credential
+  VCVerifier -->> W: 16. Return Verification Result
   Note over W: If verification is successful, proceed to save the credential
   Note over W: Use cached Issuer Metadata for rendering
   
@@ -126,19 +130,35 @@ Note:
 ````
 
 
-##### 6. Authorize user for credential request and get authorization code and access token
-_inji-vci-client_ uses `authorizeUser` callback function to authorize the user for the credential request. 
-This typically involves redirecting the user to an authorization server where they can log in and grant permission 
+##### 6. Authorize user for credential request and get authorization code
+_inji-vci-client_ uses `authorizeUser` callback function to authorize the user for the credential request.
+This typically involves redirecting the user to an authorization server where they can log in and grant permission
 for the credential request.
-Once authorization code is received, _inji-vci-client_ uses `getTokenResponse` callback function to exchange the 
+Once authorization code is received, _inji-vci-client_ uses `getTokenResponse` callback function to exchange the
 authorization code for an access token.
 For more details check [VCI Client Library](https://github.com/mosip/inji-vci-client/blob/master/kotlin/README.md)
 
-##### 7. Provide authorization code and access token
-When the user has successfully authorized the request, the _inji-vci-client_ will receive an authorization code and access token.
+##### 7. Provide authorization code
+When the user has successfully authorized, the _inji-vci-client_ will receive an authorization code and return it back
+to _inji-vci-client_.
 
 
-##### 8. Create Credential Request and send to Issuing Authority
+##### 8. Get access token to access credential endpoint from authorized wallet
+Once authorization code is received, _inji-vci-client_ uses `getTokenResponse` callback function to exchange the
+authorization code for an access token.
+
+##### 9. Provide access token
+Wallet receives the token request from _inji-vci-client_. It makes an api call to get access token from authroization
+server and return it back to _inji-vci-client_.
+
+##### 10. Get jwt proof - proof of possession to bind the credential to wallet
+Once access token is received, _inji-vci-client_ uses `getProofJwt` callback function to create the proof JWT for the
+credential request.
+
+##### 11. Provide jwt proof
+Wallet constructs JWT proof and return it back to _inji-vci-client_.
+
+##### 12. Create Credential Request and send to Issuing Authority
 _inji-vci-client_ will use `CredentialRequestFactory` and create `SdJwtCredentialRequest` request with following body:
 
 ````
@@ -154,14 +174,14 @@ _inji-vci-client_ will use `CredentialRequestFactory` and create `SdJwtCredentia
 ````
 and send it to the issuing authority.
 
-##### 9. Receive the Credential Response
+##### 13. Receive the Credential Response
 The _inji-vci-client_ receives the credential response as jwt string
 
 ```
 "eyJraWQiOiJkaWQ6ZXhhbXBsZ.eyJpc3N1YW5jZURhdGUiOiIyM.KPxgihac0aW9EkL1nOzM~disclousure1~disclousure1~"
 ```
 
-##### 10. Return the Credential Response
+##### 14. Return the Credential Response
 Once the response is received in _inji-vci-client_, it is returned to the Wallet.
 
 ````
@@ -172,7 +192,7 @@ Once the response is received in _inji-vci-client_, it is returned to the Wallet
 }
 ````
 
-##### 11. Perform vc verification
+##### 15. Perform vc verification
 After obtaining the credential from the issuing authority through the _inji-vci-client_ library, a verification process ensures that the issued Verifiable Credential (VC) remains unaltered through _vc-verifier_ library.
 
 _vc-verifier_ will use `CredentialVerifierFactory` and create `SdJwtVerifiableCredential` to perform validation and verification of the credential.
@@ -187,7 +207,7 @@ VCVerifier.verify(
 )
 ````
 
-##### 12. Return VC verification Result
+##### 16. Return VC verification Result
 After verifying the VC, return verification result
 
 ````
