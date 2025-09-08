@@ -341,7 +341,7 @@ fileignoreconfig:
   - filename: android/app/src/main/java/io/mosip/residentapp/InjiVciClientModule.java
     checksum: 17f55840bab193bc353034445ba4fce53e1ce466e95f616c15a1351f8d2f23bc
   - filename: ios/Inji.xcworkspace/xcshareddata/swiftpm/Package.resolved
-    checksum: 23b9d6c7dd17bcffc583d743b387e7cf5a4785a76848dea58121d1f54cbe517f
+    checksum: 3cedf13dd287307d7ed29958a65127919cc3e47293c1959a91388329451dbf1e
   - filename: injitest/src/main/resources/Vids.json
     checksum: 8bcffed7a6dd565ae695e1b29de0655e10bd5c5420af2718defd593a687b8817
   - filename: injitest/src/main/java/inji/utils/UpdateNetworkSettings.java
@@ -393,7 +393,7 @@ fileignoreconfig:
   - filename: machines/openID4VP/openID4VPMachine.typegen.ts
     checksum: a87664e146d420fb3140a0f6579980aaf82041928b502f8b301b4ebff048351c
   - filename: ios/RNOpenID4VPModule.swift
-    checksum: 4bd3c69556b86024cd15490deafb0d8c6b760ebcfc486f68da5575d63b315d14
+    checksum: c62c80577be28a06e1aa27bf6a56c3787cd05c59b92f914e6e50b34e04a2b06f
   - filename: assets/InjiHomeLogoSmall.svg
     checksum: 9f29c9b0b91eba7fd7f5f4d1f78f9b6f96ef2c850c1346d712058a438d01036a
   - filename: assets/InjiHomeLogo.svg

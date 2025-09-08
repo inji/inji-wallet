@@ -35,13 +35,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           return
         }
 
-        let trustedVerifiersList: [Verifier] = try verifierMeta.map { verifierDict in
-          guard let clientId = verifierDict["client_id"] as? String,
-                let responseUris = verifierDict["response_uris"] as? [String] else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Verifier data"])
-          }
-          return Verifier(clientId: clientId, responseUris: responseUris)
-        }
+        let trustedVerifiersList: [Verifier] = try parseVerifiers(verifierMeta)
 
         let authenticationResponse: AuthorizationRequest = try await openID4VP!.authenticateVerifier(
           urlEncodedAuthorizationRequest: urlEncodedAuthorizationRequest,
@@ -178,6 +172,23 @@ func sendErrorToVerifier(_ error: String, _ errorCode: String,
         resolve(true)
     }
 }
+  
+  private func parseVerifiers(_ verifiers: [[String: Any]]) throws -> [Verifier] {
+    return try verifiers.map { verifierDict in
+      guard let clientId = verifierDict["client_id"] as? String,
+            let responseUris = verifierDict["response_uris"] as? [String] else {
+        throw NSError(domain: "OpenID4VP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Verifier data"])
+      }
+      
+      var clientMetadata: ClientMetadata? = nil
+      if let metadata = verifierDict["client_metadata"] as? [String: Any] {
+        let encoded = try JSONSerialization.data(withJSONObject: metadata)
+        clientMetadata = try ClientMetadata.deserializeAndValidate(clientMetadata: encoded)
+      }
+      
+      return Verifier(clientId: clientId, responseUris: responseUris,clientMetadata: clientMetadata)
+    }
+  }
 
   func toJsonString(jsonObject: AuthorizationRequest) throws -> String {
     let encoder = JSONEncoder()

@@ -42,7 +42,7 @@ export const ReceiveVcScreen: React.FC = () => {
 
   useEffect(() => {
     getDetailedViewFields(
-      verifiableCredentialData?.issuer,
+      verifiableCredentialData.vcMetadata.issuerHost,
       verifiableCredentialData.credentialConfigurationId,
       DETAIL_VIEW_DEFAULT_FIELDS,
       verifiableCredentialData.vcMetadata.format,
