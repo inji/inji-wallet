@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-vci-client-ios-swift",
       "state" : {
-        "branch" : "release-0.5.x",
-        "revision" : "6e76c7516f81c7af96cfd573339de2f1128e10eb"
+        "revision" : "b906287e06cb88ed9a49e34ebc7fb4cb7cf6f134",
+        "version" : "0.5.0"
       }
     },
     {

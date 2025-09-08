@@ -853,8 +853,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/inji-vci-client-ios-swift.git";
 			requirement = {
-				branch = "release-0.5.x";
-				kind = branch;
+				kind = exactVersion;
+				version = 0.5.0;
 			};
 		};
 		C3F18B182E320C85007DBE73 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */ = {
