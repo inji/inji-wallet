@@ -35,6 +35,8 @@ export class VCActivityLog implements ActivityLog {
   type: ActivityLogType;
   issuer: string;
   flow: string;
+  issuerHost?: string;
+  credentialType?: string;
 
   constructor({
     id = '',
@@ -46,6 +48,8 @@ export class VCActivityLog implements ActivityLog {
     issuer = '',
     credentialConfigurationId = '',
     flow = VCItemContainerFlowType.VC_SHARE,
+    issuerHost = '',
+    credentialType = '',
   } = {}) {
     this.id = id;
     this.idType = idType;
@@ -56,6 +60,8 @@ export class VCActivityLog implements ActivityLog {
     this.issuer = issuer;
     this.credentialConfigurationId = credentialConfigurationId;
     this.flow = flow;
+    this.issuerHost = issuerHost;
+    this.credentialType = credentialType;
   }
 
   getActionText(t: TFunction, wellknown: Object | undefined) {
@@ -66,7 +72,8 @@ export class VCActivityLog implements ActivityLog {
       );
       return `${t(this.type, {idType: cardType})}`;
     }
-    return `${t(this.type, {idType: ''})}`;
+
+    return `${t(this.type, {idType: this.credentialType || ''})}`;
   }
 
   static getLogFromObject(data: Object): VCActivityLog {

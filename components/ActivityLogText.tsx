@@ -17,10 +17,14 @@ export const ActivityLogText: React.FC<{
     activity.flow === VCItemContainerFlowType.VP_SHARE
       ? VPShareActivityLog.getLogFromObject(activity)
       : VCActivityLog.getLogFromObject(activity);
-  const wellknown =
-    activity.flow === VCItemContainerFlowType.VC_SHARE
-      ? historyController.getWellKnownIssuerMap(activity.issuer)
-      : undefined;
+  const wellknown = (() => {
+    if (activity.flow !== VCItemContainerFlowType.VC_SHARE) return undefined;
+    const vcActivity = activity as VCActivityLog;
+    return (
+      historyController.getWellKnownIssuerMap(vcActivity.issuer) ||
+      historyController.getWellKnownIssuerMap(vcActivity.issuerHost ?? '')
+    );
+  })();
 
   return (
     <TextItem

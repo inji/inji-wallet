@@ -458,13 +458,14 @@ export const VCItemActions = model => {
     }),
     logDownloaded: send(
       (context: any) => {
+        const credentialConfigurationId =
+          context.verifiableCredential?.credentialConfigurationId || '';
         return ActivityLogEvents.LOG_ACTIVITY(
           VCActivityLog.getLogFromObject({
             _vcKey: context.vcMetadata.getVcKey(),
             type: 'VC_DOWNLOADED',
             issuer: context.vcMetadata.issuer!!,
-            credentialConfigurationId:
-              context.verifiableCredential.credentialConfigurationId,
+            credentialConfigurationId,
             timestamp: Date.now(),
             deviceName: '',
           }),
@@ -477,11 +478,14 @@ export const VCItemActions = model => {
     logRemovedVc: send(
       (context: any, _) => {
         const vcMetadata = VCMetadata.fromVC(context.vcMetadata);
+        const credentialConfigurationId =
+          context.verifiableCredential?.credentialConfigurationId || '';
         return ActivityLogEvents.LOG_ACTIVITY(
           VCActivityLog.getLogFromObject({
-            credentialConfigurationId:
-              context.verifiableCredential.credentialConfigurationId,
+            credentialConfigurationId,
             issuer: vcMetadata.issuer!!,
+            issuerHost: vcMetadata.issuerHost,
+            credentialType: vcMetadata.credentialType,
             _vcKey: vcMetadata.getVcKey(),
             type: 'VC_REMOVED',
             timestamp: Date.now(),
@@ -496,13 +500,16 @@ export const VCItemActions = model => {
     logWalletBindingSuccess: send(
       (context: any) => {
         const vcMetadata = VCMetadata.fromVC(context.vcMetadata);
+        const credentialConfigurationId =
+          context.verifiableCredential?.credentialConfigurationId || '';
         return ActivityLogEvents.LOG_ACTIVITY(
           VCActivityLog.getLogFromObject({
             _vcKey: vcMetadata.getVcKey(),
             type: 'WALLET_BINDING_SUCCESSFULL',
-            credentialConfigurationId:
-              context.verifiableCredential.credentialConfigurationId,
+            credentialConfigurationId,
             issuer: vcMetadata.issuer!!,
+            issuerHost: vcMetadata.issuerHost,
+            credentialType: vcMetadata.credentialType,
             timestamp: Date.now(),
             deviceName: '',
           }),
@@ -516,13 +523,16 @@ export const VCItemActions = model => {
     logWalletBindingFailure: send(
       (context: any) => {
         const vcMetadata = VCMetadata.fromVC(context.vcMetadata);
+        const credentialConfigurationId =
+          context.verifiableCredential?.credentialConfigurationId || '';
         return ActivityLogEvents.LOG_ACTIVITY(
           VCActivityLog.getLogFromObject({
             _vcKey: vcMetadata.getVcKey(),
             type: 'WALLET_BINDING_FAILURE',
-            credentialConfigurationId:
-              context.verifiableCredential.credentialConfigurationId,
+            credentialConfigurationId,
             issuer: vcMetadata.issuer!!,
+            issuerHost: vcMetadata.issuerHost,
+            credentialType: vcMetadata.credentialType,
             timestamp: Date.now(),
             deviceName: '',
           }),
