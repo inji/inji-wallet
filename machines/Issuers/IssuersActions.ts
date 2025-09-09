@@ -421,6 +421,8 @@ export const IssuersActions = (model: any) => {
             issuer:
               context.selectedIssuer.credential_issuer_host ??
               context.credentialOfferCredentialIssuer,
+            issuerHost: vcMetadata.issuerHost,
+            credentialType: vcMetadata.credentialType,
             credentialConfigurationId: context.selectedCredentialType.id,
           }),
           context.selectedIssuerWellknownResponse,

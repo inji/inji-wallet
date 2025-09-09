@@ -255,6 +255,8 @@ export const ScanActions = (model: any) => {
             credentialConfigurationId:
               context.selectedVc.verifiableCredential.credentialConfigurationId,
             issuer: vcMetadata.issuer!!,
+            issuerHost: vcMetadata.issuerHost,
+            credentialType: vcMetadata.credentialType,
             timestamp: Date.now(),
             deviceName:
               context.receiverInfo.name || context.receiverInfo.deviceName,
@@ -275,6 +277,8 @@ export const ScanActions = (model: any) => {
             credentialConfigurationId:
               context.selectedVc.verifiableCredential.credentialConfigurationId,
             issuer: vcMetadata.issuer!!,
+            issuerHost: vcMetadata.issuerHost,
+            credentialType: vcMetadata.credentialType,
             deviceName:
               context.receiverInfo.name || context.receiverInfo.deviceName,
           }),
