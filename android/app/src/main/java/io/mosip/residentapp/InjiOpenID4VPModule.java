@@ -3,6 +3,8 @@ package io.mosip.residentapp;
 import static io.mosip.openID4VP.authorizationResponse.AuthorizationResponseUtilsKt.toJsonString;
 import static io.mosip.openID4VP.constants.FormatType.LDP_VC;
 import static io.mosip.openID4VP.constants.FormatType.MSO_MDOC;
+import static io.mosip.openID4VP.constants.FormatType.VC_SD_JWT;
+import static io.mosip.openID4VP.constants.FormatType.DC_SD_JWT;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -188,6 +190,8 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             if (vpFormatsMap != null) {
                 addVpFormatSupported(vpFormatsMap, "ldp_vc", vpFormatsSupportedMap);
                 addVpFormatSupported(vpFormatsMap, "mso_mdoc", vpFormatsSupportedMap);
+                addVpFormatSupported(vpFormatsMap, "vc+sd-jwt", vpFormatsSupportedMap);
+                addVpFormatSupported(vpFormatsMap, "dc+sd-jwt", vpFormatsSupportedMap);
             }
         }
         return vpFormatsSupportedMap;
@@ -417,6 +421,22 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                 return mdocVcList;
 
             }
+            case VC_SD_JWT:{
+                List<Object> vcSdJwtList = new ArrayList<>();
+                for (int i = 0; i < credentialList.size(); i++) {
+                    String credential = credentialList.getString(i);
+                    vcSdJwtList.add(credential);
+                }
+                return vcSdJwtList;
+            }
+            case DC_SD_JWT:{
+                List<Object> dcSdJwtList = new ArrayList<>();
+                for (int i = 0; i < credentialList.size(); i++) {
+                    String credential = credentialList.getString(i);
+                    dcSdJwtList.add(credential);
+                }
+                return dcSdJwtList;
+            }
             default:
                 return null;
         }
@@ -427,6 +447,12 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             return LDP_VC;
         } else if (MSO_MDOC.getValue().equals(formatStr)) {
             return MSO_MDOC;
+        }
+        else if (VC_SD_JWT.getValue().equals(formatStr)) {
+            return VC_SD_JWT;
+        }
+        else if (DC_SD_JWT.getValue().equals(formatStr)) {
+            return DC_SD_JWT;
         }
         throw new UnsupportedOperationException("Credential format '" + formatStr + "' is not supported");
     }

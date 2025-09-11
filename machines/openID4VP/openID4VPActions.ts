@@ -361,6 +361,15 @@ function areVCFormatAndProofTypeMatchingRequest(
     }
   }
 
+  if( vcFormatType === VCFormat.dc_sd_jwt || vcFormatType === VCFormat.vc_sd_jwt) {
+    console.log("vc:",vc.verifiableCredential)
+    //TODO: add more checks for sd-jwt format alg
+    return Object.entries(requestFormat).some(
+      ([type, value]) =>
+        type === vcFormatType,
+    );
+  }
+
   return false;
 }
 
