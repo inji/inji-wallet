@@ -59,6 +59,7 @@ import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSign
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.ldp.LdpVPTokenSigningResult;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.DeviceAuthentication;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.MdocVPTokenSigningResult;
+import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.sdJwt.SdJwtVPTokenSigningResult;
 import io.mosip.openID4VP.constants.FormatType;
 import kotlinx.serialization.json.Json;
 
@@ -81,7 +82,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
     @SuppressLint("LogNotTimber")
     @ReactMethod
-    public void initSdk(String appId, ReadableMap walletMetadata ) {
+    public void initSdk(String appId, ReadableMap walletMetadata) {
         Log.d(TAG, "Initializing InjiOpenID4VPModule with " + appId);
 
         WalletMetadata metadata = parseWalletMetadata(walletMetadata);
@@ -95,17 +96,16 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void authenticateVerifier(String urlEncodedAuthorizationRequest,
-                                     ReadableArray trustedVerifiers,
-                                     Boolean shouldValidateClient,
-                                     Promise promise) {
+            ReadableArray trustedVerifiers,
+            Boolean shouldValidateClient,
+            Promise promise) {
         try {
             List<Verifier> verifierList = parseVerifiers(trustedVerifiers);
 
             AuthorizationRequest authRequest = openID4VP.authenticateVerifier(
                     urlEncodedAuthorizationRequest,
                     verifierList,
-                    shouldValidateClient
-            );
+                    shouldValidateClient);
 
             String authRequestJson = gson.toJson(authRequest, AuthorizationRequest.class);
             promise.resolve(authRequestJson);
@@ -115,10 +115,12 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void constructUnsignedVPToken(ReadableMap selectedVCs, String holderId, String signatureSuite, Promise promise) {
+    public void constructUnsignedVPToken(ReadableMap selectedVCs, String holderId, String signatureSuite,
+            Promise promise) {
         try {
             Map<String, Map<FormatType, List<Object>>> selectedVCsMap = parseSelectedVCs(selectedVCs);
-            Map<FormatType, UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedVCsMap, holderId, signatureSuite);
+            Map<FormatType, UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedVCsMap, holderId,
+                    signatureSuite);
             promise.resolve(toJsonString(vpTokens));
         } catch (Exception e) {
             rejectWithOpenID4VPExceptions(e, promise);
@@ -172,15 +174,19 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
         Map<VPFormatType, VPFormatSupported> vpFormatsSupportedMap = parseVpFormatsSupported(walletMetadata);
 
-        return  new WalletMetadata(
+        return new WalletMetadata(
                 presentationDefinitionUriSupported,
                 vpFormatsSupportedMap,
-                convertReadableArrayToEnumList(walletMetadata, "client_id_schemes_supported", ClientIdScheme.Companion::fromValue),
-                convertReadableArrayToEnumList(walletMetadata, "request_object_signing_alg_values_supported", RequestSigningAlgorithm.Companion::fromValue),
-                convertReadableArrayToEnumList(walletMetadata, "authorization_encryption_alg_values_supported", KeyManagementAlgorithm.Companion::fromValue),
-                convertReadableArrayToEnumList(walletMetadata, "authorization_encryption_enc_values_supported", ContentEncryptionAlgorithm.Companion::fromValue),
-                convertReadableArrayToEnumList(walletMetadata, "response_type_supported", ResponseType.Companion::fromValue)
-        );
+                convertReadableArrayToEnumList(walletMetadata, "client_id_schemes_supported",
+                        ClientIdScheme.Companion::fromValue),
+                convertReadableArrayToEnumList(walletMetadata, "request_object_signing_alg_values_supported",
+                        RequestSigningAlgorithm.Companion::fromValue),
+                convertReadableArrayToEnumList(walletMetadata, "authorization_encryption_alg_values_supported",
+                        KeyManagementAlgorithm.Companion::fromValue),
+                convertReadableArrayToEnumList(walletMetadata, "authorization_encryption_enc_values_supported",
+                        ContentEncryptionAlgorithm.Companion::fromValue),
+                convertReadableArrayToEnumList(walletMetadata, "response_type_supported",
+                        ResponseType.Companion::fromValue));
     }
 
     private Map<VPFormatType, VPFormatSupported> parseVpFormatsSupported(ReadableMap walletMetadata) {
@@ -197,8 +203,10 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         return vpFormatsSupportedMap;
     }
 
-    private <T> List<T> convertReadableArrayToEnumList(ReadableMap readableMap, String key, Function<String, T> converter) {
-        if (!readableMap.hasKey(key)) return null;
+    private <T> List<T> convertReadableArrayToEnumList(ReadableMap readableMap, String key,
+            Function<String, T> converter) {
+        if (!readableMap.hasKey(key))
+            return null;
         ReadableArray readableArray = readableMap.getArray(key);
         List<T> list = new ArrayList<>();
         for (int i = 0; i < Objects.requireNonNull(readableArray).size(); i++) {
@@ -207,8 +215,8 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         return list;
     }
 
-
-    private void addVpFormatSupported(ReadableMap vpFormatsMap, String key, Map<VPFormatType, VPFormatSupported> vpFormatsSupportedMap) {
+    private void addVpFormatSupported(ReadableMap vpFormatsMap, String key,
+            Map<VPFormatType, VPFormatSupported> vpFormatsSupportedMap) {
         if (vpFormatsMap.hasKey(key)) {
             ReadableMap formatMap = vpFormatsMap.getMap(key);
             if (formatMap != null && formatMap.hasKey("alg_values_supported")) {
@@ -218,8 +226,6 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             }
         }
     }
-
-
 
     private List<Verifier> parseVerifiers(ReadableArray verifiersArray) {
         List<Verifier> verifiers = new ArrayList();
@@ -234,21 +240,23 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                 try {
                     ReadableMap metadataMap = verifierMap.getMap("client_metadata");
                     String metadataJsonString = readableMapToJson(metadataMap).toString();
-                    clientMetadata = Json.Default.decodeFromString(ClientMetadataSerializer.INSTANCE, metadataJsonString);
+                    clientMetadata = Json.Default.decodeFromString(ClientMetadataSerializer.INSTANCE,
+                            metadataJsonString);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-    
+
             verifiers.add(new Verifier(clientId, responseUriList, clientMetadata));
         }
 
         return verifiers;
     }
+
     private static JSONObject readableMapToJson(ReadableMap readableMap) {
         JSONObject jsonObject = new JSONObject();
         ReadableMapKeySetIterator iterator = readableMap.keySetIterator();
-    
+
         while (iterator.hasNextKey()) {
             String key = iterator.nextKey();
             ReadableType type = readableMap.getType(key);
@@ -277,10 +285,10 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                 e.printStackTrace();
             }
         }
-    
+
         return jsonObject;
     }
-    
+
     private static JSONArray readableArrayToJson(ReadableArray readableArray) {
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < readableArray.size(); i++) {
@@ -312,7 +320,6 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         }
         return jsonArray;
     }
-    
 
     private Map<String, Map<FormatType, List<Object>>> parseSelectedVCs(ReadableMap selectedVCs) {
         if (selectedVCs == null) {
@@ -374,10 +381,10 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     private VPTokenSigningResult createVPTokenSigningResult(FormatType formatType, ReadableMap metadata) {
         switch (formatType) {
             case LDP_VC: {
-                String jws =metadata.getString("jws");
-                String proofValue =metadata.getString("proofValue");
-                String signatureAlgorithm =metadata.getString("signatureAlgorithm");
-                return new LdpVPTokenSigningResult(jws, proofValue, signatureAlgorithm );
+                String jws = metadata.getString("jws");
+                String proofValue = metadata.getString("proofValue");
+                String signatureAlgorithm = metadata.getString("signatureAlgorithm");
+                return new LdpVPTokenSigningResult(jws, proofValue, signatureAlgorithm);
             }
             case MSO_MDOC: {
                 Map<String, DeviceAuthentication> signatureData = new HashMap<>();
@@ -390,12 +397,24 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                         String algorithm = requireNonNullString(deviceAuthenticationMap, "mdocAuthenticationAlgorithm");
                         DeviceAuthentication deviceAuthentication = new DeviceAuthentication(
                                 signature = signature,
-                                algorithm = algorithm
-                        );
+                                algorithm = algorithm);
                         signatureData.put(docType, deviceAuthentication);
                     }
                 }
                 return new MdocVPTokenSigningResult(signatureData);
+            }
+            case VC_SD_JWT:
+            case DC_SD_JWT: {
+                Map<String, String> uuidToSignature = new HashMap<>();
+                ReadableMapKeySetIterator uuidIterator = metadata.keySetIterator();
+                while (uuidIterator.hasNextKey()) {
+                    String uuid = uuidIterator.nextKey();
+                    String signature = metadata.getString(uuid);
+                    if (signature != null) {
+                        uuidToSignature.put(uuid, signature);
+                    }
+                }
+                return new SdJwtVPTokenSigningResult(uuidToSignature);
             }
             default:
                 return null;
@@ -421,7 +440,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                 return mdocVcList;
 
             }
-            case VC_SD_JWT:{
+            case VC_SD_JWT: {
                 List<Object> vcSdJwtList = new ArrayList<>();
                 for (int i = 0; i < credentialList.size(); i++) {
                     String credential = credentialList.getString(i);
@@ -429,7 +448,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                 }
                 return vcSdJwtList;
             }
-            case DC_SD_JWT:{
+            case DC_SD_JWT: {
                 List<Object> dcSdJwtList = new ArrayList<>();
                 for (int i = 0; i < credentialList.size(); i++) {
                     String credential = credentialList.getString(i);
@@ -447,11 +466,9 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             return LDP_VC;
         } else if (MSO_MDOC.getValue().equals(formatStr)) {
             return MSO_MDOC;
-        }
-        else if (VC_SD_JWT.getValue().equals(formatStr)) {
+        } else if (VC_SD_JWT.getValue().equals(formatStr)) {
             return VC_SD_JWT;
-        }
-        else if (DC_SD_JWT.getValue().equals(formatStr)) {
+        } else if (DC_SD_JWT.getValue().equals(formatStr)) {
             return DC_SD_JWT;
         }
         throw new UnsupportedOperationException("Credential format '" + formatStr + "' is not supported");

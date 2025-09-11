@@ -9,12 +9,14 @@ import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {VCFormat} from '../../shared/VCFormat';
 import {KeyTypes} from '../../shared/cryptoutil/KeyTypes';
 import {getMdocAuthenticationAlorithm} from '../../components/VC/common/VCUtils';
-import {isIOS} from '../../shared/constants';
+import {isIOS, JWT_ALG_TO_KEY_TYPE} from '../../shared/constants';
 import {canonicalize} from '../../shared/Utils';
 import {
   constructDetachedJWT,
   isClientValidationRequired,
 } from '../../shared/openID4VP/OpenID4VPHelper';
+import { ca } from 'date-fns/locale';
+import jwtDecode from 'jwt-decode';
 
 const signatureSuite = 'JsonWebSignature2020';
 
@@ -133,7 +135,44 @@ export const openID4VPServices = () => {
 
           vpTokenSigningResultMap[formatType] = signedData;
         }
+        else if (
+          formatType === VCFormat.vc_sd_jwt.valueOf() ||
+          formatType === VCFormat.dc_sd_jwt.valueOf()
+        ) {
+          const uuidToUnsignedKBJWT = credentials.uuidToUnsignedKBT;
+          console.log('uuidToUnsignedKBJWT:', uuidToUnsignedKBJWT);
+          const uuidToSignature: Record<string, string> = {};
+        
+          for (const [uuid, unsignedKBJWT] of Object.entries(uuidToUnsignedKBJWT)) {
+            console.log('unsignedKBJWT for sd-jwt:', unsignedKBJWT.split('.')[0]);
+            const header = JSON.parse(
+              atob(unsignedKBJWT.split('.')[0])
+            );
+            //<header>==.<payload>==
+            console.log('header for sd-jwt:', header);
+            const alg = header.alg;
+        
+
+            const keyType = JWT_ALG_TO_KEY_TYPE[alg];
+            console.log('keyType for sd-jwt:', keyType);
+            const signature = await createSignature(
+              context.privateKey,
+              unsignedKBJWT.replace('=', ''),
+              keyType
+            );
+        console.log('signature for sd-jwt:', signature);
+            if (signature) {
+              uuidToSignature[uuid] = signature;
+            } else {
+              throw new Error(`Failed to create signature for UUID: ${uuid}`);
+            }
+          }
+        
+          vpTokenSigningResultMap[formatType] = uuidToSignature;
+        }
+        
       }
+      console.log('vpTokenSigningResultMap:', JSON.stringify(vpTokenSigningResultMap));
       return await OpenID4VP.shareVerifiablePresentation(
         vpTokenSigningResultMap,
       );
