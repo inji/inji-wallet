@@ -66,19 +66,16 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
       ? props.svgTemplate[0]
       : null;
 
-  const [loadingSvg, setLoadingSvg] = useState<boolean>(true);
-
   useEffect(() => {
     if (svgTemplate) {
-      setLoadingSvg(false);
-
       const match = svgTemplate.match(/viewBox="0 0 (\d+) (\d+)"/);
       if (match) {
         const [, w, h] = match.map(Number);
         setSvgAspectRatio(h / w);
+      } else {
+        setSvgAspectRatio(null);
       }
     } else {
-      setLoadingSvg(true);
       setSvgAspectRatio(null);
     }
   }, [svgTemplate]);
@@ -125,7 +122,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
 
   const [shareModalVisible, setShareModalVisible] = useState(false);
 
-  if (loadingSvg) {
+  if (props.loadingSvg) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator />
@@ -404,4 +401,6 @@ export interface VCItemDetailsProps {
   activeTab?: Number;
   vcHasImage: boolean;
   svgTemplate?: string[] | null;
+  svgRendererError?: string | null;
+  loadingSvg?: string | null;
 }

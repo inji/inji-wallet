@@ -42,6 +42,9 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
   const verificationStatus = controller.verificationStatus;
   const [verifiableCredential, setVerifiableCredential] = useState(null);
   const [svgTemplate, setSvgTemplate] = useState<string[] | null>(null);
+  const [svgRendererError, setSvgRendererError] = useState<string[] | null>(
+    null,
+  );
 
   useEffect(() => {
     async function processVC() {
@@ -56,21 +59,6 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
 
     processVC();
   }, [controller.credential]);
-
-  useEffect(() => {
-    const fetchSvg = async () => {
-      try {
-        const vcJsonString = JSON.stringify(controller.credential.credential);
-        const result = await VcRenderer.getInstance().renderSvg(vcJsonString);
-        setSvgTemplate(result);
-      } catch (err) {
-        console.error(':::::Failed to fetch SVG:', err);
-        setSvgTemplate(null);
-      }
-    };
-
-    fetchSvg();
-  }, [controller.credential.credential]);
 
   useEffect(() => {
     if (controller.isVerificationInProgress) {
@@ -88,6 +76,37 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
   const [wellknown, setWellknown] = useState(null);
   const [wellknownFieldsFlag, setWellknownFieldsFlag] = useState(false);
   const verifiableCredentialData = controller.verifiableCredentialData;
+
+  const [loadingSvg, setLoadingSvg] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchSvg = async () => {
+      try {
+        setLoadingSvg(true);
+
+        const vcJsonString = JSON.stringify(controller.credential.credential);
+        const result = await VcRenderer.getInstance().renderVC(
+          controller.verifiableCredentialData.format,
+          verifiableCredentialData?.wellKnown,
+          vcJsonString,
+        );
+
+        setSvgTemplate(result);
+        setSvgRendererError(null);
+      } catch (err: any) {
+        setSvgTemplate(null);
+        setSvgRendererError(err.errorCode ?? 'Unknown error');
+      } finally {
+        setLoadingSvg(false);
+      }
+    };
+
+    if (controller.credential?.credential['renderMethod']) {
+      fetchSvg();
+    } else {
+      setLoadingSvg(false);
+    }
+  }, [controller.credential?.credential]);
 
   useEffect(() => {
     getDetailedViewFields(
@@ -184,6 +203,8 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
           activeTab={props.activeTab}
           vcHasImage={profileImage !== undefined}
           svgTemplate={svgTemplate}
+          svgRendererError={svgRendererError}
+          loadingSvg={loadingSvg}
         />
       )}
 

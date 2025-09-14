@@ -1,6 +1,7 @@
 import {NativeModules} from 'react-native';
 import {MMKVLoader} from 'react-native-mmkv-storage';
 import {CACHE_TTL} from '../constants';
+import {__AppId} from '../GlobalVariables';
 
 const MMKV = new MMKVLoader().initialize();
 const CACHE_KEY_PREFIX = 'vc_renderer_svg_';
@@ -14,7 +15,9 @@ class VcRenderer {
   private static instance: VcRenderer;
   private InjiVcRenderer = NativeModules.InjiVcRenderer;
 
-  private constructor() {}
+  private constructor() {
+    this.InjiVcRenderer.init(__AppId.getValue());
+  }
 
   static getInstance(): VcRenderer {
     if (!VcRenderer.instance) {
@@ -27,7 +30,11 @@ class VcRenderer {
     return `${CACHE_KEY_PREFIX}${vcId}`;
   }
 
-  async renderSvg(vcJson: string): Promise<string[]> {
+  async renderVC(
+    credentialFormat: string,
+    wellKnown: string,
+    vcJson: string,
+  ): Promise<string[]> {
     const vc = JSON.parse(vcJson);
     const vcId = vc.id ?? JSON.stringify(vc);
     const cacheKey = this.makeCacheKey(vcId);
@@ -45,17 +52,25 @@ class VcRenderer {
       }
     }
 
-    const result: string[] = await this.InjiVcRenderer.renderSvg(vcJson);
+    try {
+      const result: string[] = await this.InjiVcRenderer.renderVC(
+        credentialFormat,
+        wellKnown,
+        vcJson,
+      );
 
-    if (result && result.length > 0) {
-      const payload: CachedSvg = {
-        data: result,
-        timestamp: Date.now(),
-      };
-      await MMKV.setItem(cacheKey, JSON.stringify(payload));
+      if (result && result.length > 0) {
+        const payload: CachedSvg = {
+          data: result,
+          timestamp: Date.now(),
+        };
+        await MMKV.setItem(cacheKey, JSON.stringify(payload));
+      }
+
+      return result;
+    } catch (rendererError) {
+      throw rendererError;
     }
-
-    return result;
   }
 
   async clearCache(vcId: string) {
