@@ -36,11 +36,11 @@
 		9CCCA19E2CF87A8400D5A461 /* securekeystore in Frameworks */ = {isa = PBXBuildFile; productRef = 9CCCA19D2CF87A8400D5A461 /* securekeystore */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		C33922312E770B68004A01EC /* InjiVcRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = C33922302E770B68004A01EC /* InjiVcRenderer */; };
 		C3F18B1A2E320C85007DBE73 /* OpenID4VP in Frameworks */ = {isa = PBXBuildFile; productRef = C3F18B192E320C85007DBE73 /* OpenID4VP */; };
 		C3F18B1D2E320C9A007DBE73 /* VCIClient in Frameworks */ = {isa = PBXBuildFile; productRef = C3F18B1C2E320C9A007DBE73 /* VCIClient */; };
 		C3F6A9DD2E661896006C9904 /* RNInjiVcRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3F6A9DC2E66188D006C9904 /* RNInjiVcRenderer.swift */; };
 		C3F6A9DF2E661903006C9904 /* RNInjiVcRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3F6A9DE2E6618F6006C9904 /* RNInjiVcRenderer.m */; };
-		C3F6A9E12E661B83006C9904 /* InjiVcRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = C3F6A9E02E661B83006C9904 /* InjiVcRenderer */; };
 		E86208152C0335C5007C3E24 /* RNVCIClientModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86208142C0335C5007C3E24 /* RNVCIClientModule.swift */; };
 		E86208172C0335EC007C3E24 /* RNVCIClientModule.m in Sources */ = {isa = PBXBuildFile; fileRef = E86208162C0335EC007C3E24 /* RNVCIClientModule.m */; };
 		FD8D20B92BBAACDF009AD01C /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD8D20A62BBAACDF009AD01C /* Fontisto.ttf */; };
@@ -129,7 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3F18B1D2E320C9A007DBE73 /* VCIClient in Frameworks */,
-				C3F6A9E12E661B83006C9904 /* InjiVcRenderer in Frameworks */,
+				C33922312E770B68004A01EC /* InjiVcRenderer in Frameworks */,
 				9C4850432C3E5873002ECBD5 /* ios-tuvali-library in Frameworks */,
 				9CAE74EE2E2E38F800C2532C /* pixelpass in Frameworks */,
 				9CCCA19E2CF87A8400D5A461 /* securekeystore in Frameworks */,
@@ -325,7 +325,7 @@
 				9CAE74ED2E2E38F800C2532C /* pixelpass */,
 				C3F18B192E320C85007DBE73 /* OpenID4VP */,
 				C3F18B1C2E320C9A007DBE73 /* VCIClient */,
-				C3F6A9E02E661B83006C9904 /* InjiVcRenderer */,
+				C33922302E770B68004A01EC /* InjiVcRenderer */,
 			);
 			productName = Inji;
 			productReference = 13B07F961A680F5B00A75B9A /* Inji.app */;
@@ -359,7 +359,7 @@
 				9CAE74EC2E2E38F800C2532C /* XCRemoteSwiftPackageReference "pixelpass-ios-swift" */,
 				C3F18B182E320C85007DBE73 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */,
 				C3F18B1B2E320C9A007DBE73 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */,
-				C3F6A9D92E661416006C9904 /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */,
+				C339222F2E770B68004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */,
 			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
@@ -744,10 +744,7 @@
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -808,10 +805,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -867,6 +861,14 @@
 				version = 0.3.0;
 			};
 		};
+		C339222F2E770B68004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tw-mosip/inji-vc-renderer-ios-swift.git";
+			requirement = {
+				kind = revision;
+				revision = 68ebc0162eb456f88d80dc68d7d18a6029f50d7e;
+			};
+		};
 		C3F18B182E320C85007DBE73 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/inji-openid4vp-ios-swift.git";
@@ -880,14 +882,6 @@
 			repositoryURL = "https://github.com/mosip/inji-vci-client-ios-swift";
 			requirement = {
 				branch = "release-0.5.x";
-				kind = branch;
-			};
-		};
-		C3F6A9D92E661416006C9904 /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/tw-mosip/inji-vc-renderer-ios-swift.git";
-			requirement = {
-				branch = "injimob-3499-svg-rendering";
 				kind = branch;
 			};
 		};
@@ -909,6 +903,11 @@
 			package = 9CCCA19C2CF87A8400D5A461 /* XCRemoteSwiftPackageReference "secure-keystore-ios-swift" */;
 			productName = securekeystore;
 		};
+		C33922302E770B68004A01EC /* InjiVcRenderer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C339222F2E770B68004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */;
+			productName = InjiVcRenderer;
+		};
 		C3F18B192E320C85007DBE73 /* OpenID4VP */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C3F18B182E320C85007DBE73 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */;
@@ -918,11 +917,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C3F18B1B2E320C9A007DBE73 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */;
 			productName = VCIClient;
-		};
-		C3F6A9E02E661B83006C9904 /* InjiVcRenderer */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C3F6A9D92E661416006C9904 /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */;
-			productName = InjiVcRenderer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

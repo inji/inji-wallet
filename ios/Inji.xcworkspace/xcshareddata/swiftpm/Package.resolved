@@ -78,8 +78,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tw-mosip/inji-vc-renderer-ios-swift.git",
       "state" : {
-        "branch" : "injimob-3499-svg-rendering",
-        "revision" : "b34c19ab27d2beaee2f6fc7c1283280394250b66"
+        "revision" : "68ebc0162eb456f88d80dc68d7d18a6029f50d7e"
       }
     },
     {
