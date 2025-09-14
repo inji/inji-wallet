@@ -36,7 +36,7 @@
 		9CCCA19E2CF87A8400D5A461 /* securekeystore in Frameworks */ = {isa = PBXBuildFile; productRef = 9CCCA19D2CF87A8400D5A461 /* securekeystore */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		C33922312E770B68004A01EC /* InjiVcRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = C33922302E770B68004A01EC /* InjiVcRenderer */; };
+		C33922342E771552004A01EC /* InjiVcRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = C33922332E771552004A01EC /* InjiVcRenderer */; };
 		C3F18B1A2E320C85007DBE73 /* OpenID4VP in Frameworks */ = {isa = PBXBuildFile; productRef = C3F18B192E320C85007DBE73 /* OpenID4VP */; };
 		C3F18B1D2E320C9A007DBE73 /* VCIClient in Frameworks */ = {isa = PBXBuildFile; productRef = C3F18B1C2E320C9A007DBE73 /* VCIClient */; };
 		C3F6A9DD2E661896006C9904 /* RNInjiVcRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3F6A9DC2E66188D006C9904 /* RNInjiVcRenderer.swift */; };
@@ -129,7 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3F18B1D2E320C9A007DBE73 /* VCIClient in Frameworks */,
-				C33922312E770B68004A01EC /* InjiVcRenderer in Frameworks */,
+				C33922342E771552004A01EC /* InjiVcRenderer in Frameworks */,
 				9C4850432C3E5873002ECBD5 /* ios-tuvali-library in Frameworks */,
 				9CAE74EE2E2E38F800C2532C /* pixelpass in Frameworks */,
 				9CCCA19E2CF87A8400D5A461 /* securekeystore in Frameworks */,
@@ -325,7 +325,7 @@
 				9CAE74ED2E2E38F800C2532C /* pixelpass */,
 				C3F18B192E320C85007DBE73 /* OpenID4VP */,
 				C3F18B1C2E320C9A007DBE73 /* VCIClient */,
-				C33922302E770B68004A01EC /* InjiVcRenderer */,
+				C33922332E771552004A01EC /* InjiVcRenderer */,
 			);
 			productName = Inji;
 			productReference = 13B07F961A680F5B00A75B9A /* Inji.app */;
@@ -359,7 +359,7 @@
 				9CAE74EC2E2E38F800C2532C /* XCRemoteSwiftPackageReference "pixelpass-ios-swift" */,
 				C3F18B182E320C85007DBE73 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */,
 				C3F18B1B2E320C9A007DBE73 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */,
-				C339222F2E770B68004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */,
+				C33922322E771552004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */,
 			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
@@ -861,12 +861,12 @@
 				version = 0.3.0;
 			};
 		};
-		C339222F2E770B68004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */ = {
+		C33922322E771552004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/tw-mosip/inji-vc-renderer-ios-swift.git";
 			requirement = {
 				kind = revision;
-				revision = 68ebc0162eb456f88d80dc68d7d18a6029f50d7e;
+				revision = d416433ac4cab4020012dbfde69c1617e5af62fb;
 			};
 		};
 		C3F18B182E320C85007DBE73 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */ = {
@@ -903,9 +903,9 @@
 			package = 9CCCA19C2CF87A8400D5A461 /* XCRemoteSwiftPackageReference "secure-keystore-ios-swift" */;
 			productName = securekeystore;
 		};
-		C33922302E770B68004A01EC /* InjiVcRenderer */ = {
+		C33922332E771552004A01EC /* InjiVcRenderer */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C339222F2E770B68004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */;
+			package = C33922322E771552004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */;
 			productName = InjiVcRenderer;
 		};
 		C3F18B192E320C85007DBE73 /* OpenID4VP */ = {

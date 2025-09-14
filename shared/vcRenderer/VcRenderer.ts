@@ -26,7 +26,7 @@ class VcRenderer {
     return VcRenderer.instance;
   }
 
-  private makeCacheKey(vcId: string) {
+  private createCacheKey(vcId: string) {
     return `${CACHE_KEY_PREFIX}${vcId}`;
   }
 
@@ -37,7 +37,7 @@ class VcRenderer {
   ): Promise<string[]> {
     const vc = JSON.parse(vcJson);
     const vcId = vc.id ?? JSON.stringify(vc);
-    const cacheKey = this.makeCacheKey(vcId);
+    const cacheKey = this.createCacheKey(vcId);
     const cachedRaw = await MMKV.getItem(cacheKey);
     if (cachedRaw && typeof cachedRaw === 'string') {
       try {
@@ -74,7 +74,7 @@ class VcRenderer {
   }
 
   async clearCache(vcId: string) {
-    const cacheKey = this.makeCacheKey(vcId);
+    const cacheKey = this.createCacheKey(vcId);
     await MMKV.removeItem(cacheKey);
   }
 }

@@ -34,7 +34,7 @@ class RNInjiVcRenderer: NSObject, RCTBridgeModule {
         }
 
         do {
-            let format = CredentialFormat.fromValue("test")
+            let format = CredentialFormat.fromValue(credentialFormat)
             let result = try renderer.renderVC(
                 credentialFormat: format,
                 wellKnownJson: wellKnown,
