@@ -55,7 +55,7 @@ class VcRenderer {
     try {
       const result: string[] = await this.InjiVcRenderer.renderVC(
         credentialFormat,
-        wellKnown,
+        wellKnown ? JSON.stringify(wellKnown) : null,
         vcJson,
       );
 

@@ -87,7 +87,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
         const vcJsonString = JSON.stringify(controller.credential.credential);
         const result = await VcRenderer.getInstance().renderVC(
           controller.verifiableCredentialData.format,
-          verifiableCredentialData?.wellKnown,
+          wellknown ?? null,
           vcJsonString,
         );
 
@@ -102,11 +102,11 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
     };
 
     if (controller.credential?.credential['renderMethod']) {
-      fetchSvg();
+      requestAnimationFrame(fetchSvg);
     } else {
       setLoadingSvg(false);
     }
-  }, [controller.credential?.credential]);
+  }, [controller.credential?.credential, wellknown]);
 
   useEffect(() => {
     getDetailedViewFields(
