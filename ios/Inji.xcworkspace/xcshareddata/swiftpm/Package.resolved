@@ -78,7 +78,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tw-mosip/inji-vc-renderer-ios-swift.git",
       "state" : {
-        "revision" : "d416433ac4cab4020012dbfde69c1617e5af62fb"
+        "revision" : "a1f1ebb2f1026bdd88e31378d820211d7b9d9fdd"
       }
     },
     {
