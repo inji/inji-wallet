@@ -70,7 +70,7 @@
       "location" : "https://github.com/mosip/inji-openid4vp-ios-swift.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "ca4935478360f45dd20444eac5d6bae9affc6d36"
+        "revision" : "93d9cda26cf863888814813b63e1aa8250045a9e"
       }
     },
     {
@@ -87,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-vci-client-ios-swift",
       "state" : {
-        "branch" : "release-0.5.x",
-        "revision" : "839f5825dcfd6278da4983e5c56a858f6b51e9d4"
+        "branch" : "develop",
+        "revision" : "c64213b4598f65f887acc1b7a309d3cb1e895129"
       }
     },
     {

@@ -286,7 +286,7 @@ function getFullAddress(credential: CredentialSubject) {
     .filter(Boolean)
     .join(', ');
 }
-const formatKeyLabel = (key: string): string => {
+export const formatKeyLabel = (key: string): string => {
   return key
     .replace(/\[\d+\]/g, '') // Remove [0], [1], etc.
     .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase → spaced
@@ -303,7 +303,7 @@ const renderFieldRecursively = (
   parentKey = '',
   depth = 0,
   renderedFields: Set<string>,
-  disclosedKeys: Set<string> = new Set(),
+  disclosedKeys: string[],
 ): JSX.Element[] => {
   const fullKey = parentKey ? `${parentKey}.${key}` : key;
   let shortKey =
@@ -320,12 +320,12 @@ const renderFieldRecursively = (
   if (Array.isArray(value)) {
     const label = formatKeyLabel(key);
     const arrayFullKey = fullKey;
-    const isArrayDisclosed = disclosedKeys.has(arrayFullKey);
+    const isArrayDisclosed = disclosedKeys.includes(arrayFullKey);
 
     return value.flatMap((item, index) => {
       const itemKey = `${key}[${index}]`;
       const itemFullKey = parentKey ? `${parentKey}.${itemKey}` : itemKey;
-      const isItemDisclosed = disclosedKeys.has(itemFullKey);
+      const isItemDisclosed = disclosedKeys.includes(itemFullKey);
       const showDisclosureIcon = isArrayDisclosed || isItemDisclosed;
 
       return [
@@ -436,7 +436,7 @@ const renderFieldRecursively = (
     shortKey = publicKeyLabelMap[shortKey];
   }
   const label = formatKeyLabel(shortKey);
-  const isDisclosed = disclosedKeys.has(fullKey);
+  const isDisclosed = disclosedKeys.includes(fullKey);
   return [
     <Row
       key={`extra-${fullKey}`}
@@ -471,7 +471,7 @@ export const fieldItemIterator = (
 ): JSX.Element[] => {
   const fieldNameColor = display.getTextColor(Theme.Colors.DetailsLabel);
   const fieldValueColor = display.getTextColor(Theme.Colors.Details);
-  const disclosedKeys = verifiableCredential.disclosedKeys || new Set<string>();
+  const disclosedKeys = verifiableCredential.disclosedKeys ||  [];
   const renderedFields = new Set<string>();
 
   const renderedMainFields = fields.map(field => {
@@ -501,7 +501,7 @@ export const fieldItemIterator = (
       return null;
     }
 
-    const isDisclosed = disclosedKeys.has(field);
+    const isDisclosed = disclosedKeys.includes(field);
     return (
       <Row
         key={field}

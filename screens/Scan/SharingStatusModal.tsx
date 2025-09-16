@@ -1,15 +1,15 @@
-import React, {useEffect} from 'react';
-import {useTranslation} from 'react-i18next';
-import {Theme} from '../../components/ui/styleUtils';
-import {Modal} from '../../components/ui/Modal';
-import {Pressable, Dimensions, BackHandler} from 'react-native';
-import {Button, Column, Row, Text} from '../../components/ui';
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Theme } from '../../components/ui/styleUtils';
+import { Modal } from '../../components/ui/Modal';
+import { Pressable, Dimensions, BackHandler, View, Image } from 'react-native';
+import { Button, Column, Row, Text } from '../../components/ui';
 import testIDProps from '../../shared/commonUtil';
-import {SvgImage} from '../../components/ui/svg';
-import {isIOS} from '../../shared/constants';
+import { SvgImage } from '../../components/ui/svg';
+import { isIOS } from '../../shared/constants';
 
 export const SharingStatusModal: React.FC<SharingStatusModalProps> = props => {
-  const {t} = useTranslation('ScanScreen');
+  const { t } = useTranslation('ScanScreen');
   const resetAndExit = () => {
     BackHandler.exitApp();
     props.goToHome();
@@ -65,16 +65,62 @@ export const SharingStatusModal: React.FC<SharingStatusModalProps> = props => {
             size={'large'}>
             {props.additionalMessage}
           </Text>
+          <Row
+            align="center"
+            style={{
+              
+              alignSelf: 'center',
+              backgroundColor: '#F5F5F5',
+              borderRadius: 16,
+              paddingVertical: 12,
+              paddingHorizontal: 16,
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}
+          >
+            {props.verifierLogo && (
+              <Image
+                source={{ uri: props.verifierLogo }}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 8,
+                  marginRight: 12,
+                }}
+                resizeMode="contain"
+              />
+            )}
+            <View style={{ alignItems: 'flex-start' }}>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                  color: '#000',
+                }}
+              >
+                {props.verifierName}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: '#666',
+                  marginTop: 2,
+                }}
+              >
+                {`Today at ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+              </Text>
+            </View>
+          </Row>
         </Column>
         {props.buttonStatus === 'homeAndHistoryIcons' ? (
           <Row
             align="space-evenly"
-            style={{marginBottom: Dimensions.get('screen').height * 0.06}}>
+            style={{ marginBottom: Dimensions.get('screen').height * 0.06 }}>
             <Column>
               <Pressable
                 accessible={false}
                 testID="successfullyVcSharedHomeIcon"
-                style={{height: 75, justifyContent: 'space-between'}}
+                style={{ height: 75, justifyContent: 'space-between' }}
                 onPress={props.goToHome}>
                 {SvgImage.SuccessHomeIcon()}
                 <Text align="center" weight="bold">
@@ -87,7 +133,7 @@ export const SharingStatusModal: React.FC<SharingStatusModalProps> = props => {
               <Pressable
                 accessible={false}
                 testID="successfullyVcSharedHistoryIcon"
-                style={{height: 75, justifyContent: 'space-between'}}
+                style={{ height: 75, justifyContent: 'space-between' }}
                 onPress={props.goToHistory}>
                 {SvgImage.SuccessHistoryIcon()}
                 <Text align="center" weight="bold">
@@ -99,7 +145,7 @@ export const SharingStatusModal: React.FC<SharingStatusModalProps> = props => {
         ) : null}
         {props.gradientButtonTitle && (
           <Column
-            style={{marginBottom: Dimensions.get('screen').height * 0.012}}>
+            style={{ marginBottom: Dimensions.get('screen').height * 0.012 }}>
             <Button
               testID="failedVcSharedRetryButton"
               type="gradient"
@@ -113,7 +159,7 @@ export const SharingStatusModal: React.FC<SharingStatusModalProps> = props => {
             <Button
               testID="failedVcSharedHomeButton"
               type="clear"
-              styles={{marginBottom: 9}}
+              styles={{ marginBottom: 9 }}
               title={props.clearButtonTitle}
               onPress={props.onClearButton}
             />
@@ -138,4 +184,6 @@ interface SharingStatusModalProps {
   goToHistory?: () => void;
   onGradientButton?: () => void;
   onClearButton?: () => void;
+  verifierName?: string;
+  verifierLogo?: string;
 }

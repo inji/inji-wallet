@@ -139,3 +139,7 @@ export const createCacheObject = (response: any) => {
 export const isCacheExpired = (timestamp: number) => {
   return Date.now() - timestamp >= CACHE_TTL;
 };
+
+export function getVerifierKey(verifier: string): string {
+  return `trusted_verifier_${verifier}`;
+}

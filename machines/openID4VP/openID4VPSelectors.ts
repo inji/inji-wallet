@@ -126,3 +126,19 @@ export function selectVerifierNameInVPSharing(state: State) {
 export function selectRequestedClaimsByVerifier(state: State) {
   return state.context.requestedClaims;
 }
+
+export function selectshowTrustConsentModal(state: State) {
+  return state.context.showTrustConsentModal;
+}
+
+export function selectVerifierNameInTrustModal(state: State) {
+  return (
+    state.context.authenticationResponse['client_metadata']?.['client_name']
+  );
+}
+
+export function selectVerifierLogoInTrustModal(state: State) {
+  return (
+    state.context.authenticationResponse['client_metadata']?.['logo_uri']
+  );
+}

@@ -1,52 +1,54 @@
 import React from 'react';
-import {Modal, View, Text, Image, ScrollView} from 'react-native';
-import {Button} from '../../components/ui';
-import {Theme} from '../../components/ui/styleUtils';
-import {useTranslation} from 'react-i18next';
+import { Modal, View, Text, Image, ScrollView } from 'react-native';
+import { Button } from './ui';
+import { Theme } from './ui/styleUtils';
+import { useTranslation } from 'react-i18next';
 
-export const TrustIssuerModal = ({
-                                     isVisible,
-                                     issuerLogo,
-                                     issuerName,
-                                     onConfirm,
-                                     onCancel,
-                                 }: {
+export const TrustModal = ({
+    isVisible,
+    logo,
+    name,
+    onConfirm,
+    onCancel,
+    flowType = 'issuer',
+}: {
     isVisible: boolean;
-    issuerLogo: any;
-    issuerName: string;
+    logo: any;
+    name: string;
     onConfirm: () => void;
     onCancel: () => void;
+    flowType?: 'issuer' | 'verifier';
 }) => {
-    const {t} = useTranslation('trustScreen');
+    const { t } = useTranslation('trustScreen');
     return (
         <Modal transparent={true} visible={isVisible} animationType="fade">
             <View style={Theme.TrustIssuerScreenStyle.modalOverlay}>
                 <View style={Theme.TrustIssuerScreenStyle.modalContainer}>
-                    {(issuerLogo || issuerName) && (
+                    {(logo || name) && (
                         <View style={Theme.TrustIssuerScreenStyle.issuerHeader}>
-                            {issuerLogo && (
+                            {logo && (
                                 <Image
-                                    source={{uri: issuerLogo}}
+                                    source={{ uri: logo }}
                                     style={Theme.TrustIssuerScreenStyle.issuerLogo}
                                 />
                             )}
-                            {issuerName && (
+                            {name && (
                                 <Text style={Theme.TrustIssuerScreenStyle.issuerName}>
-                                    {issuerName}
+                                    {name}
                                 </Text>
                             )}
                         </View>
                     )}
                     <ScrollView
-                        style={{flex: 1, width: '100%'}}
-                        contentContainerStyle={{alignItems: 'center', paddingBottom: 10}}
+                        style={{ flex: 1, width: '100%' }}
+                        contentContainerStyle={{ alignItems: 'center', paddingBottom: 10 }}
                         showsVerticalScrollIndicator={true}>
                         <Text style={Theme.TrustIssuerScreenStyle.description}>
-                            {t('description')}
+                            {t(flowType == 'issuer' ? 'description' : 'verifierDescription')}
                         </Text>
 
                         <View style={Theme.TrustIssuerScreenStyle.infoContainer}>
-                            {t('infoPoints', {returnObjects: true}).map((point, index) => (
+                            {t(flowType == 'issuer' ? 'infoPoints' : 'verifierInfoPoints', { returnObjects: true }).map((point, index) => (
                                 <View key={index} style={Theme.TrustIssuerScreenStyle.infoItem}>
                                     <Text style={Theme.TrustIssuerScreenStyle.info}>•</Text>
                                     <Text style={Theme.TrustIssuerScreenStyle.infoText}>
@@ -57,7 +59,7 @@ export const TrustIssuerModal = ({
                         </View>
                     </ScrollView>
 
-                    <View style={{width: '100%', paddingTop: 10, paddingBottom: 5}}>
+                    <View style={{ width: '100%', paddingTop: 10, paddingBottom: 5 }}>
                         <Button
                             styles={{
                                 marginBottom: 3,
@@ -66,14 +68,14 @@ export const TrustIssuerModal = ({
                                 alignItems: 'center',
                             }}
                             type="gradient"
-                            title={t('confirm')}
+                            title={t(flowType == 'issuer' ? 'confirm' : 'verifierConfirm')}
                             onPress={onConfirm}
                         />
                         <Button
                             styles={{
                                 marginBottom: -10,
                                 paddingBottom: 20,
-                                minHeight: 80,
+                                minHeight: 60,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 maxWidth: '100%',

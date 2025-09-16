@@ -707,6 +707,7 @@
     "enableBluetoothButtonText": "Allow bluetooth permissions",
     "scanningGuide": "Hold the phone steady and scan the QR code to share your card.",
     "invalidQR": "Please scan a valid QR",
+    "unknownVerifier": "Unknown verifier",
     "errors": {
       "locationDisabled": {
         "message": "To continue, let your device turn on location",
@@ -871,6 +872,10 @@
     "cardSelected": "card selected",
     "unCheck": "Uncheck",
     "checkAll": "Check All",
+    "selectedFieldsTitle":"Information you choose to share",
+    "selectedFieldsSubtitle":"Your card includes the following selectively shareable details listed below.",
+    "unselectAll":"Unselect All",
+    "selectAll":"Select All",
     "consentDialog": {
       "title": "Consent Required",
       "message": "We require your consent to share your verifiable credentials with {{verifierName}}. This will enable us to verify your identity and fulfil your service requests. Choose \"Yes, Proceed\" to consent or \"Decline\" if you do not wish to share your credentials with {{verifierName}}.",
@@ -1128,12 +1133,19 @@
   },
   "trustScreen": {
     "description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",
+    "verifierDescription": "Make sure you recognize or trust this verifier. Once you do:",
     "infoPoints": [
       "The card will be securely saved in your wallet.",
       "This issuer will be added to your trusted list.",
       "You won't need to review trust again when downloading from them next time."
     ],
+    "verifierInfoPoints":[
+      "The card will be securely shared with the verifier.",
+      "The verifier will be added to your trusted list.",
+      "You won’t need to review trust again when sharing with them in the future."
+    ],
     "confirm": "Yes, I Trust This Issuer",
+    "verifierConfirm": "Yes, I Trust This Verifier",
     "cancel": "No, Take Me Back"
   }
 }

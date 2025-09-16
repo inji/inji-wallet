@@ -120,7 +120,7 @@ export const openID4VPMachine = model.createMachine(
           src: 'getAuthenticationResponse',
           onDone: {
             actions: 'setAuthenticationResponse',
-            target: 'getVCsSatisfyingAuthRequest',
+            target: 'checkVerifierTrust',
           },
           onError: {
             actions: 'setAuthenticationError',
@@ -129,7 +129,53 @@ export const openID4VPMachine = model.createMachine(
         },
         exit: 'resetIsShowLoadingScreen',
       },
+      checkVerifierTrust: {
+        invoke: {
+          src: 'isVerifierTrusted',
+          onDone: [
+            {
+              cond: (ctx, e) => e.data === true,
+              target: 'getVCsSatisfyingAuthRequest',
+            },
+            {
+              target: 'requestVerifierConsent',
+            },
+          ],
+          onError: {
+            target: 'requestVerifierConsent',
+          },
+        },
+      },
+      
+      requestVerifierConsent: {
+        entry: ['showTrustConsentModal'],
+        on: {
+          VERIFIER_TRUST_CONSENT_GIVEN: {
+            actions: 'dismissTrustModal',
+            target: 'storeTrustedVerifier',
+          },
+          CANCEL: {
+            actions: ['dismissTrustModal',sendParent('DISMISS')],
+            target: 'waitingForData',
+          },
+        },
+      },
+      
+      storeTrustedVerifier: {
+        invoke: {
+          src: 'storeTrustedVerifier',
+          onDone: {
+            target: 'getVCsSatisfyingAuthRequest',
+          },
+          onError: {
+            // fail silently,will attempt next time, just move on
+            target: 'getVCsSatisfyingAuthRequest',
+          },
+        },
+      },
+      
       getVCsSatisfyingAuthRequest: {
+        entry:["dismissTrustModal"],
         on: {
           DOWNLOADED_VCS: [
             {

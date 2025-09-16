@@ -17,12 +17,14 @@ import {Text} from './../../components/ui';
 import {BannerStatusType} from '../../components/BannerNotification';
 import {isIOS, LIVENESS_CHECK} from '../../shared/constants';
 import {SendVPScreen} from './SendVPScreen';
+import { useSendVPScreen } from './SendVPScreenController';
 
 const ScanStack = createNativeStackNavigator();
 
 export const ScanLayout: React.FC = () => {
   const {t} = useTranslation('ScanScreen');
   const controller = useScanLayout();
+  const sendVPScreenController = useSendVPScreen();
   if (
     controller.statusOverlay != null &&
     !controller.isAccepted &&
@@ -178,6 +180,8 @@ export const ScanLayout: React.FC = () => {
         image={SvgImage.SuccessLogo()}
         goToHome={controller.GOTO_HOME}
         goToHistory={controller.GOTO_HISTORY}
+        verifierLogo={sendVPScreenController.verifierLogoInTrustModal}
+        verifierName={sendVPScreenController.verifierNameInTrustModal??t('unknownVerifier')}
       />
 
       {controller.errorStatusOverlay && (

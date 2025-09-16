@@ -28,8 +28,11 @@ import {
   selectRequestedClaimsByVerifier,
   selectSelectedVCs,
   selectShowConfirmationPopup,
+  selectshowTrustConsentModal,
   selectVCsMatchingAuthRequest,
   selectVerifiableCredentialsData,
+  selectVerifierLogoInTrustModal,
+  selectVerifierNameInTrustModal,
   selectVerifierNameInVPSharing,
 } from '../../machines/openID4VP/openID4VPSelectors';
 import {OpenID4VPEvents} from '../../machines/openID4VP/openID4VPMachine';
@@ -46,6 +49,7 @@ import {ActivityLogEvents} from '../../machines/activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
 import {SelectedCredentialsForVPSharing} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {isIOS} from '../../shared/constants';
+import { verifier } from '../../shared/tuvali';
 
 type MyVcsTabNavigation = NavigationProp<RootRouteProps>;
 
@@ -218,6 +222,9 @@ export function useSendVPScreen() {
     showLoadingScreen: useSelector(openID4VPService, selectIsShowLoadingScreen),
     vpVerifierName,
     flowType: useSelector(openID4VPService, selectFlowType),
+    showTrustConsentModal: useSelector(openID4VPService,selectshowTrustConsentModal),
+    verifierNameInTrustModal: useSelector(openID4VPService, selectVerifierNameInTrustModal),
+    verifierLogoInTrustModal: useSelector(openID4VPService, selectVerifierLogoInTrustModal),
     showConfirmationPopup,
     isSelectingVCs,
     checkIfAnyVCHasImage,
@@ -302,13 +309,17 @@ export function useSendVPScreen() {
       setSelectedVCKeys({...updatedVCsList});
     },
 
-    ACCEPT_REQUEST: () => {
-      openID4VPService.send(OpenID4VPEvents.ACCEPT_REQUEST(getSelectedVCs()));
+    ACCEPT_REQUEST: (selectedDisclosuresByVc) => {
+      openID4VPService.send(OpenID4VPEvents.ACCEPT_REQUEST(getSelectedVCs(), selectedDisclosuresByVc));
     },
 
-    VERIFY_AND_ACCEPT_REQUEST: () => {
+    VERIFIER_TRUST_CONSENT_GIVEN: () =>{
+      openID4VPService.send(OpenID4VPEvents.VERIFIER_TRUST_CONSENT_GIVEN());
+    },
+
+    VERIFY_AND_ACCEPT_REQUEST: (selectedDisclosuresByVc) => {
       openID4VPService.send(
-        OpenID4VPEvents.VERIFY_AND_ACCEPT_REQUEST(getSelectedVCs()),
+        OpenID4VPEvents.VERIFY_AND_ACCEPT_REQUEST(getSelectedVCs(), selectedDisclosuresByVc),
       );
     },
     CANCEL,

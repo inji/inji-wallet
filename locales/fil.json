@@ -702,6 +702,7 @@
     "enableBluetoothButtonText": "Payagan ang mga pahintulot ng bluetooth",
     "scanningGuide": "Panatilihin ang telepono at i-scan ang QR code upang ibahagi ang iyong card.",
     "invalidQR": "Mangyaring mag-scan ng wastong QR",
+    "unknownVerifier": "Hindi kilalang verifier",
     "errors": {
       "locationDisabled": {
         "message": "Para magpatuloy, hayaang i-on ng iyong device ang lokasyon",
@@ -862,6 +863,10 @@
     "cardSelected": "card pinili",
     "unCheck": "Alisin ang check",
     "checkAll": "Suriin Lahat",
+    "selectedFieldsTitle": "Impormasyon na pinili mong ibahagi",
+    "selectedFieldsSubtitle": "Ang iyong card ay naglalaman ng mga sumusunod na detalyeng maaaring piliing ibahagi.",
+    "unselectAll": "Alisin ang lahat ng pagpili",
+    "selectAll": "Piliin lahat",
     "consentDialog": {
       "title": "Kinakailangan ang Pahintulot",
       "message": "Hinihiling namin ang iyong pahintulot na ibahagi ang iyong mga nabe-verify na kredensyal sa {{verifierName}}. Ito ay magbibigay-daan sa amin na i-verify ang iyong pagkakakilanlan at matupad ang iyong mga kahilingan sa serbisyo. Piliin ang \"Oo, Magpatuloy\" upang pumayag o \"Tanggihan\" kung hindi mo gustong ibahagi ang iyong mga kredensyal sa {{verifierName}}.",
@@ -1111,12 +1116,19 @@
   },
   "trustScreen": {
     "description": "Siguraduhin mong kilala mo o pinagkakatiwalaan mo ang issuer na ito. Kapag pinagkatiwalaan mo sila:",
+    "verifierDescription": "Tiyaking kilala mo o pinagkakatiwalaan mo ang verifier na ito. Kapag nagtiwala ka na:",
     "infoPoints": [
       "Ang card ay ligtas na mase-save sa iyong wallet.",
       "Ang issuer na ito ay idagdag sa iyong trusted list.",
       "Hindi mo na kailangang muling suriin ang tiwala kapag magda-download mula sa kanila sa susunod."
     ],
+    "verifierInfoPoints": [
+      "Ang card ay ligtas na ibabahagi sa verifier.",
+      "Ang verifier ay idaragdag sa iyong listahan ng pinagkakatiwalaan.",
+      "Hindi mo na kailangang suriin muli ang tiwala kapag muling nagbahagi sa kanila sa hinaharap."
+    ],
     "confirm": "Oo, Pinagkakatiwalaan Ko ang Issuer na Ito",
+    "verifierConfirm": "Oo, pinagkakatiwalaan ko ang verifier na ito",
     "cancel": "Hindi, Ibalik Mo Ako"
   }
 }
