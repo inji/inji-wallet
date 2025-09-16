@@ -5,10 +5,12 @@
 
 RCT_EXTERN_METHOD(init:(NSString *)traceabilityId)
 
-RCT_EXTERN_METHOD(renderVC:(NSString *)vcJsonString
+
+RCT_EXTERN_METHOD(renderVC:(NSString *)credentialFormat
                   wellKnown:(NSString *)wellKnown
-                  credentialFormat:(NSString *)credentialFormat
+                  vcJsonString:(NSString *)vcJsonString
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
+
 
 @end
