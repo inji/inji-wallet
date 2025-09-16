@@ -2,6 +2,7 @@ import {NativeModules} from 'react-native';
 import {MMKVLoader} from 'react-native-mmkv-storage';
 import {CACHE_TTL} from '../constants';
 import {__AppId} from '../GlobalVariables';
+import {isCacheExpired} from '../Utils';
 
 const MMKV = new MMKVLoader().initialize();
 const CACHE_KEY_PREFIX = 'vc_renderer_svg_';
@@ -42,13 +43,15 @@ class VcRenderer {
     if (cachedRaw && typeof cachedRaw === 'string') {
       try {
         const cached: CachedSvg = JSON.parse(cachedRaw);
-        const withinTTL = Date.now() - cached.timestamp < CACHE_TTL;
 
-        if (withinTTL) {
+        if (!isCacheExpired(cached.timestamp)) {
           return cached.data;
+        } else {
+          await this.clearCache(vcId);
         }
       } catch (e) {
         console.warn('::::failed to parse cached SVG, ignoring::::', e);
+        await this.clearCache(vcId);
       }
     }
 
@@ -69,6 +72,7 @@ class VcRenderer {
 
       return result;
     } catch (rendererError) {
+      await this.clearCache(vcId);
       throw rendererError;
     }
   }
