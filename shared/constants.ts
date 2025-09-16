@@ -202,4 +202,4 @@ export const OVP_ERROR_CODE = {
   DECLINED: 'access_denied',
 };
 
-export const FALLBACK_QR_IMAGE_ID = 'qrCodeFallbackImage';
+export const QR_IMAGE_ID = 'qrCodeImage';

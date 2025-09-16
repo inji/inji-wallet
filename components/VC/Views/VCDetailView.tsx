@@ -35,7 +35,7 @@ import {VCFormat} from '../../../shared/VCFormat';
 import testIDProps from '../../../shared/commonUtil';
 import {ShareableInfoModal} from './ShareableInfoModal';
 import {SvgCss} from 'react-native-svg/css';
-import {FALLBACK_QR_IMAGE_ID} from '../../../shared/constants';
+import {QR_IMAGE_ID} from '../../../shared/constants';
 
 const getProfileImage = (face: any) => {
   if (face) {
@@ -145,7 +145,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                 style={{backgroundColor: 'transparent'}}
               />
             </Column>
-            {!svgTemplate?.includes(FALLBACK_QR_IMAGE_ID) && (
+            {svgTemplate?.includes(QR_IMAGE_ID) && (
               <Button
                 testID="zoomQrCode"
                 title="Tap to zoom QR Code"
