@@ -54,7 +54,7 @@ export const ReceiveVcScreen: React.FC = () => {
 
         const vcJsonString = JSON.stringify(controller.credential.credential);
         const result = await VcRenderer.getInstance().renderVC(
-          wellknown.format,
+          verifiableCredentialData.vcMetadata.format,
           wellknown ?? null,
           vcJsonString,
         );
