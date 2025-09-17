@@ -445,8 +445,8 @@ public class NoNetworkIosTest extends IosBaseTest {
 //        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
 
-//        assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");
-//        assertEquals(retrieveIdPage.verifyGetItTextDisplayed(), "Get it now using your AID.");
+        assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");
+        assertEquals(retrieveIdPage.verifyGetItTextDisplayed(), "Get it now using your AID.");
         GenerateUinOrVidPage generateUinOrVidPage = retrieveIdPage.clickOnGetItNowText();
 
         String sessionId = getDriver().getSessionId().toString();
