@@ -34,11 +34,11 @@ public class UnlockWithPasscodeTest extends IosBaseTest {
         HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
+        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         SettingsPage settingsPage = homePage.clickOnSettingIcon();
 
-//        assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
-//        assertTrue(settingsPage.isDataBackupAndRestoreDisplayed(), "Verify if backup & restore is displayed");
+        assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
+        assertTrue(settingsPage.isDataBackupAndRestoreDisplayed(), "Verify if backup & restore is displayed");
         UnlockApplicationPage unlockApplicationPage = settingsPage.clickOnLogoutButton();
 
         assertTrue(unlockApplicationPage.isUnlockApplicationPageLoaded(), "Verify if unlock application page is displayed");
