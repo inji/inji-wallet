@@ -178,7 +178,7 @@ public class KeyManagmentTest extends IosBaseTest {
         IosUtil.scrollToElement(getDriver(), 100, 800, 100, 200);
         sunbirdLoginPage.clickOnLoginButton();
 
-//        assertTrue(sunbirdLoginPage.isSunbirdCardActive(), "Verify if download sunbird displayed active");
+        assertTrue(sunbirdLoginPage.isSunbirdCardActive(), "Verify if download sunbird displayed active");
         assertTrue(sunbirdLoginPage.isSunbirdCardLogoDisplayed(), "Verify if download sunbird logo displayed");
         sunbirdLoginPage.openDetailedSunbirdVcView();
 //        assertTrue(keyManagementPage.compareListOfKeys());
