@@ -258,25 +258,18 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
   }
   
   var vpFormatsSupported: [VPFormatType: VPFormatSupported] = [:]
-  if let vpFormatsSupportedDict = metadata["vp_formats_supported"] as? [String: Any], let ldpVcDict = vpFormatsSupportedDict["ldp_vc"] as? [String: Any] {
-    let algValuesSupported = ldpVcDict["alg_values_supported"] as? [String]
-    vpFormatsSupported[.ldp_vc] = VPFormatSupported(algValuesSupported: algValuesSupported)
-    if let mdocDict = vpFormatsSupportedDict["mso_mdoc"] as? [String: Any] {
-      let mdocAlgValuesSupported = mdocDict["alg_values_supported"] as? [String]
-      vpFormatsSupported[.mso_mdoc] = VPFormatSupported(algValuesSupported: mdocAlgValuesSupported)
+  if let vpFormatsSupportedDict = metadata["vp_formats_supported"] as? [String: Any] {
+    for (format, formatDict) in vpFormatsSupportedDict {
+      guard let formatType = VPFormatType.fromValue(format) else {
+        throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unsupported VP format: \(format)"])
+      }
+      if let formatDetails = formatDict as? [String: Any] {
+        let algValuesSupported = formatDetails["alg_values_supported"] as? [String]
+        vpFormatsSupported[formatType] = VPFormatSupported(algValuesSupported: algValuesSupported)
+      } else {
+        vpFormatsSupported[formatType] = VPFormatSupported(algValuesSupported: nil)
+      }
     }
-    
-    if let vcSdJwtDict = vpFormatsSupportedDict["vc+sd_jwt"] as? [String: Any] {
-      let algValuesSupported = vcSdJwtDict["alg_values_supported"] as? [String]
-      vpFormatsSupported[.vc_sd_jwt] = VPFormatSupported(algValuesSupported: algValuesSupported)
-    }
-    
-    if let dcSdJwtDict = vpFormatsSupportedDict["dc+sd_jwt"] as? [String: Any] {
-      let algValuesSupported = dcSdJwtDict["alg_values_supported"] as? [String]
-      vpFormatsSupported[.dc_sd_jwt] = VPFormatSupported(algValuesSupported: algValuesSupported)
-    }
-  } else {
-    vpFormatsSupported[.ldp_vc] = VPFormatSupported(algValuesSupported: nil)
   }
   
   let walletMetadataObject = try WalletMetadata(
