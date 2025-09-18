@@ -98,7 +98,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
 
     return (
       <Column>
-        <Row crossAlign="center" style={{ justifyContent: "space-between", marginBottom: -10}}>
+        <Row crossAlign="center" style={{ justifyContent: "space-between", marginBottom: -10 }}>
           <Row crossAlign="center">
             {node.__self && (
               <CheckBox
@@ -301,28 +301,15 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
             <Column padding="8 0">
               <View style={{ paddingHorizontal: 6, marginTop: 8 }}>
                 <View
-                  style={{
-                    height: 1,
-                    backgroundColor: '#DADADA',
-                    marginBottom: 12,
-                  }}
+                  style={{...Theme.Styles.horizontalSeparator, marginBottom: 12 }}
                 />
-
                 <Column>
                   <Text
-                    style={{
-                      fontWeight: 'bold',
-                      fontSize: 15,
-                      color: Theme.Colors.Text,
-                    }}>
+                    style={Theme.Styles.disclosureTitle}>
                     {t('SendVPScreen:selectedFieldsTitle')}
                   </Text>
                   <Text
-                    style={{
-                      fontSize: 13,
-                      color: '#666',
-                      marginTop: 4,
-                    }}>
+                    style={Theme.Styles.disclosureSubtitle}>
                     {t('SendVPScreen:selectedFieldsSubtitle')}
                   </Text>
                 </Column>
@@ -330,10 +317,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
                 <Row style={{ marginTop: 12 }} width='100%' align='flex-end'><Pressable onPress={toggleSelectAll}>
                   <Text
                     color={Theme.Colors.Icon}
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 'bold',
-                    }}>
+                    style={Theme.Styles.disclosureSelectButton}>
                     {areAllSelected()
                       ? t('SendVPScreen:unselectAll')
                       : t('SendVPScreen:selectAll')}
@@ -342,12 +326,9 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
                 </Row>
 
                 <View
-                  style={{
-                    height: 1,
-                    backgroundColor: '#DADADA',
-                    marginTop: 12
-                  }}
+                  style={{ ...Theme.Styles.horizontalSeparator, marginTop: 12 }}
                 />
+
               </View>
               {Object.entries(buildDisclosureTree(credential.disclosedKeys)).map(
                 ([name, node]) => (

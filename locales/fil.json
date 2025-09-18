@@ -690,7 +690,7 @@
   "ScanScreen": {
     "shareWithSelfie": "Ibahagi sa Selfie",
     "shareWithSelfieQrLogin": "Pag-login sa QR Code",
-    "shareWithSelfieMessage": "Para ibahagi ang iyong Mga Nabe-verify na Kredensyal, secure naming ive-verify ang iyong pagkakakilanlan gamit ang pag-verify sa mukha. Sa pagpapatuloy, pumapayag ka sa INJI na gamitin ang iyong camera para sa layuning ito. \n\n Gagamitin lang ang iyong facial data para sa pag-verify at hindi ibabahagi sa anumang third party.",
+    "shareWithSelfieMessage": "Para maibahagi ang iyong Verifiable Credentials, susuriin muna namin ang iyong pagkakakilanlan gamit ang facial authentication. Sa pagpapatuloy, sumasang-ayon ka na gamitin ng Inji Wallet ang camera ng iyong telepono para sa layuning ito. Ang iyong facial data ay gagamitin lamang para sa authentication at hindi ito itatago o ibabahagi sa kahit anong third party.",
     "shareWithSelfieMessageQrLogin": "Upang ma-access ang portal, kakailanganin mong ibahagi ang iyong Mga Na-verify na Kredensyal at secure na i-verify ang iyong pagkakakilanlan gamit ang pag-verify sa mukha. Sa pagpapatuloy, pumapayag ka sa Inji na gamitin ang iyong camera para sa layuning ito. \n\n Gagamitin lang ang iyong facial data para sa pag-verify at hindi ibabahagi. Pagkatapos ng matagumpay na pag-verify, maaari mong piliin kung aling mga detalye ang ibabahagi.",
     "ConfirmButton": "Naiintindihan ko",
     "doNotAskMessage": "Huwag mo na akong tanungin",

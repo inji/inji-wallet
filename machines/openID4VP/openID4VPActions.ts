@@ -426,7 +426,7 @@ function extractAlgFromSdJwt(sdJwtCompact: string): string {
   const jwt = parts[0];
 
   const jwtParts = jwt.split('.');
-  if (jwtParts.length < 2) {
+  if (jwtParts.length < 3) {
     throw new Error('Invalid SD-JWT format');
   }
 

@@ -153,6 +153,15 @@ export function useOvpErrorModal({
         showRetryButton: true,
       });
       generateAndStoreLogMessage('SEND_VP_ERROR');
+    } else if (error.includes('failed to update trusted verifier list')) {
+      setErrorModal({
+        show: true,
+        title: t('errors.trustedVerifierListUpdateError.title'),
+        message: t('errors.trustedVerifierListUpdateError.message'),
+        additionalMessage,
+        showRetryButton: false,
+      });
+      generateAndStoreLogMessage('TRUSTED_VERIFIER_LIST_UPDATE_ERROR');
     } else if (error !== '') {
       setErrorModal({
         show: true,

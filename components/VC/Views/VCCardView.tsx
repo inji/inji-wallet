@@ -121,9 +121,8 @@ export const VCCardView: React.FC<VCItemProps> = ({
       description={t('copilot:cardMessage')}
       order={6}
       title={t('copilot:cardTitle')}
-    >
-      {CardViewContent()}
-    </Copilot>
+      children={CardViewContent()}
+    />
   );
 
   return (

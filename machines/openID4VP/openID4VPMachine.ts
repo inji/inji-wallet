@@ -155,10 +155,20 @@ export const openID4VPMachine = model.createMachine(
             target: 'storeTrustedVerifier',
           },
           CANCEL: {
-            actions: ['dismissTrustModal',sendParent('DISMISS')],
-            target: 'waitingForData',
+            actions: 'dismissTrustModal',
+            target: 'delayBeforeDismissToParent',
           },
         },
+      },
+      
+      delayBeforeDismissToParent: {
+        after: {
+          200: 'sendDismissToParent',
+        },
+      },
+      sendDismissToParent: {
+        entry: sendParent('DISMISS'),
+        always: 'waitingForData',
       },
       
       storeTrustedVerifier: {
@@ -168,8 +178,10 @@ export const openID4VPMachine = model.createMachine(
             target: 'getVCsSatisfyingAuthRequest',
           },
           onError: {
-            // fail silently,will attempt next time, just move on
-            target: 'getVCsSatisfyingAuthRequest',
+            actions: model.assign({
+              error: () => 'failed to update trusted verifier list',
+            }),
+            target: 'showError',
           },
         },
       },

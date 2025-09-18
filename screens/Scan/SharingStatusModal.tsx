@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Theme } from '../../components/ui/styleUtils';
 import { Modal } from '../../components/ui/Modal';
@@ -10,6 +10,8 @@ import { isIOS } from '../../shared/constants';
 
 export const SharingStatusModal: React.FC<SharingStatusModalProps> = props => {
   const { t } = useTranslation('ScanScreen');
+  const [logoFailed, setLogoFailed] = useState(false);
+  const showLogo = !!props.verifierLogo && !logoFailed;
   const resetAndExit = () => {
     BackHandler.exitApp();
     props.goToHome();
@@ -65,38 +67,21 @@ export const SharingStatusModal: React.FC<SharingStatusModalProps> = props => {
             size={'large'}>
             {props.additionalMessage}
           </Text>
-          <Row
+          {(props.verifierLogo || props.verifierName) && <Row
             align="center"
-            style={{
-              
-              alignSelf: 'center',
-              backgroundColor: '#F5F5F5',
-              borderRadius: 16,
-              paddingVertical: 12,
-              paddingHorizontal: 16,
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}
+            style={Theme.SelectVcOverlayStyles.sharedSuccessfullyVerifierInfo}
           >
-            {props.verifierLogo && (
+            {showLogo && (
               <Image
                 source={{ uri: props.verifierLogo }}
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 8,
-                  marginRight: 12,
-                }}
+                style={Theme.SelectVcOverlayStyles.sharedSuccessfullyVerifierLogo}
                 resizeMode="contain"
+                onError={() => setLogoFailed(true)}
               />
             )}
             <View style={{ alignItems: 'flex-start' }}>
               <Text
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: 16,
-                  color: '#000',
-                }}
+                style={Theme.TextStyles.bold}
               >
                 {props.verifierName}
               </Text>
@@ -110,7 +95,7 @@ export const SharingStatusModal: React.FC<SharingStatusModalProps> = props => {
                 {`Today at ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
               </Text>
             </View>
-          </Row>
+          </Row>}
         </Column>
         {props.buttonStatus === 'homeAndHistoryIcons' ? (
           <Row

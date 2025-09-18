@@ -163,7 +163,7 @@ export const ScanLayout: React.FC = () => {
           />
         )}
       </ScanStack.Navigator>
-
+       
       <SharingStatusModal
         isVisible={controller.isAccepted || controller.isVPSharingSuccess}
         testId={'sharingSuccessModal'}
@@ -180,8 +180,8 @@ export const ScanLayout: React.FC = () => {
         image={SvgImage.SuccessLogo()}
         goToHome={controller.GOTO_HOME}
         goToHistory={controller.GOTO_HISTORY}
-        verifierLogo={sendVPScreenController.verifierLogoInTrustModal}
-        verifierName={sendVPScreenController.verifierNameInTrustModal??t('unknownVerifier')}
+        verifierLogo={controller.openID4VPFlowType == VCShareFlowType.OPENID4VP ? sendVPScreenController.verifierLogoInTrustModal ?? undefined : undefined}
+        verifierName={controller.openID4VPFlowType == VCShareFlowType.OPENID4VP ? sendVPScreenController.verifierNameInTrustModal ?? t('unknownVerifier') : undefined}
       />
 
       {controller.errorStatusOverlay && (

@@ -132,7 +132,6 @@ class OpenID4VP {
     vcData: VC,
     selectedDisclosures: string[],
   ): string {
-    console.log('Selected disclosures for SD-JWT:', selectedDisclosures);
     if (!vcData?.verifiableCredential?.credential) {
       throw new Error('Invalid VC: missing credential');
     }
