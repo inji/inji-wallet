@@ -281,15 +281,10 @@ export function useSendVPScreen() {
     SELECT_VC_ITEM:
       (vcKey: string, inputDescriptorId: string) =>
       (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
-        console.log("[INJIMOB-3539] Toggling selection for VC:", vcKey, "under input descriptor:", inputDescriptorId);
         let descriptorMappingToVCs = {...selectedVCKeysID};
 
-        console.log("[INJIMOB-3539] Current selected VCs by id:", selectedVCKeysID);
-        console.log("[INJIMOB-3539] Current selected VCs by id:", selectedVCKeysID.keys);
-        console.log("[INJIMOB-3539] Current selected VCs by id:", Object.keys(selectedVCKeysID));
         const isVCSelected = Object.keys(selectedVCKeysID)?.includes(inputDescriptorId) && selectedVCKeysID[inputDescriptorId]?.includes(vcKey) ? false : true;
         if (isVCSelected) {
-          console.log("[INJIMOB-3539] Selecting VC:", vcKey, "for input descriptor:", inputDescriptorId);
             if (descriptorMappingToVCs[inputDescriptorId]) {
                 if (!descriptorMappingToVCs[inputDescriptorId].includes(vcKey)) {
                   descriptorMappingToVCs[inputDescriptorId].push(vcKey);
@@ -297,7 +292,6 @@ export function useSendVPScreen() {
             } else {
                 descriptorMappingToVCs[inputDescriptorId] = [vcKey];
             }
-            console.log("[INJIMOB-3539] Updated descriptor to VCs mapping:", descriptorMappingToVCs);
         } else {
           // remove vc key from the input descriptor mapping
             if (descriptorMappingToVCs[inputDescriptorId]) {
