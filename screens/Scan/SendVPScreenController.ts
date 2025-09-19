@@ -66,7 +66,7 @@ export function useSendVPScreen() {
   const navigation = useNavigation<MyVcsTabNavigation>();
   const openID4VPService = scanService.getSnapshot().context.OpenId4VPRef;
   // input descriptor id to VCs mapping
-  const [selectedVCKeysID, setSelectedVCKeysID] = useState<Record<string, [string]>>(
+  const [inputDescriptorIdToSelectedVcKeys, setInputDescriptorIdToSelectedVcKeys] = useState<Record<string, [string]>>(
     {},
   );
 
@@ -110,7 +110,7 @@ export function useSendVPScreen() {
 
   const getSelectedVCs = (): Record<string, any[]> => {
     let selectedVcsData: Record<string, any[]> = {}; // input_descriptor_id to VC[]
-    Object.entries(selectedVCKeysID).forEach(([inputDescriptorId, vcKeys]) => {
+    Object.entries(inputDescriptorIdToSelectedVcKeys).forEach(([inputDescriptorId, vcKeys]) => {
         vcKeys.forEach((vcKey : string) => {
             const vcData = myVcs[vcKey];
             selectedVcsData[inputDescriptorId] = selectedVcsData[inputDescriptorId] || [];
@@ -241,7 +241,7 @@ export function useSendVPScreen() {
     vcsMatchingAuthRequest,
     userSelectedVCs: useSelector(openID4VPService, selectSelectedVCs),
     areAllVCsChecked,
-    selectedVCKeysID,
+    inputDescriptorIdToSelectedVcKeys,
     isVerifyingIdentity: useSelector(
       openID4VPService,
       selectIsVerifyingIdentity,
@@ -281,9 +281,9 @@ export function useSendVPScreen() {
     SELECT_VC_ITEM:
       (vcKey: string, inputDescriptorId: string) =>
       (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
-        let descriptorMappingToVCs = {...selectedVCKeysID};
+        let descriptorMappingToVCs = {...inputDescriptorIdToSelectedVcKeys};
 
-        const isVCSelected = Object.keys(selectedVCKeysID)?.includes(inputDescriptorId) && selectedVCKeysID[inputDescriptorId]?.includes(vcKey) ? false : true;
+        const isVCSelected = Object.keys(inputDescriptorIdToSelectedVcKeys)?.includes(inputDescriptorId) && inputDescriptorIdToSelectedVcKeys[inputDescriptorId]?.includes(vcKey) ? false : true;
         if (isVCSelected) {
             if (descriptorMappingToVCs[inputDescriptorId]) {
                 if (!descriptorMappingToVCs[inputDescriptorId].includes(vcKey)) {
@@ -303,13 +303,46 @@ export function useSendVPScreen() {
                 }
             }
         }
-        setSelectedVCKeysID(descriptorMappingToVCs)
+        setInputDescriptorIdToSelectedVcKeys(descriptorMappingToVCs)
+        const {serviceRefs, wellknownResponse, ...vcData} =
+          vcRef.getSnapshot().context;
+      },
+
+    SELECT_VC_ITEM_V1:
+      (vcKey: string, inputDescriptorIds: string[]) =>
+      (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
+        let descriptorMappingToVCs = {...inputDescriptorIdToSelectedVcKeys};
+
+        for (const inputDescriptorId of inputDescriptorIds) {
+          const isVCSelected = !(Object.keys(inputDescriptorIdToSelectedVcKeys)?.includes(inputDescriptorId) && inputDescriptorIdToSelectedVcKeys[inputDescriptorId]?.includes(vcKey));
+          if (isVCSelected) {
+            if (descriptorMappingToVCs[inputDescriptorId]) {
+              if (!descriptorMappingToVCs[inputDescriptorId].includes(vcKey)) {
+                descriptorMappingToVCs[inputDescriptorId].push(vcKey);
+              }
+            } else {
+              descriptorMappingToVCs[inputDescriptorId] = [vcKey];
+            }
+          } else {
+            // remove vc key from the input descriptor mapping
+            if (descriptorMappingToVCs[inputDescriptorId]) {
+              descriptorMappingToVCs[inputDescriptorId] = descriptorMappingToVCs[
+                  inputDescriptorId
+                  ].filter(key => key !== vcKey); // remove the vcKey from the array
+              if (descriptorMappingToVCs[inputDescriptorId].length === 0) { // if the array is empty, remove the input descriptor id
+                delete descriptorMappingToVCs[inputDescriptorId];
+              }
+            }
+          }
+        }
+
+        setInputDescriptorIdToSelectedVcKeys(descriptorMappingToVCs)
         const {serviceRefs, wellknownResponse, ...vcData} =
           vcRef.getSnapshot().context;
       },
 
     UNCHECK_ALL: () => {
-      setSelectedVCKeysID({})
+      setInputDescriptorIdToSelectedVcKeys({})
     },
 
     CHECK_ALL: () => {
@@ -323,7 +356,7 @@ export function useSendVPScreen() {
           updatedInputDescriptorToCredentialsMapping[inputDescriptorId].push(vcKey);
         });
       });
-      setSelectedVCKeysID({...updatedInputDescriptorToCredentialsMapping});
+      setInputDescriptorIdToSelectedVcKeys({...updatedInputDescriptorToCredentialsMapping});
     },
 
     ACCEPT_REQUEST: (selectedDisclosuresByVc) => {

@@ -268,7 +268,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   const noOfCardsSelected = controller.areAllVCsChecked
     ? Object.values(controller.vcsMatchingAuthRequest).length
-    : Object.values(controller.selectedVCKeysID).reduce((vcCount, arr) => vcCount + arr.length, 0);
+    : Object.values(controller.inputDescriptorIdToSelectedVcKeys).reduce((vcCount, arr) => vcCount + arr.length, 0);
 
   const cardsSelectedText =
     noOfCardsSelected === 1
@@ -349,7 +349,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                       selectable
                       selected={
                         controller.areAllVCsChecked || (
-                            Object.keys(controller.selectedVCKeysID).includes(inputDescriptorId) && controller.selectedVCKeysID[inputDescriptorId].includes(getVcKey(vcData))
+                            Object.keys(controller.inputDescriptorIdToSelectedVcKeys).includes(inputDescriptorId) && controller.inputDescriptorIdToSelectedVcKeys[inputDescriptorId].includes(getVcKey(vcData))
                           )
                       }
                       flow={VCItemContainerFlowType.VP_SHARE}
