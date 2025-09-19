@@ -308,39 +308,6 @@ export function useSendVPScreen() {
           vcRef.getSnapshot().context;
       },
 
-    SELECT_VC_ITEM_V1:
-      (vcKey: string, inputDescriptorIds: string[]) =>
-      (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
-        let descriptorMappingToVCs = {...inputDescriptorIdToSelectedVcKeys};
-
-        for (const inputDescriptorId of inputDescriptorIds) {
-          const isVCSelected = !(Object.keys(inputDescriptorIdToSelectedVcKeys)?.includes(inputDescriptorId) && inputDescriptorIdToSelectedVcKeys[inputDescriptorId]?.includes(vcKey));
-          if (isVCSelected) {
-            if (descriptorMappingToVCs[inputDescriptorId]) {
-              if (!descriptorMappingToVCs[inputDescriptorId].includes(vcKey)) {
-                descriptorMappingToVCs[inputDescriptorId].push(vcKey);
-              }
-            } else {
-              descriptorMappingToVCs[inputDescriptorId] = [vcKey];
-            }
-          } else {
-            // remove vc key from the input descriptor mapping
-            if (descriptorMappingToVCs[inputDescriptorId]) {
-              descriptorMappingToVCs[inputDescriptorId] = descriptorMappingToVCs[
-                  inputDescriptorId
-                  ].filter(key => key !== vcKey); // remove the vcKey from the array
-              if (descriptorMappingToVCs[inputDescriptorId].length === 0) { // if the array is empty, remove the input descriptor id
-                delete descriptorMappingToVCs[inputDescriptorId];
-              }
-            }
-          }
-        }
-
-        setInputDescriptorIdToSelectedVcKeys(descriptorMappingToVCs)
-        const {serviceRefs, wellknownResponse, ...vcData} =
-          vcRef.getSnapshot().context;
-      },
-
     UNCHECK_ALL: () => {
       setInputDescriptorIdToSelectedVcKeys({})
     },
