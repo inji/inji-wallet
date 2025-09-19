@@ -1,5 +1,5 @@
 {
-  "originHash" : "c97fbee22fce758b0bea2f875d3805ef3530cfb7d60c2832b0b36cf3f72da606",
+  "originHash" : "a3146fb582ba55930e9db89f50cf0454e89ade6fb6a380b0e7d649e8527e703a",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -69,8 +69,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-openid4vp-ios-swift.git",
       "state" : {
-        "branch" : "develop",
-        "revision" : "93d9cda26cf863888814813b63e1aa8250045a9e"
+        "branch" : "release-0.5.x",
+        "revision" : "e939d4acf4e9f54d902b65913b93432fcd068b46"
       }
     },
     {
@@ -78,7 +78,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-vc-renderer-ios-swift.git",
       "state" : {
-        "branch" : "develop",
+        "branch" : "release-0.1.x",
         "revision" : "58237eae6caf198d725ecfcd397b4d6f8f2d87bd"
       }
     },
@@ -87,7 +87,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-vci-client-ios-swift",
       "state" : {
-        "branch" : "develop",
+        "branch" : "release-0.6.x",
         "revision" : "c64213b4598f65f887acc1b7a309d3cb1e895129"
       }
     },
@@ -105,8 +105,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/pixelpass-ios-swift/",
       "state" : {
-        "branch" : "release-0.6.x",
-        "revision" : "78faea2ff48626ef9a6d198123bcf7b299acefd1"
+        "revision" : "78faea2ff48626ef9a6d198123bcf7b299acefd1",
+        "version" : "0.6.3"
       }
     },
     {
@@ -141,7 +141,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/abhip2565/SwiftCBOR",
       "state" : {
-        "revision" : "cc4e195a0ea2dce88f2fd6c6d73b2504e3c884fd",
+        "revision" : "04ccff117f6549121d5721ec84fdf0162122b90e",
         "version" : "0.5.0"
       }
     },
