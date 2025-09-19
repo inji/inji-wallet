@@ -296,7 +296,7 @@ function getVcsMatchingAuthRequest(context, event) {
         requestedClaimsByVerifier,
       );
 
-      let shouldInclude = false;
+      let shouldInclude: boolean;
       if (inputDescriptor.constraints.fields && format) {
         shouldInclude = isMatchingConstraints && areMatchingFormatAndProofType;
       } else {
