@@ -182,8 +182,17 @@ export const openID4VPServices = () => {
             const header = JSON.parse(atob(unsignedKBJWT.split('.')[0]));
             const alg = header.alg;
             const keyType = JWT_ALG_TO_KEY_TYPE[alg];
+
+            let privateKey: string;
+
+            if (keyType === KeyTypes.ED25519) {
+              privateKey = context.privateKey;
+            } else {
+              const keypair = await fetchKeyPair(keyType);
+              privateKey = keypair.privateKey;
+            }
             const signature = await createSignature(
-              context.privateKey,
+              privateKey,
               unsignedKBJWT,
               keyType,
             );
@@ -203,4 +212,3 @@ export const openID4VPServices = () => {
     },
   };
 };
-
