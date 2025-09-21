@@ -37,6 +37,7 @@ import testIDProps from '../../../shared/commonUtil';
 import {ShareableInfoModal} from './ShareableInfoModal';
 import {SvgCss} from 'react-native-svg/css';
 import {QR_IMAGE_ID} from '../../../shared/constants';
+import {sharePdfToAllSupportedApps} from '../../../shared/sharing/shareUtils';
 
 const getProfileImage = (face: any) => {
   if (face) {
@@ -189,6 +190,22 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                 onClose={() => setShowQrOverlay(false)}
               />
             )}
+
+            <TouchableOpacity
+              onPress={() => sharePdfToAllSupportedApps(props.svgTemplate)}
+              testID="exportPdfButton"
+              style={{alignItems: 'center', marginTop: 24}}>
+              <Feather name="share" size={28} color="#007AFF" />
+              <Text
+                style={{
+                  color: '#007AFF',
+                  fontSize: 12,
+                  fontFamily: 'Inter_500Medium',
+                  marginTop: 4,
+                }}>
+                Export as PDF
+              </Text>
+            </TouchableOpacity>
           </Column>
         ) : (
           <Column fill>

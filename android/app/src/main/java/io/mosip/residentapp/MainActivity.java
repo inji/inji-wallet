@@ -16,6 +16,8 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
 import java.util.Objects;
+import com.tom_roush.pdfbox.android.PDFBoxResourceLoader;
+
 
 /**
  * IMPORTANT NOTE: The Android permission flow here works
@@ -44,6 +46,7 @@ public class MainActivity extends ReactActivity {
     super.onCreate(null);
     Intent intent = getIntent();
     handleIntent(intent);
+    PDFBoxResourceLoader.init(this);
   }
 
   @Override

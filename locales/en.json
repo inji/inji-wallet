@@ -117,7 +117,8 @@
     "disclosureNoteTitle": "Please note",
     "disclosedFieldsDescription":"Your card includes the following selectively shareable details listed below.",
     "disclosedFieldsTitle":"Information you choose to share",
-    "disclosureInfoNote":"Fields next to this icon indicate that the information can be shared selectively."
+    "disclosureInfoNote":"Fields next to this icon indicate that the information can be shared selectively.",
+    "tapToZoomQr": "Tap to zoom QR code"
   },
   "HomeScreenKebabPopUp": {
     "title": "More Options",

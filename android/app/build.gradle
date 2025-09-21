@@ -268,6 +268,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("io.mosip:injivcrenderer-aar:0.1.0-SNAPSHOT")
+    implementation("com.tom-roush:pdfbox-android:2.0.27.0")
+    implementation("com.caverock:androidsvg-aar:1.4")
     implementation("io.mosip:inji-openid4vp-aar:0.6.0-SNAPSHOT"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
