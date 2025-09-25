@@ -12,6 +12,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -20,6 +21,7 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableType;
+import com.facebook.react.bridge.WritableMap;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -142,9 +144,13 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     private static void rejectWithOpenID4VPExceptions(Exception e, Promise promise) {
-        if (e instanceof OpenID4VPExceptions) {
-            OpenID4VPExceptions ex = (OpenID4VPExceptions) e;
-            promise.reject(ex.getErrorCode(), ex.getMessage(), ex);
+        if (e instanceof OpenID4VPExceptions exception) {
+            WritableMap errorMap = Arguments.createMap();
+            errorMap.putString("errorCode", exception.getErrorCode());
+            errorMap.putString("message", exception.getMessage());
+            errorMap.putString("networkResponse", exception.getNetworkResponse());
+
+            promise.reject(exception.getErrorCode(), exception.getMessage(), exception, errorMap);
         } else {
             promise.reject("ERR_UNKNOWN", e.getMessage(), e);
         }

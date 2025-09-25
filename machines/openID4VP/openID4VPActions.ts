@@ -156,9 +156,8 @@ export const openID4VPActions = (model: any) => {
     setAuthenticationError: model.assign({
       error: (_, event) => {
         console.error(
-          'Error occured during the authenticateVerifier call :',
-          event.data.message,
-          event.data.code,
+          'Error occurred during the authenticateVerifier call :',
+           event.data.userInfo,
         );
         return event.data.code;
       },
