@@ -76,10 +76,10 @@ class OpenID4VP {
     );
   }
 
-  static sendErrorToVerifier(errorMessage: string, errorCode: string) {
-    OpenID4VP.getInstance().then(openID4VP => {
-      openID4VP.InjiOpenID4VP.sendErrorToVerifier(errorMessage, errorCode);
-    });
+  static async sendErrorToVerifier(errorMessage: string, errorCode: string) {
+    const openID4VP = await OpenID4VP.getInstance();
+
+    return openID4VP.InjiOpenID4VP.sendErrorToVerifier(errorMessage, errorCode);
   }
 
   private processSelectedVCs(

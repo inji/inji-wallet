@@ -9,7 +9,12 @@ import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {VCFormat} from '../../shared/VCFormat';
 import {KeyTypes} from '../../shared/cryptoutil/KeyTypes';
 import {getMdocAuthenticationAlorithm} from '../../components/VC/common/VCUtils';
-import {isIOS, JWT_ALG_TO_KEY_TYPE} from '../../shared/constants';
+import {
+  isIOS,
+  JWT_ALG_TO_KEY_TYPE,
+  OVP_ERROR_CODE,
+  OVP_ERROR_MESSAGES,
+} from '../../shared/constants';
 import {canonicalize, getVerifierKey} from '../../shared/Utils';
 import {
   constructDetachedJWT,
@@ -79,6 +84,13 @@ export const openID4VPServices = () => {
 
     getSelectedKey: async (context: any) => {
       return await fetchKeyPair(context.keyType);
+    },
+
+    shareDeclineStatus: async () => {
+      return await OpenID4VP.sendErrorToVerifier(
+        OVP_ERROR_MESSAGES.DECLINED,
+        OVP_ERROR_CODE.DECLINED,
+      );
     },
 
     sendVP: (context: any) => async () => {

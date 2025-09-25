@@ -62,6 +62,7 @@ import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.MdocVPTokenSigningResult;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.sdJwt.SdJwtVPTokenSigningResult;
 import io.mosip.openID4VP.constants.FormatType;
+import io.mosip.openID4VP.networkManager.NetworkResponse;
 import kotlinx.serialization.json.Json;
 
 public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
@@ -150,22 +151,27 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sendErrorToVerifier(String errorMessage, String errorCode) {
-        OpenID4VPExceptions exception;
+    public void sendErrorToVerifier(String errorMessage, String errorCode, Promise promise) {
+        try {
+            OpenID4VPExceptions exception;
 
-        switch (errorCode) {
-            case ACCESS_DENIED:
-                exception = new OpenID4VPExceptions.AccessDenied(errorMessage, "InjiOpenID4VPModule");
-                break;
-            case INVALID_TRANSACTION_DATA:
-                exception = new OpenID4VPExceptions.InvalidTransactionData(errorMessage, "InjiOpenID4VPModule");
-                break;
-            default:
-                exception = new OpenID4VPExceptions.GenericFailure(errorMessage, "InjiOpenID4VPModule");
-                break;
+            switch (errorCode) {
+                case ACCESS_DENIED:
+                    exception = new OpenID4VPExceptions.AccessDenied(errorMessage, "InjiOpenID4VPModule");
+                    break;
+                case INVALID_TRANSACTION_DATA:
+                    exception = new OpenID4VPExceptions.InvalidTransactionData(errorMessage, "InjiOpenID4VPModule");
+                    break;
+                default:
+                    exception = new OpenID4VPExceptions.GenericFailure(errorMessage, "InjiOpenID4VPModule");
+                    break;
+            }
+
+            String verifierResponse = openID4VP.sendErrorResponseToVerifier(exception);
+            promise.resolve(verifierResponse);
+        } catch (Exception exception) {
+            rejectWithOpenID4VPExceptions(exception, promise);
         }
-
-        openID4VP.sendErrorToVerifier(exception);
     }
 
     private WalletMetadata parseWalletMetadata(ReadableMap walletMetadata) {

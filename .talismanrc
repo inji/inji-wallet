@@ -390,6 +390,8 @@ fileignoreconfig:
     checksum: 6b315164dca5de95c11e0dc8cbb480207b19c312b1c9135adc39ef74a1ff7e35
   - filename: screens/Scan/SendVPScreenController.ts
     checksum: f898ac7f1ecfa1df17e33b327d675f57debf2d5bd56052fc047dd03577354590
+  - filename: screens/Scan/SendVPScreen.tsx
+    checksum: de80cb9a932ed99e224438a8c373d117807101a39a440e97977654ef6935af6c
   - filename: machines/openID4VP/openID4VPMachine.typegen.ts
     checksum: a87664e146d420fb3140a0f6579980aaf82041928b502f8b301b4ebff048351c
   - filename: ios/RNOpenID4VPModule.swift

@@ -99,7 +99,10 @@ export function useOvpErrorModal({
         showRetryButton: false,
       });
       generateAndStoreLogMessage('INVALID_REQUEST_URI_METHOD');
-    } else if (error.includes('invalid_request')) {
+    } else if (
+      error.includes('invalid_request') ||
+      error.includes('invalid_request_object')
+    ) {
       setErrorModal({
         show: true,
         title: t('errors.invalidQrCode.title'),

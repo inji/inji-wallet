@@ -155,7 +155,11 @@ export const openID4VPActions = (model: any) => {
 
     setAuthenticationError: model.assign({
       error: (_, event) => {
-        console.error('Error:', event.data.message, event.data.code);
+        console.error(
+          'Error occured during the authenticateVerifier call :',
+          event.data.message,
+          event.data.code,
+        );
         return event.data.code;
       },
     }),
@@ -225,13 +229,6 @@ export const openID4VPActions = (model: any) => {
       },
       {to: (context: any) => context.serviceRefs.activityLog},
     ),
-
-    shareDeclineStatus: () => {
-      OpenID4VP.sendErrorToVerifier(
-        OVP_ERROR_MESSAGES.DECLINED,
-        OVP_ERROR_CODE.DECLINED,
-      );
-    },
 
     setIsFaceVerificationRetryAttempt: model.assign({
       isFaceVerificationRetryAttempt: () => true,
@@ -317,7 +314,8 @@ function getVcsMatchingAuthRequest(context, event) {
   }
 
   if (Object.keys(matchingVCs).length === 0) {
-    OpenID4VP.sendErrorToVerifier(
+    // Error is only sent when there are no VCs matching the request
+    void OpenID4VP.sendErrorToVerifier(
       OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
       OVP_ERROR_CODE.NO_MATCHING_VCS,
     );
@@ -378,7 +376,8 @@ function areVCFormatAndProofTypeMatchingRequest(
       const alg = extractAlgFromSdJwt(sdJwt);
 
       return Object.entries(requestFormat).some(
-        ([type, value]) => type === vcFormatType && value["sd-jwt_alg_values"]?.includes(alg),
+        ([type, value]) =>
+          type === vcFormatType && value['sd-jwt_alg_values']?.includes(alg),
       );
     } catch (e) {
       console.error('Error processing SD-JWT alg match:', e);
