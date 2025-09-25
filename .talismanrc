@@ -409,5 +409,5 @@ fileignoreconfig:
   - filename: shared/vcRenderer/VcRenderer.ts
     checksum: 02f7d58fb149ecd3f10dd0bdfb6e85c4b3ae41d29a40d192056ffec0367b53c6
   - filename: components/VC/Views/VCDetailView.tsx
-    checksum: 28537e64ff03c0bf9580d02fda145b49181a073c3df3f792674275a62f1e5667
+    checksum: 890c216a5632ac77b938f2f58f2123a669ea45b933a41931b8e7324e315f2d50
     version: "1.0"
