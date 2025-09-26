@@ -32,7 +32,6 @@ export const SendVcScreen: React.FC = () => {
     controller.shareableVcsMetadata,
   );
   let service;
-  console.log("face:",controller.verifiableCredentialData)
   if (shareableVcsMetadataOrderedByPinStatus?.length > 0) {
     const vcMetadata = shareableVcsMetadataOrderedByPinStatus[0];
     const firstVCMachine = useRef(

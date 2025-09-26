@@ -623,7 +623,7 @@ export const requestMachine =
                 credentialConfigurationId:
                   context.incomingVc.verifiableCredential
                     .credentialConfigurationId,
-                issuer: vcMetadata.issuer!!,
+                issuer: vcMetadata.issuerHost!!,
                 timestamp: Date.now(),
                 deviceName:
                   context.senderInfo.name || context.senderInfo.deviceName,

@@ -254,7 +254,7 @@ export const ScanActions = (model: any) => {
               : 'VC_SHARED_WITH_VERIFICATION_CONSENT',
             credentialConfigurationId:
               context.selectedVc.verifiableCredential.credentialConfigurationId,
-            issuer: vcMetadata.issuer!!,
+            issuer: vcMetadata.issuerHost!!,
             timestamp: Date.now(),
             deviceName:
               context.receiverInfo.name || context.receiverInfo.deviceName,
@@ -274,7 +274,7 @@ export const ScanActions = (model: any) => {
             timestamp: Date.now(),
             credentialConfigurationId:
               context.selectedVc.verifiableCredential.credentialConfigurationId,
-            issuer: vcMetadata.issuer!!,
+            issuer: vcMetadata.issuerHost!!,
             deviceName:
               context.receiverInfo.name || context.receiverInfo.deviceName,
           }),
@@ -362,7 +362,7 @@ export const ScanActions = (model: any) => {
         return ActivityLogEvents.LOG_ACTIVITY(
           VCActivityLog.getLogFromObject({
             _vcKey: vcMetadata.getVcKey(),
-            issuer: vcMetadata.issuer!!,
+            issuer: vcMetadata.issuerHost!!,
             credentialConfigurationId:
               selectedVc.verifiableCredential.credentialConfigurationId,
             type: 'QRLOGIN_SUCCESFULL',
