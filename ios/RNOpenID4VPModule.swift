@@ -169,26 +169,30 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
     }
   }
 
-@objc
-func sendErrorToVerifier(_ error: String, _ errorCode: String,
-                         resolver resolve: @escaping RCTPromiseResolveBlock,
-                         rejecter reject: @escaping RCTPromiseRejectBlock) {
+  @objc
+  func sendErrorToVerifier(_ error: String, _ errorCode: String,
+                           resolver resolve: @escaping RCTPromiseResolveBlock,
+                           rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
-        let exception: OpenID4VPException = {
-            switch errorCode {
-            case OpenID4VPErrorCodes.accessDenied:
-                return AccessDenied(message: error, className: Self.moduleName())
-            case OpenID4VPErrorCodes.invalidTransactionData:
-                return InvalidTransactionData(message: error, className: Self.moduleName())
-            default:
-                return GenericFailure(message: error, className: Self.moduleName())
-            }
-        }()
-
-        await openID4VP?.sendErrorToVerifier(error: exception)
-        resolve(true)
+      let exception: OpenID4VPException = {
+        switch errorCode {
+        case OpenID4VPErrorCodes.accessDenied:
+          return AccessDenied(message: error, className: Self.moduleName())
+        case OpenID4VPErrorCodes.invalidTransactionData:
+          return InvalidTransactionData(message: error, className: Self.moduleName())
+        default:
+          return GenericFailure(message: error, className: Self.moduleName())
+        }
+      }()
+      
+      do {
+        let verifierResponse = try await openID4VP?.sendErrorResponseToVerifier(error: exception)
+        resolve(verifierResponse)
+      } catch {
+        rejectWithOpenID4VPError(error, reject: reject)
+      }
     }
-}
+  }
   
   private func parseVerifiers(_ verifiers: [[String: Any]]) throws -> [Verifier] {
     return try verifiers.map { verifierDict in
