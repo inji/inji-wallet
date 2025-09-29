@@ -22,7 +22,9 @@ const signatureSuite = 'JsonWebSignature2020';
 export const openID4VPServices = () => {
   return {
     fetchTrustedVerifiers: async () => {
-      return await CACHED_API.fetchTrustedVerifiersList();
+      const newVar = await CACHED_API.fetchTrustedVerifiersList(false);
+      console.log('newVar', newVar);
+      return newVar;
     },
 
     shouldValidateClient: async () => {

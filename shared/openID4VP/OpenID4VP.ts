@@ -33,6 +33,7 @@ class OpenID4VP {
     urlEncodedAuthorizationRequest: string,
     trustedVerifiersList: any,
   ) {
+    console.log('trustedVerifiersList', trustedVerifiersList);
     const shouldValidateClient = await isClientValidationRequired();
     const openID4VP = await OpenID4VP.getInstance();
 
@@ -154,7 +155,7 @@ class OpenID4VP {
       disclosureSet.size > 0
         ? [jwt, ...disclosureSet].join('~') + '~'
         : jwt + '~';
- 
+
     return finalSdJwt;
   }
 }
