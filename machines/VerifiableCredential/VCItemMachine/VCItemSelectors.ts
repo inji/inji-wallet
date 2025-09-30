@@ -3,7 +3,7 @@ import {VCMetadata} from '../../../shared/VCMetadata';
 import {VCItemMachine} from './VCItemMachine';
 import {
   getMosipLogo,
-  vcHasImage,
+  getFaceAttribute,
 } from '../../../components/VC/common/VCUtils';
 import {
   Credential,
@@ -49,7 +49,7 @@ export function selectVerifiableCredentialData(
 ): VerifiableCredentialData {
   const vcMetadata = new VCMetadata(state.context.vcMetadata);
   const faceField =
-    vcHasImage(state.context.verifiableCredential,state.context.format) ??
+    getFaceAttribute(state.context.verifiableCredential,state.context.format) ??
     state.context.credential?.biometrics?.face;
 
   return {

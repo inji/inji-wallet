@@ -716,7 +716,7 @@ const PROOF_TYPE_ALGORITHM_MAP = {
   [-7]: 'ES256',
 };
 
-export function vcHasImage(verifiableCredential, format) {
+export function getFaceAttribute(verifiableCredential, format) {
   let credentialSubject = {};
   if (format === VCFormat.ldp_vc) {
     credentialSubject =

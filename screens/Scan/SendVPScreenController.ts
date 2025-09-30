@@ -48,7 +48,7 @@ import {VPShareOverlayProps} from './VPShareOverlay';
 import {ActivityLogEvents} from '../../machines/activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
 import {isIOS} from '../../shared/constants';
-import { vcHasImage } from '../../components/VC/common/VCUtils';
+import { getFaceAttribute } from '../../components/VC/common/VCUtils';
 
 type MyVcsTabNavigation = NavigationProp<RootRouteProps>;
 
@@ -97,14 +97,14 @@ export function useSendVPScreen() {
     return Object.values(vcs)
       .flatMap(vc => vc)
       .some(vc => {
-        return vcHasImage(vc.verifiableCredential,vc.format) != null;
+        return getFaceAttribute(vc.verifiableCredential,vc.format) != null;
       });
   };
 
   const checkIfAllVCsHasImage = vcs => {
     return Object.values(vcs)
       .flatMap(vc => vc)
-      .every(vc => vcHasImage(vc.verifiableCredential,vc.format) != null);
+      .every(vc => getFaceAttribute(vc.verifiableCredential,vc.format) != null);
   };
 
   const getSelectedVCs = (): Record<string, any[]> => {
