@@ -33,7 +33,6 @@ class OpenID4VP {
     urlEncodedAuthorizationRequest: string,
     trustedVerifiersList: any,
   ) {
-    console.log('trustedVerifiersList', trustedVerifiersList);
     const shouldValidateClient = await isClientValidationRequired();
     const openID4VP = await OpenID4VP.getInstance();
 

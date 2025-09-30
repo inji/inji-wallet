@@ -28,7 +28,7 @@ export async function request(
   method: HTTP_METHOD,
   path: `/${string}` | string,
   body?: Record<string, unknown>,
-  host = 'https://69f765eeecff.ngrok-free.app',
+  host = MIMOTO_BASE_URL,
   headers: Record<string, string> = {
     'Content-Type': 'application/json',
   },
@@ -60,7 +60,6 @@ export async function request(
           body: body ? JSON.stringify(body) : undefined,
           signal: controller.signal,
         });
-        console.log('Response received from ', requestUrl, response);
       } catch (error: any) {
         clearTimeout(timeoutId);
         console.error(`Request failed: ${requestUrl}:`, error);

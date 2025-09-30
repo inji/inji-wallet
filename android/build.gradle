@@ -14,7 +14,6 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-        mavenLocal()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:8.4.0")
@@ -31,7 +30,6 @@ allprojects { repositories {
     maven{url("https://central.sonatype.com/repository/maven-snapshots/")}
     maven { url(expoCameraMavenPath) }
     mavenCentral()
-    mavenLocal()
     maven {url("https://repo.danubetech.com/repository/maven-public/")}
     configurations.all {
         resolutionStrategy {

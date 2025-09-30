@@ -163,7 +163,7 @@ export const API = {
 export const CACHED_API = {
   fetchTrustedVerifiersList: (isCachePreferred: boolean = true) =>
     generateCacheAPIFunction({
-      isCachePreferred: false,
+      isCachePreferred,
       cacheKey: API_CACHED_STORAGE_KEYS.fetchTrustedVerifiers,
       fetchCall: API.fetchTrustedVerifiersList,
     }),
