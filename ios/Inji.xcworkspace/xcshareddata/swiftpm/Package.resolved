@@ -2,6 +2,15 @@
   "originHash" : "a3146fb582ba55930e9db89f50cf0454e89ade6fb6a380b0e7d649e8527e703a",
   "pins" : [
     {
+      "identity" : "aexml",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tadija/AEXML.git",
+      "state" : {
+        "revision" : "db806756c989760b35108146381535aec231092b",
+        "version" : "4.7.0"
+      }
+    },
+    {
       "identity" : "alamofire",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Alamofire/Alamofire.git",
@@ -79,7 +88,7 @@
       "location" : "https://github.com/mosip/inji-vc-renderer-ios-swift.git",
       "state" : {
         "branch" : "release-0.1.x",
-        "revision" : "58237eae6caf198d725ecfcd397b4d6f8f2d87bd"
+        "revision" : "97842f70c7bc510afb0bb415b9806b4e722808f0"
       }
     },
     {
