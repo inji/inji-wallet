@@ -1,5 +1,5 @@
 import {isLocationEnabled} from 'react-native-device-info';
-import Storage, { isMinimumStorageLimitReached } from '../../../shared/storage';
+import  { isMinimumStorageLimitReached } from '../../../shared/storage';
 import BluetoothStateManager from 'react-native-bluetooth-state-manager';
 import {
   check,
@@ -169,10 +169,10 @@ export const ScanServices = (model: any) => {
           });
         }
       };
+      const { processedCredential, ...rest } = context.selectedVc;
+      const payload = JSON.stringify(rest);
       wallet.sendData(
-        JSON.stringify({
-          ...context.selectedVc,
-        }),
+        payload
       );
       const subscription = subscribe(statusCallback);
       return () => subscription?.remove();

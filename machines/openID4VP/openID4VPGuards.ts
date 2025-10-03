@@ -1,3 +1,4 @@
+import { getFaceAttribute } from '../../components/VC/common/VCUtils';
 import {VCShareFlowType} from '../../shared/Utils';
 
 export const openID4VPGuards = () => {
@@ -25,7 +26,7 @@ export const openID4VPGuards = () => {
       const hasImage = Object.values(context.selectedVCs)
         .flatMap(vc => vc)
         .some(
-          vc => vc.verifiableCredential?.credential?.credentialSubject?.face,
+          vc => getFaceAttribute(vc.verifiableCredential,vc.format) != null,
         );
       return !!hasImage;
     },

@@ -115,7 +115,8 @@ export const activityLogMachine =
         }),
 
         setActivities: model.assign({
-          activities: (_, event) => (event.response || []) as VCActivityLog[],
+          activities: (_, event) => {
+            return (event.response || []) as VCActivityLog[]},
         }),
 
         storeActivity: send(

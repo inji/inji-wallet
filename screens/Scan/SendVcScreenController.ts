@@ -91,6 +91,7 @@ export function useSendVcScreen() {
         } = vcRef.getSnapshot().context;
         const vcData = {
           ...rest,
+          processedCredential,
           verifiableCredential: filteredVerifiableCredential,
         };
         scanService.send(
