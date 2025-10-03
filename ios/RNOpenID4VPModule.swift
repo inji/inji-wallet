@@ -197,9 +197,10 @@ func sendErrorToVerifier(_ error: String, _ errorCode: String,
         throw NSError(domain: "OpenID4VP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Verifier data"])
       }
       
-      var jwksUri: String? = nil
-      if let jwksUriInfo = verifierDict["jwks_uri"] as? String {
-        jwksUri = jwksUriInfo
+      let jwksUri: String? = verifierDict["jwks_uri"] as? String
+      
+      if let allowUnsignedRequest = verifierDict["allow_unsigned_request"] as? Bool {
+        return Verifier(clientId: clientId, responseUris: responseUris, jwksUri: jwksUri, allowUnsignedRequest: allowUnsignedRequest)
       }
       
       return Verifier(clientId: clientId, responseUris: responseUris,jwksUri: jwksUri)

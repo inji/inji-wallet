@@ -244,6 +244,11 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                     e.printStackTrace();
                 }
             }
+            if(verifierMap.hasKey("allow_unsigned_request")){
+                boolean allowUnsignedRequest = verifierMap.getBoolean("allow_unsigned_request");
+                verifiers.add(new Verifier(clientId, responseUriList, jwksUri, allowUnsignedRequest));
+                continue;
+            }
 
             verifiers.add(new Verifier(clientId, responseUriList, jwksUri));
         }
