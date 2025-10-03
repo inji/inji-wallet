@@ -606,14 +606,13 @@ public class ChangeLanguageTest extends IosBaseTest {
         assertTrue(addNewCardPage.isDownloadViaSunbirdDisplayed(), "Verify if download sunbird displayed");
         SunbirdLoginPage sunbirdLoginPage = addNewCardPage.clickOnDownloadViaSunbird();
         addNewCardPage.clickOnCredentialTypeHeadingInsuranceCredential();
-        addNewCardPage.clickOnContinueButtonInSigninPopupIos();
+//        addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         sunbirdLoginPage.enterPolicyNumber(getPolicyNumber());
         sunbirdLoginPage.enterFullName(getPolicyName());
         sunbirdLoginPage.enterDateOfBirth();
         IosUtil.scrollToElement(getDriver(), 100, 800, 100, 200);
         sunbirdLoginPage.clickOnLoginButton();
 
-        addNewCardPage.clickOnDoneButton();
         assertTrue(sunbirdLoginPage.isSunbirdCardActive(), "Verify if download sunbird displayed active");
         SettingsPage settingsPage = homePage.clickOnSettingIcon();
 
@@ -628,7 +627,7 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         sunbirdLoginPage.openDetailedSunbirdVcView();
 
-        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(), TestDataReader.readData("fullNameSunbird"));
+        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(), getPolicyName());
         assertEquals(sunbirdLoginPage.getPolicyNameForSunbirdCard(), TestDataReader.readData("policyNameSunbird"));
         assertEquals(sunbirdLoginPage.getPhoneNumberForSunbirdCard(), TestDataReader.readData("phoneNumberSunbird"));
         assertTrue(sunbirdLoginPage.isDateOfBirthValueForSunbirdCardDisplayed());
@@ -966,7 +965,7 @@ public class ChangeLanguageTest extends IosBaseTest {
         assertTrue(homePage.verifyAppSettingsHeader("English"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyAppSettingDescription("English"), "Verify if app settings description displayed");
         homePage.clickOnNextButton();
-        homePage.clickOnNextButtonForInjiTour();
+//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }
@@ -1016,7 +1015,7 @@ public class ChangeLanguageTest extends IosBaseTest {
         assertTrue(homePage.verifyAppSettingsHeader("Hindi"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyAppSettingDescription("Hindi"), "Verify if app settings description displayed");
         homePage.clickOnNextButton();
-        homePage.clickOnNextButtonForInjiTour();
+//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }
@@ -1066,7 +1065,7 @@ public class ChangeLanguageTest extends IosBaseTest {
         assertTrue(homePage.verifyAppSettingsHeader("Kannada"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyAppSettingDescription("Kannada"), "Verify if app settings description displayed");
         homePage.clickOnNextButton();
-        homePage.clickOnNextButtonForInjiTour();
+//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }
@@ -1116,7 +1115,7 @@ public class ChangeLanguageTest extends IosBaseTest {
         assertTrue(homePage.verifyAppSettingsHeader("Tamil"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyAppSettingDescription("Tamil"), "Verify if app settings description displayed");
         homePage.clickOnNextButton();
-        homePage.clickOnNextButtonForInjiTour();
+//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }
@@ -1166,7 +1165,7 @@ public class ChangeLanguageTest extends IosBaseTest {
         assertTrue(homePage.verifyAppSettingsHeader("Filipino"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyAppSettingDescription("Filipino"), "Verify if app settings description displayed");
         homePage.clickOnNextButton();
-        homePage.clickOnNextButtonForInjiTour();
+//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }

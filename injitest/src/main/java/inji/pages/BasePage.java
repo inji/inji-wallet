@@ -140,6 +140,8 @@ public class BasePage {
                 ExtentReportManager.getTest().log(Status.FAIL, "Failed to click on element: " + describeElement(element));
                 throw e;
             }
+        } else {
+            throw new RuntimeException("Element not visible: " + stepDesc);
         }
     }
 
@@ -166,6 +168,8 @@ public class BasePage {
         if (isElementVisible(element)) {
             element.sendKeys(text);
             logStep(stepDesc + " - Entered text: '" + text + "'", element);
+        } else {
+            throw new RuntimeException("Element not visible: " + stepDesc);
         }
     }
 
@@ -174,6 +178,8 @@ public class BasePage {
             element.clear();
             element.sendKeys(text);
             logStep(stepDesc + " - Cleared and entered: '" + text + "'", element);
+        } else {
+            throw new RuntimeException("Element not visible: " + stepDesc);
         }
     }
 

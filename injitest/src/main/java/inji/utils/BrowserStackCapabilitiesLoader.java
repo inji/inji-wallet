@@ -29,6 +29,7 @@ public class BrowserStackCapabilitiesLoader {
         bStackOptions.put("networkLogs", true); // network logs
         bStackOptions.put("interactiveDebugging", true); // optional
         bStackOptions.put("local", true); // set to true only if testing local resources
+        bStackOptions.put("localIdentifier", BrowserStackLocalManager.getLocalIdentifier());// set localIdentifier for browserstack local
 
         // passing credentials here instead of setting via -D
         bStackOptions.put("userName", InjiWalletConfigManager.getproperty("browserstack.username"));

@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>inji</groupId>
-    <artifactId>injitest</artifactId>
+    <groupId>io.mosip.inji</groupId>
+    <artifactId>inji-wallet</artifactId>
     <version>0.20.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>inji-mob-automation</name>
-    <description>inji-mob-automation</description>
-    <url>https://github.com/mosip/inji/injitest</url>
+    <name>uitest-inji-wallet</name>
+    <description>Project for Inji Mobile UI Automation</description>
+    <url>https://github.com/mosip/inji-wallet</url>
 
     <licenses>
         <license>
@@ -17,9 +17,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git://github.com/mosip/admin-ui.git</connection>
-        <developerConnection>scm:git:ssh://github.com:mosip/admin-ui.git</developerConnection>
-        <url>https://github.com/mosip/inji/injitest</url>
+        <connection>scm:git:git://github.com/mosip/inji-wallet.git</connection>
+        <developerConnection>scm:git:ssh://github.com/mosip/inji-wallet.git</developerConnection>
+        <url>https://github.com/mosip/inji-wallet</url>
         <tag>HEAD</tag>
     </scm>
     <developers>
@@ -27,9 +27,20 @@
             <name>Mosip</name>
             <email>mosip.emailnotifier@gmail.com</email>
             <organization>io.mosip</organization>
-            <organizationUrl>https://github.com/mosip/inji/injitest</organizationUrl>
+            <organizationUrl>https://github.com/mosip/inji-wallet</organizationUrl>
         </developer>
     </developers>
+    <repositories>
+        <repository>
+            <id>ossrh-central</id>
+            <name>MavenCentralRepository</name>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
@@ -37,6 +48,10 @@
         <surefire.plugin.version>3.5.3</surefire.plugin.version>
         <log4j.version>2.25.1</log4j.version>
         <jackson.version>2.14.3</jackson.version>
+        <maven.gpg.plugin.version>1.5</maven.gpg.plugin.version>
+        <maven.shade.plugin.version>3.6.1</maven.shade.plugin.version>
+        <central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
+        <jarName>uitest-inji-wallet-0.20.0-SNAPSHOT-jar-with-dependencies</jarName>
     </properties>
     <dependencies>
         <dependency>
@@ -192,6 +207,16 @@
             <version>5.1.2</version>
         </dependency>
     </dependencies>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://central.sonatype.com/api/v1/publisher</url>
+        </repository>
+    </distributionManagement>
     <build>
         <plugins>
             <plugin>
@@ -231,6 +256,69 @@
                         <goals>
                             <goal>revision</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>${central.publishing.maven.plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>ossrh</publishingServerId>
+                    <autoPublish>false</autoPublish>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${maven.shade.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>${jarName}}</finalName>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>inji.runner.MosipTestRunner</mainClass>
+                                </transformer>
+                            </transformers>
+                            <!-- add this to prevent some security issues when
+                            merging everything together -->
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${maven.gpg.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

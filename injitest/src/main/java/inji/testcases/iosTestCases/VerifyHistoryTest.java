@@ -258,10 +258,10 @@ public class VerifyHistoryTest extends IosBaseTest {
 
 //        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 //        String uin = TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
@@ -328,10 +328,10 @@ public class VerifyHistoryTest extends IosBaseTest {
 
 //        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         //String vid = TestDataReader.readData("vid");
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getVID());
@@ -399,7 +399,7 @@ public class VerifyHistoryTest extends IosBaseTest {
         assertTrue(addNewCardPage.isDownloadViaSunbirdDisplayed(), "Verify if download sunbird displayed");
         SunbirdLoginPage sunbirdLoginPage = addNewCardPage.clickOnDownloadViaSunbird();
         addNewCardPage.clickOnCredentialTypeHeadingInsuranceCredential();
-        addNewCardPage.clickOnContinueButtonInSigninPopupIos();
+//        addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         sunbirdLoginPage.enterPolicyNumber(getPolicyNumber());
         sunbirdLoginPage.enterFullName(getPolicyName());
         sunbirdLoginPage.enterDateOfBirth();
@@ -412,7 +412,7 @@ public class VerifyHistoryTest extends IosBaseTest {
 
         sunbirdLoginPage.openDetailedSunbirdVcView();
 
-        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCardForDetailView(), TestDataReader.readData("fullNameSunbird"));
+        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCardForDetailView(), getPolicyName());
         assertEquals(sunbirdLoginPage.getPolicyNameForSunbirdCard(), TestDataReader.readData("policyNameSunbird"));
         assertEquals(sunbirdLoginPage.getPhoneNumberForSunbirdCard(), TestDataReader.readData("phoneNumberSunbird"));
         assertTrue(sunbirdLoginPage.isDateOfBirthValueForSunbirdCardDisplayed());
@@ -455,7 +455,7 @@ public class VerifyHistoryTest extends IosBaseTest {
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 //        String uin = TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
@@ -509,7 +509,7 @@ public class VerifyHistoryTest extends IosBaseTest {
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -564,7 +564,7 @@ public class VerifyHistoryTest extends IosBaseTest {
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 

@@ -23,15 +23,15 @@ public class SunbirdLoginPage extends BasePage {
     private WebElement loginWithKBA;
 
     @AndroidFindBy(xpath = "//*[@resource-id=\"_form_policyNumber\"]")
-    @iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField[@name=\"Please fill in this field\" and @value=\"Policy Number\"]")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField[@value=\"Policy Number\"]")
     private WebElement enterPolicyTextBox;
 
     @AndroidFindBy(xpath = "//android.widget.EditText[@resource-id=\"_form_fullName\"]")
-    @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeTextField[`name == \"Please fill in this field\"`][2]")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField[@value=\"Full Name\"]")
     private WebElement enterFullNameTextBox;
 
     @AndroidFindBy(uiAutomator = "UiSelector().className(\"android.widget.Spinner\")")
-    @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeOther[`name == \"Please fill in this field\"`]")
+    @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeOther[`name == \"eSignet\"`]/XCUIElementTypeOther[10]")
     private WebElement enterDateOfBirthTextBox;
 
     @iOSXCUITFindBy(xpath = "//XCUIElementTypePickerWheel[@value=\"2025\"]")
@@ -189,7 +189,7 @@ public class SunbirdLoginPage extends BasePage {
     private WebElement setButton;
 
     @AndroidFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
-    @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+    @iOSXCUITFindBy(accessibility = "Continue")
     private WebElement continuePopupButton;
 
     public void clickOnLoginWithKbaButton() {

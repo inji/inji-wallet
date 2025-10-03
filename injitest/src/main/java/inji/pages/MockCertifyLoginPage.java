@@ -25,7 +25,7 @@ public class MockCertifyLoginPage extends BasePage {
     @iOSXCUITFindBy(xpath = "//*[contains(@text,'Login with e-Signet')]")
     private WebElement esignetLoginHeader;
 
-    @AndroidFindBy(xpath = "//*[contains(@text,'Please enter your UIN/VID')]")
+    @AndroidFindBy(xpath = "//android.widget.EditText[@resource-id=\"Otp_vid\"]")
     @iOSXCUITFindBy(xpath = "//*[contains(@text,'Please enter your UIN/VID'')]")
     private WebElement enterYourVidTextHeader;
 
@@ -38,12 +38,12 @@ public class MockCertifyLoginPage extends BasePage {
     private WebElement getOtpButton;
 
 
-    @AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.Button\").instance(1)")
+    @AndroidFindBy(xpath = "//android.widget.Button[@resource-id=\"verify_otp\"]")
     @iOSXCUITFindBy(accessibility = "Verify")
     private WebElement verifyButton;
 
-    @AndroidFindBy(xpath = "//*[contains(@text,'OTP has been sent to your registered Mobile Number')]")
-    @iOSXCUITFindBy(xpath = "//*[contains(@text,'OTP has been sent to your registered Mobile Number')]")
+    @AndroidFindBy(xpath = "//*[contains(@text,'Please enter the 6-digit OTP sent to')]")
+    @iOSXCUITFindBy(xpath = "//*[contains(@text,'Please enter the 6-digit OTP sent to')]")
     private WebElement otpSendMessage;
 
     @AndroidFindBy(className = "android.view.ViewGroup")
@@ -140,6 +140,7 @@ public class MockCertifyLoginPage extends BasePage {
     }
 
     public void clickOnGetOtpButton() {
+        ((HidesKeyboard) driver).hideKeyboard();
         click(getOtpButton, "Clicking on Get OTP button");
     }
 

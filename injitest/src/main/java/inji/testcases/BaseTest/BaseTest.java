@@ -12,6 +12,7 @@ import inji.driver.DriverManager;
 import inji.models.Policy;
 import inji.models.Uin;
 import inji.models.Vid;
+import inji.utils.BrowserStackLocalManager;
 import inji.utils.ExtentReportManager;
 import inji.utils.InjiWalletConfigManager;
 import inji.utils.testdatamanager.MockUINManager;
@@ -47,6 +48,7 @@ import java.util.Map;
 public abstract class BaseTest {
 
     protected Local bsLocal;
+
     private static final ThreadLocal<Uin> threadUin = new ThreadLocal<>();
     private static final ThreadLocal<Vid> threadVid = new ThreadLocal<>();
     private static final ThreadLocal<Uin> threadMockUin = new ThreadLocal<>();
@@ -62,15 +64,7 @@ public abstract class BaseTest {
     @BeforeSuite(alwaysRun = true)
     public void beforeSuite() {
         ExtentReportManager.initReport();
-        bsLocal = new Local();
-        Map<String, String> options = new HashMap<>();
-        options.put("key", InjiWalletConfigManager.getproperty("browserstack.accesskey"));
-        options.put("forcelocal", "true");
-        try {
-            bsLocal.start(options);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to start BrowserStack Local", e);
-        }
+        BrowserStackLocalManager.startLocal();
     }
 
     @BeforeMethod(alwaysRun = true)
@@ -205,6 +199,7 @@ public abstract class BaseTest {
     @AfterSuite(alwaysRun = true)
     public void afterSuite() {
         ExtentReportManager.flushReport();
+        BrowserStackLocalManager.stopLocal();
 
         // Generate final report file name
         String timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new Date());
@@ -241,15 +236,6 @@ public abstract class BaseTest {
                 LOGGER.info("Uploaded to S3: {}", success);
             } catch (Exception e) {
                 LOGGER.error("S3 upload failed: {}", e.getMessage(), e);
-            }
-        }
-
-        // Stop BrowserStack Local
-        if (bsLocal != null && bsLocal.isRunning()) {
-            try {
-                bsLocal.stop();
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to stop BrowserStack Local", e);
             }
         }
     }

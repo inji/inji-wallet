@@ -48,7 +48,7 @@ public class UnlockWithPasscodeTest extends AndroidBaseTest {
 //        assertTrue(enterYourPasscodePage.isEnterYourPasscodePageLoaded(), "Verify if enter your passcode page is displayed");
         enterYourPasscodePage.enterPasscodeOnPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
 
-        homePage.clickOnNextButtonForInjiTour();
+//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }

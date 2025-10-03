@@ -297,7 +297,7 @@ public class DeletingVcTest extends AndroidBaseTest {
 //        assertTrue(sunbirdLoginPage.isSunbirdCardActive(), "Verify if download sunbird displayed active");
 //        assertTrue(sunbirdLoginPage.isSunbirdCardLogoDisplayed(), "Verify if download sunbird logo displayed");
 //        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(),TestDataReader.readData("fullNameSunbird"));
-
+        addNewCardPage.clickOnDoneButton();
         MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
 //        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
 

@@ -36,7 +36,9 @@ public class AppUnlockMethodPage extends BasePage {
     }
 
     public SetPasscode clickOnUsePasscode() {
-        click(usePasscodeButton, "Click on 'Use Passcode' button to proceed");
+        if (isElementVisible(usePasscodeButton)) {
+            click(usePasscodeButton, "Click on 'Use Passcode' button to proceed");
+        }
         return new SetPasscode(driver);
     }
 

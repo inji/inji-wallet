@@ -211,7 +211,7 @@ public class NoNetworkAndroidTest extends AndroidBaseTest {
         assertTrue(helpPage.isHelpPageLoaded(), "Verify if help page is displayed");
         helpPage.exitHelpPage();
 
-        homePage.clickOnNextButtonForInjiTour();
+//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
     }
 

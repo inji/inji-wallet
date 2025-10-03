@@ -1,5 +1,6 @@
 package inji.pages;
 
+import inji.utils.InjiWalletConfigManager;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.HidesKeyboard;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -10,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ESignetLoginPage extends BasePage {
+
+    private static final String mosipIssuerCredentialType = InjiWalletConfigManager.getproperty("mosip.issuer.credentialType");
 
 
     @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeStaticText[`label == \"“Inji” Wants to Use “mosip.net” to Sign In\"`]")
@@ -30,7 +33,7 @@ public class ESignetLoginPage extends BasePage {
     @iOSXCUITFindBy(xpath = "//android.view.View[@resource-id=\"navbar-header\"]/android.widget.Image[1]")
     private WebElement ESignetLogo;
 
-    @AndroidFindBy(xpath = "//android.widget.EditText[@resource-id=\"Otp_mosip-vid\"]")
+    @AndroidFindBy(xpath = "//android.widget.EditText[@resource-id=\"Otp_vid\"]")
     @iOSXCUITFindBy(className = "XCUIElementTypeTextField")
     private WebElement enterIdTextBox;
 
@@ -38,12 +41,12 @@ public class ESignetLoginPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "Get OTP")
     private WebElement getOtpButton;
 
-    @AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.Button\").instance(1)")
+    @AndroidFindBy(xpath = "//android.widget.Button[@resource-id=\"verify_otp\"]")
     @iOSXCUITFindBy(accessibility = "Verify")
     private WebElement verifyButton;
 
-    @AndroidFindBy(xpath = "//*[contains(@text,'OTP has been sent to your registered Mobile Number')]")
-    @iOSXCUITFindBy(xpath = "//*[contains(@text,'OTP has been sent to your registered Mobile Number')]")
+    @AndroidFindBy(xpath = "//*[contains(@text,'Please enter the 6-digit OTP sent to')]")
+    @iOSXCUITFindBy(xpath = "//*[contains(@text,'Please enter the 6-digit OTP sent to')]")
     private WebElement otpSendMessage;
 
     @AndroidFindBy(className = "android.view.ViewGroup")
@@ -122,6 +125,10 @@ public class ESignetLoginPage extends BasePage {
     }
 
     public OtpVerificationPage setEnterIdTextBox(String uinOrVid) {
+        if ("iOS".equalsIgnoreCase(driver.getCapabilities().getCapability("platformName").toString())) {
+            click(enterIdTextBox, "Click on Enter ID textbox to enter UIN or VID"); // Needed for iOS before typing
+        }
+
         enterText(enterIdTextBox, uinOrVid, "Enter UIN or VID in Enter ID textbox");
         return new OtpVerificationPage(driver);
     }
@@ -201,6 +208,6 @@ public class ESignetLoginPage extends BasePage {
     }
 
     public void clickOnCredentialTypeHeadingMOSIPVerifiableCredential() {
-        click(credentialTypeHeadingMOSIPVerifiableCredential, "Click on Credential Type heading - MOSIP Verifiable Credential");
+        scrollAndClickByAccessibilityId(mosipIssuerCredentialType, "Click on 'MOSIP Verifiable Credential' option");
     }
 }

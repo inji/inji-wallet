@@ -19,7 +19,7 @@ DeletePolicySunBirdR:
    InjiWallet_SunBirdR_DeletePolicy_NOAUTH_Valid_Smoke_POLICY2:
       endPoint: $SUNBIRDBASEURL$/api/v1/Insurance/{insuranceid}
       description: Deleting Sunbird policy with valid parameters
-      uniqueIdentifier: TC_InjiWallet_DeletePolicySunBirdR_01
+      uniqueIdentifier: TC_InjiWallet_DeletePolicySunBirdR_02
       role: resident
       restMethod: delete
       checkErrorsOnlyInResponse: true
@@ -36,7 +36,7 @@ DeletePolicySunBirdR:
    InjiWallet_SunBirdR_DeletePolicy_NOAUTH_Valid_Smoke_POLICY3:
       endPoint: $SUNBIRDBASEURL$/api/v1/Insurance/{insuranceid}
       description: Deleting Sunbird policy with valid parameters
-      uniqueIdentifier: TC_InjiWallet_DeletePolicySunBirdR_01
+      uniqueIdentifier: TC_InjiWallet_DeletePolicySunBirdR_03
       role: resident
       restMethod: delete
       checkErrorsOnlyInResponse: true

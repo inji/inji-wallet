@@ -409,6 +409,7 @@ public class VerifyHistoryTest extends AndroidBaseTest {
         sunbirdLoginPage.clickOnLoginButton();
 
 //        assertTrue(sunbirdLoginPage.isSunbirdCardActive(), "Verify if download sunbird displayed active");
+        addNewCardPage.clickOnDoneButton();
         assertTrue(sunbirdLoginPage.isSunbirdCardLogoDisplayed(), "Verify if download sunbird logo displayed");
 //        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(),TestDataReader.readData("fullNameSunbird"));
 

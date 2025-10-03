@@ -89,7 +89,7 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
         assertTrue(homePage.verifyAppSettingsHeader("English"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyAppSettingDescription("English"), "Verify if app settings description displayed");
         homePage.clickOnNextButton();
-        homePage.clickOnNextButtonForInjiTour();
+//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }
@@ -217,7 +217,7 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
 
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
 //        String uin=TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
@@ -265,7 +265,7 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
         addNewCardPage.clickOnDownloadViaEsignet();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         esignetLoginPage.setEnterIdTextBox(getUIN());
         esignetLoginPage.clickOnGetOtpButton();
@@ -273,7 +273,7 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
-        addNewCardPage.clickOnDoneButton();
+//        addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         homePage.clickOnSettingIcon();
 
@@ -338,7 +338,7 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
 
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
 //        String uin=TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
