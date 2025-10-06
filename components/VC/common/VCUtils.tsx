@@ -152,7 +152,7 @@ export const getFieldValue = (
           return null;
         }
         return getLocalizedField(value?.toString());
-      }      
+      }
     }
   }
 };
@@ -715,3 +715,32 @@ const ProtectedCurve = {
 const PROOF_TYPE_ALGORITHM_MAP = {
   [-7]: 'ES256',
 };
+
+export function getFaceAttribute(verifiableCredential, format) {
+  let credentialSubject = {};
+  if (format === VCFormat.ldp_vc) {
+    credentialSubject =
+      verifiableCredential?.credential?.credentialSubject ??
+      verifiableCredential?.verifiableCredential.credential.credentialSubject ?? {};
+  } else if (format === VCFormat.mso_mdoc) {
+    const nameSpaces =
+      verifiableCredential?.processedCredential?.issuerSigned?.nameSpaces ??
+      verifiableCredential?.processedCredential?.nameSpaces ??
+      {};
+    credentialSubject = Object.values(nameSpaces)
+      .flat()
+      .reduce((acc, item) => {
+        const key = item.elementIdentifier;
+        const value = item.elementValue;
+        acc[key] = value;
+        return acc;
+      }, {} as Record<string, any>);
+  } else if (format === VCFormat.vc_sd_jwt || format === VCFormat.dc_sd_jwt) {
+    credentialSubject =
+      verifiableCredential?.processedCredential?.fullResolvedPayload ?? {};
+  }
+  const faceField =
+    getFaceField(credentialSubject)
+
+  return faceField
+}

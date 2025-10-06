@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import {
   Dimensions,
+  FlatList,
   Image,
   ImageBackground,
   ImageBackgroundProps,
@@ -55,31 +56,9 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
   const verifiableCredential = props.credential;
   const wellknownDisplayProperty = new Display(props.wellknown);
 
-  const [svgAspectRatio, setSvgAspectRatio] = useState<number | null>(null);
-
   const {width: deviceWidth} = Dimensions.get('window');
-  const targetHeight = svgAspectRatio
-    ? deviceWidth * svgAspectRatio
-    : deviceWidth * 0.7;
-
-  const svgTemplate =
-    Array.isArray(props.svgTemplate) && props.svgTemplate.length > 0
-      ? props.svgTemplate[0]
-      : null;
-
-  useEffect(() => {
-    if (svgTemplate) {
-      const match = svgTemplate.match(/viewBox="0 0 (\d+) (\d+)"/);
-      if (match) {
-        const [, w, h] = match.map(Number);
-        setSvgAspectRatio(h / w);
-      } else {
-        setSvgAspectRatio(null);
-      }
-    } else {
-      setSvgAspectRatio(null);
-    }
-  }, [svgTemplate]);
+  const CARD_WIDTH = deviceWidth * 0.8;
+  const CARD_SPACING = 16;
 
   const shouldShowHrLine = verifiableCredential => {
     let availableFieldNames: string[] = [];
@@ -134,26 +113,70 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
   return (
     <>
       <Column scroll>
-        {svgTemplate ? (
+        {Array.isArray(props.svgTemplate) && props.svgTemplate.length > 0 ? (
           <Column padding="30 0 0 0">
-            <Column padding="0 16 0 16">
-              <SvgCss
-                xml={svgTemplate}
-                width="100%"
-                height={targetHeight}
-                preserveAspectRatio="xMidYMid meet"
-                style={{backgroundColor: 'transparent'}}
-              />
-            </Column>
-            {svgTemplate?.includes(QR_IMAGE_ID) && (
-              <Button
-                testID="zoomQrCode"
-                title="Tap to zoom QR Code"
-                type="gradient"
-                size="Large"
-                onPress={() => setShowQrOverlay(true)}
-              />
-            )}
+            <FlatList
+              data={props.svgTemplate}
+              keyExtractor={(_, index) => `svg-${index}`}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              pagingEnabled={props.svgTemplate.length > 1}
+              snapToInterval={
+                props.svgTemplate.length > 1
+                  ? CARD_WIDTH + CARD_SPACING
+                  : undefined
+              }
+              decelerationRate="fast"
+              snapToAlignment="start"
+              contentContainerStyle={{
+                paddingHorizontal: 16,
+                justifyContent: 'center',
+                alignItems:
+                  props.svgTemplate.length === 1 ? 'center' : 'flex-start',
+              }}
+              ItemSeparatorComponent={() => (
+                <View style={{width: CARD_SPACING}} />
+              )}
+              renderItem={({item}) => {
+                let aspectRatio: number | null = null;
+                const match = item.match(/viewBox="0 0 (\d+) (\d+)"/);
+                if (match) {
+                  const [, w, h] = match.map(Number);
+                  aspectRatio = h / w;
+                }
+
+                const targetWidth =
+                  props.svgTemplate.length === 1
+                    ? deviceWidth - 32
+                    : CARD_WIDTH;
+                const targetHeight = aspectRatio
+                  ? targetWidth * aspectRatio
+                  : targetWidth * 0.7;
+
+                return (
+                  <Column style={{width: targetWidth}}>
+                    <SvgCss
+                      xml={item}
+                      width="100%"
+                      height={targetHeight}
+                      preserveAspectRatio="xMidYMid meet"
+                    />
+
+                    <View style={{height: 12}} />
+
+                    {item.includes(QR_IMAGE_ID) && (
+                      <Button
+                        testID="zoomQrCode"
+                        title="Tap to zoom QR Code"
+                        type="gradient"
+                        size="Large"
+                        onPress={() => setShowQrOverlay(true)}
+                      />
+                    )}
+                  </Column>
+                );
+              }}
+            />
 
             {showQrOverlay && (
               <QrCodeOverlay
@@ -257,7 +280,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
           </Column>
         )}
       </Column>
-      {!svgTemplate &&
+      {!props.svgTemplate &&
         props.vcHasImage &&
         !props.verifiableCredentialData?.vcMetadata.isExpired && (
           <View

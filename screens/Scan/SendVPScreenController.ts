@@ -42,14 +42,13 @@ import {selectShareableVcs} from '../../machines/VerifiableCredential/VCMetaMach
 import {RootRouteProps} from '../../routes';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
 import {GlobalContext} from '../../shared/GlobalContext';
-import {formatTextWithGivenLimit, isMosipVC} from '../../shared/Utils';
+import {formatTextWithGivenLimit} from '../../shared/Utils';
 import {VCMetadata} from '../../shared/VCMetadata';
 import {VPShareOverlayProps} from './VPShareOverlay';
 import {ActivityLogEvents} from '../../machines/activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
-import {SelectedCredentialsForVPSharing} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {isIOS} from '../../shared/constants';
-import { verifier } from '../../shared/tuvali';
+import { getFaceAttribute } from '../../components/VC/common/VCUtils';
 
 type MyVcsTabNavigation = NavigationProp<RootRouteProps>;
 
@@ -98,14 +97,14 @@ export function useSendVPScreen() {
     return Object.values(vcs)
       .flatMap(vc => vc)
       .some(vc => {
-        return isMosipVC(vc.vcMetadata?.issuer);
+        return getFaceAttribute(vc.verifiableCredential,vc.format) != null;
       });
   };
 
   const checkIfAllVCsHasImage = vcs => {
     return Object.values(vcs)
       .flatMap(vc => vc)
-      .every(vc => isMosipVC(vc.vcMetadata.issuer));
+      .every(vc => getFaceAttribute(vc.verifiableCredential,vc.format) != null);
   };
 
   const getSelectedVCs = (): Record<string, any[]> => {

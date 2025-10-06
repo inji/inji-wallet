@@ -17,7 +17,6 @@ import {
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {
   getVCsOrderedByPinStatus,
-  isMosipVC,
   VCItemContainerFlowType,
 } from '../../shared/Utils';
 import {FaceVerificationAlertOverlay} from './FaceVerificationAlertOverlay';
@@ -33,7 +32,6 @@ export const SendVcScreen: React.FC = () => {
     controller.shareableVcsMetadata,
   );
   let service;
-
   if (shareableVcsMetadataOrderedByPinStatus?.length > 0) {
     const vcMetadata = shareableVcsMetadataOrderedByPinStatus[0];
     const firstVCMachine = useRef(
@@ -102,7 +100,7 @@ export const SendVcScreen: React.FC = () => {
         <Column
           style={Theme.SendVcScreenStyles.shareOptionButtonsContainer}
           backgroundColor={Theme.Colors.whiteBackgroundColor}>
-          {isMosipVC(controller.verifiableCredentialData[0].issuer) && (
+          {controller.verifiableCredentialData[0].face && (
             <Button
               type="gradient"
               title={t('acceptRequestAndVerify')}
