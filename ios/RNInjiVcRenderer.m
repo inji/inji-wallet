@@ -6,11 +6,10 @@
 RCT_EXTERN_METHOD(init:(NSString *)traceabilityId)
 
 
-RCT_EXTERN_METHOD(renderVC:(NSString *)credentialFormat
-                  wellKnown:(NSString *)wellKnown
+RCT_EXTERN_METHOD(generateCredentialDisplayContent: (NSString *)credentialFormat
+                  wellKnown:(NSString * _Nullable)wellKnown
                   vcJsonString:(NSString *)vcJsonString
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
-
 
 @end

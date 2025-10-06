@@ -20,7 +20,7 @@ class RNInjiVcRenderer: NSObject, RCTBridgeModule {
   }
 
 
-    @objc(renderVC:wellKnown:vcJsonString:resolver:rejecter:)
+  @objc(generateCredentialDisplayContent:wellKnown:vcJsonString:resolver:rejecter:)
     func generateCredentialDisplayContent(
         credentialFormat: String,
         wellKnown: String?,
