@@ -79,7 +79,7 @@
       "location" : "https://github.com/mosip/inji-openid4vp-ios-swift.git",
       "state" : {
         "branch" : "release-0.5.x",
-        "revision" : "e939d4acf4e9f54d902b65913b93432fcd068b46"
+        "revision" : "b3ce7ef9f70229d76e01af89dcf92e7d9d677254"
       }
     },
     {
@@ -88,7 +88,7 @@
       "location" : "https://github.com/mosip/inji-vc-renderer-ios-swift.git",
       "state" : {
         "branch" : "release-0.1.x",
-        "revision" : "97842f70c7bc510afb0bb415b9806b4e722808f0"
+        "revision" : "68b6c14aaf1e572f84307e0f932d93a66134055d"
       }
     },
     {

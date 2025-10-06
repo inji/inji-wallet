@@ -26,6 +26,7 @@ import com.google.gson.GsonBuilder;
 
 import io.mosip.openID4VP.authorizationRequest.clientMetadata.ClientMetadata;
 import io.mosip.openID4VP.authorizationRequest.clientMetadata.ClientMetadataSerializer;
+import io.mosip.openID4VP.authorizationRequest.clientMetadata.Jwks;
 import io.mosip.openID4VP.constants.ClientIdScheme;
 import io.mosip.openID4VP.constants.ContentEncryptionAlgorithm;
 import io.mosip.openID4VP.constants.KeyManagementAlgorithm;
@@ -235,19 +236,21 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             String clientId = verifierMap.getString("client_id");
             ReadableArray responseUris = verifierMap.getArray("response_uris");
             List<String> responseUriList = convertReadableArrayToList(responseUris);
-            ClientMetadata clientMetadata = null;
-            if (verifierMap.hasKey("client_metadata") && !verifierMap.isNull("client_metadata")) {
+            String jwksUri = null;
+            if (verifierMap.hasKey("jwks_uri") && !verifierMap.isNull("jwks_uri")) {
                 try {
-                    ReadableMap metadataMap = verifierMap.getMap("client_metadata");
-                    String metadataJsonString = readableMapToJson(metadataMap).toString();
-                    clientMetadata = Json.Default.decodeFromString(ClientMetadataSerializer.INSTANCE,
-                            metadataJsonString);
+                    jwksUri = verifierMap.getString("jwks_uri");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+            if(verifierMap.hasKey("allow_unsigned_request")){
+                boolean allowUnsignedRequest = verifierMap.getBoolean("allow_unsigned_request");
+                verifiers.add(new Verifier(clientId, responseUriList, jwksUri, allowUnsignedRequest));
+                continue;
+            }
 
-            verifiers.add(new Verifier(clientId, responseUriList, clientMetadata));
+            verifiers.add(new Verifier(clientId, responseUriList, jwksUri));
         }
 
         return verifiers;

@@ -154,7 +154,7 @@ class OpenID4VP {
       disclosureSet.size > 0
         ? [jwt, ...disclosureSet].join('~') + '~'
         : jwt + '~';
- 
+
     return finalSdJwt;
   }
 }

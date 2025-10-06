@@ -5,7 +5,7 @@ import {
 import {__AppId} from './GlobalVariables';
 import {MIMOTO_BASE_URL, REQUEST_TIMEOUT} from './constants';
 import NetInfo from '@react-native-community/netinfo';
-import { ErrorMessage } from './openId4VCI/Utils';
+import {ErrorMessage} from './openId4VCI/Utils';
 
 export type HTTP_METHOD = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
 
@@ -78,15 +78,15 @@ export async function request(
     throw error;
   }
 
-  
   let jsonResponse;
   try {
     jsonResponse = await response.json();
   } catch (jsonError) {
     console.warn(`Failed to parse JSON from ${requestUrl}`, jsonError);
-    throw new Error(ErrorMessage.NETWORK_REQUEST_FAILED+' Invalid JSON response');
+    throw new Error(
+      ErrorMessage.NETWORK_REQUEST_FAILED + ' Invalid JSON response',
+    );
   }
-
 
   if (response.status >= 400) {
     const backendUrl = host + path;
@@ -102,9 +102,8 @@ export async function request(
     throw new Error(errorMessage);
   }
 
-  
   if (jsonResponse.errors && jsonResponse.errors.length) {
-    const { errorCode, errorMessage } = jsonResponse.errors.shift();
+    const {errorCode, errorMessage} = jsonResponse.errors.shift();
     console.error(
       `The backend API ${requestUrl} returned structured error --> error code: ${errorCode}, message: ${errorMessage}`,
     );

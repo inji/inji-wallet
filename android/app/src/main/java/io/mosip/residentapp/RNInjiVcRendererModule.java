@@ -2,7 +2,6 @@ package io.mosip.residentapp;
 
 import androidx.annotation.Nullable;
 
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -35,10 +34,14 @@ public class RNInjiVcRendererModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void renderVC(String credentialFormat, String wellKnown, String vcJsonString, Promise promise) {
+    public void generateCredentialDisplayContent(String credentialFormat, String wellKnown, String vcJsonString, Promise promise) {
         try {
-            List<Object> results = injiVcRenderer.renderVC(
-                    CredentialFormat.Companion.fromValue(credentialFormat),
+            CredentialFormat format = CredentialFormat.Companion.fromValue(credentialFormat);
+            if (format == null) {
+                throw new UnsupportedOperationException("Invalid credential format: " + credentialFormat);
+            }
+            List<Object> results = injiVcRenderer.generateCredentialDisplayContent(
+                    format,
                     wellKnown,
                     vcJsonString
             );

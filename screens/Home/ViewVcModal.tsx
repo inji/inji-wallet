@@ -85,7 +85,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
         setLoadingSvg(true);
 
         const vcJsonString = JSON.stringify(controller.credential.credential);
-        const result = await VcRenderer.getInstance().renderVC(
+        const result = await VcRenderer.getInstance().generateCredentialDisplayContent(
           controller.verifiableCredentialData.format,
           wellknown ?? null,
           vcJsonString,
