@@ -36,8 +36,12 @@ public class RNInjiVcRendererModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void generateCredentialDisplayContent(String credentialFormat, String wellKnown, String vcJsonString, Promise promise) {
         try {
+            CredentialFormat format = CredentialFormat.Companion.fromValue(credentialFormat);
+            if (format == null) {
+                throw new UnsupportedOperationException("Invalid credential format: " + credentialFormat);
+            }
             List<Object> results = injiVcRenderer.generateCredentialDisplayContent(
-                    CredentialFormat.Companion.fromValue(credentialFormat),
+                    format,
                     wellKnown,
                     vcJsonString
             );
