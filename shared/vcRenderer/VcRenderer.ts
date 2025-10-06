@@ -1,6 +1,5 @@
 import {NativeModules} from 'react-native';
 import {MMKVLoader} from 'react-native-mmkv-storage';
-import {CACHE_TTL} from '../constants';
 import {__AppId} from '../GlobalVariables';
 import {isCacheExpired} from '../Utils';
 
@@ -31,7 +30,7 @@ class VcRenderer {
     return `${CACHE_KEY_PREFIX}${vcId}`;
   }
 
-  async renderVC(
+  async generateCredentialDisplayContent(
     credentialFormat: string,
     wellKnown: string,
     vcJson: string,
@@ -56,7 +55,7 @@ class VcRenderer {
     }
 
     try {
-      const result: string[] = await this.InjiVcRenderer.renderVC(
+      const result: string[] = await this.InjiVcRenderer.generateCredentialDisplayContent(
         credentialFormat,
         wellKnown ? JSON.stringify(wellKnown) : null,
         vcJson,
@@ -79,7 +78,7 @@ class VcRenderer {
 
   async clearCache(vcId: string) {
     const cacheKey = this.createCacheKey(vcId);
-    await MMKV.removeItem(cacheKey);
+    MMKV.removeItem(cacheKey);
   }
 }
 

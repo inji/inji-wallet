@@ -21,7 +21,7 @@ class RNInjiVcRenderer: NSObject, RCTBridgeModule {
 
 
     @objc(renderVC:wellKnown:vcJsonString:resolver:rejecter:)
-    func renderVC(
+    func generateCredentialDisplayContent(
         credentialFormat: String,
         wellKnown: String?,
         vcJsonString: String,
@@ -35,7 +35,7 @@ class RNInjiVcRenderer: NSObject, RCTBridgeModule {
 
         do {
             let format = CredentialFormat.fromValue(credentialFormat)
-            let result = try renderer.renderVC(
+          let result = try renderer.generateCredentialDisplayContent(
                 credentialFormat: format,
                 wellKnownJson: wellKnown,
                 vcJsonString: vcJsonString
