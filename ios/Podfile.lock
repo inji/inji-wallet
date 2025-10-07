@@ -1126,9 +1126,6 @@ PODS:
   - React-Mapbuffer (0.74.5):
     - glog
     - React-debug
-  - react-native-app-auth (7.2.0):
-    - AppAuth (>= 1.7.3)
-    - React-Core
   - react-native-cloud-storage (1.4.0):
     - DoubleConversion
     - glog
@@ -1482,7 +1479,7 @@ PODS:
     - React-Core
   - RNPermissions (3.8.4):
     - React-Core
-  - RNScreens (3.31.1):
+  - RNScreens (3.33.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1597,7 +1594,6 @@ DEPENDENCIES:
   - React-jsitracing (from `../node_modules/react-native/ReactCommon/hermes/executor/`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
-  - react-native-app-auth (from `../node_modules/react-native-app-auth`)
   - react-native-cloud-storage (from `../node_modules/react-native-cloud-storage`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - "react-native-image-editor (from `../node_modules/@react-native-community/image-editor`)"
@@ -1798,8 +1794,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
-  react-native-app-auth:
-    :path: "../node_modules/react-native-app-auth"
   react-native-cloud-storage:
     :path: "../node_modules/react-native-cloud-storage"
   react-native-get-random-values:
@@ -1983,7 +1977,6 @@ SPEC CHECKSUMS:
   React-jsitracing: 3b6060bbf5317663667e1dd93560c7943ab86ccc
   React-logger: 257858bd55f3a4e1bc0cf07ddc8fb9faba6f8c7c
   React-Mapbuffer: 6c1cacdbf40b531f549eba249e531a7d0bfd8e7f
-  react-native-app-auth: 63fa4e58c5bd29aeb974d3a06a23c5858322d533
   react-native-cloud-storage: 15f24d9b9f175ce07473c3af86b6add72a727c95
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-image-editor: b09448ba9171308ff5ac6c9f66f49ad4cbfaee06
@@ -2029,7 +2022,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: aac5c1ec73422109dec1da770247a1e410dcc620
   RNLocalize: 298e85ce16540a11de40c1a588ead39fc5e9a072
   RNPermissions: f1b49dd05fa9b83993cd05a9ee115247944d8f1a
-  RNScreens: b32a9ff15bea7fcdbe5dff6477bc503f792b1208
+  RNScreens: d2a12528d1abe4922e7ee5c9a00dd40c827c2ab5
   RNSecureRandom: 07efbdf2cd99efe13497433668e54acd7df49fef
   RNShare: 0fad69ae2d71de9d1f7b9a43acf876886a6cb99c
   RNSVG: 43b64ed39c14ce830d840903774154ca0c1f27ec
