@@ -4,14 +4,12 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import io.mosip.tuvali.common.events.*;
 
-import java.lang.reflect.Field;
-
 public class RNEventMapper {
 
     public static WritableMap toMap(Event event) {
         WritableMap writableMap = Arguments.createMap();
         writableMap.putString("type", getEventType(event));
-        populateProperties(event, writableMap);
+        populateEventFields(event, writableMap);
         return writableMap;
     }
 
@@ -36,37 +34,23 @@ public class RNEventMapper {
         }
     }
 
-    private static void populateProperties(Event event, WritableMap writableMap) {
-        for (Field field : event.getClass().getDeclaredFields()) {  
-            try {
-                field.setAccessible(true);
-                populateProperty(field, event, writableMap);
-                field.setAccessible(false);
-            } catch (Exception e) {
-                System.out.println("Unable to populate RN event " + field.getName());
-            }    
-        }
-    }
+    private static void populateEventFields(Event event, WritableMap map) {
+        if (event instanceof DataReceivedEvent) {
+            DataReceivedEvent e = (DataReceivedEvent) event;
+            map.putString("data", e.getData());
+            map.putInt("crcFailureCount", e.getCrcFailureCount());
+            map.putInt("totalChunkCount", e.getTotalChunkCount());
 
-    private static void populateProperty(Field field, Event event, WritableMap writableMap) throws IllegalAccessException {
-        Object propertyValue = field.get(event);
-        if (propertyValue instanceof Enum) {
-            propertyValue = readEnumValue((Enum<?>) propertyValue);
-        }
-        if (propertyValue instanceof Integer) {
-            writableMap.putInt(field.getName(), (Integer) propertyValue);
-        } else {
-            writableMap.putString(field.getName(), propertyValue.toString());
-        }
-    }
+        } else if (event instanceof ErrorEvent) {
+            ErrorEvent e = (ErrorEvent) event;
+            map.putString("message", e.getMessage());
+            map.putString("code", e.getCode());
 
-    private static Object readEnumValue(Enum<?> enumValue) {
-        try {
-            Field valueField = enumValue.getClass().getDeclaredField("value");
-            valueField.setAccessible(true);
-            return valueField.get(enumValue);
-        } catch (Exception e) {
-            return enumValue.ordinal();
+        } else if (event instanceof VerificationStatusEvent) {
+            VerificationStatusEvent e = (VerificationStatusEvent) event;
+            map.putInt("status", e.getStatus().getValue());
+
         }
+        // ConnectedEvent, DisconnectedEvent, SecureChannelEstablishedEvent have no extra fields
     }
 }
