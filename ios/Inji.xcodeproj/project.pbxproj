@@ -873,7 +873,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/inji-openid4vp-ios-swift.git";
 			requirement = {
-				branch = "release-0.5.x";
+				branch = develop;
 				kind = branch;
 			};
 		};
