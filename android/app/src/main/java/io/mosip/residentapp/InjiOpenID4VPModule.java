@@ -148,7 +148,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             WritableMap errorMap = Arguments.createMap();
             errorMap.putString("errorCode", exception.getErrorCode());
             errorMap.putString("message", exception.getMessage());
-            errorMap.putString("networkResponse", exception.getResponse());
+            errorMap.putString("response", exception.getResponse());
 
             promise.reject(exception.getErrorCode(), exception.getMessage(), exception, errorMap);
         } else {

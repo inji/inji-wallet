@@ -227,12 +227,22 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   }
 
   func rejectWithOpenID4VPError(_ error: Error, reject: RCTPromiseRejectBlock) {
-      if let openidError = error as? OpenID4VPException {
-          reject(openidError.errorCode, openidError.message, openidError)
-      } else {
+    if let openidError = error as? OpenID4VPException {
+        let errorMap: [String: Any] = [
+            "errorCode": openidError.errorCode,
+            "message": openidError.message,
+            "response": openidError.response ?? ""
+        ]
+        let nsError = NSError(
+            domain: "OPENID4VP",
+            code: 0,
+            userInfo: errorMap
+        )
+        reject(openidError.errorCode, openidError.message, nsError)
+    } else {
         let nsError = NSError(domain: error.localizedDescription, code: 0)
         reject("ERR_UNKNOWN", nsError.localizedDescription, nsError)
-      }
+    }
   }
 
 
