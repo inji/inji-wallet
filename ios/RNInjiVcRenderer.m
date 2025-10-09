@@ -12,4 +12,8 @@ RCT_EXTERN_METHOD(generateCredentialDisplayContent: (NSString *)credentialFormat
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(convertSvgToPdf:(NSArray<NSString *> *)svgList
+                  withResolver:(RCTPromiseResolveBlock)resolve
+                  withRejecter:(RCTPromiseRejectBlock)reject)
+
 @end

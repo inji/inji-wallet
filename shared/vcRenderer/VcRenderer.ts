@@ -76,6 +76,15 @@ class VcRenderer {
     }
   }
 
+  async convertSvgToPdf(svgList: string[]): Promise<string> {
+    try {
+      return await this.InjiVcRenderer.convertSvgToPdf(svgList);
+    } catch (e) {
+      console.error('convertSvgToPdf failed:', e);
+      throw e;
+    }
+  }
+
   async clearCache(vcId: string) {
     const cacheKey = this.createCacheKey(vcId);
     MMKV.removeItem(cacheKey);

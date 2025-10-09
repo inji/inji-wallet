@@ -14,6 +14,9 @@ import java.util.List;
 import io.mosip.injivcrenderer.InjiVcRenderer;
 import io.mosip.injivcrenderer.exceptions.VcRendererExceptions;
 import io.mosip.injivcrenderer.constants.CredentialFormat;
+import com.facebook.react.bridge.ReadableArray;
+import java.util.ArrayList;
+
 
 public class RNInjiVcRendererModule extends ReactContextBaseJavaModule {
     private static final String MODULE_NAME = "InjiVcRenderer";
@@ -52,6 +55,25 @@ public class RNInjiVcRendererModule extends ReactContextBaseJavaModule {
                 resultArray.pushString(svg);
             }
             promise.resolve(resultArray);
+        } catch (Exception e) {
+            rejectWithVcRendererExceptions(e, promise);
+        }
+    }
+
+    @ReactMethod
+    public void convertSvgToPdf(ReadableArray svgArray, Promise promise) {
+        try {
+            List<String> svgList = new ArrayList<>();
+            for (int i = 0; i < svgArray.size(); i++) {
+                String svg = svgArray.getString(i);
+                if (svg != null) {
+                    svgList.add(svg);
+                }
+            }
+
+            String base64Pdf = injiVcRenderer.convertSvgToPdf(svgList);
+
+            promise.resolve(base64Pdf);
         } catch (Exception e) {
             rejectWithVcRendererExceptions(e, promise);
         }

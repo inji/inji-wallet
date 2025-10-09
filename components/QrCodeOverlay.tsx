@@ -11,7 +11,7 @@ import {NativeModules} from 'react-native';
 import {VerifiableCredential} from '../machines/VerifiableCredential/VCMetaMachine/vc';
 import {DEFAULT_ECL, MAX_QR_DATA_LENGTH} from '../shared/constants';
 import {VCMetadata} from '../shared/VCMetadata';
-import {shareImageToAllSupportedApps} from '../shared/sharing/imageUtils';
+import {shareImageToAllSupportedApps} from '../shared/sharing/shareUtils';
 import {ShareOptions} from 'react-native-share';
 
 export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {

@@ -1,5 +1,5 @@
 {
-  "originHash" : "a3146fb582ba55930e9db89f50cf0454e89ade6fb6a380b0e7d649e8527e703a",
+  "originHash" : "84b82f6eb7d3eb2aba433f640a5f6ff2e485f63a62fb992a1a0057900c74e2bb",
   "pins" : [
     {
       "identity" : "aexml",
@@ -85,10 +85,10 @@
     {
       "identity" : "inji-vc-renderer-ios-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mosip/inji-vc-renderer-ios-swift.git",
+      "location" : "https://github.com/tw-mosip/inji-vc-renderer-ios-swift.git",
       "state" : {
-        "branch" : "release-0.1.x",
-        "revision" : "68b6c14aaf1e572f84307e0f932d93a66134055d"
+        "branch" : "injimob-3559-svg-to-pdf-convertor",
+        "revision" : "c76d91a2111d7e8e14973c25fc3b69c185c8ab5c"
       }
     },
     {
