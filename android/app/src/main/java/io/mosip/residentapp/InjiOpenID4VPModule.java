@@ -135,8 +135,10 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     public void shareVerifiablePresentation(ReadableMap vpTokenSigningResultMap, Promise promise) {
         try {
             Map<FormatType, VPTokenSigningResult> authContainer = parseVPTokenSigningResult(vpTokenSigningResultMap);
-            String response = openID4VP.shareVerifiablePresentation(authContainer);
-            promise.resolve(response);
+            NetworkResponse verifierResponse = openID4VP.sendAuthorizationResponseToVerifier(authContainer);
+            String verifierResponseJson = gson.toJson(verifierResponse, NetworkResponse.class);
+
+            promise.resolve(verifierResponseJson);
         } catch (Exception e) {
             rejectWithOpenID4VPExceptions(e, promise);
         }
@@ -173,8 +175,10 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                     break;
             }
 
-            String verifierResponse = openID4VP.sendErrorResponseToVerifier(exception);
-            promise.resolve(verifierResponse);
+            NetworkResponse verifierResponse = openID4VP.sendErrorResponseToVerifier(exception);
+            String verifierResponseJson = gson.toJson(verifierResponse, NetworkResponse.class);
+
+            promise.resolve(verifierResponseJson);
         } catch (Exception exception) {
             rejectWithOpenID4VPExceptions(exception, promise);
         }

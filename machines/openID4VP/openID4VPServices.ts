@@ -218,9 +218,14 @@ export const openID4VPServices = () => {
           vpTokenSigningResultMap[formatType] = uuidToSignature;
         }
       }
-      return await OpenID4VP.shareVerifiablePresentation(
-        vpTokenSigningResultMap,
+      const verifierResponse = await OpenID4VP.shareVerifiablePresentation(
+          vpTokenSigningResultMap,
       );
+      if(verifierResponse["statusCode"] != 200){
+        console.error("Error response from verifier during sharing the VP :", verifierResponse);
+        throw new Error(`Failed to share VP`);
+      }
+      return verifierResponse;
     },
   };
 };
