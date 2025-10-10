@@ -13,7 +13,8 @@ import java.util.Map;
 public class ESignetLoginPage extends BasePage {
 
     private static final String mosipIssuerCredentialType = InjiWalletConfigManager.getproperty("mosip.issuer.credentialType");
-
+    private static final String landIssuerSdJwtCredentialType = InjiWalletConfigManager.getproperty("landregistry.issuer.sdjwtcredentialType");
+    private static final int maxPageScrolls = Integer.parseInt(InjiWalletConfigManager.getproperty("max.pageScroll"));
 
     @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeStaticText[`label == \"“Inji” Wants to Use “mosip.net” to Sign In\"`]")
     private WebElement iosSignInPermissionPopup;
@@ -94,6 +95,30 @@ public class ESignetLoginPage extends BasePage {
     @AndroidFindBy(id = "android:id/button1")
     @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
     private WebElement continuePopupButton;
+    
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"View Shareable Information\"]")
+    @iOSXCUITFindBy(xpath = "credentialTypeHeading-MOSIPVerifiableCredential")
+    private WebElement viewSharableInformationOnSdJwtVc;
+    
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"Information you choose to share\"]")
+    @iOSXCUITFindBy(xpath = "credentialTypeHeading-MOSIPVerifiableCredential")
+    private WebElement viewHeadingOnInformationOnSdJwtVc;
+    
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"Please note\"]")
+    @iOSXCUITFindBy(xpath = "credentialTypeHeading-MOSIPVerifiableCredential")
+    private WebElement viewConsentOnInformationOnSdJwtVc;
+    
+    @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id=\"iconIcon\"]")
+    @iOSXCUITFindBy(xpath = "credentialTypeHeading-MOSIPVerifiableCredential")
+    private WebElement closeInformationViewPage;
+    
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"Fields next to this icon indicate that the information can be shared selectively.\"]")
+    @iOSXCUITFindBy(xpath = "credentialTypeHeading-MOSIPVerifiableCredential")
+    private WebElement InformationForSharedOptionsOnSdJwt;
+    
+  
+
+    
 
     public ESignetLoginPage(AppiumDriver driver) {
         super(driver);
@@ -123,6 +148,11 @@ public class ESignetLoginPage extends BasePage {
         click(continuePopupButton, "Click on 'Continue' button in Esignet login popup");
         //click(esignetLoginButton, "Click on Esignet login button");
     }
+    
+    public void clickOnLoginWithOtpButton() {
+         click(esignetLoginButton, "Click on Esignet login button");
+    }
+    
 
     public OtpVerificationPage setEnterIdTextBox(String uinOrVid) {
         if ("iOS".equalsIgnoreCase(driver.getCapabilities().getCapability("platformName").toString())) {
@@ -143,6 +173,11 @@ public class ESignetLoginPage extends BasePage {
 
     public void clickOnGetOtpButton() {
         click(getOtpButton, "Click on 'Get OTP' button");
+    }
+    
+    public void clickOnHideKeyboardAndGetOtpButton() {
+        ((HidesKeyboard) driver).hideKeyboard();
+        click(getOtpButton, "Click on 'Hide Keyboard and Get OTP' button");
     }
 
     public void clickOnVerifyButton() {
@@ -210,4 +245,48 @@ public class ESignetLoginPage extends BasePage {
     public void clickOnCredentialTypeHeadingMOSIPVerifiableCredential() {
         scrollAndClickByAccessibilityId(mosipIssuerCredentialType, "Click on 'MOSIP Verifiable Credential' option");
     }
+    
+    public void clickOnCredentialTypeHeadingLandSdJwtVerifiableCredential() {
+        scrollAndClickByAccessibilityId(landIssuerSdJwtCredentialType, "Click on 'Land Registry sd jwt' option");
+    }
+    
+
+    public boolean isviewSharableInformationSdJwtVcDisplayed() {
+        return isElementVisible(viewSharableInformationOnSdJwtVc, "Check if 'view Sharable Information Icon' is displayed");
+    }
+    
+    public boolean isInformationForSharedOptionsOnSdJwtDisplayed() {
+        for (int i = 0; i < maxPageScrolls; i++) { 
+            if (isElementVisible(InformationForSharedOptionsOnSdJwt, "Information for shared options on Sd Jwt Displayed")) {
+                return true;
+            }
+            scrollDown();
+        }
+        return false;
+    }
+    
+    public void clickOnviewSharableInformationOnSdJwt() {
+        click(viewSharableInformationOnSdJwtVc, "Click on view Sharable Information Icon");
+    }
+    
+    public boolean isInformationMessageHadingSdJwtVcDisplayed() {
+        return isElementVisible(viewHeadingOnInformationOnSdJwtVc, "Check if 'view Sharable Information Heading' is displayed");
+    }
+    
+    public boolean isConsentOnInformationMessageSdJwtVcDisplayed() {
+        return isElementVisible(viewConsentOnInformationOnSdJwtVc, "Check if 'view Sharable Information Consent' is displayed");
+    }
+    
+    public void clickOnCloseviewSharableInformationOnSdJwt() {
+        click(closeInformationViewPage, "Click on close view Sharable Information Icon");
+    }
+    
+
+
+
+
+    
+  
+    
+    
 }

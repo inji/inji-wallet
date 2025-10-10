@@ -104,8 +104,12 @@ public class TestDataReader {
                 return "9261481024";
             case "Mock":
                 return "1231231231";
+            case "LandRegistry":
+                return "2154189532";
             case "idTypeForMobileDrivingLicense":
                 return "Mobile Driving License";
+            case "InvalidLandRegistry":
+                return "786";                
             default:
                 return "Key not found";
         }

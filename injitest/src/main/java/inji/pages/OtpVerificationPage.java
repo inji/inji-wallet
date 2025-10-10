@@ -154,4 +154,8 @@ public class OtpVerificationPage extends BasePage {
     public void clickOnGetOtpButton() {
         click(getOtpButton, "Click on get OTP");
     }
+    
+    public boolean isInvalidErrorMessageDisplayed() {
+        return isElementVisible(invalidOtpMessageForeSignet, "Getting the invalid OTP message for ESignet Login");
+    }
 }

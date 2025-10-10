@@ -13,7 +13,8 @@ public class AddNewCardPage extends BasePage {
     private static final String mosipIssuerCredentialType = InjiWalletConfigManager.getproperty("mosip.issuer.credentialType");
     private static final String stayProtectedIssuer = InjiWalletConfigManager.getproperty("stayProtected.issuer");
     private static final String stayProtectedIssuerCredentialType = InjiWalletConfigManager.getproperty("stayProtected.issuer.credentialType");
-
+    private static final String landRegistryIssuer = InjiWalletConfigManager.getproperty("landregistry.issuer");
+    private static final String landRegistryIssuerSdJwtCredentialType = InjiWalletConfigManager.getproperty("landregistry.issuer.sdjwtcredentialType");
 
     @AndroidFindBy(accessibility = "title")
     @iOSXCUITFindBy(accessibility = "title")
@@ -57,7 +58,8 @@ public class AddNewCardPage extends BasePage {
     @AndroidFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM1.0")
     @iOSXCUITFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM1.0")
     private WebElement credentialTypeHeadingLandStatementCredential;
-
+    
+    
     @AndroidFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM2.0")
     @iOSXCUITFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM2.0")
     private WebElement credentialTypeHeadingLandStatementCredential2;
@@ -171,6 +173,12 @@ public class AddNewCardPage extends BasePage {
         click(downloadViaLand, "Clicking on download via Land registry");
         return new ESignetLoginPage(driver);
     }
+    
+    public ESignetLoginPage clickOnDownloadViaLandSdJwt() {
+        scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Land sd jwt'");
+        scrollAndClickByAccessibilityId(landRegistryIssuerSdJwtCredentialType, "Click on 'Land Sd Jwt' option");
+        return new ESignetLoginPage(driver);
+    }
 
     public void clickOnLandStatementCredential01() {
         click(credentialTypeHeadingLandStatementCredential, "Clicking on Land statement credential type");
@@ -187,12 +195,12 @@ public class AddNewCardPage extends BasePage {
     public void clickOncredentialTypeHeadingRegistrationReceiptCredentialVCDM1() {
         click(credentialTypeHeadingRegistrationReceiptCredentialVCDM1, "Clicking on Land statement credential type");
     }
-
+    
     public void clickOnMosipIssuer() {
         scrollAndClickByAccessibilityId(mosipIssuer, "Click on 'Download via Esignet'");
         new ESignetLoginPage(driver);
     }
-
+    
     public void clickOnContinueButtonInSigninPopupIos() {
         click(continueButton, "Click on Continue button in iOS Sign-in popup");
     }
@@ -273,4 +281,6 @@ public class AddNewCardPage extends BasePage {
     public void ClickOnContinueButton() {
         click(continuePopupButton, "Clicking on continue button");
     }
+    
+    
 }
