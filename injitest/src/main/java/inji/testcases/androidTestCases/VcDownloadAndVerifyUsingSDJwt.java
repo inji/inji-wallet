@@ -53,14 +53,15 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		assertTrue(esignetLoginPage.isESignetLogoDisplayed(), "Verify if esignet logo is displayed");
-		OtpVerificationPage otpVerification = esignetLoginPage
-				.setEnterIdTextBox(TestDataReader.readData("LandRegistry"));
+//		OtpVerificationPage otpVerification = esignetLoginPage
+//				.setEnterIdTextBox(TestDataReader.readData("LandRegistry"));
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
 		addNewCardPage.clickOnDoneButton();
 		assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
-		DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();		
+		DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
 		assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed Vc view page is displayed");
 		assertTrue(esignetLoginPage.isviewSharableInformationSdJwtVcDisplayed(),
 				"Verify if Sharbale inforamtion link is displayed");
@@ -98,7 +99,8 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		OtpVerificationPage otpVerification = esignetLoginPage
 				.setEnterIdTextBox(TestDataReader.readData("InvalidLandRegistry"));
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
-		assertTrue(otpVerification.isInvalidErrorMessageDisplayed(), "Verify if invalid individual id error displayed");
+		assertTrue(otpVerification.isInvalidIndividualErrorMessageDisplayed(),
+				"Verify if invalid individual id error displayed");
 	}
 
 	@Test
@@ -122,8 +124,9 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		assertTrue(esignetLoginPage.isESignetLogoDisplayed(), "Verify if esignet logo is displayed");
-		OtpVerificationPage otpVerification = esignetLoginPage
-				.setEnterIdTextBox(TestDataReader.readData("LandRegistry"));
+//		OtpVerificationPage otpVerification = esignetLoginPage
+//				.setEnterIdTextBox(TestDataReader.readData("LandRegistry"));
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
@@ -151,8 +154,9 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		assertTrue(esignetLoginPage.isESignetLogoDisplayed(), "Verify if esignet logo is displayed");
-		OtpVerificationPage otpVerification = esignetLoginPage
-				.setEnterIdTextBox(TestDataReader.readData("LandRegistry"));
+//		OtpVerificationPage otpVerification = esignetLoginPage
+//				.setEnterIdTextBox(TestDataReader.readData("LandRegistry"));
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
@@ -187,8 +191,9 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		assertTrue(esignetLoginPage.isESignetLogoDisplayed(), "Verify if esignet logo is displayed");
-		OtpVerificationPage otpVerification = esignetLoginPage
-				.setEnterIdTextBox(TestDataReader.readData("LandRegistry"));
+//		OtpVerificationPage otpVerification = esignetLoginPage
+//				.setEnterIdTextBox(TestDataReader.readData("LandRegistry"));
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
@@ -202,12 +207,12 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaLandSdJwt();
 		esignetLoginPageAgain.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPageAgain.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain
-				.setEnterIdTextBox(TestDataReader.readData("LandRegistry"));
+//		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain
+//				.setEnterIdTextBox(TestDataReader.readData("LandRegistry"));
+		OtpVerificationPage otpVerificationAgain = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
 		esignetLoginPageAgain.clickOnHideKeyboardAndGetOtpButton();
 		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
 		esignetLoginPageAgain.clickOnVerifyButton();
-		addNewCardPageAgain.clickOnDoneButton();
 	}
 
 }

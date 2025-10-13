@@ -9,278 +9,304 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.WebElement;
 
 public class AddNewCardPage extends BasePage {
-    private static final String mosipIssuer = InjiWalletConfigManager.getproperty("mosip.issuer");
-    private static final String mosipIssuerCredentialType = InjiWalletConfigManager.getproperty("mosip.issuer.credentialType");
-    private static final String stayProtectedIssuer = InjiWalletConfigManager.getproperty("stayProtected.issuer");
-    private static final String stayProtectedIssuerCredentialType = InjiWalletConfigManager.getproperty("stayProtected.issuer.credentialType");
-    private static final String landRegistryIssuer = InjiWalletConfigManager.getproperty("landregistry.issuer");
-    private static final String landRegistryIssuerSdJwtCredentialType = InjiWalletConfigManager.getproperty("landregistry.issuer.sdjwtcredentialType");
+	private static final String mosipIssuer = InjiWalletConfigManager.getproperty("mosip.issuer");
+	private static final String mosipIssuerCredentialType = InjiWalletConfigManager
+			.getproperty("mosip.issuer.credentialType");
+	private static final String stayProtectedIssuer = InjiWalletConfigManager.getproperty("stayProtected.issuer");
+	private static final String stayProtectedIssuerCredentialType = InjiWalletConfigManager
+			.getproperty("stayProtected.issuer.credentialType");
+	private static final String landRegistryIssuer = InjiWalletConfigManager.getproperty("landregistry.issuer");
+	private static final String landRegistryIssuerSdJwtCredentialType = InjiWalletConfigManager
+			.getproperty("landregistry.issuer.sdjwtcredentialType");
 
-    @AndroidFindBy(accessibility = "title")
-    @iOSXCUITFindBy(accessibility = "title")
-    private WebElement addNewCardHeader;
+	private static final String FarmerIssuer = InjiWalletConfigManager.getproperty("farmerId.issuer");
+	private static final String FarmerIssuerSdJwtCredentialTypeWithFace = InjiWalletConfigManager
+			.getproperty("farmerId.issuer.svgcredentialTypewithFace");
+	private static final String FarmerIssuerSdJwtCredentialTypeWithoutFace = InjiWalletConfigManager
+			.getproperty("farmerId.issuer.svgcredentialTypewithOutFace");
 
+	public static final String LandRegistryUIN = InjiWalletConfigManager.getproperty("landregistry.uin");
+	public static final String SVGWithFaceUIN = InjiWalletConfigManager.getproperty("svgwithface.uin");
+	public static final String SVGWithOutFaceUIN = InjiWalletConfigManager.getproperty("svgwithoutface.uin");
 
-    @AndroidFindBy(accessibility = "goBack")
-    @iOSXCUITFindBy(accessibility = "goBack")
-    private WebElement backButton;
+	@AndroidFindBy(accessibility = "title")
+	@iOSXCUITFindBy(accessibility = "title")
+	private WebElement addNewCardHeader;
 
-    @iOSXCUITFindBy(accessibility = "Continue")
-    private WebElement continueButton;
+	@AndroidFindBy(accessibility = "goBack")
+	@iOSXCUITFindBy(accessibility = "goBack")
+	private WebElement backButton;
 
-    @iOSXCUITFindBy(accessibility = "Cancel")
-    private WebElement cancelButton;
+	@iOSXCUITFindBy(accessibility = "Continue")
+	private WebElement continueButton;
 
-    @AndroidFindBy(accessibility = "issuersScreenDescription")
-    @iOSXCUITFindBy(accessibility = "issuersScreenDescription")
-    private WebElement addNewCardGuideMessage;
+	@iOSXCUITFindBy(accessibility = "Cancel")
+	private WebElement cancelButton;
 
-    @AndroidFindBy(accessibility = "issuerDescription-Mosip")
-    @iOSXCUITFindBy(accessibility = "issuerDescription-Mosip")
-    private WebElement issuerDescriptionMosip;
+	@AndroidFindBy(accessibility = "issuersScreenDescription")
+	@iOSXCUITFindBy(accessibility = "issuersScreenDescription")
+	private WebElement addNewCardGuideMessage;
 
-    @AndroidFindBy(accessibility = "issuerDescription-Mosip")
-    @iOSXCUITFindBy(accessibility = "issuerDescription-Mosip")
-    private WebElement issuerDescriptionEsignet;
+	@AndroidFindBy(accessibility = "issuerDescription-Mosip")
+	@iOSXCUITFindBy(accessibility = "issuerDescription-Mosip")
+	private WebElement issuerDescriptionMosip;
 
-    @AndroidFindBy(className = "android.widget.EditText")
-    @iOSXCUITFindBy(accessibility = "issuerSearchBar")
-    private WebElement issuerSearchBar;
+	@AndroidFindBy(accessibility = "issuerDescription-Mosip")
+	@iOSXCUITFindBy(accessibility = "issuerDescription-Mosip")
+	private WebElement issuerDescriptionEsignet;
 
-    @AndroidFindBy(accessibility = "issuerHeading-StayProtected")
-    @iOSXCUITFindBy(accessibility = "issuerHeading-StayProtected")
-    private WebElement downloadViaSunbird;
+	@AndroidFindBy(className = "android.widget.EditText")
+	@iOSXCUITFindBy(accessibility = "issuerSearchBar")
+	private WebElement issuerSearchBar;
 
-    @AndroidFindBy(accessibility = "credentialTypeHeading-InsuranceCredential")
-    @iOSXCUITFindBy(accessibility = "credentialTypeHeading-InsuranceCredential")
-    private WebElement credentialTypeHeadingInsuranceCredential;
+	@AndroidFindBy(accessibility = "issuerHeading-StayProtected")
+	@iOSXCUITFindBy(accessibility = "issuerHeading-StayProtected")
+	private WebElement downloadViaSunbird;
 
-    @AndroidFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM1.0")
-    @iOSXCUITFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM1.0")
-    private WebElement credentialTypeHeadingLandStatementCredential;
-    
-    
-    @AndroidFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM2.0")
-    @iOSXCUITFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM2.0")
-    private WebElement credentialTypeHeadingLandStatementCredential2;
+	@AndroidFindBy(accessibility = "credentialTypeHeading-InsuranceCredential")
+	@iOSXCUITFindBy(accessibility = "credentialTypeHeading-InsuranceCredential")
+	private WebElement credentialTypeHeadingInsuranceCredential;
 
-    @AndroidFindBy(accessibility = "credentialTypeHeading-RegistrationReceiptCredential_VCDM2.0")
-    @iOSXCUITFindBy(accessibility = "credentialTypeHeading-RegistrationReceiptCredential_VCDM2.0")
-    private WebElement credentialTypeHeadingRegistrationReceiptCredential_VCDM2;
+	@AndroidFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM1.0")
+	@iOSXCUITFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM1.0")
+	private WebElement credentialTypeHeadingLandStatementCredential;
 
-    @AndroidFindBy(accessibility = "credentialTypeHeading-RegistrationReceiptCredential_VCDM1.0")
-    @iOSXCUITFindBy(accessibility = "credentialTypeHeading-RegistrationReceiptCredential_VCDM1.0")
-    private WebElement credentialTypeHeadingRegistrationReceiptCredentialVCDM1;
+	@AndroidFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM2.0")
+	@iOSXCUITFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM2.0")
+	private WebElement credentialTypeHeadingLandStatementCredential2;
 
-    @AndroidFindBy(accessibility = "credentialTypeValue")
-    @iOSXCUITFindBy(accessibility = "credentialTypeValue")
-    private WebElement credentialTypeValue;
+	@AndroidFindBy(accessibility = "credentialTypeHeading-RegistrationReceiptCredential_VCDM2.0")
+	@iOSXCUITFindBy(accessibility = "credentialTypeHeading-RegistrationReceiptCredential_VCDM2.0")
+	private WebElement credentialTypeHeadingRegistrationReceiptCredential_VCDM2;
 
-    @AndroidFindBy(accessibility = "copilot-next-action")
-    @iOSXCUITFindBy(accessibility = "copilot-next-action")
-    private WebElement DoneButton;
+	@AndroidFindBy(accessibility = "credentialTypeHeading-RegistrationReceiptCredential_VCDM1.0")
+	@iOSXCUITFindBy(accessibility = "credentialTypeHeading-RegistrationReceiptCredential_VCDM1.0")
+	private WebElement credentialTypeHeadingRegistrationReceiptCredentialVCDM1;
 
-    @AndroidFindBy(accessibility = "issuerHeading-MockMdl")
-    @iOSXCUITFindBy(accessibility = "issuerHeading-MockMdl")
-    private WebElement downloadViaMockCertify;
+	@AndroidFindBy(accessibility = "credentialTypeValue")
+	@iOSXCUITFindBy(accessibility = "credentialTypeValue")
+	private WebElement credentialTypeValue;
 
-    @AndroidFindBy(accessibility = "credentialTypeHeading-DrivingLicenseCredential")
-    @iOSXCUITFindBy(accessibility = "credentialTypeHeading-DrivingLicenseCredential")
-    private WebElement credentialTypeHeadingMockVerifiableCredential_mdoc;
+	@AndroidFindBy(accessibility = "copilot-next-action")
+	@iOSXCUITFindBy(accessibility = "copilot-next-action")
+	private WebElement DoneButton;
 
-    @AndroidFindBy(accessibility = "credentialTypeHeading-MockVerifiableCredential")
-    @iOSXCUITFindBy(accessibility = "credentialTypeHeading-MockVerifiableCredential")
-    private WebElement credentialTypeHeadingMockVerifiableCredential;
+	@AndroidFindBy(accessibility = "issuerHeading-MockMdl")
+	@iOSXCUITFindBy(accessibility = "issuerHeading-MockMdl")
+	private WebElement downloadViaMockCertify;
 
-    @AndroidFindBy(xpath = "//*[@resource-id=\"issuerSearchBar\"]")
-    @iOSXCUITFindBy(accessibility = "issuerSearchBar")
-    private WebElement IssuerSearchBar;
+	@AndroidFindBy(accessibility = "credentialTypeHeading-DrivingLicenseCredential")
+	@iOSXCUITFindBy(accessibility = "credentialTypeHeading-DrivingLicenseCredential")
+	private WebElement credentialTypeHeadingMockVerifiableCredential_mdoc;
 
-    @AndroidFindBy(accessibility = "issuerHeading-Mock")
-    @iOSXCUITFindBy(accessibility = "issuerHeading-Mock")
-    private WebElement downloadViaMock;
+	@AndroidFindBy(accessibility = "credentialTypeHeading-MockVerifiableCredential")
+	@iOSXCUITFindBy(accessibility = "credentialTypeHeading-MockVerifiableCredential")
+	private WebElement credentialTypeHeadingMockVerifiableCredential;
 
-    @AndroidFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
-    @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
-    private WebElement continuePopupButton;
+	@AndroidFindBy(xpath = "//*[@resource-id=\"issuerSearchBar\"]")
+	@iOSXCUITFindBy(accessibility = "issuerSearchBar")
+	private WebElement IssuerSearchBar;
 
-    @AndroidFindBy(accessibility = "issuerHeading-Land")
-    @iOSXCUITFindBy(accessibility = "issuerHeading-Land")
-    private WebElement downloadViaLand;
+	@AndroidFindBy(accessibility = "issuerHeading-Mock")
+	@iOSXCUITFindBy(accessibility = "issuerHeading-Mock")
+	private WebElement downloadViaMock;
 
-    public AddNewCardPage(AppiumDriver driver) {
-        super(driver);
-    }
+	@AndroidFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+	@iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
+	private WebElement continuePopupButton;
 
-    private WebElement getDownloadViaUinElement() {
-        String accessibilityId = InjiWalletConfigManager.getproperty("mosip.issuer");
-        return driver.findElement(MobileBy.AccessibilityId(accessibilityId));
-    }
+	@AndroidFindBy(accessibility = "issuerHeading-Land")
+	@iOSXCUITFindBy(accessibility = "issuerHeading-Land")
+	private WebElement downloadViaLand;
 
-    public String verifyLanguageForAddNewCardGuideMessage() {
-        return getText(addNewCardGuideMessage, "Get text for guide message on Add New Card page");
-    }
+	public AddNewCardPage(AppiumDriver driver) {
+		super(driver);
+	}
 
-    public boolean isAddNewCardPageGuideMessageForEsignetDisplayed() {
-        return isElementVisible(addNewCardGuideMessage, "Check if guide message for Esignet is visible");
-    }
+	private WebElement getDownloadViaUinElement() {
+		String accessibilityId = InjiWalletConfigManager.getproperty("mosip.issuer");
+		return driver.findElement(MobileBy.AccessibilityId(accessibilityId));
+	}
 
-    public boolean isAddNewCardPageLoaded() {
-        return isElementVisible(addNewCardHeader, "Verify if Add New Card header is visible");
-    }
+	public String verifyLanguageForAddNewCardGuideMessage() {
+		return getText(addNewCardGuideMessage, "Get text for guide message on Add New Card page");
+	}
 
-    public RetrieveIdPage clickOnDownloadViaUin() {
-        scrollAndClickByAccessibilityId(mosipIssuer, "Click on 'Download via UIN'");
-        scrollAndClickByAccessibilityId(mosipIssuerCredentialType, "Click on 'MOSIP Verifiable Credential' option");
-        return new RetrieveIdPage(driver);
-    }
+	public boolean isAddNewCardPageGuideMessageForEsignetDisplayed() {
+		return isElementVisible(addNewCardGuideMessage, "Check if guide message for Esignet is visible");
+	}
 
-    public void clickOnBack() {
-        click(backButton, "Click on Back button");
-    }
+	public boolean isAddNewCardPageLoaded() {
+		return isElementVisible(addNewCardHeader, "Verify if Add New Card header is visible");
+	}
 
-    public boolean isAddNewCardGuideMessageDisplayed() {
-        return isElementVisible(addNewCardGuideMessage, "Verify guide message is visible on Add New Card page");
-    }
+	public RetrieveIdPage clickOnDownloadViaUin() {
+		scrollAndClickByAccessibilityId(mosipIssuer, "Click on 'Download via UIN'");
+		scrollAndClickByAccessibilityId(mosipIssuerCredentialType, "Click on 'MOSIP Verifiable Credential' option");
+		return new RetrieveIdPage(driver);
+	}
 
-    public boolean isDownloadViaUinDisplayed() {
-        return isElementVisible(getDownloadViaUinElement(), "Verify 'Download via UIN' button is visible");
-    }
+	public void clickOnBack() {
+		click(backButton, "Click on Back button");
+	}
 
-    public boolean isDownloadViaUinDisplayedInHindi() {
-        return isElementVisible(getDownloadViaUinElement(), "Verify 'Download via UIN' button is visible in Hindi");
-    }
+	public boolean isAddNewCardGuideMessageDisplayed() {
+		return isElementVisible(addNewCardGuideMessage, "Verify guide message is visible on Add New Card page");
+	}
 
-    public boolean isDownloadViaEsignetDisplayed() {
-        return isElementVisible(getDownloadViaUinElement(), "Verify 'Download via Esignet' button is visible");
-    }
+	public boolean isDownloadViaUinDisplayed() {
+		return isElementVisible(getDownloadViaUinElement(), "Verify 'Download via UIN' button is visible");
+	}
 
-    public boolean isDownloadViaEsignetDisplayedInHindi() {
-        return isElementVisible(getDownloadViaUinElement(), "Verify 'Download via Esignet' button is visible in Hindi");
-    }
+	public boolean isDownloadViaUinDisplayedInHindi() {
+		return isElementVisible(getDownloadViaUinElement(), "Verify 'Download via UIN' button is visible in Hindi");
+	}
 
-    public boolean isDownloadViaEsignetDisplayedinFillpino() {
-        return isElementVisible(getDownloadViaUinElement(), "Verify 'Download via Esignet' button is visible in Filipino");
-    }
+	public boolean isDownloadViaEsignetDisplayed() {
+		return isElementVisible(getDownloadViaUinElement(), "Verify 'Download via Esignet' button is visible");
+	}
 
-    public ESignetLoginPage clickOnDownloadViaEsignet() {
-        scrollAndClickByAccessibilityId(mosipIssuer, "Click on 'Download via Esignet'");
-        scrollAndClickByAccessibilityId(mosipIssuerCredentialType, "Click on 'MOSIP Verifiable Credential' option");
-        return new ESignetLoginPage(driver);
-    }
+	public boolean isDownloadViaEsignetDisplayedInHindi() {
+		return isElementVisible(getDownloadViaUinElement(), "Verify 'Download via Esignet' button is visible in Hindi");
+	}
 
-    public ESignetLoginPage clickOnDownloadViaLand() {
-        click(downloadViaLand, "Clicking on download via Land registry");
-        return new ESignetLoginPage(driver);
-    }
-    
-    public ESignetLoginPage clickOnDownloadViaLandSdJwt() {
-        scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Land sd jwt'");
-        scrollAndClickByAccessibilityId(landRegistryIssuerSdJwtCredentialType, "Click on 'Land Sd Jwt' option");
-        return new ESignetLoginPage(driver);
-    }
+	public boolean isDownloadViaEsignetDisplayedinFillpino() {
+		return isElementVisible(getDownloadViaUinElement(),
+				"Verify 'Download via Esignet' button is visible in Filipino");
+	}
 
-    public void clickOnLandStatementCredential01() {
-        click(credentialTypeHeadingLandStatementCredential, "Clicking on Land statement credential type");
-    }
+	public ESignetLoginPage clickOnDownloadViaEsignet() {
+		scrollAndClickByAccessibilityId(mosipIssuer, "Click on 'Download via Esignet'");
+		scrollAndClickByAccessibilityId(mosipIssuerCredentialType, "Click on 'MOSIP Verifiable Credential' option");
+		return new ESignetLoginPage(driver);
+	}
 
-    public void clickOncredentialTypeHeadingLandStatementCredential2() {
-        click(credentialTypeHeadingLandStatementCredential2, "Clicking on Land statement credential type");
-    }
+	public ESignetLoginPage clickOnDownloadViaLand() {
+		click(downloadViaLand, "Clicking on download via Land registry");
+		return new ESignetLoginPage(driver);
+	}
 
-    public void clickOncredentialTypeHeadingRegistrationReceiptCredential_VCDM2() {
-        click(credentialTypeHeadingRegistrationReceiptCredential_VCDM2, "Clicking on Land statement credential type");
-    }
+	public ESignetLoginPage clickOnDownloadViaLandSdJwt() {
+		scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Land sd jwt'");
+		scrollAndClickByAccessibilityId(landRegistryIssuerSdJwtCredentialType, "Click on 'Land Sd Jwt' option");
+		return new ESignetLoginPage(driver);
+	}
 
-    public void clickOncredentialTypeHeadingRegistrationReceiptCredentialVCDM1() {
-        click(credentialTypeHeadingRegistrationReceiptCredentialVCDM1, "Clicking on Land statement credential type");
-    }
-    
-    public void clickOnMosipIssuer() {
-        scrollAndClickByAccessibilityId(mosipIssuer, "Click on 'Download via Esignet'");
-        new ESignetLoginPage(driver);
-    }
-    
-    public void clickOnContinueButtonInSigninPopupIos() {
-        click(continueButton, "Click on Continue button in iOS Sign-in popup");
-    }
+	public ESignetLoginPage clickOnDownloadViaLandSVGWithFace() {
+		scrollAndClickByAccessibilityId(FarmerIssuer, "Click on 'Download via Farmer SVG'");
+		scrollAndClickByAccessibilityIdForStale(FarmerIssuerSdJwtCredentialTypeWithFace,
+				"Click on 'Farmer Id with Face' option");
+		return new ESignetLoginPage(driver);
+	}
 
-    public void clickOnCancelButtonInSigninPopupIos() {
-        click(cancelButton, "Click on Cancel button in iOS Sign-in popup");
-    }
+	public ESignetLoginPage clickOnDownloadViaLandSVGWithOutFace() {
+		scrollAndClickByAccessibilityId(FarmerIssuer, "Click on 'Download via Farmer SVG'");
+		scrollAndClickByAccessibilityIdForStale(FarmerIssuerSdJwtCredentialTypeWithoutFace,
+				"Click on 'Farmer Id without Face' option");
+		return new ESignetLoginPage(driver);
+	}
 
-    public void isBackButtonDisplayed() {
-        isElementVisible(backButton, "Check if Back button is displayed");
-    }
+	public void clickOnLandStatementCredential01() {
+		click(credentialTypeHeadingLandStatementCredential, "Clicking on Land statement credential type");
+	}
 
-    public boolean isAddNewCardGuideMessageDisplayedInFillopin() {
-        return isElementVisible(addNewCardGuideMessage, "Verify guide message is visible in Filipino");
-    }
+	public void clickOncredentialTypeHeadingLandStatementCredential2() {
+		click(credentialTypeHeadingLandStatementCredential2, "Clicking on Land statement credential type");
+	}
 
-    public boolean isAddNewCardGuideMessageDisplayedInHindi() {
-        return isElementVisible(addNewCardGuideMessage, "Verify guide message is visible in Hindi");
-    }
+	public void clickOncredentialTypeHeadingRegistrationReceiptCredential_VCDM2() {
+		click(credentialTypeHeadingRegistrationReceiptCredential_VCDM2, "Clicking on Land statement credential type");
+	}
 
-    public boolean isIssuerDescriptionMosipDisplayed() {
-        return isElementVisible(issuerDescriptionMosip, "Check if MOSIP issuer description is displayed");
-    }
+	public void clickOncredentialTypeHeadingRegistrationReceiptCredentialVCDM1() {
+		click(credentialTypeHeadingRegistrationReceiptCredentialVCDM1, "Clicking on Land statement credential type");
+	}
 
-    public boolean isIssuerDescriptionEsignetDisplayed() {
-        return isElementVisible(issuerDescriptionEsignet, "Check if Esignet issuer description is displayed");
-    }
+	public void clickOnMosipIssuer() {
+		scrollAndClickByAccessibilityId(mosipIssuer, "Click on 'Download via Esignet'");
+		new ESignetLoginPage(driver);
+	}
 
-    public boolean isIssuerSearchBarDisplayed() {
-        return isElementVisible(issuerSearchBar, "Verify Issuer search bar is visible");
-    }
+	public void clickOnContinueButtonInSigninPopupIos() {
+		click(continueButton, "Click on Continue button in iOS Sign-in popup");
+	}
 
-    public boolean isIssuerSearchBarDisplayedInFilipino() {
-        return isElementVisible(issuerSearchBar, "Verify Issuer search bar is visible in Filipino");
-    }
+	public void clickOnCancelButtonInSigninPopupIos() {
+		click(cancelButton, "Click on Cancel button in iOS Sign-in popup");
+	}
 
-    public boolean isIssuerSearchBarDisplayedInHindi() {
-        return isElementVisible(issuerSearchBar, "Verify Issuer search bar is visible in Hindi");
-    }
+	public void isBackButtonDisplayed() {
+		isElementVisible(backButton, "Check if Back button is displayed");
+	}
 
-    public void sendTextInIssuerSearchBar(String text) {
-        clearAndSendKeys(issuerSearchBar, text, "Enter text in Issuer search bar: " + text);
-    }
+	public boolean isAddNewCardGuideMessageDisplayedInFillopin() {
+		return isElementVisible(addNewCardGuideMessage, "Verify guide message is visible in Filipino");
+	}
 
-    public boolean isDownloadViaSunbirdDisplayed() {
-        return isElementVisible(downloadViaSunbird, "Verify 'Download via Sunbird' option is visible");
-    }
+	public boolean isAddNewCardGuideMessageDisplayedInHindi() {
+		return isElementVisible(addNewCardGuideMessage, "Verify guide message is visible in Hindi");
+	}
 
-    public SunbirdLoginPage clickOnDownloadViaSunbird() {
+	public boolean isIssuerDescriptionMosipDisplayed() {
+		return isElementVisible(issuerDescriptionMosip, "Check if MOSIP issuer description is displayed");
+	}
+
+	public boolean isIssuerDescriptionEsignetDisplayed() {
+		return isElementVisible(issuerDescriptionEsignet, "Check if Esignet issuer description is displayed");
+	}
+
+	public boolean isIssuerSearchBarDisplayed() {
+		return isElementVisible(issuerSearchBar, "Verify Issuer search bar is visible");
+	}
+
+	public boolean isIssuerSearchBarDisplayedInFilipino() {
+		return isElementVisible(issuerSearchBar, "Verify Issuer search bar is visible in Filipino");
+	}
+
+	public boolean isIssuerSearchBarDisplayedInHindi() {
+		return isElementVisible(issuerSearchBar, "Verify Issuer search bar is visible in Hindi");
+	}
+
+	public void sendTextInIssuerSearchBar(String text) {
+		clearAndSendKeys(issuerSearchBar, text, "Enter text in Issuer search bar: " + text);
+	}
+
+	public boolean isDownloadViaSunbirdDisplayed() {
+		return isElementVisible(downloadViaSunbird, "Verify 'Download via Sunbird' option is visible");
+	}
+
+	public SunbirdLoginPage clickOnDownloadViaSunbird() {
 //        click(continuePopupButton, "Click on Continue popup button");
-        scrollAndClickByAccessibilityId(stayProtectedIssuer, "Click on 'Download via Sunbird'");
-        return new SunbirdLoginPage(driver);
-    }
+		scrollAndClickByAccessibilityId(stayProtectedIssuer, "Click on 'Download via Sunbird'");
+		return new SunbirdLoginPage(driver);
+	}
 
-    public void clickOnCredentialTypeHeadingInsuranceCredential() {
+	public void clickOnCredentialTypeHeadingInsuranceCredential() {
 //        click(continuePopupButton, "Click on Continue popup button");
-        scrollAndClickByAccessibilityId(stayProtectedIssuerCredentialType, 10, "Click on Insurance Credential type heading");
-    }
+		scrollAndClickByAccessibilityId(stayProtectedIssuerCredentialType, 10,
+				"Click on Insurance Credential type heading");
+	}
 
-    public void clickOnDoneButton() {
-        click(DoneButton, "Click on Done button");
-        IosUtil.scrollToElement(driver, 100, 800, 100, 200);
-    }
+	public void clickOnDoneButton() {
+		click(DoneButton, "Click on Done button");
+		IosUtil.scrollToElement(driver, 100, 800, 100, 200);
+	}
 
-    public MockCertifyLoginPage clickOnDownloadViaMockCertify() {
-        clearAndSendKeys(IssuerSearchBar, "mock mobile", "Enter 'mock mobile' in Issuer search bar");
-        click(downloadViaMockCertify, "Click on 'Download via Mock Certify'");
-        click(credentialTypeHeadingMockVerifiableCredential_mdoc, "Click on Mock Verifiable Credential (mdoc)");
-        return new MockCertifyLoginPage(driver);
-    }
+	public MockCertifyLoginPage clickOnDownloadViaMockCertify() {
+		clearAndSendKeys(IssuerSearchBar, "mock mobile", "Enter 'mock mobile' in Issuer search bar");
+		click(downloadViaMockCertify, "Click on 'Download via Mock Certify'");
+		click(credentialTypeHeadingMockVerifiableCredential_mdoc, "Click on Mock Verifiable Credential (mdoc)");
+		return new MockCertifyLoginPage(driver);
+	}
 
-    public void clickOnDownloadViaMock() {
-        clearAndSendKeys(IssuerSearchBar, "mock", "Enter 'mock' in Issuer search bar");
-        click(downloadViaMock, "Click on 'Download via Mock'");
-        click(credentialTypeHeadingMockVerifiableCredential, "Click on Mock Verifiable Credential");
-    }
+	public void clickOnDownloadViaMock() {
+		clearAndSendKeys(IssuerSearchBar, "mock", "Enter 'mock' in Issuer search bar");
+		click(downloadViaMock, "Click on 'Download via Mock'");
+		click(credentialTypeHeadingMockVerifiableCredential, "Click on Mock Verifiable Credential");
+	}
 
-    public void ClickOnContinueButton() {
-        click(continuePopupButton, "Clicking on continue button");
-    }
-    
-    
+	public void ClickOnContinueButton() {
+		click(continuePopupButton, "Clicking on continue button");
+	}
+
 }
