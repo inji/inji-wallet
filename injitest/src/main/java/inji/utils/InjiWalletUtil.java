@@ -91,7 +91,7 @@ public class InjiWalletUtil extends AdminTestUtil {
     public static JSONArray mimotoActuatorResponseArray = null;
 
     public static String getValueFromMimotoActuator(String section, String key) {
-        String url = ApplnURI + ConfigManager.getproperty("actuator.mimoto.endpoint");
+        String url = ApplnURI + ConfigManager.getproperty("actuator_mimoto_endpoint");
         if (!(System.getenv("useOldContextURL") == null)
                 && !(System.getenv("useOldContextURL").isBlank())
                 && System.getenv("useOldContextURL").equalsIgnoreCase("true")) {

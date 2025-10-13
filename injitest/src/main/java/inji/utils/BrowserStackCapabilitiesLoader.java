@@ -12,11 +12,11 @@ public class BrowserStackCapabilitiesLoader {
     private static final String buildIdentifier = "#" + new SimpleDateFormat("dd-MMM-HH:mm").format(new Date());
 
     public static DesiredCapabilities getCommonCapabilities() {
-        String platform = InjiWalletConfigManager.getproperty("browserstack.platformName");
-        String deviceName = InjiWalletConfigManager.getproperty("browserstack.deviceName");
-        String platformVersion = InjiWalletConfigManager.getproperty("browserstack.platformVersion");
-        String appId = InjiWalletConfigManager.getproperty("browserstack.appId");
-        String buildName = InjiWalletConfigManager.getproperty("browserstack.buildName");
+        String platform = InjiWalletConfigManager.getproperty("browserstack_platformName");
+        String deviceName = InjiWalletConfigManager.getproperty("browserstack_deviceName");
+        String platformVersion = InjiWalletConfigManager.getproperty("browserstack_platformVersion");
+        String appId = InjiWalletConfigManager.getproperty("browserstack_appId");
+        String buildName = InjiWalletConfigManager.getproperty("browserstack_buildName");
 
         // Initialize desired capabilities (W3C format)
         DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -32,8 +32,8 @@ public class BrowserStackCapabilitiesLoader {
         bStackOptions.put("localIdentifier", BrowserStackLocalManager.getLocalIdentifier());// set localIdentifier for browserstack local
 
         // passing credentials here instead of setting via -D
-        bStackOptions.put("userName", InjiWalletConfigManager.getproperty("browserstack.username"));
-        bStackOptions.put("accessKey", InjiWalletConfigManager.getproperty("browserstack.accesskey"));
+        bStackOptions.put("userName", InjiWalletConfigManager.getproperty("browserstack_username"));
+        bStackOptions.put("accessKey", InjiWalletConfigManager.getproperty("browserstack_accesskey"));
 
         // Set the common Appium capabilities
         capabilities.setCapability("platformName", platform);

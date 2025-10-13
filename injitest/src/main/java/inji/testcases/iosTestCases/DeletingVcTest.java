@@ -242,7 +242,7 @@ public class DeletingVcTest extends IosBaseTest {
 
         SharePage scanPage = homePage.clickOnShareButton();
         scanPage.acceptPermissionPopupBluetoothIos();
-        scanPage.acceptPermissionPopupCameraIos();
+//        scanPage.acceptPermissionPopupCameraIos();
 
         assertTrue(scanPage.isNoShareableCardsMessageDisplayed(), "Verify if no shareable cards are available message is displayed");
     }

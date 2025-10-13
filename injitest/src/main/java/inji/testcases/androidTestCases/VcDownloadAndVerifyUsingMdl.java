@@ -7,6 +7,7 @@ import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.AndroidBaseTest;
 import inji.utils.InjiWalletUtil;
+import inji.utils.IosUtil;
 import inji.utils.ResourceBundleLoader;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
@@ -37,6 +38,19 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
 
         homePage.clickOnNextButtonForInjiTour();
 //        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
+
+        SettingsPage settingsPage = homePage.clickOnSettingIcon();
+        settingsPage.clickOnKeyManagement();
+        KeyManagementPage keyManagementPage = new KeyManagementPage(getDriver());
+        keyManagementPage.clickOnDoneButton();
+
+        IosUtil.dragAndDrop(getDriver(), keyManagementPage.getTheCoordinatesECCR1TextText(), keyManagementPage.getTheCoordinatesED25519Text());
+        keyManagementPage.clickOnSaveKeyOrderingPreferenceButton();
+
+        assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
+        keyManagementPage.clickOnArrowleftButton();
+        homePage.clickOnHomeButton();
+
         AddNewCardPage addNewCardPage = homePage.downloadCard();
 
 //        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
@@ -191,6 +205,19 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
 
         homePage.clickOnNextButtonForInjiTour();
 //        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
+
+        SettingsPage settingsPage = homePage.clickOnSettingIcon();
+        settingsPage.clickOnKeyManagement();
+        KeyManagementPage keyManagementPage = new KeyManagementPage(getDriver());
+        keyManagementPage.clickOnDoneButton();
+
+        IosUtil.dragAndDrop(getDriver(), keyManagementPage.getTheCoordinatesECCR1TextText(), keyManagementPage.getTheCoordinatesED25519Text());
+        keyManagementPage.clickOnSaveKeyOrderingPreferenceButton();
+
+        assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
+        keyManagementPage.clickOnArrowleftButton();
+        homePage.clickOnHomeButton();
+
         AddNewCardPage addNewCardPage = homePage.downloadCard();
 
 //        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
@@ -249,6 +276,19 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
 
         homePage.clickOnNextButtonForInjiTour();
 //        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
+
+        SettingsPage settingsPage = homePage.clickOnSettingIcon();
+        settingsPage.clickOnKeyManagement();
+        KeyManagementPage keyManagementPage = new KeyManagementPage(getDriver());
+        keyManagementPage.clickOnDoneButton();
+
+        IosUtil.dragAndDrop(getDriver(), keyManagementPage.getTheCoordinatesECCR1TextText(), keyManagementPage.getTheCoordinatesED25519Text());
+        keyManagementPage.clickOnSaveKeyOrderingPreferenceButton();
+
+        assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
+        keyManagementPage.clickOnArrowleftButton();
+        homePage.clickOnHomeButton();
+        
         AddNewCardPage addNewCardPage = homePage.downloadCard();
 
 //        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
@@ -297,7 +337,7 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
 
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
-        addNewCardPage.clickOnDoneButton();
+//        addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
     }
 }

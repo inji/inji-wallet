@@ -16,7 +16,7 @@ public class DriverManager {
 
     public static AppiumDriver getAndroidDriver() {
         try {
-            if (Boolean.parseBoolean(InjiWalletConfigManager.getproperty("browserstack.run"))) {
+            if (Boolean.parseBoolean(InjiWalletConfigManager.getproperty("browserstack_run"))) {
                 desiredCapabilities = BrowserStackCapabilitiesLoader.getCommonCapabilities();
                 appiumDriver.set(new AndroidDriver(new URL("https://hub-cloud.browserstack.com/wd/hub"), desiredCapabilities));
             } else {
@@ -31,7 +31,7 @@ public class DriverManager {
 
     public static AppiumDriver getIosDriver() {
         try {
-            if (Boolean.parseBoolean(InjiWalletConfigManager.getproperty("browserstack.run"))) {
+            if (Boolean.parseBoolean(InjiWalletConfigManager.getproperty("browserstack_run"))) {
                 desiredCapabilities = BrowserStackCapabilitiesLoader.getCommonCapabilities();
                 appiumDriver.set(new IOSDriver(new URL("https://hub-cloud.browserstack.com/wd/hub"), desiredCapabilities));
             } else {

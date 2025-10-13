@@ -11,7 +11,7 @@ public class ThreadCountListener implements ISuiteListener {
     @Override
     public void onStart(ISuite suite) {
         try {
-            int threadCount = Integer.parseInt(InjiWalletConfigManager.getproperty("thread.count"));
+            int threadCount = Integer.parseInt(InjiWalletConfigManager.getproperty("thread_count"));
 
             XmlSuite xmlSuite = suite.getXmlSuite();
             xmlSuite.setThreadCount(threadCount);

@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class ESignetLoginPage extends BasePage {
 
-    private static final String mosipIssuerCredentialType = InjiWalletConfigManager.getproperty("mosip.issuer.credentialType");
+    private static final String mosipIssuerCredentialType = InjiWalletConfigManager.getproperty("mosip_issuer.credentialType");
 
 
     @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeStaticText[`label == \"“Inji” Wants to Use “mosip.net” to Sign In\"`]")

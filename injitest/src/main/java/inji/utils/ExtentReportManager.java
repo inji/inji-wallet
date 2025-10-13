@@ -77,9 +77,9 @@ public class ExtentReportManager {
             LOGGER.info("Adding Git info to report: Branch = {}, Commit ID = {}", gitBranch, gitCommitId);
             extent.setSystemInfo("Git Branch", gitBranch);
             extent.setSystemInfo("Git Commit ID", gitCommitId);
-            extent.setSystemInfo("Device Name", InjiWalletConfigManager.getproperty("browserstack.deviceName"));
-            extent.setSystemInfo("Platform Name", InjiWalletConfigManager.getproperty("browserstack.platformName"));
-            extent.setSystemInfo("platform version", InjiWalletConfigManager.getproperty("browserstack.platformVersion"));
+            extent.setSystemInfo("Device Name", InjiWalletConfigManager.getproperty("browserstack_deviceName"));
+            extent.setSystemInfo("Platform Name", InjiWalletConfigManager.getproperty("browserstack_platformName"));
+            extent.setSystemInfo("platform version", InjiWalletConfigManager.getproperty("browserstack_platformVersion"));
             systemInfoAdded = true;
         }
     }

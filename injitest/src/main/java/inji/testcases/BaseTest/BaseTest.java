@@ -158,8 +158,8 @@ public abstract class BaseTest {
             String jsonUrl = "https://app-automate.browserstack.com/sessions/" + sessionId + ".json";
 
             // Call BrowserStack session API
-            String username = InjiWalletConfigManager.getproperty("browserstack.username");
-            String accessKey = InjiWalletConfigManager.getproperty("browserstack.accesskey");
+            String username = InjiWalletConfigManager.getproperty("browserstack_username");
+            String accessKey = InjiWalletConfigManager.getproperty("browserstack_accesskey");
             String auth = username + ":" + accessKey;
             String basicAuth = "Basic " + Base64.getEncoder().encodeToString(auth.getBytes());
 

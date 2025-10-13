@@ -19,7 +19,7 @@ public class BrowserStackLocalManager {
                 bsLocal = new Local();
                 localIdentifier = "injiwallet-" + System.currentTimeMillis();
                 Map<String, String> options = new HashMap<>();
-                options.put("key", InjiWalletConfigManager.getproperty("browserstack.accesskey"));
+                options.put("key", InjiWalletConfigManager.getproperty("browserstack_accesskey"));
                 options.put("forcelocal", "true");
 
                 options.put("localIdentifier", localIdentifier);

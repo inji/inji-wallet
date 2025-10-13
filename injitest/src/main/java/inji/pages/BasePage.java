@@ -21,8 +21,8 @@ public class BasePage {
     protected AppiumDriver driver;
     protected WebDriverWait wait;
 
-    private static final int DEFAULT_WAIT = Integer.parseInt(InjiWalletConfigManager.getproperty("element.wait.time"));
-    private static final int maxPageScrolls = Integer.parseInt(InjiWalletConfigManager.getproperty("max.pageScroll"));
+    private static final int DEFAULT_WAIT = Integer.parseInt(InjiWalletConfigManager.getproperty("element_wait_time"));
+    private static final int maxPageScrolls = Integer.parseInt(InjiWalletConfigManager.getproperty("max_pageScroll"));
     private static final int POLLING_INTERVAL = 500;
 
     public BasePage(AppiumDriver driver) {
