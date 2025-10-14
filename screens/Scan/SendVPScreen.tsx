@@ -68,7 +68,8 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     if (errorModal.show && controller.isOVPViaDeepLink) {
       const timeout = setTimeout(
         async () => {
-          await OpenID4VP.sendErrorToVerifier(
+          // Send error to verifier is initiated and its response is not listened to here.
+          void OpenID4VP.sendErrorToVerifier(
             OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
             OVP_ERROR_CODE.NO_MATCHING_VCS,
           );
@@ -132,7 +133,8 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   };
 
   const handleDismiss = async () => {
-    await OpenID4VP.sendErrorToVerifier(
+    // Send error to verifier is initiated and its response is not listened to here.
+    void OpenID4VP.sendErrorToVerifier(
       OVP_ERROR_MESSAGES.DECLINED,
       OVP_ERROR_CODE.DECLINED,
     );
@@ -147,7 +149,8 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   };
 
   const handleRejectButtonEvent = async () => {
-    await OpenID4VP.sendErrorToVerifier(
+    // Send error to verifier is initiated and its response is not listened to here.
+    void OpenID4VP.sendErrorToVerifier(
       OVP_ERROR_MESSAGES.DECLINED,
       OVP_ERROR_CODE.DECLINED,
     );
@@ -234,7 +237,8 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const getPrimaryButtonEvent = () => {
     if (controller.showConfirmationPopup && controller.isOVPViaDeepLink) {
       return async () => {
-        await OpenID4VP.sendErrorToVerifier(
+        // Send error to verifier is initiated and its response is not listened to here.
+        void OpenID4VP.sendErrorToVerifier(
           OVP_ERROR_MESSAGES.DECLINED,
           OVP_ERROR_CODE.DECLINED,
         );
