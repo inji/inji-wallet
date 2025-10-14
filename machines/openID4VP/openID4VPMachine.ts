@@ -82,7 +82,10 @@ export const openID4VPMachine = model.createMachine(
             target: 'getKeyPairFromKeystore',
           },
           onError: {
-            actions: 'setTrustedVerifiersApiCallError',
+            actions: [
+              'setTrustedVerifiersApiCallError',
+              'resetIsShowLoadingScreen',
+            ],
           },
         },
       },
