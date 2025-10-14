@@ -147,6 +147,15 @@ export function useOvpErrorModal({
         showRetryButton: false,
       });
       generateAndStoreLogMessage('REQUEST_COULD_NOT_BE_PROCESSED');
+    } else if (error.includes('VERIFIER_RESPONSE_ERROR')) {
+      setErrorModal({
+        show: true,
+        title: t('errors.verifierResponseError.title'),
+        message: t('errors.verifierResponseError.message'),
+        additionalMessage,
+        showRetryButton: false,
+      });
+      generateAndStoreLogMessage('SEND_VP_ERROR');
     } else if (error.startsWith('send vp')) {
       setErrorModal({
         show: true,

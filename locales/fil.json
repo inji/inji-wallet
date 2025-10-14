@@ -924,6 +924,10 @@
         "title": "May Nangyaring Mali",
         "message": "Nagkaroon ng teknikal na problema habang ibinabahagi ang iyong card. Pindutin ang \"Subukang Muli\" para subukang muli o bumalik sa \"Home\"."
       },
+      "verifierResponseError": {
+        "title": "Hindi maproseso ng tagapagsuri ang kredensyal",
+        "message": "May naging isyu habang pinoproseso ng tagapagsuri ang iyong kredensyal."
+      },
       "noImage": {
         "title": "Isang Error ang Naganap!",
         "message": "Ang pag-verify ng mukha ay nangangailangan ng larawan sa napiling (mga) kredensyal. Pakigamit ang opsyong Ibahagi o pumili ng kredensyal na may kasamang larawan."

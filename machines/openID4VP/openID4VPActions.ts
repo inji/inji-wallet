@@ -157,7 +157,7 @@ export const openID4VPActions = (model: any) => {
       error: (_, event) => {
         console.error(
           'Error occurred during the authenticateVerifier call :',
-           event.data.userInfo,
+          event.data.userInfo,
         );
         return event.data.code;
       },
@@ -165,7 +165,7 @@ export const openID4VPActions = (model: any) => {
 
     setTrustedVerifiersApiCallError: model.assign({
       error: (_, event) => {
-        console.error('Error:', event.data.message);
+        console.error('Error while fetching trusted verifiers:', event.data);
         return 'api error - ' + event.data.message;
       },
     }),

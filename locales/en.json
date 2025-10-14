@@ -933,6 +933,10 @@
         "title": "Something Went Wrong",
         "message": "There was a technical issue while sharing your card. Tap \"Retry\" to try again or go back to \"Home\"."
       },
+      "verifierResponseError": {
+        "title": "Verifier could not process the credential",
+        "message": "There was an issue while the verifier was processing your credential."
+      },
       "noImage": {
         "title": "An Error Occured!",
         "message": "Face verification requires a photo in the selected credential(s). Please use the Share option or select a credential that includes an image."

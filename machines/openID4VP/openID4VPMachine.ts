@@ -442,6 +442,11 @@ export const openID4VPMachine = model.createMachine(
       shareVPDeclineStatusToVerifier: {
         invoke: {
           src: 'shareDeclineStatus',
+          onError: (_, event) =>
+            console.error(
+              'Failed to send decline status to verifier - ',
+              event.data,
+            ),
         },
         after: {
           200: {
