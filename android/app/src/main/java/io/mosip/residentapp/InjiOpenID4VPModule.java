@@ -1,10 +1,12 @@
 package io.mosip.residentapp;
 
 import static io.mosip.openID4VP.authorizationResponse.AuthorizationResponseUtilsKt.toJsonString;
+import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
+import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
+import static io.mosip.openID4VP.constants.FormatType.DC_SD_JWT;
 import static io.mosip.openID4VP.constants.FormatType.LDP_VC;
 import static io.mosip.openID4VP.constants.FormatType.MSO_MDOC;
 import static io.mosip.openID4VP.constants.FormatType.VC_SD_JWT;
-import static io.mosip.openID4VP.constants.FormatType.DC_SD_JWT;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -26,31 +28,17 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import io.mosip.openID4VP.authorizationRequest.clientMetadata.ClientMetadata;
-import io.mosip.openID4VP.authorizationRequest.clientMetadata.ClientMetadataSerializer;
-import io.mosip.openID4VP.authorizationRequest.clientMetadata.Jwks;
-import io.mosip.openID4VP.constants.ClientIdScheme;
-import io.mosip.openID4VP.constants.ContentEncryptionAlgorithm;
-import io.mosip.openID4VP.constants.KeyManagementAlgorithm;
-import io.mosip.openID4VP.constants.RequestSigningAlgorithm;
-import io.mosip.openID4VP.constants.ResponseType;
-import io.mosip.openID4VP.constants.VPFormatType;
-import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
-
-import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
-import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.function.Function;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 import io.mosip.openID4VP.OpenID4VP;
 import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest;
@@ -63,9 +51,15 @@ import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.ldp.L
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.DeviceAuthentication;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.MdocVPTokenSigningResult;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.sdJwt.SdJwtVPTokenSigningResult;
+import io.mosip.openID4VP.constants.ClientIdScheme;
+import io.mosip.openID4VP.constants.ContentEncryptionAlgorithm;
 import io.mosip.openID4VP.constants.FormatType;
+import io.mosip.openID4VP.constants.KeyManagementAlgorithm;
+import io.mosip.openID4VP.constants.RequestSigningAlgorithm;
+import io.mosip.openID4VP.constants.ResponseType;
+import io.mosip.openID4VP.constants.VPFormatType;
+import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
 import io.mosip.openID4VP.networkManager.NetworkResponse;
-import kotlinx.serialization.json.Json;
 
 public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     private static final String TAG = "InjiOpenID4VPModule";
@@ -145,12 +139,12 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    private static void rejectWithOpenID4VPExceptions(Exception e, Promise promise) {
+    private void rejectWithOpenID4VPExceptions(Exception e, Promise promise) {
         if (e instanceof OpenID4VPExceptions exception) {
             WritableMap errorMap = Arguments.createMap();
             errorMap.putString("errorCode", exception.getErrorCode());
             errorMap.putString("message", exception.getMessage());
-            errorMap.putString("response", exception.getResponse());
+            errorMap.putString("response", gson.toJson(exception.getNetworkResponse()));
 
             promise.reject(exception.getErrorCode(), exception.getMessage(), exception, errorMap);
         } else {

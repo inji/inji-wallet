@@ -231,7 +231,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
         let errorMap: [String: Any] = [
             "errorCode": openidError.errorCode,
             "message": openidError.message,
-            "response": openidError.networkResponse ?? ""
+            "response": Inji.toJsonString(openidError.networkResponse) ?? ""
         ]
         let nsError = NSError(
             domain: "OPENID4VP",
@@ -323,4 +323,13 @@ fileprivate func resolveToJsonData(_ response: NetworkResponse?,resolver resolve
   } else {
     reject("ERROR", "Failed to serialize JSON", nil)
   }
+}
+
+fileprivate func toJsonString<T>(_ input: T) -> String? where T: Encodable {
+  let encoder = JSONEncoder()
+  if let jsonData = try? encoder.encode(input),
+     let jsonString = String(data: jsonData, encoding: .utf8) {
+    return jsonString
+  }
+  return nil
 }
