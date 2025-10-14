@@ -91,7 +91,7 @@ export const updateCredentialInformation = async (
       credentialConfigurationId: context.selectedCredentialType.id,
       issuerLogo: getDisplayObjectForCurrentLanguage(
         context.selectedIssuer.display,
-      )?.logo,
+      )?.logo ?? "",
       processedCredential,
     };
   } catch (e) {
@@ -113,9 +113,12 @@ export const updateCredentialInformation = async (
 };
 
 export const getDisplayObjectForCurrentLanguage = (
-  display: [displayType],
+  display: displayType[],
 ): displayType => {
   const currentLanguage = i18next.language;
+  if (!display || display.length === 0) {
+    return {} as displayType;
+  }
   const languageKey = Object.keys(display[0]).includes('language')
     ? 'language'
     : 'locale';
