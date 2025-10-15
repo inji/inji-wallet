@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 
 public class AddNewCardPage extends BasePage {
     private static final String mosipIssuer = InjiWalletConfigManager.getproperty("mosip_issuer");
-    private static final String mosipIssuerCredentialType = InjiWalletConfigManager.getproperty("mosip_issuer.credentialType");
+    private static final String mosipIssuerCredentialType = InjiWalletConfigManager.getproperty("mosip_issuer_credentialType");
     private static final String stayProtectedIssuer = InjiWalletConfigManager.getproperty("stayProtected_issuer");
     private static final String stayProtectedIssuerCredentialType = InjiWalletConfigManager.getproperty("stayProtected_issuer_credentialType");
 
