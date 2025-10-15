@@ -1,0 +1,152 @@
+THIRD-PARTY-NOTICES
+
+This project includes third-party packages that are distributed under various open-source licenses. Below is a list of packages and their associated licenses.
+
+================================================================================
+Package: Apache Commons
+License: Apache License 2.0
+Homepage: https://commons.apache.org/
+
+--------------------------------------------------------------------------------
+Package: Google Guava
+License: Apache License 2.0
+Homepage: https://github.com/google/guava
+
+--------------------------------------------------------------------------------
+Package: Jackson
+License: Apache License 2.0
+Homepage: https://github.com/FasterXML/jackson
+
+--------------------------------------------------------------------------------
+Package: SLF4J
+License: MIT License
+Homepage: https://www.slf4j.org/
+
+--------------------------------------------------------------------------------
+Package: Logback
+License: Eclipse Public License 1.0
+Homepage: https://logback.qos.ch/
+
+--------------------------------------------------------------------------------
+Package: Hibernate
+License: GNU Lesser General Public License (LGPL)
+Homepage: https://hibernate.org/
+
+--------------------------------------------------------------------------------
+Package: Spring Framework
+License: Apache License 2.0
+Homepage: https://spring.io/projects/spring-framework
+
+--------------------------------------------------------------------------------
+Package: JUnit
+License: Eclipse Public License 1.0
+Homepage: https://junit.org/
+
+--------------------------------------------------------------------------------
+Package: Mockito
+License: MIT License
+Homepage: https://site.mockito.org/
+
+--------------------------------------------------------------------------------
+Package: Jetty
+License: Apache License 2.0 / Eclipse Public License
+Homepage: https://www.eclipse.org/jetty/
+
+--------------------------------------------------------------------------------
+Package: Netty
+License: Apache License 2.0
+Homepage: https://netty.io/
+
+--------------------------------------------------------------------------------
+Package: Bouncy Castle
+License: MIT License
+Homepage: https://www.bouncycastle.org/
+
+--------------------------------------------------------------------------------
+Package: JSON.org
+License: JSON License
+Homepage: https://www.json.org/
+
+--------------------------------------------------------------------------------
+Package: Eclipse Collections
+License: Eclipse Public License 1.0
+Homepage: https://www.eclipse.org/collections/
+
+--------------------------------------------------------------------------------
+Package: FastUtil
+License: Apache License 2.0
+Homepage: https://fastutil.di.unimi.it/
+
+--------------------------------------------------------------------------------
+Package: H2 Database
+License: MPL 2.0 or EPL
+Homepage: https://www.h2database.com/
+
+--------------------------------------------------------------------------------
+Package: PostgreSQL JDBC Driver
+License: BSD License
+Homepage: https://jdbc.postgresql.org/
+
+--------------------------------------------------------------------------------
+Package: MySQL Connector/J
+License: GPL v2 with FOSS exception
+Homepage: https://dev.mysql.com/downloads/connector/j/
+
+--------------------------------------------------------------------------------
+Package: Apache HttpComponents
+License: Apache License 2.0
+Homepage: https://hc.apache.org/
+
+--------------------------------------------------------------------------------
+Package: OkHttp
+License: Apache License 2.0
+Homepage: https://square.github.io/okhttp/
+
+--------------------------------------------------------------------------------
+Package: Retrofit
+License: Apache License 2.0
+Homepage: https://square.github.io/retrofit/
+
+--------------------------------------------------------------------------------
+Package: Gson
+License: Apache License 2.0
+Homepage: https://github.com/google/gson
+
+--------------------------------------------------------------------------------
+Package: Lombok
+License: MIT License
+Homepage: https://projectlombok.org/
+
+--------------------------------------------------------------------------------
+Package: Apache Kafka
+License: Apache License 2.0
+Homepage: https://kafka.apache.org/
+
+--------------------------------------------------------------------------------
+Package: Zookeeper
+License: Apache License 2.0
+Homepage: https://zookeeper.apache.org/
+
+--------------------------------------------------------------------------------
+Package: Avro
+License: Apache License 2.0
+Homepage: https://avro.apache.org/
+
+--------------------------------------------------------------------------------
+Package: Protocol Buffers
+License: BSD License
+Homepage: https://developers.google.com/protocol-buffers
+
+--------------------------------------------------------------------------------
+Package: Thrift
+License: Apache License 2.0
+Homepage: https://thrift.apache.org/
+
+--------------------------------------------------------------------------------
+Package: Apache Curator
+License: Apache License 2.0
+Homepage: https://curator.apache.org/
+
+================================================================================
+
+Full license texts and additional details for each of the above packages are available in the license/ directory of this repository. Please refer to those files or the original source of each package for complete legal terms and conditions.
