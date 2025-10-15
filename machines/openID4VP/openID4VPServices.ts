@@ -221,7 +221,7 @@ export const openID4VPServices = () => {
       const verifierResponse = await OpenID4VP.shareVerifiablePresentation(
         vpTokenSigningResultMap,
       );
-      if (verifierResponse['statusCode'] !== 200) {
+      if (verifierResponse['status_code'] !== 200) {
         console.error(
           'Error response from verifier during sharing the VP :',
           verifierResponse,

@@ -316,7 +316,7 @@ func mapStringsToEnum<T: RawRepresentable>(
 
 fileprivate func resolveToJsonData(_ response: NetworkResponse?,resolver resolve: @escaping RCTPromiseResolveBlock,
                                    rejecter reject: @escaping RCTPromiseRejectBlock) throws {
-  let jsonData = try JSONEncoder().encode(response)
+  let jsonData = try toJsonData(response)
   
   if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
     resolve(jsonObject)
@@ -326,10 +326,15 @@ fileprivate func resolveToJsonData(_ response: NetworkResponse?,resolver resolve
 }
 
 fileprivate func toJsonString<T>(_ input: T) -> String? where T: Encodable {
-  let encoder = JSONEncoder()
-  if let jsonData = try? encoder.encode(input),
+  if let jsonData = try? toJsonData(input),
      let jsonString = String(data: jsonData, encoding: .utf8) {
     return jsonString
   }
   return nil
+}
+
+fileprivate func toJsonData<T>(_ input: T) throws -> Data where T: Encodable {
+  let encoder = JSONEncoder()
+  encoder.keyEncodingStrategy = .convertToSnakeCase
+  return try encoder.encode(input)
 }

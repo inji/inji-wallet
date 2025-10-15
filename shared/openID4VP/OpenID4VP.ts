@@ -71,9 +71,11 @@ class OpenID4VP {
   ) {
     const openID4VP = await OpenID4VP.getInstance();
 
-    return await openID4VP.InjiOpenID4VP.shareVerifiablePresentation(
-      vpTokenSigningResultMap,
-    );
+    const verifierResponse =
+      await openID4VP.InjiOpenID4VP.shareVerifiablePresentation(
+        vpTokenSigningResultMap,
+      );
+    return parseJSON(verifierResponse);
   }
 
   static async sendErrorToVerifier(errorMessage: string, errorCode: string) {
