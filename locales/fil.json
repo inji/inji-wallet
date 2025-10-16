@@ -35,7 +35,8 @@
       "INVALID_AUTH_REQUEST": "Nabigong maibahagi ang kredensyal — May kulang o maling impormasyon sa kahilingan.",
       "REQUEST_COULD_NOT_BE_PROCESSED": "Hindi naibahagi ang kredensyal — Hindi naproseso ang kahilingan dahil sa teknikal na isyu.",
       "INVALID_PRESENTATION_DEFINITION_URI": "Hindi naibahagi ang kredensyal — Mali ang format ng datos sa kahilingan ng verifier.",
-      "SEND_VP_ERROR": "Nabigong maibahagi ang kredensyal dahil sa teknikal na isyu."
+      "SEND_VP_ERROR": "Nabigong maibahagi ang kredensyal dahil sa teknikal na isyu.",
+      "INVALID_TRANSACTION_DATA": "Hindi maiproseso ang kahilingan sa beripikasyon dahil sa hindi suportadong data"
     }
   },
   "DeviceInfoList": {
@@ -915,6 +916,10 @@
       "invalidPresentationDefinitionRef": {
         "title": "Problema sa Tugon",
         "message": "Ang tugon mula sa tagapagsuri ay hindi wasto. Pakiusap, sabihan silang i-check at ibigay ang tamang detalye."
+      },
+      "invalidTransactionData": {
+        "title": "Hindi suportado ang kahilingan sa pag -verify",
+        "message": "Kasama sa kahilingan sa pag -verify na ito na hindi suportado ng iyong pitaka."
       },
       "invalidQrCode": {
         "title": "Hindi maiproseso ang iyong kahilingan",

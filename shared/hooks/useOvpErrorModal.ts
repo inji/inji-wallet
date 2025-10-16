@@ -174,6 +174,15 @@ export function useOvpErrorModal({
         showRetryButton: false,
       });
       generateAndStoreLogMessage('TRUSTED_VERIFIER_LIST_UPDATE_ERROR');
+    } else if(error.includes("invalid_transaction_data")){
+        setErrorModal({
+            show: true,
+            title: t('errors.invalidTransactionData.title'),
+            message: t('errors.invalidTransactionData.message'),
+            additionalMessage,
+            showRetryButton: false,
+        });
+        generateAndStoreLogMessage('INVALID_TRANSACTION_DATA');
     } else if (error !== '') {
       setErrorModal({
         show: true,

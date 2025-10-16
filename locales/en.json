@@ -35,7 +35,8 @@
       "INVALID_AUTH_REQUEST": "Credential sharing failed — The request had missing or incorrect information.",
       "REQUEST_COULD_NOT_BE_PROCESSED": "Credential not shared — Request couldn’t be processed due to a technical issue.",
       "INVALID_PRESENTATION_DEFINITION_URI": "Credential not shared — The verifier’s request had incorrect data format.",
-      "SEND_VP_ERROR": "Credential sharing failed due to a technical issue."
+      "SEND_VP_ERROR": "Credential sharing failed due to a technical issue.",
+      "INVALID_TRANSACTION_DATA": "The verification request could not be processed due to unsupported data"
     }
   },
   "DeviceInfoList": {
@@ -924,6 +925,10 @@
       "genericError": {
         "title": "Oops! An Error Occured.",
         "message": "There was a technical issue while processing your request. You can try again in a moment."
+      },
+      "invalidTransactionData": {
+        "title": "Verification Request Not Supported",
+        "message": "This verification request includes data that is not supported by your wallet."
       },
       "invalidQrCode": {
         "title": "Request can’t be processed",
