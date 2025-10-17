@@ -19,7 +19,7 @@ describe('ActivityLog', () => {
 describe('getActionText', () => {
   let activityLog;
   let mockIl18nfn;
-  let wellknown = {
+  const wellknown = {
     credential_configurations_supported: {
       mockId: {
         display: [
@@ -79,5 +79,81 @@ describe('getActionText', () => {
       idType: '',
     });
     expect(mockIl18nfn).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('VCActivityLog.getLogFromObject', () => {
+  it('should create VCActivityLog instance from object', () => {
+    const mockData = {
+      id: 'test-id',
+      type: 'VC_ADDED',
+      timestamp: 1234567890,
+      deviceName: 'Test Device',
+    };
+
+    const log = VCActivityLog.getLogFromObject(mockData);
+
+    expect(log).toBeInstanceOf(VCActivityLog);
+    expect(log.id).toBe('test-id');
+    expect(log.type).toBe('VC_ADDED');
+    expect(log.timestamp).toBe(1234567890);
+    expect(log.deviceName).toBe('Test Device');
+  });
+
+  it('should create VCActivityLog from empty object', () => {
+    const log = VCActivityLog.getLogFromObject({});
+
+    expect(log).toBeInstanceOf(VCActivityLog);
+    expect(log.timestamp).toBeDefined();
+  });
+});
+
+describe('VCActivityLog.getActionLabel', () => {
+  it('should return formatted action label with device name and time', () => {
+    const mockLog = new VCActivityLog({
+      deviceName: 'iPhone 12',
+      timestamp: Date.now() - 60000, // 1 minute ago
+    });
+
+    const label = mockLog.getActionLabel('en');
+
+    expect(label).toContain('iPhone 12');
+    expect(label).toContain('·');
+    expect(label).toContain('ago');
+  });
+
+  it('should return only time when device name is empty', () => {
+    const mockLog = new VCActivityLog({
+      deviceName: '',
+      timestamp: Date.now() - 120000, // 2 minutes ago
+    });
+
+    const label = mockLog.getActionLabel('en');
+
+    expect(label).not.toContain('·');
+    expect(label).toContain('ago');
+  });
+
+  it('should filter out empty labels', () => {
+    const mockLog = new VCActivityLog({
+      deviceName: '   ', // whitespace only
+      timestamp: Date.now(),
+    });
+
+    const label = mockLog.getActionLabel('en');
+
+    expect(label).not.toContain('·');
+    expect(label).toBeTruthy();
+  });
+
+  it('should format time in different languages', () => {
+    const mockLog = new VCActivityLog({
+      deviceName: 'Test Device',
+      timestamp: Date.now() - 300000, // 5 minutes ago
+    });
+
+    const labelEn = mockLog.getActionLabel('en');
+    expect(labelEn).toBeTruthy();
+    expect(labelEn).toContain('Test Device');
   });
 });
