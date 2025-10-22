@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.mosip.inji</groupId>
     <artifactId>inji-wallet</artifactId>
-    <version>0.20.0-SNAPSHOT</version>
+    <version>0.21.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>uitest-inji-wallet</name>
     <description>Project for Inji Mobile UI Automation</description>
@@ -51,7 +51,7 @@
         <maven.gpg.plugin.version>1.5</maven.gpg.plugin.version>
         <maven.shade.plugin.version>3.6.1</maven.shade.plugin.version>
         <central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
-        <jarName>uitest-inji-wallet-0.20.0-SNAPSHOT-jar-with-dependencies</jarName>
+        <jarName>uitest-inji-wallet-0.21.0-SNAPSHOT-jar-with-dependencies</jarName>
     </properties>
     <dependencies>
         <dependency>
