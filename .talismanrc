@@ -341,7 +341,7 @@ fileignoreconfig:
   - filename: android/app/src/main/java/io/mosip/residentapp/InjiVciClientModule.java
     checksum: 17f55840bab193bc353034445ba4fce53e1ce466e95f616c15a1351f8d2f23bc
   - filename: ios/Inji.xcworkspace/xcshareddata/swiftpm/Package.resolved
-    checksum: 252427dd3d91cc71d644c0448e07683e3b7f3ff3936b31b075691c1f1cd0ba0d
+    checksum: f1e1c7e8e92ebaf9a46a8916e65b756f059fc60e1149882c46e1b866c5fafe4e
   - filename: injitest/src/main/resources/Vids.json
     checksum: 8bcffed7a6dd565ae695e1b29de0655e10bd5c5420af2718defd593a687b8817
   - filename: injitest/src/main/java/inji/utils/UpdateNetworkSettings.java
