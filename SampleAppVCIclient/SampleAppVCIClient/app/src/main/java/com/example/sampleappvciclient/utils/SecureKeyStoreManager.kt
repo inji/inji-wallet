@@ -16,7 +16,7 @@ class SecureKeystoreManager(private val context: Context) {
         private const val KEY_KEYS_GENERATED = "keys_generated"
         private const val KEY_ORDER_PREFERENCE = "keyPreference"
 
-        // Singleton instance
+       
         @Volatile
         private var INSTANCE: SecureKeystoreManager? = null
 
@@ -85,28 +85,21 @@ class SecureKeystoreManager(private val context: Context) {
         }
     }
 
-    /**
-     * Generate and store key pairs similar to React Native implementation
-     */
     private suspend fun generateAndStoreKeyPairs() {
-        val isBiometricsEnabled = isBiometricsEnabled()
-        val isHardwareSupported = isHardwareKeystoreSupported()
+    val deviceBiometricsEnabled = isBiometricsEnabled()
+    val isHardwareSupported = isHardwareKeystoreSupported()
 
-        Log.i(TAG, "Hardware keystore supported: $isHardwareSupported")
-        Log.i(TAG, "Biometrics enabled: $isBiometricsEnabled")
+    Log.i(TAG, "Hardware keystore supported: $isHardwareSupported")
+    Log.i(TAG, "Biometrics enabled on device: $deviceBiometricsEnabled")
+    val isBiometricsEnabledForKeys = false
 
         if (isHardwareSupported) {
-            // Generate RS256 key pair in hardware keystore
-            generateKeyPairRSA(isBiometricsEnabled)
-
-            // Generate ES256 key pair in hardware keystore
-            generateKeyPairECR1(isBiometricsEnabled)
+            generateKeyPairRSA(isBiometricsEnabledForKeys)
+            generateKeyPairECR1(isBiometricsEnabledForKeys)
         } else {
             Log.w(TAG, "Hardware keystore not supported, keys will be stored in software")
             throw Exception("Hardware keystore not supported on this device")
         }
-
-        // Store key preferences
         storeKeyPreferences()
     }
 

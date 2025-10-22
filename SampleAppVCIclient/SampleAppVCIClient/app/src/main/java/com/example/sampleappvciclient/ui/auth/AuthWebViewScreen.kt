@@ -6,10 +6,14 @@ import android.net.Uri
 import android.util.Log
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
@@ -24,24 +28,29 @@ fun AuthWebViewScreen(
     navController: NavController
 ) {
     var isLoading by remember { mutableStateOf(true) }
+    var isDownloading by remember { mutableStateOf(false) }
     var currentUrl by remember { mutableStateOf("") }
 
-    Column(
+    Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Header with loading indicator and current URL
-        if (isLoading) {
-            LinearProgressIndicator(
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            // Header with loading indicator
+            if (isLoading) {
+                LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = androidx.compose.ui.graphics.Color(0xFFF2680C)
+                )
+            }
 
-        Text(
-            text = "Loading: $currentUrl",
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-            maxLines = 1
-        )
+            Text(
+                text = "Authenticating...",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                maxLines = 1
+            )
 
         // WebView
         AndroidView(
@@ -81,6 +90,8 @@ fun AuthWebViewScreen(
                                 if (code != null) {
                                     Log.d("AuthWebView", "✅ Completing auth flow with code: $code")
                                     AuthCodeHolder.complete(code)
+                                    isLoading = true
+                                    isDownloading = true
                                 } else if (error != null) {
                                     Log.e("AuthWebView", "❌ Auth error: $error")
                                     AuthCodeHolder.complete(null)
@@ -89,9 +100,8 @@ fun AuthWebViewScreen(
                                     AuthCodeHolder.complete(null)
                                 }
 
-                                navController.navigate(Screen.CredentialDetail.createRoute(code)) {
-                                    popUpTo(Screen.CredentialDetail.route) { inclusive = true }
-                                }
+                                // Don't navigate back - stay on this screen with loader
+                                // The download will complete in background and navigate when done
                                 return true
                             }
 
@@ -116,5 +126,45 @@ fun AuthWebViewScreen(
             },
             modifier = Modifier.fillMaxSize()
         )
+        }
+        
+        // Loading overlay when page is loading
+        if (isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White.copy(alpha = 0.95f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(32.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(56.dp),
+                            color = Color(0xFFF2680C)
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = if (isDownloading) "Downloading Credential..." else "Loading Authentication...",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Please wait...",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Gray
+                        )
+                    }
+                }
+            }
+        }
     }
 }

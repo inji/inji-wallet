@@ -5,4 +5,5 @@ object Constants {
     var credentialTypeId: String? = null
     var clientId: String? = null
     var redirectUri: String? = null
+    var credentialDisplayName: String? = null
 }

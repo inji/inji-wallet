@@ -37,6 +37,22 @@ android {
     buildFeatures {
         compose = true
     }
+    
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/license.txt",
+                "META-INF/LICENSE.txt",
+                "META-INF/LICENSE",
+                "META-INF/notice.txt",
+                "META-INF/NOTICE.txt",
+                "META-INF/NOTICE",
+                "META-INF/DEPENDENCIES",
+                "META-INF/ASL2.0",
+                "META-INF/*.kotlin_module"
+            )
+        }
+    }
 }
 
 dependencies {
@@ -52,12 +68,29 @@ dependencies {
     implementation(libs.androidx.material3)
 
 
-    implementation("io.mosip:inji-vci-client-aar:0.4.0-SNAPSHOT")
+    implementation("io.mosip:inji-vci-client-aar:0.5.0") {
+        exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
+        exclude(group = "org.bouncycastle")
+    }
+    
+    implementation("com.nimbusds:nimbus-jose-jwt:9.38-rc5") //JWT Signing Library
+
+    implementation("io.mosip:secure-keystore:0.3.0") {   // Secure Keystore Library
+        exclude(group = "org.bouncycastle")
+        exclude(group = "org.springframework")
+        exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
+    }
+   implementation("io.mosip:vcverifier-aar:1.4.0") { // Verifiable Credential Verification Library
+        exclude(group = "org.bouncycastle")
+        exclude(group = "org.springframework")
+        exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
+    }
+
     implementation("androidx.navigation:navigation-compose:2.8.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.5")
-    implementation("io.mosip:pixelpass-aar:0.7.0-SNAPSHOT")
-    implementation("io.mosip:secure-keystore:0.3.0")
+
+    
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.browser:browser:1.8.0")
@@ -68,10 +101,16 @@ dependencies {
 
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-    implementation("io.mosip:vcverifier-aar:1.4.0-SNAPSHOT")
+   
+    implementation("io.mosip:pixelpass-aar:0.7.0") {
+        exclude(group = "org.bouncycastle")
+        exclude(group = "org.springframework")
+        exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
+    }
 
-
-    implementation("com.nimbusds:nimbus-jose-jwt:9.38-rc5")
+    implementation("com.apicatalog:titanium-json-ld:1.3.2")
+    
+    implementation("org.bouncycastle:bcprov-jdk18on:1.74")
 
 
     testImplementation(libs.junit)
@@ -82,4 +121,3 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
-

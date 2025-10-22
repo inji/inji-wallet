@@ -7,4 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Inji  Colors -->
+    <color name="inji_orange">#F2680C</color>
+    <color name="inji_purple">#451691</color>
+    <color name="splash_background">#FFFFFF</color>
 </resources>

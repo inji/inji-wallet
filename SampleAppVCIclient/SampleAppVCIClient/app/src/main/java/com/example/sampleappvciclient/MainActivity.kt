@@ -56,14 +56,11 @@ class MainActivity : ComponentActivity() {
         // Generate keys for first time
         lifecycleScope.launch {
             try {
-                showToast("Generating secure key pairs...")
-
                 val result = keystoreManager.initializeKeystore()
 
                 if (result.isSuccess) {
                     val message = result.getOrNull() ?: "Key pairs generated successfully!"
                     Log.i(TAG, message)
-                    showToast("✅ $message")
 
                     // Log keystore status
                     val status = keystoreManager.getKeystoreStatus()
@@ -72,12 +69,10 @@ class MainActivity : ComponentActivity() {
                 } else {
                     val error = result.exceptionOrNull()
                     Log.e(TAG, "Keystore initialization failed", error)
-                    showToast("❌ Failed to generate keys: ${error?.message}")
                 }
 
             } catch (e: Exception) {
                 Log.e(TAG, "Error during keystore initialization", e)
-                showToast("❌ Keystore error: ${e.message}")
             }
         }
     }
@@ -90,7 +85,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        setIntent(intent) // update intent reference so LaunchedEffect can pick it up
+        setIntent(intent) 
     }
 
     private fun handleDeeplink(
