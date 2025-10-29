@@ -1,6 +1,6 @@
 import {sha256} from '@noble/hashes/sha256';
 import {VCMetadata} from './VCMetadata';
-import {NETWORK_REQUEST_FAILED} from './constants';
+import {CACHE_TTL, NETWORK_REQUEST_FAILED} from './constants';
 import {groupBy} from './javascript';
 import {Issuers} from './openId4VCI/Utils';
 import {v4 as uuid} from 'uuid';
@@ -135,3 +135,11 @@ export const createCacheObject = (response: any) => {
     cachedTime: currentTime,
   };
 };
+
+export const isCacheExpired = (timestamp: number) => {
+  return Date.now() - timestamp >= CACHE_TTL;
+};
+
+export function getVerifierKey(verifier: string): string {
+  return `trusted_verifier_${verifier}`;
+}

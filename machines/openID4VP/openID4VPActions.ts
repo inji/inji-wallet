@@ -53,6 +53,7 @@ export const openID4VPActions = (model: any) => {
 
     setSelectedVCs: model.assign({
       selectedVCs: (_, event) => event.selectedVCs,
+      selectedDisclosuresByVc: (_, event) => event.selectedDisclosuresByVc,
     }),
 
     compareAndStoreSelectedVC: model.assign({
@@ -154,16 +155,27 @@ export const openID4VPActions = (model: any) => {
 
     setAuthenticationError: model.assign({
       error: (_, event) => {
-        console.error('Error:', event.data.message, event.data.code);
+        console.error(
+          'Error occurred during the authenticateVerifier call :',
+          event.data.userInfo,
+        );
         return event.data.code;
       },
     }),
 
     setTrustedVerifiersApiCallError: model.assign({
       error: (_, event) => {
-        console.error('Error:', event.data.message);
+        console.error('Error while fetching trusted verifiers:', event.data);
         return 'api error - ' + event.data.message;
       },
+    }),
+
+    showTrustConsentModal: assign({
+      showTrustConsentModal: () => true,
+    }),
+
+    dismissTrustModal: assign({
+      showTrustConsentModal: () => false,
     }),
 
     setSendVPShareError: model.assign({
@@ -216,13 +228,6 @@ export const openID4VPActions = (model: any) => {
       },
       {to: (context: any) => context.serviceRefs.activityLog},
     ),
-
-    shareDeclineStatus: () => {
-      OpenID4VP.sendErrorToVerifier(
-        OVP_ERROR_MESSAGES.DECLINED,
-        OVP_ERROR_CODE.DECLINED,
-      );
-    },
 
     setIsFaceVerificationRetryAttempt: model.assign({
       isFaceVerificationRetryAttempt: () => true,
@@ -287,7 +292,7 @@ function getVcsMatchingAuthRequest(context, event) {
         requestedClaimsByVerifier,
       );
 
-      let shouldInclude = false;
+      let shouldInclude: boolean;
       if (inputDescriptor.constraints.fields && format) {
         shouldInclude = isMatchingConstraints && areMatchingFormatAndProofType;
       } else {
@@ -308,7 +313,8 @@ function getVcsMatchingAuthRequest(context, event) {
   }
 
   if (Object.keys(matchingVCs).length === 0) {
-    OpenID4VP.sendErrorToVerifier(
+    // Error is only sent when there are no VCs matching the request
+    void OpenID4VP.sendErrorToVerifier(
       OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
       OVP_ERROR_CODE.NO_MATCHING_VCS,
     );
@@ -329,7 +335,6 @@ function areVCFormatAndProofTypeMatchingRequest(
     return false;
   }
   const vcFormatType = vc.format;
-
   if (vcFormatType === VCFormat.ldp_vc) {
     const vcProofType = vc?.verifiableCredential?.credential?.proof?.type;
     return Object.entries(requestFormat).some(
@@ -357,6 +362,24 @@ function areVCFormatAndProofTypeMatchingRequest(
       );
     } catch (error) {
       console.error('Error in processing mdoc VC format:', error);
+      return false;
+    }
+  }
+
+  if (
+    vcFormatType === VCFormat.dc_sd_jwt ||
+    vcFormatType === VCFormat.vc_sd_jwt
+  ) {
+    try {
+      const sdJwt = vc.verifiableCredential?.credential;
+      const alg = extractAlgFromSdJwt(sdJwt);
+
+      return Object.entries(requestFormat).some(
+        ([type, value]) =>
+          type === vcFormatType && value['sd-jwt_alg_values']?.includes(alg),
+      );
+    } catch (e) {
+      console.error('Error processing SD-JWT alg match:', e);
       return false;
     }
   }
@@ -396,6 +419,29 @@ function isVCMatchingRequestConstraints(
     });
   });
 }
+function extractAlgFromSdJwt(sdJwtCompact: string): string {
+  const parts = sdJwtCompact.trim().split('~');
+  const jwt = parts[0];
+
+  const jwtParts = jwt.split('.');
+  if (jwtParts.length < 3) {
+    throw new Error('Invalid SD-JWT format');
+  }
+
+  const headerJson = JSON.parse(base64UrlDecode(jwtParts[0]));
+  if (!headerJson.alg) {
+    throw new Error('Missing alg in SD-JWT header');
+  }
+  return headerJson.alg;
+}
+
+function base64UrlDecode(input: string): string {
+  input = input.replace(/-/g, '+').replace(/_/g, '/');
+  while (input.length % 4) {
+    input += '=';
+  }
+  return Buffer.from(input, 'base64').toString('utf8');
+}
 
 function fetchCredentialBasedOnFormat(vc: any) {
   const format = vc.format;
@@ -409,6 +455,11 @@ function fetchCredentialBasedOnFormat(vc: any) {
       credential = getProcessedDataForMdoc(
         vc.verifiableCredential.processedCredential,
       );
+      break;
+    }
+    case VCFormat.vc_sd_jwt || VCFormat.dc_sd_jwt: {
+      credential =
+        vc.verifiableCredential.processedCredential.fullResolvedPayload;
       break;
     }
   }

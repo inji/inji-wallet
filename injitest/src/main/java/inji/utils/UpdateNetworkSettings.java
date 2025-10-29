@@ -15,8 +15,8 @@ public class UpdateNetworkSettings {
     public static void setNoNetworkProfile(String sessionID) {
         String baseURL = "https://api-cloud.browserstack.com";
         String endpoint = "/app-automate/sessions/" + sessionID + "/update_network.json";
-        String accessKey = InjiWalletConfigManager.getproperty("browserstack.accesskey");
-        String userName = InjiWalletConfigManager.getproperty("browserstack.username");
+        String accessKey = InjiWalletConfigManager.getproperty("browserstack_accesskey");
+        String userName = InjiWalletConfigManager.getproperty("browserstack_username");
         String networkSettingsJson = "{\"networkProfile\":\"no-network\"}";
         RequestSpecification requestSpec = RestAssured.given()
                 .auth().basic(userName, accessKey)
@@ -29,8 +29,8 @@ public class UpdateNetworkSettings {
         String baseURL = "https://api-cloud.browserstack.com";
         String endpoint = "/app-automate/sessions/" + sessionID + "/update_network.json";
 
-        String accessKey = InjiWalletConfigManager.getproperty("browserstack.accesskey");
-        String userName = InjiWalletConfigManager.getproperty("browserstack.username");
+        String accessKey = InjiWalletConfigManager.getproperty("browserstack_accesskey");
+        String userName = InjiWalletConfigManager.getproperty("browserstack_username");
         String networkSettingsJson = "{\"networkProfile\":\"reset\"}";
 
         RequestSpecification requestSpec = RestAssured.given()
@@ -44,8 +44,8 @@ public class UpdateNetworkSettings {
     public static void set2gNetworkProfile(String sessionID) {
         String baseURL = "https://api-cloud.browserstack.com";
         String endpoint = "/app-automate/sessions/" + sessionID + "/update_network.json";
-        String accessKey = InjiWalletConfigManager.getproperty("browserstack.accesskey");
-        String userName = InjiWalletConfigManager.getproperty("browserstack.username");
+        String accessKey = InjiWalletConfigManager.getproperty("browserstack_accesskey");
+        String userName = InjiWalletConfigManager.getproperty("browserstack_username");
         String networkSettingsJson = "{\"networkProfile\":\"2g-gprs-good\"}";
         RequestSpecification requestSpec = RestAssured.given()
                 .auth().basic(userName, accessKey)

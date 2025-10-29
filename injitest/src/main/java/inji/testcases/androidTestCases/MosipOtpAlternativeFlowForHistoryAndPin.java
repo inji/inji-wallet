@@ -63,7 +63,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends AndroidBaseTest {
         moreOptionsPage.clickOnPinOrUnPinCard();
 
         detailedVcViewPage.clickOnBackArrow();
-        addNewCardPage.clickOnDoneButton();
+//        addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         assertTrue(homePage.isPinIconDisplayed(), "Verify if pin icon on vc is displayed");
 
@@ -134,7 +134,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends AndroidBaseTest {
         otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
-        addNewCardPage.clickOnDoneButton();
+//        addNewCardPage.clickOnDoneButton();
 //        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 
         MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
@@ -215,7 +215,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends AndroidBaseTest {
         otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
-        addNewCardPage.clickOnDoneButton();
+//        addNewCardPage.clickOnDoneButton();
 //        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 
         MoreOptionsPage moreOptionsPage = new MoreOptionsPage(getDriver());

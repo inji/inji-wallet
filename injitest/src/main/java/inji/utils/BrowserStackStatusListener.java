@@ -29,7 +29,7 @@ public class BrowserStackStatusListener implements ITestListener {
     }
 
     private void markStatus(String status, String reason) {
-        if (!Boolean.parseBoolean(InjiWalletConfigManager.getproperty("browserstack.run"))) return;
+        if (!Boolean.parseBoolean(InjiWalletConfigManager.getproperty("browserstack_run"))) return;
 
         AppiumDriver driver = DriverManager.getDriver();
         if (driver instanceof JavascriptExecutor jse) {
@@ -44,7 +44,7 @@ public class BrowserStackStatusListener implements ITestListener {
     }
 
     private void markSessionName(String testName) {
-        if (!Boolean.parseBoolean(InjiWalletConfigManager.getproperty("browserstack.run"))) return;
+        if (!Boolean.parseBoolean(InjiWalletConfigManager.getproperty("browserstack_run"))) return;
 
         AppiumDriver driver = DriverManager.getDriver();
         if (driver instanceof JavascriptExecutor jse) {

@@ -35,7 +35,8 @@
       "INVALID_AUTH_REQUEST": "Credential sharing failed — The request had missing or incorrect information.",
       "REQUEST_COULD_NOT_BE_PROCESSED": "Credential not shared — Request couldn’t be processed due to a technical issue.",
       "INVALID_PRESENTATION_DEFINITION_URI": "Credential not shared — The verifier’s request had incorrect data format.",
-      "SEND_VP_ERROR": "Credential sharing failed due to a technical issue."
+      "SEND_VP_ERROR": "Credential sharing failed due to a technical issue.",
+      "INVALID_TRANSACTION_DATA": "The verification request could not be processed due to unsupported data"
     }
   },
   "DeviceInfoList": {
@@ -695,7 +696,7 @@
   "ScanScreen": {
     "shareWithSelfie": "Share with Selfie",
     "shareWithSelfieQrLogin": "QR Code Login",
-    "shareWithSelfieMessage": "To share your Verifiable Credentials, we’ll securely verify your identity using face verification. By continuing, you consent to INJI using your camera for this purpose. \n\n Your facial data will only be used for verification and will not be shared with any third parties.",
+    "shareWithSelfieMessage": "To share your Verifiable Credentials, we’ll verify your identity using face authentication. By continuing, you consent to Inji Wallet using your phone camera for this purpose. Your facial data will be used only for authentication and will not be stored or shared with any third parties.",
     "shareWithSelfieMessageQrLogin": "In order to access the portal, you’ll need to share your Verifiable Credentials and verify your identity securely using face verification. By continuing, you consent to Inji using your camera for this purpose. \n\n Your facial data will only be used for verification and will not be shared. After successful verification, you can choose which details to share.",
     "ConfirmButton": "I Understand",
     "doNotAskMessage": "Don't ask me again",
@@ -707,6 +708,7 @@
     "enableBluetoothButtonText": "Allow bluetooth permissions",
     "scanningGuide": "Hold the phone steady and scan the QR code to share your card.",
     "invalidQR": "Please scan a valid QR",
+    "unknownVerifier": "Unknown verifier",
     "errors": {
       "locationDisabled": {
         "message": "To continue, let your device turn on location",
@@ -871,6 +873,10 @@
     "cardSelected": "card selected",
     "unCheck": "Uncheck",
     "checkAll": "Check All",
+    "selectedFieldsTitle":"Information you choose to share",
+    "selectedFieldsSubtitle":"Your card includes the following selectively shareable details listed below.",
+    "unselectAll":"Unselect All",
+    "selectAll":"Select All",
     "consentDialog": {
       "title": "Consent Required",
       "message": "We require your consent to share your verifiable credentials with {{verifierName}}. This will enable us to verify your identity and fulfil your service requests. Choose \"Yes, Proceed\" to consent or \"Decline\" if you do not wish to share your credentials with {{verifierName}}.",
@@ -920,6 +926,10 @@
         "title": "Oops! An Error Occured.",
         "message": "There was a technical issue while processing your request. You can try again in a moment."
       },
+      "invalidTransactionData": {
+        "title": "Verification Request Not Supported",
+        "message": "This verification request includes data that is not supported by your wallet."
+      },
       "invalidQrCode": {
         "title": "Request can’t be processed",
         "message": "The QR code is invalid because some required information is missing. Please ask the verifier to provide a valid QR code to share your credentials."
@@ -927,6 +937,10 @@
       "sendVPError": {
         "title": "Something Went Wrong",
         "message": "There was a technical issue while sharing your card. Tap \"Retry\" to try again or go back to \"Home\"."
+      },
+      "verifierResponseError": {
+        "title": "Verifier could not process the credential",
+        "message": "There was an issue while the verifier was processing your credential."
       },
       "noImage": {
         "title": "An Error Occured!",
@@ -1128,12 +1142,19 @@
   },
   "trustScreen": {
     "description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",
+    "verifierDescription": "Make sure you recognize or trust this verifier. Once you do:",
     "infoPoints": [
       "The card will be securely saved in your wallet.",
       "This issuer will be added to your trusted list.",
       "You won't need to review trust again when downloading from them next time."
     ],
+    "verifierInfoPoints":[
+      "The card will be securely shared with the verifier.",
+      "The verifier will be added to your trusted list.",
+      "You won’t need to review trust again when sharing with them in the future."
+    ],
     "confirm": "Yes, I Trust This Issuer",
+    "verifierConfirm": "Yes, I Trust This Verifier",
     "cancel": "No, Take Me Back"
   }
 }

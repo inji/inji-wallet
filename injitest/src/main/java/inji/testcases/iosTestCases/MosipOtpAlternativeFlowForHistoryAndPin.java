@@ -39,7 +39,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends IosBaseTest {
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
         esignetLoginPage.clickOnGetOtpButton();
@@ -59,7 +59,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends IosBaseTest {
         moreOptionsPage.clickOnPinOrUnPinCard();
 
         detailedVcViewPage.clickOnBackArrow();
-        addNewCardPage.clickOnDoneButton();
+//        addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         assertTrue(homePage.isPinIconDisplayed(), "Verify if pin icon on vc is displayed");
 
@@ -99,7 +99,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends IosBaseTest {
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
         esignetLoginPage.clickOnGetOtpButton();
@@ -155,10 +155,10 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends IosBaseTest {
         AddNewCardPage addNewCardPage = homePage.downloadCard();
 
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
-        esignetLoginPage.clickOnCredentialTypeHeadingMOSIPVerifiableCredential();
+//        esignetLoginPage.clickOnCredentialTypeHeadingMOSIPVerifiableCredential();
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
         esignetLoginPage.clickOnGetOtpButton();

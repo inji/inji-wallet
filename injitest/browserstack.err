@@ -18,3 +18,7 @@
 [Thu, 14 Aug 2025 05:38:21 GMT] Error from server Error: listen EADDRINUSE: address already in use \\.\pipe\browserstack\daemonInstance - \\.\pipe\browserstack\daemonInstance
 [Thu, 14 Aug 2025 06:21:13 GMT] Error from server Error: listen EADDRINUSE: address already in use \\.\pipe\browserstack\daemonInstance - \\.\pipe\browserstack\daemonInstance
 [Thu, 14 Aug 2025 07:12:11 GMT] Error from server Error: listen EADDRINUSE: address already in use \\.\pipe\browserstack\daemonInstance - \\.\pipe\browserstack\daemonInstance
+[Fri, 19 Sep 2025 11:06:06 GMT] Error from server Error: listen EADDRINUSE: address already in use \\.\pipe\browserstack\daemonInstance - \\.\pipe\browserstack\daemonInstance
+[Fri, 19 Sep 2025 12:35:59 GMT] Error from server Error: listen EADDRINUSE: address already in use \\.\pipe\browserstack\RANCHER_AUTOMATION_TUNNELdaemonInstance - \\.\pipe\browserstack\RANCHER_AUTOMATION_TUNNELdaemonInstance
+[Fri, 19 Sep 2025 12:50:21 GMT] Error from server Error: listen EADDRINUSE: address already in use \\.\pipe\browserstack\RANCHER_AUTOMATION_TUNNELdaemonInstance - \\.\pipe\browserstack\RANCHER_AUTOMATION_TUNNELdaemonInstance
+[Fri, 19 Sep 2025 14:03:23 GMT] Error from server Error: listen EADDRINUSE: address already in use \\.\pipe\browserstack\RANCHER_AUTOMATION_TUNNELdaemonInstance - \\.\pipe\browserstack\RANCHER_AUTOMATION_TUNNELdaemonInstance

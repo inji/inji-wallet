@@ -27,6 +27,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
   flow,
   isInitialLaunch = false,
   isTopCard = false,
+  onDisclosuresChange,
 }) => {
   const controller = useVcItemController(vcMetadata);
   const {t} = useTranslation();
@@ -56,17 +57,16 @@ export const VCCardView: React.FC<VCItemProps> = ({
         setVc(processedData);
       }
     }
-   
     loadVc();
   }, [isDownloading, controller.credential]);
 
   useEffect(() => {
     if (!verifiableCredentialData || !verifiableCredentialData.vcMetadata) return;
     const {
-      issuer,
       credentialConfigurationId,
       vcMetadata: { format },
     } = verifiableCredentialData;
+
     if (vcMetadata.issuerHost) {
       getCredentialIssuersWellKnownConfig(
         vcMetadata.issuerHost,
@@ -76,13 +76,13 @@ export const VCCardView: React.FC<VCItemProps> = ({
         vcMetadata.issuerHost,
       )
         .then(response => {
-          if(response && response.matchingCredentialIssuerMetadata) {
-          setWellknown(response.matchingCredentialIssuerMetadata);
+          if (response && response.matchingCredentialIssuerMetadata) {
+            setWellknown(response.matchingCredentialIssuerMetadata);
           }
           setFields(response.fields);
         })
         .catch(error => {
-          setWellknown({"fallback":"true"});
+          setWellknown({fallback: 'true'});
           console.error(
             'Error occurred while fetching wellknown for viewing VC ',
             error,
@@ -94,6 +94,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
   if (!isVCLoaded(controller.credential) || !wellknown || !vc) {
     return <VCCardSkeleton />;
   }
+
   const CardViewContent = () => (
     <VCCardViewContent
       vcMetadata={vcMetadata}
@@ -111,6 +112,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
       DISMISS={controller.DISMISS}
       KEBAB_POPUP={controller.KEBAB_POPUP}
       isInitialLaunch={isInitialLaunch}
+      onDisclosuresChange={onDisclosuresChange}
     />
   );
 
@@ -159,4 +161,5 @@ export interface VCItemProps {
   flow?: string;
   isInitialLaunch?: boolean;
   isTopCard?: boolean;
+  onDisclosuresChange?: (paths: string[]) => void;
 }

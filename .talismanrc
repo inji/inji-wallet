@@ -341,7 +341,7 @@ fileignoreconfig:
   - filename: android/app/src/main/java/io/mosip/residentapp/InjiVciClientModule.java
     checksum: 17f55840bab193bc353034445ba4fce53e1ce466e95f616c15a1351f8d2f23bc
   - filename: ios/Inji.xcworkspace/xcshareddata/swiftpm/Package.resolved
-    checksum: 3cedf13dd287307d7ed29958a65127919cc3e47293c1959a91388329451dbf1e
+    checksum: f1e1c7e8e92ebaf9a46a8916e65b756f059fc60e1149882c46e1b866c5fafe4e
   - filename: injitest/src/main/resources/Vids.json
     checksum: 8bcffed7a6dd565ae695e1b29de0655e10bd5c5420af2718defd593a687b8817
   - filename: injitest/src/main/java/inji/utils/UpdateNetworkSettings.java
@@ -365,7 +365,7 @@ fileignoreconfig:
   - filename: android/app/src/main/AndroidManifest.xml
     checksum: 8f4bd61770b8bb0a28859ca0f3b4b095aed4e3fb5adef435cb74b9389ff13e09
   - filename: ios/Inji.xcodeproj/project.pbxproj
-    checksum: 5fd66dc8d95628ae831e86caffb46bc0ecf0f42a534ebad76774ba133b8a7907
+    checksum: 5bb246fa39bc7a9994b50bc5b1505d5389d0e254a4e30cfb2a57e6a1025e9087
   - filename: screens/Settings/ReceivedCardsModal.tsx
     checksum: 6dee9153a61009b0252d294154c88d5e1b241a517c76e930b391a39d7bc52392
   - filename: components/FaceScanner/FaceCompare.tsx
@@ -390,6 +390,8 @@ fileignoreconfig:
     checksum: 6b315164dca5de95c11e0dc8cbb480207b19c312b1c9135adc39ef74a1ff7e35
   - filename: screens/Scan/SendVPScreenController.ts
     checksum: f898ac7f1ecfa1df17e33b327d675f57debf2d5bd56052fc047dd03577354590
+  - filename: screens/Scan/SendVPScreen.tsx
+    checksum: de80cb9a932ed99e224438a8c373d117807101a39a440e97977654ef6935af6c
   - filename: machines/openID4VP/openID4VPMachine.typegen.ts
     checksum: a87664e146d420fb3140a0f6579980aaf82041928b502f8b301b4ebff048351c
   - filename: ios/RNOpenID4VPModule.swift
@@ -406,4 +408,8 @@ fileignoreconfig:
     checksum: 2ab5f935ea3d1ec4d109d8614c2246f40e284594288566338f185611470e6928
   - filename: components/VC/common/VCUtils.tsx
     checksum: 221b56a2aeb73f39677cdb7c7528bfe17e49092ce785431d20b2cdfffb96d9cf
+  - filename: shared/vcRenderer/VcRenderer.ts
+    checksum: 02f7d58fb149ecd3f10dd0bdfb6e85c4b3ae41d29a40d192056ffec0367b53c6
+  - filename: components/VC/Views/VCDetailView.tsx
+    checksum: 890c216a5632ac77b938f2f58f2123a669ea45b933a41931b8e7324e315f2d50
     version: "1.0"

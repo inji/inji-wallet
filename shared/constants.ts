@@ -201,3 +201,5 @@ export const OVP_ERROR_CODE = {
   NO_MATCHING_VCS: 'invalid_transaction_data',
   DECLINED: 'access_denied',
 };
+
+export const QR_IMAGE_ID = 'qrCodeImage';

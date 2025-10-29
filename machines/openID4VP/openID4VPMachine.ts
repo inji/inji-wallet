@@ -82,7 +82,10 @@ export const openID4VPMachine = model.createMachine(
             target: 'getKeyPairFromKeystore',
           },
           onError: {
-            actions: 'setTrustedVerifiersApiCallError',
+            actions: [
+              'setTrustedVerifiersApiCallError',
+              'resetIsShowLoadingScreen',
+            ],
           },
         },
       },
@@ -120,7 +123,7 @@ export const openID4VPMachine = model.createMachine(
           src: 'getAuthenticationResponse',
           onDone: {
             actions: 'setAuthenticationResponse',
-            target: 'getVCsSatisfyingAuthRequest',
+            target: 'checkVerifierTrust',
           },
           onError: {
             actions: 'setAuthenticationError',
@@ -129,7 +132,65 @@ export const openID4VPMachine = model.createMachine(
         },
         exit: 'resetIsShowLoadingScreen',
       },
+      checkVerifierTrust: {
+        invoke: {
+          src: 'isVerifierTrusted',
+          onDone: [
+            {
+              cond: (ctx, e) => e.data === true,
+              target: 'getVCsSatisfyingAuthRequest',
+            },
+            {
+              target: 'requestVerifierConsent',
+            },
+          ],
+          onError: {
+            target: 'requestVerifierConsent',
+          },
+        },
+      },
+
+      requestVerifierConsent: {
+        entry: ['showTrustConsentModal'],
+        on: {
+          VERIFIER_TRUST_CONSENT_GIVEN: {
+            actions: 'dismissTrustModal',
+            target: 'storeTrustedVerifier',
+          },
+          CANCEL: {
+            actions: 'dismissTrustModal',
+            target: 'delayBeforeDismissToParent',
+          },
+        },
+      },
+
+      delayBeforeDismissToParent: {
+        after: {
+          200: 'sendDismissToParent',
+        },
+      },
+      sendDismissToParent: {
+        entry: sendParent('DISMISS'),
+        always: 'waitingForData',
+      },
+
+      storeTrustedVerifier: {
+        invoke: {
+          src: 'storeTrustedVerifier',
+          onDone: {
+            target: 'getVCsSatisfyingAuthRequest',
+          },
+          onError: {
+            actions: model.assign({
+              error: () => 'failed to update trusted verifier list',
+            }),
+            target: 'showError',
+          },
+        },
+      },
+
       getVCsSatisfyingAuthRequest: {
+        entry: ['dismissTrustModal'],
         on: {
           DOWNLOADED_VCS: [
             {
@@ -382,9 +443,14 @@ export const openID4VPMachine = model.createMachine(
         },
       },
       shareVPDeclineStatusToVerifier: {
-        entry: [
-          'shareDeclineStatus',
-        ],
+        invoke: {
+          src: 'shareDeclineStatus',
+          onError: (_, event) =>
+            console.error(
+              'Failed to send decline status to verifier - ',
+              event.data,
+            ),
+        },
         after: {
           200: {
             actions: sendParent('DISMISS'),

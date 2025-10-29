@@ -99,7 +99,10 @@ export function useOvpErrorModal({
         showRetryButton: false,
       });
       generateAndStoreLogMessage('INVALID_REQUEST_URI_METHOD');
-    } else if (error.includes('invalid_request')) {
+    } else if (
+      error.includes('invalid_request') ||
+      error.includes('invalid_request_object')
+    ) {
       setErrorModal({
         show: true,
         title: t('errors.invalidQrCode.title'),
@@ -144,6 +147,15 @@ export function useOvpErrorModal({
         showRetryButton: false,
       });
       generateAndStoreLogMessage('REQUEST_COULD_NOT_BE_PROCESSED');
+    } else if (error.includes('VERIFIER_RESPONSE_ERROR')) {
+      setErrorModal({
+        show: true,
+        title: t('errors.verifierResponseError.title'),
+        message: t('errors.verifierResponseError.message'),
+        additionalMessage,
+        showRetryButton: false,
+      });
+      generateAndStoreLogMessage('SEND_VP_ERROR');
     } else if (error.startsWith('send vp')) {
       setErrorModal({
         show: true,
@@ -153,6 +165,24 @@ export function useOvpErrorModal({
         showRetryButton: true,
       });
       generateAndStoreLogMessage('SEND_VP_ERROR');
+    } else if (error.includes('failed to update trusted verifier list')) {
+      setErrorModal({
+        show: true,
+        title: t('errors.trustedVerifierListUpdateError.title'),
+        message: t('errors.trustedVerifierListUpdateError.message'),
+        additionalMessage,
+        showRetryButton: false,
+      });
+      generateAndStoreLogMessage('TRUSTED_VERIFIER_LIST_UPDATE_ERROR');
+    } else if(error.includes("invalid_transaction_data")){
+        setErrorModal({
+            show: true,
+            title: t('errors.invalidTransactionData.title'),
+            message: t('errors.invalidTransactionData.message'),
+            additionalMessage,
+            showRetryButton: false,
+        });
+        generateAndStoreLogMessage('INVALID_TRANSACTION_DATA');
     } else if (error !== '') {
       setErrorModal({
         show: true,

@@ -229,7 +229,6 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
 //        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
 
 //        moreOptionsPage.clickOnCloseButton();
-        addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
     }
 
@@ -300,7 +299,7 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
-        addNewCardPage.clickOnDoneButton();
+//        addNewCardPage.clickOnDoneButton();
 //        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 
         HistoryPage historyPage = homePage.clickOnHistoryButton();

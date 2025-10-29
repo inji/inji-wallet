@@ -769,6 +769,24 @@ export const DefaultTheme = {
       flex: 1,
       justifyContent: 'space-around',
     },
+    horizontalSeparator:{
+      height: 1,
+      backgroundColor: '#DADADA',
+    },
+    disclosureTitle:{
+      fontFamily: 'Inter_700Bold',
+      fontSize: 15,
+      color: Colors.Black,
+    },
+    disclosureSubtitle:{
+      fontSize: 13,
+      color: '#747474',
+      marginTop: 4,
+    },
+    disclosureSelectButton:{
+      fontSize: 14,
+      fontFamily: 'Inter_700Bold',
+    }
   }),
   BannerStyles: StyleSheet.create({
     container: {
@@ -1173,6 +1191,21 @@ export const DefaultTheme = {
       borderColor: Colors.Orange,
       borderRadius: 30,
     },
+    sharedSuccessfullyVerifierInfo:{
+      alignSelf: 'center',
+      backgroundColor: '#F5F5F5',
+      borderRadius: 16,
+      paddingVertical: 12,
+      paddingHorizontal: 16,
+      flexDirection: 'row',
+      justifyContent: 'center',
+    },
+    sharedSuccessfullyVerifierLogo: {
+      width: 40,
+      height: 40,
+      borderRadius: 8,
+      marginRight: 12,
+    }
   }),
   AppMetaDataStyles: StyleSheet.create({
     buttonContainer: {

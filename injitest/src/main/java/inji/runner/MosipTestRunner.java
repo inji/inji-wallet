@@ -141,7 +141,7 @@ public class MosipTestRunner {
         }
 
 
-        String testCasesProperty = InjiWalletConfigManager.getproperty("testcases.toRun"); // e.g., "method1,method2"
+        String testCasesProperty = InjiWalletConfigManager.getproperty("testcases_toRun"); // e.g., "method1,method2"
         List<String> testCases = null;
         if (testCasesProperty != null && !testCasesProperty.trim().isEmpty()) {
             testCases = Arrays.asList(testCasesProperty.split(","));

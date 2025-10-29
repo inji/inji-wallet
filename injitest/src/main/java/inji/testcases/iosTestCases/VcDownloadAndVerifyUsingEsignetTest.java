@@ -40,7 +40,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 //        String uin = TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
@@ -108,10 +108,10 @@ public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
         AddNewCardPage addNewCardPage = homePage.downloadCard();
 
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
-        esignetLoginPage.clickOnCredentialTypeHeadingMOSIPVerifiableCredential();
+//        esignetLoginPage.clickOnCredentialTypeHeadingMOSIPVerifiableCredential();
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
 //        String vid = TestDataReader.readData("vid");
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getVID());

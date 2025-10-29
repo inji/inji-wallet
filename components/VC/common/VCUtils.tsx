@@ -152,7 +152,7 @@ export const getFieldValue = (
           return null;
         }
         return getLocalizedField(value?.toString());
-      }      
+      }
     }
   }
 };
@@ -286,7 +286,7 @@ function getFullAddress(credential: CredentialSubject) {
     .filter(Boolean)
     .join(', ');
 }
-const formatKeyLabel = (key: string): string => {
+export const formatKeyLabel = (key: string): string => {
   return key
     .replace(/\[\d+\]/g, '') // Remove [0], [1], etc.
     .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase → spaced
@@ -303,7 +303,7 @@ const renderFieldRecursively = (
   parentKey = '',
   depth = 0,
   renderedFields: Set<string>,
-  disclosedKeys: Set<string> = new Set(),
+  disclosedKeys: string[],
 ): JSX.Element[] => {
   const fullKey = parentKey ? `${parentKey}.${key}` : key;
   let shortKey =
@@ -320,12 +320,12 @@ const renderFieldRecursively = (
   if (Array.isArray(value)) {
     const label = formatKeyLabel(key);
     const arrayFullKey = fullKey;
-    const isArrayDisclosed = disclosedKeys.has(arrayFullKey);
+    const isArrayDisclosed = disclosedKeys.includes(arrayFullKey);
 
     return value.flatMap((item, index) => {
       const itemKey = `${key}[${index}]`;
       const itemFullKey = parentKey ? `${parentKey}.${itemKey}` : itemKey;
-      const isItemDisclosed = disclosedKeys.has(itemFullKey);
+      const isItemDisclosed = disclosedKeys.includes(itemFullKey);
       const showDisclosureIcon = isArrayDisclosed || isItemDisclosed;
 
       return [
@@ -436,7 +436,7 @@ const renderFieldRecursively = (
     shortKey = publicKeyLabelMap[shortKey];
   }
   const label = formatKeyLabel(shortKey);
-  const isDisclosed = disclosedKeys.has(fullKey);
+  const isDisclosed = disclosedKeys.includes(fullKey);
   return [
     <Row
       key={`extra-${fullKey}`}
@@ -471,7 +471,7 @@ export const fieldItemIterator = (
 ): JSX.Element[] => {
   const fieldNameColor = display.getTextColor(Theme.Colors.DetailsLabel);
   const fieldValueColor = display.getTextColor(Theme.Colors.Details);
-  const disclosedKeys = verifiableCredential.disclosedKeys || new Set<string>();
+  const disclosedKeys = verifiableCredential.disclosedKeys ||  [];
   const renderedFields = new Set<string>();
 
   const renderedMainFields = fields.map(field => {
@@ -501,7 +501,7 @@ export const fieldItemIterator = (
       return null;
     }
 
-    const isDisclosed = disclosedKeys.has(field);
+    const isDisclosed = disclosedKeys.includes(field);
     return (
       <Row
         key={field}
@@ -715,3 +715,32 @@ const ProtectedCurve = {
 const PROOF_TYPE_ALGORITHM_MAP = {
   [-7]: 'ES256',
 };
+
+export function getFaceAttribute(verifiableCredential, format) {
+  let credentialSubject = {};
+  if (format === VCFormat.ldp_vc) {
+    credentialSubject =
+      verifiableCredential?.credential?.credentialSubject ??
+      verifiableCredential?.verifiableCredential.credential.credentialSubject ?? {};
+  } else if (format === VCFormat.mso_mdoc) {
+    const nameSpaces =
+      verifiableCredential?.processedCredential?.issuerSigned?.nameSpaces ??
+      verifiableCredential?.processedCredential?.nameSpaces ??
+      {};
+    credentialSubject = Object.values(nameSpaces)
+      .flat()
+      .reduce((acc, item) => {
+        const key = item.elementIdentifier;
+        const value = item.elementValue;
+        acc[key] = value;
+        return acc;
+      }, {} as Record<string, any>);
+  } else if (format === VCFormat.vc_sd_jwt || format === VCFormat.dc_sd_jwt) {
+    credentialSubject =
+      verifiableCredential?.processedCredential?.fullResolvedPayload ?? {};
+  }
+  const faceField =
+    getFaceField(credentialSubject)
+
+  return faceField
+}

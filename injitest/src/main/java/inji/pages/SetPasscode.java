@@ -6,6 +6,7 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
 
@@ -17,6 +18,9 @@ public class SetPasscode extends BasePage {
 
     @iOSXCUITFindBy(accessibility = "Done")
     private WebElement doneButton;
+
+    @iOSXCUITFindBy(accessibility = "Enter OTP")
+    private WebElement enterOtpHeader;
 
     @AndroidFindBy(xpath = "//android.view.View[contains(@resource-id, \"otp_verify_input\")]//android.widget.EditText[1]")
     @iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"eSignet\"]/XCUIElementTypeOther[6]/XCUIElementTypeTextField[1]")
@@ -106,20 +110,22 @@ public class SetPasscode extends BasePage {
     }
 
     private void enterOtpIosForeSignet(char[] arr) {
-        String baseXpath = isElementVisible(inputOtp)
-                ? "//XCUIElementTypeOther[@name=\"eSignet\"]/XCUIElementTypeOther[6]/XCUIElementTypeTextField"
-                : "//XCUIElementTypeOther[@name=\"eSignet\"]/XCUIElementTypeOther[7]/XCUIElementTypeTextField";
+        if (isElementVisible(enterOtpHeader)) {
+            String baseXpath = "//*[@type='XCUIElementTypeTextField' or @type='XCUIElementTypeSecureTextField']";
 
-        List<WebElement> fields = driver.findElements(By.xpath(baseXpath));
+            for (int i = 0; i < arr.length; i++) {
+                WebElement passcodeInput = driver.findElement(By.xpath("(" + baseXpath + ")[" + (i + 1) + "]"));
 
-        if (fields.size() < arr.length) {
-            throw new IllegalStateException("Not enough input fields to enter OTP on iOS eSignet.");
-        }
-
-        for (int i = 0; i < arr.length; i++) {
-            fields.get(i).sendKeys(String.valueOf(arr[i]));
+                if (i==0) {
+                    click(passcodeInput, "Click on the passcode field");
+                }
+                enterText(passcodeInput, String.valueOf(arr[i]), "Entering passcode digit in field " + (i + 1));
+            }
+        } else {
+            throw new IllegalStateException("Enter OTP header is not visible on iOS Esignet.");
         }
     }
+
 
     private void enterOtpAndroidForeSignet(char[] arr) {
         String baseXpath = isElementVisible(inputOtp)

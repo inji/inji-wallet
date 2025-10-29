@@ -40,7 +40,7 @@ public class VerifyHelpPageTest extends IosBaseTest {
         assertFalse(helpPage.isHelpPageContentEmpty(), "verifying if help page is not empty");
         helpPage.exitHelpPage();
 
-        homePage.clickOnNextButtonForInjiTour();
+//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
     }
 

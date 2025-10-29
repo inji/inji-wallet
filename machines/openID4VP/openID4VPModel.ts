@@ -16,11 +16,14 @@ const openID4VPEvents = {
     vcKey,
     inputDescriptorId,
   }),
-  ACCEPT_REQUEST: (selectedVCs: Record<string, VC[]>) => ({
+  ACCEPT_REQUEST: (selectedVCs: Record<string, VC[]>,selectedDisclosuresByVc: any) => ({
     selectedVCs,
+    selectedDisclosuresByVc
   }),
-  VERIFY_AND_ACCEPT_REQUEST: (selectedVCs: Record<string, VC[]>) => ({
+  VERIFIER_TRUST_CONSENT_GIVEN: () => ({}),
+  VERIFY_AND_ACCEPT_REQUEST: (selectedVCs: Record<string, VC[]>,selectedDisclosuresByVc) => ({
     selectedVCs,
+    selectedDisclosuresByVc
   }),
   CONFIRM: () => ({}),
   CANCEL: () => ({}),
@@ -52,6 +55,7 @@ export const openID4VPModel = createModel(
     vcsMatchingAuthRequest: {} as Record<string, VC[]>,
     checkedAll: false as boolean,
     selectedVCs: {} as Record<string, VC[]>,
+    selectedDisclosuresByVc: {} as Record<string, string[]>,
     isShareWithSelfie: false as boolean,
     showFaceAuthConsent: true as boolean,
     purpose: '' as string,
@@ -68,6 +72,7 @@ export const openID4VPModel = createModel(
     requestedClaims: '' as string,
     showLoadingScreen: false as boolean,
     isOVPViaDeepLink: false,
+    showTrustConsentModal: false as boolean,
   },
   {events: openID4VPEvents},
 );

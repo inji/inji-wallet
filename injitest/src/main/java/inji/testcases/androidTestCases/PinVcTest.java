@@ -164,7 +164,7 @@ public class PinVcTest extends AndroidBaseTest {
      //   assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
         moreOptionsPage.clickOnPinOrUnPinCard();
 
-        homePage.clickOnNextButtonForInjiTour();
+//        homePage.clickOnNextButtonForInjiTour();
 //        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         homePage.downloadCard();
 
@@ -183,7 +183,7 @@ public class PinVcTest extends AndroidBaseTest {
         esignetLoginPage.clickOnVerifyButton();
 
         assertTrue(homePage.isPinIconDisplayed(), "Verify if pin icon on vc is displayed");
-        addNewCardPage.clickOnDoneButton();
+//        addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         homePage.clickOnMoreOptionsButton();
 

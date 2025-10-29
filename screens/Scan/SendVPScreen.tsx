@@ -33,6 +33,7 @@ import {GlobalContext} from '../../shared/GlobalContext';
 import {APP_EVENTS} from '../../machines/app';
 import {useScanScreen} from './ScanScreenController';
 import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
+import {TrustModal} from '../../components/TrustModal';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
@@ -52,12 +53,23 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   const {appService} = useContext(GlobalContext);
   const [triggerExitFlow, setTriggerExitFlow] = useState(false);
+  const [selectedDisclosuresByVc, setSelectedDisclosuresByVc] = useState<
+    Record<string, string[]>
+  >({});
+
+  const handleDisclosureChange = (vcKey: string, disclosures: string[]) => {
+    setSelectedDisclosuresByVc(prev => ({
+      ...prev,
+      [vcKey]: disclosures,
+    }));
+  };
 
   useEffect(() => {
     if (errorModal.show && controller.isOVPViaDeepLink) {
       const timeout = setTimeout(
-        () => {
-          OpenID4VP.sendErrorToVerifier(
+        async () => {
+          // Send error to verifier is initiated and its response is not listened to here.
+          void OpenID4VP.sendErrorToVerifier(
             OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
             OVP_ERROR_CODE.NO_MATCHING_VCS,
           );
@@ -120,11 +132,13 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     resetErrorModal();
   };
 
-  const handleDismiss = () => {
-    OpenID4VP.sendErrorToVerifier(
+  const handleDismiss = async () => {
+    // Send error to verifier is initiated and its response is not listened to here.
+    void OpenID4VP.sendErrorToVerifier(
       OVP_ERROR_MESSAGES.DECLINED,
       OVP_ERROR_CODE.DECLINED,
     );
+
     controller.generateAndStoreLogMessage('USER_DECLINED_CONSENT');
     if (controller.isOVPViaDeepLink) {
       controller.GO_TO_HOME();
@@ -134,8 +148,9 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     }
   };
 
-  const handleRejectButtonEvent = () => {
-    OpenID4VP.sendErrorToVerifier(
+  const handleRejectButtonEvent = async () => {
+    // Send error to verifier is initiated and its response is not listened to here.
+    void OpenID4VP.sendErrorToVerifier(
       OVP_ERROR_MESSAGES.DECLINED,
       OVP_ERROR_CODE.DECLINED,
     );
@@ -221,8 +236,9 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   const getPrimaryButtonEvent = () => {
     if (controller.showConfirmationPopup && controller.isOVPViaDeepLink) {
-      return () => {
-        OpenID4VP.sendErrorToVerifier(
+      return async () => {
+        // Send error to verifier is initiated and its response is not listened to here.
+        void OpenID4VP.sendErrorToVerifier(
           OVP_ERROR_MESSAGES.DECLINED,
           OVP_ERROR_CODE.DECLINED,
         );
@@ -257,7 +273,10 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   const noOfCardsSelected = controller.areAllVCsChecked
     ? Object.values(controller.vcsMatchingAuthRequest).length
-    : Object.keys(controller.selectedVCKeys).length;
+    : Object.values(controller.inputDescriptorIdToSelectedVcKeys).reduce(
+        (vcCount, arr) => vcCount + arr.length,
+        0,
+      );
 
   const cardsSelectedText =
     noOfCardsSelected === 1
@@ -270,6 +289,18 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   return (
     <React.Fragment>
+      {
+        <TrustModal
+          isVisible={controller.showTrustConsentModal}
+          logo={controller.verifierLogoInTrustModal}
+          name={
+            controller.verifierNameInTrustModal ??
+            t('ScanScreen:unknownVerifier')
+          }
+          onConfirm={controller.VERIFIER_TRUST_CONSENT_GIVEN}
+          onCancel={controller.CANCEL}
+          flowType="verifier"></TrustModal>
+      }
       {Object.keys(vcsMatchingAuthRequest).length > 0 && (
         <>
           {controller.purpose !== '' && (
@@ -324,7 +355,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                 ([inputDescriptorId, vcs]) =>
                   vcs.map(vcData => (
                     <VcItemContainer
-                      key={getVcKey(vcData)}
+                      key={`${getVcKey(vcData)}-${inputDescriptorId}`}
                       vcMetadata={vcData.vcMetadata}
                       margin="0 2 8 2"
                       onPress={controller.SELECT_VC_ITEM(
@@ -334,12 +365,18 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                       selectable
                       selected={
                         controller.areAllVCsChecked ||
-                        Object.keys(controller.selectedVCKeys).includes(
-                          getVcKey(vcData),
-                        )
+                        (Object.keys(
+                          controller.inputDescriptorIdToSelectedVcKeys,
+                        ).includes(inputDescriptorId) &&
+                          controller.inputDescriptorIdToSelectedVcKeys[
+                            inputDescriptorId
+                          ].includes(getVcKey(vcData)))
                       }
                       flow={VCItemContainerFlowType.VP_SHARE}
                       isPinned={vcData.vcMetadata.isPinned}
+                      onDisclosuresChange={disclosures => {
+                        handleDisclosureChange(getVcKey(vcData), disclosures);
+                      }}
                     />
                   )),
               )}
@@ -361,7 +398,9 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                     Object.keys(controller.getSelectedVCs()).length === 0 ||
                     controller.checkIfAnyVCHasImage(controller.getSelectedVCs())
                   }
-                  onPress={controller.ACCEPT_REQUEST}
+                  onPress={() =>
+                    controller.ACCEPT_REQUEST(selectedDisclosuresByVc)
+                  }
                 />
               )}
               {/*If one of the selected vc has image, it needs to sent only after biometric authentication (Share with Selfie)*/}
@@ -378,7 +417,11 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                       controller.getSelectedVCs(),
                     )
                   }
-                  onPress={controller.VERIFY_AND_ACCEPT_REQUEST}
+                  onPress={() =>
+                    controller.VERIFY_AND_ACCEPT_REQUEST(
+                      selectedDisclosuresByVc,
+                    )
+                  }
                 />
               )}
 

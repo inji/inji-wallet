@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Feather  from 'react-native-vector-icons/Feather';
-import { Image, ImageBackground, ImageBackgroundProps, TouchableOpacity, View } from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  ImageBackground,
+  ImageBackgroundProps,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {ActivityIndicator} from '../../ui/ActivityIndicator';
+
 import {
   Credential,
   CredentialWrapper,
@@ -10,26 +20,28 @@ import {
   VerifiableCredentialData,
   WalletBindingResponse,
 } from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
-import { Button, Column, Row, Text } from '../../ui';
-import { Theme } from '../../ui/styleUtils';
-import { QrCodeOverlay } from '../../QrCodeOverlay';
-import { SvgImage } from '../../ui/svg';
-import { isActivationNeeded } from '../../../shared/openId4VCI/Utils';
+import {Button, Column, Row, Text} from '../../ui';
+import {Theme} from '../../ui/styleUtils';
+import {QrCodeOverlay} from '../../QrCodeOverlay';
+import {SvgImage} from '../../ui/svg';
+import {isActivationNeeded} from '../../../shared/openId4VCI/Utils';
 import {
   BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS,
   DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
   Display,
   fieldItemIterator,
 } from '../common/VCUtils';
-import { VCFormat } from '../../../shared/VCFormat';
+import {VCFormat} from '../../../shared/VCFormat';
 
 import testIDProps from '../../../shared/commonUtil';
-import { ShareableInfoModal } from './ShareableInfoModal';
+import {ShareableInfoModal} from './ShareableInfoModal';
+import {SvgCss} from 'react-native-svg/css';
+import {QR_IMAGE_ID} from '../../../shared/constants';
 
 const getProfileImage = (face: any) => {
   if (face) {
     return (
-      <Image source={{ uri: face }} style={Theme.Styles.detailedViewImage} />
+      <Image source={{uri: face}} style={Theme.Styles.detailedViewImage} />
     );
   }
   return <></>;
@@ -38,11 +50,15 @@ const getProfileImage = (face: any) => {
 export const VCDetailView: React.FC<VCItemDetailsProps> = (
   props: VCItemDetailsProps,
 ) => {
-  const { t } = useTranslation('VcDetails');
+  const {t} = useTranslation('VcDetails');
   const logo = props.verifiableCredentialData.issuerLogo;
   const face = props.verifiableCredentialData.face;
   const verifiableCredential = props.credential;
   const wellknownDisplayProperty = new Display(props.wellknown);
+
+  const {width: deviceWidth} = Dimensions.get('window');
+  const CARD_WIDTH = deviceWidth * 0.8;
+  const CARD_SPACING = 16;
 
   const shouldShowHrLine = verifiableCredential => {
     let availableFieldNames: string[] = [];
@@ -53,7 +69,10 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
     } else if (
       props.verifiableCredentialData.vcMetadata.format === VCFormat.mso_mdoc
     ) {
-      const namespaces = verifiableCredential['issuerSigned']?.['nameSpaces'] ?? verifiableCredential['nameSpaces'] ?? {};
+      const namespaces =
+        verifiableCredential['issuerSigned']?.['nameSpaces'] ??
+        verifiableCredential['nameSpaces'] ??
+        {};
       Object.keys(namespaces).forEach(namespace => {
         (namespaces[namespace] as Array<Object>).forEach(element => {
           availableFieldNames.push(
@@ -61,11 +80,13 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
           );
         });
       });
-    }
-    else if (
-      props.verifiableCredentialData.vcMetadata.format === VCFormat.vc_sd_jwt || props.verifiableCredentialData.vcMetadata.format === VCFormat.dc_sd_jwt
+    } else if (
+      props.verifiableCredentialData.vcMetadata.format === VCFormat.vc_sd_jwt ||
+      props.verifiableCredentialData.vcMetadata.format === VCFormat.dc_sd_jwt
     ) {
-      availableFieldNames = Object.keys(verifiableCredential?.fullResolvedPayload);
+      availableFieldNames = Object.keys(
+        verifiableCredential?.fullResolvedPayload,
+      );
     }
     for (const fieldName of availableFieldNames) {
       if (
@@ -77,95 +98,190 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
 
     return false;
   };
+  const [showQrOverlay, setShowQrOverlay] = useState(false);
+
   const [shareModalVisible, setShareModalVisible] = useState(false);
+
+  if (props.loadingSvg) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
   return (
     <>
       <Column scroll>
-        <Column fill>
-          <Column
-            padding="10 10 3 10"
-            backgroundColor={Theme.Colors.DetailedViewBackground}>
-            <ImageBackground
-              imageStyle={Theme.Styles.vcDetailBg}
-              resizeMethod="scale"
-              resizeMode="stretch"
-              style={[
-                Theme.Styles.openCardBgContainer,
-                wellknownDisplayProperty.getBackgroundColor(),
-              ]}
-              source={
-                wellknownDisplayProperty.getBackgroundImage(
-                  Theme.OpenCard,
-                ) as ImageBackgroundProps
-              }>
-              <Row padding="14 14 0 14" margin="0 0 0 0">
-                <Column crossAlign="center">
-                  {getProfileImage(face)}
-                  <QrCodeOverlay
-                    verifiableCredential={
-                      props.credentialWrapper as unknown as VerifiableCredential
-                    }
-                    meta={props.verifiableCredentialData.vcMetadata}
-                  />
-                  <Column
-                    width={80}
-                    height={59}
-                    crossAlign="center"
-                    margin="12 0 0 0">
-                    <Image
-                      {...testIDProps('issuerLogo')}
-                      src={logo?.url}
-                      alt={logo?.alt_text}
-                      style={Theme.Styles.issuerLogo}
-                      resizeMethod="scale"
-                      resizeMode="contain"
+        {Array.isArray(props.svgTemplate) && props.svgTemplate.length > 0 ? (
+          <Column padding="30 0 0 0">
+            <FlatList
+              data={props.svgTemplate}
+              keyExtractor={(_, index) => `svg-${index}`}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              pagingEnabled={props.svgTemplate.length > 1}
+              snapToInterval={
+                props.svgTemplate.length > 1
+                  ? CARD_WIDTH + CARD_SPACING
+                  : undefined
+              }
+              decelerationRate="fast"
+              snapToAlignment="start"
+              contentContainerStyle={{
+                paddingHorizontal: 16,
+                justifyContent: 'center',
+                alignItems:
+                  props.svgTemplate.length === 1 ? 'center' : 'flex-start',
+              }}
+              ItemSeparatorComponent={() => (
+                <View style={{width: CARD_SPACING}} />
+              )}
+              renderItem={({item}) => {
+                let aspectRatio: number | null = null;
+                const match = item.match(/viewBox="0 0 (\d+) (\d+)"/);
+                if (match) {
+                  const [, w, h] = match.map(Number);
+                  aspectRatio = h / w;
+                }
+
+                const targetWidth =
+                  props.svgTemplate.length === 1
+                    ? deviceWidth - 32
+                    : CARD_WIDTH;
+                const targetHeight = aspectRatio
+                  ? targetWidth * aspectRatio
+                  : targetWidth * 0.7;
+
+                return (
+                  <Column style={{width: targetWidth}}>
+                    <SvgCss
+                      xml={item}
+                      width="100%"
+                      height={targetHeight}
+                      preserveAspectRatio="xMidYMid meet"
                     />
+
+                    <View style={{height: 12}} />
+
+                    {item.includes(QR_IMAGE_ID) && (
+                      <Button
+                        testID="zoomQrCode"
+                        title="Tap to zoom QR Code"
+                        type="gradient"
+                        size="Large"
+                        onPress={() => setShowQrOverlay(true)}
+                      />
+                    )}
                   </Column>
-                </Column>
-                <Column
-                  align="space-evenly"
-                  margin={'0 0 0 24'}
-                  style={{ flex: 1 }}>
-                  {fieldItemIterator(
-                    props.fields,
-                    props.wellknownFieldsFlag,
-                    verifiableCredential,
-                    props.wellknown,
-                    wellknownDisplayProperty,
-                    false,
-                    props,
-                  )}
-                </Column>
-              </Row>
-              <>
-                <View
-                  style={[
-                    Theme.Styles.hrLine,
-                    {
-                      borderBottomColor: wellknownDisplayProperty.getTextColor(
-                        Theme.Styles.hrLine.borderBottomColor,
-                      ),
-                    },
-                  ]}></View>
-                <Column padding="0 14 14 14">
-                  {shouldShowHrLine(verifiableCredential) &&
-                    fieldItemIterator(
-                      DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
-                      true,
+                );
+              }}
+            />
+
+            {showQrOverlay && (
+              <QrCodeOverlay
+                verifiableCredential={
+                  props.credentialWrapper as unknown as VerifiableCredential
+                }
+                meta={props.verifiableCredentialData.vcMetadata}
+                showInlineQr={false}
+                forceVisible={true}
+                onClose={() => setShowQrOverlay(false)}
+              />
+            )}
+          </Column>
+        ) : (
+          <Column fill>
+            <Column
+              padding="10 10 3 10"
+              backgroundColor={Theme.Colors.DetailedViewBackground}>
+              <ImageBackground
+                imageStyle={Theme.Styles.vcDetailBg}
+                resizeMethod="scale"
+                resizeMode="stretch"
+                style={[
+                  Theme.Styles.openCardBgContainer,
+                  wellknownDisplayProperty.getBackgroundColor(),
+                ]}
+                source={
+                  wellknownDisplayProperty.getBackgroundImage(
+                    Theme.OpenCard,
+                  ) as ImageBackgroundProps
+                }>
+                <Row padding="14 14 0 14" margin="0 0 0 0">
+                  <Column crossAlign="center">
+                    {getProfileImage(face)}
+                    <QrCodeOverlay
+                      verifiableCredential={
+                        props.credentialWrapper as unknown as VerifiableCredential
+                      }
+                      meta={props.verifiableCredentialData.vcMetadata}
+                      showInlineQr={true}
+                    />
+                    <Column
+                      width={80}
+                      height={59}
+                      crossAlign="center"
+                      margin="12 0 0 0">
+                      <Image
+                        {...testIDProps('issuerLogo')}
+                        src={logo?.url}
+                        alt={logo?.alt_text}
+                        style={Theme.Styles.issuerLogo}
+                        resizeMethod="scale"
+                        resizeMode="contain"
+                      />
+                    </Column>
+                  </Column>
+                  <Column
+                    align="space-evenly"
+                    margin={'0 0 0 24'}
+                    style={{flex: 1}}>
+                    {fieldItemIterator(
+                      props.fields,
+                      props.wellknownFieldsFlag,
                       verifiableCredential,
                       props.wellknown,
                       wellknownDisplayProperty,
-                      true,
+                      false,
                       props,
                     )}
-                </Column>
-                {(props.credential.disclosedKeys != null) && (<DisclosureInfoNote />)}
-              </>
-            </ImageBackground>
+                  </Column>
+                </Row>
+                <>
+                  <View
+                    style={[
+                      Theme.Styles.hrLine,
+                      {
+                        borderBottomColor:
+                          wellknownDisplayProperty.getTextColor(
+                            Theme.Styles.hrLine.borderBottomColor,
+                          ),
+                      },
+                    ]}></View>
+                  <Column padding="0 14 14 14">
+                    {shouldShowHrLine(verifiableCredential) &&
+                      fieldItemIterator(
+                        DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
+                        true,
+                        verifiableCredential,
+                        props.wellknown,
+                        wellknownDisplayProperty,
+                        true,
+                        props,
+                      )}
+                  </Column>
+                  {props.credential.disclosedKeys != null && (
+                    <DisclosureInfoNote />
+                  )}
+                </>
+              </ImageBackground>
+            </Column>
           </Column>
-        </Column>
+        )}
       </Column>
-      {props.vcHasImage &&
+      {!props.svgTemplate &&
+        props.vcHasImage &&
         !props.verifiableCredentialData?.vcMetadata.isExpired && (
           <View
             style={{
@@ -245,9 +361,8 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
               ))}
           </View>
         )}
-      {
-        (props.credential.disclosedKeys != null) && (<View
-
+      {props.credential.disclosedKeys != null && (
+        <View
           style={{
             padding: 16,
             backgroundColor: Theme.Colors.DetailedViewBackground,
@@ -258,8 +373,8 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
           <TouchableOpacity
             onPress={() => setShareModalVisible(true)}
             testID="viewShareableInfoLink"
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-            <Feather name="eye" size={20} color={"#007AFF"} />
+            style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
+            <Feather name="eye" size={20} color={'#007AFF'} />
             <Text
               style={{
                 color: '#007AFF',
@@ -269,34 +384,30 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
               {t('View Shareable Information')}
             </Text>
           </TouchableOpacity>
-        </View>)}
+        </View>
+      )}
 
       <ShareableInfoModal
         isVisible={shareModalVisible}
         onDismiss={() => setShareModalVisible(false)}
         disclosedPaths={Array.from(props.credential.disclosedKeys ?? {}) || []}
       />
-
     </>
   );
 };
 
 export const DisclosureInfoNote = () => {
-  const { t } = useTranslation('VcDetails');
+  const {t} = useTranslation('VcDetails');
   return (
-    <View
-      style={Theme.DisclosureInfo.view}>
+    <View style={Theme.DisclosureInfo.view}>
       <Row align="flex-start">
         <Icon
           name="share-square-o"
           size={18}
           color={Theme.Colors.DetailsLabel}
-          style={{ marginTop: 2, marginRight: 8 }}
+          style={{marginTop: 2, marginRight: 8}}
         />
-        <Text
-          style={Theme.DisclosureInfo.text}>
-          {t('disclosureInfoNote')}
-        </Text>
+        <Text style={Theme.DisclosureInfo.text}>{t('disclosureInfoNote')}</Text>
       </Row>
     </View>
   );
@@ -313,4 +424,7 @@ export interface VCItemDetailsProps {
   onBinding?: () => void;
   activeTab?: Number;
   vcHasImage: boolean;
+  svgTemplate?: string[] | null;
+  svgRendererError?: string | null;
+  loadingSvg?: string | null;
 }

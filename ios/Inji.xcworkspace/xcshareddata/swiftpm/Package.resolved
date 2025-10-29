@@ -1,6 +1,15 @@
 {
-  "originHash" : "327f856a9787c0e4bf4517bc1e50ff1e45a4aee6adcc4233b1e042d022a881f0",
+  "originHash" : "a3146fb582ba55930e9db89f50cf0454e89ade6fb6a380b0e7d649e8527e703a",
   "pins" : [
+    {
+      "identity" : "aexml",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tadija/AEXML.git",
+      "state" : {
+        "revision" : "db806756c989760b35108146381535aec231092b",
+        "version" : "4.7.0"
+      }
+    },
     {
       "identity" : "alamofire",
       "kind" : "remoteSourceControl",
@@ -70,7 +79,16 @@
       "location" : "https://github.com/mosip/inji-openid4vp-ios-swift.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "ca4935478360f45dd20444eac5d6bae9affc6d36"
+        "revision" : "01fa8c01f5b9ee16b5377073f061ca0186288df4"
+      }
+    },
+    {
+      "identity" : "inji-vc-renderer-ios-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mosip/inji-vc-renderer-ios-swift.git",
+      "state" : {
+        "revision" : "68b6c14aaf1e572f84307e0f932d93a66134055d",
+        "version" : "0.1.0"
       }
     },
     {
@@ -78,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-vci-client-ios-swift",
       "state" : {
-        "branch" : "release-0.5.x",
-        "revision" : "839f5825dcfd6278da4983e5c56a858f6b51e9d4"
+        "revision" : "5b7b6ee5dc84588c46286a976454fd49f95ce80c",
+        "version" : "0.6.0"
       }
     },
     {
@@ -96,8 +114,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/pixelpass-ios-swift/",
       "state" : {
-        "branch" : "release-0.6.x",
-        "revision" : "78faea2ff48626ef9a6d198123bcf7b299acefd1"
+        "revision" : "78faea2ff48626ef9a6d198123bcf7b299acefd1",
+        "version" : "0.6.3"
       }
     },
     {
@@ -132,7 +150,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/abhip2565/SwiftCBOR",
       "state" : {
-        "revision" : "cc4e195a0ea2dce88f2fd6c6d73b2504e3c884fd",
+        "revision" : "04ccff117f6549121d5721ec84fdf0162122b90e",
         "version" : "0.5.0"
       }
     },

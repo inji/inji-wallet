@@ -53,7 +53,7 @@ public class KeyManagmentTest extends IosBaseTest {
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 //        String uin = TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
@@ -114,8 +114,8 @@ public class KeyManagmentTest extends IosBaseTest {
         MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -171,7 +171,7 @@ public class KeyManagmentTest extends IosBaseTest {
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         SunbirdLoginPage sunbirdLoginPage = addNewCardPage.clickOnDownloadViaSunbird();
         addNewCardPage.clickOnCredentialTypeHeadingInsuranceCredential();
-        addNewCardPage.clickOnContinueButtonInSigninPopupIos();
+//        addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         sunbirdLoginPage.enterPolicyNumber(getPolicyNumber());
         sunbirdLoginPage.enterFullName(getPolicyName());
         sunbirdLoginPage.enterDateOfBirth();

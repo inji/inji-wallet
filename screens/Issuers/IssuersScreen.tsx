@@ -37,7 +37,7 @@ import { QrScanner } from '../../components/QrScanner';
 import { IssuersModel } from '../../machines/Issuers/IssuersModel';
 import { AUTH_ROUTES } from '../../routes/routesConstants';
 import { TransactionCodeModal } from './TransactionCodeScreen';
-import { TrustIssuerModal } from './TrustIssuerModal';
+import { TrustModal } from '../../components/TrustModal';
 import i18next from 'i18next';
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
@@ -288,7 +288,7 @@ export const IssuersScreen: React.FC<
   }
   
   function issuerTrustConsentComponent() {
-    return <TrustIssuerModal isVisible={true} issuerLogo={controller.issuerLogo} issuerName={controller.issuerName} onConfirm={controller.ON_CONSENT_GIVEN} onCancel={controller.CANCEL} />
+    return <TrustModal isVisible={true} logo={controller.issuerLogo} name={controller.issuerName} onConfirm={controller.ON_CONSENT_GIVEN} onCancel={controller.CANCEL} />
   }
 
   return (

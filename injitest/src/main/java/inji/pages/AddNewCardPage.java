@@ -9,10 +9,10 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.WebElement;
 
 public class AddNewCardPage extends BasePage {
-    private static final String mosipIssuer = InjiWalletConfigManager.getproperty("mosip.issuer");
-    private static final String mosipIssuerCredentialType = InjiWalletConfigManager.getproperty("mosip.issuer.credentialType");
-    private static final String stayProtectedIssuer = InjiWalletConfigManager.getproperty("stayProtected.issuer");
-    private static final String stayProtectedIssuerCredentialType = InjiWalletConfigManager.getproperty("stayProtected.issuer.credentialType");
+    private static final String mosipIssuer = InjiWalletConfigManager.getproperty("mosip_issuer");
+    private static final String mosipIssuerCredentialType = InjiWalletConfigManager.getproperty("mosip_issuer_credentialType");
+    private static final String stayProtectedIssuer = InjiWalletConfigManager.getproperty("stayProtected_issuer");
+    private static final String stayProtectedIssuerCredentialType = InjiWalletConfigManager.getproperty("stayProtected_issuer_credentialType");
 
 
     @AndroidFindBy(accessibility = "title")
@@ -111,7 +111,7 @@ public class AddNewCardPage extends BasePage {
     }
 
     private WebElement getDownloadViaUinElement() {
-        String accessibilityId = InjiWalletConfigManager.getproperty("mosip.issuer");
+        String accessibilityId = InjiWalletConfigManager.getproperty("mosip_issuer");
         return driver.findElement(MobileBy.AccessibilityId(accessibilityId));
     }
 

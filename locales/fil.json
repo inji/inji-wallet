@@ -35,7 +35,8 @@
       "INVALID_AUTH_REQUEST": "Nabigong maibahagi ang kredensyal — May kulang o maling impormasyon sa kahilingan.",
       "REQUEST_COULD_NOT_BE_PROCESSED": "Hindi naibahagi ang kredensyal — Hindi naproseso ang kahilingan dahil sa teknikal na isyu.",
       "INVALID_PRESENTATION_DEFINITION_URI": "Hindi naibahagi ang kredensyal — Mali ang format ng datos sa kahilingan ng verifier.",
-      "SEND_VP_ERROR": "Nabigong maibahagi ang kredensyal dahil sa teknikal na isyu."
+      "SEND_VP_ERROR": "Nabigong maibahagi ang kredensyal dahil sa teknikal na isyu.",
+      "INVALID_TRANSACTION_DATA": "Hindi maiproseso ang kahilingan sa beripikasyon dahil sa hindi suportadong data"
     }
   },
   "DeviceInfoList": {
@@ -690,7 +691,7 @@
   "ScanScreen": {
     "shareWithSelfie": "Ibahagi sa Selfie",
     "shareWithSelfieQrLogin": "Pag-login sa QR Code",
-    "shareWithSelfieMessage": "Para ibahagi ang iyong Mga Nabe-verify na Kredensyal, secure naming ive-verify ang iyong pagkakakilanlan gamit ang pag-verify sa mukha. Sa pagpapatuloy, pumapayag ka sa INJI na gamitin ang iyong camera para sa layuning ito. \n\n Gagamitin lang ang iyong facial data para sa pag-verify at hindi ibabahagi sa anumang third party.",
+    "shareWithSelfieMessage": "Para maibahagi ang iyong Verifiable Credentials, susuriin muna namin ang iyong pagkakakilanlan gamit ang facial authentication. Sa pagpapatuloy, sumasang-ayon ka na gamitin ng Inji Wallet ang camera ng iyong telepono para sa layuning ito. Ang iyong facial data ay gagamitin lamang para sa authentication at hindi ito itatago o ibabahagi sa kahit anong third party.",
     "shareWithSelfieMessageQrLogin": "Upang ma-access ang portal, kakailanganin mong ibahagi ang iyong Mga Na-verify na Kredensyal at secure na i-verify ang iyong pagkakakilanlan gamit ang pag-verify sa mukha. Sa pagpapatuloy, pumapayag ka sa Inji na gamitin ang iyong camera para sa layuning ito. \n\n Gagamitin lang ang iyong facial data para sa pag-verify at hindi ibabahagi. Pagkatapos ng matagumpay na pag-verify, maaari mong piliin kung aling mga detalye ang ibabahagi.",
     "ConfirmButton": "Naiintindihan ko",
     "doNotAskMessage": "Huwag mo na akong tanungin",
@@ -702,6 +703,7 @@
     "enableBluetoothButtonText": "Payagan ang mga pahintulot ng bluetooth",
     "scanningGuide": "Panatilihin ang telepono at i-scan ang QR code upang ibahagi ang iyong card.",
     "invalidQR": "Mangyaring mag-scan ng wastong QR",
+    "unknownVerifier": "Hindi kilalang verifier",
     "errors": {
       "locationDisabled": {
         "message": "Para magpatuloy, hayaang i-on ng iyong device ang lokasyon",
@@ -862,6 +864,10 @@
     "cardSelected": "card pinili",
     "unCheck": "Alisin ang check",
     "checkAll": "Suriin Lahat",
+    "selectedFieldsTitle": "Impormasyon na pinili mong ibahagi",
+    "selectedFieldsSubtitle": "Ang iyong card ay naglalaman ng mga sumusunod na detalyeng maaaring piliing ibahagi.",
+    "unselectAll": "Alisin ang lahat ng pagpili",
+    "selectAll": "Piliin lahat",
     "consentDialog": {
       "title": "Kinakailangan ang Pahintulot",
       "message": "Hinihiling namin ang iyong pahintulot na ibahagi ang iyong mga nabe-verify na kredensyal sa {{verifierName}}. Ito ay magbibigay-daan sa amin na i-verify ang iyong pagkakakilanlan at matupad ang iyong mga kahilingan sa serbisyo. Piliin ang \"Oo, Magpatuloy\" upang pumayag o \"Tanggihan\" kung hindi mo gustong ibahagi ang iyong mga kredensyal sa {{verifierName}}.",
@@ -911,6 +917,10 @@
         "title": "Problema sa Tugon",
         "message": "Ang tugon mula sa tagapagsuri ay hindi wasto. Pakiusap, sabihan silang i-check at ibigay ang tamang detalye."
       },
+      "invalidTransactionData": {
+        "title": "Hindi suportado ang kahilingan sa pag -verify",
+        "message": "Kasama sa kahilingan sa pag -verify na ito na hindi suportado ng iyong pitaka."
+      },
       "invalidQrCode": {
         "title": "Hindi maiproseso ang iyong kahilingan",
         "message": "Di-wasto ang QR code dahil nawawala ang ilang kinakailangang impormasyon. Mangyaring hilingin sa verifier na magbigay ng wastong QR code upang ibahagi ang iyong mga kredensyal."
@@ -918,6 +928,10 @@
       "sendVPError": {
         "title": "May Nangyaring Mali",
         "message": "Nagkaroon ng teknikal na problema habang ibinabahagi ang iyong card. Pindutin ang \"Subukang Muli\" para subukang muli o bumalik sa \"Home\"."
+      },
+      "verifierResponseError": {
+        "title": "Hindi maproseso ng tagapagsuri ang kredensyal",
+        "message": "May naging isyu habang pinoproseso ng tagapagsuri ang iyong kredensyal."
       },
       "noImage": {
         "title": "Isang Error ang Naganap!",
@@ -1111,12 +1125,19 @@
   },
   "trustScreen": {
     "description": "Siguraduhin mong kilala mo o pinagkakatiwalaan mo ang issuer na ito. Kapag pinagkatiwalaan mo sila:",
+    "verifierDescription": "Tiyaking kilala mo o pinagkakatiwalaan mo ang verifier na ito. Kapag nagtiwala ka na:",
     "infoPoints": [
       "Ang card ay ligtas na mase-save sa iyong wallet.",
       "Ang issuer na ito ay idagdag sa iyong trusted list.",
       "Hindi mo na kailangang muling suriin ang tiwala kapag magda-download mula sa kanila sa susunod."
     ],
+    "verifierInfoPoints": [
+      "Ang card ay ligtas na ibabahagi sa verifier.",
+      "Ang verifier ay idaragdag sa iyong listahan ng pinagkakatiwalaan.",
+      "Hindi mo na kailangang suriin muli ang tiwala kapag muling nagbahagi sa kanila sa hinaharap."
+    ],
     "confirm": "Oo, Pinagkakatiwalaan Ko ang Issuer na Ito",
+    "verifierConfirm": "Oo, pinagkakatiwalaan ko ang verifier na ito",
     "cancel": "Hindi, Ibalik Mo Ako"
   }
 }

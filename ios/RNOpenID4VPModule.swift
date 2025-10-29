@@ -73,6 +73,10 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
                     result[.ldp_vc] = credentialsArray.map { AnyCodable($0) }
                 case .mso_mdoc:
                     result[.mso_mdoc] = credentialsArray.map { AnyCodable($0) }
+                case .dc_sd_jwt:
+                    result[.dc_sd_jwt] = credentialsArray.map { AnyCodable($0) }
+                case .vc_sd_jwt:
+                  result[.vc_sd_jwt] = credentialsArray.map { AnyCodable($0) }
                 default:
                     break
                 }
@@ -136,6 +140,19 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
               docTypeToDeviceAuthentication[docType] = DeviceAuthentication(signature: signature, algorithm: algorithm)
             }
             formattedVPTokenSigningResults[.mso_mdoc] = MdocVPTokenSigningResult(docTypeToDeviceAuthentication: docTypeToDeviceAuthentication)
+            
+          case FormatType.vc_sd_jwt.rawValue :
+            guard let vpResponse = vpTokenSigningResult as? [String:String] else {
+              reject("OPENID4VP", "Invalid VP token signing result format", nil)
+              return
+            }
+            formattedVPTokenSigningResults[.vc_sd_jwt] = SdJwtVpTokenSigningResult(uuidToKbJWTSignature: vpResponse)
+          case FormatType.dc_sd_jwt.rawValue :
+            guard let vpResponse = vpTokenSigningResult as? [String:String] else {
+              reject("OPENID4VP", "Invalid VP token signing result format", nil)
+              return
+            }
+            formattedVPTokenSigningResults[.dc_sd_jwt] = SdJwtVpTokenSigningResult(uuidToKbJWTSignature: vpResponse)
 
           default:
             let error = NSError(domain: "Credential format '\(credentialFormat)' is not supported", code: 0)
@@ -144,34 +161,38 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           }
         }
 
-        let response = try await openID4VP?.shareVerifiablePresentation(vpTokenSigningResults: formattedVPTokenSigningResults)
-        resolve(response)
+        let verifierResponse = try await openID4VP?.sendAuthorizationResponseToVerifier(vpTokenSigningResults: formattedVPTokenSigningResults)
+        try resolveToJsonData(verifierResponse, resolver: resolve, rejecter: reject)
       } catch {
         rejectWithOpenID4VPError(error, reject: reject)
       }
     }
   }
 
-@objc
-func sendErrorToVerifier(_ error: String, _ errorCode: String,
-                         resolver resolve: @escaping RCTPromiseResolveBlock,
-                         rejecter reject: @escaping RCTPromiseRejectBlock) {
+  @objc
+  func sendErrorToVerifier(_ error: String, _ errorCode: String,
+                           resolver resolve: @escaping RCTPromiseResolveBlock,
+                           rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
-        let exception: OpenID4VPException = {
-            switch errorCode {
-            case OpenID4VPErrorCodes.accessDenied:
-                return AccessDenied(message: error, className: Self.moduleName())
-            case OpenID4VPErrorCodes.invalidTransactionData:
-                return InvalidTransactionData(message: error, className: Self.moduleName())
-            default:
-                return GenericFailure(message: error, className: Self.moduleName())
-            }
-        }()
-
-        await openID4VP?.sendErrorToVerifier(error: exception)
-        resolve(true)
+      let exception: OpenID4VPException = {
+        switch errorCode {
+        case OpenID4VPErrorCodes.accessDenied:
+          return AccessDenied(message: error, className: Self.moduleName())
+        case OpenID4VPErrorCodes.invalidTransactionData:
+          return InvalidTransactionData(message: error, className: Self.moduleName())
+        default:
+          return GenericFailure(message: error, className: Self.moduleName())
+        }
+      }()
+      
+      do {
+        let verifierResponse = try await openID4VP?.sendErrorResponseToVerifier(error: exception)
+        try resolveToJsonData(verifierResponse, resolver: resolve, rejecter: reject)
+      } catch {
+        rejectWithOpenID4VPError(error, reject: reject)
+      }
     }
-}
+  }
   
   private func parseVerifiers(_ verifiers: [[String: Any]]) throws -> [Verifier] {
     return try verifiers.map { verifierDict in
@@ -180,13 +201,13 @@ func sendErrorToVerifier(_ error: String, _ errorCode: String,
         throw NSError(domain: "OpenID4VP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Verifier data"])
       }
       
-      var clientMetadata: ClientMetadata? = nil
-      if let metadata = verifierDict["client_metadata"] as? [String: Any] {
-        let encoded = try JSONSerialization.data(withJSONObject: metadata)
-        clientMetadata = try ClientMetadata.deserializeAndValidate(clientMetadata: encoded)
+      let jwksUri: String? = verifierDict["jwks_uri"] as? String
+      
+      if let allowUnsignedRequest = verifierDict["allow_unsigned_request"] as? Bool {
+        return Verifier(clientId: clientId, responseUris: responseUris, jwksUri: jwksUri, allowUnsignedRequest: allowUnsignedRequest)
       }
       
-      return Verifier(clientId: clientId, responseUris: responseUris,clientMetadata: clientMetadata)
+      return Verifier(clientId: clientId, responseUris: responseUris,jwksUri: jwksUri)
     }
   }
 
@@ -206,12 +227,22 @@ func sendErrorToVerifier(_ error: String, _ errorCode: String,
   }
 
   func rejectWithOpenID4VPError(_ error: Error, reject: RCTPromiseRejectBlock) {
-      if let openidError = error as? OpenID4VPException {
-          reject(openidError.errorCode, openidError.message, openidError)
-      } else {
+    if let openidError = error as? OpenID4VPException {
+        let errorMap: [String: Any] = [
+            "errorCode": openidError.errorCode,
+            "message": openidError.message,
+            "response": Inji.toJsonString(openidError.networkResponse) ?? ""
+        ]
+        let nsError = NSError(
+            domain: "OPENID4VP",
+            code: 0,
+            userInfo: errorMap
+        )
+        reject(openidError.errorCode, openidError.message, nsError)
+    } else {
         let nsError = NSError(domain: error.localizedDescription, code: 0)
         reject("ERR_UNKNOWN", nsError.localizedDescription, nsError)
-      }
+    }
   }
 
 
@@ -241,18 +272,20 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
   }
   
   var vpFormatsSupported: [VPFormatType: VPFormatSupported] = [:]
-  if let vpFormatsSupportedDict = metadata["vp_formats_supported"] as? [String: Any],
-     let ldpVcDict = vpFormatsSupportedDict["ldp_vc"] as? [String: Any] {
-    let algValuesSupported = ldpVcDict["alg_values_supported"] as? [String]
-    vpFormatsSupported[.ldp_vc] = VPFormatSupported(algValuesSupported: algValuesSupported)
-    if let mdocDict = vpFormatsSupportedDict["mso_mdoc"] as? [String: Any] {
-      let mdocAlgValuesSupported = mdocDict["alg_values_supported"] as? [String]
-      vpFormatsSupported[.mso_mdoc] = VPFormatSupported(algValuesSupported: mdocAlgValuesSupported)
+  if let vpFormatsSupportedDict = metadata["vp_formats_supported"] as? [String: Any] {
+    for (format, formatDict) in vpFormatsSupportedDict {
+      guard let formatType = VPFormatType.fromValue(format) else {
+        throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unsupported VP format: \(format)"])
+      }
+      if let formatDetails = formatDict as? [String: Any] {
+        let algValuesSupported = formatDetails["alg_values_supported"] as? [String]
+        vpFormatsSupported[formatType] = VPFormatSupported(algValuesSupported: algValuesSupported)
+      } else {
+        vpFormatsSupported[formatType] = VPFormatSupported(algValuesSupported: nil)
+      }
     }
-  } else {
-    vpFormatsSupported[.ldp_vc] = VPFormatSupported(algValuesSupported: nil)
   }
-
+  
   let walletMetadataObject = try WalletMetadata(
     presentationDefinitionURISupported: metadata["presentation_definition_uri_supported"] as? Bool ?? true,
     vpFormatsSupported: vpFormatsSupported,
@@ -279,4 +312,29 @@ func mapStringsToEnum<T: RawRepresentable>(
     }
     return match
   }
+}
+
+fileprivate func resolveToJsonData(_ response: NetworkResponse?,resolver resolve: @escaping RCTPromiseResolveBlock,
+                                   rejecter reject: @escaping RCTPromiseRejectBlock) throws {
+  let jsonData = try toJsonData(response)
+  
+  if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+    resolve(jsonObject)
+  } else {
+    reject("ERROR", "Failed to serialize JSON", nil)
+  }
+}
+
+fileprivate func toJsonString<T>(_ input: T) -> String? where T: Encodable {
+  if let jsonData = try? toJsonData(input),
+     let jsonString = String(data: jsonData, encoding: .utf8) {
+    return jsonString
+  }
+  return nil
+}
+
+fileprivate func toJsonData<T>(_ input: T) throws -> Data where T: Encodable {
+  let encoder = JSONEncoder()
+  encoder.keyEncodingStrategy = .convertToSnakeCase
+  return try encoder.encode(input)
 }

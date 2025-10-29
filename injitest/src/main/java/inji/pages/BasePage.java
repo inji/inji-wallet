@@ -21,8 +21,8 @@ public class BasePage {
     protected AppiumDriver driver;
     protected WebDriverWait wait;
 
-    private static final int DEFAULT_WAIT = Integer.parseInt(InjiWalletConfigManager.getproperty("element.wait.time"));
-    private static final int maxPageScrolls = Integer.parseInt(InjiWalletConfigManager.getproperty("max.pageScroll"));
+    private static final int DEFAULT_WAIT = Integer.parseInt(InjiWalletConfigManager.getproperty("element_wait_time"));
+    private static final int maxPageScrolls = Integer.parseInt(InjiWalletConfigManager.getproperty("max_pageScroll"));
     private static final int POLLING_INTERVAL = 500;
 
     public BasePage(AppiumDriver driver) {
@@ -140,6 +140,8 @@ public class BasePage {
                 ExtentReportManager.getTest().log(Status.FAIL, "Failed to click on element: " + describeElement(element));
                 throw e;
             }
+        } else {
+            throw new RuntimeException("Element not visible: " + stepDesc);
         }
     }
 
@@ -166,6 +168,8 @@ public class BasePage {
         if (isElementVisible(element)) {
             element.sendKeys(text);
             logStep(stepDesc + " - Entered text: '" + text + "'", element);
+        } else {
+            throw new RuntimeException("Element not visible: " + stepDesc);
         }
     }
 
@@ -174,6 +178,8 @@ public class BasePage {
             element.clear();
             element.sendKeys(text);
             logStep(stepDesc + " - Cleared and entered: '" + text + "'", element);
+        } else {
+            throw new RuntimeException("Element not visible: " + stepDesc);
         }
     }
 

@@ -265,7 +265,7 @@ public class ActivateVcTest extends IosBaseTest {
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
 //        assertTrue(esignetLoginPage.isEnterYourVidTextDisplayed(), "Verify if Esignet Login page is landed");
 //        String uin=TestDataReader.readData("uin");

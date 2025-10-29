@@ -12,6 +12,7 @@ import {SvgImage} from '../../components/ui/svg';
 import {DETAIL_VIEW_DEFAULT_FIELDS} from '../../components/VC/common/VCUtils';
 import {getDetailedViewFields} from '../../shared/openId4VCI/Utils';
 import {VCProcessor} from '../../components/VC/common/VCProcessor';
+import VcRenderer from '../../shared/vcRenderer/VcRenderer';
 
 export const ReceiveVcScreen: React.FC = () => {
   const {t} = useTranslation('ReceiveVcScreen');
@@ -26,6 +27,12 @@ export const ReceiveVcScreen: React.FC = () => {
 
   const [credential, setCredential] = useState(null);
 
+  const [svgTemplate, setSvgTemplate] = useState<string[] | null>(null);
+  const [svgRendererError, setSvgRendererError] = useState<string[] | null>(
+    null,
+  );
+  const [loadingSvg, setLoadingSvg] = useState<boolean>(true);
+
   useEffect(() => {
     async function processVC() {
       if (controller.credential) {
@@ -39,6 +46,35 @@ export const ReceiveVcScreen: React.FC = () => {
 
     processVC();
   }, [controller.credential]);
+
+  useEffect(() => {
+    const fetchSvg = async () => {
+      try {
+        setLoadingSvg(true);
+
+        const vcJsonString = JSON.stringify(controller.credential.credential);
+        const result = await VcRenderer.getInstance().generateCredentialDisplayContent(
+          verifiableCredentialData.vcMetadata.format,
+          wellknown ?? null,
+          vcJsonString,
+        );
+
+        setSvgTemplate(result);
+        setSvgRendererError(null);
+      } catch (err: any) {
+        setSvgTemplate(null);
+        setSvgRendererError(err.errorCode ?? 'Unknown error');
+      } finally {
+        setLoadingSvg(false);
+      }
+    };
+
+    if (controller.credential?.credential['renderMethod']) {
+      requestAnimationFrame(fetchSvg);
+    } else {
+      setLoadingSvg(false);
+    }
+  }, [controller.credential?.credential, wellknown]);
 
   useEffect(() => {
     getDetailedViewFields(
@@ -78,6 +114,9 @@ export const ReceiveVcScreen: React.FC = () => {
               isBindingPending={false}
               activeTab={1}
               vcHasImage={profileImage !== undefined}
+              svgTemplate={svgTemplate}
+              svgRendererError={svgRendererError}
+              loadingSvg={loadingSvg}
             />
           </Column>
           <Column padding="0 24" margin="32 0 0 0">

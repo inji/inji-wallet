@@ -462,7 +462,7 @@ export const VCItemActions = model => {
           VCActivityLog.getLogFromObject({
             _vcKey: context.vcMetadata.getVcKey(),
             type: 'VC_DOWNLOADED',
-            issuer: context.vcMetadata.issuer!!,
+            issuer: context.vcMetadata.issuerHost!!,
             credentialConfigurationId:
               context.verifiableCredential.credentialConfigurationId,
             timestamp: Date.now(),
@@ -481,7 +481,7 @@ export const VCItemActions = model => {
           VCActivityLog.getLogFromObject({
             credentialConfigurationId:
               context.verifiableCredential.credentialConfigurationId,
-            issuer: vcMetadata.issuer!!,
+            issuer: vcMetadata.issuerHost!!,
             _vcKey: vcMetadata.getVcKey(),
             type: 'VC_REMOVED',
             timestamp: Date.now(),
@@ -502,7 +502,7 @@ export const VCItemActions = model => {
             type: 'WALLET_BINDING_SUCCESSFULL',
             credentialConfigurationId:
               context.verifiableCredential.credentialConfigurationId,
-            issuer: vcMetadata.issuer!!,
+            issuer: vcMetadata.issuerHost!!,
             timestamp: Date.now(),
             deviceName: '',
           }),
@@ -522,7 +522,7 @@ export const VCItemActions = model => {
             type: 'WALLET_BINDING_FAILURE',
             credentialConfigurationId:
               context.verifiableCredential.credentialConfigurationId,
-            issuer: vcMetadata.issuer!!,
+            issuer: vcMetadata.issuerHost!!,
             timestamp: Date.now(),
             deviceName: '',
           }),

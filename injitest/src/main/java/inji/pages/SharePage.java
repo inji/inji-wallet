@@ -116,7 +116,7 @@ public class SharePage extends BasePage {
 
     public SharePage acceptPermissionPopupBluetoothIos() {
         click(okButtonIos, "Click on OK Button (iOS)");
-        click(AllowButtonIos, "Click on Allow Button (iOS)");
+//        click(AllowButtonIos, "Click on Allow Button (iOS)");
         return this;
     }
 

@@ -36,7 +36,7 @@ public class ResourceBundleLoader {
 
     private static void loadResourceBundleJson() {
         try {
-            String url = convertToRawGitHubUrl(InjiWalletConfigManager.getproperty("eSignet.resource.bundle.url"));
+            String url = convertToRawGitHubUrl(InjiWalletConfigManager.getproperty("eSignet_resource_bundle_url"));
 
             String jsonContent = downloadJson(url);
             Map<String, Object> nestedMap = new ObjectMapper().readValue(jsonContent, new TypeReference<>() {
