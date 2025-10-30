@@ -11,7 +11,7 @@ import {KeyTypes} from './cryptoutil/KeyTypes';
 
 export let MIMOTO_BASE_URL = MIMOTO_HOST;
 export let ESIGNET_BASE_URL = ESIGNET_HOST;
-export let DEBUG_MODE_ENABLED = DEBUG_MODE === 'true';
+export const DEBUG_MODE_ENABLED = DEBUG_MODE === 'true';
 export let CACHE_TTL = 60 * 60 * 1000;
 
 export const LIVENESS_CHECK = LIVENESS_DETECTION === 'true';
@@ -110,7 +110,7 @@ export function isAndroid(): boolean {
 
 export const ENOENT = 'No such file or directory';
 
-export const androidVersion: number = Number(Platform.Version);
+export const androidVersion = Number(Platform.Version);
 
 // Configuration for argon2i hashing algorithm
 export const argon2iConfig: Argon2iConfig = {
@@ -169,9 +169,9 @@ export const MAX_QR_DATA_LENGTH = 4296;
 
 export const INTRO_SLIDER_LOGO_MARGIN = Dimensions.get('screen').width * 0.45;
 
-export const COPILOT_PRE_FINAL_STEP: number = 5;
-export const COPILOT_FINAL_STEP: number = 6;
-export const COPILOT_HEIGHT: number = 0.22;
+export const COPILOT_PRE_FINAL_STEP = 5;
+export const COPILOT_FINAL_STEP = 6;
+export const COPILOT_HEIGHT = 0.22;
 export const KEY_MANAGEMENT_STEP = 7;
 export const copilotTestID = {
   '1': 'help',
@@ -198,7 +198,7 @@ export const OVP_ERROR_MESSAGES = {
 };
 
 export const OVP_ERROR_CODE = {
-  NO_MATCHING_VCS: 'invalid_transaction_data',
+  NO_MATCHING_VCS: 'access_denied',
   DECLINED: 'access_denied',
 };
 
