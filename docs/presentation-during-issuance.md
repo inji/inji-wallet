@@ -4,6 +4,7 @@ When issuing credentials to a user, authentication or authorization is often req
 In essence, it means presenting one credential to obtain another.
 
 Example use cases:
+
 - To issue a Student ID Credential, the user presents an Enrollment Credential issued by the educational institution.
 - To issue a Health Insurance Credential, the user presents an Identity Credential issued by a government authority.
 
@@ -16,6 +17,7 @@ This document focuses on the tech design to support presentations during the iss
 - Wallet supports for `openid4vp_presentation` interaction type only. Other interaction types like `redirect_to_web` will be supported in future.
 
 ### Future scope
+
 - redirect_to_web interaction type support during issuance.
 
 ## Pre-requisites
@@ -44,9 +46,9 @@ sequenceDiagram
     user->wallet: Selects Issuer and Credential to download Or User scans Credential Offer QR code
     Note over wallet,issuer: 0. Discovery of Metadata
     wallet->>issuer: 1. GET /.well-known/openid-credential-issuer
-    issuer-->>wallet: 2. Credential Issuer metadata
+    issuer->>wallet: 2. Credential Issuer metadata
     wallet->>issuer: 3. GET /.well-known/oauth-authorization-server
-    issuer-->>wallet: 4. OAuth Authorization server(AS) metadata
+    issuer->>wallet: 4. OAuth Authorization server(AS) metadata
     Note over wallet,issuer: 1. Authorization to download credential
     alt Authorization server supports interactive interaction <br/>(`interactive_authorization_endpoint` available in Authorization Server metadata)
         wallet->>issuer: 5. Initial request to interaction endpoint <br/>POST Content-Type: application/x-www-form-urlencoded /iar<br/>{response_type="code", client_id, code_challenge, code_challenge_method:"S256", redirect_uri, interaction_types_supported=openid4vp_presentation, <br/>authorization_details=[{"type": "openid_credential", "locations": [ "https://credential-issuer.example.com" ], "credential_configuration_id": "UniversityDegreeCredential" }]}
@@ -88,7 +90,11 @@ sequenceDiagram
     participant issuer as 🛡️ Inji Certify<br/>(OAuth AS + VCI)
     Note over user, vciClient: User initiates credential download in the wallet (via Credential offer or Trusted Issuer flow)
     wallet ->> vciClient: 0. requests for Credential download <br/> requestCredentialFromTrustedIssuer(<br/>"<credentialIssuer>",<br/><credentialConfigurationId>,<br/>ClientMetadata("client-id", "https://sampleApp/redirect-uri", supportedInteractionTypesOfWallet),<br/>authorizeUser: authorizeUserCallback,<br/>getTokenResponse: tokenResponseCallback, <br/>getProofJwt: proofJwtCallback,<br/> interactionCallbacks: mapOf(InteractionCallback(type=InteractionType.OPENID4VP_PRESENTATION, callback=openid4vpInteractionCallback))<br/>)
-    vciClient -> issuer: 1. Discovery of Issuer and Authorization Server metadata
+    Note over vciClient, issuer: 1. Discovery of Issuer and Authorization Server metadata
+    vciClient->>issuer: 1.1. GET /.well-known/openid-credential-issuer
+    issuer->>vciClient: 1.2. Credential Issuer metadata
+    vciClient->>issuer: 1.3. GET /.well-known/oauth-authorization-server
+    issuer->>vciClient: 1.4. OAuth Authorization server(AS) metadata
     Note over wallet, issuer: Authorization to download credential
     alt Authorization server supports interactive interaction <br/>(`interactive_authorization_endpoint` available in Authorization Server metadata)
         vciClient ->> issuer: 2. Initial request to interaction endpoint (Happens in PAR mode)<br/>POST Content-Type: application/x-www-form-urlencoded /iar<br/>{response_type="code", client_id, code_challenge, code_challenge_method:"S256", redirect_uri, interaction_types_supported=openid4vp_presentation, <br/>authorization_details=[{"type": "openid_credential", "locations": [ "https://credential-issuer.example.com" ], "credential_configuration_id": "UniversityDegreeCredential" }]}
