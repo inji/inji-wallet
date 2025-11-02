@@ -15,6 +15,12 @@
     "WALLET_BINDING_FAILURE": "Nabigo ang pag-activate ng {{idType}}.",
     "VC_REMOVED": "Ang {{idType}} ay inalis sa wallet.",
     "TAMPERED_VC_REMOVED": "Ang {{idType}} ay inalis mula sa wallet dahil sa pakikialam.",
+    "VC_STATUS_CHANGED": {
+      "VALID": "Tapos na ang pag-check ng status. Ang status ng {{idType}} ay Valid.",
+      "REVOKED": "Tapos na ang pag-check ng status. Ang status ng {{idType}} ay Binawi.",
+      "EXPIRED": "Tapos na ang pag-check ng status. Ang status ng {{idType}} ay Expired.",
+      "PENDING": "Tapos na ang pag-check ng status. Ang status ng {{idType}} ay Naka-pending para sa beripikasyon."
+    },
     "vpSharing": {
       "SHARED_SUCCESSFULLY": "Matagumpay na naibahagi ang Pagtatanghal ng Kredensyal.",
       "SHARED_WITH_FACE_VERIFIACTION": "Matagumpay ang pag-verify sa mukha, at matagumpay na naibahagi ang Credential Presentation.",
@@ -73,6 +79,8 @@
   "VcDetails": {
     "generatedOn": "Nilikha noong",
     "status": "Katayuan",
+    "lastChecked": "Huling Suri",
+    "revoked": "Binawi",
     "valid": "Napatunayan",
     "pending": "Nakabinbin",
     "expired": "Nag-expire na",
@@ -125,6 +133,7 @@
     "unPinCard": "I-unpin",
     "pinCard": "Pin",
     "share": "Ibahagi",
+    "reverify": "Suriin ang Katayuan ng Card",
     "shareWithSelfie": "Ibahagi sa Selfie",
     "offlineAuthDisabledMessage": "Mag-click dito upang paganahin ang mga kredensyal na ito na magamit para sa online na pagpapatotoo.",
     "viewActivityLog": "Tingnan ang log ng aktibidad",
@@ -191,7 +200,16 @@
     "alternateBiometricSuccess": "Tagumpay! Maaari ka na ngayong gumamit ng biometrics upang i-unlock ang Inji app.",
     "activated": "Ang mga kredensyal ay pinagana para sa online na pagpapatunay.",
     "keyPreferenceSuccess": "Ang iyong mga kagustuhan sa key ay matagumpay na na-save!",
-    "keyPreferenceError": "Paumanhin! May error sa pagsasaayos ng iyong mga kagustuhan sa key"
+    "keyPreferenceError": "Paumanhin! May error sa pagsasaayos ng iyong mga kagustuhan sa key",
+    "reverifiedSuccessfully": {
+      "VALID": "Matagumpay ang pag-check ng status. Ang status ng iyong {{vcType}} ay Valid.",
+      "REVOKED": "Matagumpay ang pag-check ng status. Ang status ng iyong {{vcType}} ay Binawi.",
+      "PENDING": "Matagumpay ang pag-check ng status. Ang status ng iyong {{vcType}} ay Naka-pending para sa beripikasyon.",
+      "EXPIRED": "Matagumpay ang pag-check ng status. Ang status ng iyong {{vcType}} ay Expired."
+    },
+    "reverificationFailed": {
+      "PENDING": "Nabigong i-check ang status. Hindi ma-verify ang iyong {{vcType}}, pakisubukan muli mamaya."
+    }
   },
   "AboutInji": {
     "aboutInji": "Tungkol kay Inji Wallet",
@@ -503,7 +521,9 @@
   "VcVerificationBanner": {
     "inProgress": "Pina-validate namin ang iyong card, maaaring magtagal ito. Kapag na-verify na, magagawa mong i-activate ang iyong card.",
     "success": "Matagumpay na na-verify ang {{vcDetails}} at magagamit na ngayon para sa pag-activate.",
-    "error": "Paumanhin, hindi namin ma-verify ang {{vcDetails}} ngayon. Subukang muli mamaya. Hanggang sa panahong iyon, hindi mo maa-activate o maibabahagi ang iyong card."
+    "error": "Paumanhin, hindi namin ma-verify ang {{vcDetails}} ngayon. Subukang muli mamaya. Hanggang sa panahong iyon, hindi mo maa-activate o maibabahagi ang iyong card.",
+    "revoked": "Ang {{vcDetails}} ay binawi na ng issuer at hindi na ito valid. Mangyaring makipag-ugnayan sa issuer para sa karagdagang impormasyon.",
+    "expired": "Ang {{vcDetails}} ay expired na at hindi na ito valid. Mangyaring makipag-ugnayan sa issuer para sa karagdagang impormasyon."
   },
   "ViewVcModal": {
     "title": "Mga Detalye ng ID",
@@ -520,6 +540,10 @@
       "expired": {
         "title": "Nag-expire na Katayuan:",
         "description": "Nag-expire na ang kredensyal."
+      },
+      "revoked": {
+        "title": "Binawing Status:",
+        "description": "Ang credential ay binawi na."
       }
     }
   },

@@ -6,6 +6,8 @@ import {
   selectDownloadingFailedVcs,
   selectInProgressVcDownloads,
   selectIsRefreshingMyVcs,
+  selectIsReverificationFailure,
+  selectIsReverificationSuccess,
   selectIsTampered,
   selectMyVcs,
   selectMyVcsMetadata,
@@ -44,7 +46,6 @@ export function useMyVcsTab(props: HomeScreenTabProps) {
   const vcMetaService = appService.children.get('vcMeta')!!;
   const settingsService = appService.children.get('settings')!!;
   const authService = appService.children.get('auth');
-
   return {
     service,
     AddVcModalService: useSelector(service, selectAddVcModal),
@@ -72,7 +73,17 @@ export function useMyVcsTab(props: HomeScreenTabProps) {
       vcMetaService,
       selectVerificationErrorMessage,
     ),
-
+    reverificationSuccess: useSelector(vcMetaService,selectIsReverificationSuccess),
+    reverificationfailure: useSelector(vcMetaService,selectIsReverificationFailure),
+    RESET_REVERIFICATION_FAILURE: () => {
+      vcMetaService.send(VcMetaEvents.RESET_REVERIFY_VC_FAILED());
+    },
+    RESET_REVERIFICATION_SUCCESS: () => {
+      vcMetaService.send(VcMetaEvents.RESET_REVERIFY_VC_SUCCESS());
+    },
+    RESET_HIGHLIGHT:()=>{
+      vcMetaService.send(VcMetaEvents.RESET_HIGHLIGHT());
+    },
     SET_STORE_VC_ITEM_STATUS: () =>
       service.send(MyVcsTabEvents.SET_STORE_VC_ITEM_STATUS()),
 

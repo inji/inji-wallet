@@ -1,5 +1,5 @@
 import { DocumentDirectoryPath } from "react-native-fs";
-import { MY_VCS_STORE_KEY } from "../constants";
+import { EXPIRED_VC_ERROR_CODE, MY_VCS_STORE_KEY } from "../constants";
 import { decryptJson, encryptJson } from "../cryptoutil/cryptoUtil";
 import fileStorage from "../fileStorage";
 import Storage, { MMKV } from "../storage";
@@ -162,24 +162,33 @@ async function handlePreviousBackup(
         const timestamp = Date.now() + Math.random().toString().substring(2, 10);
         const prevUnixTimeStamp = vcData.vcMetadata.timestamp;
 
-        //verify the credential and update the metadata
-        const verifiableCredential = vcData.verifiableCredential?.credential || vcData.verifiableCredential;
-        const verificationResult = await verifyCredentialData(verifiableCredential, vcData.vcMetadata.format)
-        const isVerified = verificationResult.isVerified;
-        
-        vcData.vcMetadata.timestamp = timestamp;
-        vcData.vcMetadata.isVerified = isVerified;
+      //verify the credential and update the metadata
+      const verifiableCredential =
+        vcData.verifiableCredential?.credential || vcData.verifiableCredential;
+      const verificationResult = await verifyCredentialData(
+        verifiableCredential,
+        vcData.vcMetadata.format,
+      );
+      const isVerified = verificationResult.isVerified;
+      const isRevoked = verificationResult.isRevoked ?? false;
+      const isExpired =
+        verificationResult.verificationErrorCode === EXPIRED_VC_ERROR_CODE;
+      vcData.vcMetadata.timestamp = timestamp;
+      vcData.vcMetadata.isVerified = isVerified;
 
-        //update the vcMetadata
-        dataFromDB.myVCs.forEach(myVcMetadata => {
-          if (
-            myVcMetadata.requestId === vcData.vcMetadata.requestId &&
-            myVcMetadata.timestamp === prevUnixTimeStamp
-          ) {
-            myVcMetadata.timestamp = timestamp;
-            myVcMetadata.isVerified = isVerified;
-          }
-        });
+      //update the vcMetadata
+      dataFromDB.myVCs.forEach(myVcMetadata => {
+        if (
+          myVcMetadata.requestId === vcData.vcMetadata.requestId &&
+          myVcMetadata.timestamp === prevUnixTimeStamp
+        ) {
+          myVcMetadata.timestamp = timestamp;
+          myVcMetadata.isVerified = isVerified;
+          myVcMetadata.isRevoked = isRevoked;
+          myVcMetadata.isExpired = isExpired;
+          myVcMetadata.lastKnownStatusTimestamp = new Date().toISOString();
+        }
+      });
 
         // Encrypt and store the VC
         const updatedVcKey = new VCMetadata(vcData.vcMetadata).getVcKey();

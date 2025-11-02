@@ -60,6 +60,7 @@ import QuestionIcon from '../../assets/questionIcon.svg';
 import CopyIcon from '../../assets/file_copy.svg';
 import StarIcon from '../../assets/credentialRegestryStar.svg';
 import SelectedCheckBox from '../../assets/Selected_Check_Box.svg';
+import ReverifyIcon from '../../assets/Reverify.svg';
 export class SvgImage {
   static selectedCheckBox() {
     return <SelectedCheckBox />;
@@ -246,6 +247,12 @@ export class SvgImage {
         }}
       />
     );
+  }
+
+  static ReverifyIcon() {
+    return (
+      <ReverifyIcon/>
+    )
   }
 
   static OutlinedPinIcon() {

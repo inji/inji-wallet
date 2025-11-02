@@ -28,5 +28,9 @@ export const VCItemGaurds = () => {
 
     isVerificationPendingBecauseOfNetworkIssue: (_context, event) =>
       (event.data as Error).message == VerificationErrorType.NETWORK_ERROR,
+
+    hasVcStatusChangedAfterReverification: (context:any) => {
+      return context.statusChangedDuringVerification;
+    }
   };
 };

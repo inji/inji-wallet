@@ -15,6 +15,12 @@
     "WALLET_BINDING_FAILURE": "Activation of {{idType}} has failed.",
     "VC_REMOVED": "{{idType}} is removed from wallet.",
     "TAMPERED_VC_REMOVED": "{{idType}} is removed from from wallet due to tampering.",
+    "VC_STATUS_CHANGED": {
+      "VALID": "Status check completed. The status of {{idType}} is Valid.",
+      "REVOKED": "Status check completed. The status of {{idType}} is Revoked.",
+      "EXPIRED": "Status check completed. The status of {{idType}} is Expired.",
+      "PENDING": "Status check completed. The status of {{idType}} is Pending Verification."
+    },
     "vpSharing": {
       "SHARED_SUCCESSFULLY": "Credential Presentation is shared successfully.",
       "SHARED_WITH_FACE_VERIFIACTION": "Face verification is successful, and the Credential Presentation is shared successfully.",
@@ -73,7 +79,9 @@
   "VcDetails": {
     "generatedOn": "Generated On",
     "status": "Status",
+    "lastChecked": "Last Checked",
     "valid": "Valid",
+    "revoked": "Revoked",
     "pending": "Pending",
     "expired": "Expired",
     "photo": "Photo",
@@ -116,15 +124,17 @@
     "shareQRCode": "Share QR Code",
     "disclosureNote": "Your card includes specific details marked by the issuer as selectively shareable. These can be shared independently during credential presentation. Other fields not listed here can only be shared as part of the full credential, if requested by the verifier.",
     "disclosureNoteTitle": "Please note",
-    "disclosedFieldsDescription":"Your card includes the following selectively shareable details listed below.",
-    "disclosedFieldsTitle":"Information you choose to share",
-    "disclosureInfoNote":"Fields next to this icon indicate that the information can be shared selectively."
+    "disclosedFieldsDescription": "Your card includes the following selectively shareable details listed below.",
+    "disclosedFieldsTitle": "Information you choose to share",
+    "disclosureInfoNote": "Fields next to this icon indicate that the information can be shared selectively."
   },
   "HomeScreenKebabPopUp": {
     "title": "More Options",
     "unPinCard": "Unpin",
     "pinCard": "Pin",
     "share": "Share",
+    "reverify": "Check Card Status",
+    "new": "NEW",
     "shareWithSelfie": "Share with Selfie",
     "offlineAuthDisabledMessage": "Click here to enable this credentials to be used for online authentication.",
     "viewActivityLog": "View Activity Log",
@@ -192,7 +202,16 @@
     "alternateBiometricSuccess": "Success! You can now use biometrics to unlock Inji app.",
     "activated": "Credentials are enabled for online authentication.",
     "keyPreferenceSuccess": "Your key preferences have been saved successfully!",
-    "keyPreferenceError": "Sorry! Error setting your key preferences"
+    "keyPreferenceError": "Sorry! Error setting your key preferences",
+    "reverifiedSuccessfully": {
+      "VALID": "Status check successful. The status of your {{vcType}} is Valid.",
+      "REVOKED": "Status check successful. The status of your {{vcType}} is Revoked.",
+      "PENDING": "Status check successful. The status of your {{vcType}} is Pending Verification.",
+      "EXPIRED": "Status check successful. The status of your {{vcType}} is Expired."
+    },
+    "reverificationFailed": {
+      "PENDING": "Status check failed. Unable to verify your {{vcType}}, please try again later"
+    }
   },
   "AboutInji": {
     "aboutInji": "About Inji Wallet",
@@ -504,7 +523,9 @@
   "VcVerificationBanner": {
     "inProgress": "We are validating your card, this may take sometime. Once verified, you’ll be able to activate your card.",
     "success": "{{vcDetails}} is verified successfully and now available for activation.",
-    "error": "Sorry, we are unable to verify the {{vcDetails}} right now. Please try again later. Until then, you won't be able to activate or share your card."
+    "error": "Sorry, we are unable to verify the {{vcDetails}} right now. Please try again later. Until then, you won't be able to activate or share your card.",
+    "revoked": "{{vcDetails}} has been revoked by the issuer and is no longer valid. Please contact the issuer for more information.",
+    "expired": "{{vcDetails}} has expired and is no longer valid. Please contact the issuer for more information."
   },
   "ViewVcModal": {
     "title": "ID Details",
@@ -521,6 +542,10 @@
       "expired": {
         "title": "Expired Status:",
         "description": "The credential has expired."
+      },
+      "revoked": {
+        "title": "Revoked Status:",
+        "description": "The credential has been revoked."
       }
     }
   },
@@ -872,10 +897,10 @@
     "cardSelected": "card selected",
     "unCheck": "Uncheck",
     "checkAll": "Check All",
-    "selectedFieldsTitle":"Information you choose to share",
-    "selectedFieldsSubtitle":"Your card includes the following selectively shareable details listed below.",
-    "unselectAll":"Unselect All",
-    "selectAll":"Select All",
+    "selectedFieldsTitle": "Information you choose to share",
+    "selectedFieldsSubtitle": "Your card includes the following selectively shareable details listed below.",
+    "unselectAll": "Unselect All",
+    "selectAll": "Select All",
     "consentDialog": {
       "title": "Consent Required",
       "message": "We require your consent to share your verifiable credentials with {{verifierName}}. This will enable us to verify your identity and fulfil your service requests. Choose \"Yes, Proceed\" to consent or \"Decline\" if you do not wish to share your credentials with {{verifierName}}.",
@@ -1147,7 +1172,7 @@
       "This issuer will be added to your trusted list.",
       "You won't need to review trust again when downloading from them next time."
     ],
-    "verifierInfoPoints":[
+    "verifierInfoPoints": [
       "The card will be securely shared with the verifier.",
       "The verifier will be added to your trusted list.",
       "You won’t need to review trust again when sharing with them in the future."

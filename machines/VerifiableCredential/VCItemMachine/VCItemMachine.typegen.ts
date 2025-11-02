@@ -11,6 +11,7 @@
 "done.invoke.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromContext.fetchWellknown:invocation[0]": { type: "done.invoke.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromContext.fetchWellknown:invocation[0]"; data: unknown; __tip: "See the XState TS docs to learn how to strongly type this." };
 "done.invoke.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromServer.loadDownloadLimitConfig:invocation[0]": { type: "done.invoke.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromServer.loadDownloadLimitConfig:invocation[0]"; data: unknown; __tip: "See the XState TS docs to learn how to strongly type this." };
 "done.invoke.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromServer.verifyingDownloadLimitExpiry:invocation[0]": { type: "done.invoke.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromServer.verifyingDownloadLimitExpiry:invocation[0]"; data: unknown; __tip: "See the XState TS docs to learn how to strongly type this." };
+"done.invoke.vc-item-machine.vcUtilitiesState.reverificationState.verifying:invocation[0]": { type: "done.invoke.vc-item-machine.vcUtilitiesState.reverificationState.verifying:invocation[0]"; data: unknown; __tip: "See the XState TS docs to learn how to strongly type this." };
 "done.invoke.vc-item-machine.vcUtilitiesState.verifyingCredential.triggerAutoBackupForVcDownload:invocation[0]": { type: "done.invoke.vc-item-machine.vcUtilitiesState.verifyingCredential.triggerAutoBackupForVcDownload:invocation[0]"; data: unknown; __tip: "See the XState TS docs to learn how to strongly type this." };
 "done.invoke.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]": { type: "done.invoke.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]"; data: unknown; __tip: "See the XState TS docs to learn how to strongly type this." };
 "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.acceptingBindingOTP.resendOTP:invocation[0]": { type: "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.acceptingBindingOTP.resendOTP:invocation[0]"; data: unknown; __tip: "See the XState TS docs to learn how to strongly type this." };
@@ -22,6 +23,7 @@
 "error.platform.checkStatus": { type: "error.platform.checkStatus"; data: unknown };
 "error.platform.downloadCredential": { type: "error.platform.downloadCredential"; data: unknown };
 "error.platform.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromServer.verifyingDownloadLimitExpiry:invocation[0]": { type: "error.platform.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromServer.verifyingDownloadLimitExpiry:invocation[0]"; data: unknown };
+"error.platform.vc-item-machine.vcUtilitiesState.reverificationState.verifying:invocation[0]": { type: "error.platform.vc-item-machine.vcUtilitiesState.reverificationState.verifying:invocation[0]"; data: unknown };
 "error.platform.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]": { type: "error.platform.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]"; data: unknown };
 "error.platform.vc-item-machine.vcUtilitiesState.walletBinding.acceptingBindingOTP.resendOTP:invocation[0]": { type: "error.platform.vc-item-machine.vcUtilitiesState.walletBinding.acceptingBindingOTP.resendOTP:invocation[0]"; data: unknown };
 "error.platform.vc-item-machine.vcUtilitiesState.walletBinding.addKeyPair:invocation[0]": { type: "error.platform.vc-item-machine.vcUtilitiesState.walletBinding.addKeyPair:invocation[0]"; data: unknown };
@@ -44,12 +46,12 @@
 "isUserSignedAlready": "done.invoke.vc-item-machine.vcUtilitiesState.kebabPopUp.triggerAutoBackup:invocation[0]" | "done.invoke.vc-item-machine.vcUtilitiesState.verifyingCredential.triggerAutoBackupForVcDownload:invocation[0]";
 "loadDownloadLimitConfig": "done.invoke.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromServer.loadDownloadLimitConfig:invocation[0]";
 "requestBindingOTP": "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.acceptingBindingOTP.resendOTP:invocation[0]" | "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.requestingBindingOTP:invocation[0]";
-"verifyCredential": "done.invoke.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]" | "done.invoke.vc-item-machine.verifyState.verifyingCredential:invocation[0]";
+"verifyCredential": "done.invoke.vc-item-machine.vcUtilitiesState.reverificationState.verifying:invocation[0]" | "done.invoke.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]" | "done.invoke.vc-item-machine.verifyState.verifyingCredential:invocation[0]";
         };
         missingImplementations: {
-          actions: "addVcToInProgressDownloads" | "closeViewVcModal" | "incrementDownloadCounter" | "logDownloaded" | "logRemovedVc" | "logWalletBindingFailure" | "logWalletBindingSuccess" | "refreshAllVcs" | "removeVcFromInProgressDownloads" | "removeVcItem" | "removeVcMetaDataFromStorage" | "removeVcMetaDataFromVcMachineContext" | "removeVerificationStatusFromVcMeta" | "requestVcContext" | "resetIsMachineInKebabPopupState" | "resetIsVerified" | "resetPrivateKey" | "resetVerificationStatus" | "sendActivationStartEvent" | "sendActivationSuccessEvent" | "sendBackupEvent" | "sendDownloadLimitExpire" | "sendDownloadingFailedToVcMeta" | "sendTelemetryEvents" | "sendUserCancelledActivationFailedEndEvent" | "sendVerificationError" | "sendVerificationStatusToVcMeta" | "sendWalletBindingErrorEvent" | "sendWalletBindingSuccess" | "setCommunicationDetails" | "setContext" | "setDownloadInterval" | "setErrorAsVerificationError" | "setErrorAsWalletBindingError" | "setIsVerified" | "setMaxDownloadCount" | "setOTP" | "setPinCard" | "setPrivateKey" | "setPublicKey" | "setThumbprintForWalletBindingId" | "setVcKey" | "setVcMetadata" | "setVerificationStatus" | "setWalletBindingResponse" | "showVerificationBannerStatus" | "storeContext" | "storeVcInContext" | "unSetBindingTransactionId" | "unSetError" | "unSetOTP" | "updateVcMetadata" | "updateWellknownResponse";
+          actions: "addVcToInProgressDownloads" | "closeViewVcModal" | "incrementDownloadCounter" | "logDownloaded" | "logRemovedVc" | "logStatusChangedOnReverification" | "logWalletBindingFailure" | "logWalletBindingSuccess" | "refreshAllVcs" | "removeVcFromInProgressDownloads" | "removeVcItem" | "removeVcMetaDataFromStorage" | "removeVcMetaDataFromVcMachineContext" | "removeVerificationStatusFromVcMeta" | "requestVcContext" | "resetIsMachineInKebabPopupState" | "resetIsVerified" | "resetPrivateKey" | "resetStatusChangedFlag" | "resetVerificationStatus" | "sendActivationStartEvent" | "sendActivationSuccessEvent" | "sendBackupEvent" | "sendDownloadLimitExpire" | "sendDownloadingFailedToVcMeta" | "sendReverificationFailureToVcMeta" | "sendReverificationSuccessToVcMeta" | "sendTelemetryEvents" | "sendUserCancelledActivationFailedEndEvent" | "sendVerificationError" | "sendVerificationStatusToVcMeta" | "sendWalletBindingErrorEvent" | "sendWalletBindingSuccess" | "setCommunicationDetails" | "setContext" | "setDownloadInterval" | "setErrorAsVerificationError" | "setErrorAsWalletBindingError" | "setIsVerified" | "setMaxDownloadCount" | "setOTP" | "setPinCard" | "setPrivateKey" | "setPublicKey" | "setThumbprintForWalletBindingId" | "setVcKey" | "setVcMetadata" | "setVerificationStatus" | "setWalletBindingResponse" | "showVerificationBannerStatus" | "storeContext" | "storeVcInContext" | "unSetBindingTransactionId" | "unSetError" | "unSetOTP" | "updateVcMetadata" | "updateWellknownResponse";
           delays: never;
-          guards: "hasCredential" | "hasCredentialAndWellknown" | "hasKeyPair" | "isCustomSecureKeystore" | "isDownloadAllowed" | "isSignedIn" | "isVerificationPendingBecauseOfNetworkIssue";
+          guards: "hasCredential" | "hasCredentialAndWellknown" | "hasKeyPair" | "hasVcStatusChangedAfterReverification" | "isCustomSecureKeystore" | "isDownloadAllowed" | "isSignedIn" | "isVerificationPendingBecauseOfNetworkIssue";
           services: "addWalletBindingId" | "checkDownloadExpiryLimit" | "checkStatus" | "downloadCredential" | "fetchIssuerWellknown" | "fetchKeyPair" | "generateKeypairAndStore" | "isUserSignedAlready" | "loadDownloadLimitConfig" | "requestBindingOTP" | "verifyCredential";
         };
         eventsCausingActions: {
@@ -58,6 +60,7 @@
 "incrementDownloadCounter": "POLL" | "done.invoke.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromServer.loadDownloadLimitConfig:invocation[0]";
 "logDownloaded": "STORE_RESPONSE";
 "logRemovedVc": "STORE_RESPONSE";
+"logStatusChangedOnReverification": "";
 "logWalletBindingFailure": "error.platform.vc-item-machine.vcUtilitiesState.walletBinding.addKeyPair:invocation[0]" | "error.platform.vc-item-machine.vcUtilitiesState.walletBinding.addingWalletBindingId:invocation[0]" | "error.platform.vc-item-machine.vcUtilitiesState.walletBinding.generateKeyPair:invocation[0]" | "error.platform.vc-item-machine.vcUtilitiesState.walletBinding.requestingBindingOTP:invocation[0]";
 "logWalletBindingSuccess": "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.addingWalletBindingId:invocation[0]";
 "refreshAllVcs": "STORE_RESPONSE" | "done.invoke.vc-item-machine.vcUtilitiesState.kebabPopUp.triggerAutoBackup:invocation[0]";
@@ -67,15 +70,18 @@
 "removeVcMetaDataFromVcMachineContext": "DISMISS";
 "removeVerificationStatusFromVcMeta": "RESET_VERIFICATION_STATUS";
 "requestVcContext": "DISMISS" | "REFRESH" | "STORE_ERROR" | "xstate.init";
-"resetIsMachineInKebabPopupState": "" | "ADD_WALLET_BINDING_ID" | "CANCEL" | "CLOSE_VC_MODAL" | "DISMISS" | "REFRESH" | "REMOVE" | "SHOW_ACTIVITY" | "done.invoke.vc-item-machine.vcUtilitiesState.kebabPopUp.triggerAutoBackup:invocation[0]" | "xstate.stop";
-"resetIsVerified": "error.platform.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]" | "error.platform.vc-item-machine.verifyState.verifyingCredential:invocation[0]";
+"resetIsMachineInKebabPopupState": "" | "ADD_WALLET_BINDING_ID" | "CANCEL" | "CLOSE_VC_MODAL" | "DISMISS" | "REFRESH" | "REMOVE" | "REVERIFY_VC" | "SHOW_ACTIVITY" | "done.invoke.vc-item-machine.vcUtilitiesState.kebabPopUp.triggerAutoBackup:invocation[0]" | "xstate.stop";
+"resetIsVerified": "error.platform.vc-item-machine.vcUtilitiesState.reverificationState.verifying:invocation[0]" | "error.platform.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]" | "error.platform.vc-item-machine.verifyState.verifyingCredential:invocation[0]";
 "resetPrivateKey": "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.addingWalletBindingId:invocation[0]";
+"resetStatusChangedFlag": "";
 "resetVerificationStatus": "REMOVE_VERIFICATION_STATUS_BANNER" | "RESET_VERIFICATION_STATUS";
 "sendActivationStartEvent": "CONFIRM";
 "sendActivationSuccessEvent": "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.addingWalletBindingId:invocation[0]";
 "sendBackupEvent": "done.invoke.vc-item-machine.vcUtilitiesState.kebabPopUp.triggerAutoBackup:invocation[0]" | "done.invoke.vc-item-machine.vcUtilitiesState.verifyingCredential.triggerAutoBackupForVcDownload:invocation[0]";
 "sendDownloadLimitExpire": "FAILED" | "error.platform.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromServer.verifyingDownloadLimitExpiry:invocation[0]";
 "sendDownloadingFailedToVcMeta": "error.platform.downloadCredential";
+"sendReverificationFailureToVcMeta": "error.platform.vc-item-machine.vcUtilitiesState.reverificationState.verifying:invocation[0]";
+"sendReverificationSuccessToVcMeta": "done.invoke.vc-item-machine.vcUtilitiesState.reverificationState.verifying:invocation[0]";
 "sendTelemetryEvents": "STORE_RESPONSE";
 "sendUserCancelledActivationFailedEndEvent": "DISMISS";
 "sendVerificationError": "STORE_RESPONSE";
@@ -87,7 +93,7 @@
 "setDownloadInterval": "done.invoke.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromServer.loadDownloadLimitConfig:invocation[0]";
 "setErrorAsVerificationError": "error.platform.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]";
 "setErrorAsWalletBindingError": "error.platform.vc-item-machine.vcUtilitiesState.walletBinding.acceptingBindingOTP.resendOTP:invocation[0]" | "error.platform.vc-item-machine.vcUtilitiesState.walletBinding.addKeyPair:invocation[0]" | "error.platform.vc-item-machine.vcUtilitiesState.walletBinding.addingWalletBindingId:invocation[0]" | "error.platform.vc-item-machine.vcUtilitiesState.walletBinding.generateKeyPair:invocation[0]" | "error.platform.vc-item-machine.vcUtilitiesState.walletBinding.requestingBindingOTP:invocation[0]";
-"setIsVerified": "done.invoke.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]" | "done.invoke.vc-item-machine.verifyState.verifyingCredential:invocation[0]";
+"setIsVerified": "done.invoke.vc-item-machine.vcUtilitiesState.reverificationState.verifying:invocation[0]" | "done.invoke.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]" | "done.invoke.vc-item-machine.verifyState.verifyingCredential:invocation[0]";
 "setMaxDownloadCount": "done.invoke.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromServer.loadDownloadLimitConfig:invocation[0]";
 "setOTP": "INPUT_OTP";
 "setPinCard": "PIN_CARD";
@@ -98,13 +104,13 @@
 "setVcMetadata": "UPDATE_VC_METADATA";
 "setVerificationStatus": "SET_VERIFICATION_STATUS" | "SHOW_VERIFICATION_STATUS_BANNER" | "STORE_RESPONSE";
 "setWalletBindingResponse": "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.addingWalletBindingId:invocation[0]";
-"showVerificationBannerStatus": "SHOW_VERIFICATION_STATUS_BANNER" | "STORE_RESPONSE" | "xstate.after(500)#vc-item-machine.verifyState.verifyingCredential";
-"storeContext": "done.invoke.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]" | "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.addingWalletBindingId:invocation[0]" | "done.invoke.vc-item-machine.verifyState.verifyingCredential:invocation[0]" | "error.platform.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]" | "error.platform.vc-item-machine.verifyState.verifyingCredential:invocation[0]";
+"showVerificationBannerStatus": "" | "SHOW_VERIFICATION_STATUS_BANNER" | "xstate.after(500)#vc-item-machine.verifyState.verifyingCredential";
+"storeContext": "done.invoke.vc-item-machine.vcUtilitiesState.reverificationState.verifying:invocation[0]" | "done.invoke.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]" | "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.addingWalletBindingId:invocation[0]" | "done.invoke.vc-item-machine.verifyState.verifyingCredential:invocation[0]" | "error.platform.vc-item-machine.vcUtilitiesState.reverificationState.verifying:invocation[0]" | "error.platform.vc-item-machine.vcUtilitiesState.verifyingCredential:invocation[0]" | "error.platform.vc-item-machine.verifyState.verifyingCredential:invocation[0]";
 "storeVcInContext": "STORE_RESPONSE";
 "unSetBindingTransactionId": "DISMISS";
 "unSetError": "CANCEL" | "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.addingWalletBindingId:invocation[0]";
 "unSetOTP": "DISMISS" | "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.requestingBindingOTP:invocation[0]";
-"updateVcMetadata": "PIN_CARD" | "STORE_RESPONSE";
+"updateVcMetadata": "PIN_CARD" | "STORE_RESPONSE" | "done.invoke.vc-item-machine.vcUtilitiesState.reverificationState.verifying:invocation[0]" | "error.platform.vc-item-machine.vcUtilitiesState.reverificationState.verifying:invocation[0]";
 "updateWellknownResponse": "done.invoke.vc-item-machine.vcUtilitiesState.loadVc.loadVcFromContext.fetchWellknown:invocation[0]";
         };
         eventsCausingDelays: {
@@ -114,6 +120,7 @@
           "hasCredential": "GET_VC_RESPONSE";
 "hasCredentialAndWellknown": "GET_VC_RESPONSE";
 "hasKeyPair": "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.addKeyPair:invocation[0]";
+"hasVcStatusChangedAfterReverification": "";
 "isCustomSecureKeystore": "done.invoke.vc-item-machine.vcUtilitiesState.walletBinding.addingWalletBindingId:invocation[0]";
 "isDownloadAllowed": "POLL";
 "isSignedIn": "done.invoke.vc-item-machine.vcUtilitiesState.kebabPopUp.triggerAutoBackup:invocation[0]" | "done.invoke.vc-item-machine.vcUtilitiesState.verifyingCredential.triggerAutoBackupForVcDownload:invocation[0]";
@@ -130,14 +137,15 @@
 "isUserSignedAlready": "STORE_RESPONSE";
 "loadDownloadLimitConfig": "GET_VC_RESPONSE" | "STORE_ERROR";
 "requestBindingOTP": "CONFIRM" | "RESEND_OTP";
-"verifyCredential": "CREDENTIAL_DOWNLOADED" | "VERIFY";
+"verifyCredential": "CREDENTIAL_DOWNLOADED" | "REVERIFY_VC" | "VERIFY";
         };
-        matchesStates: "vcUtilitiesState" | "vcUtilitiesState.idle" | "vcUtilitiesState.kebabPopUp" | "vcUtilitiesState.kebabPopUp.idle" | "vcUtilitiesState.kebabPopUp.pinCard" | "vcUtilitiesState.kebabPopUp.removeWallet" | "vcUtilitiesState.kebabPopUp.removingVc" | "vcUtilitiesState.kebabPopUp.showActivities" | "vcUtilitiesState.kebabPopUp.triggerAutoBackup" | "vcUtilitiesState.loadVc" | "vcUtilitiesState.loadVc.loadVcFromContext" | "vcUtilitiesState.loadVc.loadVcFromContext.fetchWellknown" | "vcUtilitiesState.loadVc.loadVcFromContext.idle" | "vcUtilitiesState.loadVc.loadVcFromServer" | "vcUtilitiesState.loadVc.loadVcFromServer.checkingStatus" | "vcUtilitiesState.loadVc.loadVcFromServer.downloadingCredential" | "vcUtilitiesState.loadVc.loadVcFromServer.loadDownloadLimitConfig" | "vcUtilitiesState.loadVc.loadVcFromServer.savingFailed" | "vcUtilitiesState.loadVc.loadVcFromServer.savingFailed.idle" | "vcUtilitiesState.loadVc.loadVcFromServer.savingFailed.viewingVc" | "vcUtilitiesState.loadVc.loadVcFromServer.verifyingDownloadLimitExpiry" | "vcUtilitiesState.verifyingCredential" | "vcUtilitiesState.verifyingCredential.handleVCVerificationFailure" | "vcUtilitiesState.verifyingCredential.idle" | "vcUtilitiesState.verifyingCredential.triggerAutoBackupForVcDownload" | "vcUtilitiesState.walletBinding" | "vcUtilitiesState.walletBinding.acceptingBindingOTP" | "vcUtilitiesState.walletBinding.acceptingBindingOTP.idle" | "vcUtilitiesState.walletBinding.acceptingBindingOTP.resendOTP" | "vcUtilitiesState.walletBinding.addKeyPair" | "vcUtilitiesState.walletBinding.addingWalletBindingId" | "vcUtilitiesState.walletBinding.generateKeyPair" | "vcUtilitiesState.walletBinding.requestingBindingOTP" | "vcUtilitiesState.walletBinding.showBindingWarning" | "vcUtilitiesState.walletBinding.showingWalletBindingError" | "vcUtilitiesState.walletBinding.updatingContextVariables" | "verifyState" | "verifyState.idle" | "verifyState.verificationCompleted" | "verifyState.verifyingCredential" | { "vcUtilitiesState"?: "idle" | "kebabPopUp" | "loadVc" | "verifyingCredential" | "walletBinding" | { "kebabPopUp"?: "idle" | "pinCard" | "removeWallet" | "removingVc" | "showActivities" | "triggerAutoBackup";
+        matchesStates: "vcUtilitiesState" | "vcUtilitiesState.idle" | "vcUtilitiesState.kebabPopUp" | "vcUtilitiesState.kebabPopUp.idle" | "vcUtilitiesState.kebabPopUp.pinCard" | "vcUtilitiesState.kebabPopUp.removeWallet" | "vcUtilitiesState.kebabPopUp.removingVc" | "vcUtilitiesState.kebabPopUp.showActivities" | "vcUtilitiesState.kebabPopUp.triggerAutoBackup" | "vcUtilitiesState.loadVc" | "vcUtilitiesState.loadVc.loadVcFromContext" | "vcUtilitiesState.loadVc.loadVcFromContext.fetchWellknown" | "vcUtilitiesState.loadVc.loadVcFromContext.idle" | "vcUtilitiesState.loadVc.loadVcFromServer" | "vcUtilitiesState.loadVc.loadVcFromServer.checkingStatus" | "vcUtilitiesState.loadVc.loadVcFromServer.downloadingCredential" | "vcUtilitiesState.loadVc.loadVcFromServer.loadDownloadLimitConfig" | "vcUtilitiesState.loadVc.loadVcFromServer.savingFailed" | "vcUtilitiesState.loadVc.loadVcFromServer.savingFailed.idle" | "vcUtilitiesState.loadVc.loadVcFromServer.savingFailed.viewingVc" | "vcUtilitiesState.loadVc.loadVcFromServer.verifyingDownloadLimitExpiry" | "vcUtilitiesState.reverificationState" | "vcUtilitiesState.reverificationState.checkingStatusChange" | "vcUtilitiesState.reverificationState.verifying" | "vcUtilitiesState.verifyingCredential" | "vcUtilitiesState.verifyingCredential.handleVCVerificationFailure" | "vcUtilitiesState.verifyingCredential.idle" | "vcUtilitiesState.verifyingCredential.triggerAutoBackupForVcDownload" | "vcUtilitiesState.walletBinding" | "vcUtilitiesState.walletBinding.acceptingBindingOTP" | "vcUtilitiesState.walletBinding.acceptingBindingOTP.idle" | "vcUtilitiesState.walletBinding.acceptingBindingOTP.resendOTP" | "vcUtilitiesState.walletBinding.addKeyPair" | "vcUtilitiesState.walletBinding.addingWalletBindingId" | "vcUtilitiesState.walletBinding.generateKeyPair" | "vcUtilitiesState.walletBinding.requestingBindingOTP" | "vcUtilitiesState.walletBinding.showBindingWarning" | "vcUtilitiesState.walletBinding.showingWalletBindingError" | "vcUtilitiesState.walletBinding.updatingContextVariables" | "verifyState" | "verifyState.checkingStatusChange" | "verifyState.idle" | "verifyState.verificationCompleted" | "verifyState.verifyingCredential" | { "vcUtilitiesState"?: "idle" | "kebabPopUp" | "loadVc" | "reverificationState" | "verifyingCredential" | "walletBinding" | { "kebabPopUp"?: "idle" | "pinCard" | "removeWallet" | "removingVc" | "showActivities" | "triggerAutoBackup";
 "loadVc"?: "loadVcFromContext" | "loadVcFromServer" | { "loadVcFromContext"?: "fetchWellknown" | "idle";
 "loadVcFromServer"?: "checkingStatus" | "downloadingCredential" | "loadDownloadLimitConfig" | "savingFailed" | "verifyingDownloadLimitExpiry" | { "savingFailed"?: "idle" | "viewingVc"; }; };
+"reverificationState"?: "checkingStatusChange" | "verifying";
 "verifyingCredential"?: "handleVCVerificationFailure" | "idle" | "triggerAutoBackupForVcDownload";
 "walletBinding"?: "acceptingBindingOTP" | "addKeyPair" | "addingWalletBindingId" | "generateKeyPair" | "requestingBindingOTP" | "showBindingWarning" | "showingWalletBindingError" | "updatingContextVariables" | { "acceptingBindingOTP"?: "idle" | "resendOTP"; }; };
-"verifyState"?: "idle" | "verificationCompleted" | "verifyingCredential"; };
+"verifyState"?: "checkingStatusChange" | "idle" | "verificationCompleted" | "verifyingCredential"; };
         tags: never;
       }
   

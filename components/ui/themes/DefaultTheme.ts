@@ -769,24 +769,24 @@ export const DefaultTheme = {
       flex: 1,
       justifyContent: 'space-around',
     },
-    horizontalSeparator:{
+    horizontalSeparator: {
       height: 1,
       backgroundColor: '#DADADA',
     },
-    disclosureTitle:{
+    disclosureTitle: {
       fontFamily: 'Inter_700Bold',
       fontSize: 15,
       color: Colors.Black,
     },
-    disclosureSubtitle:{
+    disclosureSubtitle: {
       fontSize: 13,
       color: '#747474',
       marginTop: 4,
     },
-    disclosureSelectButton:{
+    disclosureSelectButton: {
       fontSize: 14,
       fontFamily: 'Inter_700Bold',
-    }
+    },
   }),
   BannerStyles: StyleSheet.create({
     container: {
@@ -1191,7 +1191,7 @@ export const DefaultTheme = {
       borderColor: Colors.Orange,
       borderRadius: 30,
     },
-    sharedSuccessfullyVerifierInfo:{
+    sharedSuccessfullyVerifierInfo: {
       alignSelf: 'center',
       backgroundColor: '#F5F5F5',
       borderRadius: 16,
@@ -1205,7 +1205,7 @@ export const DefaultTheme = {
       height: 40,
       borderRadius: 8,
       marginRight: 12,
-    }
+    },
   }),
   AppMetaDataStyles: StyleSheet.create({
     buttonContainer: {
@@ -1365,6 +1365,15 @@ export const DefaultTheme = {
       maxHeight: 300,
       position: 'absolute',
       bottom: 0,
+    },
+    new: {
+      height: 20,
+      width: 'auto',
+      backgroundColor: '#FF5300',
+      alignItems: 'center',
+      marginLeft: 10,
+      borderRadius: 5,
+      paddingHorizontal: 5,
     },
     kebabHeaderStyle: {
       justifyContent: 'space-between',
@@ -2168,14 +2177,14 @@ export const DefaultTheme = {
       color: '#973C00',
       marginBottom: 5,
     },
-    noteDescriptionText:{
+    noteDescriptionText: {
       fontSize: 13,
       color: '#973C00',
       fontFamily: 'Inter_400Regular',
       lineHeight: 18,
       textAlign: 'left',
-      marginLeft: -25
-    }
+      marginLeft: -25,
+    },
   }),
   DisclosureInfo: StyleSheet.create({
     view: {

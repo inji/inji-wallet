@@ -23,8 +23,52 @@ export const VCMetaActions = (model: any) => {
     }),
 
     setVerificationStatus: model.assign({
-      verificationStatus: (_, event) =>
-        event.verificationStatus as vcVerificationBannerDetails,
+      verificationStatus: (_, event) =>{
+        return event.verificationStatus as vcVerificationBannerDetails}
+    }),
+    setReverificationSuccess: model.assign({
+      ReverificationSuccess: (context,event) => ({
+        status: true,
+        statusValue: event.statusValue,
+        vcKey: event.vcKey,
+        vcType: event.vcType
+      })
+    }),
+    resetReverificationSuccess: model.assign({
+      ReverificationSuccess: () => ({
+        status: false,
+        statusValue: '',
+        vcKey:'',
+        vcType:''
+      })
+    }),
+
+    resetHighlightVcKey: model.assign({
+      ReverificationSuccess: (context:any) => ({
+       ...context.ReverificationSuccess,
+        vcKey:''
+      }),
+      ReverificationFailed: (context:any) => ({
+        ...context.ReverificationFailed,
+         vcKey:''
+       }),
+    }),
+    setReverificationFailed: model.assign({
+      ReverificationFailed: (context,event) => ({
+        status: true,
+        statusValue: event.statusValue,
+        vcKey: event.vcKey,
+        vcType: event.vcType
+      })
+    }),
+
+    resetReverificationFailed: model.assign({
+      ReverificationFailed: (context,event) => ({
+        status: false,
+        statusValue: event.statusValue,
+        vcKey: '',
+        vcType:''
+      })
     }),
 
     sendBackupEvent: send(BackupEvents.DATA_BACKUP(true), {

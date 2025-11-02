@@ -41,6 +41,13 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
     Array<Record<string, VCMetadata>>
   >([]);
   const [showPinVc, setShowPinVc] = useState(true);
+const [highlightCardLayout, setHighlightCardLayout] = useState<null | {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  type: 'success' | 'failure';
+}>(null);
 
   const getId = () => {
     controller.DISMISS();
@@ -67,6 +74,13 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
       controller.SET_TOUR_GUIDE(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (!props.isViewingVc) {
+      controller.RESET_HIGHLIGHT?.();
+      setHighlightCardLayout(null);
+    }
+  }, [props.isViewingVc]);
 
   useEffect(() => {
     filterVcs(search);
@@ -276,23 +290,40 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
                   )}
                 </Row>
                 {showPinVc &&
-                  vcMetadataOrderedByPinStatus.map((vcMetadata, index) => {
-                    return (
-                      <VcItemContainer
-                        key={vcMetadata.getVcKey()}
-                        vcMetadata={vcMetadata}
-                        margin="0 2 8 2"
-                        onPress={controller.VIEW_VC}
-                        isDownloading={controller.inProgressVcDownloads?.has(
-                          vcMetadata.getVcKey(),
-                        )}
-                        isPinned={vcMetadata.isPinned}
-                        isInitialLaunch={controller.isInitialDownloading}
-                        isTopCard={index === 0}
-                      />
-                    );
-                  })}
+                vcMetadataOrderedByPinStatus.map((vcMetadata, index) => {
+                  const vcKey = vcMetadata.getVcKey();
 
+                  const isSuccessHighlighted =
+                    controller.reverificationSuccess.status &&
+                    controller.reverificationSuccess.vcKey === vcKey;
+
+                  const isFailureHighlighted =
+                    controller.reverificationfailure.status &&
+                    controller.reverificationfailure.vcKey === vcKey;
+                  const highlightType = isSuccessHighlighted
+                    ? 'success'
+                    : isFailureHighlighted
+                    ? 'failure'
+                    : null;
+
+                  return (
+                    <VcItemContainer
+                      key={vcKey}
+                      vcMetadata={vcMetadata}
+                      margin="0 2 8 2"
+                      onPress={controller.VIEW_VC}
+                      isDownloading={controller.inProgressVcDownloads?.has(vcKey)}
+                      isPinned={vcMetadata.isPinned}
+                      isInitialLaunch={controller.isInitialDownloading}
+                      isTopCard={index === 0}
+                      onMeasured={rect => {
+                        if (highlightType && !highlightCardLayout) {
+                          setHighlightCardLayout({ ...rect, type: highlightType });
+                        }
+                      }}
+                    />
+                  );
+                })}
                 {filteredSearchData.length > 0 && !showPinVc
                   ? filteredSearchData.map(vcMetadataObj => {
                       const [vcKey, vcMetadata] =
@@ -470,6 +501,14 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
           primaryButtonTestID="tryAgain"
         />
       )}
+      <MessageOverlay
+        overlayMode='highlight'
+        isVisible={!!highlightCardLayout && !props.isViewingVc}
+        cardLayout={highlightCardLayout ?? undefined}
+        onBackdropPress={() => {
+          controller.RESET_HIGHLIGHT()
+          setHighlightCardLayout(null)}}
+      />
     </React.Fragment>
   );
 };

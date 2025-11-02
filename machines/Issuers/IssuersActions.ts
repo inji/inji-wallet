@@ -39,6 +39,8 @@ export const IssuersActions = (model: any) => {
           ...context.vcMetadata,
           isVerified: true,
           isExpired: event.data.verificationErrorCode == EXPIRED_VC_ERROR_CODE,
+          isRevoked: event.data.isRevoked,
+          lastKnownStatusTimestamp: new Date().toISOString()
         }),
     }),
     resetVerificationResult: assign({
@@ -47,6 +49,7 @@ export const IssuersActions = (model: any) => {
           ...context.vcMetadata,
           isVerified: false,
           isExpired: false,
+          isRevoked: false,
         }),
     }),
     setIssuers: model.assign({
