@@ -12,13 +12,13 @@ This document focuses on the tech design to support presentations during the iss
 
 ## Clarifications
 
-- The OVP request received is no different from current OVP request structure followed in Wallet (Draft 23 OpenID4VP specification using DIF presentation exchange). // TODO: add as hyper link
-- The VP response created is also similar to the current VP response structure followed in Wallet (Draft 23 OpenID4VP specification using DIF presentation exchange).
-- Wallet supports for `openid4vp_presentation` interaction type only. Other interaction types like `redirect_to_web` will be supported in future.
+- The OVP request received is no different from current OVP request structure followed in Wallet. [Draft 23 OpenID4VP specification using DIF presentation exchange](https://openid.net/specs/openid-4-verifiable-presentations-1_0-ID3.html#name-dif-presentation-exchange-2).
+- The VP response created is also similar to the current VP response structure followed in Wallet. [Draft 23 VP response (Presentation Exchange)](https://openid.net/specs/openid-4-verifiable-presentations-1_0-ID3.html#name-examples-presentation-excha).
+- Wallet supports for `openid4vp_presentation` interaction type only. Other interaction types like `redirect_to_web` will be supported in the future.
 
 ### Future scope
 
-- redirect_to_web interaction type support during issuance.
+- `redirect_to_web` interaction type support during issuance.
 
 ## Pre-requisites
 
@@ -52,21 +52,22 @@ sequenceDiagram
     Note over wallet,issuer: 1. Authorization to download credential
     alt Authorization server supports interactive interaction <br/>(`interactive_authorization_endpoint` available in Authorization Server metadata)
         wallet->>issuer: 5. Initial request to interaction endpoint <br/>POST Content-Type: application/x-www-form-urlencoded /iar<br/>{response_type="code", client_id, code_challenge, code_challenge_method:"S256", redirect_uri, interaction_types_supported=openid4vp_presentation, <br/>authorization_details=[{"type": "openid_credential", "locations": [ "https://credential-issuer.example.com" ], "credential_configuration_id": "UniversityDegreeCredential" }]}
-        issuer-->>wallet: 6. 200 Interactive Authorization Response
+        issuer->>wallet: 6. 200 Interactive Authorization Response
         Note over wallet,issuer: 2. Presentation Flow with Issuer
         Note over wallet, issuer: The response body has the structure<br/>{status:"require_interaction", type:"openid4vp_presentation", auth_session:"..random string",<br/>//Presentation request<br/>openid4vp_request: {standard ovp request by value with response_mode as "iar-post" or "iar-post.jwt"}}
         wallet ->> user : consent to the interaction - openid4vp_presentation
         wallet->>wallet: 7. Validate the response and validate openid4vp_request
         wallet->>wallet: 8. Display and select credential(s) which satisfies presentation request criteria
         wallet->>user: 9. User consent
-        wallet-->>issuer: 10. Share VP response to the Issuer <br/>POST /iar<br/>Content-Type - application/x-www-form-urlencoded<br/>{auth_session=...&openid4vp_presentation=...}
+        wallet->>issuer: 10. Share VP response to the Issuer <br/>POST /iar<br/>Content-Type - application/x-www-form-urlencoded<br/>{auth_session=...&openid4vp_presentation=...}
         issuer->>issuer: 11. Validate auth_session and VP response
         alt If VP is valid
-            issuer-->>wallet: 12. 200 OK {status:"ok", authorization_code:"..."}
-            wallet-->>issuer: 13. Token exchange occurs
-            wallet-->>issuer: 14. Credential request and issuance occurs
+            issuer->>wallet: 12. 200 OK {status:"ok", authorization_code:"..."}
+            wallet->>issuer: 13. Token exchange occurs
+            wallet->>issuer: 14. Credential request and issuance occurs
         else
-            issuer-->>wallet: 12. 4xx Bad Request {error:"invalid_request", error_description:"VP verification failed"}
+            issuer->>wallet: 12. 4xx Bad Request {error:"invalid_request", error_description:"VP verification failed"}
+            wallet ->> user: 13: show Error screen UI to user reg Credential download failure
         end
     end
 ```
@@ -78,8 +79,8 @@ sequenceDiagram
 1. **User**: The individual requesting the credential.
 2. **Wallet - Inji Wallet**: The digital wallet application used by the user to manage credentials.
 3. **Issuer - Inji Certify (OAuth AS + VCI)**: The entity responsible for issuing the credential, which also acts as an OAuth Authorization Server and Verifiable Credential Issuer.
-4. **Inji VCI Client Library**: The library used by the wallet to handle OpenID for VC issuance.
-5. **Inji OpenID4VP Library**: The library used by the wallet to handle OpenID for Verifiable Presentations.
+4. **Inji VCI Client Library**: The library used by the wallet to handle OpenID for VC issuance. (Download of credential into Wallet)
+5. **Inji OpenID4VP Library**: The library used by the wallet to handle OpenID for Verifiable Presentations. (Wallet presenting of the credential to a Verifier)
 
 ```mermaid
 sequenceDiagram
@@ -99,51 +100,51 @@ sequenceDiagram
     alt Authorization server supports interactive interaction <br/>(`interactive_authorization_endpoint` available in Authorization Server metadata)
         vciClient ->> issuer: 2. Initial request to interaction endpoint (Happens in PAR mode)<br/>POST Content-Type: application/x-www-form-urlencoded /iar<br/>{response_type="code", client_id, code_challenge, code_challenge_method:"S256", redirect_uri, interaction_types_supported=openid4vp_presentation, <br/>authorization_details=[{"type": "openid_credential", "locations": [ "https://credential-issuer.example.com" ], "credential_configuration_id": "UniversityDegreeCredential" }]}
         alt Successful interaction response
-            issuer -->> vciClient: 3. 200 Interactive Authorization Response
+            issuer ->> vciClient: 3. 200 Interactive Authorization Response
             Note over wallet, issuer: Presentation Flow with Issuer
             Note over wallet, issuer: The response body has the structure<br/>{status:"require_interaction", type:"openid4vp_presentation", auth_session:"..random string",<br/>//Presentation request<br/>openid4vp_request: {standard ovp request by value with response_mode as "iar-post" or "iar-post.jwt"}}
             vciClient ->> wallet: 4. initiate openid4vp interaction callback to Wallet<br/>interactionCallbacks.get(InteractionType.OPENID4VP_PRESENTATION)?.callback?.invoke(openid4vpRequest)
             Note over wallet, openid4vp: OVP Response creation callback<br/>Wallet uses inji-openid4vp library to process openid4vpRequest and create VP response
             wallet ->> openid4vp: 5. Process openid4vpRequest<br/>authenticateVerifier(urlEncodedAuthorizationRequest = null,<br/>authorizationRequest = ovpRequest<br/>trustedVerifiers = trustedVerifiers,<br/>shouldValidateClient = true)
-            openid4vp -->> openid4vp: 6. validate the ovp request<br/>(current validation logic is applied here + if response_mode is iar-post or iar-post.jwt, then response_uri check is skipped)
-            openid4vp -->> wallet: 7. Return AuthorizationRequest
+            openid4vp ->> openid4vp: 6. validate the ovp request<br/>(current validation logic is applied here + if response_mode is iar-post or iar-post.jwt, then response_uri check is skipped)
+            openid4vp ->> wallet: 7. Return AuthorizationRequest
             wallet ->> user: 8. Display and select credential(s) which satisfies presentation request criteria
             user ->> wallet: 9. Selects the credential(s)
             wallet ->> user: 10. Ask User consent to share VP
             alt user provided consent to VP share
-                user -->> wallet: 11. Approve
+                user ->> wallet: 11. Approve
                 wallet ->> openid4vp: Create VP response using inji-openid4vp library (constructUnsignedVPToken and constructVPResponse)
-                openid4vp -->> wallet: Return VP response as Map<String, Any>
+                openid4vp ->> wallet: Return VP response as Map<String, Any>
                 wallet ->> vciClient: 12. Return Success Authorization VP Response to vciClient
             else user rejected consent to VP share
-                user -->> wallet: 11. Deny
+                user ->> wallet: 11. Deny
                 wallet ->> vciClient: 12. Return Error Authorization VP Response (as Map<String, Any>) to vciClient
             end
             Note over wallet, openid4vp: End of OVP Response creation callback<br/>Wallet returns the VP response (success or error) in the form of Map<String,Any> to vciClient
             vciClient ->> issuer: 13. Share VP response to the Issuer <br/>POST /iar<br/>Content-Type - application/x-www-form-urlencoded<br/>{auth_session=...&openid4vp_presentation=...}
             issuer ->> issuer: 14. Validate auth_session and VP response
             alt Server side validation of Submitted response is successful
-                issuer -->> vciClient: 15. 200 OK {status:"ok", authorization_code:"..."}
+                issuer ->> vciClient: 15. 200 OK {status:"ok", authorization_code:"..."}
                 Note over wallet, issuer: Usual authorization Code Flow continuation
             else Server side validation of Submitted response failed
-                issuer -->> vciClient: 15. 4xx Bad Request {error:"invalid_request", error_description:"VP verification failed"}
+                issuer ->> vciClient: 15. 4xx Bad Request {error:"invalid_request", error_description:"VP verification failed"}
                 vciClient ->> wallet: Propagate interaction error to wallet
                 wallet ->> user: Show error to user
             end
         else Error interaction response
-            issuer -->> vciClient: interaction error response<br/>4xx Bad Request {error:"missing_interaction_type", error_description:"interaction_types_supported in the request is missing the required interaction type 'openid4vp_presentation'"}
+            issuer ->> vciClient: interaction error response<br/>4xx Bad Request {error:"missing_interaction_type", error_description:"interaction_types_supported in the request is missing the required interaction type 'openid4vp_presentation'"}
             vciClient ->> wallet: Propagate interaction error to wallet
             wallet ->> user: Show error to user
         end
     else non Interactive Authorization Request flow
         vciClient ->> issuer: i. Metadata discovery
-        issuer -->> vciClient: ii. Authorization Server and Issuer metadata
+        issuer ->> vciClient: ii. Authorization Server and Issuer metadata
         vciClient ->> issuer: iii. Authorization Request to /authorize endpoint
-        issuer -->> vciClient: iv. Authorization Response with authorization code
+        issuer ->> vciClient: iv. Authorization Response with authorization code
         Note over wallet, issuer: Usual authorization Code Flow continuation
-        vciClient -->> issuer: v. Token exchange occurs
-        vciClient -->> issuer: vi. Credential request and issuance occurs
-        issuer -->> vciClient: vii. Credential issuance response
+        vciClient ->> issuer: v. Token exchange occurs
+        vciClient ->> issuer: vi. Credential request and issuance occurs
+        issuer ->> vciClient: vii. Credential issuance response
         vciClient ->> wallet: viii. Propagate successful credential issuance response to wallet
         wallet ->> user: Show successful credential download to user 🪪
     end
@@ -158,7 +159,7 @@ sequenceDiagram
   - Because the Wallet is responsible for user interactions, including displaying requests and obtaining user consent. Hence, the Wallet needs to validate the request and process it accordingly.
   - This also allows the Wallet to have control over how it wants to handle the presentation request and which library to use for VP response creation.
 - In step 5, why is authenticateVerifier called with urlEncodedAuthorizationRequest = null and authorizationRequest = ovpRequest?
-  - Because in this flow, the openid4vp request is received by value (not as a URL). Hence, we pass it as authorizationRequest.
+  - Because in this flow, the openid4vp request is received by value (as JSON and not as a URL). Hence, we pass it as authorizationRequest.
 - In step 6, why is there a special validation for response_mode?
   - Because in this flow, the response_mode can be `iar-post` or `iar-post.jwt`, which are specific to interactive authorization requests.
   - Hence, we need to skip the response_uri check for these modes as ovp_request may not contain response_uri in such cases and response is sent to the interaction endpoint of the issuer.
@@ -169,8 +170,8 @@ sequenceDiagram
 - In Step 13, why is vci client library responsible for sharing VP response to issuer rather than inji-openid4vp library?
   - Because the vci client library is responsible for handling the overall issuance flow, including interactions with the issuer.
   - The inji-openid4vp library is focused on handling OpenID for Verifiable Presentations, including creating VP responses, but not managing the entire issuance process.
-  - Also There is a mandation to add authSession to the request which is specific to issuance flow and not related to openid4vp.
-  - The VP response submission body of OVP flow - {vp_token:..., presentation_submission:...} is wrapped inside but in PDI flow {auth_session:..., openid4vp_presentation:{vp_token:..., presentation_submission:...}} it differs. To handle this wrapping and addition of auth_session, it is better to keep this logic in vci client library.
+  - Also, There is a mandation to add authSession to the request which is more specific to issuance flow and not related to openid4vp.
+  - The VP response submission body of OVP flow - {vp_token:..., presentation_submission:...} is wrapped inside but in PDI flow {auth_session:..., openid4vp_presentation:{vp_token:..., presentation_submission:...}} it differs. To handle this wrapping and addition of auth_session, it is better to keep this logic in vci client library to have more control.
 
 #### Changes summary
 
@@ -182,6 +183,7 @@ sequenceDiagram
 2. Inji OpenID4VP Library
    - Add support to validate openid4vp request with response_mode as iar-post or iar-post.jwt by skipping response_uri check.
    - Add support to create VP response for openid4vp request with response_mode as iar-post or iar-post.jwt.
+   - Add method `constructVPResponse` to create VP response and return it as Map<String, Any> to Wallet.
 3. Inji Wallet
 
 - Implement the openid4vp interaction callback to handle the presentation request, display it to the user, and obtain user consent.
