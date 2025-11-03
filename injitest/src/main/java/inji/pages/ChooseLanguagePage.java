@@ -1,5 +1,12 @@
 package inji.pages;
 
+import java.time.Duration;
+import java.util.Collections;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import inji.utils.AndroidUtil;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -86,4 +93,30 @@ public class ChooseLanguagePage extends BasePage {
     public void clickOnArabicLanguage() {
         click(arabicLanguage, "Select 'Arabic' as the preferred language");
     }
+    public void ScrollRightToLeft() {
+    Dimension size = driver.manage().window().getSize();
+    int startX = (int) (size.width * 0.9);
+    int endX = (int) (size.width * 0.1);
+    int y = (int) (size.height * 0.5);
+    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+    Sequence swipe = new Sequence(finger, 1);
+    swipe.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, y));
+    swipe.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+    swipe.addAction(finger.createPointerMove(Duration.ofMillis(500), PointerInput.Origin.viewport(), endX, y));
+    swipe.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+    ((RemoteWebDriver) driver).perform(Collections.singletonList(swipe)); 
+    }
+    public void ScrollLeftToright() {
+        Dimension size = driver.manage().window().getSize();
+    	int startX = (int) (size.width * 0.1);
+    	int endX = (int) (size.width * 0.9);
+    	int y = (int) (size.height * 0.5);
+    	PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+    	Sequence swipe = new Sequence(finger, 1);
+    	swipe.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, y));
+    	swipe.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+    	swipe.addAction(finger.createPointerMove(Duration.ofMillis(500), PointerInput.Origin.viewport(), endX, y));
+    	swipe.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+    	((RemoteWebDriver) driver).perform(Collections.singletonList(swipe));
+}
 }

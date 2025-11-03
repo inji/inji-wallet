@@ -476,4 +476,17 @@ public class BasePage {
 
 		driver.perform(Collections.singletonList(swipe));
 	}
+	public void scrollToElement(WebElement element, int maxScrolls) {
+	    for (int i = 0; i < maxScrolls; i++) {
+	        try {
+	            if (element.isDisplayed()) {
+	                ExtentReportManager.getTest().log(Status.INFO, "Scrolled to element: " + describeElement(element));
+	                return;
+	            }
+	        } catch (StaleElementReferenceException | NoSuchElementException e) {
+	        }
+	        scrollDown();
+	    }
+	    throw new NoSuchElementException("Element not found after " + maxScrolls + " scroll attempts: " + describeElement(element));
+	}
 }

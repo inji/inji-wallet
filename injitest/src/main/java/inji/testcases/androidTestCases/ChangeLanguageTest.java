@@ -1112,5 +1112,17 @@ public class ChangeLanguageTest extends AndroidBaseTest {
         assertTrue(backupDataPage.verifyBackupDataAndRestoreTitle("Arabic"), "Backup & Restore");
         assertTrue(backupDataPage.verifyBackupDataDescription("Arabic"), "Protect your data with ease using our Backup & Restore feature. Safely store your VCs against loss or accidents by creating regular backups and recover it effortlessly whenever needed for seamless continuity.");
     }
+    @Test
+    public void verifyScrollLeftToRight() {
 
+        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
+        chooseLanguagePage.clickOnArabicLanguage();
+        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
+        WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
+        for(int i=0;i<=4;i++) {
+        chooseLanguagePage.ScrollRightToLeft();
+        }
+        for(int i=0;i<=4;i++) {
+        chooseLanguagePage.ScrollLeftToright();}
+    }
 }

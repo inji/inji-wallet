@@ -1,14 +1,30 @@
 package inji.testcases.androidTestCases;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+import org.testng.annotations.Test;
 import inji.annotations.NeedsUIN;
 import inji.annotations.NeedsVID;
 import inji.constants.PlatformType;
+import inji.pages.AddNewCardPage;
+import inji.pages.AppUnlockMethodPage;
+import inji.pages.ChooseLanguagePage;
+import inji.pages.ConfirmPasscode;
+import inji.pages.DetailedVcViewPage;
+import inji.pages.ESignetLoginPage;
+import inji.pages.EnterYourPasscodePage;
 import inji.pages.*;
+import inji.pages.OtpVerificationPage;
+import inji.pages.PleaseConfirmPopupPage;
+import inji.pages.SetPasscode;
+import inji.pages.UnlockApplicationPage;
+import inji.pages.WelcomePage;
 import inji.testcases.BaseTest.AndroidBaseTest;
 import inji.utils.InjiWalletUtil;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
 
+import io.appium.java_client.InteractsWithApps;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -281,6 +297,39 @@ public class VcDownloadAndVerifyUsingEsignetTest extends AndroidBaseTest {
         assertTrue(esignetLoginPage.isInvalidOtpMessageDisplayed(), "verify if invalid otp message is displayed");
 
     }
+    @Test
+    @NeedsUIN
+    public void downloadAndVerifyVcUsingKillingAndRelaunchiingTheAppVidViaEsignet() throws InterruptedException {
+        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
+            WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
+            AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
+            SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
+            ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+            HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+            homePage.clickOnNextButtonForInjiTour();
+            AddNewCardPage addNewCardPage = homePage.downloadCard();
+            ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
+            esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+            OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox("5738164521");
+            esignetLoginPage.clickOnGetOtpButton();
+            otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+            esignetLoginPage.clickOnVerifyButton();
+            addNewCardPage.clickOnDoneButton();
+            DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
+        ((InteractsWithApps) getDriver()).terminateApp("io.mosip.residentapp");
+        ((InteractsWithApps) getDriver()).activateApp("io.mosip.residentapp");
+        UnlockApplicationPage unlockApplicationPage = new UnlockApplicationPage(getDriver());
+        EnterYourPasscodePage enterPasscodeOnPasscodePage = unlockApplicationPage.clickOnUnlockApplicationButton();
+        enterPasscodeOnPasscodePage.enterPasscodeOnPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        homePage.downloadCard();
+        addNewCardPage.clickOnDownloadViaEsignet();
+        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+        esignetLoginPage.setEnterIdTextBox("5738164521");
+        esignetLoginPage.clickOnGetOtpButton();
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        esignetLoginPage.clickOnVerifyButton();
+        addNewCardPage.clickOnDoneButton();
+    }
 }
