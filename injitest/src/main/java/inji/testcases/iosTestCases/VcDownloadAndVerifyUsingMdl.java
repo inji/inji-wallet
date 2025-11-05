@@ -172,7 +172,9 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
 
         otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
-        assertTrue(mockCertifyLoginPage.isInvalidOtpErrorTextDisplay(), "Verify if Invalid OTP error text is displayed");
+        assertEquals(ResourceBundleLoader.get(InjiWalletConstants.auth_failed), mockCertifyLoginPage.getInvalidOtpMessage());
+  //      assertTrue(mockCertifyLoginPage.isInvalidOtpErrorTextDisplay(), "Verify if credential type value is displayed");
+
 
     }
 
