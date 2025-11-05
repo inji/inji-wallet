@@ -32,6 +32,12 @@ export const getKebabMenuOptions = props => {
       testID: 'viewActivityLog',
     },
     {
+      label: t('reverify'),
+      icon: SvgImage.ReverifyIcon(),
+      onPress: controller.REVERIFY_VC,
+      testID: 'reverify',
+    },
+    {
       label: t('removeFromWallet'),
       icon: SvgImage.outlinedDeleteIcon(),
       onPress: () => controller.REMOVE(props.vcMetadata),

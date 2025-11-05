@@ -244,6 +244,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
               <VCVerification
                 vcMetadata={verifiableCredentialData?.vcMetadata}
                 display={wellknownDisplayProperty}
+                showLastChecked={false}
               />
             </Row>
           </Column>
@@ -301,7 +302,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
             <Column padding="8 0">
               <View style={{ paddingHorizontal: 6, marginTop: 8 }}>
                 <View
-                  style={{...Theme.Styles.horizontalSeparator, marginBottom: 12 }}
+                  style={{ ...Theme.Styles.horizontalSeparator, marginBottom: 12 }}
                 />
                 <Column>
                   <Text

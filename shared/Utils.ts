@@ -143,3 +143,10 @@ export const isCacheExpired = (timestamp: number) => {
 export function getVerifierKey(verifier: string): string {
   return `trusted_verifier_${verifier}`;
 }
+
+export const enum VerificationStatus {
+  VALID = 'VALID',
+  REVOKED = 'REVOKED',
+  PENDING = 'PENDING',
+  EXPIRED = 'EXPIRED',
+}

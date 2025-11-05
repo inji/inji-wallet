@@ -1412,6 +1412,15 @@ export const DefaultTheme = {
       position: 'absolute',
       bottom: 0,
     },
+    new: {
+      height: 20,
+      width: 'auto',
+      backgroundColor: '#FF5300',
+      alignItems: 'center',
+      marginLeft: 10,
+      borderRadius: 5,
+      paddingHorizontal: 5,
+    },
     kebabHeaderStyle: {
       justifyContent: 'space-between',
       fontFamily: 'Montserrat_700Bold',

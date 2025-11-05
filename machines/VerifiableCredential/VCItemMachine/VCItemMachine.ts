@@ -394,6 +394,9 @@ export const VCItemMachine = model.createMachine(
                 target:
                   '#vc-item-machine.vcUtilitiesState.kebabPopUp.showActivities',
               },
+              REVERIFY_VC: {
+                target: '#vc-item-machine.vcUtilitiesState.reverificationState',
+              },
               REMOVE: {
                 actions: 'setVcKey',
                 target:
@@ -543,6 +546,51 @@ export const VCItemMachine = model.createMachine(
               },
             },
           },
+          reverificationState: {
+            initial: 'verifying',
+            states: {
+              verifying: {
+                entry: () => console.log('🔄 reverification started'),
+                invoke: {
+                  src: 'verifyCredential',
+                  onDone: {
+                    actions: [
+                      'setIsVerified',
+                      'storeContext',
+                      'updateVcMetadata',
+                      'sendReverificationSuccessToVcMeta',
+                    ],
+                    target: 'checkingStatusChange',
+                  },
+                  onError: {
+                    actions: [
+                      'resetIsVerified',
+                      'storeContext',
+                      'updateVcMetadata',
+                      'sendReverificationFailureToVcMeta',
+                    ],
+                    target: 'checkingStatusChange',
+                  },
+                },
+              },
+
+              checkingStatusChange: {
+                always: [
+                  {
+                    cond: 'hasVcStatusChangedAfterReverification',
+                    actions: [
+                      'logStatusChangedOnReverification',
+                      'resetStatusChangedFlag',
+                    ],
+                    target: '#vc-item-machine.vcUtilitiesState.idle',
+                  },
+                  {
+                    target: '#vc-item-machine.vcUtilitiesState.idle',
+                  },
+                ],
+              },
+            },
+          },
         },
       },
       verifyState: {
@@ -561,10 +609,10 @@ export const VCItemMachine = model.createMachine(
         states: {
           idle: {},
           verifyingCredential: {
-            entry: send({
+            entry: [send({
               type: 'SET_VERIFICATION_STATUS',
               response: {statusType: BannerStatusType.IN_PROGRESS},
-            }),
+            }),()=>console.info("auto verification started 🔄")],
 
             invoke: {
               src: 'verifyCredential',
@@ -592,7 +640,7 @@ export const VCItemMachine = model.createMachine(
                   'sendVerificationStatusToVcMeta',
                   'updateVcMetadata',
                 ],
-                target: 'verificationCompleted',
+                target: 'checkingStatusChange',
               },
               SET_VERIFICATION_STATUS: {
                 actions: 'setVerificationStatus',
@@ -606,6 +654,21 @@ export const VCItemMachine = model.createMachine(
               //TO-DO: Handle if some error is thrown when storing verified status into storage
               STORE_ERROR: {},
             },
+          },
+          checkingStatusChange: {
+            always: [
+              {
+                cond: 'hasVcStatusChangedAfterReverification',
+                actions: [
+                  'logStatusChangedOnReverification',
+                  'resetStatusChangedFlag',
+                ],
+                target: 'verificationCompleted',
+              },
+              {
+                target: 'verificationCompleted',
+              },
+            ],
           },
           verificationCompleted: {
             entry: 'showVerificationBannerStatus',

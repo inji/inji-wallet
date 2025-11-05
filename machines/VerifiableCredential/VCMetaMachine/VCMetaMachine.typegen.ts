@@ -11,7 +11,7 @@
           "isUserSignedAlready": "done.invoke.vcMeta.ready.tamperedVCs.triggerAutoBackupForTamperedVcDeletion:invocation[0]";
         };
         missingImplementations: {
-          actions: "addVcToInProgressDownloads" | "getVcItemResponse" | "loadMyVcs" | "loadReceivedVcs" | "logTamperedVCsremoved" | "prependToMyVcsMetadata" | "removeDownloadFailedVcsFromStorage" | "removeDownloadingFailedVcsFromMyVcs" | "removeVcFromInProgressDownlods" | "removeVcFromMyVcsMetadata" | "resetDownloadCreadentialsFailed" | "resetDownloadCredentialsSuccess" | "resetDownloadFailedVcs" | "resetInProgressVcsDownloaded" | "resetTamperedVcs" | "resetVerificationErrorMessage" | "resetVerificationStatus" | "resetWalletBindingSuccess" | "sendBackupEvent" | "setDownloadCreadentialsFailed" | "setDownloadCredentialsSuccess" | "setDownloadedVc" | "setDownloadingFailedVcs" | "setMyVcs" | "setReceivedVcs" | "setUpdatedVcMetadatas" | "setVerificationErrorMessage" | "setVerificationStatus" | "setWalletBindingSuccess" | "updateMyVcsMetadata";
+          actions: "addVcToInProgressDownloads" | "getVcItemResponse" | "loadMyVcs" | "loadReceivedVcs" | "logTamperedVCsremoved" | "prependToMyVcsMetadata" | "removeDownloadFailedVcsFromStorage" | "removeDownloadingFailedVcsFromMyVcs" | "removeVcFromInProgressDownlods" | "removeVcFromMyVcsMetadata" | "resetDownloadCreadentialsFailed" | "resetDownloadCredentialsSuccess" | "resetDownloadFailedVcs" | "resetHighlightVcKey" | "resetInProgressVcsDownloaded" | "resetReverificationFailed" | "resetReverificationSuccess" | "resetTamperedVcs" | "resetVerificationErrorMessage" | "resetVerificationStatus" | "resetWalletBindingSuccess" | "sendBackupEvent" | "setDownloadCreadentialsFailed" | "setDownloadCredentialsSuccess" | "setDownloadedVc" | "setDownloadingFailedVcs" | "setMyVcs" | "setReceivedVcs" | "setReverificationFailed" | "setReverificationSuccess" | "setUpdatedVcMetadatas" | "setVerificationErrorMessage" | "setVerificationStatus" | "setWalletBindingSuccess" | "updateMyVcsMetadata";
           delays: never;
           guards: "isAnyVcTampered" | "isSignedIn";
           services: "isUserSignedAlready";
@@ -30,7 +30,10 @@
 "resetDownloadCreadentialsFailed": "RESET_DOWNLOADING_FAILED";
 "resetDownloadCredentialsSuccess": "RESET_DOWNLOADING_SUCCESS";
 "resetDownloadFailedVcs": "STORE_RESPONSE";
+"resetHighlightVcKey": "RESET_HIGHLIGHT";
 "resetInProgressVcsDownloaded": "RESET_IN_PROGRESS_VCS_DOWNLOADED";
+"resetReverificationFailed": "RESET_REVERIFY_VC_FAILED";
+"resetReverificationSuccess": "RESET_REVERIFY_VC_SUCCESS";
 "resetTamperedVcs": "REMOVE_TAMPERED_VCS";
 "resetVerificationErrorMessage": "RESET_VERIFY_ERROR";
 "resetVerificationStatus": "RESET_VERIFICATION_STATUS";
@@ -42,6 +45,8 @@
 "setDownloadingFailedVcs": "DOWNLOAD_LIMIT_EXPIRED";
 "setMyVcs": "STORE_RESPONSE";
 "setReceivedVcs": "STORE_RESPONSE";
+"setReverificationFailed": "REVERIFY_VC_FAILED";
+"setReverificationSuccess": "REVERIFY_VC_SUCCESS";
 "setUpdatedVcMetadatas": "VC_METADATA_UPDATED";
 "setVerificationErrorMessage": "VERIFY_VC_FAILED";
 "setVerificationStatus": "SET_VERIFICATION_STATUS";

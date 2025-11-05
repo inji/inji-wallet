@@ -1,15 +1,17 @@
-import {Dimensions, View} from 'react-native';
-import {Column, Row, Text} from '../../ui';
-import {CustomTooltip} from '../../ui/ToolTip';
-import {Theme} from '../../ui/styleUtils';
+import { Dimensions, View } from 'react-native';
+import { Column, Row, Text } from '../../ui';
+import { CustomTooltip } from '../../ui/ToolTip';
+import { Theme } from '../../ui/styleUtils';
 import React from 'react';
-import {SvgImage} from '../../ui/svg';
-import {useTranslation} from 'react-i18next';
+import { SvgImage } from '../../ui/svg';
+import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ExpiredStatus from '../../../assets/Expired_Status.svg';
 import RevokedStatus from '../../../assets/Revoked_Status.svg';
 import ValidStatus from '../../../assets/Valid_Status.svg';
 import PendingStatus from '../../../assets/Pending_Status.svg';
+import { STATUS_FIELD_NAME } from './VCUtils';
+import { StatusTooltipContent } from './VcStatustooTip';
 
 export const VCItemFieldName = ({
   fieldName,
@@ -22,7 +24,7 @@ export const VCItemFieldName = ({
   fieldNameColor?: string;
   isDisclosed?: boolean;
 }) => {
-  const {t} = useTranslation('ViewVcModal');
+  const { t } = useTranslation('ViewVcModal');
   return (
     <Row>
       {fieldName && (
@@ -30,17 +32,17 @@ export const VCItemFieldName = ({
           testID={`${testID}Title`}
           color={textColor}
           style={Theme.Styles.fieldItemTitle}>
-          {fieldName}
+          {fieldName === STATUS_FIELD_NAME ? t('VcDetails:status') : fieldName}
         </Text>
       )}
 
-      {fieldName == t('VcDetails:status') && (
+      {fieldName == STATUS_FIELD_NAME && (
         <CustomTooltip
           testID="statusToolTip"
           width={Dimensions.get('screen').width * 0.8}
           height={Dimensions.get('screen').height * 0.28}
           triggerComponent={SvgImage.info()}
-          triggerComponentStyles={{marginLeft: 2, marginTop: 2}}
+          triggerComponentStyles={{ marginLeft: 2, marginTop: 2 }}
           toolTipContent={
             <Column>
               <Row style={{width: '100%'}}>
@@ -147,19 +149,28 @@ export const VCItemFieldValue = ({
   testID,
   fieldValueColor: textColor = Theme.Colors.Details,
 }: {
-  fieldValue: string;
+  fieldValue: any;
   testID: string;
   fieldValueColor?: string;
 }) => {
-  return (
-    <>
-      <Text
+  if (React.isValidElement(fieldValue)) {
+
+    return (
+      <View
         testID={`${testID}Value`}
-        color={textColor}
-        style={Theme.Styles.fieldItemValue}>
+      >
         {fieldValue}
-      </Text>
-    </>
+      </View>
+    );
+  }
+
+  return (
+    <Text
+      testID={`${testID}Value`}
+      color={textColor}
+      style={Theme.Styles.fieldItemValue}>
+      {fieldValue}
+    </Text>
   );
 };
 

@@ -10,6 +10,8 @@ import {VcMetaEvents} from '../machines/VerifiableCredential/VCMetaMachine/VCMet
 import {
   selectIsDownloadingFailed,
   selectIsDownloadingSuccess,
+  selectIsReverificationFailure,
+  selectIsReverificationSuccess,
   selectWalletBindingSuccess,
 } from '../machines/VerifiableCredential/VCMetaMachine/VCMetaSelectors';
 import {selectVerificationStatus} from '../machines/VerifiableCredential/VCItemMachine/VCItemSelectors';
@@ -27,6 +29,8 @@ export const UseBannerNotification = () => {
     isBiometricUnlock: useSelector(settingsService, selectIsBiometricUnlock),
     isDownloadingSuccess: useSelector(vcMetaService, selectIsDownloadingSuccess),
     isDownloadingFailed: useSelector(vcMetaService, selectIsDownloadingFailed),
+    isReverificationSuccess: useSelector(vcMetaService,selectIsReverificationSuccess),
+    isReverificationFailed: useSelector(vcMetaService, selectIsReverificationFailure),
     DISMISS: () => {
       settingsService.send(SettingsEvents.DISMISS());
     },
@@ -39,6 +43,12 @@ export const UseBannerNotification = () => {
     },
     RESET_DOWNLOADING_SUCCESS: () => {
       vcMetaService.send(VcMetaEvents.RESET_DOWNLOADING_SUCCESS());
+    },
+    RESET_REVIRIFICATION_SUCCESS: () => {
+      vcMetaService.send(VcMetaEvents.RESET_REVERIFY_VC_SUCCESS());
+    },
+    RESET_REVERIFICATION_FAILURE: () => {
+      vcMetaService.send(VcMetaEvents.RESET_REVERIFY_VC_FAILED());
     },
   };
 };

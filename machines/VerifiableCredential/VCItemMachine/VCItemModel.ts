@@ -28,6 +28,7 @@ const VCItemEvents = {
   PIN_CARD: () => ({}),
   KEBAB_POPUP: () => ({}),
   SHOW_ACTIVITY: () => ({}),
+  REVERIFY_VC: () => ({}),
   CLOSE_VC_MODAL: () => ({}),
   REMOVE: (vcMetadata: VCMetadata) => ({vcMetadata}),
   UPDATE_VC_METADATA: (vcMetadata: VCMetadata) => ({vcMetadata}),
@@ -38,6 +39,7 @@ const VCItemEvents = {
   RESET_VERIFICATION_STATUS: () => ({}),
   REMOVE_VERIFICATION_STATUS_BANNER: () => ({}),
   SHOW_VERIFICATION_STATUS_BANNER: (response: unknown) => ({response}),
+  CLOSE_BANNER: () => ({}),
 };
 
 export const VCItemModel = createModel(
@@ -63,6 +65,9 @@ export const VCItemModel = createModel(
     verificationStatus: null as vcVerificationBannerDetails | null,
     showVerificationStatusBanner: false as boolean,
     wellknownResponse: {} as Object,
+    showReverificationSuccessBanner: false as boolean,
+    showVerificationFailureBanner: false as boolean,
+    statusChangedDuringVerification: false,
   },
   {
     events: VCItemEvents,

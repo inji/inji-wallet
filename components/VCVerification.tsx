@@ -1,53 +1,83 @@
-import testIDProps from '../shared/commonUtil';
-import {Display} from './VC/common/VCUtils';
-import VerifiedIcon from './VerifiedIcon';
-import {Row, Text} from './ui';
-import {Theme} from './ui/styleUtils';
 import React from 'react';
-import {useTranslation} from 'react-i18next';
+import { View } from 'react-native';
+import testIDProps from '../shared/commonUtil';
+import { Display } from './VC/common/VCUtils';
+import VerifiedIcon from './VerifiedIcon';
 import PendingIcon from './PendingIcon';
-import {VCMetadata} from '../shared/VCMetadata';
+import { Row, Text } from './ui';
+import { Theme } from './ui/styleUtils';
+import { useTranslation } from 'react-i18next';
+import { VCMetadata } from '../shared/VCMetadata';
 
 export const VCVerification: React.FC<VCVerificationProps> = ({
   vcMetadata,
   display,
+  showLastChecked = true,
 }) => {
-  const {t} = useTranslation('VcDetails');
-  const statusText = vcMetadata.isVerified
-    ? vcMetadata.isExpired
-      ? t('expired')
-      : t('valid')
-    : t('pending');
+  const { t } = useTranslation('VcDetails');
 
-  const statusIcon = vcMetadata.isVerified ? (
-    vcMetadata.isExpired ? (
-      <PendingIcon />
-    ) : (
-      <VerifiedIcon />
-    )
-  ) : (
-    <PendingIcon />
-  );
+  let statusText: string;
+  let statusIcon: JSX.Element;
+
+  if (vcMetadata.isVerified) {
+    if (vcMetadata.isRevoked) {
+      statusText = t('revoked');
+      statusIcon = <PendingIcon color="brown" />;
+    } else if (vcMetadata.isExpired) {
+      statusText = t('expired');
+      statusIcon = <PendingIcon color="red" />;
+    } else {
+      statusText = t('valid');
+      statusIcon = <VerifiedIcon />;
+    }
+  } else {
+    statusText = t('pending');
+    statusIcon = <PendingIcon color="orange" />;
+  }
+
   return (
-    <Row
-      {...testIDProps('verified')}
-      style={{
-        alignItems: 'center',
-      }}>
-      <React.Fragment>
-        {statusIcon}
+  <View
+    {...testIDProps('verified')}
+    style={{
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      paddingVertical: 6,
+    }}>
+    
+    {/* First Row: Status Icon + Text */}
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      {statusIcon}
+      <Text
+        testID="verificationStatus"
+        color={display.getTextColor(Theme.Colors.Details)}
+        style={Theme.Styles.verificationStatus}>
+        {statusText}
+      </Text>
+    </View>
+
+    {showLastChecked && vcMetadata.lastKnownStatusTimestamp && (
+      <View style={{ marginTop: 4 }}>
         <Text
-          testID="verificationStatus"
+          testID='lastCheckedLabel'
           color={display.getTextColor(Theme.Colors.Details)}
-          style={Theme.Styles.verificationStatus}>
-          {statusText}
+          style={[Theme.Styles.verificationStatus, { fontFamily: 'Inter_400' }]}>
+          {t('lastChecked')}
         </Text>
-      </React.Fragment>
-    </Row>
-  );
+        <Text
+          testID="lastKnownStatusTimestamp"
+          color={display.getTextColor(Theme.Colors.Details)}
+          style={[Theme.Styles.verificationStatus,{ fontFamily: 'Inter_400' }]}>
+          {new Date(vcMetadata.lastKnownStatusTimestamp).toLocaleString()}
+        </Text>
+      </View>
+    )}
+  </View>
+);
+
 };
 
 export interface VCVerificationProps {
   vcMetadata: VCMetadata;
   display: Display;
+  showLastChecked?: boolean;
 }

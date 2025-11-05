@@ -79,6 +79,8 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
               isVisible={controller.activeTab === 0}
               service={controller.tabRefs.myVcs}
               vcItemActor={controller.selectedVc}
+              isViewingVc={controller.isViewingVc}
+              
             />
             <ReceivedVcsTab
               isVisible={controller.activeTab === 1}
@@ -117,6 +119,7 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
 };
 
 export interface HomeScreenTabProps {
+  isViewingVc: any;
   isVisible: boolean;
   service: TabRef;
   vcItemActor: ActorRefFrom<typeof VCItemMachine>;

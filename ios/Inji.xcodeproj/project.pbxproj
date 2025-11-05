@@ -22,7 +22,20 @@
 		96905EF65AED1B983A6B3ABC /* libPods-Inji.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-Inji.a */; };
 		9C0E86B52BEE357A00E9F9F6 /* RNPixelpassModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0E86B42BEE357A00E9F9F6 /* RNPixelpassModule.swift */; };
 		9C0E86BB2BEE36C300E9F9F6 /* RNPixelpassModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0E86BA2BEE36C300E9F9F6 /* RNPixelpassModule.m */; };
-		9C4850432C3E5873002ECBD5 /* ios-tuvali-library in Frameworks */ = {isa = PBXBuildFile; productRef = 9C4850422C3E5873002ECBD5 /* ios-tuvali-library */; };
+		9C3BD80E2EA8C8DE00101656 /* RNVCVerifierModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD80D2EA8C8D600101656 /* RNVCVerifierModule.swift */; };
+		9C3BD8102EA8C8F800101656 /* RNVCVerifierModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD80F2EA8C8EE00101656 /* RNVCVerifierModule.m */; };
+		9C3BD83C2EA8D63A00101656 /* CredentialsVerifierFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD82E2EA8D63A00101656 /* CredentialsVerifierFactory.swift */; };
+		9C3BD83D2EA8D63A00101656 /* VerifiableCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD82F2EA8D63A00101656 /* VerifiableCredential.swift */; };
+		9C3BD83E2EA8D63A00101656 /* NetworkManagerClientExceptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD8332EA8D63A00101656 /* NetworkManagerClientExceptions.swift */; };
+		9C3BD83F2EA8D63A00101656 /* RevocationCheckExceptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD8342EA8D63A00101656 /* RevocationCheckExceptions.swift */; };
+		9C3BD8402EA8D63A00101656 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD8312EA8D63A00101656 /* Data.swift */; };
+		9C3BD8412EA8D63A00101656 /* CredentialsVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD83A2EA8D63A00101656 /* CredentialsVerifier.swift */; };
+		9C3BD8422EA8D63A00101656 /* LdpVerifiableCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD82C2EA8D63A00101656 /* LdpVerifiableCredential.swift */; };
+		9C3BD8432EA8D63A00101656 /* CredentialsVerifierConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD8282EA8D63A00101656 /* CredentialsVerifierConstant.swift */; };
+		9C3BD8442EA8D63A00101656 /* LdpStatusChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD82A2EA8D63A00101656 /* LdpStatusChecker.swift */; };
+		9C3BD8452EA8D63A00101656 /* base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD8382EA8D63A00101656 /* base64.swift */; };
+		9C3BD8462EA8D63A00101656 /* NetworkManagerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD8362EA8D63A00101656 /* NetworkManagerClient.swift */; };
+		9C3BD8472EA8D63A00101656 /* CredentialFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD8272EA8D63A00101656 /* CredentialFormat.swift */; };
 		9C48504B2C3E59B5002ECBD5 /* RNWalletModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4850442C3E59B5002ECBD5 /* RNWalletModule.swift */; };
 		9C48504D2C3E59B5002ECBD5 /* RNWalletModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4850462C3E59B5002ECBD5 /* RNWalletModule.m */; };
 		9C48504E2C3E59B5002ECBD5 /* RNEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4850472C3E59B5002ECBD5 /* RNEventEmitter.swift */; };
@@ -30,10 +43,11 @@
 		9C4850502C3E59B5002ECBD5 /* RNEventMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4850492C3E59B5002ECBD5 /* RNEventMapper.swift */; };
 		9C4850512C3E59B5002ECBD5 /* RNVersionModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C48504A2C3E59B5002ECBD5 /* RNVersionModule.m */; };
 		9C4850532C3E59E2002ECBD5 /* RNEventEmitterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4850522C3E59E2002ECBD5 /* RNEventEmitterProtocol.swift */; };
-		9C7CDF3E2C7CBEDE00243A9A /* RNSecureKeystoreModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7CDF3D2C7CBEDE00243A9A /* RNSecureKeystoreModule.swift */; };
 		9C7CDF432C7CC13500243A9A /* RNSecureKeystoreModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7CDF422C7CC13500243A9A /* RNSecureKeystoreModule.m */; };
 		9CAE74EE2E2E38F800C2532C /* pixelpass in Frameworks */ = {isa = PBXBuildFile; productRef = 9CAE74ED2E2E38F800C2532C /* pixelpass */; };
+		9CCC57772E9D7C7000669DB7 /* ios-tuvali-library in Frameworks */ = {isa = PBXBuildFile; productRef = 9CCC57762E9D7C7000669DB7 /* ios-tuvali-library */; };
 		9CCCA19E2CF87A8400D5A461 /* securekeystore in Frameworks */ = {isa = PBXBuildFile; productRef = 9CCCA19D2CF87A8400D5A461 /* securekeystore */; };
+		9CCDB2E02EAB63D9009E8E2B /* RNSecureKeystoreModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CCDB2DF2EAB63C9009E8E2B /* RNSecureKeystoreModule.swift */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		C339223B2E79A536004A01EC /* InjiVcRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = C339223A2E79A536004A01EC /* InjiVcRenderer */; };
@@ -84,6 +98,20 @@
 		7A4D352CD337FB3A3BF06240 /* Pods-Inji.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Inji.release.xcconfig"; path = "Target Support Files/Pods-Inji/Pods-Inji.release.xcconfig"; sourceTree = "<group>"; };
 		9C0E86B42BEE357A00E9F9F6 /* RNPixelpassModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNPixelpassModule.swift; sourceTree = "<group>"; };
 		9C0E86BA2BEE36C300E9F9F6 /* RNPixelpassModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNPixelpassModule.m; sourceTree = "<group>"; };
+		9C3BD80D2EA8C8D600101656 /* RNVCVerifierModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNVCVerifierModule.swift; sourceTree = "<group>"; };
+		9C3BD80F2EA8C8EE00101656 /* RNVCVerifierModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNVCVerifierModule.m; sourceTree = "<group>"; };
+		9C3BD8272EA8D63A00101656 /* CredentialFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialFormat.swift; sourceTree = "<group>"; };
+		9C3BD8282EA8D63A00101656 /* CredentialsVerifierConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsVerifierConstant.swift; sourceTree = "<group>"; };
+		9C3BD82A2EA8D63A00101656 /* LdpStatusChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LdpStatusChecker.swift; sourceTree = "<group>"; };
+		9C3BD82C2EA8D63A00101656 /* LdpVerifiableCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LdpVerifiableCredential.swift; sourceTree = "<group>"; };
+		9C3BD82E2EA8D63A00101656 /* CredentialsVerifierFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsVerifierFactory.swift; sourceTree = "<group>"; };
+		9C3BD82F2EA8D63A00101656 /* VerifiableCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiableCredential.swift; sourceTree = "<group>"; };
+		9C3BD8312EA8D63A00101656 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		9C3BD8332EA8D63A00101656 /* NetworkManagerClientExceptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerClientExceptions.swift; sourceTree = "<group>"; };
+		9C3BD8342EA8D63A00101656 /* RevocationCheckExceptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevocationCheckExceptions.swift; sourceTree = "<group>"; };
+		9C3BD8362EA8D63A00101656 /* NetworkManagerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerClient.swift; sourceTree = "<group>"; };
+		9C3BD8382EA8D63A00101656 /* base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = base64.swift; sourceTree = "<group>"; };
+		9C3BD83A2EA8D63A00101656 /* CredentialsVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsVerifier.swift; sourceTree = "<group>"; };
 		9C4850442C3E59B5002ECBD5 /* RNWalletModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNWalletModule.swift; path = Inji/RNWalletModule.swift; sourceTree = "<group>"; };
 		9C4850462C3E59B5002ECBD5 /* RNWalletModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNWalletModule.m; path = Inji/RNWalletModule.m; sourceTree = "<group>"; };
 		9C4850472C3E59B5002ECBD5 /* RNEventEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNEventEmitter.swift; path = Inji/RNEventEmitter.swift; sourceTree = "<group>"; };
@@ -91,8 +119,8 @@
 		9C4850492C3E59B5002ECBD5 /* RNEventMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNEventMapper.swift; path = Inji/RNEventMapper.swift; sourceTree = "<group>"; };
 		9C48504A2C3E59B5002ECBD5 /* RNVersionModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNVersionModule.m; path = Inji/RNVersionModule.m; sourceTree = "<group>"; };
 		9C4850522C3E59E2002ECBD5 /* RNEventEmitterProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNEventEmitterProtocol.swift; path = Inji/RNEventEmitterProtocol.swift; sourceTree = "<group>"; };
-		9C7CDF3D2C7CBEDE00243A9A /* RNSecureKeystoreModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSecureKeystoreModule.swift; sourceTree = "<group>"; };
 		9C7CDF422C7CC13500243A9A /* RNSecureKeystoreModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNSecureKeystoreModule.m; sourceTree = "<group>"; };
+		9CCDB2DF2EAB63C9009E8E2B /* RNSecureKeystoreModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSecureKeystoreModule.swift; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = Inji/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		C3F6A9DC2E66188D006C9904 /* RNInjiVcRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNInjiVcRenderer.swift; sourceTree = "<group>"; };
@@ -129,8 +157,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3F18B1D2E320C9A007DBE73 /* VCIClient in Frameworks */,
+				9CCC57772E9D7C7000669DB7 /* ios-tuvali-library in Frameworks */,
 				C339223B2E79A536004A01EC /* InjiVcRenderer in Frameworks */,
-				9C4850432C3E5873002ECBD5 /* ios-tuvali-library in Frameworks */,
 				9CAE74EE2E2E38F800C2532C /* pixelpass in Frameworks */,
 				9CCCA19E2CF87A8400D5A461 /* securekeystore in Frameworks */,
 				C3F18B1A2E320C85007DBE73 /* OpenID4VP in Frameworks */,
@@ -144,6 +172,7 @@
 		13B07FAE1A68108700A75B9A /* Inji */ = {
 			isa = PBXGroup;
 			children = (
+				9C3BD83B2EA8D63A00101656 /* vcverifier */,
 				C3F6A9DE2E6618F6006C9904 /* RNInjiVcRenderer.m */,
 				C3F6A9DC2E66188D006C9904 /* RNInjiVcRenderer.swift */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
@@ -151,10 +180,11 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				9C0E86B42BEE357A00E9F9F6 /* RNPixelpassModule.swift */,
+				9C3BD80D2EA8C8D600101656 /* RNVCVerifierModule.swift */,
+				9C3BD80F2EA8C8EE00101656 /* RNVCVerifierModule.m */,
 				9C4850472C3E59B5002ECBD5 /* RNEventEmitter.swift */,
 				9C4850522C3E59E2002ECBD5 /* RNEventEmitterProtocol.swift */,
 				9C4850492C3E59B5002ECBD5 /* RNEventMapper.swift */,
-				9C7CDF3D2C7CBEDE00243A9A /* RNSecureKeystoreModule.swift */,
 				9C48504A2C3E59B5002ECBD5 /* RNVersionModule.m */,
 				9C4850482C3E59B5002ECBD5 /* RNVersionModule.swift */,
 				9C4850462C3E59B5002ECBD5 /* RNWalletModule.m */,
@@ -169,6 +199,7 @@
 				E86208142C0335C5007C3E24 /* RNVCIClientModule.swift */,
 				E86208162C0335EC007C3E24 /* RNVCIClientModule.m */,
 				1E6875EA2CA554FD0086D870 /* RNOpenID4VPModule.m */,
+				9CCDB2DF2EAB63C9009E8E2B /* RNSecureKeystoreModule.swift */,
 				1E6875EC2CA5550F0086D870 /* RNOpenID4VPModule.swift */,
 				1D23B9CD47CFD7F3C87D202F /* PrivacyInfo.xcprivacy */,
 				1EED69F82DA913D30042EAFC /* IntentData.swift */,
@@ -233,6 +264,89 @@
 				FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */,
 			);
 			name = Inji;
+			sourceTree = "<group>";
+		};
+		9C3BD8292EA8D63A00101656 /* constants */ = {
+			isa = PBXGroup;
+			children = (
+				9C3BD8272EA8D63A00101656 /* CredentialFormat.swift */,
+				9C3BD8282EA8D63A00101656 /* CredentialsVerifierConstant.swift */,
+			);
+			path = constants;
+			sourceTree = "<group>";
+		};
+		9C3BD82B2EA8D63A00101656 /* statusChecker */ = {
+			isa = PBXGroup;
+			children = (
+				9C3BD82A2EA8D63A00101656 /* LdpStatusChecker.swift */,
+			);
+			path = statusChecker;
+			sourceTree = "<group>";
+		};
+		9C3BD82D2EA8D63A00101656 /* types */ = {
+			isa = PBXGroup;
+			children = (
+				9C3BD82C2EA8D63A00101656 /* LdpVerifiableCredential.swift */,
+			);
+			path = types;
+			sourceTree = "<group>";
+		};
+		9C3BD8302EA8D63A00101656 /* credentialVerifier */ = {
+			isa = PBXGroup;
+			children = (
+				9C3BD82B2EA8D63A00101656 /* statusChecker */,
+				9C3BD82D2EA8D63A00101656 /* types */,
+				9C3BD82E2EA8D63A00101656 /* CredentialsVerifierFactory.swift */,
+				9C3BD82F2EA8D63A00101656 /* VerifiableCredential.swift */,
+			);
+			path = credentialVerifier;
+			sourceTree = "<group>";
+		};
+		9C3BD8322EA8D63A00101656 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				9C3BD8312EA8D63A00101656 /* Data.swift */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		9C3BD8352EA8D63A00101656 /* exception */ = {
+			isa = PBXGroup;
+			children = (
+				9C3BD8332EA8D63A00101656 /* NetworkManagerClientExceptions.swift */,
+				9C3BD8342EA8D63A00101656 /* RevocationCheckExceptions.swift */,
+			);
+			path = exception;
+			sourceTree = "<group>";
+		};
+		9C3BD8372EA8D63A00101656 /* networkManager */ = {
+			isa = PBXGroup;
+			children = (
+				9C3BD8362EA8D63A00101656 /* NetworkManagerClient.swift */,
+			);
+			path = networkManager;
+			sourceTree = "<group>";
+		};
+		9C3BD8392EA8D63A00101656 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				9C3BD8382EA8D63A00101656 /* base64.swift */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		9C3BD83B2EA8D63A00101656 /* vcverifier */ = {
+			isa = PBXGroup;
+			children = (
+				9C3BD8292EA8D63A00101656 /* constants */,
+				9C3BD8302EA8D63A00101656 /* credentialVerifier */,
+				9C3BD8322EA8D63A00101656 /* data */,
+				9C3BD8352EA8D63A00101656 /* exception */,
+				9C3BD8372EA8D63A00101656 /* networkManager */,
+				9C3BD8392EA8D63A00101656 /* utils */,
+				9C3BD83A2EA8D63A00101656 /* CredentialsVerifier.swift */,
+			);
+			path = vcverifier;
 			sourceTree = "<group>";
 		};
 		9CFB37462DDDC83900C199A8 /* Recovered References */ = {
@@ -320,12 +434,12 @@
 			);
 			name = Inji;
 			packageProductDependencies = (
-				9C4850422C3E5873002ECBD5 /* ios-tuvali-library */,
 				9CCCA19D2CF87A8400D5A461 /* securekeystore */,
 				9CAE74ED2E2E38F800C2532C /* pixelpass */,
 				C3F18B192E320C85007DBE73 /* OpenID4VP */,
 				C3F18B1C2E320C9A007DBE73 /* VCIClient */,
 				C339223A2E79A536004A01EC /* InjiVcRenderer */,
+				9CCC57762E9D7C7000669DB7 /* ios-tuvali-library */,
 			);
 			productName = Inji;
 			productReference = 13B07F961A680F5B00A75B9A /* Inji.app */;
@@ -354,12 +468,12 @@
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			packageReferences = (
-				9C4850412C3E5873002ECBD5 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */,
 				9CCCA19C2CF87A8400D5A461 /* XCRemoteSwiftPackageReference "secure-keystore-ios-swift" */,
 				9CAE74EC2E2E38F800C2532C /* XCRemoteSwiftPackageReference "pixelpass-ios-swift" */,
 				C3F18B182E320C85007DBE73 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */,
 				C3F18B1B2E320C9A007DBE73 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */,
 				C33922392E79A536004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */,
+				9CCC57752E9D7C7000669DB7 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */,
 			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
@@ -575,7 +689,9 @@
 				1E6875ED2CA5550F0086D870 /* RNOpenID4VPModule.swift in Sources */,
 				1E55C20B2DB120C2009DF38B /* RNDeepLinkIntentModule.swift in Sources */,
 				C3F6A9DD2E661896006C9904 /* RNInjiVcRenderer.swift in Sources */,
+				9C3BD8102EA8C8F800101656 /* RNVCVerifierModule.m in Sources */,
 				9C48504F2C3E59B5002ECBD5 /* RNVersionModule.swift in Sources */,
+				9C3BD80E2EA8C8DE00101656 /* RNVCVerifierModule.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				9C0E86BB2BEE36C300E9F9F6 /* RNPixelpassModule.m in Sources */,
 				E86208152C0335C5007C3E24 /* RNVCIClientModule.swift in Sources */,
@@ -588,10 +704,22 @@
 				9C7CDF432C7CC13500243A9A /* RNSecureKeystoreModule.m in Sources */,
 				E86208172C0335EC007C3E24 /* RNVCIClientModule.m in Sources */,
 				9C48504E2C3E59B5002ECBD5 /* RNEventEmitter.swift in Sources */,
-				9C7CDF3E2C7CBEDE00243A9A /* RNSecureKeystoreModule.swift in Sources */,
 				9C48504B2C3E59B5002ECBD5 /* RNWalletModule.swift in Sources */,
 				1EED69F92DA913D30042EAFC /* IntentData.swift in Sources */,
 				9C48504D2C3E59B5002ECBD5 /* RNWalletModule.m in Sources */,
+				9C3BD83C2EA8D63A00101656 /* CredentialsVerifierFactory.swift in Sources */,
+				9C3BD83D2EA8D63A00101656 /* VerifiableCredential.swift in Sources */,
+				9C3BD83E2EA8D63A00101656 /* NetworkManagerClientExceptions.swift in Sources */,
+				9C3BD83F2EA8D63A00101656 /* RevocationCheckExceptions.swift in Sources */,
+				9C3BD8402EA8D63A00101656 /* Data.swift in Sources */,
+				9CCDB2E02EAB63D9009E8E2B /* RNSecureKeystoreModule.swift in Sources */,
+				9C3BD8412EA8D63A00101656 /* CredentialsVerifier.swift in Sources */,
+				9C3BD8422EA8D63A00101656 /* LdpVerifiableCredential.swift in Sources */,
+				9C3BD8432EA8D63A00101656 /* CredentialsVerifierConstant.swift in Sources */,
+				9C3BD8442EA8D63A00101656 /* LdpStatusChecker.swift in Sources */,
+				9C3BD8452EA8D63A00101656 /* base64.swift in Sources */,
+				9C3BD8462EA8D63A00101656 /* NetworkManagerClient.swift in Sources */,
+				9C3BD8472EA8D63A00101656 /* CredentialFormat.swift in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
 				9C4850512C3E59B5002ECBD5 /* RNVersionModule.m in Sources */,
 				C3F6A9DF2E661903006C9904 /* RNInjiVcRenderer.m in Sources */,
@@ -837,20 +965,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		9C4850412C3E5873002ECBD5 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mosip/tuvali-ios-swift/";
-			requirement = {
-				kind = exactVersion;
-				version = 0.5.0;
-			};
-		};
 		9CAE74EC2E2E38F800C2532C /* XCRemoteSwiftPackageReference "pixelpass-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/pixelpass-ios-swift/";
 			requirement = {
 				kind = exactVersion;
 				version = 0.6.3;
+			};
+		};
+		9CCC57752E9D7C7000669DB7 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mosip/tuvali-ios-swift/";
+			requirement = {
+				kind = exactVersion;
+				version = 0.5.0;
 			};
 		};
 		9CCCA19C2CF87A8400D5A461 /* XCRemoteSwiftPackageReference "secure-keystore-ios-swift" */ = {
@@ -888,15 +1016,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		9C4850422C3E5873002ECBD5 /* ios-tuvali-library */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9C4850412C3E5873002ECBD5 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */;
-			productName = "ios-tuvali-library";
-		};
 		9CAE74ED2E2E38F800C2532C /* pixelpass */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9CAE74EC2E2E38F800C2532C /* XCRemoteSwiftPackageReference "pixelpass-ios-swift" */;
 			productName = pixelpass;
+		};
+		9CCC57762E9D7C7000669DB7 /* ios-tuvali-library */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9CCC57752E9D7C7000669DB7 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */;
+			productName = "ios-tuvali-library";
 		};
 		9CCCA19D2CF87A8400D5A461 /* securekeystore */ = {
 			isa = XCSwiftPackageProductDependency;

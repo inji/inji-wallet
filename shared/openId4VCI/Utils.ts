@@ -46,15 +46,12 @@ export const Issuers = {
 export function getVcVerificationDetails(
   statusType,
   vcMetadata: VCMetadata,
-  verifiableCredential,
-  wellknown: Object,
 ): vcVerificationBannerDetails {
-  const credentialType = getCredentialTypeFromWellKnown(
-    wellknown,
-    getVerifiableCredential(verifiableCredential).credentialConfigurationId,
-  );
+  const credentialType = vcMetadata.credentialType
   return {
     statusType: statusType,
+    isRevoked:vcMetadata.isRevoked,
+    isExpired: vcMetadata.isExpired,
     vcType: credentialType,
   };
 }

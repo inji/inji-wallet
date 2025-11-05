@@ -91,3 +91,11 @@ export function selectIsDownloadingFailed(state: State) {
 export function selectIsDownloadingSuccess(state: State) {
   return state.context.DownloadingCredentialsSuccess;
 }
+
+export function selectIsReverificationSuccess(state: State) {
+  return state.context.reverificationSuccess;
+}
+
+export function selectIsReverificationFailure(state: State) {
+  return state.context.reverificationFailed;
+}

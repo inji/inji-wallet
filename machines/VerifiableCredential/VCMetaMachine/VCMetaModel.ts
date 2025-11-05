@@ -20,7 +20,9 @@ export const VCMetamodel = createModel(
     verificationErrorMessage: '' as string,
     verificationStatus: null as vcVerificationBannerDetails | null,
     DownloadingCredentialsFailed: false,
-    DownloadingCredentialsSuccess: false
+    DownloadingCredentialsSuccess: false,
+    reverificationSuccess: {status: false, statusValue: '', vcKey: '', vcType: ''},
+    reverificationFailed: {status: false, statusValue: '', vcKey: '', vcType: ''},
   },
   {
     events: VcMetaEvents,

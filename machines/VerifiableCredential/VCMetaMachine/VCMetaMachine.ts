@@ -1,4 +1,4 @@
-import {EventFrom, send, sendParent} from 'xstate';
+import {actions, EventFrom, send, sendParent} from 'xstate';
 import {AppServices} from '../../../shared/GlobalContext';
 import {VCMetamodel} from './VCMetaModel';
 import {VCMetaActions} from './VCMetaActions';
@@ -25,8 +25,8 @@ export const vcMetaMachine =
         VC_DOWNLOADING_FAILED: {
           actions: 'setDownloadCreadentialsFailed',
         },
-        RESET_DOWNLOADING_SUCCESS:{
-          actions: 'resetDownloadCredentialsSuccess'
+        RESET_DOWNLOADING_SUCCESS: {
+          actions: 'resetDownloadCredentialsSuccess',
         },
         RESET_DOWNLOADING_FAILED: {
           actions: 'resetDownloadCreadentialsFailed',
@@ -105,6 +105,21 @@ export const vcMetaMachine =
             WALLET_BINDING_SUCCESS: {
               actions: 'setWalletBindingSuccess',
             },
+            REVERIFY_VC_SUCCESS: {
+              actions: 'setReverificationSuccess',
+            },
+            RESET_REVERIFY_VC_SUCCESS: {
+              actions: 'resetReverificationSuccess',
+            },
+            REVERIFY_VC_FAILED: {
+              actions: 'setReverificationFailed',
+            },
+            RESET_REVERIFY_VC_FAILED: {
+              actions: 'resetReverificationFailed',
+            },
+            RESET_HIGHLIGHT: {
+              actions: 'resetHighlightVcKey',
+            },
             GET_VC_ITEM: {
               actions: 'getVcItemResponse',
             },
@@ -118,7 +133,7 @@ export const vcMetaMachine =
               actions: ['updateMyVcsMetadata', 'setUpdatedVcMetadatas'],
             },
             VC_DOWNLOADED: {
-              actions: ['setDownloadCredentialsSuccess','setDownloadedVc',]
+              actions: ['setDownloadCredentialsSuccess', 'setDownloadedVc'],
             },
             ADD_VC_TO_IN_PROGRESS_DOWNLOADS: {
               actions: 'addVcToInProgressDownloads',

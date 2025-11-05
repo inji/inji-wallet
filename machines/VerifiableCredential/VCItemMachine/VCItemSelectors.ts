@@ -136,6 +136,18 @@ export function selectShowWalletBindingError(state: State) {
   );
 }
 
+export function isReverifyingVc(state: State) {
+  return state.matches('vcUtilitiesState.reverificationState');
+}
+
+export function showReverificationSuccessBanner(state: State) {
+  return state.context.showReverificationSuccessBanner;
+}
+
+export function showVerificationFailureBanner(state: State) {
+  return state.context.showVerificationFailureBanner;
+}
+
 export function selectVc(state: State) {
   const {serviceRefs, ...data} = state.context;
   return data;

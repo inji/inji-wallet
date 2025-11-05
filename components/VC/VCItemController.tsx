@@ -7,6 +7,7 @@ import {
   selectWalletBindingResponse,
   selectVerifiableCredentialData,
   selectCredential,
+  isReverifyingVc,
 } from '../../machines/VerifiableCredential/VCItemMachine/VCItemSelectors';
 import {useInterpret, useSelector} from '@xstate/react';
 import {
@@ -49,6 +50,7 @@ export function useVcItemController(vcMetadata: VCMetadata) {
       VCItemService,
       selectIsSavingFailedInIdle,
     ),
+    isReverifyingVc: useSelector(VCItemService, isReverifyingVc),
     storeErrorTranslationPath: 'errors.savingFailed',
     generatedOn: useSelector(VCItemService, selectGeneratedOn),
     isTourGuide: useSelector(authService, selectIsTourGuide),
