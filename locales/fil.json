@@ -195,13 +195,12 @@
   },
   "AboutInji": {
     "aboutInji": "Tungkol kay Inji Wallet",
-    "header": "TUNGKOL SA INJI WALLET",
+    "header": "Tungkol Sa Inji Wallet",
     "appID": "App ID",
     "aboutDetails": "Ginagawa ng Inji Wallet na mapagkakatiwalaan at portable ang data, na nagtatampok ng dalawang pangunahing interface na tumutugon sa magkakaibang pangangailangan ng user, kung saan ang Inji Mobile ang isa sa mga ito. Bilang isang mobile-based na wallet app, ang Inji Mobile ay isang secure, desentralisadong solusyon na nagbibigay-daan sa mga user na mag-download, mamahala, magbahagi, at mag-verify ng mga nabe-verify na kredensyal nang direkta mula sa kanilang mga smartphone, na nagbibigay ng maayos at mapagkakatiwalaang paraan upang mahawakan ang mga kredensyal on the go.",
     "forMoreDetails": "Para sa karagdagang detalye",
     "clickHere": "Pindutin dito",
     "version": "Bersyon",
-    "tuvaliVersion": "Tuvali-bersyon",
     "poweredBy": "Pinapatakbo ng Inji, Isang Produktong MOSIP"
   },
   "IssuersScreen": {

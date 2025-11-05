@@ -15,7 +15,7 @@ import {ListItem} from 'react-native-elements';
 import getAllConfigurations from '../../shared/api';
 import {CopyButton} from '../../components/CopyButton';
 import testIDProps from '../../shared/commonUtil';
-import {__InjiVersion, __TuvaliVersion} from '../../shared/GlobalVariables';
+import {__InjiVersion} from '../../shared/GlobalVariables';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {SvgImage} from '../../components/ui/svg';
 import LinearGradient from 'react-native-linear-gradient';
@@ -136,14 +136,6 @@ export const AboutInji: React.FC<AboutInjiProps> = ({appId}) => {
                 {__InjiVersion.getValue()}
               </Text>
             </Row>
-            {__TuvaliVersion.getpackageVersion() != 'unknown' && (
-              <Text
-                weight="semibold"
-                style={Theme.AboutInjiScreenStyle.tuvaliVerisonStyle}
-                color={Theme.Colors.aboutVersion}>
-                {t('tuvaliVersion')}: {__TuvaliVersion.getValue()}
-              </Text>
-            )}
             <View style={Theme.AboutInjiScreenStyle.horizontalLineStyle} />
             <Text
               weight="semibold"

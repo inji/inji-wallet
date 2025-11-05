@@ -196,13 +196,12 @@
   },
   "AboutInji": {
     "aboutInji": "About Inji Wallet",
-    "header": "ABOUT INJI WALLET",
+    "header": "About Inji Wallet",
     "appID": "App ID",
     "aboutDetails": "Inji Wallet makes data trustworthy and portable, featuring two main interfaces that cater to diverse user needs, with Inji Mobile being one of them. As a mobile-based wallet app, Inji Mobile is a secure, decentralized solution that allows users to download, manage, share, and verify verifiable credentials directly from their smartphones, providing a seamless and trustworthy way to handle credentials on the go.",
     "forMoreDetails": "For more details",
     "clickHere": "Click here",
     "version": "Version",
-    "tuvaliVersion": "Tuvali-version",
     "poweredBy": "Powered by Inji, A MOSIP Product"
   },
   "IssuersScreen": {
