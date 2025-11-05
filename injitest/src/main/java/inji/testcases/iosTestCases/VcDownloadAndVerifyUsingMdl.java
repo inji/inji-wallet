@@ -49,7 +49,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+        esignetLoginPage.clickOnLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         Thread.sleep(9000);
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
@@ -59,6 +60,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
 
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
+        addNewCardPage.clickOnDoneButton();
+
 
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
@@ -113,7 +116,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+        esignetLoginPage.clickOnLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox("2185461749");
 
@@ -158,7 +162,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+        esignetLoginPage.clickOnLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -167,8 +172,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
 
         otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
+        assertTrue(mockCertifyLoginPage.isInvalidOtpErrorTextDisplay(), "Verify if Invalid OTP error text is displayed");
 
-        assertEquals(ResourceBundleLoader.get(InjiWalletConstants.auth_failed), mockCertifyLoginPage.getInvalidOtpMessage());
     }
 
     @Test
@@ -206,7 +211,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+        esignetLoginPage.clickOnLoginWithOtpButton();
+ //       esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         Thread.sleep(9000);
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
@@ -216,6 +222,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
 
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
+        addNewCardPage.clickOnDoneButton();
 
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 //        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -266,7 +273,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+        esignetLoginPage.clickOnLoginWithOtpButton();
+//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         Thread.sleep(9000);
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
@@ -276,7 +284,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
 
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
-
+        addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         homePage.downloadCard();
         addNewCardPage.clickOnDownloadViaMockCertify();

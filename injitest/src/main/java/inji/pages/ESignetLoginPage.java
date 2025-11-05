@@ -124,6 +124,10 @@ public class ESignetLoginPage extends BasePage {
         //click(esignetLoginButton, "Click on Esignet login button");
     }
 
+    public void clickOnLoginWithOtpButton() {
+        click(esignetLoginButton, "Click on Esignet login button");
+    }
+
     public OtpVerificationPage setEnterIdTextBox(String uinOrVid) {
         if ("iOS".equalsIgnoreCase(driver.getCapabilities().getCapability("platformName").toString())) {
             click(enterIdTextBox, "Click on Enter ID textbox to enter UIN or VID"); // Needed for iOS before typing

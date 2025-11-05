@@ -30,7 +30,7 @@ public class MockCertifyLoginPage extends BasePage {
     private WebElement enterYourVidTextHeader;
 
     @AndroidFindBy(uiAutomator = "UiSelector().className(\"android.widget.EditText\").instance(0)")
-    @iOSXCUITFindBy(className = "XCUIElementTypeTextField")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField[@value=\"Enter UIN/VID\"]")
     private WebElement enterIdTextBox;
 
     @AndroidFindBy(xpath = "//android.widget.Button[@text=\"Get OTP\"]")
@@ -62,6 +62,7 @@ public class MockCertifyLoginPage extends BasePage {
     private WebElement settingUpTextOrDownloadingCredentials;
 
     @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id=\"error-banner-message\"]")
+    @iOSXCUITFindBy(accessibility = "OTP authentication failed. Please try again.")
     private WebElement invalidOtpText;
 
     @AndroidFindBy(uiAutomator = "UiSelector().className(\"android.widget.TextView\").instance(1)")
@@ -96,6 +97,14 @@ public class MockCertifyLoginPage extends BasePage {
     @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
     private WebElement continuePopupButton;
 
+    @AndroidFindBy(accessibility = "tryAgain")
+    @iOSXCUITFindBy(accessibility = "tryAgain")
+    private WebElement retryButton;
+
+    @AndroidFindBy(xpath = "//*[@text=\"Network request failed\"]")
+    @iOSXCUITFindBy(accessibility = "getIdButton")
+    private WebElement networkErrorMesseage;
+
 
     public MockCertifyLoginPage(AppiumDriver driver) {
         super(driver);
@@ -127,6 +136,9 @@ public class MockCertifyLoginPage extends BasePage {
     }
 
     public OtpVerificationPage setEnterIdTextBox(String uinOrVid) {
+        if ("iOS".equalsIgnoreCase(driver.getCapabilities().getCapability("platformName").toString())) {
+            click(enterIdTextBox, "Click on Enter ID textbox to enter UIN or VID"); // Needed for iOS before typing
+        }
         enterText(enterIdTextBox, uinOrVid, "Entering UIN or VID in the input textbox: " + uinOrVid);
         return new OtpVerificationPage(driver);
     }
@@ -140,12 +152,20 @@ public class MockCertifyLoginPage extends BasePage {
     }
 
     public void clickOnGetOtpButton() {
-        ((HidesKeyboard) driver).hideKeyboard();
+        try {
+            ((HidesKeyboard) driver).hideKeyboard();
+        } catch (Exception e) {
+            logger.info("Keyboard not hidden automatically, ignoring: " + e.getMessage());
+        }
         click(getOtpButton, "Clicking on Get OTP button");
     }
 
     public void clickOnVerifyButton() {
-        ((HidesKeyboard) driver).hideKeyboard();
+        try {
+            ((HidesKeyboard) driver).hideKeyboard();
+        } catch (Exception e) {
+            logger.info("Keyboard not hidden automatically, ignoring: " + e.getMessage());
+        }
         click(verifyButton, "Clicking on Verify button after hiding keyboard");
     }
 
@@ -156,7 +176,6 @@ public class MockCertifyLoginPage extends BasePage {
     public String getInvalidOtpMessage() {
         return getText(invalidOtpText, "Fetching the error message for 'Invalid OTP'");
     }
-
     private static final Map<String, Map<String, String>> LANGUAGE_TEXT_MAP = new HashMap<>();
 
     static {
@@ -212,5 +231,20 @@ public class MockCertifyLoginPage extends BasePage {
 
     public String getInvalidIndividualIdMessage() {
         return getText(invalidIndividualIdText, "Getting the error message for 'Invalid Individual ID'");
+    }
+
+    public boolean isNoInternetErrorDisplayed() {
+        return isElementVisible(networkErrorMesseage, "Checking if 'Network Request Failed' message is displayed");
+    }
+
+    public boolean isRetryButtonDisplayed() {
+        if (isElementVisible(retryButton, "Check if Retry button is displayed")) {
+            click(retryButton, "Click on Retry button");
+            return true;
+        }
+        return false;
+    }
+    public boolean isInvalidOtpErrorTextDisplay() {
+        return isElementVisible(invalidOtpText, "Checking if invalid otp error message is displayed");
     }
 }
