@@ -63,19 +63,19 @@ export class VCActivityLog implements ActivityLog {
   }
 
   getActionText(t: TFunction, wellknown: Object | undefined) {
-    const vcStatus = this.vcStatus ? `.${this.vcStatus}` : '';
+    const formattedVcStatus = this.vcStatus ? `.${this.vcStatus}` : '';
     if (!!this.credentialConfigurationId && wellknown) {
       const cardType = getCredentialTypeFromWellKnown(
         wellknown,
         this.credentialConfigurationId,
       );
-      return `${t(this.type + vcStatus, {
+      return `${t(this.type + formattedVcStatus, {
         idType: cardType,
         vcStatus: this.vcStatus,
       })}`;
     }
 
-    return `${t(this.type + vcStatus, {idType: '', vcStatus: this.vcStatus})}`;
+    return `${t(this.type + formattedVcStatus, {idType: '', vcStatus: this.vcStatus})}`;
   }
 
   static getLogFromObject(data: Object): VCActivityLog {

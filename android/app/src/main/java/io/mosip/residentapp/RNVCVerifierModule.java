@@ -10,6 +10,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableArray;
 
+import io.mosip.residentapp.Utils.FormatConverter;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
@@ -46,11 +47,7 @@ public class RNVCVerifierModule extends ReactContextBaseJavaModule {
 public void getVerificationSummary(String vc, String format, ReadableArray statusPurposes, Promise promise) {
     try {
         // Convert ReadableArray to List<String>
-        List<String> statusPurposeList = new ArrayList<>();
-        for (int i = 0; i < statusPurposes.size(); i++) {
-            statusPurposeList.add(statusPurposes.getString(i));
-        }
-
+        List<String> statusPurposeList = FormatConverter.convertReadableArrayToList(statusPurposes);
         CredentialVerificationSummary summary = credentialsVerifier.verifyAndGetCredentialStatus(
             vc,
             CredentialFormat.Companion.fromValue(format),

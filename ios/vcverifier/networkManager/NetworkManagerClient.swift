@@ -5,6 +5,11 @@ enum HttpMethod: String {
     case post = "POST"
 }
 
+protocol NetworkManaging {
+    func sendHTTPRequest(url: String, method: HttpMethod, bodyParams: [String: String]?,
+                         headers: [String: String]?) async throws -> [String: Any]
+}
+
 class NetworkManagerClient:NetworkManaging {
     
     static let shared = NetworkManagerClient()

@@ -117,18 +117,6 @@ export const BannerNotificationContainer: React.FC<
         />
       )}
 
-      {/* {verificationStatus !== null && showVerificationStatusBanner && (
-        <BannerNotification
-          type={verificationStatus.statusType}
-          message={t(`VcVerificationBanner.${verificationStatus?.statusType}`, {
-            vcDetails: `${verificationStatus.vcType} ${verificationStatus.vcNumber}`,
-          })}
-          onClosePress={bannerNotificationController.RESET_VERIFICATION_STATUS}
-          key={'reVerificationInProgress'}
-          testId={'reVerificationInProgress'}
-        />
-      )} */}
-
       {bannerNotificationController.isDownloadingFailed && (
         <BannerNotification
           type={BannerStatusType.ERROR}

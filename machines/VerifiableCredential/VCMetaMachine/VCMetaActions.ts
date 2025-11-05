@@ -27,7 +27,7 @@ export const VCMetaActions = (model: any) => {
         return event.verificationStatus as vcVerificationBannerDetails}
     }),
     setReverificationSuccess: model.assign({
-      ReverificationSuccess: (context,event) => ({
+      reverificationSuccess: (context,event) => ({
         status: true,
         statusValue: event.statusValue,
         vcKey: event.vcKey,
@@ -35,7 +35,7 @@ export const VCMetaActions = (model: any) => {
       })
     }),
     resetReverificationSuccess: model.assign({
-      ReverificationSuccess: () => ({
+      reverificationSuccess: () => ({
         status: false,
         statusValue: '',
         vcKey:'',
@@ -44,17 +44,17 @@ export const VCMetaActions = (model: any) => {
     }),
 
     resetHighlightVcKey: model.assign({
-      ReverificationSuccess: (context:any) => ({
-       ...context.ReverificationSuccess,
+      reverificationSuccess: (context:any) => ({
+       ...context.reverificationSuccess,
         vcKey:''
       }),
-      ReverificationFailed: (context:any) => ({
-        ...context.ReverificationFailed,
+      reverificationFailed: (context:any) => ({
+        ...context.reverificationFailed,
          vcKey:''
        }),
     }),
     setReverificationFailed: model.assign({
-      ReverificationFailed: (context,event) => ({
+      reverificationFailed: (context,event) => ({
         status: true,
         statusValue: event.statusValue,
         vcKey: event.vcKey,
@@ -63,7 +63,7 @@ export const VCMetaActions = (model: any) => {
     }),
 
     resetReverificationFailed: model.assign({
-      ReverificationFailed: (context,event) => ({
+      reverificationFailed: (context,event) => ({
         status: false,
         statusValue: event.statusValue,
         vcKey: '',

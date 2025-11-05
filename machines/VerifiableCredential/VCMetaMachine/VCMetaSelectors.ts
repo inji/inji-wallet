@@ -93,9 +93,9 @@ export function selectIsDownloadingSuccess(state: State) {
 }
 
 export function selectIsReverificationSuccess(state: State) {
-  return state.context.ReverificationSuccess;
+  return state.context.reverificationSuccess;
 }
 
 export function selectIsReverificationFailure(state: State) {
-  return state.context.ReverificationFailed;
+  return state.context.reverificationFailed;
 }

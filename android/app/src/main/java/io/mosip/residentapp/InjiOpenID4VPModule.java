@@ -60,6 +60,7 @@ import io.mosip.openID4VP.constants.ResponseType;
 import io.mosip.openID4VP.constants.VPFormatType;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
 import io.mosip.openID4VP.networkManager.NetworkResponse;
+import io.mosip.residentapp.Utils.FormatConverter;
 
 public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     private static final String TAG = "InjiOpenID4VPModule";
@@ -232,7 +233,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             ReadableMap formatMap = vpFormatsMap.getMap(key);
             if (formatMap != null && formatMap.hasKey("alg_values_supported")) {
                 ReadableArray algArray = formatMap.getArray("alg_values_supported");
-                List<String> algValuesList = algArray != null ? convertReadableArrayToList(algArray) : null;
+                List<String> algValuesList = algArray != null ? FormatConverter.convertReadableArrayToList(algArray) : null;
                 vpFormatsSupportedMap.put(VPFormatType.Companion.fromValue(key), new VPFormatSupported(algValuesList));
             }
         }
@@ -245,7 +246,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             ReadableMap verifierMap = verifiersArray.getMap(i);
             String clientId = verifierMap.getString("client_id");
             ReadableArray responseUris = verifierMap.getArray("response_uris");
-            List<String> responseUriList = convertReadableArrayToList(responseUris);
+            List<String> responseUriList = FormatConverter.convertReadableArrayToList(responseUris);
             String jwksUri = null;
             if (verifierMap.hasKey("jwks_uri") && !verifierMap.isNull("jwks_uri")) {
                 try {
@@ -487,15 +488,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         throw new UnsupportedOperationException("Credential format '" + formatStr + "' is not supported");
     }
 
-    private List<String> convertReadableArrayToList(ReadableArray readableArray) {
-        List<String> list = new ArrayList<>();
-
-        for (int i = 0; i < readableArray.size(); i++) {
-            list.add(readableArray.getString(i));
-        }
-
-        return list;
-    }
+    
 
     private String requireNonNullString(ReadableMap map, String key) {
         String value = map.getString(key);

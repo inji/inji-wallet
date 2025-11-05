@@ -1,13 +1,6 @@
 import Foundation
 import Gzip
 
-// MARK: - Protocol for mocking
-
-protocol NetworkManaging {
-    func sendHTTPRequest(url: String, method: HttpMethod, bodyParams: [String: String]?,
-                         headers: [String: String]?) async throws -> [String: Any]
-}
-
 // MARK: - Credential Status Result
 
 public struct CredentialStatusResult {

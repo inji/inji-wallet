@@ -17,6 +17,7 @@ import {
 import {CredentialDownloadResponse, request} from '../../../shared/request';
 import {WalletBindingResponse} from '../VCMetaMachine/vc';
 import {getVerifiableCredential} from './VCItemSelectors';
+import { VERIFICATION_TIMEOUT_IN_MS } from '../../../shared/vcjs/verifyCredential';
 
 const {RNSecureKeystoreModule} = NativeModules;
 export const VCItemServices = model => {
@@ -205,9 +206,10 @@ export const VCItemServices = model => {
         const format = context.selectedCredentialType?.format ?? context.format;
     
 
+        
         const verificationResult = await withTimeout(
           verifyCredentialData(credential, format),
-          5000
+          VERIFICATION_TIMEOUT_IN_MS
         );
     
         if (!verificationResult.isVerified) {

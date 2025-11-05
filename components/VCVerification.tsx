@@ -58,6 +58,7 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
     {showLastChecked && vcMetadata.lastKnownStatusTimestamp && (
       <View style={{ marginTop: 4 }}>
         <Text
+          testID='lastCheckedLabel'
           color={display.getTextColor(Theme.Colors.Details)}
           style={[Theme.Styles.verificationStatus, { fontFamily: 'Inter_400' }]}>
           {t('lastChecked')}

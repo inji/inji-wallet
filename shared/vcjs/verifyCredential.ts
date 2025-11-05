@@ -247,7 +247,7 @@ export async function checkIsStatusRevoked(
         const isValid = await verifyStatusListVC(status.statusListVC);
         if (!isValid) {
           throw new Error(
-            `StatusListVC verification failed for valid entry at index ${status.statusListIndex}`,
+            `StatusListVC verification failed for valid entry  ${status.errorMessage}`,
           );
         }
       }
@@ -307,6 +307,11 @@ export interface VerificationResult {
   verificationErrorCode: string;
   isRevoked?: boolean;
 }
+
+//TODO: Implement status list VC verification for iOS.
+//Currently Digital Bazaar library does not support VC 2.0 status list VC verification.
 function verifyStatusListVC(statusListVC: string | undefined) {
   return true;
 }
+
+export const VERIFICATION_TIMEOUT_IN_MS = 5000;

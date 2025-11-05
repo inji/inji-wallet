@@ -7,7 +7,7 @@ import { Theme } from './ui/styleUtils';
 import Svg, { Mask, Rect } from 'react-native-svg';
 
 export const MessageOverlay: React.FC<MessageOverlayProps> = props => {
-  const {t} = useTranslation('common');
+  const { t } = useTranslation('common');
   const style = StyleSheet.create({
     customHeight: {
       minHeight: props.minHeight ? props.minHeight : props.progress ? 100 : 170,
@@ -20,7 +20,7 @@ export const MessageOverlay: React.FC<MessageOverlayProps> = props => {
     <Overlay
       isVisible={props.isVisible}
       fullScreen={isHighlightMode}
-      backdropStyle={{ backgroundColor: isHighlightMode?'transparent':'rgba(0,0,0,0.6)' }}
+      backdropStyle={{ backgroundColor: isHighlightMode ? 'transparent' : 'rgba(0,0,0,0.6)' }}
       overlayStyle={
         isHighlightMode
           ? { backgroundColor: 'transparent', padding: 0, margin: 0 }
@@ -28,40 +28,40 @@ export const MessageOverlay: React.FC<MessageOverlayProps> = props => {
       }
       onShow={props.onShow}
       onBackdropPress={props.onBackdropPress}>
-       {isHighlightMode ? (
-  <View
-    style={{ flex: 1 }}
-    onStartShouldSetResponder={() => true}
-    onResponderRelease={props.onBackdropPress}
-  >
-    {props.cardLayout && (
-      <>
-        <Svg
-          style={StyleSheet.absoluteFill}
-          pointerEvents="none"
+      {isHighlightMode ? (
+        <View
+          style={{ flex: 1 }}
+          onStartShouldSetResponder={() => true}
+          onResponderRelease={props.onBackdropPress}
         >
-          <Mask id="hole">
-            <Rect width="100%" height="100%" fill="white" />
-            <Rect
-              x={props.cardLayout.x - 10}
-              y={props.cardLayout.y - 10}
-              width={props.cardLayout.width + 20}
-              height={props.cardLayout.height + 20}
-              rx={12}
-              fill="black"
-            />
-          </Mask>
-          <Rect
-            width="100%"
-            height="100%"
-            fill="rgba(0,0,0,0.65)"
-            mask="url(#hole)"
-          />
-        </Svg>
-      </>
-    )}
-  </View>
-)
+          {props.cardLayout && (
+            <>
+              <Svg
+                style={StyleSheet.absoluteFill}
+                pointerEvents="none"
+              >
+                <Mask id="hole">
+                  <Rect width="100%" height="100%" fill="white" />
+                  <Rect
+                    x={props.cardLayout.x - 10}
+                    y={props.cardLayout.y - 10}
+                    width={props.cardLayout.width + 20}
+                    height={props.cardLayout.height + 20}
+                    rx={12}
+                    fill="black"
+                  />
+                </Mask>
+                <Rect
+                  width="100%"
+                  height="100%"
+                  fill="rgba(0,0,0,0.65)"
+                  mask="url(#hole)"
+                />
+              </Svg>
+            </>
+          )}
+        </View>
+      )
         : (
           (props.title || props.message || props.children) && (
             <Column
@@ -129,7 +129,7 @@ export const ErrorMessageOverlay: React.FC<ErrorMessageOverlayProps> = ({
   onDismiss,
   translationPath,
 }) => {
-  const {t} = useTranslation(translationPath);
+  const { t } = useTranslation(translationPath);
 
   return (
     <MessageOverlay

@@ -612,7 +612,7 @@ export const VCItemMachine = model.createMachine(
             entry: [send({
               type: 'SET_VERIFICATION_STATUS',
               response: {statusType: BannerStatusType.IN_PROGRESS},
-            }),()=>console.log("auto verification started 🔄")],
+            }),()=>console.info("auto verification started 🔄")],
 
             invoke: {
               src: 'verifyCredential',
