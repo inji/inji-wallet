@@ -425,7 +425,7 @@
     }
   },
   "MyVcsTab": {
-    "searchByName": "Maghanap",
+    "searchByName": "maghanap...",
     "bringYourDigitalID": "Dalhin ang Iyong Digital ID",
     "generateVcDescription": "Upang i-download ang iyong card i-tap ang I-download card sa ibaba",
     "generateVcFABDescription": "Upang i-download ang iyong card i-tap ang + sa ibaba",
@@ -520,6 +520,10 @@
       "expired": {
         "title": "Nag-expire na Katayuan:",
         "description": "Nag-expire na ang kredensyal."
+      },
+      "revoked": {
+        "title": "Binawing Katayuan:",
+        "description": "Ang kredensyal ay binawi at hindi na wasto."
       }
     }
   },

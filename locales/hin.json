@@ -426,7 +426,7 @@
     }
   },
   "MyVcsTab": {
-    "searchByName": "खोजें",
+    "searchByName": "खोजें...",
     "downloadCard": "डाउनलोड कार्ड",
     "bringYourDigitalID": "अपनी डिजिटल आईडी लाओ",
     "generateVcDescription": "अपना कार्ड डाउनलोड करने के लिए नीचे डाउनलोड कार्ड टैप करें",
@@ -522,6 +522,10 @@
       "expired": {
         "title": "समाप्त स्थिति:",
         "description": "क्रेडेंशियल समाप्त हो गया है।"
+      },
+      "revoked": {
+        "title": "रद्द स्थिति:",
+        "description": "क्रेडेंशियल को रद्द कर दिया गया है और अब मान्य नहीं है।"
       }
     }
   },

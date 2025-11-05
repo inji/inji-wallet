@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, Pressable} from 'react-native';
+import {Platform, Pressable, View} from 'react-native';
 import {Icon, ListItem, Switch} from 'react-native-elements';
 import {Column, Row, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
@@ -18,6 +18,8 @@ import {SvgImage} from '../../components/ui/svg';
 import {DataBackupAndRestore} from './DataBackupAndRestore';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {SettingsKeyManagementScreen} from './SettingsKeyManagement';
+import SwitchToggle from 'react-native-switch-toggle';
+import {isIOS} from '../../shared/constants';
 
 const LanguageSetting: React.FC = () => {
   const {t} = useTranslation('SettingScreen');
@@ -73,150 +75,165 @@ export const SettingScreen: React.FC<
   };
 
   return (
-      <React.Fragment>
-        <Pressable accessible={false} onPress={controller.TOGGLE_SETTINGS}>
-          {props.triggerComponent}
-        </Pressable>
-        <BannerNotificationContainer />
-        <ScrollView {...testIDProps('settingsScreen')}>
-          <Column
-              style={{display: Platform.OS !== 'ios' ? 'flex' : 'none'}}
-              backgroundColor={Theme.Colors.lightGreyBackgroundColor}>
-            <Text
-                style={{paddingTop: 3}}
-                testID="injiAsVerifierApp"
-                weight="semibold"
-                margin="10"
-                color={Theme.Colors.aboutVersion}>
-              {t('injiAsVerifierApp')}
-            </Text>
-            <Row
-                align="space-evenly"
-                backgroundColor={Theme.Colors.whiteBackgroundColor}>
-              <Pressable
-                  {...testIDProps('receiveCardPressableArea')}
-                  onPress={controller.RECEIVE_CARD}>
-                <Column align="center" style={Theme.Styles.receiveCardsContainer}>
-                  {SvgImage.ReceiveCard()}
-                  <Text
-                      testID="receiveCard"
-                      margin="6"
-                      style={{paddingTop: 3}}
-                      weight="semibold">
-                    {t('receiveCard')}
-                  </Text>
-                </Column>
-              </Pressable>
+    <React.Fragment>
+      <Pressable accessible={false} onPress={controller.TOGGLE_SETTINGS}>
+        {props.triggerComponent}
+      </Pressable>
+      <BannerNotificationContainer />
+      <ScrollView {...testIDProps('settingsScreen')}>
+        <Column
+          style={{display: Platform.OS !== 'ios' ? 'flex' : 'none'}}
+          backgroundColor={Theme.Colors.lightGreyBackgroundColor}>
+          <Text
+            style={{paddingTop: 3}}
+            testID="injiAsVerifierApp"
+            weight="semibold"
+            margin="10"
+            color={Theme.Colors.aboutVersion}>
+            {t('injiAsVerifierApp')}
+          </Text>
+          <Row
+            align="space-evenly"
+            backgroundColor={Theme.Colors.whiteBackgroundColor}>
+            <Pressable
+              {...testIDProps('receiveCardPressableArea')}
+              onPress={controller.RECEIVE_CARD}>
+              <Column align="center" style={Theme.Styles.receiveCardsContainer}>
+                {SvgImage.ReceiveCard()}
+                <Text
+                  testID="receiveCard"
+                  margin="6"
+                  style={{paddingTop: 3}}
+                  weight="semibold">
+                  {t('receiveCard')}
+                </Text>
+              </Column>
+            </Pressable>
 
-              <ReceivedCards />
-            </Row>
+            <ReceivedCards />
+          </Row>
 
-            <Text
-                weight="semibold"
-                style={{paddingTop: 3}}
-                margin="10"
-                color={Theme.Colors.aboutVersion}>
-              {t('basicSettings')}
-            </Text>
-          </Column>
-          <Column fill>
-            <MessageOverlay
-                isVisible={controller.alertMsg != ''}
-                onBackdropPress={controller.hideAlert}
-                title={controller.alertMsg}
-            />
+          <Text
+            weight="semibold"
+            style={{paddingTop: 3}}
+            margin="10"
+            color={Theme.Colors.aboutVersion}>
+            {t('basicSettings')}
+          </Text>
+        </Column>
+        <Column fill>
+          <MessageOverlay
+            isVisible={controller.alertMsg != ''}
+            onBackdropPress={controller.hideAlert}
+            title={controller.alertMsg}
+          />
 
-            <LanguageSetting />
+          <LanguageSetting />
 
-            <ListItem topDivider disabled={!controller.canUseBiometrics}>
-              {SvgImage.fingerprintIcon(24)}
-              <ListItem.Content>
-                <ListItem.Title
-                    {...testIDProps('bioUnlock')}
-                    style={{paddingTop: 3}}>
-                  <Text weight="semibold" color={Theme.Colors.settingsLabel}>
-                    {t('bioUnlock')}
-                  </Text>
-                </ListItem.Title>
-              </ListItem.Content>
-              <Switch
-                  {...testIDProps('biometricToggle')}
-                  value={controller.isBiometricUnlockEnabled}
-                  onValueChange={handleBiometricToggle}
-                  trackColor={{
-                    false: Theme.Colors.switchTrackFalse,
-                    true:
-                        Platform.OS == 'ios'
-                            ? Theme.Colors.switchHead
-                            : Theme.Colors.switchTrackTrue,
-                  }}
-                  color={Theme.Colors.switchHead}
+          <ListItem topDivider disabled={!controller.canUseBiometrics}>
+            {isIOS()
+              ? SvgImage.faceBiometicIcon(24)
+              : SvgImage.fingerprintIcon(24)}
+            <ListItem.Content>
+              <ListItem.Title
+                {...testIDProps('bioUnlock')}
+                style={{paddingTop: 3}}>
+                <Text weight="semibold" color={Theme.Colors.settingsLabel}>
+                  {t('bioUnlock')}
+                </Text>
+              </ListItem.Title>
+            </ListItem.Content>
+            <View
+              style={[
+                Theme.Styles.wrapper,
+                {
+                  borderColor: controller.isBiometricUnlockEnabled
+                    ? 'transparent'
+                    : Theme.Colors.switchHead,
+                  backgroundColor: controller.isBiometricUnlockEnabled
+                    ? Theme.Colors.switchHead
+                    : Theme.Colors.switchCircleOff,
+                },
+              ]}>
+              <SwitchToggle
+                {...testIDProps('biometricToggle')}
+                switchOn={controller.isBiometricUnlockEnabled}
+                onPress={() =>
+                  handleBiometricToggle(!controller.isBiometricUnlockEnabled)
+                }
+                circleColorOff={Theme.Colors.switchHead}
+                circleColorOn={Theme.Colors.switchCircleOff}
+                backgroundColorOn={Theme.Colors.switchHead}
+                backgroundColorOff={'#FFFFFF'}
+                containerStyle={Theme.Styles.container}
+                circleStyle={Theme.Styles.circle}
               />
-            </ListItem>
+            </View>
+          </ListItem>
 
-            <AboutInji appId={controller.appId} />
+          <AboutInji appId={controller.appId} />
 
-            <DataBackupAndRestore />
-            <SettingsKeyManagementScreen controller={controller} />
+          <DataBackupAndRestore />
+          <SettingsKeyManagementScreen controller={controller} />
 
-            {CREDENTIAL_REGISTRY_EDIT === 'true' && (
-                <EditableListItem
-                    testID="credentialRegistry"
-                    title={t('credentialRegistry')}
-                    content={controller.credentialRegistry}
-                    items={[
-                      {
-                        label: t('credentialRegistry'),
-                        value: controller.credentialRegistry,
-                        testID: 'credentialRegistry',
-                      },
-                      {
-                        label: t('esignethosturl'),
-                        value: controller.esignetHostUrl,
-                        testID: 'esignetHost',
-                      },
-                    ]}
-                    response={controller.credentialRegistryResponse}
-                    onCancel={controller.CANCEL}
-                    onEdit={updateRegistry}
-                    Icon="star"
-                    errorMessage={t('errorMessage')}
-                    progress={controller.isResetInjiProps}
-                    titleColor={Theme.Colors.settingsLabel}
-                />
-            )}
+          {CREDENTIAL_REGISTRY_EDIT === 'true' && (
+            <EditableListItem
+              testID="credentialRegistry"
+              title={t('credentialRegistry')}
+              content={controller.credentialRegistry}
+              items={[
+                {
+                  label: t('credentialRegistry'),
+                  value: controller.credentialRegistry,
+                  testID: 'credentialRegistry',
+                },
+                {
+                  label: t('esignethosturl'),
+                  value: controller.esignetHostUrl,
+                  testID: 'esignetHost',
+                },
+              ]}
+              response={controller.credentialRegistryResponse}
+              onCancel={controller.CANCEL}
+              onEdit={updateRegistry}
+              Icon="star"
+              errorMessage={t('errorMessage')}
+              progress={controller.isResetInjiProps}
+              titleColor={Theme.Colors.settingsLabel}
+            />
+          )}
 
-            <ListItem
-                topDivider
-                bottomDivider
-                onPress={() => controller.INJI_TOUR_GUIDE()}>
-              {SvgImage.coloredInfo()}
-              <ListItem.Content>
-                <ListItem.Title
-                    {...testIDProps('injiTourGuide')}
-                    style={{paddingTop: 3}}>
-                  <Text weight="semibold" color={Theme.Colors.settingsLabel}>
-                    {t('injiTourGuide')}
-                  </Text>
-                </ListItem.Title>
-              </ListItem.Content>
-            </ListItem>
+          <ListItem
+            topDivider
+            bottomDivider
+            onPress={() => controller.INJI_TOUR_GUIDE()}>
+            {SvgImage.coloredInfo()}
+            <ListItem.Content>
+              <ListItem.Title
+                {...testIDProps('injiTourGuide')}
+                style={{paddingTop: 3}}>
+                <Text weight="semibold" color={Theme.Colors.settingsLabel}>
+                  {t('injiTourGuide')}
+                </Text>
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
 
-            <ListItem onPress={controller.LOGOUT}>
-              {SvgImage.logOutIcon()}
-              <ListItem.Content>
-                <ListItem.Title
-                    {...testIDProps('logout')}
-                    style={{paddingTop: 3}}>
-                  <Text weight="semibold" color={Theme.Colors.settingsLabel}>
-                    {t('logout')}
-                  </Text>
-                </ListItem.Title>
-              </ListItem.Content>
-            </ListItem>
-          </Column>
-        </ScrollView>
-      </React.Fragment>
+          <ListItem onPress={controller.LOGOUT}>
+            {SvgImage.logOutIcon()}
+            <ListItem.Content>
+              <ListItem.Title
+                {...testIDProps('logout')}
+                style={{paddingTop: 3}}>
+                <Text weight="semibold" color={Theme.Colors.settingsLabel}>
+                  {t('logout')}
+                </Text>
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        </Column>
+      </ScrollView>
+    </React.Fragment>
   );
 };
 

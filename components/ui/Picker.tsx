@@ -4,6 +4,7 @@ import {Icon, ListItem, Overlay} from 'react-native-elements';
 import {Column} from './Layout';
 import {Text} from './Text';
 import testIDProps from '../../shared/commonUtil';
+import {Theme} from './styleUtils';
 
 interface Picker extends React.VFC<PickerProps<unknown>> {
   <T>(props: PickerProps<T>): ReturnType<React.FC>;
@@ -33,23 +34,46 @@ export const Picker: Picker = (props: PickerProps<unknown>) => {
       <Overlay
         isVisible={isContentVisible}
         onBackdropPress={toggleContent}
-        overlayStyle={{padding: 1}}>
+        overlayStyle={{
+          padding: 1,
+          borderRadius: 12,
+          overflow: 'hidden',
+        }}>
         <Column
           testID={props.testID}
           width={Dimensions.get('window').width * 0.8}>
-          {props.items.map((item, index) => (
-            <ListItem
-              topDivider={index !== 0}
-              onPress={() => selectItem(index)}
-              key={index}>
-              <ListItem.Content>
-                <ListItem.Title {...testIDProps(item.value as string)}>
-                  <Text>{item.label}</Text>
-                </ListItem.Title>
-              </ListItem.Content>
-              {selectedIndex === index && <Icon name="check" />}
-            </ListItem>
-          ))}
+          {props.items.map((item, index) => {
+            const isSelected = selectedIndex === index;
+            return (
+              <ListItem
+                topDivider={index !== 0}
+                onPress={() => selectItem(index)}
+                containerStyle={{
+                  backgroundColor: isSelected
+                    ? Theme.Colors.ListSelectedBackground
+                    : Theme.Colors.ListUnselectedBackground,
+                }}>
+                <ListItem.Content>
+                  <ListItem.Title {...testIDProps(item.value as string)}>
+                    <Text
+                      style={{
+                        color: isSelected
+                          ? Theme.Colors.ListSelectedText
+                          : Theme.Colors.ListUnselectedText,
+                        fontWeight: isSelected ? '600' : '400',
+                        fontFamily: 'Montserrat_500Medium',
+                      }}>
+                      {item.label}
+                    </Text>
+                  </ListItem.Title>
+                </ListItem.Content>
+
+                {isSelected && (
+                  <Icon name="check" color={Theme.Colors.ListSelectedIcon} />
+                )}
+              </ListItem>
+            );
+          })}
         </Column>
       </Overlay>
     </React.Fragment>

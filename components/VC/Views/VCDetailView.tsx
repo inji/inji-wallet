@@ -302,7 +302,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                       <Text
                         testID="offlineAuthDisabledHeader"
                         style={{
-                          fontFamily: 'Inter_600SemiBold',
+                          fontFamily: 'Montserrat_600SemiBold',
                           fontSize: 14,
                         }}
                         color={Theme.Colors.statusLabel}
@@ -312,7 +312,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                       <Text
                         testID="offlineAuthDisabledMessage"
                         style={{
-                          fontFamily: 'Inter_400Regular',
+                          fontFamily: 'Montserrat_400Regular',
                           fontSize: 12,
                         }}
                         color={Theme.Colors.statusMessage}
@@ -345,7 +345,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                         testID="profileAuthenticated"
                         color={Theme.Colors.statusLabel}
                         style={{
-                          fontFamily: 'Inter_600SemiBold',
+                          fontFamily: 'Montserrat_600SemiBold',
                           fontSize: 14,
                         }}
                         margin={'0 18 0 0'}>
@@ -379,7 +379,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
               style={{
                 color: '#007AFF',
                 fontSize: 16,
-                fontFamily: 'Inter_500Medium',
+                fontFamily: 'Montserrat_500Medium',
               }}>
               {t('View Shareable Information')}
             </Text>

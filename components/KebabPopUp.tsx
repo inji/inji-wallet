@@ -59,7 +59,7 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
                   {item.icon}
                 </View>
                 <Text
-                  style={{fontFamily: 'Inter_600SemiBold'}}
+                  style={{fontFamily: 'Montserrat_600SemiBold'}}
                   color={
                     item.testID === 'removeFromWallet'
                       ? Theme.Colors.warningText

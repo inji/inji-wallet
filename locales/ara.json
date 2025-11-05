@@ -425,7 +425,7 @@
     }
   },
   "MyVcsTab": {
-    "searchByName": "يبحث",
+    "searchByName": "...يبحث",
     "bringYourDigitalID": "أحضر هويتك الرقمية",
     "generateVcDescription": "اضغط على \"إضافة بطاقة \" أدناه لتنزيل بطاقتك",
     "generateVcFABDescription": "اضغط على \"+\" أدناه لتنزيل بطاقتك",
@@ -516,6 +516,14 @@
       "pending": {
         "title": "وضع انتظار:",
         "description": "التحقق معلق حاليًا بسبب مشكلات فنية."
+      },
+      "expired": {
+        "title": "الحالة منتهية الصلاحية:",
+        "description": "انتهت صلاحية بيانات الاعتماد."
+      },
+      "revoked": {
+        "title": "الحالة الملغاة:",
+        "description": "تم إلغاء بيانات الاعتماد ولم تعد صالحة."
       }
     }
   },

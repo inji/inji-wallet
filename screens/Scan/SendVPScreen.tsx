@@ -340,7 +340,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
               <Text
                 style={{
                   color: Theme.Colors.Icon,
-                  fontFamily: 'Inter_600SemiBold',
+                  fontFamily: 'Montserrat_600SemiBold',
                 }}
                 onPress={
                   areAllVcsChecked

@@ -13,6 +13,7 @@ import {
 } from '../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../shared/telemetry/TelemetryConstants';
 import {SvgImage} from '../components/ui/svg';
+import {isIOS} from '../shared/constants';
 
 export const BiometricScreen: React.FC<RootRouteProps> = props => {
   const {t} = useTranslation('BiometricScreen');
@@ -39,7 +40,9 @@ export const BiometricScreen: React.FC<RootRouteProps> = props => {
       backgroundColor={Theme.Colors.whiteBackgroundColor}>
       <Centered fill>
         <TouchableOpacity onPress={controller.useBiometrics}>
-          {SvgImage.fingerprintIcon(180)}
+          {isIOS()
+            ? SvgImage.faceBiometicIcon(108)
+            : SvgImage.fingerprintIcon(108)}
         </TouchableOpacity>
       </Centered>
 

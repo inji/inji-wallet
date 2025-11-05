@@ -426,7 +426,7 @@
     }
   },
   "MyVcsTab": {
-    "searchByName": "Search",
+    "searchByName": "search...",
     "bringYourDigitalID": "Bring your digital identity",
     "generateVcDescription": "Tap on \"Download card\" below to download your card",
     "generateVcFABDescription": "Tap on  \"+\" below to download your card",
@@ -521,6 +521,10 @@
       "expired": {
         "title": "Expired Status:",
         "description": "The credential has expired."
+      },
+      "revoked": {
+        "title": "Revoked Status:",
+        "description": "The credential has been revoked and is no longer valid."
       }
     }
   },

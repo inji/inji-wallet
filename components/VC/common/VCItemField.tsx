@@ -6,6 +6,10 @@ import React from 'react';
 import {SvgImage} from '../../ui/svg';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ExpiredStatus from '../../../assets/Expired_Status.svg';
+import RevokedStatus from '../../../assets/Revoked_Status.svg';
+import ValidStatus from '../../../assets/Valid_Status.svg';
+import PendingStatus from '../../../assets/Pending_Status.svg';
 
 export const VCItemFieldName = ({
   fieldName,
@@ -38,52 +42,101 @@ export const VCItemFieldName = ({
           triggerComponent={SvgImage.info()}
           triggerComponentStyles={{marginLeft: 2, marginTop: 2}}
           toolTipContent={
-            <Column align="flex-start">
-              <View style={{marginBottom: 20}}>
-                <Text weight="semibold">
-                  {t('statusToolTipContent.valid.title')}
-                </Text>
-                <Text
-                  weight="regular"
-                  style={[
-                    Theme.Styles.tooltipContentDescription,
-                    {marginTop: 3},
-                  ]}>
-                  {t('statusToolTipContent.valid.description')}
-                </Text>
-              </View>
-              <View style={{marginBottom: 20}}>
-                <Text weight="semibold">
-                  {t('statusToolTipContent.pending.title')}
-                </Text>
-                <Text
-                  weight="regular"
-                  style={[
-                    Theme.Styles.tooltipContentDescription,
-                    {marginTop: 3},
-                  ]}>
-                  {t('statusToolTipContent.pending.description')}
-                </Text>
-              </View>
-              <View>
-                <Text weight="semibold">
-                  {t('statusToolTipContent.expired.title')}
-                </Text>
-                <Text
-                  weight="regular"
-                  style={[
-                    Theme.Styles.tooltipContentDescription,
-                    {marginTop: 3},
-                  ]}>
-                  {t('statusToolTipContent.expired.description')}
-                </Text>
-              </View>
+            <Column>
+              <Row style={{width: '100%'}}>
+                <View style={{marginRight: 6}}>
+                  <ValidStatus width={20} height={20} />
+                </View>
+                <View style={{marginBottom: 15, marginTop: 1}}>
+                  <Text
+                    weight="semibold"
+                    style={Theme.Styles.tooltipContentTitle}>
+                    {t('statusToolTipContent.valid.title')}
+                  </Text>
+                  <Text
+                    weight="regular"
+                    style={[
+                      Theme.Styles.tooltipContentDescription,
+                      {marginTop: 3},
+                    ]}>
+                    {t('statusToolTipContent.valid.description')}
+                  </Text>
+                </View>
+              </Row>
+
+              <Row style={{width: '100%'}}>
+                <View style={{marginRight: 6}}>
+                  <PendingStatus width={20} height={20} />
+                </View>
+                <View style={{marginBottom: 15, marginTop: 1}}>
+                  <Text
+                    weight="semibold"
+                    style={Theme.Styles.tooltipContentTitle}>
+                    {t('statusToolTipContent.pending.title')}
+                  </Text>
+                  <Text
+                    weight="regular"
+                    style={[
+                      Theme.Styles.tooltipContentDescription,
+                      {marginTop: 3},
+                    ]}>
+                    {t('statusToolTipContent.pending.description')}
+                  </Text>
+                </View>
+              </Row>
+
+              <Row style={{width: '100%'}}>
+                <View style={{marginRight: 6}}>
+                  <ExpiredStatus width={20} height={20} />
+                </View>
+                <View style={{marginBottom: 15, marginTop: 1}}>
+                  <Text
+                    weight="semibold"
+                    style={Theme.Styles.tooltipContentTitle}>
+                    {t('statusToolTipContent.expired.title')}
+                  </Text>
+                  <Text
+                    weight="regular"
+                    style={[
+                      Theme.Styles.tooltipContentDescription,
+                      {marginTop: 3},
+                    ]}>
+                    {t('statusToolTipContent.expired.description')}
+                  </Text>
+                </View>
+              </Row>
+
+              <Row style={{width: '100%'}}>
+                <View style={{marginRight: 6}}>
+                  <RevokedStatus width={20} height={20} />
+                </View>
+                <View style={{marginTop: 1}}>
+                  <Text
+                    weight="semibold"
+                    style={Theme.Styles.tooltipContentTitle}>
+                    {t('statusToolTipContent.revoked.title')}
+                  </Text>
+                  <Text
+                    weight="regular"
+                    style={[
+                      Theme.Styles.tooltipContentDescription,
+                      {marginTop: 3},
+                    ]}>
+                    {t('statusToolTipContent.revoked.description')}
+                  </Text>
+                </View>
+              </Row>
             </Column>
           }
         />
       )}
       {isDisclosed && (
-      <Icon name="share-square-o" size={10} color="#666" style={{marginLeft:5, marginTop:3}} />
+        <Icon
+          name="share-square-o"
+          size={10}
+          color="#666"
+          style={{marginLeft: 5, marginTop: 3}}
+        />
       )}
     </Row>
   );

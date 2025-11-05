@@ -28,7 +28,7 @@ export const BannerNotificationContainer: React.FC<
   const verificationStatus = bannerNotificationController.verificationStatus;
 
   return (
-    <>
+    <View style={[{position: 'absolute', zIndex: 9999}]}>
       <BackupAndRestoreBannerNotification />
 
       {settingsScreenController.isKeyOrderSet === true && (
@@ -131,7 +131,7 @@ export const BannerNotificationContainer: React.FC<
           testId={'downloadingVcSuccessPopup'}
         />
       )}
-    </>
+    </View>
   );
 };
 

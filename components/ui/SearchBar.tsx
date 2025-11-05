@@ -5,9 +5,30 @@ import {Row} from './Layout';
 import {Theme} from './styleUtils';
 import {SvgImage} from './svg';
 
-export const SearchBar = ({ isVcSearch = false, searchIconTestID, searchBarTestID, placeholder, search, onFocus, onChangeText, onLayout, editable = true }: SearchBarProps) => {
+export const SearchBar = ({
+  isVcSearch = false,
+  searchIconTestID,
+  searchBarTestID,
+  placeholder,
+  search,
+  onFocus,
+  onChangeText,
+  onLayout,
+  editable = true,
+}: SearchBarProps) => {
   return (
-    <Row>
+    <Row style={Theme.SearchBarStyles.innerSearchBarContainer}>
+      <TextInput
+        testID={searchBarTestID}
+        style={Theme.SearchBarStyles.searchBar}
+        placeholder={placeholder}
+        placeholderTextColor={Theme.Colors.SearchBarPlaceholderColor}
+        value={search}
+        onFocus={onFocus}
+        onChangeText={searchText => onChangeText(searchText)}
+        onLayout={onLayout}
+        editable={editable ?? true}
+      />
       {isVcSearch ? (
         <View
           testID={searchIconTestID}
@@ -18,21 +39,12 @@ export const SearchBar = ({ isVcSearch = false, searchIconTestID, searchBarTestI
         <Icon
           testID={searchIconTestID}
           name="search"
-          color={Theme.Colors.Icon}
+          type="material"
+          color={Theme.Colors.SearchIcon}
           size={27}
           style={Theme.SearchBarStyles.searchIcon}
         />
       )}
-      <TextInput
-        testID={searchBarTestID}
-        style={Theme.SearchBarStyles.searchBar}
-        placeholder={placeholder}
-        value={search}
-        onFocus={onFocus}
-        onChangeText={searchText => onChangeText(searchText)}
-        onLayout={onLayout}
-        editable={editable ?? true}
-      />
     </Row>
   );
 };
