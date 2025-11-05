@@ -11,7 +11,6 @@ import RevokedStatus from '../../../assets/Revoked_Status.svg';
 import ValidStatus from '../../../assets/Valid_Status.svg';
 import PendingStatus from '../../../assets/Pending_Status.svg';
 import { STATUS_FIELD_NAME } from './VCUtils';
-import { StatusTooltipContent } from './VcStatustooTip';
 
 export const VCItemFieldName = ({
   fieldName,

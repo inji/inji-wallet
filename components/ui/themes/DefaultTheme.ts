@@ -811,7 +811,7 @@ export const DefaultTheme = {
       flex: 1,
       justifyContent: 'space-around',
     },
-    horizontalSeparator: {
+    horizontalSeparator:{
       height: 1,
       backgroundColor: '#DADADA',
     },
