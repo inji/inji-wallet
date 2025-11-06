@@ -1,17 +1,18 @@
 import React from 'react';
 import {render} from '@testing-library/react-native';
 import {VcItemContainerProfileImage} from './VcItemContainerProfileImage';
+import {View} from 'react-native';
 
 // Mock SvgImage
 jest.mock('./ui/svg', () => ({
   SvgImage: {
-    pinIcon: jest.fn(() => null),
+    pinIcon: jest.fn(() => <View testID="mockPinIcon" />),
   },
 }));
 
 // Mock ProfileIcon
 jest.mock('./ProfileIcon', () => ({
-  ProfileIcon: jest.fn(() => null),
+  ProfileIcon: jest.fn(() => <View testID="mockProfileIcon" />),
 }));
 
 describe('VcItemContainerProfileImage Component', () => {

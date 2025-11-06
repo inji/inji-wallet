@@ -1,6 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`VcItemContainerProfileImage Component should match snapshot with empty string face 1`] = `null`;
+exports[`VcItemContainerProfileImage Component should match snapshot with empty string face 1`] = `
+<View
+  testID="mockProfileIcon"
+/>
+`;
 
 exports[`VcItemContainerProfileImage Component should match snapshot with face image 1`] = `
 <View
@@ -81,9 +85,20 @@ exports[`VcItemContainerProfileImage Component should match snapshot with face i
       ]
     }
   />
+  <View
+    testID="mockPinIcon"
+  />
 </View>
 `;
 
-exports[`VcItemContainerProfileImage Component should match snapshot without face image 1`] = `null`;
+exports[`VcItemContainerProfileImage Component should match snapshot without face image 1`] = `
+<View
+  testID="mockProfileIcon"
+/>
+`;
 
-exports[`VcItemContainerProfileImage Component should match snapshot without face image and pinned 1`] = `null`;
+exports[`VcItemContainerProfileImage Component should match snapshot without face image and pinned 1`] = `
+<View
+  testID="mockProfileIcon"
+/>
+`;
