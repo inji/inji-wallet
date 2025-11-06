@@ -87,6 +87,10 @@ describe('imageUtils', () => {
       const result = await shareImageToAllSupportedApps(mockShareOptions);
 
       expect(result).toBe(false);
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Exception while sharing image::',
+        expect.objectContaining({message: 'User did not share'}),
+      );
       consoleErrorSpy.mockRestore();
     });
   });

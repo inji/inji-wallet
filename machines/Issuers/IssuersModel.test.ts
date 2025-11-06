@@ -235,7 +235,6 @@ describe('IssuersModel', () => {
         context.credentialWrapper,
         context.serviceRefs,
         context.vcMetadata,
-        context.credentialOfferCredentialIssuer,
         context.tokenRequestObject,
       ];
 

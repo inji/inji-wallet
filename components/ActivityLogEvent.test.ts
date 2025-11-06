@@ -147,7 +147,7 @@ describe('VCActivityLog.getActionLabel', () => {
     expect(label).toBeTruthy();
   });
 
-  it('should format time in different languages', () => {
+  it('should format time with device name in English locale', () => {
     const mockLog = new VCActivityLog({
       deviceName: 'Test Device',
       timestamp: Date.now() - 300000, // 5 minutes ago

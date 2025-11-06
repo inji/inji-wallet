@@ -9,8 +9,18 @@ import {
   removeBottomSectionFields,
   getMatchingCredentialIssuerMetadata,
   selectCredentialRequestKey,
+  updateCredentialInformation,
 } from './Utils';
 import {VCFormat} from '../VCFormat';
+
+// Mock VCProcessor
+jest.mock('../../components/VC/common/VCProcessor', () => ({
+  VCProcessor: {
+    processForRendering: jest.fn().mockResolvedValue({
+      processedData: 'mocked-processed-credential',
+    }),
+  },
+}));
 
 describe('openId4VCI Utils', () => {
   describe('Protocols', () => {
@@ -250,6 +260,148 @@ describe('openId4VCI Utils', () => {
 
       const result = selectCredentialRequestKey(proofSigningAlgos, keyOrder);
       expect(result).toBe('ES256');
+    });
+  });
+
+  describe('updateCredentialInformation', () => {
+    it('should update credential information for MSO_MDOC format', async () => {
+      const mockContext = {
+        selectedCredentialType: {
+          id: 'TestCredential',
+          format: VCFormat.mso_mdoc,
+        },
+        selectedIssuer: {
+          display: [{language: 'en', logo: 'test-logo.png'}],
+        },
+        vcMetadata: {
+          id: 'test-id',
+        },
+      };
+
+      const mockCredential = {
+        credential: 'test-credential-data',
+      } as any;
+
+      const result = await updateCredentialInformation(
+        mockContext,
+        mockCredential,
+      );
+
+      expect(result).toBeDefined();
+      expect(result.format).toBe(VCFormat.mso_mdoc);
+      expect(result.verifiableCredential).toBeDefined();
+      expect(result.verifiableCredential.credentialConfigurationId).toBe(
+        'TestCredential',
+      );
+      expect(result.generatedOn).toBeInstanceOf(Date);
+    });
+
+    it('should update credential information for SD-JWT format', async () => {
+      const mockContext = {
+        selectedCredentialType: {
+          id: 'SDJWTCredential',
+          format: VCFormat.vc_sd_jwt,
+        },
+        selectedIssuer: {
+          display: [{language: 'en', logo: 'sd-jwt-logo.png'}],
+        },
+        vcMetadata: {
+          id: 'sd-jwt-id',
+        },
+      };
+
+      const mockCredential = {
+        credential: 'sd-jwt-credential-data',
+      } as any;
+
+      const result = await updateCredentialInformation(
+        mockContext,
+        mockCredential,
+      );
+
+      expect(result).toBeDefined();
+      expect(result.format).toBe(VCFormat.vc_sd_jwt);
+      expect(result.vcMetadata.format).toBe(VCFormat.vc_sd_jwt);
+    });
+
+    it('should update credential information for DC-SD-JWT format', async () => {
+      const mockContext = {
+        selectedCredentialType: {
+          id: 'DCSDJWTCredential',
+          format: VCFormat.dc_sd_jwt,
+        },
+        selectedIssuer: {
+          display: [{language: 'en', logo: 'dc-logo.png'}],
+        },
+        vcMetadata: {
+          id: 'dc-jwt-id',
+        },
+      };
+
+      const mockCredential = {
+        credential: 'dc-sd-jwt-credential-data',
+      } as any;
+
+      const result = await updateCredentialInformation(
+        mockContext,
+        mockCredential,
+      );
+
+      expect(result).toBeDefined();
+      expect(result.format).toBe(VCFormat.dc_sd_jwt);
+    });
+
+    it('should handle credential without logo in display', async () => {
+      const mockContext = {
+        selectedCredentialType: {
+          id: 'NoLogoCredential',
+          format: VCFormat.ldp_vc,
+        },
+        selectedIssuer: {
+          display: [{language: 'en'}],
+        },
+        vcMetadata: {},
+      };
+
+      const mockCredential = {
+        credential: 'no-logo-credential',
+      } as any;
+
+      const result = await updateCredentialInformation(
+        mockContext,
+        mockCredential,
+      );
+
+      expect(result).toBeDefined();
+      expect(result.verifiableCredential.issuerLogo).toBe('');
+    });
+
+    it('should include vcMetadata with format', async () => {
+      const mockContext = {
+        selectedCredentialType: {
+          id: 'MetadataTest',
+          format: VCFormat.ldp_vc,
+        },
+        selectedIssuer: {
+          display: [],
+        },
+        vcMetadata: {
+          id: 'metadata-id',
+        },
+      };
+
+      const mockCredential = {
+        credential: 'metadata-test',
+      } as any;
+
+      const result = await updateCredentialInformation(
+        mockContext,
+        mockCredential,
+      );
+
+      expect(result.vcMetadata).toBeDefined();
+      expect(result.vcMetadata.format).toBe(VCFormat.ldp_vc);
+      expect(result.vcMetadata.id).toBe('metadata-id');
     });
   });
 });

@@ -26,6 +26,18 @@ jest.mock('./ui', () => ({
   Text: ({children}: {children: React.ReactNode}) => <>{children}</>,
 }));
 
+// Mock react-native components
+jest.mock('react-native', () => {
+  const ReactNative = jest.requireActual('react-native');
+  return {
+    ...ReactNative,
+    Modal: ({children}: {children: React.ReactNode}) => <>{children}</>,
+    View: ({children}: {children: React.ReactNode}) => <>{children}</>,
+    ScrollView: ({children}: {children: React.ReactNode}) => <>{children}</>,
+    Image: jest.fn(() => null),
+  };
+});
+
 describe('TrustModal Component', () => {
   const defaultProps = {
     isVisible: true,
