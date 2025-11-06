@@ -117,9 +117,9 @@ describe('VCItemModel', () => {
       expect(typeof initialContext.wellknownResponse).toBe('object');
     });
 
-    it('should have all 21 required properties', () => {
+    it('should have all 24 required properties', () => {
       const properties = Object.keys(initialContext);
-      expect(properties).toHaveLength(21);
+      expect(properties).toHaveLength(24);
     });
   });
 

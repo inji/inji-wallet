@@ -114,9 +114,9 @@ describe('VCMetaModel', () => {
       expect(initialContext).toHaveProperty('DownloadingCredentialsSuccess');
     });
 
-    it('should have exactly 14 properties in initial context', () => {
+    it('should have exactly 16 properties in initial context', () => {
       const propertyCount = Object.keys(initialContext).length;
-      expect(propertyCount).toBe(14);
+      expect(propertyCount).toBe(16);
     });
   });
 

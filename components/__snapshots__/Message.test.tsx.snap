@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Message Component should match snapshot with cancel button 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "rgba(0,0,0,.6)",
+      "height": 1334,
+      "position": "absolute",
+      "top": 0,
+      "width": 750,
+      "zIndex": 9,
+    }
+  }
+>
+  Test
+</View>
+`;
+
+exports[`Message Component should match snapshot with hint text 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "rgba(0,0,0,.6)",
+      "height": 1334,
+      "position": "absolute",
+      "top": 0,
+      "width": 750,
+      "zIndex": 9,
+    }
+  }
+>
+  Test
+  Hint text
+</View>
+`;
+
+exports[`Message Component should match snapshot with message only 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "rgba(0,0,0,.6)",
+      "height": 1334,
+      "position": "absolute",
+      "top": 0,
+      "width": 750,
+      "zIndex": 9,
+    }
+  }
+>
+  Test Message
+</View>
+`;
+
+exports[`Message Component should match snapshot with title and message 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "rgba(0,0,0,.6)",
+      "height": 1334,
+      "position": "absolute",
+      "top": 0,
+      "width": 750,
+      "zIndex": 9,
+    }
+  }
+>
+  Title
+  Message
+</View>
+`;
+
+exports[`Message Component should match snapshot with title only 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "rgba(0,0,0,.6)",
+      "height": 1334,
+      "position": "absolute",
+      "top": 0,
+      "width": 750,
+      "zIndex": 9,
+    }
+  }
+>
+  Test Title
+</View>
+`;

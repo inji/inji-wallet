@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActivityLogText Component should match snapshot with VC activity 1`] = `null`;
+
+exports[`ActivityLogText Component should match snapshot with VP activity 1`] = `null`;

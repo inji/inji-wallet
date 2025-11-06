@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QrCodeOverlay Component should match snapshot with default props 1`] = `null`;
+
+exports[`QrCodeOverlay Component should match snapshot with force visible 1`] = `null`;
+
+exports[`QrCodeOverlay Component should match snapshot with inline QR disabled 1`] = `null`;
+
+exports[`QrCodeOverlay Component should match snapshot with onClose handler 1`] = `null`;

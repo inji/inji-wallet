@@ -1,0 +1,851 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BannerNotification Component should match snapshot with different testId 1`] = `
+<View
+  accessibilityLabel="customBanner"
+  accessible={true}
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "alignItems": "flex-start",
+            "backgroundColor": "#DB2E2E",
+            "columnGap": 7,
+            "justifyContent": "space-between",
+            "marginVertical": 1,
+            "paddingHorizontal": 18,
+            "paddingVertical": 12,
+            "position": "relative",
+            "width": "100%",
+          },
+          {
+            "backgroundColor": "#4B9D20",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="customBannerText"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 12,
+              "lineHeight": 15,
+              "padding": 1,
+              "textAlignVertical": "center",
+            },
+          ]
+        }
+      >
+        Test notification message
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="close"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "paddingLeft": 9,
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`BannerNotification Component should match snapshot with error status 1`] = `
+<View
+  accessibilityLabel="bannerTest"
+  accessible={true}
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "alignItems": "flex-start",
+            "backgroundColor": "#DB2E2E",
+            "columnGap": 7,
+            "justifyContent": "space-between",
+            "marginVertical": 1,
+            "paddingHorizontal": 18,
+            "paddingVertical": 12,
+            "position": "relative",
+            "width": "100%",
+          },
+          {
+            "backgroundColor": "#DB2E2E",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="bannerTestText"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 12,
+              "lineHeight": 15,
+              "padding": 1,
+              "textAlignVertical": "center",
+            },
+          ]
+        }
+      >
+        Test notification message
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="close"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "paddingLeft": 9,
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`BannerNotification Component should match snapshot with in progress status 1`] = `
+<View
+  accessibilityLabel="bannerTest"
+  accessible={true}
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "alignItems": "flex-start",
+            "backgroundColor": "#DB2E2E",
+            "columnGap": 7,
+            "justifyContent": "space-between",
+            "marginVertical": 1,
+            "paddingHorizontal": 18,
+            "paddingVertical": 12,
+            "position": "relative",
+            "width": "100%",
+          },
+          {
+            "backgroundColor": "#D9822B",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="bannerTestText"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 12,
+              "lineHeight": 15,
+              "padding": 1,
+              "textAlignVertical": "center",
+            },
+          ]
+        }
+      >
+        Test notification message
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="close"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "paddingLeft": 9,
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`BannerNotification Component should match snapshot with long message 1`] = `
+<View
+  accessibilityLabel="bannerTest"
+  accessible={true}
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "alignItems": "flex-start",
+            "backgroundColor": "#DB2E2E",
+            "columnGap": 7,
+            "justifyContent": "space-between",
+            "marginVertical": 1,
+            "paddingHorizontal": 18,
+            "paddingVertical": 12,
+            "position": "relative",
+            "width": "100%",
+          },
+          {
+            "backgroundColor": "#4B9D20",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="bannerTestText"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 12,
+              "lineHeight": 15,
+              "padding": 1,
+              "textAlignVertical": "center",
+            },
+          ]
+        }
+      >
+        This is a very long notification message that should wrap to multiple lines and still be displayed correctly
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="close"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "paddingLeft": 9,
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`BannerNotification Component should match snapshot with success status 1`] = `
+<View
+  accessibilityLabel="bannerTest"
+  accessible={true}
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "alignItems": "flex-start",
+            "backgroundColor": "#DB2E2E",
+            "columnGap": 7,
+            "justifyContent": "space-between",
+            "marginVertical": 1,
+            "paddingHorizontal": 18,
+            "paddingVertical": 12,
+            "position": "relative",
+            "width": "100%",
+          },
+          {
+            "backgroundColor": "#4B9D20",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="bannerTestText"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 12,
+              "lineHeight": 15,
+              "padding": 1,
+              "textAlignVertical": "center",
+            },
+          ]
+        }
+      >
+        Test notification message
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="close"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "paddingLeft": 9,
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;

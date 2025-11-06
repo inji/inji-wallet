@@ -1,0 +1,821 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccountInformation Component should match snapshot with different email 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "columnGap": 11,
+        "marginBottom": 21,
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <Image
+      accessibilityLabel="associatedAccountPicture"
+      accessible={true}
+      source={
+        {
+          "uri": "https://example.com/avatar.jpg",
+        }
+      }
+      style={
+        {
+          "borderRadius": 45,
+          "height": 40,
+          "width": 40,
+        }
+      }
+    />
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="associatedAccount"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#707070",
+              "fontSize": 12,
+            },
+          ]
+        }
+      >
+        associatedAccount
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="associatedAccountEmail"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "fontFamily": "Helvetica Neue",
+              "fontSize": 13,
+            },
+          ]
+        }
+      >
+        another@test.com
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`AccountInformation Component should match snapshot with different picture URL 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "columnGap": 11,
+        "marginBottom": 21,
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <Image
+      accessibilityLabel="associatedAccountPicture"
+      accessible={true}
+      source={
+        {
+          "uri": "https://example.com/different-avatar.jpg",
+        }
+      }
+      style={
+        {
+          "borderRadius": 45,
+          "height": 40,
+          "width": 40,
+        }
+      }
+    />
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="associatedAccount"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#707070",
+              "fontSize": 12,
+            },
+          ]
+        }
+      >
+        associatedAccount
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="associatedAccountEmail"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "fontFamily": "Helvetica Neue",
+              "fontSize": 13,
+            },
+          ]
+        }
+      >
+        test@example.com
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`AccountInformation Component should match snapshot with email and picture 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "columnGap": 11,
+        "marginBottom": 21,
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <Image
+      accessibilityLabel="associatedAccountPicture"
+      accessible={true}
+      source={
+        {
+          "uri": "https://example.com/avatar.jpg",
+        }
+      }
+      style={
+        {
+          "borderRadius": 45,
+          "height": 40,
+          "width": 40,
+        }
+      }
+    />
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="associatedAccount"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#707070",
+              "fontSize": 12,
+            },
+          ]
+        }
+      >
+        associatedAccount
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="associatedAccountEmail"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "fontFamily": "Helvetica Neue",
+              "fontSize": 13,
+            },
+          ]
+        }
+      >
+        test@example.com
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`AccountInformation Component should match snapshot with long email 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "columnGap": 11,
+        "marginBottom": 21,
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <Image
+      accessibilityLabel="associatedAccountPicture"
+      accessible={true}
+      source={
+        {
+          "uri": "https://example.com/avatar.jpg",
+        }
+      }
+      style={
+        {
+          "borderRadius": 45,
+          "height": 40,
+          "width": 40,
+        }
+      }
+    />
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="associatedAccount"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#707070",
+              "fontSize": 12,
+            },
+          ]
+        }
+      >
+        associatedAccount
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="associatedAccountEmail"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "fontFamily": "Helvetica Neue",
+              "fontSize": 13,
+            },
+          ]
+        }
+      >
+        very.long.email.address@example-domain.com
+      </Text>
+    </View>
+  </View>
+</View>
+`;

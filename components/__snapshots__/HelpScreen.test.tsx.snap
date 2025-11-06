@@ -1,0 +1,6561 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HelpScreen Component should match snapshot when disabled 1`] = `
+[
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": true,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={false}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+  >
+    <Text>
+      Help
+    </Text>
+  </View>,
+  <RCTSafeAreaView
+    style={
+      {
+        "flex": 1,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          {
+            "paddingBottom": 10,
+            "paddingEnd": 10,
+            "paddingStart": 10,
+            "paddingTop": 10,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <RCTScrollView
+        data={
+          [
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.one
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.one",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.two
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.two",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.three-a
+                   
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.three-b
+                   
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.three-c
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.three",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.four
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.four",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.five
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.five",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.six
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.six",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.seven
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.seven",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.eight
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.eight",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.nine
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.nine",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.ten-a
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.ten-b
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.ten",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.eleven
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.eleven",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.twelve
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.twelve",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.sixteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.sixteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.seventeen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.seventeen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.thirteen-a
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.thirteen-b
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.thirteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.fourteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.fourteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.fifteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.fifteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.fifteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.fifteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.one
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.one",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.two
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.two",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.three
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.three",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.four
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.four",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.five
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.five",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.six
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.six",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.seven
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.seven",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.eight
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.eight",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.one
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.one",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.two
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.two",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.three
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.three",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.four
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.four",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.five
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.five",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.six
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.six",
+            },
+          ]
+        }
+        getItem={[Function]}
+        getItemCount={[Function]}
+        keyExtractor={[Function]}
+        onContentSizeChange={[Function]}
+        onLayout={[Function]}
+        onMomentumScrollBegin={[Function]}
+        onMomentumScrollEnd={[Function]}
+        onScroll={[Function]}
+        onScrollBeginDrag={[Function]}
+        onScrollEndDrag={[Function]}
+        onScrollToIndexFailed={[Function]}
+        removeClippedSubviews={false}
+        renderItem={[Function]}
+        scrollEventThrottle={0.0001}
+        stickyHeaderIndices={[]}
+        viewabilityConfigCallbackPairs={[]}
+      >
+        <View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.one
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.one
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.two
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.two
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.three
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.three-a
+                 
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.three-b
+                 
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.three-c
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.four
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.four
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.five
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.five
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.six
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.six
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.seven
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.seven
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.eight
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.eight
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.nine
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.nine
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.ten
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.ten-a
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.ten-b
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "height": 0,
+              }
+            }
+          />
+        </View>
+      </RCTScrollView>
+    </View>
+  </RCTSafeAreaView>,
+]
+`;
+
+exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
+[
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={false}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+  >
+    <Text>
+      Help
+    </Text>
+  </View>,
+  <RCTSafeAreaView
+    style={
+      {
+        "flex": 1,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          {
+            "paddingBottom": 10,
+            "paddingEnd": 10,
+            "paddingStart": 10,
+            "paddingTop": 10,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <RCTScrollView
+        data={
+          [
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.one
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.one",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.two
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.two",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.three-a
+                   
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.three-b
+                   
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.three-c
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.three",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.four
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.four",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.five
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.five",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.six
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.six",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.seven
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.seven",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.eight
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.eight",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.nine
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.nine",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.ten-a
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.ten-b
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.ten",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.eleven
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.eleven",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.twelve
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.twelve",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.sixteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.sixteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.seventeen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.seventeen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.thirteen-a
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.thirteen-b
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.thirteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.fourteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.fourteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.fifteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.fifteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.fifteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.fifteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.one
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.one",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.two
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.two",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.three
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.three",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.four
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.four",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.five
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.five",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.six
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.six",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.seven
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.seven",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.eight
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.eight",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.one
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.one",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.two
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.two",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.three
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.three",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.four
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.four",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.five
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.five",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.six
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.six",
+            },
+          ]
+        }
+        getItem={[Function]}
+        getItemCount={[Function]}
+        keyExtractor={[Function]}
+        onContentSizeChange={[Function]}
+        onLayout={[Function]}
+        onMomentumScrollBegin={[Function]}
+        onMomentumScrollEnd={[Function]}
+        onScroll={[Function]}
+        onScrollBeginDrag={[Function]}
+        onScrollEndDrag={[Function]}
+        onScrollToIndexFailed={[Function]}
+        removeClippedSubviews={false}
+        renderItem={[Function]}
+        scrollEventThrottle={0.0001}
+        stickyHeaderIndices={[]}
+        viewabilityConfigCallbackPairs={[]}
+      >
+        <View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.one
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.one
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.two
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.two
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.three
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.three-a
+                 
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.three-b
+                 
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.three-c
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.four
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.four
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.five
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.five
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.six
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.six
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.seven
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.seven
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.eight
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.eight
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.nine
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.nine
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.ten
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.ten-a
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.ten-b
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "height": 0,
+              }
+            }
+          />
+        </View>
+      </RCTScrollView>
+    </View>
+  </RCTSafeAreaView>,
+]
+`;
+
+exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
+[
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={false}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+  >
+    <Text>
+      Help
+    </Text>
+  </View>,
+  <RCTSafeAreaView
+    style={
+      {
+        "flex": 1,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          {
+            "paddingBottom": 10,
+            "paddingEnd": 10,
+            "paddingStart": 10,
+            "paddingTop": 10,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <RCTScrollView
+        data={
+          [
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.one
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.one",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.two
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.two",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.three-a
+                   
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.three-b
+                   
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.three-c
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.three",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.four
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.four",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.five
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.five",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.six
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.six",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.seven
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.seven",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.eight
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.eight",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.nine
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.nine",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.ten-a
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.ten-b
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.ten",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.eleven
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.eleven",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.twelve
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.twelve",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.sixteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.sixteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.seventeen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.seventeen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.thirteen-a
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.thirteen-b
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.thirteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.fourteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.fourteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.fifteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.fifteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.fifteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.fifteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.one
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.one",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.two
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.two",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.three
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.three",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.four
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.four",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.five
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.five",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.six
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.six",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.seven
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.seven",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.eight
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.eight",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.one
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.one",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.two
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.two",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.three
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.three",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.four
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.four",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.five
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.five",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.six
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.six",
+            },
+          ]
+        }
+        getItem={[Function]}
+        getItemCount={[Function]}
+        keyExtractor={[Function]}
+        onContentSizeChange={[Function]}
+        onLayout={[Function]}
+        onMomentumScrollBegin={[Function]}
+        onMomentumScrollEnd={[Function]}
+        onScroll={[Function]}
+        onScrollBeginDrag={[Function]}
+        onScrollEndDrag={[Function]}
+        onScrollToIndexFailed={[Function]}
+        removeClippedSubviews={false}
+        renderItem={[Function]}
+        scrollEventThrottle={0.0001}
+        stickyHeaderIndices={[]}
+        viewabilityConfigCallbackPairs={[]}
+      >
+        <View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.one
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.one
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.two
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.two
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.three
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.three-a
+                 
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.three-b
+                 
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.three-c
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.four
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.four
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.five
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.five
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.six
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.six
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.seven
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.seven
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.eight
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.eight
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.nine
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.nine
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.ten
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.ten-a
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.ten-b
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "height": 0,
+              }
+            }
+          />
+        </View>
+      </RCTScrollView>
+    </View>
+  </RCTSafeAreaView>,
+]
+`;
+
+exports[`HelpScreen Component should match snapshot with keyManagement source 1`] = `
+[
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={false}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+  >
+    <Text>
+      Help
+    </Text>
+  </View>,
+  <RCTSafeAreaView
+    style={
+      {
+        "flex": 1,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          {
+            "paddingBottom": 10,
+            "paddingEnd": 10,
+            "paddingStart": 10,
+            "paddingTop": 10,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <RCTScrollView
+        data={
+          [
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.one
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.one",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.two
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.two",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.three-a
+                   
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.three-b
+                   
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.three-c
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.three",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.four
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.four",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.five
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.five",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.six
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.six",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.seven
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.seven",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.eight
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.eight",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.nine
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.nine",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.ten-a
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.ten-b
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.ten",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.eleven
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.eleven",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.twelve
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.twelve",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.sixteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.sixteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.seventeen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.seventeen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.thirteen-a
+                   
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      }
+                    }
+                  >
+                    here
+                  </Text>
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.thirteen-b
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.thirteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.fourteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.fourteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.fifteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.fifteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.inji.fifteen
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.inji.fifteen",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.one
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.one",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.two
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.two",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.three
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.three",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.four
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.four",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.five
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.five",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.six
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.six",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.seven
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.seven",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.backup.eight
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.backup.eight",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.one
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.one",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.two
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.two",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.three
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.three",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.four
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.four",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.five
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.five",
+            },
+            {
+              "data": <React.Fragment>
+                <Text
+                  style={
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    }
+                  }
+                >
+                  answers.KeyManagement.six
+                   
+                </Text>
+              </React.Fragment>,
+              "title": "questions.KeyManagement.six",
+            },
+          ]
+        }
+        getItem={[Function]}
+        getItemCount={[Function]}
+        keyExtractor={[Function]}
+        onContentSizeChange={[Function]}
+        onLayout={[Function]}
+        onMomentumScrollBegin={[Function]}
+        onMomentumScrollEnd={[Function]}
+        onScroll={[Function]}
+        onScrollBeginDrag={[Function]}
+        onScrollEndDrag={[Function]}
+        onScrollToIndexFailed={[Function]}
+        removeClippedSubviews={false}
+        renderItem={[Function]}
+        scrollEventThrottle={0.0001}
+        stickyHeaderIndices={[]}
+        viewabilityConfigCallbackPairs={[]}
+      >
+        <View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.one
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.one
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.two
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.two
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.three
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.three-a
+                 
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.three-b
+                 
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.three-c
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.four
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.four
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.five
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.five
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.six
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.six
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.seven
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.seven
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.eight
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.eight
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.nine
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.nine
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            onFocusCapture={[Function]}
+            onLayout={[Function]}
+            style={null}
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Inter_700Bold",
+                      "fontSize": 18,
+                      "lineHeight": 19,
+                      "margin": 7,
+                      "paddingTop": 5,
+                    },
+                  ]
+                }
+              >
+                questions.inji.ten
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.ten-a
+                 
+                <Text
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Inter_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
+                      },
+                    ]
+                  }
+                >
+                  here
+                </Text>
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Inter_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Inter_600SemiBold",
+                      "margin": 5,
+                    },
+                  ]
+                }
+              >
+                answers.inji.ten-b
+                 
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "height": 0,
+              }
+            }
+          />
+        </View>
+      </RCTScrollView>
+    </View>
+  </RCTSafeAreaView>,
+]
+`;

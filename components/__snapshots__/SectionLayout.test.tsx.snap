@@ -1,0 +1,165 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SectionLayout Component should match snapshot with complex children 1`] = `
+<View
+  accessibilityLabel="testSection"
+  accessible={true}
+  style={
+    {
+      "marginBottom": 0,
+      "marginLeft": 18,
+      "marginRight": 18,
+      "marginTop": 16,
+      "rowGap": 2,
+    }
+  }
+>
+  <View
+    testID="headerIcon"
+  >
+    Icon
+  </View>
+  Section Header
+  <Text>
+    Line 1
+  </Text>
+  <Text>
+    Line 2
+  </Text>
+  <View>
+    <Text>
+      Nested content
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`SectionLayout Component should match snapshot with custom marginBottom 1`] = `
+<View
+  accessibilityLabel="testSection"
+  accessible={true}
+  style={
+    {
+      "marginBottom": 20,
+      "marginLeft": 18,
+      "marginRight": 18,
+      "marginTop": 16,
+      "rowGap": 2,
+    }
+  }
+>
+  <View
+    testID="headerIcon"
+  >
+    Icon
+  </View>
+  Section Header
+  <Text>
+    Section Content
+  </Text>
+</View>
+`;
+
+exports[`SectionLayout Component should match snapshot with default props 1`] = `
+<View
+  accessibilityLabel="testSection"
+  accessible={true}
+  style={
+    {
+      "marginBottom": 0,
+      "marginLeft": 18,
+      "marginRight": 18,
+      "marginTop": 16,
+      "rowGap": 2,
+    }
+  }
+>
+  <View
+    testID="headerIcon"
+  >
+    Icon
+  </View>
+  Section Header
+  <Text>
+    Section Content
+  </Text>
+</View>
+`;
+
+exports[`SectionLayout Component should match snapshot with different header text 1`] = `
+<View
+  accessibilityLabel="testSection"
+  accessible={true}
+  style={
+    {
+      "marginBottom": 0,
+      "marginLeft": 18,
+      "marginRight": 18,
+      "marginTop": 16,
+      "rowGap": 2,
+    }
+  }
+>
+  <View
+    testID="headerIcon"
+  >
+    Icon
+  </View>
+  Custom Section Title
+  <Text>
+    Section Content
+  </Text>
+</View>
+`;
+
+exports[`SectionLayout Component should match snapshot with different icon 1`] = `
+<View
+  accessibilityLabel="testSection"
+  accessible={true}
+  style={
+    {
+      "marginBottom": 0,
+      "marginLeft": 18,
+      "marginRight": 18,
+      "marginTop": 16,
+      "rowGap": 2,
+    }
+  }
+>
+  <View
+    testID="customIcon"
+  >
+    🔍
+  </View>
+  Section Header
+  <Text>
+    Section Content
+  </Text>
+</View>
+`;
+
+exports[`SectionLayout Component should match snapshot with zero marginBottom 1`] = `
+<View
+  accessibilityLabel="testSection"
+  accessible={true}
+  style={
+    {
+      "marginBottom": 0,
+      "marginLeft": 18,
+      "marginRight": 18,
+      "marginTop": 16,
+      "rowGap": 2,
+    }
+  }
+>
+  <View
+    testID="headerIcon"
+  >
+    Icon
+  </View>
+  Section Header
+  <Text>
+    Section Content
+  </Text>
+</View>
+`;

@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DualMessageOverlay Component should match snapshot with both buttons 1`] = `
+[
+  "Confirm Action",
+  "Are you sure you want to proceed?",
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Inter_700Bold",
+          "fontSize": 15,
+          "justifyContent": "center",
+        },
+        {
+          "color": "#FFFFFF",
+        },
+        {
+          "textAlign": "left",
+        },
+        null,
+        null,
+        {
+          "paddingLeft": 0,
+        },
+      ]
+    }
+  >
+    tryAgain
+  </Text>,
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Inter_700Bold",
+          "fontSize": 15,
+          "justifyContent": "center",
+        },
+        {
+          "color": "#FFFFFF",
+        },
+        {
+          "textAlign": "left",
+        },
+        null,
+        null,
+        {
+          "paddingLeft": 0,
+        },
+      ]
+    }
+  >
+    ignore
+  </Text>,
+]
+`;
+
+exports[`DualMessageOverlay Component should match snapshot with children 1`] = `
+[
+  "Confirm Action",
+  "Are you sure you want to proceed?",
+  <Text>
+    Custom content here
+  </Text>,
+]
+`;
+
+exports[`DualMessageOverlay Component should match snapshot with custom height 1`] = `
+[
+  "Confirm Action",
+  "Are you sure you want to proceed?",
+]
+`;
+
+exports[`DualMessageOverlay Component should match snapshot with hint text 1`] = `
+[
+  "Confirm Action",
+  "Are you sure you want to proceed?",
+  "Additional information",
+]
+`;
+
+exports[`DualMessageOverlay Component should match snapshot with only ignore button 1`] = `
+[
+  "Confirm Action",
+  "Are you sure you want to proceed?",
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Inter_700Bold",
+          "fontSize": 15,
+          "justifyContent": "center",
+        },
+        {
+          "color": "#FFFFFF",
+        },
+        {
+          "textAlign": "left",
+        },
+        null,
+        null,
+        {
+          "paddingLeft": 0,
+        },
+      ]
+    }
+  >
+    ignore
+  </Text>,
+]
+`;
+
+exports[`DualMessageOverlay Component should match snapshot with only try again button 1`] = `
+[
+  "Confirm Action",
+  "Are you sure you want to proceed?",
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Inter_700Bold",
+          "fontSize": 15,
+          "justifyContent": "center",
+        },
+        {
+          "color": "#FFFFFF",
+        },
+        {
+          "textAlign": "left",
+        },
+        null,
+        null,
+        {
+          "paddingLeft": 0,
+        },
+      ]
+    }
+  >
+    tryAgain
+  </Text>,
+]
+`;
+
+exports[`DualMessageOverlay Component should match snapshot with title and message 1`] = `
+[
+  "Confirm Action",
+  "Are you sure you want to proceed?",
+]
+`;

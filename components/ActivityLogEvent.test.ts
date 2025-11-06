@@ -67,6 +67,7 @@ describe('getActionText', () => {
     activityLog.getActionText(mockIl18nfn, wellknown);
     expect(mockIl18nfn).toHaveBeenCalledWith('mockType', {
       idType: 'fake VC',
+      vcStatus: '',
     });
     expect(mockIl18nfn).toHaveBeenCalledTimes(1);
     // TODO: assert the returned string

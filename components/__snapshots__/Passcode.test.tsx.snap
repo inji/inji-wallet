@@ -1,0 +1,629 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Passcode Component should match snapshot with both message and error 1`] = `
+<Modal
+  animationType="slide"
+  hardwareAccelerated={false}
+  onRequestClose={[MockFunction]}
+  style={
+    {
+      "height": 1334,
+      "width": 750,
+    }
+  }
+  visible={true}
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        {
+          "paddingBottom": 32,
+          "paddingEnd": 32,
+          "paddingStart": 32,
+          "paddingTop": 32,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          {
+            "width": "100%",
+          },
+          null,
+          {
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        Enter passcode
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#D52929",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        Authentication failed
+      </Text>
+    </View>
+  </View>
+</Modal>
+`;
+
+exports[`Passcode Component should match snapshot with custom message 1`] = `
+<Modal
+  animationType="slide"
+  hardwareAccelerated={false}
+  onRequestClose={[MockFunction]}
+  style={
+    {
+      "height": 1334,
+      "width": 750,
+    }
+  }
+  visible={true}
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        {
+          "paddingBottom": 32,
+          "paddingEnd": 32,
+          "paddingStart": 32,
+          "paddingTop": 32,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          {
+            "width": "100%",
+          },
+          null,
+          {
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        Please enter your 6-digit passcode
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#D52929",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      />
+    </View>
+  </View>
+</Modal>
+`;
+
+exports[`Passcode Component should match snapshot with default props 1`] = `
+<Modal
+  animationType="slide"
+  hardwareAccelerated={false}
+  onRequestClose={[MockFunction]}
+  style={
+    {
+      "height": 1334,
+      "width": 750,
+    }
+  }
+  visible={true}
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        {
+          "paddingBottom": 32,
+          "paddingEnd": 32,
+          "paddingStart": 32,
+          "paddingTop": 32,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          {
+            "width": "100%",
+          },
+          null,
+          {
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        Enter your passcode
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#D52929",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      />
+    </View>
+  </View>
+</Modal>
+`;
+
+exports[`Passcode Component should match snapshot with error message 1`] = `
+<Modal
+  animationType="slide"
+  hardwareAccelerated={false}
+  onRequestClose={[MockFunction]}
+  style={
+    {
+      "height": 1334,
+      "width": 750,
+    }
+  }
+  visible={true}
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        {
+          "paddingBottom": 32,
+          "paddingEnd": 32,
+          "paddingStart": 32,
+          "paddingTop": 32,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          {
+            "width": "100%",
+          },
+          null,
+          {
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        Enter your passcode
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Inter_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#D52929",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        Incorrect passcode. Try again.
+      </Text>
+    </View>
+  </View>
+</Modal>
+`;

@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextEditOverlay Component should match snapshot with default props 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "rgba(0,0,0,.6)",
+      "height": 1334,
+      "position": "absolute",
+      "top": 0,
+      "width": 750,
+      "zIndex": 9,
+    }
+  }
+>
+  Edit Name
+</View>
+`;
+
+exports[`TextEditOverlay Component should match snapshot with different label 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "rgba(0,0,0,.6)",
+      "height": 1334,
+      "position": "absolute",
+      "top": 0,
+      "width": 750,
+      "zIndex": 9,
+    }
+  }
+>
+  Edit Email
+</View>
+`;
+
+exports[`TextEditOverlay Component should match snapshot with empty value 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "rgba(0,0,0,.6)",
+      "height": 1334,
+      "position": "absolute",
+      "top": 0,
+      "width": 750,
+      "zIndex": 9,
+    }
+  }
+>
+  Edit Name
+</View>
+`;
+
+exports[`TextEditOverlay Component should match snapshot with long value 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "rgba(0,0,0,.6)",
+      "height": 1334,
+      "position": "absolute",
+      "top": 0,
+      "width": 750,
+      "zIndex": 9,
+    }
+  }
+>
+  Edit Name
+</View>
+`;
+
+exports[`TextEditOverlay Component should match snapshot with maxLength 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "rgba(0,0,0,.6)",
+      "height": 1334,
+      "position": "absolute",
+      "top": 0,
+      "width": 750,
+      "zIndex": 9,
+    }
+  }
+>
+  Edit Name
+</View>
+`;

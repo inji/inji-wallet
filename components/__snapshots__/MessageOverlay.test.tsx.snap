@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorMessageOverlay Component should match snapshot with error 1`] = `
+[
+  "network.title",
+  "network.message",
+]
+`;
+
+exports[`ErrorMessageOverlay Component should match snapshot with testID 1`] = `
+[
+  "network.title",
+  "network.message",
+]
+`;
+
+exports[`MessageOverlay Component should match snapshot with button 1`] = `
+[
+  "Test Title",
+  "Test Message",
+]
+`;
+
+exports[`MessageOverlay Component should match snapshot with custom children 1`] = `
+[
+  "Test Title",
+  "Test Message",
+  <Text>
+    Custom Content
+  </Text>,
+]
+`;
+
+exports[`MessageOverlay Component should match snapshot with custom minHeight 1`] = `
+[
+  "Test Title",
+  "Test Message",
+]
+`;
+
+exports[`MessageOverlay Component should match snapshot with hint text 1`] = `
+[
+  "Test Title",
+  "Test Message",
+  "This is a hint",
+]
+`;
+
+exports[`MessageOverlay Component should match snapshot with numeric progress 1`] = `
+[
+  "Test Title",
+  "Test Message",
+]
+`;
+
+exports[`MessageOverlay Component should match snapshot with progress indicator 1`] = `
+[
+  "Test Title",
+  "Test Message",
+]
+`;
+
+exports[`MessageOverlay Component should match snapshot with title and message 1`] = `
+[
+  "Test Title",
+  "Test Message",
+]
+`;

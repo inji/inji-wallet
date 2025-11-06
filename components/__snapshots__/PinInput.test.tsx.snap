@@ -1,0 +1,719 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PinInput Component should match snapshot with 4 digit PIN 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      {
+        "width": "66.66666666666667%",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#951F6F",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_700Bold",
+        "fontSize": 29,
+        "height": 50,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+</View>
+`;
+
+exports[`PinInput Component should match snapshot with 6 digit PIN 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      {
+        "width": "100%",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#951F6F",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_700Bold",
+        "fontSize": 29,
+        "height": 50,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+</View>
+`;
+
+exports[`PinInput Component should match snapshot with custom testID 1`] = `
+<View
+  accessibilityLabel="customPinInput"
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      {
+        "width": "66.66666666666667%",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#951F6F",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_700Bold",
+        "fontSize": 29,
+        "height": 50,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+</View>
+`;
+
+exports[`PinInput Component should match snapshot with onChange handler 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      {
+        "width": "66.66666666666667%",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#951F6F",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_700Bold",
+        "fontSize": 29,
+        "height": 50,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+</View>
+`;
+
+exports[`PinInput Component should match snapshot with onDone and autosubmit 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      {
+        "width": "66.66666666666667%",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#951F6F",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_700Bold",
+        "fontSize": 29,
+        "height": 50,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+  <TextInput
+    contextMenuHidden={true}
+    keyboardType="numeric"
+    maxLength={1}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    secureTextEntry={true}
+    selectTextOnFocus={true}
+    selectionColor="#951F6F"
+    style={
+      {
+        "borderBottomWidth": 3,
+        "borderColor": "#C7C7C7",
+        "color": "#000000",
+        "flex": 1,
+        "fontFamily": "Inter_600SemiBold",
+        "fontSize": 33,
+        "height": 50,
+        "lineHeight": 28,
+        "margin": 8,
+        "textAlign": "center",
+      }
+    }
+    value=""
+  />
+</View>
+`;

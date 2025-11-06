@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProgressingModal Component should match snapshot as requester 1`] = `null`;
+
+exports[`ProgressingModal Component should match snapshot with BLE error visible 1`] = `"Bluetooth error occurred"`;
+
+exports[`ProgressingModal Component should match snapshot with default props 1`] = `null`;
+
+exports[`ProgressingModal Component should match snapshot with hint visible 1`] = `"Please wait..."`;
+
+exports[`ProgressingModal Component should match snapshot with progress spinner 1`] = `
+<Spinner
+  color="#951F6F"
+  style={
+    {
+      "marginLeft": 6,
+    }
+  }
+  type="ThreeBounce"
+/>
+`;
+
+exports[`ProgressingModal Component should match snapshot with retry button 1`] = `"Connection failed"`;
+
+exports[`ProgressingModal Component should match snapshot with stay in progress button 1`] = `"Taking longer than expected"`;
