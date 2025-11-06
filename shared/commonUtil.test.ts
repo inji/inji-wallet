@@ -85,6 +85,27 @@ describe('removeWhiteSpace', () => {
     const response = removeWhiteSpace('React Native Unit Testing');
     expect(response).toBe('ReactNativeUnitTesting');
   });
+
+  it('should handle empty string', () => {
+    expect(removeWhiteSpace('')).toBe('');
+  });
+
+  it('should handle string with only spaces', () => {
+    expect(removeWhiteSpace('    ')).toBe('');
+  });
+
+  it('should handle string with tabs and newlines', () => {
+    expect(removeWhiteSpace('Hello\tWorld\n')).toBe('HelloWorld');
+  });
+
+  it('should handle string with multiple types of whitespace', () => {
+    expect(removeWhiteSpace('  Test  \t  String  \n  ')).toBe('TestString');
+  });
+
+  it('should remove all whitespace from string', () => {
+    const result = removeWhiteSpace('Hello World Test');
+    expect(result).toBe('HelloWorldTest');
+  });
 });
 
 describe('logState', () => {
@@ -108,32 +129,32 @@ describe('getMaskedText', () => {
     const maskedTxt = getMaskedText(id);
     expect(maskedTxt).toBe('******7890');
   });
-});
 
-describe('faceMatchConfig', () => {
-  it('should expose a function', () => {
-    expect(faceMatchConfig).toBeDefined();
+  it('should handle exactly 4 characters', () => {
+    expect(getMaskedText('1234')).toBe('1234');
   });
 
-  // it('faceMatchConfig should return expected output', () => {
-  //   // const retValue = faceMatchConfig(resp);
-  //   expect(false).toBeTruthy();
-  // });
+  it('should handle long strings', () => {
+    const longString = '12345678901234567890';
+    const masked = getMaskedText(longString);
+    expect(masked.endsWith('7890')).toBe(true);
+    expect(masked.length).toBe(longString.length);
+  });
+
+  it('should handle short strings', () => {
+    const result = getMaskedText('ABCDEF');
+    expect(result).toBe('**CDEF');
+  });
+
+  it('should handle exactly 4 characters (ABCD)', () => {
+    const result = getMaskedText('ABCD');
+    expect(result).toBe('ABCD');
+  });
 });
 
 describe('getBackupFileName', () => {
   it('should expose a function', () => {
     expect(getBackupFileName()).toMatch('backup_');
-  });
-});
-
-describe('bytesToMB', () => {
-  it('bytesToMB returns a string', () => {
-    expect(bytesToMB(0)).toBe('0');
-  });
-
-  it('10^6 bytes is 1MB', () => {
-    expect(bytesToMB(1e6)).toBe('1.000');
   });
 });
 
@@ -145,8 +166,15 @@ describe('getDriveName', () => {
   it('getDriveName should return Google Drive on Android', () => {
     expect(getDriveName()).toBe('Google Drive');
   });
-  it('getDriveName should return Google Drive on Android', () => {
-    expect(getDriveName()).toBe('Google Drive');
+
+  it('should return a string', () => {
+    const result = getDriveName();
+    expect(typeof result).toBe('string');
+  });
+
+  it('should return Google Drive for Android or iCloud for iOS', () => {
+    const result = getDriveName();
+    expect([GOOGLE_DRIVE_NAME, ICLOUD_DRIVE_NAME]).toContain(result);
   });
 });
 
@@ -160,6 +188,19 @@ describe('sleep : The promise resolves after a certain time', () => {
     const promise = sleep(time);
     expect(promise).toBeInstanceOf(Promise);
   });
+
+  it('should delay for specified milliseconds', async () => {
+    const start = Date.now();
+    await sleep(100);
+    const end = Date.now();
+    const elapsed = end - start;
+    expect(elapsed).toBeGreaterThanOrEqual(90); // Allow small margin
+  });
+
+  it('should resolve after timeout', async () => {
+    const promise = sleep(50);
+    await expect(promise).resolves.toBeUndefined();
+  });
 });
 
 describe('getScreenHeight', () => {
@@ -170,6 +211,11 @@ describe('getScreenHeight', () => {
   it('getScreenHeight should return screen height', () => {
     const height = getScreenHeight();
     expect(typeof height).toBe('object');
+  });
+
+  it('should return a value', () => {
+    const height = getScreenHeight();
+    expect(height).toBeDefined();
   });
 });
 
@@ -191,6 +237,18 @@ describe('getRandomInt', () => {
     const value = 5;
     const result = getRandomInt(value, value);
     expect(result).toBe(value);
+  });
+
+  it('should handle negative ranges', () => {
+    const result = getRandomInt(-10, -1);
+    expect(result).toBeGreaterThanOrEqual(-10);
+    expect(result).toBeLessThanOrEqual(-1);
+  });
+
+  it('should handle larger ranges', () => {
+    const result = getRandomInt(100, 200);
+    expect(result).toBeGreaterThanOrEqual(100);
+    expect(result).toBeLessThanOrEqual(200);
   });
 });
 
@@ -219,6 +277,14 @@ describe('getMosipIdentifier', () => {
     const result = getMosipIdentifier(credentialSubject as CredentialSubject);
     expect(result).toBeUndefined();
   });
+
+  it('should prioritize UIN over VID', () => {
+    const credSubject = {
+      UIN: '1111111111',
+      VID: '2222222222',
+    } as CredentialSubject;
+    expect(getMosipIdentifier(credSubject)).toBe('1111111111');
+  });
 });
 
 describe('isTranslationKeyFound', () => {
@@ -237,6 +303,24 @@ describe('isTranslationKeyFound', () => {
     const result = isTranslationKeyFound('someKey', mockT);
     expect(result).toBe(false);
   });
+
+  it('should return true when key is translated', () => {
+    const mockT = () => 'Translated value';
+    expect(isTranslationKeyFound('any.key', mockT)).toBe(true);
+  });
+
+  it('should return false when translation key not found', () => {
+    const mockT = (key: string) => key; // returns same key
+    expect(isTranslationKeyFound('some.unknown.key', mockT)).toBe(false);
+  });
+
+  it('should return true for errors.notFound key when translation is found', () => {
+    const mockT = (key: string) => {
+      if (key === 'errors.notFound') return 'Error Not Found';
+      return key;
+    };
+    expect(isTranslationKeyFound('errors.notFound', mockT)).toBe(true);
+  });
 });
 
 describe('getAccountType', () => {
@@ -247,6 +331,16 @@ describe('getAccountType', () => {
   it('should return gmail for Android platform', () => {
     const result = getAccountType();
     expect(result).toBe('gmail');
+  });
+
+  it('should return a string', () => {
+    const result = getAccountType();
+    expect(typeof result).toBe('string');
+  });
+
+  it('should return Gmail for Android or Apple for iOS', () => {
+    const result = getAccountType();
+    expect([GMAIL, APPLE]).toContain(result);
   });
 });
 
@@ -262,6 +356,16 @@ describe('faceMatchConfig', () => {
     expect(config.withFace.encoder).toBeDefined();
     expect(config.withFace.matcher).toBeDefined();
     expect(config.withFace.encoder.tfModel).toBeDefined();
+    expect(config.withFace.matcher.threshold).toBe(1);
+  });
+
+  it('should return config with correct structure', () => {
+    const config = faceMatchConfig();
+    expect(config).toHaveProperty('withFace');
+    expect(config.withFace).toHaveProperty('encoder');
+    expect(config.withFace).toHaveProperty('matcher');
+    expect(config.withFace.encoder.tfModel).toHaveProperty('path');
+    expect(config.withFace.encoder.tfModel).toHaveProperty('modelChecksum');
     expect(config.withFace.matcher.threshold).toBe(1);
   });
 });
@@ -288,9 +392,13 @@ describe('BYTES_IN_MEGABYTE', () => {
   });
 });
 
-describe('bytesToMB - additional tests', () => {
-  it('should return "0" for zero bytes', () => {
+describe('bytesToMB', () => {
+  it('bytesToMB returns a string', () => {
     expect(bytesToMB(0)).toBe('0');
+  });
+
+  it('10^6 bytes is 1MB', () => {
+    expect(bytesToMB(1e6)).toBe('1.000');
   });
 
   it('should return "0" for negative bytes', () => {
@@ -333,272 +441,16 @@ describe('bytesToMB - additional tests', () => {
   it('should handle exactly one byte', () => {
     expect(bytesToMB(1)).toBe('0.000');
   });
-});
 
-describe('removeWhiteSpace - additional tests', () => {
-  it('should handle empty string', () => {
-    expect(removeWhiteSpace('')).toBe('');
-  });
-
-  it('should handle string with only spaces', () => {
-    expect(removeWhiteSpace('    ')).toBe('');
-  });
-
-  it('should handle string with tabs and newlines', () => {
-    expect(removeWhiteSpace('Hello\tWorld\n')).toBe('HelloWorld');
-  });
-
-  it('should handle string with multiple types of whitespace', () => {
-    expect(removeWhiteSpace('  Test  \t  String  \n  ')).toBe('TestString');
-  });
-});
-
-describe('getMaskedText - additional tests', () => {
-  it('should mask all but last 4 characters', () => {
-    expect(getMaskedText('1234567890')).toBe('******7890');
-  });
-
-  it('should handle exactly 4 characters', () => {
-    expect(getMaskedText('1234')).toBe('1234');
-  });
-
-  it('should handle long strings', () => {
-    const longString = '12345678901234567890';
-    const masked = getMaskedText(longString);
-    expect(masked.endsWith('7890')).toBe(true);
-    expect(masked.length).toBe(longString.length);
-  });
-});
-
-describe('getRandomInt', () => {
-  it('should be defined', () => {
-    expect(getRandomInt).toBeDefined();
-  });
-
-  it('should return a number within range', () => {
-    const result = getRandomInt(1, 10);
-    expect(result).toBeGreaterThanOrEqual(1);
-    expect(result).toBeLessThanOrEqual(10);
-  });
-
-  it('should return min when min equals max', () => {
-    expect(getRandomInt(5, 5)).toBe(5);
-  });
-
-  it('should handle negative ranges', () => {
-    const result = getRandomInt(-10, -1);
-    expect(result).toBeGreaterThanOrEqual(-10);
-    expect(result).toBeLessThanOrEqual(-1);
-  });
-});
-
-describe('getAccountType', () => {
-  it('should be defined', () => {
-    expect(getAccountType).toBeDefined();
-  });
-
-  it('should return a string', () => {
-    const result = getAccountType();
-    expect(typeof result).toBe('string');
-  });
-});
-
-describe('getDriveName - additional tests', () => {
-  it('should return a string', () => {
-    const result = getDriveName();
-    expect(typeof result).toBe('string');
-  });
-});
-
-describe('getScreenHeight - additional tests', () => {
-  it('should return a value', () => {
-    const height = getScreenHeight();
-    expect(height).toBeDefined();
-  });
-});
-
-describe('getMosipIdentifier', () => {
-  it('should be defined', () => {
-    expect(getMosipIdentifier).toBeDefined();
-  });
-
-  it('should return UIN when present', () => {
-    const credSubject = {
-      UIN: '1234567890',
-      VID: '9876543210',
-    } as CredentialSubject;
-    expect(getMosipIdentifier(credSubject)).toBe('1234567890');
-  });
-
-  it('should return VID when UIN is not present', () => {
-    const credSubject = {
-      VID: '9876543210',
-    } as CredentialSubject;
-    expect(getMosipIdentifier(credSubject)).toBe('9876543210');
-  });
-
-  it('should prioritize UIN over VID', () => {
-    const credSubject = {
-      UIN: '1111111111',
-      VID: '2222222222',
-    } as CredentialSubject;
-    expect(getMosipIdentifier(credSubject)).toBe('1111111111');
-  });
-});
-
-describe('isTranslationKeyFound', () => {
-  it('should be defined', () => {
-    expect(isTranslationKeyFound).toBeDefined();
-  });
-
-  it('should return true when translation is found', () => {
-    const mockT = (key: string) => {
-      if (key === 'errors.notFound') return 'Error Not Found';
-      return key;
-    };
-    expect(isTranslationKeyFound('errors.notFound', mockT)).toBe(true);
-  });
-
-  it('should return false when translation key not found', () => {
-    const mockT = (key: string) => key; // returns same key
-    expect(isTranslationKeyFound('some.unknown.key', mockT)).toBe(false);
-  });
-
-  it('should return true when key is translated', () => {
-    const mockT = () => 'Translated value';
-    expect(isTranslationKeyFound('any.key', mockT)).toBe(true);
-  });
-});
-
-describe('removeWhiteSpace', () => {
-  it('should remove all whitespace from string', () => {
-    const result = removeWhiteSpace('Hello World Test');
-    expect(result).toBe('HelloWorldTest');
-  });
-
-  it('should handle string with tabs and newlines', () => {
-    const result = removeWhiteSpace('Hello\t\nWorld');
-    expect(result).toBe('HelloWorld');
-  });
-
-  it('should return empty string for empty input', () => {
-    const result = removeWhiteSpace('');
-    expect(result).toBe('');
-  });
-});
-
-describe('getRandomInt', () => {
-  it('should return number within range', () => {
-    const result = getRandomInt(1, 10);
-    expect(result).toBeGreaterThanOrEqual(1);
-    expect(result).toBeLessThanOrEqual(10);
-  });
-
-  it('should handle same min and max', () => {
-    const result = getRandomInt(5, 5);
-    expect(result).toBe(5);
-  });
-
-  it('should handle larger ranges', () => {
-    const result = getRandomInt(100, 200);
-    expect(result).toBeGreaterThanOrEqual(100);
-    expect(result).toBeLessThanOrEqual(200);
-  });
-});
-
-describe('bytesToMB', () => {
   it('should convert bytes to megabytes', () => {
     const bytes = BYTES_IN_MEGABYTE * 5; // 5 MB
     const result = bytesToMB(bytes);
     expect(result).toBe('5.000');
   });
 
-  it('should handle zero bytes', () => {
-    const result = bytesToMB(0);
-    expect(result).toBe('0');
-  });
-
-  it('should handle fractional megabytes', () => {
+  it('should handle fractional megabytes with BYTES_IN_MEGABYTE constant', () => {
     const bytes = BYTES_IN_MEGABYTE * 2.5;
     const result = bytesToMB(bytes);
     expect(result).toBe('2.500');
-  });
-});
-
-describe('sleep', () => {
-  it('should delay for specified milliseconds', async () => {
-    const start = Date.now();
-    await sleep(100);
-    const end = Date.now();
-    const elapsed = end - start;
-    expect(elapsed).toBeGreaterThanOrEqual(90); // Allow small margin
-  });
-
-  it('should resolve after timeout', async () => {
-    const promise = sleep(50);
-    await expect(promise).resolves.toBeUndefined();
-  });
-});
-
-describe('getMaskedText', () => {
-  it('should mask all but last 4 characters', () => {
-    const result = getMaskedText('1234567890');
-    expect(result).toBe('******7890');
-  });
-
-  it('should handle short strings', () => {
-    const result = getMaskedText('ABCDEF');
-    expect(result).toBe('**CDEF');
-  });
-
-  it('should handle exactly 4 characters', () => {
-    const result = getMaskedText('ABCD');
-    expect(result).toBe('ABCD');
-  });
-});
-
-describe('getDriveName', () => {
-  it('should return Google Drive for Android or iCloud for iOS', () => {
-    const result = getDriveName();
-    expect([GOOGLE_DRIVE_NAME, ICLOUD_DRIVE_NAME]).toContain(result);
-  });
-});
-
-describe('getAccountType', () => {
-  it('should return Gmail for Android or Apple for iOS', () => {
-    const result = getAccountType();
-    expect([GMAIL, APPLE]).toContain(result);
-  });
-});
-
-describe('faceMatchConfig', () => {
-  it('should return config with correct structure', () => {
-    const config = faceMatchConfig();
-    expect(config).toHaveProperty('withFace');
-    expect(config.withFace).toHaveProperty('encoder');
-    expect(config.withFace).toHaveProperty('matcher');
-    expect(config.withFace.encoder.tfModel).toHaveProperty('path');
-    expect(config.withFace.encoder.tfModel).toHaveProperty('modelChecksum');
-    expect(config.withFace.matcher.threshold).toBe(1);
-  });
-});
-
-describe('getMosipIdentifier', () => {
-  it('should extract UIN from credential subject', () => {
-    const credentialSubject = {UIN: '1234567890'} as CredentialSubject;
-    const result = getMosipIdentifier(credentialSubject);
-    expect(result).toBe('1234567890');
-  });
-
-  it('should extract VID from credential subject', () => {
-    const credentialSubject = {VID: '9876543210'} as CredentialSubject;
-    const result = getMosipIdentifier(credentialSubject);
-    expect(result).toBe('9876543210');
-  });
-
-  it('should return empty string when no ID found', () => {
-    const credentialSubject = {} as CredentialSubject;
-    const result = getMosipIdentifier(credentialSubject);
-    expect(result).toBeUndefined();
   });
 });

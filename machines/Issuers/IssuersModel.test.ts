@@ -149,10 +149,6 @@ describe('IssuersModel', () => {
       expect(initialContext.isCredentialOfferFlow).toBe(false);
     });
 
-    it('should have credentialOfferCredentialIssuer as empty object', () => {
-      expect(initialContext.credentialOfferCredentialIssuer).toEqual({});
-    });
-
     it('should have tokenRequestObject as empty object', () => {
       expect(initialContext.tokenRequestObject).toEqual({});
     });

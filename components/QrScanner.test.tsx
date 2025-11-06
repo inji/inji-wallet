@@ -11,17 +11,19 @@ jest.mock('../shared/GlobalContext', () => ({
   GlobalContext: {},
 }));
 
+// Mock xstate with a mutable mock function
+const mockUseSelector = jest.fn();
+jest.mock('@xstate/react', () => ({
+  useSelector: jest.fn((...args) => mockUseSelector(...args)),
+}));
+
 // Before each test, set up the context mock
 beforeEach(() => {
   mockUseContext.mockReturnValue({
     appService: {send: jest.fn()},
   });
+  mockUseSelector.mockReturnValue(true);
 });
-
-// Mock xstate
-jest.mock('@xstate/react', () => ({
-  useSelector: jest.fn(() => true),
-}));
 
 // Mock app machine
 jest.mock('../machines/app', () => ({
@@ -45,7 +47,11 @@ jest.mock('./ui', () => ({
 // Mock expo-camera
 jest.mock('expo-camera', () => ({
   CameraView: jest.fn(() => null),
-  useCameraPermissions: jest.fn(() => [null, jest.fn(), jest.fn()]),
+  useCameraPermissions: jest.fn(() => [
+    null,
+    jest.fn(() => Promise.resolve({granted: true})),
+    jest.fn(() => Promise.resolve({status: 'granted'})),
+  ]),
   PermissionStatus: {
     UNDETERMINED: 'undetermined',
     GRANTED: 'granted',
@@ -61,6 +67,10 @@ describe('QrScanner Component', () => {
   const defaultProps = {
     onQrFound: jest.fn(),
   };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   it('should match snapshot with default props', () => {
     const {toJSON} = render(<QrScanner {...defaultProps} />);
@@ -79,5 +89,18 @@ describe('QrScanner Component', () => {
       <QrScanner {...defaultProps} title="Scan QR code to share credentials" />,
     );
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should render with onQrFound callback', () => {
+    const onQrFound = jest.fn();
+    const {toJSON} = render(<QrScanner onQrFound={onQrFound} />);
+    expect(toJSON()).toBeTruthy();
+    expect(onQrFound).not.toHaveBeenCalled(); // Callback not called until QR is scanned
+  });
+
+  it('should render when isActive is false', () => {
+    mockUseSelector.mockReturnValue(false);
+    const {toJSON} = render(<QrScanner {...defaultProps} />);
+    expect(toJSON()).toBeTruthy();
   });
 });

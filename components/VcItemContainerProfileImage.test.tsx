@@ -61,11 +61,9 @@ describe('VcItemContainerProfileImage Component', () => {
     expect(toJSON()).toMatchSnapshot();
   });
 
-  it('should match snapshot with different image URL', () => {
+  it('should match snapshot with empty string face', () => {
     const {toJSON} = render(
-      <VcItemContainerProfileImage
-        verifiableCredentialData={{face: 'https://example.com/profile.png'}}
-      />,
+      <VcItemContainerProfileImage verifiableCredentialData={{face: ''}} />,
     );
     expect(toJSON()).toMatchSnapshot();
   });

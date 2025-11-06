@@ -26,67 +26,29 @@ describe('Layout Components', () => {
       expect(getByText('Child 2')).toBeTruthy();
     });
 
-    it('should handle fill prop', () => {
-      const {toJSON} = render(
-        <Column fill>
+    it('should render with fill prop', () => {
+      const {getByLabelText} = render(
+        <Column fill testID="fill-column">
           <Text>Fill Column</Text>
         </Column>,
       );
-      expect(toJSON()).toBeTruthy();
+      expect(getByLabelText('fill-column')).toBeTruthy();
     });
 
-    it('should handle padding prop', () => {
-      const {toJSON} = render(
-        <Column padding="10">
-          <Text>Padded Column</Text>
+    it('should render with multiple layout props', () => {
+      const {getByLabelText} = render(
+        <Column
+          testID="complex-column"
+          fill
+          padding="10"
+          margin="10 20"
+          backgroundColor="#FF0000"
+          align="center"
+          crossAlign="center">
+          <Text>Complex Column</Text>
         </Column>,
       );
-      expect(toJSON()).toBeTruthy();
-    });
-
-    it('should handle margin prop', () => {
-      const {toJSON} = render(
-        <Column margin="10 20">
-          <Text>Margin Column</Text>
-        </Column>,
-      );
-      expect(toJSON()).toBeTruthy();
-    });
-
-    it('should handle backgroundColor prop', () => {
-      const {toJSON} = render(
-        <Column backgroundColor="#FF0000">
-          <Text>Colored Column</Text>
-        </Column>,
-      );
-      expect(toJSON()).toBeTruthy();
-    });
-
-    it('should handle width and height props', () => {
-      const {toJSON} = render(
-        <Column width={200} height={100}>
-          <Text>Sized Column</Text>
-        </Column>,
-      );
-      expect(toJSON()).toBeTruthy();
-    });
-
-    it('should handle align prop', () => {
-      const {toJSON} = render(
-        <Column align="center">
-          <Text>Aligned Column</Text>
-        </Column>,
-      );
-      expect(toJSON()).toBeTruthy();
-    });
-
-    it('should handle crossAlign prop', () => {
-      const {toJSON} = render(
-        <Column crossAlign="center">
-          <Text>Cross Aligned Column</Text>
-        </Column>,
-      );
-      expect(toJSON()).toBeTruthy();
+      expect(getByLabelText('complex-column')).toBeTruthy();
     });
   });
 
@@ -114,54 +76,19 @@ describe('Layout Components', () => {
       expect(getByText('Item 3')).toBeTruthy();
     });
 
-    it('should handle fill prop', () => {
-      const {toJSON} = render(
-        <Row fill>
+    it('should render with fill prop', () => {
+      const {getByLabelText} = render(
+        <Row fill testID="fill-row">
           <Text>Fill Row</Text>
         </Row>,
       );
-      expect(toJSON()).toBeTruthy();
+      expect(getByLabelText('fill-row')).toBeTruthy();
     });
 
-    it('should handle padding prop', () => {
-      const {toJSON} = render(
-        <Row padding="15">
-          <Text>Padded Row</Text>
-        </Row>,
-      );
-      expect(toJSON()).toBeTruthy();
-    });
-
-    it('should handle margin prop', () => {
-      const {toJSON} = render(
-        <Row margin="5 10">
-          <Text>Margin Row</Text>
-        </Row>,
-      );
-      expect(toJSON()).toBeTruthy();
-    });
-
-    it('should handle backgroundColor prop', () => {
-      const {toJSON} = render(
-        <Row backgroundColor="#00FF00">
-          <Text>Colored Row</Text>
-        </Row>,
-      );
-      expect(toJSON()).toBeTruthy();
-    });
-
-    it('should handle width prop', () => {
-      const {toJSON} = render(
-        <Row width="100%">
-          <Text>Full Width Row</Text>
-        </Row>,
-      );
-      expect(toJSON()).toBeTruthy();
-    });
-
-    it('should handle multiple layout props', () => {
-      const {toJSON} = render(
+    it('should render with multiple layout props', () => {
+      const {getByLabelText} = render(
         <Row
+          testID="complex-row"
           fill
           padding="10"
           margin="5"
@@ -171,7 +98,7 @@ describe('Layout Components', () => {
           <Text>Complex Row</Text>
         </Row>,
       );
-      expect(toJSON()).toBeTruthy();
+      expect(getByLabelText('complex-row')).toBeTruthy();
     });
 
     it('should handle nested layouts', () => {

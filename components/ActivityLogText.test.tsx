@@ -2,6 +2,8 @@ import React from 'react';
 import {render} from '@testing-library/react-native';
 import {ActivityLogText} from './ActivityLogText';
 import {VCItemContainerFlowType} from '../shared/Utils';
+import {VCActivityLog} from './ActivityLogEvent';
+import {VPShareActivityLog} from './VPShareActivityLogEvent';
 
 // Mock TextItem
 jest.mock('./ui/TextItem', () => ({
@@ -45,10 +47,10 @@ describe('ActivityLogText Component', () => {
     vcIdType: 'NationalID',
     flow: VCItemContainerFlowType.VC_SHARE,
     issuer: 'test-issuer',
-  };
+  } as unknown as VCActivityLog;
 
   it('should match snapshot with VC activity', () => {
-    const {toJSON} = render(<ActivityLogText activity={mockActivity as any} />);
+    const {toJSON} = render(<ActivityLogText activity={mockActivity} />);
     expect(toJSON()).toMatchSnapshot();
   });
 
@@ -56,8 +58,8 @@ describe('ActivityLogText Component', () => {
     const vpActivity = {
       ...mockActivity,
       flow: VCItemContainerFlowType.VP_SHARE,
-    };
-    const {toJSON} = render(<ActivityLogText activity={vpActivity as any} />);
+    } as unknown as VPShareActivityLog;
+    const {toJSON} = render(<ActivityLogText activity={vpActivity} />);
     expect(toJSON()).toMatchSnapshot();
   });
 });

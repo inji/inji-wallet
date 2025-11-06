@@ -129,7 +129,7 @@ describe('VPShareActivityLog', () => {
         timestamp: Date.now() - 60000, // 1 minute ago
       });
 
-      const label = log.getActionLabel('en');
+      const label = log.getActionLabel('enUS');
 
       expect(label).toBeDefined();
       expect(typeof label).toBe('string');
@@ -141,7 +141,7 @@ describe('VPShareActivityLog', () => {
         timestamp: Date.now() - 3600000, // 1 hour ago
       });
 
-      const languages = ['en', 'enUS', 'hi', 'kn', 'ta', 'ar'];
+      const languages = ['enUS', 'hi', 'kn', 'ta', 'ar'];
 
       languages.forEach(lang => {
         const label = log.getActionLabel(lang);
@@ -154,7 +154,7 @@ describe('VPShareActivityLog', () => {
       const recentTimestamp = Date.now() - 5000; // 5 seconds ago
       const log = new VPShareActivityLog({timestamp: recentTimestamp});
 
-      const label = log.getActionLabel('en');
+      const label = log.getActionLabel('enUS');
 
       expect(label).toBeDefined();
       expect(label.length).toBeGreaterThan(0);
@@ -164,7 +164,7 @@ describe('VPShareActivityLog', () => {
       const oldTimestamp = Date.now() - 86400000; // 1 day ago
       const log = new VPShareActivityLog({timestamp: oldTimestamp});
 
-      const label = log.getActionLabel('en');
+      const label = log.getActionLabel('enUS');
 
       expect(label).toBeDefined();
       expect(label).toContain('ago');

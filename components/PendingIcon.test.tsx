@@ -13,24 +13,8 @@ describe('PendingIcon', () => {
     expect(toJSON()).toMatchSnapshot();
   });
 
-  it('should render with correct icon name', () => {
-    const {toJSON} = render(<PendingIcon />);
-    const tree = toJSON();
-    expect(tree).toBeTruthy();
-  });
-
-  it('should render with material-community icon type', () => {
-    const {toJSON} = render(<PendingIcon />);
-    const tree = toJSON();
-    expect(tree).toBeTruthy();
-  });
-
-  it('should have proper styling structure', () => {
-    const {toJSON} = render(<PendingIcon />);
-    const tree = toJSON();
-
-    // Verify component structure exists
-    expect(tree).toBeTruthy();
-    expect(tree.children).toBeTruthy();
+  it('should render with custom color', () => {
+    const {toJSON} = render(<PendingIcon color="#FF0000" />);
+    expect(toJSON()).toMatchSnapshot();
   });
 });

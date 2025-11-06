@@ -18,3 +18,22 @@ exports[`PendingIcon should match snapshot 1`] = `
   />
 </View>
 `;
+
+exports[`PendingIcon should render with custom color 1`] = `
+<View
+  style={
+    {
+      "marginRight": 3,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "backgroundColor": "white",
+        "borderRadius": 10,
+      }
+    }
+  />
+</View>
+`;
