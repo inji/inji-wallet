@@ -1,6 +1,7 @@
 import React from 'react';
 import {render} from '@testing-library/react-native';
 import {KebabPopUp} from './KebabPopUp';
+import {Text} from 'react-native';
 
 // Mock controller
 jest.mock('./KebabPopUpController', () => ({
@@ -63,7 +64,7 @@ describe('KebabPopUp Component', () => {
   });
 
   it('should match snapshot with custom icon component', () => {
-    const CustomIcon = <div>Custom</div>;
+    const CustomIcon = <Text>Custom</Text>;
     const {toJSON} = render(<KebabPopUp {...defaultProps} icon={CustomIcon} />);
     expect(toJSON()).toMatchSnapshot();
   });

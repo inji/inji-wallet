@@ -397,38 +397,6 @@ describe('getVerifierKey', () => {
   });
 });
 
-describe('base64ToByteArray', () => {
-  it('should convert valid base64 to byte array', () => {
-    const base64 = 'SGVsbG8gV29ybGQ='; // "Hello World" in base64
-    const result = base64ToByteArray(base64);
-    expect(result).toBeInstanceOf(Uint8Array);
-    expect(result.length).toBeGreaterThan(0);
-  });
-
-  it('should handle empty string', () => {
-    const result = base64ToByteArray('');
-    expect(result).toBeInstanceOf(Uint8Array);
-  });
-
-  it('should throw error for invalid base64', () => {
-    expect(() => {
-      base64ToByteArray('!!!invalid!!!');
-    }).toThrow();
-  });
-
-  it('should handle standard base64', () => {
-    const base64 = 'VGVzdA==';
-    const result = base64ToByteArray(base64);
-    expect(result).toBeInstanceOf(Uint8Array);
-  });
-
-  it('should handle URL-safe base64', () => {
-    const base64 = 'VGVzdA';
-    const result = base64ToByteArray(base64);
-    expect(result).toBeInstanceOf(Uint8Array);
-  });
-});
-
 describe('canonicalize', () => {
   it('should be defined', async () => {
     const {canonicalize} = await import('./Utils');

@@ -712,9 +712,9 @@ exports[`KebabPopUp Component should match snapshot with custom icon component 1
     ]
   }
 >
-  <div>
+  <Text>
     Custom
-  </div>
+  </Text>
   <View
     accessible={true}
     style={
