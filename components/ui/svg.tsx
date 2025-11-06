@@ -558,10 +558,6 @@ export class SvgImage {
     );
   }
 
-  static SearchIcon() {
-    return <Search {...testIDProps('searchIcon')} />;
-  }
-
   static settingsLanguageIcon(size) {
     return (
       <SettingsLanguage

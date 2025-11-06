@@ -45,22 +45,14 @@ export const SetupPicker: Picker = (props: PickerProps<unknown>) => {
                 {...testIDProps(item.value)}
                 style={{paddingTop: 3}}>
                 <Text
-                  color={selectedIndex === index ? '#F37321' : null}
-                  weight={selectedIndex === index ? 'semibold' : 'regular'}>
+                  color={isSelected ? Theme.Colors.Icon : null}
+                  weight={isSelected ? 'semibold' : 'regular'}>
                   {item.label}
                 </Text>
               </ListItem.Title>
             </ListItem.Content>
-            {selectedIndex === index ? (
-              <View
-                style={{
-                  width: 22,
-                  height: 22,
-                  borderRadius: 11,
-                  borderWidth: 7,
-                  borderColor: isSelected ? '#F37321' : '#C4C4C4',
-                  backgroundColor: '#FFFFFF', // white center
-                }}></View>
+            {isSelected ? (
+              <View style={Theme.Styles.listItemSelectedCircle} />
             ) : (
               <Icon
                 name="radio-button-unchecked"

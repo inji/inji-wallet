@@ -1146,7 +1146,9 @@
     "verify": "تحقق",
     "emptyCodeError": "لا يمكن أن يكون الرمز فارغًا",
     "invalidCharacters": "يسمح فقط بالأحرف والأرقام",
-    "TransactionCode": "رمز المعاملة"
+    "TransactionCode": "رمز المعاملة",
+    "showMore": "عرض المزيد ↓",
+    "showLess": "عرض أقل ↑"
   },
   "trustScreen": {
     "description": "تأكد من أنك تعرف أو تثق بهذا المصدر. بمجرد أن تثق بهذا المصدر:",

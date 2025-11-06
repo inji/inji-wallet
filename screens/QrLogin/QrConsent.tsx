@@ -9,8 +9,7 @@ import {Modal} from '../../components/ui/Modal';
 import {QrLoginRef} from '../../machines/QrLogin/QrLoginMachine';
 import {ScrollView} from 'react-native';
 import {getClientNameForCurrentLanguage} from '../../i18n';
-import SwitchToggle from 'react-native-switch-toggle';
-import testIDProps from '../../shared/commonUtil';
+import ShareToggle from '../../components/ShareToggle';
 
 export const QrConsent: React.FC<QrConsentProps> = props => {
   const {t} = useTranslation('QrLogin');
@@ -102,35 +101,11 @@ export const QrConsent: React.FC<QrConsentProps> = props => {
                   </ListItem.Title>
                 </ListItem.Content>
 
-                <View
-                  style={[
-                    Theme.Styles.wrapper,
-                    {
-                      borderColor: controller.isShare[claim]
-                        ? 'transparent'
-                        : Theme.Colors.switchHead,
-                      backgroundColor: controller.isShare[claim]
-                        ? Theme.Colors.switchHead
-                        : Theme.Colors.switchCircleOff,
-                    },
-                  ]}>
-                  <SwitchToggle
-                    {...testIDProps('biometricToggle')}
-                    switchOn={controller.isShare[claim]}
-                    onPress={() =>
-                      controller.SELECT_CONSENT(
-                        controller.isShare[claim],
-                        claim,
-                      )
-                    }
-                    circleColorOff={Theme.Colors.switchHead}
-                    circleColorOn={Theme.Colors.switchCircleOff}
-                    backgroundColorOn={Theme.Colors.switchHead}
-                    backgroundColorOff={'#FFFFFF'}
-                    containerStyle={Theme.Styles.container}
-                    circleStyle={Theme.Styles.circle}
-                  />
-                </View>
+                <ShareToggle
+                  value={controller.isShare[claim]}
+                  onToggle={value => controller.SELECT_CONSENT(value, claim)}
+                  testID="voluntaryClaimToggle"
+                />
               </ListItem>
             ))}
           </Column>

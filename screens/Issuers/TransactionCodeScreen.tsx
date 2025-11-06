@@ -121,9 +121,7 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                           style={
                             Theme.TransactionCodeScreenStyle.showMoreButton
                           }>
-                          {showFullDescription
-                            ? t('Show less ↑')
-                            : t('Show more ↓')}
+                          {showFullDescription ? t('showLess') : t('showMore')}
                         </Text>
                       )}
                     </Column>
@@ -175,7 +173,7 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                         <LinearGradient
                           colors={
                             transactionCode.length > 0
-                              ? Theme.Colors.GradientColors // Example: ['#4facfe', '#00f2fe']
+                              ? Theme.Colors.GradientColors
                               : [
                                   Theme.Colors.TransactionCodeBorderColor,
                                   Theme.Colors.TransactionCodeBorderColor,
@@ -183,14 +181,10 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                           }
                           start={{x: 0, y: 0}}
                           end={{x: 1, y: 0}}
-                          style={{
-                            width: Dimensions.get('window').width - 100,
-                            alignSelf: 'center',
-                            borderRadius: 18,
-                            padding: 2, // thickness of gradient border
-                            marginTop: 10,
-                            marginBottom: 25,
-                          }}>
+                          style={
+                            Theme.TransactionCodeScreenStyle
+                              .transactionGradientContainer
+                          }>
                           <View
                             style={{
                               backgroundColor:
@@ -206,7 +200,9 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                                 padding: 0,
                               }}
                               placeholder={t('placeholder')}
-                              placeholderTextColor={'#809FB8'}
+                              placeholderTextColor={
+                                Theme.Colors.TransactionCodePlaceholderColor
+                              }
                               inputContainerStyle={{
                                 borderBottomWidth: 0,
                                 flexDirection: 'row',

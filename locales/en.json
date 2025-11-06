@@ -1162,7 +1162,9 @@
     "verify": "Verify",
     "emptyCodeError": "Code cannot be empty",
     "invalidCharacters": "Only letters and numbers are allowed",
-    "TransactionCode": "Transasction Code"
+    "TransactionCode": "Transasction Code",
+    "showMore": "Show more ↓",
+    "showLess": "Show less ↑"
   },
   "trustScreen": {
     "description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",

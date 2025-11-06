@@ -48,21 +48,19 @@ export const Picker: Picker = (props: PickerProps<unknown>) => {
               <ListItem
                 topDivider={index !== 0}
                 onPress={() => selectItem(index)}
-                containerStyle={{
-                  backgroundColor: isSelected
-                    ? Theme.Colors.ListSelectedBackground
-                    : Theme.Colors.ListUnselectedBackground,
-                }}>
+                containerStyle={
+                  isSelected
+                    ? Theme.Styles.listItemSelectedContainer
+                    : Theme.Styles.listItemUnselectedContainer
+                }>
                 <ListItem.Content>
                   <ListItem.Title {...testIDProps(item.value as string)}>
                     <Text
-                      style={{
-                        color: isSelected
-                          ? Theme.Colors.ListSelectedText
-                          : Theme.Colors.ListUnselectedText,
-                        fontWeight: isSelected ? '600' : '400',
-                        fontFamily: 'Montserrat_500Medium',
-                      }}>
+                      style={
+                        isSelected
+                          ? Theme.Styles.listItemSelectedText
+                          : Theme.Styles.listItemUnselectedText
+                      }>
                       {item.label}
                     </Text>
                   </ListItem.Title>

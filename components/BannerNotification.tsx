@@ -7,7 +7,6 @@ import testIDProps from '../shared/commonUtil';
 import ErrorToastIcon from '../assets/Error_Toast_Icon.svg';
 import InfoToastIcon from '../assets/Info_Toast_Icon.svg';
 import SuccessToastIcon from '../assets/Success_Toast_Icon.svg';
-import WarningToastIcon from '../assets/Warning_Toast_Icon.svg';
 
 export const BannerNotification: React.FC<BannerNotificationProps> = props => {
   return (
@@ -15,9 +14,9 @@ export const BannerNotification: React.FC<BannerNotificationProps> = props => {
       <Row
         style={[Theme.BannerStyles.container, Theme.BannerStyles[props.type]]}>
         <Row fill>
-          {props.type === 'success' && <SuccessToastIcon />}
-          {props.type === 'error' && <ErrorToastIcon />}
-          {props.type === 'inProgress' && <InfoToastIcon />}
+          {props.type === BannerStatusType.SUCCESS && <SuccessToastIcon />}
+          {props.type === BannerStatusType.ERROR && <ErrorToastIcon />}
+          {props.type === BannerStatusType.IN_PROGRESS && <InfoToastIcon />}
           <Text
             testID={`${props.testId}Text`}
             color={Theme.Colors.PopupText}

@@ -80,6 +80,7 @@ const Colors = {
   CharcoalBlue: '#384455',
   LightRose: '#EFB3B5',
   LightYellow: '#FFE799',
+  SteelBlue: '#809FB8',
 };
 
 export type ElevationLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -174,6 +175,7 @@ export const PurpleTheme = {
     PopupText: Colors.CharcoalBlue,
     TransactionCodeBackgroundColor: Colors.White,
     TransactionCodeBorderColor: Colors.veryLightBluishGray,
+    TransactionCodePlaceholderColor: Colors.SteelBlue,
   },
   Styles: StyleSheet.create({
     title: {
@@ -616,6 +618,26 @@ export const PurpleTheme = {
     picker: {
       fontFamily: 'Montserrat_600SemiBold',
       fontSize: 18,
+    },
+    listItemSelectedText: {
+      color: Colors.brandPrimary,
+      fontWeight: '600',
+      fontFamily: 'Montserrat_500Medium',
+    },
+    listItemUnselectedText: {
+      color: Colors.Black,
+      fontWeight: '400',
+      fontFamily: 'Montserrat_500Medium',
+    },
+    listItemSelectedContainer: {backgroundColor: Colors.brandPrimaryLight},
+    listItemUnselectedContainer: {backgroundColor: Colors.White},
+    listItemSelectedCircle: {
+      width: 22,
+      height: 22,
+      borderRadius: 11,
+      borderWidth: 7,
+      borderColor: Colors.brandPrimary,
+      backgroundColor: Colors.White,
     },
     wrapper: {
       borderWidth: 2,
@@ -2052,6 +2074,14 @@ export const PurpleTheme = {
       marginBottom: 10,
       marginTop: 10,
       width: '80%',
+    },
+    transactionGradientContainer: {
+      width: Dimensions.get('window').width - 100,
+      alignSelf: 'center',
+      borderRadius: 18,
+      padding: 2,
+      marginTop: 10,
+      marginBottom: 25,
     },
     inputStyle: {
       fontSize: 20,

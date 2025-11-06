@@ -19,7 +19,8 @@ import {DataBackupAndRestore} from './DataBackupAndRestore';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {SettingsKeyManagementScreen} from './SettingsKeyManagement';
 import SwitchToggle from 'react-native-switch-toggle';
-import {isIOS} from '../../shared/constants';
+import BiometricIcon from '../../components/BiometricIcon';
+import ShareToggle from '../../components/ShareToggle';
 
 const LanguageSetting: React.FC = () => {
   const {t} = useTranslation('SettingScreen');
@@ -131,9 +132,7 @@ export const SettingScreen: React.FC<
           <LanguageSetting />
 
           <ListItem topDivider disabled={!controller.canUseBiometrics}>
-            {isIOS()
-              ? SvgImage.faceBiometicIcon(24)
-              : SvgImage.fingerprintIcon(24)}
+            <BiometricIcon size={24} />
             <ListItem.Content>
               <ListItem.Title
                 {...testIDProps('bioUnlock')}
@@ -143,32 +142,13 @@ export const SettingScreen: React.FC<
                 </Text>
               </ListItem.Title>
             </ListItem.Content>
-            <View
-              style={[
-                Theme.Styles.wrapper,
-                {
-                  borderColor: controller.isBiometricUnlockEnabled
-                    ? 'transparent'
-                    : Theme.Colors.switchHead,
-                  backgroundColor: controller.isBiometricUnlockEnabled
-                    ? Theme.Colors.switchHead
-                    : Theme.Colors.switchCircleOff,
-                },
-              ]}>
-              <SwitchToggle
-                {...testIDProps('biometricToggle')}
-                switchOn={controller.isBiometricUnlockEnabled}
-                onPress={() =>
-                  handleBiometricToggle(!controller.isBiometricUnlockEnabled)
-                }
-                circleColorOff={Theme.Colors.switchHead}
-                circleColorOn={Theme.Colors.switchCircleOff}
-                backgroundColorOn={Theme.Colors.switchHead}
-                backgroundColorOff={'#FFFFFF'}
-                containerStyle={Theme.Styles.container}
-                circleStyle={Theme.Styles.circle}
-              />
-            </View>
+            <ShareToggle
+              value={controller.isBiometricUnlockEnabled}
+              onToggle={value => {
+                handleBiometricToggle(!value);
+              }}
+              testID="biometricToggle"
+            />
           </ListItem>
 
           <AboutInji appId={controller.appId} />
