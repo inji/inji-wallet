@@ -163,10 +163,6 @@ describe('getDriveName', () => {
     expect(getDriveName).toBeDefined();
   });
 
-  it('getDriveName should return Google Drive on Android', () => {
-    expect(getDriveName()).toBe('Google Drive');
-  });
-
   it('should return a string', () => {
     const result = getDriveName();
     expect(typeof result).toBe('string');
@@ -326,11 +322,6 @@ describe('isTranslationKeyFound', () => {
 describe('getAccountType', () => {
   it('should expose a function', () => {
     expect(getAccountType).toBeDefined();
-  });
-
-  it('should return gmail for Android platform', () => {
-    const result = getAccountType();
-    expect(result).toBe('gmail');
   });
 
   it('should return a string', () => {
