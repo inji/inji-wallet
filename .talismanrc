@@ -417,3 +417,5 @@ fileignoreconfig:
     checksum: ce9c50ec1af107161c2a25e1481794aaa9898ff1998dff26bc7986c43a51c2fa
   - filename: screens/IntroSliders/trustedDigitalWalletIntro.tsx
     checksum: 4d46111af02fc8b6731f624d3e4f6ce71d6369649f4549564627a8962b136192
+  - filename: components/ui/Picker.tsx
+    checksum: ad814e904cb990f55068281fcb566cca349872de2c4fd66432ed6372fb540ec3
