@@ -2088,6 +2088,18 @@ export const PurpleTheme = {
       marginTop: 10,
       marginBottom: 25,
     },
+    inputContainer: {
+      borderBottomWidth: 0,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '100%',
+      backgroundColor: Colors.White,
+      borderRadius: 18,
+      paddingHorizontal: 20,
+      overflow: 'hidden',
+      height: 60,
+    },
     inputStyle: {
       fontSize: 20,
       fontWeight: '500',

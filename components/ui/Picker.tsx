@@ -42,6 +42,7 @@ export const Picker: Picker = (props: PickerProps<unknown>) => {
             const isSelected = selectedIndex === index;
             return (
               <ListItem
+                key={String(item.value ?? index)}
                 topDivider={index !== 0}
                 onPress={() => selectItem(index)}
                 containerStyle={

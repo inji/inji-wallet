@@ -205,19 +205,9 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                               placeholderTextColor={
                                 Theme.Colors.TransactionCodePlaceholderColor
                               }
-                              inputContainerStyle={{
-                                borderBottomWidth: 0,
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                width: '100%',
-                                backgroundColor:
-                                  Theme.Colors.TransactionCodeBackgroundColor,
-                                borderRadius: 18,
-                                paddingHorizontal: 20,
-                                overflow: 'hidden',
-                                height: 60,
-                              }}
+                              inputContainerStyle={
+                                Theme.TransactionCodeScreenStyle.inputContainer
+                              }
                               inputStyle={
                                 Theme.TransactionCodeScreenStyle.inputStyle
                               }
@@ -236,7 +226,9 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                                   name={showCode ? 'eye-off' : 'eye'}
                                   type="feather"
                                   size={20}
-                                  color={'#99B2C6'}
+                                  color={
+                                    Theme.Colors.TransactionCodePlaceholderColor
+                                  }
                                   onPress={() => setShowCode(prev => !prev)}
                                 />
                               }
