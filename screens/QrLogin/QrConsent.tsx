@@ -9,7 +9,7 @@ import {Modal} from '../../components/ui/Modal';
 import {QrLoginRef} from '../../machines/QrLogin/QrLoginMachine';
 import {ScrollView} from 'react-native';
 import {getClientNameForCurrentLanguage} from '../../i18n';
-import ShareToggle from '../../components/ShareToggle';
+import Toggle from '../../components/Toggle';
 
 export const QrConsent: React.FC<QrConsentProps> = props => {
   const {t} = useTranslation('QrLogin');
@@ -101,7 +101,7 @@ export const QrConsent: React.FC<QrConsentProps> = props => {
                   </ListItem.Title>
                 </ListItem.Content>
 
-                <ShareToggle
+                <Toggle
                   value={controller.isShare[claim]}
                   onToggle={value => controller.SELECT_CONSENT(value, claim)}
                   testID="voluntaryClaimToggle"

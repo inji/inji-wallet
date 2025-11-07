@@ -34,11 +34,7 @@ export const Picker: Picker = (props: PickerProps<unknown>) => {
       <Overlay
         isVisible={isContentVisible}
         onBackdropPress={toggleContent}
-        overlayStyle={{
-          padding: 1,
-          borderRadius: 12,
-          overflow: 'hidden',
-        }}>
+        overlayStyle={Theme.Styles.overlay}>
         <Column
           testID={props.testID}
           width={Dimensions.get('window').width * 0.8}>

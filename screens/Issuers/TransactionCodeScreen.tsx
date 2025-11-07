@@ -113,7 +113,9 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                             setTextLineCount(e.nativeEvent.lines.length);
                           }
                         }}>
-                        {t(`${props.description || t('description')}`)}
+                        {props.description
+                          ? t(props.description)
+                          : t('description')}
                       </Text>
                       {textLineCount > maxLines && (
                         <Text
@@ -243,7 +245,7 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                         </LinearGradient>
                         <Button
                           disabled={transactionCode.length == 0}
-                          title="Verify"
+                          title={t('verify')}
                           type="gradient"
                           onPress={handleVerify}
                         />

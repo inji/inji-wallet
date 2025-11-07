@@ -20,7 +20,7 @@ import {BannerNotificationContainer} from '../../components/BannerNotificationCo
 import {SettingsKeyManagementScreen} from './SettingsKeyManagement';
 import SwitchToggle from 'react-native-switch-toggle';
 import BiometricIcon from '../../components/BiometricIcon';
-import ShareToggle from '../../components/ShareToggle';
+import Toggle from '../../components/Toggle';
 
 const LanguageSetting: React.FC = () => {
   const {t} = useTranslation('SettingScreen');
@@ -142,7 +142,7 @@ export const SettingScreen: React.FC<
                 </Text>
               </ListItem.Title>
             </ListItem.Content>
-            <ShareToggle
+            <Toggle
               value={controller.isBiometricUnlockEnabled}
               onToggle={value => {
                 handleBiometricToggle(!value);

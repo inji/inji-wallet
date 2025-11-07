@@ -619,6 +619,11 @@ export const PurpleTheme = {
       fontFamily: 'Montserrat_600SemiBold',
       fontSize: 18,
     },
+    overlay: {
+      padding: 1,
+      borderRadius: 12,
+      overflow: 'hidden',
+    },
     listItemSelectedText: {
       color: Colors.brandPrimary,
       fontWeight: '600',

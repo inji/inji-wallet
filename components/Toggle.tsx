@@ -10,7 +10,7 @@ interface ShareToggleProps {
   testID?: string;
 }
 
-const ShareToggle: React.FC<ShareToggleProps> = ({value, onToggle, testID}) => {
+const Toggle: React.FC<ShareToggleProps> = ({value, onToggle, testID}) => {
   return (
     <View
       style={[
@@ -37,4 +37,4 @@ const ShareToggle: React.FC<ShareToggleProps> = ({value, onToggle, testID}) => {
   );
 };
 
-export default ShareToggle;
+export default Toggle;

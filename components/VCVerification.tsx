@@ -1,20 +1,20 @@
 import React from 'react';
-import { View } from 'react-native';
+import {View} from 'react-native';
 import testIDProps from '../shared/commonUtil';
-import { Display } from './VC/common/VCUtils';
+import {Display} from './VC/common/VCUtils';
 import VerifiedIcon from './VerifiedIcon';
 import PendingIcon from './PendingIcon';
-import { Row, Text } from './ui';
-import { Theme } from './ui/styleUtils';
-import { useTranslation } from 'react-i18next';
-import { VCMetadata } from '../shared/VCMetadata';
+import {Row, Text} from './ui';
+import {Theme} from './ui/styleUtils';
+import {useTranslation} from 'react-i18next';
+import {VCMetadata} from '../shared/VCMetadata';
 
 export const VCVerification: React.FC<VCVerificationProps> = ({
   vcMetadata,
   display,
   showLastChecked = true,
 }) => {
-  const { t } = useTranslation('VcDetails');
+  const {t} = useTranslation('VcDetails');
 
   let statusText: string;
   let statusIcon: JSX.Element;
@@ -36,44 +36,48 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
   }
 
   return (
-  <View
-    {...testIDProps('verified')}
-    style={{
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      paddingVertical: 6,
-    }}>
-    
-    {/* First Row: Status Icon + Text */}
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      {statusIcon}
-      <Text
-        testID="verificationStatus"
-        color={display.getTextColor(Theme.Colors.Details)}
-        style={Theme.Styles.verificationStatus}>
-        {statusText}
-      </Text>
-    </View>
-
-    {showLastChecked && vcMetadata.lastKnownStatusTimestamp && (
-      <View style={{ marginTop: 4 }}>
+    <View
+      {...testIDProps('verified')}
+      style={{
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        paddingVertical: 6,
+      }}>
+      {/* First Row: Status Icon + Text */}
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        {statusIcon}
         <Text
-          testID='lastCheckedLabel'
+          testID="verificationStatus"
           color={display.getTextColor(Theme.Colors.Details)}
-          style={[Theme.Styles.verificationStatus, { fontFamily: 'Inter_400' }]}>
-          {t('lastChecked')}
-        </Text>
-        <Text
-          testID="lastKnownStatusTimestamp"
-          color={display.getTextColor(Theme.Colors.Details)}
-          style={[Theme.Styles.verificationStatus,{ fontFamily: 'Inter_400' }]}>
-          {new Date(vcMetadata.lastKnownStatusTimestamp).toLocaleString()}
+          style={Theme.Styles.verificationStatus}>
+          {statusText}
         </Text>
       </View>
-    )}
-  </View>
-);
 
+      {showLastChecked && vcMetadata.lastKnownStatusTimestamp && (
+        <View style={{marginTop: 4}}>
+          <Text
+            testID="lastCheckedLabel"
+            color={display.getTextColor(Theme.Colors.Details)}
+            style={[
+              Theme.Styles.verificationStatus,
+              {fontFamily: 'Montserrat_400Regular'},
+            ]}>
+            {t('lastChecked')}
+          </Text>
+          <Text
+            testID="lastKnownStatusTimestamp"
+            color={display.getTextColor(Theme.Colors.Details)}
+            style={[
+              Theme.Styles.verificationStatus,
+              {fontFamily: 'Montserrat_400Regular'},
+            ]}>
+            {new Date(vcMetadata.lastKnownStatusTimestamp).toLocaleString()}
+          </Text>
+        </View>
+      )}
+    </View>
+  );
 };
 
 export interface VCVerificationProps {
