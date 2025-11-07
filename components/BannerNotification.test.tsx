@@ -2,6 +2,11 @@ import React from 'react';
 import {render} from '@testing-library/react-native';
 import {BannerNotification, BannerStatusType} from './BannerNotification';
 
+// Mock the SVG components
+jest.mock('../assets/Error_Toast_Icon.svg', () => 'ErrorToastIcon');
+jest.mock('../assets/Info_Toast_Icon.svg', () => 'InfoToastIcon');
+jest.mock('../assets/Success_Toast_Icon.svg', () => 'SuccessToastIcon');
+
 describe('BannerNotification Component', () => {
   const defaultProps = {
     message: 'Test notification message',

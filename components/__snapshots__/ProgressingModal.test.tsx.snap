@@ -10,7 +10,7 @@ exports[`ProgressingModal Component should match snapshot with hint visible 1`] 
 
 exports[`ProgressingModal Component should match snapshot with progress spinner 1`] = `
 <Spinner
-  color="#951F6F"
+  color="#F37321"
   style={
     {
       "marginLeft": 6,

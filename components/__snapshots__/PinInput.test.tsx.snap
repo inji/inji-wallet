@@ -36,14 +36,14 @@ exports[`PinInput Component should match snapshot with 4 digit PIN 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
-        "borderColor": "#951F6F",
+        "borderColor": "#F37321",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_700Bold",
+        "fontFamily": "Montserrat_700Bold",
         "fontSize": 29,
         "height": 50,
         "margin": 8,
@@ -61,14 +61,14 @@ exports[`PinInput Component should match snapshot with 4 digit PIN 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -87,14 +87,14 @@ exports[`PinInput Component should match snapshot with 4 digit PIN 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -113,14 +113,14 @@ exports[`PinInput Component should match snapshot with 4 digit PIN 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -169,14 +169,14 @@ exports[`PinInput Component should match snapshot with 6 digit PIN 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
-        "borderColor": "#951F6F",
+        "borderColor": "#F37321",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_700Bold",
+        "fontFamily": "Montserrat_700Bold",
         "fontSize": 29,
         "height": 50,
         "margin": 8,
@@ -194,14 +194,14 @@ exports[`PinInput Component should match snapshot with 6 digit PIN 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -220,14 +220,14 @@ exports[`PinInput Component should match snapshot with 6 digit PIN 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -246,14 +246,14 @@ exports[`PinInput Component should match snapshot with 6 digit PIN 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -272,14 +272,14 @@ exports[`PinInput Component should match snapshot with 6 digit PIN 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -298,14 +298,14 @@ exports[`PinInput Component should match snapshot with 6 digit PIN 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -355,14 +355,14 @@ exports[`PinInput Component should match snapshot with custom testID 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
-        "borderColor": "#951F6F",
+        "borderColor": "#F37321",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_700Bold",
+        "fontFamily": "Montserrat_700Bold",
         "fontSize": 29,
         "height": 50,
         "margin": 8,
@@ -380,14 +380,14 @@ exports[`PinInput Component should match snapshot with custom testID 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -406,14 +406,14 @@ exports[`PinInput Component should match snapshot with custom testID 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -432,14 +432,14 @@ exports[`PinInput Component should match snapshot with custom testID 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -488,14 +488,14 @@ exports[`PinInput Component should match snapshot with onChange handler 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
-        "borderColor": "#951F6F",
+        "borderColor": "#F37321",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_700Bold",
+        "fontFamily": "Montserrat_700Bold",
         "fontSize": 29,
         "height": 50,
         "margin": 8,
@@ -513,14 +513,14 @@ exports[`PinInput Component should match snapshot with onChange handler 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -539,14 +539,14 @@ exports[`PinInput Component should match snapshot with onChange handler 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -565,14 +565,14 @@ exports[`PinInput Component should match snapshot with onChange handler 1`] = `
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -621,14 +621,14 @@ exports[`PinInput Component should match snapshot with onDone and autosubmit 1`]
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
-        "borderColor": "#951F6F",
+        "borderColor": "#F37321",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_700Bold",
+        "fontFamily": "Montserrat_700Bold",
         "fontSize": 29,
         "height": 50,
         "margin": 8,
@@ -646,14 +646,14 @@ exports[`PinInput Component should match snapshot with onDone and autosubmit 1`]
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -672,14 +672,14 @@ exports[`PinInput Component should match snapshot with onDone and autosubmit 1`]
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
@@ -698,14 +698,14 @@ exports[`PinInput Component should match snapshot with onDone and autosubmit 1`]
     onKeyPress={[Function]}
     secureTextEntry={true}
     selectTextOnFocus={true}
-    selectionColor="#951F6F"
+    selectionColor="#F37321"
     style={
       {
         "borderBottomWidth": 3,
         "borderColor": "#C7C7C7",
         "color": "#000000",
         "flex": 1,
-        "fontFamily": "Inter_600SemiBold",
+        "fontFamily": "Montserrat_600SemiBold",
         "fontSize": 33,
         "height": 50,
         "lineHeight": 28,
