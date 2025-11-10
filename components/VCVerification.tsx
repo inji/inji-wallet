@@ -9,6 +9,7 @@ import {Theme} from './ui/styleUtils';
 import {useTranslation} from 'react-i18next';
 import {VCMetadata} from '../shared/VCMetadata';
 import {RevocationStatus} from '../shared/vcVerifier/VcVerifier';
+import {formattedDate} from '../shared/openId4VCI/Utils';
 
 export const VCVerification: React.FC<VCVerificationProps> = ({
   vcMetadata,
@@ -76,7 +77,7 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
               Theme.Styles.verificationStatus,
               {fontFamily: 'Montserrat_400'},
             ]}>
-            {new Date(vcMetadata.lastKnownStatusTimestamp).toLocaleString()}
+            {formattedDate(vcMetadata.lastKnownStatusTimestamp)}
           </Text>
         </View>
       )}
