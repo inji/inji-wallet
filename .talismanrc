@@ -34,7 +34,7 @@ fileignoreconfig:
   - filename: shared/fileStorage.ts
     checksum: 2ba2721d9722cd9420ae26762316230f7dab1a0be45820cbda4d0ecae0edf957
   - filename: screens/Issuers/IssuersScreen.tsx
-    checksum: a323497d3276f0ef20ddd6b94d2238a895651d853c3d8f055acc3351dc72da0b
+    checksum: 33c6c04320f822bb00343bcf4d5fa010177366ae44d8f64a280484d00616c8c6
   - filename: screens/Home/MyVcs/GetIdInputModal.tsx
     checksum: 5c736ed79a372d0ffa7c02eb33d0dc06edbbb08d120978ff287f5f06cd6c7746
   - filename: shared/openId4VCI/Utils.ts
