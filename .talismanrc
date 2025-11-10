@@ -70,7 +70,7 @@ fileignoreconfig:
   - filename: android/app/build.gradle
     checksum: 8d5715e179a398518e6acff82c75b27077c9f893dc90b2972c77f9a09f10be95
   - filename: .github/workflows/push-triggers.yml
-    checksum: abc19ea38c8d7b79f15695d015709cc88a34a995181aaf12bc8344f940f3cbc4
+    checksum: 1461e21496ff0771b8ec8d6f25e77871191e91a2bca1934d1636df129ef2afbb
   - filename: android/fastlane/Fastfile
     checksum: a5e816489a80b0a7498f35b7a2919f2287d4307b660687c2a9c51412aa8eceb7
   - filename: .github/workflows/internal-build.yml
@@ -95,8 +95,6 @@ fileignoreconfig:
     checksum: e85d18cd3349e0127f1cc7173fcdfd31824e609508512a613997a73756cd4dec
   - filename: .github/workflows/android-custom-build.yml
     checksum: 4d155c6e5468effb0b82e62f6878f2bd7ff7e7c9540e16bdd28cb81b80672ac3
-  - filename: .github/workflows/push-triggers.yml
-    checksum: 4a031b46646aa982c8f40e4c7fe0bd3e05a76a6af1ff1c2de7350ba6ebf9a839
   - filename: components/VC/Views/VCCardViewContent.tsx
     checksum: 02655ff3d7f8a8ea4f3664485f98c961802c598242ec44408594a2ddb721fa5e
   - filename: screens/Settings/BackupController.tsx
