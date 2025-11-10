@@ -48,18 +48,14 @@ jobs:
       BUILD_ARTIFACT: inji-wallet-test
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3.7.0
+      - uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-      - name: Cache npm dependencies
-        uses: actions/cache@v4
-        with:
-          path: '~/.npm'
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
+          cache: 'npm'
       - name: Install the dependencies
         run: npm install
+      - name: Run tests with coverage
+        run: npm run test-coverage
       - name: Build the project
         run: npm run build
       - uses: 8398a7/action-slack@v3
