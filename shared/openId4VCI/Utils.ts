@@ -488,3 +488,17 @@ function resolveEd25519Alg(proofSigningAlgosSupported: string[]) {
     ? KEY_TYPE_TO_JWT_ALG[KeyTypes.ED25519]
     : ED25519_PROOF_SIGNING_ALGO;
 }
+
+export function formattedDate(time: number|string): React.ReactNode {
+  const date = new Date(time);
+  const day = date.getDate();
+  const month = date.toLocaleString('default', {month: 'long'});
+  const year = date.getFullYear();
+  const formattedHours = (date.getHours() % 12 || 12)
+    .toString()
+    .padStart(2, '0');
+  const formattedMinutes = date.getMinutes().toString().padStart(2, '0');
+  const period = date.getHours() >= 12 ? 'PM' : 'AM';
+
+  return `${day} ${month} ${year}, ${formattedHours}:${formattedMinutes} ${period}`;
+}
