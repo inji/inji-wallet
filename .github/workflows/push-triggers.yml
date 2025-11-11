@@ -39,7 +39,7 @@ jobs:
       IOS_SERVICE_LOCATION: 'ios'
       SCRIPT_NAME: "fastlane ios_app_build"
 
-  build-inji-wallet:
+  run-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -62,7 +62,7 @@ jobs:
   sonar-check-on-push:
     name: Sonar check
     if: ${{ github.event_name != 'pull_request' }}
-    needs: [build-android, build-ios, build-inji-wallet]
+    needs: [build-android, build-ios, run-tests]
     uses: mosip/kattu/.github/workflows/npm-sonar-analysis.yml@master-java21
     with:
       SERVICE_LOCATION: '.'
