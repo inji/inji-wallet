@@ -208,7 +208,6 @@ const BackupAndRestoreScreen: React.FC<BackupAndRestoreProps> = props => {
         <HelpScreen source={'BackUp'} triggerComponent={HelpIcon()} />
       }
       onDismiss={props.onBackPress}>
-      <BannerNotificationContainer />
       <View
         style={{
           backgroundColor: Theme.Colors.lightGreyBackgroundColor,
@@ -220,6 +219,7 @@ const BackupAndRestoreScreen: React.FC<BackupAndRestoreProps> = props => {
           </Column>
         ) : (
           <ScrollView>
+            <BannerNotificationContainer />
             {LastBackupSection}
             {AccountSection}
             {RestoreSection}
