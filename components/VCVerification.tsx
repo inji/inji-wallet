@@ -1,20 +1,21 @@
 import React from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
 import testIDProps from '../shared/commonUtil';
-import {Display} from './VC/common/VCUtils';
+import { Display } from './VC/common/VCUtils';
 import VerifiedIcon from './VerifiedIcon';
 import PendingIcon from './PendingIcon';
-import {Row, Text} from './ui';
-import {Theme} from './ui/styleUtils';
-import {useTranslation} from 'react-i18next';
-import {VCMetadata} from '../shared/VCMetadata';
+import { Row, Text } from './ui';
+import { Theme } from './ui/styleUtils';
+import { useTranslation } from 'react-i18next';
+import { VCMetadata } from '../shared/VCMetadata';
+import { formattedDate } from '../shared/openId4VCI/Utils';
 
 export const VCVerification: React.FC<VCVerificationProps> = ({
   vcMetadata,
   display,
   showLastChecked = true,
 }) => {
-  const {t} = useTranslation('VcDetails');
+  const { t } = useTranslation('VcDetails');
 
   let statusText: string;
   let statusIcon: JSX.Element;
@@ -44,7 +45,7 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
         paddingVertical: 6,
       }}>
       {/* First Row: Status Icon + Text */}
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         {statusIcon}
         <Text
           testID="verificationStatus"
@@ -55,13 +56,13 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
       </View>
 
       {showLastChecked && vcMetadata.lastKnownStatusTimestamp && (
-        <View style={{marginTop: 4}}>
+        <View style={{ marginTop: 4 }}>
           <Text
             testID="lastCheckedLabel"
             color={display.getTextColor(Theme.Colors.Details)}
             style={[
               Theme.Styles.verificationStatus,
-              {fontFamily: 'Montserrat_400Regular'},
+              { fontFamily: 'Montserrat_400Regular' },
             ]}>
             {t('lastChecked')}
           </Text>
@@ -72,7 +73,7 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
               Theme.Styles.verificationStatus,
               {fontFamily: 'Montserrat_400Regular'},
             ]}>
-            {new Date(vcMetadata.lastKnownStatusTimestamp).toLocaleString()}
+            {formattedDate(vcMetadata.lastKnownStatusTimestamp)}
           </Text>
         </View>
       )}
