@@ -30,7 +30,7 @@ export const BannerNotificationContainer: React.FC<
   const verificationStatus = bannerNotificationController.verificationStatus || null;
 
   return (
-    <View style={[{position: 'absolute', zIndex: 100}]}>
+    <View>
       <BackupAndRestoreBannerNotification />
 
       {settingsScreenController.isKeyOrderSet === true && (

@@ -858,6 +858,12 @@ export const DefaultTheme = {
     },
   }),
   BannerStyles: StyleSheet.create({
+    wrapper: {
+          position: 'absolute',
+          zIndex: 100,
+          width: '100%',
+          alignSelf: 'center',
+      },
     container: {
       alignItems: 'center',
       justifyContent: 'space-between',

@@ -208,9 +208,7 @@ const BackupAndRestoreScreen: React.FC<BackupAndRestoreProps> = props => {
         <HelpScreen source={'BackUp'} triggerComponent={HelpIcon()} />
       }
       onDismiss={props.onBackPress}>
-      <View>
-        <BannerNotificationContainer />
-      </View>
+      <BannerNotificationContainer />
       <View
         style={{
           backgroundColor: Theme.Colors.lightGreyBackgroundColor,

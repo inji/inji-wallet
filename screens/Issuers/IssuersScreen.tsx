@@ -297,9 +297,7 @@ export const IssuersScreen: React.FC<
 
   return (
     <React.Fragment>
-      <View>
-        <BannerNotificationContainer />
-      </View>
+      <BannerNotificationContainer />
       {controller.issuers.length > 0 && (
         <Column style={Theme.IssuersScreenStyles.issuerListOuterContainer}>
           <Row
