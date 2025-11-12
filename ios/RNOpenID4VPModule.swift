@@ -161,7 +161,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           }
         }
 
-        let verifierResponse = try await openID4VP?.sendAuthorizationResponseToVerifier(vpTokenSigningResults: formattedVPTokenSigningResults)
+        let verifierResponse = try await openID4VP?.sendVPResponseToVerifier(vpTokenSigningResults: formattedVPTokenSigningResults)
         try resolveToJsonData(verifierResponse, resolver: resolve, rejecter: reject)
       } catch {
         rejectWithOpenID4VPError(error, reject: reject)
@@ -186,7 +186,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
       }()
       
       do {
-        let verifierResponse = try await openID4VP?.sendErrorResponseToVerifier(error: exception)
+        let verifierResponse = try await openID4VP?.sendErrorInfoToVerifier(error: exception)
         try resolveToJsonData(verifierResponse, resolver: resolve, rejecter: reject)
       } catch {
         rejectWithOpenID4VPError(error, reject: reject)
@@ -231,7 +231,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
         let errorMap: [String: Any] = [
             "errorCode": openidError.errorCode,
             "message": openidError.message,
-            "response": Inji.toJsonString(openidError.networkResponse) ?? ""
+            "verifierResponse": Inji.toJsonString(openidError.verifierResponse) ?? ""
         ]
         let nsError = NSError(
             domain: "OPENID4VP",
@@ -314,7 +314,7 @@ func mapStringsToEnum<T: RawRepresentable>(
   }
 }
 
-fileprivate func resolveToJsonData(_ response: NetworkResponse?,resolver resolve: @escaping RCTPromiseResolveBlock,
+fileprivate func resolveToJsonData(_ response: VerifierResponse?,resolver resolve: @escaping RCTPromiseResolveBlock,
                                    rejecter reject: @escaping RCTPromiseRejectBlock) throws {
   let jsonData = try toJsonData(response)
   

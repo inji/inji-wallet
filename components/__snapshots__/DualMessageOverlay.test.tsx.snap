@@ -13,7 +13,7 @@ exports[`DualMessageOverlay Component should match snapshot with both buttons 1`
           "lineHeight": 18,
         },
         {
-          "fontFamily": "Inter_700Bold",
+          "fontFamily": "Montserrat_700Bold",
           "fontSize": 15,
           "justifyContent": "center",
         },
@@ -42,7 +42,7 @@ exports[`DualMessageOverlay Component should match snapshot with both buttons 1`
           "lineHeight": 18,
         },
         {
-          "fontFamily": "Inter_700Bold",
+          "fontFamily": "Montserrat_700Bold",
           "fontSize": 15,
           "justifyContent": "center",
         },
@@ -103,7 +103,7 @@ exports[`DualMessageOverlay Component should match snapshot with only ignore but
           "lineHeight": 18,
         },
         {
-          "fontFamily": "Inter_700Bold",
+          "fontFamily": "Montserrat_700Bold",
           "fontSize": 15,
           "justifyContent": "center",
         },
@@ -139,7 +139,7 @@ exports[`DualMessageOverlay Component should match snapshot with only try again 
           "lineHeight": 18,
         },
         {
-          "fontFamily": "Inter_700Bold",
+          "fontFamily": "Montserrat_700Bold",
           "fontSize": 15,
           "justifyContent": "center",
         },

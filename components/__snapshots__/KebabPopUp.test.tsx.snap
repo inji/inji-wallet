@@ -51,7 +51,7 @@ exports[`KebabPopUp Component should match snapshot when not visible 1`] = `
         },
         null,
         {
-          "fontFamily": "Inter_700Bold",
+          "fontFamily": "Montserrat_700Bold",
           "justifyContent": "space-between",
         },
         null,
@@ -69,7 +69,7 @@ exports[`KebabPopUp Component should match snapshot when not visible 1`] = `
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_700Bold",
+            "fontFamily": "Montserrat_700Bold",
             "fontSize": 15,
             "justifyContent": "center",
           },
@@ -132,7 +132,7 @@ exports[`KebabPopUp Component should match snapshot when not visible 1`] = `
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_400Regular",
+            "fontFamily": "Montserrat_400Regular",
             "fontSize": 14,
           },
           null,
@@ -147,7 +147,7 @@ exports[`KebabPopUp Component should match snapshot when not visible 1`] = `
           },
           null,
           {
-            "fontFamily": "Inter_600SemiBold",
+            "fontFamily": "Montserrat_600SemiBold",
           },
         ]
       }
@@ -201,7 +201,7 @@ exports[`KebabPopUp Component should match snapshot when not visible 1`] = `
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_400Regular",
+            "fontFamily": "Montserrat_400Regular",
             "fontSize": 14,
           },
           {
@@ -218,7 +218,7 @@ exports[`KebabPopUp Component should match snapshot when not visible 1`] = `
           },
           null,
           {
-            "fontFamily": "Inter_600SemiBold",
+            "fontFamily": "Montserrat_600SemiBold",
           },
         ]
       }
@@ -280,7 +280,7 @@ exports[`KebabPopUp Component should match snapshot with VC that has image 1`] =
         },
         null,
         {
-          "fontFamily": "Inter_700Bold",
+          "fontFamily": "Montserrat_700Bold",
           "justifyContent": "space-between",
         },
         null,
@@ -298,7 +298,7 @@ exports[`KebabPopUp Component should match snapshot with VC that has image 1`] =
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_700Bold",
+            "fontFamily": "Montserrat_700Bold",
             "fontSize": 15,
             "justifyContent": "center",
           },
@@ -361,7 +361,7 @@ exports[`KebabPopUp Component should match snapshot with VC that has image 1`] =
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_400Regular",
+            "fontFamily": "Montserrat_400Regular",
             "fontSize": 14,
           },
           null,
@@ -376,7 +376,7 @@ exports[`KebabPopUp Component should match snapshot with VC that has image 1`] =
           },
           null,
           {
-            "fontFamily": "Inter_600SemiBold",
+            "fontFamily": "Montserrat_600SemiBold",
           },
         ]
       }
@@ -430,7 +430,7 @@ exports[`KebabPopUp Component should match snapshot with VC that has image 1`] =
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_400Regular",
+            "fontFamily": "Montserrat_400Regular",
             "fontSize": 14,
           },
           {
@@ -447,7 +447,7 @@ exports[`KebabPopUp Component should match snapshot with VC that has image 1`] =
           },
           null,
           {
-            "fontFamily": "Inter_600SemiBold",
+            "fontFamily": "Montserrat_600SemiBold",
           },
         ]
       }
@@ -509,7 +509,7 @@ exports[`KebabPopUp Component should match snapshot with custom icon color 1`] =
         },
         null,
         {
-          "fontFamily": "Inter_700Bold",
+          "fontFamily": "Montserrat_700Bold",
           "justifyContent": "space-between",
         },
         null,
@@ -527,7 +527,7 @@ exports[`KebabPopUp Component should match snapshot with custom icon color 1`] =
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_700Bold",
+            "fontFamily": "Montserrat_700Bold",
             "fontSize": 15,
             "justifyContent": "center",
           },
@@ -590,7 +590,7 @@ exports[`KebabPopUp Component should match snapshot with custom icon color 1`] =
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_400Regular",
+            "fontFamily": "Montserrat_400Regular",
             "fontSize": 14,
           },
           null,
@@ -605,7 +605,7 @@ exports[`KebabPopUp Component should match snapshot with custom icon color 1`] =
           },
           null,
           {
-            "fontFamily": "Inter_600SemiBold",
+            "fontFamily": "Montserrat_600SemiBold",
           },
         ]
       }
@@ -659,7 +659,7 @@ exports[`KebabPopUp Component should match snapshot with custom icon color 1`] =
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_400Regular",
+            "fontFamily": "Montserrat_400Regular",
             "fontSize": 14,
           },
           {
@@ -676,7 +676,7 @@ exports[`KebabPopUp Component should match snapshot with custom icon color 1`] =
           },
           null,
           {
-            "fontFamily": "Inter_600SemiBold",
+            "fontFamily": "Montserrat_600SemiBold",
           },
         ]
       }
@@ -741,7 +741,7 @@ exports[`KebabPopUp Component should match snapshot with custom icon component 1
         },
         null,
         {
-          "fontFamily": "Inter_700Bold",
+          "fontFamily": "Montserrat_700Bold",
           "justifyContent": "space-between",
         },
         null,
@@ -759,7 +759,7 @@ exports[`KebabPopUp Component should match snapshot with custom icon component 1
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_700Bold",
+            "fontFamily": "Montserrat_700Bold",
             "fontSize": 15,
             "justifyContent": "center",
           },
@@ -822,7 +822,7 @@ exports[`KebabPopUp Component should match snapshot with custom icon component 1
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_400Regular",
+            "fontFamily": "Montserrat_400Regular",
             "fontSize": 14,
           },
           null,
@@ -837,7 +837,7 @@ exports[`KebabPopUp Component should match snapshot with custom icon component 1
           },
           null,
           {
-            "fontFamily": "Inter_600SemiBold",
+            "fontFamily": "Montserrat_600SemiBold",
           },
         ]
       }
@@ -891,7 +891,7 @@ exports[`KebabPopUp Component should match snapshot with custom icon component 1
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_400Regular",
+            "fontFamily": "Montserrat_400Regular",
             "fontSize": 14,
           },
           {
@@ -908,7 +908,7 @@ exports[`KebabPopUp Component should match snapshot with custom icon component 1
           },
           null,
           {
-            "fontFamily": "Inter_600SemiBold",
+            "fontFamily": "Montserrat_600SemiBold",
           },
         ]
       }
@@ -970,7 +970,7 @@ exports[`KebabPopUp Component should match snapshot with default icon 1`] = `
         },
         null,
         {
-          "fontFamily": "Inter_700Bold",
+          "fontFamily": "Montserrat_700Bold",
           "justifyContent": "space-between",
         },
         null,
@@ -988,7 +988,7 @@ exports[`KebabPopUp Component should match snapshot with default icon 1`] = `
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_700Bold",
+            "fontFamily": "Montserrat_700Bold",
             "fontSize": 15,
             "justifyContent": "center",
           },
@@ -1051,7 +1051,7 @@ exports[`KebabPopUp Component should match snapshot with default icon 1`] = `
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_400Regular",
+            "fontFamily": "Montserrat_400Regular",
             "fontSize": 14,
           },
           null,
@@ -1066,7 +1066,7 @@ exports[`KebabPopUp Component should match snapshot with default icon 1`] = `
           },
           null,
           {
-            "fontFamily": "Inter_600SemiBold",
+            "fontFamily": "Montserrat_600SemiBold",
           },
         ]
       }
@@ -1120,7 +1120,7 @@ exports[`KebabPopUp Component should match snapshot with default icon 1`] = `
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_400Regular",
+            "fontFamily": "Montserrat_400Regular",
             "fontSize": 14,
           },
           {
@@ -1137,7 +1137,7 @@ exports[`KebabPopUp Component should match snapshot with default icon 1`] = `
           },
           null,
           {
-            "fontFamily": "Inter_600SemiBold",
+            "fontFamily": "Montserrat_600SemiBold",
           },
         ]
       }

@@ -67,7 +67,7 @@
     {
       "identity" : "gzipswift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/1024jp/GzipSwift.git",
+      "location" : "https://github.com/1024jp/GzipSwift",
       "state" : {
         "revision" : "7a7f17761c76a932662ab77028a4329f67d645a4",
         "version" : "5.2.0"
@@ -79,7 +79,7 @@
       "location" : "https://github.com/mosip/inji-openid4vp-ios-swift.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "addc65b3cb9388690fe88857ded9f893d500f548"
+        "revision" : "bf6031839a86c4954fd4fed039b32a66874fc25a"
       }
     },
     {
