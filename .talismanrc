@@ -272,7 +272,7 @@ fileignoreconfig:
   - filename: machines/Issuers/IssuersService.ts
     checksum: e3832dff27687abc28609d2b281e570b4b0017995b7cfb56627a6b96949c469a
   - filename: screens/Home/ViewVcModal.tsx
-    checksum: cfb25d562185488432b76287c4ef93359c1c64d8e29f5755d4c0a726c1485442
+    checksum: 870fd6d53a3118cc120d3bb9d18698125a260e8f5673eddbb444e589bb3aacbd
   - filename: injitest/src/main/resources/TestData.json
     checksum: 1b5af14c96b456898259b4cb7a5607b006404cf0360274bdc204d7d065698e3c
   - filename: injitest/src/test/java/androidTestCases/ActivateVcTest.java
