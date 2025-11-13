@@ -4,9 +4,9 @@
 
 This README provides a step-by-step [guide](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide/building-verifiable-credentials-wallet-with-inji-libraries#inji-libraries-used-for-building-a-custom-wallet) for developers to build their own Verifiable Credential (VC) wallet using the Inji [libraries](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide). By leveraging Inji’s modular SDKs, developers can easily integrate core VC wallet capabilities such as downloading, storing, sharing, and verifying credentials. The implementation examples are based on Kotlin for Android, but the same libraries are also available in Swift for iOS, enabling developers to create secure, interoperable, and cross-platform wallet applications powered by Inji. The **Sample Verifiable Credential Wallet** is a **Kotlin-based Android application** that demonstrates the **end-to-end Verifiable Credential (VC) lifecycle** within the **Inji ecosystem** — covering:
 
-- **Credential issuance** via [Inji Certify](https://docs.inji.io/inji-certify/overview)  
-- **Secure storage and management** through [Inji Libraries/SDKs](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide)  
-- **Verification** using [Inji Verify](https://docs.inji.io/inji-verify/overview)  
+- **Credential issuance** via [Inji Certify](https://docs.inji.io/inji-certify/overview)
+- **Secure storage and management** through [Inji Libraries/SDKs](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide)
+- **Verification** using [Inji Verify](https://docs.inji.io/inji-verify/overview)
 
 It serves as a reference implementation for developers integrating Inji Mobile Wallet library components to build secure and standards-compliant credential wallet applications.
 
@@ -20,12 +20,12 @@ The purpose of the Sample Credential Wallet is to help developers understand and
 
 ### Key Components
 
-| Component           | Description                                                                          |
-| ------------------- | ------------------------------------------------------------------------------------ |
-| Inji Certify        | Credential issuer implementing the OpenID4VCI protocol for secure issuance           |
-| VCI Client          | OpenID4VCI client library handling authorization and credential download flows       |
-| Secure Keystore     | Android hardware-backed Keystore manager for RSA/EC key pair generation              |
-| VC Verifier | Verification library validating credential signatures and structure using vcverifier         |
+| Component       | Description                                                                          |
+| --------------- | ------------------------------------------------------------------------------------ |
+| Inji Certify    | Credential issuer implementing the OpenID4VCI protocol for secure issuance           |
+| VCI Client      | OpenID4VCI client library handling authorization and credential download flows       |
+| Secure Keystore | Android hardware-backed Keystore manager for RSA/EC key pair generation              |
+| VC Verifier     | Verification library validating credential signatures and structure using vcverifier |
 
 To get more details, click [here](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide/building-verifiable-credentials-wallet-with-inji-libraries#inji-libraries-used-for-building-a-custom-wallet) !
 
@@ -229,7 +229,7 @@ A demo video will be `available soon`, providing a walkthrough of the following 
 - [Inji Wallet GitHub Repository](https://github.com/mosip/inji-wallet)
 - [Inji VCI Client Repository](https://github.com/mosip/inji-vci-client)
 - [Secure Keystore Repository](https://github.com/mosip/secure-keystore/tree/master)
-- [VC Verifier Repository](https://github.com/mosip/inji-vci-client)
+- [VC Verifier Repository](https://github.com/mosip/vc-verifier)
 - [OpenID4VCI Specification Draft 13](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html)
 - [Building Verifiable Credentials Wallet with Inji Libraries](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide/building-verifiable-credentials-wallet-with-inji-libraries)
 - [OpenID4VP Specification Draft 23](https://openid.net/specs/openid-4-verifiable-presentations-1_0-ID3.html)
