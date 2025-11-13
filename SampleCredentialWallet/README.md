@@ -2,20 +2,19 @@
 
 ## Introduction
 
-This ReadMe provides step-by-step documentation for building a Kotlin-based verifiable credential (VC) wallet from scratch using Inji Mobile Wallet [libraries](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide). It demonstrates how developers can leverage the [Inji Mobile Wallet](https://docs.inji.io/inji-wallet/inji-mobile) to securely download, verify, store, and present verifiable credentials. While this guide focuses on Android-based implementations, the Inji libraries are also available in Swift for iOS development, ensuring cross-platform flexibility.
+This README provides a step-by-step [guide](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide/building-verifiable-credentials-wallet-with-inji-libraries#inji-libraries-used-for-building-a-custom-wallet) for developers to build their own Verifiable Credential (VC) wallet using the Inji [libraries](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide). By leveraging Inji’s modular SDKs, developers can easily integrate core VC wallet capabilities such as downloading, storing, sharing, and verifying credentials. The implementation examples are based on Kotlin for Android, but the same libraries are also available in Swift for iOS, enabling developers to create secure, interoperable, and cross-platform wallet applications powered by Inji. The **Sample Verifiable Credential Wallet** is a **Kotlin-based Android application** that demonstrates the **end-to-end Verifiable Credential (VC) lifecycle** within the **Inji ecosystem** — covering:
 
-## Overview
+- **Credential issuance** via [Inji Certify](https://docs.inji.io/inji-certify/overview)  
+- **Secure storage and management** through [Inji Libraries/SDKs](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide)  
+- **Verification** using [Inji Verify](https://docs.inji.io/inji-verify/overview)  
 
-The Sample Credential Wallet is a Kotlin-based Android application showcasing the end-to-end Verifiable Credential (VC) flow across the MOSIP Inji ecosystem from credential issuance ([Inji Certify](https://docs.inji.io/inji-certify/overview)) to storage ([Inji Mobile Wallet](https://docs.inji.io/inji-wallet/inji-mobile)) to verification ([Inji Verify](https://docs.inji.io/inji-verify/overview)).
-
-It serves as a reference implementation for developers integrating MOSIP's Inji Mobile Wallet components to build secure and standards-compliant credential wallet applications.
+It serves as a reference implementation for developers integrating Inji Mobile Wallet library components to build secure and standards-compliant credential wallet applications.
 
 ### Purpose
 
-The purpose of the Sample Credential Wallet is to help developers understand and implement the verifiable credential lifecycle using the MOSIP Inji ecosystem. It demonstrates:
+The purpose of the Sample Credential Wallet is to help developers understand and implement the verifiable credential lifecycle using the Inji ecosystem. It demonstrates:
 
-- Integration of MOSIP Inji libraries for credential issuance and verification
-- Implementation of OpenID4VCI protocol for credential requests
+- Implementation of OpenID4VCI protocol for credential requests using Inji Library components
 - Hardware-backed key generation and JWT signing for proof generation
 - Full credential lifecycle — issuance → verification → storage
 
@@ -26,7 +25,9 @@ The purpose of the Sample Credential Wallet is to help developers understand and
 | Inji Certify        | Credential issuer implementing the OpenID4VCI protocol for secure issuance           |
 | VCI Client          | OpenID4VCI client library handling authorization and credential download flows       |
 | Secure Keystore     | Android hardware-backed Keystore manager for RSA/EC key pair generation              |
-| Credential Verifier | Verification library validating credential signatures and structure using vcverifier |
+| VC Verifier | Verification library validating credential signatures and structure using vcverifier         |
+
+To get more details, click [here](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide/building-verifiable-credentials-wallet-with-inji-libraries#inji-libraries-used-for-building-a-custom-wallet) !
 
 **Integrated Libraries:**
 
@@ -41,6 +42,8 @@ The purpose of the Sample Credential Wallet is to help developers understand and
 - **Credential Issuance** – Authorization Code Flow-based issuance
 - **Credential Verification** – Signature validation via MOSIP vcverifier
 
+To get more details, [click here](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide/building-verifiable-credentials-wallet-with-inji-libraries#inji-libraries-used-for-building-a-custom-wallet) !
+
 ## Pre-requisites
 
 ### Development Environment
@@ -52,11 +55,6 @@ The purpose of the Sample Credential Wallet is to help developers understand and
   - Min API: 26
   - Target API: 35
   - Compile SDK: 35
-
-### Access to Services
-
-- Inji Certify (COLLAB environment)
-- eSignet / OIDC Server – Integrated via OpenID4VCI flow
 
 ### Dependencies
 
@@ -218,7 +216,7 @@ adb logcat -c && adb logcat MainActivity:D AuthCodeHolder:D CredentialDownload:D
 
 ## Demo Reference
 
-A demo video will walk through will be available soon which will cover below items:
+A demo video will be `available soon`, providing a walkthrough of the following features:
 
 - Keystore initialization
 - Issuer selection and credential request
