@@ -199,84 +199,83 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
           />
         )}
 
-      {!isVCLoaded(verifiableCredential) ? (
-        <ActivityIndicator />
-      ) : (
-        <VcDetailsContainer
-          fields={fields}
-          wellknownFieldsFlag={wellknownFieldsFlag}
-          wellknown={wellknown}
-          credential={verifiableCredential}
-          credentialWrapper={controller.credential}
-          verifiableCredentialData={controller.verifiableCredentialData}
-          onBinding={controller.addtoWallet}
-          walletBindingResponse={controller.walletBindingResponse}
-          activeTab={props.activeTab}
-          vcHasImage={profileImage !== undefined}
-          svgTemplate={svgTemplate}
-          svgRendererError={svgRendererError}
-          loadingSvg={loadingSvg}
-        />
-      )}
-
-      {controller.isAcceptingBindingOtp && (
-        <OtpVerificationModal
-          service={props.vcItemActor}
-          isVisible={controller.isAcceptingBindingOtp}
-          onDismiss={controller.DISMISS}
-          onInputDone={controller.inputOtp}
-          error={controller.otpError}
-          resend={controller.RESEND_OTP}
-          phone={controller.isCommunicationDetails.phoneNumber}
-          email={controller.isCommunicationDetails.emailId}
-          flow={TelemetryConstants.FlowType.vcActivation}
-        />
-      )}
-
-      <BindingVcWarningOverlay
-        isVisible={controller.isBindingWarning}
-        onConfirm={controller.CONFIRM}
-        onCancel={controller.CANCEL}
-      />
-
-      <MessageOverlay
-        testID="walletBindingError"
-        isVisible={controller.isBindingError}
-        title={controller.walletBindingError}
-        onButtonPress={() => {
-          controller.CANCEL();
-        }}
-      />
-
-      <MessageOverlay
-        isVisible={
-          controller.isWalletBindingInProgress || controller.isReverifyingVc
-        }
-        title={t('inProgress')}
-        progress
-      />
-
-      {controller.toastVisible && <ToastItem message={controller.message} />}
-
-      <WalletBinding
-        service={props.vcItemActor}
-        vcMetadata={controller.verifiableCredentialData.vcMetadata}
-      />
-
-      <RemoveVcWarningOverlay
-        testID="removeVcWarningOverlay"
-        service={props.vcItemActor}
-        vcMetadata={controller.verifiableCredentialData.vcMetadata}
-      />
-
-      <HistoryTab
-        service={props.vcItemActor}
-        vcMetadata={VCMetadata.fromVC(
-          controller.verifiableCredentialData.vcMetadata,
+        {!isVCLoaded(verifiableCredential) ? (
+          <ActivityIndicator />
+        ) : (
+          <VcDetailsContainer
+            fields={fields}
+            wellknownFieldsFlag={wellknownFieldsFlag}
+            wellknown={wellknown}
+            credential={verifiableCredential}
+            credentialWrapper={controller.credential}
+            verifiableCredentialData={controller.verifiableCredentialData}
+            onBinding={controller.addtoWallet}
+            walletBindingResponse={controller.walletBindingResponse}
+            activeTab={props.activeTab}
+            vcHasImage={profileImage !== undefined}
+            svgTemplate={svgTemplate}
+            svgRendererError={svgRendererError}
+            loadingSvg={loadingSvg}
+          />
         )}
-      />
-      </View>
 
+        {controller.isAcceptingBindingOtp && (
+          <OtpVerificationModal
+            service={props.vcItemActor}
+            isVisible={controller.isAcceptingBindingOtp}
+            onDismiss={controller.DISMISS}
+            onInputDone={controller.inputOtp}
+            error={controller.otpError}
+            resend={controller.RESEND_OTP}
+            phone={controller.isCommunicationDetails.phoneNumber}
+            email={controller.isCommunicationDetails.emailId}
+            flow={TelemetryConstants.FlowType.vcActivation}
+          />
+        )}
+
+        <BindingVcWarningOverlay
+          isVisible={controller.isBindingWarning}
+          onConfirm={controller.CONFIRM}
+          onCancel={controller.CANCEL}
+        />
+
+        <MessageOverlay
+          testID="walletBindingError"
+          isVisible={controller.isBindingError}
+          title={controller.walletBindingError}
+          onButtonPress={() => {
+            controller.CANCEL();
+          }}
+        />
+
+        <MessageOverlay
+          isVisible={
+            controller.isWalletBindingInProgress || controller.isReverifyingVc
+          }
+          title={t('inProgress')}
+          progress
+        />
+
+        {controller.toastVisible && <ToastItem message={controller.message} />}
+
+        <WalletBinding
+          service={props.vcItemActor}
+          vcMetadata={controller.verifiableCredentialData.vcMetadata}
+        />
+
+        <RemoveVcWarningOverlay
+          testID="removeVcWarningOverlay"
+          service={props.vcItemActor}
+          vcMetadata={controller.verifiableCredentialData.vcMetadata}
+        />
+
+        <HistoryTab
+          service={props.vcItemActor}
+          vcMetadata={VCMetadata.fromVC(
+            controller.verifiableCredentialData.vcMetadata,
+          )}
+        />
+      </View>
     </Modal>
   );
 };
