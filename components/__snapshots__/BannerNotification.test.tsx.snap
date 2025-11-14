@@ -4,6 +4,12 @@ exports[`BannerNotification Component should match snapshot with different testI
 <View
   accessibilityLabel="customBanner"
   accessible={true}
+  style={
+    {
+      "alignSelf": "center",
+      "width": "100%",
+    }
+  }
 >
   <View
     accessible={true}
@@ -179,6 +185,12 @@ exports[`BannerNotification Component should match snapshot with error status 1`
 <View
   accessibilityLabel="bannerTest"
   accessible={true}
+  style={
+    {
+      "alignSelf": "center",
+      "width": "100%",
+    }
+  }
 >
   <View
     accessible={true}
@@ -354,6 +366,12 @@ exports[`BannerNotification Component should match snapshot with in progress sta
 <View
   accessibilityLabel="bannerTest"
   accessible={true}
+  style={
+    {
+      "alignSelf": "center",
+      "width": "100%",
+    }
+  }
 >
   <View
     accessible={true}
@@ -529,6 +547,12 @@ exports[`BannerNotification Component should match snapshot with long message 1`
 <View
   accessibilityLabel="bannerTest"
   accessible={true}
+  style={
+    {
+      "alignSelf": "center",
+      "width": "100%",
+    }
+  }
 >
   <View
     accessible={true}
@@ -704,6 +728,12 @@ exports[`BannerNotification Component should match snapshot with success status 
 <View
   accessibilityLabel="bannerTest"
   accessible={true}
+  style={
+    {
+      "alignSelf": "center",
+      "width": "100%",
+    }
+  }
 >
   <View
     accessible={true}

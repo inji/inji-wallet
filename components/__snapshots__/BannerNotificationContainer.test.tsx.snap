@@ -3,12 +3,12 @@
 exports[`BannerNotificationContainer Component should match snapshot with no banners visible 1`] = `
 <View
   style={
-    [
-      {
-        "position": "absolute",
-        "zIndex": 100,
-      },
-    ]
+    {
+      "alignItems": "center",
+      "position": "absolute",
+      "width": "100%",
+      "zIndex": 100,
+    }
   }
 />
 `;
@@ -16,12 +16,12 @@ exports[`BannerNotificationContainer Component should match snapshot with no ban
 exports[`BannerNotificationContainer Component should match snapshot with verification banner disabled 1`] = `
 <View
   style={
-    [
-      {
-        "position": "absolute",
-        "zIndex": 100,
-      },
-    ]
+    {
+      "alignItems": "center",
+      "position": "absolute",
+      "width": "100%",
+      "zIndex": 100,
+    }
   }
 />
 `;
@@ -29,12 +29,12 @@ exports[`BannerNotificationContainer Component should match snapshot with verifi
 exports[`BannerNotificationContainer Component should match snapshot with verification banner enabled 1`] = `
 <View
   style={
-    [
-      {
-        "position": "absolute",
-        "zIndex": 100,
-      },
-    ]
+    {
+      "alignItems": "center",
+      "position": "absolute",
+      "width": "100%",
+      "zIndex": 100,
+    }
   }
 />
 `;
