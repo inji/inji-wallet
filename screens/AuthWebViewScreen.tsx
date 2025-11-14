@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text,
   BackHandler,
+  SafeAreaView,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import {Ionicons} from '@expo/vector-icons';
@@ -115,7 +116,7 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   );
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Header />
       {showWebView && (
         <WebView
@@ -135,7 +136,7 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
           thirdPartyCookiesEnabled={false}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

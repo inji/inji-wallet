@@ -15,6 +15,7 @@ import {  getImpressionEventData,  sendImpressionEvent} from '../../shared/telem
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {SUPPORTED_KEY_TYPES} from '../../shared/constants';
 import { HelpIcon } from '../../components/ui/HelpIcon';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const {RNSecureKeystoreModule} = NativeModules;
 
@@ -101,6 +102,7 @@ export const KeyManagementScreen: React.FC<KeyManagementScreenProps> = () => {
   };
 
   return (
+    <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
     <View
       style={{
         flex: 1,
@@ -129,7 +131,7 @@ export const KeyManagementScreen: React.FC<KeyManagementScreenProps> = () => {
       </View>
       <View style={{...Theme.KeyManagementScreenStyle.copilotViewStyle, position: "relative"}}>
         <BannerNotificationContainer />
-        <View>
+        <View style={{flex:1}}>
           <Copilot
             title={t('copilot:keyManagementTitle')}
             description={t('copilot:keyManagementDesc')}
@@ -181,6 +183,7 @@ export const KeyManagementScreen: React.FC<KeyManagementScreenProps> = () => {
         />
       </View>
     </View>
+    </SafeAreaView>
   );
 };
 
