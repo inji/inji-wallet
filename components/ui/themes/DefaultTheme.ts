@@ -1758,11 +1758,11 @@ export const DefaultTheme = {
       paddingHorizontal: 15,
       paddingBottom: 10,
       backgroundColor: '#fff',
-      elevation: 5, // For Android
-      shadowColor: '#000', // For iOS
-      shadowOffset: {width: 0, height: 2},
-      shadowOpacity: 0.2,
-      shadowRadius: 4,
+      elevation: 5,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 }, // only downward shadow
+      shadowOpacity: 0.1,
+      shadowRadius: 4,    
       zIndex: 1,
     },
     heading: {

@@ -20,7 +20,6 @@ export const Header: React.FC<HeaderProps> = ({goBack, title, testID}) => {
             marginBottom: 22,
             marginVertical: 16,
             marginLeft: 10,
-            paddingTop: insets.top,
           }}>
           <BackButton onPress={goBack} />
           <Row fill align={'center'}>
