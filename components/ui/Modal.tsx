@@ -38,14 +38,14 @@ export const Modal: React.FC<ModalProps> = ({
     <RNModal
       {...testIDProps(testID)}
       animationType="slide"
-      style={modalStyle}
+      style={fullScreen ? Theme.ModalStyles.modal : modalStyle}
       visible={isVisible}
       onShow={onShow}
       onRequestClose={onDismiss}>
       <Column {...(showHeader ? {fill: true, safe: true} : {fill: true})}>
         {showHeader ? (
           <Row elevation={headerElevation}>
-            <View style={fullScreen ? Theme.ModalStyles.modal : modalStyle}>
+            <View style={modalStyle}>
               {headerRight && !arrowLeft ? (
                 <Icon
                   {...testIDProps('closeModal')}
