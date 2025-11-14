@@ -12,7 +12,7 @@ import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {Theme} from '../../components/ui/styleUtils';
 import {HelpScreen} from '../../components/HelpScreen';
-import {Pressable, SafeAreaView, View} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {KebabPopUp} from '../../components/KebabPopUp';
 import {SvgImage} from '../../components/ui/svg';
 import {VCMetadata} from '../../shared/VCMetadata';
@@ -182,7 +182,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
       headerTitle={t('title')}
       onDismiss={handleModalDismiss}
       headerElevation={2}>
-      <View style={{position: 'relative'}}>
+      <View style={{ position: 'relative' }}>
         <BannerNotificationContainer showVerificationStatusBanner={false} />
 
         {controller.showVerificationStatusBanner && (
@@ -198,7 +198,6 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
             testId={'reVerificationInProgress'}
           />
         )}
-      </View>
 
       {!isVCLoaded(verifiableCredential) ? (
         <ActivityIndicator />
@@ -276,6 +275,8 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
           controller.verifiableCredentialData.vcMetadata,
         )}
       />
+      </View>
+
     </Modal>
   );
 };
