@@ -182,8 +182,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
       headerTitle={t('title')}
       onDismiss={handleModalDismiss}
       headerElevation={2}>
-      <View
-        style={[Theme.BannerStyles.bannerStackContainer, {top: insets.top}]}>
+      <View style={{position: 'relative'}}>
         <BannerNotificationContainer showVerificationStatusBanner={false} />
 
         {controller.showVerificationStatusBanner && (
