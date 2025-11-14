@@ -41,6 +41,13 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
     Array<Record<string, VCMetadata>>
   >([]);
   const [showPinVc, setShowPinVc] = useState(true);
+const [highlightCardLayout, setHighlightCardLayout] = useState<null | {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  type: 'success' | 'failure';
+}>(null);
 
   const getId = () => {
     controller.DISMISS();
@@ -67,6 +74,13 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
       controller.SET_TOUR_GUIDE(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (!props.isViewingVc) {
+      controller.RESET_HIGHLIGHT?.();
+      setHighlightCardLayout(null);
+    }
+  }, [props.isViewingVc]);
 
   useEffect(() => {
     filterVcs(search);
@@ -245,7 +259,6 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
                 }>
                 <Row style={Theme.SearchBarStyles.vcSearchBarContainer}>
                   <SearchBar
-                    isVcSearch
                     searchIconTestID="searchIssuerIcon"
                     searchBarTestID="issuerSearchBar"
                     search={search}
@@ -254,45 +267,49 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
                     onChangeText={filterVcs}
                     onLayout={() => filterVcs('')}
                   />
-                  {clearSearchIcon && (
-                    <Pressable
-                      onPress={clearSearchText}
-                      style={Theme.SearchBarStyles.clearSearch}>
-                      <Icon
-                        testID="clearingIssuerSearchIcon"
-                        name="circle-with-cross"
-                        type="entypo"
-                        size={18}
-                        color={Theme.Colors.DetailsLabel}
-                      />
-                    </Pressable>
-                  )}
                 </Row>
                 <Row pY={11} pX={8}>
                   {numberOfCardsAvailable > 0 && (
-                    <Text style={{fontFamily: 'Inter_500Medium'}}>
+                    <Text style={{fontFamily: 'Montserrat_500Medium'}}>
                       {cardsAvailableText}
                     </Text>
                   )}
                 </Row>
                 {showPinVc &&
-                  vcMetadataOrderedByPinStatus.map((vcMetadata, index) => {
-                    return (
-                      <VcItemContainer
-                        key={vcMetadata.getVcKey()}
-                        vcMetadata={vcMetadata}
-                        margin="0 2 8 2"
-                        onPress={controller.VIEW_VC}
-                        isDownloading={controller.inProgressVcDownloads?.has(
-                          vcMetadata.getVcKey(),
-                        )}
-                        isPinned={vcMetadata.isPinned}
-                        isInitialLaunch={controller.isInitialDownloading}
-                        isTopCard={index === 0}
-                      />
-                    );
-                  })}
+                vcMetadataOrderedByPinStatus.map((vcMetadata, index) => {
+                  const vcKey = vcMetadata.getVcKey();
 
+                  const isSuccessHighlighted =
+                    controller.reverificationSuccess.status &&
+                    controller.reverificationSuccess.vcKey === vcKey;
+
+                  const isFailureHighlighted =
+                    controller.reverificationfailure.status &&
+                    controller.reverificationfailure.vcKey === vcKey;
+                  const highlightType = isSuccessHighlighted
+                    ? 'success'
+                    : isFailureHighlighted
+                    ? 'failure'
+                    : null;
+
+                  return (
+                    <VcItemContainer
+                      key={vcKey}
+                      vcMetadata={vcMetadata}
+                      margin="0 2 8 2"
+                      onPress={controller.VIEW_VC}
+                      isDownloading={controller.inProgressVcDownloads?.has(vcKey)}
+                      isPinned={vcMetadata.isPinned}
+                      isInitialLaunch={controller.isInitialDownloading}
+                      isTopCard={index === 0}
+                      onMeasured={rect => {
+                        if (highlightType && !highlightCardLayout) {
+                          setHighlightCardLayout({ ...rect, type: highlightType });
+                        }
+                      }}
+                    />
+                  );
+                })}
                 {filteredSearchData.length > 0 && !showPinVc
                   ? filteredSearchData.map(vcMetadataObj => {
                       const [vcKey, vcMetadata] =
@@ -324,7 +341,7 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
                             fontWeight: 'bold',
                             textAlign: 'center',
                             fontSize: 18,
-                            fontFamily: 'Inter_600SemiBold',
+                            fontFamily: 'Montserrat_600SemiBold',
                           }}>
                           {t('noCardsTitle')}
                         </Text>
@@ -334,7 +351,7 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
                             lineHeight: 17,
                             paddingTop: 10,
                             fontSize: 14,
-                            fontFamily: 'Inter_400Regular',
+                            fontFamily: 'Montserrat_400Regular',
                           }}>
                           {t('noCardsDescription')}
                         </Text>
@@ -470,6 +487,14 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
           primaryButtonTestID="tryAgain"
         />
       )}
+      <MessageOverlay
+        overlayMode='highlight'
+        isVisible={!!highlightCardLayout && !props.isViewingVc}
+        cardLayout={highlightCardLayout ?? undefined}
+        onBackdropPress={() => {
+          controller.RESET_HIGHLIGHT()
+          setHighlightCardLayout(null)}}
+      />
     </React.Fragment>
   );
 };

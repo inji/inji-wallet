@@ -71,6 +71,7 @@ export function useKebabPopUp(props) {
     DISMISS: () => service.send(VCItemEvents.DISMISS()),
     CANCEL: () => service.send(VCItemEvents.CANCEL()),
     SHOW_ACTIVITY: () => service.send(VCItemEvents.SHOW_ACTIVITY()),
+    REVERIFY_VC: () => service.send(VCItemEvents.REVERIFY_VC()),
     INPUT_OTP: (otp: string) => service.send(VCItemEvents.INPUT_OTP(otp)),
     RESEND_OTP: () => service.send(VCItemEvents.RESEND_OTP()),
     GOTO_SCANSCREEN: () => {

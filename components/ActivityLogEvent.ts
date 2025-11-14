@@ -20,6 +20,7 @@ export type ActivityLogType =
   | 'WALLET_BINDING_SUCCESSFULL'
   | 'WALLET_BINDING_FAILURE'
   | 'VC_REMOVED'
+  | 'VC_STATUS_CHANGED'
   | 'TAMPERED_VC_REMOVED';
 
 export interface ActivityLog {
@@ -35,6 +36,7 @@ export class VCActivityLog implements ActivityLog {
   type: ActivityLogType;
   issuer: string;
   flow: string;
+  vcStatus?: string;
 
   constructor({
     id = '',
@@ -46,6 +48,7 @@ export class VCActivityLog implements ActivityLog {
     issuer = '',
     credentialConfigurationId = '',
     flow = VCItemContainerFlowType.VC_SHARE,
+    vcStatus = '',
   } = {}) {
     this.id = id;
     this.idType = idType;
@@ -56,17 +59,23 @@ export class VCActivityLog implements ActivityLog {
     this.issuer = issuer;
     this.credentialConfigurationId = credentialConfigurationId;
     this.flow = flow;
+    this.vcStatus = vcStatus;
   }
 
   getActionText(t: TFunction, wellknown: Object | undefined) {
+    const formattedVcStatus = this.vcStatus ? `.${this.vcStatus}` : '';
     if (!!this.credentialConfigurationId && wellknown) {
       const cardType = getCredentialTypeFromWellKnown(
         wellknown,
         this.credentialConfigurationId,
       );
-      return `${t(this.type, {idType: cardType})}`;
+      return `${t(this.type + formattedVcStatus, {
+        idType: cardType,
+        vcStatus: this.vcStatus,
+      })}`;
     }
-    return `${t(this.type, {idType: ''})}`;
+
+    return `${t(this.type + formattedVcStatus, {idType: '', vcStatus: this.vcStatus})}`;
   }
 
   static getLogFromObject(data: Object): VCActivityLog {

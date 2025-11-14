@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LanguageSelector Component should match snapshot with custom trigger component 1`] = `<View />`;
+
+exports[`LanguageSelector Component should match snapshot with default trigger 1`] = `<View />`;

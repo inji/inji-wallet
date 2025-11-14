@@ -39,10 +39,30 @@ jobs:
       IOS_SERVICE_LOCATION: 'ios'
       SCRIPT_NAME: "fastlane ios_app_build"
 
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6.0.0
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+      - name: Install the dependencies
+        run: npm install
+      - name: Build the project
+        run: npm run build
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,author,commit,workflow,job
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_INJI_TEAM }}
+        if: failure()
+
   sonar-check-on-push:
     name: Sonar check
     if: ${{ github.event_name != 'pull_request' }}
-    needs: [build-android, build-ios]
+    needs: [build-android, build-ios, run-tests]
     uses: mosip/kattu/.github/workflows/npm-sonar-analysis.yml@master-java21
     with:
       SERVICE_LOCATION: '.'
@@ -78,7 +98,7 @@ jobs:
       SERVICE_LOCATION: injitest
       BUILD_ARTIFACT: uitest-inji-wallet-local
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:

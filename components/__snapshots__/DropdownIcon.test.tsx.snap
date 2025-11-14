@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DropdownIcon Component should match snapshot with default props 1`] = `<View />`;
+
+exports[`DropdownIcon Component should match snapshot with different icon 1`] = `<View />`;
+
+exports[`DropdownIcon Component should match snapshot with empty items 1`] = `<View />`;
+
+exports[`DropdownIcon Component should match snapshot with multiple items 1`] = `<View />`;

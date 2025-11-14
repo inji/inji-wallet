@@ -6,6 +6,8 @@ import React from 'react';
 import {SvgImage} from '../../ui/svg';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {STATUS_FIELD_NAME} from './VCUtils';
+import {StatusTooltipContent} from './VcStatustooTip';
 
 export const VCItemFieldName = ({
   fieldName,
@@ -26,64 +28,27 @@ export const VCItemFieldName = ({
           testID={`${testID}Title`}
           color={textColor}
           style={Theme.Styles.fieldItemTitle}>
-          {fieldName}
+          {fieldName === STATUS_FIELD_NAME ? t('VcDetails:status') : fieldName}
         </Text>
       )}
 
-      {fieldName == t('VcDetails:status') && (
+      {fieldName == STATUS_FIELD_NAME && (
         <CustomTooltip
           testID="statusToolTip"
           width={Dimensions.get('screen').width * 0.8}
           height={Dimensions.get('screen').height * 0.28}
           triggerComponent={SvgImage.info()}
           triggerComponentStyles={{marginLeft: 2, marginTop: 2}}
-          toolTipContent={
-            <Column align="flex-start">
-              <View style={{marginBottom: 20}}>
-                <Text weight="semibold">
-                  {t('statusToolTipContent.valid.title')}
-                </Text>
-                <Text
-                  weight="regular"
-                  style={[
-                    Theme.Styles.tooltipContentDescription,
-                    {marginTop: 3},
-                  ]}>
-                  {t('statusToolTipContent.valid.description')}
-                </Text>
-              </View>
-              <View style={{marginBottom: 20}}>
-                <Text weight="semibold">
-                  {t('statusToolTipContent.pending.title')}
-                </Text>
-                <Text
-                  weight="regular"
-                  style={[
-                    Theme.Styles.tooltipContentDescription,
-                    {marginTop: 3},
-                  ]}>
-                  {t('statusToolTipContent.pending.description')}
-                </Text>
-              </View>
-              <View>
-                <Text weight="semibold">
-                  {t('statusToolTipContent.expired.title')}
-                </Text>
-                <Text
-                  weight="regular"
-                  style={[
-                    Theme.Styles.tooltipContentDescription,
-                    {marginTop: 3},
-                  ]}>
-                  {t('statusToolTipContent.expired.description')}
-                </Text>
-              </View>
-            </Column>
-          }
+          toolTipContent={<StatusTooltipContent />}
         />
       )}
       {isDisclosed && (
-      <Icon name="share-square-o" size={10} color="#666" style={{marginLeft:5, marginTop:3}} />
+        <Icon
+          name="share-square-o"
+          size={10}
+          color="#666"
+          style={{marginLeft: 5, marginTop: 3}}
+        />
       )}
     </Row>
   );
@@ -94,19 +59,21 @@ export const VCItemFieldValue = ({
   testID,
   fieldValueColor: textColor = Theme.Colors.Details,
 }: {
-  fieldValue: string;
+  fieldValue: any;
   testID: string;
   fieldValueColor?: string;
 }) => {
+  if (React.isValidElement(fieldValue)) {
+    return <View testID={`${testID}Value`}>{fieldValue}</View>;
+  }
+
   return (
-    <>
-      <Text
-        testID={`${testID}Value`}
-        color={textColor}
-        style={Theme.Styles.fieldItemValue}>
-        {fieldValue}
-      </Text>
-    </>
+    <Text
+      testID={`${testID}Value`}
+      color={textColor}
+      style={Theme.Styles.fieldItemValue}>
+      {fieldValue}
+    </Text>
   );
 };
 

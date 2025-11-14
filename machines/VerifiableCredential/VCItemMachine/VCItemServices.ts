@@ -1,19 +1,23 @@
-import { NativeModules } from 'react-native';
+import {NativeModules} from 'react-native';
 import getAllConfigurations, {
   API_URLS,
   CACHED_API,
   DownloadProps,
 } from '../../../shared/api';
 import Cloud from '../../../shared/CloudBackupAndRestoreUtils';
-import { isIOS } from '../../../shared/constants';
+import {isIOS} from '../../../shared/constants';
 import {
   fetchKeyPair,
   generateKeyPair,
 } from '../../../shared/cryptoutil/cryptoUtil';
-import { getMatchingCredentialIssuerMetadata, verifyCredentialData } from '../../../shared/openId4VCI/Utils';
-import { CredentialDownloadResponse, request } from '../../../shared/request';
-import { WalletBindingResponse } from '../VCMetaMachine/vc';
-import { getVerifiableCredential } from './VCItemSelectors';
+import {
+  getMatchingCredentialIssuerMetadata,
+  verifyCredentialData,
+} from '../../../shared/openId4VCI/Utils';
+import {CredentialDownloadResponse, request} from '../../../shared/request';
+import {WalletBindingResponse} from '../VCMetaMachine/vc';
+import {getVerifiableCredential} from './VCItemSelectors';
+import { VERIFICATION_TIMEOUT_IN_MS } from '../../../shared/vcjs/verifyCredential';
 
 const {RNSecureKeystoreModule} = NativeModules;
 export const VCItemServices = model => {
@@ -107,7 +111,7 @@ export const VCItemServices = model => {
     },
     fetchIssuerWellknown: async context => {
       const wellknownResponse = await CACHED_API.fetchIssuerWellknownConfig(
-        context.vcMetadata.issuer,
+        context.vcMetadata.issuerHost,
         context.vcMetadata.issuerHost,
         true,
       );
@@ -192,16 +196,43 @@ export const VCItemServices = model => {
     },
 
     verifyCredential: async (context: any) => {
-      if(context.verifiableCredential){
-        const verificationResult = await verifyCredentialData(
-          getVerifiableCredential(context.verifiableCredential),
-          context.selectedCredentialType.format
+      try {
+    
+        if (!context.verifiableCredential) {
+          throw new Error('Missing verifiable credential in context');
+        }
+    
+        const credential = getVerifiableCredential(context.verifiableCredential);
+        const format = context.selectedCredentialType?.format ?? context.format;
+    
+
+        
+        const verificationResult = await withTimeout(
+          verifyCredentialData(credential, format),
+          VERIFICATION_TIMEOUT_IN_MS
         );
-         if(!verificationResult.isVerified) {
-            throw new Error(verificationResult.verificationErrorCode);
-          }
-          return verificationResult;
+    
+        if (!verificationResult.isVerified) {
+          throw new Error(verificationResult.verificationErrorCode);
+        }
+    
+         return verificationResult;
+    
+      } catch (error) {
+        console.error('Credential verification failed:', error);
+        throw error;
       }
-    },
+    }
+    
   };
 };
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error('VERIFICATION_TIMEOUT')), ms),
+    ),
+  ]);
+}
+

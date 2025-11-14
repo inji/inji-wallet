@@ -1,0 +1,30 @@
+MOSIP
+Copyright (c) 2022 Modular Open Source Identity Platform
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+Third-party attributions:
+
+- Portions of this software are licensed under the Apache License 2.0
+  and include NOTICE files from their original authors. Attribution is
+  hereby retained for the following components:
+    • AWS SDK (Java & Ruby)
+    • Selenium WebDriver
+    • Google APIs / Google Cloud SDK
+    • Jackson JSON library
+    • Keycloak Admin Client
+    • ExtentReports
+    • Other Apache-2.0 licensed libraries as listed in LICENSE
+
+- This product includes data from "caniuse-lite"
+  Licensed under Creative Commons Attribution 4.0 International (CC-BY-4.0).
+  Copyright © BrowserStack and contributors.
+
+- This product includes "spdx-exceptions"
+  Licensed under Creative Commons Attribution 3.0 Unported (CC-BY-3.0).
+  Copyright © SPDX Working Group.
+
+All other third-party software components are licensed under permissive
+licenses (MIT, BSD, ISC, 0BSD, BlueOak-1.0.0, CC0-1.0) and their license
+texts are provided in LICENSE and THIRD-PARTY-NOTICES.

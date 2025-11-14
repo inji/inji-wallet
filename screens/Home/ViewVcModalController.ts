@@ -22,6 +22,7 @@ import {
   selectShowVerificationStatusBanner,
   selectIsVerificationCompleted,
   selectCredential,
+  isReverifyingVc,
 } from '../../machines/VerifiableCredential/VCItemMachine/VCItemSelectors';
 import {selectPasscode} from '../../machines/auth';
 import {biometricsMachine, selectIsSuccess} from '../../machines/biometrics';
@@ -113,6 +114,7 @@ export function useViewVcModal({vcItemActor, isVisible}: ViewVcModalProps) {
     isBindingError: useSelector(vcItemActor, selectShowWalletBindingError),
     isBindingSuccess: useSelector(vcItemActor, selectWalletBindingSuccess),
     isBindingWarning: useSelector(vcItemActor, selectBindingWarning),
+    isReverifyingVc: useSelector(vcItemActor, isReverifyingVc),
     isCommunicationDetails: useSelector(
       vcItemActor,
       selectIsCommunicationDetails,

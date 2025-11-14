@@ -31,10 +31,12 @@ export class VCMetadata {
   mosipIndividualId: string = '';
   format: string = '';
   isExpired: boolean = false;
+  isRevoked: boolean = false;
 
   downloadKeyType: string = '';
   credentialType: string = '';
   issuerHost: string = '';
+  lastKnownStatusTimestamp?: string = '';
 
   constructor({
     idType = '',
@@ -49,8 +51,10 @@ export class VCMetadata {
     format = '',
     downloadKeyType = '',
     isExpired = false,
+    isRevoked = false,
     credentialType = '',
     issuerHost = '',
+    lastKnownStatusTimestamp = '',
   } = {}) {
     this.idType = idType;
     this.requestId = requestId;
@@ -64,8 +68,10 @@ export class VCMetadata {
     this.format = format;
     this.downloadKeyType = downloadKeyType;
     this.isExpired = isExpired;
+    this.isRevoked = isRevoked;
     this.credentialType = credentialType;
     this.issuerHost = issuerHost;
+    this.lastKnownStatusTimestamp = lastKnownStatusTimestamp;
   }
 
   //TODO: Remove any typing and use appropriate typing
@@ -81,6 +87,7 @@ export class VCMetadata {
       timestamp: vc.vcMetadata ? vc.vcMetadata.timestamp : vc.timestamp,
       isVerified: vc.isVerified,
       isExpired: vc.isExpired,
+      isRevoked: vc.isRevoked,
       mosipIndividualId: vc.mosipIndividualId
         ? vc.mosipIndividualId
         : vc.vcMetadata
@@ -89,6 +96,7 @@ export class VCMetadata {
       downloadKeyType: vc.downloadKeyType,
       credentialType: vc.credentialType,
       issuerHost: vc.issuerHost,
+      lastKnownStatusTimestamp: vc.lastKnownStatusTimestamp,
     });
   }
 
@@ -156,6 +164,8 @@ export const getVCMetadata = (context: object, keyType: string) => {
     timestamp: context.timestamp ?? '',
     isVerified: context.vcMetadata.isVerified ?? false,
     isExpired: context.vcMetadata.isExpired ?? false,
+    isRevoked: context.vcMetadata.isRevoked ?? false,
+    lastKnownStatusTimestamp:context.vcMetadata.lastKnownStatusTimestamp ?? '',
     mosipIndividualId: getMosipIndividualId(
       context['verifiableCredential'] as VerifiableCredential,
       issuer,

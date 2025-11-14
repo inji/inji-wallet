@@ -3,12 +3,13 @@ import {useTranslation} from 'react-i18next';
 import {Button, Column, Row, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
 import {useQrLogin} from './QrLoginController';
-import {Image} from 'react-native';
-import {ListItem, Switch} from 'react-native-elements';
+import {Image, View} from 'react-native';
+import {ListItem} from 'react-native-elements';
 import {Modal} from '../../components/ui/Modal';
 import {QrLoginRef} from '../../machines/QrLogin/QrLoginMachine';
 import {ScrollView} from 'react-native';
 import {getClientNameForCurrentLanguage} from '../../i18n';
+import Toggle from '../../components/Toggle';
 
 export const QrConsent: React.FC<QrConsentProps> = props => {
   const {t} = useTranslation('QrLogin');
@@ -100,15 +101,10 @@ export const QrConsent: React.FC<QrConsentProps> = props => {
                   </ListItem.Title>
                 </ListItem.Content>
 
-                <Switch
+                <Toggle
                   value={controller.isShare[claim]}
-                  onValueChange={() =>
-                    controller.SELECT_CONSENT(
-                      controller.isShare[claim],
-                      claim,
-                    )
-                  }
-                  color={Theme.Colors.Icon}
+                  onToggle={value => controller.SELECT_CONSENT(value, claim)}
+                  testID="voluntaryClaimToggle"
                 />
               </ListItem>
             ))}

@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VcItemContainerProfileImage Component should match snapshot with empty string face 1`] = `
+<View
+  testID="mockProfileIcon"
+/>
+`;
+
+exports[`VcItemContainerProfileImage Component should match snapshot with face image 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    {
+      "borderRadius": 100,
+      "height": 53,
+      "width": 40,
+    }
+  }
+>
+  <Image
+    source={
+      {
+        "uri": "https://example.com/avatar.jpg",
+      }
+    }
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": 53,
+          "width": 40,
+        },
+        {
+          "borderRadius": 10,
+          "height": 53,
+          "width": 40,
+        },
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`VcItemContainerProfileImage Component should match snapshot with face image and pinned 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    {
+      "borderRadius": 100,
+      "height": 53,
+      "width": 40,
+    }
+  }
+>
+  <Image
+    source={
+      {
+        "uri": "https://example.com/avatar.jpg",
+      }
+    }
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": 53,
+          "width": 40,
+        },
+        {
+          "borderRadius": 10,
+          "height": 53,
+          "width": 40,
+        },
+      ]
+    }
+  />
+  <View
+    testID="mockPinIcon"
+  />
+</View>
+`;
+
+exports[`VcItemContainerProfileImage Component should match snapshot without face image 1`] = `
+<View
+  testID="mockProfileIcon"
+/>
+`;
+
+exports[`VcItemContainerProfileImage Component should match snapshot without face image and pinned 1`] = `
+<View
+  testID="mockProfileIcon"
+/>
+`;

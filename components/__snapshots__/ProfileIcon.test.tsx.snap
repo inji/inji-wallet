@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProfileIcon Component should match snapshot with custom container styles 1`] = `
+<View
+  accessibilityLabel="ProfileIconOuter"
+  accessible={true}
+  style={
+    {
+      "position": "relative",
+    }
+  }
+>
+  <View
+    accessibilityLabel="ProfileIconInner"
+    accessible={true}
+    style={
+      {
+        "backgroundColor": "blue",
+        "borderRadius": 10,
+        "padding": 5,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`ProfileIcon Component should match snapshot with custom icon size 1`] = `
+<View
+  accessibilityLabel="ProfileIconOuter"
+  accessible={true}
+  style={
+    {
+      "position": "relative",
+    }
+  }
+>
+  <View
+    accessibilityLabel="ProfileIconInner"
+    accessible={true}
+    style={{}}
+  />
+</View>
+`;
+
+exports[`ProfileIcon Component should match snapshot with pinned icon 1`] = `
+<View
+  accessibilityLabel="ProfileIconOuter"
+  accessible={true}
+  style={
+    {
+      "position": "relative",
+    }
+  }
+>
+  <View
+    accessibilityLabel="ProfileIconInner"
+    accessible={true}
+    style={{}}
+  />
+  <View
+    testID="mockPinIcon"
+  />
+</View>
+`;
+
+exports[`ProfileIcon Component should match snapshot without pinned icon 1`] = `
+<View
+  accessibilityLabel="ProfileIconOuter"
+  accessible={true}
+  style={
+    {
+      "position": "relative",
+    }
+  }
+>
+  <View
+    accessibilityLabel="ProfileIconInner"
+    accessible={true}
+    style={{}}
+  />
+</View>
+`;

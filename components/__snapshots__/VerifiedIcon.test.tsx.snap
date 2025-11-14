@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VerifiedIcon should match snapshot 1`] = `
+<View
+  style={
+    {
+      "marginRight": 3,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "backgroundColor": "white",
+        "borderRadius": 10,
+      }
+    }
+  />
+</View>
+`;

@@ -311,19 +311,6 @@ export const IssuersScreen: React.FC<
               onChangeText={filterIssuers}
               onLayout={() => filterIssuers('')}
             />
-            {clearSearchIcon && (
-              <Pressable
-                onPress={clearSearchText}
-                style={Theme.SearchBarStyles.clearSearch}>
-                <Icon
-                  testID="clearingIssuerSearchIcon"
-                  name="circle-with-cross"
-                  type="entypo"
-                  size={18}
-                  color={Theme.Colors.DetailsLabel}
-                />
-              </Pressable>
-            )}
           </Row>
           <Text
             testID="issuersScreenDescription"

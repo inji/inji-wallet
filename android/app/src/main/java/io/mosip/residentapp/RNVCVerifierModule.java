@@ -1,14 +1,22 @@
 package io.mosip.residentapp;
+import java.util.*;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.WritableArray;
 
+import io.mosip.residentapp.Utils.FormatConverter;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.VerificationResult;
+import io.mosip.vercred.vcverifier.data.CredentialVerificationSummary;
+import io.mosip.vercred.vcverifier.data.CredentialStatusResult;
+import io.mosip.vercred.vcverifier.exception.StatusCheckException;
 
 public class RNVCVerifierModule extends ReactContextBaseJavaModule {
     
@@ -34,4 +42,51 @@ public class RNVCVerifierModule extends ReactContextBaseJavaModule {
 
         promise.resolve(response);
     }
+
+    @ReactMethod
+public void getVerificationSummary(String vc, String format, ReadableArray statusPurposes, Promise promise) {
+    try {
+        // Convert ReadableArray to List<String>
+        List<String> statusPurposeList = FormatConverter.convertReadableArrayToList(statusPurposes);
+        CredentialVerificationSummary summary = credentialsVerifier.verifyAndGetCredentialStatus(
+            vc,
+            CredentialFormat.Companion.fromValue(format),
+            statusPurposeList
+        );
+
+        WritableMap resultMap = Arguments.createMap();
+
+        VerificationResult verificationResult = summary.getVerificationResult();
+        resultMap.putBoolean("verificationStatus", verificationResult.getVerificationStatus());
+        resultMap.putString("verificationMessage", verificationResult.getVerificationMessage());
+        resultMap.putString("verificationErrorCode", verificationResult.getVerificationErrorCode());
+
+        WritableArray statusArray = Arguments.createArray();
+        for (CredentialStatusResult statusResult : summary.getCredentialStatus()) {
+            WritableMap statusMap = Arguments.createMap();
+            statusMap.putString("purpose", statusResult.getPurpose());
+            statusMap.putInt("status", statusResult.getStatus());
+            statusMap.putBoolean("valid", statusResult.getValid());
+
+            StatusCheckException error = statusResult.getError();
+            if (error != null) {
+                WritableMap errorMap = Arguments.createMap();
+                errorMap.putString("message", error.getMessage());
+                errorMap.putString("code", error.getErrorCode().name());
+                statusMap.putMap("error", errorMap);
+            } else {
+                statusMap.putNull("error");
+            }
+
+            statusArray.pushMap(statusMap);
+        }
+
+        resultMap.putArray("credentialStatus", statusArray);
+        promise.resolve(resultMap);
+
+    } catch (Exception e) {
+        promise.reject("VERIFY_AND_GET_STATUS_ERROR", e.getMessage(), e);
+    }
+}
+
 }

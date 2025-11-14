@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Button, Column, Text } from '../../components/ui';
-import { Theme } from '../../components/ui/styleUtils';
+import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {Button, Column, Text} from '../../components/ui';
+import {Theme} from '../../components/ui/styleUtils';
 import {
   Dimensions,
   Keyboard,
-  KeyboardAvoidingView, TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
   View,
-  ModalProps
+  ModalProps,
 } from 'react-native';
-import { isIOS } from '../../shared/constants';
-import { SvgImage } from '../../components/ui/svg';
-import { getScreenHeight } from '../../shared/commonUtil';
-import { PinInput } from '../../components/PinInput';
-import { Modal } from '../../components/ui/Modal';
-import { CancelDownloadModal } from './ConfirmationModal';
-import { Icon, Input } from 'react-native-elements';
+import {isIOS} from '../../shared/constants';
+import {SvgImage} from '../../components/ui/svg';
+import {getScreenHeight} from '../../shared/commonUtil';
+import {PinInput} from '../../components/PinInput';
+import {Modal} from '../../components/ui/Modal';
+import {CancelDownloadModal} from './ConfirmationModal';
+import {Icon, Input} from 'react-native-elements';
+import LinearGradient from 'react-native-linear-gradient';
 
 export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
-  const { t } = useTranslation('transactionCodeScreen');
-  const { isSmallScreen, screenHeight } = getScreenHeight();
+  const {t} = useTranslation('transactionCodeScreen');
+  const {isSmallScreen, screenHeight} = getScreenHeight();
   const [transactionCode, setTransactionCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
@@ -28,7 +30,6 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [textLineCount, setTextLineCount] = useState(0);
   const maxLines = 2;
-
 
   const validateCode = (code: string): string => {
     if (!code.trim()) return t('emptyCodeError');
@@ -47,41 +48,47 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
   };
 
   const handleChange = (text: string) => {
-    if (!touched)
-      setTouched(true);
+    if (!touched) setTouched(true);
     setTransactionCode(text);
     let error;
-    if (touched)
-      error = validateCode(text);
+    if (touched) error = validateCode(text);
     setErrorMessage(error);
   };
 
   return (
     <>
       {showCancelConfirm ? (
-        <CancelDownloadModal onCancel={() => setShowCancelConfirm(false)} onConfirm={props.onDismiss ?? (() => { })} visible={showCancelConfirm} />
+        <CancelDownloadModal
+          onCancel={() => setShowCancelConfirm(false)}
+          onConfirm={props.onDismiss ?? (() => {})}
+          visible={showCancelConfirm}
+        />
       ) : (
-        <Modal isVisible={props.visible ?? false} onDismiss={() => setShowCancelConfirm(true)}>
+        <Modal
+          isVisible={props.visible ?? false}
+          onDismiss={() => setShowCancelConfirm(true)}>
           <KeyboardAvoidingView
             style={
               isSmallScreen
-                ? { flex: 1, paddingHorizontal: 10 }
+                ? {flex: 1, paddingHorizontal: 10}
                 : Theme.Styles.keyboardAvoidStyle
             }
             behavior={isIOS() ? 'padding' : 'height'}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-              <View style={{ height: 700 }}>
+            <TouchableWithoutFeedback
+              onPress={Keyboard.dismiss}
+              accessible={false}>
+              <View style={{height: 700}}>
                 <Column
                   crossAlign="center"
                   style={
                     isSmallScreen
                       ? null
                       : {
-                        maxHeight: screenHeight,
-                        flex: 1,
-                        justifyContent: 'space-around',
-                        marginBottom: 20,
-                      }
+                          maxHeight: screenHeight,
+                          flex: 1,
+                          justifyContent: 'space-around',
+                          marginBottom: 20,
+                        }
                   }>
                   {SvgImage.OtpVerificationIcon()}
                   <View>
@@ -93,39 +100,37 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                         {t('TransactionCode')}
                       </Text>
                       <Text
-                        style={{ marginTop: 15 }}
+                        style={{marginTop: 15}}
                         testID="otpVerificationDescription"
                         color={Theme.Colors.RetrieveIdLabel}
                         numLines={showFullDescription ? undefined : 2}
-                        ellipsizeMode='tail'
+                        ellipsizeMode="tail"
                         weight="semibold"
                         size="small"
                         align="center"
-                        onTextLayout={(e) => {
+                        onTextLayout={e => {
                           if (textLineCount !== e.nativeEvent.lines.length) {
                             setTextLineCount(e.nativeEvent.lines.length);
                           }
-                        }}
-                      >
-                        {t(
-                          `${props.description ||
-                          t('description')
-                          }`,
-                        )}
+                        }}>
+                        {props.description
+                          ? t(props.description)
+                          : t('description')}
                       </Text>
-                      {textLineCount > maxLines && <Text
-                        onPress={() => setShowFullDescription(prev => !prev)}
-                        style={Theme.TransactionCodeScreenStyle.showMoreButton}
-                      >
-                        {showFullDescription ? t('Show less ↑') : t('Show more ↓')}
-                      </Text>}
-                      </Column>
+                      {textLineCount > maxLines && (
+                        <Text
+                          onPress={() => setShowFullDescription(prev => !prev)}
+                          style={
+                            Theme.TransactionCodeScreenStyle.showMoreButton
+                          }>
+                          {showFullDescription ? t('showLess') : t('showMore')}
+                        </Text>
+                      )}
+                    </Column>
                   </View>
 
                   {(props.error || errorMessage) && (
-                    <View
-                      style={Theme.TransactionCodeScreenStyle.errorView}
-                    >
+                    <View style={Theme.TransactionCodeScreenStyle.errorView}>
                       <Text
                         testID="otpVerificationError"
                         align="center"
@@ -135,11 +140,11 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                     </View>
                   )}
 
-                  <View style={{ alignItems: 'center' }}>
-                    {((!props.inputMode ||
+                  <View style={{alignItems: 'center'}}>
+                    {(!props.inputMode ||
                       (props.inputMode && props.inputMode === 'numeric')) &&
-                      props.length &&
-                      props.length <= 6) ? (
+                    props.length &&
+                    props.length <= 6 ? (
                       <>
                         <PinInput
                           testID="pinInput"
@@ -157,40 +162,85 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                             props.onDismiss?.();
                           }}
                         />
-                        <Button styles={{ marginTop: 30 }} disabled={transactionCode.length == 0} title={t('verify')} type="gradient" onPress={handleVerify} />
+                        <Button
+                          styles={{marginTop: 30}}
+                          disabled={transactionCode.length == 0}
+                          title={t('verify')}
+                          type="gradient"
+                          onPress={handleVerify}
+                        />
                       </>
                     ) : (
                       <>
-                        <Input
-                          containerStyle={{
-                            width: Dimensions.get('window').width - 80,
-                            alignSelf: 'center',
-                          }}
-                          placeholder={t('placeholder')}
-                          placeholderTextColor="#ACACAC"
-                          inputContainerStyle={{
-                            borderBottomColor: '#C1C1C1',
-                            borderBottomWidth: 1,
-                            marginBottom: 16,
-                          }}
-                          inputStyle={Theme.TransactionCodeScreenStyle.inputStyle}
-                          maxLength={props.length ?? 30}
-                          autoFocus
-                          secureTextEntry={!showCode}
-                          value={transactionCode}
-                          keyboardType={props.inputMode === 'numeric' ? 'numeric' : 'default'}
-                          onChangeText={handleChange}
-                          rightIcon={
-                            <Icon
-                              name={showCode ? 'eye-off' : 'eye'}
-                              type="feather"
-                              size={20}
-                              color="#888"
-                              onPress={() => setShowCode(prev => !prev)}
-                            />
+                        <LinearGradient
+                          colors={
+                            transactionCode.length > 0
+                              ? Theme.Colors.GradientColors
+                              : [
+                                  Theme.Colors.TransactionCodeBorderColor,
+                                  Theme.Colors.TransactionCodeBorderColor,
+                                ]
                           }
+                          start={{x: 0, y: 0}}
+                          end={{x: 1, y: 0}}
+                          style={
+                            Theme.TransactionCodeScreenStyle
+                              .transactionGradientContainer
+                          }>
+                          <View
+                            style={{
+                              backgroundColor:
+                                Theme.Colors.TransactionCodeBackgroundColor,
+                              borderRadius: 16,
+                              overflow: 'hidden',
+                            }}>
+                            <Input
+                              containerStyle={{
+                                width: Dimensions.get('window').width - 80,
+                                alignSelf: 'center',
+                                marginBottom: -25,
+                                padding: 0,
+                              }}
+                              placeholder={t('placeholder')}
+                              placeholderTextColor={
+                                Theme.Colors.TransactionCodePlaceholderColor
+                              }
+                              inputContainerStyle={
+                                Theme.TransactionCodeScreenStyle.inputContainer
+                              }
+                              inputStyle={
+                                Theme.TransactionCodeScreenStyle.inputStyle
+                              }
+                              maxLength={props.length ?? 30}
+                              autoFocus
+                              secureTextEntry={!showCode}
+                              value={transactionCode}
+                              keyboardType={
+                                props.inputMode === 'numeric'
+                                  ? 'numeric'
+                                  : 'default'
+                              }
+                              onChangeText={handleChange}
+                              rightIcon={
+                                <Icon
+                                  name={showCode ? 'eye-off' : 'eye'}
+                                  type="feather"
+                                  size={20}
+                                  color={
+                                    Theme.Colors.TransactionCodePlaceholderColor
+                                  }
+                                  onPress={() => setShowCode(prev => !prev)}
+                                />
+                              }
+                            />
+                          </View>
+                        </LinearGradient>
+                        <Button
+                          disabled={transactionCode.length == 0}
+                          title={t('verify')}
+                          type="gradient"
+                          onPress={handleVerify}
                         />
-                        <Button disabled={transactionCode.length == 0} title="Verify" type="gradient" onPress={handleVerify} />
                       </>
                     )}
                   </View>
@@ -202,7 +252,6 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
       )}
     </>
   );
-
 };
 
 interface ExtendedModalProps extends ModalProps {

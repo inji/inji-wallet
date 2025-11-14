@@ -12,8 +12,9 @@ import {getErrorEventData, sendErrorEvent} from '../telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../telemetry/TelemetryConstants';
 import {getMosipIdentifier} from '../commonUtil';
 import {NativeModules} from 'react-native';
-import {isAndroid} from '../constants';
+import {isAndroid, isIOS} from '../constants';
 import {VCFormat} from '../VCFormat';
+import VCVerifier, {CredentialStatusResult, VerificationSummaryResult} from '../vcVerifier/VcVerifier';
 
 // FIXME: Ed25519Signature2018 not fully supported yet.
 // Ed25519Signature2018 proof type check is not tested with its real credential
@@ -61,7 +62,7 @@ async function verifyCredentialForAndroid(
     typeof verifiableCredential === 'string'
       ? verifiableCredential
       : JSON.stringify(verifiableCredential);
-  const vcVerifierResult = await vcVerifier.verifyCredentials(
+  const vcVerifierResult = await VCVerifier.getInstance().getVerificationSummary(
     credentialString,
     credentialFormat,
   );
@@ -72,28 +73,45 @@ async function verifyCredentialForIos(
   verifiableCredential: Credential,
   credentialFormat: string,
 ): Promise<VerificationResult> {
-  if (credentialFormat === VCFormat.mso_mdoc || credentialFormat === VCFormat.vc_sd_jwt || credentialFormat === VCFormat.dc_sd_jwt) {
+  if (
+    credentialFormat === VCFormat.mso_mdoc ||
+    credentialFormat === VCFormat.vc_sd_jwt ||
+    credentialFormat === VCFormat.dc_sd_jwt
+  ) {
     return createSuccessfulVerificationResult();
   }
   /*
   Since Digital Bazaar library is not able to verify ProofType: "Ed25519Signature2020",
   defaulting it to return true until VcVerifier is implemented for iOS.
   */
+ let verificationResponse: VerificationResult;
   if (verifiableCredential.proof.type === ProofType.ED25519_2020) {
-    return createSuccessfulVerificationResult();
+    verificationResponse = createSuccessfulVerificationResult();
+  }
+  else{
+    const purpose = getPurposeFromProof(verifiableCredential.proof.proofPurpose);
+    const suite = selectVerificationSuite(verifiableCredential.proof);
+    const vcjsOptions = {
+      purpose,
+      suite,
+      credential: verifiableCredential,
+      documentLoader: jsonld.documentLoaders.xhr(),
+    };
+  
+    const result = await vcjs.verifyCredential(vcjsOptions);
+    verificationResponse = handleResponse(result, verifiableCredential);
   }
 
-  const purpose = getPurposeFromProof(verifiableCredential.proof.proofPurpose);
-  const suite = selectVerificationSuite(verifiableCredential.proof);
-  const vcjsOptions = {
-    purpose,
-    suite,
-    credential: verifiableCredential,
-    documentLoader: jsonld.documentLoaders.xhr(),
-  };
 
-  const result = await vcjs.verifyCredential(vcjsOptions);
-  return handleResponse(result, verifiableCredential);
+  if (verificationResponse.isVerified) {
+    const statusArray = await VCVerifier.getInstance().getCredentialStatus(
+      verifiableCredential,
+      credentialFormat,
+    );
+    const isRevoked = await checkIsStatusRevoked(statusArray);
+    verificationResponse.isRevoked = isRevoked;
+  }
+  return verificationResponse;
 }
 
 function getPurposeFromProof(proofPurpose) {
@@ -159,10 +177,10 @@ function handleResponse(
   return verificationResult;
 }
 
-function handleVcVerifierResponse(
-  verificationResult: any,
+async function handleVcVerifierResponse(
+  verificationResult: VerificationSummaryResult,
   verifiableCredential: VerifiableCredential | Credential,
-): VerificationResult {
+): Promise<VerificationResult> {
   try {
     if (!verificationResult.verificationStatus) {
       verificationResult.verificationErrorCode =
@@ -174,10 +192,12 @@ function handleVcVerifierResponse(
         verifiableCredential,
       );
     }
+    const isRevoked = await checkIsStatusRevoked(verificationResult.credentialStatus)
     return {
       isVerified: verificationResult.verificationStatus,
       verificationMessage: verificationResult.verificationMessage,
       verificationErrorCode: verificationResult.verificationErrorCode,
+      isRevoked: isRevoked,
     };
   } catch (error) {
     console.error(
@@ -191,6 +211,50 @@ function handleVcVerifierResponse(
       verificationErrorCode: verificationResult.verificationErrorCode,
     };
   }
+}
+
+export async function checkIsStatusRevoked(
+  vcStatus: CredentialStatusResult[],
+): Promise<boolean> {
+  if (!vcStatus || vcStatus.length === 0) return false;
+
+  const revocationStatuses = vcStatus.filter(
+    s => s.purpose?.toLowerCase() === 'revocation',
+  );
+
+  let result = false;
+  for (const status of revocationStatuses) {
+    if (status.status > 0) {
+      if (isIOS()) {
+        const isValid = await verifyStatusListVC(status.statusListVC);
+        if (!isValid) {
+          throw new Error(`Revoked statusListVC verification failed`);
+        }
+      }
+      result = true;
+    } else if (status.status < 0) {
+      throw new Error(
+        `Error fetching revocation status : ${status.errorMessage}`,
+      );
+    }
+  }
+
+  if (result) return true;
+
+  if (isIOS()) {
+    for (const status of revocationStatuses) {
+      if (status.status === 0) {
+        const isValid = await verifyStatusListVC(status.statusListVC);
+        if (!isValid) {
+          throw new Error(
+            `StatusListVC verification failed for valid entry  ${status.errorMessage}`,
+          );
+        }
+      }
+    }
+  }
+
+  return false;
 }
 
 function createSuccessfulVerificationResult(): VerificationResult {
@@ -241,4 +305,13 @@ export interface VerificationResult {
   isVerified: boolean;
   verificationMessage: string;
   verificationErrorCode: string;
+  isRevoked?: boolean;
 }
+
+//TODO: Implement status list VC verification for iOS.
+//Currently Digital Bazaar library does not support VC 2.0 status list VC verification.
+function verifyStatusListVC(statusListVC: string | undefined) {
+  return true;
+}
+
+export const VERIFICATION_TIMEOUT_IN_MS = 5000;

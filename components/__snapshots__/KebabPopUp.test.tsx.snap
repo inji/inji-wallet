@@ -1,0 +1,1149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`KebabPopUp Component should match snapshot when not visible 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        {
+          "marginBottom": 15,
+          "marginEnd": 15,
+          "marginStart": 15,
+          "marginTop": 15,
+        },
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "fontFamily": "Montserrat_700Bold",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      accessibilityLabel="kebabTitle"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      title
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "width": 25,
+        }
+      }
+    />
+    <Text
+      accessibilityLabel="pinCard"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 10,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      Pin Card
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "width": 25,
+        }
+      }
+    />
+    <Text
+      accessibilityLabel="removeFromWallet"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#D52929",
+          },
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 10,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      Remove
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`KebabPopUp Component should match snapshot with VC that has image 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        {
+          "marginBottom": 15,
+          "marginEnd": 15,
+          "marginStart": 15,
+          "marginTop": 15,
+        },
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "fontFamily": "Montserrat_700Bold",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      accessibilityLabel="kebabTitle"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      title
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "width": 25,
+        }
+      }
+    />
+    <Text
+      accessibilityLabel="pinCard"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 10,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      Pin Card
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "width": 25,
+        }
+      }
+    />
+    <Text
+      accessibilityLabel="removeFromWallet"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#D52929",
+          },
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 10,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      Remove
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`KebabPopUp Component should match snapshot with custom icon color 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        {
+          "marginBottom": 15,
+          "marginEnd": 15,
+          "marginStart": 15,
+          "marginTop": 15,
+        },
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "fontFamily": "Montserrat_700Bold",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      accessibilityLabel="kebabTitle"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      title
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "width": 25,
+        }
+      }
+    />
+    <Text
+      accessibilityLabel="pinCard"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 10,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      Pin Card
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "width": 25,
+        }
+      }
+    />
+    <Text
+      accessibilityLabel="removeFromWallet"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#D52929",
+          },
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 10,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      Remove
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`KebabPopUp Component should match snapshot with custom icon component 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <Text>
+    Custom
+  </Text>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        {
+          "marginBottom": 15,
+          "marginEnd": 15,
+          "marginStart": 15,
+          "marginTop": 15,
+        },
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "fontFamily": "Montserrat_700Bold",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      accessibilityLabel="kebabTitle"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      title
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "width": 25,
+        }
+      }
+    />
+    <Text
+      accessibilityLabel="pinCard"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 10,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      Pin Card
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "width": 25,
+        }
+      }
+    />
+    <Text
+      accessibilityLabel="removeFromWallet"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#D52929",
+          },
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 10,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      Remove
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`KebabPopUp Component should match snapshot with default icon 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        {
+          "marginBottom": 15,
+          "marginEnd": 15,
+          "marginStart": 15,
+          "marginTop": 15,
+        },
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "fontFamily": "Montserrat_700Bold",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      accessibilityLabel="kebabTitle"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      title
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "width": 25,
+        }
+      }
+    />
+    <Text
+      accessibilityLabel="pinCard"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 10,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      Pin Card
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "width": 25,
+        }
+      }
+    />
+    <Text
+      accessibilityLabel="removeFromWallet"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#D52929",
+          },
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 10,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      Remove
+    </Text>
+  </View>
+</View>
+`;

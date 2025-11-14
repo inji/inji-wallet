@@ -33,6 +33,9 @@ export const DETAIL_VIEW_DEFAULT_FIELDS = [
   'address',
 ];
 
+export const STATUS_FIELD_NAME = 'Status';
+export const VC_STATUS_KEYS = ['valid', 'pending', 'expired', 'revoked'];
+
 //todo UIN & VID to be removed once we get the fields in the wellknown endpoint
 export const CARD_VIEW_ADD_ON_FIELDS = ['UIN', 'VID'];
 export const DETAIL_VIEW_ADD_ON_FIELDS = [

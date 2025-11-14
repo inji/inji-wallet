@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QrScanner Component should match snapshot with custom title 1`] = `<View />`;
+
+exports[`QrScanner Component should match snapshot with default props 1`] = `<View />`;
+
+exports[`QrScanner Component should match snapshot with title 1`] = `<View />`;

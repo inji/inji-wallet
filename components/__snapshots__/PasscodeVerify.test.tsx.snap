@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PasscodeVerify Component should match snapshot with default props 1`] = `null`;
+
+exports[`PasscodeVerify Component should match snapshot with different testID 1`] = `null`;
+
+exports[`PasscodeVerify Component should match snapshot without onError handler 1`] = `null`;

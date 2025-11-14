@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditableListItem Component should match snapshot with custom title color 1`] = `
+[
+  "Contact Information",
+  "Edit your details",
+  "editLabel",
+  "editLabel",
+]
+`;
+
+exports[`EditableListItem Component should match snapshot with default props 1`] = `
+[
+  "Contact Information",
+  "Edit your details",
+  "editLabel",
+  "editLabel",
+]
+`;
+
+exports[`EditableListItem Component should match snapshot with error state 1`] = `
+[
+  "Contact Information",
+  "Edit your details",
+  "editLabel",
+  "Failed to update",
+  "editLabel",
+]
+`;
+
+exports[`EditableListItem Component should match snapshot with progress indicator 1`] = `
+[
+  "Contact Information",
+  "Edit your details",
+  "editLabel",
+  "editLabel",
+]
+`;
+
+exports[`EditableListItem Component should match snapshot with single item 1`] = `
+[
+  "Contact Information",
+  "Edit your details",
+  "editLabel",
+]
+`;
+
+exports[`EditableListItem Component should match snapshot with success response 1`] = `
+[
+  "Contact Information",
+  "Edit your details",
+  "editLabel",
+  "editLabel",
+]
+`;
