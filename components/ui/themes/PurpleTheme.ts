@@ -12,6 +12,7 @@ import Constants from 'expo-constants';
 import HomeScreenLogo from '../../../assets/Inji_Home_Logo.svg';
 import InjiLogoSmall from '../../../assets/InjiLogo.svg';
 import i18next from '../../../i18n';
+import { POINTER_SIZE } from '../ToolTip';
 
 const Colors = {
   Black: '#231F20',
@@ -734,6 +735,33 @@ export const PurpleTheme = {
       borderWidth: 2,
       borderColor: '#E0E0E0',
       maxWidth: '90%',
+    },
+    tootlipOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'transparent',
+    },
+    tooltip: {
+      position: 'absolute',
+      backgroundColor: '#EBE6F3',
+      borderRadius: 8,
+      elevation: 6,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      zIndex: 999,
+    },
+    pointer: {
+      position: 'absolute',
+      width: 0,
+      height: 0,
+      borderLeftWidth: POINTER_SIZE / 2,
+      borderRightWidth: POINTER_SIZE / 2,
+      borderBottomWidth: POINTER_SIZE / 2,
+      borderLeftColor: 'transparent',
+      borderRightColor: 'transparent',
+      borderBottomColor: '#EBE6F3',
+      zIndex: 1000,
     },
     tooltipContentTitle: {
       color: Colors.DeepPurple,
