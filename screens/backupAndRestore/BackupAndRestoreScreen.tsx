@@ -207,6 +207,7 @@ const BackupAndRestoreScreen: React.FC<BackupAndRestoreProps> = props => {
       headerRight={
         <HelpScreen source={'BackUp'} triggerComponent={HelpIcon()} />
       }
+      fullScreen
       onDismiss={props.onBackPress}>
       <View
         style={{

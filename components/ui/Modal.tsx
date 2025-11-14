@@ -19,6 +19,7 @@ export const Modal: React.FC<ModalProps> = ({
   requester,
   showClose = true,
   showHeader = true,
+  fullScreen = false,
   modalStyle = Theme.ModalStyles.defaultModal,
   onDismiss,
   headerTitle,
@@ -44,7 +45,7 @@ export const Modal: React.FC<ModalProps> = ({
       <Column {...(showHeader ? {fill: true, safe: true} : {fill: true})}>
         {showHeader ? (
           <Row elevation={headerElevation}>
-            <View style={modalStyle}>
+            <View style={fullScreen ? Theme.ModalStyles.modal : modalStyle}>
               {headerRight && !arrowLeft ? (
                 <Icon
                   {...testIDProps('closeModal')}
@@ -121,4 +122,5 @@ export interface ModalProps {
   arrowLeft?: boolean;
   onShow?: () => void;
   children?: React.ReactNode;
+  fullScreen?: boolean;
 }
