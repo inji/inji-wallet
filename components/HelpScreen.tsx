@@ -362,8 +362,8 @@ export const HelpScreen: React.FC<HelpScreenProps> = props => {
         onDismiss={() => {
           setShowHelpPage(!showHelpPage);
         }}>
-        <BannerNotificationContainer />
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{flex: 1, position: "relative"}}>
+          <BannerNotificationContainer />
           <Column fill padding="10" align="space-between">
             <FlatList
               ref={listingRef}
