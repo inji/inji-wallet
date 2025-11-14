@@ -499,6 +499,9 @@ export const DefaultTheme = {
     ProfileIconPinnedStyle: {
       position: 'absolute',
     },
+    BackButtonBgGradient:{
+      borderRadius: 10,
+    },
     IconContainer: {
       padding: 6,
       width: 25,
@@ -1140,10 +1143,16 @@ export const DefaultTheme = {
     searchBarContainer: {
       alignItems: 'center',
     },
+    clearIcon: {
+      position: 'absolute',
+      right: 45, 
+      width: 40,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
     vcSearchBarContainer: {},
     innerSearchBarContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
       alignItems: 'center',
       width: '100%',
       backgroundColor: Colors.White,
@@ -1160,17 +1169,17 @@ export const DefaultTheme = {
       paddingLeft: 15,
     },
     searchIcon: {
+      width: 25,
       justifyContent: 'center',
-      height: Dimensions.get('window').height * 0.055,
-      width: Dimensions.get('window').width * 0.1,
-      fontFamily: 'Montserrat_500Medium',
+      alignItems: 'center',
     },
     searchBar: {
       textAlign: I18nManager.isRTL ? 'right' : 'left',
       height: Dimensions.get('window').height * 0.055,
-      width: Dimensions.get('window').width * 0.75,
+      flex: 1,
       fontFamily: 'Montserrat_500Medium',
       fontSize: 17,
+      marginRight: 40
     },
   }),
   ButtonStyles: StyleSheet.create({

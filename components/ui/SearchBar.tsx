@@ -1,8 +1,8 @@
 import React from 'react';
-import {TextInput} from 'react-native';
-import {Icon} from 'react-native-elements';
-import {Row} from './Layout';
-import {Theme} from './styleUtils';
+import { TextInput, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements';
+import { Row } from './Layout';
+import { Theme } from './styleUtils';
 
 export const SearchBar = ({
   searchIconTestID,
@@ -27,6 +27,20 @@ export const SearchBar = ({
         onLayout={onLayout}
         editable={editable ?? true}
       />
+
+      {search?.length > 0 && (
+        <TouchableOpacity
+          onPress={() => onChangeText('')}
+          style={Theme.SearchBarStyles.clearIcon}>
+          <Icon
+            testID='clearingIssuerSearchIcon'
+            name="close"
+            type="material"
+            color={Theme.Colors.SearchIcon}
+            size={22}
+          />
+        </TouchableOpacity>
+      )}
       <Icon
         testID={searchIconTestID}
         name="search"
