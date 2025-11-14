@@ -751,6 +751,8 @@ export const DefaultTheme = {
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.2,
       shadowRadius: 4,
+      borderWidth: 1,
+      borderColor: "#E0E0E0",
       zIndex: 999,
     },
     pointer: {
