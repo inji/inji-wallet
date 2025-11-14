@@ -20,12 +20,12 @@ The purpose of the Sample Credential Wallet is to help developers understand and
 
 ### Key Components
 
-| Component       | Description                                                                          |
-| --------------- | ------------------------------------------------------------------------------------ |
-| Inji Certify    | Credential issuer implementing the OpenID4VCI protocol for secure issuance           |
-| VCI Client      | OpenID4VCI client library handling authorization and credential download flows       |
-| Secure Keystore | Android hardware-backed Keystore manager for RSA/EC key pair generation              |
-| VC Verifier     | Verification library validating credential signatures and structure using vcverifier |
+| Component       | Description                                                                           |
+| --------------- | ------------------------------------------------------------------------------------- |
+| Inji Certify    | Credential issuer implementing the OpenID4VCI protocol for secure issuance            |
+| VCI Client      | OpenID4VCI client library handling authorization and credential download flows        |
+| Secure Keystore | Android hardware-backed Keystore manager for RSA/EC key pair generation               |
+| VC Verifier     | Verification library validating credential signatures and structure using vc verifier |
 
 To get more details, click [here](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide/building-verifiable-credentials-wallet-with-inji-libraries#inji-libraries-used-for-building-a-custom-wallet) !
 
@@ -40,7 +40,7 @@ To get more details, click [here](https://docs.inji.io/inji-wallet/inji-mobile/t
 - **Keypair Generation** – RSA (RS256) and EC (ES256) key generation
 - **JWT Proof Signing** – Proof JWT generation for OpenID4VCI
 - **Credential Issuance** – Authorization Code Flow-based issuance
-- **Credential Verification** – Signature validation via MOSIP vcverifier
+- **Credential Verification** – Signature validation via vc verifier
 
 To get more details, [click here](https://docs.inji.io/inji-wallet/inji-mobile/technical-overview/integration-guide/building-verifiable-credentials-wallet-with-inji-libraries#inji-libraries-used-for-building-a-custom-wallet) !
 
@@ -147,7 +147,7 @@ Performs Authorization Code Flow → Proof JWT generation → Credential downloa
 
 ### Step 4. Verify Credential
 
-Credential is validated via MOSIP vcverifier library.
+Credential is validated via vc verifier library.
 
 ### Step 5. View Stored Credentials
 
@@ -192,7 +192,7 @@ app/src/main/java/com/example/samplecredentialwallet/
 │   └── CredentialDetailScreen.kt      # Credential details
 └── utils/
     ├── SecureKeystoreManager.kt       # Android Keystore wrapper
-    ├── CredentialVerifier.kt          # MOSIP vcverifier integration
+    ├── CredentialVerifier.kt          # vc verifier integration
     └── CredentialStore.kt             # In-memory storage
 ```
 
