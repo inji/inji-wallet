@@ -11,80 +11,114 @@ object CredentialVerifier {
 
     private val verifier = CredentialsVerifier()
     private const val LOG_TAG = "CredentialVerifier"
+    private const val DEMO_MODE = true // Set to false for production strict verification
 
-    suspend fun verifyCredential(credentialJson: String): Boolean {
+    suspend fun verifyCredential(credentialJson: String, demoMode: Boolean = DEMO_MODE): Boolean {
         return withContext(Dispatchers.IO) {
             try {
-                Log.d(LOG_TAG, "Starting credential verification...")
-                Log.d(LOG_TAG, "Credential length: ${credentialJson.length}")
-                Log.d(LOG_TAG, "Credential preview (first 200 chars): ${credentialJson.take(200)}")
+                Log.d(LOG_TAG, "Starting credential verification (demoMode: $demoMode)")
+                val credentialHash = credentialJson.hashCode().toString(16)
+                Log.d(LOG_TAG, "Credential hash: $credentialHash, length: ${credentialJson.length}")
                 
 
                 val cleanCredential = if (credentialJson.startsWith("CredentialResponse(")) {
-                    Log.w(LOG_TAG, " Credential still wrapped in CredentialResponse object, extracting...")
+                    Log.d(LOG_TAG, "Extracting credential from response wrapper")
                     val credMatch = Regex("""credential=(\{.*\})(?:,|\))""").find(credentialJson)
                     credMatch?.groupValues?.get(1) ?: credentialJson
                 } else {
                     credentialJson
                 }
                 
-                Log.d(LOG_TAG, "Cleaned credential (first 100 chars): ${cleanCredential.take(100)}")
-                
+                // Validate JSON structure
                 try {
                     JSONObject(cleanCredential)
+                    Log.d(LOG_TAG, "JSON structure valid")
                 } catch (e: Exception) {
-                    Log.e(LOG_TAG, "❌ Not valid JSON: ${e.message}")
+                    Log.e(LOG_TAG, "Invalid JSON structure: ${e.message}")
                     return@withContext false
                 }
 
-                Log.d(LOG_TAG, "Verifying credential with LDP_VC format")
+                // Perform cryptographic verification
+                Log.d(LOG_TAG, "Performing cryptographic verification with LDP_VC format")
 
                 try {
                     val result = verifier.verify(cleanCredential, CredentialFormat.LDP_VC)
 
                     if (result.verificationStatus) {
-                        Log.i(LOG_TAG, " Credential Verified Successfully!")
-                        Log.d(LOG_TAG, "Verification Message: ${result.verificationMessage}")
+                        Log.i(LOG_TAG, "✓ Credential verified successfully")
+                        Log.d(LOG_TAG, "Verification message: ${result.verificationMessage}")
                         return@withContext true
                     } else {
-                        Log.w(LOG_TAG, " Credential Verification Failed!")
-                        Log.w(LOG_TAG, "Error Code: ${result.verificationErrorCode}")
-                        Log.w(LOG_TAG, "Error Message: ${result.verificationMessage}")
+                        Log.w(LOG_TAG, "✗ Credential verification failed")
+                        Log.w(LOG_TAG, "Error code: ${result.verificationErrorCode}")
+                        Log.w(LOG_TAG, "Error message: ${result.verificationMessage}")
                         
-                        Log.i(LOG_TAG, " JSON structure is valid - accepting for demo")
-                        return@withContext true
+                        if (demoMode) {
+                            Log.i(LOG_TAG, "Demo mode: accepting despite verification failure")
+                            return@withContext true
+                        } else {
+                            Log.e(LOG_TAG, "Production mode: rejecting unverified credential")
+                            return@withContext false
+                        }
                     }
                 } catch (verifyError: NoClassDefFoundError) {
-                    Log.w(LOG_TAG, " Verification library not compatible with this Android version")
-                    Log.w(LOG_TAG, "Missing class: ${verifyError.message}")
-                    Log.i(LOG_TAG, " Skipping verification - JSON structure is valid")
-                    return@withContext true
+                    Log.w(LOG_TAG, "Verification library class not found: ${verifyError.message}")
+                    if (demoMode) {
+                        Log.i(LOG_TAG, "Demo mode: accepting despite library error")
+                        return@withContext true
+                    } else {
+                        Log.e(LOG_TAG, "Production mode: cannot verify without library")
+                        return@withContext false
+                    }
                 } catch (verifyError: ClassNotFoundException) {
-                    Log.w(LOG_TAG, " Verification library missing dependencies: ${verifyError.message}")
-                    Log.i(LOG_TAG, " Skipping verification - JSON structure is valid")
-                    return@withContext true
+                    Log.w(LOG_TAG, "Verification library dependencies missing: ${verifyError.message}")
+                    if (demoMode) {
+                        Log.i(LOG_TAG, "Demo mode: accepting despite missing dependencies")
+                        return@withContext true
+                    } else {
+                        Log.e(LOG_TAG, "Production mode: cannot verify without dependencies")
+                        return@withContext false
+                    }
                 } catch (verifyError: UnsatisfiedLinkError) {
-                    Log.w(LOG_TAG, " Native library error: ${verifyError.message}")
-                    Log.i(LOG_TAG, " Skipping verification - JSON structure is valid")
-                    return@withContext true
+                    Log.w(LOG_TAG, "Native library error: ${verifyError.message}")
+                    if (demoMode) {
+                        Log.i(LOG_TAG, "Demo mode: accepting despite native library error")
+                        return@withContext true
+                    } else {
+                        Log.e(LOG_TAG, "Production mode: cannot verify without native library")
+                        return@withContext false
+                    }
+                } catch (verifyError: Exception) {
+                    Log.e(LOG_TAG, "Verification exception: ${verifyError.javaClass.simpleName} - ${verifyError.message}")
+                    if (demoMode) {
+                        Log.i(LOG_TAG, "Demo mode: accepting despite verification exception")
+                        return@withContext true
+                    } else {
+                        Log.e(LOG_TAG, "Production mode: rejecting due to verification exception")
+                        return@withContext false
+                    }
                 }
             } catch (e: Exception) {
-                Log.e(LOG_TAG, " Verification Error: ${e.message}", e)
-                e.printStackTrace()
-                
-                try {
-                    val cleanCredential = if (credentialJson.startsWith("CredentialResponse(")) {
-                        val credMatch = Regex("""credential=(\{.*\})(?:,|\))""").find(credentialJson)
-                        credMatch?.groupValues?.get(1) ?: credentialJson
-                    } else {
-                        credentialJson
+                Log.e(LOG_TAG, "Unexpected error during verification: ${e.javaClass.simpleName} - ${e.message}")
+                if (demoMode) {
+                    Log.w(LOG_TAG, "Demo mode: attempting fallback validation")
+                    // In demo mode, at least validate it's parseable JSON
+                    return@withContext try {
+                        val cleanCredential = if (credentialJson.startsWith("CredentialResponse(")) {
+                            val credMatch = Regex("""credential=(\{.*\})(?:,|\))""").find(credentialJson)
+                            credMatch?.groupValues?.get(1) ?: credentialJson
+                        } else {
+                            credentialJson
+                        }
+                        JSONObject(cleanCredential)
+                        Log.i(LOG_TAG, "Demo mode: valid JSON structure, accepting")
+                        true
+                    } catch (jsonError: Exception) {
+                        Log.e(LOG_TAG, "Demo mode: invalid JSON, rejecting")
+                        false
                     }
-                    
-                    JSONObject(cleanCredential)
-                    Log.w(LOG_TAG, " Verification library failed but JSON is valid")
-                    return@withContext true
-                } catch (jsonError: Exception) {
-                    Log.e(LOG_TAG, " Not even valid JSON")
+                } else {
+                    Log.e(LOG_TAG, "Production mode: rejecting due to unexpected error")
                     return@withContext false
                 }
             }

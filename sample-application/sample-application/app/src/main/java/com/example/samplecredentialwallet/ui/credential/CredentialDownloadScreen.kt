@@ -23,6 +23,7 @@ import com.example.samplecredentialwallet.utils.Constants
 import com.example.samplecredentialwallet.utils.CredentialStore
 import com.example.samplecredentialwallet.utils.CredentialVerifier
 import com.example.samplecredentialwallet.utils.SecureKeystoreManager
+import com.example.samplecredentialwallet.utils.EndpointConfig
 import com.nimbusds.jose.JOSEObjectType
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jose.JWSHeader
@@ -135,7 +136,7 @@ fun CredentialDownloadScreen(
                                         loadingMessage.value = "Authenticating..."
                                     }
                                     val code = handleAuthorizationFlow(navController, url)
-                                    Log.d("AUTH_FLOW", "Authorization code received: ${code.substring(0, 10)}...")
+                                    Log.d("AUTH_FLOW", "Authorization code received")
                                     code
                                 },
                                 
@@ -146,25 +147,16 @@ fun CredentialDownloadScreen(
                                         loadingMessage.value = "Exchanging tokens..."
                                     }
 
-                                    // COLLAB ENVIRONMENT - Token endpoints
-                                    val endpoint = when {
-                                        Constants.credentialIssuerHost?.contains("tan") == true ->
-                                            "https://api.collab.mosip.net/v1/mimoto/get-token/MosipTAN"
-                                        tokenRequest.tokenEndpoint.contains("esignet-mosipid") ->
-                                            "https://api.collab.mosip.net/residentmobileapp/get-token/Mosip"
-                                        tokenRequest.tokenEndpoint.contains("esignet-insurance") ->
-                                            "https://api.collab.mosip.net/residentmobileapp/get-token/StayProtected"
-                                        tokenRequest.tokenEndpoint.contains("esignet-mock") -> {
-                                            // For Land issuer (uses esignet-mock)
-                                            "https://api.collab.mosip.net/v1/mimoto/get-token/Land"
-                                        }
-                                        else -> throw Exception("Unknown token endpoint: ${tokenRequest.tokenEndpoint}")
-                                    }
+                                    // Resolve token endpoint using configuration
+                                    val endpoint = EndpointConfig.resolveTokenEndpoint(
+                                        tokenRequest.tokenEndpoint,
+                                        Constants.credentialIssuerHost
+                                    )
                                     Log.d("TOKEN_EXCHANGE", "Using custom endpoint: $endpoint")
 
                                     val response = sendTokenRequest(tokenRequest, endpoint)
-                                    Log.d("TOKEN_EXCHANGE", "Access token received: ${response.getString("access_token").substring(0, 20)}...")
-                                    Log.d("TOKEN_EXCHANGE", "c_nonce received: ${response.optString("c_nonce")}")
+                                    Log.d("TOKEN_EXCHANGE", "Access token received")
+                                    Log.d("TOKEN_EXCHANGE", "c_nonce received")
 
                                     TokenResponse(
                                         accessToken = response.getString("access_token"),

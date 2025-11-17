@@ -30,6 +30,7 @@ fun AuthWebViewScreen(
     var isLoading by remember { mutableStateOf(true) }
     var isDownloading by remember { mutableStateOf(false) }
     var currentUrl by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -79,24 +80,31 @@ fun AuthWebViewScreen(
                             Log.d("AuthWebView", "shouldOverrideUrlLoading: $url")
 
                             if (url != null && url.startsWith(redirectUri)) {
-                                Log.d("AuthWebView", "🎯 Redirect URI matched: $url")
+                                Log.d("AuthWebView", "Redirect URI matched: $url")
 
                                 val uri = Uri.parse(url)
                                 val code = uri.getQueryParameter("code")
                                 val error = uri.getQueryParameter("error")
 
-                                Log.d("AuthWebView", "📝 Auth code: $code, Error: $error")
+                                Log.d("AuthWebView", "Auth code present: ${code != null}, Error: $error")
 
                                 if (code != null) {
-                                    Log.d("AuthWebView", "✅ Completing auth flow with code: $code")
+                                    Log.d("AuthWebView", "Completing auth flow with code")
                                     AuthCodeHolder.complete(code)
                                     isLoading = true
                                     isDownloading = true
+                                    errorMessage = null
                                 } else if (error != null) {
-                                    Log.e("AuthWebView", "❌ Auth error: $error")
+                                    Log.e("AuthWebView", "Auth error: $error")
+                                    isLoading = false
+                                    isDownloading = false
+                                    errorMessage = "Authentication failed: $error"
                                     AuthCodeHolder.complete(null)
                                 } else {
-                                    Log.w("AuthWebView", "⚠️ No code or error in redirect")
+                                    Log.w("AuthWebView", "No code or error in redirect")
+                                    isLoading = false
+                                    isDownloading = false
+                                    errorMessage = "Authentication failed: No authorization code received"
                                     AuthCodeHolder.complete(null)
                                 }
 
@@ -117,10 +125,12 @@ fun AuthWebViewScreen(
                             super.onReceivedError(view, errorCode, description, failingUrl)
                             Log.e("AuthWebView", "WebView error: $errorCode - $description for $failingUrl")
                             isLoading = false
+                            isDownloading = false
+                            errorMessage = "Failed to load page: ${description ?: "Unknown error"}"
                         }
                     }
 
-                    Log.d("AuthWebView", "🚀 Loading authorization URL: $authorizationUrl")
+                    Log.d("AuthWebView", "Loading authorization URL: $authorizationUrl")
                     loadUrl(authorizationUrl)
                 }
             },
@@ -128,8 +138,8 @@ fun AuthWebViewScreen(
         )
         }
         
-        // Loading overlay when page is loading
-        if (isLoading) {
+        // Loading overlay when page is loading or downloading
+        if (isLoading || isDownloading) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -162,6 +172,53 @@ fun AuthWebViewScreen(
                             style = MaterialTheme.typography.bodySmall,
                             color = Color.Gray
                         )
+                    }
+                }
+            }
+        }
+        
+        // Error overlay when there's an error
+        errorMessage?.let { message ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White.copy(alpha = 0.95f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(32.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Error",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Red
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = message,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray
+                        )
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Button(
+                            onClick = { 
+                                errorMessage = null
+                                navController.popBackStack()
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFF2680C)
+                            )
+                        ) {
+                            Text("Go Back")
+                        }
                     }
                 }
             }

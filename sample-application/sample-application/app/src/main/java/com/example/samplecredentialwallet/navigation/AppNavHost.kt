@@ -15,6 +15,7 @@ import com.example.samplecredentialwallet.ui.issuer.IssuerDetailScreen
 import com.example.samplecredentialwallet.ui.auth.AuthWebViewScreen
 import com.example.samplecredentialwallet.ui.splash.SplashScreen
 import com.example.samplecredentialwallet.utils.Constants
+import com.example.samplecredentialwallet.utils.IssuerRepository
 
 sealed class Screen(val route: String) {
     object Splash : Screen("splash")
@@ -59,44 +60,15 @@ fun AppNavHost(navController: NavHostController) {
         composable(Screen.IssuerList.route) {
             IssuerListScreen(
                 onIssuerClick = { issuerType ->
-                    // Set constants based on issuer type - COLLAB ENVIRONMENT
-                    when (issuerType) {
-                        "Mosip" -> {
-                            Constants.credentialIssuerHost = "https://injicertify-mosipid.collab.mosip.net"
-                            Constants.credentialTypeId = "MosipVerifiableCredential"
-                            Constants.clientId = "mpartner-default-mimoto-mosipid-oidc"
-                            Constants.redirectUri = "io.mosip.residentapp.inji://oauthredirect"
-                            Constants.credentialDisplayName = "Veridonia National ID"
-                        }
-                        "StayProtected" -> {
-                            Constants.credentialIssuerHost = "https://injicertify-insurance.collab.mosip.net"
-                            Constants.credentialTypeId = "InsuranceCredential"
-                            Constants.clientId = "esignet-sunbird-partner"
-                            Constants.redirectUri = "io.mosip.residentapp.inji://oauthredirect"
-                            Constants.credentialDisplayName = "Life Insurance"
-                        }
-                        "MosipTAN" -> {
-                            Constants.credentialIssuerHost = "https://injicertify-tan.collab.mosip.net/v1/certify/issuance"
-                            Constants.credentialTypeId = "IncomeTaxAccountCredential"
-                            Constants.clientId = "mpartner-default-mimoto-mosipid-oidc"
-                            Constants.redirectUri = "io.mosip.residentapp.inji://oauthredirect"
-                            Constants.credentialDisplayName = "Income Tax Account"
-                        }
-                        "Land" -> {
-                            Constants.credentialIssuerHost = "https://injicertify-landregistry.collab.mosip.net"
-                            Constants.credentialTypeId = "LandStatementCredential"
-                            Constants.clientId = "mpartner-default-mimoto-land-oidc"
-                            Constants.redirectUri = "io.mosip.residentapp.inji://oauthredirect"
-                            Constants.credentialDisplayName = "Land Records Statement"
-                        }
+                    // Apply issuer configuration from repository
+                    if (IssuerRepository.applyConfiguration(issuerType)) {
+                        // Navigate to credential download
+                        navController.navigate(Screen.CredentialDetail.route)
+                    } else {
+                        Log.e("AppNavHost", "Unknown issuer type: $issuerType")
                     }
-                    // Navigate directly to credential download
-                    navController.navigate(Screen.CredentialDetail.route)
                 }
             )
-        }
-        composable(Screen.CredentialDetail.route) {
-            CredentialDownloadScreen(navController)
         }
         composable(Screen.AuthWebView.route) { backStackEntry ->
             val encodedUrl = backStackEntry.arguments?.getString("authUrl") ?: ""

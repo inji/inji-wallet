@@ -9,7 +9,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.samplecredentialwallet.navigation.AppNavHost
 import com.example.samplecredentialwallet.utils.SecureKeystoreManager
@@ -41,7 +40,7 @@ class MainActivity : ComponentActivity() {
 
             // Handle deeplink when activity is created
             LaunchedEffect(Unit) {
-                handleDeeplink(intent, navController)
+                handleDeeplink(intent)
             }
         }
     }
@@ -85,13 +84,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        setIntent(intent) 
+        setIntent(intent)
+        handleDeeplink(intent)
     }
 
-    private fun handleDeeplink(
-        intent: Intent?,
-        navController: NavHostController
-    ) {
+    private fun handleDeeplink(intent: Intent?) {
         intent?.data?.let { uri: Uri ->
             if (uri.toString().startsWith("io.mosip.residentapp.inji://oauthredirect")) {
                 val code = uri.getQueryParameter("code")

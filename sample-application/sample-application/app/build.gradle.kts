@@ -69,18 +69,21 @@ dependencies {
 
 
     implementation("io.mosip:inji-vci-client-aar:0.5.0") {
+        // Exclude transitive dependencies to use explicitly declared versions
         exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
         exclude(group = "org.bouncycastle")
     }
     
-    implementation("com.nimbusds:nimbus-jose-jwt:9.38-rc5") //JWT Signing Library
+    implementation("com.nimbusds:nimbus-jose-jwt:10.6") //JWT Signing Library
 
     implementation("io.mosip:secure-keystore:0.3.0") {   // Secure Keystore Library
+        // Exclude transitive dependencies to prevent conflicts and use explicitly declared versions
         exclude(group = "org.bouncycastle")
         exclude(group = "org.springframework")
         exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
     }
    implementation("io.mosip:vcverifier-aar:1.4.0") { // Verifiable Credential Verification Library
+        // Exclude transitive dependencies to prevent conflicts and use explicitly declared versions
         exclude(group = "org.bouncycastle")
         exclude(group = "org.springframework")
         exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
@@ -103,6 +106,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
    
     implementation("io.mosip:pixelpass-aar:0.7.0") {
+        // Exclude transitive dependencies to prevent conflicts and use explicitly declared versions
         exclude(group = "org.bouncycastle")
         exclude(group = "org.springframework")
         exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")

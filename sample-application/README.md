@@ -83,7 +83,7 @@ dependencies {
     implementation("io.mosip:inji-vci-client-aar:0.5.0")
     implementation("io.mosip:secure-keystore:0.3.0")
     implementation("io.mosip:vcverifier-aar:1.4.0")
-    implementation("com.nimbusds:nimbus-jose-jwt:9.38-rc5")
+    implementation("com.nimbusds:nimbus-jose-jwt:10.6")
 }
 ```
 

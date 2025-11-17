@@ -86,12 +86,12 @@ class SecureKeystoreManager(private val context: Context) {
     }
 
     private suspend fun generateAndStoreKeyPairs() {
-    val deviceBiometricsEnabled = isBiometricsEnabled()
-    val isHardwareSupported = isHardwareKeystoreSupported()
+        val deviceBiometricsEnabled = isBiometricsEnabled()
+        val isHardwareSupported = isHardwareKeystoreSupported()
 
-    Log.i(TAG, "Hardware keystore supported: $isHardwareSupported")
-    Log.i(TAG, "Biometrics enabled on device: $deviceBiometricsEnabled")
-    val isBiometricsEnabledForKeys = false
+        Log.i(TAG, "Hardware keystore supported: $isHardwareSupported")
+        Log.i(TAG, "Biometrics enabled on device: $deviceBiometricsEnabled")
+        val isBiometricsEnabledForKeys = false
 
         if (isHardwareSupported) {
             generateKeyPairRSA(isBiometricsEnabledForKeys)

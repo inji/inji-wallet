@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -30,7 +31,10 @@ import androidx.compose.ui.unit.sp
 import com.example.samplecredentialwallet.R
 import com.example.samplecredentialwallet.ui.theme.CardBlue
 import com.example.samplecredentialwallet.ui.theme.InjiOrange
+import com.example.samplecredentialwallet.utils.CredentialParser
 import com.example.samplecredentialwallet.utils.CredentialStore
+import com.example.samplecredentialwallet.utils.CredentialVerifier
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -41,9 +45,24 @@ fun HomeScreen(
     onViewCredential: (Int) -> Unit = {}
 ) {
     val credentials = remember { mutableStateOf(CredentialStore.getAllCredentials()) }
+    val verificationStatus = remember { mutableStateMapOf<Int, Boolean?>() }
+    val coroutineScope = rememberCoroutineScope()
     
     LaunchedEffect(Unit) {
         credentials.value = CredentialStore.getAllCredentials()
+    }
+    
+    // Verify credentials when they change
+    LaunchedEffect(credentials.value) {
+        credentials.value.forEachIndexed { index, credential ->
+            if (!verificationStatus.containsKey(index)) {
+                verificationStatus[index] = null // Start as unverified
+                coroutineScope.launch {
+                    val isValid = CredentialVerifier.verifyCredential(credential)
+                    verificationStatus[index] = isValid
+                }
+            }
+        }
     }
     
     Scaffold(
@@ -154,6 +173,7 @@ fun HomeScreen(
                         itemsIndexed(credentials.value) { index, credential ->
                             CredentialHomeCard(
                                 credential = credential,
+                                isValid = verificationStatus[index],
                                 onClick = { onViewCredential(index) }
                             )
                         }
@@ -167,6 +187,7 @@ fun HomeScreen(
 @Composable
 fun CredentialHomeCard(
     credential: String,
+    isValid: Boolean? = null,
     onClick: () -> Unit
 ) {
     val parsedData = remember(credential) { parseCredential(credential) }
@@ -260,20 +281,55 @@ fun CredentialHomeCard(
                 
                 Spacer(modifier = Modifier.height(4.dp))
                 
+                // Verification status badge
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.CheckCircle,
-                        contentDescription = null,
-                        tint = Color(0xFF4CAF50),
-                        modifier = Modifier.size(14.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = "Valid",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.White,
-                        fontSize = 11.sp
-                    )
+                    when (isValid) {
+                        true -> {
+                            Icon(
+                                imageVector = Icons.Default.CheckCircle,
+                                contentDescription = "Verified",
+                                tint = Color(0xFF4CAF50),
+                                modifier = Modifier.size(14.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "Valid",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.White,
+                                fontSize = 11.sp
+                            )
+                        }
+                        false -> {
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = "Not Verified",
+                                tint = Color(0xFFFF9800),
+                                modifier = Modifier.size(14.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "Unverified",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.White,
+                                fontSize = 11.sp
+                            )
+                        }
+                        null -> {
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = "Checking",
+                                tint = Color(0xFFBDBDBD),
+                                modifier = Modifier.size(14.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "Checking...",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.White,
+                                fontSize = 11.sp
+                            )
+                        }
+                    }
                 }
             }
 
@@ -297,66 +353,5 @@ fun CredentialHomeCard(
 }
 
 private fun parseCredential(credentialJson: String): Map<String, String> {
-    val result = mutableMapOf<String, String>()
-    
-    try {
-        val cleanCredential = if (credentialJson.startsWith("CredentialResponse(")) {
-            val credMatch = Regex("""credential=(\{.*\})(?:,|\))""").find(credentialJson)
-            credMatch?.groupValues?.get(1) ?: credentialJson
-        } else {
-            credentialJson
-        }
-        
-        val json = JSONObject(cleanCredential)
-        
-        val credentialName = json.optString("credentialName")
-        if (credentialName.isNotEmpty()) {
-            result["credentialName"] = credentialName
-        }
-        
-        val types = json.optJSONArray("type")
-        if (types != null && types.length() > 0) {
-            result["type"] = types.getString(types.length() - 1)
-        }
-        
-        val credentialSubject = json.optJSONObject("credentialSubject")
-        if (credentialSubject != null) {
-            credentialSubject.keys().forEach { key ->
-                val value = credentialSubject.opt(key)
-                when (value) {
-                    is String -> {
-                        if (key == "face" && value.startsWith("data:image/")) {
-                            val base64Data = value.substringAfter(",")
-                            result["faceImage"] = base64Data
-                        } else {
-                            result[key] = value
-                        }
-                    }
-                    is JSONObject -> {
-                        val actualValue = value.optString("value", "")
-                        if (actualValue.isNotEmpty()) {
-                            result[key] = actualValue
-                        }
-                    }
-                    is JSONArray -> {
-                        val arrayValues = mutableListOf<String>()
-                        for (i in 0 until value.length()) {
-                            val item = value.opt(i)
-                            if (item is JSONObject) {
-                                item.optString("value")?.let { arrayValues.add(it) }
-                            } else {
-                                arrayValues.add(item.toString())
-                            }
-                        }
-                        result[key] = arrayValues.joinToString(", ")
-                    }
-                    else -> result[key] = value.toString()
-                }
-            }
-        }
-    } catch (e: Exception) {
-        result["error"] = "Failed to parse credential"
-    }
-    
-    return result
+    return CredentialParser.parseCredential(credentialJson)
 }
