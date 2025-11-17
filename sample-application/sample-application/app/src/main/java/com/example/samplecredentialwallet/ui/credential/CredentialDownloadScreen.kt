@@ -46,6 +46,7 @@ import kotlinx.coroutines.withTimeout
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
+import java.net.URLEncoder
 import java.net.UnknownHostException
 import java.util.Base64
 import java.util.Date
@@ -570,14 +571,17 @@ suspend fun sendTokenRequest(
     conn.connectTimeout = 15000
     conn.readTimeout = 15000
 
+    // Helper function to URL-encode parameter values
+    fun enc(value: String): String = URLEncoder.encode(value, "UTF-8")
+
     val formBody = buildString {
-        append("grant_type=${tokenRequest.grantType.value}")
-        tokenRequest.authCode?.let { append("&code=$it") }
-        tokenRequest.preAuthCode?.let { append("&pre-authorized_code=$it") }
-        tokenRequest.txCode?.let { append("&tx_code=$it") }
-        tokenRequest.clientId?.let { append("&client_id=$it") }
-        tokenRequest.redirectUri?.let { append("&redirect_uri=$it") }
-        tokenRequest.codeVerifier?.let { append("&code_verifier=$it") }
+        append("grant_type=${enc(tokenRequest.grantType.value)}")
+        tokenRequest.authCode?.let { append("&code=${enc(it)}") }
+        tokenRequest.preAuthCode?.let { append("&pre-authorized_code=${enc(it)}") }
+        tokenRequest.txCode?.let { append("&tx_code=${enc(it)}") }
+        tokenRequest.clientId?.let { append("&client_id=${enc(it)}") }
+        tokenRequest.redirectUri?.let { append("&redirect_uri=${enc(it)}") }
+        tokenRequest.codeVerifier?.let { append("&code_verifier=${enc(it)}") }
     }
 
     try {
