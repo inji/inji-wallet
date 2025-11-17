@@ -32,7 +32,7 @@ export const MainLayout: React.FC = () => {
   const {appService} = useContext(GlobalContext);
   const scanService = appService.children.get('scan');
 
-  const options: BottomTabNavigationOptions = {
+  const bottomTabNavigationOptions: BottomTabNavigationOptions = {
     tabBarShowLabel: true,
     tabBarActiveTintColor: Theme.Colors.IconBg,
     ...Theme.BottomTabBarStyle,
@@ -55,10 +55,12 @@ export const MainLayout: React.FC = () => {
 
   return (
     <SafeAreaView
+        edges = {['left', 'right', 'bottom']}
       style={{
         flex: 1,
         paddingTop: isAndroid() ? insets.top : 0,
         bottom: isAndroid() ? insets.bottom : -10,
+        backgroundColor: "white",
       }}>
       <CopilotProvider
         stopOnOutsideClick
@@ -71,7 +73,7 @@ export const MainLayout: React.FC = () => {
           initialRouteName={mainRoutes[0].name}
           screenOptions={({route}) => ({
             tabBarAccessibilityLabel: route.name,
-            ...options,
+            ...bottomTabNavigationOptions,
           })}>
           {mainRoutes.map((route, index) => (
             <Screen

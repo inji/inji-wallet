@@ -32,7 +32,7 @@ export const AppLayout: React.FC = () => {
   };
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{backgroundColor: "white"}}>
       <GestureHandlerRootView>
         <NavigationContainer ref={navigationRef}>
           <StatusBar {...statusBarOptions} />
