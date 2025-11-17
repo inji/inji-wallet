@@ -508,7 +508,7 @@ private fun signProofJWT(
         .expirationTime(Date(now + 3 * 60 * 1000))
         .build()
 
-    Log.d("PROOF_JWT_CLAIMS", JSONObject(claimsSet.toJSONObject()).toString(2))
+    // Note: JWT claims contain sensitive data (nonce, etc.) - avoid logging in production
 
     Log.d("PROOF_JWT", "Signing JWT with algorithm: $alg")
     val signedJWT = SignedJWT(header, claimsSet).apply {
@@ -523,7 +523,7 @@ private fun signProofJWT(
         }
     }
 
-    Log.d("PROOF_JWT_FINAL", signedJWT.serialize())
+    // Note: Serialized JWT contains sensitive proof - avoid logging in production
 
     return signedJWT.serialize()
 }
