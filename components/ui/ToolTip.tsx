@@ -1,14 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React, {useRef, useState} from 'react';
 import {
   Modal,
   View,
   ScrollView,
   TouchableOpacity,
-  Pressable, Dimensions,
+  Pressable,
+  Dimensions,
   findNodeHandle,
-  UIManager
+  UIManager,
 } from 'react-native';
-import { Theme } from './styleUtils';
+import {Theme} from './styleUtils';
 
 interface CustomTooltipProps {
   triggerComponent: React.ReactNode;
@@ -28,7 +29,7 @@ export const CustomTooltip = ({
   maxHeight = 300,
 }: CustomTooltipProps) => {
   const [visible, setVisible] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({x: 0, y: 0});
   const [pointerLeft, setPointerLeft] = useState(20);
   const [showAbove, setShowAbove] = useState(false);
 
@@ -66,9 +67,14 @@ export const CustomTooltip = ({
         }
 
         const calculatedPointerLeft = iconCenterX - tooltipX - POINTER_SIZE / 2;
-        setPointerLeft(Math.min(Math.max(calculatedPointerLeft, SCREEN_PADDING), width - SCREEN_PADDING));
+        setPointerLeft(
+          Math.min(
+            Math.max(calculatedPointerLeft, SCREEN_PADDING),
+            width - SCREEN_PADDING,
+          ),
+        );
         setShowAbove(showAboveTooltip);
-        setPosition({ x: tooltipX, y: tooltipY });
+        setPosition({x: tooltipX, y: tooltipY});
         setVisible(true);
       });
     } catch (e) {
@@ -79,7 +85,7 @@ export const CustomTooltip = ({
   return (
     <>
       <View ref={iconRef} collapsable={false}>
-        <TouchableOpacity onPress={showTooltip} style={{ marginLeft: 5 }}>
+        <TouchableOpacity onPress={showTooltip} style={{marginLeft: 5}}>
           {triggerComponent}
         </TouchableOpacity>
       </View>
@@ -90,10 +96,16 @@ export const CustomTooltip = ({
           visible={visible}
           animationType="fade"
           hardwareAccelerated
-          onRequestClose={() => setVisible(false)}
-        >
-          <Pressable style={Theme.Styles.tootlipOverlay} onPress={() => setVisible(false)} />
-          <View style={[Theme.Styles.tooltip, { width, top: position.y, left: position.x }]}>
+          onRequestClose={() => setVisible(false)}>
+          <Pressable
+            style={Theme.Styles.tooltipOverlay}
+            onPress={() => setVisible(false)}
+          />
+          <View
+            style={[
+              Theme.Styles.tooltip,
+              {width, top: position.y, left: position.x},
+            ]}>
             <View
               style={[
                 Theme.Styles.pointer,
@@ -101,16 +113,15 @@ export const CustomTooltip = ({
                   left: pointerLeft,
                   top: showAbove ? undefined : -POINTER_SIZE / 2,
                   bottom: showAbove ? -POINTER_SIZE / 2 : undefined,
-                  transform: [{ rotate: showAbove ? '180deg' : '0deg' }],
+                  transform: [{rotate: showAbove ? '180deg' : '0deg'}],
                 },
               ]}
             />
             <ScrollView
               nestedScrollEnabled
               keyboardShouldPersistTaps="handled"
-              style={{ maxHeight, overflow: 'hidden' }}
-              contentContainerStyle={{ padding: 15 }}
-            >
+              style={{maxHeight, overflow: 'hidden'}}
+              contentContainerStyle={{padding: 15}}>
               {toolTipContent}
             </ScrollView>
           </View>

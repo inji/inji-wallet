@@ -12,7 +12,7 @@ import Constants from 'expo-constants';
 import HomeScreenLogo from '../../../assets/Inji_Home_Logo.svg';
 import InjiLogoSmall from '../../../assets/InjiLogo.svg';
 import i18next from '../../../i18n';
-import { POINTER_SIZE } from '../ToolTip';
+import {POINTER_SIZE} from '../ToolTip';
 
 const Colors = {
   Black: '#231F20',
@@ -513,7 +513,7 @@ export const PurpleTheme = {
       borderRadius: 10,
       backgroundColor: Colors.LightPurple,
     },
-    BackButtonBgGradient:{
+    BackButtonBgGradient: {
       borderRadius: 10,
     },
     imageCaptureButton: {
@@ -736,7 +736,7 @@ export const PurpleTheme = {
       borderColor: '#E0E0E0',
       maxWidth: '90%',
     },
-    tootlipOverlay: {
+    tooltipOverlay: {
       ...StyleSheet.absoluteFillObject,
       backgroundColor: 'transparent',
     },
@@ -746,11 +746,11 @@ export const PurpleTheme = {
       borderRadius: 8,
       elevation: 6,
       shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
+      shadowOffset: {width: 0, height: 2},
       shadowOpacity: 0.2,
       shadowRadius: 4,
       borderWidth: 1,
-      borderColor: "#E0E0E0",
+      borderColor: '#E0E0E0',
       zIndex: 999,
     },
     pointer: {
@@ -901,7 +901,6 @@ export const PurpleTheme = {
   BannerStyles: StyleSheet.create({
     bannerStackContainer: {
       position: 'absolute',
-      top: StatusBar.currentHeight || 0,
       width: '100%',
       alignItems: 'center',
       zIndex: 100,
@@ -1184,7 +1183,7 @@ export const PurpleTheme = {
     },
     clearIcon: {
       position: 'absolute',
-      right: 45, 
+      right: 45,
       width: 40,
       justifyContent: 'center',
       alignItems: 'center',
@@ -1218,7 +1217,7 @@ export const PurpleTheme = {
       flex: 1,
       fontFamily: 'Montserrat_500Medium',
       fontSize: 17,
-      marginRight: 40
+      marginRight: 40,
     },
   }),
   ButtonStyles: StyleSheet.create({
@@ -1771,9 +1770,9 @@ export const PurpleTheme = {
       backgroundColor: '#fff',
       elevation: 5,
       shadowColor: '#000',
-      shadowOffset: { width: 0, height: 4 }, // only downward shadow
+      shadowOffset: {width: 0, height: 4}, // only downward shadow
       shadowOpacity: 0.1,
-      shadowRadius: 4,    
+      shadowRadius: 4,
       zIndex: 1,
     },
     heading: {

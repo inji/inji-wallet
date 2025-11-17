@@ -34,7 +34,6 @@ import {
 import {VCProcessor} from '../../components/VC/common/VCProcessor';
 import {HelpIcon} from '../../components/ui/HelpIcon';
 import VcRenderer from '../../shared/vcRenderer/VcRenderer';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
   const {t} = useTranslation('ViewVcModal');
@@ -51,7 +50,6 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
   const [svgRendererError, setSvgRendererError] = useState<string[] | null>(
     null,
   );
-  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     async function processVC() {

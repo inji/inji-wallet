@@ -12,7 +12,7 @@ import Constants from 'expo-constants';
 import HomeScreenLogo from '../../../assets/InjiHomeLogo.svg';
 import InjiLogoSmall from '../../../assets/InjiLogo.svg';
 import i18next from '../../../i18n';
-import { POINTER_SIZE } from '../ToolTip';
+import {POINTER_SIZE} from '../ToolTip';
 const Colors = {
   Black: '#000000',
   Zambezi: '#5F5F5F',
@@ -500,7 +500,7 @@ export const DefaultTheme = {
     ProfileIconPinnedStyle: {
       position: 'absolute',
     },
-    BackButtonBgGradient:{
+    BackButtonBgGradient: {
       borderRadius: 10,
     },
     IconContainer: {
@@ -738,7 +738,7 @@ export const DefaultTheme = {
       color: Colors.RoyalPurple,
       marginTop: 10,
     },
-    tootlipOverlay: {
+    tooltipOverlay: {
       ...StyleSheet.absoluteFillObject,
       backgroundColor: 'transparent',
     },
@@ -748,11 +748,11 @@ export const DefaultTheme = {
       borderRadius: 8,
       elevation: 6,
       shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
+      shadowOffset: {width: 0, height: 2},
       shadowOpacity: 0.2,
       shadowRadius: 4,
       borderWidth: 1,
-      borderColor: "#E0E0E0",
+      borderColor: '#E0E0E0',
       zIndex: 999,
     },
     pointer: {
@@ -1175,7 +1175,7 @@ export const DefaultTheme = {
     },
     clearIcon: {
       position: 'absolute',
-      right: 45, 
+      right: 45,
       width: 40,
       justifyContent: 'center',
       alignItems: 'center',
@@ -1209,7 +1209,7 @@ export const DefaultTheme = {
       flex: 1,
       fontFamily: 'Montserrat_500Medium',
       fontSize: 17,
-      marginRight: 40
+      marginRight: 40,
     },
   }),
   ButtonStyles: StyleSheet.create({
@@ -1762,9 +1762,9 @@ export const DefaultTheme = {
       backgroundColor: '#fff',
       elevation: 5,
       shadowColor: '#000',
-      shadowOffset: { width: 0, height: 4 }, // only downward shadow
+      shadowOffset: {width: 0, height: 4}, // only downward shadow
       shadowOpacity: 0.1,
-      shadowRadius: 4,    
+      shadowRadius: 4,
       zIndex: 1,
     },
     heading: {
