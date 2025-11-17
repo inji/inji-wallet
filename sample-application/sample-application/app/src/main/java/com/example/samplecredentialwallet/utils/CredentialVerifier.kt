@@ -11,9 +11,8 @@ object CredentialVerifier {
 
     private val verifier = CredentialsVerifier()
     private const val LOG_TAG = "CredentialVerifier"
-    private const val DEMO_MODE = true // Set to false for production strict verification
 
-    suspend fun verifyCredential(credentialJson: String, demoMode: Boolean = DEMO_MODE): Boolean {
+    suspend fun verifyCredential(credentialJson: String, demoMode: Boolean = false): Boolean {
         return withContext(Dispatchers.IO) {
             try {
                 Log.d(LOG_TAG, "Starting credential verification (demoMode: $demoMode)")

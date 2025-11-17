@@ -240,7 +240,7 @@ fun CredentialDownloadScreen(
                                     tokenResponseJson = credentialStr
 
                                     Log.d("VC_VERIFY", "Starting credential verification")
-                                    val verified = CredentialVerifier.verifyCredential(credentialStr)
+                                    val verified = CredentialVerifier.verifyCredential(credentialStr, demoMode = true)
                                     Log.d("VC_VERIFY", "Verification result: $verified")
                                     
                                     // Add display name to credential before storing

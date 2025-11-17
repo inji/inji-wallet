@@ -58,7 +58,7 @@ fun HomeScreen(
             if (!verificationStatus.containsKey(index)) {
                 verificationStatus[index] = null // Start as unverified
                 coroutineScope.launch {
-                    val isValid = CredentialVerifier.verifyCredential(credential)
+                    val isValid = CredentialVerifier.verifyCredential(credential, demoMode = true)
                     verificationStatus[index] = isValid
                 }
             }
