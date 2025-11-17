@@ -52,7 +52,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         esignetLoginPage.clickOnLoginWithOtpButton();
 //        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
-        Thread.sleep(9000);
+    
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
         mockCertifyLoginPage.clickOnGetOtpButton();
@@ -213,7 +213,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         esignetLoginPage.clickOnLoginWithOtpButton();
  //       esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
-        Thread.sleep(9000);
+        
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
         mockCertifyLoginPage.clickOnGetOtpButton();
@@ -275,7 +275,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         esignetLoginPage.clickOnLoginWithOtpButton();
 //        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
-        Thread.sleep(9000);
+       
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
         mockCertifyLoginPage.clickOnGetOtpButton();
@@ -290,7 +290,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-        Thread.sleep(9000);
+    
         mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
         mockCertifyLoginPage.clickOnGetOtpButton();
