@@ -11,7 +11,6 @@ import {authRoutes, baseRoutes} from '../routes';
 import {useAppLayout} from './AppLayoutController';
 import {StatusBar, StatusBarProps} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 export const AppLayout: React.FC = () => {
@@ -32,21 +31,19 @@ export const AppLayout: React.FC = () => {
   };
 
   return (
-    <SafeAreaProvider style={{backgroundColor: "white"}}>
-      <GestureHandlerRootView>
-        <NavigationContainer ref={navigationRef}>
-          <StatusBar {...statusBarOptions} />
-          <Navigator
-            initialRouteName={baseRoutes[0].name}
-            screenOptions={options}>
-            {baseRoutes.map(route => (
-              <Screen key={route.name} {...route} />
-            ))}
-            {controller.isAuthorized &&
-              authRoutes.map(route => <Screen key={route.name} {...route} />)}
-          </Navigator>
-        </NavigationContainer>
-      </GestureHandlerRootView>
-    </SafeAreaProvider>
+    <GestureHandlerRootView>
+      <NavigationContainer ref={navigationRef}>
+        <StatusBar {...statusBarOptions} />
+        <Navigator
+          initialRouteName={baseRoutes[0].name}
+          screenOptions={options}>
+          {baseRoutes.map(route => (
+            <Screen key={route.name} {...route} />
+          ))}
+          {controller.isAuthorized &&
+            authRoutes.map(route => <Screen key={route.name} {...route} />)}
+        </Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 };
