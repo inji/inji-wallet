@@ -9,12 +9,9 @@ import {
 } from '@react-navigation/native-stack';
 import {authRoutes, baseRoutes} from '../routes';
 import {useAppLayout} from './AppLayoutController';
-import {StatusBar} from 'react-native';
+import {StatusBar, StatusBarProps} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {
-  initialWindowMetrics,
-  SafeAreaProvider,
-} from 'react-native-safe-area-context';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 export const AppLayout: React.FC = () => {
@@ -28,15 +25,17 @@ export const AppLayout: React.FC = () => {
     headerBackVisible: false,
   };
 
+  const statusBarOptions: StatusBarProps = {
+    animated: true,
+    barStyle: 'dark-content',
+    backgroundColor: 'white',
+  };
+
   return (
-    <SafeAreaProvider
-      style={{
-        paddingBottom: initialWindowMetrics?.insets.bottom,
-        backgroundColor: 'white',
-      }}>
+    <SafeAreaProvider>
       <GestureHandlerRootView>
         <NavigationContainer ref={navigationRef}>
-          <StatusBar animated={true} barStyle="dark-content" />
+          <StatusBar {...statusBarOptions} />
           <Navigator
             initialRouteName={baseRoutes[0].name}
             screenOptions={options}>
