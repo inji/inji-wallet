@@ -1,6 +1,6 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {FlatList, Pressable, View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import {Issuer} from '../../components/openId4VCI/Issuer';
 import {Error} from '../../components/ui/Error';
 import {Header} from '../../components/ui/Header';
@@ -27,7 +27,6 @@ import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {MessageOverlay} from '../../components/MessageOverlay';
 import {SearchBar} from '../../components/ui/SearchBar';
 import {SvgImage} from '../../components/ui/svg';
-import {Icon} from 'react-native-elements';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {CredentialTypeSelectionScreen} from './CredentialTypeSelectionScreen';
 import {QrScanner} from '../../components/QrScanner';
@@ -35,7 +34,7 @@ import {IssuersModel} from '../../machines/Issuers/IssuersModel';
 import {AUTH_ROUTES} from '../../routes/routesConstants';
 import {TransactionCodeModal} from './TransactionCodeScreen';
 import {TrustModal} from '../../components/TrustModal';
-import i18next from 'i18next';
+
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
