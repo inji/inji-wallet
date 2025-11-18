@@ -12,7 +12,7 @@ import {GlobalContext} from '../shared/GlobalContext';
 import {ScanEvents} from '../machines/bleShare/scan/scanMachine';
 import testIDProps from '../shared/commonUtil';
 import {SvgImage} from '../components/ui/svg';
-import {isAndroid, isIOS} from '../shared/constants';
+import {isIOS} from '../shared/constants';
 import {CopilotProvider} from 'react-native-copilot';
 import {View} from 'react-native';
 import {CopilotTooltip} from '../components/CopilotTooltip';
@@ -22,7 +22,6 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from '@xstate/react';
 import {selectAuthorizationRequest, selectIsLinkCode} from '../machines/app';
 import {BOTTOM_TAB_ROUTES} from '../routes/routesConstants';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
@@ -32,9 +31,14 @@ export const MainLayout: React.FC = () => {
   const scanService = appService.children.get('scan');
 
   const navigation = useNavigation<ScanLayoutNavigation>();
-  const insets = useSafeAreaInsets();
 
   const linkCode = useSelector(appService, selectIsLinkCode);
+
+  const options: BottomTabNavigationOptions = {
+      tabBarShowLabel: true,
+      tabBarActiveTintColor: Theme.Colors.IconBg,
+      ...Theme.BottomTabBarStyle,
+  };
 
   const authorizationRequest = useSelector(
     appService,
@@ -47,109 +51,96 @@ export const MainLayout: React.FC = () => {
     }
   }, [linkCode, authorizationRequest]);
 
-  const bottomTabNavigationOptions: BottomTabNavigationOptions = {
-    tabBarShowLabel: true,
-    tabBarActiveTintColor: Theme.Colors.IconBg,
-    ...Theme.BottomTabBarStyle,
-  };
-
-  return (
-    <SafeAreaView
-        edges = {isAndroid() ? ['bottom', 'top'] : ['bottom']}
-        style={{
-        flex: 1,
-        backgroundColor: "white",
-      }}>
+    return (
       <CopilotProvider
-        stopOnOutsideClick
-        androidStatusBarVisible
-        tooltipComponent={CopilotTooltip}
-        tooltipStyle={Theme.Styles.copilotStyle}
-        stepNumberComponent={() => null}
-        animated>
-        <Navigator
-          initialRouteName={mainRoutes[0].name}
-          screenOptions={({route}) => ({
-            tabBarAccessibilityLabel: route.name,
-            ...bottomTabNavigationOptions,
-          })}>
-          {mainRoutes.map((route, index) => (
-            <Screen
-              key={route.name}
-              name={route.name}
-              component={route.component}
-              listeners={{
-                tabPress: e => {
-                  if (route.name == share.name) {
-                    scanService?.send(ScanEvents.RESET());
-                  }
-                },
-              }}
-              options={{
-                ...route.options,
-                title: t(route.name),
-                tabBarIcon: ({focused}) => (
-                  <Column
-                    {...testIDProps(route.name + 'Icon')}
-                    align="center"
-                    crossAlign="center"
-                    style={focused ? Theme.Styles.bottomTabIconStyle : null}>
-                    {route.name === 'home' ? (
-                      focused ? (
-                        <LinearGradient
-                          colors={Theme.Colors.GradientColorsLight}
-                          start={Theme.LinearGradientDirection.start}
-                          end={Theme.LinearGradientDirection.end}
-                          style={{
-                            width: 36,
-                            height: 36,
-                            borderRadius: 10,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}>
-                          <View>{SvgImage[`${route.name}`](focused)}</View>
-                        </LinearGradient>
-                      ) : (
-                        <View>{SvgImage[`${route.name}`](focused)}</View>
-                      )
-                    ) : (
-                      <Copilot
-                        title={t(`copilot:${route.name}Title`)}
-                        description={t(`copilot:${route.name}Message`)}
-                        order={2 + index}
-                        targetStyle={Theme.Styles.tabBarIconCopilot}
-                        children={
-                          <>
-                            {focused ? (
-                              <LinearGradient
-                                style={{
-                                  width: 36,
-                                  height: 36,
-                                  borderRadius: 10,
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                }}
-                                colors={Theme.Colors.GradientColorsLight}
-                                start={Theme.LinearGradientDirection.start}
-                                end={Theme.LinearGradientDirection.end}>
-                                {SvgImage[`${route.name}`](focused)}
-                              </LinearGradient>
-                            ) : (
-                              <View>{SvgImage[`${route.name}`](focused)}</View>
-                            )}
-                          </>
-                        }
-                      />
-                    )}
-                  </Column>
-                ),
-                tabBarAccessibilityLabel: isIOS() ? t(route.name) : route.name,
-                tabBarTestID: route.name,
-              }}
-            />
-          ))}
-        </Navigator>
+          stopOnOutsideClick
+          androidStatusBarVisible
+          tooltipComponent={CopilotTooltip}
+          tooltipStyle={Theme.Styles.copilotStyle}
+          stepNumberComponent={() => null}
+          animated>
+          <Navigator
+              initialRouteName={mainRoutes[0].name}
+              screenOptions={({route}) => ({
+                  tabBarAccessibilityLabel: route.name,
+                  ...options,
+              })}>
+              {mainRoutes.map((route, index) => (
+                  <Screen
+                      key={route.name}
+                      name={route.name}
+                      component={route.component}
+                      listeners={{
+                          tabPress: e => {
+                              if (route.name == share.name) {
+                                  scanService?.send(ScanEvents.RESET());
+                              }
+                          },
+                      }}
+                      options={{
+                          ...route.options,
+                          title: t(route.name),
+                          tabBarIcon: ({focused}) => (
+                              <Column
+                                  {...testIDProps(route.name + 'Icon')}
+                                  align="center"
+                                  crossAlign="center"
+                                  style={focused ? Theme.Styles.bottomTabIconStyle : null}>
+                                  {route.name === 'home' ? (
+                                      focused ? (
+                                          <LinearGradient
+                                              colors={Theme.Colors.GradientColorsLight}
+                                              start={Theme.LinearGradientDirection.start}
+                                              end={Theme.LinearGradientDirection.end}
+                                              style={{
+                                                  width: 36,
+                                                  height: 36,
+                                                  borderRadius: 10,
+                                                  justifyContent: 'center',
+                                                  alignItems: 'center',
+                                              }}>
+                                              <View>{SvgImage[`${route.name}`](focused)}</View>
+                                          </LinearGradient>
+                                      ) : (
+                                          <View>{SvgImage[`${route.name}`](focused)}</View>
+                                      )
+                                  ) : (
+                                      <Copilot
+                                          title={t(`copilot:${route.name}Title`)}
+                                          description={t(`copilot:${route.name}Message`)}
+                                          order={2 + index}
+                                          targetStyle={Theme.Styles.tabBarIconCopilot}
+                                          children={
+                                              <>
+                                                  {focused ? (
+                                                      <LinearGradient
+                                                          style={{
+                                                              width: 36,
+                                                              height: 36,
+                                                              borderRadius: 10,
+                                                              justifyContent: 'center',
+                                                              alignItems: 'center',
+                                                          }}
+                                                          colors={Theme.Colors.GradientColorsLight}
+                                                          start={Theme.LinearGradientDirection.start}
+                                                          end={Theme.LinearGradientDirection.end}>
+                                                          {SvgImage[`${route.name}`](focused)}
+                                                      </LinearGradient>
+                                                  ) : (
+                                                      <View>{SvgImage[`${route.name}`](focused)}</View>
+                                                  )}
+                                              </>
+                                          }
+                                      />
+                                  )}
+                              </Column>
+                          ),
+                          tabBarAccessibilityLabel: isIOS() ? t(route.name) : route.name,
+                          tabBarTestID: route.name,
+                      }}
+                  />
+              ))}
+          </Navigator>
       </CopilotProvider>
-    </SafeAreaView>
   );
 };

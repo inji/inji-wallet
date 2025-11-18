@@ -9,7 +9,7 @@ import {
 } from '@react-navigation/native-stack';
 import {authRoutes, baseRoutes} from '../routes';
 import {useAppLayout} from './AppLayoutController';
-import {StatusBar, StatusBarProps} from 'react-native';
+import {StatusBar} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const {Navigator, Screen} = createNativeStackNavigator();
@@ -24,16 +24,10 @@ export const AppLayout: React.FC = () => {
     headerBackVisible: false,
   };
 
-  const statusBarOptions: StatusBarProps = {
-    animated: true,
-    barStyle: 'dark-content',
-    backgroundColor: 'white',
-  };
-
   return (
     <GestureHandlerRootView>
       <NavigationContainer ref={navigationRef}>
-        <StatusBar {...statusBarOptions} />
+        <StatusBar animated={true} barStyle="dark-content" />
         <Navigator
           initialRouteName={baseRoutes[0].name}
           screenOptions={options}>

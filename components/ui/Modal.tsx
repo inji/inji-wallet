@@ -19,7 +19,6 @@ export const Modal: React.FC<ModalProps> = ({
   requester,
   showClose = true,
   showHeader = true,
-  fullScreen = false,
   modalStyle = Theme.ModalStyles.defaultModal,
   onDismiss,
   headerTitle,
@@ -38,7 +37,7 @@ export const Modal: React.FC<ModalProps> = ({
     <RNModal
       {...testIDProps(testID)}
       animationType="slide"
-      style={fullScreen ? Theme.ModalStyles.modal : modalStyle}
+      style={modalStyle}
       visible={isVisible}
       onShow={onShow}
       onRequestClose={onDismiss}>
@@ -122,5 +121,4 @@ export interface ModalProps {
   arrowLeft?: boolean;
   onShow?: () => void;
   children?: React.ReactNode;
-  fullScreen?: boolean;
 }

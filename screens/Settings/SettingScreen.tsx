@@ -82,7 +82,7 @@ export const SettingScreen: React.FC<
       </Pressable>
       <BannerNotificationContainer />
       <ScrollView {...testIDProps('settingsScreen')}>
-        <Column safe
+        <Column
           style={{display: Platform.OS !== 'ios' ? 'flex' : 'none'}}
           backgroundColor={Theme.Colors.lightGreyBackgroundColor}>
           <Text

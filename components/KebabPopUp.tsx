@@ -17,7 +17,7 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
   const { t } = useTranslation('HomeScreenKebabPopUp');
 
   return (
-    <Column safe>
+    <Column>
       {props.icon ? (
         props.icon
       ) : (

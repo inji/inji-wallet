@@ -179,7 +179,6 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
       headerRight={headerRight(props.flow)}
       headerTitle={t('title')}
       onDismiss={handleModalDismiss}
-      fullScreen
       headerElevation={2}>
       <View style={{position: 'relative', flex: 1}}>
         <BannerNotificationContainer showVerificationStatusBanner={false} />
