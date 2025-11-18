@@ -28,15 +28,9 @@ const {Navigator, Screen} = createBottomTabNavigator();
 
 export const MainLayout: React.FC = () => {
   const {t} = useTranslation('MainLayout');
-
   const {appService} = useContext(GlobalContext);
   const scanService = appService.children.get('scan');
 
-  const bottomTabNavigationOptions: BottomTabNavigationOptions = {
-    tabBarShowLabel: true,
-    tabBarActiveTintColor: Theme.Colors.IconBg,
-    ...Theme.BottomTabBarStyle,
-  };
   const navigation = useNavigation<ScanLayoutNavigation>();
   const insets = useSafeAreaInsets();
 
@@ -53,13 +47,17 @@ export const MainLayout: React.FC = () => {
     }
   }, [linkCode, authorizationRequest]);
 
+  const bottomTabNavigationOptions: BottomTabNavigationOptions = {
+    tabBarShowLabel: true,
+    tabBarActiveTintColor: Theme.Colors.IconBg,
+    ...Theme.BottomTabBarStyle,
+  };
+
   return (
     <SafeAreaView
-        edges = {['left', 'right', 'bottom']}
-      style={{
+        edges = {isAndroid() ? ['bottom', 'top'] : ['bottom']}
+        style={{
         flex: 1,
-        paddingTop: isAndroid() ? insets.top : 0,
-        bottom: isAndroid() ? insets.bottom : -10,
         backgroundColor: "white",
       }}>
       <CopilotProvider

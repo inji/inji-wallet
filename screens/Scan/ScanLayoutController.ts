@@ -60,14 +60,11 @@ import {
 } from '../../machines/openID4VP/openID4VPSelectors';
 import {OpenID4VPEvents} from '../../machines/openID4VP/openID4VPMachine';
 import {selectShareableVcsMetadata} from '../../machines/VerifiableCredential/VCMetaMachine/VCMetaSelectors';
+import { useTabBarVisibility } from '../../shared/hooks/useTabBarVisibility';
 
 type ScanLayoutNavigation = NavigationProp<
   ScanStackParamList & MainBottomTabParamList
 >;
-
-const changeTabBarVisible = (visible: string) => {
-  Theme.BottomTabBarStyle.tabBarStyle.display = visible;
-};
 
 // TODO: refactor
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -77,6 +74,7 @@ export function useScanLayout() {
   const scanService = appService.children.get('scan')!!;
   const openID4VPService = scanService.getSnapshot().context.OpenId4VPRef;
   const navigation = useNavigation<ScanLayoutNavigation>();
+  const {showTabBar, hideTabBar} = useTabBarVisibility();
 
   const isLocationDisabled = useSelector(scanService, selectIsLocationDisabled);
   const isLocationDenied = useSelector(scanService, selectIsLocationDenied);
@@ -116,14 +114,14 @@ export function useScanLayout() {
   const onRetry = () => scanService.send(ScanEvents.RETRY());
   const GOTO_HOME = () => {
     scanService.send(ScanEvents.DISMISS());
-    changeTabBarVisible('flex');
+    showTabBar();
     setTimeout(() => {
       navigation.navigate(BOTTOM_TAB_ROUTES.home);
     }, 1);
   };
   const GOTO_HISTORY = () => {
     scanService.send(ScanEvents.GOTO_HISTORY());
-    changeTabBarVisible('flex');
+    showTabBar();
     navigation.navigate(BOTTOM_TAB_ROUTES.history);
   };
   const RETRY_VERIFICATION = () => {
@@ -318,26 +316,26 @@ export function useScanLayout() {
         appService.send(APP_EVENTS.RESET_AUTHORIZATION_REQUEST());
       }
     } else if (isQrLoginDoneViaDeeplink) {
-      changeTabBarVisible('flex');
+      showTabBar();
       navigation.navigate(BOTTOM_TAB_ROUTES.home);
     } else if (isDone) {
-      changeTabBarVisible('flex');
+      showTabBar();
       navigation.navigate(BOTTOM_TAB_ROUTES.home);
     } else if (
       isReviewing &&
       flowType === VCShareFlowType.SIMPLE_SHARE &&
       !isAccepted
     ) {
-      changeTabBarVisible('none');
+      hideTabBar();
       navigation.navigate(SCAN_ROUTES.SendVcScreen);
     } else if (openID4VPFlowType === VCShareFlowType.OPENID4VP) {
-      changeTabBarVisible('none');
+      hideTabBar();
       navigation.navigate(SCAN_ROUTES.SendVPScreen);
     } else if (isScanning) {
-      changeTabBarVisible('flex');
+      showTabBar();
       navigation.navigate(SCAN_ROUTES.ScanScreen);
     } else if (isQrLoginDone) {
-      changeTabBarVisible('flex');
+      showTabBar();
       navigation.navigate(BOTTOM_TAB_ROUTES.history);
     }
   }, [
