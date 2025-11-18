@@ -14,8 +14,6 @@ import org.testng.*;
 import org.testng.annotations.*;
 import org.testng.internal.BaseTestMethod;
 import org.testng.internal.TestResult;
-
-import javax.ws.rs.core.MediaType;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -103,16 +101,12 @@ public class AddIdentity extends InjiWalletUtil implements ITest {
 
             GlobalMethods.reportResponse(response.getHeaders().asList().toString(), url, response);
         } else {
-
             testCaseDTO.setInputTemplate(AdminTestUtil.modifySchemaGenerateHbs(testCaseDTO.isRegenerateHbs()));
             String uin = JsonPrecondtion
                     .getValueFromJson(
-                            RestClient.getRequestWithCookie(ApplnURI + "/v1/idgenerator/uin", MediaType.APPLICATION_JSON,
-                                    MediaType.APPLICATION_JSON, COOKIENAME,
+                            RestClient.getRequestWithCookie(ApplnURI + "/v1/idgenerator/uin", "application/json", "application/json", COOKIENAME,
                                     new KernelAuthentication().getTokenByRole(testCaseDTO.getRole())).asString(),
                             "response.uin");
-
-
             testCaseDTO = InjiWalletUtil.isTestCaseValidForTheExecution(testCaseDTO);
 
             DateFormat dateFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
