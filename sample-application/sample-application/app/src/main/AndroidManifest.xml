@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Existing permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Required permissions for biometrics and keystore -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
+    <!-- Feature declarations -->
+    <uses-feature android:name="android.hardware.fingerprint" android:required="false" />
+    <uses-feature android:name="android.hardware.biometric" android:required="false" />
+
+    <application
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SampleCredentialWallet"
+        tools:targetApi="31">
+
+        <activity
+            android:name="com.example.samplecredentialwallet.MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.SampleCredentialWallet"
+            android:launchMode="singleTop">
+
+            <!-- Launcher -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Deep link for OAuth redirect -->
+            <intent-filter android:label="authRedirect">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Matches redirect URI: io.mosip.residentapp.inji://oauthredirect -->
+                <data
+                    android:scheme="io.mosip.residentapp.inji"
+                    android:host="oauthredirect" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

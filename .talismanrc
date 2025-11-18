@@ -419,3 +419,8 @@ fileignoreconfig:
     checksum: ad814e904cb990f55068281fcb566cca349872de2c4fd66432ed6372fb540ec3
   - filename: components/VC/common/VcStatustooTip.tsx
     checksum: 08097d6f18acf897c1b6f0479861399e5da630b95d2f5a0133e03edd9d28daa0
+  - filename: sample-application/sample-application/app/src/main/java/com/example/samplecredentialwallet/utils/SecureKeyStoreManager.kt
+    checksum: d9c999da50bf114d2bdb73550f94ad77003f252d97dd5c2cd2f0f14c2f4004a0
+  - filename: sample-application/sample-application/app/src/main/java/com/example/samplecredentialwallet/utils/CredentialParser.kt
+    checksum: bb910d0b02d8623c9f259a4e2a335dd8f9289c1949955538e65bab9179b09359
+version: "1.0"

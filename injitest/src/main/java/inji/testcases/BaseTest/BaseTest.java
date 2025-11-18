@@ -209,8 +209,8 @@ public abstract class BaseTest {
         int failed = ExtentReportManager.getFailedCount();
         int skipped = ExtentReportManager.getSkippedCount();
 
-        String newFileName = String.format("InjiMobileUi-%s-%s-T-%d_P-%d_S-%d_F-%d.html",
-                envName, timestamp, total, passed, skipped, failed);
+        String newFileName = String.format("InjiMobileUi-%s-%s-%s-T-%d_P-%d_S-%d_F-%d.html",
+                InjiWalletConfigManager.getproperty("browserstack_platformName"), envName, timestamp, total, passed, skipped, failed);
 
         File originalReport = new File("test-output/ExtentReport.html");
         File renamedReport = new File("test-output/" + newFileName);

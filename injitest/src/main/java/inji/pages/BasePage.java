@@ -6,6 +6,7 @@ import inji.utils.InjiWalletConfigManager;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
@@ -20,6 +21,7 @@ import java.util.List;
 public class BasePage {
     protected AppiumDriver driver;
     protected WebDriverWait wait;
+    protected static final Logger logger = Logger.getLogger(BasePage.class);
 
     private static final int DEFAULT_WAIT = Integer.parseInt(InjiWalletConfigManager.getproperty("element_wait_time"));
     private static final int maxPageScrolls = Integer.parseInt(InjiWalletConfigManager.getproperty("max_pageScroll"));

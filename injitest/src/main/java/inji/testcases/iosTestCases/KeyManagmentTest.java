@@ -114,7 +114,8 @@ public class KeyManagmentTest extends IosBaseTest {
         MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-//        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+        esignetLoginPage.clickOnLoginWithOtpButton();
 //        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());

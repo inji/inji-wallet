@@ -509,7 +509,7 @@ public class VerifyHistoryTest extends IosBaseTest {
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+        esignetLoginPage.clickOnLoginWithOtpButton();
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -518,9 +518,19 @@ public class VerifyHistoryTest extends IosBaseTest {
 
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
+        addNewCardPage.clickOnDoneButton();
+        MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
+//        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
+
+        PleaseConfirmPopupPage pleaseConfirmPopupPage = moreOptionsPage.clickOnRemoveFromWallet();
+        assertTrue(pleaseConfirmPopupPage.isPleaseConfirmPopupPageLoaded(), "Verify if pop up page is displayed");
+
+        pleaseConfirmPopupPage.clickOnConfirmButton();
+        assertEquals(homePage.verifyLanguageForNoVCDownloadedPageLoaded(), "Bring your digital identity");
+        HistoryPage historyPage = homePage.clickOnHistoryButton();
+
 
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
-        HistoryPage historyPage = homePage.clickOnHistoryButton();
 
         assertTrue(historyPage.isHistoryPageLoaded(), "Verify if history page is displayed");
         assertTrue(historyPage.verifyHistory(PlatformType.IOS));
@@ -564,8 +574,7 @@ public class VerifyHistoryTest extends IosBaseTest {
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-
+        esignetLoginPage.clickOnLoginWithOtpButton();
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
         mockCertifyLoginPage.clickOnGetOtpButton();
@@ -573,9 +582,19 @@ public class VerifyHistoryTest extends IosBaseTest {
 
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
+        addNewCardPage.clickOnDoneButton();
+        MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
+//        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
+
+        PleaseConfirmPopupPage pleaseConfirmPopupPage = moreOptionsPage.clickOnRemoveFromWallet();
+        assertTrue(pleaseConfirmPopupPage.isPleaseConfirmPopupPageLoaded(), "Verify if pop up page is displayed");
+
+        pleaseConfirmPopupPage.clickOnConfirmButton();
+        assertEquals(homePage.verifyLanguageForNoVCDownloadedPageLoaded(), "Bring your digital identity");
+        HistoryPage historyPage = homePage.clickOnHistoryButton();
+
 
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
-        HistoryPage historyPage = homePage.clickOnHistoryButton();
 
         assertTrue(historyPage.isHistoryPageLoaded(), "Verify if history page is displayed");
         assertTrue(historyPage.verifyHistoryForMock(PlatformType.IOS));
