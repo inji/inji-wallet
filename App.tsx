@@ -166,7 +166,7 @@ const AppInitialization: React.FC = () => {
 
 export default function App() {
   return (
-    <SafeAreaProvider style={{backgroundColor: 'green'}}>
+    <SafeAreaProvider style={{backgroundColor: 'white'}}>
       <GlobalContextProvider>
         <CopilotProvider
           stopOnOutsideClick
