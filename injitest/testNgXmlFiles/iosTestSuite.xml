@@ -91,11 +91,14 @@
                     <include name="downloadAndVerifyVcUsingUinViaEsignet"/>
                     <include name="downloadAndVerifyVcUsingVidViaEsignet"/>
                     <include name="denyPopupforEsignetLoginWebPage"/>
+                    <include name="downloadAndVerifyVcUsingUinViaEsignetFiveTimes"/>
                 </methods>
             </class>
             <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingSunbirdTest">
                 <methods>
                     <include name="downloadAndVerifyVcUsingUinViaSunbird"/>
+                    <include name="downloadAndVerifyVcUsingUinViaSunbirdFiveTimes"/>
+                    <include name="downloadAndVerifyVcUsingUinViaSunbirdLifeFiveTimes"/>
                 </methods>
             </class>
             <class name="inji.testcases.iosTestCases.VerifyHelpPageTest">
@@ -142,9 +145,15 @@
                     <include name="downloadAndVerifyVcUsingInvalidOtp"/>
                     <include name="downloadAndVerifyVcUsingViaMdlAndPinAndUnpin"/>
                     <include name="downloadAndVerifyVcUsingViaMdlMultipleTimes"/>
+                    <include name="downloadAndVerifyVcUsingMdlFiveTimes"/>
                 </methods>
             </class>
-
+            <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingLandRegistryTest">
+            <methods>
+                <include name="downloadAndVerifyVcUsingLandStatement"/>
+                <include name="downloadAndVerifyVcUsingLandStatementFiveTimes"/>
+            </methods>
+            </class>
         </classes>
     </test>
 </suite>

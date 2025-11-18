@@ -322,5 +322,13 @@ public class SunbirdLoginPage extends BasePage {
     public boolean isStatusIconDisplayed() {
         return isElementVisible(statusIcon, "Check if status icon is displayed");
     }
-
+    public HomePage navigateBackToHomePage() {
+        return null;
+    }
+    public void clickOnDoneButton() {
+        click(doneButton, "Click on Done button after login");
+    }
+    public boolean isSunbirdCardisActive() {
+        return isElementVisible(activatedStatus, "Check if Sunbird card is active (status visible)");
+    }
 }
