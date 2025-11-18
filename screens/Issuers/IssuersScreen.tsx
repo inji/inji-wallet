@@ -38,14 +38,12 @@ import {TrustModal} from '../../components/TrustModal';
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
-  const model = IssuersModel;
   const controller = useIssuerScreenController(props);
   const {i18n, t} = useTranslation('IssuersScreen');
   const issuers = controller.issuers;
   let [filteredSearchData, setFilteredSearchData] = useState(issuers);
   const [search, setSearch] = useState('');
   const [tapToSearch, setTapToSearch] = useState(false);
-  const [clearSearchIcon, setClearSearchIcon] = useState(false);
   const showFullScreenError = controller.isError;
 
   const isVerificationFailed = controller.verificationErrorMessage !== '';
@@ -131,11 +129,6 @@ export const IssuersScreen: React.FC<
     setTapToSearch(true);
   };
 
-  const clearSearchText = () => {
-    filterIssuers('');
-    setClearSearchIcon(false);
-  };
-
   const goBack = () => {
     if (
       controller.errorMessageType &&
@@ -167,11 +160,6 @@ export const IssuersScreen: React.FC<
     });
     setFilteredSearchData(filteredData);
     setSearch(searchText);
-    if (searchText !== '') {
-      setClearSearchIcon(true);
-    } else {
-      setClearSearchIcon(false);
-    }
   };
   if (controller.isSelectingCredentialType) {
     return <CredentialTypeSelectionScreen {...props} />;
