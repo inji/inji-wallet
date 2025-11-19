@@ -30,7 +30,6 @@ import {SvgImage} from '../../components/ui/svg';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {CredentialTypeSelectionScreen} from './CredentialTypeSelectionScreen';
 import {QrScanner} from '../../components/QrScanner';
-import {IssuersModel} from '../../machines/Issuers/IssuersModel';
 import {AUTH_ROUTES} from '../../routes/routesConstants';
 import {TransactionCodeModal} from './TransactionCodeScreen';
 import {TrustModal} from '../../components/TrustModal';
@@ -38,14 +37,12 @@ import {TrustModal} from '../../components/TrustModal';
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
-  const model = IssuersModel;
   const controller = useIssuerScreenController(props);
   const {i18n, t} = useTranslation('IssuersScreen');
   const issuers = controller.issuers;
   let [filteredSearchData, setFilteredSearchData] = useState(issuers);
   const [search, setSearch] = useState('');
   const [tapToSearch, setTapToSearch] = useState(false);
-  const [clearSearchIcon, setClearSearchIcon] = useState(false);
   const showFullScreenError = controller.isError;
 
   const isVerificationFailed = controller.verificationErrorMessage !== '';
@@ -131,11 +128,6 @@ export const IssuersScreen: React.FC<
     setTapToSearch(true);
   };
 
-  const clearSearchText = () => {
-    filterIssuers('');
-    setClearSearchIcon(false);
-  };
-
   const goBack = () => {
     if (
       controller.errorMessageType &&
@@ -167,11 +159,6 @@ export const IssuersScreen: React.FC<
     });
     setFilteredSearchData(filteredData);
     setSearch(searchText);
-    if (searchText !== '') {
-      setClearSearchIcon(true);
-    } else {
-      setClearSearchIcon(false);
-    }
   };
   if (controller.isSelectingCredentialType) {
     return <CredentialTypeSelectionScreen {...props} />;
