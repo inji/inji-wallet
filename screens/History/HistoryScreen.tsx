@@ -15,17 +15,16 @@ export const HistoryScreen: React.FC<MainRouteProps> = () => {
 
   return (
     <Column fill backgroundColor={Theme.Colors.whiteBackgroundColor}>
+      <BannerNotificationContainer />
       <Column
         scroll
         padding="7 0"
-        style={{flexGrow: 1}}
         refreshControl={
           <RefreshControl
             refreshing={controller.isRefreshing}
             onRefresh={controller.REFRESH}
           />
         }>
-        <BannerNotificationContainer />
         {controller.activities.map(activity => (
           <ActivityLogText
             key={`${activity.timestamp}-${activity._vcKey}`}
