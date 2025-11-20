@@ -13,6 +13,7 @@ import {DETAIL_VIEW_DEFAULT_FIELDS} from '../../components/VC/common/VCUtils';
 import {getDetailedViewFields} from '../../shared/openId4VCI/Utils';
 import {VCProcessor} from '../../components/VC/common/VCProcessor';
 import VcRenderer from '../../shared/vcRenderer/VcRenderer';
+import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 
 export const ReceiveVcScreen: React.FC = () => {
   const {t} = useTranslation('ReceiveVcScreen');
@@ -53,11 +54,12 @@ export const ReceiveVcScreen: React.FC = () => {
         setLoadingSvg(true);
 
         const vcJsonString = JSON.stringify(controller.credential.credential);
-        const result = await VcRenderer.getInstance().generateCredentialDisplayContent(
-          verifiableCredentialData.vcMetadata.format,
-          wellknown ?? null,
-          vcJsonString,
-        );
+        const result =
+          await VcRenderer.getInstance().generateCredentialDisplayContent(
+            verifiableCredentialData.vcMetadata.format,
+            wellknown ?? null,
+            vcJsonString,
+          );
 
         setSvgTemplate(result);
         setSvgRendererError(null);
@@ -95,6 +97,7 @@ export const ReceiveVcScreen: React.FC = () => {
 
   return (
     <React.Fragment>
+      <BannerNotificationContainer />
       {controller.isDisplayingIncomingVC && (
         <Column
           scroll

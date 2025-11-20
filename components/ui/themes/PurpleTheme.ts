@@ -12,6 +12,7 @@ import Constants from 'expo-constants';
 import HomeScreenLogo from '../../../assets/Inji_Home_Logo.svg';
 import InjiLogoSmall from '../../../assets/InjiLogo.svg';
 import i18next from '../../../i18n';
+import {POINTER_SIZE} from '../ToolTip';
 
 const Colors = {
   Black: '#231F20',
@@ -512,7 +513,7 @@ export const PurpleTheme = {
       borderRadius: 10,
       backgroundColor: Colors.LightPurple,
     },
-    BackButtonBgGradient:{
+    BackButtonBgGradient: {
       borderRadius: 10,
     },
     imageCaptureButton: {
@@ -735,6 +736,35 @@ export const PurpleTheme = {
       borderColor: '#E0E0E0',
       maxWidth: '90%',
     },
+    tooltipOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'transparent',
+    },
+    tooltip: {
+      position: 'absolute',
+      backgroundColor: '#EBE6F3',
+      borderRadius: 8,
+      elevation: 6,
+      shadowColor: '#000',
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      borderWidth: 1,
+      borderColor: '#E0E0E0',
+      zIndex: 999,
+    },
+    pointer: {
+      position: 'absolute',
+      width: 0,
+      height: 0,
+      borderLeftWidth: POINTER_SIZE / 2,
+      borderRightWidth: POINTER_SIZE / 2,
+      borderBottomWidth: POINTER_SIZE / 2,
+      borderLeftColor: 'transparent',
+      borderRightColor: 'transparent',
+      borderBottomColor: '#EBE6F3',
+      zIndex: 1000,
+    },
     tooltipContentTitle: {
       color: Colors.DeepPurple,
     },
@@ -869,6 +899,16 @@ export const PurpleTheme = {
     },
   }),
   BannerStyles: StyleSheet.create({
+    bannerStackContainer: {
+      position: 'absolute',
+      width: '100%',
+      alignItems: 'center',
+      zIndex: 100,
+    },
+    wrapper: {
+      width: '100%',
+      alignSelf: 'center',
+    },
     container: {
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -1143,7 +1183,7 @@ export const PurpleTheme = {
     },
     clearIcon: {
       position: 'absolute',
-      right: 45, 
+      right: 45,
       width: 40,
       justifyContent: 'center',
       alignItems: 'center',
@@ -1177,7 +1217,7 @@ export const PurpleTheme = {
       flex: 1,
       fontFamily: 'Montserrat_500Medium',
       fontSize: 17,
-      marginRight: 40
+      marginRight: 40,
     },
   }),
   ButtonStyles: StyleSheet.create({
@@ -1728,10 +1768,10 @@ export const PurpleTheme = {
       paddingHorizontal: 15,
       paddingBottom: 10,
       backgroundColor: '#fff',
-      elevation: 5, // For Android
-      shadowColor: '#000', // For iOS
-      shadowOffset: {width: 0, height: 2},
-      shadowOpacity: 0.2,
+      elevation: 5,
+      shadowColor: '#000',
+      shadowOffset: {width: 0, height: 4}, // only downward shadow
+      shadowOpacity: 0.1,
       shadowRadius: 4,
       zIndex: 1,
     },

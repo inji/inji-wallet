@@ -20,14 +20,13 @@ import LinearGradient from 'react-native-linear-gradient';
 const RequestStack = createNativeStackNavigator();
 
 export const RequestLayout: React.FC = () => {
-  const { t } = useTranslation('RequestScreen');
+  const {t} = useTranslation('RequestScreen');
   const controller = useRequestLayout();
   const receivedCardsController = useReceivedVcsTab();
   const bleErrorCode = controller.bleError.code;
 
   return (
     <React.Fragment>
-      <BannerNotificationContainer />
       <RequestStack.Navigator
         initialRouteName="RequestScreen"
         screenListeners={{
@@ -49,32 +48,34 @@ export const RequestLayout: React.FC = () => {
               title: t('incomingVc'),
               headerLeft: () =>
                 !I18nManager.isRTL && (
-                  <LinearGradient start={Theme.LinearGradientDirection.start}
-                  end={Theme.LinearGradientDirection.end}
-                  colors={Theme.Colors.GradientColorsLight}
-                  style={Theme.Styles.BackButtonBgGradient}>
-                  <HeaderBackButton
-                    onPress={() => {
-                      controller.RESET();
-                    }}
-                    style={Theme.Styles.IconContainer}
-                    tintColor={Theme.Colors.Icon}
-                  />
+                  <LinearGradient
+                    start={Theme.LinearGradientDirection.start}
+                    end={Theme.LinearGradientDirection.end}
+                    colors={Theme.Colors.GradientColorsLight}
+                    style={Theme.Styles.BackButtonBgGradient}>
+                    <HeaderBackButton
+                      onPress={() => {
+                        controller.RESET();
+                      }}
+                      style={Theme.Styles.IconContainer}
+                      tintColor={Theme.Colors.Icon}
+                    />
                   </LinearGradient>
                 ),
               headerRight: () =>
                 I18nManager.isRTL && (
-                  <LinearGradient start={Theme.LinearGradientDirection.start}
-                  end={Theme.LinearGradientDirection.end}
-                  colors={Theme.Colors.GradientColorsLight}
-                  style={Theme.Styles.BackButtonBgGradient}>
-                  <HeaderBackButton
-                    onPress={() => {
-                      controller.RESET();
-                    }}
-                    style={Theme.Styles.IconContainer}
-                    tintColor={Theme.Colors.Icon}
-                  />
+                  <LinearGradient
+                    start={Theme.LinearGradientDirection.start}
+                    end={Theme.LinearGradientDirection.end}
+                    colors={Theme.Colors.GradientColorsLight}
+                    style={Theme.Styles.BackButtonBgGradient}>
+                    <HeaderBackButton
+                      onPress={() => {
+                        controller.RESET();
+                      }}
+                      style={Theme.Styles.IconContainer}
+                      tintColor={Theme.Colors.Icon}
+                    />
                   </LinearGradient>
                 ),
             }}
@@ -87,7 +88,8 @@ export const RequestLayout: React.FC = () => {
             title: t('receiveCard'),
             headerLeft: () =>
               !I18nManager.isRTL && (
-                <LinearGradient start={Theme.LinearGradientDirection.start}
+                <LinearGradient
+                  start={Theme.LinearGradientDirection.start}
                   end={Theme.LinearGradientDirection.end}
                   colors={Theme.Colors.GradientColorsLight}
                   style={Theme.Styles.BackButtonBgGradient}>
@@ -102,17 +104,18 @@ export const RequestLayout: React.FC = () => {
               ),
             headerRight: () =>
               I18nManager.isRTL && (
-                <LinearGradient start={Theme.LinearGradientDirection.start}
+                <LinearGradient
+                  start={Theme.LinearGradientDirection.start}
                   end={Theme.LinearGradientDirection.end}
                   colors={Theme.Colors.GradientColorsLight}
                   style={Theme.Styles.BackButtonBgGradient}>
-                <HeaderBackButton
-                  onPress={() => {
-                    controller.GOTO_HOME();
-                  }}
-                  style={Theme.Styles.IconContainer}
-                  tintColor={Theme.Colors.Icon}
-                />
+                  <HeaderBackButton
+                    onPress={() => {
+                      controller.GOTO_HOME();
+                    }}
+                    style={Theme.Styles.IconContainer}
+                    tintColor={Theme.Colors.Icon}
+                  />
                 </LinearGradient>
               ),
           }}
