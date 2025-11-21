@@ -1,0 +1,122 @@
+diff --git a/node_modules/react-native-app-intro-slider/dist/index.js b/node_modules/react-native-app-intro-slider/dist/index.js
+index 0935c97..11e341f 100644
+--- a/node_modules/react-native-app-intro-slider/dist/index.js
++++ b/node_modules/react-native-app-intro-slider/dist/index.js
+@@ -15,32 +15,31 @@ const react_native_1 = require("react-native");
+ const merge_extradata_1 = __importDefault(require("./merge-extradata"));
+ const isAndroidRTL = react_native_1.I18nManager.isRTL && react_native_1.Platform.OS === 'android';
+ class AppIntroSlider extends React.Component {
+-    constructor() {
+-        super(...arguments);
++    constructor(props) {
++        super(props);
+         this.state = {
+             width: 0,
+             height: 0,
+             activeIndex: 0,
++            isInitialized: false,
++            isPositioned: false,
+         };
+         this.goToSlide = (pageNum, triggerOnSlideChange) => {
++            const clampedPageNum = Math.max(0, Math.min(pageNum, this.props.data.length - 1));
+             const prevNum = this.state.activeIndex;
+-            this.setState({ activeIndex: pageNum });
++            this.setState({ activeIndex: clampedPageNum });
+             this.flatList?.scrollToOffset({
+-                offset: this._rtlSafeIndex(pageNum) * this.state.width,
++                offset: clampedPageNum * this.state.width,
+             });
+             if (triggerOnSlideChange && this.props.onSlideChange) {
+-                this.props.onSlideChange(pageNum, prevNum);
++                this.props.onSlideChange(clampedPageNum, prevNum);
+             }
+         };
+-        // Get the list ref
+         this.getListRef = () => this.flatList;
+-        // Index that works across Android's weird rtl bugs
+         this._rtlSafeIndex = (i) => isAndroidRTL ? this.props.data.length - 1 - i : i;
+-        // Render a slide
+         this._renderItem = (flatListArgs) => {
+             const { width, height } = this.state;
+             const props = { ...flatListArgs, dimensions: { width, height } };
+-            // eslint-disable-next-line react-native/no-inline-styles
+             return <react_native_1.View style={{ width, flex: 1 }}>{this.props.renderItem(props)}</react_native_1.View>;
+         };
+         this._renderButton = (name, label, onPress, render) => {
+@@ -77,7 +76,6 @@ class AppIntroSlider extends React.Component {
+         this._renderDoneButton = () => this.props.showDoneButton &&
+             this._renderButton('Done', this.props.doneLabel, this.props.onDone, this.props.renderDoneButton);
+         this._renderSkipButton = () => 
+-        // scrollToEnd does not work in RTL so use goToSlide instead
+         this.props.showSkipButton &&
+             this._renderButton('Skip', this.props.skipLabel, () => this.props.onSkip
+                 ? this.props.onSkip()
+@@ -113,13 +111,14 @@ class AppIntroSlider extends React.Component {
+         };
+         this._onMomentumScrollEnd = (e) => {
+             const offset = e.nativeEvent.contentOffset.x;
+-            // Touching very very quickly and continuous brings about
+-            // a variation close to - but not quite - the width.
+-            // That's why we round the number.
+-            // Also, Android phones and their weird numbers
+-            const newIndex = this._rtlSafeIndex(Math.round(offset / this.state.width));
++            if (!this.state.isInitialized) {
++                return;
++            }
++            let newIndex = Math.round(offset / this.state.width);
++            if (isAndroidRTL) {
++                newIndex = this.props.data.length - 1 - newIndex;
++            }
+             if (newIndex === this.state.activeIndex) {
+-                // No page change, don't do anything
+                 return;
+             }
+             const lastIndex = this.state.activeIndex;
+@@ -129,29 +128,31 @@ class AppIntroSlider extends React.Component {
+         this._onLayout = ({ nativeEvent }) => {
+             const { width, height } = nativeEvent.layout;
+             if (width !== this.state.width || height !== this.state.height) {
+-                // Set new width to update rendering of pages
+-                this.setState({ width, height });
+-                // Set new scroll position
+-                const func = () => {
+-                    this.flatList?.scrollToOffset({
+-                        offset: this._rtlSafeIndex(this.state.activeIndex) * width,
+-                        animated: false,
+-                    });
+-                };
+-                setTimeout(func, 0); // Must be called like this to avoid bugs :/
++                this.setState({ width, height, isInitialized: true });
++                
++                // Calculate correct offset based on RTL
++                const offset = isAndroidRTL 
++                    ? (this.props.data.length - 1) * width  // RTL: scroll to end
++                    : this.state.activeIndex * width;       // LTR: scroll to current index
++                
++                // Scroll immediately without delay
++                this.flatList?.scrollToOffset({
++                    offset: offset,
++                    animated: false,
++                });
++                this.setState({ isPositioned: true });
+             }
+         };
+     }
+     render() {
+-        // Separate props used by the component to props passed to FlatList
+-        /* eslint-disable @typescript-eslint/no-unused-vars */
+         const { renderPagination, activeDotStyle, dotStyle, skipLabel, doneLabel, nextLabel, prevLabel, renderItem, data, extraData, ...otherProps } = this.props;
+-        /* eslint-enable @typescript-eslint/no-unused-vars */
+-        // Merge component width and user-defined extraData
+         const extra = merge_extradata_1.default(extraData, this.state.width);
++        const flatListStyle = [
++            styles.flatList,
++            isAndroidRTL && !this.state.isPositioned && { opacity: 0 }
++        ];
+         return (<react_native_1.View style={styles.flexOne}>
+-        <react_native_1.FlatList ref={(ref) => (this.flatList = ref)} data={this.props.data} horizontal pagingEnabled showsHorizontalScrollIndicator={false} bounces={false} style={styles.flatList} renderItem={this._renderItem} onMomentumScrollEnd={this._onMomentumScrollEnd} extraData={extra} onLayout={this._onLayout} 
+-        // make sure all slides are rendered so we can use dots to navigate to them
++        <react_native_1.FlatList ref={(ref) => (this.flatList = ref)} data={this.props.data} horizontal pagingEnabled showsHorizontalScrollIndicator={false} bounces={false} style={flatListStyle} renderItem={this._renderItem} onMomentumScrollEnd={this._onMomentumScrollEnd} extraData={extra} onLayout={this._onLayout} 
+         initialNumToRender={data.length} {...otherProps}/>
+         {renderPagination
+             ? renderPagination(this.state.activeIndex)
