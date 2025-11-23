@@ -423,7 +423,7 @@ istio:
   prefix:
   corsPolicy:
     allowOrigins:
-      - prefix: https://api-internal.released.mosip.net
+      - prefix: https://api-internal.sandbox.mosip.net
     allowCredentials: true
     allowHeaders:
       - Accept
@@ -492,29 +492,29 @@ uitestrig:
       loginlang: sin
       push-reports-to-s3: 'yes'
       s3-account: Injiuitestrig
-      browserstack_username: mosiptestautomat_i0twsf
-      browserstack_accesskey: qF9z4m5PABzpksZyhopD
-      eSignet_resource_bundle_url: https://github.com/mosip/esignet/blob/v1.6.1/oidc-ui/public/locales/en.json 
-      mosip_components_base_urls: auditmanager=api-internal.released.mosip.net;idrepository=api-internal.released.mosip.net;partnermanager=api-internal.released.mosip.net;idauthentication=api-internal.released.mosip.net;policymanager=api-internal.released.mosip.net;authmanager=api-internal.released.mosip.net;resident=api-internal.released.mosip.net;preregistration=api-internal.released.mosip.net;masterdata=api-internal.released.mosip.net;idgenerator=api-internal.released.mosip.net;
-      ENV_ENDPOINT: https://api-internal.released.mosip.net
+      browserstack_username: <provide browserstack_username>
+      browserstack_accesskey: <provide browserstack_accesskey>
+      eSignet_resource_bundle_url: https://github.com/mosip/esignet/blob/v1.6.1/oidc-ui/public/locales/en.json
+      mosip_components_base_urls: auditmanager=api-internal.sandbox.xyz.net;idrepository=api-internal.sandbox.mosip.net;partnermanager=api-internal.sandbox.mosip.net;idauthentication=api-internal.sandbox.mosip.net;policymanager=api-internal.sandbox.mosip.net;authmanager=api-internal.sandbox.mosip.net;resident=api-internal.sandbox.mosip.net;preregistration=api-internal.sandbox.mosip.net;masterdata=api-internal.sandbox.mosip.net;idgenerator=api-internal.sandbox.mosip.net;
+      ENV_ENDPOINT: https://api-internal.sandbox.xyz.net
       ENV_TESTLEVEL: smokeAndRegression
-      ENV_USER: api-internal.released
+      ENV_USER: api-internal.sandboxname
       actuatorMimotoEndpoint: /v1/mimoto/actuator/env
-      eSignetbaseurl: https://esignet-mosipid.released.mosip.net
+      eSignetbaseurl: https://esignet.sandbox.xyz.net
     android:
-      browserstack_appId: bs://2cdbf4aa9a799edc717e7454429d6a15bd65cd00
+      browserstack_appId: <provide browserstack_appId>
       browserstack_platformName: Android
-      browserstack_deviceName: Google Pixel 7 Pro
-      browserstack_platformVersion: 13.0
-      browserstack_buildName: dev-int-inji Android Build
+      browserstack_deviceName: <provide browserstack_deviceName> #eg: Google Pixel 7 Pro
+      browserstack_platformVersion: <provide browserstack_platformVersion> #eg: 13.0
+      browserstack_buildName: <provide browserstack_buildName> #eg: dev-int-inji Android Build
       ENV_TESTNG_XML_FILE: androidRegression.xml
       ENV_BROWSERSTACK_CONFIG: androidConfig.yml
     ios:
-      browserstack_appId: bs://bae062808e073556d381ae3d9f8f68e53bf17a4a
+      browserstack_appId: <provide browserstack_appId>
       browserstack_platformName: ios
-      browserstack_deviceName: iPhone 13 Pro
-      browserstack_platformVersion: 15
-      browserstack_buildName: dev-int-inji Ios Build
+      browserstack_deviceName: <provide browserstack_deviceName> #eg:iPhone 13 Pro
+      browserstack_platformVersion: <provide browserstack_platformVersion> #eg:15
+      browserstack_buildName: <provide browserstack_buildName> #eg:dev-int-inji Ios Build
       ENV_TESTNG_XML_FILE: iosRegression.xml
       ENV_BROWSERSTACK_CONFIG: iosConfig.yml
     scripts:
