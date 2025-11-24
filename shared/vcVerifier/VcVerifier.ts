@@ -1,11 +1,10 @@
 import {NativeModules} from 'react-native';
 
 export type CredentialStatusResult = {
-  status: number;
   purpose: string;
-  valid: boolean;
+  isValid: boolean;
   error?: ErrorResult;
-  statusListVC?: string;
+  statusListVC?: string; // Available only in iOS
 };
 
 export type ErrorResult = {

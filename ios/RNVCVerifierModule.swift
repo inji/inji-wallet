@@ -31,10 +31,12 @@ class VCVerifierModule: NSObject, RCTBridgeModule {
 
                 let responseArray = results.map { result in
                     return [
-                      "status": result.status,
+                      "isValid": result.result.isValid,
                       "purpose": result.purpose,
-                      "errorCode": result.error?.errorCode.rawValue,
-                      "errorMessage": result.error?.message,
+                      "error": [
+                        "code": result.result.error?.errorCode ?? "",
+                        "message": result.result.error?.message ?? ""
+                      ],
                       "statusListVC": result.statusListVC
                     ]
                 }

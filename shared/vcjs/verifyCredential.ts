@@ -213,43 +213,46 @@ async function handleVcVerifierResponse(
   }
 }
 
+const handleStatusListVCVerification = async (status: CredentialStatusResult, type: "revoked" | "valid") => {
+  const isValid = await verifyStatusListVC(status.statusListVC);
+  if (!isValid) {
+    throw new Error(
+        `StatusListVC verification failed for ${type} entry  ${status.error}`,
+    );
+  }
+}
+
 export async function checkIsStatusRevoked(
-  vcStatus: CredentialStatusResult[],
+    vcStatus: CredentialStatusResult[],
 ): Promise<boolean> {
   if (!vcStatus || vcStatus.length === 0) return false;
 
   const revocationStatuses = vcStatus.filter(
-    s => s.purpose?.toLowerCase() === 'revocation',
+      s => s.purpose?.toLowerCase() === 'revocation',
   );
 
-  let result = false;
   for (const status of revocationStatuses) {
-    if(status.valid === false){
-      if(status.error !== null) {
-        if(isIOS()) {
-          throw new Error(`Revoked statusListVC verification failed`);
-        } else {
-          result = true
-        }
+    const {isValid, error} = status;
+    if (!isValid) {
+      // if there is an error fetching revocation status, throw error (isValid = true, error = Error)
+      if (error) {
+        throw new Error(`Error fetching revocation status : ${error}`);
+      }
+      // There is no error fetching revocation status, but the status is invalid (isValid = false, error = undefined)
+      if (isIOS()) {
+        await handleStatusListVCVerification(status, "revoked");
       } else {
-        throw new Error(
-            `Error fetching revocation status : ${status.error}`,
-        );
+        // If at least one of the revocation status is invalid, consider the credential as revoked
+        return true
       }
     }
   }
 
-  if (result) return true;
-
+  // Validate the valid statuses statusList VC for iOS
   if (isIOS()) {
     for (const status of revocationStatuses) {
-      if (status.status === 0) {
-        const isValid = await verifyStatusListVC(status.statusListVC);
-        if (!isValid) {
-          throw new Error(
-            `StatusListVC verification failed for valid entry  ${status.error}`,
-          );
-        }
+      if (status.isValid) {
+        handleStatusListVCVerification(status, "valid")
       }
     }
   }
