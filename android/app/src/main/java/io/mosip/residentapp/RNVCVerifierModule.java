@@ -65,10 +65,9 @@ public void getVerificationSummary(String vc, String format, ReadableArray statu
         for (CredentialStatusResult statusResult : summary.getCredentialStatus()) {
             WritableMap statusMap = Arguments.createMap();
             statusMap.putString("purpose", statusResult.getPurpose());
-            statusMap.putInt("status", statusResult.getStatus());
-            statusMap.putBoolean("valid", statusResult.getValid());
+            statusMap.putBoolean("valid", statusResult.getResult().isValid());
 
-            StatusCheckException error = statusResult.getError();
+            StatusCheckException error = statusResult.getResult().getError();
             if (error != null) {
                 WritableMap errorMap = Arguments.createMap();
                 errorMap.putString("message", error.getMessage());

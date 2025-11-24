@@ -3,18 +3,20 @@ import Gzip
 
 // MARK: - Credential Status Result
 
+public struct Result<T> {
+  let isValid: Bool
+  let error: T?
+}
+
 public struct CredentialStatusResult {
     let purpose: String
-    let status: Int
-    let valid: Bool
-    let error: StatusCheckException?
+   let result : Result<StatusCheckException>
+
     let statusListVC: [String: Any]?
 
-    init(purpose: String, status: Int, valid: Bool, error: StatusCheckException?, statusListVC: [String: Any]? = nil) {
+  init(purpose: String, result: Result<StatusCheckException>, statusListVC: [String: Any]? = nil) {
         self.purpose = purpose
-        self.status = status
-        self.valid = valid
-        self.error = error
+        self.result = result
         self.statusListVC = statusListVC
     }
 }
@@ -71,10 +73,10 @@ final class LdpStatusChecker {
                 let result = try await checkStatusEntry(entry: entry, purpose: purpose)
                 results.append(result)
             } catch let error as StatusCheckException {
-                results.append(.init(purpose: purpose, status: -1, valid: false, error: error))
+                results.append(.init(purpose: purpose, result: Result(isValid: false, error: error)))
             } catch {
                 let genericError = StatusCheckException(message: error.localizedDescription, errorCode: .unknownError)
-                results.append(.init(purpose: purpose, status: -1, valid: false, error: genericError))
+                results.append(.init(purpose: purpose, result: Result(isValid: false, error: genericError)))
             }
         }
         return results
@@ -181,7 +183,7 @@ final class LdpStatusChecker {
         }
 
         let statusValue = readBits(from: bitSet, start: bitPosition, count: statusSize)
-        return .init(purpose: purpose, status: statusValue, valid: statusValue == 0, error: nil, statusListVC: statusListVC)
+        return .init(purpose: purpose, result: Result(isValid: statusValue == 0, error: nil), statusListVC: statusListVC)
     }
 
     private func readBits(from bitSet: [UInt8], start: Int, count: Int) -> Int {

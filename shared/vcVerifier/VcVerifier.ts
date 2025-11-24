@@ -3,10 +3,15 @@ import {NativeModules} from 'react-native';
 export type CredentialStatusResult = {
   status: number;
   purpose: string;
-  errorCode?: string;
-  errorMessage?: string;
+  valid: boolean;
+  error?: ErrorResult;
   statusListVC?: string;
 };
+
+export type ErrorResult = {
+  code: string;
+  message: string;
+}
 
 export type VerificationSummaryResult = {
   verificationStatus: boolean;

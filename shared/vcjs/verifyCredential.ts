@@ -224,18 +224,18 @@ export async function checkIsStatusRevoked(
 
   let result = false;
   for (const status of revocationStatuses) {
-    if (status.status > 0) {
-      if (isIOS()) {
-        const isValid = await verifyStatusListVC(status.statusListVC);
-        if (!isValid) {
+    if(status.valid === false){
+      if(status.error !== null) {
+        if(isIOS()) {
           throw new Error(`Revoked statusListVC verification failed`);
+        } else {
+          result = true
         }
+      } else {
+        throw new Error(
+            `Error fetching revocation status : ${status.error}`,
+        );
       }
-      result = true;
-    } else if (status.status < 0) {
-      throw new Error(
-        `Error fetching revocation status : ${status.errorMessage}`,
-      );
     }
   }
 
@@ -247,7 +247,7 @@ export async function checkIsStatusRevoked(
         const isValid = await verifyStatusListVC(status.statusListVC);
         if (!isValid) {
           throw new Error(
-            `StatusListVC verification failed for valid entry  ${status.errorMessage}`,
+            `StatusListVC verification failed for valid entry  ${status.error}`,
           );
         }
       }
