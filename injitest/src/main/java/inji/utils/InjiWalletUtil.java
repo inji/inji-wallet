@@ -10,7 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.SkipException;
 
-
+import javax.ws.rs.core.MediaType;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -108,8 +108,8 @@ public class InjiWalletUtil extends AdminTestUtil {
             if (mimotoActuatorResponseArray == null) {
                 Response response = null;
                 JSONObject responseJson = null;
+                response = RestClient.getRequest(url, MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON);
 
-                response = RestClient.getRequest(url, "application/json", "application/json");
                 responseJson = new JSONObject(response.getBody().asString());
                 mimotoActuatorResponseArray = responseJson.getJSONArray("propertySources");
             }
