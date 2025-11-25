@@ -17,6 +17,13 @@ public class AddNewCardPage extends BasePage {
     private static final String landRegistryIssuerCredentialType = InjiWalletConfigManager.getproperty("landregistry.issuer.credentialType");
     public static final String LandRegistryUIN = InjiWalletConfigManager.getproperty("landregistry.uin");
     private static final String landRegistryIssuerSdJwtCredentialType = InjiWalletConfigManager.getproperty("landregistry.issuer.sdjwtcredentialType");
+    public static final String SVGWithFaceUIN = InjiWalletConfigManager.getproperty("svgwithface.uin");
+    public static final String SVGWithOutFaceUIN = InjiWalletConfigManager.getproperty("svgwithoutface.uin");
+    private static final String FarmerIssuer = InjiWalletConfigManager.getproperty("farmerId.issuer");
+    private static final String FarmerIssuerSdJwtCredentialTypeWithFace = InjiWalletConfigManager
+            .getproperty("farmerId.issuer.svgcredentialTypewithFace");
+    private static final String FarmerIssuerSdJwtCredentialTypeWithoutFace = InjiWalletConfigManager
+            .getproperty("farmerId.issuer.svgcredentialTypewithOutFace");
 
 
     @AndroidFindBy(accessibility = "title")
@@ -291,5 +298,22 @@ public class AddNewCardPage extends BasePage {
     public void clickOnCredentialTypeHeadingLifeInsuranceCredential() {
 //        click(continuePopupButton, "Click on Continue popup button");
         scrollAndClickByAccessibilityId(stayProtectedIssuerCredentialType, 10, "Click on Insurance Credential type heading");
+    }
+    public ESignetLoginPage clickOnDownloadViaLandSdJwt() {
+        scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Land sd jwt'");
+        scrollAndClickByAccessibilityId(landRegistryIssuerSdJwtCredentialType, "Click on 'Land Sd Jwt' option");
+        return new ESignetLoginPage(driver);
+    }
+    public ESignetLoginPage clickOnDownloadViaLandSVGWithFace() {
+        scrollAndClickByAccessibilityId(FarmerIssuer, "Click on 'Download via Farmer SVG'");
+        scrollAndClickByAccessibilityIdForStale(FarmerIssuerSdJwtCredentialTypeWithFace,
+                "Click on 'Farmer Id with Face' option");
+        return new ESignetLoginPage(driver);
+    }
+    public ESignetLoginPage clickOnDownloadViaLandSVGWithOutFace() {
+        scrollAndClickByAccessibilityId(FarmerIssuer, "Click on 'Download via Farmer SVG'");
+        scrollAndClickByAccessibilityIdForStale(FarmerIssuerSdJwtCredentialTypeWithoutFace,
+                "Click on 'Farmer Id without Face' option");
+        return new ESignetLoginPage(driver);
     }
 }
