@@ -1,7 +1,6 @@
 import {NativeModules} from 'react-native';
 
 export type CredentialStatusResult = {
-  purpose: string;
   isValid: boolean;
   error?: ErrorResult;
   statusListVC?: string; // Available only in iOS
@@ -16,7 +15,7 @@ export type VerificationSummaryResult = {
   verificationStatus: boolean;
   verificationMessage: string;
   verificationErrorCode: string;
-  credentialStatus: CredentialStatusResult[];
+  credentialStatus: Map<string, CredentialStatusResult>;
 };
 
 class VCVerifier {
@@ -37,14 +36,12 @@ class VCVerifier {
   async getCredentialStatus(
     credential: any,
     format: string,
-  ): Promise<CredentialStatusResult[]> {
+  ): Promise<Map<string, CredentialStatusResult>> {
     try {
-      const result: CredentialStatusResult[] =
-        await this.vcVerifier.getCredentialStatus(
+      return await this.vcVerifier.getCredentialStatus(
           JSON.stringify(credential),
           format,
-        );
-      return result;
+      );
     } catch (error) {
       throw new Error(`Failed to get credential status: ${error}`);
     }
@@ -55,12 +52,11 @@ class VCVerifier {
     credentialFormat: string,
   ): Promise<VerificationSummaryResult> {
     try {
-      const result = await this.vcVerifier.getVerificationSummary(
-        credentialString,
-        credentialFormat,
-        [],
+      return await this.vcVerifier.getVerificationSummary(
+          credentialString,
+          credentialFormat,
+          [],
       );
-      return result;
     } catch (error) {
       throw new Error(`Failed to get verification summary: ${error}`);
     }

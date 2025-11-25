@@ -5,19 +5,23 @@ import Gzip
 
 public struct Result<T> {
   let isValid: Bool
+  let statusListVC: [String: Any]?
   let error: T?
+  
+  init(isValid: Bool, statusListVC: [String: Any]? = nil, error: T? = nil) {
+    self.isValid = isValid
+    self.statusListVC = statusListVC
+    self.error = error
+  }
 }
 
-public struct CredentialStatusResult {
+internal struct CredentialStatusResult {
     let purpose: String
    let result : Result<StatusCheckException>
 
-    let statusListVC: [String: Any]?
-
-  init(purpose: String, result: Result<StatusCheckException>, statusListVC: [String: Any]? = nil) {
+  init(purpose: String, result: Result<StatusCheckException>) {
         self.purpose = purpose
         self.result = result
-        self.statusListVC = statusListVC
     }
 }
 
@@ -35,7 +39,7 @@ enum StatusCheckErrorCode: String {
     case unknownError = "UNKNOWN_ERROR"
 }
 
-struct StatusCheckException: Error {
+public struct StatusCheckException: Error {
     let message: String
     let errorCode: StatusCheckErrorCode
 }
@@ -51,7 +55,7 @@ final class LdpStatusChecker {
         self.networkManager = networkManager
     }
 
-    func getStatuses(credential: String, statusPurposes: [String]? = nil) async throws -> [CredentialStatusResult]? {
+  func getStatuses(credential: String, statusPurposes: [String]? = nil) async throws -> [String: Result<StatusCheckException>]? {
         guard
             let data = credential.data(using: .utf8),
             let vc = try JSONSerialization.jsonObject(with: data) as? [String: Any]
@@ -65,19 +69,19 @@ final class LdpStatusChecker {
         let filteredEntries = filterEntries(statusEntries, statusPurposes)
         guard !filteredEntries.isEmpty else { return nil }
 
-        var results: [CredentialStatusResult] = []
-
+        var results: [String: Result<StatusCheckException>] = [:]
+        
         for entry in filteredEntries {
-            let purpose = (entry["statusPurpose"] as? String)?.lowercased() ?? ""
-            do {
-                let result = try await checkStatusEntry(entry: entry, purpose: purpose)
-                results.append(result)
-            } catch let error as StatusCheckException {
-                results.append(.init(purpose: purpose, result: Result(isValid: false, error: error)))
-            } catch {
-                let genericError = StatusCheckException(message: error.localizedDescription, errorCode: .unknownError)
-                results.append(.init(purpose: purpose, result: Result(isValid: false, error: genericError)))
-            }
+          let purpose = (entry["statusPurpose"] as? String)?.lowercased() ?? ""
+          do {
+            let result = try await checkStatusEntry(entry: entry, purpose: purpose)
+            results[purpose] = result.result
+          } catch let error as StatusCheckException {
+            results[purpose] = Result(isValid: false, statusListVC: nil, error: error)
+          } catch {
+            let genericError = StatusCheckException(message: error.localizedDescription, errorCode: .unknownError)
+            results[purpose] = Result(isValid: false, statusListVC: nil, error: genericError)
+          }
         }
         return results
     }
@@ -183,7 +187,7 @@ final class LdpStatusChecker {
         }
 
         let statusValue = readBits(from: bitSet, start: bitPosition, count: statusSize)
-        return .init(purpose: purpose, result: Result(isValid: statusValue == 0, error: nil), statusListVC: statusListVC)
+      return .init(purpose: purpose, result: Result(isValid: statusValue == 0, statusListVC: statusListVC, error: nil))
     }
 
     private func readBits(from bitSet: [UInt8], start: Int, count: Int) -> Int {

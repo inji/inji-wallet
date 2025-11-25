@@ -31,13 +31,14 @@ class VCVerifierModule: NSObject, RCTBridgeModule {
 
                 let responseArray = results.map { result in
                     return [
-                      "isValid": result.result.isValid,
-                      "purpose": result.purpose,
-                      "error": [
-                        "code": result.result.error?.errorCode ?? "",
-                        "message": result.result.error?.message ?? ""
-                      ],
-                      "statusListVC": result.statusListVC
+                      result.purpose: [
+                        "isValid": result.result.isValid,
+                        "error": [
+                          "code": result.result.error?.errorCode ?? "",
+                          "message": result.result.error?.message ?? ""
+                        ],
+                        "statusListVC": result.statusListVC
+                       ]
                     ]
                 }
                 resolve(responseArray)
@@ -46,4 +47,5 @@ class VCVerifierModule: NSObject, RCTBridgeModule {
             }
         }
     }
+  
 }
