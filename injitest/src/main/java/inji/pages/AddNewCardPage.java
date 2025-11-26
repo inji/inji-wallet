@@ -207,7 +207,7 @@ public class AddNewCardPage extends BasePage {
     }
 
     public void clickOnMosipIssuer() {
-        scrollAndClickByAccessibilityId(mosipIssuer, "Click on 'Download via Esignet'");
+        scrollAndClickByAccessibilityId(mosipIssuer, "Click on 'Download via Mosip'");
     }
     
     public void clickOnMdlIssuer() {

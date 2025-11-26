@@ -406,7 +406,7 @@ public class NoNetworkIosTest extends IosBaseTest {
 //        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
-        /*This waiting is required as the network turn off is taking 8 to 10 seconds on IOS*/
+        // Wait for network profile to be applied
         Thread.sleep(10000);
         
         addNewCardPage.clickOnBack();
@@ -450,7 +450,7 @@ public class NoNetworkIosTest extends IosBaseTest {
 //        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
-        /*This waiting is required as the network turn off is taking 8 to 10 seconds on IOS*/
+        // Wait for network profile to be applied
         Thread.sleep(10000);
         
         addNewCardPage.clickOnBack();
@@ -493,7 +493,7 @@ public class NoNetworkIosTest extends IosBaseTest {
 //        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
-        /*This waiting is required as the network turn off is taking 8 to 10 seconds on IOS*/
+        // Wait for network profile to be applied
         Thread.sleep(10000);
         
         addNewCardPage.clickOnBack();
@@ -536,7 +536,7 @@ public class NoNetworkIosTest extends IosBaseTest {
 //        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
-        /*This waiting is required as the network turn off is taking 8 to 10 seconds on IOS*/
+        // Wait for network profile to be applied
         Thread.sleep(10000);
         
         addNewCardPage.clickOnBack();
@@ -580,7 +580,7 @@ public class NoNetworkIosTest extends IosBaseTest {
 //        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
-        /*This waiting is required as the network turn off is taking 8 to 10 seconds on IOS*/
+        // Wait for network profile to be applied
         Thread.sleep(10000);
         
         addNewCardPage.clickOnBack();

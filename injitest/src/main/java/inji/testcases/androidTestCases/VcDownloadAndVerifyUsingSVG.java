@@ -96,7 +96,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		OtpVerificationPage otpVerification = esignetLoginPage
 				.setEnterIdTextBox(TestDataReader.readData("InvalidLandRegistry"));
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
-		assertTrue(otpVerification.isInvalidErrorMessageDisplayed(), "Verify if invalid individual id error displayed");
+		assertTrue(otpVerification.isInvalidIndividualErrorMessageDisplayed(), "Verify if invalid individual id error displayed");
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		OtpVerificationPage otpVerification = esignetLoginPage
 				.setEnterIdTextBox(TestDataReader.readData("InvalidLandRegistry"));
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
-		assertTrue(otpVerification.isInvalidErrorMessageDisplayed(), "Verify if invalid individual id error displayed");
+		assertTrue(otpVerification.isInvalidIndividualErrorMessageDisplayed(), "Verify if invalid individual id error displayed");
 	}
 
 	@Test
