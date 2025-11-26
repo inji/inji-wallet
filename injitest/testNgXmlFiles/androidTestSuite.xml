@@ -181,7 +181,7 @@
                     <!--   need to be tested-->
                 </methods>
             </class>
-            <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingSDJwt">
+            <class name="inji.testcases.androidTestCases.VcDownloadAndVerifyUsingSDJwt">
                 <methods>
                     <include name="downloadAndVerifyLandSdJwtVc"/>
                     <include name="downloadAndVerifyLandSdJwtVcUsingInvalidCredential"/>
@@ -190,7 +190,7 @@
                     <include name="downloadAndVerifyLandSdJwtVcMultipleTime"/>
                 </methods>
             </class>
-            <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingSVG">
+            <class name="inji.testcases.androidTestCases.VcDownloadAndVerifyUsingSVG">
                 <methods>
                     <include name="downloadAndVerifyFarmerSVGVcWithFace"/>
                     <include name="downloadAndVerifyFarmerSVGVcWithoutFace"/>
