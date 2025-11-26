@@ -26,7 +26,7 @@ To install INJI-WALLET UITESTRIG, run:
 ```
 
 ## Uninstall
-To Uninstall INJI-WALLET UITETRIG, run:
+To Uninstall INJI-WALLET UITESTRIG, run:
 
 ```
   ./delete.sh
