@@ -219,7 +219,7 @@ const handleStatusListVCVerification = async (status: CredentialStatusResult, ty
 }
 
 export async function checkIsStatusRevoked(
-    vcStatus: Map<string, CredentialStatusResult>,
+    vcStatus: Record<string, CredentialStatusResult>,
 ): Promise<boolean> {
   if (!Object.keys(vcStatus).length) return false;
 

@@ -15,7 +15,7 @@ export type VerificationSummaryResult = {
   verificationStatus: boolean;
   verificationMessage: string;
   verificationErrorCode: string;
-  credentialStatus: Map<string, CredentialStatusResult>;
+  credentialStatus: Record<string, CredentialStatusResult>;
 };
 
 class VCVerifier {
@@ -36,7 +36,7 @@ class VCVerifier {
   async getCredentialStatus(
     credential: any,
     format: string,
-  ): Promise<Map<string, CredentialStatusResult>> {
+  ): Promise<Record<string, CredentialStatusResult>> {
     try {
       return await this.vcVerifier.getCredentialStatus(
           JSON.stringify(credential),
