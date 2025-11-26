@@ -3,26 +3,16 @@ import Gzip
 
 // MARK: - Credential Status Result
 
-public struct Result<T> {
+public struct CredentialStatusResult {
   let isValid: Bool
   let statusListVC: [String: Any]?
-  let error: T?
+  let error: StatusCheckException?
   
-  init(isValid: Bool, statusListVC: [String: Any]? = nil, error: T? = nil) {
+  init(isValid: Bool, statusListVC: [String: Any]? = nil, error: StatusCheckException? = nil) {
     self.isValid = isValid
     self.statusListVC = statusListVC
     self.error = error
   }
-}
-
-internal struct CredentialStatusResult {
-    let purpose: String
-   let result : Result<StatusCheckException>
-
-  init(purpose: String, result: Result<StatusCheckException>) {
-        self.purpose = purpose
-        self.result = result
-    }
 }
 
 // MARK: - Error Types
@@ -30,6 +20,7 @@ internal struct CredentialStatusResult {
 enum StatusCheckErrorCode: String {
     case rangeError = "RANGE_ERROR"
     case statusVerificationError = "STATUS_VERIFICATION_ERROR"
+    case invalidCredentialStatus = "INVALID_CREDENTIAL_STATUS"
     case statusRetrievalError = "STATUS_RETRIEVAL_ERROR"
     case invalidPurpose = "INVALID_PURPOSE"
     case invalidIndex = "INVALID_INDEX"
@@ -55,7 +46,7 @@ final class LdpStatusChecker {
         self.networkManager = networkManager
     }
 
-  func getStatuses(credential: String, statusPurposes: [String]? = nil) async throws -> [String: Result<StatusCheckException>]? {
+  func getStatuses(credential: String, statusPurposes: [String]? = nil) async throws -> [String: CredentialStatusResult] {
         guard
             let data = credential.data(using: .utf8),
             let vc = try JSONSerialization.jsonObject(with: data) as? [String: Any]
@@ -64,23 +55,29 @@ final class LdpStatusChecker {
         }
 
         let statusField = vc["credentialStatus"]
-        guard let statusEntries = normalizeStatusField(statusField) else { return nil }
+        guard let statusEntries = normalizeStatusField(statusField) else { throw StatusCheckException(
+          message: "No valid credentialStatus entries found",
+          errorCode: .invalidCredentialStatus
+      ) }
 
         let filteredEntries = filterEntries(statusEntries, statusPurposes)
-        guard !filteredEntries.isEmpty else { return nil }
+        guard !filteredEntries.isEmpty else {
+          print("No matching credentialStatus entries found for purposes: \(statusPurposes ?? [])")
+          return [:]
+        }
 
-        var results: [String: Result<StatusCheckException>] = [:]
+        var results: [String: CredentialStatusResult] = [:]
         
         for entry in filteredEntries {
           let purpose = (entry["statusPurpose"] as? String)?.lowercased() ?? ""
           do {
             let result = try await checkStatusEntry(entry: entry, purpose: purpose)
-            results[purpose] = result.result
+            results[purpose] = result
           } catch let error as StatusCheckException {
-            results[purpose] = Result(isValid: false, statusListVC: nil, error: error)
+            results[purpose] = CredentialStatusResult(isValid: false, statusListVC: nil, error: error)
           } catch {
             let genericError = StatusCheckException(message: error.localizedDescription, errorCode: .unknownError)
-            results[purpose] = Result(isValid: false, statusListVC: nil, error: genericError)
+            results[purpose] = CredentialStatusResult(isValid: false, statusListVC: nil, error: genericError)
           }
         }
         return results
@@ -192,7 +189,7 @@ final class LdpStatusChecker {
         let isValid = (statusValue == 0)
         print("Status value for purpose \(purpose) at index \(indexStr): \(statusValue)")
 
-      return .init(purpose: purpose, result: Result(isValid: isValid, statusListVC: statusListVC, error: nil))
+      return .init(isValid: isValid, statusListVC: statusListVC, error: nil)
     }
 
     private func readBits(from bitSet: [UInt8], start: Int, count: Int) -> Int {

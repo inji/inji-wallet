@@ -30,14 +30,14 @@ class VCVerifierModule: NSObject, RCTBridgeModule {
                 let results = try await verifier.getCredentialStatus(credential: credential, format: credentialFormat)
 
                 var response: [String: Any] = [:]
-                for (key, value) in results {
-                  let error : [String: Any]? = value.error != nil ? [
-                        "code": value.error?.errorCode ?? "UNKNOWN_ERROR",
-                        "message": value.error?.message ?? "An unknown error occurred"
+                for (purpose, credentialStatusResult) in results {
+                  let error : [String: Any]? = credentialStatusResult.error != nil ? [
+                        "code": credentialStatusResult.error?.errorCode ?? "UNKNOWN_ERROR",
+                        "message": credentialStatusResult.error?.message ?? "An unknown error occurred"
                     ] : nil
-                    response[key] = [
-                        "isValid": value.isValid,
-                        "statusListVC": value.statusListVC,
+                    response[purpose] = [
+                        "isValid": credentialStatusResult.isValid,
+                        "statusListVC": credentialStatusResult.statusListVC,
                         "error": error
                     ]
                 }
