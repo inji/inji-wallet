@@ -208,27 +208,22 @@ public class AddNewCardPage extends BasePage {
 
     public void clickOnMosipIssuer() {
         scrollAndClickByAccessibilityId(mosipIssuer, "Click on 'Download via Esignet'");
-        new ESignetLoginPage(driver);
     }
     
     public void clickOnMdlIssuer() {
-        scrollAndClickByAccessibilityId(mdlIssuer, "Click on 'Download via Esignet'");
-        new ESignetLoginPage(driver);
+        scrollAndClickByAccessibilityId(mdlIssuer, "Click on 'Download via Mdl'");
     }
     
     public void clickOnMockIssuer() {
-        scrollAndClickByAccessibilityId(mockIssuer, "Click on 'Download via Esignet'");
-        new ESignetLoginPage(driver);
+        scrollAndClickByAccessibilityId(mockIssuer, "Click on 'Download via Mock'");
     }   
     
     public void clickOnLandRegistryIssuer() {
-        scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Esignet'");
-        new ESignetLoginPage(driver);
+        scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via LandRegistry'");
     }
     
     public void clickOnStayProtectedIssuer() {
-        scrollAndClickByAccessibilityId(stayProtectedIssuer, "Click on 'Download via Esignet'");
-        new ESignetLoginPage(driver);
+        scrollAndClickByAccessibilityId(stayProtectedIssuer, "Click on 'Download via Stayprotected'");
     }
     
     public void clickOnContinueButtonInSigninPopupIos() {
@@ -295,19 +290,19 @@ public class AddNewCardPage extends BasePage {
         IosUtil.scrollToElement(driver, 100, 800, 100, 200);
     }
 
-    public void ClickOnContinueButton() {
+    public void clickOnContinueButton() {
         click(continuePopupButton, "Clicking on continue button");
     }
     
     public MockCertifyLoginPage clickOnDownloadViaMockCertify() {
-        scrollAndClickByAccessibilityId(mdlIssuer, "Click on 'Download via Land'");
-        scrollAndClickByAccessibilityId(mdlIssuerCredentialType, "Click on 'land Verifiable Credential' option");
+        scrollAndClickByAccessibilityId(mdlIssuer, "Click on 'Download via Mdl'");
+        scrollAndClickByAccessibilityId(mdlIssuerCredentialType, "Click on 'Mdl Verifiable Credential' option");
         return new MockCertifyLoginPage(driver);
     }
     
     public ESignetLoginPage clickOnDownloadViaMock() {
-        scrollAndClickByAccessibilityId(mockIssuer, "Click on 'Download via Land'");
-        scrollAndClickByAccessibilityId(mockIssuerCredentialType, "Click on 'land Verifiable Credential' option");
+        scrollAndClickByAccessibilityId(mockIssuer, "Click on 'Download via mock'");
+        scrollAndClickByAccessibilityId(mockIssuerCredentialType, "Click on 'mock Verifiable Credential' option");
         return new ESignetLoginPage(driver);
     }
 
@@ -333,7 +328,7 @@ public class AddNewCardPage extends BasePage {
         return new ESignetLoginPage(driver);
     }
     public ESignetLoginPage clickOnDownloadViaLandSVGWithOutFace() {
-        scrollAndClickByAccessibilityId(FarmerIssuer, "Click on 'Download via Farmer SVG'");
+        scrollAndClickByAccessibilityId(FarmerIssuer, "Click on 'Download via Farmer SVG without face'");
         scrollAndClickByAccessibilityIdForStale(FarmerIssuerSdJwtCredentialTypeWithoutFace,
                 "Click on 'Farmer Id without Face' option");
         return new ESignetLoginPage(driver);

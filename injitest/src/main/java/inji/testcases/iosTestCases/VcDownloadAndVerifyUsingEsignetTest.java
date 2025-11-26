@@ -274,7 +274,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
         for (int i = 1; i <= 5; i++) {
             System.out.println("=== Starting VC Download Iteration " + i + " ===");
 
-            AddNewCardPage addNewCardPage = homePage.ScrollanddownloadCard();
+            AddNewCardPage addNewCardPage = homePage.scrollanddownloadCard();
             assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description esignet displayed - Iteration " + i);
             assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(), "Verify if add new card guide message displayed - Iteration " + i);
 

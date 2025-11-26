@@ -173,7 +173,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaLandSdJwt();
 		esignetLoginPageAgain.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPageAgain.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerificationAgain = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
+		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
 		esignetLoginPageAgain.clickOnHideKeyboardAndGetOtpButton();
 		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
 		esignetLoginPageAgain.clickOnVerifyButton();

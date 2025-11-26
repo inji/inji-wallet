@@ -110,8 +110,9 @@ public class VcDownloadAndVerifyUsingSunbirdTest extends IosBaseTest {
             detailedVcViewPage.clickOnBackArrow();
 
             System.out.println("=== Completed Sunbird VC Download Iteration " + i + " ===");
-            System.out.println("Successfully downloaded and verified 5 Sunbird VCs!");
+            
         }
+        	System.out.println("Successfully downloaded and verified 5 Sunbird VCs!");
     }
     @Test
     @NeedsSunbirdPolicy

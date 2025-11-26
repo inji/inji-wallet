@@ -162,7 +162,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends IosBaseTest {
 		esignetLoginPageAgain.clickOnLoginWithOtpButton();
 //		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain
 //				.setEnterIdTextBox(TestDataReader.readData("LandRegistry"));
-		OtpVerificationPage otpVerificationAgain = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
+		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
 		esignetLoginPageAgain.clickOnGetOtpButton();
 		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
 		esignetLoginPageAgain.clickOnVerifyButtonIos();

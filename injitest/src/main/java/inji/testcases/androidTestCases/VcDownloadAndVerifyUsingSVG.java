@@ -281,7 +281,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaLandSdJwt();
 		esignetLoginPageAgain.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPageAgain.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerificationAgain = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithFaceUIN);
+		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(AddNewCardPage.SVGWithFaceUIN);
 		esignetLoginPageAgain.clickOnHideKeyboardAndGetOtpButton();
 		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
 		esignetLoginPageAgain.clickOnVerifyButton();
@@ -321,7 +321,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaLandSVGWithOutFace();
 		esignetLoginPageAgain.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPageAgain.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerificationAgain = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithOutFaceUIN);
+		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(AddNewCardPage.SVGWithOutFaceUIN);
 		esignetLoginPageAgain.clickOnHideKeyboardAndGetOtpButton();
 		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
 		esignetLoginPageAgain.clickOnVerifyButton();
