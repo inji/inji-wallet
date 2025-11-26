@@ -154,7 +154,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 
 	@Test
 	@NeedsUIN
-	public void downloadAndVerifyFarmerSVGVcWithOutFacUsingInvalidOtp() throws InterruptedException {
+	public void downloadAndVerifyFarmerSVGVcWithOutFaceUsingInvalidOtp() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
