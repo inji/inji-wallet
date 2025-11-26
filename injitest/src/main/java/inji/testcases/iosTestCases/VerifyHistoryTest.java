@@ -507,6 +507,8 @@ public class VerifyHistoryTest extends IosBaseTest {
         assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(), "Verify if add new card guide message displayed");
         assertTrue(addNewCardPage.isDownloadViaEsignetDisplayed(), "Verify if download via uin displayed");
 
+        // Mock Certify Login appears as a modal after clicking Login with OTP.
+        // So we instantiate it manually instead of receiving it from navigation.
         MockCertifyLoginPage mockCertifyLoginPage = new MockCertifyLoginPage(getDriver());
         addNewCardPage.clickOnDownloadViaMock();
 

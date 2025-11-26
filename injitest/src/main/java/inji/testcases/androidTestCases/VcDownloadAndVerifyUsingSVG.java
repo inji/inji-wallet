@@ -149,7 +149,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
-		assertTrue(otpVerification.isInvalidErrorMessageDisplayed(), "Verify if invalid OTP error displayed");
+		assertTrue(otpVerification.isInvalidOTPErrorMessageDisplayed(), "Verify if invalid OTP error displayed");
 	}
 
 	@Test
@@ -176,7 +176,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
-		assertTrue(otpVerification.isInvalidErrorMessageDisplayed(), "Verify if invalid OTP error displayed");
+		assertTrue(otpVerification.isInvalidOTPErrorMessageDisplayed(), "Verify if invalid OTP error displayed");
 	}
 
 	@Test
@@ -278,7 +278,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 				"Verify if issuer description esignet displayed");
 		assertTrue(addNewCardPageAgain.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
-		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaLandSdJwt();
+		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaLandSVGWithFace();
 		esignetLoginPageAgain.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPageAgain.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(AddNewCardPage.SVGWithFaceUIN);
