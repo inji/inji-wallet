@@ -209,8 +209,8 @@ async function handleVcVerifierResponse(
   }
 }
 
-const handleStatusListVCVerification = async (status: CredentialStatusResult, type: "revoked" | "valid") => {
-  const isValid = await verifyStatusListVC(status.statusListVC);
+const handleStatusListVCVerification = (status: CredentialStatusResult, type: "revoked" | "valid") => {
+  const isValid = verifyStatusListVC(status.statusListVC);
   if (!isValid) {
     throw new Error(
         `StatusListVC verification failed for ${type} entry  ${status.error}`,
@@ -244,7 +244,7 @@ export async function checkIsStatusRevoked(
   // There is no error fetching revocation status, but the status is invalid (isValid = false, error = undefined) - VC is revoked
   // Validate the valid statuses statusList VC for iOS
   if (isIOS()) {
-    await handleStatusListVCVerification(revocationStatus, "revoked");
+    handleStatusListVCVerification(revocationStatus, "revoked");
   }
   // If revocation status is invalid, the credential is revoked
   return true
