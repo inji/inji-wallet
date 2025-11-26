@@ -29,23 +29,22 @@ class VCVerifierModule: NSObject, RCTBridgeModule {
                 let verifier = CredentialsVerifier()
                 let results = try await verifier.getCredentialStatus(credential: credential, format: credentialFormat)
 
-                let responseArray = results.map { result in
-                    return [
-                      result.purpose: [
-                        "isValid": result.result.isValid,
-                        "error": [
-                          "code": result.result.error?.errorCode ?? "",
-                          "message": result.result.error?.message ?? ""
-                        ],
-                        "statusListVC": result.statusListVC
-                       ]
+                var response: [String: Any] = [:]
+                for (key, value) in results {
+                  let error : [String: Any]? = value.error != nil ? [
+                        "code": value.error?.errorCode ?? "UNKNOWN_ERROR",
+                        "message": value.error?.message ?? "An unknown error occurred"
+                    ] : nil
+                    response[key] = [
+                        "isValid": value.isValid,
+                        "statusListVC": value.statusListVC,
+                        "error": error
                     ]
                 }
-                resolve(responseArray)
+                resolve(response)
             } catch {
                 reject("VERIFICATION_FAILED", "Verification threw an error: \(error.localizedDescription)", error)
             }
         }
     }
-  
 }

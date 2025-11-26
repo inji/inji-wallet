@@ -4,10 +4,7 @@ import {RsaSignature2018} from '../../lib/jsonld-signatures/suites/rsa2018/RsaSi
 import {Ed25519Signature2018} from '../../lib/jsonld-signatures/suites/ed255192018/Ed25519Signature2018';
 import {AssertionProofPurpose} from '../../lib/jsonld-signatures/purposes/AssertionProofPurpose';
 import {PublicKeyProofPurpose} from '../../lib/jsonld-signatures/purposes/PublicKeyProofPurpose';
-import {
-  Credential,
-  VerifiableCredential,
-} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {Credential, VerifiableCredential,} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {getErrorEventData, sendErrorEvent} from '../telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../telemetry/TelemetryConstants';
 import {getMosipIdentifier} from '../commonUtil';
@@ -242,7 +239,7 @@ export async function checkIsStatusRevoked(
   console.error("Credential is revoked. Error: ", error);
   // if there is an error fetching revocation status itself, throw error (isValid = true, error = Error)
   if (error) {
-    throw new Error(`Error fetching revocation status : ${error}`);
+    throw new Error(`Error fetching revocation status : ${error.code} : ${error.message}`);
   }
   // There is no error fetching revocation status, but the status is invalid (isValid = false, error = undefined) - VC is revoked
   // Validate the valid statuses statusList VC for iOS

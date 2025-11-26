@@ -14,7 +14,6 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-        mavenLocal()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:8.4.0")
@@ -32,7 +31,6 @@ allprojects { repositories {
     maven { url(expoCameraMavenPath) }
     mavenCentral()
     maven {url("https://repo.danubetech.com/repository/maven-public/")}
-    mavenLocal()
     configurations.all {
         resolutionStrategy {
             // use 0.9.0 to fix crash on Android 11
