@@ -236,10 +236,10 @@ export async function checkIsStatusRevoked(
     return false
   }
 
-  console.error("Credential is revoked. Error: ", error);
+  console.error(`Credential is revoked. Error: ${error?.code}, Message: ${error?.message}`);
   // if there is an error fetching revocation status itself, throw error (isValid = true, error = Error)
   if (error) {
-    throw new Error(`Error fetching revocation status : ${error.code} : ${error.message}`);
+    throw new Error(`Error fetching revocation status. Error: ${error.code}, Message: ${error.message}`);
   }
   // There is no error fetching revocation status, but the status is invalid (isValid = false, error = undefined) - VC is revoked
   // Validate the valid statuses statusList VC for iOS

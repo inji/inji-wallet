@@ -177,6 +177,8 @@ final class LdpStatusChecker {
             else {
                 throw StatusCheckException(message: "statusMessage count mismatch", errorCode: .statusVerificationError)
             }
+          
+          print("Status message for purpose '\(purpose): $\(statusMessage)")
         }
 
         let bitSet = try decodeEncodedList(encodedList)
@@ -187,7 +189,10 @@ final class LdpStatusChecker {
         }
 
         let statusValue = readBits(from: bitSet, start: bitPosition, count: statusSize)
-      return .init(purpose: purpose, result: Result(isValid: statusValue == 0, statusListVC: statusListVC, error: nil))
+        let isValid = (statusValue == 0)
+        print("Status value for purpose \(purpose) at index \(indexStr): \(statusValue)")
+
+      return .init(purpose: purpose, result: Result(isValid: isValid, statusListVC: statusListVC, error: nil))
     }
 
     private func readBits(from bitSet: [UInt8], start: Int, count: Int) -> Int {
