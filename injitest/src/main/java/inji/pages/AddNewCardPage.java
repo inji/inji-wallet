@@ -13,7 +13,21 @@ public class AddNewCardPage extends BasePage {
     private static final String mosipIssuerCredentialType = InjiWalletConfigManager.getproperty("mosip_issuer_credentialType");
     private static final String stayProtectedIssuer = InjiWalletConfigManager.getproperty("stayProtected_issuer");
     private static final String stayProtectedIssuerCredentialType = InjiWalletConfigManager.getproperty("stayProtected_issuer_credentialType");
-
+    private static final String landRegistryIssuer = InjiWalletConfigManager.getproperty("landregistry.issuer");
+    private static final String landRegistryIssuerCredentialType = InjiWalletConfigManager.getproperty("landregistry.issuer.credentialType");
+    public static final String LandRegistryUIN = InjiWalletConfigManager.getproperty("landregistry.uin");
+    private static final String landRegistryIssuerSdJwtCredentialType = InjiWalletConfigManager.getproperty("landregistry.issuer.sdjwtcredentialType");
+    public static final String SVGWithFaceUIN = InjiWalletConfigManager.getproperty("svgwithface.uin");
+    public static final String SVGWithOutFaceUIN = InjiWalletConfigManager.getproperty("svgwithoutface.uin");
+    private static final String FarmerIssuer = InjiWalletConfigManager.getproperty("farmerId.issuer");
+    private static final String FarmerIssuerSdJwtCredentialTypeWithFace = InjiWalletConfigManager
+            .getproperty("farmerId.issuer.svgcredentialTypewithFace");
+    private static final String FarmerIssuerSdJwtCredentialTypeWithoutFace = InjiWalletConfigManager
+            .getproperty("farmerId.issuer.svgcredentialTypewithOutFace");
+    private static final String mockIssuer = InjiWalletConfigManager.getproperty("mock_issuer");
+    private static final String mockIssuerCredentialType  = InjiWalletConfigManager.getproperty("mock_issuer_credentialType");    
+    private static final String mdlIssuer = InjiWalletConfigManager.getproperty("mdl_issuer");
+    private static final String mdlIssuerCredentialType  = InjiWalletConfigManager.getproperty("mdl_issuer_credentialType");
 
     @AndroidFindBy(accessibility = "title")
     @iOSXCUITFindBy(accessibility = "title")
@@ -53,6 +67,10 @@ public class AddNewCardPage extends BasePage {
     @AndroidFindBy(accessibility = "credentialTypeHeading-InsuranceCredential")
     @iOSXCUITFindBy(accessibility = "credentialTypeHeading-InsuranceCredential")
     private WebElement credentialTypeHeadingInsuranceCredential;
+
+    @AndroidFindBy(accessibility = "credentialTypeItem-LifeInsuranceCredential")
+    @iOSXCUITFindBy(accessibility = "credentialTypeItem-LifeInsuranceCredential")
+    private WebElement credentialTypeHeadingLifeInsuranceCredential;
 
     @AndroidFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM1.0")
     @iOSXCUITFindBy(accessibility = "credentialTypeHeading-LandStatementCredential_VCDM1.0")
@@ -192,7 +210,27 @@ public class AddNewCardPage extends BasePage {
         scrollAndClickByAccessibilityId(mosipIssuer, "Click on 'Download via Esignet'");
         new ESignetLoginPage(driver);
     }
-
+    
+    public void clickOnMdlIssuer() {
+        scrollAndClickByAccessibilityId(mdlIssuer, "Click on 'Download via Esignet'");
+        new ESignetLoginPage(driver);
+    }
+    
+    public void clickOnMockIssuer() {
+        scrollAndClickByAccessibilityId(mockIssuer, "Click on 'Download via Esignet'");
+        new ESignetLoginPage(driver);
+    }   
+    
+    public void clickOnLandRegistryIssuer() {
+        scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Esignet'");
+        new ESignetLoginPage(driver);
+    }
+    
+    public void clickOnStayProtectedIssuer() {
+        scrollAndClickByAccessibilityId(stayProtectedIssuer, "Click on 'Download via Esignet'");
+        new ESignetLoginPage(driver);
+    }
+    
     public void clickOnContinueButtonInSigninPopupIos() {
         click(continueButton, "Click on Continue button in iOS Sign-in popup");
     }
@@ -257,20 +295,47 @@ public class AddNewCardPage extends BasePage {
         IosUtil.scrollToElement(driver, 100, 800, 100, 200);
     }
 
-    public MockCertifyLoginPage clickOnDownloadViaMockCertify() {
-        clearAndSendKeys(IssuerSearchBar, "mock mobile", "Enter 'mock mobile' in Issuer search bar");
-        click(downloadViaMockCertify, "Click on 'Download via Mock Certify'");
-        click(credentialTypeHeadingMockVerifiableCredential_mdoc, "Click on Mock Verifiable Credential (mdoc)");
-        return new MockCertifyLoginPage(driver);
-    }
-
-    public void clickOnDownloadViaMock() {
-        clearAndSendKeys(IssuerSearchBar, "mock", "Enter 'mock' in Issuer search bar");
-        click(downloadViaMock, "Click on 'Download via Mock'");
-        click(credentialTypeHeadingMockVerifiableCredential, "Click on Mock Verifiable Credential");
-    }
-
     public void ClickOnContinueButton() {
         click(continuePopupButton, "Clicking on continue button");
+    }
+    
+    public MockCertifyLoginPage clickOnDownloadViaMockCertify() {
+        scrollAndClickByAccessibilityId(mdlIssuer, "Click on 'Download via Land'");
+        scrollAndClickByAccessibilityId(mdlIssuerCredentialType, "Click on 'land Verifiable Credential' option");
+        return new MockCertifyLoginPage(driver);
+    }
+    
+    public ESignetLoginPage clickOnDownloadViaMock() {
+        scrollAndClickByAccessibilityId(mockIssuer, "Click on 'Download via Land'");
+        scrollAndClickByAccessibilityId(mockIssuerCredentialType, "Click on 'land Verifiable Credential' option");
+        return new ESignetLoginPage(driver);
+    }
+
+    public ESignetLoginPage clickOnDownloadViaLandRegistry() {
+        scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Land'");
+        scrollAndClickByAccessibilityId(landRegistryIssuerCredentialType, "Click on 'land Verifiable Credential' option");
+        return new ESignetLoginPage(driver);
+    }
+//    public void clickOnCredentialTypeHeadingLifeInsuranceCredential() {
+////        click(continuePopupButton, "Click on Continue popup button");
+//        scrollAndClickByAccessibilityId(stayProtectedIssuerCredentialType, 10, "Click on Insurance Credential type heading");
+//    }
+    
+    public ESignetLoginPage clickOnDownloadViaLandSdJwt() {
+        scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Land sd jwt'");
+        scrollAndClickByAccessibilityId(landRegistryIssuerSdJwtCredentialType, "Click on 'Land Sd Jwt' option");
+        return new ESignetLoginPage(driver);
+    }
+    public ESignetLoginPage clickOnDownloadViaLandSVGWithFace() {
+        scrollAndClickByAccessibilityId(FarmerIssuer, "Click on 'Download via Farmer SVG'");
+        scrollAndClickByAccessibilityIdForStale(FarmerIssuerSdJwtCredentialTypeWithFace,
+                "Click on 'Farmer Id with Face' option");
+        return new ESignetLoginPage(driver);
+    }
+    public ESignetLoginPage clickOnDownloadViaLandSVGWithOutFace() {
+        scrollAndClickByAccessibilityId(FarmerIssuer, "Click on 'Download via Farmer SVG'");
+        scrollAndClickByAccessibilityIdForStale(FarmerIssuerSdJwtCredentialTypeWithoutFace,
+                "Click on 'Farmer Id without Face' option");
+        return new ESignetLoginPage(driver);
     }
 }

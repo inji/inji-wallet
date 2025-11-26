@@ -605,4 +605,8 @@ public class HomePage extends BasePage {
         click(closeButton, "Clicking on the Close (cross) button");
     }
 
+    public  AddNewCardPage ScrollanddownloadCard() {
+        scrollAndClickByAccessibilityId("downloadCardButton", 4, "scrool to downlaodbutton");
+        return new AddNewCardPage(driver);
+    }
 }
