@@ -4,10 +4,7 @@ import {RsaSignature2018} from '../../lib/jsonld-signatures/suites/rsa2018/RsaSi
 import {Ed25519Signature2018} from '../../lib/jsonld-signatures/suites/ed255192018/Ed25519Signature2018';
 import {AssertionProofPurpose} from '../../lib/jsonld-signatures/purposes/AssertionProofPurpose';
 import {PublicKeyProofPurpose} from '../../lib/jsonld-signatures/purposes/PublicKeyProofPurpose';
-import {
-  Credential,
-  VerifiableCredential,
-} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {Credential, VerifiableCredential,} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {getErrorEventData, sendErrorEvent} from '../telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../telemetry/TelemetryConstants';
 import {getMosipIdentifier} from '../commonUtil';
@@ -108,8 +105,7 @@ async function verifyCredentialForIos(
       verifiableCredential,
       credentialFormat,
     );
-    const isRevoked = await checkIsStatusRevoked(statusArray);
-    verificationResponse.isRevoked = isRevoked;
+    verificationResponse.isRevoked = await checkIsStatusRevoked(statusArray);
   }
   return verificationResponse;
 }
@@ -213,48 +209,45 @@ async function handleVcVerifierResponse(
   }
 }
 
+const handleStatusListVCVerification = (status: CredentialStatusResult, type: "revoked" | "valid") => {
+  const isValid = verifyStatusListVC(status.statusListVC);
+  if (!isValid) {
+    throw new Error(
+        `StatusListVC verification failed for ${type} entry  ${status.error}`,
+    );
+  }
+}
+
 export async function checkIsStatusRevoked(
-  vcStatus: CredentialStatusResult[],
+    vcStatus: Record<string, CredentialStatusResult>,
 ): Promise<boolean> {
-  if (!vcStatus || vcStatus.length === 0) return false;
+  if (!Object.keys(vcStatus).length) return false;
 
-  const revocationStatuses = vcStatus.filter(
-    s => s.purpose?.toLowerCase() === 'revocation',
-  );
+  const revocationStatus = vcStatus["revocation"] as CredentialStatusResult;
+  if (!revocationStatus) return false;
 
-  let result = false;
-  for (const status of revocationStatuses) {
-    if (status.status > 0) {
-      if (isIOS()) {
-        const isValid = await verifyStatusListVC(status.statusListVC);
-        if (!isValid) {
-          throw new Error(`Revoked statusListVC verification failed`);
-        }
-      }
-      result = true;
-    } else if (status.status < 0) {
-      throw new Error(
-        `Error fetching revocation status : ${status.errorMessage}`,
-      );
+  const {isValid, error} = revocationStatus;
+
+  if (isValid) {
+    // Validate the valid statuses statusList VC for iOS
+    if (isIOS()) {
+      handleStatusListVCVerification(revocationStatus, "valid")
     }
+    return false
   }
 
-  if (result) return true;
-
+  console.error(`Credential is revoked. Error: ${error?.code}, Message: ${error?.message}`);
+  // if there is an error fetching revocation status itself, throw error (isValid = true, error = Error)
+  if (error) {
+    throw new Error(`Error fetching revocation status. Error: ${error.code}, Message: ${error.message}`);
+  }
+  // There is no error fetching revocation status, but the status is invalid (isValid = false, error = undefined) - VC is revoked
+  // Validate the valid statuses statusList VC for iOS
   if (isIOS()) {
-    for (const status of revocationStatuses) {
-      if (status.status === 0) {
-        const isValid = await verifyStatusListVC(status.statusListVC);
-        if (!isValid) {
-          throw new Error(
-            `StatusListVC verification failed for valid entry  ${status.errorMessage}`,
-          );
-        }
-      }
-    }
+    handleStatusListVCVerification(revocationStatus, "revoked");
   }
-
-  return false;
+  // If revocation status is invalid, the credential is revoked
+  return true
 }
 
 function createSuccessfulVerificationResult(): VerificationResult {
