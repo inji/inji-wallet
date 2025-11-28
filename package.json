@@ -19,7 +19,7 @@
     "@digitalbazaar/rsa-signature-2018": "digitalbazaar/rsa-signature-2018#initial",
     "@digitalbazaar/rsa-verification-key-2018": "digitalbazaar/rsa-verification-key-2018#initial",
     "@digitalcredentials/vc": "^1.1.2",
-    "@expo-google-fonts/inter": "^0.2.3",
+    "@expo-google-fonts/montserrat": "^0.4.2",
     "@expo/metro-config": "~0.18.11",
     "@invertase/react-native-apple-authentication": "^2.3.0",
     "@iriscan/biometric-sdk-react-native": "0.2.6",

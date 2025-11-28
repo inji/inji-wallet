@@ -44,7 +44,7 @@ const settings: TabScreen = {
   options: {
     headerTitleStyle: {
       fontSize: 26,
-      fontFamily: 'Inter_600SemiBold',
+      fontFamily: 'Montserrat_600SemiBold',
       marginTop: 15,
     },
     title: i18n.t('MainLayout:settings'),

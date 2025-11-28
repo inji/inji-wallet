@@ -10,7 +10,7 @@ export const Timestamp: React.FC<TimestampProps> = props => {
         testID={`${props.testId}Time`}
         size="regular"
         style={{
-          fontFamily: 'Inter_500Medium',
+          fontFamily: 'Montserrat_500Medium',
           fontWeight: '600',
           fontSize: 14,
           letterSpacing: 0,

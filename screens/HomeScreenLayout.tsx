@@ -29,7 +29,7 @@ export const HomeScreenLayout: React.FC<RootRouteProps> = props => {
         tabBarActiveTintColor: Theme.Colors.IconBg,
         tabBarLabelStyle: {
           fontSize: 12,
-          fontFamily: 'Inter_600SemiBold',
+          fontFamily: 'Montserrat_600SemiBold',
         },
         tabBarStyle: {
           height: 75,
