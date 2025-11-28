@@ -499,9 +499,6 @@ export const DefaultTheme = {
     ProfileIconPinnedStyle: {
       position: 'absolute',
     },
-    BackButtonBgGradient:{
-      borderRadius: 10,
-    },
     IconContainer: {
       padding: 6,
       width: 25,

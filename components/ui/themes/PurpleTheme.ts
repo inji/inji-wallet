@@ -512,9 +512,6 @@ export const PurpleTheme = {
       borderRadius: 10,
       backgroundColor: Colors.LightPurple,
     },
-    BackButtonBgGradient:{
-      borderRadius: 10,
-    },
     imageCaptureButton: {
       marginLeft: 130,
       marginRight: 50,
