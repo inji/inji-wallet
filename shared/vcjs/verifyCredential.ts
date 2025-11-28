@@ -234,7 +234,7 @@ const handleStatusListVCVerification = (
 export async function checkIsStatusRevoked(
   vcStatus: Record<string, CredentialStatusResult>,
 ): Promise<EvaluationStatus> {
-  if (!Object.keys(vcStatus).length) return EvaluationStatus.FALSE;
+  if (!vcStatus || !Object.keys(vcStatus).length) return EvaluationStatus.FALSE;
 
   const revocationStatus = vcStatus['revocation'] as CredentialStatusResult;
   if (!revocationStatus) return EvaluationStatus.FALSE;
