@@ -14,7 +14,7 @@
   </defs>
   <g id="pin_icon" transform="translate(-318.347 -147.347)">
     <g transform="matrix(1, 0, 0, 1, 318.35, 147.35)" filter="url(#Rectangle_6989)">
-      <g id="Rectangle_6989-2" data-name="Rectangle 6989" transform="translate(4.5 1.5)" fill="#FFF" stroke="#FFF" stroke-width="1">
+      <g id="Rectangle_6989-2" data-name="Rectangle 6989" transform="translate(4.5 1.5)" fill="#fff" stroke="#fff" stroke-width="1">
         <rect width="26" height="26" rx="6" stroke="none"/>
         <rect x="0.5" y="0.5" width="25" height="25" rx="5.5" fill="none"/>
       </g>

@@ -49,9 +49,12 @@ import {ActivityLogEvents} from '../../machines/activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
 import {isIOS} from '../../shared/constants';
 import { getFaceAttribute } from '../../components/VC/common/VCUtils';
-import { useTabBarVisibility } from '../../shared/hooks/useTabBarVisibility';
 
 type MyVcsTabNavigation = NavigationProp<RootRouteProps>;
+
+const changeTabBarVisible = (visible: string) => {
+  Theme.BottomTabBarStyle.tabBarStyle.display = visible;
+};
 
 export function useSendVPScreen() {
   const {t} = useTranslation('SendVPScreen');
@@ -61,7 +64,6 @@ export function useSendVPScreen() {
   const activityLogService = appService.children.get('activityLog')!!;
   const navigation = useNavigation<MyVcsTabNavigation>();
   const openID4VPService = scanService.getSnapshot().context.OpenId4VPRef;
-  const {showTabBar} = useTabBarVisibility();
   // input descriptor id to VCs mapping
   const [inputDescriptorIdToSelectedVcKeys, setInputDescriptorIdToSelectedVcKeys] = useState<Record<string, [string]>>(
     {},
@@ -272,7 +274,7 @@ export function useSendVPScreen() {
       scanService.send(ScanEvents.RESET());
       setTimeout(() => {
         navigation.navigate(BOTTOM_TAB_ROUTES.home, {screen: 'HomeScreen'});
-        showTabBar();
+        changeTabBarVisible('flex');
       }, 0);
     },
     SELECT_VC_ITEM:

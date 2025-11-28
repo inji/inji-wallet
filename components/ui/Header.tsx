@@ -4,8 +4,10 @@ import {Column, Row} from './Layout';
 import {Theme} from './styleUtils';
 import testIDProps from '../../shared/commonUtil';
 import {BackButton} from './backButton/BackButton';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const Header: React.FC<HeaderProps> = ({goBack, title, testID}) => {
+  const insets = useSafeAreaInsets();
   return (
     <Column safe align="center" testID={testID}>
       <Row elevation={2}>
@@ -18,6 +20,7 @@ export const Header: React.FC<HeaderProps> = ({goBack, title, testID}) => {
             marginBottom: 22,
             marginVertical: 16,
             marginLeft: 10,
+            paddingTop: insets.top,
           }}>
           <BackButton onPress={goBack} />
           <Row fill align={'center'}>
