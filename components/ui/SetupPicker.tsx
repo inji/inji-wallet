@@ -45,6 +45,7 @@ export const SetupPicker: Picker = (props: PickerProps<unknown>) => {
               style={{paddingTop: 3}}>
               <Text
                 color={selectedIndex === index ? Theme.Colors.Icon : null}
+                size={'medium'}
                 weight={selectedIndex === index ? 'semibold' : 'regular'}>
                 {item.label}
               </Text>

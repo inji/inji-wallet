@@ -219,7 +219,8 @@
     "forMoreDetails": "Para sa karagdagang detalye",
     "clickHere": "Pindutin dito",
     "version": "Bersyon",
-    "poweredBy": "Pinapatakbo ng Inji, Isang Produktong MOSIP"
+    "poweredBy": "Isang Produktong MOSIP",
+    "copyright": "© 2022 MOSIP. Lahat ng karapatan ay nakalaan."
   },
   "IssuersScreen": {
     "title": "Magdagdag ng bagong card",
