@@ -153,6 +153,7 @@ export const PurpleTheme = {
     urlLink: Colors.Purple,
     warningText: Colors.Red,
     PendingIcon: Colors.Yellow,
+    unCheckText: Colors.Orange,
   },
   Styles: StyleSheet.create({
     title: {
@@ -998,6 +999,12 @@ export const PurpleTheme = {
     mediumSmall: {
       fontSize: 15,
       lineHeight: 18,
+    },
+    mediumExtraSmall: {
+      fontSize: 14,
+    },
+    medium: {
+      fontSize: 16,
     },
     extraSmall: {
       fontSize: 12,
@@ -1959,6 +1966,20 @@ export const PurpleTheme = {
     injiVersionText: {
       paddingTop: 3,
       maxWidth: 250,
+    },
+    footerContainer: {
+      alignItems: 'center',
+      marginTop: 12,
+    },
+
+    poweredByRow: {
+      alignItems: 'center',
+      marginBottom: 4,
+    },
+    logoStyle: {
+      width: 24,
+      height: 24,
+      marginRight: 5,
     },
     tuvaliVerisonStyle: {
       paddingTop: 3,

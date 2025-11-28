@@ -137,12 +137,29 @@ export const AboutInji: React.FC<AboutInjiProps> = ({appId}) => {
               </Text>
             </Row>
             <View style={Theme.AboutInjiScreenStyle.horizontalLineStyle} />
-            <Text
-              weight="semibold"
-              style={Theme.AboutInjiScreenStyle.poweredByTextStyle}
-              color="black">
-              {t('poweredBy')}
-            </Text>
+            <Column
+              crossAlign="center"
+              style={Theme.AboutInjiScreenStyle.footerContainer}>
+              <Row style={Theme.AboutInjiScreenStyle.poweredByRow}>
+                <View style={Theme.AboutInjiScreenStyle.logoStyle}>
+                  {SvgImage.logoIcon(24, 24)}
+                </View>
+
+                <Text
+                  weight="semibold"
+                  style={Theme.AboutInjiScreenStyle.poweredByTextStyle}
+                  color="black">
+                  {t('poweredBy')}
+                </Text>
+              </Row>
+
+              <Text
+                weight="semibold"
+                style={Theme.AboutInjiScreenStyle.poweredByTextStyle}
+                color="black">
+                {t('copyright')}
+              </Text>
+            </Column>
           </Column>
         </Column>
       </Modal>
