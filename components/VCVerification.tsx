@@ -9,6 +9,7 @@ import { Theme } from './ui/styleUtils';
 import { useTranslation } from 'react-i18next';
 import { VCMetadata } from '../shared/VCMetadata';
 import { formattedDate } from '../shared/openId4VCI/Utils';
+import {EvaluationStatus} from "../shared/vcVerifier/VcVerifier";
 
 export const VCVerification: React.FC<VCVerificationProps> = ({
   vcMetadata,
@@ -21,13 +22,16 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
   let statusIcon: JSX.Element;
 
   if (vcMetadata.isVerified) {
-    if (vcMetadata.isRevoked) {
+    if (vcMetadata.isRevoked === EvaluationStatus.TRUE) {
       statusText = t('revoked');
       statusIcon = <PendingIcon color="brown" />;
     } else if (vcMetadata.isExpired) {
       statusText = t('expired');
       statusIcon = <PendingIcon color="red" />;
-    } else {
+    } else if(vcMetadata.isRevoked === EvaluationStatus.UNDETERMINED){
+      statusText = t('pending');
+      statusIcon = <PendingIcon color="orange" />;
+    }else {
       statusText = t('valid');
       statusIcon = <VerifiedIcon />;
     }

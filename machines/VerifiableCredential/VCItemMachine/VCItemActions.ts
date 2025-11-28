@@ -31,6 +31,7 @@ import {VcMetaEvents} from '../VCMetaMachine/VCMetaMachine';
 import {WalletBindingResponse} from '../VCMetaMachine/vc';
 import {BannerStatusType} from '../../../components/BannerNotification';
 import {VCActivityLog} from '../../../components/ActivityLogEvent';
+import {EvaluationStatus} from "../../../shared/vcVerifier/VcVerifier";
 
 export const VCItemActions = model => {
   return {
@@ -91,12 +92,12 @@ export const VCItemActions = model => {
 
     sendReverificationSuccessToVcMeta: send(
       (context: any) => ({
-        type: 'REVERIFY_VC_SUCCESS',
-        statusValue: context.vcMetadata.isRevoked
+        type: context.vcMetadata.isRevoked === EvaluationStatus.UNDETERMINED ? 'REVERIFY_VC_FAILED' : 'REVERIFY_VC_SUCCESS',
+        statusValue: (context.vcMetadata.isRevoked === EvaluationStatus.TRUE)
           ? VerificationStatus.REVOKED
           : context.vcMetadata.isExpired
           ? VerificationStatus.EXPIRED
-          : context.vcMetadata.isVerified
+          : (context.vcMetadata.isVerified && context.vcMetadata.isRevoked === EvaluationStatus.FALSE)
           ? VerificationStatus.VALID
           : VerificationStatus.PENDING,
         vcKey: context.vcMetadata.getVcKey(),

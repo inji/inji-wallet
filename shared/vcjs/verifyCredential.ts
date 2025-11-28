@@ -11,7 +11,11 @@ import {getMosipIdentifier} from '../commonUtil';
 import {NativeModules} from 'react-native';
 import {isAndroid, isIOS} from '../constants';
 import {VCFormat} from '../VCFormat';
-import VCVerifier, {CredentialStatusResult, VerificationSummaryResult} from '../vcVerifier/VcVerifier';
+import VCVerifier, {
+  CredentialStatusResult,
+  EvaluationStatus,
+  VerificationSummaryResult
+} from '../vcVerifier/VcVerifier';
 
 // FIXME: Ed25519Signature2018 not fully supported yet.
 // Ed25519Signature2018 proof type check is not tested with its real credential
@@ -220,11 +224,11 @@ const handleStatusListVCVerification = (status: CredentialStatusResult, type: "r
 
 export async function checkIsStatusRevoked(
     vcStatus: Record<string, CredentialStatusResult>,
-): Promise<boolean> {
-  if (!Object.keys(vcStatus).length) return false;
+): Promise<EvaluationStatus> {
+  if (!Object.keys(vcStatus).length) return EvaluationStatus.FALSE;
 
   const revocationStatus = vcStatus["revocation"] as CredentialStatusResult;
-  if (!revocationStatus) return false;
+  if (!revocationStatus) return EvaluationStatus.FALSE;
 
   const {isValid, error} = revocationStatus;
 
@@ -233,13 +237,14 @@ export async function checkIsStatusRevoked(
     if (isIOS()) {
       handleStatusListVCVerification(revocationStatus, "valid")
     }
-    return false
+    return EvaluationStatus.FALSE
   }
 
   console.error(`Credential is revoked. Error: ${error?.code}, Message: ${error?.message}`);
   // if there is an error fetching revocation status itself, throw error (isValid = true, error = Error)
   if (error) {
-    throw new Error(`Error fetching revocation status. Error: ${error.code}, Message: ${error.message}`);
+    console.error(`Error fetching revocation status. Error: ${error.code}, Message: ${error.message}`);
+    return EvaluationStatus.UNDETERMINED
   }
   // There is no error fetching revocation status, but the status is invalid (isValid = false, error = undefined) - VC is revoked
   // Validate the valid statuses statusList VC for iOS
@@ -247,7 +252,7 @@ export async function checkIsStatusRevoked(
     handleStatusListVCVerification(revocationStatus, "revoked");
   }
   // If revocation status is invalid, the credential is revoked
-  return true
+  return EvaluationStatus.TRUE
 }
 
 function createSuccessfulVerificationResult(): VerificationResult {
@@ -298,7 +303,7 @@ export interface VerificationResult {
   isVerified: boolean;
   verificationMessage: string;
   verificationErrorCode: string;
-  isRevoked?: boolean;
+  isRevoked?: EvaluationStatus;
 }
 
 //TODO: Implement status list VC verification for iOS.

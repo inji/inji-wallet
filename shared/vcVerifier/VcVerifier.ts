@@ -1,5 +1,20 @@
 import {NativeModules} from 'react-native';
 
+export const EvaluationStatus = Object.freeze({
+  TRUE: "TRUE",
+  FALSE: "FALSE",
+  UNDETERMINED: "UNDETERMINED"
+} as const);
+
+/**
+ * Type representing any possible value of EvaluationStatus.
+ *
+ * - "TRUE" → Condition was evaluated and is positively true
+ * - "FALSE" → Condition was evaluated and is definitively false
+ * - "UNDETERMINED" → Condition could not be evaluated due to an error
+ */
+export type EvaluationStatus = typeof EvaluationStatus[keyof typeof EvaluationStatus];
+
 export type CredentialStatusResult = {
   isValid: boolean;
   error?: ErrorResult;
