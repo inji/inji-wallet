@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, Pressable, View} from 'react-native';
+import {Platform, Pressable} from 'react-native';
 import {Icon, ListItem, Switch} from 'react-native-elements';
 import {Column, Row, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
@@ -18,9 +18,6 @@ import {SvgImage} from '../../components/ui/svg';
 import {DataBackupAndRestore} from './DataBackupAndRestore';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {SettingsKeyManagementScreen} from './SettingsKeyManagement';
-import SwitchToggle from 'react-native-switch-toggle';
-import BiometricIcon from '../../components/BiometricIcon';
-import Toggle from '../../components/Toggle';
 
 const LanguageSetting: React.FC = () => {
   const {t} = useTranslation('SettingScreen');
@@ -132,7 +129,7 @@ export const SettingScreen: React.FC<
           <LanguageSetting />
 
           <ListItem topDivider disabled={!controller.canUseBiometrics}>
-            <BiometricIcon size={24} />
+            {SvgImage.fingerprintIcon(24)}
             <ListItem.Content>
               <ListItem.Title
                 {...testIDProps('bioUnlock')}
@@ -142,12 +139,18 @@ export const SettingScreen: React.FC<
                 </Text>
               </ListItem.Title>
             </ListItem.Content>
-            <Toggle
+            <Switch
+              {...testIDProps('biometricToggle')}
               value={controller.isBiometricUnlockEnabled}
-              onToggle={value => {
-                handleBiometricToggle(!value);
+              onValueChange={handleBiometricToggle}
+              trackColor={{
+                false: Theme.Colors.switchTrackFalse,
+                true:
+                  Platform.OS == 'ios'
+                    ? Theme.Colors.switchHead
+                    : Theme.Colors.switchTrackTrue,
               }}
-              testID="biometricToggle"
+              color={Theme.Colors.switchHead}
             />
           </ListItem>
 

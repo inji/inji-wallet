@@ -443,7 +443,7 @@
     }
   },
   "MyVcsTab": {
-    "searchByName": "maghanap...",
+    "searchByName": "Maghanap",
     "bringYourDigitalID": "Dalhin ang Iyong Digital ID",
     "generateVcDescription": "Upang i-download ang iyong card i-tap ang I-download card sa ibaba",
     "generateVcFABDescription": "Upang i-download ang iyong card i-tap ang + sa ibaba",
@@ -1144,9 +1144,7 @@
     "verify": "I-verify",
     "emptyCodeError": "Hindi puwedeng walang laman ang code",
     "invalidCharacters": "Mga letra at numero lamang ang pinapayagan",
-    "TransactionCode": "Transaction Code",
-    "showMore": "Ipakita pa ↓",
-    "showLess": "Ipakita nang kaunti ↑"
+    "TransactionCode": "Transaction Code"
   },
   "trustScreen": {
     "description": "Siguraduhin mong kilala mo o pinagkakatiwalaan mo ang issuer na ito. Kapag pinagkatiwalaan mo sila:",

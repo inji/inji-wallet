@@ -445,7 +445,7 @@
     }
   },
   "MyVcsTab": {
-    "searchByName": "search...",
+    "searchByName": "Search",
     "bringYourDigitalID": "Bring your digital identity",
     "generateVcDescription": "Tap on \"Download card\" below to download your card",
     "generateVcFABDescription": "Tap on  \"+\" below to download your card",
@@ -1162,9 +1162,7 @@
     "verify": "Verify",
     "emptyCodeError": "Code cannot be empty",
     "invalidCharacters": "Only letters and numbers are allowed",
-    "TransactionCode": "Transasction Code",
-    "showMore": "Show more ↓",
-    "showLess": "Show less ↑"
+    "TransactionCode": "Transasction Code"
   },
   "trustScreen": {
     "description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",

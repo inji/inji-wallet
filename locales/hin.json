@@ -445,7 +445,7 @@
     }
   },
   "MyVcsTab": {
-    "searchByName": "खोजें...",
+    "searchByName": "खोजें",
     "downloadCard": "डाउनलोड कार्ड",
     "bringYourDigitalID": "अपनी डिजिटल आईडी लाओ",
     "generateVcDescription": "अपना कार्ड डाउनलोड करने के लिए नीचे डाउनलोड कार्ड टैप करें",
@@ -1146,9 +1146,7 @@
     "verify": "सत्यापित करें",
     "emptyCodeError": "कोड खाली नहीं हो सकता",
     "invalidCharacters": "केवल अक्षर और संख्याएँ मान्य हैं",
-    "TransactionCode": "लेन-देन कोड",
-    "showMore": "अधिक दिखाएं ↓",
-    "showLess": "कम दिखाएं ↑"
+    "TransactionCode": "लेन-देन कोड"
   },
   "trustScreen": {
     "description": "सुनिश्चित करें कि आप इस जारीकर्ता को पहचानते हैं या उस पर भरोसा करते हैं। एक बार जब आप भरोसा कर लेते हैं:",

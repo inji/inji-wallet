@@ -17,7 +17,6 @@ import {PinInput} from '../../components/PinInput';
 import {Modal} from '../../components/ui/Modal';
 import {CancelDownloadModal} from './ConfirmationModal';
 import {Icon, Input} from 'react-native-elements';
-import LinearGradient from 'react-native-linear-gradient';
 
 export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
   const {t} = useTranslation('transactionCodeScreen');
@@ -113,9 +112,7 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                             setTextLineCount(e.nativeEvent.lines.length);
                           }
                         }}>
-                        {props.description
-                          ? t(props.description)
-                          : t('description')}
+                        {t(`${props.description || t('description')}`)}
                       </Text>
                       {textLineCount > maxLines && (
                         <Text
@@ -123,7 +120,9 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                           style={
                             Theme.TransactionCodeScreenStyle.showMoreButton
                           }>
-                          {showFullDescription ? t('showLess') : t('showMore')}
+                          {showFullDescription
+                            ? t('Show less ↑')
+                            : t('Show more ↓')}
                         </Text>
                       )}
                     </Column>
@@ -172,72 +171,44 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
                       </>
                     ) : (
                       <>
-                        <LinearGradient
-                          colors={
-                            transactionCode.length > 0
-                              ? Theme.Colors.GradientColors
-                              : [
-                                  Theme.Colors.TransactionCodeBorderColor,
-                                  Theme.Colors.TransactionCodeBorderColor,
-                                ]
+                        <Input
+                          containerStyle={{
+                            width: Dimensions.get('window').width - 80,
+                            alignSelf: 'center',
+                          }}
+                          placeholder={t('placeholder')}
+                          placeholderTextColor="#ACACAC"
+                          inputContainerStyle={{
+                            borderBottomColor: '#C1C1C1',
+                            borderBottomWidth: 1,
+                            marginBottom: 16,
+                          }}
+                          inputStyle={
+                            Theme.TransactionCodeScreenStyle.inputStyle
                           }
-                          start={{x: 0, y: 0}}
-                          end={{x: 1, y: 0}}
-                          style={
-                            Theme.TransactionCodeScreenStyle
-                              .transactionGradientContainer
-                          }>
-                          <View
-                            style={{
-                              backgroundColor:
-                                Theme.Colors.TransactionCodeBackgroundColor,
-                              borderRadius: 16,
-                              overflow: 'hidden',
-                            }}>
-                            <Input
-                              containerStyle={{
-                                width: Dimensions.get('window').width - 80,
-                                alignSelf: 'center',
-                                marginBottom: -25,
-                                padding: 0,
-                              }}
-                              placeholder={t('placeholder')}
-                              placeholderTextColor={
-                                Theme.Colors.TransactionCodePlaceholderColor
-                              }
-                              inputContainerStyle={
-                                Theme.TransactionCodeScreenStyle.inputContainer
-                              }
-                              inputStyle={
-                                Theme.TransactionCodeScreenStyle.inputStyle
-                              }
-                              maxLength={props.length ?? 30}
-                              autoFocus
-                              secureTextEntry={!showCode}
-                              value={transactionCode}
-                              keyboardType={
-                                props.inputMode === 'numeric'
-                                  ? 'numeric'
-                                  : 'default'
-                              }
-                              onChangeText={handleChange}
-                              rightIcon={
-                                <Icon
-                                  name={showCode ? 'eye-off' : 'eye'}
-                                  type="feather"
-                                  size={20}
-                                  color={
-                                    Theme.Colors.TransactionCodePlaceholderColor
-                                  }
-                                  onPress={() => setShowCode(prev => !prev)}
-                                />
-                              }
+                          maxLength={props.length ?? 30}
+                          autoFocus
+                          secureTextEntry={!showCode}
+                          value={transactionCode}
+                          keyboardType={
+                            props.inputMode === 'numeric'
+                              ? 'numeric'
+                              : 'default'
+                          }
+                          onChangeText={handleChange}
+                          rightIcon={
+                            <Icon
+                              name={showCode ? 'eye-off' : 'eye'}
+                              type="feather"
+                              size={20}
+                              color="#888"
+                              onPress={() => setShowCode(prev => !prev)}
                             />
-                          </View>
-                        </LinearGradient>
+                          }
+                        />
                         <Button
                           disabled={transactionCode.length == 0}
-                          title={t('verify')}
+                          title="Verify"
                           type="gradient"
                           onPress={handleVerify}
                         />

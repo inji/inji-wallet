@@ -41,13 +41,13 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
     Array<Record<string, VCMetadata>>
   >([]);
   const [showPinVc, setShowPinVc] = useState(true);
-const [highlightCardLayout, setHighlightCardLayout] = useState<null | {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  type: 'success' | 'failure';
-}>(null);
+  const [highlightCardLayout, setHighlightCardLayout] = useState<null | {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    type: 'success' | 'failure';
+  }>(null);
 
   const getId = () => {
     controller.DISMISS();
@@ -259,6 +259,7 @@ const [highlightCardLayout, setHighlightCardLayout] = useState<null | {
                 }>
                 <Row style={Theme.SearchBarStyles.vcSearchBarContainer}>
                   <SearchBar
+                    isVcSearch
                     searchIconTestID="searchIssuerIcon"
                     searchBarTestID="issuerSearchBar"
                     search={search}
@@ -267,49 +268,67 @@ const [highlightCardLayout, setHighlightCardLayout] = useState<null | {
                     onChangeText={filterVcs}
                     onLayout={() => filterVcs('')}
                   />
+                  {clearSearchIcon && (
+                    <Pressable
+                      onPress={clearSearchText}
+                      style={Theme.SearchBarStyles.clearSearch}>
+                      <Icon
+                        testID="clearingIssuerSearchIcon"
+                        name="circle-with-cross"
+                        type="entypo"
+                        size={18}
+                        color={Theme.Colors.DetailsLabel}
+                      />
+                    </Pressable>
+                  )}
                 </Row>
                 <Row pY={11} pX={8}>
                   {numberOfCardsAvailable > 0 && (
-                    <Text style={{fontFamily: 'Montserrat_500Medium'}}>
+                    <Text style={{fontFamily: 'Inter_500Medium'}}>
                       {cardsAvailableText}
                     </Text>
                   )}
                 </Row>
                 {showPinVc &&
-                vcMetadataOrderedByPinStatus.map((vcMetadata, index) => {
-                  const vcKey = vcMetadata.getVcKey();
+                  vcMetadataOrderedByPinStatus.map((vcMetadata, index) => {
+                    const vcKey = vcMetadata.getVcKey();
 
-                  const isSuccessHighlighted =
-                    controller.reverificationSuccess.status &&
-                    controller.reverificationSuccess.vcKey === vcKey;
+                    const isSuccessHighlighted =
+                      controller.reverificationSuccess.status &&
+                      controller.reverificationSuccess.vcKey === vcKey;
 
-                  const isFailureHighlighted =
-                    controller.reverificationfailure.status &&
-                    controller.reverificationfailure.vcKey === vcKey;
-                  const highlightType = isSuccessHighlighted
-                    ? 'success'
-                    : isFailureHighlighted
-                    ? 'failure'
-                    : null;
+                    const isFailureHighlighted =
+                      controller.reverificationfailure.status &&
+                      controller.reverificationfailure.vcKey === vcKey;
+                    const highlightType = isSuccessHighlighted
+                      ? 'success'
+                      : isFailureHighlighted
+                      ? 'failure'
+                      : null;
 
-                  return (
-                    <VcItemContainer
-                      key={vcKey}
-                      vcMetadata={vcMetadata}
-                      margin="0 2 8 2"
-                      onPress={controller.VIEW_VC}
-                      isDownloading={controller.inProgressVcDownloads?.has(vcKey)}
-                      isPinned={vcMetadata.isPinned}
-                      isInitialLaunch={controller.isInitialDownloading}
-                      isTopCard={index === 0}
-                      onMeasured={rect => {
-                        if (highlightType && !highlightCardLayout) {
-                          setHighlightCardLayout({ ...rect, type: highlightType });
-                        }
-                      }}
-                    />
-                  );
-                })}
+                    return (
+                      <VcItemContainer
+                        key={vcKey}
+                        vcMetadata={vcMetadata}
+                        margin="0 2 8 2"
+                        onPress={controller.VIEW_VC}
+                        isDownloading={controller.inProgressVcDownloads?.has(
+                          vcKey,
+                        )}
+                        isPinned={vcMetadata.isPinned}
+                        isInitialLaunch={controller.isInitialDownloading}
+                        isTopCard={index === 0}
+                        onMeasured={rect => {
+                          if (highlightType && !highlightCardLayout) {
+                            setHighlightCardLayout({
+                              ...rect,
+                              type: highlightType,
+                            });
+                          }
+                        }}
+                      />
+                    );
+                  })}
                 {filteredSearchData.length > 0 && !showPinVc
                   ? filteredSearchData.map(vcMetadataObj => {
                       const [vcKey, vcMetadata] =
@@ -341,7 +360,7 @@ const [highlightCardLayout, setHighlightCardLayout] = useState<null | {
                             fontWeight: 'bold',
                             textAlign: 'center',
                             fontSize: 18,
-                            fontFamily: 'Montserrat_600SemiBold',
+                            fontFamily: 'Inter_600SemiBold',
                           }}>
                           {t('noCardsTitle')}
                         </Text>
@@ -351,7 +370,7 @@ const [highlightCardLayout, setHighlightCardLayout] = useState<null | {
                             lineHeight: 17,
                             paddingTop: 10,
                             fontSize: 14,
-                            fontFamily: 'Montserrat_400Regular',
+                            fontFamily: 'Inter_400Regular',
                           }}>
                           {t('noCardsDescription')}
                         </Text>
@@ -488,12 +507,13 @@ const [highlightCardLayout, setHighlightCardLayout] = useState<null | {
         />
       )}
       <MessageOverlay
-        overlayMode='highlight'
+        overlayMode="highlight"
         isVisible={!!highlightCardLayout && !props.isViewingVc}
         cardLayout={highlightCardLayout ?? undefined}
         onBackdropPress={() => {
-          controller.RESET_HIGHLIGHT()
-          setHighlightCardLayout(null)}}
+          controller.RESET_HIGHLIGHT();
+          setHighlightCardLayout(null);
+        }}
       />
     </React.Fragment>
   );
