@@ -2,7 +2,7 @@ import React from 'react';
 import {RefreshControl} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {useTranslation} from 'react-i18next';
-import {Column, HorizontallyCentered, Text} from '../../components/ui';
+import {Centered, Column, Text} from '../../components/ui';
 import {useHistoryTab} from './HistoryScreenController';
 import {ActivityLogText} from '../../components/ActivityLogText';
 import {MainRouteProps} from '../../routes/main';
@@ -15,7 +15,6 @@ export const HistoryScreen: React.FC<MainRouteProps> = () => {
 
   return (
     <Column fill backgroundColor={Theme.Colors.whiteBackgroundColor}>
-      <BannerNotificationContainer />
       <Column
         scroll
         padding="7 0"
@@ -25,6 +24,7 @@ export const HistoryScreen: React.FC<MainRouteProps> = () => {
             onRefresh={controller.REFRESH}
           />
         }>
+        <BannerNotificationContainer />
         {controller.activities.map(activity => (
           <ActivityLogText
             key={`${activity.timestamp}-${activity._vcKey}`}
@@ -32,7 +32,7 @@ export const HistoryScreen: React.FC<MainRouteProps> = () => {
           />
         ))}
         {controller.activities.length === 0 && (
-          <HorizontallyCentered fill>
+          <Centered fill>
             <Icon
               style={{marginBottom: 20}}
               size={40}
@@ -46,7 +46,7 @@ export const HistoryScreen: React.FC<MainRouteProps> = () => {
               margin="0 0 4 0">
               {t('noHistory')}
             </Text>
-          </HorizontallyCentered>
+          </Centered>
         )}
       </Column>
     </Column>
