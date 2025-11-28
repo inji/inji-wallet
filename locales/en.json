@@ -221,7 +221,8 @@
     "forMoreDetails": "For more details",
     "clickHere": "Click here",
     "version": "Version",
-    "poweredBy": "Powered by Inji, A MOSIP Product"
+    "poweredBy": "A MOSIP Product",
+    "copyright": "© 2022 MOSIP. All rights reserved."
   },
   "IssuersScreen": {
     "title": "Add new card",

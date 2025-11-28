@@ -105,7 +105,7 @@ export const StaticSendVcScreen: React.FC = () => {
         <Text testID="cardsSelected" margin={'3 0 10 0'}>
           2 {t('SendVPScreen:cardsSelected')}
         </Text>
-        <Text testID="uncheckText" color={Theme.Colors.GradientColors[1]}>
+        <Text testID="uncheckText" color={Theme.Colors.unCheckText}>
           {t('SendVPScreen:unCheck')}
         </Text>
       </Row>
