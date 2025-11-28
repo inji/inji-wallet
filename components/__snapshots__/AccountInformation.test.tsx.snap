@@ -129,7 +129,7 @@ exports[`AccountInformation Component should match snapshot with different email
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Montserrat_400Regular",
+              "fontFamily": "Inter_400Regular",
               "fontSize": 14,
             },
             null,
@@ -182,7 +182,7 @@ exports[`AccountInformation Component should match snapshot with different email
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Montserrat_400Regular",
+              "fontFamily": "Inter_400Regular",
               "fontSize": 14,
             },
             null,
@@ -334,7 +334,7 @@ exports[`AccountInformation Component should match snapshot with different pictu
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Montserrat_400Regular",
+              "fontFamily": "Inter_400Regular",
               "fontSize": 14,
             },
             null,
@@ -387,7 +387,7 @@ exports[`AccountInformation Component should match snapshot with different pictu
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Montserrat_400Regular",
+              "fontFamily": "Inter_400Regular",
               "fontSize": 14,
             },
             null,
@@ -539,7 +539,7 @@ exports[`AccountInformation Component should match snapshot with email and pictu
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Montserrat_400Regular",
+              "fontFamily": "Inter_400Regular",
               "fontSize": 14,
             },
             null,
@@ -592,7 +592,7 @@ exports[`AccountInformation Component should match snapshot with email and pictu
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Montserrat_400Regular",
+              "fontFamily": "Inter_400Regular",
               "fontSize": 14,
             },
             null,
@@ -744,7 +744,7 @@ exports[`AccountInformation Component should match snapshot with long email 1`] 
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Montserrat_400Regular",
+              "fontFamily": "Inter_400Regular",
               "fontSize": 14,
             },
             null,
@@ -797,7 +797,7 @@ exports[`AccountInformation Component should match snapshot with long email 1`] 
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Montserrat_400Regular",
+              "fontFamily": "Inter_400Regular",
               "fontSize": 14,
             },
             null,
