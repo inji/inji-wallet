@@ -1,20 +1,20 @@
 import React from 'react';
-import { Icon, ListItem, Overlay } from 'react-native-elements';
-import { Theme } from '../components/ui/styleUtils';
-import { Column, Row, Text } from '../components/ui';
-import { View } from 'react-native';
-import { useKebabPopUp } from './KebabPopUpController';
-import { ActorRefFrom } from 'xstate';
-import { useTranslation } from 'react-i18next';
-import { FlatList } from 'react-native-gesture-handler';
-import { VCMetadata } from '../shared/VCMetadata';
+import {Icon, ListItem, Overlay} from 'react-native-elements';
+import {Theme} from '../components/ui/styleUtils';
+import {Column, Row, Text} from '../components/ui';
+import {View} from 'react-native';
+import {useKebabPopUp} from './KebabPopUpController';
+import {ActorRefFrom} from 'xstate';
+import {useTranslation} from 'react-i18next';
+import {FlatList} from 'react-native-gesture-handler';
+import {VCMetadata} from '../shared/VCMetadata';
 import testIDProps from '../shared/commonUtil';
-import { getKebabMenuOptions } from './kebabMenuUtils';
-import { VCItemMachine } from '../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
+import {getKebabMenuOptions} from './kebabMenuUtils';
+import {VCItemMachine} from '../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 
 export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
   const controller = useKebabPopUp(props);
-  const { t } = useTranslation('HomeScreenKebabPopUp');
+  const {t} = useTranslation('HomeScreenKebabPopUp');
 
   return (
     <Column>
@@ -52,14 +52,14 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
 
         <FlatList
           data={getKebabMenuOptions(props)}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <ListItem topDivider onPress={item.onPress}>
-              <Row crossAlign="center" style={{ flex: 1 }}>
-                <View style={{ width: 25, alignItems: 'center' }}>
+              <Row crossAlign="center" style={{flex: 1}}>
+                <View style={{width: 25, alignItems: 'center'}}>
                   {item.icon}
                 </View>
                 <Text
-                  style={{fontFamily: 'Montserrat_600SemiBold'}}
+                  style={{fontFamily: 'Inter_600SemiBold'}}
                   color={
                     item.testID === 'removeFromWallet'
                       ? Theme.Colors.warningText
@@ -69,7 +69,13 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
                   margin="0 0 0 10">
                   {item.label}
                 </Text>
-                {item.label === t('reverify') && (<View style={Theme.KebabPopUpStyles.new}><Text color='white' weight='bold' style={{ fontSize: 10 }}>{t('new')}</Text></View>)}
+                {item.label === t('reverify') && (
+                  <View style={Theme.KebabPopUpStyles.new}>
+                    <Text color="white" weight="bold" style={{fontSize: 10}}>
+                      {t('new')}
+                    </Text>
+                  </View>
+                )}
               </Row>
             </ListItem>
           )}

@@ -12,7 +12,7 @@ import {
   resetRetryCount,
 } from '../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../shared/telemetry/TelemetryConstants';
-import BiometricIcon from '../components/BiometricIcon';
+import {SvgImage} from '../components/ui/svg';
 
 export const BiometricScreen: React.FC<RootRouteProps> = props => {
   const {t} = useTranslation('BiometricScreen');
@@ -39,7 +39,7 @@ export const BiometricScreen: React.FC<RootRouteProps> = props => {
       backgroundColor={Theme.Colors.whiteBackgroundColor}>
       <Centered fill>
         <TouchableOpacity onPress={controller.useBiometrics}>
-          <BiometricIcon size={108} />
+          {SvgImage.fingerprintIcon(180)}
         </TouchableOpacity>
       </Centered>
 

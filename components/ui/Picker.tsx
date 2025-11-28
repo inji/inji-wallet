@@ -4,7 +4,6 @@ import {Icon, ListItem, Overlay} from 'react-native-elements';
 import {Column} from './Layout';
 import {Text} from './Text';
 import testIDProps from '../../shared/commonUtil';
-import {Theme} from './styleUtils';
 
 interface Picker extends React.VFC<PickerProps<unknown>> {
   <T>(props: PickerProps<T>): ReturnType<React.FC>;
@@ -34,41 +33,23 @@ export const Picker: Picker = (props: PickerProps<unknown>) => {
       <Overlay
         isVisible={isContentVisible}
         onBackdropPress={toggleContent}
-        overlayStyle={Theme.Styles.overlay}>
+        overlayStyle={{padding: 1}}>
         <Column
           testID={props.testID}
           width={Dimensions.get('window').width * 0.8}>
-          {props.items.map((item, index) => {
-            const isSelected = selectedIndex === index;
-            return (
-              <ListItem
-                key={String(item.value ?? index)}
-                topDivider={index !== 0}
-                onPress={() => selectItem(index)}
-                containerStyle={
-                  isSelected
-                    ? Theme.Styles.listItemSelectedContainer
-                    : Theme.Styles.listItemUnselectedContainer
-                }>
-                <ListItem.Content>
-                  <ListItem.Title {...testIDProps(item.value as string)}>
-                    <Text
-                      style={
-                        isSelected
-                          ? Theme.Styles.listItemSelectedText
-                          : Theme.Styles.listItemUnselectedText
-                      }>
-                      {item.label}
-                    </Text>
-                  </ListItem.Title>
-                </ListItem.Content>
-
-                {isSelected && (
-                  <Icon name="check" color={Theme.Colors.ListSelectedIcon} />
-                )}
-              </ListItem>
-            );
-          })}
+          {props.items.map((item, index) => (
+            <ListItem
+              topDivider={index !== 0}
+              onPress={() => selectItem(index)}
+              key={index}>
+              <ListItem.Content>
+                <ListItem.Title {...testIDProps(item.value as string)}>
+                  <Text>{item.label}</Text>
+                </ListItem.Title>
+              </ListItem.Content>
+              {selectedIndex === index && <Icon name="check" />}
+            </ListItem>
+          ))}
         </Column>
       </Overlay>
     </React.Fragment>
