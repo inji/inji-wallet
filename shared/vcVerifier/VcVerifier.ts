@@ -1,9 +1,9 @@
 import {NativeModules} from 'react-native';
 
 export const EvaluationStatus = Object.freeze({
-  TRUE: "TRUE",
-  FALSE: "FALSE",
-  UNDETERMINED: "UNDETERMINED"
+  TRUE: 'TRUE',
+  FALSE: 'FALSE',
+  UNDETERMINED: 'UNDETERMINED',
 } as const);
 
 /**
@@ -13,7 +13,8 @@ export const EvaluationStatus = Object.freeze({
  * - "FALSE" → Condition was evaluated and is definitively false
  * - "UNDETERMINED" → Condition could not be evaluated due to an error
  */
-export type EvaluationStatus = typeof EvaluationStatus[keyof typeof EvaluationStatus];
+export type EvaluationStatus =
+  (typeof EvaluationStatus)[keyof typeof EvaluationStatus];
 
 export type CredentialStatusResult = {
   isValid: boolean;
@@ -24,7 +25,7 @@ export type CredentialStatusResult = {
 export type ErrorResult = {
   code: string;
   message: string;
-}
+};
 
 export type VerificationSummaryResult = {
   verificationStatus: boolean;
@@ -54,8 +55,8 @@ class VCVerifier {
   ): Promise<Record<string, CredentialStatusResult>> {
     try {
       return await this.vcVerifier.getCredentialStatus(
-          JSON.stringify(credential),
-          format,
+        JSON.stringify(credential),
+        format,
       );
     } catch (error) {
       throw new Error(`Failed to get credential status: ${error}`);
@@ -68,9 +69,9 @@ class VCVerifier {
   ): Promise<VerificationSummaryResult> {
     try {
       return await this.vcVerifier.getVerificationSummary(
-          credentialString,
-          credentialFormat,
-          [],
+        credentialString,
+        credentialFormat,
+        [],
       );
     } catch (error) {
       throw new Error(`Failed to get verification summary: ${error}`);

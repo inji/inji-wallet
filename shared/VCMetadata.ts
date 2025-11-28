@@ -9,7 +9,7 @@ import {getMosipIdentifier} from './commonUtil';
 import {VCFormat} from './VCFormat';
 import {isMosipVC, UUID} from './Utils';
 import {getCredentialType} from '../components/VC/common/VCUtils';
-import { EvaluationStatus } from './vcVerifier/VcVerifier';
+import {EvaluationStatus} from './vcVerifier/VcVerifier';
 
 const VC_KEY_PREFIX = 'VC';
 const VC_ITEM_STORE_KEY_REGEX = '^VC_[a-zA-Z0-9_-]+$';
@@ -151,7 +151,7 @@ export const getVCMetadata = (context: object, keyType: string) => {
     try {
       const url = new URL(issuerHost);
       return url.hostname.split('.')[0];
-    }catch (error) {
+    } catch (error) {
       // Fallback to issuerHost if URL parsing fails
       return issuerHost;
     }
@@ -166,7 +166,7 @@ export const getVCMetadata = (context: object, keyType: string) => {
     isVerified: context.vcMetadata.isVerified ?? false,
     isExpired: context.vcMetadata.isExpired ?? false,
     isRevoked: context.vcMetadata.isRevoked ?? false,
-    lastKnownStatusTimestamp:context.vcMetadata.lastKnownStatusTimestamp ?? '',
+    lastKnownStatusTimestamp: context.vcMetadata.lastKnownStatusTimestamp ?? '',
     mosipIndividualId: getMosipIndividualId(
       context['verifiableCredential'] as VerifiableCredential,
       issuer,
