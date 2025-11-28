@@ -3,13 +3,13 @@ import {NativeModules} from 'react-native';
 export type CredentialStatusResult = {
   isValid: boolean;
   error?: ErrorResult;
-  statusListVC?: string; // Available only in iOS
+  statusListVC?: Record<string, any>; // Available only in iOS
 };
 
 export type ErrorResult = {
   code: string;
   message: string;
-}
+};
 
 export type VerificationSummaryResult = {
   verificationStatus: boolean;
@@ -39,8 +39,8 @@ class VCVerifier {
   ): Promise<Record<string, CredentialStatusResult>> {
     try {
       return await this.vcVerifier.getCredentialStatus(
-          JSON.stringify(credential),
-          format,
+        JSON.stringify(credential),
+        format,
       );
     } catch (error) {
       throw new Error(`Failed to get credential status: ${error}`);
@@ -53,9 +53,9 @@ class VCVerifier {
   ): Promise<VerificationSummaryResult> {
     try {
       return await this.vcVerifier.getVerificationSummary(
-          credentialString,
-          credentialFormat,
-          [],
+        credentialString,
+        credentialFormat,
+        [],
       );
     } catch (error) {
       throw new Error(`Failed to get verification summary: ${error}`);
