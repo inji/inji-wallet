@@ -80,7 +80,7 @@ exports[`BannerNotification Component should match snapshot with different testI
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Inter_600SemiBold",
+              "fontFamily": "Montserrat_600SemiBold",
               "fontSize": 15,
             },
             {
@@ -92,7 +92,7 @@ exports[`BannerNotification Component should match snapshot with different testI
             null,
             null,
             {
-              "fontFamily": "Inter_600SemiBold",
+              "fontFamily": "Montserrat_600SemiBold",
               "fontSize": 12,
               "lineHeight": 15,
               "padding": 1,
@@ -250,7 +250,7 @@ exports[`BannerNotification Component should match snapshot with error status 1`
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Inter_600SemiBold",
+              "fontFamily": "Montserrat_600SemiBold",
               "fontSize": 15,
             },
             {
@@ -262,7 +262,7 @@ exports[`BannerNotification Component should match snapshot with error status 1`
             null,
             null,
             {
-              "fontFamily": "Inter_600SemiBold",
+              "fontFamily": "Montserrat_600SemiBold",
               "fontSize": 12,
               "lineHeight": 15,
               "padding": 1,
@@ -420,7 +420,7 @@ exports[`BannerNotification Component should match snapshot with in progress sta
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Inter_600SemiBold",
+              "fontFamily": "Montserrat_600SemiBold",
               "fontSize": 15,
             },
             {
@@ -432,7 +432,7 @@ exports[`BannerNotification Component should match snapshot with in progress sta
             null,
             null,
             {
-              "fontFamily": "Inter_600SemiBold",
+              "fontFamily": "Montserrat_600SemiBold",
               "fontSize": 12,
               "lineHeight": 15,
               "padding": 1,
@@ -590,7 +590,7 @@ exports[`BannerNotification Component should match snapshot with long message 1`
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Inter_600SemiBold",
+              "fontFamily": "Montserrat_600SemiBold",
               "fontSize": 15,
             },
             {
@@ -602,7 +602,7 @@ exports[`BannerNotification Component should match snapshot with long message 1`
             null,
             null,
             {
-              "fontFamily": "Inter_600SemiBold",
+              "fontFamily": "Montserrat_600SemiBold",
               "fontSize": 12,
               "lineHeight": 15,
               "padding": 1,
@@ -760,7 +760,7 @@ exports[`BannerNotification Component should match snapshot with success status 
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Inter_600SemiBold",
+              "fontFamily": "Montserrat_600SemiBold",
               "fontSize": 15,
             },
             {
@@ -772,7 +772,7 @@ exports[`BannerNotification Component should match snapshot with success status 
             null,
             null,
             {
-              "fontFamily": "Inter_600SemiBold",
+              "fontFamily": "Montserrat_600SemiBold",
               "fontSize": 12,
               "lineHeight": 15,
               "padding": 1,
