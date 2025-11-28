@@ -61,7 +61,7 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
             color={display.getTextColor(Theme.Colors.Details)}
             style={[
               Theme.Styles.verificationStatus,
-              {fontFamily: 'Inter_400'},
+              {fontFamily: 'Montserrat_400'},
             ]}>
             {t('lastChecked')}
           </Text>
@@ -70,7 +70,7 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
             color={display.getTextColor(Theme.Colors.Details)}
             style={[
               Theme.Styles.verificationStatus,
-              {fontFamily: 'Inter_400'},
+              {fontFamily: 'Montserrat_400'},
             ]}>
             {new Date(vcMetadata.lastKnownStatusTimestamp).toLocaleString()}
           </Text>
