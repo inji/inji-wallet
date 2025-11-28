@@ -53,7 +53,7 @@
                     <include name="verifyWelcomePagesFromInjiTourGuideKaanda"/>
                     <include name="verifyWelcomePagesFromInjiTourGuideTamil"/>
                     <include name="verifyWelcomePagesFromInjiTourGuideWithFilipinoLangauge"/>
-                    <include name="verifyWelcomePagesFromInjiTourGuideWithArabicLangauge"/>
+                    <!-- <include name="verifyWelcomePagesFromInjiTourGuideWithArabicLangauge"/> This tetcase is dsiabled from running-->
                 </methods>
             </class>
             <class name="inji.testcases.iosTestCases.DeletingVcTest">
@@ -73,7 +73,7 @@
                     <include name="setupPasscodeAndDownloadCardWithoutInternet"/>
                     <include name="verifyListOfLanguagesInOfflineMode"/>
                     <include name="verifyHelpPageOfflineMode"/>
-                    <include name="verifyRecivedCardOffline"/>
+                    <!-- <include name="verifyRecivedCardOffline"/> this tetcase is not appliacable for ios -->
                     <include name="downloadCardWithoutInternetRetryWithInternet"/>
                     <include name="verifyVcIssuerListWithoutNetwork"/>
                     <include name="DownloadVcWithEsignetWithoutNetwork"/>
