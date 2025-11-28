@@ -19,7 +19,7 @@ export type EvaluationStatus =
 export type CredentialStatusResult = {
   isValid: boolean;
   error?: ErrorResult;
-  statusListVC?: string; // Available only in iOS
+  statusListVC?: Record<string, any>; // Available only in iOS
 };
 
 export type ErrorResult = {

@@ -69,7 +69,10 @@ final class LdpStatusChecker {
         var results: [String: CredentialStatusResult] = [:]
         
         for entry in filteredEntries {
-          let purpose = (entry["statusPurpose"] as? String)?.lowercased() ?? ""
+          guard let purpose = (entry["statusPurpose"] as? String)?.lowercased(), !purpose.isEmpty else {
+            print("Warning: Skipping entry with missing statusPurpose")
+            continue
+          }
           do {
             let result = try await checkStatusEntry(entry: entry, purpose: purpose)
             results[purpose] = result
@@ -175,7 +178,7 @@ final class LdpStatusChecker {
                 throw StatusCheckException(message: "statusMessage count mismatch", errorCode: .statusVerificationError)
             }
           
-          print("Status message for purpose '\(purpose): $\(statusMessage)")
+          print("Status message for purpose '\(purpose): \(statusMessage)")
         }
 
         let bitSet = try decodeEncodedList(encodedList)

@@ -321,7 +321,7 @@ export interface VerificationResult {
 
 //TODO: Implement status list VC verification for iOS.
 //Currently Digital Bazaar library does not support VC 2.0 status list VC verification.
-function verifyStatusListVC(statusListVC: string | undefined) {
+function verifyStatusListVC(statusListVC: Record<string, any> | undefined) {
   return true;
 }
 
