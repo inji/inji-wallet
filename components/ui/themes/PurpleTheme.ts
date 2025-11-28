@@ -1138,16 +1138,10 @@ export const PurpleTheme = {
     searchBarContainer: {
       alignItems: 'center',
     },
-    clearIcon: {
-      position: 'absolute',
-      right: 45, 
-      width: 40,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
     vcSearchBarContainer: {},
     innerSearchBarContainer: {
       flexDirection: 'row',
+      justifyContent: 'space-between',
       alignItems: 'center',
       width: '100%',
       backgroundColor: Colors.White,
@@ -1164,17 +1158,17 @@ export const PurpleTheme = {
       paddingLeft: 15,
     },
     searchIcon: {
-      width: 25,
       justifyContent: 'center',
-      alignItems: 'center',
+      height: Dimensions.get('window').height * 0.055,
+      width: Dimensions.get('window').width * 0.1,
+      fontFamily: 'Montserrat_500Medium',
     },
     searchBar: {
       textAlign: I18nManager.isRTL ? 'right' : 'left',
       height: Dimensions.get('window').height * 0.055,
-      flex: 1,
+      width: Dimensions.get('window').width * 0.75,
       fontFamily: 'Montserrat_500Medium',
       fontSize: 17,
-      marginRight: 40
     },
   }),
   ButtonStyles: StyleSheet.create({
