@@ -67,7 +67,7 @@ exports[`CopyButton Component should match snapshot with default props 1`] = `
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_600SemiBold",
+            "fontFamily": "Montserrat_600SemiBold",
             "fontSize": 15,
           },
           null,
@@ -156,7 +156,7 @@ exports[`CopyButton Component should match snapshot with long content 1`] = `
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_600SemiBold",
+            "fontFamily": "Montserrat_600SemiBold",
             "fontSize": 15,
           },
           null,
@@ -245,7 +245,7 @@ exports[`CopyButton Component should match snapshot with special characters 1`] 
             "lineHeight": 18,
           },
           {
-            "fontFamily": "Inter_600SemiBold",
+            "fontFamily": "Montserrat_600SemiBold",
             "fontSize": 15,
           },
           null,
