@@ -8,6 +8,7 @@ import {
   Text,
   BackHandler,
   SafeAreaView,
+  Platform,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import {Ionicons} from '@expo/vector-icons';
@@ -60,7 +61,13 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
       {
         text: t('continue'),
         style: 'default',
-        onPress: () => setShowWebView(true),
+        onPress: () => {
+          if (Platform.OS === 'android') {
+            setTimeout(() => setShowWebView(true), 2000);
+          } else {
+            setShowWebView(true);
+          }
+        },
       },
     ]);
 
