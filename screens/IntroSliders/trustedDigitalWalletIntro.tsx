@@ -17,28 +17,28 @@ export const StaticHomeScreen: React.FC = () => {
       name: 'Abigail',
       status: 'valid',
       pin: false,
-      face: require('../../assets/faceImage2.png'),
+      face: require('../../assets/Profile1.png'),
     },
     {
       id: 2,
       name: 'Patricia',
       status: 'valid',
       pin: false,
-      face: require('../../assets/faceImage1.png'),
+      face: require('../../assets/Profile2.jpg'),
     },
     {
       id: 3,
       name: 'Timara',
       status: 'pending',
       pin: false,
-      face: require('../../assets/faceImage2.png'),
+      face: require('../../assets/Profile3.jpg'),
     },
     {
       id: 4,
       name: 'Abishek',
       status: 'valid',
       pin: false,
-      face: require('../../assets/faceImage1.png'),
+      face: require('../../assets/Profile4.png'),
     },
   ];
 
