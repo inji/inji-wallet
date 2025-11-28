@@ -23,16 +23,18 @@ import {RootRouteProps} from '../../routes';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
 import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {Theme} from '../../components/ui/styleUtils';
-import { useTabBarVisibility } from '../../shared/hooks/useTabBarVisibility';
 
 type MyVcsTabNavigation = NavigationProp<RootRouteProps>;
+
+const changeTabBarVisible = (visible: string) => {
+  Theme.BottomTabBarStyle.tabBarStyle.display = visible;
+};
 
 export function useSendVcScreen() {
   const {appService} = useContext(GlobalContext);
   const scanService = appService.children.get('scan')!!;
   const vcMetaService = appService.children.get('vcMeta')!!;
   const navigation = useNavigation<MyVcsTabNavigation>();
-  const {showTabBar} = useTabBarVisibility();
 
   const [selectedIndex, setSelectedIndex] = useState<number>(null);
 
@@ -73,7 +75,7 @@ export function useSendVcScreen() {
     RETRY_VERIFICATION: () => scanService.send(ScanEvents.RETRY_VERIFICATION()),
     GO_TO_HOME: () => {
       navigation.navigate(BOTTOM_TAB_ROUTES.home, {screen: 'HomeScreen'});
-      showTabBar();
+      changeTabBarVisible('flex');
     },
     SELECT_VC_ITEM:
       (index: number) => (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
