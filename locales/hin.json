@@ -221,7 +221,8 @@
     "forMoreDetails": "अधिक जानकारी के लिए",
     "clickHere": "यहाँ क्लिक करें",
     "version": "संस्करण",
-    "poweredBy": "इंजी द्वारा संचालित, एक MOSIP उत्पाद"
+    "poweredBy": "एक MOSIP उत्पाद",
+    "copyright": "© 2022 MOSIP. सभी अधिकार सुरक्षित।"
   },
   "IssuersScreen": {
     "title": "नया कार्ड जोड़ें",

@@ -26,7 +26,6 @@ export const Text: React.FC<TextProps> = (props: TextProps) => {
       accessible={props.accessible}
       onPress={props.onPress}>
       {props.children}
-      
     </RNText>
   );
 };
@@ -38,7 +37,15 @@ interface TextProps {
   weight?: 'regular' | 'semibold' | 'bold';
   align?: TextStyle['textAlign'];
   margin?: Spacing;
-  size?: 'small' | 'extraSmall' | 'smaller' | 'regular' | 'large' | 'mediumSmall';
+  size?:
+    | 'small'
+    | 'extraSmall'
+    | 'smaller'
+    | 'regular'
+    | 'large'
+    | 'mediumSmall'
+    | 'medium'
+    | 'mediumExtraSmall';
   lineHeight?: number;
   numLines?: number;
   ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip' | undefined;

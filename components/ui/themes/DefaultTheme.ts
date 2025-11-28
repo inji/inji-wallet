@@ -151,6 +151,7 @@ export const DefaultTheme = {
     warningText: Colors.Red,
     PendingIcon: Colors.Yellow,
     selectIDTextGradient: ['#F5F5F5', '#FFFFFF'],
+    unCheckText: Colors.Orange,
   },
   Styles: StyleSheet.create({
     title: {
@@ -993,9 +994,15 @@ export const DefaultTheme = {
       fontSize: 11,
       lineHeight: 18,
     },
+    mediumExtraSmall: {
+      fontSize: 14,
+    },
     mediumSmall: {
       fontSize: 15,
       lineHeight: 18,
+    },
+    medium: {
+      fontSize: 16,
     },
     large: {
       fontSize: 18,
@@ -1369,7 +1376,6 @@ export const DefaultTheme = {
     new: {
       height: 20,
       width: 'auto',
-      backgroundColor: '#FF5300',
       alignItems: 'center',
       marginLeft: 10,
       borderRadius: 5,
@@ -1954,6 +1960,22 @@ export const DefaultTheme = {
     injiVersionText: {
       paddingTop: 3,
       maxWidth: 250,
+    },
+    footerContainer: {
+      alignItems: 'center',
+      marginTop: 12,
+    },
+
+    poweredByRow: {
+      alignItems: 'center',
+      marginBottom: 4,
+    },
+
+    logoStyle: {
+      width: 24,
+      height: 24,
+      marginRight: 5,
+      marginTop: 12,
     },
     tuvaliVerisonStyle: {
       paddingTop: 3,
