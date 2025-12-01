@@ -862,7 +862,7 @@
   "SendVcScreen": {
     "reasonForSharing": "ಹಂಚಿಕೆಗೆ ಕಾರಣ (ಐಚ್ಛಿಕ)",
     "introTitle": "ವಿನಂತಿದವರು",
-    "requestMessage": "ನಿಮ್ಮ ಡಿಜಿಟಲ್ ಐಡಿಯನ್ನು ವಿನಂತಿಸುತ್ತಿದ್ದಾರೆ",
+    "requestMessage": "ನಿಮ್ಮ ಡಿಜಿಟಲ್ ಐಡಿಯನ್ನು ವಿನಂತಿಸುತ್ತಿದ್ದಾರೆ ",
     "acceptRequest": "ಹಂಚಿಕೊಳ್ಳಿ",
     "acceptRequestAndVerify": "ಸೆಲ್ಫಿಯೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ",
     "reject": "ತಿರಸ್ಕರಿಸಿ",

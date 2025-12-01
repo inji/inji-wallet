@@ -16,7 +16,7 @@ const Colors = {
   Black: '#000000',
   Zambezi: '#5F5F5F',
   Violet: '#5B03AD',
-  BrightOrange: '#FF5300',
+  Primary: '#FF5300',
   Magenta: '#951F6F',
   Grey: '#C7C7C7',
   Grey5: '#E0E0E0',
@@ -31,7 +31,7 @@ const Colors = {
   DimGray: '#737373',
   DarkGray: '#A5A5A5',
   platinumGrey: '#EDEDED',
-  Orange: '#951F6F',
+  Secondary: '#951F6F',
   OrangeBrown: '#D9822B',
   Blue: '#0000FF',
   LightGrey: '#F8F8F8',
@@ -76,26 +76,26 @@ export const DefaultTheme = {
   Colors: {
     ProfileIconColor: Colors.DarkGray,
     DetailedViewBackground: Colors.Gray97,
-    TabItemText: Colors.Orange,
+    TabItemText: Colors.Secondary,
     Details: Colors.Black,
     DetailsLabel: Colors.Gray40,
     LoadingDetailsLabel: Colors.Gray40,
-    AddIdBtnBg: Colors.Orange,
-    AddIdBtnTxt: Colors.Orange,
+    AddIdBtnBg: Colors.Secondary,
+    AddIdBtnTxt: Colors.Secondary,
     DownloadIdBtnTxt: Colors.White,
-    Loading: Colors.Orange,
-    Cursor: Colors.Orange,
-    noUinText: Colors.Orange,
-    IconBg: Colors.Orange,
+    Loading: Colors.Secondary,
+    Cursor: Colors.Secondary,
+    noUinText: Colors.Secondary,
+    IconBg: Colors.Secondary,
     popUp: Colors.Green,
-    Icon: Colors.Orange,
+    Icon: Colors.Secondary,
     GrayIcon: Colors.Gray50,
     helpText: Colors.Gray44,
     borderBottomColor: Colors.Grey6,
     whiteBackgroundColor: Colors.White,
     lightGreyBackgroundColor: Colors.LightGrey,
     aboutVersion: Colors.Gray40,
-    switchHead: Colors.Orange,
+    switchHead: Colors.Secondary,
     switchTrackTrue: Colors.LightOrange,
     switchTrackFalse: Colors.Grey,
     overlayBackgroundColor: Colors.White,
@@ -112,7 +112,7 @@ export const DefaultTheme = {
     whiteText: Colors.White,
     flipCameraIcon: Colors.Black,
     RetrieveIdLabel: Colors.ShadeOfGrey,
-    inputSelection: Colors.Orange,
+    inputSelection: Colors.Secondary,
     checkCircleIcon: Colors.White,
     OnboardingCircleIcon: Colors.White,
     OnboardingCloseIcon: Colors.White,
@@ -147,11 +147,12 @@ export const DefaultTheme = {
     warningLogoBgColor: Colors.warningLogoBg,
     tooltipIcon: Colors.toolTip,
     toolTipPointerColor: Colors.toolTipPointer,
-    urlLink: Colors.Orange,
+    urlLink: Colors.Secondary,
     warningText: Colors.Red,
     PendingIcon: Colors.Yellow,
     selectIDTextGradient: ['#F5F5F5', '#FFFFFF'],
-    unCheckText: Colors.Orange,
+    unCheckText: Colors.Secondary,
+    secondaryText: Colors.Secondary,
   },
   Styles: StyleSheet.create({
     title: {
@@ -311,14 +312,14 @@ export const DefaultTheme = {
       borderRadius: 15,
       margin: 5,
       borderWidth: 3,
-      borderColor: Colors.Orange,
+      borderColor: Colors.Secondary,
       overflow: 'hidden',
     },
     selectedVc: {
       borderRadius: 10,
       margin: 5,
       borderWidth: 2,
-      borderColor: Colors.Orange,
+      borderColor: Colors.Secondary,
     },
     labelPartContainer: {
       marginLeft: 16,
@@ -563,7 +564,7 @@ export const DefaultTheme = {
       borderWidth: 0,
     },
     tabIndicator: {
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
     },
     tabContainer: {
       backgroundColor: Colors.Transparent,
@@ -594,7 +595,7 @@ export const DefaultTheme = {
     idInputBottom: {
       position: 'relative',
       bottom: 18,
-      borderBottomColor: Colors.Orange,
+      borderBottomColor: Colors.Secondary,
       borderBottomWidth: 1,
       minWidth: 210,
     },
@@ -651,7 +652,7 @@ export const DefaultTheme = {
       borderRadius: 200,
       height: 70,
       width: 70,
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
       justifyContent: 'center',
       position: 'absolute',
     },
@@ -732,7 +733,7 @@ export const DefaultTheme = {
     sendVPHeaderSubTitle: {
       fontSize: 13,
       fontFamily: 'Montserrat_600SemiBold',
-      color: Colors.Orange,
+      color: Colors.Secondary,
       maxWidth: '80%',
       overflow: 'hidden',
     },
@@ -890,7 +891,7 @@ export const DefaultTheme = {
     },
     onEnteringPin: {
       borderBottomWidth: 3,
-      borderColor: Colors.Orange,
+      borderColor: Colors.Secondary,
       color: Colors.Black,
       flex: 1,
       fontFamily: 'Montserrat_700Bold',
@@ -941,7 +942,7 @@ export const DefaultTheme = {
       fontFamily: 'Montserrat_600SemiBold',
     },
     urlLinkText: {
-      color: Colors.Orange,
+      color: Colors.Secondary,
       fontFamily: 'Montserrat_600SemiBold',
     },
     aboutDetails: {
@@ -1037,7 +1038,7 @@ export const DefaultTheme = {
   }),
   ToastItemStyles: StyleSheet.create({
     toastContainer: {
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
       position: 'absolute',
       alignSelf: 'center',
       top: 80,
@@ -1067,7 +1068,7 @@ export const DefaultTheme = {
     searchBarContainer: {
       alignItems: 'center',
       borderBottomWidth: 1,
-      borderBottomColor: Colors.Orange,
+      borderBottomColor: Colors.Secondary,
     },
     vcSearchBarContainer: {
       alignItems: 'center',
@@ -1102,14 +1103,14 @@ export const DefaultTheme = {
       flex: 1,
     },
     solid: {
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
     },
     clear: {
       backgroundColor: Colors.Transparent,
     },
     outline: {
       backgroundColor: Colors.Transparent,
-      borderColor: Colors.Orange,
+      borderColor: Colors.Secondary,
     },
     disabledOutlineButton: {
       backgroundColor: Colors.Transparent,
@@ -1124,7 +1125,7 @@ export const DefaultTheme = {
       backgroundColor: Colors.Grey,
     },
     addId: {
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
     },
     gradient: {
       borderRadius: 9,
@@ -1145,7 +1146,7 @@ export const DefaultTheme = {
     },
     radius: {
       borderRadius: 10,
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
     },
     Large: {
       width: Dimensions.get('window').width * 0.9,
@@ -1195,7 +1196,7 @@ export const DefaultTheme = {
       margin: 16,
       padding: 8,
       borderWidth: 2,
-      borderColor: Colors.Orange,
+      borderColor: Colors.Secondary,
       borderRadius: 30,
     },
     sharedSuccessfullyVerifierInfo: {
@@ -1377,6 +1378,7 @@ export const DefaultTheme = {
       height: 20,
       width: 'auto',
       alignItems: 'center',
+      justifyContent: 'center',
       marginLeft: 10,
       borderRadius: 5,
       paddingHorizontal: 5,
@@ -1471,7 +1473,7 @@ export const DefaultTheme = {
       padding: 20,
     },
     slider: {
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
       minHeight: 300,
       width: '100%',
       margin: 0,

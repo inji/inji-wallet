@@ -870,7 +870,7 @@
   "SendVcScreen": {
     "reasonForSharing": "Reason for sharing (optional)",
     "introTitle": "Requester",
-    "requestMessage": "is requesting your digital ID for the purpose",
+    "requestMessage": "is requesting your digital ID for the purpose of ",
     "acceptRequest": "Share",
     "acceptRequestAndVerify": "Share with Selfie",
     "reject": "Reject",
