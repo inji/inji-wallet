@@ -52,7 +52,7 @@ const Colors = {
   GradientColorsLight: ['#F3E2FF', '#F3E2FF'],
   DisabledColors: ['#C7C7C7', '#C7C7C7'],
   captureIconBorder: '#F59B4B',
-  Purple: '#70308C',
+  Primary: '#70308C',
   LightPurple: '#F3E2FF',
   TimeoutHintBoxColor: '#FBF5FF',
   TimeoutHintBoxBorder: '#F3E2FF',
@@ -78,19 +78,19 @@ export const PurpleTheme = {
   Colors: {
     ProfileIconColor: Colors.DarkGray,
     DetailedViewBackground: Colors.Gray97,
-    TabItemText: Colors.Purple,
+    TabItemText: Colors.Primary,
     Details: Colors.Black,
     DetailsLabel: Colors.Gray40,
     LoadingDetailsLabel: Colors.Gray40,
-    AddIdBtnBg: Colors.Purple,
-    AddIdBtnTxt: Colors.Purple,
+    AddIdBtnBg: Colors.Primary,
+    AddIdBtnTxt: Colors.Primary,
     DownloadIdBtnTxt: Colors.White,
-    Loading: Colors.Purple,
-    Cursor: Colors.Purple,
-    noUinText: Colors.Purple,
-    IconBg: Colors.Purple,
+    Loading: Colors.Primary,
+    Cursor: Colors.Primary,
+    noUinText: Colors.Primary,
+    IconBg: Colors.Primary,
     popUp: Colors.Green,
-    Icon: Colors.Purple,
+    Icon: Colors.Primary,
     GrayIcon: Colors.Gray50,
     helpText: Colors.Gray44,
     borderBottomColor: Colors.Grey6,
@@ -98,7 +98,7 @@ export const PurpleTheme = {
     lightGreyBackgroundColor: Colors.LightGrey,
     errorGrayText: Colors.mediumDarkGrey,
     aboutVersion: Colors.Gray40,
-    switchHead: Colors.Purple,
+    switchHead: Colors.Primary,
     switchTrackTrue: Colors.LightPurple,
     switchTrackFalse: Colors.Grey,
     overlayBackgroundColor: Colors.White,
@@ -115,7 +115,7 @@ export const PurpleTheme = {
     whiteText: Colors.White,
     flipCameraIcon: Colors.Black,
     RetrieveIdLabel: Colors.ShadeOfGrey,
-    inputSelection: Colors.Purple,
+    inputSelection: Colors.Primary,
     checkCircleIcon: Colors.White,
     OnboardingCircleIcon: Colors.White,
     OnboardingCloseIcon: Colors.White,
@@ -150,10 +150,11 @@ export const PurpleTheme = {
     warningLogoBgColor: Colors.warningLogoBg,
     tooltipIcon: Colors.tooltip,
     toolTipPointerColor: Colors.toolTipPointer,
-    urlLink: Colors.Purple,
+    urlLink: Colors.Primary,
     warningText: Colors.Red,
     PendingIcon: Colors.Yellow,
     unCheckText: Colors.Orange,
+    secondaryText: Colors.Orange,
   },
   Styles: StyleSheet.create({
     title: {
@@ -327,14 +328,14 @@ export const PurpleTheme = {
       borderRadius: 15,
       margin: 5,
       borderWidth: 3,
-      borderColor: Colors.Purple,
+      borderColor: Colors.Primary,
       overflow: 'hidden',
     },
     selectedVc: {
       borderRadius: 10,
       margin: 5,
       borderWidth: 2,
-      borderColor: Colors.Purple,
+      borderColor: Colors.Primary,
     },
     labelPartContainer: {
       marginLeft: 16,
@@ -569,7 +570,7 @@ export const PurpleTheme = {
       borderWidth: 0,
     },
     tabIndicator: {
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
     },
     tabContainer: {
       backgroundColor: Colors.Transparent,
@@ -600,7 +601,7 @@ export const PurpleTheme = {
     idInputBottom: {
       position: 'relative',
       bottom: 18,
-      borderBottomColor: Colors.Purple,
+      borderBottomColor: Colors.Primary,
       borderBottomWidth: 1,
       minWidth: 210,
     },
@@ -657,7 +658,7 @@ export const PurpleTheme = {
       borderRadius: 200,
       height: 70,
       width: 70,
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
       justifyContent: 'center',
       position: 'absolute',
     },
@@ -700,7 +701,7 @@ export const PurpleTheme = {
       paddingHorizontal: 24,
     },
     newLabel: {
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
       paddingHorizontal: 5,
       paddingVertical: 4,
       maxHeight: 20,
@@ -899,7 +900,7 @@ export const PurpleTheme = {
     },
     onEnteringPin: {
       borderBottomWidth: 3,
-      borderColor: Colors.Purple,
+      borderColor: Colors.Primary,
       color: Colors.Black,
       flex: 1,
       fontFamily: 'Montserrat_700Bold',
@@ -950,7 +951,7 @@ export const PurpleTheme = {
       fontFamily: 'Montserrat_600SemiBold',
     },
     urlLinkText: {
-      color: Colors.Purple,
+      color: Colors.Primary,
       fontFamily: 'Montserrat_600SemiBold',
     },
     aboutDetails: {
@@ -1046,7 +1047,7 @@ export const PurpleTheme = {
   }),
   ToastItemStyles: StyleSheet.create({
     toastContainer: {
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
       position: 'absolute',
       alignSelf: 'center',
       top: 80,
@@ -1076,7 +1077,7 @@ export const PurpleTheme = {
     searchBarContainer: {
       alignItems: 'center',
       borderBottomWidth: 1,
-      borderBottomColor: Colors.Purple,
+      borderBottomColor: Colors.Primary,
     },
     vcSearchBarContainer: {
       alignItems: 'center',
@@ -1111,14 +1112,14 @@ export const PurpleTheme = {
       flex: 1,
     },
     solid: {
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
     },
     clear: {
       backgroundColor: Colors.Transparent,
     },
     outline: {
       backgroundColor: Colors.Transparent,
-      borderColor: Colors.Purple,
+      borderColor: Colors.Primary,
     },
     disabledOutlineButton: {
       backgroundColor: Colors.Transparent,
@@ -1133,7 +1134,7 @@ export const PurpleTheme = {
       backgroundColor: Colors.Grey,
     },
     addId: {
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
     },
     gradient: {
       borderRadius: 9,
@@ -1154,7 +1155,7 @@ export const PurpleTheme = {
     },
     radius: {
       borderRadius: 10,
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
     },
   }),
   OIDCAuthStyles: StyleSheet.create({
@@ -1201,7 +1202,7 @@ export const PurpleTheme = {
       margin: 16,
       padding: 8,
       borderWidth: 2,
-      borderColor: Colors.Purple,
+      borderColor: Colors.Primary,
       borderRadius: 30,
     },
     sharedSuccessfullyVerifierInfo: {
@@ -1479,7 +1480,7 @@ export const PurpleTheme = {
       padding: 20,
     },
     slider: {
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
       minHeight: 300,
       width: '100%',
       margin: 0,

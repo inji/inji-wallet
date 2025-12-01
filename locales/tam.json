@@ -862,7 +862,7 @@
   "SendVcScreen": {
     "reasonForSharing": "பகிர்வதற்கான காரணம் (விரும்பினால்)",
     "introTitle": "கோரியவர்",
-    "requestMessage": "உங்கள் டிஜிட்டல் ஐடியை கோருகிறார்",
+    "requestMessage": "உங்கள் டிஜிட்டல் ஐடியை கோருகிறார் ",
     "acceptRequest": "பகிர்",
     "acceptRequestAndVerify": "செல்ஃபியுடன் பகிரவும்",
     "reject": "நிராகரிக்கவும்",

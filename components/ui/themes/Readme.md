@@ -70,7 +70,7 @@ To change the color of TabItemText
 ```
 export const DefaultTheme = {
   Colors: {
-    TabItemText: colors.Orange,
+    TabItemText: colors.Primary,
     ...
   }
 }
@@ -83,7 +83,7 @@ To change the color of Details Label Text
 ```
 export const DefaultTheme = {
   Colors: {
-      DetailsLabel: colors.Orange,
+      DetailsLabel: colors.Primary,
     ...
   }
 }
@@ -109,8 +109,8 @@ To change the color of AddId Button Text and Background
 ```
 export const DefaultTheme = {
   Colors: {
-     AddIdBtnBg: colors.Orange,
-      AddIdBtnTxt: colors.Orange,
+     AddIdBtnBg: colors.Primary,
+      AddIdBtnTxt: colors.Primary,
     ...
   }
 }
@@ -123,7 +123,7 @@ To change the color of Icons
 ```
 export const DefaultTheme = {
   Colors: {
-      Icon: colors.Orange,
+      Icon: colors.Primary,
     ...
   }
 }
@@ -136,7 +136,7 @@ To change the Background Color of Icons
 ```
 export const DefaultTheme = {
   Colors: {
-       IconBg: colors.Orange,
+       IconBg: colors.Primary,
     ...
   }
 }
@@ -149,7 +149,7 @@ To change the Color of Loading Transition
 ```
 export const DefaultTheme = {
   Colors: {
-       Loading: colors.Orange,
+       Loading: colors.Primary,
     ...
   }
 }
@@ -175,7 +175,7 @@ To change the Color of noUinText
 ```
 export const DefaultTheme = {
   Colors: {
-       noUinText : colors.Orange,
+       noUinText : colors.Primary,
     ...
   }
 }
