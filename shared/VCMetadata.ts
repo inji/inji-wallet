@@ -9,7 +9,7 @@ import {getMosipIdentifier} from './commonUtil';
 import {VCFormat} from './VCFormat';
 import {isMosipVC, UUID} from './Utils';
 import {getCredentialType} from '../components/VC/common/VCUtils';
-import {EvaluationStatus} from './vcVerifier/VcVerifier';
+import {RevocationStatus, RevocationStatusType} from './vcVerifier/VcVerifier';
 
 const VC_KEY_PREFIX = 'VC';
 const VC_ITEM_STORE_KEY_REGEX = '^VC_[a-zA-Z0-9_-]+$';
@@ -32,7 +32,7 @@ export class VCMetadata {
   mosipIndividualId: string = '';
   format: string = '';
   isExpired: boolean = false;
-  isRevoked: EvaluationStatus = EvaluationStatus.FALSE;
+  isRevoked: RevocationStatusType = RevocationStatus.FALSE;
 
   downloadKeyType: string = '';
   credentialType: string = '';
@@ -52,7 +52,7 @@ export class VCMetadata {
     format = '',
     downloadKeyType = '',
     isExpired = false,
-    isRevoked = EvaluationStatus.FALSE,
+    isRevoked = RevocationStatus.FALSE,
     credentialType = '',
     issuerHost = '',
     lastKnownStatusTimestamp = '',

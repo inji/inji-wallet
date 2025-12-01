@@ -16,7 +16,8 @@ import {isAndroid, isIOS} from '../constants';
 import {VCFormat} from '../VCFormat';
 import VCVerifier, {
   CredentialStatusResult,
-  EvaluationStatus,
+  RevocationStatus,
+  RevocationStatusType,
   VerificationSummaryResult,
 } from '../vcVerifier/VcVerifier';
 
@@ -233,11 +234,11 @@ const handleStatusListVCVerification = (
 
 export async function checkIsStatusRevoked(
   vcStatus: Record<string, CredentialStatusResult>,
-): Promise<EvaluationStatus> {
-  if (!vcStatus || !Object.keys(vcStatus).length) return EvaluationStatus.FALSE;
+): Promise<RevocationStatusType> {
+  if (!vcStatus || !Object.keys(vcStatus).length) return RevocationStatus.FALSE;
 
   const revocationStatus = vcStatus['revocation'] as CredentialStatusResult;
-  if (!revocationStatus) return EvaluationStatus.FALSE;
+  if (!revocationStatus) return RevocationStatus.FALSE;
 
   const {isValid, error} = revocationStatus;
 
@@ -246,7 +247,7 @@ export async function checkIsStatusRevoked(
     if (isIOS()) {
       handleStatusListVCVerification(revocationStatus, 'valid');
     }
-    return EvaluationStatus.FALSE;
+    return RevocationStatus.FALSE;
   }
 
   console.error(
@@ -257,7 +258,7 @@ export async function checkIsStatusRevoked(
     console.error(
       `Error fetching revocation status. Error: ${error.code}, Message: ${error.message}`,
     );
-    return EvaluationStatus.UNDETERMINED;
+    return RevocationStatus.UNDETERMINED;
   }
   // There is no error fetching revocation status, but the status is invalid (isValid = false, error = undefined) - VC is revoked
   // Validate the valid statuses statusList VC for iOS
@@ -265,7 +266,7 @@ export async function checkIsStatusRevoked(
     handleStatusListVCVerification(revocationStatus, 'revoked');
   }
   // If revocation status is invalid, the credential is revoked
-  return EvaluationStatus.TRUE;
+  return RevocationStatus.TRUE;
 }
 
 function createSuccessfulVerificationResult(): VerificationResult {
@@ -316,7 +317,7 @@ export interface VerificationResult {
   isVerified: boolean;
   verificationMessage: string;
   verificationErrorCode: string;
-  isRevoked?: EvaluationStatus;
+  isRevoked?: RevocationStatusType;
 }
 
 //TODO: Implement status list VC verification for iOS.

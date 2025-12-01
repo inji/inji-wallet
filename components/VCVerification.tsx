@@ -4,12 +4,12 @@ import testIDProps from '../shared/commonUtil';
 import {Display} from './VC/common/VCUtils';
 import VerifiedIcon from './VerifiedIcon';
 import PendingIcon from './PendingIcon';
-import {Row, Text} from './ui';
+import {Text} from './ui';
 import {Theme} from './ui/styleUtils';
 import {useTranslation} from 'react-i18next';
 import {VCMetadata} from '../shared/VCMetadata';
 import {formattedDate} from '../shared/openId4VCI/Utils';
-import {EvaluationStatus} from '../shared/vcVerifier/VcVerifier';
+import {RevocationStatus} from '../shared/vcVerifier/VcVerifier';
 
 export const VCVerification: React.FC<VCVerificationProps> = ({
   vcMetadata,
@@ -22,13 +22,13 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
   let statusIcon: JSX.Element;
 
   if (vcMetadata.isVerified) {
-    if (vcMetadata.isRevoked === EvaluationStatus.TRUE) {
+    if (vcMetadata.isRevoked === RevocationStatus.TRUE) {
       statusText = t('revoked');
       statusIcon = <PendingIcon color="brown" />;
     } else if (vcMetadata.isExpired) {
       statusText = t('expired');
       statusIcon = <PendingIcon color="red" />;
-    } else if (vcMetadata.isRevoked === EvaluationStatus.UNDETERMINED) {
+    } else if (vcMetadata.isRevoked === RevocationStatus.UNDETERMINED) {
       statusText = t('pending');
       statusIcon = <PendingIcon color="orange" />;
     } else {
