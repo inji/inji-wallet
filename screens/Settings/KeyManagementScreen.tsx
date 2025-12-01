@@ -11,17 +11,11 @@ import {BackButton} from '../../components/ui/backButton/BackButton';
 import {Copilot} from '../../components/ui/Copilot';
 import {useCopilot} from 'react-native-copilot';
 import {useNavigation, useRoute, RouteProp} from '@react-navigation/native';
-import {
-  getEndEventData,
-  getImpressionEventData,
-  sendEndEvent,
-  sendImpressionEvent,
-} from '../../shared/telemetry/TelemetryUtils';
+import {  getImpressionEventData,  sendImpressionEvent} from '../../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {SUPPORTED_KEY_TYPES} from '../../shared/constants';
-import {SvgImage} from '../../components/ui/svg';
-import LinearGradient from 'react-native-linear-gradient';
 import { HelpIcon } from '../../components/ui/HelpIcon';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const {RNSecureKeystoreModule} = NativeModules;
 
@@ -108,6 +102,7 @@ export const KeyManagementScreen: React.FC<KeyManagementScreenProps> = () => {
   };
 
   return (
+    <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
     <View
       style={{
         flex: 1,
@@ -134,58 +129,61 @@ export const KeyManagementScreen: React.FC<KeyManagementScreenProps> = () => {
           triggerComponent={ HelpIcon() }
         />
       </View>
-      <BannerNotificationContainer />
-      <View style={Theme.KeyManagementScreenStyle.copilotViewStyle}>
-        <Copilot
-          title={t('copilot:keyManagementTitle')}
-          description={t('copilot:keyManagementDesc')}
-          order={7}
-          children={
-            <DragList
-              style={Theme.KeyManagementScreenStyle.dragViewStyleSettingsScreen}
-              scrollEnabled={false}
-              data={keyOrder}
-              renderItem={renderItem}
-              keyExtractor={item => item.value}
-              onReordered={handleReorder}
-            />
-          }
+      <View style={{...Theme.KeyManagementScreenStyle.copilotViewStyle, position: "relative"}}>
+        <BannerNotificationContainer />
+        <View style={{flex:1}}>
+          <Copilot
+            title={t('copilot:keyManagementTitle')}
+            description={t('copilot:keyManagementDesc')}
+            order={7}
+            children={
+              <DragList
+                style={Theme.KeyManagementScreenStyle.dragViewStyleSettingsScreen}
+                scrollEnabled={false}
+                data={keyOrder}
+                renderItem={renderItem}
+                keyExtractor={item => item.value}
+                onReordered={handleReorder}
+              />
+            }
+          />
+        </View>
+        <Button
+          testID="saveKeyOrderingPreference"
+          type="gradient"
+          title={t('save')}
+          onPress={async () => {
+            const keyOrderMap = convertToKeyValue(keyOrder);
+            try {
+              controller.SET_KEY_MANAGEMENT_TOUR_GUIDE_EXPLORED();
+              await RNSecureKeystoreModule.storeData(
+                'keyPreference',
+                JSON.stringify(keyOrderMap),
+              );
+              controller.SET_KEY_ORDER_RESPONSE(true);
+              sendImpressionEvent(
+                getImpressionEventData(
+                  TelemetryConstants.FlowType.setKeyPriority,
+                  TelemetryConstants.EndEventStatus.success,
+                ),
+              );
+            } catch (e) {
+              sendImpressionEvent(
+                getImpressionEventData(
+                  TelemetryConstants.FlowType.setKeyPriority,
+                  TelemetryConstants.EndEventStatus.failure,
+                ),
+              );
+              controller.SET_KEY_ORDER_RESPONSE(false);
+            }
+          }}
+          styles={{
+            marginVertical: 30,
+          }}
         />
       </View>
-      <Button
-        testID="saveKeyOrderingPreference"
-        type="gradient"
-        title={t('save')}
-        onPress={async () => {
-          const keyOrderMap = convertToKeyValue(keyOrder);
-          try {
-            controller.SET_KEY_MANAGEMENT_TOUR_GUIDE_EXPLORED();
-            await RNSecureKeystoreModule.storeData(
-              'keyPreference',
-              JSON.stringify(keyOrderMap),
-            );
-            controller.SET_KEY_ORDER_RESPONSE(true);
-            sendImpressionEvent(
-              getImpressionEventData(
-                TelemetryConstants.FlowType.setKeyPriority,
-                TelemetryConstants.EndEventStatus.success,
-              ),
-            );
-          } catch (e) {
-            sendImpressionEvent(
-              getImpressionEventData(
-                TelemetryConstants.FlowType.setKeyPriority,
-                TelemetryConstants.EndEventStatus.failure,
-              ),
-            );
-            controller.SET_KEY_ORDER_RESPONSE(false);
-          }
-        }}
-        styles={{
-          marginVertical: 30,
-        }}
-      />
     </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,10 +1,11 @@
 import React, {useRef} from 'react';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import {SafeAreaView, ScrollView, View} from 'react-native';
+import { ScrollView, View} from 'react-native';
 import {Icon, Overlay} from 'react-native-elements';
 import {Button, Column, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
 import {useTranslation} from 'react-i18next';
+import {SafeAreaView} from "react-native-safe-area-context";
 
 export const OnboardingOverlay: React.FC<OnboardingProps> = props => {
   const slider = useRef<AppIntroSlider>();

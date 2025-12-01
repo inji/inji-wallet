@@ -40,7 +40,11 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
   const controller = useViewVcModal(props);
   const profileImage = controller.verifiableCredentialData.face;
   const verificationStatus = controller.verificationStatus;
-  const verificationStatusMessage = controller.verificationStatus?.isRevoked ? "revoked" : controller.verificationStatus?.isExpired ? "expired" : controller.verificationStatus?.statusType;
+  const verificationStatusMessage = controller.verificationStatus?.isRevoked
+    ? 'revoked'
+    : controller.verificationStatus?.isExpired
+    ? 'expired'
+    : controller.verificationStatus?.statusType;
   const [verifiableCredential, setVerifiableCredential] = useState(null);
   const [svgTemplate, setSvgTemplate] = useState<string[] | null>(null);
   const [svgRendererError, setSvgRendererError] = useState<string[] | null>(
@@ -69,7 +73,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
       !controller.verifiableCredentialData.vcMetadata.isVerified &&
       !controller.isVerificationInProgress
     ) {
-      props.vcItemActor.send({ type: 'VERIFY' });
+      props.vcItemActor.send({type: 'VERIFY'});
     }
   }, [controller.verifiableCredentialData.vcMetadata.isVerified]);
 
@@ -86,11 +90,12 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
         setLoadingSvg(true);
 
         const vcJsonString = JSON.stringify(controller.credential.credential);
-        const result = await VcRenderer.getInstance().generateCredentialDisplayContent(
-          controller.verifiableCredentialData.format,
-          wellknown ?? null,
-          vcJsonString,
-        );
+        const result =
+          await VcRenderer.getInstance().generateCredentialDisplayContent(
+            controller.verifiableCredentialData.format,
+            wellknown ?? null,
+            vcJsonString,
+          );
 
         setSvgTemplate(result);
         setSvgRendererError(null);
@@ -175,94 +180,100 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
       headerTitle={t('title')}
       onDismiss={handleModalDismiss}
       headerElevation={2}>
-      <BannerNotificationContainer showVerificationStatusBanner={false} />
+      <View style={{position: 'relative', flex: 1}}>
+        <BannerNotificationContainer showVerificationStatusBanner={false} />
 
-      {controller.showVerificationStatusBanner && (
-        <BannerNotification
-          type={verificationStatus?.statusType as BannerStatus}
-          message={t(`VcVerificationBanner:${verificationStatusMessage}`, {
-            vcDetails: `${verificationStatus?.vcType} ${verificationStatus?.vcNumber ?? ""}`,
-          })}
-          onClosePress={controller.RESET_VERIFICATION_STATUS}
-          key={'reVerificationInProgress'}
-          testId={'reVerificationInProgress'}
-        />
-      )}
-
-      {!isVCLoaded(verifiableCredential) ? (
-        <ActivityIndicator />
-      ) : (
-        <VcDetailsContainer
-          fields={fields}
-          wellknownFieldsFlag={wellknownFieldsFlag}
-          wellknown={wellknown}
-          credential={verifiableCredential}
-          credentialWrapper={controller.credential}
-          verifiableCredentialData={controller.verifiableCredentialData}
-          onBinding={controller.addtoWallet}
-          walletBindingResponse={controller.walletBindingResponse}
-          activeTab={props.activeTab}
-          vcHasImage={profileImage !== undefined}
-          svgTemplate={svgTemplate}
-          svgRendererError={svgRendererError}
-          loadingSvg={loadingSvg}
-        />
-      )}
-
-      {controller.isAcceptingBindingOtp && (
-        <OtpVerificationModal
-          service={props.vcItemActor}
-          isVisible={controller.isAcceptingBindingOtp}
-          onDismiss={controller.DISMISS}
-          onInputDone={controller.inputOtp}
-          error={controller.otpError}
-          resend={controller.RESEND_OTP}
-          phone={controller.isCommunicationDetails.phoneNumber}
-          email={controller.isCommunicationDetails.emailId}
-          flow={TelemetryConstants.FlowType.vcActivation}
-        />
-      )}
-
-      <BindingVcWarningOverlay
-        isVisible={controller.isBindingWarning}
-        onConfirm={controller.CONFIRM}
-        onCancel={controller.CANCEL}
-      />
-
-      <MessageOverlay
-        testID="walletBindingError"
-        isVisible={controller.isBindingError}
-        title={controller.walletBindingError}
-        onButtonPress={() => {
-          controller.CANCEL();
-        }}
-      />
-
-      <MessageOverlay
-        isVisible={controller.isWalletBindingInProgress || controller.isReverifyingVc}
-        title={t('inProgress')}
-        progress
-      />
-
-      {controller.toastVisible && <ToastItem message={controller.message} />}
-
-      <WalletBinding
-        service={props.vcItemActor}
-        vcMetadata={controller.verifiableCredentialData.vcMetadata}
-      />
-
-      <RemoveVcWarningOverlay
-        testID="removeVcWarningOverlay"
-        service={props.vcItemActor}
-        vcMetadata={controller.verifiableCredentialData.vcMetadata}
-      />
-
-      <HistoryTab
-        service={props.vcItemActor}
-        vcMetadata={VCMetadata.fromVC(
-          controller.verifiableCredentialData.vcMetadata,
+        {controller.showVerificationStatusBanner && (
+          <BannerNotification
+            type={verificationStatus?.statusType as BannerStatus}
+            message={t(`VcVerificationBanner:${verificationStatusMessage}`, {
+              vcDetails: `${verificationStatus?.vcType} ${
+                verificationStatus?.vcNumber ?? ''
+              }`,
+            })}
+            onClosePress={controller.RESET_VERIFICATION_STATUS}
+            key={'reVerificationInProgress'}
+            testId={'reVerificationInProgress'}
+          />
         )}
-      />
+
+        {!isVCLoaded(verifiableCredential) ? (
+          <ActivityIndicator />
+        ) : (
+          <VcDetailsContainer
+            fields={fields}
+            wellknownFieldsFlag={wellknownFieldsFlag}
+            wellknown={wellknown}
+            credential={verifiableCredential}
+            credentialWrapper={controller.credential}
+            verifiableCredentialData={controller.verifiableCredentialData}
+            onBinding={controller.addtoWallet}
+            walletBindingResponse={controller.walletBindingResponse}
+            activeTab={props.activeTab}
+            vcHasImage={profileImage !== undefined}
+            svgTemplate={svgTemplate}
+            svgRendererError={svgRendererError}
+            loadingSvg={loadingSvg}
+          />
+        )}
+
+        {controller.isAcceptingBindingOtp && (
+          <OtpVerificationModal
+            service={props.vcItemActor}
+            isVisible={controller.isAcceptingBindingOtp}
+            onDismiss={controller.DISMISS}
+            onInputDone={controller.inputOtp}
+            error={controller.otpError}
+            resend={controller.RESEND_OTP}
+            phone={controller.isCommunicationDetails.phoneNumber}
+            email={controller.isCommunicationDetails.emailId}
+            flow={TelemetryConstants.FlowType.vcActivation}
+          />
+        )}
+
+        <BindingVcWarningOverlay
+          isVisible={controller.isBindingWarning}
+          onConfirm={controller.CONFIRM}
+          onCancel={controller.CANCEL}
+        />
+
+        <MessageOverlay
+          testID="walletBindingError"
+          isVisible={controller.isBindingError}
+          title={controller.walletBindingError}
+          onButtonPress={() => {
+            controller.CANCEL();
+          }}
+        />
+
+        <MessageOverlay
+          isVisible={
+            controller.isWalletBindingInProgress || controller.isReverifyingVc
+          }
+          title={t('inProgress')}
+          progress
+        />
+
+        {controller.toastVisible && <ToastItem message={controller.message} />}
+
+        <WalletBinding
+          service={props.vcItemActor}
+          vcMetadata={controller.verifiableCredentialData.vcMetadata}
+        />
+
+        <RemoveVcWarningOverlay
+          testID="removeVcWarningOverlay"
+          service={props.vcItemActor}
+          vcMetadata={controller.verifiableCredentialData.vcMetadata}
+        />
+
+        <HistoryTab
+          service={props.vcItemActor}
+          vcMetadata={VCMetadata.fromVC(
+            controller.verifiableCredentialData.vcMetadata,
+          )}
+        />
+      </View>
     </Modal>
   );
 };

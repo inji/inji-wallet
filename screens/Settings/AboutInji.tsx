@@ -60,91 +60,93 @@ export const AboutInji: React.FC<AboutInjiProps> = ({appId}) => {
         onDismiss={() => {
           setShowAboutInji(!showAboutInji);
         }}>
-        <BannerNotificationContainer />
-        <LinearGradient
-          colors={Theme.Colors.GradientColorsLight}
-          start={Theme.LinearGradientDirection.start}
-          end={Theme.LinearGradientDirection.end}>
-          <Row
-            testID="appID"
-            crossAlign="flex-start"
-            style={Theme.Styles.primaryRow}>
-            <Row>
-              <Text
-                weight="semibold"
-                style={Theme.AboutInjiScreenStyle.appIdTitleStyle}>
-                {t('appID')}
-              </Text>
-              <Text
-                weight="semibold"
-                style={Theme.AboutInjiScreenStyle.appIdTextStyle}>
-                {I18nManager.isRTL ? appId : ' : ' + appId}
-              </Text>
-            </Row>
-            <CopyButton content={appId} />
-          </Row>
-        </LinearGradient>
-        <Column
-          align="space-between"
-          style={Theme.AboutInjiScreenStyle.containerStyle}>
-          <Column>
-            <Text
-              testID="aboutDetails"
-              style={Theme.AboutInjiScreenStyle.aboutDetailstextStyle}>
-              {t('aboutDetails')}
-            </Text>
+        <View style={{position: 'relative', flex: 1}}>
+          <BannerNotificationContainer />
+          <LinearGradient
+            colors={Theme.Colors.GradientColorsLight}
+            start={Theme.LinearGradientDirection.start}
+            end={Theme.LinearGradientDirection.end}>
             <Row
+              testID="appID"
+              crossAlign="flex-start"
+              style={Theme.Styles.primaryRow}>
+              <Row>
+                <Text
+                  weight="semibold"
+                  style={Theme.AboutInjiScreenStyle.appIdTitleStyle}>
+                  {t('appID')}
+                </Text>
+                <Text
+                  weight="semibold"
+                  style={Theme.AboutInjiScreenStyle.appIdTextStyle}>
+                  {I18nManager.isRTL ? appId : ' : ' + appId}
+                </Text>
+              </Row>
+              <CopyButton content={appId} />
+            </Row>
+          </LinearGradient>
+          <Column
+            align="space-between"
+            style={Theme.AboutInjiScreenStyle.containerStyle}>
+            <Column>
+              <Text
+                testID="aboutDetails"
+                style={Theme.AboutInjiScreenStyle.aboutDetailstextStyle}>
+                {t('aboutDetails')}
+              </Text>
+              <Row
+                align="space-between"
+                crossAlign="center"
+                style={Theme.AboutInjiScreenStyle.innerContainerStyle}>
+                <Text style={Theme.AboutInjiScreenStyle.moreDetailstextStyle}>
+                  {t('forMoreDetails')}
+                </Text>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => {
+                    aboutInjiUrl && Linking.openURL(aboutInjiUrl);
+                  }}>
+                  <Text
+                    testID="clickHere"
+                    color={Theme.Colors.AddIdBtnBg}
+                    style={Theme.AboutInjiScreenStyle.clickHereTextStyle}
+                    weight="bold">
+                    {t('clickHere')}
+                  </Text>
+                </TouchableOpacity>
+              </Row>
+            </Column>
+
+            <Column
+              pY={25}
               align="space-between"
               crossAlign="center"
-              style={Theme.AboutInjiScreenStyle.innerContainerStyle}>
-              <Text style={Theme.AboutInjiScreenStyle.moreDetailstextStyle}>
-                {t('forMoreDetails')}
-              </Text>
-              <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => {
-                  aboutInjiUrl && Linking.openURL(aboutInjiUrl);
-                }}>
+              style={Theme.Styles.versionContainer}>
+              <Row style={Theme.AboutInjiScreenStyle.injiVersionContainerStyle}>
                 <Text
-                  testID="clickHere"
-                  color={Theme.Colors.AddIdBtnBg}
-                  style={Theme.AboutInjiScreenStyle.clickHereTextStyle}
-                  weight="bold">
-                  {t('clickHere')}
+                  testID="tuvaliVersion"
+                  weight="semibold"
+                  style={Theme.AboutInjiScreenStyle.injiVersionTitle}
+                  color={Theme.Colors.aboutVersion}>
+                  {t('version') + ' : '}
                 </Text>
-              </TouchableOpacity>
-            </Row>
-          </Column>
-
-          <Column
-            pY={25}
-            align="space-between"
-            crossAlign="center"
-            style={Theme.Styles.versionContainer}>
-            <Row style={Theme.AboutInjiScreenStyle.injiVersionContainerStyle}>
-              <Text
-                testID="tuvaliVersion"
-                weight="semibold"
-                style={Theme.AboutInjiScreenStyle.injiVersionTitle}
-                color={Theme.Colors.aboutVersion}>
-                {t('version') + ' : '}
-              </Text>
+                <Text
+                  weight="semibold"
+                  style={Theme.AboutInjiScreenStyle.injiVersionText}
+                  color={Theme.Colors.aboutVersion}>
+                  {__InjiVersion.getValue()}
+                </Text>
+              </Row>
+              <View style={Theme.AboutInjiScreenStyle.horizontalLineStyle} />
               <Text
                 weight="semibold"
-                style={Theme.AboutInjiScreenStyle.injiVersionText}
-                color={Theme.Colors.aboutVersion}>
-                {__InjiVersion.getValue()}
+                style={Theme.AboutInjiScreenStyle.poweredByTextStyle}
+                color="black">
+                {t('poweredBy')}
               </Text>
-            </Row>
-            <View style={Theme.AboutInjiScreenStyle.horizontalLineStyle} />
-            <Text
-              weight="semibold"
-              style={Theme.AboutInjiScreenStyle.poweredByTextStyle}
-              color="black">
-              {t('poweredBy')}
-            </Text>
+            </Column>
           </Column>
-        </Column>
+        </View>
       </Modal>
     </React.Fragment>
   );

@@ -34,7 +34,7 @@ fileignoreconfig:
   - filename: shared/fileStorage.ts
     checksum: 2ba2721d9722cd9420ae26762316230f7dab1a0be45820cbda4d0ecae0edf957
   - filename: screens/Issuers/IssuersScreen.tsx
-    checksum: a323497d3276f0ef20ddd6b94d2238a895651d853c3d8f055acc3351dc72da0b
+    checksum: 33c6c04320f822bb00343bcf4d5fa010177366ae44d8f64a280484d00616c8c6
   - filename: screens/Home/MyVcs/GetIdInputModal.tsx
     checksum: 5c736ed79a372d0ffa7c02eb33d0dc06edbbb08d120978ff287f5f06cd6c7746
   - filename: shared/openId4VCI/Utils.ts
@@ -272,7 +272,7 @@ fileignoreconfig:
   - filename: machines/Issuers/IssuersService.ts
     checksum: e3832dff27687abc28609d2b281e570b4b0017995b7cfb56627a6b96949c469a
   - filename: screens/Home/ViewVcModal.tsx
-    checksum: cfb25d562185488432b76287c4ef93359c1c64d8e29f5755d4c0a726c1485442
+    checksum: 870fd6d53a3118cc120d3bb9d18698125a260e8f5673eddbb444e589bb3aacbd
   - filename: injitest/src/main/resources/TestData.json
     checksum: 1b5af14c96b456898259b4cb7a5607b006404cf0360274bdc204d7d065698e3c
   - filename: injitest/src/test/java/androidTestCases/ActivateVcTest.java
@@ -364,8 +364,6 @@ fileignoreconfig:
     checksum: 8f4bd61770b8bb0a28859ca0f3b4b095aed4e3fb5adef435cb74b9389ff13e09
   - filename: ios/Inji.xcodeproj/project.pbxproj
     checksum: 5bb246fa39bc7a9994b50bc5b1505d5389d0e254a4e30cfb2a57e6a1025e9087
-  - filename: screens/Settings/ReceivedCardsModal.tsx
-    checksum: 6dee9153a61009b0252d294154c88d5e1b241a517c76e930b391a39d7bc52392
   - filename: components/FaceScanner/FaceCompare.tsx
     checksum: 947b6d75543e2bf959ca2d95dd7224051e0b4ec2c28f7515f923701e22a932f0
   - filename: components/FaceScanner/LivenessDetection.tsx
@@ -417,8 +415,12 @@ fileignoreconfig:
     checksum: 4d46111af02fc8b6731f624d3e4f6ce71d6369649f4549564627a8962b136192
   - filename: components/ui/Picker.tsx
     checksum: ad814e904cb990f55068281fcb566cca349872de2c4fd66432ed6372fb540ec3
+  - filename: components/VC/common/VcStatustooTip.tsx
+    checksum: 08097d6f18acf897c1b6f0479861399e5da630b95d2f5a0133e03edd9d28daa0
   - filename: sample-application/sample-application/app/src/main/java/com/example/samplecredentialwallet/utils/SecureKeyStoreManager.kt
     checksum: d9c999da50bf114d2bdb73550f94ad77003f252d97dd5c2cd2f0f14c2f4004a0
   - filename: sample-application/sample-application/app/src/main/java/com/example/samplecredentialwallet/utils/CredentialParser.kt
     checksum: bb910d0b02d8623c9f259a4e2a335dd8f9289c1949955538e65bab9179b09359
+  - filename: screens/Settings/ReceivedCardsModal.tsx
+    checksum: 3d949ca267ab605562d3a99e14232fa292600c3c280b1cbec3bb5e7eba5adca8
 version: "1.0"

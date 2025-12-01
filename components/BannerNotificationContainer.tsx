@@ -15,7 +15,7 @@ import {useSettingsScreen} from '../screens/Settings/SettingScreenController';
 export const BannerNotificationContainer: React.FC<
   BannerNotificationContainerProps
 > = props => {
-  const { showVerificationStatusBanner = true } = props;
+  const {showVerificationStatusBanner = true} = props;
   const scanScreenController = useScanScreen();
   const settingsScreenController = useSettingsScreen(props);
   const showQuickShareSuccessBanner =
@@ -23,18 +23,21 @@ export const BannerNotificationContainer: React.FC<
 
   const bannerNotificationController = UseBannerNotification();
   const WalletBindingSuccess = bannerNotificationController.isBindingSuccess;
-  const reverificationSuccessObject = bannerNotificationController.isReverificationSuccess;
-  const reverificationFailureObject = bannerNotificationController.isReverificationFailed;
-  const { t } = useTranslation('BannerNotification');
+  const reverificationSuccessObject =
+    bannerNotificationController.isReverificationSuccess;
+  const reverificationFailureObject =
+    bannerNotificationController.isReverificationFailed;
+  const {t} = useTranslation('BannerNotification');
   const rt = useTranslation('RequestScreen').t;
-  const verificationStatus = bannerNotificationController.verificationStatus || null;
+  const verificationStatus =
+    bannerNotificationController.verificationStatus || null;
 
   return (
-    <View style={[{position: 'absolute', zIndex: 100}]}>
+    <View style={Theme.BannerStyles.bannerStackContainer}>
       <BackupAndRestoreBannerNotification />
 
       {settingsScreenController.isKeyOrderSet === true && (
-        <View style={Theme.BannerStyles.topBanner}>
+        <View>
           <BannerNotification
             type={BannerStatusType.SUCCESS}
             message={t('keyPreferenceSuccess')}
@@ -46,7 +49,7 @@ export const BannerNotificationContainer: React.FC<
       )}
 
       {settingsScreenController.isKeyOrderSet === false && (
-        <View style={Theme.BannerStyles.topBanner}>
+        <View>
           <BannerNotification
             type={BannerStatusType.ERROR}
             message={t('keyPreferenceError')}
@@ -58,7 +61,7 @@ export const BannerNotificationContainer: React.FC<
       )}
 
       {WalletBindingSuccess && (
-        <View style={Theme.BannerStyles.topBanner}>
+        <View>
           <BannerNotification
             type={BannerStatusType.SUCCESS}
             message={t('activated')}
@@ -72,10 +75,13 @@ export const BannerNotificationContainer: React.FC<
       )}
 
       {reverificationSuccessObject.status && (
-        <View style={Theme.BannerStyles.topBanner}>
+        <View>
           <BannerNotification
             type={BannerStatusType.SUCCESS}
-            message={t(`reverifiedSuccessfully.${reverificationSuccessObject.statusValue}`, { vcType: reverificationSuccessObject.vcType })}
+            message={t(
+              `reverifiedSuccessfully.${reverificationSuccessObject.statusValue}`,
+              {vcType: reverificationSuccessObject.vcType},
+            )}
             onClosePress={
               bannerNotificationController.RESET_REVIRIFICATION_SUCCESS
             }
@@ -86,7 +92,7 @@ export const BannerNotificationContainer: React.FC<
       )}
 
       {showQuickShareSuccessBanner && (
-        <View style={Theme.BannerStyles.topBanner}>
+        <View>
           <BannerNotification
             type={BannerStatusType.SUCCESS}
             message={rt('status.accepted.message')}
@@ -130,8 +136,13 @@ export const BannerNotificationContainer: React.FC<
       {reverificationFailureObject.status && (
         <BannerNotification
           type={BannerStatusType.ERROR}
-          message={t(`reverificationFailed.${reverificationFailureObject.statusValue}`, { vcType: reverificationFailureObject.vcType })}
-          onClosePress={bannerNotificationController.RESET_REVERIFICATION_FAILURE}
+          message={t(
+            `reverificationFailed.${reverificationFailureObject.statusValue}`,
+            {vcType: reverificationFailureObject.vcType},
+          )}
+          onClosePress={
+            bannerNotificationController.RESET_REVERIFICATION_FAILURE
+          }
           key={'reverificationFailedPopup'}
           testId={'reverificationFailedPopup'}
         />

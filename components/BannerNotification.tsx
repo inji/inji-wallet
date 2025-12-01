@@ -10,7 +10,7 @@ import SuccessToastIcon from '../assets/Success_Toast_Icon.svg';
 
 export const BannerNotification: React.FC<BannerNotificationProps> = props => {
   return (
-    <View {...testIDProps(props.testId)}>
+    <View {...testIDProps(props.testId)} style={Theme.BannerStyles.wrapper}>
       <Row
         style={[Theme.BannerStyles.container, Theme.BannerStyles[props.type]]}>
         <Row fill>
