@@ -20,6 +20,7 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   const {authorizationURL, clientId, redirectUri, controller} = route.params;
   const webViewRef = useRef<WebView>(null);
   const [showWebView, setShowWebView] = useState(false);
+  const [shouldRenderWebView, setShouldRenderWebView] = useState(false);
   const {t} = useTranslation('authWebView');
 
   const hostName = new URL(authorizationURL).hostname; // example.mosip.net
@@ -81,6 +82,15 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
     handleBackPress,
   ]);
 
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      setShouldRenderWebView(true);
+      setTimeout(() => {
+        setShouldRenderWebView(false);
+      }, 1000);
+    }
+  }, []);
+
   const handleNavigationRequest = (request: any) => {
     const {url} = request;
     if (url.startsWith(redirectUri)) {
@@ -125,6 +135,9 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <Header />
+      {shouldRenderWebView && !showWebView && (
+        <WebView style={{width: 0, height: 0}} source={{uri: 'about:blank'}} />
+      )}
       {showWebView && (
         <WebView
           ref={webViewRef}
