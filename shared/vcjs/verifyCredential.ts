@@ -250,9 +250,6 @@ export async function checkIsStatusRevoked(
     return RevocationStatus.FALSE;
   }
 
-  console.error(
-    `Credential is revoked. Error: ${error?.code}, Message: ${error?.message}`,
-  );
   // if there is an error fetching revocation status itself, throw error (isValid = true, error = Error)
   if (error) {
     console.error(
@@ -265,6 +262,7 @@ export async function checkIsStatusRevoked(
   if (isIOS()) {
     handleStatusListVCVerification(revocationStatus, 'revoked');
   }
+  console.error(`Credential is revoked`);
   // If revocation status is invalid, the credential is revoked
   return RevocationStatus.TRUE;
 }
