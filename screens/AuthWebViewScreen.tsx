@@ -77,12 +77,19 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   ]);
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+
     if (Platform.OS === 'android') {
       setShouldRenderWebView(true);
-      setTimeout(() => {
+
+      timeoutId = setTimeout(() => {
         setShouldRenderWebView(false);
-      }, 1000);
+      }, 300);
     }
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, []);
 
   const handleNavigationRequest = (request: any) => {
