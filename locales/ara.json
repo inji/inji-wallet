@@ -444,7 +444,7 @@
     }
   },
   "MyVcsTab": {
-    "searchByName": "...يبحث",
+    "searchByName": "يبحث",
     "bringYourDigitalID": "أحضر هويتك الرقمية",
     "generateVcDescription": "اضغط على \"إضافة بطاقة \" أدناه لتنزيل بطاقتك",
     "generateVcFABDescription": "اضغط على \"+\" أدناه لتنزيل بطاقتك",
@@ -537,10 +537,6 @@
       "pending": {
         "title": "وضع انتظار:",
         "description": "التحقق معلق حاليًا بسبب مشكلات فنية."
-      },
-      "expired": {
-        "title": "الحالة منتهية الصلاحية:",
-        "description": "انتهت صلاحية بيانات الاعتماد."
       },
       "revoked": {
         "title": "الحالة الملغاة:",
@@ -1146,9 +1142,7 @@
     "verify": "تحقق",
     "emptyCodeError": "لا يمكن أن يكون الرمز فارغًا",
     "invalidCharacters": "يسمح فقط بالأحرف والأرقام",
-    "TransactionCode": "رمز المعاملة",
-    "showMore": "عرض المزيد ↓",
-    "showLess": "عرض أقل ↑"
+    "TransactionCode": "رمز المعاملة"
   },
   "trustScreen": {
     "description": "تأكد من أنك تعرف أو تثق بهذا المصدر. بمجرد أن تثق بهذا المصدر:",

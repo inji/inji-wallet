@@ -1,17 +1,17 @@
 import {
-  Montserrat_400Regular,
-  Montserrat_500Medium,
-  Montserrat_600SemiBold,
-  Montserrat_700Bold,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
   useFonts,
-} from '@expo-google-fonts/montserrat';
+} from '@expo-google-fonts/inter';
 
 export function useFont() {
   const [hasFontsLoaded] = useFonts({
-    Montserrat_400Regular,
-    Montserrat_500Medium,
-    Montserrat_600SemiBold,
-    Montserrat_700Bold,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
   });
 
   return hasFontsLoaded;

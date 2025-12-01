@@ -2,7 +2,7 @@ import React from 'react';
 import {Column, Row, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
 import {SvgImage} from '../../components/ui/svg';
-import LinearGradient from 'react-native-linear-gradient';
+import {LinearGradient} from 'react-native-linear-gradient';
 import {Image, Icon} from 'react-native-elements';
 import {ScrollView, View} from 'react-native';
 import {HelpScreen} from '../../components/HelpScreen';
@@ -90,6 +90,7 @@ export const StaticHomeScreen: React.FC = () => {
       </Row>
       <SearchBar
         searchBarTestID="searchBar"
+        isVcSearch
         editable={false}
         placeholder={t('MyVcsTab:searchByName')}
       />

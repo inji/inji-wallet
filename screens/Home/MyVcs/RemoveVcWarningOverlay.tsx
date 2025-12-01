@@ -26,8 +26,14 @@ export const RemoveVcWarningOverlay: React.FC<
         padding={'10'}
         width={Dimensions.get('screen').width * 0.8}
         height={Dimensions.get('screen').height * 0}>
-        <Row align="center" crossAlign="center">
+        <Row align="center" crossAlign="center" margin={'0 80 -10 0'}>
           {SvgImage.WarningLogo()}
+          <Text
+            margin={'0 0 0 -80'}
+            color={Theme.Colors.whiteText}
+            weight="bold">
+            !
+          </Text>
         </Row>
 
         <Column

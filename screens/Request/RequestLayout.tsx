@@ -27,6 +27,7 @@ export const RequestLayout: React.FC = () => {
 
   return (
     <React.Fragment>
+      <BannerNotificationContainer />
       <RequestStack.Navigator
         initialRouteName="RequestScreen"
         screenListeners={{
@@ -48,35 +49,23 @@ export const RequestLayout: React.FC = () => {
               title: t('incomingVc'),
               headerLeft: () =>
                 !I18nManager.isRTL && (
-                  <LinearGradient
-                    start={Theme.LinearGradientDirection.start}
-                    end={Theme.LinearGradientDirection.end}
-                    colors={Theme.Colors.GradientColorsLight}
-                    style={Theme.Styles.BackButtonBgGradient}>
-                    <HeaderBackButton
-                      onPress={() => {
-                        controller.RESET();
-                      }}
-                      style={Theme.Styles.IconContainer}
-                      tintColor={Theme.Colors.Icon}
-                    />
-                  </LinearGradient>
+                  <HeaderBackButton
+                    onPress={() => {
+                      controller.RESET();
+                    }}
+                    style={Theme.Styles.IconContainer}
+                    tintColor={Theme.Colors.Icon}
+                  />
                 ),
               headerRight: () =>
                 I18nManager.isRTL && (
-                  <LinearGradient
-                    start={Theme.LinearGradientDirection.start}
-                    end={Theme.LinearGradientDirection.end}
-                    colors={Theme.Colors.GradientColorsLight}
-                    style={Theme.Styles.BackButtonBgGradient}>
-                    <HeaderBackButton
-                      onPress={() => {
-                        controller.RESET();
-                      }}
-                      style={Theme.Styles.IconContainer}
-                      tintColor={Theme.Colors.Icon}
-                    />
-                  </LinearGradient>
+                  <HeaderBackButton
+                    onPress={() => {
+                      controller.RESET();
+                    }}
+                    style={Theme.Styles.IconContainer}
+                    tintColor={Theme.Colors.Icon}
+                  />
                 ),
             }}
           />
@@ -88,35 +77,23 @@ export const RequestLayout: React.FC = () => {
             title: t('receiveCard'),
             headerLeft: () =>
               !I18nManager.isRTL && (
-                <LinearGradient
-                  start={Theme.LinearGradientDirection.start}
-                  end={Theme.LinearGradientDirection.end}
-                  colors={Theme.Colors.GradientColorsLight}
-                  style={Theme.Styles.BackButtonBgGradient}>
-                  <HeaderBackButton
-                    onPress={() => {
-                      controller.GOTO_HOME();
-                    }}
-                    style={Theme.Styles.IconContainer}
-                    tintColor={Theme.Colors.Icon}
-                  />
-                </LinearGradient>
+                <HeaderBackButton
+                  onPress={() => {
+                    controller.GOTO_HOME();
+                  }}
+                  style={Theme.Styles.IconContainer}
+                  tintColor={Theme.Colors.Icon}
+                />
               ),
             headerRight: () =>
               I18nManager.isRTL && (
-                <LinearGradient
-                  start={Theme.LinearGradientDirection.start}
-                  end={Theme.LinearGradientDirection.end}
-                  colors={Theme.Colors.GradientColorsLight}
-                  style={Theme.Styles.BackButtonBgGradient}>
-                  <HeaderBackButton
-                    onPress={() => {
-                      controller.GOTO_HOME();
-                    }}
-                    style={Theme.Styles.IconContainer}
-                    tintColor={Theme.Colors.Icon}
-                  />
-                </LinearGradient>
+                <HeaderBackButton
+                  onPress={() => {
+                    controller.GOTO_HOME();
+                  }}
+                  style={Theme.Styles.IconContainer}
+                  tintColor={Theme.Colors.Icon}
+                />
               ),
           }}
         />

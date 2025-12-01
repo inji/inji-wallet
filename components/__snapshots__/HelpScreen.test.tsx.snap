@@ -37,19 +37,10 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
       Help
     </Text>
   </View>,
-  <RNCSafeAreaView
-    edges={
-      {
-        "bottom": "additive",
-        "left": "additive",
-        "right": "additive",
-        "top": "additive",
-      }
-    }
+  <RCTSafeAreaView
     style={
       {
         "flex": 1,
-        "position": "relative",
       }
     }
   >
@@ -95,7 +86,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -112,7 +103,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -123,8 +114,8 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -140,7 +131,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -152,7 +143,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -164,7 +155,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -181,7 +172,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -198,7 +189,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -215,7 +206,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -232,7 +223,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -243,8 +234,8 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -260,7 +251,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -277,7 +268,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -288,8 +279,8 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -305,7 +296,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -316,8 +307,8 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -328,7 +319,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -345,7 +336,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -362,7 +353,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -379,7 +370,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -396,7 +387,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -413,7 +404,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -424,8 +415,8 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -436,7 +427,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -453,7 +444,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -470,7 +461,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -487,7 +478,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -504,7 +495,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -521,7 +512,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -538,7 +529,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -555,7 +546,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -572,7 +563,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -589,7 +580,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -606,7 +597,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -623,7 +614,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -640,7 +631,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -657,7 +648,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -674,7 +665,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -691,7 +682,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -708,7 +699,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -725,7 +716,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -771,7 +762,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -782,7 +773,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -802,7 +793,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -813,7 +804,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -839,7 +830,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -850,7 +841,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -870,7 +861,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -881,7 +872,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -899,7 +890,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -909,8 +900,8 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -935,7 +926,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -946,7 +937,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -966,7 +957,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -977,7 +968,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -995,7 +986,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1006,7 +997,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -1024,7 +1015,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1035,7 +1026,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -1061,7 +1052,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1072,7 +1063,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -1092,7 +1083,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1103,7 +1094,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -1129,7 +1120,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1140,7 +1131,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -1160,7 +1151,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1171,7 +1162,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -1197,7 +1188,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1208,7 +1199,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -1228,7 +1219,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1239,7 +1230,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -1265,7 +1256,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1276,7 +1267,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -1296,7 +1287,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1307,7 +1298,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -1325,7 +1316,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -1335,8 +1326,8 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -1361,7 +1352,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1372,7 +1363,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -1392,7 +1383,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1403,7 +1394,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -1429,7 +1420,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1440,7 +1431,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -1460,7 +1451,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1471,7 +1462,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -1489,7 +1480,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -1499,8 +1490,8 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -1525,7 +1516,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1536,7 +1527,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -1556,7 +1547,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1567,7 +1558,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -1585,7 +1576,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -1595,8 +1586,8 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -1613,7 +1604,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -1624,7 +1615,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -1645,7 +1636,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
         </View>
       </RCTScrollView>
     </View>
-  </RNCSafeAreaView>,
+  </RCTSafeAreaView>,
 ]
 `;
 
@@ -1686,19 +1677,10 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
       Help
     </Text>
   </View>,
-  <RNCSafeAreaView
-    edges={
-      {
-        "bottom": "additive",
-        "left": "additive",
-        "right": "additive",
-        "top": "additive",
-      }
-    }
+  <RCTSafeAreaView
     style={
       {
         "flex": 1,
-        "position": "relative",
       }
     }
   >
@@ -1744,7 +1726,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -1761,7 +1743,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -1772,8 +1754,8 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -1789,7 +1771,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -1801,7 +1783,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -1813,7 +1795,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -1830,7 +1812,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -1847,7 +1829,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -1864,7 +1846,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -1881,7 +1863,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -1892,8 +1874,8 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -1909,7 +1891,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -1926,7 +1908,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -1937,8 +1919,8 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -1954,7 +1936,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -1965,8 +1947,8 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -1977,7 +1959,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -1994,7 +1976,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2011,7 +1993,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2028,7 +2010,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2045,7 +2027,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2062,7 +2044,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2073,8 +2055,8 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -2085,7 +2067,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2102,7 +2084,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2119,7 +2101,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2136,7 +2118,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2153,7 +2135,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2170,7 +2152,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2187,7 +2169,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2204,7 +2186,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2221,7 +2203,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2238,7 +2220,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2255,7 +2237,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2272,7 +2254,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2289,7 +2271,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2306,7 +2288,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2323,7 +2305,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2340,7 +2322,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2357,7 +2339,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2374,7 +2356,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -2420,7 +2402,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2431,7 +2413,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -2451,7 +2433,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2462,7 +2444,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -2488,7 +2470,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2499,7 +2481,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -2519,7 +2501,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2530,7 +2512,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -2548,7 +2530,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -2558,8 +2540,8 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -2584,7 +2566,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2595,7 +2577,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -2615,7 +2597,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2626,7 +2608,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -2644,7 +2626,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2655,7 +2637,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -2673,7 +2655,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2684,7 +2666,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -2710,7 +2692,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2721,7 +2703,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -2741,7 +2723,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2752,7 +2734,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -2778,7 +2760,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2789,7 +2771,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -2809,7 +2791,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2820,7 +2802,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -2846,7 +2828,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2857,7 +2839,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -2877,7 +2859,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2888,7 +2870,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -2914,7 +2896,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2925,7 +2907,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -2945,7 +2927,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -2956,7 +2938,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -2974,7 +2956,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -2984,8 +2966,8 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -3010,7 +2992,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -3021,7 +3003,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -3041,7 +3023,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -3052,7 +3034,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -3078,7 +3060,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -3089,7 +3071,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -3109,7 +3091,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -3120,7 +3102,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -3138,7 +3120,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -3148,8 +3130,8 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -3174,7 +3156,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -3185,7 +3167,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -3205,7 +3187,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -3216,7 +3198,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -3234,7 +3216,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -3244,8 +3226,8 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -3262,7 +3244,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -3273,7 +3255,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -3294,7 +3276,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
         </View>
       </RCTScrollView>
     </View>
-  </RNCSafeAreaView>,
+  </RCTSafeAreaView>,
 ]
 `;
 
@@ -3335,19 +3317,10 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
       Help
     </Text>
   </View>,
-  <RNCSafeAreaView
-    edges={
-      {
-        "bottom": "additive",
-        "left": "additive",
-        "right": "additive",
-        "top": "additive",
-      }
-    }
+  <RCTSafeAreaView
     style={
       {
         "flex": 1,
-        "position": "relative",
       }
     }
   >
@@ -3393,7 +3366,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3410,7 +3383,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3421,8 +3394,8 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -3438,7 +3411,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3450,7 +3423,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3462,7 +3435,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3479,7 +3452,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3496,7 +3469,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3513,7 +3486,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3530,7 +3503,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3541,8 +3514,8 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -3558,7 +3531,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3575,7 +3548,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3586,8 +3559,8 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -3603,7 +3576,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3614,8 +3587,8 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -3626,7 +3599,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3643,7 +3616,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3660,7 +3633,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3677,7 +3650,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3694,7 +3667,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3711,7 +3684,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3722,8 +3695,8 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -3734,7 +3707,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3751,7 +3724,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3768,7 +3741,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3785,7 +3758,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3802,7 +3775,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3819,7 +3792,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3836,7 +3809,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3853,7 +3826,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3870,7 +3843,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3887,7 +3860,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3904,7 +3877,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3921,7 +3894,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3938,7 +3911,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3955,7 +3928,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3972,7 +3945,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -3989,7 +3962,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -4006,7 +3979,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -4023,7 +3996,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -4069,7 +4042,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4080,7 +4053,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -4100,7 +4073,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4111,7 +4084,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -4137,7 +4110,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4148,7 +4121,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -4168,7 +4141,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4179,7 +4152,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -4197,7 +4170,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -4207,8 +4180,8 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -4233,7 +4206,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4244,7 +4217,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -4264,7 +4237,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4275,7 +4248,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -4293,7 +4266,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4304,7 +4277,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -4322,7 +4295,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4333,7 +4306,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -4359,7 +4332,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4370,7 +4343,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -4390,7 +4363,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4401,7 +4374,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -4427,7 +4400,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4438,7 +4411,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -4458,7 +4431,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4469,7 +4442,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -4495,7 +4468,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4506,7 +4479,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -4526,7 +4499,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4537,7 +4510,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -4563,7 +4536,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4574,7 +4547,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -4594,7 +4567,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4605,7 +4578,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -4623,7 +4596,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -4633,8 +4606,8 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -4659,7 +4632,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4670,7 +4643,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -4690,7 +4663,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4701,7 +4674,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -4727,7 +4700,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4738,7 +4711,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -4758,7 +4731,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4769,7 +4742,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -4787,7 +4760,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -4797,8 +4770,8 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -4823,7 +4796,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4834,7 +4807,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -4854,7 +4827,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4865,7 +4838,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -4883,7 +4856,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -4893,8 +4866,8 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -4911,7 +4884,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -4922,7 +4895,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -4943,7 +4916,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
         </View>
       </RCTScrollView>
     </View>
-  </RNCSafeAreaView>,
+  </RCTSafeAreaView>,
 ]
 `;
 
@@ -4984,19 +4957,10 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
       Help
     </Text>
   </View>,
-  <RNCSafeAreaView
-    edges={
-      {
-        "bottom": "additive",
-        "left": "additive",
-        "right": "additive",
-        "top": "additive",
-      }
-    }
+  <RCTSafeAreaView
     style={
       {
         "flex": 1,
-        "position": "relative",
       }
     }
   >
@@ -5042,7 +5006,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5059,7 +5023,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5070,8 +5034,8 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -5087,7 +5051,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5099,7 +5063,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5111,7 +5075,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5128,7 +5092,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5145,7 +5109,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5162,7 +5126,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5179,7 +5143,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5190,8 +5154,8 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -5207,7 +5171,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5224,7 +5188,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5235,8 +5199,8 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -5252,7 +5216,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5263,8 +5227,8 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -5275,7 +5239,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5292,7 +5256,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5309,7 +5273,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5326,7 +5290,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5343,7 +5307,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5360,7 +5324,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5371,8 +5335,8 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       }
                     }
                   >
@@ -5383,7 +5347,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5400,7 +5364,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5417,7 +5381,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5434,7 +5398,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5451,7 +5415,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5468,7 +5432,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5485,7 +5449,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5502,7 +5466,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5519,7 +5483,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5536,7 +5500,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5553,7 +5517,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5570,7 +5534,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5587,7 +5551,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5604,7 +5568,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5621,7 +5585,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5638,7 +5602,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5655,7 +5619,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5672,7 +5636,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                   style={
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     }
                   }
@@ -5718,7 +5682,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -5729,7 +5693,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -5749,7 +5713,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -5760,7 +5724,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -5786,7 +5750,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -5797,7 +5761,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -5817,7 +5781,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -5828,7 +5792,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -5846,7 +5810,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -5856,8 +5820,8 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -5882,7 +5846,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -5893,7 +5857,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -5913,7 +5877,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -5924,7 +5888,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -5942,7 +5906,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -5953,7 +5917,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -5971,7 +5935,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -5982,7 +5946,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -6008,7 +5972,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6019,7 +5983,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -6039,7 +6003,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6050,7 +6014,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -6076,7 +6040,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6087,7 +6051,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -6107,7 +6071,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6118,7 +6082,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -6144,7 +6108,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6155,7 +6119,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -6175,7 +6139,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6186,7 +6150,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -6212,7 +6176,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6223,7 +6187,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -6243,7 +6207,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6254,7 +6218,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -6272,7 +6236,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -6282,8 +6246,8 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -6308,7 +6272,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6319,7 +6283,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -6339,7 +6303,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6350,7 +6314,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -6376,7 +6340,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6387,7 +6351,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -6407,7 +6371,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6418,7 +6382,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -6436,7 +6400,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -6446,8 +6410,8 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -6472,7 +6436,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6483,7 +6447,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#000000",
-                      "fontFamily": "Montserrat_700Bold",
+                      "fontFamily": "Inter_700Bold",
                       "fontSize": 18,
                       "lineHeight": 19,
                       "margin": 7,
@@ -6503,7 +6467,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6514,7 +6478,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -6532,7 +6496,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                         "lineHeight": 18,
                       },
                       {
-                        "fontFamily": "Montserrat_400Regular",
+                        "fontFamily": "Inter_400Regular",
                         "fontSize": 14,
                       },
                       null,
@@ -6542,8 +6506,8 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       null,
                       null,
                       {
-                        "color": "#F37321",
-                        "fontFamily": "Montserrat_600SemiBold",
+                        "color": "#951F6F",
+                        "fontFamily": "Inter_600SemiBold",
                       },
                     ]
                   }
@@ -6560,7 +6524,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       "lineHeight": 18,
                     },
                     {
-                      "fontFamily": "Montserrat_400Regular",
+                      "fontFamily": "Inter_400Regular",
                       "fontSize": 14,
                     },
                     null,
@@ -6571,7 +6535,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     null,
                     {
                       "color": "#707070",
-                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontFamily": "Inter_600SemiBold",
                       "margin": 5,
                     },
                   ]
@@ -6592,6 +6556,6 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
         </View>
       </RCTScrollView>
     </View>
-  </RNCSafeAreaView>,
+  </RCTSafeAreaView>,
 ]
 `;

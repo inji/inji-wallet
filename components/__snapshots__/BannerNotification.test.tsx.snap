@@ -4,12 +4,6 @@ exports[`BannerNotification Component should match snapshot with different testI
 <View
   accessibilityLabel="customBanner"
   accessible={true}
-  style={
-    {
-      "alignSelf": "center",
-      "width": "100%",
-    }
-  }
 >
   <View
     accessible={true}
@@ -31,11 +25,9 @@ exports[`BannerNotification Component should match snapshot with different testI
         null,
         [
           {
-            "alignItems": "center",
+            "alignItems": "flex-start",
             "backgroundColor": "#DB2E2E",
-            "borderRadius": 10,
             "columnGap": 7,
-            "height": 70,
             "justifyContent": "space-between",
             "marginVertical": 1,
             "paddingHorizontal": 18,
@@ -44,8 +36,7 @@ exports[`BannerNotification Component should match snapshot with different testI
             "width": "100%",
           },
           {
-            "backgroundColor": "#9DCFBB",
-            "color": "#384455",
+            "backgroundColor": "#4B9D20",
           },
         ],
         null,
@@ -59,7 +50,7 @@ exports[`BannerNotification Component should match snapshot with different testI
         [
           {
             "alignItems": undefined,
-            "flexDirection": "row",
+            "flexDirection": "column",
             "justifyContent": undefined,
           },
           {
@@ -79,7 +70,6 @@ exports[`BannerNotification Component should match snapshot with different testI
         ]
       }
     >
-      <SuccessToastIcon />
       <Text
         accessibilityLabel="customBannerText"
         style={
@@ -90,11 +80,11 @@ exports[`BannerNotification Component should match snapshot with different testI
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Montserrat_600SemiBold",
+              "fontFamily": "Inter_600SemiBold",
               "fontSize": 15,
             },
             {
-              "color": "#384455",
+              "color": "#FFFFFF",
             },
             {
               "textAlign": "left",
@@ -102,10 +92,9 @@ exports[`BannerNotification Component should match snapshot with different testI
             null,
             null,
             {
-              "fontFamily": "Montserrat_600SemiBold",
-              "fontSize": 14,
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 12,
               "lineHeight": 15,
-              "marginHorizontal": 8,
               "padding": 1,
               "textAlignVertical": "center",
             },
@@ -185,12 +174,6 @@ exports[`BannerNotification Component should match snapshot with error status 1`
 <View
   accessibilityLabel="bannerTest"
   accessible={true}
-  style={
-    {
-      "alignSelf": "center",
-      "width": "100%",
-    }
-  }
 >
   <View
     accessible={true}
@@ -212,11 +195,9 @@ exports[`BannerNotification Component should match snapshot with error status 1`
         null,
         [
           {
-            "alignItems": "center",
+            "alignItems": "flex-start",
             "backgroundColor": "#DB2E2E",
-            "borderRadius": 10,
             "columnGap": 7,
-            "height": 70,
             "justifyContent": "space-between",
             "marginVertical": 1,
             "paddingHorizontal": 18,
@@ -225,8 +206,7 @@ exports[`BannerNotification Component should match snapshot with error status 1`
             "width": "100%",
           },
           {
-            "backgroundColor": "#EFB3B5",
-            "color": "#384455",
+            "backgroundColor": "#DB2E2E",
           },
         ],
         null,
@@ -240,7 +220,7 @@ exports[`BannerNotification Component should match snapshot with error status 1`
         [
           {
             "alignItems": undefined,
-            "flexDirection": "row",
+            "flexDirection": "column",
             "justifyContent": undefined,
           },
           {
@@ -260,7 +240,6 @@ exports[`BannerNotification Component should match snapshot with error status 1`
         ]
       }
     >
-      <SuccessToastIcon />
       <Text
         accessibilityLabel="bannerTestText"
         style={
@@ -271,11 +250,11 @@ exports[`BannerNotification Component should match snapshot with error status 1`
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Montserrat_600SemiBold",
+              "fontFamily": "Inter_600SemiBold",
               "fontSize": 15,
             },
             {
-              "color": "#384455",
+              "color": "#FFFFFF",
             },
             {
               "textAlign": "left",
@@ -283,10 +262,9 @@ exports[`BannerNotification Component should match snapshot with error status 1`
             null,
             null,
             {
-              "fontFamily": "Montserrat_600SemiBold",
-              "fontSize": 14,
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 12,
               "lineHeight": 15,
-              "marginHorizontal": 8,
               "padding": 1,
               "textAlignVertical": "center",
             },
@@ -366,12 +344,6 @@ exports[`BannerNotification Component should match snapshot with in progress sta
 <View
   accessibilityLabel="bannerTest"
   accessible={true}
-  style={
-    {
-      "alignSelf": "center",
-      "width": "100%",
-    }
-  }
 >
   <View
     accessible={true}
@@ -393,11 +365,9 @@ exports[`BannerNotification Component should match snapshot with in progress sta
         null,
         [
           {
-            "alignItems": "center",
+            "alignItems": "flex-start",
             "backgroundColor": "#DB2E2E",
-            "borderRadius": 10,
             "columnGap": 7,
-            "height": 70,
             "justifyContent": "space-between",
             "marginVertical": 1,
             "paddingHorizontal": 18,
@@ -406,8 +376,7 @@ exports[`BannerNotification Component should match snapshot with in progress sta
             "width": "100%",
           },
           {
-            "backgroundColor": "#FFE799",
-            "color": "#384455",
+            "backgroundColor": "#D9822B",
           },
         ],
         null,
@@ -421,7 +390,7 @@ exports[`BannerNotification Component should match snapshot with in progress sta
         [
           {
             "alignItems": undefined,
-            "flexDirection": "row",
+            "flexDirection": "column",
             "justifyContent": undefined,
           },
           {
@@ -441,7 +410,6 @@ exports[`BannerNotification Component should match snapshot with in progress sta
         ]
       }
     >
-      <SuccessToastIcon />
       <Text
         accessibilityLabel="bannerTestText"
         style={
@@ -452,11 +420,11 @@ exports[`BannerNotification Component should match snapshot with in progress sta
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Montserrat_600SemiBold",
+              "fontFamily": "Inter_600SemiBold",
               "fontSize": 15,
             },
             {
-              "color": "#384455",
+              "color": "#FFFFFF",
             },
             {
               "textAlign": "left",
@@ -464,10 +432,9 @@ exports[`BannerNotification Component should match snapshot with in progress sta
             null,
             null,
             {
-              "fontFamily": "Montserrat_600SemiBold",
-              "fontSize": 14,
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 12,
               "lineHeight": 15,
-              "marginHorizontal": 8,
               "padding": 1,
               "textAlignVertical": "center",
             },
@@ -547,12 +514,6 @@ exports[`BannerNotification Component should match snapshot with long message 1`
 <View
   accessibilityLabel="bannerTest"
   accessible={true}
-  style={
-    {
-      "alignSelf": "center",
-      "width": "100%",
-    }
-  }
 >
   <View
     accessible={true}
@@ -574,11 +535,9 @@ exports[`BannerNotification Component should match snapshot with long message 1`
         null,
         [
           {
-            "alignItems": "center",
+            "alignItems": "flex-start",
             "backgroundColor": "#DB2E2E",
-            "borderRadius": 10,
             "columnGap": 7,
-            "height": 70,
             "justifyContent": "space-between",
             "marginVertical": 1,
             "paddingHorizontal": 18,
@@ -587,8 +546,7 @@ exports[`BannerNotification Component should match snapshot with long message 1`
             "width": "100%",
           },
           {
-            "backgroundColor": "#9DCFBB",
-            "color": "#384455",
+            "backgroundColor": "#4B9D20",
           },
         ],
         null,
@@ -602,7 +560,7 @@ exports[`BannerNotification Component should match snapshot with long message 1`
         [
           {
             "alignItems": undefined,
-            "flexDirection": "row",
+            "flexDirection": "column",
             "justifyContent": undefined,
           },
           {
@@ -622,7 +580,6 @@ exports[`BannerNotification Component should match snapshot with long message 1`
         ]
       }
     >
-      <SuccessToastIcon />
       <Text
         accessibilityLabel="bannerTestText"
         style={
@@ -633,11 +590,11 @@ exports[`BannerNotification Component should match snapshot with long message 1`
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Montserrat_600SemiBold",
+              "fontFamily": "Inter_600SemiBold",
               "fontSize": 15,
             },
             {
-              "color": "#384455",
+              "color": "#FFFFFF",
             },
             {
               "textAlign": "left",
@@ -645,10 +602,9 @@ exports[`BannerNotification Component should match snapshot with long message 1`
             null,
             null,
             {
-              "fontFamily": "Montserrat_600SemiBold",
-              "fontSize": 14,
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 12,
               "lineHeight": 15,
-              "marginHorizontal": 8,
               "padding": 1,
               "textAlignVertical": "center",
             },
@@ -728,12 +684,6 @@ exports[`BannerNotification Component should match snapshot with success status 
 <View
   accessibilityLabel="bannerTest"
   accessible={true}
-  style={
-    {
-      "alignSelf": "center",
-      "width": "100%",
-    }
-  }
 >
   <View
     accessible={true}
@@ -755,11 +705,9 @@ exports[`BannerNotification Component should match snapshot with success status 
         null,
         [
           {
-            "alignItems": "center",
+            "alignItems": "flex-start",
             "backgroundColor": "#DB2E2E",
-            "borderRadius": 10,
             "columnGap": 7,
-            "height": 70,
             "justifyContent": "space-between",
             "marginVertical": 1,
             "paddingHorizontal": 18,
@@ -768,8 +716,7 @@ exports[`BannerNotification Component should match snapshot with success status 
             "width": "100%",
           },
           {
-            "backgroundColor": "#9DCFBB",
-            "color": "#384455",
+            "backgroundColor": "#4B9D20",
           },
         ],
         null,
@@ -783,7 +730,7 @@ exports[`BannerNotification Component should match snapshot with success status 
         [
           {
             "alignItems": undefined,
-            "flexDirection": "row",
+            "flexDirection": "column",
             "justifyContent": undefined,
           },
           {
@@ -803,7 +750,6 @@ exports[`BannerNotification Component should match snapshot with success status 
         ]
       }
     >
-      <SuccessToastIcon />
       <Text
         accessibilityLabel="bannerTestText"
         style={
@@ -814,11 +760,11 @@ exports[`BannerNotification Component should match snapshot with success status 
               "lineHeight": 18,
             },
             {
-              "fontFamily": "Montserrat_600SemiBold",
+              "fontFamily": "Inter_600SemiBold",
               "fontSize": 15,
             },
             {
-              "color": "#384455",
+              "color": "#FFFFFF",
             },
             {
               "textAlign": "left",
@@ -826,10 +772,9 @@ exports[`BannerNotification Component should match snapshot with success status 
             null,
             null,
             {
-              "fontFamily": "Montserrat_600SemiBold",
-              "fontSize": 14,
+              "fontFamily": "Inter_600SemiBold",
+              "fontSize": 12,
               "lineHeight": 15,
-              "marginHorizontal": 8,
               "padding": 1,
               "textAlignVertical": "center",
             },

@@ -33,11 +33,11 @@ export const BannerNotificationContainer: React.FC<
     bannerNotificationController.verificationStatus || null;
 
   return (
-    <View style={Theme.BannerStyles.bannerStackContainer}>
+    <>
       <BackupAndRestoreBannerNotification />
 
       {settingsScreenController.isKeyOrderSet === true && (
-        <View>
+        <View style={Theme.BannerStyles.topBanner}>
           <BannerNotification
             type={BannerStatusType.SUCCESS}
             message={t('keyPreferenceSuccess')}
@@ -49,7 +49,7 @@ export const BannerNotificationContainer: React.FC<
       )}
 
       {settingsScreenController.isKeyOrderSet === false && (
-        <View>
+        <View style={Theme.BannerStyles.topBanner}>
           <BannerNotification
             type={BannerStatusType.ERROR}
             message={t('keyPreferenceError')}
@@ -61,7 +61,7 @@ export const BannerNotificationContainer: React.FC<
       )}
 
       {WalletBindingSuccess && (
-        <View>
+        <View style={Theme.BannerStyles.topBanner}>
           <BannerNotification
             type={BannerStatusType.SUCCESS}
             message={t('activated')}
@@ -75,7 +75,7 @@ export const BannerNotificationContainer: React.FC<
       )}
 
       {reverificationSuccessObject.status && (
-        <View>
+        <View style={Theme.BannerStyles.topBanner}>
           <BannerNotification
             type={BannerStatusType.SUCCESS}
             message={t(
@@ -92,7 +92,7 @@ export const BannerNotificationContainer: React.FC<
       )}
 
       {showQuickShareSuccessBanner && (
-        <View>
+        <View style={Theme.BannerStyles.topBanner}>
           <BannerNotification
             type={BannerStatusType.SUCCESS}
             message={rt('status.accepted.message')}
@@ -156,7 +156,7 @@ export const BannerNotificationContainer: React.FC<
           testId={'downloadingVcSuccessPopup'}
         />
       )}
-    </View>
+    </>
   );
 };
 

@@ -12,7 +12,7 @@ import {
   sendStartEvent,
 } from '../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../shared/telemetry/TelemetryConstants';
-import BiometricIcon from '../components/BiometricIcon';
+import {SvgImage} from '../components/ui/svg';
 
 export const AuthScreen: React.FC<RootRouteProps> = props => {
   const {t} = useTranslation('AuthScreen');
@@ -43,7 +43,7 @@ export const AuthScreen: React.FC<RootRouteProps> = props => {
         title={controller.alertMsg}
       />
       <Column crossAlign="center">
-        <BiometricIcon size={66} />
+        {SvgImage.fingerprintIcon(66)}
         <Column margin="30 0 0 0">
           <Text
             testID="selectAppUnlockMethod"

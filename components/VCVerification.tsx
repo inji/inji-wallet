@@ -4,11 +4,10 @@ import testIDProps from '../shared/commonUtil';
 import {Display} from './VC/common/VCUtils';
 import VerifiedIcon from './VerifiedIcon';
 import PendingIcon from './PendingIcon';
-import {Text} from './ui';
+import {Row, Text} from './ui';
 import {Theme} from './ui/styleUtils';
 import {useTranslation} from 'react-i18next';
 import {VCMetadata} from '../shared/VCMetadata';
-import {formattedDate} from '../shared/openId4VCI/Utils';
 import {RevocationStatus} from '../shared/vcVerifier/VcVerifier';
 
 export const VCVerification: React.FC<VCVerificationProps> = ({
@@ -66,7 +65,7 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
             color={display.getTextColor(Theme.Colors.Details)}
             style={[
               Theme.Styles.verificationStatus,
-              {fontFamily: 'Montserrat_400Regular'},
+              {fontFamily: 'Inter_400'},
             ]}>
             {t('lastChecked')}
           </Text>
@@ -75,9 +74,9 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
             color={display.getTextColor(Theme.Colors.Details)}
             style={[
               Theme.Styles.verificationStatus,
-              {fontFamily: 'Montserrat_400Regular'},
+              {fontFamily: 'Inter_400'},
             ]}>
-            {formattedDate(vcMetadata.lastKnownStatusTimestamp)}
+            {new Date(vcMetadata.lastKnownStatusTimestamp).toLocaleString()}
           </Text>
         </View>
       )}

@@ -12,7 +12,6 @@ import Constants from 'expo-constants';
 import HomeScreenLogo from '../../../assets/InjiHomeLogo.svg';
 import InjiLogoSmall from '../../../assets/InjiLogo.svg';
 import i18next from '../../../i18n';
-import {POINTER_SIZE} from '../ToolTip';
 const Colors = {
   Black: '#000000',
   Zambezi: '#5F5F5F',
@@ -32,8 +31,7 @@ const Colors = {
   DimGray: '#737373',
   DarkGray: '#A5A5A5',
   platinumGrey: '#EDEDED',
-  Orange: '#F37321',
-  DarkMagenta: '#951F6F',
+  Orange: '#951F6F',
   OrangeBrown: '#D9822B',
   Blue: '#0000FF',
   LightGrey: '#F8F8F8',
@@ -47,13 +45,12 @@ const Colors = {
   Warning: '#f0ad4e',
   GrayText: '#6F6F6F',
   mediumLightGrayText: '#A7A7A7',
-  veryLightBluishGray: '#D9E1E7',
   dorColor: '#CBCBCB',
   plainText: '#FFFFFF',
   walletbindingLabel: '#000000',
   LightOrange: '#F7EDF3',
   GradientColors: ['#FF5300', '#5B03AD'],
-  GradientColorsLight: ['#FF5300' + 14, '#FF5300' + 14],
+  GradientColorsLight: ['#FF5300' + 14, '#5B03AD' + 14],
   DisabledColors: ['#C7C7C7', '#C7C7C7'],
   TimeoutHintBoxColor: '#FFF7E5',
   TimeoutHintBoxBorder: '#FFF2D6',
@@ -71,16 +68,6 @@ const Colors = {
   Mercury: '#E6E6E6',
   Yellow: '#E8A94F',
   selectIDTextGradient: ['#F5F5F5', '#FFFFFF'],
-  brandPrimary: '#F37321',
-  brandPrimaryLight: '#FCEFE6',
-  brandPrimaryDark: '#D65F17',
-  DeepPurple: '#290B45',
-  RoyalPurple: '#451691',
-  LightMintGreen: '#9DCFBB',
-  CharcoalBlue: '#384455',
-  LightRose: '#EFB3B5',
-  LightYellow: '#FFE799',
-  SteelBlue: '#809FB8',
 };
 
 export type ElevationLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -94,7 +81,7 @@ export const DefaultTheme = {
     DetailsLabel: Colors.Gray40,
     LoadingDetailsLabel: Colors.Gray40,
     AddIdBtnBg: Colors.Orange,
-    AddIdBtnTxt: Colors.DarkMagenta,
+    AddIdBtnTxt: Colors.Orange,
     DownloadIdBtnTxt: Colors.White,
     Loading: Colors.Orange,
     Cursor: Colors.Orange,
@@ -102,7 +89,6 @@ export const DefaultTheme = {
     IconBg: Colors.Orange,
     popUp: Colors.Green,
     Icon: Colors.Orange,
-    SearchIcon: Colors.veryLightBluishGray,
     GrayIcon: Colors.Gray50,
     helpText: Colors.Gray44,
     borderBottomColor: Colors.Grey6,
@@ -112,7 +98,6 @@ export const DefaultTheme = {
     switchHead: Colors.Orange,
     switchTrackTrue: Colors.LightOrange,
     switchTrackFalse: Colors.Grey,
-    switchCircleOff: Colors.White,
     overlayBackgroundColor: Colors.White,
     rotatingIcon: Colors.Grey5,
     loadingLabel: Colors.Grey6,
@@ -154,10 +139,10 @@ export const DefaultTheme = {
     uncheckedIcon: Colors.uncheckedIcon,
     settingsLabel: Colors.Black,
     chevronRightColor: Colors.Grey,
-    linearGradientStart: Colors.brandPrimary,
-    linearGradientEnd: Colors.brandPrimary,
-    linearIconGradientStart: Colors.brandPrimary,
-    linearIconGradientEnd: Colors.brandPrimary,
+    linearGradientStart: Colors.startColor,
+    linearGradientEnd: Colors.endColor,
+    linearIconGradientStart: Colors.startColor,
+    linearIconGradientEnd: Colors.endColor,
     LinearGradientStroke: Colors.stroke,
     warningLogoBgColor: Colors.warningLogoBg,
     tooltipIcon: Colors.toolTip,
@@ -166,16 +151,6 @@ export const DefaultTheme = {
     warningText: Colors.Red,
     PendingIcon: Colors.Yellow,
     selectIDTextGradient: ['#F5F5F5', '#FFFFFF'],
-    ListSelectedBackground: Colors.brandPrimaryLight,
-    ListSelectedText: Colors.brandPrimary,
-    ListSelectedIcon: Colors.brandPrimary,
-    ListUnselectedBackground: Colors.White,
-    ListUnselectedText: Colors.Black,
-    SearchBarPlaceholderColor: Colors.veryLightBluishGray,
-    PopupText: Colors.CharcoalBlue,
-    TransactionCodeBackgroundColor: Colors.White,
-    TransactionCodeBorderColor: Colors.veryLightBluishGray,
-    TransactionCodePlaceholderColor: Colors.SteelBlue,
   },
   Styles: StyleSheet.create({
     title: {
@@ -194,12 +169,12 @@ export const DefaultTheme = {
     fieldItemTitle: {
       backgroundColor: Colors.Transparent,
       fontSize: 11,
-      fontFamily: 'Montserrat_400Regular',
+      fontFamily: 'Inter_400Regular',
     },
     fieldItemValue: {
       backgroundColor: Colors.Transparent,
       fontSize: 12,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       marginTop: 3,
     },
     loadingSubtitle: {
@@ -208,7 +183,7 @@ export const DefaultTheme = {
     },
     verificationStatus: {
       fontSize: 12,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
     },
     statusLabel: {
       color: Colors.Gray30,
@@ -500,9 +475,6 @@ export const DefaultTheme = {
     ProfileIconPinnedStyle: {
       position: 'absolute',
     },
-    BackButtonBgGradient: {
-      borderRadius: 10,
-    },
     IconContainer: {
       padding: 6,
       width: 25,
@@ -602,7 +574,7 @@ export const DefaultTheme = {
     detailsText: {
       fontWeight: 'bold',
       fontSize: 15,
-      fontFamily: 'Montserrat_700Bold',
+      fontFamily: 'Inter_700Bold',
     },
     idInputContainer: {
       width: Dimensions.get('window').width * 0.86,
@@ -615,50 +587,8 @@ export const DefaultTheme = {
       height: isIOS() ? 100 : 'auto',
     },
     picker: {
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       fontSize: 18,
-    },
-    overlay: {
-      padding: 1,
-      borderRadius: 12,
-      overflow: 'hidden',
-    },
-    listItemSelectedText: {
-      color: Colors.brandPrimary,
-      fontWeight: '600',
-      fontFamily: 'Montserrat_500Medium',
-    },
-    listItemUnselectedText: {
-      color: Colors.Black,
-      fontWeight: '400',
-      fontFamily: 'Montserrat_500Medium',
-    },
-    listItemSelectedContainer: {backgroundColor: Colors.brandPrimaryLight},
-    listItemUnselectedContainer: {backgroundColor: Colors.White},
-    listItemSelectedCircle: {
-      width: 22,
-      height: 22,
-      borderRadius: 11,
-      borderWidth: 7,
-      borderColor: Colors.brandPrimary,
-      backgroundColor: Colors.White,
-    },
-    wrapper: {
-      borderWidth: 2,
-      borderRadius: 16,
-      padding: 2,
-    },
-    container: {
-      width: 48,
-      height: 22,
-      borderRadius: 16,
-      padding: 3,
-    },
-    circle: {
-      width: 18,
-      height: 18,
-      borderRadius: 9,
-      elevation: 2,
     },
     idInputBottom: {
       position: 'relative',
@@ -678,7 +608,7 @@ export const DefaultTheme = {
       marginVertical: 6,
     },
     placeholder: {
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
     },
     hrLine: {
       borderBottomColor: Colors.Gray44,
@@ -726,46 +656,14 @@ export const DefaultTheme = {
     },
     boxShadow: generateBoxShadowStyle(),
     tooltipContainerStyle: {
-      backgroundColor: '#EBE6F3',
-      borderWidth: 2,
-      borderColor: '#E0E0E0',
-      maxWidth: '90%',
-    },
-    tooltipContentTitle: {
-      color: Colors.DeepPurple,
-    },
-    tooltipContentDescription: {
-      color: Colors.RoyalPurple,
-      marginTop: 10,
-    },
-    tooltipOverlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: 'transparent',
-    },
-    tooltip: {
-      position: 'absolute',
-      backgroundColor: '#EBE6F3',
-      borderRadius: 8,
-      elevation: 6,
-      shadowColor: '#000',
-      shadowOffset: {width: 0, height: 2},
-      shadowOpacity: 0.2,
-      shadowRadius: 4,
+      backgroundColor: '#FAFAFA',
       borderWidth: 1,
       borderColor: '#E0E0E0',
-      zIndex: 999,
+      marginLeft: 15,
     },
-    pointer: {
-      position: 'absolute',
-      width: 0,
-      height: 0,
-      borderLeftWidth: POINTER_SIZE / 2,
-      borderRightWidth: POINTER_SIZE / 2,
-      borderBottomWidth: POINTER_SIZE / 2,
-      borderLeftColor: 'transparent',
-      borderRightColor: 'transparent',
-      borderBottomColor: '#EBE6F3',
-      zIndex: 1000,
+    tooltipContentDescription: {
+      color: Colors.toolTipContent,
+      marginTop: 10,
     },
     tooltipHrLine: {
       borderBottomColor: Colors.Grey5,
@@ -800,7 +698,7 @@ export const DefaultTheme = {
       maxHeight: 20,
       borderRadius: 4,
       fontSize: 10,
-      fontFamily: 'Montserrat_700Bold',
+      fontFamily: 'Inter_700Bold',
       lineHeight: 12,
     },
     scanLayoutHeaderContainer: {
@@ -811,7 +709,7 @@ export const DefaultTheme = {
     },
     scanLayoutHeaderTitle: {
       fontSize: 26,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       paddingTop: isIOS() ? 10 : 20,
       paddingBottom: 10,
     },
@@ -828,18 +726,18 @@ export const DefaultTheme = {
     },
     sendVPHeaderTitle: {
       fontSize: 18,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
     },
     sendVPHeaderSubTitle: {
       fontSize: 13,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       color: Colors.Orange,
       maxWidth: '80%',
       overflow: 'hidden',
     },
     HistoryHeaderTitleStyle: {
       fontSize: 26,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       marginTop: isIOS() ? 5 : 15,
     },
     tabBarIconCopilot: {
@@ -876,7 +774,7 @@ export const DefaultTheme = {
       backgroundColor: '#DADADA',
     },
     disclosureTitle: {
-      fontFamily: 'Montserrat_700Bold',
+      fontFamily: 'Inter_700Bold',
       fontSize: 15,
       color: Colors.Black,
     },
@@ -887,32 +785,20 @@ export const DefaultTheme = {
     },
     disclosureSelectButton: {
       fontSize: 14,
-      fontFamily: 'Montserrat_700Bold',
+      fontFamily: 'Inter_700Bold',
     },
   }),
   BannerStyles: StyleSheet.create({
-    bannerStackContainer: {
-      position: 'absolute',
-      width: '100%',
-      alignItems: 'center',
-      zIndex: 100,
-    },
-    wrapper: {
-      width: '100%',
-      alignSelf: 'center',
-    },
     container: {
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'space-between',
       backgroundColor: '#DB2E2E',
       width: '100%',
-      height: 70,
       position: 'relative',
       paddingHorizontal: 18,
       paddingVertical: 12,
       marginVertical: 1,
       columnGap: 7,
-      borderRadius: 10,
     },
     topBanner: {
       marginTop: 10,
@@ -920,24 +806,20 @@ export const DefaultTheme = {
     },
     text: {
       textAlignVertical: 'center',
-      fontSize: 14,
+      fontSize: 12,
       lineHeight: 15,
       padding: 1,
-      marginHorizontal: 8,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
     },
     dismiss: {paddingLeft: 9},
     inProgress: {
-      backgroundColor: Colors.LightYellow,
-      color: Colors.CharcoalBlue,
+      backgroundColor: Colors.OrangeBrown,
     },
     success: {
-      backgroundColor: Colors.LightMintGreen,
-      color: Colors.CharcoalBlue,
+      backgroundColor: Colors.Green,
     },
     error: {
-      backgroundColor: Colors.LightRose,
-      color: Colors.CharcoalBlue,
+      backgroundColor: Colors.LightRed,
     },
   }),
   QrCodeStyles: StyleSheet.create({
@@ -963,7 +845,7 @@ export const DefaultTheme = {
       borderTopLeftRadius: 21,
       borderTopRightRadius: 21,
       justifyContent: 'space-between',
-      fontFamily: 'Montserrat_700Bold',
+      fontFamily: 'Inter_700Bold',
       paddingBottom: 10,
       paddingRight: 15,
       paddingLeft: 130,
@@ -999,7 +881,7 @@ export const DefaultTheme = {
       color: Colors.Black,
       flex: 1,
       fontSize: 33,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       height: 50,
       lineHeight: 28,
       margin: 8,
@@ -1010,7 +892,7 @@ export const DefaultTheme = {
       borderColor: Colors.Orange,
       color: Colors.Black,
       flex: 1,
-      fontFamily: 'Montserrat_700Bold',
+      fontFamily: 'Inter_700Bold',
       fontSize: 29,
       height: 50,
       margin: 8,
@@ -1020,33 +902,33 @@ export const DefaultTheme = {
   TextStyles: StyleSheet.create({
     header: {
       color: Colors.Black,
-      fontFamily: 'Montserrat_700Bold',
+      fontFamily: 'Inter_700Bold',
       fontSize: 18,
       lineHeight: 19,
       paddingTop: 5,
     },
     subHeader: {
       color: Colors.mediumLightGrayText,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       lineHeight: 19,
       fontSize: 13,
       paddingTop: 4,
     },
     semiBoldHeader: {
       color: Colors.Black,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       fontSize: 18,
       lineHeight: 21,
       paddingTop: 4,
     },
     retrieveIdLabel: {
       color: Colors.ShadeOfGrey,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       lineHeight: 18,
     },
     helpHeader: {
       color: Colors.Black,
-      fontFamily: 'Montserrat_700Bold',
+      fontFamily: 'Inter_700Bold',
       fontSize: 18,
       lineHeight: 19,
       paddingTop: 5,
@@ -1055,11 +937,11 @@ export const DefaultTheme = {
     helpDetails: {
       margin: 5,
       color: Colors.Gray44,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
     },
     urlLinkText: {
       color: Colors.Orange,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
     },
     aboutDetails: {
       color: Colors.Black,
@@ -1072,7 +954,7 @@ export const DefaultTheme = {
       top: 65,
       left: 5,
       color: Colors.Red,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       fontSize: 12,
       minWidth: 200,
     },
@@ -1082,21 +964,21 @@ export const DefaultTheme = {
       lineHeight: 18,
     },
     regular: {
-      fontFamily: 'Montserrat_400Regular',
+      fontFamily: 'Inter_400Regular',
       fontSize: 14,
     },
     regularGrey: {
-      fontFamily: 'Montserrat_400Regular',
+      fontFamily: 'Inter_400Regular',
       fontSize: 15,
       lineHeight: 19,
       color: Colors.ShadeOfGrey,
     },
     semibold: {
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       fontSize: 15,
     },
     bold: {
-      fontFamily: 'Montserrat_700Bold',
+      fontFamily: 'Inter_700Bold',
       fontSize: 15,
       justifyContent: 'center',
     },
@@ -1170,27 +1052,23 @@ export const DefaultTheme = {
     },
   }),
   SearchBarStyles: StyleSheet.create({
+    idleSearchBarBottomLine: {
+      alignItems: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: Colors.Gray40,
+    },
     searchBarContainer: {
       alignItems: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: Colors.Orange,
     },
-    clearIcon: {
-      position: 'absolute',
-      right: 45,
-      width: 40,
-      justifyContent: 'center',
+    vcSearchBarContainer: {
       alignItems: 'center',
-    },
-    vcSearchBarContainer: {},
-    innerSearchBarContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      width: '100%',
+      borderBottomWidth: 0.5,
+      borderTopWidth: 0.5,
+      borderColor: Colors.DimGray,
+      width: Dimensions.get('window').width,
       backgroundColor: Colors.White,
-      borderColor: Colors.veryLightBluishGray,
-      borderRadius: 18,
-      borderWidth: 2,
-      marginTop: 10,
-      paddingHorizontal: 20,
     },
     vcSearchIcon: {
       justifyContent: 'center',
@@ -1199,17 +1077,17 @@ export const DefaultTheme = {
       paddingLeft: 15,
     },
     searchIcon: {
-      width: 25,
       justifyContent: 'center',
-      alignItems: 'center',
+      height: Dimensions.get('window').height * 0.055,
+      width: Dimensions.get('window').width * 0.1,
     },
     searchBar: {
       textAlign: I18nManager.isRTL ? 'right' : 'left',
       height: Dimensions.get('window').height * 0.055,
-      flex: 1,
-      fontFamily: 'Montserrat_500Medium',
-      fontSize: 17,
-      marginRight: 40,
+      width: Dimensions.get('window').width * 0.75,
+    },
+    clearSearch: {
+      padding: 10,
     },
   }),
   ButtonStyles: StyleSheet.create({
@@ -1290,7 +1168,7 @@ export const DefaultTheme = {
       backgroundColor: Colors.White,
       borderWidth: 0,
       marginTop: -15,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       padding: 0,
     },
     timeoutHintContainer: {
@@ -1393,7 +1271,7 @@ export const DefaultTheme = {
   }),
   BackupAndRestoreStyles: StyleSheet.create({
     backupProgressText: {
-      fontFamily: 'Montserrat_400Regular',
+      fontFamily: 'Inter_400Regular',
       fontSize: 14,
       color: Colors.Gray44,
     },
@@ -1403,7 +1281,7 @@ export const DefaultTheme = {
       textAlign: 'center',
       lineHeight: 22,
       fontSize: 17,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       marginHorizontal: 30,
     },
     actionOrLoaderContainer: {
@@ -1420,7 +1298,7 @@ export const DefaultTheme = {
       paddingHorizontal: 10,
       textAlign: 'center',
       paddingTop: 15,
-      fontFamily: 'Montserrat_500Medium',
+      fontFamily: 'Inter_500Medium',
       fontSize: 14,
       letterSpacing: 0,
       lineHeight: 17,
@@ -1438,7 +1316,7 @@ export const DefaultTheme = {
     headerText: {
       justifyContent: 'center',
       paddingLeft: 12,
-      fontFamily: 'Montserrat_500Medium',
+      fontFamily: 'Inter_500Medium',
       fontWeight: '600',
       fontSize: 14,
       letterSpacing: 0,
@@ -1499,7 +1377,7 @@ export const DefaultTheme = {
     },
     kebabHeaderStyle: {
       justifyContent: 'space-between',
-      fontFamily: 'Montserrat_700Bold',
+      fontFamily: 'Inter_700Bold',
     },
   }),
   MessageOverlayStyles: StyleSheet.create({
@@ -1519,7 +1397,6 @@ export const DefaultTheme = {
     button: {
       borderTopLeftRadius: 0,
       borderTopRightRadius: 0,
-      fontSize: 16,
     },
     halfButton: {
       borderRadius: 8,
@@ -1598,7 +1475,7 @@ export const DefaultTheme = {
     sliderTitle: {
       color: Colors.White,
       marginBottom: 20,
-      fontFamily: 'Montserrat_700Bold',
+      fontFamily: 'Inter_700Bold',
     },
     text: {
       color: Colors.White,
@@ -1679,7 +1556,7 @@ export const DefaultTheme = {
       marginHorizontal: 9,
     },
     issuerHeading: {
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       fontSize: 14,
       paddingHorizontal: 3,
       marginBottom: 2,
@@ -1705,7 +1582,7 @@ export const DefaultTheme = {
     image: {marginTop: -60, paddingBottom: 26},
     title: {
       color: Colors.Black,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       fontSize: 18,
       lineHeight: 21,
       paddingTop: 4,
@@ -1714,7 +1591,7 @@ export const DefaultTheme = {
     },
     message: {
       textAlign: 'center',
-      fontFamily: 'Montserrat_400Regular',
+      fontFamily: 'Inter_400Regular',
       fontSize: 14,
       lineHeight: 20,
       marginTop: 6,
@@ -1724,7 +1601,7 @@ export const DefaultTheme = {
     },
     additionalMessage: {
       color: Colors.Black,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       fontSize: 18,
       lineHeight: 21,
       paddingTop: 4,
@@ -1760,16 +1637,16 @@ export const DefaultTheme = {
       paddingHorizontal: 15,
       paddingBottom: 10,
       backgroundColor: '#fff',
-      elevation: 5,
-      shadowColor: '#000',
-      shadowOffset: {width: 0, height: 4}, // only downward shadow
-      shadowOpacity: 0.1,
+      elevation: 5, // For Android
+      shadowColor: '#000', // For iOS
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.2,
       shadowRadius: 4,
       zIndex: 1,
     },
     heading: {
       color: 'black',
-      fontFamily: 'Montserrat_700Bold',
+      fontFamily: 'Inter_700Bold',
       fontSize: 18,
       lineHeight: 19,
       padding: 10,
@@ -1916,16 +1793,16 @@ export const DefaultTheme = {
     purposeText: {
       fontSize: 13,
       position: 'relative',
-      fontFamily: 'Montserrat_500Medium',
+      fontFamily: 'Inter_500Medium',
     },
     cardsSelectedText: {
-      fontFamily: 'Montserrat_500Medium',
+      fontFamily: 'Inter_500Medium',
       color: '#000000',
       fontSize: 14,
     },
     selectIDText: {
       position: 'relative',
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       fontSize: 16,
     },
   }),
@@ -1945,11 +1822,11 @@ export const DefaultTheme = {
       justifyContent: 'space-between',
     },
     bannerTitle: {
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
     },
     bannerGuide: {
       opacity: 0.8,
-      fontFamily: 'Montserrat_400Regular',
+      fontFamily: 'Inter_400Regular',
     },
     bannerEnablePermissionContainer: {
       marginTop: 15,
@@ -1957,7 +1834,7 @@ export const DefaultTheme = {
     bannerEnablePermission: {
       borderBottomWidth: 1.5,
       borderBottomColor: Colors.White,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
     },
     scannerContainer: {
       borderRadius: 24,
@@ -2012,18 +1889,14 @@ export const DefaultTheme = {
     },
     holdPhoneSteadyText: {
       color: Colors.Black,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       fontSize: 15,
     },
     cameraFlipIcon: {
       height: 50,
       width: 50,
     },
-    iconText: {
-      fontFamily: 'Montserrat_600SemiBold',
-      fontSize: 12,
-      marginTop: 6,
-    },
+    iconText: {fontFamily: 'Inter_600SemiBold', fontSize: 12, marginTop: 6},
   }),
 
   BottomTabBarStyle: StyleSheet.create({
@@ -2031,7 +1904,7 @@ export const DefaultTheme = {
     headerLeftContainerStyle: {paddingEnd: 13},
     tabBarLabelStyle: {
       fontSize: 12,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
     },
     tabBarStyle: {
       display: 'flex',
@@ -2126,26 +1999,6 @@ export const DefaultTheme = {
       marginBottom: 10,
       marginTop: 10,
       width: '80%',
-    },
-    transactionGradientContainer: {
-      width: Dimensions.get('window').width - 100,
-      alignSelf: 'center',
-      borderRadius: 18,
-      padding: 2,
-      marginTop: 10,
-      marginBottom: 25,
-    },
-    inputContainer: {
-      borderBottomWidth: 0,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      width: '100%',
-      backgroundColor: Colors.White,
-      borderRadius: 18,
-      paddingHorizontal: 20,
-      overflow: 'hidden',
-      height: 60,
     },
     inputStyle: {
       fontSize: 20,
@@ -2309,7 +2162,7 @@ export const DefaultTheme = {
     titleText: {
       fontSize: 17,
       textAlign: 'left',
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       paddingTop: 20,
     },
     titleDescription: {
@@ -2320,14 +2173,14 @@ export const DefaultTheme = {
     },
     noteTitleText: {
       fontSize: 14,
-      fontFamily: 'Montserrat_600SemiBold',
+      fontFamily: 'Inter_600SemiBold',
       color: '#973C00',
       marginBottom: 5,
     },
     noteDescriptionText: {
       fontSize: 13,
       color: '#973C00',
-      fontFamily: 'Montserrat_400Regular',
+      fontFamily: 'Inter_400Regular',
       lineHeight: 18,
       textAlign: 'left',
       marginLeft: -25,
@@ -2346,7 +2199,7 @@ export const DefaultTheme = {
     },
     text: {
       fontSize: 14,
-      fontFamily: 'Montserrat_400Regular',
+      fontFamily: 'Inter_400Regular',
       color: 'black',
       flex: 1,
     },

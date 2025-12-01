@@ -13,7 +13,6 @@ import {DETAIL_VIEW_DEFAULT_FIELDS} from '../../components/VC/common/VCUtils';
 import {getDetailedViewFields} from '../../shared/openId4VCI/Utils';
 import {VCProcessor} from '../../components/VC/common/VCProcessor';
 import VcRenderer from '../../shared/vcRenderer/VcRenderer';
-import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 
 export const ReceiveVcScreen: React.FC = () => {
   const {t} = useTranslation('ReceiveVcScreen');
@@ -97,7 +96,6 @@ export const ReceiveVcScreen: React.FC = () => {
 
   return (
     <React.Fragment>
-      <BannerNotificationContainer />
       {controller.isDisplayingIncomingVC && (
         <Column
           scroll

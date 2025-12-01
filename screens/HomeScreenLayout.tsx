@@ -14,19 +14,32 @@ import {I18nManager, View} from 'react-native';
 import {isIOS} from '../shared/constants';
 import {Copilot} from '../components/ui/Copilot';
 import LinearGradient from 'react-native-linear-gradient';
-import { useTabBarVisibility } from '../shared/hooks/useTabBarVisibility';
 
 export const HomeScreenLayout: React.FC<RootRouteProps> = props => {
   const {t} = useTranslation('IssuersScreen');
   const {Navigator, Screen} = createNativeStackNavigator();
-  const { hideTabBar, showTabBar } = useTabBarVisibility();
 
   React.useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(props.route);
     if (routeName === 'IssuersScreen') {
-      hideTabBar();
+      props.navigation.setOptions({tabBarStyle: {display: 'none'}});
     } else {
-      showTabBar();
+      props.navigation.setOptions({
+        tabBarShowLabel: true,
+        tabBarActiveTintColor: Theme.Colors.IconBg,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontFamily: 'Inter_600SemiBold',
+        },
+        tabBarStyle: {
+          height: 75,
+          paddingHorizontal: 10,
+        },
+        tabBarItemStyle: {
+          height: 83,
+          padding: 11,
+        },
+      });
     }
   }, [props.navigation, props.route]);
 

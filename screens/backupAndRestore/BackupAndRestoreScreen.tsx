@@ -208,13 +208,12 @@ const BackupAndRestoreScreen: React.FC<BackupAndRestoreProps> = props => {
         <HelpScreen source={'BackUp'} triggerComponent={HelpIcon()} />
       }
       onDismiss={props.onBackPress}>
+      <BannerNotificationContainer />
       <View
         style={{
           backgroundColor: Theme.Colors.lightGreyBackgroundColor,
           flex: 1,
-          position: "relative"
         }}>
-        <BannerNotificationContainer />
         {props.isSigningIn || backupController.isLoadingBackupDetails ? (
           <Column fill align="center" crossAlign="center">
             <LoaderAnimation testID="backupAndRestoreScreen" />

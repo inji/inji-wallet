@@ -1,10 +1,12 @@
 import React from 'react';
-import { TextInput, TouchableOpacity } from 'react-native';
-import { Icon } from 'react-native-elements';
-import { Row } from './Layout';
-import { Theme } from './styleUtils';
+import {TextInput, View} from 'react-native';
+import {Icon} from 'react-native-elements';
+import {Row} from './Layout';
+import {Theme} from './styleUtils';
+import {SvgImage} from './svg';
 
 export const SearchBar = ({
+  isVcSearch = false,
   searchIconTestID,
   searchBarTestID,
   placeholder,
@@ -15,45 +17,38 @@ export const SearchBar = ({
   editable = true,
 }: SearchBarProps) => {
   return (
-    <Row style={Theme.SearchBarStyles.innerSearchBarContainer}>
+    <Row>
+      {isVcSearch ? (
+        <View
+          testID={searchIconTestID}
+          style={Theme.SearchBarStyles.vcSearchIcon}>
+          {SvgImage.SearchIcon()}
+        </View>
+      ) : (
+        <Icon
+          testID={searchIconTestID}
+          name="search"
+          color={Theme.Colors.Icon}
+          size={27}
+          style={Theme.SearchBarStyles.searchIcon}
+        />
+      )}
       <TextInput
         testID={searchBarTestID}
         style={Theme.SearchBarStyles.searchBar}
         placeholder={placeholder}
-        placeholderTextColor={Theme.Colors.SearchBarPlaceholderColor}
         value={search}
         onFocus={onFocus}
         onChangeText={searchText => onChangeText(searchText)}
         onLayout={onLayout}
         editable={editable ?? true}
       />
-
-      {search?.length > 0 && (
-        <TouchableOpacity
-          onPress={() => onChangeText('')}
-          style={Theme.SearchBarStyles.clearIcon}>
-          <Icon
-            testID='clearingIssuerSearchIcon'
-            name="close"
-            type="material"
-            color={Theme.Colors.SearchIcon}
-            size={22}
-          />
-        </TouchableOpacity>
-      )}
-      <Icon
-        testID={searchIconTestID}
-        name="search"
-        type="material"
-        color={Theme.Colors.SearchIcon}
-        size={27}
-        style={Theme.SearchBarStyles.searchIcon}
-      />
     </Row>
   );
 };
 
 interface SearchBarProps {
+  isVcSearch: Boolean;
   searchIconTestID: string;
   searchBarTestID: string;
   search: string;
