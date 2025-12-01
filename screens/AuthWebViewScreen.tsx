@@ -8,13 +8,13 @@ import {
   Text,
   BackHandler,
   SafeAreaView,
-  Platform,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import {Ionicons} from '@expo/vector-icons';
 import VciClient from '../shared/vciClient/VciClient';
 import {Theme} from '../components/ui/styleUtils';
 import {useTranslation} from 'react-i18next';
+import {isAndroid} from '../shared/constants';
 
 const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   const {authorizationURL, clientId, redirectUri, controller} = route.params;
@@ -79,7 +79,7 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | null = null;
 
-    if (Platform.OS === 'android') {
+    if (isAndroid()) {
       setShouldRenderWebView(true);
 
       timeoutId = setTimeout(() => {
