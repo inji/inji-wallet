@@ -52,7 +52,7 @@ export class VCMetadata {
     format = '',
     downloadKeyType = '',
     isExpired = false,
-    isRevoked = false,
+    isRevoked = EvaluationStatus.FALSE,
     credentialType = '',
     issuerHost = '',
     lastKnownStatusTimestamp = '',
