@@ -59,7 +59,8 @@ const AppLayoutWrapper: React.FC = () => {
   const authService = appService.children.get('auth');
   const isAppSetupComplete = useSelector(authService, selectAppSetupComplete);
 
-  const [isDeepLinkOverlayVisible, setDeepLinkOverlayVisible] = useState(isDeepLinkFlow);
+  const [isDeepLinkOverlayVisible, setDeepLinkOverlayVisible] =
+    useState(isDeepLinkFlow);
 
   useEffect(() => {
     if (AppState.currentState === 'active') {

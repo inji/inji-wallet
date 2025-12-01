@@ -30,8 +30,8 @@ export const baseRoutes: Screen[] = [
     component: KeyManagementScreen,
   },
   {
-    name:'AuthView',
-    component:AuthWebViewScreen
+    name: 'AuthView',
+    component: AuthWebViewScreen,
   },
   {
     name: 'Language',

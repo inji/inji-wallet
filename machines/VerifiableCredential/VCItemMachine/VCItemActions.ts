@@ -1,5 +1,9 @@
 import {assign, send} from 'xstate';
-import {CommunicationDetails, UUID, VerificationStatus} from '../../../shared/Utils';
+import {
+  CommunicationDetails,
+  UUID,
+  VerificationStatus,
+} from '../../../shared/Utils';
 import {StoreEvents} from '../../store';
 import {VCMetadata} from '../../../shared/VCMetadata';
 import {
@@ -31,6 +35,7 @@ import {VcMetaEvents} from '../VCMetaMachine/VCMetaMachine';
 import {WalletBindingResponse} from '../VCMetaMachine/vc';
 import {BannerStatusType} from '../../../components/BannerNotification';
 import {VCActivityLog} from '../../../components/ActivityLogEvent';
+import {RevocationStatus} from '../../../shared/vcVerifier/VcVerifier';
 
 export const VCItemActions = model => {
   return {
@@ -58,7 +63,7 @@ export const VCItemActions = model => {
     resetIsVerified: assign((context: any) => {
       const previous = context.vcMetadata;
       const statusChanged = previous.isVerified;
-    
+
       return {
         ...context,
         vcMetadata: new VCMetadata({
@@ -91,16 +96,21 @@ export const VCItemActions = model => {
 
     sendReverificationSuccessToVcMeta: send(
       (context: any) => ({
-        type: 'REVERIFY_VC_SUCCESS',
-        statusValue: context.vcMetadata.isRevoked
-          ? VerificationStatus.REVOKED
-          : context.vcMetadata.isExpired
-          ? VerificationStatus.EXPIRED
-          : context.vcMetadata.isVerified
-          ? VerificationStatus.VALID
-          : VerificationStatus.PENDING,
+        type:
+          context.vcMetadata.isRevoked === RevocationStatus.UNDETERMINED
+            ? 'REVERIFY_VC_FAILED'
+            : 'REVERIFY_VC_SUCCESS',
+        statusValue:
+          context.vcMetadata.isRevoked === RevocationStatus.TRUE
+            ? VerificationStatus.REVOKED
+            : context.vcMetadata.isExpired
+            ? VerificationStatus.EXPIRED
+            : context.vcMetadata.isVerified &&
+              context.vcMetadata.isRevoked === RevocationStatus.FALSE
+            ? VerificationStatus.VALID
+            : VerificationStatus.PENDING,
         vcKey: context.vcMetadata.getVcKey(),
-        vcType: context.vcMetadata.credentialType
+        vcType: context.vcMetadata.credentialType,
       }),
       {
         to: (context: any) => context.serviceRefs.vcMeta,
@@ -110,13 +120,13 @@ export const VCItemActions = model => {
     resetStatusChangedFlag: assign({
       statusChangedDuringVerification: () => false,
     }),
-    
+
     sendReverificationFailureToVcMeta: send(
-      (context:any) => ({
+      (context: any) => ({
         type: 'REVERIFY_VC_FAILED',
         statusValue: VerificationStatus.PENDING,
         vcKey: context.vcMetadata.getVcKey(),
-        vcType: context.vcMetadata.credentialType
+        vcType: context.vcMetadata.credentialType,
       }),
       {
         to: (context: any) => context.serviceRefs.vcMeta,

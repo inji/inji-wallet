@@ -13,10 +13,7 @@ import {ProfileInfo} from '../../shared/CloudBackupAndRestoreUtils';
 import {useBackupScreen} from './BackupController';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {useBackupRestoreScreen} from '../Settings/BackupRestoreController';
-import {
-  getAccountType,
-  getDriveName,
-} from '../../shared/commonUtil';
+import {getAccountType, getDriveName} from '../../shared/commonUtil';
 import {HelpScreen} from '../../components/HelpScreen';
 import {isIOS} from '../../shared/constants';
 import {HelpIcon} from '../../components/ui/HelpIcon';
@@ -222,11 +219,11 @@ const BackupAndRestoreScreen: React.FC<BackupAndRestoreProps> = props => {
             <LoaderAnimation testID="backupAndRestoreScreen" />
           </Column>
         ) : (
-            <ScrollView>
-              {LastBackupSection}
-              {AccountSection}
-              {RestoreSection}
-            </ScrollView>
+          <ScrollView>
+            {LastBackupSection}
+            {AccountSection}
+            {RestoreSection}
+          </ScrollView>
         )}
       </View>
     </Modal>

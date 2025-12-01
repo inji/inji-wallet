@@ -64,7 +64,7 @@ fileignoreconfig:
   - filename: assets/Finger_Print_Icon.svg
     checksum: 776d4fe4fc4b54d185ccf97daf0511b9fe2c0e0f7c1a809047020e5e8a100db6
   - filename: screens/MainLayout.tsx
-    checksum: dd31361997111c28461239e986112a30ee986e99432ac3016033508863b90ddd
+    checksum: 8909ef957c866221e864c6edaf93081af7f5968857200284bf7047631f525322
   - filename: android/app/build.gradle
     checksum: 8d5715e179a398518e6acff82c75b27077c9f893dc90b2972c77f9a09f10be95
   - filename: .github/workflows/push-triggers.yml
@@ -270,7 +270,7 @@ fileignoreconfig:
   - filename: machines/Issuers/IssuersService.ts
     checksum: e3832dff27687abc28609d2b281e570b4b0017995b7cfb56627a6b96949c469a
   - filename: screens/Home/ViewVcModal.tsx
-    checksum: cfb25d562185488432b76287c4ef93359c1c64d8e29f5755d4c0a726c1485442
+    checksum: 847d45d566b7fc86dd3ebbba74bf587399dd7754466e42ebdecd462a157705e9
   - filename: injitest/src/main/resources/TestData.json
     checksum: 1b5af14c96b456898259b4cb7a5607b006404cf0360274bdc204d7d065698e3c
   - filename: injitest/src/test/java/androidTestCases/ActivateVcTest.java
@@ -385,7 +385,7 @@ fileignoreconfig:
   - filename: android/app/src/main/java/io/mosip/residentapp/InjiOpenId4VPModule.java
     checksum: 6b315164dca5de95c11e0dc8cbb480207b19c312b1c9135adc39ef74a1ff7e35
   - filename: screens/Scan/SendVPScreenController.ts
-    checksum: f898ac7f1ecfa1df17e33b327d675f57debf2d5bd56052fc047dd03577354590
+    checksum: aa228c43a01e653b9da6ee354a39c942bec25848aa9631650611d1b5f85623d7
   - filename: screens/Scan/SendVPScreen.tsx
     checksum: de80cb9a932ed99e224438a8c373d117807101a39a440e97977654ef6935af6c
   - filename: machines/openID4VP/openID4VPMachine.typegen.ts
@@ -418,5 +418,9 @@ fileignoreconfig:
     checksum: 3a38d02673f03c2edf1daa2003a3ff2b191482a1d26a97f945f7656b9e2cfcce
   - filename: screens/IntroSliders/secureShareIntro.tsx
     checksum: e0f176f4ba920fb05cd1e4937295fe34c036b4b662fa3cf74b292b69a6e8af93
+  - filename: components/VC/common/VcStatustooTip.tsx
+    checksum: a48c88da719fadcb3d1aeb730a23735709c0c198351104203abd03445f6cc76f
+  - filename: screens/Settings/KeyManagementScreen.tsx
+    checksum: 6871fad16ecb5f019f502b2f7f715bc2a7b646ee08026b321aa1f8ce071dccc1
     version: "1.0"
 

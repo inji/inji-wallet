@@ -53,11 +53,12 @@ export const ReceiveVcScreen: React.FC = () => {
         setLoadingSvg(true);
 
         const vcJsonString = JSON.stringify(controller.credential.credential);
-        const result = await VcRenderer.getInstance().generateCredentialDisplayContent(
-          verifiableCredentialData.vcMetadata.format,
-          wellknown ?? null,
-          vcJsonString,
-        );
+        const result =
+          await VcRenderer.getInstance().generateCredentialDisplayContent(
+            verifiableCredentialData.vcMetadata.format,
+            wellknown ?? null,
+            vcJsonString,
+          );
 
         setSvgTemplate(result);
         setSvgRendererError(null);
