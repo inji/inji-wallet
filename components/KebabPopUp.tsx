@@ -72,13 +72,13 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
                 </Text>
                 {item.label === t('reverify') && (
                   <LinearGradient
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 0}}
                     colors={Theme.Colors.GradientColors}
                     style={Theme.KebabPopUpStyles.new}>
-                    <View>
-                      <Text color="white" weight="bold" style={{fontSize: 10}}>
-                        {t('new')}
-                      </Text>
-                    </View>
+                    <Text color="white" weight="bold" style={{fontSize: 10}}>
+                      {t('new')}
+                    </Text>
                   </LinearGradient>
                 )}
               </Row>

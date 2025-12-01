@@ -858,7 +858,7 @@
   "SendVcScreen": {
     "reasonForSharing": "سبب المشاركة (اختياري)",
     "introTitle": "المحقق",
-    "requestMessage": "يطلب هويتك الرقمية لغرض",
+    "requestMessage": "يطلب هويتك الرقمية لغرض ",
     "acceptRequest": "يشارك",
     "acceptRequestAndVerify": "شارك مع سيلفي",
     "reject": "رفض",

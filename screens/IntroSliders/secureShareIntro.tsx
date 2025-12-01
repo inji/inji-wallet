@@ -69,12 +69,16 @@ export const StaticSendVcScreen: React.FC = () => {
           borderBottomWidth: 1,
           borderBottomColor: Theme.Colors.lightGreyBackgroundColor,
         }}>
-        <Text testID="introTitle" weight="bold" size="small">
+        <Text testID="introTitle" weight="bold" size="medium">
           {t('SendVcScreen:introTitle')}
         </Text>
       </Row>
       <Row style={{paddingHorizontal: 16}}>
-        <Text testID="issuerName" color={Theme.Colors.GrayText} size="smaller">
+        <Text
+          testID="issuerName"
+          color={Theme.Colors.secondaryText}
+          size="extraSmall"
+          weight="bold">
           Relying Party
         </Text>
       </Row>
