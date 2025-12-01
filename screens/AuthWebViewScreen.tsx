@@ -62,13 +62,7 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
       {
         text: t('continue'),
         style: 'default',
-        onPress: () => {
-          if (Platform.OS === 'android') {
-            setTimeout(() => setShowWebView(true), 2000);
-          } else {
-            setShowWebView(true);
-          }
-        },
+        onPress: () => setShowWebView(true),
       },
     ]);
 
