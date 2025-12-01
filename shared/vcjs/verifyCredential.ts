@@ -14,7 +14,10 @@ import {getMosipIdentifier} from '../commonUtil';
 import {NativeModules} from 'react-native';
 import {isAndroid, isIOS} from '../constants';
 import {VCFormat} from '../VCFormat';
-import VCVerifier, {CredentialStatusResult, VerificationSummaryResult} from '../vcVerifier/VcVerifier';
+import VCVerifier, {
+  CredentialStatusResult,
+  VerificationSummaryResult,
+} from '../vcVerifier/VcVerifier';
 
 // FIXME: Ed25519Signature2018 not fully supported yet.
 // Ed25519Signature2018 proof type check is not tested with its real credential
@@ -62,10 +65,11 @@ async function verifyCredentialForAndroid(
     typeof verifiableCredential === 'string'
       ? verifiableCredential
       : JSON.stringify(verifiableCredential);
-  const vcVerifierResult = await VCVerifier.getInstance().getVerificationSummary(
-    credentialString,
-    credentialFormat,
-  );
+  const vcVerifierResult =
+    await VCVerifier.getInstance().getVerificationSummary(
+      credentialString,
+      credentialFormat,
+    );
   return handleVcVerifierResponse(vcVerifierResult, verifiableCredential);
 }
 
@@ -84,12 +88,13 @@ async function verifyCredentialForIos(
   Since Digital Bazaar library is not able to verify ProofType: "Ed25519Signature2020",
   defaulting it to return true until VcVerifier is implemented for iOS.
   */
- let verificationResponse: VerificationResult;
+  let verificationResponse: VerificationResult;
   if (verifiableCredential.proof.type === ProofType.ED25519_2020) {
     verificationResponse = createSuccessfulVerificationResult();
-  }
-  else{
-    const purpose = getPurposeFromProof(verifiableCredential.proof.proofPurpose);
+  } else {
+    const purpose = getPurposeFromProof(
+      verifiableCredential.proof.proofPurpose,
+    );
     const suite = selectVerificationSuite(verifiableCredential.proof);
     const vcjsOptions = {
       purpose,
@@ -97,19 +102,17 @@ async function verifyCredentialForIos(
       credential: verifiableCredential,
       documentLoader: jsonld.documentLoaders.xhr(),
     };
-  
+
     const result = await vcjs.verifyCredential(vcjsOptions);
     verificationResponse = handleResponse(result, verifiableCredential);
   }
-
 
   if (verificationResponse.isVerified) {
     const statusArray = await VCVerifier.getInstance().getCredentialStatus(
       verifiableCredential,
       credentialFormat,
     );
-    const isRevoked = await checkIsStatusRevoked(statusArray);
-    verificationResponse.isRevoked = isRevoked;
+    verificationResponse.isRevoked = await checkIsStatusRevoked(statusArray);
   }
   return verificationResponse;
 }
@@ -192,7 +195,9 @@ async function handleVcVerifierResponse(
         verifiableCredential,
       );
     }
-    const isRevoked = await checkIsStatusRevoked(verificationResult.credentialStatus)
+    const isRevoked = await checkIsStatusRevoked(
+      verificationResult.credentialStatus,
+    );
     return {
       isVerified: verificationResult.verificationStatus,
       verificationMessage: verificationResult.verificationMessage,
@@ -213,48 +218,52 @@ async function handleVcVerifierResponse(
   }
 }
 
+const handleStatusListVCVerification = (
+  status: CredentialStatusResult,
+  type: 'revoked' | 'valid',
+) => {
+  const isValid = verifyStatusListVC(status.statusListVC);
+  if (!isValid) {
+    throw new Error(
+      `StatusListVC verification failed for ${type} entry  ${status.error}`,
+    );
+  }
+};
+
 export async function checkIsStatusRevoked(
-  vcStatus: CredentialStatusResult[],
+  vcStatus: Record<string, CredentialStatusResult>,
 ): Promise<boolean> {
-  if (!vcStatus || vcStatus.length === 0) return false;
+  if (!Object.keys(vcStatus).length) return false;
 
-  const revocationStatuses = vcStatus.filter(
-    s => s.purpose?.toLowerCase() === 'revocation',
+  const revocationStatus = vcStatus['revocation'] as CredentialStatusResult;
+  if (!revocationStatus) return false;
+
+  const {isValid, error} = revocationStatus;
+
+  if (isValid) {
+    // Validate the valid statuses statusList VC for iOS
+    if (isIOS()) {
+      handleStatusListVCVerification(revocationStatus, 'valid');
+    }
+    return false;
+  }
+
+  console.error(
+    `Credential is revoked. Error: ${error?.code}, Message: ${error?.message}`,
   );
-
-  let result = false;
-  for (const status of revocationStatuses) {
-    if (status.status > 0) {
-      if (isIOS()) {
-        const isValid = await verifyStatusListVC(status.statusListVC);
-        if (!isValid) {
-          throw new Error(`Revoked statusListVC verification failed`);
-        }
-      }
-      result = true;
-    } else if (status.status < 0) {
-      throw new Error(
-        `Error fetching revocation status : ${status.errorMessage}`,
-      );
-    }
+  // if there is an error fetching revocation status itself, throw error (isValid = false, error = Error)
+  if (error) {
+    throw new Error(
+      `Error fetching revocation status. Error: ${error.code}, Message: ${error.message}`,
+    );
   }
-
-  if (result) return true;
-
+  // There is no error fetching revocation status, but the status is invalid (isValid = false, error = undefined) - VC is revoked
+  // Validate the valid statuses statusList VC for iOS
   if (isIOS()) {
-    for (const status of revocationStatuses) {
-      if (status.status === 0) {
-        const isValid = await verifyStatusListVC(status.statusListVC);
-        if (!isValid) {
-          throw new Error(
-            `StatusListVC verification failed for valid entry  ${status.errorMessage}`,
-          );
-        }
-      }
-    }
+    handleStatusListVCVerification(revocationStatus, 'revoked');
   }
-
-  return false;
+  // If revocation status is invalid, the credential is revoked
+  return true;
 }
 
 function createSuccessfulVerificationResult(): VerificationResult {
@@ -310,7 +319,7 @@ export interface VerificationResult {
 
 //TODO: Implement status list VC verification for iOS.
 //Currently Digital Bazaar library does not support VC 2.0 status list VC verification.
-function verifyStatusListVC(statusListVC: string | undefined) {
+function verifyStatusListVC(statusListVC: Record<string, any> | undefined) {
   return true;
 }
 
