@@ -22,6 +22,7 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   const [showWebView, setShowWebView] = useState(false);
   const [shouldRenderWebView, setShouldRenderWebView] = useState(false);
   const {t} = useTranslation('authWebView');
+  const WEBVIEW_INIT_DELAY_MS = 300;
 
   const hostName = new URL(authorizationURL).hostname; // example.mosip.net
   const parsed = psl.parse(hostName);
@@ -84,7 +85,7 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
 
       timeoutId = setTimeout(() => {
         setShouldRenderWebView(false);
-      }, 300);
+      }, WEBVIEW_INIT_DELAY_MS);
     }
 
     return () => {
