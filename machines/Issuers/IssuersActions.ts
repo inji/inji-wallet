@@ -29,6 +29,7 @@ import {NativeModules} from 'react-native';
 import {VCActivityLog} from '../../components/ActivityLogEvent';
 import {isNetworkError, parseJSON} from '../../shared/Utils';
 import {issuerType} from './IssuersMachine';
+import { RevocationStatus } from '../../shared/vcVerifier/VcVerifier';
 
 const {RNSecureKeystoreModule} = NativeModules;
 export const IssuersActions = (model: any) => {
@@ -49,7 +50,7 @@ export const IssuersActions = (model: any) => {
           ...context.vcMetadata,
           isVerified: false,
           isExpired: false,
-          isRevoked: false,
+          isRevoked: RevocationStatus.FALSE,
         }),
     }),
     setIssuers: model.assign({

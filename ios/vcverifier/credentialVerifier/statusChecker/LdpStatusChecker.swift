@@ -55,10 +55,14 @@ final class LdpStatusChecker {
         }
 
         let statusField = vc["credentialStatus"]
-        guard let statusEntries = normalizeStatusField(statusField) else { throw StatusCheckException(
-          message: "No valid credentialStatus entries found",
-          errorCode: .invalidCredentialStatus
-      ) }
+        if statusField == nil {
+            return [:]
+        }
+
+        guard let statusEntries = normalizeStatusField(statusField) else {
+            throw StatusCheckException(message: "Malformed credentialStatus structure", errorCode: .invalidCredentialStatus)
+        }
+
 
         let filteredEntries = filterEntries(statusEntries, statusPurposes)
         guard !filteredEntries.isEmpty else {

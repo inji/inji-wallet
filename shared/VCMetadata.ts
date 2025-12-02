@@ -165,7 +165,7 @@ export const getVCMetadata = (context: object, keyType: string) => {
     timestamp: context.timestamp ?? '',
     isVerified: context.vcMetadata.isVerified ?? false,
     isExpired: context.vcMetadata.isExpired ?? false,
-    isRevoked: context.vcMetadata.isRevoked ?? false,
+    isRevoked: context.vcMetadata.isRevoked ?? RevocationStatus.FALSE,
     lastKnownStatusTimestamp: context.vcMetadata.lastKnownStatusTimestamp ?? '',
     mosipIndividualId: getMosipIndividualId(
       context['verifiableCredential'] as VerifiableCredential,

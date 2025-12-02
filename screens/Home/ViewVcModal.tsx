@@ -34,13 +34,14 @@ import {
 import {VCProcessor} from '../../components/VC/common/VCProcessor';
 import {HelpIcon} from '../../components/ui/HelpIcon';
 import VcRenderer from '../../shared/vcRenderer/VcRenderer';
+import { RevocationStatus } from '../../shared/vcVerifier/VcVerifier';
 
 export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
   const {t} = useTranslation('ViewVcModal');
   const controller = useViewVcModal(props);
   const profileImage = controller.verifiableCredentialData.face;
   const verificationStatus = controller.verificationStatus;
-  const verificationStatusMessage = controller.verificationStatus?.isRevoked
+  const verificationStatusMessage = controller.verificationStatus?.isRevoked == RevocationStatus.TRUE
     ? 'revoked'
     : controller.verificationStatus?.isExpired
     ? 'expired'

@@ -69,7 +69,7 @@ export const VCItemActions = model => {
         vcMetadata: new VCMetadata({
           ...previous,
           isVerified: false,
-          isRevoked: false,
+          isRevoked: RevocationStatus.FALSE,
           isExpired: false,
           lastKnownStatusTimestamp: new Date().toISOString(),
         }),
@@ -135,7 +135,7 @@ export const VCItemActions = model => {
 
     logStatusChangedOnReverification: send(
       (context: any) => {
-        const status = context.vcMetadata.isRevoked
+        const status = context.vcMetadata.isRevoked === RevocationStatus.TRUE
           ? VerificationStatus.REVOKED
           : context.vcMetadata.isExpired
           ? VerificationStatus.EXPIRED

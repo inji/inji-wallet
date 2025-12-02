@@ -7,6 +7,7 @@ import { TelemetryConstants } from "../telemetry/TelemetryConstants";
 import { getErrorEventData, sendErrorEvent } from "../telemetry/TelemetryUtils";
 import { VCMetadata } from "../VCMetadata";
 import { verifyCredentialData } from "../openId4VCI/Utils";
+import { RevocationStatus } from "../vcVerifier/VcVerifier";
 
 export async function loadBackupData(
     data: string,
@@ -170,7 +171,7 @@ async function handlePreviousBackup(
         vcData.vcMetadata.format,
       );
       const isVerified = verificationResult.isVerified;
-      const isRevoked = verificationResult.isRevoked ?? false;
+      const isRevoked = verificationResult.isRevoked ?? RevocationStatus.FALSE;
       const isExpired =
         verificationResult.verificationErrorCode === EXPIRED_VC_ERROR_CODE;
       vcData.vcMetadata.timestamp = timestamp;
