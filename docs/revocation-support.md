@@ -2,7 +2,7 @@
 
 This document explains how Inji Wallet determines whether a credential is valid, revoked, or in a pending/unknown state.
 
-Revocation is based on the **Status List 2021** mechanism. The wallet currently supports only `statusPurpose = "revocation"`.
+Revocation is based on the [**Status List 2021**](https://www.w3.org/TR/vc-bitstring-status-list/) mechanism. The wallet currently supports only `statusPurpose = "revocation"`. Additionally, the wallet only supports status check of credentials in the `ldp_vc` format. For other formats status check is bypassed for now.
 
 ---
 
@@ -149,5 +149,5 @@ The wallet UI displays this state as **"Status Pending"**.
 
 ## References
 
-- [W3C Status List 2021](https://w3c.github.io/vc-status-list-2021/)
+- [W3C Status List 2021](https://www.w3.org/TR/vc-bitstring-status-list/)
 - Inji Wallet Documentation
