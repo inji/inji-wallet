@@ -13,7 +13,6 @@ import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
 import {ProgressingModal} from '../../components/ProgressingModal';
 import {isIOS} from '../../shared/constants';
 import testIDProps from '../../shared/commonUtil';
-import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 
 type RequestStackParamList = {
   RequestScreen: undefined;
@@ -46,9 +45,9 @@ export const RequestScreen: React.FC = () => {
   return (
     <Column
       fill
+      padding="24"
       align="space-between"
       backgroundColor={Theme.Colors.lightGreyBackgroundColor}>
-      <BannerNotificationContainer />
       {loadQRCode()}
       {controller.isMinimumStorageLimitReached && (
         <ErrorMessageOverlay
@@ -79,7 +78,7 @@ export const RequestScreen: React.FC = () => {
     ) {
       return (
         <React.Fragment>
-          <Column align="flex-end" fill padding="24">
+          <Column align="flex-end" fill>
             {controller.isWaitingForConnection && <SharingQR {...props} />}
             <StatusMessage {...props} />
           </Column>

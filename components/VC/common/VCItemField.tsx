@@ -35,6 +35,8 @@ export const VCItemFieldName = ({
       {fieldName == STATUS_FIELD_NAME && (
         <CustomTooltip
           testID="statusToolTip"
+          width={Dimensions.get('screen').width * 0.8}
+          height={Dimensions.get('screen').height * 0.28}
           triggerComponent={SvgImage.info()}
           triggerComponentStyles={{marginLeft: 2, marginTop: 2}}
           toolTipContent={<StatusTooltipContent />}
