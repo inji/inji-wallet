@@ -10,7 +10,7 @@ exports[`<Text /> Testing the Text component 1`] = `
         "lineHeight": 18,
       },
       {
-        "fontFamily": "Montserrat_400Regular",
+        "fontFamily": "Inter_400Regular",
         "fontSize": 14,
       },
       null,
