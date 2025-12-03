@@ -60,7 +60,6 @@ import QuestionIcon from '../../assets/questionIcon.svg';
 import CopyIcon from '../../assets/file_copy.svg';
 import StarIcon from '../../assets/credentialRegestryStar.svg';
 import SelectedCheckBox from '../../assets/Selected_Check_Box.svg';
-import FaceBiometric from '../../assets/Icon.svg';
 import ReverifyIcon from '../../assets/Reverify.svg';
 export class SvgImage {
   static selectedCheckBox() {
@@ -251,9 +250,7 @@ export class SvgImage {
   }
 
   static ReverifyIcon() {
-    return (
-      <ReverifyIcon/>
-    )
+    return <ReverifyIcon />;
   }
 
   static OutlinedPinIcon() {
@@ -558,6 +555,10 @@ export class SvgImage {
     );
   }
 
+  static SearchIcon() {
+    return <Search {...testIDProps('searchIcon')} />;
+  }
+
   static settingsLanguageIcon(size) {
     return (
       <SettingsLanguage
@@ -572,17 +573,6 @@ export class SvgImage {
   static fingerprintIcon(size?: number | undefined) {
     return (
       <SettingsBiometric
-        height={size}
-        width={size}
-        color1={Theme.Colors.linearIconGradientStart}
-        color2={Theme.Colors.linearIconGradientEnd}
-      />
-    );
-  }
-
-  static faceBiometicIcon(size?: number | undefined) {
-    return (
-      <FaceBiometric
         height={size}
         width={size}
         color1={Theme.Colors.linearIconGradientStart}

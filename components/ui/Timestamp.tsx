@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {Text} from '../ui/Text';
-import { formattedDate } from '../../shared/openId4VCI/Utils';
+import {formattedDate} from '../../shared/openId4VCI/Utils';
 
 export const Timestamp: React.FC<TimestampProps> = props => {
   return (
@@ -10,7 +10,7 @@ export const Timestamp: React.FC<TimestampProps> = props => {
         testID={`${props.testId}Time`}
         size="regular"
         style={{
-          fontFamily: 'Montserrat_500Medium',
+          fontFamily: 'Inter_500Medium',
           fontWeight: '600',
           fontSize: 14,
           letterSpacing: 0,

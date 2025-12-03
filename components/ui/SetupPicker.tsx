@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, View} from 'react-native';
+import {Dimensions} from 'react-native';
 import {Icon, ListItem} from 'react-native-elements';
 import {Column} from './Layout';
 import {Text} from './Text';
@@ -33,35 +33,30 @@ export const SetupPicker: Picker = (props: PickerProps<unknown>) => {
       testID={props.testID}
       width={Dimensions.get('window').width * 0.8}
       backgroundColor={Theme.Colors.whiteBackgroundColor}>
-      {props.items.map((item, index) => {
-        const isSelected = selectedIndex === index;
-        return (
-          <ListItem
-            bottomDivider
-            topDivider={index !== 0}
-            onPress={() => selectItem(index)}>
-            <ListItem.Content>
-              <ListItem.Title
-                {...testIDProps(item.value)}
-                style={{paddingTop: 3}}>
-                <Text
-                  color={isSelected ? Theme.Colors.Icon : null}
-                  weight={isSelected ? 'semibold' : 'regular'}>
-                  {item.label}
-                </Text>
-              </ListItem.Title>
-            </ListItem.Content>
-            {isSelected ? (
-              <View style={Theme.Styles.listItemSelectedCircle} />
-            ) : (
-              <Icon
-                name="radio-button-unchecked"
-                color={Theme.Colors.GrayIcon}
-              />
-            )}
-          </ListItem>
-        );
-      })}
+      {props.items.map((item, index) => (
+        <ListItem
+          bottomDivider
+          topDivider={index !== 0}
+          onPress={() => selectItem(index)}
+          key={index}>
+          <ListItem.Content>
+            <ListItem.Title
+              {...testIDProps(item.value)}
+              style={{paddingTop: 3}}>
+              <Text
+                color={selectedIndex === index ? Theme.Colors.Icon : null}
+                weight={selectedIndex === index ? 'semibold' : 'regular'}>
+                {item.label}
+              </Text>
+            </ListItem.Title>
+          </ListItem.Content>
+          {selectedIndex === index ? (
+            <Icon name="radio-button-checked" color={Theme.Colors.Icon} />
+          ) : (
+            <Icon name="radio-button-unchecked" color={Theme.Colors.GrayIcon} />
+          )}
+        </ListItem>
+      ))}
     </Column>
   );
 };

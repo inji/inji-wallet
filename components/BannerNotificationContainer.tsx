@@ -15,7 +15,7 @@ import {useSettingsScreen} from '../screens/Settings/SettingScreenController';
 export const BannerNotificationContainer: React.FC<
   BannerNotificationContainerProps
 > = props => {
-  const { showVerificationStatusBanner = true } = props;
+  const {showVerificationStatusBanner = true} = props;
   const scanScreenController = useScanScreen();
   const settingsScreenController = useSettingsScreen(props);
   const showQuickShareSuccessBanner =
@@ -23,14 +23,17 @@ export const BannerNotificationContainer: React.FC<
 
   const bannerNotificationController = UseBannerNotification();
   const WalletBindingSuccess = bannerNotificationController.isBindingSuccess;
-  const reverificationSuccessObject = bannerNotificationController.isReverificationSuccess;
-  const reverificationFailureObject = bannerNotificationController.isReverificationFailed;
-  const { t } = useTranslation('BannerNotification');
+  const reverificationSuccessObject =
+    bannerNotificationController.isReverificationSuccess;
+  const reverificationFailureObject =
+    bannerNotificationController.isReverificationFailed;
+  const {t} = useTranslation('BannerNotification');
   const rt = useTranslation('RequestScreen').t;
-  const verificationStatus = bannerNotificationController.verificationStatus || null;
+  const verificationStatus =
+    bannerNotificationController.verificationStatus || null;
 
   return (
-    <View style={[{position: 'absolute', zIndex: 100}]}>
+    <>
       <BackupAndRestoreBannerNotification />
 
       {settingsScreenController.isKeyOrderSet === true && (
@@ -75,7 +78,10 @@ export const BannerNotificationContainer: React.FC<
         <View style={Theme.BannerStyles.topBanner}>
           <BannerNotification
             type={BannerStatusType.SUCCESS}
-            message={t(`reverifiedSuccessfully.${reverificationSuccessObject.statusValue}`, { vcType: reverificationSuccessObject.vcType })}
+            message={t(
+              `reverifiedSuccessfully.${reverificationSuccessObject.statusValue}`,
+              {vcType: reverificationSuccessObject.vcType},
+            )}
             onClosePress={
               bannerNotificationController.RESET_REVIRIFICATION_SUCCESS
             }
@@ -130,8 +136,13 @@ export const BannerNotificationContainer: React.FC<
       {reverificationFailureObject.status && (
         <BannerNotification
           type={BannerStatusType.ERROR}
-          message={t(`reverificationFailed.${reverificationFailureObject.statusValue}`, { vcType: reverificationFailureObject.vcType })}
-          onClosePress={bannerNotificationController.RESET_REVERIFICATION_FAILURE}
+          message={t(
+            `reverificationFailed.${reverificationFailureObject.statusValue}`,
+            {vcType: reverificationFailureObject.vcType},
+          )}
+          onClosePress={
+            bannerNotificationController.RESET_REVERIFICATION_FAILURE
+          }
           key={'reverificationFailedPopup'}
           testId={'reverificationFailedPopup'}
         />
@@ -145,7 +156,7 @@ export const BannerNotificationContainer: React.FC<
           testId={'downloadingVcSuccessPopup'}
         />
       )}
-    </View>
+    </>
   );
 };
 
