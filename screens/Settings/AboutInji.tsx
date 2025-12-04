@@ -142,7 +142,7 @@ export const AboutInji: React.FC<AboutInjiProps> = ({appId}) => {
               style={Theme.AboutInjiScreenStyle.footerContainer}>
               <Row style={Theme.AboutInjiScreenStyle.poweredByRow}>
                 <View style={Theme.AboutInjiScreenStyle.logoStyle}>
-                  {SvgImage.logoIcon(24, 24)}
+                  {SvgImage.logoIcon(40, 40)}
                 </View>
 
                 <Text
@@ -155,8 +155,8 @@ export const AboutInji: React.FC<AboutInjiProps> = ({appId}) => {
 
               <Text
                 weight="semibold"
-                style={Theme.AboutInjiScreenStyle.poweredByTextStyle}
-                color="black">
+                style={Theme.AboutInjiScreenStyle.infoTextStyle}
+                color={Theme.Colors.GrayText}>
                 {t('copyright')}
               </Text>
             </Column>
