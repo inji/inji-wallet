@@ -96,6 +96,10 @@ export const VCCardView: React.FC<VCItemProps> = ({
           if (response && response.matchingCredentialIssuerMetadata) {
             setWellknown(response.matchingCredentialIssuerMetadata);
           }
+          controller.STORE_INCOMING_VC_WELLKNOWN_CONFIG(
+              verifiableCredentialData?.vcMetadata.issuerHost ?? "",
+              response.wellknownResponse,
+          );
           setFields(response.fields);
         })
         .catch(error => {
