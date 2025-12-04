@@ -130,7 +130,9 @@ export const activityLogMachine =
               const updatedWellKnownIssuerMap = {
                 ...context.wellKnownIssuerMap,
               };
-              updatedWellKnownIssuerMap[event.log.issuer] = event.wellknown;
+              // add to updated map only if key is not already present
+              if(!updatedWellKnownIssuerMap[event.log.issuer])
+                updatedWellKnownIssuerMap[event.log.issuer] = event.wellknown;
               return updatedWellKnownIssuerMap as unknown as Record<
                 string,
                 Object
