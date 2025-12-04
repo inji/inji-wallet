@@ -311,10 +311,6 @@ public class AddNewCardPage extends BasePage {
         scrollAndClickByAccessibilityId(landRegistryIssuerCredentialType, "Click on 'land Verifiable Credential' option");
         return new ESignetLoginPage(driver);
     }
-//    public void clickOnCredentialTypeHeadingLifeInsuranceCredential() {
-////        click(continuePopupButton, "Click on Continue popup button");
-//        scrollAndClickByAccessibilityId(stayProtectedIssuerCredentialType, 10, "Click on Insurance Credential type heading");
-//    }
     
     public ESignetLoginPage clickOnDownloadViaLandSdJwt() {
         scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Land sd jwt'");

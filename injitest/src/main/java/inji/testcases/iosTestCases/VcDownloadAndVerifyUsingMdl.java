@@ -12,8 +12,13 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import static org.testng.Assert.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
+	
+	private static final Logger logger = LogManager.getLogger(VcDownloadAndVerifyUsingMdl.class);
+	
     @Test
     @NeedsMockUIN
     public void downloadAndVerifyVcUsingMdl() throws InterruptedException {
@@ -50,8 +55,6 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
         esignetLoginPage.clickOnLoginWithOtpButton();
-//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-
     
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -117,17 +120,13 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
         esignetLoginPage.clickOnLoginWithOtpButton();
-//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(TestDataReader.readData("invaliduin"));
 
         mockCertifyLoginPage.clickOnGetOtpButton();
-//        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
-        
-        assertTrue(otpVerification.isInvalidIndividualErrorMessageDisplayed(), "Verify if issuer description  esignet displayed");
-        
-
-        //assertEquals(ResourceBundleLoader.get(InjiWalletConstants.invalid_individual_id), mockCertifyLoginPage.getInvalidIndividualIdMessage());
+		assertEquals(ResourceBundleLoader.get(InjiWalletConstants.invalid_individual_id),
+				otpVerification.getInvalidIndividualErrorMessageForEsignet());
     }
 
     @Test
@@ -166,7 +165,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
         esignetLoginPage.clickOnLoginWithOtpButton();
-//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -214,8 +213,6 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
         esignetLoginPage.clickOnLoginWithOtpButton();
- //       esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-
         
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -276,10 +273,6 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
         esignetLoginPage.clickOnLoginWithOtpButton();
-//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-        
-
-       
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
         mockCertifyLoginPage.clickOnGetOtpButton();
@@ -294,8 +287,6 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         esignetLoginPage.clickOnLoginWithOtpButton();
-        
- //       esignetLoginPage.clickOnEsignetLoginWithOtpButton();
     
         mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -303,7 +294,6 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
 
-        //assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
     }
     @Test
     @NeedsMockUIN
@@ -317,7 +307,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         homePage.clickOnNextButtonForInjiTour();
         // Download VC 5 times
         for (int i = 1; i <= 5; i++) {
-            System.out.println("Downloading VC iteration: " + i);
+        	logger.info("Downloading VC iteration: " + i);
             downloadAndVerifyMockVc(homePage, i);
         }
     }

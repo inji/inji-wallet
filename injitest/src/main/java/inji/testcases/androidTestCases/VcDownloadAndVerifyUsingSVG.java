@@ -1,13 +1,16 @@
 package inji.testcases.androidTestCases;
 
 import inji.annotations.NeedsUIN;
+import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.AndroidBaseTest;
 import inji.utils.InjiWalletUtil;
+import inji.utils.ResourceBundleLoader;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
@@ -94,9 +97,12 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerification = esignetLoginPage
-				.setEnterIdTextBox(TestDataReader.readData("InvalidLandRegistry"));
+				.setEnterIdTextBox(TestDataReader.readData("invaliduin"));
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
-		assertTrue(otpVerification.isInvalidIndividualErrorMessageDisplayed(), "Verify if invalid individual id error displayed");
+		assertEquals(
+			    ResourceBundleLoader.get(InjiWalletConstants.invalid_individual_id),
+			    otpVerification.getInvalidIndividualErrorMessageForEsignet()
+			);
 	}
 
 	@Test
@@ -120,9 +126,12 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerification = esignetLoginPage
-				.setEnterIdTextBox(TestDataReader.readData("InvalidLandRegistry"));
+				.setEnterIdTextBox(TestDataReader.readData("invaliduin"));
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
-		assertTrue(otpVerification.isInvalidIndividualErrorMessageDisplayed(), "Verify if invalid individual id error displayed");
+		assertEquals(
+			    ResourceBundleLoader.get(InjiWalletConstants.invalid_individual_id),
+			    otpVerification.getInvalidIndividualErrorMessageForEsignet()
+			);
 	}
 
 	@Test
@@ -149,7 +158,8 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
-		assertTrue(otpVerification.isInvalidOTPErrorMessageDisplayed(), "Verify if invalid OTP error displayed");
+		assertEquals(ResourceBundleLoader.get(InjiWalletConstants.auth_failed), otpVerification.getInvalidOtpMessageForEsignetFarmer());
+
 	}
 
 	@Test
@@ -176,7 +186,8 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
-		assertTrue(otpVerification.isInvalidOTPErrorMessageDisplayed(), "Verify if invalid OTP error displayed");
+		assertEquals(ResourceBundleLoader.get(InjiWalletConstants.auth_failed), otpVerification.getInvalidOtpMessageForEsignetFarmer());
+
 	}
 
 	@Test

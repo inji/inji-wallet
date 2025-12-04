@@ -53,7 +53,7 @@
                     <include name="verifyWelcomePagesFromInjiTourGuideKaanda"/>
                     <include name="verifyWelcomePagesFromInjiTourGuideTamil"/>
                     <include name="verifyWelcomePagesFromInjiTourGuideWithFilipinoLangauge"/>
-                    <!-- <include name="verifyWelcomePagesFromInjiTourGuideWithArabicLangauge"/> This tetcase is dsiabled from running-->
+                    <include name="verifyWelcomePagesFromInjiTourGuideWithArabicLangauge"/>
                 </methods>
             </class>
             <class name="inji.testcases.iosTestCases.DeletingVcTest">

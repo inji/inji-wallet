@@ -617,8 +617,8 @@ public class ChangeLanguageTest extends IosBaseTest {
         SettingsPage settingsPage = homePage.clickOnSettingIcon();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
+        homePage.clickOnCrossIconButton();
         settingsPage.clickOnLanguage().clickOnHindiLanguage();
-
         assertTrue(settingsPage.verifyHindiLanguage(), "Verify if language is changed to hindi");
         homePage.clickOnHomeButton();
 
@@ -1170,7 +1170,7 @@ public class ChangeLanguageTest extends IosBaseTest {
 
     }
 
-    @Test(enabled = false)
+    @Test
     public void verifyWelcomePagesFromInjiTourGuideWithArabicLangauge() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
         chooseLanguagePage.clickOnArabicLanguage();

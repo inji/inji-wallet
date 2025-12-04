@@ -383,37 +383,26 @@ public class NoNetworkIosTest extends IosBaseTest {
     public void DownloadVcWithEsignetWithoutNetwork() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
         ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
         HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
         AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
-        // Wait for network profile to be applied
-        Thread.sleep(10000);
+
         
         addNewCardPage.clickOnBack();
 
         homePage.downloadCard();
-//        assertTrue(addNewCardPage.isIssuerDescriptionMosipDisplayed(), "Verify if issuer description  mosip displayed");
-//        assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description  esignet displayed");
 
         addNewCardPage.clickOnMosipIssuer();
         assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
@@ -426,39 +415,20 @@ public class NoNetworkIosTest extends IosBaseTest {
     @Test
     public void DownloadVcWithMockWithoutNetwork() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
         ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
         HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
-
         AddNewCardPage addNewCardPage = homePage.downloadCard();
-
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
-        // Wait for network profile to be applied
-        Thread.sleep(10000);
         
         addNewCardPage.clickOnBack();
 
         homePage.downloadCard();
-//        assertTrue(addNewCardPage.isIssuerDescriptionMosipDisplayed(), "Verify if issuer description  mosip displayed");
-//        assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description  esignet displayed");
-
         addNewCardPage.clickOnMockIssuer();
         assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
         homePage.clickOnTryAgainButton();
@@ -469,41 +439,24 @@ public class NoNetworkIosTest extends IosBaseTest {
     @Test
     public void DownloadVcWithMdlWithoutNetwork() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
         ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
         HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
-
         AddNewCardPage addNewCardPage = homePage.downloadCard();
-
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
-        // Wait for network profile to be applied
-        Thread.sleep(10000);
         
         addNewCardPage.clickOnBack();
 
         homePage.downloadCard();
-//        assertTrue(addNewCardPage.isIssuerDescriptionMosipDisplayed(), "Verify if issuer description  mosip displayed");
-//        assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description  esignet displayed");
 
         addNewCardPage.clickOnMdlIssuer();
         assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
+        
         homePage.clickOnTryAgainButton();
 
         assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
@@ -512,38 +465,20 @@ public class NoNetworkIosTest extends IosBaseTest {
     @Test
     public void DownloadVcWithLandRegistryWithoutNetwork() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
         ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
         HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
         AddNewCardPage addNewCardPage = homePage.downloadCard();
-
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
-        // Wait for network profile to be applied
-        Thread.sleep(10000);
-        
         addNewCardPage.clickOnBack();
 
         homePage.downloadCard();
-//        assertTrue(addNewCardPage.isIssuerDescriptionMosipDisplayed(), "Verify if issuer description  mosip displayed");
-//        assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description  esignet displayed");
 
         addNewCardPage.clickOnLandRegistryIssuer();
         assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
@@ -557,37 +492,21 @@ public class NoNetworkIosTest extends IosBaseTest {
     public void DownloadVcWithStayProtectedWithoutNetwork() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
         ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
         HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
-
         AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
-        // Wait for network profile to be applied
-        Thread.sleep(10000);
-        
         addNewCardPage.clickOnBack();
 
         homePage.downloadCard();
-//        assertTrue(addNewCardPage.isIssuerDescriptionMosipDisplayed(), "Verify if issuer description  mosip displayed");
-//        assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description  esignet displayed");
 
         addNewCardPage.clickOnStayProtectedIssuer();
         assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
@@ -595,10 +514,6 @@ public class NoNetworkIosTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
     }
-    
-    
-    
-    
     
     @Test
     public void verifyGetUinHeaderOffline() {

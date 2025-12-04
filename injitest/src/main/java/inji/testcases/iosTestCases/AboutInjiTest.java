@@ -37,8 +37,7 @@ public class AboutInjiTest extends IosBaseTest {
         AboutInjiPage aboutInjiPage = settingsPage.clickOnAbouInji();
 
         assertTrue(aboutInjiPage.isAboutInjiHeaderDisplayed(), "Verify id about inji page displayed");
-        //Text can change on the element, only verifying the element is present or not
-        //assertEquals(aboutInjiPage.getAboutInjiHeader(), "About Inji Wallet"); 
+        assertEquals(aboutInjiPage.getAboutInjiHeader(), "About Inji Wallet"); 
 
         aboutInjiPage.clickOnCopyText();
         assertTrue(aboutInjiPage.isAppIdCopiedTextDisplayed(), "verify if app id is copied");

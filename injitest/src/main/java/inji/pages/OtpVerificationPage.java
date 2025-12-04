@@ -173,5 +173,13 @@ public class OtpVerificationPage extends BasePage {
     public boolean isInvalidOTPErrorMessageDisplayed() {
         return isElementVisible(invalidOtpErrorMessageForeSignet, "Getting the invalid OTP message for ESignet Login");
     }
+    
+    public String getInvalidOtpMessageForEsignetFarmer() {
+        return getText(invalidOtpErrorMessageForeSignet, "Getting the invalid OTP message for ESignet Login Farmer");
+    }
+    
+    public String getInvalidIndividualErrorMessageForEsignet() {
+        return getText(invalidIndividualMessageForeSignet, "Getting the invalid individual ID for ESignet Login");
+    }
 
 }

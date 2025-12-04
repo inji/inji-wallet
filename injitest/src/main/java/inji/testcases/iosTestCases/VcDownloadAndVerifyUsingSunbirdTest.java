@@ -10,8 +10,13 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class VcDownloadAndVerifyUsingSunbirdTest extends IosBaseTest {
+	
+	private static final Logger logger = LogManager.getLogger(VcDownloadAndVerifyUsingSunbirdTest.class);
+	
     @Test
     @NeedsSunbirdPolicy
     public void downloadAndVerifyVcUsingUinViaSunbird() throws InterruptedException {
@@ -77,7 +82,7 @@ public class VcDownloadAndVerifyUsingSunbirdTest extends IosBaseTest {
 
         // Loop to download Sunbird VC 5 times
         for (int i = 1; i <= 5; i++) {
-            System.out.println("=== Starting Sunbird VC Download Iteration " + i + " ===");
+            logger.info("=== Starting Sunbird VC Download Iteration " + i + " ===");
 
             AddNewCardPage addNewCardPage = homePage.downloadCard();
             assertTrue(addNewCardPage.isDownloadViaSunbirdDisplayed(), "Verify if download sunbird displayed - Iteration " + i);
@@ -111,8 +116,8 @@ public class VcDownloadAndVerifyUsingSunbirdTest extends IosBaseTest {
             detailedVcViewPage.clickOnCrossIcon();
             detailedVcViewPage.clickOnBackArrow();
 
-            System.out.println("=== Completed Sunbird VC Download Iteration " + i + " ===");
-            System.out.println("Successfully downloaded and verified 5 Sunbird VCs!");
+            logger.info("=== Completed Sunbird VC Download Iteration " + i + " ===");
+            logger.info("Successfully downloaded and verified 5 Sunbird VCs!");
         }
     }
 }

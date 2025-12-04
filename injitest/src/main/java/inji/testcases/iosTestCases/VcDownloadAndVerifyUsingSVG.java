@@ -2,6 +2,7 @@ package inji.testcases.iosTestCases;
 
 import inji.annotations.NeedsUIN;
 import inji.annotations.NeedsVID;
+import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.IosBaseTest;
@@ -11,6 +12,7 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+import inji.utils.ResourceBundleLoader;
 
 public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 	@Test
@@ -29,8 +31,6 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-//		OtpVerificationPage otpVerification = esignetLoginPage
-//				.setEnterIdTextBox(TestDataReader.readData("SVGWithFace"));
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithFaceUIN);
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
@@ -57,8 +57,6 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithOutFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-//		OtpVerificationPage otpVerification = esignetLoginPage
-//				.setEnterIdTextBox(TestDataReader.readData("SVGWithOutFace"));
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithOutFaceUIN);
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
@@ -86,10 +84,12 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerification = esignetLoginPage
-				.setEnterIdTextBox(TestDataReader.readData("InvalidLandRegistry"));
+				.setEnterIdTextBox(TestDataReader.readData("invaliduin"));
 		esignetLoginPage.clickOnGetOtpButton();
-		assertTrue(otpVerification.isInvalidIndividualErrorMessageDisplayed(),
-				"Verify if invalid individual id error displayed");
+		assertEquals(
+			    ResourceBundleLoader.get(InjiWalletConstants.invalid_individual_id),
+			    otpVerification.getInvalidIndividualErrorMessageForEsignet()
+			);
 	}
 
 	@Test
@@ -109,10 +109,12 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerification = esignetLoginPage
-				.setEnterIdTextBox(TestDataReader.readData("InvalidLandRegistry"));
+				.setEnterIdTextBox(TestDataReader.readData("invaliduin"));
 		esignetLoginPage.clickOnGetOtpButton();
-		assertTrue(otpVerification.isInvalidIndividualErrorMessageDisplayed(),
-				"Verify if invalid individual id error displayed");
+		assertEquals(
+			    ResourceBundleLoader.get(InjiWalletConstants.invalid_individual_id),
+			    otpVerification.getInvalidIndividualErrorMessageForEsignet()
+			);
 	}
 
 	@Test
@@ -131,13 +133,12 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-//		OtpVerificationPage otpVerification = esignetLoginPage
-//				.setEnterIdTextBox(TestDataReader.readData("SVGWithFace"));
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithFaceUIN);
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.IOS);
 		esignetLoginPage.clickOnVerifyButtonIos();
-		assertTrue(otpVerification.isInvalidOTPErrorMessageDisplayed(), "Verify if invalid OTP error displayed");
+		assertEquals(ResourceBundleLoader.get(InjiWalletConstants.auth_failed), otpVerification.getInvalidOtpMessageForEsignetFarmer());
+
 	}
 
 	@Test
@@ -156,13 +157,12 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithOutFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-//		OtpVerificationPage otpVerification = esignetLoginPage
-//				.setEnterIdTextBox(TestDataReader.readData("SVGWithOutFace"));
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithOutFaceUIN);
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.IOS);
 		esignetLoginPage.clickOnVerifyButtonIos();
-		assertTrue(otpVerification.isInvalidOTPErrorMessageDisplayed(), "Verify if invalid OTP error displayed");
+		assertEquals(ResourceBundleLoader.get(InjiWalletConstants.auth_failed), otpVerification.getInvalidOtpMessageForEsignetFarmer());
+
 	}
 
 	@Test
@@ -181,8 +181,6 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-//		OtpVerificationPage otpVerification = esignetLoginPage
-//				.setEnterIdTextBox(TestDataReader.readData("SVGWithFace"));
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithFaceUIN);
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
@@ -213,8 +211,6 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithOutFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-//		OtpVerificationPage otpVerification = esignetLoginPage
-//				.setEnterIdTextBox(TestDataReader.readData("SVGWithOutFace"));
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithOutFaceUIN);
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
@@ -245,8 +241,6 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-//		OtpVerificationPage otpVerification = esignetLoginPage
-//				.setEnterIdTextBox(TestDataReader.readData("SVGWithFace"));
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithFaceUIN);
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
@@ -257,8 +251,6 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaLandSVGWithFace();
 		addNewCardPageAgain.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPageAgain.clickOnLoginWithOtpButton();
-//		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain
-//				.setEnterIdTextBox(TestDataReader.readData("SVGWithFace"));		
 		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(AddNewCardPage.SVGWithFaceUIN);
 		esignetLoginPageAgain.clickOnGetOtpButton();
 		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
@@ -282,8 +274,6 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithOutFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-//		OtpVerificationPage otpVerification = esignetLoginPage
-//				.setEnterIdTextBox(TestDataReader.readData("SVGWithOutFace"));
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithOutFaceUIN);
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
@@ -294,8 +284,6 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaLandSVGWithOutFace();
 		addNewCardPageAgain.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPageAgain.clickOnLoginWithOtpButton();
-//		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain
-//				.setEnterIdTextBox(TestDataReader.readData("SVGWithOutFace"));
 		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(AddNewCardPage.SVGWithOutFaceUIN);
 		esignetLoginPageAgain.clickOnGetOtpButton();
 		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);

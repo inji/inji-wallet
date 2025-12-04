@@ -1,6 +1,7 @@
 package inji.testcases.iosTestCases;
 
 import inji.annotations.NeedsUIN;
+
 import inji.annotations.NeedsVID;
 import inji.constants.PlatformType;
 import inji.pages.*;
@@ -11,8 +12,13 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
+	
+	private static final Logger logger = LogManager.getLogger(VcDownloadAndVerifyUsingEsignetTest.class);
+	
     @Test
     @NeedsUIN
     public void downloadAndVerifyVcUsingUinViaEsignet() throws InterruptedException {
@@ -272,7 +278,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
 
         // Loop to download VC 5 times
         for (int i = 1; i <= 5; i++) {
-            System.out.println("=== Starting VC Download Iteration " + i + " ===");
+        	logger.info("=== Starting VC Download Iteration " + i + " ===");
 
             AddNewCardPage addNewCardPage = homePage.scrollanddownloadCard();
             assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description esignet displayed - Iteration " + i);
@@ -300,9 +306,9 @@ public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
             detailedVcViewPage.clickOnBackArrow();
             assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed - Iteration " + i);
 
-            System.out.println("=== Completed VC Download Iteration " + i + " ===");
+            logger.info("=== Completed VC Download Iteration " + i + " ===");
         }
 
-        System.out.println("Successfully downloaded and verified 5 VCs!");
+        logger.info("Successfully downloaded and verified 5 VCs!");
     }
 }
