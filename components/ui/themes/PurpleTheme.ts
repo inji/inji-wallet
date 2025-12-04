@@ -1994,8 +1994,8 @@ export const PurpleTheme = {
       marginBottom: 4,
     },
     logoStyle: {
-      width: 24,
-      height: 24,
+      width: 40,
+      height: 40,
       marginRight: 5,
     },
     tuvaliVerisonStyle: {
@@ -2009,6 +2009,12 @@ export const PurpleTheme = {
       height: 1,
     },
     poweredByTextStyle: {
+      fontSize: 16,
+      paddingTop: 15,
+      maxWidth: 250,
+    },
+    infoTextStyle: {
+      fontSize: 13,
       paddingTop: 15,
       maxWidth: 250,
     },
