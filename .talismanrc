@@ -408,8 +408,6 @@ fileignoreconfig:
     checksum: 02f7d58fb149ecd3f10dd0bdfb6e85c4b3ae41d29a40d192056ffec0367b53c6
   - filename: components/VC/Views/VCDetailView.tsx
     checksum: 890c216a5632ac77b938f2f58f2123a669ea45b933a41931b8e7324e315f2d50
-  - filename: components/ui/Picker.tsx
-    checksum: 5be293ee41d3e3bd5924320d63074d2c196d3163c99c39991632477ed9fcd871
   - filename: components/ui/SetupPicker.tsx
     checksum: 669e85d1c8ff526b97fa4ed4b8ed33a100eaba9f2f41bceccd75dc7a85a12103
   - filename: components/ui/Picker.tsx
