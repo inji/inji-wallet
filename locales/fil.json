@@ -219,7 +219,8 @@
     "forMoreDetails": "Para sa karagdagang detalye",
     "clickHere": "Pindutin dito",
     "version": "Bersyon",
-    "poweredBy": "Pinapatakbo ng Inji, Isang Produktong MOSIP"
+    "poweredBy": "Isang Produktong MOSIP",
+    "copyright": "© 2022 MOSIP. Lahat ng karapatan ay nakalaan."
   },
   "IssuersScreen": {
     "title": "Magdagdag ng bagong card",
@@ -859,7 +860,7 @@
   "SendVcScreen": {
     "reasonForSharing": "Dahilan ng pagbabahagi (opsyonal)",
     "introTitle": "Tagapagpatunay",
-    "requestMessage": "humihiling ng iyong digital na ID para sa layunin.",
+    "requestMessage": "humihiling ng iyong digital na ID para sa layunin ng",
     "acceptRequest": "Tanggapin ang kahilingan at pumili ng card",
     "acceptRequestAndVerify": "Ibahagi sa Selfie",
     "reject": "Tanggihan",

@@ -8,6 +8,7 @@ import {Row, Text} from './ui';
 import {Theme} from './ui/styleUtils';
 import {useTranslation} from 'react-i18next';
 import {VCMetadata} from '../shared/VCMetadata';
+import {RevocationStatus} from '../shared/vcVerifier/VcVerifier';
 
 export const VCVerification: React.FC<VCVerificationProps> = ({
   vcMetadata,
@@ -20,12 +21,15 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
   let statusIcon: JSX.Element;
 
   if (vcMetadata.isVerified) {
-    if (vcMetadata.isRevoked) {
+    if (vcMetadata.isRevoked === RevocationStatus.TRUE) {
       statusText = t('revoked');
       statusIcon = <PendingIcon color="brown" />;
     } else if (vcMetadata.isExpired) {
       statusText = t('expired');
       statusIcon = <PendingIcon color="red" />;
+    } else if (vcMetadata.isRevoked === RevocationStatus.UNDETERMINED) {
+      statusText = t('pending');
+      statusIcon = <PendingIcon color="orange" />;
     } else {
       statusText = t('valid');
       statusIcon = <VerifiedIcon />;
@@ -61,7 +65,7 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
             color={display.getTextColor(Theme.Colors.Details)}
             style={[
               Theme.Styles.verificationStatus,
-              {fontFamily: 'Inter_400'},
+              {fontFamily: 'Montserrat_400'},
             ]}>
             {t('lastChecked')}
           </Text>
@@ -70,7 +74,7 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
             color={display.getTextColor(Theme.Colors.Details)}
             style={[
               Theme.Styles.verificationStatus,
-              {fontFamily: 'Inter_400'},
+              {fontFamily: 'Montserrat_400'},
             ]}>
             {new Date(vcMetadata.lastKnownStatusTimestamp).toLocaleString()}
           </Text>

@@ -45,6 +45,7 @@ export const SetupLanguageScreen: React.FC<RootRouteProps> = props => {
           testID="chooseLanguage"
           style={{paddingTop: 3}}
           margin="10 0 10 0"
+          size="large"
           weight="semibold">
           {t('header')}
         </Text>
@@ -52,6 +53,7 @@ export const SetupLanguageScreen: React.FC<RootRouteProps> = props => {
           weight="semibold"
           style={{paddingTop: 3}}
           align="center"
+          size="mediumSmall"
           color={Theme.Colors.GrayText}>
           {t('description')}
         </Text>

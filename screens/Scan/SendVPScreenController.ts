@@ -48,7 +48,7 @@ import {VPShareOverlayProps} from './VPShareOverlay';
 import {ActivityLogEvents} from '../../machines/activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
 import {isIOS} from '../../shared/constants';
-import { getFaceAttribute } from '../../components/VC/common/VCUtils';
+import {getFaceAttribute} from '../../components/VC/common/VCUtils';
 
 type MyVcsTabNavigation = NavigationProp<RootRouteProps>;
 
@@ -65,9 +65,10 @@ export function useSendVPScreen() {
   const navigation = useNavigation<MyVcsTabNavigation>();
   const openID4VPService = scanService.getSnapshot().context.OpenId4VPRef;
   // input descriptor id to VCs mapping
-  const [inputDescriptorIdToSelectedVcKeys, setInputDescriptorIdToSelectedVcKeys] = useState<Record<string, [string]>>(
-    {},
-  );
+  const [
+    inputDescriptorIdToSelectedVcKeys,
+    setInputDescriptorIdToSelectedVcKeys,
+  ] = useState<Record<string, [string]>>({});
 
   const hasLoggedErrorRef = useRef(false);
 
@@ -97,26 +98,31 @@ export function useSendVPScreen() {
     return Object.values(vcs)
       .flatMap(vc => vc)
       .some(vc => {
-        return getFaceAttribute(vc.verifiableCredential,vc.format) != null;
+        return getFaceAttribute(vc.verifiableCredential, vc.format) != null;
       });
   };
 
   const checkIfAllVCsHasImage = vcs => {
     return Object.values(vcs)
       .flatMap(vc => vc)
-      .every(vc => getFaceAttribute(vc.verifiableCredential,vc.format) != null);
+      .every(
+        vc => getFaceAttribute(vc.verifiableCredential, vc.format) != null,
+      );
   };
 
   const getSelectedVCs = (): Record<string, any[]> => {
     let selectedVcsData: Record<string, any[]> = {}; // input_descriptor_id to VC[]
-    Object.entries(inputDescriptorIdToSelectedVcKeys).forEach(([inputDescriptorId, vcKeys]) => {
-        vcKeys.forEach((vcKey : string) => {
-            const vcData = myVcs[vcKey];
-            selectedVcsData[inputDescriptorId] = selectedVcsData[inputDescriptorId] || [];
-            selectedVcsData[inputDescriptorId].push(vcData);
+    Object.entries(inputDescriptorIdToSelectedVcKeys).forEach(
+      ([inputDescriptorId, vcKeys]) => {
+        vcKeys.forEach((vcKey: string) => {
+          const vcData = myVcs[vcKey];
+          selectedVcsData[inputDescriptorId] =
+            selectedVcsData[inputDescriptorId] || [];
+          selectedVcsData[inputDescriptorId].push(vcData);
         });
-    });
-    return selectedVcsData
+      },
+    );
+    return selectedVcsData;
   };
 
   const showConfirmationPopup = useSelector(
@@ -222,9 +228,18 @@ export function useSendVPScreen() {
     showLoadingScreen: useSelector(openID4VPService, selectIsShowLoadingScreen),
     vpVerifierName,
     flowType: useSelector(openID4VPService, selectFlowType),
-    showTrustConsentModal: useSelector(openID4VPService,selectshowTrustConsentModal),
-    verifierNameInTrustModal: useSelector(openID4VPService, selectVerifierNameInTrustModal),
-    verifierLogoInTrustModal: useSelector(openID4VPService, selectVerifierLogoInTrustModal),
+    showTrustConsentModal: useSelector(
+      openID4VPService,
+      selectshowTrustConsentModal,
+    ),
+    verifierNameInTrustModal: useSelector(
+      openID4VPService,
+      selectVerifierNameInTrustModal,
+    ),
+    verifierLogoInTrustModal: useSelector(
+      openID4VPService,
+      selectVerifierLogoInTrustModal,
+    ),
     showConfirmationPopup,
     isSelectingVCs,
     checkIfAnyVCHasImage,
@@ -282,60 +297,80 @@ export function useSendVPScreen() {
       (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
         let descriptorMappingToVCs = {...inputDescriptorIdToSelectedVcKeys};
 
-        const isVCSelected = Object.keys(inputDescriptorIdToSelectedVcKeys)?.includes(inputDescriptorId) && inputDescriptorIdToSelectedVcKeys[inputDescriptorId]?.includes(vcKey) ? false : true;
+        const isVCSelected =
+          Object.keys(inputDescriptorIdToSelectedVcKeys)?.includes(
+            inputDescriptorId,
+          ) &&
+          inputDescriptorIdToSelectedVcKeys[inputDescriptorId]?.includes(vcKey)
+            ? false
+            : true;
         if (isVCSelected) {
-            if (descriptorMappingToVCs[inputDescriptorId]) {
-                if (!descriptorMappingToVCs[inputDescriptorId].includes(vcKey)) {
-                  descriptorMappingToVCs[inputDescriptorId].push(vcKey);
-                }
-            } else {
-                descriptorMappingToVCs[inputDescriptorId] = [vcKey];
+          if (descriptorMappingToVCs[inputDescriptorId]) {
+            if (!descriptorMappingToVCs[inputDescriptorId].includes(vcKey)) {
+              descriptorMappingToVCs[inputDescriptorId].push(vcKey);
             }
+          } else {
+            descriptorMappingToVCs[inputDescriptorId] = [vcKey];
+          }
         } else {
           // remove vc key from the input descriptor mapping
-            if (descriptorMappingToVCs[inputDescriptorId]) {
-                descriptorMappingToVCs[inputDescriptorId] = descriptorMappingToVCs[
-                inputDescriptorId
-                ].filter(key => key !== vcKey); // remove the vcKey from the array
-                if (descriptorMappingToVCs[inputDescriptorId].length === 0) { // if the array is empty, remove the input descriptor id
-                  delete descriptorMappingToVCs[inputDescriptorId];
-                }
+          if (descriptorMappingToVCs[inputDescriptorId]) {
+            descriptorMappingToVCs[inputDescriptorId] = descriptorMappingToVCs[
+              inputDescriptorId
+            ].filter(key => key !== vcKey); // remove the vcKey from the array
+            if (descriptorMappingToVCs[inputDescriptorId].length === 0) {
+              // if the array is empty, remove the input descriptor id
+              delete descriptorMappingToVCs[inputDescriptorId];
             }
+          }
         }
-        setInputDescriptorIdToSelectedVcKeys(descriptorMappingToVCs)
+        setInputDescriptorIdToSelectedVcKeys(descriptorMappingToVCs);
         const {serviceRefs, wellknownResponse, ...vcData} =
           vcRef.getSnapshot().context;
       },
 
     UNCHECK_ALL: () => {
-      setInputDescriptorIdToSelectedVcKeys({})
+      setInputDescriptorIdToSelectedVcKeys({});
     },
 
     CHECK_ALL: () => {
-      const updatedInputDescriptorToCredentialsMapping: Record<string, any[]> = {};
+      const updatedInputDescriptorToCredentialsMapping: Record<string, any[]> =
+        {};
       Object.entries(vcsMatchingAuthRequest).map(([inputDescriptorId, vcs]) => {
         updatedInputDescriptorToCredentialsMapping[inputDescriptorId] = [];
         vcs.map(vcData => {
           const vcKey = VCMetadata.fromVcMetadataString(
             vcData.vcMetadata,
           ).getVcKey();
-          updatedInputDescriptorToCredentialsMapping[inputDescriptorId].push(vcKey);
+          updatedInputDescriptorToCredentialsMapping[inputDescriptorId].push(
+            vcKey,
+          );
         });
       });
-      setInputDescriptorIdToSelectedVcKeys({...updatedInputDescriptorToCredentialsMapping});
+      setInputDescriptorIdToSelectedVcKeys({
+        ...updatedInputDescriptorToCredentialsMapping,
+      });
     },
 
-    ACCEPT_REQUEST: (selectedDisclosuresByVc) => {
-      openID4VPService.send(OpenID4VPEvents.ACCEPT_REQUEST(getSelectedVCs(), selectedDisclosuresByVc));
+    ACCEPT_REQUEST: selectedDisclosuresByVc => {
+      openID4VPService.send(
+        OpenID4VPEvents.ACCEPT_REQUEST(
+          getSelectedVCs(),
+          selectedDisclosuresByVc,
+        ),
+      );
     },
 
-    VERIFIER_TRUST_CONSENT_GIVEN: () =>{
+    VERIFIER_TRUST_CONSENT_GIVEN: () => {
       openID4VPService.send(OpenID4VPEvents.VERIFIER_TRUST_CONSENT_GIVEN());
     },
 
-    VERIFY_AND_ACCEPT_REQUEST: (selectedDisclosuresByVc) => {
+    VERIFY_AND_ACCEPT_REQUEST: selectedDisclosuresByVc => {
       openID4VPService.send(
-        OpenID4VPEvents.VERIFY_AND_ACCEPT_REQUEST(getSelectedVCs(), selectedDisclosuresByVc),
+        OpenID4VPEvents.VERIFY_AND_ACCEPT_REQUEST(
+          getSelectedVCs(),
+          selectedDisclosuresByVc,
+        ),
       );
     },
     CANCEL,

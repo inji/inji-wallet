@@ -34,13 +34,19 @@ import {
 import {VCProcessor} from '../../components/VC/common/VCProcessor';
 import {HelpIcon} from '../../components/ui/HelpIcon';
 import VcRenderer from '../../shared/vcRenderer/VcRenderer';
+import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
 
 export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
   const {t} = useTranslation('ViewVcModal');
   const controller = useViewVcModal(props);
   const profileImage = controller.verifiableCredentialData.face;
   const verificationStatus = controller.verificationStatus;
-  const verificationStatusMessage = controller.verificationStatus?.isRevoked ? "revoked" : controller.verificationStatus?.isExpired ? "expired" : controller.verificationStatus?.statusType;
+  const verificationStatusMessage =
+    controller.verificationStatus?.isRevoked == RevocationStatus.TRUE
+      ? 'revoked'
+      : controller.verificationStatus?.isExpired
+      ? 'expired'
+      : controller.verificationStatus?.statusType;
   const [verifiableCredential, setVerifiableCredential] = useState(null);
   const [svgTemplate, setSvgTemplate] = useState<string[] | null>(null);
   const [svgRendererError, setSvgRendererError] = useState<string[] | null>(
@@ -69,7 +75,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
       !controller.verifiableCredentialData.vcMetadata.isVerified &&
       !controller.isVerificationInProgress
     ) {
-      props.vcItemActor.send({ type: 'VERIFY' });
+      props.vcItemActor.send({type: 'VERIFY'});
     }
   }, [controller.verifiableCredentialData.vcMetadata.isVerified]);
 
@@ -86,11 +92,12 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
         setLoadingSvg(true);
 
         const vcJsonString = JSON.stringify(controller.credential.credential);
-        const result = await VcRenderer.getInstance().generateCredentialDisplayContent(
-          controller.verifiableCredentialData.format,
-          wellknown ?? null,
-          vcJsonString,
-        );
+        const result =
+          await VcRenderer.getInstance().generateCredentialDisplayContent(
+            controller.verifiableCredentialData.format,
+            wellknown ?? null,
+            vcJsonString,
+          );
 
         setSvgTemplate(result);
         setSvgRendererError(null);
@@ -181,7 +188,9 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
         <BannerNotification
           type={verificationStatus?.statusType as BannerStatus}
           message={t(`VcVerificationBanner:${verificationStatusMessage}`, {
-            vcDetails: `${verificationStatus?.vcType} ${verificationStatus?.vcNumber ?? ""}`,
+            vcDetails: `${verificationStatus?.vcType} ${
+              verificationStatus?.vcNumber ?? ''
+            }`,
           })}
           onClosePress={controller.RESET_VERIFICATION_STATUS}
           key={'reVerificationInProgress'}
@@ -239,7 +248,9 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
       />
 
       <MessageOverlay
-        isVisible={controller.isWalletBindingInProgress || controller.isReverifyingVc}
+        isVisible={
+          controller.isWalletBindingInProgress || controller.isReverifyingVc
+        }
         title={t('inProgress')}
         progress
       />

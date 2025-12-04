@@ -61,6 +61,8 @@ import CopyIcon from '../../assets/file_copy.svg';
 import StarIcon from '../../assets/credentialRegestryStar.svg';
 import SelectedCheckBox from '../../assets/Selected_Check_Box.svg';
 import ReverifyIcon from '../../assets/Reverify.svg';
+import Logomark from '../../assets/Logomark.svg';
+
 export class SvgImage {
   static selectedCheckBox() {
     return <SelectedCheckBox />;
@@ -599,6 +601,9 @@ export class SvgImage {
         color2={Theme.Colors.linearIconGradientEnd}
       />
     );
+  }
+  static logoIcon(height: number, width: number) {
+    return <Logomark height={height} width={width} />;
   }
 }
 

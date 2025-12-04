@@ -1,5 +1,21 @@
 import {NativeModules} from 'react-native';
 
+export const RevocationStatus = Object.freeze({
+  TRUE: 'TRUE',
+  FALSE: 'FALSE',
+  UNDETERMINED: 'UNDETERMINED',
+} as const);
+
+/**
+ * Type representing any possible value of RevocationStatus.
+ *
+ * - "TRUE" → Condition was evaluated and is positively true
+ * - "FALSE" → Condition was evaluated and is definitively false
+ * - "UNDETERMINED" → Condition could not be evaluated due to an error
+ */
+export type RevocationStatusType =
+  (typeof RevocationStatus)[keyof typeof RevocationStatus];
+
 export type CredentialStatusResult = {
   isValid: boolean;
   error?: ErrorResult;

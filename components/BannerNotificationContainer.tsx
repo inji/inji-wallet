@@ -11,6 +11,7 @@ import {useTranslation} from 'react-i18next';
 import {useScanScreen} from '../screens/Scan/ScanScreenController';
 import {Theme} from './ui/styleUtils';
 import {useSettingsScreen} from '../screens/Settings/SettingScreenController';
+import {RevocationStatusType} from '../shared/vcVerifier/VcVerifier';
 
 export const BannerNotificationContainer: React.FC<
   BannerNotificationContainerProps
@@ -162,7 +163,7 @@ export const BannerNotificationContainer: React.FC<
 
 export type vcVerificationBannerDetails = {
   statusType: BannerStatus;
-  isRevoked: boolean;
+  isRevoked: RevocationStatusType;
   isExpired: boolean;
   vcType: string;
 };

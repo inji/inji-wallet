@@ -1,7 +1,7 @@
 import React from 'react';
 import {Icon, ListItem, Overlay} from 'react-native-elements';
 import {Theme} from '../components/ui/styleUtils';
-import {Column, Row, Text} from '../components/ui';
+import {Button, Column, Row, Text} from '../components/ui';
 import {View} from 'react-native';
 import {useKebabPopUp} from './KebabPopUpController';
 import {ActorRefFrom} from 'xstate';
@@ -11,6 +11,7 @@ import {VCMetadata} from '../shared/VCMetadata';
 import testIDProps from '../shared/commonUtil';
 import {getKebabMenuOptions} from './kebabMenuUtils';
 import {VCItemMachine} from '../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
+import {LinearGradient} from 'react-native-linear-gradient';
 
 export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
   const controller = useKebabPopUp(props);
@@ -59,7 +60,7 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
                   {item.icon}
                 </View>
                 <Text
-                  style={{fontFamily: 'Inter_600SemiBold'}}
+                  style={{fontFamily: 'Montserrat_600SemiBold'}}
                   color={
                     item.testID === 'removeFromWallet'
                       ? Theme.Colors.warningText
@@ -70,11 +71,15 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
                   {item.label}
                 </Text>
                 {item.label === t('reverify') && (
-                  <View style={Theme.KebabPopUpStyles.new}>
+                  <LinearGradient
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 0}}
+                    colors={Theme.Colors.GradientColors}
+                    style={Theme.KebabPopUpStyles.new}>
                     <Text color="white" weight="bold" style={{fontSize: 10}}>
                       {t('new')}
                     </Text>
-                  </View>
+                  </LinearGradient>
                 )}
               </Row>
             </ListItem>
