@@ -87,7 +87,7 @@ export const ReceiveVcScreen: React.FC = () => {
       setWellknown(response.matchingCredentialIssuerMetadata);
       setFields(response.fields);
       controller.STORE_INCOMING_VC_WELLKNOWN_CONFIG(
-        verifiableCredentialData?.issuer,
+        verifiableCredentialData?.vcMetadata.issuerHost,
         response.wellknownResponse,
       );
     });
