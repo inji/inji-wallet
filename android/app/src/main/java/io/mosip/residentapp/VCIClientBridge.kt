@@ -1,8 +1,16 @@
 package io.mosip.residentapp
 
 import com.facebook.react.bridge.ReactApplicationContext
+import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest
+import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken
+import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult
+import io.mosip.openID4VP.constants.FormatType
 import io.mosip.vciclient.VCIClient
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata
+import io.mosip.vciclient.authorizationCodeFlow.interactiveAuth.AuthorizationHandler
+import io.mosip.vciclient.authorizationCodeFlow.interactiveAuth.AuthorizationResponse
+import io.mosip.vciclient.authorizationCodeFlow.interactiveAuth.PresentationAuthorizationHandler
+import io.mosip.vciclient.authorizationCodeFlow.interactiveAuth.WebAuthorizationHandler
 import io.mosip.vciclient.credential.response.CredentialResponse
 import io.mosip.vciclient.token.TokenRequest
 import io.mosip.vciclient.token.TokenResponse
@@ -29,6 +37,71 @@ object VCIClientBridge {
                 getTokenResponse = getTokenResponseCallback(),
                 getProofJwt = getProofJwtCallback(),
                 onCheckIssuerTrust = onCheckIssuerTrustCallback()
+        )
+    }
+
+    @JvmStatic
+    fun requestCredentialByOfferSyncV2(
+        client: VCIClient,
+        offer: String,
+        clientMetaData: ClientMetadata
+    ): CredentialResponse = runBlocking {
+        client.fetchCredentialByCredentialOfferV2(
+            credentialOffer = offer,
+            clientMetadata = clientMetaData,
+            getTxCode = getTxCodeCallback(),
+            authorizations = authorizations(),
+            getTokenResponse = getTokenResponseCallback(),
+            getProofJwt = getProofJwtCallback(),
+            onCheckIssuerTrust = onCheckIssuerTrustCallback()
+        )
+    }
+
+    //TODO: Move all private functions to the end of the class (Ordering)
+    private fun authorizations(): List<AuthorizationHandler> {
+        val webAuthorizationHandler =
+            WebAuthorizationHandler(openWebPageCallback() as (String) -> AuthorizationResponse)
+        val presentationAuthorizationHandler = PresentationAuthorizationHandler(
+            handlePresentationRequest = getHandlePresentationRequestCallback(),
+            signVerifiablePresentation = getSignVerifiablePresentationCallback(),
+            trustedVerifiers = listOf(),
+            //TODO: Set holderId and signatureSuite later
+//            holderId = "",
+//            signatureSuite = TODO(),
+            shouldValidateClient = false,
+//            openId4vp = TODO(),
+//            handlePresentationTimeoutMs = TODO(),
+//            signVPTokensTimeoutMs = TODO()
+        )
+        val authorizations = listOf<AuthorizationHandler>(
+            presentationAuthorizationHandler,
+            webAuthorizationHandler
+        )
+
+        return authorizations
+    }
+
+    private fun getHandlePresentationRequestCallback() : suspend (AuthorizationRequest) -> Map<String, Map<FormatType, List<Any>>> = { authorizationRequest ->
+        VCIClientCallbackBridge.createPresentationRequestDeferred()
+        VCIClientCallbackBridge.emitPresentationRequest(reactContext, authorizationRequest)
+        VCIClientCallbackBridge.awaitSelectedCredentialsForPresentationRequest()
+    }
+
+    private fun getSignVerifiablePresentationCallback() : suspend (Map<FormatType, UnsignedVPToken>) -> Map<FormatType, VPTokenSigningResult> = { payload ->
+        VCIClientCallbackBridge.createSignedVPTokenDeferred()
+        VCIClientCallbackBridge.emitSignedVPTokenRequest(reactContext, payload)
+        VCIClientCallbackBridge.awaitSignedVPToken()
+    }
+
+    private fun openWebPageCallback(): suspend (String) -> AuthorizationResponse = { endpoint ->
+        VCIClientCallbackBridge.createAuthCodeDeferredV2()
+        VCIClientCallbackBridge.emitRequestAuthCode(reactContext, endpoint)
+        val authCode = VCIClientCallbackBridge.awaitAuthCodeV2()
+        AuthorizationResponse(
+            authorizationCode = authCode["code"] as String?,
+            status = authCode["status"] as String?,
+            error = authCode["error"] as String?,
+            errorDescription = authCode["errorDescription"] as String?
         )
     }
 
