@@ -69,8 +69,8 @@ object VCIClientBridge {
             signatureSuite = "JsonWebSignature2020",
             shouldValidateClient = false,
 //            openId4vp = TODO(),
-//            handlePresentationTimeoutMs = TODO(),
-//            signVPTokensTimeoutMs = TODO()
+            handlePresentationTimeoutMs = 3 * 60 * 1000L,
+            signVPTokensTimeoutMs = 3 * 60 * 1000L
         )
         val authorizations = listOf<AuthorizationHandler>(
             presentationAuthorizationHandler,
