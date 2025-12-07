@@ -123,6 +123,7 @@ export const openID4VPMachine = model.createMachine(
                   authenticationResponse: (context, _) =>
                     context.presentationRequest,
                 }),
+                'resetIsShowLoadingScreen',
               ],
               target: 'checkVerifierTrust',
             },
@@ -419,46 +420,94 @@ export const openID4VPMachine = model.createMachine(
             actions: 'resetFaceCaptureBannerStatus',
           },
         },
-        invoke: {
-          src: 'sendVP',
-          onDone: [
-            {
-              cond: 'isShareWithSelfie',
-              actions: [
-                send({
-                  type: 'LOG_ACTIVITY',
-                  logType: 'SHARED_WITH_FACE_VERIFIACTION',
-                }),
-                sendParent('SUCCESS'),
-              ],
-              target: 'success',
-            },
-            {
-              actions: [
-                send({
-                  type: 'LOG_ACTIVITY',
-                  logType: 'SHARED_SUCCESSFULLY',
-                }),
-                sendParent('SUCCESS'),
-              ],
-              target: 'success',
-            },
-          ],
-          onError: {
-            actions: [
-              send({
-                type: 'LOG_ACTIVITY',
-                logType: 'RETRY_ATTEMPT_FAILED',
-              }),
-              'setSendVPShareError',
-              sendParent('SHOW_ERROR'),
+        initial: 'prepare',
+        states: {
+          prepare: {
+            // if isAuthorizationFlow go to constructVP else sendVP
+            always: [
+              {
+                cond: 'isAuthorizationFlow',
+                target: 'constructVP',
+              },
+              {
+                target: 'sendVP',
+              },
             ],
-            target: 'showError',
           },
-        },
-        after: {
-          SHARING_TIMEOUT: {
-            actions: sendParent('TIMEOUT'),
+          constructVP: {
+            initial: 'constructing',
+            states: {
+              constructing: {
+                invoke: {
+                  src: 'sendSelectedCredentialsForVP',
+                  onDone: {
+                    actions: [
+                      () => console.debug('3177: VP constructed successfully'),
+                    ],
+                  },
+                  onError: {
+                    actions: [
+                      (_, event) =>
+                        console.error(
+                          '3177: Error in constructing VP: ',
+                          event.data,
+                        ),
+                      send({
+                        type: 'LOG_ACTIVITY',
+                        logType: 'RETRY_ATTEMPT_FAILED',
+                      }),
+                      'setConstructVPError',
+                      sendParent('SHOW_ERROR'),
+                    ],
+                    target: '#OpenID4VP.showError',
+                  },
+                },
+              },
+            },
+          },
+          sendVP: {
+            invoke: {
+              src: 'sendVP',
+              onDone: [
+                {
+                  cond: 'isShareWithSelfie',
+                  actions: [
+                    send({
+                      type: 'LOG_ACTIVITY',
+                      logType: 'SHARED_WITH_FACE_VERIFIACTION',
+                    }),
+                    sendParent('SUCCESS'),
+                  ],
+                  target: '#success',
+                },
+                {
+                  actions: [
+                    send({
+                      type: 'LOG_ACTIVITY',
+                      logType: 'SHARED_SUCCESSFULLY',
+                    }),
+                    sendParent('SUCCESS'),
+                  ],
+                  target: '#success',
+                },
+              ],
+              onError: {
+                actions: [
+                  send({
+                    type: 'LOG_ACTIVITY',
+                    logType: 'RETRY_ATTEMPT_FAILED',
+                  }),
+                  'setSendVPShareError',
+                  sendParent('SHOW_ERROR'),
+                ],
+                target: '#showError',
+              },
+            },
+            after: {
+              SHARING_TIMEOUT: {
+                actions: sendParent('TIMEOUT'),
+              },
+            },
           },
         },
       },
@@ -478,6 +527,7 @@ export const openID4VPMachine = model.createMachine(
         },
       },
       showError: {
+        id: 'showError',
         on: {
           RETRY: {
             actions: ['resetError', 'incrementOpenID4VPRetryCount'],
@@ -491,7 +541,9 @@ export const openID4VPMachine = model.createMachine(
           },
         },
       },
-      success: {},
+      success: {
+        id: 'success',
+      },
     },
   },
   {

@@ -37,7 +37,7 @@ import {TrustModal} from '../../components/TrustModal';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
-  const controller = useSendVPScreen();
+  const controller = useSendVPScreen(props);
   const scanScreenController = useScanScreen();
 
   const [errorModal, resetErrorModal] = useOvpErrorModal({
@@ -299,7 +299,8 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           }
           onConfirm={controller.VERIFIER_TRUST_CONSENT_GIVEN}
           onCancel={controller.CANCEL}
-          flowType="verifier"></TrustModal>
+          flowType="verifier"
+        />
       }
       {Object.keys(vcsMatchingAuthRequest).length > 0 && (
         <>

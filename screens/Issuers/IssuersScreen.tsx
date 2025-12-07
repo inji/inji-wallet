@@ -267,13 +267,23 @@ export const IssuersScreen: React.FC<
   if (controller.loadingReason) {
     return (
       <Fragment>
-        {controller.isPresentationAuthorizationInProgress && (
-          <SendVPScreen navigation={props.navigation} route={props.route} />
+        {controller.isPresentationAuthorizationInProgress ? (
+          <SendVPScreen
+            navigation={props.navigation}
+            route={{
+              ...props.route,
+              params: {
+                ...props.route.params,
+                ovpService: controller.ovpMachine,
+              },
+            }}
+          />
+        ) : (
+          <Loader
+            title={t('loaders.loading')}
+            subTitle={t(`loaders.subTitle.${controller.loadingReason}`)}
+          />
         )}
-        <Loader
-          title={t('loaders.loading')}
-          subTitle={t(`loaders.subTitle.${controller.loadingReason}`)}
-        />
       </Fragment>
     );
   }

@@ -175,6 +175,13 @@ object VCIClientCallbackBridge {
     }
 
     @JvmStatic
+    fun completePresentationRequest(selectedVCs: Map<String, Map<FormatType, List<Object>>>) {
+        deferredPresentationRequest?.complete(selectedVCs)
+        println("completed presentation request")
+        deferredAuthCode = null
+    }
+
+  @JvmStatic
     fun completeAuthCode(code: String) {
         deferredAuthCode?.complete(code)
         deferredAuthCode = null

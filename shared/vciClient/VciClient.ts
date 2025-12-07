@@ -1,6 +1,9 @@
 import {NativeModules, NativeEventEmitter} from 'react-native';
 import {__AppId} from '../GlobalVariables';
-import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {
+  SelectedCredentialsForVPSharing,
+  VerifiableCredential,
+} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 
 const emitter = new NativeEventEmitter(NativeModules.InjiVciClient);
 
@@ -21,6 +24,12 @@ class VciClient {
 
   async sendProof(jwt: string) {
     this.InjiVciClient.sendProofFromJS(jwt);
+  }
+
+  async sendSelectedCredentialsForVPSharing(
+    credentials: SelectedCredentialsForVPSharing,
+  ) {
+    this.InjiVciClient.sendSelectedCredentialsForVPSharingFromJS(credentials);
   }
 
   async sendAuthCode(authCode: string) {

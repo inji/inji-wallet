@@ -132,13 +132,11 @@ export function selectshowTrustConsentModal(state: State) {
 }
 
 export function selectVerifierNameInTrustModal(state: State) {
-  return (
-    state.context.authenticationResponse['client_metadata']?.['client_name']
-  );
+  return state.context.authenticationResponse['client_metadata']?.[
+    'client_name'
+  ];
 }
 
 export function selectVerifierLogoInTrustModal(state: State) {
-  return (
-    state.context.authenticationResponse['client_metadata']?.['logo_uri']
-  );
+  return state.context.authenticationResponse['client_metadata']?.['logo_uri'];
 }
