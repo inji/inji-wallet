@@ -8,6 +8,7 @@ import static io.mosip.openID4VP.constants.FormatType.LDP_VC;
 import static io.mosip.openID4VP.constants.FormatType.MSO_MDOC;
 import static io.mosip.openID4VP.constants.FormatType.VC_SD_JWT;
 import static io.mosip.residentapp.Utils.OVPUtils.parseSelectedVCs;
+import static io.mosip.residentapp.Utils.OVPUtils.parseVPTokenSigningResult;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -337,71 +338,6 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     }
 
 
-    private Map<FormatType, VPTokenSigningResult> parseVPTokenSigningResult(ReadableMap vpTokenSigningResultMap) {
-        if (vpTokenSigningResultMap == null) {
-            return Collections.emptyMap();
-        }
-        Map<FormatType, VPTokenSigningResult> formattedMetadata = new EnumMap<>(FormatType.class);
-        ReadableMapKeySetIterator iterator = vpTokenSigningResultMap.keySetIterator();
-        while (iterator.hasNextKey()) {
-            String formatStr = iterator.nextKey();
-            ReadableMap metadata = vpTokenSigningResultMap.getMap(formatStr);
-            if (metadata == null) {
-                continue;
-            }
-            FormatType formatType = getFormatType(formatStr);
-            VPTokenSigningResult vpTokenSigningResult = createVPTokenSigningResult(formatType, metadata);
-            if (vpTokenSigningResult != null) {
-                formattedMetadata.put(formatType, vpTokenSigningResult);
-            }
-        }
-
-        return formattedMetadata;
-    }
-
-    private VPTokenSigningResult createVPTokenSigningResult(FormatType formatType, ReadableMap metadata) {
-        switch (formatType) {
-            case LDP_VC: {
-                String jws = metadata.getString("jws");
-                String proofValue = metadata.getString("proofValue");
-                String signatureAlgorithm = metadata.getString("signatureAlgorithm");
-                return new LdpVPTokenSigningResult(jws, proofValue, signatureAlgorithm);
-            }
-            case MSO_MDOC: {
-                Map<String, DeviceAuthentication> signatureData = new HashMap<>();
-                ReadableMapKeySetIterator docTypeIterator = metadata.keySetIterator();
-                while (docTypeIterator.hasNextKey()) {
-                    String docType = docTypeIterator.nextKey();
-                    ReadableMap deviceAuthenticationMap = metadata.getMap(docType);
-                    if (deviceAuthenticationMap != null) {
-                        String signature = requireNonNullString(deviceAuthenticationMap, "signature");
-                        String algorithm = requireNonNullString(deviceAuthenticationMap, "mdocAuthenticationAlgorithm");
-                        DeviceAuthentication deviceAuthentication = new DeviceAuthentication(
-                                signature = signature,
-                                algorithm = algorithm);
-                        signatureData.put(docType, deviceAuthentication);
-                    }
-                }
-                return new MdocVPTokenSigningResult(signatureData);
-            }
-            case VC_SD_JWT:
-            case DC_SD_JWT: {
-                Map<String, String> uuidToSignature = new HashMap<>();
-                ReadableMapKeySetIterator uuidIterator = metadata.keySetIterator();
-                while (uuidIterator.hasNextKey()) {
-                    String uuid = uuidIterator.nextKey();
-                    String signature = metadata.getString(uuid);
-                    if (signature != null) {
-                        uuidToSignature.put(uuid, signature);
-                    }
-                }
-                return new SdJwtVPTokenSigningResult(uuidToSignature);
-            }
-            default:
-                return null;
-        }
-    }
-
     private FormatType getFormatType(String formatStr) {
         if (LDP_VC.getValue().equals(formatStr)) {
             return LDP_VC;
@@ -413,12 +349,5 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             return DC_SD_JWT;
         }
         throw new UnsupportedOperationException("Credential format '" + formatStr + "' is not supported");
-    }
-
-
-
-    private String requireNonNullString(ReadableMap map, String key) {
-        String value = map.getString(key);
-        return Objects.requireNonNull(value, key + " cannot be null");
     }
 }

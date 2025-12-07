@@ -5,6 +5,8 @@ import {openID4VPActions} from './openID4VPActions';
 import {AppServices} from '../../shared/GlobalContext';
 import {openID4VPGuards} from './openID4VPGuards';
 import {send, sendParent} from 'xstate/lib/actions';
+import {IssuersModel} from '../Issuers/IssuersModel';
+import {parseJSON} from '../../shared/Utils';
 
 const model = openID4VPModel;
 
@@ -436,6 +438,19 @@ export const openID4VPMachine = model.createMachine(
           },
           constructVP: {
             initial: 'constructing',
+            on: {
+              SIGN_VP: {
+                //{"data": "{\"LDP_VC\":{\"dataToSign\":\"xM-qsJdNufrbhx4Y1xc2zHQcQ2MijcuIq6CBxf1JQO_BAeGE7HzR0fg5_WTTjsw8KvUY0rCgEzSLzdLCyU5avw\"}}", "type": "SIGN_VP"}
+                actions: [
+                  (_, event) =>
+                    console.debug('3177: SIGN_DATA event received: ', event),
+                  model.assign({
+                    unsignedVPToken: (_, event) => parseJSON(event.data),
+                  }),
+                ],
+                target: '#signVP',
+              },
+            },
             states: {
               constructing: {
                 invoke: {
@@ -460,6 +475,21 @@ export const openID4VPMachine = model.createMachine(
                       sendParent('SHOW_ERROR'),
                     ],
                     target: '#OpenID4VP.showError',
+                  },
+                },
+              },
+              signVP: {
+                id: 'signVP',
+                invoke: {
+                  src: 'signVP',
+                  onDone: {
+                    actions: [
+                      (_, event) =>
+                        console.debug('3177: VP signed successfully ', event),
+                      sendParent((_context, event) =>
+                        IssuersModel.events.SIGNED_DATA_FOR_VP(event),
+                      ),
+                    ],
                   },
                 },
               },

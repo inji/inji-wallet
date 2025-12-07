@@ -32,6 +32,10 @@ class VciClient {
     this.InjiVciClient.sendSelectedCredentialsForVPSharingFromJS(credentials);
   }
 
+  sendSignedVP(vpTokenSigningResult: object) {
+    this.InjiVciClient.sendVPTokenSigningResult(vpTokenSigningResult);
+  }
+
   async sendAuthCode(authCode: string) {
     this.InjiVciClient.sendAuthCodeFromJS(authCode);
   }
@@ -72,6 +76,7 @@ class VciClient {
       issuerDisplay: object[],
     ) => void,
     handlePresentationRequest: (presentationRequest: object) => void,
+    signPresentation: (vpTokenSigningRequest: object) => void,
   ): Promise<any> {
     const proofListener = emitter.addListener(
       'onRequestProof',
@@ -95,7 +100,7 @@ class VciClient {
     const signVPListener = emitter.addListener(
       'onRequestSignedVPToken',
       ({vpTokenSigningRequest}) => {
-        //Handle signed VP token request
+        signPresentation(vpTokenSigningRequest);
       },
     );
 

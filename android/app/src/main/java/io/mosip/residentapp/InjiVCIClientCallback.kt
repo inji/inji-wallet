@@ -6,6 +6,7 @@ import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.google.gson.Gson
 import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest
+import io.mosip.openID4VP.authorizationResponse.toJsonString
 import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult
 import io.mosip.openID4VP.constants.FormatType
@@ -54,8 +55,9 @@ object VCIClientCallbackBridge {
     ) {
         val params =
             Arguments.createMap().apply {
-                putString("vpTokenSigningRequest", Gson().toJson(payload))
+                putString("vpTokenSigningRequest", payload.toJsonString())
             }
+      println("Emitting signed VP token request to JS")
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
             .emit("onRequestSignedVPToken", params)
     }
@@ -180,6 +182,13 @@ object VCIClientCallbackBridge {
         println("completed presentation request")
         deferredAuthCode = null
     }
+
+  @JvmStatic
+  fun completeSignDataForVP(vpTokenSigningResult: MutableMap<FormatType, VPTokenSigningResult>) {
+    deferredSignedVPToken?.complete(vpTokenSigningResult)
+    print("completed signed VP token")
+    deferredSignedVPToken = null
+  }
 
   @JvmStatic
     fun completeAuthCode(code: String) {
