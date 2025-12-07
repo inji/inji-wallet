@@ -11,6 +11,7 @@ import {
   selectIsSendingVPError,
 } from '../../machines/bleShare/scan/scanSelectors';
 import {
+  isAuthorization,
   selectAreAllVCsChecked,
   selectCredentials,
   selectIsError,
@@ -227,6 +228,7 @@ export function useSendVPScreen(props) {
   }
 
   return {
+    isAuthorizationFlow: useSelector(openID4VPService, isAuthorization),
     isSendingVP: useSelector(openID4VPService, selectIsSharingVP),
     showLoadingScreen: useSelector(openID4VPService, selectIsShowLoadingScreen),
     vpVerifierName,

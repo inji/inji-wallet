@@ -29,6 +29,10 @@ export const openID4VPActions = (model: any) => {
       presentationRequest: (_, event) => event.presentationRequest,
     }),
 
+    setAuthorizer: model.assign({
+      authorizer: (_, event) => event.authorizer,
+    }),
+
     setAuthenticationResponse: model.assign({
       authenticationResponse: (_, event) => event.data,
     }),

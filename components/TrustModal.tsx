@@ -17,9 +17,11 @@ export const TrustModal = ({
   name: string;
   onConfirm: () => void;
   onCancel: () => void;
-  flowType?: 'issuer' | 'verifier';
+  flowType?: 'issuer' | 'verifier' | 'pdi';
 }) => {
   const {t} = useTranslation('trustScreen');
+  const flowPrefix = flowType == 'issuer' ? '' : flowType;
+
   return (
     <Modal transparent={true} visible={isVisible} animationType="fade">
       <View style={Theme.TrustIssuerScreenStyle.modalOverlay}>
@@ -44,11 +46,11 @@ export const TrustModal = ({
             contentContainerStyle={{alignItems: 'center', paddingBottom: 10}}
             showsVerticalScrollIndicator={true}>
             <Text style={Theme.TrustIssuerScreenStyle.description}>
-              {t(flowType == 'issuer' ? 'description' : 'verifierDescription')}
+              {t(`${flowPrefix}Description`)}
             </Text>
 
             <View style={Theme.TrustIssuerScreenStyle.infoContainer}>
-              {t(flowType == 'issuer' ? 'infoPoints' : 'verifierInfoPoints', {
+              {t(`${flowPrefix}InfoPoints`, {
                 returnObjects: true,
               }).map((point, index) => (
                 <View key={index} style={Theme.TrustIssuerScreenStyle.infoItem}>
@@ -70,7 +72,7 @@ export const TrustModal = ({
                 alignItems: 'center',
               }}
               type="gradient"
-              title={t(flowType == 'issuer' ? 'confirm' : 'verifierConfirm')}
+              title={t(`${flowPrefix}Confirm`)}
               onPress={onConfirm}
             />
             <Button

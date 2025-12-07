@@ -23,6 +23,7 @@ import {
   selectTxCodeDisplayDetails,
   selectIsPresentationAuthorization,
   selectOVPMachine,
+  selectIsPresentationAuthorizationInProgress,
 } from '../../machines/Issuers/IssuersSelectors';
 import {ActorRefFrom} from 'xstate';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
@@ -39,9 +40,13 @@ export function useIssuerScreenController({route, navigation}) {
   service.subscribe(logState);
 
   return {
-    isPresentationAuthorizationInProgress: useSelector(
+    isPresentationAuthorization: useSelector(
       service,
       selectIsPresentationAuthorization,
+    ),
+    isPresentationAuthorizationInProgress: useSelector(
+      service,
+      selectIsPresentationAuthorizationInProgress,
     ),
     issuers: useSelector(service, selectIssuers),
     ovpMachine: useSelector(service, selectOVPMachine),
