@@ -254,7 +254,13 @@ export const IssuersMachine = model.createMachine(
               // },
             },
             states: {
-              success: {},
+              success: {
+                always: [
+                  {
+                    target: '#issuersMachine.credentialDownloadFromOffer.idle',
+                  },
+                ],
+              },
               showError: {},
               inProgress: {
                 on: {

@@ -115,5 +115,7 @@ export function selectIsPresentationAuthorization(state: State) {
 }
 
 export function selectIsPresentationAuthorizationInProgress(state: State) {
-  return state.matches('credentialDownloadFromOffer.inProgress');
+  return state.matches(
+    'credentialDownloadFromOffer.presentationAuthorization.inProgress',
+  );
 }

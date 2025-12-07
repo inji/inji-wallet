@@ -268,6 +268,17 @@ export const IssuersScreen: React.FC<
     );
   }
 
+  if (controller.isPresentationAuthorizationInProgress) {
+    return (
+      <Loader
+        title={'Presenting Credential'}
+        subTitle={t(
+          `Presenting your credential securely to download the credential...`,
+        )}
+      />
+    );
+  }
+
   if (controller.loadingReason) {
     return (
       <Fragment>
@@ -289,17 +300,6 @@ export const IssuersScreen: React.FC<
           />
         )}
       </Fragment>
-    );
-  }
-
-  if (controller.isPresentationAuthorizationInProgress) {
-    return (
-      <Loader
-        title={'Presenting Credential'}
-        subTitle={t(
-          `Presenting your credential securely to download the credential...`,
-        )}
-      />
     );
   }
 
