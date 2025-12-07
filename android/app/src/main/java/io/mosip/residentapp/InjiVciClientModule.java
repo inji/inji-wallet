@@ -103,6 +103,24 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void requestCredentialByOfferV2(String credentialOffer,String clientMetadataJson, Promise promise) {
+        new Thread(() -> {
+            try {
+                ClientMetadata clientMetadata= new Gson().fromJson(
+                        clientMetadataJson, ClientMetadata.class);
+                CredentialResponse response = VCIClientBridge.requestCredentialByOfferSyncV2(vciClient, credentialOffer,clientMetadata);
+                reactContext.runOnUiQueueThread(() -> {
+                    promise.resolve(response != null ? response.toJsonString() : null);
+                });
+            } catch (Exception e) {
+                reactContext.runOnUiQueueThread(() -> {
+                    promise.reject("OFFER_FLOW_FAILED", e.getMessage(), e);
+                });
+            }
+        }).start();
+    }
+
+    @ReactMethod
     public void requestCredentialFromTrustedIssuer(String credentialIssuer, String credentialConfigurationId, String clientMetadataJson, Promise promise) {
         new Thread(() -> {
             try {

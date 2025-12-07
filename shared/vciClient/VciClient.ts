@@ -63,11 +63,14 @@ class VciClient {
       issuerDisplay: object[],
     ) => void,
   ): Promise<any> {
-
     const proofListener = emitter.addListener(
       'onRequestProof',
       ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
-        getProofJwt(credentialIssuer, cNonce, JSON.parse(proofSigningAlgorithmsSupported));
+        getProofJwt(
+          credentialIssuer,
+          cNonce,
+          JSON.parse(proofSigningAlgorithmsSupported),
+        );
       },
     );
 
@@ -105,7 +108,7 @@ class VciClient {
         clientId: 'wallet',
         redirectUri: 'io.mosip.residentapp.inji://oauthredirect',
       };
-      response = await this.InjiVciClient.requestCredentialByOffer(
+      response = await this.InjiVciClient.requestCredentialByOfferV2(
         credentialOffer,
         JSON.stringify(clientMetadata),
       );
@@ -125,8 +128,7 @@ class VciClient {
       credential: {
         credential: parsedResponse.credential,
       } as VerifiableCredential,
-      credentialConfigurationId:
-        parsedResponse.credentialConfigurationId ?? {},
+      credentialConfigurationId: parsedResponse.credentialConfigurationId ?? {},
       credentialIssuer: parsedResponse.credentialIssuer ?? '',
     };
   }
@@ -146,7 +148,11 @@ class VciClient {
     const proofListener = emitter.addListener(
       'onRequestProof',
       ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
-        getProofJwt(credentialIssuer, cNonce, JSON.parse(proofSigningAlgorithmsSupported));
+        getProofJwt(
+          credentialIssuer,
+          cNonce,
+          JSON.parse(proofSigningAlgorithmsSupported),
+        );
       },
     );
 
@@ -185,8 +191,7 @@ class VciClient {
       credential: {
         credential: parsedResponse.credential,
       } as VerifiableCredential,
-      credentialConfigurationId:
-        parsedResponse.credentialConfigurationId ?? {},
+      credentialConfigurationId: parsedResponse.credentialConfigurationId ?? {},
       credentialIssuer: parsedResponse.credentialIssuer ?? '',
     };
   }

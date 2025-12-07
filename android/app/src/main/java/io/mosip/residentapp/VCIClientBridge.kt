@@ -59,8 +59,8 @@ object VCIClientBridge {
 
     //TODO: Move all private functions to the end of the class (Ordering)
     private fun authorizations(): List<AuthorizationHandler> {
-        val webAuthorizationHandler =
-            WebAuthorizationHandler(openWebPageCallback() as (String) -> AuthorizationResponse)
+//        val webAuthorizationHandler =
+//            WebAuthorizationHandler(openWebPageCallback() as (String) -> AuthorizationResponse)
         val presentationAuthorizationHandler = PresentationAuthorizationHandler(
             handlePresentationRequest = getHandlePresentationRequestCallback(),
             signVerifiablePresentation = getSignVerifiablePresentationCallback(),
@@ -75,7 +75,7 @@ object VCIClientBridge {
         )
         val authorizations = listOf<AuthorizationHandler>(
             presentationAuthorizationHandler,
-            webAuthorizationHandler
+//            webAuthorizationHandler
         )
 
         return authorizations
