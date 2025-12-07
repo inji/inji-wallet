@@ -1,17 +1,20 @@
-import { createModel } from 'xstate/lib/model';
+import {createModel} from 'xstate/lib/model';
 import {
   CredentialTypes,
   CredentialWrapper,
   IssuerWellknownResponse,
   VerifiableCredential,
 } from '../VerifiableCredential/VCMetaMachine/vc';
-import { AppServices } from '../../shared/GlobalContext';
-import { VCMetadata } from '../../shared/VCMetadata';
-import { IssuersEvents } from './IssuersEvents';
-import { issuerType } from './IssuersMachine';
+import {AppServices} from '../../shared/GlobalContext';
+import {VCMetadata} from '../../shared/VCMetadata';
+import {IssuersEvents} from './IssuersEvents';
+import {issuerType} from './IssuersMachine';
+import {ActorRefFrom} from 'xstate';
+import {openID4VPMachine} from '../openID4VP/openID4VPMachine';
 
 export const IssuersModel = createModel(
   {
+    OpenId4VPRef: {} as ActorRefFrom<typeof openID4VPMachine>,
     issuers: [] as issuerType[],
     selectedIssuerId: '' as string,
     qrData: '' as string,

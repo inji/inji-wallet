@@ -12,7 +12,7 @@ import {
   REQUEST_TIMEOUT,
   isIOS,
 } from '../../shared/constants';
-import {assign, send} from 'xstate';
+import {assign, send, spawn} from 'xstate';
 import {StoreEvents} from '../store';
 import {BackupEvents} from '../backupAndRestore/backup/backupMachine';
 import {getVCMetadata, VCMetadata} from '../../shared/VCMetadata';
@@ -27,11 +27,15 @@ import {
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {NativeModules} from 'react-native';
 import {VCActivityLog} from '../../components/ActivityLogEvent';
-import {isNetworkError, parseJSON} from '../../shared/Utils';
+import {isNetworkError, parseJSON, VCShareFlowType} from '../../shared/Utils';
 import {issuerType} from './IssuersMachine';
 import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
+import {logState} from '../../shared/commonUtil';
+import {createOpenID4VPMachine} from '../openID4VP/openID4VPMachine';
 
 const {RNSecureKeystoreModule} = NativeModules;
+
+const OPENID4VP_REF_ID = 'Presentation_During_Issuance_OpenID4VP_Service';
 export const IssuersActions = (model: any) => {
   return {
     setVerificationResult: assign({
@@ -499,5 +503,35 @@ export const IssuersActions = (model: any) => {
         to: context => context.serviceRefs.vcMeta,
       },
     ),
+
+    setOpenId4VPRef: assign({
+      OpenId4VPRef: (context: any) => {
+        const service = spawn(
+          createOpenID4VPMachine(context.serviceRefs),
+          OPENID4VP_REF_ID,
+        );
+        service.subscribe(logState);
+        return service;
+      },
+    }),
+
+    sendVPScanData: (
+      context: {
+        OpenId4VPRef: {
+          send: (arg0: {
+            type: string;
+            presentationRequest: any;
+            flowType: VCShareFlowType;
+          }) => any;
+        };
+        presentationRequest: any;
+      },
+      event,
+    ) =>
+      context.OpenId4VPRef.send({
+        type: 'AUTHENTICATE_VIA_PRESENTATION',
+        presentationRequest: event.presentationRequest,
+        flowType: VCShareFlowType.OPENID4VP_AUTHORIZATION,
+      }),
   };
 };

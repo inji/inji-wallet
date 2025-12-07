@@ -1,8 +1,11 @@
-import { getFaceAttribute } from '../../components/VC/common/VCUtils';
+import {getFaceAttribute} from '../../components/VC/common/VCUtils';
 import {VCShareFlowType} from '../../shared/Utils';
 
 export const openID4VPGuards = () => {
   return {
+    isAuthorizationFlow: (context: any) =>
+      context.flowType === VCShareFlowType.OPENID4VP_AUTHORIZATION,
+
     showFaceAuthConsentScreen: (context, event) => {
       return context.showFaceAuthConsent && context.isShareWithSelfie;
     },
@@ -26,7 +29,7 @@ export const openID4VPGuards = () => {
       const hasImage = Object.values(context.selectedVCs)
         .flatMap(vc => vc)
         .some(
-          vc => getFaceAttribute(vc.verifiableCredential,vc.format) != null,
+          vc => getFaceAttribute(vc.verifiableCredential, vc.format) != null,
         );
       return !!hasImage;
     },

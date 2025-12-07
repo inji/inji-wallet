@@ -1,8 +1,8 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React, {Fragment, useEffect, useLayoutEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, Pressable, View} from 'react-native';
 import {Issuer} from '../../components/openId4VCI/Issuer';
-import {ErrorView} from '../../components/ui/Error';
+import {Error} from '../../components/ui/Error';
 import {Header} from '../../components/ui/Header';
 import {Button, Column, Row, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
@@ -35,7 +35,8 @@ import {IssuersModel} from '../../machines/Issuers/IssuersModel';
 import {AUTH_ROUTES} from '../../routes/routesConstants';
 import {TransactionCodeModal} from './TransactionCodeScreen';
 import {TrustModal} from '../../components/TrustModal';
-
+import i18next from 'i18next';
+import {SendVPScreen} from '../Scan/SendVPScreen';
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
@@ -56,6 +57,7 @@ export const IssuersScreen: React.FC<
   const verificationErrorMessage = isTranslationKeyFound(translationKey, t)
     ? t(translationKey)
     : t('errors.verificationFailed.ERR_GENERIC');
+    : t('errors.verificationFailed.ERR_GENERIC');
 
   useLayoutEffect(() => {
     if (controller.loadingReason || showFullScreenError) {
@@ -68,6 +70,7 @@ export const IssuersScreen: React.FC<
         header: props => (
           <Header
             goBack={props.navigation.goBack}
+            title={controller.isQrScanning ? t('download') : t('title')}
             title={controller.isQrScanning ? t('download') : t('title')}
             testID="issuersScreenHeader"
           />
@@ -265,10 +268,15 @@ export const IssuersScreen: React.FC<
 
   if (controller.loadingReason) {
     return (
-      <Loader
-        title={t('loaders.loading')}
-        subTitle={t(`loaders.subTitle.${controller.loadingReason}`)}
-      />
+      <Fragment>
+        {controller.isPresentationAuthorizationInProgress && (
+          <SendVPScreen navigation={props.navigation} route={props.route} />
+        )}
+        <Loader
+          title={t('loaders.loading')}
+          subTitle={t(`loaders.subTitle.${controller.loadingReason}`)}
+        />
+      </Fragment>
     );
   }
 
@@ -357,6 +365,7 @@ export const IssuersScreen: React.FC<
             {controller.issuers.length > 0 && (
               <FlatList
                 data={filteredSearchData}
+                renderItem={({item}) => (
                 renderItem={({item}) => (
                   <Issuer
                     testID={removeWhiteSpace(item.issuer_id)}

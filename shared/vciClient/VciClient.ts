@@ -62,6 +62,7 @@ class VciClient {
       credentialIssuer: string,
       issuerDisplay: object[],
     ) => void,
+    handlePresentationRequest: (presentationRequest: object) => void,
   ): Promise<any> {
     const proofListener = emitter.addListener(
       'onRequestProof',
@@ -71,6 +72,21 @@ class VciClient {
           cNonce,
           JSON.parse(proofSigningAlgorithmsSupported),
         );
+      },
+    );
+
+    const presentationRequestListener = emitter.addListener(
+      'onPresentationRequest',
+      ({presentationRequest}) => {
+        //TODO: Handle presentation request
+        handlePresentationRequest(JSON.parse(presentationRequest));
+      },
+    );
+
+    const signVPListener = emitter.addListener(
+      'onRequestSignedVPToken',
+      ({vpTokenSigningRequest}) => {
+        //Handle signed VP token request
       },
     );
 
@@ -121,6 +137,8 @@ class VciClient {
       txCodeListener.remove();
       tokenResponseListener.remove();
       trustIssuerListener.remove();
+      presentationRequestListener.remove();
+      signVPListener.remove();
     }
 
     const parsedResponse = JSON.parse(response);
@@ -144,6 +162,7 @@ class VciClient {
     ) => void,
     navigateToAuthView: (authorizationEndpoint: string) => void,
     requestTokenResponse: (tokenRequest: object) => void,
+    handlePresentationRequest: (presentationRequest: object) => void,
   ): Promise<any> {
     const proofListener = emitter.addListener(
       'onRequestProof',
@@ -153,6 +172,21 @@ class VciClient {
           cNonce,
           JSON.parse(proofSigningAlgorithmsSupported),
         );
+      },
+    );
+
+    const presentationRequestListener = emitter.addListener(
+      'onPresentationRequest',
+      ({presentationRequest}) => {
+        //TODO: Handle presentation request
+        handlePresentationRequest(JSON.parse(presentationRequest));
+      },
+    );
+
+    const signVPListener = emitter.addListener(
+      'onRequestSignedVPToken',
+      ({vpTokenSigningRequest}) => {
+        //Handle signed VP token request
       },
     );
 
@@ -184,6 +218,8 @@ class VciClient {
       proofListener.remove();
       authListener.remove();
       tokenResponseListener.remove();
+      presentationRequestListener.remove();
+      signVPListener.remove();
     }
 
     const parsedResponse = JSON.parse(response);

@@ -108,3 +108,7 @@ export function selectIsQrScanning(state: State) {
 export function selectTrustedIssuerConsentStatus(state: State) {
   return state.context.trustedIssuerConsentStatus;
 }
+
+export function selectIsPresentationAuthorization(state: State) {
+  return state.matches('credentialDownloadFromOffer.presentationAuthorization');
+}

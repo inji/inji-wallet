@@ -42,6 +42,10 @@ export const openID4VPServices = () => {
     },
 
     isVerifierTrusted: (context: any) => async () => {
+      console.debug(
+        'Checking if verifier is trusted:',
+        context.authenticationResponse,
+      );
       const {RNSecureKeystoreModule} = NativeModules;
       const verifier = context.authenticationResponse?.client_id;
       try {
