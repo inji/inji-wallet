@@ -21,7 +21,8 @@ import {
   selectIssuerLogo,
   selectIssuerName,
   selectTxCodeDisplayDetails,
-  selectTrustedIssuerConsentStatus
+  selectIsPresentationAuthorization,
+  selectOVPMachine,
 } from '../../machines/Issuers/IssuersSelectors';
 import {ActorRefFrom} from 'xstate';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
@@ -43,6 +44,7 @@ export function useIssuerScreenController({route, navigation}) {
       selectIsPresentationAuthorization,
     ),
     issuers: useSelector(service, selectIssuers),
+    ovpMachine: useSelector(service, selectOVPMachine),
     issuerLogo: useSelector(service, selectIssuerLogo),
     issuerName: useSelector(service, selectIssuerName),
     isTxCodeRequested: useSelector(service, selectIsTxCodeRequested),

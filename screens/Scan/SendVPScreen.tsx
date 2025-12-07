@@ -37,7 +37,7 @@ import { TrustModalVerifier } from '../../components/TrustModalVerifier';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
-  const controller = useSendVPScreen();
+  const controller = useSendVPScreen(props);
   const scanScreenController = useScanScreen();
 
   const [errorModal, resetErrorModal] = useOvpErrorModal({

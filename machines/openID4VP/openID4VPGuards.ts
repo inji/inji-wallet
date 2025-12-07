@@ -13,7 +13,8 @@ export const openID4VPGuards = () => {
     isShareWithSelfie: context => context.isShareWithSelfie,
 
     isSimpleOpenID4VPShare: context =>
-      context.flowType === VCShareFlowType.OPENID4VP,
+      context.flowType === VCShareFlowType.OPENID4VP ||
+      context.flowType === VCShareFlowType.OPENID4VP_AUTHORIZATION,
 
     isSelectedVCMatchingRequest: context =>
       Object.values(context.selectedVCs).length === 1,

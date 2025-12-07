@@ -1,6 +1,7 @@
 import {ErrorMessage} from '../../shared/openId4VCI/Utils';
-import {StateFrom} from 'xstate';
+import {ActorRefFrom, StateFrom} from 'xstate';
 import {IssuersMachine} from './IssuersMachine';
+import {openID4VPMachine} from '../openID4VP/openID4VPMachine';
 
 type State = StateFrom<typeof IssuersMachine>;
 
@@ -109,6 +110,18 @@ export function selectTrustedIssuerConsentStatus(state: State) {
   return state.context.trustedIssuerConsentStatus;
 }
 
+export function selectOVPMachine(state: State) {
+  return state.context.OpenId4VPRef as ActorRefFrom<typeof openID4VPMachine>;
+}
+
 export function selectIsPresentationAuthorization(state: State) {
+  console.debug(
+    'selectIsPresentationAuthorization called, current state:',
+    state.value,
+  );
+  console.debug(
+    'Is in presentationAuthorization state:',
+    state.matches('credentialDownloadFromOffer.presentationAuthorization'),
+  );
   return state.matches('credentialDownloadFromOffer.presentationAuthorization');
 }

@@ -65,9 +65,8 @@ object VCIClientBridge {
             handlePresentationRequest = getHandlePresentationRequestCallback(),
             signVerifiablePresentation = getSignVerifiablePresentationCallback(),
             trustedVerifiers = listOf(),
-            //TODO: Set holderId and signatureSuite later
-//            holderId = "",
-//            signatureSuite = TODO(),
+            holderId = "did:jwk:e...Q==#0",
+            signatureSuite = "JsonWebSignature2020",
             shouldValidateClient = false,
 //            openId4vp = TODO(),
 //            handlePresentationTimeoutMs = TODO(),

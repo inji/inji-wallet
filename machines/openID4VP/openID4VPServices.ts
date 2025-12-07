@@ -15,12 +15,18 @@ import {
   OVP_ERROR_CODE,
   OVP_ERROR_MESSAGES,
 } from '../../shared/constants';
-import {canonicalize, getVerifierKey} from '../../shared/Utils';
+import {
+  canonicalize,
+  getVerifierKey,
+  VCShareFlowType,
+} from '../../shared/Utils';
 import {
   constructDetachedJWT,
   isClientValidationRequired,
 } from '../../shared/openID4VP/OpenID4VPHelper';
 import {NativeModules} from 'react-native';
+import VciClient from '../../shared/vciClient/VciClient';
+import {SelectedCredentialsForVPSharing} from '../VerifiableCredential/VCMetaMachine/vc';
 
 const signatureSuite = 'JsonWebSignature2020';
 
@@ -46,6 +52,8 @@ export const openID4VPServices = () => {
         'Checking if verifier is trusted:',
         context.authenticationResponse,
       );
+      if (context.flowType === VCShareFlowType.OPENID4VP_AUTHORIZATION)
+        return false;
       const {RNSecureKeystoreModule} = NativeModules;
       const verifier = context.authenticationResponse?.client_id;
       try {
@@ -94,6 +102,17 @@ export const openID4VPServices = () => {
       return await OpenID4VP.sendErrorToVerifier(
         OVP_ERROR_MESSAGES.DECLINED,
         OVP_ERROR_CODE.DECLINED,
+      );
+    },
+
+    sendSelectedCredentialsForVP: (context: any) => async () => {
+      const selectedCredentials: SelectedCredentialsForVPSharing =
+        await OpenID4VP.prepareCredentialsForVPSharing(
+          context.selectedVCs,
+          context.selectedDisclosuresByVc,
+        );
+      await VciClient.getInstance().sendSelectedCredentialsForVPSharing(
+        selectedCredentials,
       );
     },
 

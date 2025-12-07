@@ -9,10 +9,12 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.google.gson.Gson;
 
 import java.util.Map;
 
+import io.mosip.residentapp.Utils.OVPUtils;
 import io.mosip.vciclient.VCIClient;
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata;
 import io.mosip.vciclient.credential.response.CredentialResponse;
@@ -49,6 +51,12 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendAuthCodeFromJS(String authCode) {
         VCIClientCallbackBridge.completeAuthCode(authCode);
+    }
+
+    @ReactMethod
+    public void sendSelectedCredentialsForVPSharingFromJS(ReadableMap selectedVCs) {
+        System.out.println("InjiVciClientModule: sendSelectedCredentialsForVPSharingFromJS called with selectedVCs: " + selectedVCs);
+        VCIClientCallbackBridge.completePresentationRequest(OVPUtils.parseSelectedVCs(selectedVCs));
     }
 
     @ReactMethod
