@@ -1,92 +1,94 @@
 import React from 'react';
-import { Modal, View, Text, Image, ScrollView } from 'react-native';
-import { Button } from './ui';
-import { Theme } from './ui/styleUtils';
-import { useTranslation } from 'react-i18next';
+import {Modal, View, Text, Image, ScrollView} from 'react-native';
+import {Button} from './ui';
+import {Theme} from './ui/styleUtils';
+import {useTranslation} from 'react-i18next';
 
 export const TrustModal = ({
-    isVisible,
-    logo,
-    name,
-    onConfirm,
-    onCancel,
-    flowType = 'issuer',
+  isVisible,
+  logo,
+  name,
+  onConfirm,
+  onCancel,
+  flowType = 'issuer',
 }: {
-    isVisible: boolean;
-    logo: any;
-    name: string;
-    onConfirm: () => void;
-    onCancel: () => void;
-    flowType?: 'issuer' | 'verifier';
+  isVisible: boolean;
+  logo: any;
+  name: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+  flowType?: 'issuer' | 'verifier';
 }) => {
-    const { t } = useTranslation('trustScreen');
-    return (
-        <Modal transparent={true} visible={isVisible} animationType="fade">
-            <View style={Theme.TrustIssuerScreenStyle.modalOverlay}>
-                <View style={Theme.TrustIssuerScreenStyle.modalContainer}>
-                    {(logo || name) && (
-                        <View style={Theme.TrustIssuerScreenStyle.issuerHeader}>
-                            {logo && (
-                                <Image
-                                    source={{ uri: logo }}
-                                    style={Theme.TrustIssuerScreenStyle.issuerLogo}
-                                />
-                            )}
-                            {name && (
-                                <Text style={Theme.TrustIssuerScreenStyle.issuerName}>
-                                    {name}
-                                </Text>
-                            )}
-                        </View>
-                    )}
-                    <ScrollView
-                        style={{ flex: 1, width: '100%' }}
-                        contentContainerStyle={{ alignItems: 'center', paddingBottom: 10 }}
-                        showsVerticalScrollIndicator={true}>
-                        <Text style={Theme.TrustIssuerScreenStyle.description}>
-                            {t(flowType == 'issuer' ? 'description' : 'verifierDescription')}
-                        </Text>
-
-                        <View style={Theme.TrustIssuerScreenStyle.infoContainer}>
-                            {t(flowType == 'issuer' ? 'infoPoints' : 'verifierInfoPoints', { returnObjects: true }).map((point, index) => (
-                                <View key={index} style={Theme.TrustIssuerScreenStyle.infoItem}>
-                                    <Text style={Theme.TrustIssuerScreenStyle.info}>•</Text>
-                                    <Text style={Theme.TrustIssuerScreenStyle.infoText}>
-                                        {point}
-                                    </Text>
-                                </View>
-                            ))}
-                        </View>
-                    </ScrollView>
-
-                    <View style={{ width: '100%', paddingTop: 10, paddingBottom: 5 }}>
-                        <Button
-                            styles={{
-                                marginBottom: 3,
-                                minHeight: 50,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                            type="gradient"
-                            title={t(flowType == 'issuer' ? 'confirm' : 'verifierConfirm')}
-                            onPress={onConfirm}
-                        />
-                        <Button
-                            styles={{
-                                marginBottom: -10,
-                                paddingBottom: 20,
-                                minHeight: 60,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                maxWidth: '100%',
-                            }}
-                            type="clear"
-                            title={t('cancel')}
-                            onPress={onCancel}
-                        />
-                    </View>
-                </View>
+  const {t} = useTranslation('trustScreen');
+  return (
+    <Modal transparent={true} visible={isVisible} animationType="fade">
+      <View style={Theme.TrustIssuerScreenStyle.modalOverlay}>
+        <View style={Theme.TrustIssuerScreenStyle.modalContainer}>
+          {(logo || name) && (
+            <View style={Theme.TrustIssuerScreenStyle.issuerHeader}>
+              {logo && (
+                <Image
+                  source={{uri: logo}}
+                  style={Theme.TrustIssuerScreenStyle.issuerLogo}
+                />
+              )}
+              {name && (
+                <Text style={Theme.TrustIssuerScreenStyle.issuerName}>
+                  {name}
+                </Text>
+              )}
             </View>
-        </Modal>
-    );
+          )}
+          <ScrollView
+            style={{flex: 1, width: '100%'}}
+            contentContainerStyle={{alignItems: 'center', paddingBottom: 10}}
+            showsVerticalScrollIndicator={true}>
+            <Text style={Theme.TrustIssuerScreenStyle.description}>
+              {t(flowType == 'issuer' ? 'description' : 'verifierDescription')}
+            </Text>
+
+            <View style={Theme.TrustIssuerScreenStyle.infoContainer}>
+              {t(flowType == 'issuer' ? 'infoPoints' : 'verifierInfoPoints', {
+                returnObjects: true,
+              }).map((point, index) => (
+                <View key={index} style={Theme.TrustIssuerScreenStyle.infoItem}>
+                  <Text style={Theme.TrustIssuerScreenStyle.info}>•</Text>
+                  <Text style={Theme.TrustIssuerScreenStyle.infoText}>
+                    {point}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+
+          <View style={{width: '100%', paddingTop: 10, paddingBottom: 5}}>
+            <Button
+              styles={{
+                marginBottom: 3,
+                minHeight: 50,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              type="gradient"
+              title={t(flowType == 'issuer' ? 'confirm' : 'verifierConfirm')}
+              onPress={onConfirm}
+            />
+            <Button
+              styles={{
+                marginBottom: -10,
+                paddingBottom: 20,
+                minHeight: 60,
+                justifyContent: 'center',
+                alignItems: 'center',
+                maxWidth: '100%',
+              }}
+              type="clear"
+              title={t('cancel')}
+              onPress={onCancel}
+            />
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
 };
