@@ -115,13 +115,9 @@ export function selectOVPMachine(state: State) {
 }
 
 export function selectIsPresentationAuthorization(state: State) {
-  console.debug(
-    'selectIsPresentationAuthorization called, current state:',
-    state.value,
-  );
-  console.debug(
-    'Is in presentationAuthorization state:',
-    state.matches('credentialDownloadFromOffer.presentationAuthorization'),
-  );
   return state.matches('credentialDownloadFromOffer.presentationAuthorization');
+}
+
+export function selectIsPresentationAuthorizationInProgress(state: State) {
+  return state.matches('credentialDownloadFromOffer.inProgress');
 }

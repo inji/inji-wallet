@@ -60,7 +60,11 @@ export const IssuersScreen: React.FC<
     : t('errors.verificationFailed.ERR_GENERIC');
 
   useLayoutEffect(() => {
-    if (controller.loadingReason || showFullScreenError) {
+    if (
+      controller.loadingReason ||
+      showFullScreenError ||
+      controller.isPresentationAuthorizationInProgress
+    ) {
       props.navigation.setOptions({
         headerShown: false,
       });
@@ -269,7 +273,7 @@ export const IssuersScreen: React.FC<
   if (controller.loadingReason) {
     return (
       <Fragment>
-        {controller.isPresentationAuthorizationInProgress ? (
+        {controller.isPresentationAuthorization ? (
           <SendVPScreen
             navigation={props.navigation}
             route={{
@@ -287,6 +291,17 @@ export const IssuersScreen: React.FC<
           />
         )}
       </Fragment>
+    );
+  }
+
+  if (controller.isPresentationAuthorizationInProgress) {
+    return (
+      <Loader
+        title={'Presenting Credential'}
+        subTitle={t(
+          `Presenting your credential securely to download the credential...`,
+        )}
+      />
     );
   }
 

@@ -299,9 +299,8 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           }
           onConfirm={controller.VERIFIER_TRUST_CONSENT_GIVEN}
           onCancel={controller.CANCEL}
-          flowType="verifier">
-
-          </TrustModalVerifier>
+          flowType={controller.isAuthorizationFlow ? 'pdi' : 'verifier'}
+        />
       }
       {Object.keys(vcsMatchingAuthRequest).length > 0 && (
         <>

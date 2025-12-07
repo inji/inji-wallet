@@ -516,24 +516,22 @@ export const IssuersActions = (model: any) => {
       },
     }),
 
-    sendVPScanData: (
-      context: {
-        OpenId4VPRef: {
-          send: (arg0: {
-            type: string;
-            presentationRequest: any;
-            flowType: VCShareFlowType;
-          }) => any;
-        };
-        presentationRequest: any;
-      },
-      event,
-    ) =>
-      context.OpenId4VPRef.send({
+    sendVPScanData: (context, event) => {
+      const authorizer =
+        context?.issuerName ??
+        context?.selectedIssuer?.display?.[0]?.name ??
+        context?.selectedIssuerId;
+      console.debug(
+        'Issuance Flow - Sending VP Scan Data to OpenID4VP Service ',
+        authorizer,
+      );
+      return context.OpenId4VPRef.send({
         type: 'AUTHENTICATE_VIA_PRESENTATION',
+        authorizer: authorizer,
         presentationRequest: event.presentationRequest,
         flowType: VCShareFlowType.OPENID4VP_AUTHORIZATION,
-      }),
+      });
+    },
 
     sendSignedVP: (context, event) => {
       vciClient.getInstance().sendSignedVP(event.data);
