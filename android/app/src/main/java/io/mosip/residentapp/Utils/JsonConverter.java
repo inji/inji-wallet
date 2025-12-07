@@ -22,7 +22,7 @@ public final class JsonConverter {
     }
 
     public static String toJson(Object src) {
-        return INSTANCE.toJson(src);
+        return INSTANCE.gson.toJson(src);
     }
 
     public <T> T fromJson(String json, Class<T> clazz) {
