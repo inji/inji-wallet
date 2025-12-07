@@ -25,6 +25,10 @@ import {
 export const openID4VPActions = (model: any) => {
   let result;
   return {
+    setPresentationRequest: model.assign({
+      presentationRequest: (_, event) => event.presentationRequest,
+    }),
+
     setAuthenticationResponse: model.assign({
       authenticationResponse: (_, event) => event.data,
     }),

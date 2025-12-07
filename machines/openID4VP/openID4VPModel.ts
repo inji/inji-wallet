@@ -16,14 +16,20 @@ const openID4VPEvents = {
     vcKey,
     inputDescriptorId,
   }),
-  ACCEPT_REQUEST: (selectedVCs: Record<string, VC[]>,selectedDisclosuresByVc: any) => ({
+  ACCEPT_REQUEST: (
+    selectedVCs: Record<string, VC[]>,
+    selectedDisclosuresByVc: any,
+  ) => ({
     selectedVCs,
-    selectedDisclosuresByVc
+    selectedDisclosuresByVc,
   }),
   VERIFIER_TRUST_CONSENT_GIVEN: () => ({}),
-  VERIFY_AND_ACCEPT_REQUEST: (selectedVCs: Record<string, VC[]>,selectedDisclosuresByVc) => ({
+  VERIFY_AND_ACCEPT_REQUEST: (
+    selectedVCs: Record<string, VC[]>,
+    selectedDisclosuresByVc,
+  ) => ({
     selectedVCs,
-    selectedDisclosuresByVc
+    selectedDisclosuresByVc,
   }),
   CONFIRM: () => ({}),
   CANCEL: () => ({}),
@@ -45,12 +51,20 @@ const openID4VPEvents = {
   RESET_ERROR: () => ({}),
   CLOSE_BANNER: () => ({}),
   LOG_ACTIVITY: (logType: VPActivityLogType) => ({logType}),
+  AUTHENTICATE_VIA_PRESENTATION: (
+    presentationRequest: string,
+    flowType: string,
+    selectedVC: any,
+    isOVPViaDeepLink: boolean,
+  ) => ({presentationRequest, flowType, selectedVC, isOVPViaDeepLink}),
+  SIGN_VP: (data: any) => ({data}),
 };
 
 export const openID4VPModel = createModel(
   {
     serviceRefs: {} as AppServices,
     urlEncodedAuthorizationRequest: '' as string,
+    presentationRequest: {} as object,
     authenticationResponse: {},
     vcsMatchingAuthRequest: {} as Record<string, VC[]>,
     checkedAll: false as boolean,

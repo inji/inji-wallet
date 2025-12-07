@@ -22,6 +22,14 @@ export const openID4VPMachine = model.createMachine(
     id: 'OpenID4VP',
     initial: 'waitingForData',
     on: {
+      AUTHENTICATE_VIA_PRESENTATION: {
+        actions: [
+          (_, event) => console.debug('AUTHENTICATE_VIA_PRESENTATION ', event),
+          'setPresentationRequest',
+          'setFlowType',
+        ],
+        target: 'checkFaceAuthConsent',
+      },
       DISMISS_POPUP: [
         {
           cond: 'isSimpleOpenID4VPShare',
@@ -107,10 +115,22 @@ export const openID4VPMachine = model.createMachine(
         description: 'checks whether key pair is generated',
         invoke: {
           src: 'getSelectedKey',
-          onDone: {
-            cond: 'hasKeyPair',
-            target: 'authenticateVerifier',
-          },
+          onDone: [
+            {
+              cond: 'isAuthorizationFlow',
+              actions: [
+                model.assign({
+                  authenticationResponse: (context, _) =>
+                    context.presentationRequest,
+                }),
+              ],
+              target: 'checkVerifierTrust',
+            },
+            {
+              cond: 'hasKeyPair',
+              target: 'authenticateVerifier',
+            },
+          ],
           onError: [
             {
               actions: 'setError',

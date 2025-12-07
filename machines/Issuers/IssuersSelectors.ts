@@ -104,3 +104,7 @@ export function selectSupportedCredentialTypes(state: State) {
 export function selectIsQrScanning(state: State) {
   return state.matches('waitingForQrScan');
 }
+
+export function selectIsPresentationAuthorization(state: State) {
+  return state.matches('credentialDownloadFromOffer.presentationAuthorization');
+}

@@ -4,6 +4,7 @@ import {IssuersActions} from './IssuersActions';
 import {IssuersService} from './IssuersService';
 import {IssuersGuards} from './IssuersGuards';
 import {CredentialTypes} from '../VerifiableCredential/VCMetaMachine/vc';
+import {openID4VPMachine} from '../openID4VP/openID4VPMachine';
 
 const model = IssuersModel;
 
@@ -132,6 +133,16 @@ export const IssuersMachine = model.createMachine(
           ],
         },
         on: {
+          PRESENTATION_REQUEST: {
+            actions: [
+              //{"presentationRequest": {"client_id": "redirect_uri:https://example.com/iar/callback", "nonce": "e6562d6dfc8f6fc2", "presentation_definition": {"format": [Object], "id": "vp token example", "input_descriptors": [Array], "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication"}, "response_mode": "iar_post", "response_type": "vp_token", "response_uri": "https://example.com/iar/callback"}, "type": "PRESENTATION_REQUEST"}
+              (_, event) =>
+                console.debug('RECEIVED PRESENTATION_REQUEST EVENT:', event),
+              'setOpenId4VPRef',
+              'sendVPScanData',
+            ],
+            target: '.presentationAuthorization',
+          },
           TOKEN_REQUEST: {
             actions: ['setTokenRequestObject'],
             target: '.tokenRequest',
@@ -167,6 +178,90 @@ export const IssuersMachine = model.createMachine(
         },
         states: {
           idle: {},
+          presentationAuthorization: {
+            entry: [
+              //TODO: telemetry for vp sharing
+              // () =>
+              //   sendStartEvent(
+              //     getStartEventData(TelemetryConstants.FlowType.vpSharing),
+              //   ),
+            ],
+            invoke: {
+              id: 'OpenId4VP',
+              src: openID4VPMachine,
+              onDone: {},
+            },
+            on: {
+              IN_PROGRESS: {
+                target: '.inProgress',
+              },
+              // TIMEOUT: {
+              //   target: '.timeout',
+              // },
+              //TODO: is it required to have separate events for consent reject and dismiss?
+              VP_CONSENT_REJECT: [
+                {
+                  actions: 'setConsentRejectedInOpenID4VP',
+                },
+              ],
+              DISMISS: [
+                {
+                  actions: 'setConsentRejectedInOpenID4VP',
+                },
+              ],
+              // SHOW_ERROR: {
+              //   target: '.showError',
+              // },
+              // SUCCESS: {
+              //   target: '.success',
+              // },
+            },
+            states: {
+              success: {},
+              showError: {},
+              inProgress: {
+                on: {
+                  // CANCEL: [
+                  //   {
+                  //     cond: 'isFlowTypeSimpleShare',
+                  //     actions: 'resetOpenID4VPFlowType',
+                  //     target: '#scan.checkStorage',
+                  //   },
+                  //   {
+                  //     target: '#scan.checkStorage',
+                  //   },
+                  // ],
+                },
+              },
+              timeout: {
+                on: {
+                  STAY_IN_PROGRESS: {
+                    target: 'inProgress',
+                  },
+                  CANCEL: [
+                    {
+                      cond: 'isFlowTypeSimpleShare',
+                      actions: 'resetOpenID4VPFlowType',
+                      // target: '#scan.checkStorage',
+                    },
+                    {
+                      // target: '#scan.checkStorage',
+                    },
+                  ],
+                  RETRY: [
+                    {
+                      cond: 'isFlowTypeSimpleShare',
+                      actions: 'resetOpenID4VPFlowType',
+                      // target: '#scan.checkStorage',
+                    },
+                    {
+                      // target: '#scan.checkStorage',
+                    },
+                  ],
+                },
+              },
+            },
+          },
           tokenRequest: {
             invoke: {
               src: 'sendTokenRequest',
@@ -437,10 +532,7 @@ export const IssuersMachine = model.createMachine(
         invoke: {
           src: 'updateCredential',
           onDone: {
-            actions: [
-              'setVerifiableCredential',
-              'setCredentialWrapper',
-            ],
+            actions: ['setVerifiableCredential', 'setCredentialWrapper'],
             target: 'verifyingCredential',
           },
         },
@@ -708,7 +800,11 @@ export const IssuersMachine = model.createMachine(
         invoke: {
           src: 'verifyCredential',
           onDone: {
-            actions: ['sendSuccessEndEvent', 'setVerificationResult','resetCredentialOfferFlowType',],
+            actions: [
+              'sendSuccessEndEvent',
+              'setVerificationResult',
+              'resetCredentialOfferFlowType',
+            ],
             target: 'storing',
           },
           onError: [
