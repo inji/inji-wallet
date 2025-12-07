@@ -1,10 +1,12 @@
-import {EventFrom, sendParent} from 'xstate';
+import {actions, EventFrom, send, sendParent, sendTo} from 'xstate';
 import {IssuersModel} from './IssuersModel';
 import {IssuersActions} from './IssuersActions';
 import {IssuersService} from './IssuersService';
 import {IssuersGuards} from './IssuersGuards';
 import {CredentialTypes} from '../VerifiableCredential/VCMetaMachine/vc';
-import {openID4VPMachine} from '../openID4VP/openID4VPMachine';
+import {OpenID4VPEvents, openID4VPMachine} from '../openID4VP/openID4VPMachine';
+import {StoreEvents} from '../store';
+import {MY_VCS_STORE_KEY} from '../../shared/constants';
 
 const model = IssuersModel;
 
@@ -207,6 +209,41 @@ export const IssuersMachine = model.createMachine(
               DISMISS: [
                 {
                   actions: 'setConsentRejectedInOpenID4VP',
+                },
+              ],
+              SIGN_PRESENTATION: [
+                {
+                  actions: [
+                    (_, event) =>
+                      //{"presentationRequest": "{\"LDP_VC\":{\"dataToSign\":\"GJaCHvGSZev7bW1Q5g8Nl3IIB9gimTSf0unZGtoOtOaANAU-OJPOePA4Owp8MXlb0NQLmXy_k3iVRKLtlQl1xQ\"}}", "type": "SIGN_PRESENTATION"}
+                      console.debug(
+                        'SIGN_PRESENTATION EVENT RECEIVED IN ISSUERS MACHINE:',
+                        event,
+                      ),
+                    send(
+                      (_, event) =>
+                        OpenID4VPEvents.SIGN_VP(event.presentationRequest),
+                      {
+                        to: (context: any) => context.OpenId4VPRef,
+                      },
+                    ),
+                    // (context, event) => send( { type: 'SIGN_VP', value: event.presentationRequest }, {to: context.OpenId4VPRef,}),
+                    // 'setSignedPresentation',
+                  ],
+                },
+              ],
+              SIGNED_DATA_FOR_VP: [
+                {
+                  actions: [
+                    // {"signedVPToken": {"data": {"ldp_vc": [Object]}, "toString": [Function anonymous], "type": "done.invoke.signVP:invocation[0]"}, "type": "SIGNED_DATA_FOR_VP"}
+                    (_, event) =>
+                      console.debug(
+                        'SIGNED_DATA_FOR_VP EVENT RECEIVED IN ISSUERS MACHINE:',
+                        event,
+                      ),
+                    'sendSignedVP',
+                  ],
+                  target: '.success',
                 },
               ],
               // SHOW_ERROR: {

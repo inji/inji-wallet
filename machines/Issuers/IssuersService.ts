@@ -214,6 +214,13 @@ export const IssuersService = () => {
         });
       };
 
+      const signPresentation = (presentationRequest: object) => {
+        sendBack({
+          type: 'SIGN_PRESENTATION',
+          presentationRequest: presentationRequest,
+        });
+      };
+
       const credentialResponse =
         await VciClient.getInstance().requestCredentialByOffer(
           context.qrData,
@@ -223,6 +230,7 @@ export const IssuersService = () => {
           getTokenResponse,
           requesTrustIssuerConsent,
           handlePresentationRequest,
+          signPresentation,
         );
       return credentialResponse;
     },

@@ -1166,11 +1166,17 @@
   },
   "trustScreen": {
     "description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",
+    "pdiDescription": "Make sure you recognize or trust this issuer. Once you trust this issuer:",
     "verifierDescription": "Make sure you recognize or trust this verifier. Once you do:",
     "infoPoints": [
       "The card will be securely saved in your wallet.",
       "This issuer will be added to your trusted list.",
       "You won't need to review trust again when downloading from them next time."
+    ],
+    "pdiInfoPoints": [
+      "The issuer wants you to prove your identity to receive the card.",
+      "Proving your identity will securely save the card in your wallet.",
+      "Provide your consent to proceed."
     ],
     "verifierInfoPoints": [
       "The card will be securely shared with the verifier.",

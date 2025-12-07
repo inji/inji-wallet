@@ -31,6 +31,7 @@ import {isNetworkError, parseJSON, VCShareFlowType} from '../../shared/Utils';
 import {issuerType} from './IssuersMachine';
 import {logState} from '../../shared/commonUtil';
 import {createOpenID4VPMachine} from '../openID4VP/openID4VPMachine';
+import vciClient from '../../shared/vciClient/VciClient';
 
 const {RNSecureKeystoreModule} = NativeModules;
 
@@ -517,5 +518,9 @@ export const IssuersActions = (model: any) => {
         presentationRequest: event.presentationRequest,
         flowType: VCShareFlowType.OPENID4VP_AUTHORIZATION,
       }),
+
+    sendSignedVP: (context, event) => {
+      vciClient.getInstance().sendSignedVP(event.data);
+    },
   };
 };
