@@ -14,8 +14,8 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
+	
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyLandSdJwtVc() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -55,7 +55,6 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyLandSdJwtVcUsingInvalidCredential() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -83,7 +82,6 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyLandSdJwtVcUsingInvalidOtp() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -112,7 +110,6 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyLandSdJwtVcAndPinAndUnpin() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -146,7 +143,6 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyLandSdJwtVcMultipleTime() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();

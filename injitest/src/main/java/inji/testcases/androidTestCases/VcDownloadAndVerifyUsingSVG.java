@@ -14,8 +14,8 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
+	
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyFarmerSVGVcWithFace() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -46,7 +46,6 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyFarmerSVGVcWithoutFace() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -77,7 +76,6 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyFarmerSVGVcWithFaceUsingInvalidCredential() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -106,7 +104,6 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyFarmerSVGVcWithOutFaceUsingInvalidCredential() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -135,7 +132,6 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyFarmerSVGVcWithFaceUsingInvalidOtp() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -163,7 +159,6 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyFarmerSVGVcWithOutFaceUsingInvalidOtp() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -191,7 +186,6 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyFarmerSVGVcWithFaceAndPinAndUnpin() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -225,7 +219,6 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyFarmerSVGVcWithOutFaceAndPinAndUnpin() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -259,7 +252,6 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyFarmerSVGVcWithFaceMultipleTime() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -299,7 +291,6 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsUIN
 	public void downloadAndVerifyFarmerSVGVcWithOutFaceMultipleTime() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
