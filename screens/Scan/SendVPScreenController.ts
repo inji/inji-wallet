@@ -65,7 +65,7 @@ export function useSendVPScreen(props) {
   const activityLogService = appService.children.get('activityLog')!!;
   const navigation = useNavigation<MyVcsTabNavigation>();
   const openID4VPService =
-    props.route.name === 'IssuersScreen'
+    props?.route?.name === 'IssuersScreen'
       ? props.route.params.ovpService
       : scanService.getSnapshot().context.OpenId4VPRef;
   // input descriptor id to VCs mapping
