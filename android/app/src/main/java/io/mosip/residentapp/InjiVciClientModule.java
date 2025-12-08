@@ -60,7 +60,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sendVPTokenSigningResult(ReadableMap vpTokenSigningResult) {
+    public void sendVPTokenSigningResultFromJS(ReadableMap vpTokenSigningResult) {
         System.out.println("InjiVciClientModule: sendVPTokenSigningResult called with vpTokenSigningResult: " + vpTokenSigningResult);
         VCIClientCallbackBridge.completeSignDataForVP(OVPUtils.parseVPTokenSigningResult(vpTokenSigningResult));
     }

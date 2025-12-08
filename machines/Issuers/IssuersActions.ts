@@ -534,7 +534,7 @@ export const IssuersActions = (model: any) => {
     },
 
     sendSignedVP: (context, event) => {
-      vciClient.getInstance().sendSignedVP(event.data);
+      vciClient.getInstance().sendSignedVP(event.signedVPToken.data);
     },
   };
 };

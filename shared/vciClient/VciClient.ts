@@ -33,7 +33,7 @@ class VciClient {
   }
 
   sendSignedVP(vpTokenSigningResult: object) {
-    this.InjiVciClient.sendVPTokenSigningResult(vpTokenSigningResult);
+    this.InjiVciClient.sendVPTokenSigningResultFromJS(vpTokenSigningResult);
   }
 
   async sendAuthCode(authCode: string) {
@@ -92,7 +92,6 @@ class VciClient {
     const presentationRequestListener = emitter.addListener(
       'onPresentationRequest',
       ({presentationRequest}) => {
-        //TODO: Handle presentation request
         handlePresentationRequest(JSON.parse(presentationRequest));
       },
     );
