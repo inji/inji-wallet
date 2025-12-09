@@ -1,0 +1,78 @@
+CreatePolicySunBirdR:
+   InjiWallet_SunBirdR_CreatePolicy_NOAUTH_Valid_Smoke_POLICY1_Sid:
+      endPoint: $SUNBIRDBASEURL$/api/v1/Insurance
+      description: Creating new sunbird policy with valid parameters
+      uniqueIdentifier: TC_InjiWallet_CreatePolicySunBirdR_01
+      role: resident
+      restMethod: post
+      checkErrorsOnlyInResponse: true
+      validityCheckRequired: true
+      inputTemplate: injiWallet/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdR
+      outputTemplate: injiWallet/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdRResult
+      input: '{
+        "policyNumber": "$POLICYNUMBERFORSUNBIRDRC$",
+      	"policyName": "Start Insurance Gold Premium",
+      	"policyExpiresOn": "2033-04-20T20:48:17.684Z",
+      	"policyIssuedOn": "$TIMESTAMP$",
+      	"fullName" : "$FULLNAMEFORSUNBIRDRC$",
+      	"dob" : "$DOBFORSUNBIRDRC$",
+      	"benefits": [{"benefits": "Critical Surgery"}, {"benefits": "Full body checkup"}],
+      	"gender": "Male",
+      	"mobile": "0123456789",
+      	"email": "automation@gmail.com"
+    }'
+      output: '{
+	"status": "SUCCESSFUL"
+}'
+
+   InjiWallet_SunBirdR_CreatePolicy_NOAUTH_Valid_Smoke_POLICY2_Sid:
+      endPoint: $SUNBIRDBASEURL$/api/v1/Insurance
+      description: Creating new sunbird policy with valid parameters
+      uniqueIdentifier: TC_InjiWallet_CreatePolicySunBirdR_02
+      role: resident
+      restMethod: post
+      checkErrorsOnlyInResponse: true
+      validityCheckRequired: true
+      inputTemplate: injiWallet/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdR
+      outputTemplate: injiWallet/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdRResult
+      input: '{
+        "policyNumber": "$POLICYNUMBERFORSUNBIRDRC$",
+      	"policyName": "Start Insurance Gold Premium",
+      	"policyExpiresOn": "2033-04-20T20:48:17.684Z",
+      	"policyIssuedOn": "$TIMESTAMP$",
+      	"fullName" : "$FULLNAMEFORSUNBIRDRC$",
+      	"dob" : "$DOBFORSUNBIRDRC$",
+      	"benefits": [{"benefits": "Critical Surgery"}, {"benefits": "Full body checkup"}],
+      	"gender": "Male",
+      	"mobile": "0123456789",
+      	"email": "automation@gmail.com"
+    }'
+      output: '{
+	"status": "SUCCESSFUL"
+}'
+
+   InjiWallet_SunBirdR_CreatePolicy_NOAUTH_Valid_Smoke_POLICY3_Sid:
+      endPoint: $SUNBIRDBASEURL$/api/v1/Insurance
+      description: Creating new sunbird policy with valid parameters
+      uniqueIdentifier: TC_InjiWallet_CreatePolicySunBirdR_03
+      role: resident
+      restMethod: post
+      checkErrorsOnlyInResponse: true
+      validityCheckRequired: true
+      inputTemplate: injiWallet/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdR
+      outputTemplate: injiWallet/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdRResult
+      input: '{
+        "policyNumber": "$POLICYNUMBERFORSUNBIRDRC$",
+      	"policyName": "Start Insurance Gold Premium",
+      	"policyExpiresOn": "2033-04-20T20:48:17.684Z",
+      	"policyIssuedOn": "$TIMESTAMP$",
+      	"fullName" : "$FULLNAMEFORSUNBIRDRC$",
+      	"dob" : "$DOBFORSUNBIRDRC$",
+      	"benefits": [{"benefits": "Critical Surgery"}, {"benefits": "Full body checkup"}],
+      	"gender": "Male",
+      	"mobile": "0123456789",
+      	"email": "automation@gmail.com"
+    }'
+      output: '{
+	"status": "SUCCESSFUL"
+}'

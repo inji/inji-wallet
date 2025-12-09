@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+	<suite name="Inji Wallet Pre-Requisite API Test">
+	<test name="Adding Identity">
+		<parameter name="ymlFile" value="injiWallet/AddIdentity/AddIdentity.yml" />
+		<classes>
+			<class name="inji.api.testscripts.AddIdentity" />
+		</classes>
+	</test>
+	<test name="AddIdentityMock">
+		<parameter name="ymlFile"
+				   value="injiWallet/AddIdentityMock/AddIdentity.yml" />
+		<parameter name="prerequisite" value="Yes" />
+		<classes>
+			<class name="inji.api.testscripts.AddIdentity" />
+		</classes>
+	</test>
+	<test name="CreatePolicySunBirdR">
+		<parameter name="ymlFile"
+			value="injiWallet/SunBirdR/CreatePolicySunBirdR/CreatePolicySunBirdR.yml" />
+		<parameter name="idKeyName" value="osid" />
+		<classes>
+			<class name="inji.api.testscripts.SimplePostForAutoGenId" />
+		</classes>
+	</test>
+	<test name="CreateVID">
+		<parameter name="ymlFile" value="injiWallet/CreateVID/CreateVid.yml" />
+		<parameter name="idKeyName" value="VID" />
+		<parameter name="prerequisite" value="Yes" />
+		<classes>
+			<class
+					name="inji.api.testscripts.SimplePostForAutoGenId" />
+		</classes>
+	</test>
+	
+</suite>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="esignet">
+    <suite-files>
+        <suite-file path="iosSanity.xml"/>
+    </suite-files>
+	<test verbose="2" preserve-order="true" name="ios">
+        <classes>
+            <class name="inji.testcases.iosTestCases.ChangeLanguageTest">
+                <methods>
+                    <include name="changeLanguageToHindiAndVerifyEsignetPage"/>
+                    <include name="changeLanguageToTamilAndVerifyEsignetPage"/>
+                    <include name="changeLanguageToKannadaAndVerifyEsignetPage"/>
+                    <include name="changeLanguageToArabicAndVerifyEsignetPage"/>
+                    <include name="changeLanguageToFillpinoAndVerifyEsignetPage"/>
+                    <include name="changeLanguageToKannadaToEnglishAndVerifyEsignetPage"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
