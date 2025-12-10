@@ -28,6 +28,7 @@ public class AddNewCardPage extends BasePage {
     private static final String mockIssuerCredentialType  = InjiWalletConfigManager.getproperty("mock_issuer_credentialType");    
     private static final String mdlIssuer = InjiWalletConfigManager.getproperty("mdl_issuer");
     private static final String mdlIssuerCredentialType  = InjiWalletConfigManager.getproperty("mdl_issuer_credentialType");
+    private static final String landRegistryIssuerRuralCredentialType  = InjiWalletConfigManager.getproperty("landregistry.issuer.ruralcredentialType");
 
     @AndroidFindBy(accessibility = "title")
     @iOSXCUITFindBy(accessibility = "title")
@@ -312,11 +313,18 @@ public class AddNewCardPage extends BasePage {
         return new ESignetLoginPage(driver);
     }
     
+    public ESignetLoginPage clickOnDownloadViaRuralLandRegistry() {
+        scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Land'");
+        scrollAndClickByAccessibilityId(landRegistryIssuerRuralCredentialType, "Click on 'land Verifiable Credential' option");
+        return new ESignetLoginPage(driver);
+    }
+    
     public ESignetLoginPage clickOnDownloadViaLandSdJwt() {
         scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Land sd jwt'");
         scrollAndClickByAccessibilityId(landRegistryIssuerSdJwtCredentialType, "Click on 'Land Sd Jwt' option");
         return new ESignetLoginPage(driver);
     }
+    
     public ESignetLoginPage clickOnDownloadViaLandSVGWithFace() {
         scrollAndClickByAccessibilityId(FarmerIssuer, "Click on 'Download via Farmer SVG'");
         scrollAndClickByAccessibilityIdForStale(FarmerIssuerSdJwtCredentialTypeWithFace,
@@ -328,5 +336,13 @@ public class AddNewCardPage extends BasePage {
         scrollAndClickByAccessibilityIdForStale(FarmerIssuerSdJwtCredentialTypeWithoutFace,
                 "Click on 'Farmer Id without Face' option");
         return new ESignetLoginPage(driver);
+    }
+    
+    public String getTextMosipCredentialText() {
+    return scrollToElementByAccessibilityIdGetText(mosipIssuerCredentialType, "Gettext from the mosip crdential type");
+    }
+    
+    public String getTextSundirdCredentialText() {
+    return scrollToElementByAccessibilityIdGetText(stayProtectedIssuerCredentialType, "Gettext from the sunbird crdential type");
     }
 }
