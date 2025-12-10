@@ -433,4 +433,29 @@ public class BasePage {
 
         driver.perform(Collections.singletonList(swipe));
     }
+    public void scrollAndClickByAccessibilityIdForStale(String accessibilityId, String stepDesc) {
+        for (int attempts = 0; attempts < maxPageScrolls; attempts++) {
+            try {
+                int waitTime = (attempts == 0) ? 10 : 2;
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
+                WebElement element = wait
+                        .until(ExpectedConditions.elementToBeClickable(AppiumBy.accessibilityId(accessibilityId)));
+                element.click();
+                logStep(stepDesc + " - Clicked", element);
+                return;
+            } catch (StaleElementReferenceException e) {
+                continue;
+            } catch (TimeoutException | NoSuchElementException e) {
+                scrollDown();
+            } catch (Exception e) {
+                ExtentReportManager.getTest().log(Status.FAIL, "Failed to click on element: " + accessibilityId);
+                throw e;
+            }
+        }
+        String errorMsg = "Element with accessibilityId '" + accessibilityId + "' was not found after " + maxPageScrolls
+                + " scroll attempts.";
+        ExtentReportManager.getTest().log(Status.FAIL, errorMsg);
+        throw new AssertionError(errorMsg);
+    }
+
 }
