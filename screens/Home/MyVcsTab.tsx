@@ -284,7 +284,7 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
                 </Row>
                 <Row pY={11} pX={8}>
                   {numberOfCardsAvailable > 0 && (
-                    <Text style={{fontFamily: 'Inter_500Medium'}}>
+                    <Text style={{fontFamily: 'Montserrat_500Medium'}}>
                       {cardsAvailableText}
                     </Text>
                   )}
@@ -360,7 +360,7 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
                             fontWeight: 'bold',
                             textAlign: 'center',
                             fontSize: 18,
-                            fontFamily: 'Inter_600SemiBold',
+                            fontFamily: 'Montserrat_600SemiBold',
                           }}>
                           {t('noCardsTitle')}
                         </Text>
@@ -370,7 +370,7 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
                             lineHeight: 17,
                             paddingTop: 10,
                             fontSize: 14,
-                            fontFamily: 'Inter_400Regular',
+                            fontFamily: 'Montserrat_400Regular',
                           }}>
                           {t('noCardsDescription')}
                         </Text>

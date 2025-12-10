@@ -125,10 +125,11 @@ public class KeyManagmentTest extends IosBaseTest {
 
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
-
+        
+        addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
-//        assertTrue(keyManagementPage.compareListOfKeys());
+        assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed Vc view page is displayed");
 
     }
 

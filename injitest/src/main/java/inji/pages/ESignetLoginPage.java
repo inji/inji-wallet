@@ -13,6 +13,7 @@ import java.util.Map;
 public class ESignetLoginPage extends BasePage {
 
     private static final String mosipIssuerCredentialType = InjiWalletConfigManager.getproperty("mosip_issuer_credentialType");
+    private static final int maxPageScrolls = Integer.parseInt(InjiWalletConfigManager.getproperty("max_pageScroll"));
 
 
     @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeStaticText[`label == \"“Inji” Wants to Use “mosip.net” to Sign In\"`]")
@@ -94,6 +95,27 @@ public class ESignetLoginPage extends BasePage {
     @AndroidFindBy(id = "android:id/button1")
     @iOSXCUITFindBy(xpath = "//*[contains(@text,'CONTINUE')]")
     private WebElement continuePopupButton;
+
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"View Shareable Information\"]")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"viewShareableInfoLink\"]")
+    private WebElement viewSharableInformationOnSdJwtVc;
+
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"Information you choose to share\"]")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"Information you choose to share\"]")
+    private WebElement viewHeadingOnInformationOnSdJwtVc;
+
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"Fields next to this icon indicate that the information can be shared selectively.\"]")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"Fields next to this icon indicate that the information can be shared selectively.\"]")
+    private WebElement InformationForSharedOptionsOnSdJwt;
+
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"Please note\"]")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"Please note\"]")
+    private WebElement viewConsentOnInformationOnSdJwtVc;
+
+    @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id=\"iconIcon\"]")
+    @iOSXCUITFindBy(xpath = "(//XCUIElementTypeOther[contains(@name, 'Information you choose to share')]/following-sibling::XCUIElementTypeOther)[1]")
+    private WebElement closeInformationViewPage;
+
 
     public ESignetLoginPage(AppiumDriver driver) {
         super(driver);
@@ -213,5 +235,38 @@ public class ESignetLoginPage extends BasePage {
 
     public void clickOnCredentialTypeHeadingMOSIPVerifiableCredential() {
         scrollAndClickByAccessibilityId(mosipIssuerCredentialType, "Click on 'MOSIP Verifiable Credential' option");
+    }
+    public void clickOnHideKeyboardAndGetOtpButton() {
+        ((HidesKeyboard) driver).hideKeyboard();
+        click(getOtpButton, "Click on 'Hide Keyboard and Get OTP' button");
+    }
+    public boolean isviewSharableInformationSdJwtVcDisplayed() {
+        return isElementVisible(viewSharableInformationOnSdJwtVc,
+                "Check if 'view Sharable Information Icon' is displayed");
+    }
+    public boolean isInformationForSharedOptionsOnSdJwtDisplayed() {
+        for (int i = 0; i < maxPageScrolls; i++) {
+            if (isElementVisible(InformationForSharedOptionsOnSdJwt,
+                    "Information for shared options on Sd Jwt Displayed")) {
+                return true;
+            }
+            scrollDown();
+        }
+        return false;
+    }
+    public void clickOnviewSharableInformationOnSdJwt() {
+        click(viewSharableInformationOnSdJwtVc, "Click on view Sharable Information Icon");
+    }
+    public boolean isInformationMessageHadingSdJwtVcDisplayed() {
+        return isElementVisible(viewHeadingOnInformationOnSdJwtVc,
+                "Check if 'view Sharable Information Heading' is displayed");
+    }
+    public boolean isConsentOnInformationMessageSdJwtVcDisplayed() {
+        return isElementVisible(viewConsentOnInformationOnSdJwtVc,
+                "Check if 'view Sharable Information Consent' is displayed");
+    }
+    public void clickOnCloseviewSharableInformationOnSdJwt() {
+        click(closeInformationViewPage, "Click on close view Sharable Information Icon");
+
     }
 }

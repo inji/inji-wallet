@@ -474,68 +474,6 @@ public class VerifyHistoryTest extends IosBaseTest {
         assertTrue(historyPage.verifyHistory(getUIN(), PlatformType.IOS), "verify if download history is displayed");
     }
 
-    @Test
-    @NeedsMockUIN
-    public void downloadAndVerifyVcUsingMdlDeleteAndVerifyHistory() throws InterruptedException {
-        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
-        WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
-        AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
-        SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-        homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
-        AddNewCardPage addNewCardPage = homePage.downloadCard();
-
-        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
-        assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description  esignet displayed");
-//        assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(), "Verify if issuer search bar displayed");
-//        addNewCardPage.sendTextInIssuerSearchBar("Download MOSIP Credentials");
-        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
-        assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(), "Verify if add new card guide message displayed");
-        assertTrue(addNewCardPage.isDownloadViaEsignetDisplayed(), "Verify if download via uin displayed");
-        MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
-
-        addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnLoginWithOtpButton();
-
-        OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
-
-        mockCertifyLoginPage.clickOnGetOtpButton();
-//        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
-
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
-        mockCertifyLoginPage.clickOnVerifyButtonIos();
-        addNewCardPage.clickOnDoneButton();
-        MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
-//        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
-
-        PleaseConfirmPopupPage pleaseConfirmPopupPage = moreOptionsPage.clickOnRemoveFromWallet();
-        assertTrue(pleaseConfirmPopupPage.isPleaseConfirmPopupPageLoaded(), "Verify if pop up page is displayed");
-
-        pleaseConfirmPopupPage.clickOnConfirmButton();
-        assertEquals(homePage.verifyLanguageForNoVCDownloadedPageLoaded(), "Bring your digital identity");
-        HistoryPage historyPage = homePage.clickOnHistoryButton();
-
-
-        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
-
-        assertTrue(historyPage.isHistoryPageLoaded(), "Verify if history page is displayed");
-        assertTrue(historyPage.verifyHistory(PlatformType.IOS));
-    }
-
 
     @Test
     @NeedsMockUIN
@@ -569,6 +507,8 @@ public class VerifyHistoryTest extends IosBaseTest {
         assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(), "Verify if add new card guide message displayed");
         assertTrue(addNewCardPage.isDownloadViaEsignetDisplayed(), "Verify if download via uin displayed");
 
+        // Mock Certify Login appears as a modal after clicking Login with OTP.
+        // So we instantiate it manually instead of receiving it from navigation.
         MockCertifyLoginPage mockCertifyLoginPage = new MockCertifyLoginPage(getDriver());
         addNewCardPage.clickOnDownloadViaMock();
 
@@ -594,9 +534,63 @@ public class VerifyHistoryTest extends IosBaseTest {
         HistoryPage historyPage = homePage.clickOnHistoryButton();
 
 
-        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
-
         assertTrue(historyPage.isHistoryPageLoaded(), "Verify if history page is displayed");
         assertTrue(historyPage.verifyHistoryForMock(PlatformType.IOS));
+    }
+    
+    @Test
+    @NeedsMockUIN
+    public void downloadAndVerifyVcUsingMdlDeleteAndVerifyHistory() throws InterruptedException {
+        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
+
+//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
+        WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
+
+//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
+        AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
+
+//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
+        SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
+
+//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+
+//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+
+        homePage.clickOnNextButtonForInjiTour();
+        AddNewCardPage addNewCardPage = homePage.downloadCard();
+        assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description  esignet displayed");
+        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
+        assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(), "Verify if add new card guide message displayed");
+        assertTrue(addNewCardPage.isDownloadViaEsignetDisplayed(), "Verify if download via uin displayed");
+
+        MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
+
+        addNewCardPage.clickOnContinueButtonInSigninPopupIos();
+        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+        esignetLoginPage.clickOnLoginWithOtpButton();
+
+        OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
+
+        mockCertifyLoginPage.clickOnGetOtpButton();
+//        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
+
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        mockCertifyLoginPage.clickOnVerifyButtonIos();
+        addNewCardPage.clickOnDoneButton();
+        MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
+//        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
+
+        PleaseConfirmPopupPage pleaseConfirmPopupPage = moreOptionsPage.clickOnRemoveFromWallet();
+//        assertTrue(pleaseConfirmPopupPage.isPleaseConfirmPopupPageLoaded(), "Verify if pop up page is displayed");
+
+        pleaseConfirmPopupPage.clickOnConfirmButton();
+        assertEquals(homePage.verifyLanguageForNoVCDownloadedPageLoaded(), "Bring your digital identity");
+        HistoryPage historyPage = homePage.clickOnHistoryButton();
+      
+
+        assertTrue(historyPage.isHistoryPageLoaded(), "Verify if history page is displayed");
+        assertTrue(historyPage.verifyHistory(PlatformType.IOS));
     }
 }

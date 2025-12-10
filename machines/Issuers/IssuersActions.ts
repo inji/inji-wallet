@@ -29,6 +29,7 @@ import {NativeModules} from 'react-native';
 import {VCActivityLog} from '../../components/ActivityLogEvent';
 import {isNetworkError, parseJSON, VCShareFlowType} from '../../shared/Utils';
 import {issuerType} from './IssuersMachine';
+import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
 import {logState} from '../../shared/commonUtil';
 import {createOpenID4VPMachine} from '../openID4VP/openID4VPMachine';
 import vciClient from '../../shared/vciClient/VciClient';
@@ -54,7 +55,7 @@ export const IssuersActions = (model: any) => {
           ...context.vcMetadata,
           isVerified: false,
           isExpired: false,
-          isRevoked: false,
+          isRevoked: RevocationStatus.FALSE,
         }),
     }),
     setIssuers: model.assign({

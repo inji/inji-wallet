@@ -99,6 +99,7 @@ export const IntroSlidersScreen: React.FC<RootRouteProps> = props => {
             <Text
               testID={`introTitle-${item.key}`}
               style={{paddingTop: 3}}
+              size={'large'}
               weight="semibold"
               margin="0 0 18 0">
               {item.title}

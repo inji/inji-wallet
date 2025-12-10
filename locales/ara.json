@@ -220,7 +220,8 @@
     "forMoreDetails": "لمزيد من التفاصيل",
     "clickHere": "انقر هنا",
     "version": "الإصدار",
-    "poweredBy": "مدعوم من Inji، منتج MOSIP"
+    "poweredBy": "منتج من MOSIP",
+    "copyright": "© 2022 MOSIP. جميع الحقوق محفوظة."
   },
   "IssuersScreen": {
     "title": "أضف بطاقة جديدة",
@@ -857,7 +858,7 @@
   "SendVcScreen": {
     "reasonForSharing": "سبب المشاركة (اختياري)",
     "introTitle": "المحقق",
-    "requestMessage": "يطلب هويتك الرقمية لغرض",
+    "requestMessage": "يطلب هويتك الرقمية لغرض ",
     "acceptRequest": "يشارك",
     "acceptRequestAndVerify": "شارك مع سيلفي",
     "reject": "رفض",

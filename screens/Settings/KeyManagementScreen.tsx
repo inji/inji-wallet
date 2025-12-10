@@ -21,7 +21,7 @@ import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {SUPPORTED_KEY_TYPES} from '../../shared/constants';
 import {SvgImage} from '../../components/ui/svg';
 import LinearGradient from 'react-native-linear-gradient';
-import { HelpIcon } from '../../components/ui/HelpIcon';
+import {HelpIcon} from '../../components/ui/HelpIcon';
 
 const {RNSecureKeystoreModule} = NativeModules;
 
@@ -129,10 +129,7 @@ export const KeyManagementScreen: React.FC<KeyManagementScreenProps> = () => {
           style={Theme.KeyManagementScreenStyle.heading}>
           {t('header')}
         </Text>
-        <HelpScreen
-          source={'keyManagement'}
-          triggerComponent={ HelpIcon() }
-        />
+        <HelpScreen source={'keyManagement'} triggerComponent={HelpIcon()} />
       </View>
       <BannerNotificationContainer />
       <View style={Theme.KeyManagementScreenStyle.copilotViewStyle}>

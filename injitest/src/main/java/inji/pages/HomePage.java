@@ -604,5 +604,13 @@ public class HomePage extends BasePage {
     public void clickOnCrossIconButton() {
         click(closeButton, "Clicking on the Close (cross) button");
     }
-
+    
+    /*
+     * Scrolls to the download button and clicks it to download the card.
+     * Use this method when the download button may be off-screen and requires scrolling to become visible.
+     */
+    public  AddNewCardPage scrollanddownloadCard() {
+        scrollAndClickByAccessibilityId("downloadCardButton", 4, "scroll to downlaodbutton");
+        return new AddNewCardPage(driver);
+    }
 }

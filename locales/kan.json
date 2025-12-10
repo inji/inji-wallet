@@ -220,7 +220,8 @@
     "forMoreDetails": "ಹೆಚ್ಚಿನ ವಿವರಗಳಿಗಾಗಿ",
     "clickHere": "ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ",
     "version": "ಆವೃತ್ತಿ",
-    "poweredBy": "ಇಂಜಿಯಿಂದ ನಡೆಸಲ್ಪಡುತ್ತಿದೆ, ಒಂದು MOSIP ಉತ್ಪನ್ನ"
+    "poweredBy": "ಒಂದು MOSIP ಉತ್ಪನ್ನ",
+    "copyright": "© 2022 MOSIP. ಎಲ್ಲಾ ಹಕ್ಕುಗಳು ಸಂರಕ್ಷಿಸಲಾಗಿದೆ."
   },
   "IssuersScreen": {
     "title": "ಹೊಸ ಕಾರ್ಡ್ ಸೇರಿಸಿ",
@@ -861,7 +862,7 @@
   "SendVcScreen": {
     "reasonForSharing": "ಹಂಚಿಕೆಗೆ ಕಾರಣ (ಐಚ್ಛಿಕ)",
     "introTitle": "ವಿನಂತಿದವರು",
-    "requestMessage": "ನಿಮ್ಮ ಡಿಜಿಟಲ್ ಐಡಿಯನ್ನು ವಿನಂತಿಸುತ್ತಿದ್ದಾರೆ",
+    "requestMessage": "ನಿಮ್ಮ ಡಿಜಿಟಲ್ ಐಡಿಯನ್ನು ವಿನಂತಿಸುತ್ತಿದ್ದಾರೆ ",
     "acceptRequest": "ಹಂಚಿಕೊಳ್ಳಿ",
     "acceptRequestAndVerify": "ಸೆಲ್ಫಿಯೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ",
     "reject": "ತಿರಸ್ಕರಿಸಿ",

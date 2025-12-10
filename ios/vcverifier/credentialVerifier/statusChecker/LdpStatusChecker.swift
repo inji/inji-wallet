@@ -7,7 +7,7 @@ public struct CredentialStatusResult {
   let isValid: Bool
   let statusListVC: [String: Any]?
   let error: StatusCheckException?
-  
+
   init(isValid: Bool, statusListVC: [String: Any]? = nil, error: StatusCheckException? = nil) {
     self.isValid = isValid
     self.statusListVC = statusListVC
@@ -55,10 +55,14 @@ final class LdpStatusChecker {
         }
 
         let statusField = vc["credentialStatus"]
-        guard let statusEntries = normalizeStatusField(statusField) else { throw StatusCheckException(
-          message: "No valid credentialStatus entries found",
-          errorCode: .invalidCredentialStatus
-      ) }
+        if statusField == nil {
+            return [:]
+        }
+
+        guard let statusEntries = normalizeStatusField(statusField) else {
+            throw StatusCheckException(message: "Malformed credentialStatus structure", errorCode: .invalidCredentialStatus)
+        }
+
 
         let filteredEntries = filterEntries(statusEntries, statusPurposes)
         guard !filteredEntries.isEmpty else {
@@ -67,7 +71,7 @@ final class LdpStatusChecker {
         }
 
         var results: [String: CredentialStatusResult] = [:]
-        
+
         for entry in filteredEntries {
           guard let purpose = (entry["statusPurpose"] as? String)?.lowercased(), !purpose.isEmpty else {
             print("Warning: Skipping entry with missing statusPurpose")
@@ -177,7 +181,7 @@ final class LdpStatusChecker {
             else {
                 throw StatusCheckException(message: "statusMessage count mismatch", errorCode: .statusVerificationError)
             }
-          
+
           print("Status message for purpose '\(purpose): \(statusMessage)")
         }
 

@@ -68,6 +68,14 @@ public class OtpVerificationPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "Get OTP")
     private WebElement getOtpButton;
 
+    @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id=\"error-banner-message\"]")
+    @iOSXCUITFindBy(accessibility = "Please Enter Valid Individual ID.")
+    private WebElement invalidIndividualMessageForeSignet;
+
+    @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id=\"error-banner-message\"]")
+    @iOSXCUITFindBy(accessibility = "OTP authentication failed. Please try again.")
+    private WebElement invalidOtpErrorMessageForeSignet;
+
     public OtpVerificationPage(AppiumDriver driver) {
         super(driver);
     }
@@ -154,4 +162,24 @@ public class OtpVerificationPage extends BasePage {
     public void clickOnGetOtpButton() {
         click(getOtpButton, "Click on get OTP");
     }
+
+    public boolean isInvalidIndividualErrorMessageDisplayed() {
+        return isElementVisible(invalidIndividualMessageForeSignet,
+                "Getting the invalid individual ID for ESignet Login");
+    }
+    public boolean isInvalidErrorMessageDisplayed() {
+        return isElementVisible(invalidOtpMessageForeSignet, "Getting the invalid OTP message for ESignet Login");
+    }
+    public boolean isInvalidOTPErrorMessageDisplayed() {
+        return isElementVisible(invalidOtpErrorMessageForeSignet, "Getting the invalid OTP message for ESignet Login");
+    }
+    
+    public String getInvalidOtpMessageForEsignetFarmer() {
+        return getText(invalidOtpErrorMessageForeSignet, "Getting the invalid OTP message for ESignet Login Farmer");
+    }
+    
+    public String getInvalidIndividualErrorMessageForEsignet() {
+        return getText(invalidIndividualMessageForeSignet, "Getting the invalid individual ID for ESignet Login");
+    }
+
 }

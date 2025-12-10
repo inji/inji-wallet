@@ -50,7 +50,9 @@ public class VerifyHistoryTest extends AndroidBaseTest {
         otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
 
         addNewCardPage.clickOnDoneButton();
+        
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
+        
         HistoryPage historyPage = homePage.clickOnHistoryButton();
 
         assertTrue(historyPage.isHistoryPageLoaded(), "Verify if history page is displayed");

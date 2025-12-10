@@ -73,10 +73,14 @@
                     <include name="setupPasscodeAndDownloadCardWithoutInternet"/>
                     <include name="verifyListOfLanguagesInOfflineMode"/>
                     <include name="verifyHelpPageOfflineMode"/>
-                    <include name="verifyRecivedCardOffline"/>
+                    <!-- <include name="verifyRecivedCardOffline"/> this tetcase is not appliacable for ios -->
                     <include name="downloadCardWithoutInternetRetryWithInternet"/>
                     <include name="verifyVcIssuerListWithoutNetwork"/>
                     <include name="DownloadVcWithEsignetWithoutNetwork"/>
+                    <include name="DownloadVcWithMockWithoutNetwork"/>
+                    <include name="DownloadVcWithMdlWithoutNetwork"/>
+                    <include name="DownloadVcWithLandRegistryWithoutNetwork"/>
+                    <include name="DownloadVcWithStayProtectedWithoutNetwork"/>
                     <include name="openQrOffline"/>
                 </methods>
             </class>
@@ -91,11 +95,16 @@
                     <include name="downloadAndVerifyVcUsingUinViaEsignet"/>
                     <include name="downloadAndVerifyVcUsingVidViaEsignet"/>
                     <include name="denyPopupforEsignetLoginWebPage"/>
+                    <include name="downloadAndVerifyVcUsingUinViaEsignetFiveTimes"/>
+                    <include name="downloadAndRemoveVcUsingUinViaEsignetFiveTimes"/>
                 </methods>
             </class>
             <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingSunbirdTest">
                 <methods>
                     <include name="downloadAndVerifyVcUsingUinViaSunbird"/>
+                    <include name="downloadAndVerifyVcUsingUinViaSunbirdFiveTimes"/>
+                    <include name="downloadAndVerifyVcUsingUinViaSunbirdLifeFiveTimes"/>
+                    <include name="downloadAndRemoveVerifyVcUsingUinViaSunbirdLifeFiveTimes"/>
                 </methods>
             </class>
             <class name="inji.testcases.iosTestCases.VerifyHelpPageTest">
@@ -142,9 +151,39 @@
                     <include name="downloadAndVerifyVcUsingInvalidOtp"/>
                     <include name="downloadAndVerifyVcUsingViaMdlAndPinAndUnpin"/>
                     <include name="downloadAndVerifyVcUsingViaMdlMultipleTimes"/>
+                    <include name="downloadAndVerifyVcUsingMdlFiveTimes"/>
                 </methods>
             </class>
-
+            <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingLandRegistryTest">
+            <methods>
+                    <include name="downloadAndVerifyVcUsingLandStatement"/>
+                    <include name="downloadAndVerifyVcUsingLandStatementFiveTimes"/>
+                    <include name="downloadAndRemoveVcUsingUinLandStatementFiveTimes"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingSDJwt">
+                <methods>
+                    <include name="downloadAndVerifyLandSdJwtVc"/>
+                    <include name="downloadAndVerifyLandSdJwtVcUsingInvalidCredential"/>
+                    <include name="downloadAndVerifyLandSdJwtVcUsingInvalidOtp"/>
+                    <include name="downloadAndVerifyLandSdJwtVcAndPinAndUnpin"/>
+                    <include name="downloadAndVerifyLandSdJwtVcMultipleTime"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingSVG">
+                <methods>
+                    <include name="downloadAndVerifyFarmerSVGVcWithFace"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithoutFace"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithFaceUsingInvalidCredential"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithOutFaceUsingInvalidCredential"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithFaceUsingInvalidOtp"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithOutFaceUsingInvalidOtp"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithFaceAndPinAndUnpin"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithOutFaceAndPinAndUnpin"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithFaceMultipleTime"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithOutFaceMultipleTime"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>

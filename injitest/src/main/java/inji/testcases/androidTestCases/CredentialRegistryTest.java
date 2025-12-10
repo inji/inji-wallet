@@ -47,7 +47,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 
         assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
-        addNewCardPage.ClickOnContinueButton();
+        addNewCardPage.clickOnContinueButton();
         retrieveIdPage.setEnterIdTextBox(TestDataReader.readData("newuin"));
         OtpVerificationPage otpVerification = new OtpVerificationPage(getDriver());
 
@@ -416,7 +416,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
-        addNewCardPage.ClickOnContinueButton();
+        addNewCardPage.clickOnContinueButton();
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(TestDataReader.readData("newuin"));
@@ -651,7 +651,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         addNewCardPage.clickOnDownloadViaMockCertify();
 
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        addNewCardPage.ClickOnContinueButton();
+        addNewCardPage.clickOnContinueButton();
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(TestDataReader.readData("MockVc"));
@@ -710,7 +710,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         addNewCardPage.clickOnDownloadViaMock();
 
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        addNewCardPage.ClickOnContinueButton();
+        addNewCardPage.clickOnContinueButton();
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(TestDataReader.readData("Mock"));
@@ -771,7 +771,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         addNewCardPage.clickOncredentialTypeHeadingLandStatementCredential2();
 
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        addNewCardPage.ClickOnContinueButton();
+        addNewCardPage.clickOnContinueButton();
 
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 

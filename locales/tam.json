@@ -220,7 +220,8 @@
     "forMoreDetails": "மேலும் விவரங்களுக்கு",
     "clickHere": "இங்கே கிளிக் செய்யவும்",
     "version": "பதிப்பு",
-    "poweredBy": "இன்ஜி மூலம் இயக்கப்படுகிறது, ஒரு MOSIP தயாரிப்பு"
+    "poweredBy": "இன்ஜி மூலம் இயக்கப்படுகிறது, ஒரு MOSIP தயாரிப்பு",
+    "copyright": "© 2022 MOSIP. அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை."
   },
   "IssuersScreen": {
     "title": "புதிய அட்டையைச் சேர்க்கவும்",
@@ -861,7 +862,7 @@
   "SendVcScreen": {
     "reasonForSharing": "பகிர்வதற்கான காரணம் (விரும்பினால்)",
     "introTitle": "கோரியவர்",
-    "requestMessage": "உங்கள் டிஜிட்டல் ஐடியை கோருகிறார்",
+    "requestMessage": "உங்கள் டிஜிட்டல் ஐடியை கோருகிறார் ",
     "acceptRequest": "பகிர்",
     "acceptRequestAndVerify": "செல்ஃபியுடன் பகிரவும்",
     "reject": "நிராகரிக்கவும்",

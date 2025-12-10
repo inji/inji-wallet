@@ -181,6 +181,28 @@
                     <!--   need to be tested-->
                 </methods>
             </class>
+            <class name="inji.testcases.androidTestCases.VcDownloadAndVerifyUsingSDJwt">
+                <methods>
+                    <include name="downloadAndVerifyLandSdJwtVc"/>
+                    <include name="downloadAndVerifyLandSdJwtVcUsingInvalidCredential"/>
+                    <include name="downloadAndVerifyLandSdJwtVcUsingInvalidOtp"/>
+                    <include name="downloadAndVerifyLandSdJwtVcAndPinAndUnpin"/>
+                    <include name="downloadAndVerifyLandSdJwtVcMultipleTime"/>
+                </methods>
+            </class>
+            <class name="inji.testcases.androidTestCases.VcDownloadAndVerifyUsingSVG">
+                <methods>
+                    <include name="downloadAndVerifyFarmerSVGVcWithFace"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithoutFace"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithFaceUsingInvalidCredential"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithOutFaceUsingInvalidCredential"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithFaceUsingInvalidOtp"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithOutFaceUsingInvalidOtp"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithFaceAndPinAndUnpin"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithOutFaceAndPinAndUnpin"/>
+                    <include name="downloadAndVerifyFarmerSVGVcWithFaceMultipleTime"/>
+                </methods>
+            </class>
             <!--<class name="inji.testcases.androidTestCases.VcDownloadAndVerifyUsingLandRegistryTest">
                 <methods>
                     <include name="downloadAndVerifyVcUsingUinViaLand"/>

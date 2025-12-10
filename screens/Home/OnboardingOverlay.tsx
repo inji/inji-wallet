@@ -41,13 +41,13 @@ export const OnboardingOverlay: React.FC<OnboardingProps> = props => {
   const renderItem = ({item}) => {
     return (
       <View style={Theme.OnboardingOverlayStyles.slide}>
-          <ScrollView showsVerticalScrollIndicator={true}>
-            <Text style={Theme.OnboardingOverlayStyles.sliderTitle}>
-              {item.title}
-            </Text>
-            <Text style={Theme.OnboardingOverlayStyles.text}>{item.text}</Text>
-            {item.footer}
-          </ScrollView>
+        <ScrollView showsVerticalScrollIndicator={true}>
+          <Text style={Theme.OnboardingOverlayStyles.sliderTitle}>
+            {item.title}
+          </Text>
+          <Text style={Theme.OnboardingOverlayStyles.text}>{item.text}</Text>
+          {item.footer}
+        </ScrollView>
       </View>
     );
   };

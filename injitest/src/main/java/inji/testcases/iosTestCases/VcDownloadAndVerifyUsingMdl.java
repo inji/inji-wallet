@@ -12,8 +12,13 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import static org.testng.Assert.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
+	
+	private static final Logger logger = LogManager.getLogger(VcDownloadAndVerifyUsingMdl.class);
+	
     @Test
     @NeedsMockUIN
     public void downloadAndVerifyVcUsingMdl() throws InterruptedException {
@@ -50,8 +55,6 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
         esignetLoginPage.clickOnLoginWithOtpButton();
-//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-
     
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -117,14 +120,13 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
         esignetLoginPage.clickOnLoginWithOtpButton();
-//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
-        OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox("2185461749");
+
+        OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(TestDataReader.readData("invaliduin"));
 
         mockCertifyLoginPage.clickOnGetOtpButton();
-//        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
-
-        assertEquals(ResourceBundleLoader.get(InjiWalletConstants.invalid_individual_id), mockCertifyLoginPage.getInvalidIndividualIdMessage());
+		assertEquals(ResourceBundleLoader.get(InjiWalletConstants.invalid_individual_id),
+				otpVerification.getInvalidIndividualErrorMessageForEsignet());
     }
 
     @Test
@@ -163,7 +165,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
         esignetLoginPage.clickOnLoginWithOtpButton();
-//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -211,8 +213,6 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
         esignetLoginPage.clickOnLoginWithOtpButton();
- //       esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-
         
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -273,9 +273,6 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
         esignetLoginPage.clickOnLoginWithOtpButton();
-//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-
-       
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
         mockCertifyLoginPage.clickOnGetOtpButton();
@@ -289,7 +286,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         addNewCardPage.clickOnDownloadViaMockCertify();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+        esignetLoginPage.clickOnLoginWithOtpButton();
     
         mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -297,7 +294,54 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
 
-        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
     }
-
+    @Test
+    @NeedsMockUIN
+    public void downloadAndVerifyVcUsingMdlFiveTimes() throws InterruptedException {
+        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
+        WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
+        AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
+        SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        homePage.clickOnNextButtonForInjiTour();
+        // Download VC 5 times
+        for (int i = 1; i <= 5; i++) {
+        	logger.info("Downloading VC iteration: " + i);
+            downloadAndVerifyMockVc(homePage, i);
+        }
+    }
+    private void downloadAndVerifyMockVc(HomePage homePage, int iteration) throws InterruptedException {
+        AddNewCardPage addNewCardPage = homePage.downloadCard();
+        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
+        assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description esignet displayed");
+        assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(), "Verify if issuer search bar displayed");
+        assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(), "Verify if add new card guide message displayed");
+        assertTrue(addNewCardPage.isDownloadViaEsignetDisplayed(), "Verify if download via uin displayed");
+        MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
+        addNewCardPage.clickOnContinueButtonInSigninPopupIos();
+        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+        esignetLoginPage.clickOnLoginWithOtpButton();
+        OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
+        mockCertifyLoginPage.clickOnGetOtpButton();
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        mockCertifyLoginPage.clickOnVerifyButtonIos();
+        // Click Done only for the first iteration
+        if (iteration == 1) {
+            addNewCardPage.clickOnDoneButton();
+        }
+        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
+        DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
+        detailedVcViewPage.clickOnQrCodeButton();
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(detailedVcViewPage.isQrCodeDisplayed(), "Verify if QR Code header is displayed");
+        detailedVcViewPage.clickOnQrCrossIcon();
+        assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed");
+        assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed Vc view page is displayed");
+        assertEquals(detailedVcViewPage.getIdTypeValueInDetailedVcView(), TestDataReader.readData("idTypeForMobileDrivingLicense"), "Verify if id type is displayed");
+        assertEquals(detailedVcViewPage.getStatusInDetailedVcView(), TestDataReader.readData("status"), "Verify if status is displayed");
+        detailedVcViewPage.clickOnBackArrow();
+        assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed");
+    }
 }
+

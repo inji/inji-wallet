@@ -98,6 +98,15 @@ public class DetailedVcViewPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "KebabIcon")
     public WebElement moreOptionsButton;
 
+    @AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().description(\"outlined-delete-icon\"))")
+    @iOSXCUITFindBy(accessibility = "removeFromWallet")
+    private WebElement removeFromWalletButton;
+
+    @AndroidFindBy(accessibility = "yesConfirm")
+    @iOSXCUITFindBy(accessibility = "yesConfirm")
+    private WebElement yesButton;
+
+
     public DetailedVcViewPage(AppiumDriver driver) {
         super(driver);
     }
@@ -204,5 +213,14 @@ public class DetailedVcViewPage extends BasePage {
 
     public void clickOnMoreOptionsInDetails() {
         click(moreOptionsButton, "Click on the 'More Options' button in Detailed VC View");
+    }
+    public PleaseConfirmPopupPage clickOnRemoveFromWallet() {
+        IosUtil.scrollToElement(driver, 59, 755, 119, 20);
+        click(removeFromWalletButton, "Clicking on 'Remove from Wallet' button");
+        return new PleaseConfirmPopupPage(driver);
+    }
+    public PleaseConfirmPopupPage clickOnConfirmButton() {
+        click(yesButton, "Click on Yes button to confirm");
+        return new PleaseConfirmPopupPage(driver);
     }
 }

@@ -221,7 +221,8 @@
     "forMoreDetails": "अधिक जानकारी के लिए",
     "clickHere": "यहाँ क्लिक करें",
     "version": "संस्करण",
-    "poweredBy": "इंजी द्वारा संचालित, एक MOSIP उत्पाद"
+    "poweredBy": "एक MOSIP उत्पाद",
+    "copyright": "© 2022 MOSIP. सभी अधिकार सुरक्षित।"
   },
   "IssuersScreen": {
     "title": "नया कार्ड जोड़ें",
@@ -863,7 +864,7 @@
   "SendVcScreen": {
     "reasonForSharing": "साझा करने का कारण (वैकल्पिक)",
     "introTitle": "अनुरोधकर्ता",
-    "requestMessage": "आपके डिजिटल आईडी के लिए अनुरोध कर रहा है",
+    "requestMessage": "आपके डिजिटल आईडी के लिए अनुरोध कर रहा है ",
     "acceptRequest": "शेयर करना",
     "acceptRequestAndVerify": "सेल्फी के साथ शेयर करें",
     "consentToPhotoVerification": "मैं सत्यापन के लिए अपना फोटो लेने की अनुमति देता हूं",
