@@ -437,11 +437,7 @@ export const VCItemMachine = model.createMachine(
                 entry: 'removeVcItem',
                 on: {
                   STORE_RESPONSE: {
-                    actions: [
-                      'closeViewVcModal',
-                      'refreshAllVcs',
-                      'logRemovedVc',
-                    ],
+                    actions: ['closeViewVcModal', 'logRemovedVc'],
                     target: 'triggerAutoBackup',
                   },
                 },
@@ -452,11 +448,14 @@ export const VCItemMachine = model.createMachine(
                   onDone: [
                     {
                       cond: 'isSignedIn',
-                      actions: ['sendBackupEvent', 'refreshAllVcs'],
+                      actions: [
+                        'sendBackupEvent',
+                        'removeVcMetaDataFromVcMachineContext',
+                      ],
                       target: '#vc-item-machine.vcUtilitiesState.idle',
                     },
                     {
-                      actions: ['refreshAllVcs'],
+                      actions: ['removeVcMetaDataFromVcMachineContext'],
                       target: '#vc-item-machine.vcUtilitiesState.idle',
                     },
                   ],
@@ -609,10 +608,13 @@ export const VCItemMachine = model.createMachine(
         states: {
           idle: {},
           verifyingCredential: {
-            entry: [send({
-              type: 'SET_VERIFICATION_STATUS',
-              response: {statusType: BannerStatusType.IN_PROGRESS},
-            }),()=>console.info("auto verification started 🔄")],
+            entry: [
+              send({
+                type: 'SET_VERIFICATION_STATUS',
+                response: {statusType: BannerStatusType.IN_PROGRESS},
+              }),
+              () => console.info('auto verification started 🔄'),
+            ],
 
             invoke: {
               src: 'verifyCredential',

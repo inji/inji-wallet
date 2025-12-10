@@ -221,7 +221,8 @@
     "forMoreDetails": "अधिक जानकारी के लिए",
     "clickHere": "यहाँ क्लिक करें",
     "version": "संस्करण",
-    "poweredBy": "इंजी द्वारा संचालित, एक MOSIP उत्पाद"
+    "poweredBy": "एक MOSIP उत्पाद",
+    "copyright": "© 2022 MOSIP. सभी अधिकार सुरक्षित।"
   },
   "IssuersScreen": {
     "title": "नया कार्ड जोड़ें",
@@ -445,7 +446,7 @@
     }
   },
   "MyVcsTab": {
-    "searchByName": "खोजें...",
+    "searchByName": "खोजें",
     "downloadCard": "डाउनलोड कार्ड",
     "bringYourDigitalID": "अपनी डिजिटल आईडी लाओ",
     "generateVcDescription": "अपना कार्ड डाउनलोड करने के लिए नीचे डाउनलोड कार्ड टैप करें",
@@ -863,7 +864,7 @@
   "SendVcScreen": {
     "reasonForSharing": "साझा करने का कारण (वैकल्पिक)",
     "introTitle": "अनुरोधकर्ता",
-    "requestMessage": "आपके डिजिटल आईडी के लिए अनुरोध कर रहा है",
+    "requestMessage": "आपके डिजिटल आईडी के लिए अनुरोध कर रहा है ",
     "acceptRequest": "शेयर करना",
     "acceptRequestAndVerify": "सेल्फी के साथ शेयर करें",
     "consentToPhotoVerification": "मैं सत्यापन के लिए अपना फोटो लेने की अनुमति देता हूं",
@@ -1146,9 +1147,7 @@
     "verify": "सत्यापित करें",
     "emptyCodeError": "कोड खाली नहीं हो सकता",
     "invalidCharacters": "केवल अक्षर और संख्याएँ मान्य हैं",
-    "TransactionCode": "लेन-देन कोड",
-    "showMore": "अधिक दिखाएं ↓",
-    "showLess": "कम दिखाएं ↑"
+    "TransactionCode": "लेन-देन कोड"
   },
   "trustScreen": {
     "description": "सुनिश्चित करें कि आप इस जारीकर्ता को पहचानते हैं या उस पर भरोसा करते हैं। एक बार जब आप भरोसा कर लेते हैं:",

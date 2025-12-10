@@ -37,7 +37,7 @@ public class AboutInjiTest extends AndroidBaseTest {
         AboutInjiPage aboutInjiPage = settingsPage.clickOnAbouInji();
 
         assertTrue(aboutInjiPage.isAboutInjiHeaderDisplayed(), "Verify id about inji page displayed");
-        assertEquals(aboutInjiPage.getAboutInjiHeader(), "About Inji Wallet");
+        assertEquals(aboutInjiPage.getAboutInjiHeader(), "ABOUT INJI WALLET");
         aboutInjiPage.clickOnCopyText();
         assertTrue(aboutInjiPage.isAppIdCopiedTextDisplayed(), "verify if app id is copied");
 

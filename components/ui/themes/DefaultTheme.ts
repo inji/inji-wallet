@@ -12,12 +12,11 @@ import Constants from 'expo-constants';
 import HomeScreenLogo from '../../../assets/InjiHomeLogo.svg';
 import InjiLogoSmall from '../../../assets/InjiLogo.svg';
 import i18next from '../../../i18n';
-import {POINTER_SIZE} from '../ToolTip';
 const Colors = {
   Black: '#000000',
   Zambezi: '#5F5F5F',
   Violet: '#5B03AD',
-  BrightOrange: '#FF5300',
+  Primary: '#FF5300',
   Magenta: '#951F6F',
   Grey: '#C7C7C7',
   Grey5: '#E0E0E0',
@@ -32,8 +31,7 @@ const Colors = {
   DimGray: '#737373',
   DarkGray: '#A5A5A5',
   platinumGrey: '#EDEDED',
-  Orange: '#F37321',
-  DarkMagenta: '#951F6F',
+  Secondary: '#951F6F',
   OrangeBrown: '#D9822B',
   Blue: '#0000FF',
   LightGrey: '#F8F8F8',
@@ -47,13 +45,12 @@ const Colors = {
   Warning: '#f0ad4e',
   GrayText: '#6F6F6F',
   mediumLightGrayText: '#A7A7A7',
-  veryLightBluishGray: '#D9E1E7',
   dorColor: '#CBCBCB',
   plainText: '#FFFFFF',
   walletbindingLabel: '#000000',
   LightOrange: '#F7EDF3',
   GradientColors: ['#FF5300', '#5B03AD'],
-  GradientColorsLight: ['#FF5300' + 14, '#FF5300' + 14],
+  GradientColorsLight: ['#FF5300' + 14, '#5B03AD' + 14],
   DisabledColors: ['#C7C7C7', '#C7C7C7'],
   TimeoutHintBoxColor: '#FFF7E5',
   TimeoutHintBoxBorder: '#FFF2D6',
@@ -71,16 +68,6 @@ const Colors = {
   Mercury: '#E6E6E6',
   Yellow: '#E8A94F',
   selectIDTextGradient: ['#F5F5F5', '#FFFFFF'],
-  brandPrimary: '#F37321',
-  brandPrimaryLight: '#FCEFE6',
-  brandPrimaryDark: '#D65F17',
-  DeepPurple: '#290B45',
-  RoyalPurple: '#451691',
-  LightMintGreen: '#9DCFBB',
-  CharcoalBlue: '#384455',
-  LightRose: '#EFB3B5',
-  LightYellow: '#FFE799',
-  SteelBlue: '#809FB8',
 };
 
 export type ElevationLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -89,30 +76,28 @@ export const DefaultTheme = {
   Colors: {
     ProfileIconColor: Colors.DarkGray,
     DetailedViewBackground: Colors.Gray97,
-    TabItemText: Colors.Orange,
+    TabItemText: Colors.Secondary,
     Details: Colors.Black,
     DetailsLabel: Colors.Gray40,
     LoadingDetailsLabel: Colors.Gray40,
-    AddIdBtnBg: Colors.Orange,
-    AddIdBtnTxt: Colors.DarkMagenta,
+    AddIdBtnBg: Colors.Secondary,
+    AddIdBtnTxt: Colors.Secondary,
     DownloadIdBtnTxt: Colors.White,
-    Loading: Colors.Orange,
-    Cursor: Colors.Orange,
-    noUinText: Colors.Orange,
-    IconBg: Colors.Orange,
+    Loading: Colors.Secondary,
+    Cursor: Colors.Secondary,
+    noUinText: Colors.Secondary,
+    IconBg: Colors.Secondary,
     popUp: Colors.Green,
-    Icon: Colors.Orange,
-    SearchIcon: Colors.veryLightBluishGray,
+    Icon: Colors.Secondary,
     GrayIcon: Colors.Gray50,
     helpText: Colors.Gray44,
     borderBottomColor: Colors.Grey6,
     whiteBackgroundColor: Colors.White,
     lightGreyBackgroundColor: Colors.LightGrey,
     aboutVersion: Colors.Gray40,
-    switchHead: Colors.Orange,
+    switchHead: Colors.Secondary,
     switchTrackTrue: Colors.LightOrange,
     switchTrackFalse: Colors.Grey,
-    switchCircleOff: Colors.White,
     overlayBackgroundColor: Colors.White,
     rotatingIcon: Colors.Grey5,
     loadingLabel: Colors.Grey6,
@@ -127,7 +112,7 @@ export const DefaultTheme = {
     whiteText: Colors.White,
     flipCameraIcon: Colors.Black,
     RetrieveIdLabel: Colors.ShadeOfGrey,
-    inputSelection: Colors.Orange,
+    inputSelection: Colors.Secondary,
     checkCircleIcon: Colors.White,
     OnboardingCircleIcon: Colors.White,
     OnboardingCloseIcon: Colors.White,
@@ -154,28 +139,20 @@ export const DefaultTheme = {
     uncheckedIcon: Colors.uncheckedIcon,
     settingsLabel: Colors.Black,
     chevronRightColor: Colors.Grey,
-    linearGradientStart: Colors.brandPrimary,
-    linearGradientEnd: Colors.brandPrimary,
-    linearIconGradientStart: Colors.brandPrimary,
-    linearIconGradientEnd: Colors.brandPrimary,
+    linearGradientStart: Colors.startColor,
+    linearGradientEnd: Colors.endColor,
+    linearIconGradientStart: Colors.startColor,
+    linearIconGradientEnd: Colors.endColor,
     LinearGradientStroke: Colors.stroke,
     warningLogoBgColor: Colors.warningLogoBg,
     tooltipIcon: Colors.toolTip,
     toolTipPointerColor: Colors.toolTipPointer,
-    urlLink: Colors.Orange,
+    urlLink: Colors.Secondary,
     warningText: Colors.Red,
     PendingIcon: Colors.Yellow,
     selectIDTextGradient: ['#F5F5F5', '#FFFFFF'],
-    ListSelectedBackground: Colors.brandPrimaryLight,
-    ListSelectedText: Colors.brandPrimary,
-    ListSelectedIcon: Colors.brandPrimary,
-    ListUnselectedBackground: Colors.White,
-    ListUnselectedText: Colors.Black,
-    SearchBarPlaceholderColor: Colors.veryLightBluishGray,
-    PopupText: Colors.CharcoalBlue,
-    TransactionCodeBackgroundColor: Colors.White,
-    TransactionCodeBorderColor: Colors.veryLightBluishGray,
-    TransactionCodePlaceholderColor: Colors.SteelBlue,
+    unCheckText: Colors.Secondary,
+    secondaryText: Colors.Secondary,
   },
   Styles: StyleSheet.create({
     title: {
@@ -335,14 +312,14 @@ export const DefaultTheme = {
       borderRadius: 15,
       margin: 5,
       borderWidth: 3,
-      borderColor: Colors.Orange,
+      borderColor: Colors.Secondary,
       overflow: 'hidden',
     },
     selectedVc: {
       borderRadius: 10,
       margin: 5,
       borderWidth: 2,
-      borderColor: Colors.Orange,
+      borderColor: Colors.Secondary,
     },
     labelPartContainer: {
       marginLeft: 16,
@@ -500,9 +477,6 @@ export const DefaultTheme = {
     ProfileIconPinnedStyle: {
       position: 'absolute',
     },
-    BackButtonBgGradient: {
-      borderRadius: 10,
-    },
     IconContainer: {
       padding: 6,
       width: 25,
@@ -590,7 +564,7 @@ export const DefaultTheme = {
       borderWidth: 0,
     },
     tabIndicator: {
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
     },
     tabContainer: {
       backgroundColor: Colors.Transparent,
@@ -618,52 +592,10 @@ export const DefaultTheme = {
       fontFamily: 'Montserrat_600SemiBold',
       fontSize: 18,
     },
-    overlay: {
-      padding: 1,
-      borderRadius: 12,
-      overflow: 'hidden',
-    },
-    listItemSelectedText: {
-      color: Colors.brandPrimary,
-      fontWeight: '600',
-      fontFamily: 'Montserrat_500Medium',
-    },
-    listItemUnselectedText: {
-      color: Colors.Black,
-      fontWeight: '400',
-      fontFamily: 'Montserrat_500Medium',
-    },
-    listItemSelectedContainer: {backgroundColor: Colors.brandPrimaryLight},
-    listItemUnselectedContainer: {backgroundColor: Colors.White},
-    listItemSelectedCircle: {
-      width: 22,
-      height: 22,
-      borderRadius: 11,
-      borderWidth: 7,
-      borderColor: Colors.brandPrimary,
-      backgroundColor: Colors.White,
-    },
-    wrapper: {
-      borderWidth: 2,
-      borderRadius: 16,
-      padding: 2,
-    },
-    container: {
-      width: 48,
-      height: 22,
-      borderRadius: 16,
-      padding: 3,
-    },
-    circle: {
-      width: 18,
-      height: 18,
-      borderRadius: 9,
-      elevation: 2,
-    },
     idInputBottom: {
       position: 'relative',
       bottom: 18,
-      borderBottomColor: Colors.Orange,
+      borderBottomColor: Colors.Secondary,
       borderBottomWidth: 1,
       minWidth: 210,
     },
@@ -720,52 +652,20 @@ export const DefaultTheme = {
       borderRadius: 200,
       height: 70,
       width: 70,
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
       justifyContent: 'center',
       position: 'absolute',
     },
     boxShadow: generateBoxShadowStyle(),
     tooltipContainerStyle: {
-      backgroundColor: '#EBE6F3',
-      borderWidth: 2,
-      borderColor: '#E0E0E0',
-      maxWidth: '90%',
-    },
-    tooltipContentTitle: {
-      color: Colors.DeepPurple,
-    },
-    tooltipContentDescription: {
-      color: Colors.RoyalPurple,
-      marginTop: 10,
-    },
-    tooltipOverlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: 'transparent',
-    },
-    tooltip: {
-      position: 'absolute',
-      backgroundColor: '#EBE6F3',
-      borderRadius: 8,
-      elevation: 6,
-      shadowColor: '#000',
-      shadowOffset: {width: 0, height: 2},
-      shadowOpacity: 0.2,
-      shadowRadius: 4,
+      backgroundColor: '#FAFAFA',
       borderWidth: 1,
       borderColor: '#E0E0E0',
-      zIndex: 999,
+      marginLeft: 15,
     },
-    pointer: {
-      position: 'absolute',
-      width: 0,
-      height: 0,
-      borderLeftWidth: POINTER_SIZE / 2,
-      borderRightWidth: POINTER_SIZE / 2,
-      borderBottomWidth: POINTER_SIZE / 2,
-      borderLeftColor: 'transparent',
-      borderRightColor: 'transparent',
-      borderBottomColor: '#EBE6F3',
-      zIndex: 1000,
+    tooltipContentDescription: {
+      color: Colors.toolTipContent,
+      marginTop: 10,
     },
     tooltipHrLine: {
       borderBottomColor: Colors.Grey5,
@@ -833,7 +733,7 @@ export const DefaultTheme = {
     sendVPHeaderSubTitle: {
       fontSize: 13,
       fontFamily: 'Montserrat_600SemiBold',
-      color: Colors.Orange,
+      color: Colors.Secondary,
       maxWidth: '80%',
       overflow: 'hidden',
     },
@@ -891,28 +791,16 @@ export const DefaultTheme = {
     },
   }),
   BannerStyles: StyleSheet.create({
-    bannerStackContainer: {
-      position: 'absolute',
-      width: '100%',
-      alignItems: 'center',
-      zIndex: 100,
-    },
-    wrapper: {
-      width: '100%',
-      alignSelf: 'center',
-    },
     container: {
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'space-between',
       backgroundColor: '#DB2E2E',
       width: '100%',
-      height: 70,
       position: 'relative',
       paddingHorizontal: 18,
       paddingVertical: 12,
       marginVertical: 1,
       columnGap: 7,
-      borderRadius: 10,
     },
     topBanner: {
       marginTop: 10,
@@ -920,24 +808,20 @@ export const DefaultTheme = {
     },
     text: {
       textAlignVertical: 'center',
-      fontSize: 14,
+      fontSize: 12,
       lineHeight: 15,
       padding: 1,
-      marginHorizontal: 8,
       fontFamily: 'Montserrat_600SemiBold',
     },
     dismiss: {paddingLeft: 9},
     inProgress: {
-      backgroundColor: Colors.LightYellow,
-      color: Colors.CharcoalBlue,
+      backgroundColor: Colors.OrangeBrown,
     },
     success: {
-      backgroundColor: Colors.LightMintGreen,
-      color: Colors.CharcoalBlue,
+      backgroundColor: Colors.Green,
     },
     error: {
-      backgroundColor: Colors.LightRose,
-      color: Colors.CharcoalBlue,
+      backgroundColor: Colors.LightRed,
     },
   }),
   QrCodeStyles: StyleSheet.create({
@@ -1007,7 +891,7 @@ export const DefaultTheme = {
     },
     onEnteringPin: {
       borderBottomWidth: 3,
-      borderColor: Colors.Orange,
+      borderColor: Colors.Secondary,
       color: Colors.Black,
       flex: 1,
       fontFamily: 'Montserrat_700Bold',
@@ -1058,7 +942,7 @@ export const DefaultTheme = {
       fontFamily: 'Montserrat_600SemiBold',
     },
     urlLinkText: {
-      color: Colors.Orange,
+      color: Colors.Secondary,
       fontFamily: 'Montserrat_600SemiBold',
     },
     aboutDetails: {
@@ -1111,9 +995,15 @@ export const DefaultTheme = {
       fontSize: 11,
       lineHeight: 18,
     },
+    mediumExtraSmall: {
+      fontSize: 14,
+    },
     mediumSmall: {
       fontSize: 15,
       lineHeight: 18,
+    },
+    medium: {
+      fontSize: 16,
     },
     large: {
       fontSize: 18,
@@ -1148,7 +1038,7 @@ export const DefaultTheme = {
   }),
   ToastItemStyles: StyleSheet.create({
     toastContainer: {
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
       position: 'absolute',
       alignSelf: 'center',
       top: 80,
@@ -1170,27 +1060,23 @@ export const DefaultTheme = {
     },
   }),
   SearchBarStyles: StyleSheet.create({
+    idleSearchBarBottomLine: {
+      alignItems: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: Colors.Gray40,
+    },
     searchBarContainer: {
       alignItems: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: Colors.Secondary,
     },
-    clearIcon: {
-      position: 'absolute',
-      right: 45,
-      width: 40,
-      justifyContent: 'center',
+    vcSearchBarContainer: {
       alignItems: 'center',
-    },
-    vcSearchBarContainer: {},
-    innerSearchBarContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      width: '100%',
+      borderBottomWidth: 0.5,
+      borderTopWidth: 0.5,
+      borderColor: Colors.DimGray,
+      width: Dimensions.get('window').width,
       backgroundColor: Colors.White,
-      borderColor: Colors.veryLightBluishGray,
-      borderRadius: 18,
-      borderWidth: 2,
-      marginTop: 10,
-      paddingHorizontal: 20,
     },
     vcSearchIcon: {
       justifyContent: 'center',
@@ -1199,17 +1085,17 @@ export const DefaultTheme = {
       paddingLeft: 15,
     },
     searchIcon: {
-      width: 25,
       justifyContent: 'center',
-      alignItems: 'center',
+      height: Dimensions.get('window').height * 0.055,
+      width: Dimensions.get('window').width * 0.1,
     },
     searchBar: {
       textAlign: I18nManager.isRTL ? 'right' : 'left',
       height: Dimensions.get('window').height * 0.055,
-      flex: 1,
-      fontFamily: 'Montserrat_500Medium',
-      fontSize: 17,
-      marginRight: 40,
+      width: Dimensions.get('window').width * 0.75,
+    },
+    clearSearch: {
+      padding: 10,
     },
   }),
   ButtonStyles: StyleSheet.create({
@@ -1217,14 +1103,14 @@ export const DefaultTheme = {
       flex: 1,
     },
     solid: {
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
     },
     clear: {
       backgroundColor: Colors.Transparent,
     },
     outline: {
       backgroundColor: Colors.Transparent,
-      borderColor: Colors.Orange,
+      borderColor: Colors.Secondary,
     },
     disabledOutlineButton: {
       backgroundColor: Colors.Transparent,
@@ -1239,7 +1125,7 @@ export const DefaultTheme = {
       backgroundColor: Colors.Grey,
     },
     addId: {
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
     },
     gradient: {
       borderRadius: 9,
@@ -1260,7 +1146,7 @@ export const DefaultTheme = {
     },
     radius: {
       borderRadius: 10,
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
     },
     Large: {
       width: Dimensions.get('window').width * 0.9,
@@ -1310,7 +1196,7 @@ export const DefaultTheme = {
       margin: 16,
       padding: 8,
       borderWidth: 2,
-      borderColor: Colors.Orange,
+      borderColor: Colors.Secondary,
       borderRadius: 30,
     },
     sharedSuccessfullyVerifierInfo: {
@@ -1491,8 +1377,8 @@ export const DefaultTheme = {
     new: {
       height: 20,
       width: 'auto',
-      backgroundColor: '#FF5300',
       alignItems: 'center',
+      justifyContent: 'center',
       marginLeft: 10,
       borderRadius: 5,
       paddingHorizontal: 5,
@@ -1519,7 +1405,6 @@ export const DefaultTheme = {
     button: {
       borderTopLeftRadius: 0,
       borderTopRightRadius: 0,
-      fontSize: 16,
     },
     halfButton: {
       borderRadius: 8,
@@ -1588,7 +1473,7 @@ export const DefaultTheme = {
       padding: 20,
     },
     slider: {
-      backgroundColor: Colors.Orange,
+      backgroundColor: Colors.Secondary,
       minHeight: 300,
       width: '100%',
       margin: 0,
@@ -1760,10 +1645,10 @@ export const DefaultTheme = {
       paddingHorizontal: 15,
       paddingBottom: 10,
       backgroundColor: '#fff',
-      elevation: 5,
-      shadowColor: '#000',
-      shadowOffset: {width: 0, height: 4}, // only downward shadow
-      shadowOpacity: 0.1,
+      elevation: 5, // For Android
+      shadowColor: '#000', // For iOS
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.2,
       shadowRadius: 4,
       zIndex: 1,
     },
@@ -2078,6 +1963,22 @@ export const DefaultTheme = {
       paddingTop: 3,
       maxWidth: 250,
     },
+    footerContainer: {
+      alignItems: 'center',
+      marginTop: 12,
+    },
+
+    poweredByRow: {
+      alignItems: 'center',
+      marginBottom: 4,
+    },
+
+    logoStyle: {
+      width: 24,
+      height: 24,
+      marginRight: 5,
+      marginTop: 12,
+    },
     tuvaliVerisonStyle: {
       paddingTop: 3,
       paddingBottom: 12,
@@ -2126,26 +2027,6 @@ export const DefaultTheme = {
       marginBottom: 10,
       marginTop: 10,
       width: '80%',
-    },
-    transactionGradientContainer: {
-      width: Dimensions.get('window').width - 100,
-      alignSelf: 'center',
-      borderRadius: 18,
-      padding: 2,
-      marginTop: 10,
-      marginBottom: 25,
-    },
-    inputContainer: {
-      borderBottomWidth: 0,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      width: '100%',
-      backgroundColor: Colors.White,
-      borderRadius: 18,
-      paddingHorizontal: 20,
-      overflow: 'hidden',
-      height: 60,
     },
     inputStyle: {
       fontSize: 20,

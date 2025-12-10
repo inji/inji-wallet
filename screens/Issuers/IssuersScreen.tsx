@@ -1,6 +1,6 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {FlatList, View} from 'react-native';
+import {FlatList, Pressable, View} from 'react-native';
 import {Issuer} from '../../components/openId4VCI/Issuer';
 import {Error} from '../../components/ui/Error';
 import {Header} from '../../components/ui/Header';
@@ -27,22 +27,26 @@ import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {MessageOverlay} from '../../components/MessageOverlay';
 import {SearchBar} from '../../components/ui/SearchBar';
 import {SvgImage} from '../../components/ui/svg';
+import {Icon} from 'react-native-elements';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {CredentialTypeSelectionScreen} from './CredentialTypeSelectionScreen';
 import {QrScanner} from '../../components/QrScanner';
+import {IssuersModel} from '../../machines/Issuers/IssuersModel';
 import {AUTH_ROUTES} from '../../routes/routesConstants';
 import {TransactionCodeModal} from './TransactionCodeScreen';
 import {TrustModal} from '../../components/TrustModal';
-
+import i18next from 'i18next';
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
+  const model = IssuersModel;
   const controller = useIssuerScreenController(props);
   const {i18n, t} = useTranslation('IssuersScreen');
   const issuers = controller.issuers;
   let [filteredSearchData, setFilteredSearchData] = useState(issuers);
   const [search, setSearch] = useState('');
   const [tapToSearch, setTapToSearch] = useState(false);
+  const [clearSearchIcon, setClearSearchIcon] = useState(false);
   const showFullScreenError = controller.isError;
 
   const isVerificationFailed = controller.verificationErrorMessage !== '';
@@ -128,6 +132,11 @@ export const IssuersScreen: React.FC<
     setTapToSearch(true);
   };
 
+  const clearSearchText = () => {
+    filterIssuers('');
+    setClearSearchIcon(false);
+  };
+
   const goBack = () => {
     if (
       controller.errorMessageType &&
@@ -159,6 +168,11 @@ export const IssuersScreen: React.FC<
     });
     setFilteredSearchData(filteredData);
     setSearch(searchText);
+    if (searchText !== '') {
+      setClearSearchIcon(true);
+    } else {
+      setClearSearchIcon(false);
+    }
   };
   if (controller.isSelectingCredentialType) {
     return <CredentialTypeSelectionScreen {...props} />;
@@ -301,6 +315,19 @@ export const IssuersScreen: React.FC<
               onChangeText={filterIssuers}
               onLayout={() => filterIssuers('')}
             />
+            {clearSearchIcon && (
+              <Pressable
+                onPress={clearSearchText}
+                style={Theme.SearchBarStyles.clearSearch}>
+                <Icon
+                  testID="clearingIssuerSearchIcon"
+                  name="circle-with-cross"
+                  type="entypo"
+                  size={18}
+                  color={Theme.Colors.DetailsLabel}
+                />
+              </Pressable>
+            )}
           </Row>
           <Text
             testID="issuersScreenDescription"

@@ -12,7 +12,6 @@ import Constants from 'expo-constants';
 import HomeScreenLogo from '../../../assets/Inji_Home_Logo.svg';
 import InjiLogoSmall from '../../../assets/InjiLogo.svg';
 import i18next from '../../../i18n';
-import {POINTER_SIZE} from '../ToolTip';
 
 const Colors = {
   Black: '#231F20',
@@ -46,7 +45,6 @@ const Colors = {
   Warning: '#f0ad4e',
   GrayText: '#6F6F6F',
   mediumLightGrayText: '#A7A7A7',
-  veryLightBluishGray: '#D9E1E7',
   dorColor: '#CBCBCB',
   plainText: '#F3E2FF',
   walletbindingLabel: '#000000',
@@ -54,7 +52,7 @@ const Colors = {
   GradientColorsLight: ['#F3E2FF', '#F3E2FF'],
   DisabledColors: ['#C7C7C7', '#C7C7C7'],
   captureIconBorder: '#F59B4B',
-  Purple: '#70308C',
+  Primary: '#70308C',
   LightPurple: '#F3E2FF',
   TimeoutHintBoxColor: '#FBF5FF',
   TimeoutHintBoxBorder: '#F3E2FF',
@@ -72,16 +70,6 @@ const Colors = {
   Mercury: '#E6E6E6',
   Yellow: '#E8A94F',
   selectIDTextGradient: ['#F5F5F5', '#FFFFFF'],
-  brandPrimary: '#5B03AD',
-  brandPrimaryLight: '#F2E6FA',
-  brandPrimaryDark: '#4A028F',
-  DeepPurple: '#290B45',
-  RoyalPurple: '#451691',
-  LightMintGreen: '#9DCFBB',
-  CharcoalBlue: '#384455',
-  LightRose: '#EFB3B5',
-  LightYellow: '#FFE799',
-  SteelBlue: '#809FB8',
 };
 
 export type ElevationLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -90,20 +78,19 @@ export const PurpleTheme = {
   Colors: {
     ProfileIconColor: Colors.DarkGray,
     DetailedViewBackground: Colors.Gray97,
-    TabItemText: Colors.Purple,
+    TabItemText: Colors.Primary,
     Details: Colors.Black,
     DetailsLabel: Colors.Gray40,
     LoadingDetailsLabel: Colors.Gray40,
-    AddIdBtnBg: Colors.Purple,
-    AddIdBtnTxt: Colors.Purple,
+    AddIdBtnBg: Colors.Primary,
+    AddIdBtnTxt: Colors.Primary,
     DownloadIdBtnTxt: Colors.White,
-    Loading: Colors.Purple,
-    Cursor: Colors.Purple,
-    noUinText: Colors.Purple,
-    IconBg: Colors.Purple,
+    Loading: Colors.Primary,
+    Cursor: Colors.Primary,
+    noUinText: Colors.Primary,
+    IconBg: Colors.Primary,
     popUp: Colors.Green,
-    Icon: Colors.Purple,
-    SearchIcon: Colors.veryLightBluishGray,
+    Icon: Colors.Primary,
     GrayIcon: Colors.Gray50,
     helpText: Colors.Gray44,
     borderBottomColor: Colors.Grey6,
@@ -111,10 +98,9 @@ export const PurpleTheme = {
     lightGreyBackgroundColor: Colors.LightGrey,
     errorGrayText: Colors.mediumDarkGrey,
     aboutVersion: Colors.Gray40,
-    switchHead: Colors.Purple,
+    switchHead: Colors.Primary,
     switchTrackTrue: Colors.LightPurple,
     switchTrackFalse: Colors.Grey,
-    switchCircleOff: Colors.White,
     overlayBackgroundColor: Colors.White,
     rotatingIcon: Colors.Grey5,
     loadingLabel: Colors.Grey6,
@@ -129,7 +115,7 @@ export const PurpleTheme = {
     whiteText: Colors.White,
     flipCameraIcon: Colors.Black,
     RetrieveIdLabel: Colors.ShadeOfGrey,
-    inputSelection: Colors.Purple,
+    inputSelection: Colors.Primary,
     checkCircleIcon: Colors.White,
     OnboardingCircleIcon: Colors.White,
     OnboardingCloseIcon: Colors.White,
@@ -156,27 +142,19 @@ export const PurpleTheme = {
     uncheckedIcon: Colors.uncheckedIcon,
     settingsLabel: Colors.Black,
     chevronRightColor: Colors.Grey,
-    linearGradientStart: Colors.brandPrimary,
-    linearGradientEnd: Colors.brandPrimary,
-    linearIconGradientStart: Colors.brandPrimary,
-    linearIconGradientEnd: Colors.brandPrimary,
+    linearGradientStart: Colors.startColor,
+    linearGradientEnd: Colors.endColor,
+    linearIconGradientStart: Colors.startColor,
+    linearIconGradientEnd: Colors.startColor,
     LinearGradientStroke: Colors.stroke,
     warningLogoBgColor: Colors.warningLogoBg,
     tooltipIcon: Colors.tooltip,
     toolTipPointerColor: Colors.toolTipPointer,
-    urlLink: Colors.Purple,
+    urlLink: Colors.Primary,
     warningText: Colors.Red,
     PendingIcon: Colors.Yellow,
-    ListSelectedBackground: Colors.brandPrimaryLight,
-    ListSelectedText: Colors.brandPrimary,
-    ListSelectedIcon: Colors.brandPrimary,
-    ListUnselectedBackground: Colors.White,
-    ListUnselectedText: Colors.Black,
-    SearchBarPlaceholderColor: Colors.veryLightBluishGray,
-    PopupText: Colors.CharcoalBlue,
-    TransactionCodeBackgroundColor: Colors.White,
-    TransactionCodeBorderColor: Colors.veryLightBluishGray,
-    TransactionCodePlaceholderColor: Colors.SteelBlue,
+    unCheckText: Colors.Orange,
+    secondaryText: Colors.Orange,
   },
   Styles: StyleSheet.create({
     title: {
@@ -350,14 +328,14 @@ export const PurpleTheme = {
       borderRadius: 15,
       margin: 5,
       borderWidth: 3,
-      borderColor: Colors.Purple,
+      borderColor: Colors.Primary,
       overflow: 'hidden',
     },
     selectedVc: {
       borderRadius: 10,
       margin: 5,
       borderWidth: 2,
-      borderColor: Colors.Purple,
+      borderColor: Colors.Primary,
     },
     labelPartContainer: {
       marginLeft: 16,
@@ -513,9 +491,6 @@ export const PurpleTheme = {
       borderRadius: 10,
       backgroundColor: Colors.LightPurple,
     },
-    BackButtonBgGradient: {
-      borderRadius: 10,
-    },
     imageCaptureButton: {
       marginLeft: 130,
       marginRight: 50,
@@ -595,7 +570,7 @@ export const PurpleTheme = {
       borderWidth: 0,
     },
     tabIndicator: {
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
     },
     tabContainer: {
       backgroundColor: Colors.Transparent,
@@ -623,52 +598,10 @@ export const PurpleTheme = {
       fontFamily: 'Montserrat_600SemiBold',
       fontSize: 18,
     },
-    overlay: {
-      padding: 1,
-      borderRadius: 12,
-      overflow: 'hidden',
-    },
-    listItemSelectedText: {
-      color: Colors.brandPrimary,
-      fontWeight: '600',
-      fontFamily: 'Montserrat_500Medium',
-    },
-    listItemUnselectedText: {
-      color: Colors.Black,
-      fontWeight: '400',
-      fontFamily: 'Montserrat_500Medium',
-    },
-    listItemSelectedContainer: {backgroundColor: Colors.brandPrimaryLight},
-    listItemUnselectedContainer: {backgroundColor: Colors.White},
-    listItemSelectedCircle: {
-      width: 22,
-      height: 22,
-      borderRadius: 11,
-      borderWidth: 7,
-      borderColor: Colors.brandPrimary,
-      backgroundColor: Colors.White,
-    },
-    wrapper: {
-      borderWidth: 2,
-      borderRadius: 16,
-      padding: 2,
-    },
-    container: {
-      width: 48,
-      height: 22,
-      borderRadius: 16,
-      padding: 3,
-    },
-    circle: {
-      width: 18,
-      height: 18,
-      borderRadius: 9,
-      elevation: 2,
-    },
     idInputBottom: {
       position: 'relative',
       bottom: 18,
-      borderBottomColor: Colors.Purple,
+      borderBottomColor: Colors.Primary,
       borderBottomWidth: 1,
       minWidth: 210,
     },
@@ -725,51 +658,19 @@ export const PurpleTheme = {
       borderRadius: 200,
       height: 70,
       width: 70,
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
       justifyContent: 'center',
       position: 'absolute',
     },
     boxShadow: generateBoxShadowStyle(),
     tooltipContainerStyle: {
-      backgroundColor: '#EBE6F3',
-      borderWidth: 2,
-      borderColor: '#E0E0E0',
-      maxWidth: '90%',
-    },
-    tooltipOverlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: 'transparent',
-    },
-    tooltip: {
-      position: 'absolute',
-      backgroundColor: '#EBE6F3',
-      borderRadius: 8,
-      elevation: 6,
-      shadowColor: '#000',
-      shadowOffset: {width: 0, height: 2},
-      shadowOpacity: 0.2,
-      shadowRadius: 4,
+      backgroundColor: '#FAFAFA',
       borderWidth: 1,
       borderColor: '#E0E0E0',
-      zIndex: 999,
-    },
-    pointer: {
-      position: 'absolute',
-      width: 0,
-      height: 0,
-      borderLeftWidth: POINTER_SIZE / 2,
-      borderRightWidth: POINTER_SIZE / 2,
-      borderBottomWidth: POINTER_SIZE / 2,
-      borderLeftColor: 'transparent',
-      borderRightColor: 'transparent',
-      borderBottomColor: '#EBE6F3',
-      zIndex: 1000,
-    },
-    tooltipContentTitle: {
-      color: Colors.DeepPurple,
+      marginLeft: 15,
     },
     tooltipContentDescription: {
-      color: Colors.RoyalPurple,
+      color: Colors.toolTipContent,
       marginTop: 10,
     },
     tooltipHrLine: {
@@ -800,7 +701,7 @@ export const PurpleTheme = {
       paddingHorizontal: 24,
     },
     newLabel: {
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
       paddingHorizontal: 5,
       paddingVertical: 4,
       maxHeight: 20,
@@ -931,21 +832,21 @@ export const PurpleTheme = {
       fontSize: 14,
       lineHeight: 15,
       padding: 1,
-      marginHorizontal: 8,
       fontFamily: 'Montserrat_600SemiBold',
+    },
+    topBanner: {
+      marginTop: 10,
+      marginBottom: 10,
     },
     dismiss: {paddingLeft: 9},
     inProgress: {
-      backgroundColor: Colors.LightYellow,
-      color: Colors.CharcoalBlue,
+      backgroundColor: Colors.OrangeBrown,
     },
     success: {
-      backgroundColor: Colors.LightMintGreen,
-      color: Colors.CharcoalBlue,
+      backgroundColor: Colors.Green,
     },
     error: {
-      backgroundColor: Colors.LightRose,
-      color: Colors.CharcoalBlue,
+      backgroundColor: Colors.LightRed,
     },
   }),
   QrCodeStyles: StyleSheet.create({
@@ -1015,7 +916,7 @@ export const PurpleTheme = {
     },
     onEnteringPin: {
       borderBottomWidth: 3,
-      borderColor: Colors.Purple,
+      borderColor: Colors.Primary,
       color: Colors.Black,
       flex: 1,
       fontFamily: 'Montserrat_700Bold',
@@ -1066,7 +967,7 @@ export const PurpleTheme = {
       fontFamily: 'Montserrat_600SemiBold',
     },
     urlLinkText: {
-      color: Colors.Purple,
+      color: Colors.Primary,
       fontFamily: 'Montserrat_600SemiBold',
     },
     aboutDetails: {
@@ -1116,6 +1017,12 @@ export const PurpleTheme = {
       fontSize: 15,
       lineHeight: 18,
     },
+    mediumExtraSmall: {
+      fontSize: 14,
+    },
+    medium: {
+      fontSize: 16,
+    },
     extraSmall: {
       fontSize: 12,
     },
@@ -1156,7 +1063,7 @@ export const PurpleTheme = {
   }),
   ToastItemStyles: StyleSheet.create({
     toastContainer: {
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
       position: 'absolute',
       alignSelf: 'center',
       top: 80,
@@ -1178,27 +1085,23 @@ export const PurpleTheme = {
     },
   }),
   SearchBarStyles: StyleSheet.create({
+    idleSearchBarBottomLine: {
+      alignItems: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: Colors.Gray40,
+    },
     searchBarContainer: {
       alignItems: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: Colors.Primary,
     },
-    clearIcon: {
-      position: 'absolute',
-      right: 45,
-      width: 40,
-      justifyContent: 'center',
+    vcSearchBarContainer: {
       alignItems: 'center',
-    },
-    vcSearchBarContainer: {},
-    innerSearchBarContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      width: '100%',
+      borderBottomWidth: 0.5,
+      borderTopWidth: 0.5,
+      borderColor: Colors.DimGray,
+      width: Dimensions.get('window').width,
       backgroundColor: Colors.White,
-      borderColor: Colors.veryLightBluishGray,
-      borderRadius: 18,
-      borderWidth: 2,
-      marginTop: 10,
-      paddingHorizontal: 20,
     },
     vcSearchIcon: {
       justifyContent: 'center',
@@ -1207,17 +1110,17 @@ export const PurpleTheme = {
       paddingLeft: 15,
     },
     searchIcon: {
-      width: 25,
       justifyContent: 'center',
-      alignItems: 'center',
+      height: Dimensions.get('window').height * 0.055,
+      width: Dimensions.get('window').width * 0.1,
     },
     searchBar: {
       textAlign: I18nManager.isRTL ? 'right' : 'left',
       height: Dimensions.get('window').height * 0.055,
-      flex: 1,
-      fontFamily: 'Montserrat_500Medium',
-      fontSize: 17,
-      marginRight: 40,
+      width: Dimensions.get('window').width * 0.75,
+    },
+    clearSearch: {
+      padding: 10,
     },
   }),
   ButtonStyles: StyleSheet.create({
@@ -1225,14 +1128,14 @@ export const PurpleTheme = {
       flex: 1,
     },
     solid: {
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
     },
     clear: {
       backgroundColor: Colors.Transparent,
     },
     outline: {
       backgroundColor: Colors.Transparent,
-      borderColor: Colors.Purple,
+      borderColor: Colors.Primary,
     },
     disabledOutlineButton: {
       backgroundColor: Colors.Transparent,
@@ -1247,7 +1150,7 @@ export const PurpleTheme = {
       backgroundColor: Colors.Grey,
     },
     addId: {
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
     },
     gradient: {
       borderRadius: 9,
@@ -1268,7 +1171,7 @@ export const PurpleTheme = {
     },
     radius: {
       borderRadius: 10,
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
     },
   }),
   OIDCAuthStyles: StyleSheet.create({
@@ -1315,7 +1218,7 @@ export const PurpleTheme = {
       margin: 16,
       padding: 8,
       borderWidth: 2,
-      borderColor: Colors.Purple,
+      borderColor: Colors.Primary,
       borderRadius: 30,
     },
     sharedSuccessfullyVerifierInfo: {
@@ -1593,7 +1496,7 @@ export const PurpleTheme = {
       padding: 20,
     },
     slider: {
-      backgroundColor: Colors.Purple,
+      backgroundColor: Colors.Primary,
       minHeight: 300,
       width: '100%',
       margin: 0,
@@ -1768,10 +1671,10 @@ export const PurpleTheme = {
       paddingHorizontal: 15,
       paddingBottom: 10,
       backgroundColor: '#fff',
-      elevation: 5,
-      shadowColor: '#000',
-      shadowOffset: {width: 0, height: 4}, // only downward shadow
-      shadowOpacity: 0.1,
+      elevation: 5, // For Android
+      shadowColor: '#000', // For iOS
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.2,
       shadowRadius: 4,
       zIndex: 1,
     },
@@ -2081,6 +1984,20 @@ export const PurpleTheme = {
       paddingTop: 3,
       maxWidth: 250,
     },
+    footerContainer: {
+      alignItems: 'center',
+      marginTop: 12,
+    },
+
+    poweredByRow: {
+      alignItems: 'center',
+      marginBottom: 4,
+    },
+    logoStyle: {
+      width: 24,
+      height: 24,
+      marginRight: 5,
+    },
     tuvaliVerisonStyle: {
       paddingTop: 3,
       paddingBottom: 12,
@@ -2128,26 +2045,6 @@ export const PurpleTheme = {
       marginBottom: 10,
       marginTop: 10,
       width: '80%',
-    },
-    transactionGradientContainer: {
-      width: Dimensions.get('window').width - 100,
-      alignSelf: 'center',
-      borderRadius: 18,
-      padding: 2,
-      marginTop: 10,
-      marginBottom: 25,
-    },
-    inputContainer: {
-      borderBottomWidth: 0,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      width: '100%',
-      backgroundColor: Colors.White,
-      borderRadius: 18,
-      paddingHorizontal: 20,
-      overflow: 'hidden',
-      height: 60,
     },
     inputStyle: {
       fontSize: 20,

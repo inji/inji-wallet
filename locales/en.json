@@ -221,7 +221,8 @@
     "forMoreDetails": "For more details",
     "clickHere": "Click here",
     "version": "Version",
-    "poweredBy": "Powered by Inji, A MOSIP Product"
+    "poweredBy": "A MOSIP Product",
+    "copyright": "© 2022 MOSIP. All rights reserved."
   },
   "IssuersScreen": {
     "title": "Add new card",
@@ -445,7 +446,7 @@
     }
   },
   "MyVcsTab": {
-    "searchByName": "search...",
+    "searchByName": "Search",
     "bringYourDigitalID": "Bring your digital identity",
     "generateVcDescription": "Tap on \"Download card\" below to download your card",
     "generateVcFABDescription": "Tap on  \"+\" below to download your card",
@@ -869,7 +870,7 @@
   "SendVcScreen": {
     "reasonForSharing": "Reason for sharing (optional)",
     "introTitle": "Requester",
-    "requestMessage": "is requesting your digital ID for the purpose",
+    "requestMessage": "is requesting your digital ID for the purpose of ",
     "acceptRequest": "Share",
     "acceptRequestAndVerify": "Share with Selfie",
     "reject": "Reject",
@@ -1162,9 +1163,7 @@
     "verify": "Verify",
     "emptyCodeError": "Code cannot be empty",
     "invalidCharacters": "Only letters and numbers are allowed",
-    "TransactionCode": "Transasction Code",
-    "showMore": "Show more ↓",
-    "showLess": "Show less ↑"
+    "TransactionCode": "Transasction Code"
   },
   "trustScreen": {
     "description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",

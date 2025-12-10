@@ -9,6 +9,7 @@ import {getMosipIdentifier} from './commonUtil';
 import {VCFormat} from './VCFormat';
 import {isMosipVC, UUID} from './Utils';
 import {getCredentialType} from '../components/VC/common/VCUtils';
+import {RevocationStatus, RevocationStatusType} from './vcVerifier/VcVerifier';
 
 const VC_KEY_PREFIX = 'VC';
 const VC_ITEM_STORE_KEY_REGEX = '^VC_[a-zA-Z0-9_-]+$';
@@ -31,7 +32,7 @@ export class VCMetadata {
   mosipIndividualId: string = '';
   format: string = '';
   isExpired: boolean = false;
-  isRevoked: boolean = false;
+  isRevoked: RevocationStatusType = RevocationStatus.FALSE;
 
   downloadKeyType: string = '';
   credentialType: string = '';
@@ -51,7 +52,7 @@ export class VCMetadata {
     format = '',
     downloadKeyType = '',
     isExpired = false,
-    isRevoked = false,
+    isRevoked = RevocationStatus.FALSE,
     credentialType = '',
     issuerHost = '',
     lastKnownStatusTimestamp = '',
@@ -150,7 +151,7 @@ export const getVCMetadata = (context: object, keyType: string) => {
     try {
       const url = new URL(issuerHost);
       return url.hostname.split('.')[0];
-    }catch (error) {
+    } catch (error) {
       // Fallback to issuerHost if URL parsing fails
       return issuerHost;
     }
@@ -164,8 +165,8 @@ export const getVCMetadata = (context: object, keyType: string) => {
     timestamp: context.timestamp ?? '',
     isVerified: context.vcMetadata.isVerified ?? false,
     isExpired: context.vcMetadata.isExpired ?? false,
-    isRevoked: context.vcMetadata.isRevoked ?? false,
-    lastKnownStatusTimestamp:context.vcMetadata.lastKnownStatusTimestamp ?? '',
+    isRevoked: context.vcMetadata.isRevoked ?? RevocationStatus.FALSE,
+    lastKnownStatusTimestamp: context.vcMetadata.lastKnownStatusTimestamp ?? '',
     mosipIndividualId: getMosipIndividualId(
       context['verifiableCredential'] as VerifiableCredential,
       issuer,

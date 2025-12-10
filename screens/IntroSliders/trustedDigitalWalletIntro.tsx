@@ -2,7 +2,7 @@ import React from 'react';
 import {Column, Row, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
 import {SvgImage} from '../../components/ui/svg';
-import LinearGradient from 'react-native-linear-gradient';
+import {LinearGradient} from 'react-native-linear-gradient';
 import {Image, Icon} from 'react-native-elements';
 import {ScrollView, View} from 'react-native';
 import {HelpScreen} from '../../components/HelpScreen';
@@ -17,28 +17,28 @@ export const StaticHomeScreen: React.FC = () => {
       name: 'Abigail',
       status: 'valid',
       pin: false,
-      face: require('../../assets/faceImage2.png'),
+      face: require('../../assets/Profile1.png'),
     },
     {
       id: 2,
       name: 'Patricia',
       status: 'valid',
       pin: false,
-      face: require('../../assets/faceImage1.png'),
+      face: require('../../assets/Profile2.jpg'),
     },
     {
       id: 3,
       name: 'Timara',
       status: 'pending',
       pin: false,
-      face: require('../../assets/faceImage2.png'),
+      face: require('../../assets/Profile3.jpg'),
     },
     {
       id: 4,
       name: 'Abishek',
       status: 'valid',
       pin: false,
-      face: require('../../assets/faceImage1.png'),
+      face: require('../../assets/Profile4.png'),
     },
   ];
 
@@ -90,6 +90,7 @@ export const StaticHomeScreen: React.FC = () => {
       </Row>
       <SearchBar
         searchBarTestID="searchBar"
+        isVcSearch
         editable={false}
         placeholder={t('MyVcsTab:searchByName')}
       />

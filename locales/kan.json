@@ -220,7 +220,8 @@
     "forMoreDetails": "ಹೆಚ್ಚಿನ ವಿವರಗಳಿಗಾಗಿ",
     "clickHere": "ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ",
     "version": "ಆವೃತ್ತಿ",
-    "poweredBy": "ಇಂಜಿಯಿಂದ ನಡೆಸಲ್ಪಡುತ್ತಿದೆ, ಒಂದು MOSIP ಉತ್ಪನ್ನ"
+    "poweredBy": "ಒಂದು MOSIP ಉತ್ಪನ್ನ",
+    "copyright": "© 2022 MOSIP. ಎಲ್ಲಾ ಹಕ್ಕುಗಳು ಸಂರಕ್ಷಿಸಲಾಗಿದೆ."
   },
   "IssuersScreen": {
     "title": "ಹೊಸ ಕಾರ್ಡ್ ಸೇರಿಸಿ",
@@ -444,7 +445,7 @@
     }
   },
   "MyVcsTab": {
-    "searchByName": "ಹುಡುಕು...",
+    "searchByName": "ಹುಡುಕು",
     "downloadCard": "ಕಾರ್ಡ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
     "bringYourDigitalID": "ನಿಮ್ಮ ಡಿಜಿಟಲ್ ಐಡಿ ತನ್ನಿ",
     "generateVcDescription": "ನಿಮ್ಮ ಕಾರ್ಡ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಕೆಳಗಿನ ಡೌನ್‌ಲೋಡ್ ಕಾರ್ಡ್ ಅನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ",
@@ -861,7 +862,7 @@
   "SendVcScreen": {
     "reasonForSharing": "ಹಂಚಿಕೆಗೆ ಕಾರಣ (ಐಚ್ಛಿಕ)",
     "introTitle": "ವಿನಂತಿದವರು",
-    "requestMessage": "ನಿಮ್ಮ ಡಿಜಿಟಲ್ ಐಡಿಯನ್ನು ವಿನಂತಿಸುತ್ತಿದ್ದಾರೆ",
+    "requestMessage": "ನಿಮ್ಮ ಡಿಜಿಟಲ್ ಐಡಿಯನ್ನು ವಿನಂತಿಸುತ್ತಿದ್ದಾರೆ ",
     "acceptRequest": "ಹಂಚಿಕೊಳ್ಳಿ",
     "acceptRequestAndVerify": "ಸೆಲ್ಫಿಯೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ",
     "reject": "ತಿರಸ್ಕರಿಸಿ",
@@ -1146,9 +1147,7 @@
     "verify": "ಸರಿಪಡಿಸಿ",
     "emptyCodeError": "ಕೋಡ್ ಖಾಲಿ ಇರಬಾರದು",
     "invalidCharacters": "ಅಕ್ಷರಗಳು ಮತ್ತು ಸಂಖ್ಯೆಗಳು ಮಾತ್ರ ಅನುಮತಿಸಲಾಗಿದೆ",
-    "TransactionCode": "ವಹಿವಾಟು ಕೋಡ್",
-    "showMore": "ಹೆಚ್ಚು ತೋರಿಸಿ ↓",
-    "showLess": "ಕಡಿಮೆ ತೋರಿಸಿ ↑"
+    "TransactionCode": "ವಹಿವಾಟು ಕೋಡ್"
   },
   "trustScreen": {
     "description": "ಈ ಹೊರಹೊಮ್ಮಿಸುವವರನ್ನು ನೀವು ಗುರುತಿಸುತ್ತೀರಾ ಅಥವಾ ನಂಬಿದೀರಾ ಎಂಬುದನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ. ನೀವು ನಂಬಿದ ನಂತರ:",

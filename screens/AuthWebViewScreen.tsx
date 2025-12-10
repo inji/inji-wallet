@@ -7,19 +7,21 @@ import {
   TouchableOpacity,
   Text,
   BackHandler,
-  SafeAreaView,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import {Ionicons} from '@expo/vector-icons';
 import VciClient from '../shared/vciClient/VciClient';
 import {Theme} from '../components/ui/styleUtils';
 import {useTranslation} from 'react-i18next';
+import {isAndroid} from '../shared/constants';
 
 const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   const {authorizationURL, clientId, redirectUri, controller} = route.params;
   const webViewRef = useRef<WebView>(null);
   const [showWebView, setShowWebView] = useState(false);
+  const [shouldRenderWebView, setShouldRenderWebView] = useState(false);
   const {t} = useTranslation('authWebView');
+  const WEBVIEW_INIT_DELAY_MS = 300;
 
   const hostName = new URL(authorizationURL).hostname; // example.mosip.net
   const parsed = psl.parse(hostName);
@@ -74,6 +76,22 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
     handleBackPress,
   ]);
 
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+
+    if (isAndroid()) {
+      setShouldRenderWebView(true);
+
+      timeoutId = setTimeout(() => {
+        setShouldRenderWebView(false);
+      }, WEBVIEW_INIT_DELAY_MS);
+    }
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, []);
+
   const handleNavigationRequest = (request: any) => {
     const {url} = request;
     if (url.startsWith(redirectUri)) {
@@ -116,8 +134,11 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   );
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <View style={{flex: 1}}>
       <Header />
+      {shouldRenderWebView && !showWebView && (
+        <WebView style={{width: 0, height: 0}} source={{uri: 'about:blank'}} />
+      )}
       {showWebView && (
         <WebView
           ref={webViewRef}
@@ -136,7 +157,7 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
           thirdPartyCookiesEnabled={false}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 

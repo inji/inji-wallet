@@ -1,18 +1,37 @@
 import {NativeModules} from 'react-native';
 
+export const RevocationStatus = Object.freeze({
+  TRUE: 'TRUE',
+  FALSE: 'FALSE',
+  UNDETERMINED: 'UNDETERMINED',
+} as const);
+
+/**
+ * Type representing any possible value of RevocationStatus.
+ *
+ * - "TRUE" → Condition was evaluated and is positively true
+ * - "FALSE" → Condition was evaluated and is definitively false
+ * - "UNDETERMINED" → Condition could not be evaluated due to an error
+ */
+export type RevocationStatusType =
+  (typeof RevocationStatus)[keyof typeof RevocationStatus];
+
 export type CredentialStatusResult = {
-  status: number;
-  purpose: string;
-  errorCode?: string;
-  errorMessage?: string;
-  statusListVC?: string;
+  isValid: boolean;
+  error?: ErrorResult;
+  statusListVC?: Record<string, any>; // Available only in iOS
+};
+
+export type ErrorResult = {
+  code: string;
+  message: string;
 };
 
 export type VerificationSummaryResult = {
   verificationStatus: boolean;
   verificationMessage: string;
   verificationErrorCode: string;
-  credentialStatus: CredentialStatusResult[];
+  credentialStatus: Record<string, CredentialStatusResult>;
 };
 
 class VCVerifier {
@@ -33,14 +52,12 @@ class VCVerifier {
   async getCredentialStatus(
     credential: any,
     format: string,
-  ): Promise<CredentialStatusResult[]> {
+  ): Promise<Record<string, CredentialStatusResult>> {
     try {
-      const result: CredentialStatusResult[] =
-        await this.vcVerifier.getCredentialStatus(
-          JSON.stringify(credential),
-          format,
-        );
-      return result;
+      return await this.vcVerifier.getCredentialStatus(
+        JSON.stringify(credential),
+        format,
+      );
     } catch (error) {
       throw new Error(`Failed to get credential status: ${error}`);
     }
@@ -51,12 +68,11 @@ class VCVerifier {
     credentialFormat: string,
   ): Promise<VerificationSummaryResult> {
     try {
-      const result = await this.vcVerifier.getVerificationSummary(
+      return await this.vcVerifier.getVerificationSummary(
         credentialString,
         credentialFormat,
         [],
       );
-      return result;
     } catch (error) {
       throw new Error(`Failed to get verification summary: ${error}`);
     }

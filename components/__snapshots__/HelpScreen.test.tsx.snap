@@ -37,19 +37,10 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
       Help
     </Text>
   </View>,
-  <RNCSafeAreaView
-    edges={
-      {
-        "bottom": "additive",
-        "left": "additive",
-        "right": "additive",
-        "top": "additive",
-      }
-    }
+  <RCTSafeAreaView
     style={
       {
         "flex": 1,
-        "position": "relative",
       }
     }
   >
@@ -123,7 +114,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -243,7 +234,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -288,7 +279,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -316,7 +307,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -424,7 +415,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -909,7 +900,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -1335,7 +1326,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -1499,7 +1490,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -1595,7 +1586,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -1645,7 +1636,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
         </View>
       </RCTScrollView>
     </View>
-  </RNCSafeAreaView>,
+  </RCTSafeAreaView>,
 ]
 `;
 
@@ -1686,19 +1677,10 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
       Help
     </Text>
   </View>,
-  <RNCSafeAreaView
-    edges={
-      {
-        "bottom": "additive",
-        "left": "additive",
-        "right": "additive",
-        "top": "additive",
-      }
-    }
+  <RCTSafeAreaView
     style={
       {
         "flex": 1,
-        "position": "relative",
       }
     }
   >
@@ -1772,7 +1754,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -1892,7 +1874,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -1937,7 +1919,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -1965,7 +1947,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -2073,7 +2055,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -2558,7 +2540,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -2984,7 +2966,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -3148,7 +3130,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -3244,7 +3226,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -3294,7 +3276,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
         </View>
       </RCTScrollView>
     </View>
-  </RNCSafeAreaView>,
+  </RCTSafeAreaView>,
 ]
 `;
 
@@ -3335,19 +3317,10 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
       Help
     </Text>
   </View>,
-  <RNCSafeAreaView
-    edges={
-      {
-        "bottom": "additive",
-        "left": "additive",
-        "right": "additive",
-        "top": "additive",
-      }
-    }
+  <RCTSafeAreaView
     style={
       {
         "flex": 1,
-        "position": "relative",
       }
     }
   >
@@ -3421,7 +3394,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -3541,7 +3514,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -3586,7 +3559,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -3614,7 +3587,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -3722,7 +3695,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -4207,7 +4180,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -4633,7 +4606,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -4797,7 +4770,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -4893,7 +4866,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -4943,7 +4916,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
         </View>
       </RCTScrollView>
     </View>
-  </RNCSafeAreaView>,
+  </RCTSafeAreaView>,
 ]
 `;
 
@@ -4984,19 +4957,10 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
       Help
     </Text>
   </View>,
-  <RNCSafeAreaView
-    edges={
-      {
-        "bottom": "additive",
-        "left": "additive",
-        "right": "additive",
-        "top": "additive",
-      }
-    }
+  <RCTSafeAreaView
     style={
       {
         "flex": 1,
-        "position": "relative",
       }
     }
   >
@@ -5070,7 +5034,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -5190,7 +5154,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -5235,7 +5199,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -5263,7 +5227,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -5371,7 +5335,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                     onPress={[Function]}
                     style={
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       }
                     }
@@ -5856,7 +5820,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -6282,7 +6246,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -6446,7 +6410,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -6542,7 +6506,7 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
                       null,
                       null,
                       {
-                        "color": "#F37321",
+                        "color": "#951F6F",
                         "fontFamily": "Montserrat_600SemiBold",
                       },
                     ]
@@ -6592,6 +6556,6 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
         </View>
       </RCTScrollView>
     </View>
-  </RNCSafeAreaView>,
+  </RCTSafeAreaView>,
 ]
 `;

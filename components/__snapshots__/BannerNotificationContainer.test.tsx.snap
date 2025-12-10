@@ -1,40 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BannerNotificationContainer Component should match snapshot with no banners visible 1`] = `
-<View
-  style={
-    {
-      "alignItems": "center",
-      "position": "absolute",
-      "width": "100%",
-      "zIndex": 100,
-    }
-  }
-/>
-`;
+exports[`BannerNotificationContainer Component should match snapshot with no banners visible 1`] = `null`;
 
-exports[`BannerNotificationContainer Component should match snapshot with verification banner disabled 1`] = `
-<View
-  style={
-    {
-      "alignItems": "center",
-      "position": "absolute",
-      "width": "100%",
-      "zIndex": 100,
-    }
-  }
-/>
-`;
+exports[`BannerNotificationContainer Component should match snapshot with verification banner disabled 1`] = `null`;
 
-exports[`BannerNotificationContainer Component should match snapshot with verification banner enabled 1`] = `
-<View
-  style={
-    {
-      "alignItems": "center",
-      "position": "absolute",
-      "width": "100%",
-      "zIndex": 100,
-    }
-  }
-/>
-`;
+exports[`BannerNotificationContainer Component should match snapshot with verification banner enabled 1`] = `null`;

@@ -81,6 +81,7 @@ export const PasscodeScreen: React.FC<PasscodeRouteProps> = props => {
         <Text
           testID="setPasscodeHeader"
           align="center"
+          size={'large'}
           style={{...Theme.TextStyles.header, paddingTop: 27}}>
           {t('header')}
         </Text>
@@ -92,6 +93,7 @@ export const PasscodeScreen: React.FC<PasscodeRouteProps> = props => {
             marginTop: 6,
             marginBottom: Dimensions.get('screen').height * 0.1,
           }}
+          size={'mediumExtraSmall'}
           weight="semibold"
           color={Theme.Colors.GrayText}>
           {controller.toggleUnlock
@@ -110,12 +112,14 @@ export const PasscodeScreen: React.FC<PasscodeRouteProps> = props => {
         <Text
           testID="confirmPasscodeHeader"
           align="center"
+          size={'large'}
           style={{...Theme.TextStyles.header, paddingTop: 27}}>
           {t('confirmPasscode')}
         </Text>
         <Text
           testID="confirmPasscodeDescription"
           align="center"
+          size={'mediumExtraSmall'}
           style={{
             paddingTop: 3,
             marginTop: 6,
@@ -149,6 +153,7 @@ export const PasscodeScreen: React.FC<PasscodeRouteProps> = props => {
           marginTop: 6,
           marginBottom: Dimensions.get('screen').height * 0.1,
         }}
+        size={'large'}
         align="center"
         weight="semibold"
         color={Theme.Colors.GrayText}>

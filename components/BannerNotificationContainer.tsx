@@ -11,6 +11,7 @@ import {useTranslation} from 'react-i18next';
 import {useScanScreen} from '../screens/Scan/ScanScreenController';
 import {Theme} from './ui/styleUtils';
 import {useSettingsScreen} from '../screens/Settings/SettingScreenController';
+import {RevocationStatusType} from '../shared/vcVerifier/VcVerifier';
 
 export const BannerNotificationContainer: React.FC<
   BannerNotificationContainerProps
@@ -33,11 +34,11 @@ export const BannerNotificationContainer: React.FC<
     bannerNotificationController.verificationStatus || null;
 
   return (
-    <View style={Theme.BannerStyles.bannerStackContainer}>
+    <>
       <BackupAndRestoreBannerNotification />
 
       {settingsScreenController.isKeyOrderSet === true && (
-        <View>
+        <View style={Theme.BannerStyles.topBanner}>
           <BannerNotification
             type={BannerStatusType.SUCCESS}
             message={t('keyPreferenceSuccess')}
@@ -49,7 +50,7 @@ export const BannerNotificationContainer: React.FC<
       )}
 
       {settingsScreenController.isKeyOrderSet === false && (
-        <View>
+        <View style={Theme.BannerStyles.topBanner}>
           <BannerNotification
             type={BannerStatusType.ERROR}
             message={t('keyPreferenceError')}
@@ -61,7 +62,7 @@ export const BannerNotificationContainer: React.FC<
       )}
 
       {WalletBindingSuccess && (
-        <View>
+        <View style={Theme.BannerStyles.topBanner}>
           <BannerNotification
             type={BannerStatusType.SUCCESS}
             message={t('activated')}
@@ -75,7 +76,7 @@ export const BannerNotificationContainer: React.FC<
       )}
 
       {reverificationSuccessObject.status && (
-        <View>
+        <View style={Theme.BannerStyles.topBanner}>
           <BannerNotification
             type={BannerStatusType.SUCCESS}
             message={t(
@@ -92,7 +93,7 @@ export const BannerNotificationContainer: React.FC<
       )}
 
       {showQuickShareSuccessBanner && (
-        <View>
+        <View style={Theme.BannerStyles.topBanner}>
           <BannerNotification
             type={BannerStatusType.SUCCESS}
             message={rt('status.accepted.message')}
@@ -156,13 +157,13 @@ export const BannerNotificationContainer: React.FC<
           testId={'downloadingVcSuccessPopup'}
         />
       )}
-    </View>
+    </>
   );
 };
 
 export type vcVerificationBannerDetails = {
   statusType: BannerStatus;
-  isRevoked: boolean;
+  isRevoked: RevocationStatusType;
   isExpired: boolean;
   vcType: string;
 };
