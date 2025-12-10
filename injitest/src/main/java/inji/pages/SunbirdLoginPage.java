@@ -324,7 +324,6 @@ public class SunbirdLoginPage extends BasePage {
     }
     
     public HomePage navigateBackToHomePage() {
-    	// Adjust to the actual control that brings you back to Home
     	click(doneButton, "Click on Done button to navigate back to Home");
     	 return new HomePage(driver);
     }

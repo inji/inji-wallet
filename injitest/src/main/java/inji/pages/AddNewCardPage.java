@@ -324,6 +324,7 @@ public class AddNewCardPage extends BasePage {
         scrollAndClickByAccessibilityId(landRegistryIssuerSdJwtCredentialType, "Click on 'Land Sd Jwt' option");
         return new ESignetLoginPage(driver);
     }
+    
     public ESignetLoginPage clickOnDownloadViaLandSVGWithFace() {
         scrollAndClickByAccessibilityId(FarmerIssuer, "Click on 'Download via Farmer SVG'");
         scrollAndClickByAccessibilityIdForStale(FarmerIssuerSdJwtCredentialTypeWithFace,
