@@ -60,7 +60,7 @@ export default function testIDProps(id: string) {
 }
 
 export const removeWhiteSpace = (str: string) => {
-  return str ? str.replace(/\s/g, '') : str;
+  return str ? str.replaceAll(/\s/g, '') : str;
 };
 
 export function logState(state: AnyState) {
@@ -134,7 +134,7 @@ export function sleep(timeInMillSeconds = 1000) {
   return new Promise(resolve => setTimeout(resolve, timeInMillSeconds));
 }
 
-export const getScreenHeight = () => {
+export const useScreenHeight = () => {
   const {height} = Dimensions.get('window');
   const isSmallScreen = height < 600;
 

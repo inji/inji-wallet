@@ -136,18 +136,16 @@ export const KeyManagementScreen: React.FC<KeyManagementScreenProps> = () => {
         <Copilot
           title={t('copilot:keyManagementTitle')}
           description={t('copilot:keyManagementDesc')}
-          order={7}
-          children={
-            <DragList
-              style={Theme.KeyManagementScreenStyle.dragViewStyleSettingsScreen}
-              scrollEnabled={false}
-              data={keyOrder}
-              renderItem={renderItem}
-              keyExtractor={item => item.value}
-              onReordered={handleReorder}
-            />
-          }
-        />
+          order={7}>
+          <DragList
+            style={Theme.KeyManagementScreenStyle.dragViewStyleSettingsScreen}
+            scrollEnabled={false}
+            data={keyOrder}
+            renderItem={renderItem}
+            keyExtractor={item => item.value}
+            onReordered={handleReorder}
+          />
+        </Copilot>
       </View>
       <Button
         testID="saveKeyOrderingPreference"

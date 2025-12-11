@@ -29,13 +29,15 @@ export async function request(
   path: `/${string}` | string,
   body?: Record<string, unknown>,
   host = MIMOTO_BASE_URL,
-  headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-  },
+  headers?: Record<string, string>,
   timeoutMillis?: number | undefined,
 ) {
+  const requestHeaders: Record<string, string> = headers ?? {
+    'Content-Type': 'application/json',
+  };
+
   if (path.includes('v1/mimoto')) {
-    headers['X-AppId'] = __AppId.getValue();
+    requestHeaders['X-AppId'] = __AppId.getValue();
   }
 
   const requestUrl = path.startsWith('https://') ? path : host + path;
@@ -45,7 +47,7 @@ export async function request(
     if (timeoutMillis === undefined) {
       response = await fetch(requestUrl, {
         method,
-        headers,
+        headers: requestHeaders,
         body: body ? JSON.stringify(body) : undefined,
       });
     } else {
@@ -56,7 +58,7 @@ export async function request(
       try {
         response = await fetch(requestUrl, {
           method,
-          headers,
+          headers: requestHeaders,
           body: body ? JSON.stringify(body) : undefined,
           signal: controller.signal,
         });

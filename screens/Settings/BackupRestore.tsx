@@ -6,7 +6,7 @@ import {Theme} from '../../components/ui/styleUtils';
 import {useBackupRestoreScreen} from './BackupRestoreController';
 import {BackupRestoreToggle} from './BackupRestoreToggle';
 
-export const BackupRestore: React.FC = ({} = props => {
+export const BackupRestore: React.FC = props => {
   const controller = useBackupRestoreScreen(props);
 
   return (
@@ -40,4 +40,4 @@ export const BackupRestore: React.FC = ({} = props => {
       )}
     </React.Fragment>
   );
-});
+};

@@ -19,7 +19,7 @@ import {
   sendErrorEvent,
 } from '../../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
-import {Error} from '../../components/ui/Error';
+import {ErrorView} from '../../components/ui/Error';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {getVCsOrderedByPinStatus} from '../../shared/Utils';
 import {SvgImage} from '../../components/ui/svg';
@@ -475,7 +475,7 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
       />
 
       {isVerificationFailed && (
-        <Error
+        <ErrorView
           testID="verificationError"
           isVisible={isVerificationFailed}
           isModal={true}
@@ -492,7 +492,7 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
       )}
 
       {controller.isNetworkOff && (
-        <Error
+        <ErrorView
           testID="networkOffError"
           isVisible={controller.isNetworkOff}
           isModal

@@ -134,10 +134,7 @@ export const StaticHomeScreen: React.FC = () => {
                 <Text
                   testID={`cardStatus-${card.id}`}
                   style={{
-                    color:
-                      card.status === 'valid'
-                        ? Theme.Colors.GrayText
-                        : Theme.Colors.GrayText,
+                    color: Theme.Colors.GrayText,
                   }}>
                   {t('VcDetails:' + card.status)}
                 </Text>

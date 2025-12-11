@@ -16,7 +16,7 @@ import {
 import {useTranslation} from 'react-i18next';
 import {MessageOverlay} from '../../../components/MessageOverlay';
 import {isIOS} from '../../../shared/constants';
-import testIDProps, {getScreenHeight} from '../../../shared/commonUtil';
+import testIDProps, {useScreenHeight} from '../../../shared/commonUtil';
 import {CustomTooltip} from '../../../components/ui/ToolTip';
 
 export const GetIdInputModal: React.FC<GetIdInputModalProps> = props => {
@@ -25,7 +25,7 @@ export const GetIdInputModal: React.FC<GetIdInputModalProps> = props => {
 
   const inputLabel = t('enterApplicationId');
 
-  const {isSmallScreen, screenHeight} = getScreenHeight();
+  const {isSmallScreen, screenHeight} = useScreenHeight();
 
   return (
     <Modal

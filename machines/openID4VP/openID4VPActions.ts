@@ -436,7 +436,7 @@ function extractAlgFromSdJwt(sdJwtCompact: string): string {
 }
 
 function base64UrlDecode(input: string): string {
-  input = input.replace(/-/g, '+').replace(/_/g, '/');
+  input = input.replaceAll(/-/g, '+').replaceAll(/_/g, '/');
   while (input.length % 4) {
     input += '=';
   }
@@ -457,7 +457,8 @@ function fetchCredentialBasedOnFormat(vc: any) {
       );
       break;
     }
-    case VCFormat.vc_sd_jwt || VCFormat.dc_sd_jwt: {
+    case VCFormat.vc_sd_jwt:
+    case VCFormat.dc_sd_jwt: {
       credential =
         vc.verifiableCredential.processedCredential.fullResolvedPayload;
       break;

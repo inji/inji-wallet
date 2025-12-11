@@ -68,7 +68,7 @@ export class UUID {
   }
 }
 
-export const formatTextWithGivenLimit = (value: string, limit: number = 15) => {
+export const formatTextWithGivenLimit = (value: string, limit = 15) => {
   if (value.length > limit) {
     return value.substring(0, limit) + '...';
   }
@@ -83,7 +83,7 @@ export enum DEEPLINK_FLOWS {
 export function base64ToByteArray(base64String) {
   try {
     let cleanBase64 = base64String.trim();
-    cleanBase64 = cleanBase64.replace(/-/g, '+').replace(/_/g, '/');
+    cleanBase64 = cleanBase64.replaceAll(/-/g, '+').replaceAll(/_/g, '/');
     while (cleanBase64.length % 4) {
       cleanBase64 += '=';
     }
@@ -107,12 +107,12 @@ export async function canonicalize(unsignedVp: any) {
       delete jsonldObjectClone.proof;
     }
     const expandedJsonldObject = await jsonld.expand(jsonldObjectClone);
-    let normalizedJsonldObject = await jsonld.canonize(expandedJsonldObject, {
+    const normalizedJsonldObject = await jsonld.canonize(expandedJsonldObject, {
       algorithm: 'URDNA2015',
     });
 
     const expandedJsonldProof = await jsonld.expand(jsonldProof);
-    let normalizedJsonldProof = await jsonld.canonize(expandedJsonldProof, {
+    const normalizedJsonldProof = await jsonld.canonize(expandedJsonldProof, {
       algorithm: 'URDNA2015',
     });
 

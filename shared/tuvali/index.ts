@@ -23,7 +23,7 @@ const wallet: Wallet = NativeModules.WalletModule
     );
 
 // TODO: Use Actual Verifier module on IOS once Verifier is implemented
-let verifier: Verifier = NativeModules.VerifierModule;
+const verifier: Verifier = NativeModules.VerifierModule;
 
 if (!isIOS()) {
   if (verifier) setupModule(verifier);

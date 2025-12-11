@@ -20,7 +20,7 @@ import {
   VCItemContainerFlowType,
 } from '../../shared/Utils';
 import {FaceVerificationAlertOverlay} from './FaceVerificationAlertOverlay';
-import {Error} from '../../components/ui/Error';
+import {ErrorView} from '../../components/ui/Error';
 import {SvgImage} from '../../components/ui/svg';
 import {LIVENESS_CHECK} from '../../shared/constants';
 

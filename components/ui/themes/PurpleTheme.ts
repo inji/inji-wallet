@@ -834,10 +834,6 @@ export const PurpleTheme = {
       padding: 1,
       fontFamily: 'Montserrat_600SemiBold',
     },
-    topBanner: {
-      marginTop: 10,
-      marginBottom: 10,
-    },
     dismiss: {paddingLeft: 9},
     inProgress: {
       backgroundColor: Colors.OrangeBrown,

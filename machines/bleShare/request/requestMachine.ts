@@ -23,7 +23,7 @@ import {VcMetaEvents} from '../../VerifiableCredential/VCMetaMachine/VCMetaMachi
 import {subscribe} from '../../../shared/openIdBLE/verifierEventHandler';
 import {VerifierDataEvent} from '../../../shared/tuvali/types/events';
 import {BLEError} from '../types';
-import Storage, { isMinimumStorageLimitReached } from '../../../shared/storage';
+import Storage, {isMinimumStorageLimitReached} from '../../../shared/storage';
 import {VCMetadata} from '../../../shared/VCMetadata';
 import {
   getEndEventData,
@@ -623,7 +623,7 @@ export const requestMachine =
                 credentialConfigurationId:
                   context.incomingVc.verifiableCredential
                     .credentialConfigurationId,
-                issuer: vcMetadata.issuerHost!!,
+                issuer: vcMetadata.issuerHost!,
                 timestamp: Date.now(),
                 deviceName:
                   context.senderInfo.name || context.senderInfo.deviceName,
@@ -832,10 +832,10 @@ export const requestMachine =
               let errorMessage = event.message;
               if (event.message.includes('CRCFailureCount')) {
                 const eventMessageList = event.message.split(' ');
-                const crcFailureCount = parseInt(
+                const crcFailureCount = Number.parseInt(
                   eventMessageList[0].split(':')[1],
                 );
-                const totalChunkCount = parseInt(
+                const totalChunkCount = Number.parseInt(
                   eventMessageList[1].split(':')[1],
                 );
                 if (crcFailureCount > 0) {
@@ -885,7 +885,9 @@ export const requestMachine =
         },
 
         checkStorageAvailability: () => async () => {
-          return Promise.resolve(isMinimumStorageLimitReached('minStorageRequired'));
+          return Promise.resolve(
+            isMinimumStorageLimitReached('minStorageRequired'),
+          );
         },
       },
 

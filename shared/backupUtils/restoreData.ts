@@ -42,7 +42,7 @@ async function handlePreviousBackup(
     const previousRestoreTimestamp = await fileStorage.readFile(
       prevBackupStatePath,
     );
-    const timestampNum = parseInt(previousRestoreTimestamp.trim());
+    const timestampNum = Number.parseInt(previousRestoreTimestamp.trim());
     await unloadVCs(encryptionKey, timestampNum);
   }
 }
@@ -79,7 +79,7 @@ async function removeOldVCFiles(cutOffTimestamp: number) {
 
   const filesToRemove = files.filter(file => {
     const fileName = file.name.split('.')[0];
-    const fileTimestamp = parseInt(fileName.split('_')[1]);
+    const fileTimestamp = Number.parseInt(fileName.split('_')[1]);
     return fileTimestamp >= cutOffTimestamp;
   });
 
@@ -104,7 +104,7 @@ async function removeVCMetadataFromDB(
   const mmkvVCs = await decryptJson(encryptionKey, myVCsEnc);
   const vcList: VCMetadata[] = JSON.parse(mmkvVCs);
   const newVCList = vcList.filter(
-    vc => !vc.timestamp || parseInt(vc.timestamp) < cutOffTimestamp,
+    vc => !vc.timestamp || Number.parseInt(vc.timestamp) < cutOffTimestamp,
   );
   const finalVC = await encryptJson(encryptionKey, JSON.stringify(newVCList));
   await MMKV.setItem(MY_VCS_STORE_KEY, finalVC);

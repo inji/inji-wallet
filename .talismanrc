@@ -1,4 +1,14 @@
 fileignoreconfig:
+  - filename: components/VC/Views/ShareableInfoModal.tsx
+    checksum: d056d7ba185363c585edd998f08e02de9023a6750f652a8fa7a9c99fceefd032
+  - filename: components/VC/common/VCProcessor.ts
+    checksum: ad4ed3148adc0f69d5a5d2431096229ea84b075f51d9fc3538112acee73cc338
+  - filename: components/VC/common/VCUtils.tsx
+    checksum: 39cac22342000243a314ed910258250a910bbe962de016964f2d2e840bb31038
+  - filename: screens/Settings/KeyManagementScreen.tsx
+    checksum: bcee7f81ce1bb46b73927834b3a2b84d86f7ef065a2731610cda7ea07edc041d
+  - filename: screens/AuthScreenController.ts
+    checksum: 997dc27895c61709a3375504c83ef5a715ae8b0582251abf2e6e482d67794ab8
   - filename: package.json
     checksum: 5b4fcb5ddc7cc96cc2d1733b544d56ea66e88cdab995a1052fbf9ac0e9c2dc21
   - filename: lib/jsonld-signatures/suites/ed255192018/ed25519.ts

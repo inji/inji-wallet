@@ -6,7 +6,7 @@ import testIDProps, {
   getBackupFileName,
   getDriveName,
   getMaskedText,
-  getScreenHeight,
+  useScreenHeight,
   hashData,
   logState,
   removeWhiteSpace,
@@ -199,18 +199,18 @@ describe('sleep : The promise resolves after a certain time', () => {
   });
 });
 
-describe('getScreenHeight', () => {
+describe('useScreenHeight', () => {
   it('should expose a function', () => {
-    expect(getScreenHeight).toBeDefined();
+    expect(useScreenHeight).toBeDefined();
   });
 
-  it('getScreenHeight should return screen height', () => {
-    const height = getScreenHeight();
+  it('useScreenHeight should return screen height', () => {
+    const height = useScreenHeight();
     expect(typeof height).toBe('object');
   });
 
   it('should return a value', () => {
-    const height = getScreenHeight();
+    const height = useScreenHeight();
     expect(height).toBeDefined();
   });
 });

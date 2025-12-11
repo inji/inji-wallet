@@ -20,7 +20,7 @@ import {
   GET_INDIVIDUAL_ID,
 } from '../../../shared/constants';
 import {MessageOverlay} from '../../../components/MessageOverlay';
-import testIDProps, {getScreenHeight} from '../../../shared/commonUtil';
+import testIDProps, {useScreenHeight} from '../../../shared/commonUtil';
 import {CustomTooltip} from '../../../components/ui/ToolTip';
 
 export const IdInputModal: React.FC<IdInputModalProps> = props => {
@@ -41,7 +41,7 @@ export const IdInputModal: React.FC<IdInputModalProps> = props => {
   const setIdInputRef = (node: TextInput) =>
     !controller.idInputRef && controller.READY(node);
 
-  const {isSmallScreen, screenHeight} = getScreenHeight();
+  const {isSmallScreen, screenHeight} = useScreenHeight();
 
   return (
     <Modal

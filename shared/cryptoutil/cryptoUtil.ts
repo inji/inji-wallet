@@ -263,7 +263,7 @@ export async function createSignatureECR1(privateKey, payload) {
         payload,
       );
       const base64DeodedSignature = base64.decode(
-        signature64.replace(/\n/g, ''),
+        signature64.replaceAll(/\n/g, ''),
       );
       const derSignature = Uint8Array.from(base64DeodedSignature, char =>
         char.charCodeAt(0),
@@ -281,7 +281,10 @@ export async function createSignatureECR1(privateKey, payload) {
 }
 
 export function replaceCharactersInB64(encodedB64: string) {
-  return encodedB64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  return encodedB64
+    .replaceAll(/\+/g, '-')
+    .replaceAll(/\//g, '_')
+    .replace(/=+$/, '');
 }
 
 export function encodeB64(str: string) {
@@ -367,7 +370,7 @@ function encryptWithForge(text: string, key: string): EncryptedOutput {
   cipher.start({iv: iv});
   cipher.update(forge.util.createBuffer(text, 'utf8'));
   cipher.finish();
-  var cipherText = forge.util.encode64(cipher.output.getBytes());
+  const cipherText = forge.util.encode64(cipher.output.getBytes());
   const encryptedData = new EncryptedOutput(
     cipherText,
     forge.util.encode64(iv),
