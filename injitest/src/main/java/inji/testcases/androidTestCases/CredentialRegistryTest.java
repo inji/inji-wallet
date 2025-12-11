@@ -37,7 +37,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 	
     private static final String credentialRegistry_updated_Url = InjiWalletConfigManager.getproperty("credentialRegistry_updated_Url");
     private static final String credentialRegistry_esignet_url = InjiWalletConfigManager.getproperty("credentialRegistry_esignet_url");
-    private static final String Current_injiEnv = InjiWalletConfigManager.getproperty("Current_injiEnv");
+    private static final String current_injiEnv = InjiWalletConfigManager.getproperty("current_injiEnv");
     
     @Test
     public void downloadAndVerifyVcInNewEnv() throws InterruptedException {
@@ -138,7 +138,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
 
         settingsPage.clickOnCredentialRegistry();
-        assertEquals(credentialRegistryPage.checkEnvNotChanged(), Current_injiEnv);
+        assertEquals(credentialRegistryPage.checkEnvNotChanged(), current_injiEnv);
     }
 
     @Test
