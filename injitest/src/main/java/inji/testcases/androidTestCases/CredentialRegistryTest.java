@@ -674,7 +674,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 
         mockCertifyLoginPage.clickOnEsignetLoginWithOtpButton();
 
-        assertTrue(mockCertifyLoginPage.isEnterYourVidTextDisplayed(), "");
+        assertTrue(mockCertifyLoginPage.isEnterYourVidTextDisplayed(), "Verify if Enter Your VID text is displayed");
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -738,7 +738,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 
         mockCertifyLoginPage.clickOnEsignetLoginWithOtpButton();
 
-        assertTrue(mockCertifyLoginPage.isEnterYourVidTextDisplayed(), "");
+        assertTrue(mockCertifyLoginPage.isEnterYourVidTextDisplayed(), "Verify if Enter Your VID text is displayed");
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
