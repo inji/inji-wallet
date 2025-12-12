@@ -94,4 +94,8 @@ public class CredentialRegistryPage extends BasePage {
     public String checkEnvNotChanged() {
         return credentialRegistryTextBox.getText();
     }
+    
+    public String getCurrentEnvValue() {
+        return credentialRegistryTextBox.getText();
+    }
 }

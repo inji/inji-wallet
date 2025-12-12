@@ -37,7 +37,6 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 	
     private static final String credentialRegistry_updated_Url = InjiWalletConfigManager.getproperty("credentialRegistry_updated_Url");
     private static final String credentialRegistry_esignet_url = InjiWalletConfigManager.getproperty("credentialRegistry_esignet_url");
-    private static final String current_injiEnv = InjiWalletConfigManager.getproperty("current_injiEnv");
     
     @Test
     public void downloadAndVerifyVcInNewEnv() throws InterruptedException {
@@ -126,19 +125,19 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         SettingsPage settingsPage = homePage.clickOnSettingIcon();
-
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         CredentialRegistryPage credentialRegistryPage = settingsPage.clickOnCredentialRegistry();
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
+        String before_cancel_env_value= credentialRegistryPage.getCurrentEnvValue();
         credentialRegistryPage.setEnterIdTextBox(credentialRegistry_updated_Url).clickOnCancelButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnSettingIcon();
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
-
         settingsPage.clickOnCredentialRegistry();
-        assertEquals(credentialRegistryPage.checkEnvNotChanged(), current_injiEnv);
+        String after_update_env_Value= credentialRegistryPage.getCurrentEnvValue();
+        assertEquals(before_cancel_env_value,after_update_env_Value,"Verify env value remains unchanged after cancel");
     }
 
     @Test
