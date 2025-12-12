@@ -25,6 +25,7 @@ import {
   APPLE,
 } from './constants';
 import {CredentialSubject} from '../machines/VerifiableCredential/VCMetaMachine/vc.d';
+import {renderHook} from '@testing-library/react-native';
 
 describe('hashData', () => {
   it('should expose a function', () => {
@@ -205,13 +206,13 @@ describe('useScreenHeight', () => {
   });
 
   it('useScreenHeight should return screen height', () => {
-    const height = useScreenHeight();
-    expect(typeof height).toBe('object');
+    const {result} = renderHook(() => useScreenHeight());
+    expect(typeof result.current).toBe('object');
   });
 
   it('should return a value', () => {
-    const height = useScreenHeight();
-    expect(height).toBeDefined();
+    const {result} = renderHook(() => useScreenHeight());
+    expect(result.current).toBeDefined();
   });
 });
 
