@@ -28,14 +28,13 @@ import inji.testcases.BaseTest.AndroidBaseTest;
 import inji.utils.InjiWalletConfigManager;
 import inji.utils.InjiWalletUtil;
 import inji.utils.TestDataReader;
-import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+
+
 
 public class CredentialRegistryTest extends AndroidBaseTest {
 	
-    private static final String credentialRegistry_updated_Url = InjiWalletConfigManager.getproperty("credentialRegistry_updated_Url");
+    private static final String credentialRegistry_url = InjiWalletConfigManager.getproperty("credentialRegistry_url");
     private static final String credentialRegistry_esignet_url = InjiWalletConfigManager.getproperty("credentialRegistry_esignet_url");
     
     @Test
@@ -65,7 +64,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         CredentialRegistryPage credentialRegistryPage = settingsPage.clickOnCredentialRegistry();
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
-        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_updated_Url).clickOnSaveButton();
+        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_url).clickOnSaveButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnHomeButton();
@@ -130,7 +129,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
         String before_cancel_env_value= credentialRegistryPage.getCurrentEnvValue();
-        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_updated_Url).clickOnCancelButton();
+        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_url).clickOnCancelButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnSettingIcon();
@@ -434,7 +433,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         CredentialRegistryPage credentialRegistryPage = settingsPage.clickOnCredentialRegistry();
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
-        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_updated_Url).enterUrlToEsignetHostTextBox(credentialRegistry_esignet_url).clickOnSaveButton();
+        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_url).enterUrlToEsignetHostTextBox(credentialRegistry_esignet_url).clickOnSaveButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnHomeButton();
@@ -660,7 +659,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         CredentialRegistryPage credentialRegistryPage = settingsPage.clickOnCredentialRegistry();
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
-        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_updated_Url).enterUrlToEsignetHostTextBox(credentialRegistry_esignet_url).clickOnSaveButton();
+        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_url).enterUrlToEsignetHostTextBox(credentialRegistry_esignet_url).clickOnSaveButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnHomeButton();
@@ -724,7 +723,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         CredentialRegistryPage credentialRegistryPage = settingsPage.clickOnCredentialRegistry();
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
-        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_updated_Url).enterUrlToEsignetHostTextBox(credentialRegistry_esignet_url).clickOnSaveButton();
+        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_url).enterUrlToEsignetHostTextBox(credentialRegistry_esignet_url).clickOnSaveButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnHomeButton();
@@ -788,7 +787,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         CredentialRegistryPage credentialRegistryPage = settingsPage.clickOnCredentialRegistry();
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
-        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_updated_Url).enterUrlToEsignetHostTextBox(credentialRegistry_esignet_url).clickOnSaveButton();
+        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_url).enterUrlToEsignetHostTextBox(credentialRegistry_esignet_url).clickOnSaveButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnHomeButton();
