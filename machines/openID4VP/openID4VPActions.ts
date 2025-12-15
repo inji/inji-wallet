@@ -436,7 +436,7 @@ function extractAlgFromSdJwt(sdJwtCompact: string): string {
 }
 
 function base64UrlDecode(input: string): string {
-  input = input.replaceAll(/-/g, '+').replaceAll(/_/g, '/');
+  input = input.replace(/-/g, '+').replace(/_/g, '/');
   while (input.length % 4) {
     input += '=';
   }

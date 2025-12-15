@@ -83,7 +83,7 @@ export enum DEEPLINK_FLOWS {
 export function base64ToByteArray(base64String) {
   try {
     let cleanBase64 = base64String.trim();
-    cleanBase64 = cleanBase64.replaceAll(/-/g, '+').replaceAll(/_/g, '/');
+    cleanBase64 = cleanBase64.replace(/-/g, '+').replace(/_/g, '/');
     while (cleanBase64.length % 4) {
       cleanBase64 += '=';
     }

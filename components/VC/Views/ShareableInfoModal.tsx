@@ -66,8 +66,8 @@ const groupDisclosedFieldsWithArrayInfo = (paths: string[]): FieldNode[] => {
   const flatten = (node: any, level = 0): FieldNode[] => {
     return Object.entries(node).flatMap(([key, value]: any) => {
       const label = key
-        .replaceAll(/([A-Z])/g, ' $1')
-        .replaceAll(/_/g, ' ')
+        .replace(/([A-Z])/g, ' $1')
+        .replace(/_/g, ' ')
         .replace(/^./, s => s.toUpperCase());
 
       const entry = [

@@ -60,7 +60,7 @@ export default function testIDProps(id: string) {
 }
 
 export const removeWhiteSpace = (str: string) => {
-  return str ? str.replaceAll(/\s/g, '') : str;
+  return str ? str.replace(/\s/g, '') : str;
 };
 
 export function logState(state: AnyState) {

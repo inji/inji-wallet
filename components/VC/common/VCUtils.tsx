@@ -239,7 +239,7 @@ const shouldExcludeField = (field: string): boolean => {
     ? field
         .split('.')
         .pop()
-        ?.replaceAll(/\[\d+\]/g, '') ?? field
+        ?.replace(/\[\d+\]/g, '') ?? field
     : field;
 
   return EXCLUDED_FIELDS_FOR_RENDERING.includes(normalized);
@@ -289,8 +289,8 @@ function getFullAddress(credential: CredentialSubject) {
 }
 export const formatKeyLabel = (key: string): string => {
   return key
-    .replaceAll(/\[\d+\]/g, '') // Remove [0], [1], etc.
-    .replaceAll(/([a-z])([A-Z])/g, '$1 $2') // camelCase → spaced
+    .replace(/\[\d+\]/g, '') // Remove [0], [1], etc.
+    .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase → spaced
     .split(/[_\s]+/) // snake_case → spaced
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
@@ -311,7 +311,7 @@ const renderFieldRecursively = (
     fullKey
       .split('.')
       .pop()
-      ?.replaceAll(/\[\d+\]/g, '') ?? key;
+      ?.replace(/\[\d+\]/g, '') ?? key;
   if (renderedFields.has(fullKey)) return [];
   if (shouldExcludeField(shortKey)) return [];
 

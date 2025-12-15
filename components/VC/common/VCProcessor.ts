@@ -88,9 +88,7 @@ export function reconstructSdJwtFromCompact(sdJwtCompact: string): {
   // Parse disclosures
   for (const disclosureB64 of disclosures) {
     if (disclosureB64.length > 0) {
-      const decodedB64 = disclosureB64
-        .replaceAll(/-/g, '+')
-        .replaceAll(/_/g, '/');
+      const decodedB64 = disclosureB64.replace(/-/g, '+').replace(/_/g, '/');
       const decoded = JSON.parse(
         Buffer.from(decodedB64, 'base64').toString('utf-8'),
       );
