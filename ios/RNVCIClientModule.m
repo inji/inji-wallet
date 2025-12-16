@@ -30,6 +30,14 @@ RCT_EXTERN_METHOD(sendProofFromJS:(NSString *)jwtProof)
 // Sends authorization code back to native side (in response to onRequestAuthCode)
 RCT_EXTERN_METHOD(sendAuthCodeFromJS:(NSString *)authCode)
 
+RCT_EXTERN_METHOD(
+  sendSelectedCredentialsForVPSharingFromJS:(id)selectedCredentials // send selected credentials back to native side (in response to onPresentationRequest
+)
+
+RCT_EXTERN_METHOD(
+  sendVPTokenSigningResultFromJS:(NSDictionary *)vpTokenSigningResult // send VP token signing result back to native side (in response to onRequestSignedVPToken
+)
+
 // Sends tx_code back to native side (in response to onRequestTxCode)
 RCT_EXTERN_METHOD(sendTxCodeFromJS:(NSString *)txCode)
 
