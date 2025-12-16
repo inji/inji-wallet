@@ -19,7 +19,7 @@ import {
 } from './OtpVerificationModalController';
 import {GET_INDIVIDUAL_ID, isIOS} from '../../../shared/constants';
 import {SvgImage} from '../../../components/ui/svg';
-import {useScreenHeight} from '../../../shared/commonUtil';
+import {useScreenHeight} from '../../../shared/hooks/useScreenHeight';
 
 export const OtpVerificationModal: React.FC<
   OtpVerificationModalProps

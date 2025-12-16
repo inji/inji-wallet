@@ -434,5 +434,7 @@ fileignoreconfig:
     checksum: a48c88da719fadcb3d1aeb730a23735709c0c198351104203abd03445f6cc76f
   - filename: screens/Settings/KeyManagementScreen.tsx
     checksum: 6871fad16ecb5f019f502b2f7f715bc2a7b646ee08026b321aa1f8ce071dccc1
+  - filename: shared/hooks/useScreenHeight.ts
+    checksum: 86476f8f1fbae08687ffd9e6fc7717aa451aef2752805f0c5bf7061f123b257c
     version: "1.0"
 

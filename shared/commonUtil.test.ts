@@ -6,7 +6,6 @@ import testIDProps, {
   getBackupFileName,
   getDriveName,
   getMaskedText,
-  useScreenHeight,
   hashData,
   logState,
   removeWhiteSpace,
@@ -17,6 +16,7 @@ import testIDProps, {
   getAccountType,
   BYTES_IN_MEGABYTE,
 } from './commonUtil';
+import {useScreenHeight} from './hooks/useScreenHeight';
 import {
   argon2iConfig,
   GOOGLE_DRIVE_NAME,

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {isIOS} from '../../shared/constants';
 import {SvgImage} from '../../components/ui/svg';
-import {useScreenHeight} from '../../shared/commonUtil';
+import {useScreenHeight} from '../../shared/hooks/useScreenHeight';
 import {PinInput} from '../../components/PinInput';
 import {Modal} from '../../components/ui/Modal';
 import {CancelDownloadModal} from './ConfirmationModal';
