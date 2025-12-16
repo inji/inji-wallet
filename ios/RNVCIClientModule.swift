@@ -40,7 +40,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
                 let clientMeta = try parseClientMetadata(from: clientMetadata)
 
-                let response = try await vciClient.requestCredentialByCredentialOffer(
+                let response = try await vciClient.fetchCredentialByCredentialOfferV2(
                     credentialOffer: credentialOffer,
                     clientMetadata: clientMeta,
                     getTxCode: { inputMode, description, length in
@@ -50,9 +50,25 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                             length: length
                         )
                     },
-                    authorizeUser: { authUrl in
-                        try await self.getAuthCodeContinuationHook(authUrl: authUrl)
-                    },
+                    authorizations: [
+                        .redirectToWeb(openWebPage: { authUrl in
+                            var result: [String: String] = [:]
+                            let semaphore = DispatchSemaphore(value: 0)
+                            
+                            Task {
+                                do {
+                                    result = try await self.getAuthCodeContinuationHook(authUrl: authUrl)
+                                } catch {
+                                    print("Error getting auth code: \(error)")
+                                    result = [:]
+                                }
+                                semaphore.signal()
+                            }
+                            
+                            semaphore.wait()
+                            return result
+                        })
+                    ],
                     getTokenResponse: { tokenRequest in
                         try await self.getTokenResponseHook(tokenRequest: tokenRequest)
                     },
@@ -94,25 +110,39 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                 }
 
                 let clientMeta = try parseClientMetadata(from: clientMetadata)
-
-                let response = try await vciClient.requestCredentialFromTrustedIssuer(
+                
+              let response = try await vciClient.fetchCredentialFromTrustedIssuerV2(
+                credentialIssuer: credentialIssuer,
+                credentialConfigurationId: credentialConfigurationId,
+                clientMetadata: clientMeta, getTokenResponse: { tokenRequest in
+                  try await self.getTokenResponseHook(tokenRequest: tokenRequest)
+                },
+                authorizations: [
+                    .redirectToWeb(openWebPage: { authUrl in
+                        var result: [String: String] = [:]
+                        let semaphore = DispatchSemaphore(value: 0)
+                        
+                        Task {
+                            do {
+                                result = try await self.getAuthCodeContinuationHook(authUrl: authUrl)
+                            } catch {
+                                print("Error getting auth code: \(error)")
+                                result = [:]
+                            }
+                            semaphore.signal()
+                        }
+                        
+                        semaphore.wait()
+                        return result
+                    })
+                ],
+                getProofJwt:  { credentialIssuer, cNonce, algos in
+                  try await self.getProofContinuationHook(
                     credentialIssuer: credentialIssuer,
-                    credentialConfigurationId: credentialConfigurationId,
-                    clientMetadata: clientMeta,
-                    authorizeUser: { authUrl in
-                        try await self.getAuthCodeContinuationHook(authUrl: authUrl)
-                    },
-                    getTokenResponse: { tokenRequest in
-                        try await self.getTokenResponseHook(tokenRequest: tokenRequest)
-                    },
-                    getProofJwt: { credentialIssuer, cNonce, algos in
-                        try await self.getProofContinuationHook(
-                            credentialIssuer: credentialIssuer,
-                            cNonce: cNonce,
-                            proofSigningAlgorithmsSupported: algos
-                        )
-                    }
-                )
+                    cNonce: cNonce,
+                    proofSigningAlgorithmsSupported: algos
+                  )
+                })
 
                 resolve(try response?.toJsonString())
             } catch {
@@ -172,7 +202,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         }
     }
 
-    private func getAuthCodeContinuationHook(authUrl: String) async throws -> String {
+  private func getAuthCodeContinuationHook(authUrl: String) async throws -> [String:String] {
         if let bridge = RCTBridge.current() {
             bridge.eventDispatcher().sendAppEvent(
                 withName: "onRequestAuthCode",
@@ -181,7 +211,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         }
 
         return try await withCheckedThrowingContinuation { continuation in
-            self.pendingAuthCodeContinuation = { code in continuation.resume(returning: code) }
+          self.pendingAuthCodeContinuation = { code in continuation.resume(returning: ["authorization_code":code]) }
         }
     }
 

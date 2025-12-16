@@ -137,7 +137,7 @@ class VciClient {
         clientId: 'wallet',
         redirectUri: 'io.mosip.residentapp.inji://oauthredirect',
       };
-      response = await this.InjiVciClient.requestCredentialByOfferV2(
+      response = await this.InjiVciClient.requestCredentialByOffer(
         credentialOffer,
         JSON.stringify(clientMetadata),
       );
