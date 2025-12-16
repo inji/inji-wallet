@@ -1,6 +1,8 @@
 import Foundation
 import React
 import VCIClient
+import OpenID4VP
+import OpenID4VPBridge
 
 @objc(InjiVciClient)
 class RNVCIClientModule: NSObject, RCTBridgeModule {
@@ -12,6 +14,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     private var pendingTxCodeContinuation: ((String) -> Void)?
     private var pendingTokenResponseContinuation: ((String) -> Void)?
     private var pendingIssuerTrustDecision: ((Bool) -> Void)?
+    private var pendingSelectedCredentialsContinuation: ((AnyObject) -> Void)?
+    private var pendingSignVPContinuation: (([String: Any]) -> Void)?
 
     static func moduleName() -> String {
         return "InjiVciClient"
@@ -67,7 +71,15 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                             
                             semaphore.wait()
                             return result
-                        })
+                        }),
+                        .presentationDuringIssuance(
+                          selectCredentialsForPresentation: { vpRequest in
+                            try await self.getSelectedCredentialsContinuationHook(vpRequest: vpRequest)
+                          },
+                          signVerifiablePresentation: { unsignedVPTokens in
+                            try await self.getSignVerifiablePresentationContinuationHook(unsignedVPTokens: unsignedVPTokens)
+                          }
+                        )
                     ],
                     getTokenResponse: { tokenRequest in
                         try await self.getTokenResponseHook(tokenRequest: tokenRequest)
@@ -237,6 +249,53 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
             self.pendingProofContinuation = { jwt in continuation.resume(returning: jwt) }
         }
     }
+  
+  private func getSelectedCredentialsContinuationHook(vpRequest: AuthorizationRequest) async throws -> [String: [FormatType: [OpenID4VPAnyCodable]]] {
+    let vpRequestJson = try OVPUtils.toJsonString(jsonObject: vpRequest)
+    if let bridge = RCTBridge.current() {
+      bridge.eventDispatcher().sendAppEvent(
+        withName: "onPresentationRequest",
+        body: [
+          "presentationRequest": vpRequestJson,
+        ]
+      )
+    }
+    
+    let selectedCredentials: AnyObject = try await withCheckedThrowingContinuation { continuation in
+      self.pendingSelectedCredentialsContinuation = {selectedCredentials in
+        continuation.resume(returning: selectedCredentials)
+      }
+    }
+    
+    guard let credentialsMap = selectedCredentials as? [String: [String: [Any]]] else {
+      print("Invalid credentials map format")
+      return [:]
+    }
+    
+    return OVPUtils.parseSelectedVCs(credentialsMap)
+  }
+  
+  private func getSignVerifiablePresentationContinuationHook(unsignedVPTokens: [FormatType: UnsignedVPToken]) async throws -> [FormatType: VPTokenSigningResult] {
+    let unsignedVPTokensJson = try OVPUtils.toJson(unsignedVPTokens)
+    if let bridge = RCTBridge.current() {
+      bridge.eventDispatcher().sendAppEvent(
+        withName: "onRequestSignedVPToken",
+        body: [
+          "vpTokenSigningRequest": unsignedVPTokensJson,
+        ]
+      )
+    }
+    
+    let signedVPTokens = try await withCheckedThrowingContinuation { continuation in
+      self.pendingSignVPContinuation = { signedVPTokens in
+        continuation.resume(returning: signedVPTokens)
+      }
+    }
+    
+    //TODO: Check on Error handling
+    
+    return try OVPUtils.parseVPTokenSigningResult(signedVPTokens)
+  }
 
     private func getTokenResponseHook(tokenRequest: TokenRequest) async throws -> TokenResponse {
         if let bridge = RCTBridge.current() {
@@ -297,6 +356,18 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         pendingProofContinuation?(jwt)
         pendingProofContinuation = nil
     }
+  
+  @objc(sendSelectedCredentialsForVPSharingFromJS:)
+  func sendSelectedCredentialsForVPSharingFromJS(_ selectedCredentials: AnyObject) {
+    pendingSelectedCredentialsContinuation?(selectedCredentials)
+    pendingSelectedCredentialsContinuation = nil
+  }
+  
+  @objc(sendVPTokenSigningResultFromJS:)
+  func sendVPTokenSigningResultFromJS(_ vpTokenSigningResult: [String: Any]) {
+    pendingSignVPContinuation?(vpTokenSigningResult)
+    pendingSignVPContinuation = nil
+  }
 
     @objc(sendAuthCodeFromJS:)
     func sendAuthCodeFromJS(_ code: String) {
@@ -324,11 +395,11 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
     // MARK: - JSON Parsing
 
-    private func parseClientMetadata(from jsonString: String) throws -> ClientMetadata {
+    private func parseClientMetadata(from jsonString: String) throws -> VciClientMetadata {
         guard let data = jsonString.data(using: .utf8) else {
             throw NSError(domain: "Invalid JSON string for clientMetadata", code: 0)
         }
-        return try JSONDecoder().decode(ClientMetadata.self, from: data)
+        return try JSONDecoder().decode(VciClientMetadata.self, from: data)
     }
 
     @objc static func requiresMainQueueSetup() -> Bool {
