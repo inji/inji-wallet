@@ -3,6 +3,27 @@ import OpenID4VP
 import React
 
 class OVPUtils: NSObject {
+  static func toJsonString(jsonObject: AuthorizationRequest) throws -> String {
+    let encoder = JSONEncoder()
+    encoder.keyEncodingStrategy = .convertToSnakeCase
+    let jsonData = try encoder.encode(jsonObject)
+    guard let jsonString = String(data: jsonData, encoding: .utf8) else {
+      throw NSError(domain: "OPENID4VP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to encode JSON"])
+    }
+    return jsonString
+  }
+  
+  static func toJson(_ data:  [FormatType : any UnsignedVPToken]?) throws -> [String: Any] {
+    let encodableDict = data?.mapKeys { $0.rawValue }.mapValues { EncodableWrapper($0) }
+    let jsonData = try JSONEncoder().encode(encodableDict)
+
+    if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+      return jsonObject
+    } else {
+      throw ParseError(message: "Failed to serialize JSON")
+    }
+  }
+  
   static func parseSelectedVCs(_ credentialsMap: [String: [String: [Any]]]) -> [String: [FormatType: [AnyCodable]]] {
     return credentialsMap.mapValues { selectedVcsFormatMap -> [FormatType: [AnyCodable]] in
       selectedVcsFormatMap.reduce(into: [:]) { result, entry in
@@ -68,6 +89,8 @@ class OVPUtils: NSObject {
         throw ParseError(message: error.localizedDescription)
       }
     }
+    
+    return formattedVPTokenSigningResults
   }
 }
 

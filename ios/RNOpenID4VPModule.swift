@@ -43,7 +43,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           shouldValidateClient: shouldValidateClient
         )
 
-        let response = try toJsonString(jsonObject: authenticationResponse)
+        let response = try OVPUtils.toJsonString(jsonObject: authenticationResponse)
         resolve(response)
       } catch {
         rejectWithOpenID4VPError(error, reject: reject)
@@ -72,15 +72,9 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           holderId: holderId,
           signatureSuite: signatureSuite
         )
-
-        let encodableDict = response?.mapKeys { $0.rawValue }.mapValues { EncodableWrapper($0) }
-        let jsonData = try JSONEncoder().encode(encodableDict)
-
-        if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-          resolve(jsonObject)
-        } else {
-          reject("ERROR", "Failed to serialize JSON", nil)
-        }
+        
+        let parsedResponse = try OVPUtils.toJson(response)
+        resolve(parsedResponse)
       } catch {
         rejectWithOpenID4VPError(error, reject: reject)
       }
@@ -149,16 +143,6 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
       
       return Verifier(clientId: clientId, responseUris: responseUris,jwksUri: jwksUri)
     }
-  }
-
-  func toJsonString(jsonObject: AuthorizationRequest) throws -> String {
-    let encoder = JSONEncoder()
-    encoder.keyEncodingStrategy = .convertToSnakeCase
-    let jsonData = try encoder.encode(jsonObject)
-    guard let jsonString = String(data: jsonData, encoding: .utf8) else {
-      throw NSError(domain: "OPENID4VP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to encode JSON"])
-    }
-    return jsonString
   }
 
   @objc
