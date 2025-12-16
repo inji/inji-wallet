@@ -11,12 +11,18 @@ export const useScreenHeight = () => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       event => {
-        const keyboardHeight = event.endCoordinates.height;
-        setKeyboardHeight(keyboardHeight + 150);
+        setKeyboardHeight(event.endCoordinates.height + 150);
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardHeight(0);
       },
     );
     return () => {
       keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
     };
   }, []);
 
