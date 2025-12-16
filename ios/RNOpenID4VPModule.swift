@@ -65,24 +65,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           return
         }
 
-        let formattedCredentialsMap: [String: [FormatType: [AnyCodable]]] = credentialsMap.mapValues { selectedVcsFormatMap -> [FormatType: [AnyCodable]] in
-            selectedVcsFormatMap.reduce(into: [:]) { result, entry in
-                let (credentialFormat, credentialsArray) = entry
-                switch FormatType(rawValue: credentialFormat) {
-                case .ldp_vc:
-                    result[.ldp_vc] = credentialsArray.map { AnyCodable($0) }
-                case .mso_mdoc:
-                    result[.mso_mdoc] = credentialsArray.map { AnyCodable($0) }
-                case .dc_sd_jwt:
-                    result[.dc_sd_jwt] = credentialsArray.map { AnyCodable($0) }
-                case .vc_sd_jwt:
-                  result[.vc_sd_jwt] = credentialsArray.map { AnyCodable($0) }
-                default:
-                    break
-                }
-            }
-        }
-
+        let formattedCredentialsMap: [String: [FormatType: [AnyCodable]]] = OVPUtils.parseSelectedVCs(credentialsMap)
 
         let response = try await openID4VP?.constructUnsignedVPToken(
           verifiableCredentials: formattedCredentialsMap,
@@ -110,55 +93,12 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
                                    rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
       do {
-        var formattedVPTokenSigningResults: [FormatType: VPTokenSigningResult] = [:]
-
-        for (credentialFormat, vpTokenSigningResult) in vpTokenSigningResults {
-          switch credentialFormat {
-          case FormatType.ldp_vc.rawValue:
-            guard let vpResponse = vpTokenSigningResult as? [String: Any],
-                     let signatureAlgorithm = vpResponse["signatureAlgorithm"] as? String else {
-                   reject("OPENID4VP", "Invalid VP token signing result for LDP_VC", nil)
-                   return
-               }
-
-               let jws = vpResponse["jws"] as? String
-               let proofValue = vpResponse["proofValue"] as? String
-            formattedVPTokenSigningResults[.ldp_vc] = LdpVPTokenSigningResult(jws: jws, proofValue: proofValue, signatureAlgorithm: signatureAlgorithm)
-
-          case FormatType.mso_mdoc.rawValue:
-            var docTypeToDeviceAuthentication : [String: DeviceAuthentication] = [:]
-            guard let vpResponse = vpTokenSigningResult as? [String:[String: String]] else {
-              reject("OPENID4VP", "Invalid VP token signing result format", nil)
-              return
-            }
-            for (docType, deviceAuthentication) in vpResponse {
-              guard let signature = deviceAuthentication["signature"],
-                    let algorithm = deviceAuthentication["mdocAuthenticationAlgorithm"] else {
-                reject("OPENID4VP", "Invalid VP token signing result provided for mdoc format", nil)
-                return
-              }
-              docTypeToDeviceAuthentication[docType] = DeviceAuthentication(signature: signature, algorithm: algorithm)
-            }
-            formattedVPTokenSigningResults[.mso_mdoc] = MdocVPTokenSigningResult(docTypeToDeviceAuthentication: docTypeToDeviceAuthentication)
-            
-          case FormatType.vc_sd_jwt.rawValue :
-            guard let vpResponse = vpTokenSigningResult as? [String:String] else {
-              reject("OPENID4VP", "Invalid VP token signing result format", nil)
-              return
-            }
-            formattedVPTokenSigningResults[.vc_sd_jwt] = SdJwtVpTokenSigningResult(uuidToKbJWTSignature: vpResponse)
-          case FormatType.dc_sd_jwt.rawValue :
-            guard let vpResponse = vpTokenSigningResult as? [String:String] else {
-              reject("OPENID4VP", "Invalid VP token signing result format", nil)
-              return
-            }
-            formattedVPTokenSigningResults[.dc_sd_jwt] = SdJwtVpTokenSigningResult(uuidToKbJWTSignature: vpResponse)
-
-          default:
-            let error = NSError(domain: "Credential format '\(credentialFormat)' is not supported", code: 0)
-            rejectWithOpenID4VPError(error, reject: reject)
-            return
-          }
+        let formattedVPTokenSigningResults: [FormatType: VPTokenSigningResult]
+        do {
+          formattedVPTokenSigningResults = try OVPUtils.parseVPTokenSigningResult(vpTokenSigningResults)
+        } catch {
+          reject("OPENID4VP", error.localizedDescription, nil)
+          return
         }
 
         let verifierResponse = try await openID4VP?.sendVPResponseToVerifier(vpTokenSigningResults: formattedVPTokenSigningResults)
