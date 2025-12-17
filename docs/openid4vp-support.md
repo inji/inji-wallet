@@ -34,9 +34,9 @@ requesting and presenting Verifiable Credentials.
 
   ```mermaid
   sequenceDiagram
-    participant 🌐 Verifier
+    participant Verifier as 🌐 Verifier
     participant Inji_Wallet as 📱Inji Wallet
-    participant 🙋 User
+    participant User as 🙋 User
 
     Verifier->>User: 1. Display Authorization Request as QR Code
     User-->>Verifier: 2. Scan QR Code via Inji Wallet
@@ -63,7 +63,7 @@ The implementation of this feature involves the following steps:
 
 - Below are the supported Client Id Scheme by the library:
 
-  - **pre-registered** : This client id scheme suggests that the verifier is already registered with the wallet and the trust is already established. The request must be signed when shared by reference.
+  - **pre-registered** : This client id scheme suggests that the verifier is already registered with the wallet and the trust is already established. The request must be signed when shared by reference. The request can be signed or unsigned when shared by value.
 
   - **redirect-uri**: When the Client Identifier Scheme is `redirect_uri`, it specifies that the client id is Verifier's Response URI . In this case, the Authorization Request must not be signed
 
@@ -127,10 +127,11 @@ sequenceDiagram
   Lib->>VP: HTTP POST Request with:<br/>1. VP Token<br/>2. Presentation Submission<br/>3. State
 ```
 
-**Note:** 
+**Note:**
 Holder binding support - The holder binding is a feature that allows the Verifier to ensure that the Verifiable Presentation is being presented by the same holder that holds the Verifiable Credentials.
-* for ldp_vc format
-  * Supported for VCs signed with signature suite **_Ed25519Signature2020_**.
-* for vc+sd-jwt and dc+sd-jwt format
-  * Via [cnf](https://www.ietf.org/archive/id/draft-ietf-oauth-sd-jwt-vc-10.html#section-3.2.2.2-3.4.2.1) claim and supported for `kid` only
-  * Supported algorithms - **_ES256_**, **_Ed25519_**.
+
+- for ldp_vc format
+  - Supported for VCs signed with signature suite **_Ed25519Signature2020_**.
+- for vc+sd-jwt and dc+sd-jwt format
+  - Via [cnf](https://www.ietf.org/archive/id/draft-ietf-oauth-sd-jwt-vc-10.html#section-3.2.2.2-3.4.2.1) claim and supported for `kid` only
+  - Supported algorithms - **_ES256_**, **_Ed25519_**.
