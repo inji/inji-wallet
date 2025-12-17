@@ -13,6 +13,9 @@ public class SvgWithOutFaceUINManager {
 
     static {
         String uin = InjiWalletConfigManager.getproperty("svgwithoutface.uin");
+        if (uin == null || uin.isEmpty()) {
+        	throw new IllegalStateException("Configuration 'svgwithoutface.uin' is not set");
+        	}
 
         for (int i = 0; i < 5; i++) {
             availableUINs.add(new Uin(uin));

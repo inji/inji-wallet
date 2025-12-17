@@ -339,7 +339,7 @@ public class AddNewCardPage extends BasePage {
     return scrollToElementByAccessibilityIdGetText(mosipIssuerCredentialType, "Gettext from the mosip crdential type");
     }
     
-    public String getTextSundirdCredentialText() {
+    public String getTextSunbirdCredentialText() {
     return scrollToElementByAccessibilityIdGetText(stayProtectedIssuerCredentialType, "Gettext from the sunbird crdential type");
     }
 }

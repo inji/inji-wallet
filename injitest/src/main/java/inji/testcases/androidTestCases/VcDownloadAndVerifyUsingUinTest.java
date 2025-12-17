@@ -543,7 +543,7 @@ public class VcDownloadAndVerifyUsingUinTest extends AndroidBaseTest {
         assertTrue(settingsPage.verifyFilipinoLanguage(), "Verify if language is changed to filipino");
         homePage.clickOnHomeButton();
 
-        homePage.sendTextInIssuerSearchBar(addNewCardPage.getTextSundirdCredentialText());
+        homePage.sendTextInIssuerSearchBar(addNewCardPage.getTextSunbirdCredentialText());
         assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(), TestDataReader.readData("fullNameSunbird"));
     }
 
