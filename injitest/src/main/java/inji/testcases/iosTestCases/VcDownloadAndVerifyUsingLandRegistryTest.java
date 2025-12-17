@@ -32,7 +32,6 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends IosBaseTest {
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         esignetLoginPage.clickOnLoginWithOtpButton();
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
-        Thread.sleep(10000);
         esignetLoginPage.clickOnGetOtpButton();
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();

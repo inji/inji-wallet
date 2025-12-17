@@ -24,13 +24,13 @@ public class SvgWithFaceUINManager {
 
 
     //Sample data, data can be passed in this way as well
-//    static {
-//        availableUINs.add(new Uin("9261481024", "6167173343", "InjiWallet_AddIdentity_withValidParameters_smoke_Pos@mosip.net"));
-//        availableUINs.add(new Uin("9261481024", "6167173343", "InjiWallet_AddIdentity_withValidParameters_smoke_Pos@mosip.net"));
-//        availableUINs.add(new Uin("9261481024", "6167173343", "InjiWallet_AddIdentity_withValidParameters_smoke_Pos@mosip.net"));
-//        availableUINs.add(new Uin("9261481024", "6167173343", "InjiWallet_AddIdentity_withValidParameters_smoke_Pos@mosip.net"));
-//        availableUINs.add(new Uin("9261481024", "6167173343", "InjiWallet_AddIdentity_withValidParameters_smoke_Pos@mosip.net"));
-//    }
+//  static {
+//      availableUINs.add(new Uin("9876543210"));
+//      availableUINs.add(new Uin("9876543210"));
+//      availableUINs.add(new Uin("9876543210"));
+//      availableUINs.add(new Uin("9876543210"));
+//      availableUINs.add(new Uin("9876543210"));
+//  }
 
     public static Uin acquireUIN() throws InterruptedException {
         return availableUINs.take();

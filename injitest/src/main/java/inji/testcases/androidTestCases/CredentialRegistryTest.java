@@ -5,6 +5,7 @@ import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
 
+import inji.annotations.NeedsLandUIN;
 import inji.annotations.NeedsMockUIN;
 import inji.annotations.NeedsUIN;
 import inji.constants.PlatformType;
@@ -761,6 +762,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 
 
     @Test
+    @NeedsLandUIN
     public void downloadAndVerifyVcInNewEnvForLandStatementCredential() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
