@@ -5,7 +5,7 @@ import {Theme} from '../components/ui/styleUtils';
 import {VerifiableCredential} from '../machines/VerifiableCredential/VCMetaMachine/vc';
 import {Modal} from '../components/ui/Modal';
 import {useTranslation} from 'react-i18next';
-import {Error} from '../components/ui/Error';
+import {ErrorView} from '../components/ui/Error';
 import {SvgImage} from '../components/ui/svg';
 
 export const VerifyIdentityOverlay: React.FC<
@@ -53,7 +53,7 @@ export const VerifyIdentityOverlay: React.FC<
         </Column>
       </Modal>
 
-      <Error
+      <ErrorView
         isModal
         alignActionsOnEnd
         showClose={false}

@@ -19,7 +19,7 @@ import {LocationPermissionRational} from './LocationPermissionRational';
 import {FaceVerificationAlertOverlay} from './FaceVerificationAlertOverlay';
 import {useSendVcScreen} from './SendVcScreenController';
 import {useSendVPScreen} from './SendVPScreenController';
-import {Error} from '../../components/ui/Error';
+import {ErrorView} from '../../components/ui/Error';
 import {VPShareOverlay} from './VPShareOverlay';
 import {VerifyIdentityOverlay} from '../VerifyIdentityOverlay';
 import {VCShareFlowType} from '../../shared/Utils';
@@ -368,7 +368,7 @@ export const ScanScreen: React.FC = () => {
           />
         )}
       <>
-        <Error
+        <ErrorView
           isModal
           alignActionsOnEnd
           showClose={false}

@@ -94,7 +94,7 @@ export const Modal: React.FC<ModalProps> = ({
                     <Icon name="close" color={Theme.Colors.Details} size={27} />
                   </TouchableOpacity>
                 ))}
-              {headerRight && headerRight}
+              {headerRight}
             </View>
           </Row>
         ) : null}

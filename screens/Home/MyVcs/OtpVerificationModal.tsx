@@ -19,7 +19,7 @@ import {
 } from './OtpVerificationModalController';
 import {GET_INDIVIDUAL_ID, isIOS} from '../../../shared/constants';
 import {SvgImage} from '../../../components/ui/svg';
-import {getScreenHeight} from '../../../shared/commonUtil';
+import {useScreenHeight} from '../../../shared/hooks/useScreenHeight';
 
 export const OtpVerificationModal: React.FC<
   OtpVerificationModalProps
@@ -75,7 +75,7 @@ export const OtpVerificationModal: React.FC<
     controller.CANCEL();
   };
 
-  const {isSmallScreen, screenHeight} = getScreenHeight();
+  const {isSmallScreen, screenHeight} = useScreenHeight();
 
   return (
     <Modal

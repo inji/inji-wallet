@@ -1,8 +1,16 @@
 fileignoreconfig:
   - filename: components/VC/common/StatusInfoModal.tsx
     checksum: 5db61aa419e0c1c70b067993272da93822917daa55523371fc196022bd7c25a3
-  - filename: components/VC/common/VcStatustooTip.tsx
-    checksum: fe1a9c713d29df1712f1b55b0bd1fe9946daa7462c3da4ae1b2bcb2198ae2345
+  - filename: components/VC/Views/ShareableInfoModal.tsx
+    checksum: e89fb09400c82b0e8bade0c16ad168babd1182685773b982f83bfff250e9fdb4
+  - filename: components/VC/common/VCProcessor.ts
+    checksum: e4d65665ce4ef34805578961e8dbfd9845ded937bebbe57e6da35098ad31fbd3
+  - filename: components/VC/common/VCUtils.tsx
+    checksum: 7894949f973ea15a532a5fc537e09c5993e5e54b763195302f999afe5fc87d03
+  - filename: screens/Settings/KeyManagementScreen.tsx
+    checksum: bcee7f81ce1bb46b73927834b3a2b84d86f7ef065a2731610cda7ea07edc041d
+  - filename: screens/AuthScreenController.ts
+    checksum: 997dc27895c61709a3375504c83ef5a715ae8b0582251abf2e6e482d67794ab8
   - filename: package.json
     checksum: 5b4fcb5ddc7cc96cc2d1733b544d56ea66e88cdab995a1052fbf9ac0e9c2dc21
   - filename: lib/jsonld-signatures/suites/ed255192018/ed25519.ts
@@ -424,9 +432,9 @@ fileignoreconfig:
     checksum: ea51350b13ce6287c8965d177bfef275e117e16e42c119f46c738a444dfc0beb
   - filename: shared/backupUtils/restoreData.ts
     checksum: 5fb43d26b6ef53f72c48dcdf611be12170c3859f81ffd405d15cfe2feaeac706
-  - filename: components/VC/common/VcStatustooTip.tsx
-    checksum: a48c88da719fadcb3d1aeb730a23735709c0c198351104203abd03445f6cc76f
   - filename: screens/Settings/KeyManagementScreen.tsx
     checksum: 6871fad16ecb5f019f502b2f7f715bc2a7b646ee08026b321aa1f8ce071dccc1
+  - filename: shared/hooks/useScreenHeight.ts
+    checksum: e3f13e7181efc6e6ad5896102bac1309bd8147ba711ff71f64a600a0dffc1364
     version: "1.0"
 

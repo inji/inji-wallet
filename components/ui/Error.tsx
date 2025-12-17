@@ -10,7 +10,7 @@ import testIDProps from '../../shared/commonUtil';
 import {Modal} from './Modal';
 import {isIOS} from '../../shared/constants';
 
-export const Error: React.FC<ErrorProps> = props => {
+export const ErrorView: React.FC<ErrorProps> = props => {
   const {t} = useTranslation('common');
   const {
     testID,

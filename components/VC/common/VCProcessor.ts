@@ -5,14 +5,14 @@ import {getVerifiableCredential} from '../../../machines/VerifiableCredential/VC
 import {parseJSON} from '../../../shared/Utils';
 import base64url from 'base64url';
 import jwtDecode from 'jwt-decode';
-import { sha256,sha384 ,sha512} from '@noble/hashes/sha2';
+import {sha256, sha384, sha512} from '@noble/hashes/sha2';
 
 const {RNPixelpassModule} = NativeModules;
 
 export class VCProcessor {
   static async processForRendering(
     vcData: VerifiableCredential,
-    vcFormat: String,
+    vcFormat: string,
   ): Promise<any> {
     if (vcFormat === VCFormat.mso_mdoc) {
       if (vcData.processedCredential) {
@@ -24,10 +24,19 @@ export class VCProcessor {
         );
       return parseJSON(decodedString);
     }
-    if(vcFormat === VCFormat.vc_sd_jwt || vcFormat === VCFormat.dc_sd_jwt) {
-      const { fullResolvedPayload, disclosedKeys, publicKeys,pathToDisclosures } =
-        reconstructSdJwtFromCompact(vcData.credential.toString());
-      return {fullResolvedPayload,disclosedKeys,publicKeys,pathToDisclosures};
+    if (vcFormat === VCFormat.vc_sd_jwt || vcFormat === VCFormat.dc_sd_jwt) {
+      const {
+        fullResolvedPayload,
+        disclosedKeys,
+        publicKeys,
+        pathToDisclosures,
+      } = reconstructSdJwtFromCompact(vcData.credential.toString());
+      return {
+        fullResolvedPayload,
+        disclosedKeys,
+        publicKeys,
+        pathToDisclosures,
+      };
     }
     return getVerifiableCredential(vcData);
   }
@@ -42,30 +51,26 @@ Output:
 - publicKeys: Set of keys that were present in JWT payload directly (non-selectively-disclosable)
 */
 
-
 function hashDigest(alg: string, input: string): Uint8Array {
   switch (alg) {
     case 'sha-256':
       return sha256(input);
     case 'sha-384':
-        return sha384(input);
+      return sha384(input);
     case 'sha-512':
-        return sha512(input);
+      return sha512(input);
     default:
       throw new Error(`Unsupported _sd_alg: ${alg}`);
   }
 }
 
-
-export function reconstructSdJwtFromCompact(
-  sdJwtCompact: string,
-): {
+export function reconstructSdJwtFromCompact(sdJwtCompact: string): {
   fullResolvedPayload: Record<string, any>;
   disclosedKeys: string[];
   publicKeys: string[];
   pathToDisclosures: Record<string, string[]>; //  Mapof{claimPath -> disclosure strings}
 } {
-  const sdJwtPublicKeys = ["iss", "sub", "aud", "exp", "nbf", "iat", "jti"];
+  const sdJwtPublicKeys = ['iss', 'sub', 'aud', 'exp', 'nbf', 'iat', 'jti'];
   const disclosedKeys = new Set<string>();
   const publicKeys = new Set<string>();
   const digestToDisclosure: Record<string, any[]> = {};
@@ -84,7 +89,9 @@ export function reconstructSdJwtFromCompact(
   for (const disclosureB64 of disclosures) {
     if (disclosureB64.length > 0) {
       const decodedB64 = disclosureB64.replace(/-/g, '+').replace(/_/g, '/');
-      const decoded = JSON.parse(Buffer.from(decodedB64, 'base64').toString('utf-8'));
+      const decoded = JSON.parse(
+        Buffer.from(decodedB64, 'base64').toString('utf-8'),
+      );
       const digestInput = disclosureB64;
       const digest = base64url(Buffer.from(hashDigest(sdAlg, digestInput)));
 
@@ -93,10 +100,10 @@ export function reconstructSdJwtFromCompact(
     }
   }
 
- //Parse the JWT payload
+  //Parse the JWT payload
   function resolveDisclosures(
     value: any,
-    path: string = '',
+    path = '',
     parentDisclosures: string[] = [],
   ): any {
     if (Array.isArray(value)) {
@@ -114,9 +121,14 @@ export function reconstructSdJwtFromCompact(
             return [];
           }
           disclosedKeys.add(currentPath);
-          const currentDisclosures = [...parentDisclosures, digestToDisclosureB64[digest]];
+          const currentDisclosures = [
+            ...parentDisclosures,
+            digestToDisclosureB64[digest],
+          ];
           pathToDisclosures[currentPath] = currentDisclosures;
-          return [resolveDisclosures(disclosure[1], currentPath, currentDisclosures)];
+          return [
+            resolveDisclosures(disclosure[1], currentPath, currentDisclosures),
+          ];
         } else {
           return [resolveDisclosures(item, currentPath, parentDisclosures)];
         }
@@ -124,7 +136,7 @@ export function reconstructSdJwtFromCompact(
     }
 
     if (typeof value === 'object' && value !== null) {
-      let result: Record<string, any> = {};
+      const result: Record<string, any> = {};
 
       const sdDigests: string[] = value._sd || [];
       for (const digest of sdDigests) {
@@ -137,9 +149,16 @@ export function reconstructSdJwtFromCompact(
         if (claimName in value) throw new Error('Overwriting existing key');
         const fullPath = path ? `${path}.${claimName}` : claimName;
         disclosedKeys.add(fullPath);
-        const currentDisclosures = [...parentDisclosures, digestToDisclosureB64[digest]];
+        const currentDisclosures = [
+          ...parentDisclosures,
+          digestToDisclosureB64[digest],
+        ];
         pathToDisclosures[fullPath] = currentDisclosures;
-        result[claimName] = resolveDisclosures(claimValue, fullPath, currentDisclosures);
+        result[claimName] = resolveDisclosures(
+          claimValue,
+          fullPath,
+          currentDisclosures,
+        );
       }
 
       for (const [k, v] of Object.entries(value)) {
@@ -167,7 +186,7 @@ export function reconstructSdJwtFromCompact(
   return {
     fullResolvedPayload,
     disclosedKeys: Array.from(disclosedKeys),
-    publicKeys: Array.from(publicKeys),         
+    publicKeys: Array.from(publicKeys),
     pathToDisclosures,
   };
 }

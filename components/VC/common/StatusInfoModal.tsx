@@ -1,8 +1,9 @@
 import React from 'react';
-import {Dimensions, View, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import {Overlay} from 'react-native-elements';
 import {Icon} from 'react-native-elements';
 import {Column, Row, Text} from '../../ui';
+import {Theme} from '../../ui/styleUtils';
 import {useTranslation} from 'react-i18next';
 import {VC_STATUS_KEYS} from './VCUtils';
 import {SvgImage} from '../../ui/svg';
@@ -33,6 +34,7 @@ export const StatusInfoModal: React.FC<StatusInfoModalProps> = ({
   onClose,
 }) => {
   const {t} = useTranslation('ViewVcModal');
+  const styles = Theme.StatusInfoModalStyles;
 
   return (
     <Overlay
@@ -79,68 +81,5 @@ export const StatusInfoModal: React.FC<StatusInfoModalProps> = ({
     </Overlay>
   );
 };
-
-const styles = StyleSheet.create({
-  overlay: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 0,
-    margin: 0,
-    width: Dimensions.get('screen').width,
-  },
-  container: {
-    paddingVertical: 20,
-    paddingHorizontal: 24,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  headerTitle: {
-    fontSize: 18,
-    color: '#000',
-    flex: 1,
-    marginRight: 12,
-  },
-  closeButton: {
-    padding: 4,
-    flexShrink: 0,
-  },
-  contentContainer: {
-    marginTop: 10,
-  },
-  statusItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingVertical: 12,
-  },
-  iconContainer: {
-    marginRight: 12,
-    marginTop: 2,
-  },
-  statusTextContainer: {
-    flex: 1,
-  },
-  statusTitle: {
-    fontSize: 14,
-    color: '#000',
-    marginBottom: 4,
-  },
-  statusDescription: {
-    fontSize: 12,
-    color: '#666',
-    lineHeight: 18,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#E0E0E0',
-  },
-});
 
 export default StatusInfoModal;

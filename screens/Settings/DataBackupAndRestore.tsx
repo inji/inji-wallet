@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {Pressable} from 'react-native';
 import {Icon, ListItem} from 'react-native-elements';
 import {Row, Text} from '../../components/ui';
-import {Error} from '../../components/ui/Error';
+import {ErrorView} from '../../components/ui/Error';
 import {Loader} from '../../components/ui/Loader';
 import {Theme} from '../../components/ui/styleUtils';
 import {SvgImage} from '../../components/ui/svg';
@@ -14,7 +14,7 @@ import testIDProps, {getDriveName} from '../../shared/commonUtil';
 import {useOverlayVisibleAfterTimeout} from '../../shared/hooks/useOverlayVisibleAfterTimeout';
 import {isAndroid, isIOS} from '../../shared/constants';
 
-export const DataBackupAndRestore: React.FC = ({} = () => {
+export const DataBackupAndRestore: React.FC = () => {
   const controller = useBackupAndRestoreSetup();
   const delay = isAndroid() ? 0 : 1000;
   const {t} = useTranslation('DataBackupScreen');
@@ -69,7 +69,7 @@ export const DataBackupAndRestore: React.FC = ({} = () => {
 
       {((controller.isSigningInFailed && !isIOS()) ||
         controller.isCloudSignInFailed) && (
-        <Error
+        <ErrorView
           isModal
           alignActionsOnEnd
           showClose={false}
@@ -102,7 +102,7 @@ export const DataBackupAndRestore: React.FC = ({} = () => {
       )}
 
       {controller.isNetworkError && (
-        <Error
+        <ErrorView
           testID="networkOffError"
           primaryButtonTestID="tryAgain"
           primaryButtonText="tryAgain"
@@ -135,4 +135,4 @@ export const DataBackupAndRestore: React.FC = ({} = () => {
       />
     </React.Fragment>
   );
-});
+};

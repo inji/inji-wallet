@@ -1,11 +1,11 @@
 import React from 'react';
-import { Overlay } from 'react-native-elements';
-import { Text } from '../../../components/ui';
-import { Icon } from 'react-native-elements';
-import { Theme } from '../../../components/ui/styleUtils';
-import { FlatList, View } from 'react-native';
-import { Dimensions } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import {Overlay} from 'react-native-elements';
+import {Text} from '../../../components/ui';
+import {Icon} from 'react-native-elements';
+import {Theme} from '../../../components/ui/styleUtils';
+import {FlatList, View} from 'react-native';
+import {Dimensions} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 const maxHeight = Dimensions.get('window').height / 1.5;
 export interface ShareableInfoModalProps {
@@ -21,7 +21,9 @@ type FieldNode = {
   isDisclosed: boolean;
 };
 
-const parsePathParts = (path: string): { key: string; isArrayItem: boolean }[] => {
+const parsePathParts = (
+  path: string,
+): {key: string; isArrayItem: boolean}[] => {
   const parts = path.split('.');
   return parts.map(part => {
     const match = part.match(/^(.+?)(\[\d+\])?$/);
@@ -39,7 +41,7 @@ const groupDisclosedFieldsWithArrayInfo = (paths: string[]): FieldNode[] => {
     const parts = parsePathParts(path);
     let current = tree;
 
-    parts.forEach(({ key, isArrayItem }, idx) => {
+    parts.forEach(({key, isArrayItem}, idx) => {
       const isLeaf = idx === parts.length - 1;
 
       if (!current[key]) {
@@ -68,12 +70,14 @@ const groupDisclosedFieldsWithArrayInfo = (paths: string[]): FieldNode[] => {
         .replace(/_/g, ' ')
         .replace(/^./, s => s.toUpperCase());
 
-      const entry = [{
-        label,
-        indentLevel: level,
-        isArrayItem: value._isArrayItem,
-        isDisclosed: value._isDisclosed,
-      }];
+      const entry = [
+        {
+          label,
+          indentLevel: level,
+          isArrayItem: value._isArrayItem,
+          isDisclosed: value._isDisclosed,
+        },
+      ];
 
       const children = flatten(value._children, level + 1);
       return [...entry, ...children];
@@ -83,13 +87,12 @@ const groupDisclosedFieldsWithArrayInfo = (paths: string[]): FieldNode[] => {
   return flatten(tree);
 };
 
-
 export const ShareableInfoModal: React.FC<ShareableInfoModalProps> = ({
   isVisible,
   onDismiss,
   disclosedPaths,
 }) => {
-  const { t } = useTranslation("VcDetails");
+  const {t} = useTranslation('VcDetails');
   const disclosedFields = groupDisclosedFieldsWithArrayInfo(disclosedPaths);
 
   return (
@@ -98,14 +101,11 @@ export const ShareableInfoModal: React.FC<ShareableInfoModalProps> = ({
       onBackdropPress={onDismiss}
       overlayStyle={{
         ...Theme.DisclosureOverlayStyles.overlay,
-        maxHeight
-      }}
-    >
-      <View style={{ maxHeight }}>
-        <View
-          style={Theme.DisclosureOverlayStyles.outerView}
-        >
-          <View style={{ flex: 1 }}>
+        maxHeight,
+      }}>
+      <View style={{maxHeight}}>
+        <View style={Theme.DisclosureOverlayStyles.outerView}>
+          <View style={{flex: 1}}>
             <Text style={Theme.DisclosureOverlayStyles.titleText}>
               {t('disclosedFieldsTitle')}
             </Text>
@@ -120,33 +120,34 @@ export const ShareableInfoModal: React.FC<ShareableInfoModalProps> = ({
             color={Theme.Colors.blackIcon}
             size={20}
             onPress={onDismiss}
-            containerStyle={{ position: 'absolute', right: 16, top: 16 }}
+            containerStyle={{position: 'absolute', right: 16, top: 16}}
           />
         </View>
-
 
         <FlatList
           data={disclosedFields}
           keyExtractor={(item, index) => item.label + index}
-          style={{ maxHeight: maxHeight }}
+          style={{maxHeight: maxHeight}}
           contentContainerStyle={{
             paddingVertical: 10,
             paddingBottom: 24,
           }}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <View
               style={{
                 ...Theme.DisclosureOverlayStyles.listView,
-                borderColor: item.isDisclosed ? Theme.Colors.lightGreyBackgroundColor : 'white',
-                backgroundColor: item.isDisclosed ? Theme.Colors.DetailedViewBackground : 'white',
-              }}
-            >
+                borderColor: item.isDisclosed
+                  ? Theme.Colors.lightGreyBackgroundColor
+                  : 'white',
+                backgroundColor: item.isDisclosed
+                  ? Theme.Colors.DetailedViewBackground
+                  : 'white',
+              }}>
               <Text
                 style={{
                   fontSize: 15,
                   paddingLeft: item.indentLevel * 12,
-                }}
-              >
+                }}>
                 {item.isArrayItem ? '• ' : item.indentLevel > 0 ? '└─ ' : ''}
                 {item.label}
               </Text>
@@ -155,32 +156,24 @@ export const ShareableInfoModal: React.FC<ShareableInfoModalProps> = ({
           showsVerticalScrollIndicator={true}
           bounces={true}
         />
-        <View
-          style={Theme.DisclosureOverlayStyles.noteView}
-        >
+        <View style={Theme.DisclosureOverlayStyles.noteView}>
           <Icon
             name="info"
             type="feather"
             color="#973C00"
             size={20}
-            containerStyle={{ marginRight: 8, marginBottom: 4 }}
-
+            containerStyle={{marginRight: 8, marginBottom: 4}}
           />
-          <View style={{ flex: 1 }}>
-            <Text
-              style={Theme.DisclosureOverlayStyles.noteTitleText}
-            >
+          <View style={{flex: 1}}>
+            <Text style={Theme.DisclosureOverlayStyles.noteTitleText}>
               {t('disclosureNoteTitle')}
             </Text>
-            <Text
-              style={Theme.DisclosureOverlayStyles.noteDescriptionText}
-            >
+            <Text style={Theme.DisclosureOverlayStyles.noteDescriptionText}>
               {t('disclosureNote')}
             </Text>
           </View>
         </View>
       </View>
     </Overlay>
-
   );
 };

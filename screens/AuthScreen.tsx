@@ -29,7 +29,7 @@ export const AuthScreen: React.FC<RootRouteProps> = props => {
         'Use Passcode Button',
       ),
     );
-    controller.usePasscode();
+    controller.navigateToPasscode();
   };
   return (
     <Column
@@ -47,7 +47,6 @@ export const AuthScreen: React.FC<RootRouteProps> = props => {
         <Column margin="30 0 0 0">
           <Text
             testID="selectAppUnlockMethod"
-            style={{paddingTop: 3}}
             align="center"
             style={Theme.TextStyles.header}>
             {t('header')}

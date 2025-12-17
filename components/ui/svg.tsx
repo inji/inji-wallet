@@ -508,8 +508,8 @@ export class SvgImage {
     return (
       <Info
         color1={Theme.Colors.tooltipIcon}
-        width={16}
-        height={16}
+        width={14}
+        height={14}
         {...testIDProps('infoIcon')}
       />
     );
