@@ -1,4 +1,8 @@
 fileignoreconfig:
+  - filename: components/VC/common/StatusInfoModal.tsx
+    checksum: 5db61aa419e0c1c70b067993272da93822917daa55523371fc196022bd7c25a3
+  - filename: components/VC/common/VcStatustooTip.tsx
+    checksum: fe1a9c713d29df1712f1b55b0bd1fe9946daa7462c3da4ae1b2bcb2198ae2345
   - filename: package.json
     checksum: 5b4fcb5ddc7cc96cc2d1733b544d56ea66e88cdab995a1052fbf9ac0e9c2dc21
   - filename: lib/jsonld-signatures/suites/ed255192018/ed25519.ts

@@ -1,4 +1,16 @@
-<svg id="Group_57154" data-name="Group 57154" xmlns="http://www.w3.org/2000/svg" width="23.854" height="29.817" viewBox="0 0 23.854 29.817">
-  <path id="gpp_maybe_FILL0_wght400_GRAD0_opsz48" d="M19.927,33.767a14.636,14.636,0,0,1-8.572-6.057A17.677,17.677,0,0,1,8,17.293V8.423L19.927,3.95,31.853,8.423v8.87A17.677,17.677,0,0,1,28.5,27.71,14.636,14.636,0,0,1,19.927,33.767Z" transform="translate(-8 -3.95)" fill="#e8a94f"/>
-  <path id="gpp_maybe_FILL0_wght400_GRAD0_opsz48-2" data-name="gpp_maybe_FILL0_wght400_GRAD0_opsz48" d="M16.405,21.784a1.271,1.271,0,1,0-.893-.372A1.218,1.218,0,0,0,16.405,21.784ZM15.289,16.8h2.233v-7.7H15.289ZM16.405,16.35Z" transform="translate(-4.478 -1.407)" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="23.854" height="29.817" viewBox="0 0 23.854 29.817">
+  <!-- Shield background - Yellow for UnActivated -->
+  <path d="M19.927,33.767a14.636,14.636,0,0,1-8.572-6.057A17.677,17.677,0,0,1,8,17.293V8.423L19.927,3.95,31.853,8.423v8.87A17.677,17.677,0,0,1,28.5,27.71,14.636,14.636,0,0,1,19.927,33.767Z" transform="translate(-8 -3.95)" fill="#E9B824"/>
+  <!-- Left arc from 12 o'clock to 6 o'clock (radius 6) centered -->
+  <path d="M12 9 A6 6 0 0 0 12 21" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  <!-- Center circle -->
+  <circle cx="12" cy="15" r="1.8" fill="#fff"/>
+  <!-- Clock hand pointing to 10 o'clock -->
+  <line x1="12" y1="15" x2="9.5" y2="12.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  <!-- Right side 5 dots from 1 o'clock to 5 o'clock -->
+  <circle cx="15" cy="9.8" r="1" fill="#fff"/>
+  <circle cx="17.2" cy="12" r="1" fill="#fff"/>
+  <circle cx="18" cy="15" r="1" fill="#fff"/>
+  <circle cx="17.2" cy="18" r="1" fill="#fff"/>
+  <circle cx="15" cy="20.2" r="1" fill="#fff"/>
 </svg>

@@ -147,14 +147,18 @@ export const StaticSendVcScreen: React.FC = () => {
                     <Text testID={`cardName-${card.id}`} weight="bold">
                       {card.name}
                     </Text>
-                    <Text
-                      testID={`cardStatus-${card.id}`}
-                      size="extraSmall"
-                      style={{
-                        color: Theme.Colors.blackIcon,
-                      }}>
-                      {t('VcDetails:' + card.status)}
-                    </Text>
+                    <Row crossAlign="center">
+                      {SvgImage.statusValidIcon(12, 12)}
+                      <Text
+                        testID={`cardStatus-${card.id}`}
+                        size="extraSmall"
+                        style={{
+                          color: Theme.Colors.blackIcon,
+                          marginLeft: 4,
+                        }}>
+                        {t('VcDetails:' + card.status)}
+                      </Text>
+                    </Row>
                   </Column>
                 </Row>
               </Column>

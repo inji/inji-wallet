@@ -1,10 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="23.854" height="29.895" viewBox="0 0 23.854 29.895">
-  <g id="credential_enabled_icon" transform="translate(-1366.659 -1167.162)">
-    <g id="Group_57086" data-name="Group 57086" transform="translate(1366.659 1167.162)">
-      <g id="Group_57159" data-name="Group 57159" transform="translate(0 0)">
-        <path id="gpp_maybe_FILL0_wght400_GRAD0_opsz48" d="M19.927,33.845a14.637,14.637,0,0,1-8.572-6.072A17.755,17.755,0,0,1,8,17.328V8.434L19.927,3.95,31.854,8.434v8.894A17.755,17.755,0,0,1,28.5,27.772,14.637,14.637,0,0,1,19.927,33.845Z" transform="translate(-8 -3.95)" fill="#4b9d20"/>
-        <path id="check_circle_FILL0_wght400_GRAD0_opsz48" d="M10.247,15.091l6.536-6.536L15.721,7.516,10.247,12.99,7.476,10.218,6.437,11.258ZM11.61,10.888Z" transform="translate(0.372 3.406)" fill="#fff"/>
-      </g>
-    </g>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="23.854" height="29.817" viewBox="0 0 23.854 29.817">
+  <!-- Shield background - Green for Valid -->
+  <path d="M19.927,33.767a14.636,14.636,0,0,1-8.572-6.057A17.677,17.677,0,0,1,8,17.293V8.423L19.927,3.95,31.853,8.423v8.87A17.677,17.677,0,0,1,28.5,27.71,14.636,14.636,0,0,1,19.927,33.767Z" transform="translate(-8 -3.95)" fill="#2AA54B"/>
+  <!-- White checkmark centered -->
+  <polyline points="7,15 10,18 17,11" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

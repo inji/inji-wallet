@@ -1,13 +1,13 @@
-import {Dimensions, View} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import {Column, Row, Text} from '../../ui';
-import {CustomTooltip} from '../../ui/ToolTip';
 import {Theme} from '../../ui/styleUtils';
-import React from 'react';
+import React, {useState} from 'react';
 import {SvgImage} from '../../ui/svg';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {STATUS_FIELD_NAME} from './VCUtils';
-import {StatusTooltipContent} from './VcStatustooTip';
+import {StatusInfoModal} from './StatusInfoModal';
+import testIDProps from '../../../shared/commonUtil';
 
 export const VCItemFieldName = ({
   fieldName,
@@ -21,6 +21,16 @@ export const VCItemFieldName = ({
   isDisclosed?: boolean;
 }) => {
   const {t} = useTranslation('ViewVcModal');
+  const [isStatusModalVisible, setIsStatusModalVisible] = useState(false);
+
+  const handleOpenStatusModal = () => {
+    setIsStatusModalVisible(true);
+  };
+
+  const handleCloseStatusModal = () => {
+    setIsStatusModalVisible(false);
+  };
+
   return (
     <Row>
       {fieldName && (
@@ -33,14 +43,18 @@ export const VCItemFieldName = ({
       )}
 
       {fieldName == STATUS_FIELD_NAME && (
-        <CustomTooltip
-          testID="statusToolTip"
-          width={Dimensions.get('screen').width * 0.8}
-          height={Dimensions.get('screen').height * 0.28}
-          triggerComponent={SvgImage.info()}
-          triggerComponentStyles={{marginLeft: 2, marginTop: 2}}
-          toolTipContent={<StatusTooltipContent />}
-        />
+        <>
+          <TouchableOpacity
+            {...testIDProps('statusInfoButton')}
+            onPress={handleOpenStatusModal}
+            style={{marginLeft: 2, marginTop: 2}}>
+            {SvgImage.info()}
+          </TouchableOpacity>
+          <StatusInfoModal
+            isVisible={isStatusModalVisible}
+            onClose={handleCloseStatusModal}
+          />
+        </>
       )}
       {isDisclosed && (
         <Icon

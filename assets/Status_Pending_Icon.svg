@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <circle cx="12" cy="12" r="12" fill="#E9B824"/>
+  <!-- Left arc from 12 o'clock to 6 o'clock (radius 7) -->
+  <path d="M12 5 A7 7 0 0 0 12 19" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- Center circle -->
+  <circle cx="12" cy="12" r="2" fill="#fff"/>
+  <!-- Clock hand pointing to 10 o'clock -->
+  <line x1="12" y1="12" x2="9" y2="9" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- Right side 5 dots from 1 o'clock to 5 o'clock (radius 7) -->
+  <circle cx="15.5" cy="5.94" r="1.2" fill="#fff"/>
+  <circle cx="18.06" cy="8.5" r="1.2" fill="#fff"/>
+  <circle cx="19" cy="12" r="1.2" fill="#fff"/>
+  <circle cx="18.06" cy="15.5" r="1.2" fill="#fff"/>
+  <circle cx="15.5" cy="18.06" r="1.2" fill="#fff"/>
+</svg>

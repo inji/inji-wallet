@@ -529,22 +529,23 @@
   "ViewVcModal": {
     "title": "Mga Detalye ng ID",
     "inProgress": "Isinasagawa",
+    "statusInfoTitle": "Impormasyon ng Katayuan",
     "statusToolTipContent": {
       "valid": {
-        "title": "Wastong Katayuan:",
-        "description": "Matagumpay na na-verify ang kredensyal."
+        "title": "Wasto",
+        "description": "Ang card ay aktibo at maaaring gamitin o ibahagi."
       },
       "pending": {
-        "title": "Nakabinbing Katayuan:",
-        "description": "Kasalukuyang nakabinbin ang pag-verify dahil sa mga teknikal na isyu."
+        "title": "Nakabinbin",
+        "description": "Hindi ma-verify ang status ng card sa ngayon."
       },
       "expired": {
-        "title": "Nag-expire na Katayuan:",
-        "description": "Nag-expire na ang kredensyal."
+        "title": "Nag-expire",
+        "description": "Ang card ay hindi na wasto dahil natapos na ang validity period nito."
       },
       "revoked": {
-        "title": "Binawing Status:",
-        "description": "Ang credential ay binawi na."
+        "title": "Binawi",
+        "description": "Ang card ay binawi ng issuer at hindi maaaring gamitin o ibahagi."
       }
     }
   },
