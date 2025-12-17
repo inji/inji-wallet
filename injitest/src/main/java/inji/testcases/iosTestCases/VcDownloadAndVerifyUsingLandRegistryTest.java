@@ -12,12 +12,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static org.testng.Assert.assertTrue;
+import inji.annotations.NeedsLandUIN;
 
 public class VcDownloadAndVerifyUsingLandRegistryTest extends IosBaseTest {
 	private static final Logger logger = LogManager.getLogger(VcDownloadAndVerifyUsingLandRegistryTest.class);
 	
     @Test
-    @NeedsMockUIN
+    @NeedsLandUIN
     public void downloadAndVerifyVcUsingLandStatement() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -25,13 +26,13 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
         ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
         HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
-
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandRegistry();
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         esignetLoginPage.clickOnLoginWithOtpButton();
-        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
+        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
+        Thread.sleep(10000);
         esignetLoginPage.clickOnGetOtpButton();
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
@@ -43,7 +44,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends IosBaseTest {
     }
 
     @Test
-    @NeedsMockUIN
+    @NeedsLandUIN
     public void downloadAndVerifyVcUsingLandStatementFiveTimes() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -51,7 +52,6 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
         ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
         HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
-
         homePage.clickOnNextButtonForInjiTour();
         // Loop to download VC 5 times
         for (int i = 1; i <= 5; i++) {
@@ -60,7 +60,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends IosBaseTest {
             ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandRegistry();
             addNewCardPage.clickOnContinueButtonInSigninPopupIos();
             esignetLoginPage.clickOnLoginWithOtpButton();
-            OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
+            OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
             esignetLoginPage.clickOnGetOtpButton();
             otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
             esignetLoginPage.clickOnVerifyButtonIos();

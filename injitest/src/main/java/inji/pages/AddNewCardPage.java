@@ -15,10 +15,7 @@ public class AddNewCardPage extends BasePage {
     private static final String stayProtectedIssuerCredentialType = InjiWalletConfigManager.getproperty("stayProtected_issuer_credentialType");
     private static final String landRegistryIssuer = InjiWalletConfigManager.getproperty("landregistry.issuer");
     private static final String landRegistryIssuerCredentialType = InjiWalletConfigManager.getproperty("landregistry.issuer.credentialType");
-    public static final String LandRegistryUIN = InjiWalletConfigManager.getproperty("landregistry.uin");
     private static final String landRegistryIssuerSdJwtCredentialType = InjiWalletConfigManager.getproperty("landregistry.issuer.sdjwtcredentialType");
-    public static final String SVGWithFaceUIN = InjiWalletConfigManager.getproperty("svgwithface.uin");
-    public static final String SVGWithOutFaceUIN = InjiWalletConfigManager.getproperty("svgwithoutface.uin");
     private static final String FarmerIssuer = InjiWalletConfigManager.getproperty("farmerId.issuer");
     private static final String FarmerIssuerSdJwtCredentialTypeWithFace = InjiWalletConfigManager
             .getproperty("farmerId.issuer.svgcredentialTypewithFace");

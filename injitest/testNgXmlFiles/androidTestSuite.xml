@@ -204,11 +204,11 @@
                    <!-- <include name="downloadAndVerifyVcUsingUinViaLandStatementVCDM1"/> -->
                 </methods>
             </class>
-            <class name="inji.testcases.androidTestCases.CredentialRegistryTest">
+        <!--    <class name="inji.testcases.androidTestCases.CredentialRegistryTest"> As this feature is only for internal testing purposes, these test cases have been disabled from execution.
                 <methods>
-             <!--   <include name="downloadAndVerifyVcInNewEnv"/> Duplicate of downloadAndVerifyVcInNewEnvForEsignet -->
+                <include name="downloadAndVerifyVcInNewEnv"/> 
                     <include name="cancelChangeEnvAndVerify"/>
-             <!--   <include name="downloadAndVerifyVcInInvalidEnv"/> Duplicate of downloadAndVerifyVcInInvalidEnvForEsignet -->
+                    <include name="downloadAndVerifyVcInInvalidEnv"/> 
                     <include name="downloadAndVerifyVcInNewEnvForEsignet"/>
                     <include name="downloadAndVerifyVcInInvalidEnvForEsignet"/>
                     <include name="downloadAndVerifyVcInInvalidEnvForEsignetInFillpino"/>
@@ -216,8 +216,7 @@
                     <include name="downloadAndVerifyVcInNewEnvForMock"/>
                     <include name="downloadAndVerifyVcInNewEnvForLandStatementCredential"/>
                 </methods>
-            </class>
-
+            </class>  -->
         </classes>
     </test>
 </suite>

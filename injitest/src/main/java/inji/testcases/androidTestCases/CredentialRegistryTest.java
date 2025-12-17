@@ -799,7 +799,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandRegistry();
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
         esignetLoginPage.clickOnLoginWithOtpButton();
-        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
+        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
         esignetLoginPage.clickOnGetOtpButton();
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();

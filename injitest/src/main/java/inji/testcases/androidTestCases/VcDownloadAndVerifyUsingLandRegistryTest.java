@@ -10,9 +10,12 @@ import org.testng.asserts.SoftAssert;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+import inji.annotations.NeedsLandUIN;
 
 public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
+	
     @Test
+    @NeedsLandUIN
     public void downloadAndVerifyVcUsingUinViaLand() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -29,7 +32,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandRegistry();
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
         esignetLoginPage.clickOnLoginWithOtpButton();
-        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
+        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
         esignetLoginPage.clickOnGetOtpButton();
 
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
@@ -64,6 +67,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
     }
 
     @Test
+    @NeedsLandUIN
     public void downloadAndVerifyVcUsingUinViaLandStatementCredential() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -80,7 +84,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandRegistry();
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
         esignetLoginPage.clickOnLoginWithOtpButton();
-        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
+        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
         esignetLoginPage.clickOnGetOtpButton();
 
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
@@ -173,6 +177,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
     }
 
     @Test
+    @NeedsLandUIN
     public void downloadAndVerifyVcUsingUinViaLandStatementRegistrationReceiptOfTheRuralProperty() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
@@ -205,7 +210,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
 
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
         esignetLoginPage.clickOnLoginWithOtpButton();
-        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
+        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
         esignetLoginPage.clickOnGetOtpButton();
         assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
