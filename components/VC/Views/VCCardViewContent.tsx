@@ -283,38 +283,31 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
             />
           )}
 
-          {(() => {
-            const needsActivation = isActivationNeeded(
-              verifiableCredentialData?.issuer,
-            );
-            const isActivated = needsActivation
-              ? !!walletBindingResponse
-              : true;
-            if (isActivated) {
-              return SvgImage.walletActivatedIcon();
-            } else {
-              return SvgImage.walletUnActivatedIcon();
-            }
-          })()}
-
           {!Object.values(VCItemContainerFlowType).includes(flow) && (
-            <Pressable
-              onPress={KEBAB_POPUP}
-              accessible={false}
-              style={Theme.Styles.kebabPressableContainer}>
-              <KebabPopUp
-                iconColor={wellknownDisplayProperty.getTextColor(
-                  Theme.Colors.helpText,
-                )}
-                vcMetadata={vcMetadata}
-                iconName="dots-three-horizontal"
-                iconType="entypo"
-                isVisible={isKebabPopUp}
-                onDismiss={DISMISS}
-                service={service}
-                vcHasImage={faceImage !== undefined}
-              />
-            </Pressable>
+            <>
+              {!verifiableCredentialData?.vcMetadata.isExpired &&
+                (!walletBindingResponse &&
+                isActivationNeeded(verifiableCredentialData?.issuer)
+                  ? SvgImage.walletUnActivatedIcon()
+                  : SvgImage.walletActivatedIcon())}
+              <Pressable
+                onPress={KEBAB_POPUP}
+                accessible={false}
+                style={Theme.Styles.kebabPressableContainer}>
+                <KebabPopUp
+                  iconColor={wellknownDisplayProperty.getTextColor(
+                    Theme.Colors.helpText,
+                  )}
+                  vcMetadata={vcMetadata}
+                  iconName="dots-three-horizontal"
+                  iconType="entypo"
+                  isVisible={isKebabPopUp}
+                  onDismiss={DISMISS}
+                  service={service}
+                  vcHasImage={faceImage !== undefined}
+                />
+              </Pressable>
+            </>
           )}
           {vcSelectableButton}
           {flow === VCItemContainerFlowType.VP_SHARE &&

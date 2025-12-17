@@ -2315,6 +2315,7 @@ export const DefaultTheme = {
     },
     headerTitle: {
       fontSize: 18,
+      lineHeight: 26,
       color: Colors.Black,
       flex: 1,
       marginRight: 12,
