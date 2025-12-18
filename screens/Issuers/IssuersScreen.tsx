@@ -35,7 +35,7 @@ import {IssuersModel} from '../../machines/Issuers/IssuersModel';
 import {AUTH_ROUTES} from '../../routes/routesConstants';
 import {TransactionCodeModal} from './TransactionCodeScreen';
 import {TrustModal} from '../../components/TrustModal';
-import i18next from 'i18next';
+
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
