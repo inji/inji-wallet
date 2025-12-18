@@ -20,7 +20,6 @@ import {
   VCItemContainerFlowType,
 } from '../../shared/Utils';
 import {FaceVerificationAlertOverlay} from './FaceVerificationAlertOverlay';
-import {SvgImage} from '../../components/ui/svg';
 import {LIVENESS_CHECK} from '../../shared/constants';
 
 export const SendVcScreen: React.FC = () => {
