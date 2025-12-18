@@ -1,43 +1,43 @@
-import React, {useEffect, useState} from 'react';
-import {Row} from '../../components/ui';
-import {Modal} from '../../components/ui/Modal';
-import {MessageOverlay} from '../../components/MessageOverlay';
-import {ToastItem} from '../../components/ui/ToastItem';
-import {useViewVcModal, ViewVcModalProps} from './ViewVcModalController';
-import {useTranslation} from 'react-i18next';
-import {OtpVerificationModal} from './MyVcs/OtpVerificationModal';
-import {BindingVcWarningOverlay} from './MyVcs/BindingVcWarningOverlay';
-import {VcDetailsContainer} from '../../components/VC/VcDetailsContainer';
-import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
-import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
-import {Theme} from '../../components/ui/styleUtils';
-import {HelpScreen} from '../../components/HelpScreen';
-import {Pressable, View} from 'react-native';
-import {KebabPopUp} from '../../components/KebabPopUp';
-import {SvgImage} from '../../components/ui/svg';
-import {VCMetadata} from '../../shared/VCMetadata';
-import {WalletBinding} from './MyVcs/WalletBinding';
-import {RemoveVcWarningOverlay} from './MyVcs/RemoveVcWarningOverlay';
-import {HistoryTab} from './MyVcs/HistoryTab';
-import {getDetailedViewFields} from '../../shared/openId4VCI/Utils';
+import React, { useEffect, useState } from 'react';
+import { Row } from '../../components/ui';
+import { Modal } from '../../components/ui/Modal';
+import { MessageOverlay } from '../../components/MessageOverlay';
+import { ToastItem } from '../../components/ui/ToastItem';
+import { useViewVcModal, ViewVcModalProps } from './ViewVcModalController';
+import { useTranslation } from 'react-i18next';
+import { OtpVerificationModal } from './MyVcs/OtpVerificationModal';
+import { BindingVcWarningOverlay } from './MyVcs/BindingVcWarningOverlay';
+import { VcDetailsContainer } from '../../components/VC/VcDetailsContainer';
+import { TelemetryConstants } from '../../shared/telemetry/TelemetryConstants';
+import { BannerNotificationContainer } from '../../components/BannerNotificationContainer';
+import { Theme } from '../../components/ui/styleUtils';
+import { HelpScreen } from '../../components/HelpScreen';
+import { Pressable, View } from 'react-native';
+import { KebabPopUp } from '../../components/KebabPopUp';
+import { SvgImage } from '../../components/ui/svg';
+import { VCMetadata } from '../../shared/VCMetadata';
+import { WalletBinding } from './MyVcs/WalletBinding';
+import { RemoveVcWarningOverlay } from './MyVcs/RemoveVcWarningOverlay';
+import { HistoryTab } from './MyVcs/HistoryTab';
+import { getDetailedViewFields } from '../../shared/openId4VCI/Utils';
 import {
   DETAIL_VIEW_DEFAULT_FIELDS,
   isVCLoaded,
 } from '../../components/VC/common/VCUtils';
-import {ActivityIndicator} from '../../components/ui/ActivityIndicator';
+import { ActivityIndicator } from '../../components/ui/ActivityIndicator';
 import ShimmerPlaceholder from 'react-native-shimmer-placeholder';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   BannerNotification,
   BannerStatus,
 } from '../../components/BannerNotification';
-import {VCProcessor} from '../../components/VC/common/VCProcessor';
-import {HelpIcon} from '../../components/ui/HelpIcon';
+import { VCProcessor } from '../../components/VC/common/VCProcessor';
+import { HelpIcon } from '../../components/ui/HelpIcon';
 import VcRenderer from '../../shared/vcRenderer/VcRenderer';
-import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
+import { RevocationStatus } from '../../shared/vcVerifier/VcVerifier';
 
 export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
-  const {t} = useTranslation('ViewVcModal');
+  const { t } = useTranslation('ViewVcModal');
   const controller = useViewVcModal(props);
   const profileImage = controller.verifiableCredentialData.face;
   const verificationStatus = controller.verificationStatus;
@@ -45,8 +45,8 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
     controller.verificationStatus?.isRevoked == RevocationStatus.TRUE
       ? 'revoked'
       : controller.verificationStatus?.isExpired
-      ? 'expired'
-      : controller.verificationStatus?.statusType;
+        ? 'expired'
+        : controller.verificationStatus?.statusType;
   const [verifiableCredential, setVerifiableCredential] = useState(null);
   const [svgTemplate, setSvgTemplate] = useState<string[] | null>(null);
   const [svgRendererError, setSvgRendererError] = useState<string[] | null>(
@@ -72,7 +72,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
       controller.SHOW_VERIFICATION_STATUS_BANNER();
     }
     if (
-      !controller.verifiableCredentialData.vcMetadata.isVerified &&
+      (!controller.verifiableCredentialData.vcMetadata.isVerified || controller.verifiableCredentialData.vcMetadata.isRevoked === RevocationStatus.UNDETERMINED) &&
       !controller.isVerificationInProgress
     ) {
       props.vcItemActor.send({type: 'VERIFY'});
