@@ -283,7 +283,7 @@ dependencies {
     implementation("io.mosip:tuvali:0.5.2")
     implementation("io.mosip:inji-vci-client-aar:0.6.0")
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("io.mosip:vcverifier-aar:1.6.0-SNAPSHOT") {
+    implementation("io.mosip:vcverifier-aar:1.6.0") {
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
     }
 
