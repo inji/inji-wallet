@@ -4,6 +4,16 @@ import {VCVerification} from './VCVerification';
 import {VCMetadata} from '../shared/VCMetadata';
 import {Display} from './VC/common/VCUtils';
 
+// Mock SvgImage
+jest.mock('./ui/svg', () => ({
+  SvgImage: {
+    statusValidIcon: () => 'StatusValidIcon',
+    statusPendingIcon: () => 'StatusPendingIcon',
+    statusExpiredIcon: () => 'StatusExpiredIcon',
+    statusRevokedIcon: () => 'StatusRevokedIcon',
+  },
+}));
+
 // Mock the Display class
 const mockDisplay = {
   getTextColor: jest.fn((defaultColor: string) => defaultColor),
