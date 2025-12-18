@@ -74,7 +74,7 @@ lane :android_build_internal do
   git_commit = sh('git rev-parse --short HEAD').strip
   git_branch = sh('git rev-parse --abbrev-ref HEAD').strip
 
-  versionName = "0.21.0-#{git_commit}-#{git_branch}"
+  versionName = "0.22.0-#{git_commit}-#{git_branch}"
 
   gradle(task: "clean bundle#{APP_FLAVOR}Release")
   upload_to_play_store(
