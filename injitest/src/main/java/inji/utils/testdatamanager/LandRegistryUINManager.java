@@ -12,9 +12,9 @@ public class LandRegistryUINManager {
     private static final BlockingQueue<Uin> availableUINs = new LinkedBlockingQueue<>();
 
     static {
-        String uin = InjiWalletConfigManager.getproperty("landregistry.uin");
+        String uin = InjiWalletConfigManager.getproperty("landregistry_uin");
         if (uin == null || uin.isEmpty()) {
-        	throw new IllegalStateException("Configuration 'landregistry.uin' is not set");
+        	throw new IllegalStateException("Configuration 'landregistry_uin' is not set");
         	}
         for (int i = 0; i < 5; i++) {
             availableUINs.add(new Uin(uin));

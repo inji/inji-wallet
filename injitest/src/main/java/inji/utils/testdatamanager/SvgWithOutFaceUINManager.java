@@ -12,9 +12,9 @@ public class SvgWithOutFaceUINManager {
     private static final BlockingQueue<Uin> availableUINs = new LinkedBlockingQueue<>();
 
     static {
-        String uin = InjiWalletConfigManager.getproperty("svgwithoutface.uin");
+        String uin = InjiWalletConfigManager.getproperty("svgwithoutface_uin");
         if (uin == null || uin.isEmpty()) {
-        	throw new IllegalStateException("Configuration 'svgwithoutface.uin' is not set");
+        	throw new IllegalStateException("Configuration 'svgwithoutface_uin' is not set");
         	}
 
         for (int i = 0; i < 5; i++) {
