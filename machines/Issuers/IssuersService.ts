@@ -145,7 +145,9 @@ export const IssuersService = () => {
           'trusted',
         );
       } catch {
+        //Todo: to confirm with Sanchi
         console.error('Error updating issuer trust in keystore');
+        throw new Error('Error adding issuer to trusted issuers');
       }
     },
     downloadCredentialFromOffer: (context: any) => async (sendBack: any) => {

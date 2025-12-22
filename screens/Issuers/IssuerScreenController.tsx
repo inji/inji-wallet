@@ -19,7 +19,8 @@ import {
   selectIsConsentRequested,
   selectIssuerLogo,
   selectIssuerName,
-  selectTxCodeDisplayDetails
+  selectTxCodeDisplayDetails,
+  selectTrustedIssuerConsentStatus
 } from '../../machines/Issuers/IssuersSelectors';
 import { ActorRefFrom } from 'xstate';
 import { BOTTOM_TAB_ROUTES } from '../../routes/routesConstants';
@@ -58,6 +59,9 @@ export function useIssuerScreenController({ route, navigation }) {
     ),
     isConsentRequested: useSelector(
       service, selectIsConsentRequested
+    ),
+    trustedIssuerConsentStatus: useSelector(
+      service, selectTrustedIssuerConsentStatus
     ),
     supportedCredentialTypes: useSelector(
       service,

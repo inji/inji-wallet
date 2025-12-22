@@ -2083,70 +2083,123 @@ export const PurpleTheme = {
     },
   }),
   TrustIssuerScreenStyle: StyleSheet.create({
-    modalOverlay: {
-      flex: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 20,
-    },
-    modalContainer: {
-      backgroundColor: '#fff',
-      borderRadius: 20,
-      width: '100%',
-      height: 470,
-      padding: 20,
-      alignItems: 'center',
-    },
-    issuerHeader: {
-      padding: 10,
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    issuerLogo: {
-      width: 60,
-      height: 60,
-      resizeMode: 'contain',
-    },
-    issuerName: {
-      marginTop: 8,
-      fontWeight: 'bold',
-      fontSize: 16,
-    },
-    description: {
-      fontSize: 14,
-      color: '#666',
-      textAlign: 'center',
-      lineHeight: 20,
-      marginBottom: 16,
-    },
-    infoContainer: {
-      width: '100%',
-      marginBottom: 10,
-    },
-    infoItem: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      marginBottom: 6,
-      paddingHorizontal: 4,
-    },
-    info: {
-      fontSize: 14,
-      color: '#666',
-      marginRight: 8,
-      marginTop: 1,
-    },
-    infoText: {
-      flex: 1,
-      fontSize: 14,
-      color: '#666',
-      lineHeight: 18,
-    },
-    buttonText: {
-      textAlign: 'center',
-      flexWrap: 'wrap',
-    },
-  }),
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+
+  modalContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 24,
+    width: '100%',
+    maxWidth: 420,
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 16,
+    alignItems: 'center',
+  },
+
+  /* ---------- Header (Shield + Title) ---------- */
+
+  header: {
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+
+  headerIcon: {
+    width: 42,
+    height: 42,
+    marginBottom: 12,
+    resizeMode: 'contain',
+  },
+
+  title: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#111827',
+  },
+
+  subtitle: {
+    fontSize: 14,
+    color: '#6B7280',
+    textAlign: 'center',
+    marginTop: 6,
+    lineHeight: 20,
+    paddingHorizontal: 12,
+  },
+
+  /* ---------- Issuer Card ---------- */
+
+  card: {
+    backgroundColor: '#EDF6FB',
+    borderRadius: 20,
+    padding: 20,
+    width: '100%',
+    marginBottom: 24,
+  },
+
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+
+  issuerLogo: {
+    width: 40,
+    height: 40,
+    resizeMode: 'contain',
+    borderRadius: 8,
+    marginRight: 12,
+    backgroundColor: '#FFFFFF',
+  },
+
+  issuerName: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#111827',
+  },
+
+  cardDescription: {
+    fontSize: 14,
+    color: '#374151',
+    lineHeight: 20,
+    marginBottom: 12,
+  },
+
+  /* ---------- Bullet Points ---------- */
+
+  infoItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 8,
+  },
+
+  bullet: {
+    fontSize: 16,
+    color: '#374151',
+    marginRight: 8,
+    marginTop: 1,
+  },
+
+  infoText: {
+    flex: 1,
+    fontSize: 14,
+    color: '#374151',
+    lineHeight: 20,
+  },
+
+  /* ---------- Actions ---------- */
+
+  actions: {
+    width: '100%',
+    gap: 12,
+    paddingBottom: 8,
+  },
+}),
+
 
   AuthWebViewScreenStyle: StyleSheet.create({
     header: {
