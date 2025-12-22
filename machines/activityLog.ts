@@ -116,7 +116,8 @@ export const activityLogMachine =
 
         setActivities: model.assign({
           activities: (_, event) => {
-            return (event.response || []) as VCActivityLog[]},
+            return (event.response || []) as VCActivityLog[];
+          },
         }),
 
         storeActivity: send(
@@ -130,7 +131,8 @@ export const activityLogMachine =
               const updatedWellKnownIssuerMap = {
                 ...context.wellKnownIssuerMap,
               };
-              updatedWellKnownIssuerMap[event.log.issuer] = event.wellknown;
+              if (!updatedWellKnownIssuerMap[event.log.issuer])
+                updatedWellKnownIssuerMap[event.log.issuer] = event.wellknown;
               return updatedWellKnownIssuerMap as unknown as Record<
                 string,
                 Object

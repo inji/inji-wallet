@@ -6,7 +6,7 @@ import {
   StyleSheet,
   ViewStyle,
 } from 'react-native';
-import {Spacing} from '../styleUtils';
+import {Spacing, Theme} from '../styleUtils';
 import {COPILOT_HEIGHT, isIOS, isAndroid} from '../../../shared/constants';
 import Constants from 'expo-constants';
 import HomeScreenLogo from '../../../assets/InjiHomeLogo.svg';
@@ -1974,8 +1974,8 @@ export const DefaultTheme = {
     },
 
     logoStyle: {
-      width: 24,
-      height: 24,
+      width: 40,
+      height: 40,
       marginRight: 5,
       marginTop: 12,
     },
@@ -1990,6 +1990,12 @@ export const DefaultTheme = {
       height: 1,
     },
     poweredByTextStyle: {
+      fontSize: 16,
+      paddingTop: 15,
+      maxWidth: 250,
+    },
+    infoTextStyle: {
+      fontSize: 13,
       paddingTop: 15,
       maxWidth: 250,
     },
@@ -2285,6 +2291,69 @@ export const DefaultTheme = {
     start: {x: 0.5, y: 0.5},
     end: {x: 1, y: 0.5},
   },
+  StatusInfoModalStyles: StyleSheet.create({
+    overlay: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      padding: 0,
+      margin: 0,
+      width: Dimensions.get('screen').width,
+    },
+    container: {
+      paddingVertical: 20,
+      paddingHorizontal: 24,
+    },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 20,
+    },
+    headerTitle: {
+      fontSize: 18,
+      lineHeight: 26,
+      color: Colors.Black,
+      flex: 1,
+      marginRight: 12,
+    },
+    closeButton: {
+      padding: 4,
+      flexShrink: 0,
+    },
+    contentContainer: {
+      marginTop: 10,
+    },
+    statusItem: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      paddingVertical: 12,
+    },
+    iconContainer: {
+      marginRight: 12,
+      marginTop: 2,
+    },
+    statusTextContainer: {
+      flex: 1,
+    },
+    statusTitle: {
+      fontSize: 14,
+      color: Colors.Black,
+      marginBottom: 4,
+    },
+    statusDescription: {
+      fontSize: 12,
+      color: Colors.Gray40,
+      lineHeight: 18,
+    },
+    divider: {
+      height: 1,
+      backgroundColor: Colors.Grey5,
+    },
+  }),
 };
 
 function generateBoxShadowStyle() {

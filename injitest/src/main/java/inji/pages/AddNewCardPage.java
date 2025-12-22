@@ -8,26 +8,26 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.WebElement;
 
+
+
 public class AddNewCardPage extends BasePage {
     private static final String mosipIssuer = InjiWalletConfigManager.getproperty("mosip_issuer");
     private static final String mosipIssuerCredentialType = InjiWalletConfigManager.getproperty("mosip_issuer_credentialType");
     private static final String stayProtectedIssuer = InjiWalletConfigManager.getproperty("stayProtected_issuer");
     private static final String stayProtectedIssuerCredentialType = InjiWalletConfigManager.getproperty("stayProtected_issuer_credentialType");
-    private static final String landRegistryIssuer = InjiWalletConfigManager.getproperty("landregistry.issuer");
-    private static final String landRegistryIssuerCredentialType = InjiWalletConfigManager.getproperty("landregistry.issuer.credentialType");
-    public static final String LandRegistryUIN = InjiWalletConfigManager.getproperty("landregistry.uin");
-    private static final String landRegistryIssuerSdJwtCredentialType = InjiWalletConfigManager.getproperty("landregistry.issuer.sdjwtcredentialType");
-    public static final String SVGWithFaceUIN = InjiWalletConfigManager.getproperty("svgwithface.uin");
-    public static final String SVGWithOutFaceUIN = InjiWalletConfigManager.getproperty("svgwithoutface.uin");
-    private static final String FarmerIssuer = InjiWalletConfigManager.getproperty("farmerId.issuer");
+    private static final String landRegistryIssuer = InjiWalletConfigManager.getproperty("landregistry_issuer");
+    private static final String landRegistryIssuerCredentialType = InjiWalletConfigManager.getproperty("landregistry_issuer_credentialType");
+    private static final String landRegistryIssuerSdJwtCredentialType = InjiWalletConfigManager.getproperty("landregistry_issuer_sdjwtcredentialType");
+    private static final String FarmerIssuer = InjiWalletConfigManager.getproperty("farmerId_issuer");
     private static final String FarmerIssuerSdJwtCredentialTypeWithFace = InjiWalletConfigManager
-            .getproperty("farmerId.issuer.svgcredentialTypewithFace");
+            .getproperty("farmerId_issuer_svgcredentialTypewithFace");
     private static final String FarmerIssuerSdJwtCredentialTypeWithoutFace = InjiWalletConfigManager
-            .getproperty("farmerId.issuer.svgcredentialTypewithOutFace");
+            .getproperty("farmerId_issuer_svgcredentialTypewithOutFace");
     private static final String mockIssuer = InjiWalletConfigManager.getproperty("mock_issuer");
     private static final String mockIssuerCredentialType  = InjiWalletConfigManager.getproperty("mock_issuer_credentialType");    
     private static final String mdlIssuer = InjiWalletConfigManager.getproperty("mdl_issuer");
     private static final String mdlIssuerCredentialType  = InjiWalletConfigManager.getproperty("mdl_issuer_credentialType");
+    private static final String landRegistryIssuerRuralCredentialType  = InjiWalletConfigManager.getproperty("landregistry_issuer_ruralcredentialType");
 
     @AndroidFindBy(accessibility = "title")
     @iOSXCUITFindBy(accessibility = "title")
@@ -312,11 +312,18 @@ public class AddNewCardPage extends BasePage {
         return new ESignetLoginPage(driver);
     }
     
+    public ESignetLoginPage clickOnDownloadViaRuralLandRegistry() {
+        scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Land'");
+        scrollAndClickByAccessibilityId(landRegistryIssuerRuralCredentialType, "Click on 'land Verifiable Credential' option");
+        return new ESignetLoginPage(driver);
+    }
+    
     public ESignetLoginPage clickOnDownloadViaLandSdJwt() {
         scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Land sd jwt'");
         scrollAndClickByAccessibilityId(landRegistryIssuerSdJwtCredentialType, "Click on 'Land Sd Jwt' option");
         return new ESignetLoginPage(driver);
     }
+    
     public ESignetLoginPage clickOnDownloadViaLandSVGWithFace() {
         scrollAndClickByAccessibilityId(FarmerIssuer, "Click on 'Download via Farmer SVG'");
         scrollAndClickByAccessibilityIdForStale(FarmerIssuerSdJwtCredentialTypeWithFace,
@@ -328,5 +335,13 @@ public class AddNewCardPage extends BasePage {
         scrollAndClickByAccessibilityIdForStale(FarmerIssuerSdJwtCredentialTypeWithoutFace,
                 "Click on 'Farmer Id without Face' option");
         return new ESignetLoginPage(driver);
+    }
+    
+    public String getTextMosipCredentialText() {
+    return scrollToElementByAccessibilityIdGetText(mosipIssuerCredentialType, "Gettext from the mosip credential type");
+    }
+    
+    public String getTextSunbirdCredentialText() {
+    return scrollToElementByAccessibilityIdGetText(stayProtectedIssuerCredentialType, "Gettext from the sunbird credential type");
     }
 }

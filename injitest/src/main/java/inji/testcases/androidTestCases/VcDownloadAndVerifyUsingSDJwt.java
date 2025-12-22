@@ -1,5 +1,6 @@
 package inji.testcases.androidTestCases;
 
+import inji.annotations.NeedsMockUIN;
 import inji.annotations.NeedsUIN;
 import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
@@ -12,10 +13,12 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+import inji.annotations.NeedsLandUIN;
 
 public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 	
 	@Test
+	@NeedsLandUIN
 	public void downloadAndVerifyLandSdJwtVc() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -34,7 +37,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSdJwt();
 		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
@@ -82,6 +85,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 	}
 
 	@Test
+	@NeedsLandUIN
 	public void downloadAndVerifyLandSdJwtVcUsingInvalidOtp() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -100,7 +104,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSdJwt();
 		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
@@ -110,6 +114,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 	}
 
 	@Test
+	@NeedsLandUIN
 	public void downloadAndVerifyLandSdJwtVcAndPinAndUnpin() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -128,7 +133,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSdJwt();
 		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
@@ -143,6 +148,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 	}
 
 	@Test
+	@NeedsLandUIN
 	public void downloadAndVerifyLandSdJwtVcMultipleTime() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -161,7 +167,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSdJwt();
 		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
@@ -176,7 +182,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		esignetLoginPageAgain.clickOnEsignetLoginWithOtpButton();
 		esignetLoginPageAgain.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain
-				.setEnterIdTextBox(AddNewCardPage.LandRegistryUIN);
+				.setEnterIdTextBox(getLandUIN());
 		esignetLoginPageAgain.clickOnHideKeyboardAndGetOtpButton();
 		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
 		esignetLoginPageAgain.clickOnVerifyButton();

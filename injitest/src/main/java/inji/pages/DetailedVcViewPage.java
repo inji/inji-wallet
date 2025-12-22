@@ -148,7 +148,7 @@ public class DetailedVcViewPage extends BasePage {
     }
 
     public String getEmailInDetailedVcView() {
-        return getText(emailIdValue, "Get the email ID displayed in Detailed VC View");
+        return scrollToElementByAccessibilityIdGetText("emailValue", "Get the email ID displayed in Detailed VC View");
     }
 
     public boolean isActivateButtonDisplayed() {

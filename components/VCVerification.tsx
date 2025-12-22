@@ -2,13 +2,13 @@ import React from 'react';
 import {View} from 'react-native';
 import testIDProps from '../shared/commonUtil';
 import {Display} from './VC/common/VCUtils';
-import VerifiedIcon from './VerifiedIcon';
-import PendingIcon from './PendingIcon';
 import {Row, Text} from './ui';
 import {Theme} from './ui/styleUtils';
+import {SvgImage} from './ui/svg';
 import {useTranslation} from 'react-i18next';
 import {VCMetadata} from '../shared/VCMetadata';
 import {RevocationStatus} from '../shared/vcVerifier/VcVerifier';
+import {formattedDate} from '../shared/openId4VCI/Utils';
 
 export const VCVerification: React.FC<VCVerificationProps> = ({
   vcMetadata,
@@ -23,20 +23,20 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
   if (vcMetadata.isVerified) {
     if (vcMetadata.isRevoked === RevocationStatus.TRUE) {
       statusText = t('revoked');
-      statusIcon = <PendingIcon color="brown" />;
+      statusIcon = SvgImage.statusRevokedIcon(12, 12);
     } else if (vcMetadata.isExpired) {
       statusText = t('expired');
-      statusIcon = <PendingIcon color="red" />;
+      statusIcon = SvgImage.statusExpiredIcon(12, 12);
     } else if (vcMetadata.isRevoked === RevocationStatus.UNDETERMINED) {
       statusText = t('pending');
-      statusIcon = <PendingIcon color="orange" />;
+      statusIcon = SvgImage.statusPendingIcon(12, 12);
     } else {
       statusText = t('valid');
-      statusIcon = <VerifiedIcon />;
+      statusIcon = SvgImage.statusValidIcon(12, 12);
     }
   } else {
     statusText = t('pending');
-    statusIcon = <PendingIcon color="orange" />;
+    statusIcon = SvgImage.statusPendingIcon(12, 12);
   }
 
   return (
@@ -53,7 +53,7 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
         <Text
           testID="verificationStatus"
           color={display.getTextColor(Theme.Colors.Details)}
-          style={Theme.Styles.verificationStatus}>
+          style={[Theme.Styles.verificationStatus, {marginLeft: 4}]}>
           {statusText}
         </Text>
       </View>
@@ -76,7 +76,7 @@ export const VCVerification: React.FC<VCVerificationProps> = ({
               Theme.Styles.verificationStatus,
               {fontFamily: 'Montserrat_400'},
             ]}>
-            {new Date(vcMetadata.lastKnownStatusTimestamp).toLocaleString()}
+            {formattedDate(vcMetadata.lastKnownStatusTimestamp)}
           </Text>
         </View>
       )}

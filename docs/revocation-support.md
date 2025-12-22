@@ -2,7 +2,9 @@
 
 This document explains how Inji Wallet determines whether a credential is valid, revoked, or in a pending/unknown state.
 
-Revocation is based on the [**Status List 2021**](https://www.w3.org/TR/vc-bitstring-status-list/) mechanism. The wallet currently supports only `statusPurpose = "revocation"`. Additionally, the wallet only supports status check of credentials in the `ldp_vc` format. For other formats status check is bypassed for now.
+Revocation is based on the [**Status List 2021**](https://www.w3.org/TR/vc-bitstring-status-list/) mechanism.
+The wallet currently supports only `statusPurpose = "revocation"`. Additionally, the wallet only supports status check
+of credentials in the `ldp_vc` format. For other formats status check is bypassed for now.
 
 ---
 
@@ -38,7 +40,7 @@ Revocation is based on the [**Status List 2021**](https://www.w3.org/TR/vc-bitst
     K --> L{Bit Value}
 
     L -->|0| R1[VALID]
-    L -->|>0| R2[REVOKED]
+    L -->|1| R2[REVOKED]
     L -->|Error| R3[PENDING]
 
 
@@ -54,12 +56,14 @@ Revocation is based on the [**Status List 2021**](https://www.w3.org/TR/vc-bitst
 
 ## Step-By-Step Explanation
 
-**The steps described below take place in the respective native modules of Android [VC verifier library](https://github.com/mosip/vc-verifier/tree/master/vc-verifier/kotlin)  and iOS (embedded in iOS module within wallet)**
+**The steps described below take place in the respective native modules of Android [VC verifier library](https://github.com/mosip/vc-verifier/tree/master/vc-verifier/kotlin) and iOS (embedded in iOS module within wallet)**
 
 ### 1. VC Downloaded
+
 As soon as the credential is downloaded in the wallet, the status checking process begins automatically.
 
 ### 2. Extract `credentialStatus` Entries
+
 The wallet reads the `credentialStatus` field from the credential and filters entries where:
 
 ```
@@ -71,6 +75,7 @@ statusPurpose == "revocation"
 - If multiple entries exist, the wallet picks the one with matching purpose
 
 ### 3. Fetch Status List Credential
+
 From the selected `credentialStatus` entry, the wallet extracts:
 
 ```js
@@ -95,30 +100,32 @@ The wallet performs comprehensive validation:
 - **Bit extraction** — computes the bit value at `statusListIndex`
 - **Returns** — final revocation status result
 
-
 ### 5. Interpreting the Result
 
 After computing the status bit from the encoded list:
 
-| `statusValue` | Meaning | Wallet Final State |
-|---------------|---------|-------------------|
-| `0` | Credential is valid | **VALID** |
-| `>0` | Credential is revoked | **REVOKED** |
-| Exception / network error / malformed data | Could not determine status | **PENDING** |
+| `statusValue`                              | Meaning                    | Wallet Final State |
+| ------------------------------------------ | -------------------------- | ------------------ |
+| `0`                                        | Credential is valid        | **VALID**          |
+| `1`                                        | Credential is revoked      | **REVOKED**        |
+| Exception / network error / malformed data | Could not determine status | **PENDING**        |
 
 ### 6. Final Wallet States
 
 #### VALID ✓
+
 - `statusValue = 0`
 - No errors during processing
 - Credential can be used normally
 
 #### REVOKED ✗
-- `statusValue > 0`
+
+- `statusValue = 1`
 - No errors during processing
 - Credential should not be used
 
 #### PENDING ⏳
+
 The credential status could not be determined due to:
 
 - Network failure or timeout
@@ -137,7 +144,7 @@ The wallet UI displays this state as **"Status Pending"**.
 
 - **Purpose support:** Only `revocation` is currently supported. Future expansion may include `suspension` or other purposes as defined in the Status List 2021 specification.
 
-- **Multi-bit status:** Credentials with `statusSize > 1` are supported (0 = valid, >0 = revoked).
+- **Multi-bit status:** Credentials with `statusSize > 1` not supported.
 
 - **iOS signature verification:** Full signature verification of the Status List VC will be added to the iOS library in a future update. Currently, this step is bypassed.
 

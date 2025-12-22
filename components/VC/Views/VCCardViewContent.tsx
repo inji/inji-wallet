@@ -1,23 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { ImageBackground, Pressable, View, Image, ImageBackgroundProps } from 'react-native';
-import { VCMetadata } from '../../../shared/VCMetadata';
-import { KebabPopUp } from '../../KebabPopUp';
-import { Credential } from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
-import { Column, Row, Text } from '../../ui';
-import { Theme } from '../../ui/styleUtils';
-import { CheckBox, Icon } from 'react-native-elements';
-import { SvgImage } from '../../ui/svg';
-import { VcItemContainerProfileImage } from '../../VcItemContainerProfileImage';
-import { isVCLoaded, getCredentialType, Display, formatKeyLabel } from '../common/VCUtils';
-import { VCItemFieldValue } from '../common/VCItemField';
-import { WalletBinding } from '../../../screens/Home/MyVcs/WalletBinding';
-import { VCVerification } from '../../VCVerification';
-import { isActivationNeeded } from '../../../shared/openId4VCI/Utils';
-import { VCItemContainerFlowType } from '../../../shared/Utils';
-import { RemoveVcWarningOverlay } from '../../../screens/Home/MyVcs/RemoveVcWarningOverlay';
-import { HistoryTab } from '../../../screens/Home/MyVcs/HistoryTab';
-import { useCopilot } from 'react-native-copilot';
-import { useTranslation } from 'react-i18next';
+import React, {useEffect, useState} from 'react';
+import {
+  ImageBackground,
+  Pressable,
+  View,
+  Image,
+  ImageBackgroundProps,
+} from 'react-native';
+import {VCMetadata} from '../../../shared/VCMetadata';
+import {KebabPopUp} from '../../KebabPopUp';
+import {Credential} from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {Column, Row, Text} from '../../ui';
+import {Theme} from '../../ui/styleUtils';
+import {CheckBox, Icon} from 'react-native-elements';
+import {SvgImage} from '../../ui/svg';
+import {VcItemContainerProfileImage} from '../../VcItemContainerProfileImage';
+import {
+  isVCLoaded,
+  getCredentialType,
+  Display,
+  formatKeyLabel,
+} from '../common/VCUtils';
+import {VCItemFieldValue} from '../common/VCItemField';
+import {WalletBinding} from '../../../screens/Home/MyVcs/WalletBinding';
+import {VCVerification} from '../../VCVerification';
+import {isActivationNeeded} from '../../../shared/openId4VCI/Utils';
+import {VCItemContainerFlowType} from '../../../shared/Utils';
+import {RevocationStatus} from '../../../shared/vcVerifier/VcVerifier';
+import {RemoveVcWarningOverlay} from '../../../screens/Home/MyVcs/RemoveVcWarningOverlay';
+import {HistoryTab} from '../../../screens/Home/MyVcs/HistoryTab';
+import {useCopilot} from 'react-native-copilot';
+import {useTranslation} from 'react-i18next';
 import testIDProps from '../../../shared/commonUtil';
 
 export const VCCardViewContent: React.FC<VCItemContentProps> = ({
@@ -39,7 +51,9 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   onDisclosuresChange,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>({});
+  const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>(
+    {},
+  );
   useEffect(() => {
     if (flow === VCItemContainerFlowType.VP_SHARE) {
       setIsExpanded(selected);
@@ -51,7 +65,9 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
       setIsExpanded(prev => !prev);
     }
   };
-  const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>({});
+  const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>(
+    {},
+  );
 
   const areAllSelected = (): boolean => {
     return credential.disclosedKeys.every(key => selectedFields[key]);
@@ -61,12 +77,10 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
     const updated: Record<string, boolean> = {};
 
     if (areAllSelected()) {
-
       credential.disclosedKeys.forEach(key => {
         updated[key] = false;
       });
     } else {
-
       credential.disclosedKeys.forEach(key => {
         updated[key] = true;
       });
@@ -77,14 +91,15 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
     onDisclosuresChange?.(selectedPaths);
   };
 
-
   const DisclosureNode: React.FC<{
     name: string;
     node: any;
     fullPath: string;
     expandedNodes: Record<string, boolean>;
-    setExpandedNodes: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
-  }> = ({ name, node, fullPath, expandedNodes, setExpandedNodes }) => {
+    setExpandedNodes: React.Dispatch<
+      React.SetStateAction<Record<string, boolean>>
+    >;
+  }> = ({name, node, fullPath, expandedNodes, setExpandedNodes}) => {
     const isExpanded = expandedNodes[fullPath] || false;
 
     const toggleExpand = () => {
@@ -98,7 +113,9 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
 
     return (
       <Column>
-        <Row crossAlign="center" style={{ justifyContent: "space-between", marginBottom: -10 }}>
+        <Row
+          crossAlign="center"
+          style={{justifyContent: 'space-between', marginBottom: -10}}>
           <Row crossAlign="center">
             {node.__self && (
               <CheckBox
@@ -115,16 +132,21 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
                 onPress={() => handleFieldToggle(fullPath)}
               />
             )}
-            <Text weight="semibold" color={wellknownDisplayProperty.getTextColor(Theme.Colors.plainText)} style={{ marginLeft: 8 }}>
+            <Text
+              weight="semibold"
+              color={wellknownDisplayProperty.getTextColor(
+                Theme.Colors.plainText,
+              )}
+              style={{marginLeft: 8}}>
               {formatKeyLabel(name)}
             </Text>
           </Row>
 
           {/* Right side: expand/collapse icon */}
           {Object.keys(node.children).length > 0 && (
-            <Pressable onPress={toggleExpand} style={{ marginLeft: 12 }}>
+            <Pressable onPress={toggleExpand} style={{marginLeft: 12}}>
               <Icon
-                name={isExpanded ? "expand-less" : "expand-more"}
+                name={isExpanded ? 'expand-less' : 'expand-more'}
                 color={Theme.Colors.Icon}
               />
             </Pressable>
@@ -147,10 +169,9 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
     );
   };
 
-
   const handleFieldToggle = (path: string) => {
     setSelectedFields(prev => {
-      const updated = { ...prev, [path]: !prev[path] };
+      const updated = {...prev, [path]: !prev[path]};
 
       // If child selected → ensure all its parents are also selected
       if (updated[path]) {
@@ -162,8 +183,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
             updated[parent] = true;
           }
         }
-      }
-      else {
+      } else {
         Object.keys(updated).forEach(p => {
           if (p.startsWith(path + '.') && updated[p]) {
             updated[p] = false;
@@ -210,12 +230,16 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
     ));
   const issuerLogo = verifiableCredentialData.issuerLogo;
   const faceImage = verifiableCredentialData.face;
-  const { start } = useCopilot();
-  const { t } = useTranslation();
+  const {start} = useCopilot();
+  const {t} = useTranslation();
 
   return (
     <ImageBackground
-      source={wellknownDisplayProperty.getBackgroundImage(Theme.CloseCard) as ImageBackgroundProps}
+      source={
+        wellknownDisplayProperty.getBackgroundImage(
+          Theme.CloseCard,
+        ) as ImageBackgroundProps
+      }
       resizeMode="stretch"
       imageStyle={Theme.Styles.vcBg}
       style={[
@@ -263,7 +287,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
             <>
               {!verifiableCredentialData?.vcMetadata.isExpired &&
                 (!walletBindingResponse &&
-                  isActivationNeeded(verifiableCredentialData?.issuer)
+                isActivationNeeded(verifiableCredentialData?.issuer)
                   ? SvgImage.walletUnActivatedIcon()
                   : SvgImage.walletActivatedIcon())}
               <Pressable
@@ -286,66 +310,67 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
             </>
           )}
           {vcSelectableButton}
-          {flow === VCItemContainerFlowType.VP_SHARE && (credential?.disclosedKeys?.length > 0) && (
-            <Pressable onPress={toggleExpand}>
-              <Icon
-                name={isExpanded ? 'expand-less' : 'expand-more'}
-                color={Theme.Colors.Icon}
-              />
-            </Pressable>
-          )}
+          {flow === VCItemContainerFlowType.VP_SHARE &&
+            credential?.disclosedKeys?.length > 0 && (
+              <Pressable onPress={toggleExpand}>
+                <Icon
+                  name={isExpanded ? 'expand-less' : 'expand-more'}
+                  color={Theme.Colors.Icon}
+                />
+              </Pressable>
+            )}
         </Row>
         {/* Expanded section for SD-JWT disclosed keys */}
         {flow === VCItemContainerFlowType.VP_SHARE &&
           isExpanded &&
           credential?.disclosedKeys?.length > 0 && (
             <Column padding="8 0">
-              <View style={{ paddingHorizontal: 6, marginTop: 8 }}>
+              <View style={{paddingHorizontal: 6, marginTop: 8}}>
                 <View
-                  style={{ ...Theme.Styles.horizontalSeparator, marginBottom: 12 }}
+                  style={{
+                    ...Theme.Styles.horizontalSeparator,
+                    marginBottom: 12,
+                  }}
                 />
                 <Column>
-                  <Text
-                    style={Theme.Styles.disclosureTitle}>
+                  <Text style={Theme.Styles.disclosureTitle}>
                     {t('SendVPScreen:selectedFieldsTitle')}
                   </Text>
-                  <Text
-                    style={Theme.Styles.disclosureSubtitle}>
+                  <Text style={Theme.Styles.disclosureSubtitle}>
                     {t('SendVPScreen:selectedFieldsSubtitle')}
                   </Text>
                 </Column>
 
-                <Row style={{ marginTop: 12 }} width='100%' align='flex-end'><Pressable onPress={toggleSelectAll}>
-                  <Text
-                    color={Theme.Colors.Icon}
-                    style={Theme.Styles.disclosureSelectButton}>
-                    {areAllSelected()
-                      ? t('SendVPScreen:unselectAll')
-                      : t('SendVPScreen:selectAll')}
-                  </Text>
-                </Pressable>
+                <Row style={{marginTop: 12}} width="100%" align="flex-end">
+                  <Pressable onPress={toggleSelectAll}>
+                    <Text
+                      color={Theme.Colors.Icon}
+                      style={Theme.Styles.disclosureSelectButton}>
+                      {areAllSelected()
+                        ? t('SendVPScreen:unselectAll')
+                        : t('SendVPScreen:selectAll')}
+                    </Text>
+                  </Pressable>
                 </Row>
 
                 <View
-                  style={{ ...Theme.Styles.horizontalSeparator, marginTop: 12 }}
+                  style={{...Theme.Styles.horizontalSeparator, marginTop: 12}}
                 />
-
               </View>
-              {Object.entries(buildDisclosureTree(credential.disclosedKeys)).map(
-                ([name, node]) => (
-                  <DisclosureNode
-                    key={name}
-                    name={name}
-                    node={node}
-                    fullPath={name}
-                    expandedNodes={expandedNodes}
-                    setExpandedNodes={setExpandedNodes}
-                  />
-                )
-              )}
+              {Object.entries(
+                buildDisclosureTree(credential.disclosedKeys),
+              ).map(([name, node]) => (
+                <DisclosureNode
+                  key={name}
+                  name={name}
+                  node={node}
+                  fullPath={name}
+                  expandedNodes={expandedNodes}
+                  setExpandedNodes={setExpandedNodes}
+                />
+              ))}
             </Column>
           )}
-
 
         <WalletBinding service={service} vcMetadata={vcMetadata} />
 
@@ -364,10 +389,10 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
 function buildDisclosureTree(paths: string[]) {
   const root: any = {};
   paths.forEach(path => {
-    const parts = path.split(".");
+    const parts = path.split('.');
     let node = root;
     parts.forEach((part, idx) => {
-      if (!node[part]) node[part] = { __self: false, children: {} };
+      if (!node[part]) node[part] = {__self: false, children: {}};
       if (idx === parts.length - 1) {
         node[part].__self = true;
       }
@@ -376,7 +401,6 @@ function buildDisclosureTree(paths: string[]) {
   });
   return root;
 }
-
 
 export interface VCItemContentProps {
   context: any;

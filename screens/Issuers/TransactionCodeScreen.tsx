@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {isIOS} from '../../shared/constants';
 import {SvgImage} from '../../components/ui/svg';
-import {getScreenHeight} from '../../shared/commonUtil';
+import {useScreenHeight} from '../../shared/hooks/useScreenHeight';
 import {PinInput} from '../../components/PinInput';
 import {Modal} from '../../components/ui/Modal';
 import {CancelDownloadModal} from './ConfirmationModal';
@@ -20,7 +20,7 @@ import {Icon, Input} from 'react-native-elements';
 
 export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
   const {t} = useTranslation('transactionCodeScreen');
-  const {isSmallScreen, screenHeight} = getScreenHeight();
+  const {isSmallScreen, screenHeight} = useScreenHeight();
   const [transactionCode, setTransactionCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);

@@ -47,7 +47,6 @@ public class keyManagement extends AndroidBaseTest {
 
         assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
         keyManagementPage.clickOnArrowleftButton();
-
         homePage.clickOnHomeButton();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
 
@@ -101,8 +100,8 @@ public class keyManagement extends AndroidBaseTest {
         keyManagementPage.clickOnSaveKeyOrderingPreferenceButton();
 
         assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
+        homePage.clickOnCrossIconButton();
         keyManagementPage.clickOnArrowleftButton();
-
         homePage.clickOnHomeButton();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
 
@@ -119,8 +118,8 @@ public class keyManagement extends AndroidBaseTest {
 
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
-
         addNewCardPage.clickOnDoneButton();
+        homePage.clickOnCrossIconButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
 

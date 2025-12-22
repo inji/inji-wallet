@@ -11,6 +11,11 @@ public class Uin {
         this.email = email;
     }
 
+    // ✅ For Land Registry flow
+    public Uin(String uin) {
+        this.uin = uin;
+    }
+    
     public String getUin() {
         return uin;
     }

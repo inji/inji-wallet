@@ -9,10 +9,6 @@ import UnCheckedIcon from '../../assets/UnCheckedIcon.svg';
 import Share from '../../assets/Scan_tab_icon.svg';
 import Settings from '../../assets/Settings.svg';
 import PinICon from '../../assets/Pin_Icon.svg';
-import WalletActivatedIcon from '../../assets/Wallet_Activated_Icon.svg';
-import WalletActivatedLargeIcon from '../../assets/Wallet_Activated_Large_Icon.svg';
-import WalletUnActivatedIcon from '../../assets/Wallet_UnActivated_Icon.svg';
-import WalletUnActivatedLargeIcon from '../../assets/Wallet_UnActivated_Large_Icon.svg';
 import LockIcon from '../../assets/Lock_Icon1.svg';
 import DigitalIdentity from '../../assets/Digital_Identity_Icon1.svg';
 import ReceiveCard from '../../assets/Receive_Card.svg';
@@ -62,6 +58,14 @@ import StarIcon from '../../assets/credentialRegestryStar.svg';
 import SelectedCheckBox from '../../assets/Selected_Check_Box.svg';
 import ReverifyIcon from '../../assets/Reverify.svg';
 import Logomark from '../../assets/Logomark.svg';
+import StatusValidIcon from '../../assets/Status_Valid_Icon.svg';
+import StatusPendingIcon from '../../assets/Status_Pending_Icon.svg';
+import StatusExpiredIcon from '../../assets/Status_Expired_Icon.svg';
+import StatusRevokedIcon from '../../assets/Status_Revoked_Icon.svg';
+import WalletActivatedIcon from '../../assets/Wallet_Activated_Icon.svg';
+import WalletUnActivatedIcon from '../../assets/Wallet_UnActivated_Icon.svg';
+import WalletActivatedLargeIcon from '../../assets/Wallet_Activated_Large_Icon.svg';
+import WalletUnActivatedLargeIcon from '../../assets/Wallet_UnActivated_Large_Icon.svg';
 
 export class SvgImage {
   static selectedCheckBox() {
@@ -130,24 +134,22 @@ export class SvgImage {
     );
   }
 
-  static walletActivatedIcon() {
+  static walletUnActivatedIcon(width = 16, height = 20) {
     return (
-      <WalletActivatedIcon
-        {...testIDProps('wallet-activated-icon')}
-        style={{
-          marginLeft: 10,
-        }}
+      <WalletUnActivatedIcon
+        width={width}
+        height={height}
+        {...testIDProps('wallet-unactivated-icon')}
       />
     );
   }
 
-  static walletUnActivatedIcon() {
+  static walletActivatedIcon(width = 16, height = 20) {
     return (
-      <WalletUnActivatedIcon
-        {...testIDProps('wallet-unactivated-icon')}
-        style={{
-          marginLeft: 10,
-        }}
+      <WalletActivatedIcon
+        width={width}
+        height={height}
+        {...testIDProps('walletActivatedIcon')}
       />
     );
   }
@@ -165,6 +167,12 @@ export class SvgImage {
       <WalletActivatedLargeIcon
         {...testIDProps('wallet-activated-large-icon')}
       />
+    );
+  }
+
+  static walletActivatedLargeIcon() {
+    return (
+      <WalletActivatedLargeIcon {...testIDProps('walletActivatedLargeIcon')} />
     );
   }
 
@@ -500,8 +508,8 @@ export class SvgImage {
     return (
       <Info
         color1={Theme.Colors.tooltipIcon}
-        width={16}
-        height={16}
+        width={14}
+        height={14}
         {...testIDProps('infoIcon')}
       />
     );
@@ -604,6 +612,46 @@ export class SvgImage {
   }
   static logoIcon(height: number, width: number) {
     return <Logomark height={height} width={width} />;
+  }
+
+  static statusValidIcon(width = 24, height = 24) {
+    return (
+      <StatusValidIcon
+        width={width}
+        height={height}
+        {...testIDProps('statusValidIcon')}
+      />
+    );
+  }
+
+  static statusPendingIcon(width = 24, height = 24) {
+    return (
+      <StatusPendingIcon
+        width={width}
+        height={height}
+        {...testIDProps('statusPendingIcon')}
+      />
+    );
+  }
+
+  static statusExpiredIcon(width = 24, height = 24) {
+    return (
+      <StatusExpiredIcon
+        width={width}
+        height={height}
+        {...testIDProps('statusExpiredIcon')}
+      />
+    );
+  }
+
+  static statusRevokedIcon(width = 24, height = 24) {
+    return (
+      <StatusRevokedIcon
+        width={width}
+        height={height}
+        {...testIDProps('statusRevokedIcon')}
+      />
+    );
   }
 }
 

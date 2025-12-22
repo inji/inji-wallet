@@ -23,7 +23,7 @@ import {VPShareOverlay} from './VPShareOverlay';
 import {FaceVerificationAlertOverlay} from './FaceVerificationAlertOverlay';
 import {useSendVPScreen} from './SendVPScreenController';
 import LinearGradient from 'react-native-linear-gradient';
-import {Error} from '../../components/ui/Error';
+import {ErrorView} from '../../components/ui/Error';
 import {SvgImage} from '../../components/ui/svg';
 import {Loader} from '../../components/ui/Loader';
 import {Icon} from 'react-native-elements';
@@ -341,7 +341,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
               <Text
                 style={{
                   color: Theme.Colors.Icon,
-                  fontFamily: 'Inter_600SemiBold',
+                  fontFamily: 'Montserrat_600SemiBold',
                 }}
                 onPress={
                   areAllVcsChecked
@@ -480,7 +480,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         </>
       )}
       {errorModal.show && (
-        <Error
+        <ErrorView
           isModal
           alignActionsOnEnd
           showClose={false}

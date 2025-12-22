@@ -6,7 +6,6 @@ import testIDProps, {
   getBackupFileName,
   getDriveName,
   getMaskedText,
-  getScreenHeight,
   hashData,
   logState,
   removeWhiteSpace,
@@ -17,6 +16,7 @@ import testIDProps, {
   getAccountType,
   BYTES_IN_MEGABYTE,
 } from './commonUtil';
+import {useScreenHeight} from './hooks/useScreenHeight';
 import {
   argon2iConfig,
   GOOGLE_DRIVE_NAME,
@@ -25,6 +25,7 @@ import {
   APPLE,
 } from './constants';
 import {CredentialSubject} from '../machines/VerifiableCredential/VCMetaMachine/vc.d';
+import {renderHook} from '@testing-library/react-native';
 
 describe('hashData', () => {
   it('should expose a function', () => {
@@ -199,19 +200,19 @@ describe('sleep : The promise resolves after a certain time', () => {
   });
 });
 
-describe('getScreenHeight', () => {
+describe('useScreenHeight', () => {
   it('should expose a function', () => {
-    expect(getScreenHeight).toBeDefined();
+    expect(useScreenHeight).toBeDefined();
   });
 
-  it('getScreenHeight should return screen height', () => {
-    const height = getScreenHeight();
-    expect(typeof height).toBe('object');
+  it('useScreenHeight should return screen height', () => {
+    const {result} = renderHook(() => useScreenHeight());
+    expect(typeof result.current).toBe('object');
   });
 
   it('should return a value', () => {
-    const height = getScreenHeight();
-    expect(height).toBeDefined();
+    const {result} = renderHook(() => useScreenHeight());
+    expect(result.current).toBeDefined();
   });
 });
 

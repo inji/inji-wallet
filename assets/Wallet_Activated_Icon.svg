@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="15.977" height="19.972" viewBox="0 0 15.977 19.972">
-  <g id="shield_green_icon" transform="translate(-1366.33 -1167.162)">
-    <path id="gpp_maybe_FILL0_wght400_GRAD0_opsz48" d="M15.989,23.922a9.8,9.8,0,0,1-5.742-4.057A11.84,11.84,0,0,1,8,12.887V6.946l7.989-3,7.989,3v5.942a11.84,11.84,0,0,1-2.247,6.978A9.8,9.8,0,0,1,15.989,23.922Z" transform="translate(1358.33 1163.212)" fill="#4b9d20"/>
-    <path id="check_circle_FILL0_wght400_GRAD0_opsz48" d="M8.982,12.577l4.366-4.366-.71-.694L8.982,11.173,7.131,9.322l-.694.694ZM9.893,9.769Z" transform="translate(1364.462 1166.943)" fill="#fff"/>
-  </g>
+  <!-- Shield background - Green for Valid -->
+  <path d="M15.989,23.922a9.8,9.8,0,0,1-5.742-4.057A11.84,11.84,0,0,1,8,12.887V6.946l7.989-3,7.989,3v5.942a11.84,11.84,0,0,1-2.247,6.978A9.8,9.8,0,0,1,15.989,23.922Z" transform="translate(-8 -3.95)" fill="#2AA54B"/>
+  <!-- White checkmark centered -->
+  <polyline points="4.5,10 6.75,12.25 11.5,7.5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

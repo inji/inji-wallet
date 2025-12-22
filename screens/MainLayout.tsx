@@ -109,29 +109,27 @@ export const MainLayout: React.FC = () => {
                       title={t(`copilot:${route.name}Title`)}
                       description={t(`copilot:${route.name}Message`)}
                       order={2 + index}
-                      targetStyle={Theme.Styles.tabBarIconCopilot}
-                      children={
-                        <>
-                          {focused ? (
-                            <LinearGradient
-                              style={{
-                                width: 36,
-                                height: 36,
-                                borderRadius: 10,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}
-                              colors={Theme.Colors.GradientColorsLight}
-                              start={Theme.LinearGradientDirection.start}
-                              end={Theme.LinearGradientDirection.end}>
-                              {SvgImage[`${route.name}`](focused)}
-                            </LinearGradient>
-                          ) : (
-                            <View>{SvgImage[`${route.name}`](focused)}</View>
-                          )}
-                        </>
-                      }
-                    />
+                      targetStyle={Theme.Styles.tabBarIconCopilot}>
+                      <>
+                        {focused ? (
+                          <LinearGradient
+                            style={{
+                              width: 36,
+                              height: 36,
+                              borderRadius: 10,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}
+                            colors={Theme.Colors.GradientColorsLight}
+                            start={Theme.LinearGradientDirection.start}
+                            end={Theme.LinearGradientDirection.end}>
+                            {SvgImage[`${route.name}`](focused)}
+                          </LinearGradient>
+                        ) : (
+                          <View>{SvgImage[`${route.name}`](focused)}</View>
+                        )}
+                      </>
+                    </Copilot>
                   )}
                 </Column>
               ),

@@ -1,21 +1,21 @@
 import * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { Pressable, View } from 'react-native';
-import { ActorRefFrom } from 'xstate';
-import { ErrorMessageOverlay, MessageOverlay } from '../../MessageOverlay';
-import { Theme } from '../../ui/styleUtils';
-import { VCMetadata } from '../../../shared/VCMetadata';
-import { format } from 'date-fns';
+import {useEffect, useRef, useState} from 'react';
+import {Pressable, View} from 'react-native';
+import {ActorRefFrom} from 'xstate';
+import {ErrorMessageOverlay, MessageOverlay} from '../../MessageOverlay';
+import {Theme} from '../../ui/styleUtils';
+import {VCMetadata} from '../../../shared/VCMetadata';
+import {format} from 'date-fns';
 
-import { VCCardSkeleton } from '../common/VCCardSkeleton';
-import { VCCardViewContent } from './VCCardViewContent';
-import { useVcItemController } from '../VCItemController';
-import { getCredentialIssuersWellKnownConfig } from '../../../shared/openId4VCI/Utils';
-import { CARD_VIEW_DEFAULT_FIELDS, isVCLoaded } from '../common/VCUtils';
-import { VCItemMachine } from '../../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
-import { useTranslation } from 'react-i18next';
-import { Copilot } from '../../ui/Copilot';
-import { VCProcessor } from '../common/VCProcessor';
+import {VCCardSkeleton} from '../common/VCCardSkeleton';
+import {VCCardViewContent} from './VCCardViewContent';
+import {useVcItemController} from '../VCItemController';
+import {getCredentialIssuersWellKnownConfig} from '../../../shared/openId4VCI/Utils';
+import {CARD_VIEW_DEFAULT_FIELDS, isVCLoaded} from '../common/VCUtils';
+import {VCItemMachine} from '../../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
+import {useTranslation} from 'react-i18next';
+import {Copilot} from '../../ui/Copilot';
+import {VCProcessor} from '../common/VCProcessor';
 
 export const VCCardView: React.FC<VCItemProps> = ({
   vcMetadata,
@@ -31,7 +31,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
   onMeasured,
 }) => {
   const controller = useVcItemController(vcMetadata);
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const cardRef = useRef<View>(null);
 
   const service = controller.VCItemService;
@@ -54,15 +54,14 @@ export const VCCardView: React.FC<VCItemProps> = ({
       const handle = requestAnimationFrame(() => {
         cardRef.current?.measureInWindow((x, y, width, height) => {
           if (width > 0 && height > 0) {
-            onMeasured({ x, y, width, height });
+            onMeasured({x, y, width, height});
           }
         });
       });
-  
+
       return () => cancelAnimationFrame(handle);
     }
   }, [onMeasured]);
-  
 
   useEffect(() => {
     async function loadVc() {
@@ -78,10 +77,11 @@ export const VCCardView: React.FC<VCItemProps> = ({
   }, [isDownloading, controller.credential]);
 
   useEffect(() => {
-    if (!verifiableCredentialData || !verifiableCredentialData.vcMetadata) return;
+    if (!verifiableCredentialData || !verifiableCredentialData.vcMetadata)
+      return;
     const {
       credentialConfigurationId,
-      vcMetadata: { format },
+      vcMetadata: {format},
     } = verifiableCredentialData;
 
     if (vcMetadata.issuerHost) {
@@ -96,10 +96,14 @@ export const VCCardView: React.FC<VCItemProps> = ({
           if (response && response.matchingCredentialIssuerMetadata) {
             setWellknown(response.matchingCredentialIssuerMetadata);
           }
+          controller.STORE_INCOMING_VC_WELLKNOWN_CONFIG(
+            verifiableCredentialData?.vcMetadata.issuerHost,
+            response.wellknownResponse,
+          );
           setFields(response.fields);
         })
         .catch(error => {
-          setWellknown({ fallback: 'true' });
+          setWellknown({fallback: 'true'});
           console.error(
             'Error occurred while fetching wellknown for viewing VC ',
             error,
@@ -137,9 +141,9 @@ export const VCCardView: React.FC<VCItemProps> = ({
     <Copilot
       description={t('copilot:cardMessage')}
       order={6}
-      title={t('copilot:cardTitle')}
-      children={CardViewContent()}
-    />
+      title={t('copilot:cardTitle')}>
+      {CardViewContent()}
+    </Copilot>
   );
 
   return (
@@ -186,5 +190,10 @@ export interface VCItemProps {
   isInitialLaunch?: boolean;
   isTopCard?: boolean;
   onDisclosuresChange?: (paths: string[]) => void;
-  onMeasured?: (rect: { x: number; y: number; width: number; height: number }) => void;
+  onMeasured?: (rect: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }) => void;
 }

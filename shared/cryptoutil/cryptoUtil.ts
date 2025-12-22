@@ -367,7 +367,7 @@ function encryptWithForge(text: string, key: string): EncryptedOutput {
   cipher.start({iv: iv});
   cipher.update(forge.util.createBuffer(text, 'utf8'));
   cipher.finish();
-  var cipherText = forge.util.encode64(cipher.output.getBytes());
+  const cipherText = forge.util.encode64(cipher.output.getBytes());
   const encryptedData = new EncryptedOutput(
     cipherText,
     forge.util.encode64(iv),

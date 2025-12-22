@@ -465,7 +465,8 @@ function fetchCredentialBasedOnFormat(vc: any) {
       );
       break;
     }
-    case VCFormat.vc_sd_jwt || VCFormat.dc_sd_jwt: {
+    case VCFormat.vc_sd_jwt:
+    case VCFormat.dc_sd_jwt: {
       credential =
         vc.verifiableCredential.processedCredential.fullResolvedPayload;
       break;

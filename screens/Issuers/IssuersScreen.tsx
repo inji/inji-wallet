@@ -2,7 +2,7 @@ import React, {Fragment, useEffect, useLayoutEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, Pressable, View} from 'react-native';
 import {Issuer} from '../../components/openId4VCI/Issuer';
-import {Error} from '../../components/ui/Error';
+import {ErrorView} from '../../components/ui/Error';
 import {Header} from '../../components/ui/Header';
 import {Button, Column, Row, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
@@ -35,8 +35,8 @@ import {IssuersModel} from '../../machines/Issuers/IssuersModel';
 import {AUTH_ROUTES} from '../../routes/routesConstants';
 import {TransactionCodeModal} from './TransactionCodeScreen';
 import {TrustModal} from '../../components/TrustModal';
-import i18next from 'i18next';
 import {SendVPScreen} from '../Scan/SendVPScreen';
+
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
@@ -185,7 +185,7 @@ export const IssuersScreen: React.FC<
 
   if (isVerificationFailed) {
     return (
-      <Error
+      <ErrorView
         testID="verificationError"
         isVisible={isVerificationFailed}
         isModal={true}
@@ -245,7 +245,7 @@ export const IssuersScreen: React.FC<
   }
   if (showFullScreenError) {
     return (
-      <Error
+      <ErrorView
         testID={`${controller.errorMessageType}Error`}
         isVisible={controller.errorMessageType !== ''}
         title={t(`errors.${controller.errorMessageType}.title`)}

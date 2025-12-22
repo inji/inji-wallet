@@ -48,7 +48,7 @@ export function useAuthScreen(props: RootRouteProps) {
   const unEnrolledNoticeBio = useSelector(bioService, selectUnenrolledNotice);
   const errorResponse = useSelector(bioService, selectErrorResponse);
 
-  const usePasscode = () => {
+  const navigateToPasscode = () => {
     props.navigation.navigate('Passcode', {setup: isSettingUp});
   };
 
@@ -86,7 +86,7 @@ export function useAuthScreen(props: RootRouteProps) {
       authService.send(AuthEvents.SETUP_BIOMETRICS('true'));
       settingsService.send(SettingsEvents.TOGGLE_BIOMETRIC_UNLOCK(true, false));
       // setup passcode aswell
-      usePasscode();
+      navigateToPasscode();
 
       // handle biometric failure unknown error
     } else if (errorMsgBio) {
@@ -115,7 +115,7 @@ export function useAuthScreen(props: RootRouteProps) {
       sendStartEvent(
         getStartEventData(TelemetryConstants.FlowType.appOnboarding),
       );
-      usePasscode();
+      navigateToPasscode();
     }
   }, [isSuccessBio, isUnavailableBio, errorMsgBio, unEnrolledNoticeBio]);
 
@@ -156,6 +156,6 @@ export function useAuthScreen(props: RootRouteProps) {
 
     hideAlert,
     useBiometrics,
-    usePasscode,
+    navigateToPasscode,
   };
 }

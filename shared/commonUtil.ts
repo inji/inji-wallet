@@ -12,8 +12,6 @@ import {
 } from './constants';
 import {generateSecureRandom} from 'react-native-securerandom';
 import forge from 'node-forge';
-import {useEffect, useState} from 'react';
-import {Dimensions, Keyboard} from 'react-native';
 import {CredentialSubject} from '../machines/VerifiableCredential/VCMetaMachine/vc';
 
 export const hashData = async (
@@ -133,30 +131,6 @@ export const getDriveName = () =>
 export function sleep(timeInMillSeconds = 1000) {
   return new Promise(resolve => setTimeout(resolve, timeInMillSeconds));
 }
-
-export const getScreenHeight = () => {
-  const {height} = Dimensions.get('window');
-  const isSmallScreen = height < 600;
-
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      event => {
-        const keyboardHeight = event.endCoordinates.height;
-        setKeyboardHeight(keyboardHeight + 150);
-      },
-    );
-    return () => {
-      keyboardDidShowListener.remove();
-    };
-  }, []);
-
-  const screenHeight = Math.floor(height - keyboardHeight);
-
-  return {isSmallScreen, screenHeight};
-};
 
 export const getMosipIdentifier = (credentialSubject: CredentialSubject) => {
   return credentialSubject.UIN ? credentialSubject.UIN : credentialSubject.VID;

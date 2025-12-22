@@ -9,8 +9,7 @@ import {Theme, Spacing} from './styleUtils';
 import testIDProps from '../../shared/commonUtil';
 
 export const Button: React.FC<ButtonProps> = props => {
-  const type =
-    props.type || 'solid' || 'radius' || 'gradient' || 'clearAddIdBtnBg';
+  const type = props.type || 'solid';
 
   const buttonStylesWithSize =
     props.size !== undefined

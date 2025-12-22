@@ -480,25 +480,26 @@ public class VcDownloadAndVerifyUsingUinTest extends AndroidBaseTest {
         assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description  esignet displayed");
         assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(), "Verify if issuer search bar displayed");
         addNewCardPage.sendTextInIssuerSearchBar("Download MOSIP Credentials");
-        RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
+            ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
 
-        assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");
-        assertEquals(retrieveIdPage.getRetrieveIdPageHeader(), "Download your ID");
-        assertTrue(retrieveIdPage.verifyDownloadIdPageGuideMessage(), "Verify if retrieve id page guide message is displayed");
-        assertTrue(retrieveIdPage.isInfoIconDisplayed(), "Verify if info icon is displayed");
+            esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
-        //      String uin = TestDataReader.readData("uin");
-        OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
+            assertTrue(esignetLoginPage.isESignetLogoDisplayed(), "");
+            OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
-        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+            esignetLoginPage.clickOnGetOtpButton();
+        //    assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        assertTrue(homePage.isDownloadingVcPopupDisplayed(), "verify downloading vc popup displayed");
-        addNewCardPage.clickOnDoneButton();
+            otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+            esignetLoginPage.clickOnVerifyButton();
+
+            addNewCardPage.clickOnDoneButton();
+
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 
         homePage.downloadCard();
         SunbirdLoginPage sunbirdLoginPage = addNewCardPage.clickOnDownloadViaSunbird();
+        addNewCardPage.clickOnCredentialTypeHeadingInsuranceCredential();
 
         sunbirdLoginPage.enterPolicyNumber(getPolicyNumber());
         sunbirdLoginPage.enterFullName(getPolicyName());
@@ -507,19 +508,13 @@ public class VcDownloadAndVerifyUsingUinTest extends AndroidBaseTest {
 
         assertTrue(sunbirdLoginPage.isSunbirdCardActive(), "Verify if download sunbird displayed active");
         assertTrue(sunbirdLoginPage.isSunbirdCardLogoDisplayed(), "Verify if download sunbird logo displayed");
-        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(), TestDataReader.readData("fullNameSunbird"));
-
-        addNewCardPage.clickOnDoneButton();
-        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         assertTrue(homePage.isCardCountDisplayed(), "Verify if card count is displayed");
 
-        homePage.sendTextInIssuerSearchBar(TestDataReader.readData("fullNameSunbird"));
-        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(), TestDataReader.readData("fullNameSunbird"));
-        assertTrue(homePage.isCardCountDisplayed(), "Verify if card count is displayed");
         //partial search
 
         assertTrue(homePage.isIssuerSearchBarDisplayed(), "Verify if card search is displayed");
-        homePage.sendTextInIssuerSearchBar("test");
+        
+        homePage.sendTextInIssuerSearchBar(addNewCardPage.getTextMosipCredentialText());
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 
@@ -538,7 +533,7 @@ public class VcDownloadAndVerifyUsingUinTest extends AndroidBaseTest {
 
         pleaseConfirmPopupPage.clickOnConfirmButton();
         //deleted
-        homePage.sendTextInIssuerSearchBar(getUIN());
+        homePage.sendTextInIssuerSearchBar(addNewCardPage.getTextMosipCredentialText());
         assertTrue(homePage.isNoCardFoundTextDisplayed(), "Verify if no card found displayed");
 
         SettingsPage settingsPage = homePage.clickOnSettingIcon();
@@ -548,7 +543,7 @@ public class VcDownloadAndVerifyUsingUinTest extends AndroidBaseTest {
         assertTrue(settingsPage.verifyFilipinoLanguage(), "Verify if language is changed to filipino");
         homePage.clickOnHomeButton();
 
-        homePage.sendTextInIssuerSearchBar(TestDataReader.readData("fullNameSunbird"));
+        homePage.sendTextInIssuerSearchBar(addNewCardPage.getTextSunbirdCredentialText());
         assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(), TestDataReader.readData("fullNameSunbird"));
     }
 

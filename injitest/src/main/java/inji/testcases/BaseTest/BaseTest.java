@@ -44,6 +44,13 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import inji.annotations.NeedsSvgWithFaceUIN;
+import inji.annotations.NeedsLandUIN;
+import inji.annotations.NeedsSvgWithOutFaceUIN;
+import inji.utils.testdatamanager.LandRegistryUINManager;
+import inji.utils.testdatamanager.SvgWithFaceUINManager;
+import inji.utils.testdatamanager.SvgWithOutFaceUINManager;
+
 
 public abstract class BaseTest {
 
@@ -53,6 +60,9 @@ public abstract class BaseTest {
     private static final ThreadLocal<Vid> threadVid = new ThreadLocal<>();
     private static final ThreadLocal<Uin> threadMockUin = new ThreadLocal<>();
     private static final ThreadLocal<Policy> threadPolicy = new ThreadLocal<>();
+    private static final ThreadLocal<Uin> threadLandUin = new ThreadLocal<>();
+    private static final ThreadLocal<Uin> threadSvgWithFaceUin = new ThreadLocal<>();
+    private static final ThreadLocal<Uin> threadSvgWithOutFaceUin = new ThreadLocal<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
 
     protected abstract PlatformType getPlatformType();
@@ -92,6 +102,18 @@ public abstract class BaseTest {
         if (method.isAnnotationPresent(NeedsMockUIN.class)) {
             Uin mockUinDetails = MockUINManager.acquireUIN();
             threadMockUin.set(mockUinDetails);
+        }
+        if (method.isAnnotationPresent(NeedsLandUIN.class)) {
+            Uin landUinDetails = LandRegistryUINManager.acquireUIN();
+            threadLandUin.set(landUinDetails);
+        }
+        if (method.isAnnotationPresent(NeedsSvgWithFaceUIN.class)) {
+            Uin svgWithFaceUinDetails = SvgWithFaceUINManager.acquireUIN();
+            threadSvgWithFaceUin.set(svgWithFaceUinDetails);
+        }
+        if (method.isAnnotationPresent(NeedsSvgWithOutFaceUIN.class)) {
+            Uin svgWithOutFaceUinDetails = SvgWithOutFaceUINManager.acquireUIN();
+            threadSvgWithOutFaceUin.set(svgWithOutFaceUinDetails);
         }
 
         if (getPlatformType() == PlatformType.ANDROID) {
@@ -148,6 +170,30 @@ public abstract class BaseTest {
             if (mockUin != null) {
                 MockUINManager.releaseUIN(mockUin);
                 threadMockUin.remove();
+            }
+        }
+        
+        if (method.isAnnotationPresent(NeedsLandUIN.class)) {
+            Uin landUin = threadLandUin.get();
+            if (landUin != null) {
+            	LandRegistryUINManager.releaseUIN(landUin);
+            	threadLandUin.remove();
+            }
+        }
+        
+        if (method.isAnnotationPresent(NeedsSvgWithFaceUIN.class)) {
+            Uin svgWithFaceUin = threadSvgWithFaceUin.get();
+            if (svgWithFaceUin != null) {
+            	SvgWithFaceUINManager.releaseUIN(svgWithFaceUin);
+            	threadSvgWithFaceUin.remove();
+            }
+        }
+        
+        if (method.isAnnotationPresent(NeedsSvgWithOutFaceUIN.class)) {
+            Uin svgWithOutFaceUin = threadSvgWithOutFaceUin.get();
+            if (svgWithOutFaceUin != null) {
+            	SvgWithOutFaceUINManager.releaseUIN(svgWithOutFaceUin);
+            	threadSvgWithOutFaceUin.remove();
             }
         }
 
@@ -305,4 +351,29 @@ public abstract class BaseTest {
     public String getMockUINEmail() {
         return getMockUinDetails() != null ? getMockUinDetails().getEmail() : null;
     }
+    
+    public Uin getLandUinDetails() {
+        return threadLandUin.get();
+    }
+
+    public String getLandUIN() {
+        return getLandUinDetails() != null ? getLandUinDetails().getUin() : null;
+    }
+    
+    public Uin getsvgWithFaceUinDetails() {
+        return threadSvgWithFaceUin.get();
+    }
+
+    public String getsvgWithFaceUIN() {
+        return getsvgWithFaceUinDetails() != null ? getsvgWithFaceUinDetails().getUin() : null;
+    }
+    
+    public Uin getsvgWithOutFaceUinDetails() {
+        return threadSvgWithOutFaceUin.get();
+    }
+
+    public String getsvgWithOutFacedUIN() {
+        return getsvgWithOutFaceUinDetails() != null ? getsvgWithOutFaceUinDetails().getUin() : null;
+    }
+  
 }

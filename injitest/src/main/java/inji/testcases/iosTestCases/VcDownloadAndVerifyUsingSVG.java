@@ -13,10 +13,14 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import inji.utils.ResourceBundleLoader;
+import inji.annotations.NeedsSvgWithFaceUIN;
+import inji.annotations.NeedsSvgWithOutFaceUIN;
+
 
 public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 	
 	@Test
+	@NeedsSvgWithFaceUIN
 	public void downloadAndVerifyFarmerSVGVcWithFace() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -31,7 +35,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithFaceUIN);
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithFaceUIN());
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
 		esignetLoginPage.clickOnVerifyButtonIos();
@@ -42,6 +46,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 	}
 
 	@Test
+	@NeedsSvgWithOutFaceUIN
 	public void downloadAndVerifyFarmerSVGVcWithoutFace() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -56,7 +61,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithOutFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithOutFaceUIN);
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithOutFacedUIN());
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
 		esignetLoginPage.clickOnVerifyButtonIos();
@@ -115,6 +120,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 	}
 
 	@Test
+	@NeedsSvgWithFaceUIN
 	public void downloadAndVerifyFarmerSVGVcWithFaceUsingInvalidOtp() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -129,7 +135,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithFaceUIN);
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithFaceUIN());
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.IOS);
 		esignetLoginPage.clickOnVerifyButtonIos();
@@ -138,6 +144,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 	}
 
 	@Test
+	@NeedsSvgWithOutFaceUIN
 	public void downloadAndVerifyFarmerSVGVcWithOutFaceUsingInvalidOtp() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -152,7 +159,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithOutFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithOutFaceUIN);
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithOutFacedUIN());
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.IOS);
 		esignetLoginPage.clickOnVerifyButtonIos();
@@ -161,6 +168,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 	}
 
 	@Test
+	@NeedsSvgWithFaceUIN
 	public void downloadAndVerifyFarmerSVGVcWithFaceAndPinAndUnpin() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -175,7 +183,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithFaceUIN);
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithFaceUIN());
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
 		esignetLoginPage.clickOnVerifyButtonIos();
@@ -190,6 +198,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 	}
 
 	@Test
+	@NeedsSvgWithOutFaceUIN
 	public void downloadAndVerifyFarmerSVGVcWithOutFaceAndPinAndUnpin() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -204,7 +213,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithOutFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithOutFaceUIN);
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithOutFacedUIN());
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
 		esignetLoginPage.clickOnVerifyButtonIos();
@@ -219,6 +228,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 	}
 
 	@Test
+	@NeedsSvgWithFaceUIN
 	public void downloadAndVerifyFarmerSVGVcWithFaceMultipleTime() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -233,7 +243,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithFaceUIN);
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithFaceUIN());
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
 		esignetLoginPage.clickOnVerifyButtonIos();
@@ -243,7 +253,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaLandSVGWithFace();
 		addNewCardPageAgain.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPageAgain.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(AddNewCardPage.SVGWithFaceUIN);
+		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(getsvgWithFaceUIN());
 		esignetLoginPageAgain.clickOnGetOtpButton();
 		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
 		esignetLoginPageAgain.clickOnVerifyButtonIos();
@@ -251,6 +261,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 	}
 
 	@Test
+	@NeedsSvgWithOutFaceUIN
 	public void downloadAndVerifyFarmerSVGVcWithOutFaceMultipleTime() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -265,7 +276,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithOutFace();
 		addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(AddNewCardPage.SVGWithOutFaceUIN);
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithOutFacedUIN());
 		esignetLoginPage.clickOnGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
 		esignetLoginPage.clickOnVerifyButtonIos();
@@ -275,7 +286,7 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaLandSVGWithOutFace();
 		addNewCardPageAgain.clickOnContinueButtonInSigninPopupIos();
 		esignetLoginPageAgain.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(AddNewCardPage.SVGWithOutFaceUIN);
+		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(getsvgWithOutFacedUIN());
 		esignetLoginPageAgain.clickOnGetOtpButton();
 		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
 		esignetLoginPageAgain.clickOnVerifyButtonIos();

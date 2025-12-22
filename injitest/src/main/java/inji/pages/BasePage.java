@@ -416,6 +416,36 @@ public class BasePage {
         ExtentReportManager.getTest().log(Status.FAIL, errorMsg);
         throw new AssertionError(errorMsg);
     }
+    
+    public String scrollToElementByAccessibilityIdGetText(String accessibilityId, String stepDesc) {
+        for (int attempts = 0; attempts < maxPageScrolls; attempts++) {
+            try {
+                int waitTime = (attempts == 0) ? 10 : 2; // long wait first time, short later
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
+
+                // Wait for element to be visible
+                WebElement element = wait.until(
+                        ExpectedConditions.visibilityOfElementLocated(AppiumBy.accessibilityId(accessibilityId))
+                );
+
+                logStep(stepDesc + " - Element Found", element);
+                return element.getText(); // SUCCESS — return WebElement
+
+            } catch (TimeoutException | NoSuchElementException e) {
+                scrollDown(); // scroll only when not found
+            } catch (Exception e) {
+                ExtentReportManager.getTest().log(Status.FAIL,
+                        "Failed to locate element: " + accessibilityId);
+                throw e;
+            }
+        }
+
+        String errorMsg = "Element with accessibilityId '" + accessibilityId +
+                "' was not found after " + maxPageScrolls + " scroll attempts.";
+        ExtentReportManager.getTest().log(Status.FAIL, errorMsg);
+        throw new AssertionError(errorMsg);
+    }
+
 
     public void scrollDown() {
         Dimension size = driver.manage().window().getSize();

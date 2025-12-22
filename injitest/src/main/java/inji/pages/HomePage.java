@@ -68,7 +68,13 @@ public class HomePage extends BasePage {
     @AndroidFindBy(accessibility = "noInternetConnectionErrorTitle")
     @iOSXCUITFindBy(accessibility = "noInternetConnectionErrorTitle")
     private WebElement noInternetConnection;
+    
+    @AndroidFindBy(accessibility = "networkRequestFailedErrorTitle")
+    @iOSXCUITFindBy(accessibility = "networkRequestFailedErrorTitle")
+    private WebElement netWorkRequestFailed;
 
+    
+    
     @AndroidFindBy(accessibility = "share")
     @iOSXCUITFindBy(accessibility = "share")
     private WebElement shareButton;
@@ -268,6 +274,19 @@ public class HomePage extends BasePage {
                 "English", "No internet connection",
                 "Tamil", "இணைய இணைப்பு இல்லை",
                 "Filipino", "Pakisuri ang iyong koneksyon at subukang muli"
+        );
+
+        String expectedText = expectedTexts.get(language);
+        return actualText.equalsIgnoreCase(expectedText);
+    }
+    
+    public boolean verifyLanguageForNetWorkRequestFailedDisplayed(String language) {
+        String actualText = getText(netWorkRequestFailed, "Getting text from 'Network Request Failed' message");
+
+        Map<String, String> expectedTexts = Map.of(
+                "English", "Network request failed",
+                "Tamil", "நெட்வொர்க் கோரிக்கை தோல்வியடைந்தது",
+                "Filipino", "Nabigo ang kahilingan sa network"
         );
 
         String expectedText = expectedTexts.get(language);

@@ -130,14 +130,15 @@ export const StaticHomeScreen: React.FC = () => {
               <Text testID={`cardName-${card.id}`} style={{fontWeight: 'bold'}}>
                 {card.name}
               </Text>
-              <Row>
+              <Row style={{alignItems: 'center'}}>
+                {card.status === 'valid' && SvgImage.statusValidIcon(12, 12)}
+                {card.status === 'pending' &&
+                  SvgImage.statusPendingIcon(12, 12)}
                 <Text
                   testID={`cardStatus-${card.id}`}
                   style={{
-                    color:
-                      card.status === 'valid'
-                        ? Theme.Colors.GrayText
-                        : Theme.Colors.GrayText,
+                    color: Theme.Colors.GrayText,
+                    marginLeft: 4,
                   }}>
                   {t('VcDetails:' + card.status)}
                 </Text>

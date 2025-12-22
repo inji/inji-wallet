@@ -531,22 +531,23 @@
   "ViewVcModal": {
     "title": "ID Details",
     "inProgress": "In Progress",
+    "statusInfoTitle": "Status Information",
     "statusToolTipContent": {
       "valid": {
-        "title": "Valid Status:",
-        "description": "The credential has been successfully verified."
+        "title": "Valid",
+        "description": "The card is active and can be used or shared."
       },
       "pending": {
-        "title": "Pending Status:",
-        "description": "Verification is currently pending due to technical issues."
+        "title": "Pending",
+        "description": "The card status cannot be verified right now."
       },
       "expired": {
-        "title": "Expired Status:",
-        "description": "The credential has expired."
+        "title": "Expired",
+        "description": "The card is no longer valid because its validity period has ended."
       },
       "revoked": {
-        "title": "Revoked Status:",
-        "description": "The credential has been revoked."
+        "title": "Revoked",
+        "description": "The card has been revoked by the issuer and cannot be used or shared."
       }
     }
   },

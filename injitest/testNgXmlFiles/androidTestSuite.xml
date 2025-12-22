@@ -153,17 +153,9 @@
                     <include name="verifyClickOnBackFromInjiTourGuide"/>
                 </methods>
             </class>
-
-            <class name="inji.testcases.androidTestCases.AboutInjiTest">
-                <methods>
-                    <include name="copyAppId"/>
-                    <include name="verifyAppId"/>
-                    <!--<include name="verifyTuvaliVersion"/>--> <!--invalid testcase-->
-                </methods>
-            </class>
             <class name="inji.testcases.androidTestCases.VcDownloadAndVerifyUsingMdl">
                 <methods>
-                    <include name="downloadAndVerifyVcUsingUinViaMockIdentity"/>
+                <!--    <include name="downloadAndVerifyVcUsingUinViaMockIdentity"/> Duplicate covered in keyManagement -->
                     <include name="downloadAndVerifyVcUsingInvalidCredentials"/>
                     <include name="downloadAndVerifyVcUsingInvalidOtp"/>
                     <include name="downloadAndVerifyVcUsingViaMdlAndPinAndUnpin"/>
@@ -203,20 +195,20 @@
                     <include name="downloadAndVerifyFarmerSVGVcWithFaceMultipleTime"/>
                 </methods>
             </class>
-            <!--<class name="inji.testcases.androidTestCases.VcDownloadAndVerifyUsingLandRegistryTest">
+            <class name="inji.testcases.androidTestCases.VcDownloadAndVerifyUsingLandRegistryTest">
                 <methods>
-                    <include name="downloadAndVerifyVcUsingUinViaLand"/>
+                    <!-- <include name="downloadAndVerifyVcUsingUinViaLand"/> Duplicate of downloadAndVerifyVcUsingUinViaLandStatementCredential -->
                     <include name="downloadAndVerifyVcUsingUinViaLandStatementCredential"/>
-                    <include name="downloadAndVerifyVcUsingUinViaLandStatementVCDM2"/>
+                    <!-- <include name="downloadAndVerifyVcUsingUinViaLandStatementVCDM2"/> Duplicate of downloadAndVerifyVcUsingUinViaLandStatementRegistrationReceiptOfTheRuralProperty-->
                     <include name="downloadAndVerifyVcUsingUinViaLandStatementRegistrationReceiptOfTheRuralProperty"/>
-                    <include name="downloadAndVerifyVcUsingUinViaLandStatementVCDM1"/>
+                   <!-- <include name="downloadAndVerifyVcUsingUinViaLandStatementVCDM1"/> -->
                 </methods>
             </class>
-            <class name="inji.testcases.androidTestCases.CredentialRegistryTest">
+        <!--    <class name="inji.testcases.androidTestCases.CredentialRegistryTest"> As this feature is only for internal testing purposes, these test cases have been disabled from execution.
                 <methods>
-                    <include name="downloadAndVerifyVcInNewEnv"/>
+                <include name="downloadAndVerifyVcInNewEnv"/> 
                     <include name="cancelChangeEnvAndVerify"/>
-                    <include name="downloadAndVerifyVcInInvalidEnv"/>
+                    <include name="downloadAndVerifyVcInInvalidEnv"/> 
                     <include name="downloadAndVerifyVcInNewEnvForEsignet"/>
                     <include name="downloadAndVerifyVcInInvalidEnvForEsignet"/>
                     <include name="downloadAndVerifyVcInInvalidEnvForEsignetInFillpino"/>
@@ -224,7 +216,7 @@
                     <include name="downloadAndVerifyVcInNewEnvForMock"/>
                     <include name="downloadAndVerifyVcInNewEnvForLandStatementCredential"/>
                 </methods>
-            </class>-->
+            </class>  -->
         </classes>
     </test>
 </suite>

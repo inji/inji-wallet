@@ -298,11 +298,10 @@ public class NoNetworkAndroidTest extends AndroidBaseTest {
 
         IosUtil.dragAndDrop(getDriver(), keyManagementPage.getTheCoordinatesECCR1TextText(), keyManagementPage.getTheCoordinatesED25519Text());
         keyManagementPage.clickOnSaveKeyOrderingPreferenceButton();
-
         assertTrue(keyManagementPage.iskeyOrderingSuccessTextMessageDisplayed(), "Verify if confirm passcode page is displayed");
+        homePage.clickPopupCloseButtonButton();
         keyManagementPage.clickOnArrowleftButton();
         homePage.clickOnHomeButton();
-
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
         mockCertifyLoginPage.clickOnEsignetLoginWithOtpButton();
@@ -314,6 +313,7 @@ public class NoNetworkAndroidTest extends AndroidBaseTest {
         mockCertifyLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
+        homePage.clickOnCrossIconButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 
         String sessionId = getDriver().getSessionId().toString();

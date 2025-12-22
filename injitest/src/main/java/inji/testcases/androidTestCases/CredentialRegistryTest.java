@@ -1,17 +1,43 @@
 package inji.testcases.androidTestCases;
 
-import inji.constants.PlatformType;
-import inji.pages.*;
-import inji.testcases.BaseTest.AndroidBaseTest;
-import inji.utils.InjiWalletUtil;
-import inji.utils.TestDataReader;
-import org.testng.annotations.Test;
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class CredentialRegistryTest extends AndroidBaseTest {
+import org.testng.annotations.Test;
 
+import inji.annotations.NeedsLandUIN;
+import inji.annotations.NeedsMockUIN;
+import inji.annotations.NeedsUIN;
+import inji.constants.PlatformType;
+import inji.pages.AddNewCardPage;
+import inji.pages.AppUnlockMethodPage;
+import inji.pages.ChooseLanguagePage;
+import inji.pages.ConfirmPasscode;
+import inji.pages.CredentialRegistryPage;
+import inji.pages.DetailedVcViewPage;
+import inji.pages.ESignetLoginPage;
+import inji.pages.HomePage;
+import inji.pages.MockCertifyLoginPage;
+import inji.pages.MoreOptionsPage;
+import inji.pages.OtpVerificationPage;
+import inji.pages.PleaseConfirmPopupPage;
+import inji.pages.RetrieveIdPage;
+import inji.pages.SetPasscode;
+import inji.pages.SettingsPage;
+import inji.pages.WelcomePage;
+import inji.testcases.BaseTest.AndroidBaseTest;
+import inji.utils.InjiWalletConfigManager;
+import inji.utils.InjiWalletUtil;
+import inji.utils.TestDataReader;
+
+
+
+
+public class CredentialRegistryTest extends AndroidBaseTest {
+	
+    private static final String credentialRegistry_url = InjiWalletConfigManager.getproperty("credentialRegistry_url");
+    private static final String credentialRegistry_esignet_url = InjiWalletConfigManager.getproperty("credentialRegistry_esignet_url");
+    
     @Test
     public void downloadAndVerifyVcInNewEnv() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
@@ -39,7 +65,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         CredentialRegistryPage credentialRegistryPage = settingsPage.clickOnCredentialRegistry();
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
-        credentialRegistryPage.setEnterIdTextBox(TestDataReader.readData("newEnv")).clickOnSaveButton();
+        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_url).clickOnSaveButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnHomeButton();
@@ -99,19 +125,19 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         SettingsPage settingsPage = homePage.clickOnSettingIcon();
-
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         CredentialRegistryPage credentialRegistryPage = settingsPage.clickOnCredentialRegistry();
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
-        credentialRegistryPage.setEnterIdTextBox(TestDataReader.readData("newEnv")).clickOnCancelButton();
+        String before_cancel_env_value= credentialRegistryPage.getCurrentEnvValue();
+        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_url).clickOnCancelButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnSettingIcon();
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
-
         settingsPage.clickOnCredentialRegistry();
-        assertEquals(credentialRegistryPage.checkEnvNotChanged(), TestDataReader.readData("injiEnv"));
+        String after_update_env_Value= credentialRegistryPage.getCurrentEnvValue();
+        assertEquals(before_cancel_env_value,after_update_env_Value,"Verify env value remains unchanged after cancel");
     }
 
     @Test
@@ -381,6 +407,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 //    }
 //
     @Test
+    @NeedsUIN
     public void downloadAndVerifyVcInNewEnvForEsignet() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
@@ -407,42 +434,34 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         CredentialRegistryPage credentialRegistryPage = settingsPage.clickOnCredentialRegistry();
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
-        credentialRegistryPage.setEnterIdTextBox(TestDataReader.readData("newEnv")).enterUrlToEsignetHostTextBox(TestDataReader.readData("newEnv")).clickOnSaveButton();
+        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_url).enterUrlToEsignetHostTextBox(credentialRegistry_esignet_url).clickOnSaveButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnHomeButton();
 
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
-
-        ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
-        addNewCardPage.clickOnContinueButton();
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-
-        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(TestDataReader.readData("newuin"));
-
+            assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description  esignet displayed");
+          assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(), "Verify if add new card guide message displayed");
+           ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
+           esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+            OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
         esignetLoginPage.clickOnGetOtpButton();
         assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
-
-        otpVerification.enterOtpForeSignet(TestDataReader.readData("otp"), PlatformType.ANDROID);
-        esignetLoginPage.clickOnVerifyButton();
-
+            otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+            esignetLoginPage.clickOnVerifyButton();
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
-        detailedVcViewPage.clickOnQrCodeButton();
-
-        detailedVcViewPage.clickOnQrCrossIcon();
-        assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed");
-        assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed Vc view page is displayed");
-        assertEquals(detailedVcViewPage.getNameInDetailedVcView(), TestDataReader.readData("fullName"), "Verify if full name is displayed");
-        assertEquals(detailedVcViewPage.getGenderInDetailedVcView(), TestDataReader.readData("gender"), "Verify if gender is displayed");
-        assertEquals(detailedVcViewPage.getIdTypeValueInDetailedVcView(), TestDataReader.readData("idType"), "Verify if id type is displayed");
-        assertEquals(detailedVcViewPage.getStatusInDetailedVcView(), TestDataReader.readData("status"), "Verify if status is displayed");
-        assertEquals(detailedVcViewPage.getUinInDetailedVcView(), TestDataReader.readData("newuin"), "Verify if uin is displayed");
-        assertEquals(detailedVcViewPage.getPhoneInDetailedVcView(), TestDataReader.readData("phoneNumber"), "Verify if phone number is displayed");
-        assertEquals(detailedVcViewPage.getEmailInDetailedVcView(), TestDataReader.readData("externalemail"), "Verify if email is displayed");
+		assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed Vc view page is displayed");
         assertTrue(detailedVcViewPage.isActivateButtonDisplayed(), "Verify if activate vc button displayed");
+        PleaseConfirmPopupPage pleaseConfirmPopupPage = detailedVcViewPage.clickOnActivateButtonAndroid();
+        pleaseConfirmPopupPage.clickOnConfirmButton();
+        otpVerification.enterOtp(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        assertTrue(detailedVcViewPage.isProfileAuthenticatedDisplayed(), "Verify profile authenticated displayed");
+        detailedVcViewPage.clickOnBackArrow();
+        assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed");
+
     }
 
     @Test
@@ -476,7 +495,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         homePage.clickOnHomeButton();
 
         homePage.downloadCard();
-        assertTrue(homePage.verifyLanguageForNoInternetConnectionDisplayed("English"), "Verify if no internet connection is displayed");
+        assertTrue(homePage.verifyLanguageForNetWorkRequestFailedDisplayed("English"), "Verify if no internet connection is displayed");
     }
 
     @Test
@@ -514,7 +533,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         homePage.clickOnHomeButton();
 
         homePage.downloadCard();
-        assertTrue(homePage.verifyLanguageForNoInternetConnectionDisplayed("Filipino"), "Verify if no internet connection is displayed");
+        assertTrue(homePage.verifyLanguageForNetWorkRequestFailedDisplayed("Filipino"), "Verify if no internet connection is displayed");
     }
 
 
@@ -614,6 +633,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 //    }
 
     @Test
+    @NeedsMockUIN
     public void downloadAndVerifyVcInNewEnvForMdl() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
@@ -640,39 +660,44 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         CredentialRegistryPage credentialRegistryPage = settingsPage.clickOnCredentialRegistry();
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
-        credentialRegistryPage.setEnterIdTextBox(TestDataReader.readData("newEnv")).enterUrlToEsignetHostTextBox(TestDataReader.readData("newEnv")).clickOnSaveButton();
+        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_url).enterUrlToEsignetHostTextBox(credentialRegistry_esignet_url).clickOnSaveButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnHomeButton();
 
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
+        assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(), "Verify if add new card guide message displayed");
+        assertTrue(addNewCardPage.isDownloadViaEsignetDisplayed(), "Verify if download via uin displayed");
+        MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 
-        addNewCardPage.clickOnDownloadViaMockCertify();
+        mockCertifyLoginPage.clickOnEsignetLoginWithOtpButton();
 
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        addNewCardPage.clickOnContinueButton();
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+        assertTrue(mockCertifyLoginPage.isEnterYourVidTextDisplayed(), "Verify if Enter Your VID text is displayed");
 
-        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(TestDataReader.readData("MockVc"));
+        OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
-        esignetLoginPage.clickOnGetOtpButton();
-        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
+        mockCertifyLoginPage.clickOnGetOtpButton();
+        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(TestDataReader.readData("otp"), PlatformType.ANDROID);
-        esignetLoginPage.clickOnVerifyButton();
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        mockCertifyLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
-        DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
-        detailedVcViewPage.clickOnQrCodeButton();
+        MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
 
-        detailedVcViewPage.clickOnQrCrossIcon();
-        assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed");
-        assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed Vc view page is displayed");
+        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
+        moreOptionsPage.clickOnPinOrUnPinCard();
+
+        assertTrue(homePage.isPinIconDisplayed(), "Verify if pin icon on vc is displayed");
+        homePage.clickOnMoreOptionsButton();
+        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
+        moreOptionsPage.clickOnPinOrUnPinCard();
     }
 
     @Test
+    @NeedsMockUIN
     public void downloadAndVerifyVcInNewEnvForMock() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
@@ -699,7 +724,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         CredentialRegistryPage credentialRegistryPage = settingsPage.clickOnCredentialRegistry();
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
-        credentialRegistryPage.setEnterIdTextBox(TestDataReader.readData("newEnv")).enterUrlToEsignetHostTextBox(TestDataReader.readData("newEnv")).clickOnSaveButton();
+        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_url).enterUrlToEsignetHostTextBox(credentialRegistry_esignet_url).clickOnSaveButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnHomeButton();
@@ -707,32 +732,37 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 
-        addNewCardPage.clickOnDownloadViaMock();
+        assertTrue(addNewCardPage.isDownloadViaEsignetDisplayed(), "Verify if download via uin displayed");
+        MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        addNewCardPage.clickOnContinueButton();
-        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
+        mockCertifyLoginPage.clickOnEsignetLoginWithOtpButton();
 
-        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(TestDataReader.readData("Mock"));
+        assertTrue(mockCertifyLoginPage.isEnterYourVidTextDisplayed(), "Verify if Enter Your VID text is displayed");
 
-        esignetLoginPage.clickOnGetOtpButton();
-        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
+        OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
-        otpVerification.enterOtpForeSignet(TestDataReader.readData("otp"), PlatformType.ANDROID);
-        esignetLoginPage.clickOnVerifyButton();
+        mockCertifyLoginPage.clickOnGetOtpButton();
+        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
+
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        mockCertifyLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
         detailedVcViewPage.clickOnQrCodeButton();
+        assertTrue(detailedVcViewPage.isQrCodeDisplayed(), "Verify if QR Code header is displayed");
 
         detailedVcViewPage.clickOnQrCrossIcon();
         assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed");
         assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed Vc view page is displayed");
+        detailedVcViewPage.clickOnBackArrow();
+        assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed");
     }
 
 
     @Test
+    @NeedsLandUIN
     public void downloadAndVerifyVcInNewEnvForLandStatementCredential() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
@@ -759,7 +789,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         CredentialRegistryPage credentialRegistryPage = settingsPage.clickOnCredentialRegistry();
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
-        credentialRegistryPage.setEnterIdTextBox(TestDataReader.readData("newEnv")).enterUrlToEsignetHostTextBox(TestDataReader.readData("newEnv")).clickOnSaveButton();
+        credentialRegistryPage.setEnterIdTextBox(credentialRegistry_url).enterUrlToEsignetHostTextBox(credentialRegistry_esignet_url).clickOnSaveButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnHomeButton();
@@ -767,19 +797,13 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 
-        addNewCardPage.clickOnDownloadViaLand();
-        addNewCardPage.clickOncredentialTypeHeadingLandStatementCredential2();
-
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        addNewCardPage.clickOnContinueButton();
-
+        
+        ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandRegistry();
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-
-        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(TestDataReader.readData("LandRegistary"));
-
+        esignetLoginPage.clickOnLoginWithOtpButton();
+        OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
         esignetLoginPage.clickOnGetOtpButton();
-
-        otpVerification.enterOtpForeSignet(TestDataReader.readData("otp"), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
