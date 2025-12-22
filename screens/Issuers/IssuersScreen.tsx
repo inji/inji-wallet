@@ -37,6 +37,8 @@ import {TransactionCodeModal} from './TransactionCodeScreen';
 import {TrustModal} from '../../components/TrustModal';
 import i18next from 'i18next';
 import {SendVPScreen} from '../Scan/SendVPScreen';
+import {ProcessingScreen, ProgressIndicator} from "../../components/ui/processingScreen/ProcessingScreen";
+
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
@@ -181,6 +183,21 @@ export const IssuersScreen: React.FC<
       setClearSearchIcon(false);
     }
   };
+
+  if (true) {
+    return (
+      <ProcessingScreen
+        title={"Processing..."}
+        subTitle={"This will only take a moment"}
+        progressSteps={[
+          <ProgressIndicator key={1} label="Sharing card/cards" completed={true} />,
+          <ProgressIndicator key={2} label="Downloading card" completed={false} />,
+        ]}
+        action={<Button title={"Go to Home"} type={'gradient'} fill disabled={true}/>}
+      />
+    )
+  }
+
   if (controller.isSelectingCredentialType) {
     return <CredentialTypeSelectionScreen {...props} />;
   }

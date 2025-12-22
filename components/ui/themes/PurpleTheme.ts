@@ -73,6 +73,7 @@ const Colors = {
   Mercury: '#E6E6E6',
   Yellow: '#E8A94F',
   selectIDTextGradient: ['#F5F5F5', '#FFFFFF'],
+  mildGray: '#BDBDBD',
 };
 
 export type ElevationLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -158,6 +159,7 @@ export const PurpleTheme = {
     PendingIcon: Colors.Yellow,
     unCheckText: Colors.Orange,
     secondaryText: Colors.Orange,
+    disabled: Colors.mildGray
   },
   Styles: StyleSheet.create({
     title: {

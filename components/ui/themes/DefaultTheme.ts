@@ -71,6 +71,7 @@ const Colors = {
   Mercury: '#E6E6E6',
   Yellow: '#E8A94F',
   selectIDTextGradient: ['#F5F5F5', '#FFFFFF'],
+  mildGray: '#BDBDBD',
 };
 
 export type ElevationLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -156,6 +157,7 @@ export const DefaultTheme = {
     selectIDTextGradient: ['#F5F5F5', '#FFFFFF'],
     unCheckText: Colors.Secondary,
     secondaryText: Colors.Secondary,
+    disabled: Colors.mildGray
   },
   Styles: StyleSheet.create({
     title: {
@@ -986,6 +988,10 @@ export const DefaultTheme = {
       fontFamily: 'Montserrat_700Bold',
       fontSize: 15,
       justifyContent: 'center',
+    },
+    extraLight: {
+      fontFamily: 'Montserrat_200ExtraLight',
+      fontWeight: "200"
     },
     small: {
       fontSize: 13,
