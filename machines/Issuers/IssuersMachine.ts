@@ -182,6 +182,9 @@ export const IssuersMachine = model.createMachine(
           idle: {},
           presentationAuthorization: {
             entry: [
+              (_, event) => console.debug(
+                'Entered presentationAuthorization state in IssuersMachine', JSON.stringify(event, null, 2)
+              ),
               //TODO: telemetry for vp sharing
               // () =>
               //   sendStartEvent(
