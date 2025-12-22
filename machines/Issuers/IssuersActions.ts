@@ -11,6 +11,7 @@ import {
   NO_INTERNET,
   REQUEST_TIMEOUT,
   isIOS,
+  AuthorizationType,
 } from '../../shared/constants';
 import {assign, send, spawn} from 'xstate';
 import {StoreEvents} from '../store';
@@ -292,6 +293,12 @@ export const IssuersActions = (model: any) => {
           return credentialTypes[0];
         }
       },
+    }),
+    setAuthorizationTypeAsPresentation: model.assign({
+      authorizationType: AuthorizationType.OPENID4VP_PRESENTATION,
+    }),
+    setPresentationAuthorizationSuccess: model.assign({
+      authorizationSuccess: true,
     }),
     supportedCredentialTypes: (context: any, event: any) => {
       return event.credentialTypes;

@@ -24,6 +24,9 @@ import {
   selectIsPresentationAuthorization,
   selectOVPMachine,
   selectIsPresentationAuthorizationInProgress,
+  selectAuthorizationType,
+  selectDownloadSuccess,
+  selectIsAuthorizationSuccess,
 } from '../../machines/Issuers/IssuersSelectors';
 import {ActorRefFrom} from 'xstate';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
@@ -48,6 +51,9 @@ export function useIssuerScreenController({route, navigation}) {
       service,
       selectIsPresentationAuthorizationInProgress,
     ),
+    authorizationType: useSelector(service, selectAuthorizationType),
+    isDownloadSuccess: useSelector(service, selectDownloadSuccess),
+    isAuthorizationSuccess: useSelector(service, selectIsAuthorizationSuccess),
     issuers: useSelector(service, selectIssuers),
     ovpMachine: useSelector(service, selectOVPMachine),
     issuerLogo: useSelector(service, selectIssuerLogo),

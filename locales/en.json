@@ -231,16 +231,26 @@
     "credentialTypeDescription": "Please select a credential",
     "help": "Help?",
     "loaders": {
+      "processing": "Processing...",
       "loading": "Loading...",
       "subTitle": {
         "displayIssuers": "Fetching Issuers",
         "settingUp": "Setting up",
-        "downloadingCredentials": "Downloading Credentials"
+        "downloadingCredentials": "Downloading Credentials",
+        "inProgress": "This will only take a moment"
+      },
+      "progressIndicators": {
+        "sharingCard": "Sharing card/cards",
+        "downloadingCard": "Downloading card",
+        "sharedCard": "Shared card/cards",
+        "downloadedCard": "Downloaded card"
       }
     },
     "offerTitle": "Scan & Download Card",
     "offerDescription": "Scan a QR code to instantly download your card.",
     "download": " Download Card",
+    "downloadSuccess": "Card Download Successfully",
+    "goHome": "Go to Home",
     "errors": {
       "noInternetConnection": {
         "title": "No internet connection",

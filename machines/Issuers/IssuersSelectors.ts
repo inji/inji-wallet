@@ -123,3 +123,15 @@ export function selectIsPresentationAuthorizationInProgress(state: State) {
     'credentialDownloadFromOffer.presentationAuthorization.inProgress',
   );
 }
+
+export function selectAuthorizationType(state: State) {
+  return state.context.authorizationType;
+}
+
+export function selectDownloadSuccess(state: State) {
+  return state.matches('showSuccessDownload');
+}
+
+export function selectIsAuthorizationSuccess(state: State) {
+  return state.context.authorizationSuccess;
+}

@@ -141,6 +141,7 @@ export const IssuersMachine = model.createMachine(
               (_, event) =>
                 console.debug('RECEIVED PRESENTATION_REQUEST EVENT:', event),
               'setOpenId4VPRef',
+              'setAuthorizationTypeAsPresentation',
               'sendVPScanData',
             ],
             target: '.presentationAuthorization',
@@ -182,9 +183,11 @@ export const IssuersMachine = model.createMachine(
           idle: {},
           presentationAuthorization: {
             entry: [
-              (_, event) => console.debug(
-                'Entered presentationAuthorization state in IssuersMachine', JSON.stringify(event, null, 2)
-              ),
+              (_, event) =>
+                console.debug(
+                  'Entered presentationAuthorization state in IssuersMachine',
+                  JSON.stringify(event, null, 2),
+                ),
               //TODO: telemetry for vp sharing
               // () =>
               //   sendStartEvent(
@@ -260,6 +263,7 @@ export const IssuersMachine = model.createMachine(
               success: {
                 always: [
                   {
+                    actions: ['setPresentationAuthorizationSuccess'],
                     target: '#issuersMachine.credentialDownloadFromOffer.idle',
                   },
                 ],
@@ -927,7 +931,34 @@ export const IssuersMachine = model.createMachine(
       },
 
       done: {
-        type: 'final',
+        entry: [
+          {
+            cond: 'isPresentationAuthorization',
+            target: 'showSuccessDownload',
+          },
+          {
+            target: '.redirect',
+          },
+        ],
+        states: {
+          idle: {},
+          showSuccessDownload: {
+            on: {
+              GO_TO_HOME: {
+                target: 'redirect',
+              },
+            },
+            after: [
+              {
+                delay: 5000,
+                target: 'redirect',
+              },
+            ],
+          },
+          redirect: {
+            type: 'final',
+          },
+        },
       },
     },
   },
