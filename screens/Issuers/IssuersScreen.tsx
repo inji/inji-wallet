@@ -36,7 +36,15 @@ import {AUTH_ROUTES} from '../../routes/routesConstants';
 import {TransactionCodeModal} from './TransactionCodeScreen';
 import {TrustModal} from '../../components/TrustModal';
 import {SendVPScreen} from '../Scan/SendVPScreen';
-import {ProcessingScreen, ProgressIndicator} from "../../components/ui/processingScreen/ProcessingScreen";
+import {
+  ProcessingScreen,
+  ProgressIndicator,
+} from '../../components/ui/processingScreen/ProcessingScreen';
+import {
+  selectIsPresentationAuthorization,
+  selectDownloadSuccess,
+} from '../../machines/Issuers/IssuersSelectors';
+import {AuthorizationType} from '../../shared/constants';
 
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
@@ -181,18 +189,50 @@ export const IssuersScreen: React.FC<
     }
   };
 
-  if (true) {
+  if (
+    controller.authorizationType === AuthorizationType.OPENID4VP_PRESENTATION &&
+    (controller.isPresentationAuthorizationInProgress ||
+      controller.isDownloadSuccess ||
+      controller.isAuthorizationSuccess)
+  ) {
     return (
       <ProcessingScreen
-        title={"Processing..."}
-        subTitle={"This will only take a moment"}
+        title={
+          controller.isDownloadSuccess
+            ? t('downloadSuccess')
+            : t('loaders.processing')
+        }
+        subTitle={t('loaders.subTitle.inProgress')}
         progressSteps={[
-          <ProgressIndicator key={1} label="Sharing card/cards" completed={true} />,
-          <ProgressIndicator key={2} label="Downloading card" completed={false} />,
+          <ProgressIndicator
+            key={1}
+            label={
+              controller.isAuthorizationSuccess
+                ? t('loaders.progressIndicators.sharedCard')
+                : t('loaders.progressIndicators.sharingCard')
+            }
+            completed={controller.isAuthorizationSuccess}
+          />,
+          <ProgressIndicator
+            key={2}
+            label={
+              controller.isDownloadSuccess
+                ? t('loaders.progressIndicators.downloadedCard')
+                : t('loaders.progressIndicators.downloadingCard')
+            }
+            completed={controller.isDownloadSuccess}
+          />,
         ]}
-        action={<Button title={"Go to Home"} type={'gradient'} fill disabled={true}/>}
+        action={
+          <Button
+            title={t('goHome')}
+            type={'gradient'}
+            fill
+            disabled={!controller.isDownloadSuccess}
+          />
+        }
       />
-    )
+    );
   }
 
   if (controller.isSelectingCredentialType) {
