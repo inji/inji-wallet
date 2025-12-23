@@ -3,25 +3,24 @@ package io.mosip.residentapp
 import com.facebook.react.bridge.ReactApplicationContext
 import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest
 import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken
-import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult
 import io.mosip.openID4VP.constants.FormatType
 import io.mosip.vciclient.VCIClient
+import io.mosip.vciclient.authorizationCodeFlow.AuthorizationMethod
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata
-import io.mosip.vciclient.authorizationCodeFlow.interactiveAuth.AuthorizationHandler
-import io.mosip.vciclient.authorizationCodeFlow.interactiveAuth.AuthorizationResponse
-import io.mosip.vciclient.authorizationCodeFlow.interactiveAuth.PresentationAuthorizationHandler
-import io.mosip.vciclient.authorizationCodeFlow.interactiveAuth.WebAuthorizationHandler
+import io.mosip.vciclient.constants.SelectCredentialsForPresentationCallback
+import io.mosip.vciclient.constants.OpenWebPageCallback
+import io.mosip.vciclient.constants.ProofJwtCallback
+import io.mosip.vciclient.constants.SignVerifiablePresentationCallback
 import io.mosip.vciclient.credential.response.CredentialResponse
 import io.mosip.vciclient.token.TokenRequest
 import io.mosip.vciclient.token.TokenResponse
-import io.mosip.vciclient.constants.AuthorizeUserCallback
-import io.mosip.vciclient.constants.ProofJwtCallback
 import kotlinx.coroutines.runBlocking
 
 object VCIClientBridge {
 
-    // Must be set by the Java side (InjiVciClientModule) to emit events to JS
     lateinit var reactContext: ReactApplicationContext
+
+    
 
     @JvmStatic
     fun requestCredentialByOfferSync(
@@ -29,80 +28,18 @@ object VCIClientBridge {
             offer: String,
             clientMetaData: ClientMetadata
     ): CredentialResponse = runBlocking {
-        client.requestCredentialByCredentialOffer(
+        client.fetchCredentialByCredentialOffer(
                 credentialOffer = offer,
                 clientMetadata = clientMetaData,
                 getTxCode = getTxCodeCallback(),
-                authorizeUser = authorizeUserCallback(),
+                authorizations = authorizationMethods(),
                 getTokenResponse = getTokenResponseCallback(),
                 getProofJwt = getProofJwtCallback(),
                 onCheckIssuerTrust = onCheckIssuerTrustCallback()
         )
     }
 
-    @JvmStatic
-    fun requestCredentialByOfferSyncV2(
-        client: VCIClient,
-        offer: String,
-        clientMetaData: ClientMetadata
-    ): CredentialResponse = runBlocking {
-        client.fetchCredentialByCredentialOfferV2(
-            credentialOffer = offer,
-            clientMetadata = clientMetaData,
-            getTxCode = getTxCodeCallback(),
-            authorizations = authorizations(),
-            getTokenResponse = getTokenResponseCallback(),
-            getProofJwt = getProofJwtCallback(),
-            onCheckIssuerTrust = onCheckIssuerTrustCallback()
-        )
-    }
-
-    //TODO: Move all private functions to the end of the class (Ordering)
-    private fun authorizations(): List<AuthorizationHandler> {
-//        val webAuthorizationHandler =
-//            WebAuthorizationHandler(openWebPageCallback() as (String) -> AuthorizationResponse)
-        val presentationAuthorizationHandler = PresentationAuthorizationHandler(
-            handlePresentationRequest = getHandlePresentationRequestCallback(),
-            signVerifiablePresentation = getSignVerifiablePresentationCallback(),
-            trustedVerifiers = listOf(),
-            holderId = "did:jwk:e...Q==#0",
-            signatureSuite = "JsonWebSignature2020",
-            shouldValidateClient = false,
-//            openId4vp = TODO(),
-            handlePresentationTimeoutMs = 3 * 60 * 1000L,
-            signVPTokensTimeoutMs = 3 * 60 * 1000L
-        )
-        val authorizations = listOf<AuthorizationHandler>(
-            presentationAuthorizationHandler,
-//            webAuthorizationHandler
-        )
-
-        return authorizations
-    }
-
-    private fun getHandlePresentationRequestCallback() : suspend (AuthorizationRequest) -> Map<String, Map<FormatType, List<Any>>> = { authorizationRequest ->
-        VCIClientCallbackBridge.createPresentationRequestDeferred()
-        VCIClientCallbackBridge.emitPresentationRequest(reactContext, authorizationRequest)
-        VCIClientCallbackBridge.awaitSelectedCredentialsForPresentationRequest()
-    }
-
-    private fun getSignVerifiablePresentationCallback() : suspend (Map<FormatType, UnsignedVPToken>) -> Map<FormatType, VPTokenSigningResult> = { payload ->
-        VCIClientCallbackBridge.createSignedVPTokenDeferred()
-        VCIClientCallbackBridge.emitSignedVPTokenRequest(reactContext, payload)
-        VCIClientCallbackBridge.awaitSignedVPToken()
-    }
-
-    private fun openWebPageCallback(): suspend (String) -> AuthorizationResponse = { endpoint ->
-        VCIClientCallbackBridge.createAuthCodeDeferredV2()
-        VCIClientCallbackBridge.emitRequestAuthCode(reactContext, endpoint)
-        val authCode = VCIClientCallbackBridge.awaitAuthCodeV2()
-        AuthorizationResponse(
-            authorizationCode = authCode["code"] as String?,
-            status = authCode["status"] as String?,
-            error = authCode["error"] as String?,
-            errorDescription = authCode["errorDescription"] as String?
-        )
-    }
+   
 
     @JvmStatic
     fun requestCredentialFromTrustedIssuerSync(
@@ -111,21 +48,69 @@ object VCIClientBridge {
             credentialConfigurationId: String,
             clientMetaData: ClientMetadata
     ): CredentialResponse = runBlocking {
-        client.requestCredentialFromTrustedIssuer(
-                credentialIssuer,
-                credentialConfigurationId,
-                clientMetaData,
-                authorizeUser = authorizeUserCallback(),
+        client.fetchCredentialFromTrustedIssuer(
+                credentialIssuer = credentialIssuer,
+                credentialConfigurationId = credentialConfigurationId,
+                clientMetadata = clientMetaData,
                 getTokenResponse = getTokenResponseCallback(),
+                authorizations = authorizationMethods(),
                 getProofJwt = getProofJwtCallback(),
         )
     }
 
-    private fun authorizeUserCallback(): AuthorizeUserCallback = { endpoint ->
+    private fun authorizationMethods(): List<AuthorizationMethod> =
+            listOf(
+                    AuthorizationMethod.PresentationDuringIssuance(
+                            selectCredentialsForPresentation =
+                                    selectCredentialsForPresentationCallback(),
+                            signVerifiablePresentation = signVerifiablePresentationCallback()
+                    ),
+                    // Uncomment when you want redirect-to-web to be enabled in V2 flow
+                    AuthorizationMethod.RedirectToWeb(openWebPage = openWebPageCallback())
+            )
+
+    private fun selectCredentialsForPresentationCallback(): SelectCredentialsForPresentationCallback =
+            { authorizationRequest: AuthorizationRequest ->
+                VCIClientCallbackBridge.createPresentationRequestDeferred()
+                VCIClientCallbackBridge.emitPresentationRequest(reactContext, authorizationRequest)
+                VCIClientCallbackBridge.awaitSelectedCredentialsForPresentationRequest()
+            }
+
+    private fun signVerifiablePresentationCallback(): SignVerifiablePresentationCallback =
+            { payload: Map<FormatType, UnsignedVPToken> ->
+                VCIClientCallbackBridge.createSignedVPTokenDeferred()
+                VCIClientCallbackBridge.emitSignedVPTokenRequest(reactContext, payload)
+                VCIClientCallbackBridge.awaitSignedVPToken()
+            }
+
+    private fun openWebPageCallback(): OpenWebPageCallback =
+    openWeb@{ endpoint: String ->
+
         VCIClientCallbackBridge.createAuthCodeDeferred()
         VCIClientCallbackBridge.emitRequestAuthCode(reactContext, endpoint)
-        VCIClientCallbackBridge.awaitAuthCode()
+
+        val authCode = try {
+            VCIClientCallbackBridge.awaitAuthCode()
+        } catch (ex: Exception) {
+            return@openWeb mapOf(
+                "error" to "authorization_failed",
+                "errorDescription" to
+                    (ex.message ?: "Failed to receive authorization code")
+            )
+        }
+
+        if (authCode.isBlank()) {
+            return@openWeb mapOf(
+                "error" to "access_denied",
+                "errorDescription" to "Authorization code not received"
+            )
+        }
+
+        mapOf(
+            "authorization_code" to authCode
+        )
     }
+
 
     private fun getProofJwtCallback(): ProofJwtCallback =
             {
@@ -142,7 +127,7 @@ object VCIClientBridge {
                 VCIClientCallbackBridge.awaitProof()
             }
 
-    private fun getTokenResponseCallback(): suspend (tokenRequest: TokenRequest) -> TokenResponse =
+    private fun getTokenResponseCallback(): suspend (TokenRequest) -> TokenResponse =
             { tokenRequest ->
                 val payload: Map<String, Any?> =
                         mapOf(
@@ -155,6 +140,7 @@ object VCIClientBridge {
                                 "redirectUri" to tokenRequest.redirectUri,
                                 "codeVerifier" to tokenRequest.codeVerifier
                         )
+
                 VCIClientCallbackBridge.createTokenResponseDeferred()
                 VCIClientCallbackBridge.emitTokenRequest(reactContext, payload)
                 VCIClientCallbackBridge.awaitTokenResponse()

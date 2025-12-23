@@ -15,33 +15,43 @@ import io.mosip.vciclient.token.TokenResponse
 import kotlinx.coroutines.CompletableDeferred
 
 object VCIClientCallbackBridge {
+    private const val TAG = "VCIClientCallbackBridge"
+    private val gson = Gson()
     private var deferredProof: CompletableDeferred<String>? = null
     private var deferredAuthCode: CompletableDeferred<String>? = null
     private var deferredTxCode: CompletableDeferred<String>? = null
-    private var deferredAuthCodeV2: CompletableDeferred<Map<String, Any>>? = null
-    private var deferredPresentationRequest: CompletableDeferred<Map<String, Map<FormatType, List<Any>>>>? = null
-    private var deferredSignedVPToken: CompletableDeferred<Map<FormatType, VPTokenSigningResult>>? = null
+    private var deferredAuthCodeResult: CompletableDeferred<Map<String, Any>>? = null
+    private var deferredPresentationRequest:
+            CompletableDeferred<Map<String, Map<FormatType, List<Any>>>>? =
+            null
+    private var deferredSignedVPToken: CompletableDeferred<Map<FormatType, VPTokenSigningResult>>? =
+            null
     private var deferredIssuerTrustResponse: CompletableDeferred<Boolean>? = null
     private var deferredTokenResponse: CompletableDeferred<TokenResponse>? = null
 
-    fun createPresentationRequestDeferred(): CompletableDeferred<Map<String, Map<FormatType, List<Any>>>> {
+    fun createPresentationRequestDeferred():
+            CompletableDeferred<Map<String, Map<FormatType, List<Any>>>> {
         deferredPresentationRequest = CompletableDeferred()
         return deferredPresentationRequest!!
     }
 
-    fun emitPresentationRequest(context: ReactApplicationContext, presentationRequest: AuthorizationRequest) {
-        val presentationRequestJson: String? = JsonConverter.toJson(presentationRequest);
+    fun emitPresentationRequest(
+            context: ReactApplicationContext,
+            presentationRequest: AuthorizationRequest
+    ) {
+        val presentationRequestJson: String? = JsonConverter.toJson(presentationRequest)
         val params: WritableMap? =
-            Arguments.createMap().apply {
-                putString("presentationRequest", presentationRequestJson)
-            }
+                Arguments.createMap().apply {
+                    putString("presentationRequest", presentationRequestJson)
+                }
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-            .emit("onPresentationRequest", params)
+                .emit("onPresentationRequest", params)
     }
 
-    suspend fun awaitSelectedCredentialsForPresentationRequest(): Map<String, Map<FormatType, List<Any>>> {
+    suspend fun awaitSelectedCredentialsForPresentationRequest():
+            Map<String, Map<FormatType, List<Any>>> {
         return deferredPresentationRequest?.await()
-            ?: throw IllegalStateException("No seleected credentials callback was set")
+                ?: throw IllegalStateException("No selected credentials callback was set")
     }
 
     fun createSignedVPTokenDeferred(): CompletableDeferred<Map<FormatType, VPTokenSigningResult>> {
@@ -50,32 +60,31 @@ object VCIClientCallbackBridge {
     }
 
     fun emitSignedVPTokenRequest(
-        context: ReactApplicationContext,
-        payload: Map<FormatType, UnsignedVPToken>
+            context: ReactApplicationContext,
+            payload: Map<FormatType, UnsignedVPToken>
     ) {
         val params =
-            Arguments.createMap().apply {
-                putString("vpTokenSigningRequest", payload.toJsonString())
-            }
-      println("Emitting signed VP token request to JS")
+                Arguments.createMap().apply {
+                    putString("vpTokenSigningRequest", payload.toJsonString())
+                }
+        android.util.Log.d(TAG, "Emitting signed VP token request to JS")
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-            .emit("onRequestSignedVPToken", params)
+                .emit("onRequestSignedVPToken", params)
     }
 
     suspend fun awaitSignedVPToken(): Map<FormatType, VPTokenSigningResult> {
         return deferredSignedVPToken?.await()
-            ?: throw IllegalStateException("No signed VP token callback was set")
+                ?: throw IllegalStateException("No signed VP token callback was set")
     }
 
-    fun createAuthCodeDeferredV2(): CompletableDeferred<Map<String, Any>> {
-        deferredAuthCodeV2 = CompletableDeferred()
-        return deferredAuthCodeV2!!
+    fun createAuthCodeResultDeferred(): CompletableDeferred<Map<String, Any>> {
+        deferredAuthCodeResult = CompletableDeferred()
+        return deferredAuthCodeResult!!
     }
 
-
-    suspend fun awaitAuthCodeV2(): Map<String,Any> {
-        return deferredAuthCodeV2?.await()
-            ?: throw IllegalStateException("No auth code callback was set")
+    suspend fun awaitAuthCodeResult(): Map<String, Any?> {
+        return deferredAuthCodeResult?.await()
+                ?: throw IllegalStateException("No auth code callback was set")
     }
 
     fun createProofDeferred(): CompletableDeferred<String> {
@@ -104,70 +113,65 @@ object VCIClientCallbackBridge {
     }
 
     fun emitRequestProof(
-        context: ReactApplicationContext,
-        credentialIssuer: String,
-        cNonce: String?,
-        proofSigningAlgorithmsSupported: List<String>,
+            context: ReactApplicationContext,
+            credentialIssuer: String,
+            cNonce: String?,
+            proofSigningAlgorithmsSupported: List<String>,
     ) {
         val params =
-            Arguments.createMap().apply {
-                putString("credentialIssuer", credentialIssuer)
-                if (cNonce != null) putString("cNonce", cNonce)
-                val json = Gson().toJson(proofSigningAlgorithmsSupported)
-                putString("proofSigningAlgorithmsSupported", json)
-            }
+                Arguments.createMap().apply {
+                    putString("credentialIssuer", credentialIssuer)
+                    if (cNonce != null) putString("cNonce", cNonce)
+                    val json = gson.toJson(proofSigningAlgorithmsSupported)
+                    putString("proofSigningAlgorithmsSupported", json)
+                }
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-            .emit("onRequestProof", params)
+                .emit("onRequestProof", params)
     }
 
     fun emitRequestAuthCode(context: ReactApplicationContext, authorizationEndpoint: String) {
         val params =
-            Arguments.createMap().apply {
-                putString("authorizationUrl", authorizationEndpoint)
-            }
+                Arguments.createMap().apply { putString("authorizationUrl", authorizationEndpoint) }
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-            .emit("onRequestAuthCode", params)
+                .emit("onRequestAuthCode", params)
     }
 
-    fun emitTokenRequest(
-        context: ReactApplicationContext,
-        payload: Map<String, Any?>
-    ) {
+    fun emitTokenRequest(context: ReactApplicationContext, payload: Map<String, Any?>) {
         val params =
-            Arguments.createMap().apply {
-                putString("tokenRequest", Gson().toJson(payload))
-            }
+                Arguments.createMap().apply { putString("tokenRequest", gson.toJson(payload)) }
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-            .emit("onRequestTokenResponse", params)
+                .emit("onRequestTokenResponse", params)
     }
 
     fun emitRequestTxCode(
-        context: ReactApplicationContext,
-        inputMode: String?,
-        description: String?,
-        length: Int?
+            context: ReactApplicationContext,
+            inputMode: String?,
+            description: String?,
+            length: Int?
     ) {
         val params =
-            Arguments.createMap().apply {
-                putString("inputMode", inputMode)
-                putString("description", description)
-                if (length != null)
-                    putInt("length", length)
-            }
+                Arguments.createMap().apply {
+                    putString("inputMode", inputMode)
+                    putString("description", description)
+                    if (length != null) putInt("length", length)
+                }
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-            .emit("onRequestTxCode", params)
+                .emit("onRequestTxCode", params)
     }
 
-    fun emitRequestIssuerTrust(context: ReactApplicationContext, credentialIssuer: String, issuerDisplay: List<Map<String, Any>>) {
+    fun emitRequestIssuerTrust(
+            context: ReactApplicationContext,
+            credentialIssuer: String,
+            issuerDisplay: List<Map<String, Any>>
+    ) {
         val params =
-            Arguments.createMap().apply {
-//TODO: Convert Gson construction to singleton pattern
-                putString("credentialIssuer", credentialIssuer)
-                putString("issuerDisplay", Gson().toJson(issuerDisplay))
-            }
+                Arguments.createMap().apply {
+                    putString("credentialIssuer", credentialIssuer)
+                    putString("issuerDisplay", gson.toJson(issuerDisplay))
+                }
 
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-            .emit("onCheckIssuerTrust", params)
+                .emit("onCheckIssuerTrust", params)
     }
 
     @JvmStatic
@@ -179,21 +183,27 @@ object VCIClientCallbackBridge {
     @JvmStatic
     fun completePresentationRequest(selectedVCs: Map<String, Map<FormatType, List<Object>>>) {
         deferredPresentationRequest?.complete(selectedVCs)
-        println("completed presentation request")
-        deferredAuthCode = null
+        android.util.Log.d(TAG, "Completed presentation request")
+        deferredPresentationRequest = null
     }
 
-  @JvmStatic
-  fun completeSignDataForVP(vpTokenSigningResult: MutableMap<FormatType, VPTokenSigningResult>) {
-    deferredSignedVPToken?.complete(vpTokenSigningResult)
-    print("completed signed VP token")
-    deferredSignedVPToken = null
-  }
+    @JvmStatic
+    fun completeSignDataForVP(vpTokenSigningResult: MutableMap<FormatType, VPTokenSigningResult>) {
+        deferredSignedVPToken?.complete(vpTokenSigningResult)
+        android.util.Log.d(TAG, "Completed signed VP token")
+        deferredSignedVPToken = null
+    }
 
-  @JvmStatic
+    @JvmStatic
     fun completeAuthCode(code: String) {
         deferredAuthCode?.complete(code)
         deferredAuthCode = null
+    }
+
+    @JvmStatic
+    fun completeAuthCodeResult(result: Map<String, Any>) {
+        deferredAuthCodeResult?.complete(result)
+        deferredAuthCodeResult = null
     }
 
     @JvmStatic
@@ -220,12 +230,12 @@ object VCIClientCallbackBridge {
 
     suspend fun awaitAuthCode(): String {
         return deferredAuthCode?.await()
-            ?: throw IllegalStateException("No auth code callback was set")
+                ?: throw IllegalStateException("No auth code callback was set")
     }
 
     suspend fun awaitTokenResponse(): TokenResponse {
         return deferredTokenResponse?.await()
-            ?: throw IllegalStateException("No TokenResponse callback was set")
+                ?: throw IllegalStateException("No TokenResponse callback was set")
     }
 
     suspend fun awaitTxCode(): String {
@@ -234,6 +244,6 @@ object VCIClientCallbackBridge {
 
     suspend fun awaitIssuerTrustResponse(): Boolean {
         return deferredIssuerTrustResponse?.await()
-            ?: throw IllegalStateException("No issuer trust response callback was set")
+                ?: throw IllegalStateException("No issuer trust response callback was set")
     }
 }

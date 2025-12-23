@@ -661,6 +661,16 @@ export const IssuersMachine = model.createMachine(
           ],
         },
         on: {
+          PRESENTATION_REQUEST: {
+            actions: [
+              //{"presentationRequest": {"client_id": "redirect_uri:https://example.com/iar/callback", "nonce": "e6562d6dfc8f6fc2", "presentation_definition": {"format": [Object], "id": "vp token example", "input_descriptors": [Array], "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication"}, "response_mode": "iar_post", "response_type": "vp_token", "response_uri": "https://example.com/iar/callback"}, "type": "PRESENTATION_REQUEST"}
+              (_, event) =>
+                console.debug('RECEIVED PRESENTATION_REQUEST EVENT:', event),
+              'setOpenId4VPRef',
+              'sendVPScanData',
+            ],
+            target: '.presentationAuthorization',
+          },
           AUTH_ENDPOINT_RECEIVED: {
             actions: [
               model.assign({
@@ -685,6 +695,131 @@ export const IssuersMachine = model.createMachine(
         initial: 'idle',
         states: {
           idle: {},
+          presentationAuthorization: {
+            entry: [
+              //TODO: telemetry for vp sharing
+              // () =>
+              //   sendStartEvent(
+              //     getStartEventData(TelemetryConstants.FlowType.vpSharing),
+              //   ),
+            ],
+            invoke: {
+              id: 'OpenId4VP',
+              src: openID4VPMachine,
+              onDone: {},
+            },
+            on: {
+              IN_PROGRESS: {
+                target: '.inProgress',
+              },
+              // TIMEOUT: {
+              //   target: '.timeout',
+              // },
+              //TODO: is it required to have separate events for consent reject and dismiss?
+              VP_CONSENT_REJECT: [
+                {
+                  actions: 'setConsentRejectedInOpenID4VP',
+                },
+              ],
+              DISMISS: [
+                {
+                  actions: 'setConsentRejectedInOpenID4VP',
+                },
+              ],
+              SIGN_PRESENTATION: [
+                {
+                  actions: [
+                    (_, event) =>
+                      //{"presentationRequest": "{\"LDP_VC\":{\"dataToSign\":\"GJaCHvGSZev7bW1Q5g8Nl3IIB9gimTSf0unZGtoOtOaANAU-OJPOePA4Owp8MXlb0NQLmXy_k3iVRKLtlQl1xQ\"}}", "type": "SIGN_PRESENTATION"}
+                      console.debug(
+                        'SIGN_PRESENTATION EVENT RECEIVED IN ISSUERS MACHINE:',
+                        event,
+                      ),
+                    send(
+                      (_, event) =>
+                        OpenID4VPEvents.SIGN_VP(event.presentationRequest),
+                      {
+                        to: (context: any) => context.OpenId4VPRef,
+                      },
+                    ),
+                    // (context, event) => send( { type: 'SIGN_VP', value: event.presentationRequest }, {to: context.OpenId4VPRef,}),
+                    // 'setSignedPresentation',
+                  ],
+                },
+              ],
+              SIGNED_DATA_FOR_VP: [
+                {
+                  actions: [
+                    // {"signedVPToken": {"data": {"ldp_vc": [Object]}, "toString": [Function anonymous], "type": "done.invoke.signVP:invocation[0]"}, "type": "SIGNED_DATA_FOR_VP"}
+                    (_, event) =>
+                      console.debug(
+                        'SIGNED_DATA_FOR_VP EVENT RECEIVED IN ISSUERS MACHINE:',
+                        event,
+                      ),
+                    'sendSignedVP',
+                  ],
+                  target: '.success',
+                },
+              ],
+              // SHOW_ERROR: {
+              //   target: '.showError',
+              // },
+              // SUCCESS: {
+              //   target: '.success',
+              // },
+            },
+            states: {
+              success: {
+                always: [
+                  {
+                    target: '#issuersMachine.downloadCredentials.idle',
+                  },
+                ],
+              },
+              showError: {},
+              inProgress: {
+                on: {
+                  // CANCEL: [
+                  //   {
+                  //     cond: 'isFlowTypeSimpleShare',
+                  //     actions: 'resetOpenID4VPFlowType',
+                  //     target: '#scan.checkStorage',
+                  //   },
+                  //   {
+                  //     target: '#scan.checkStorage',
+                  //   },
+                  // ],
+                },
+              },
+              timeout: {
+                on: {
+                  STAY_IN_PROGRESS: {
+                    target: 'inProgress',
+                  },
+                  CANCEL: [
+                    {
+                      cond: 'isFlowTypeSimpleShare',
+                      actions: 'resetOpenID4VPFlowType',
+                      // target: '#scan.checkStorage',
+                    },
+                    {
+                      // target: '#scan.checkStorage',
+                    },
+                  ],
+                  RETRY: [
+                    {
+                      cond: 'isFlowTypeSimpleShare',
+                      actions: 'resetOpenID4VPFlowType',
+                      // target: '#scan.checkStorage',
+                    },
+                    {
+                      // target: '#scan.checkStorage',
+                    },
+                  ],
+                },
+              },
+            },
+          },
           tokenRequest: {
             invoke: {
               src: 'sendTokenRequest',

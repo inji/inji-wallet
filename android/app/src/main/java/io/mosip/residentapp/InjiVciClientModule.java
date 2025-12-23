@@ -21,6 +21,8 @@ import io.mosip.vciclient.credential.response.CredentialResponse;
 import io.mosip.vciclient.token.TokenResponse;
 
 public class InjiVciClientModule extends ReactContextBaseJavaModule {
+    private static final String TAG = "InjiVciClientModule";
+    private static final Gson GSON = new Gson();
     private VCIClient vciClient;
     private final ReactApplicationContext reactContext;
 
@@ -39,7 +41,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void init(String appId) {
-        Log.d("InjiVciClientModule", "Initializing InjiVciClientModule with " + appId);
+        Log.d(TAG, "Initializing InjiVciClientModule with " + appId);
         vciClient = new VCIClient(appId);
     }
 
@@ -55,13 +57,13 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void sendSelectedCredentialsForVPSharingFromJS(ReadableMap selectedVCs) {
-        System.out.println("InjiVciClientModule: sendSelectedCredentialsForVPSharingFromJS called with selectedVCs: " + selectedVCs);
+        Log.d(TAG, "sendSelectedCredentialsForVPSharingFromJS called with selectedVCs: " + selectedVCs);
         VCIClientCallbackBridge.completePresentationRequest(OVPUtils.parseSelectedVCs(selectedVCs));
     }
 
     @ReactMethod
     public void sendVPTokenSigningResultFromJS(ReadableMap vpTokenSigningResult) {
-        System.out.println("InjiVciClientModule: sendVPTokenSigningResult called with vpTokenSigningResult: " + vpTokenSigningResult);
+        Log.d(TAG, "sendVPTokenSigningResult called with vpTokenSigningResult: " + vpTokenSigningResult);
         VCIClientCallbackBridge.completeSignDataForVP(OVPUtils.parseVPTokenSigningResult(vpTokenSigningResult));
     }
 
@@ -77,7 +79,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void sendTokenResponseFromJS(String tokenResponseJson) {
-        TokenResponse tokenResponse = new Gson().fromJson(tokenResponseJson, TokenResponse.class);
+        TokenResponse tokenResponse = GSON.fromJson(tokenResponseJson, TokenResponse.class);
         VCIClientCallbackBridge.completeTokenResponse(tokenResponse);
     }
 
@@ -87,7 +89,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
             try {
                 Map<String, Object> issuerMetadata = vciClient.getIssuerMetadata(credentialIssuer);
                 reactContext.runOnUiQueueThread(() -> {
-                    String json = new Gson().toJson(issuerMetadata, Map.class);
+                    String json = GSON.toJson(issuerMetadata, Map.class);
                     promise.resolve(json);
                 });
             } catch (Exception e) {
@@ -99,30 +101,17 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void requestCredentialByOffer(String credentialOffer,String clientMetadataJson, Promise promise) {
+    public void requestCredentialByOffer(String credentialOffer, String clientMetadataJson, Promise promise) {
         new Thread(() -> {
             try {
-                ClientMetadata clientMetadata= new Gson().fromJson(
-                    clientMetadataJson, ClientMetadata.class);
-                CredentialResponse response = VCIClientBridge.requestCredentialByOfferSync(vciClient, credentialOffer,clientMetadata);
-                reactContext.runOnUiQueueThread(() -> {
-                    promise.resolve(response != null ? response.toJsonString() : null);
-                });
-            } catch (Exception e) {
-                reactContext.runOnUiQueueThread(() -> {
-                    promise.reject("OFFER_FLOW_FAILED", e.getMessage(), e);
-                });
-            }
-        }).start();
-    }
-
-    @ReactMethod
-    public void requestCredentialByOfferV2(String credentialOffer,String clientMetadataJson, Promise promise) {
-        new Thread(() -> {
-            try {
-                ClientMetadata clientMetadata= new Gson().fromJson(
+                ClientMetadata clientMetadata = GSON.fromJson(
                         clientMetadataJson, ClientMetadata.class);
-                CredentialResponse response = VCIClientBridge.requestCredentialByOfferSyncV2(vciClient, credentialOffer,clientMetadata);
+                CredentialResponse response =
+                        VCIClientBridge.requestCredentialByOfferSync(
+                                vciClient,
+                                credentialOffer,
+                                clientMetadata
+                        );
                 reactContext.runOnUiQueueThread(() -> {
                     promise.resolve(response != null ? response.toJsonString() : null);
                 });
@@ -138,10 +127,16 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     public void requestCredentialFromTrustedIssuer(String credentialIssuer, String credentialConfigurationId, String clientMetadataJson, Promise promise) {
         new Thread(() -> {
             try {
-                ClientMetadata clientMetadata= new Gson().fromJson(
-                    clientMetadataJson, ClientMetadata.class);
+                ClientMetadata clientMetadata = GSON.fromJson(
+                        clientMetadataJson, ClientMetadata.class);
 
-                CredentialResponse response = VCIClientBridge.requestCredentialFromTrustedIssuerSync(vciClient, credentialIssuer, credentialConfigurationId,clientMetadata);
+                CredentialResponse response =
+                        VCIClientBridge.requestCredentialFromTrustedIssuerSync(
+                                vciClient,
+                                credentialIssuer,
+                                credentialConfigurationId,
+                                clientMetadata
+                        );
 
                 reactContext.runOnUiQueueThread(() -> {
                     promise.resolve(response != null ? response.toJsonString() : null);
