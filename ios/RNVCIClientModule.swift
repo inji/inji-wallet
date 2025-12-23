@@ -223,7 +223,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         }
 
         return try await withCheckedThrowingContinuation { continuation in
-          self.pendingAuthCodeContinuation = { code in continuation.resume(returning: ["authorization_code":code]) }
+          self.pendingAuthCodeContinuation = { code in continuation.resume(returning: ["code":code]) }
         }
     }
 
