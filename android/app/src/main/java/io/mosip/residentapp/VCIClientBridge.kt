@@ -20,7 +20,7 @@ object VCIClientBridge {
 
     lateinit var reactContext: ReactApplicationContext
 
-    
+
 
     @JvmStatic
     fun requestCredentialByOfferSync(
@@ -39,7 +39,7 @@ object VCIClientBridge {
         )
     }
 
-   
+
 
     @JvmStatic
     fun requestCredentialFromTrustedIssuerSync(
@@ -107,7 +107,7 @@ object VCIClientBridge {
         }
 
         mapOf(
-            "authorization_code" to authCode
+            "code" to authCode
         )
     }
 
