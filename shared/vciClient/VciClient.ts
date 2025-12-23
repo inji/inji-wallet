@@ -176,6 +176,7 @@ class VciClient {
     navigateToAuthView: (authorizationEndpoint: string) => void,
     requestTokenResponse: (tokenRequest: object) => void,
     handlePresentationRequest: (presentationRequest: object) => void,
+    signPresentation: (vpTokenSigningRequest: object) => void,
   ): Promise<any> {
     const proofListener = emitter.addListener(
       'onRequestProof',
@@ -199,7 +200,7 @@ class VciClient {
     const signVPListener = emitter.addListener(
       'onRequestSignedVPToken',
       ({vpTokenSigningRequest}) => {
-        //Handle signed VP token request
+        signPresentation(vpTokenSigningRequest);
       },
     );
 

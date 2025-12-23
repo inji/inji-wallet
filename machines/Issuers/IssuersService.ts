@@ -18,6 +18,7 @@ import {setItem} from '../store';
 import {API_CACHED_STORAGE_KEYS} from '../../shared/constants';
 import {createCacheObject} from '../../shared/Utils';
 import {VerificationResult} from '../../shared/vcjs/verifyCredential';
+import { sign } from '@noble/secp256k1';
 
 export const IssuersService = () => {
   return {
@@ -103,6 +104,14 @@ export const IssuersService = () => {
           presentationRequest: presentationRequest,
         });
       };
+
+      const signPresentation = (presentationRequest: object) => {
+        sendBack({
+          type: 'SIGN_PRESENTATION',
+          presentationRequest: presentationRequest,
+        });
+      };
+      
       const {credential} =
         await VciClient.getInstance().requestCredentialFromTrustedIssuer(
           context.selectedIssuer.credential_issuer_host,
@@ -115,6 +124,7 @@ export const IssuersService = () => {
           navigateToAuthView,
           getTokenResponse,
           handlePresentationRequest,
+          signPresentation,
         );
       return updateCredentialInformation(context, credential);
     },
