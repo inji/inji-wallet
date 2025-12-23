@@ -44,7 +44,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
                 let clientMeta = try parseClientMetadata(from: clientMetadata)
 
-                let response = try await vciClient.fetchCredentialByCredentialOfferV2(
+                let response = try await vciClient.fetchCredentialUsingCredentialOffer(
                     credentialOffer: credentialOffer,
                     clientMetadata: clientMeta,
                     getTxCode: { inputMode, description, length in
@@ -54,7 +54,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                             length: length
                         )
                     },
-                    authorizations: [
+                    authorizationMethods: [
                         .redirectToWeb(openWebPage: { authUrl in
                             var result: [String: String] = [:]
                             let semaphore = DispatchSemaphore(value: 0)
@@ -123,13 +123,13 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
                 let clientMeta = try parseClientMetadata(from: clientMetadata)
                 
-              let response = try await vciClient.fetchCredentialFromTrustedIssuerV2(
+              let response = try await vciClient.fetchCredentialFromTrustedIssuer(
                 credentialIssuer: credentialIssuer,
                 credentialConfigurationId: credentialConfigurationId,
                 clientMetadata: clientMeta, getTokenResponse: { tokenRequest in
                   try await self.getTokenResponseHook(tokenRequest: tokenRequest)
                 },
-                authorizations: [
+                authorizationMethods: [
                     .redirectToWeb(openWebPage: { authUrl in
                         var result: [String: String] = [:]
                         let semaphore = DispatchSemaphore(value: 0)
