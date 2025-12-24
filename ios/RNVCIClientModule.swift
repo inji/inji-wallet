@@ -28,7 +28,37 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
     // MARK: - Public API
 
-    @objc
+  fileprivate func getSupportedAuthorizationMethods() -> [AuthorizationMethod] {
+    return [
+      .redirectToWeb(openWebPage: { authUrl in
+        var result: [String: String] = [:]
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        Task {
+          do {
+            result = try await self.getAuthCodeContinuationHook(authUrl: authUrl)
+          } catch {
+            print("Error getting auth code: \(error)")
+            result = [:]
+          }
+          semaphore.signal()
+        }
+        
+        semaphore.wait()
+        return result
+      }),
+      .presentationDuringIssuance(
+        selectCredentialsForPresentation: { vpRequest in
+          try await self.getSelectedCredentialsContinuationHook(vpRequest: vpRequest)
+        },
+        signVerifiablePresentation: { unsignedVPTokens in
+          try await self.getSignVerifiablePresentationContinuationHook(unsignedVPTokens: unsignedVPTokens)
+        }
+      )
+    ]
+  }
+  
+  @objc
     func requestCredentialByOffer(
         _ credentialOffer: String,
         clientMetadata: String,
@@ -54,33 +84,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                             length: length
                         )
                     },
-                    authorizationMethods: [
-                        .redirectToWeb(openWebPage: { authUrl in
-                            var result: [String: String] = [:]
-                            let semaphore = DispatchSemaphore(value: 0)
-                            
-                            Task {
-                                do {
-                                    result = try await self.getAuthCodeContinuationHook(authUrl: authUrl)
-                                } catch {
-                                    print("Error getting auth code: \(error)")
-                                    result = [:]
-                                }
-                                semaphore.signal()
-                            }
-                            
-                            semaphore.wait()
-                            return result
-                        }),
-                        .presentationDuringIssuance(
-                          selectCredentialsForPresentation: { vpRequest in
-                            try await self.getSelectedCredentialsContinuationHook(vpRequest: vpRequest)
-                          },
-                          signVerifiablePresentation: { unsignedVPTokens in
-                            try await self.getSignVerifiablePresentationContinuationHook(unsignedVPTokens: unsignedVPTokens)
-                          }
-                        )
-                    ],
+                    authorizationMethods: getSupportedAuthorizationMethods(),
                     getTokenResponse: { tokenRequest in
                         try await self.getTokenResponseHook(tokenRequest: tokenRequest)
                     },
@@ -129,32 +133,15 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
                 clientMetadata: clientMeta, getTokenResponse: { tokenRequest in
                   try await self.getTokenResponseHook(tokenRequest: tokenRequest)
                 },
-                authorizationMethods: [
-                    .redirectToWeb(openWebPage: { authUrl in
-                        var result: [String: String] = [:]
-                        let semaphore = DispatchSemaphore(value: 0)
-                        
-                        Task {
-                            do {
-                                result = try await self.getAuthCodeContinuationHook(authUrl: authUrl)
-                            } catch {
-                                print("Error getting auth code: \(error)")
-                                result = [:]
-                            }
-                            semaphore.signal()
-                        }
-                        
-                        semaphore.wait()
-                        return result
-                    })
-                ],
+                authorizationMethods: getSupportedAuthorizationMethods(),
                 getProofJwt:  { credentialIssuer, cNonce, algos in
                   try await self.getProofContinuationHook(
                     credentialIssuer: credentialIssuer,
                     cNonce: cNonce,
                     proofSigningAlgorithmsSupported: algos
                   )
-                })
+                },
+              downloadTimeoutInMillis: 200000)
 
                 resolve(try response?.toJsonString())
             } catch {

@@ -23,7 +23,6 @@ export const RequestLayout: React.FC = () => {
   const {t} = useTranslation('RequestScreen');
   const controller = useRequestLayout();
   const receivedCardsController = useReceivedVcsTab();
-  const bleErrorCode = controller.bleError.code;
 
   return (
     <React.Fragment>
