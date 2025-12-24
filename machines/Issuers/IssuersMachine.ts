@@ -1049,7 +1049,7 @@ export const IssuersMachine = model.createMachine(
           onDone: {
             cond: 'isSignedIn',
             actions: ['sendBackupEvent'],
-            target: 'done',
+            target: 'success',
           },
         },
       },
@@ -1057,43 +1057,56 @@ export const IssuersMachine = model.createMachine(
       idle: {
         on: {
           COMPLETED: {
-            target: 'done',
+            target: 'success',
           },
           CANCEL: {
             target: 'selectingIssuer',
           },
         },
       },
-
-      done: {
+      success: {
+        initial: 'idle',
         entry: [
-          {
-            cond: 'isPresentationAuthorization',
-            target: 'showSuccessDownload',
-          },
-          {
-            target: '.redirect',
-          },
+          send('HANDLE_DONE'),
         ],
         states: {
-          idle: {},
+          idle: {
+            on: {
+              HANDLE_DONE: [
+                {
+                  cond: 'isPresentationAuthorization',
+                  target: 'showSuccessDownload',
+                },
+                {
+                  target: 'redirect',
+                }
+              ]
+            }
+          },
           showSuccessDownload: {
             on: {
               GO_TO_HOME: {
-                target: 'redirect',
+                target: '#done',
               },
             },
             after: [
               {
                 delay: 5000,
-                target: 'redirect',
+                actions: ()=> console.debug('Auto transitioning to redirect state after showing success message'),
+                target: '#done',
               },
             ],
           },
           redirect: {
-            type: 'final',
+            actions: ()=> console.debug('Direct transitioning to redirect state after showing success message'),
+            type: '#done',
           },
         },
+      },
+
+      done: {
+        id: 'done',
+        type: "final"
       },
     },
   },

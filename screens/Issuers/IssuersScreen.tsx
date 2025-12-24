@@ -50,7 +50,6 @@ import {AuthorizationType} from '../../shared/constants';
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
-  const model = IssuersModel;
   const controller = useIssuerScreenController(props);
   const {i18n, t} = useTranslation('IssuersScreen');
   const issuers = controller.issuers;
