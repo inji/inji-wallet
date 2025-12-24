@@ -1,16 +1,21 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import {
     Modal,
     View,
     Text,
     Image,
-    StyleSheet,
+    Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { Button } from './ui';
+import { Theme } from './ui/styleUtils';
 
 type ConsentStatus = 'idle' | 'loading' | 'success';
+
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+const SUCCESS_REDIRECT_SECONDS = 3;
+
 
 interface TrustModalProps {
     isVisible: boolean;
@@ -18,7 +23,6 @@ interface TrustModalProps {
     name: string;
     onConfirm: () => void | Promise<void>;
     onCancel: () => void;
-    flowType?: 'issuer' | 'verifier';
     consentStatus: ConsentStatus;
 }
 
@@ -28,44 +32,71 @@ export const TrustModal = memo(({
     name,
     onConfirm,
     onCancel,
-    flowType = 'issuer',
     consentStatus,
 }: TrustModalProps) => {
-    const { t } = useTranslation('trustScreen');
+    const { t } = useTranslation('issuerTrustScreen');
 
-    const infoPoints = t(
-        flowType === 'issuer' ? 'infoPoints' : 'verifierInfoPoints',
-        { returnObjects: true }
-    ) as string[];
+    const [secondsLeft, setSecondsLeft] = useState<number>(SUCCESS_REDIRECT_SECONDS);
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+
+    const infoPoints = t('infoPoints', { returnObjects: true }) as string[];
 
     const isSuccess = consentStatus === 'success';
     const isLoading = consentStatus === 'loading';
 
+    useEffect(() => {
+        if (!isSuccess) return;
+
+        setSecondsLeft(SUCCESS_REDIRECT_SECONDS);
+
+        intervalRef.current = setInterval(() => {
+            setSecondsLeft(prev => {
+                if (prev <= 1) {
+                    if (intervalRef.current) {
+                        clearInterval(intervalRef.current);
+                        intervalRef.current = null;
+                    }
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+        };
+    }, [isSuccess]);
+
+
+
     return (
-        <Modal visible={isVisible} animationType="fade">
-            <SafeAreaView style={styles.container}>
-                <View style={[styles.topSpacer, { flexGrow: isSuccess ? 1 : 1000 }]} />
+        <Modal onRequestClose={() => { null }} visible={isVisible} animationType="fade">
+            <SafeAreaView style={Theme.TrustIssuerScreenStyle.container}>
+                <View style={{ flexGrow: 1, maxHeight: SCREEN_HEIGHT * 0.25 }} />
+
                 <View>
                     {isSuccess ? (
-                        <SuccessSection t={t} logo={logo} name={name} />
+                        <SuccessSection t={t} logo={logo} name={name} secondsLeft={secondsLeft} />
                     ) : (
-                        <>
+                        <View style={Theme.TrustIssuerScreenStyle.coverCard}>
                             <HeaderSection t={t} />
                             <IssuerCardSection
                                 t={t}
                                 logo={logo}
                                 name={name}
-                                flowType={flowType}
                                 infoPoints={infoPoints}
                             />
-                        </>
+                        </View>
                     )}
                 </View>
-                <View style={styles.middleSpacer} />
+
                 {!isSuccess && (
                     <ActionsSection
                         t={t}
-                        flowType={flowType}
                         isLoading={isLoading}
                         onConfirm={onConfirm}
                         onCancel={onCancel}
@@ -78,17 +109,15 @@ export const TrustModal = memo(({
 
 TrustModal.displayName = 'TrustModal';
 
-
-
 const HeaderSection = ({ t }: { t: any }) => (
-    <View style={styles.header}>
+    <View style={Theme.TrustIssuerScreenStyle.header}>
         <Image
             source={require('../assets/TrustLogo.jpg')}
-            style={styles.trustIcon}
+            style={Theme.TrustIssuerScreenStyle.trustIcon}
         />
-        <Text style={styles.title}>{t('Quick Check')}</Text>
-        <Text style={styles.subtitle}>
-            {t('Before proceeding, confirm you recognize this issuer')}
+        <Text style={Theme.TrustIssuerScreenStyle.title}>{t('title')}</Text>
+        <Text style={Theme.TrustIssuerScreenStyle.subtitle}>
+            {t('subTitle')}
         </Text>
     </View>
 );
@@ -97,34 +126,32 @@ const IssuerCardSection = ({
     t,
     logo,
     name,
-    flowType,
     infoPoints,
 }: {
     t: any;
     logo?: string;
     name: string;
-    flowType: 'issuer' | 'verifier';
     infoPoints: string[];
 }) => (
-    <View style={styles.card}>
-        <View style={styles.cardHeader}>
+    <View style={Theme.TrustIssuerScreenStyle.card}>
+        <View style={[Theme.TrustIssuerScreenStyle.cardHeader, { marginTop: 0.037 * SCREEN_HEIGHT }]}>
             {logo && (
                 <Image
                     source={{ uri: logo }}
-                    style={styles.issuerLogo}
+                    style={Theme.TrustIssuerScreenStyle.issuerLogo}
                 />
             )}
-            <Text style={styles.issuerName}>{name}</Text>
+            <Text style={Theme.TrustIssuerScreenStyle.issuerName}>{name}</Text>
         </View>
 
-        <Text style={styles.cardDescription}>
-            {t(flowType === 'issuer' ? 'description' : 'verifierDescription')}
+        <Text style={Theme.TrustIssuerScreenStyle.cardDescription}>
+            {t('description')}
         </Text>
 
         {infoPoints.map((point, index) => (
-            <View key={index} style={styles.infoItem}>
-                <Text style={styles.bullet}>•</Text>
-                <Text style={styles.infoText}>{point}</Text>
+            <View key={index} style={Theme.TrustIssuerScreenStyle.infoItem}>
+                <Text style={Theme.TrustIssuerScreenStyle.bullet}>•</Text>
+                <Text style={Theme.TrustIssuerScreenStyle.infoText}>{point}</Text>
             </View>
         ))}
     </View>
@@ -134,62 +161,60 @@ const SuccessSection = ({
     t,
     logo,
     name,
+    secondsLeft,
 }: {
     t: any;
     logo?: string;
     name: string;
+    secondsLeft: number;
 }) => (
     <>
-        <View style={styles.successContainer}>
+        <View style={Theme.TrustIssuerScreenStyle.successContainer}>
             <Image
                 source={require('../assets/success_message_icon.png')}
-                style={styles.successIcon}
+                style={Theme.TrustIssuerScreenStyle.successIcon}
             />
-            <Text style={styles.successTitle}>
-                {t('Issuer Trusted Successfully')}
+            <Text style={Theme.TrustIssuerScreenStyle.successTitle}>
+                {t('successfullyTrusted')}
             </Text>
-            <Text style={styles.successSubtitle}>
-                {t('You will be auto redirected to your request shortly')}
+            <Text style={Theme.TrustIssuerScreenStyle.successSubtitle}>
+                {t('successfullyTrustedSubtitle', {
+                    seconds: secondsLeft,
+                })}
             </Text>
         </View>
 
-        <View style={styles.successCard}>
-            <View style={styles.cardHeader}>
+        {((name && name.length > 0) || logo) && <View style={Theme.TrustIssuerScreenStyle.successCard}>
+            <View style={Theme.TrustIssuerScreenStyle.cardHeader}>
                 {logo && (
                     <Image
                         source={{ uri: logo }}
-                        style={styles.issuerLogo}
+                        style={Theme.TrustIssuerScreenStyle.issuerLogo}
                     />
                 )}
-                <Text style={styles.issuerName}>{name}</Text>
+                {name && name.length > 0 && <Text style={Theme.TrustIssuerScreenStyle.issuerName}>{name}</Text>}
             </View>
-        </View>
+        </View>}
     </>
 );
 
 const ActionsSection = ({
     t,
-    flowType,
     isLoading,
     onConfirm,
     onCancel,
 }: {
     t: any;
-    flowType: 'issuer' | 'verifier';
     isLoading: boolean;
     onConfirm: () => void | Promise<void>;
     onCancel: () => void;
 }) => (
-    <View style={styles.actions}>
+    <View style={Theme.TrustIssuerScreenStyle.actions}>
         <Button
             customLoader={isLoading}
-            title={
-                isLoading
-                    ? t('In Progress...')
-                    : t(flowType === 'issuer' ? 'confirm' : 'verifierConfirm')
-            }
+            title={isLoading ? t('inProgress') : t('confirm')}
             type="gradient"
-            onPress={onConfirm}
+            onPress={isLoading ? () => { null } : onConfirm}
         />
 
         <Button
@@ -201,149 +226,3 @@ const ActionsSection = ({
     </View>
 );
 
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: 20,
-        paddingBottom: 16,
-    },
-
-    topSpacer: {
-        maxHeight: 250,
-    },
-
-    header: {
-        alignItems: 'center',
-        marginBottom: 23,
-    },
-
-    trustIcon: {
-        width: 65,
-        height: 65,
-        marginBottom: 11,
-    },
-
-    title: {
-        fontSize: 24,
-        fontWeight: '700',
-        color: '#111827',
-        fontFamily: 'Montserrat_700Bold',
-    },
-
-    subtitle: {
-        fontSize: 14,
-        color: '#6B7280',
-        textAlign: 'center',
-        marginTop: 7,
-        lineHeight: 20,
-        fontFamily: 'Montserrat_500Medium',
-        paddingHorizontal: 12,
-    },
-
-    card: {
-        backgroundColor: '#EDF6FB',
-        borderRadius: 20,
-        padding: 20,
-        marginBottom: 24,
-        alignItems: 'center',
-    },
-
-    successCard: {
-        backgroundColor: '#EDF6FB',
-        height: 107,
-        borderRadius: 20,
-        marginBottom: 24,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-    cardHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-    issuerLogo: {
-        width: 40,
-        height: 40,
-        resizeMode: 'contain',
-        borderRadius: 8,
-        marginRight: 12,
-        backgroundColor: '#FFFFFF',
-    },
-
-    issuerName: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: '#111827',
-    },
-
-    cardDescription: {
-        fontSize: 14,
-        color: '#5D5D5D',
-        lineHeight: 20,
-        fontFamily: 'Montserrat_500Medium',
-        marginBottom: 22,
-        marginTop: 22,
-        textAlign: 'center',
-    },
-
-    infoItem: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        marginBottom: 8,
-    },
-
-    bullet: {
-        fontSize: 16,
-        color: '#374151',
-        marginRight: 8,
-        marginTop: 1,
-    },
-
-    infoText: {
-        flex: 1,
-        fontSize: 14,
-        color: '#5D5D5D',
-        lineHeight: 20,
-        fontFamily: 'Montserrat_400Regular',
-        textAlign: 'left',
-    },
-
-    middleSpacer: {
-        flex: 1,
-    },
-
-    actions: {
-        gap: 12,
-        paddingBottom: 8,
-    },
-
-    successContainer: {
-        alignItems: 'center',
-        paddingHorizontal: 24,
-    },
-
-    successIcon: {
-        width: 108,
-        height: 108,
-        marginBottom: 36,
-    },
-
-    successTitle: {
-        fontSize: 20,
-        fontWeight: '700',
-        color: '#111827',
-        marginBottom: 7,
-        textAlign: 'center',
-    },
-
-    successSubtitle: {
-        fontSize: 14,
-        color: '#6B7280',
-        textAlign: 'center',
-        lineHeight: 20,
-        marginBottom: 28,
-    },
-});

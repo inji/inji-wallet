@@ -33,7 +33,7 @@ import {GlobalContext} from '../../shared/GlobalContext';
 import {APP_EVENTS} from '../../machines/app';
 import {useScanScreen} from './ScanScreenController';
 import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
-import {TrustModal} from '../../components/TrustModal';
+import { TrustModalVerifier } from '../../components/TrustModalVerifier';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
@@ -290,7 +290,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   return (
     <React.Fragment>
       {
-        <TrustModal
+        <TrustModalVerifier
           isVisible={controller.showTrustConsentModal}
           logo={controller.verifierLogoInTrustModal}
           name={
@@ -299,7 +299,9 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           }
           onConfirm={controller.VERIFIER_TRUST_CONSENT_GIVEN}
           onCancel={controller.CANCEL}
-          flowType="verifier"></TrustModal>
+          flowType="verifier">
+
+          </TrustModalVerifier>
       }
       {Object.keys(vcsMatchingAuthRequest).length > 0 && (
         <>

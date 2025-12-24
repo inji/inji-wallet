@@ -47,7 +47,7 @@ export const IssuersModel = createModel(
     credentialOfferCredentialIssuer: {} as string,
     tokenRequestObject: {} as object,
     credentialConfigurationId: '' as string,
-    trustedIssuerConsentStatus: '' as 'idle' | 'success' | 'loading',
+    trustedIssuerConsentStatus: 'idle' as 'idle' | 'success' | 'loading',
   },
   {
     events: IssuersEvents,

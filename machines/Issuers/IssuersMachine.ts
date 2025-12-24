@@ -246,7 +246,6 @@ export const IssuersMachine = model.createMachine(
             },
           },
           consentGivenDelay: {
-            //Todo: to confirm with sanchi
             after: {
               2000: 'sendConsentGiven',
             },
@@ -275,7 +274,7 @@ export const IssuersMachine = model.createMachine(
               },
               trustedIssuerConsentSuccessDelay: {
                 after: {
-                  3000: 'sending',
+                  4000: 'sending',
                 },
               },
               sending: {

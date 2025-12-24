@@ -68,7 +68,7 @@ export const Button: React.FC<ButtonProps> = props => {
               ? Theme.Colors.whiteText
               : type === 'plain'
                 ? Theme.Colors.plainText + 66
-                : type === 'outline' || type === 'clear' && props.disabled
+                : (type === 'outline' || type === 'clear') && props.disabled
                   ? Theme.Colors.textLabel
                   : Theme.Colors.AddIdBtnTxt
           }>

@@ -13,6 +13,9 @@ import HomeScreenLogo from '../../../assets/Inji_Home_Logo.svg';
 import InjiLogoSmall from '../../../assets/InjiLogo.svg';
 import i18next from '../../../i18n';
 
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+
 const Colors = {
   Black: '#231F20',
   Zambezi: '#5F5F5F',
@@ -2082,123 +2085,203 @@ export const PurpleTheme = {
       alignItems: 'center',
     },
   }),
-  TrustIssuerScreenStyle: StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-
-  modalContainer: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 24,
-    width: '100%',
-    maxWidth: 420,
-    paddingHorizontal: 20,
-    paddingTop: 24,
-    paddingBottom: 16,
-    alignItems: 'center',
-  },
-
-  /* ---------- Header (Shield + Title) ---------- */
-
-  header: {
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-
-  headerIcon: {
-    width: 42,
-    height: 42,
-    marginBottom: 12,
-    resizeMode: 'contain',
-  },
-
-  title: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#111827',
-  },
-
-  subtitle: {
-    fontSize: 14,
-    color: '#6B7280',
-    textAlign: 'center',
-    marginTop: 6,
-    lineHeight: 20,
-    paddingHorizontal: 12,
-  },
-
-  /* ---------- Issuer Card ---------- */
-
-  card: {
-    backgroundColor: '#EDF6FB',
-    borderRadius: 20,
-    padding: 20,
-    width: '100%',
-    marginBottom: 24,
-  },
-
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-
-  issuerLogo: {
-    width: 40,
-    height: 40,
-    resizeMode: 'contain',
-    borderRadius: 8,
-    marginRight: 12,
-    backgroundColor: '#FFFFFF',
-  },
-
-  issuerName: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#111827',
-  },
-
-  cardDescription: {
-    fontSize: 14,
-    color: '#374151',
-    lineHeight: 20,
-    marginBottom: 12,
-  },
-
-  /* ---------- Bullet Points ---------- */
-
-  infoItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 8,
-  },
-
-  bullet: {
-    fontSize: 16,
-    color: '#374151',
-    marginRight: 8,
-    marginTop: 1,
-  },
-
-  infoText: {
-    flex: 1,
-    fontSize: 14,
-    color: '#374151',
-    lineHeight: 20,
-  },
-
-  /* ---------- Actions ---------- */
-
-  actions: {
-    width: '100%',
-    gap: 12,
-    paddingBottom: 8,
-  },
+   TrustIssuerScreenStyle : StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingHorizontal: 20,
+        paddingBottom: 16,
+        backgroundColor: '#F7F7F7',
+    },
+    coverCard: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 20,
+        marginBottom: 27,
+    },
+    header: {
+        alignItems: 'center',
+    },
+    trustIcon: {
+        width: 0.07 * SCREEN_HEIGHT,
+        height: 0.07 * SCREEN_HEIGHT,
+        marginBottom: 0.016 * SCREEN_HEIGHT,
+        resizeMode: 'contain',
+        marginTop: 0.08 * SCREEN_HEIGHT,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: '700',
+        color: '#111827',
+        fontFamily: 'Montserrat_700Bold',
+        marginBottom: 0.012 * SCREEN_HEIGHT,
+    },
+    subtitle: {
+        fontSize: 14,
+        color: '#6B7280',
+        textAlign: 'center',
+        lineHeight: 20,
+        fontFamily: 'Montserrat_500Medium',
+        marginHorizontal: 0.11 * SCREEN_WIDTH,
+        marginBottom: 0.057 * SCREEN_HEIGHT,
+    },
+    card: {
+        backgroundColor: '#EDF6FB',
+        borderRadius: 20,
+        marginBottom: 16,
+        marginHorizontal: 18,
+        alignItems: 'center',
+        height: SCREEN_HEIGHT * 0.4,
+        minHeight: 300,
+    },
+    successCard: {
+        backgroundColor: '#EDF6FB',
+        height: 107,
+        borderRadius: 20,
+        marginBottom: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    cardHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 0.037 * SCREEN_HEIGHT,
+        marginHorizontal: 15,
+    },
+    issuerLogo: {
+        width: 40,
+        height: 40,
+        resizeMode: 'contain',
+        borderRadius: 8,
+        marginRight: 12,
+        backgroundColor: '#FFFFFF',
+    },
+    issuerName: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#111827',
+    },
+    cardDescription: {
+        fontSize: 14,
+        color: '#5D5D5D',
+        lineHeight: 20,
+        fontFamily: 'Montserrat_500Medium',
+        marginTop: 0.031 * SCREEN_HEIGHT,
+        textAlign: 'center',
+        marginHorizontal: 0.1 * SCREEN_WIDTH,
+        marginBottom: 0.031 * SCREEN_HEIGHT,
+    },
+    infoItem: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        paddingHorizontal: 0.05 * SCREEN_WIDTH,
+    },
+    bullet: {
+        fontSize: 16,
+        color: '#374151',
+        marginRight: 8,
+        marginTop: 1,
+    },
+    infoText: {
+        flex: 1,
+        fontSize: 14,
+        color: '#5D5D5D',
+        lineHeight: 20,
+        fontFamily: 'Montserrat_400Regular',
+        textAlign: 'left',
+    },
+    actions: {
+        gap: 12,
+        paddingBottom: 8,
+    },
+    successContainer: {
+        alignItems: 'center',
+        paddingHorizontal: 24,
+    },
+    successIcon: {
+        width: 108,
+        height: 108,
+        marginBottom: 36,
+    },
+    successTitle: {
+        fontSize: 20,
+        fontWeight: '700',
+        color: '#111827',
+        marginBottom: 7,
+        textAlign: 'center',
+    },
+    successSubtitle: {
+        fontSize: 14,
+        color: '#6B7280',
+        textAlign: 'center',
+        lineHeight: 20,
+        marginBottom: 28,
+    },
 }),
+  TrustVerifierScreenStyle: StyleSheet.create({
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 20,
+    },
+    modalContainer: {
+      backgroundColor: '#fff',
+      borderRadius: 20,
+      width: '100%',
+      height: 470,
+      padding: 20,
+      alignItems: 'center',
+    },
+    issuerHeader: {
+      padding: 10,
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    issuerLogo: {
+      width: 60,
+      height: 60,
+      resizeMode: 'contain',
+    },
+    issuerName: {
+      marginTop: 8,
+      fontWeight: 'bold',
+      fontSize: 16,
+    },
+    description: {
+      fontSize: 14,
+      color: '#666',
+      textAlign: 'center',
+      lineHeight: 20,
+      marginBottom: 16,
+    },
+    infoContainer: {
+      width: '100%',
+      marginBottom: 10,
+    },
+    infoItem: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      marginBottom: 6,
+      paddingHorizontal: 4,
+    },
+    info: {
+      fontSize: 14,
+      color: '#666',
+      marginRight: 8,
+      marginTop: 1,
+    },
+    infoText: {
+      flex: 1,
+      fontSize: 14,
+      color: '#666',
+      lineHeight: 18,
+    },
+    buttonText: {
+      textAlign: 'center',
+      flexWrap: 'wrap',
+    },
+  }),
 
 
   AuthWebViewScreenStyle: StyleSheet.create({
