@@ -12,10 +12,12 @@ import testIDProps from '../shared/commonUtil';
 import {getKebabMenuOptions} from './kebabMenuUtils';
 import {VCItemMachine} from '../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {LinearGradient} from 'react-native-linear-gradient';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
   const controller = useKebabPopUp(props);
   const {t} = useTranslation('HomeScreenKebabPopUp');
+  const insets = useSafeAreaInsets();
 
   return (
     <Column>
@@ -34,7 +36,11 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
       <Overlay
         isVisible={props.isVisible && !controller.isScanning}
         onBackdropPress={props.onDismiss}
-        overlayStyle={Theme.KebabPopUpStyles.kebabPopUp}>
+        statusBarTranslucent={true}
+        overlayStyle={[
+          Theme.KebabPopUpStyles.kebabPopUp,
+          {paddingBottom: insets.bottom},
+        ]}>
         <Row
           style={Theme.KebabPopUpStyles.kebabHeaderStyle}
           margin="15"

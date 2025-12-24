@@ -4,6 +4,8 @@ import {
   Modal as RNModal,
   TouchableOpacity,
   View,
+  Platform,
+  StatusBar,
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 import {Column, Row, Text} from '.';
@@ -12,7 +14,7 @@ import {DeviceInfoList} from '../DeviceInfoList';
 import {ElevationLevel, Theme} from './styleUtils';
 import testIDProps from '../../shared/commonUtil';
 import {BackButton} from './backButton/BackButton';
-
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 export const Modal: React.FC<ModalProps> = ({
   testID,
   isVisible,
@@ -32,7 +34,14 @@ export const Modal: React.FC<ModalProps> = ({
   children,
 }) => {
   const controller = useSendVcScreen();
-
+  const insets = useSafeAreaInsets();
+  const topInset =
+    insets.top && insets.top > 0
+      ? insets.top
+      : Platform.OS === 'android'
+      ? StatusBar.currentHeight || 0
+      : 0;
+  const bottomInset = insets.bottom ?? 0;
   return (
     <RNModal
       {...testIDProps(testID)}
@@ -40,10 +49,11 @@ export const Modal: React.FC<ModalProps> = ({
       style={modalStyle}
       visible={isVisible}
       onShow={onShow}
-      onRequestClose={onDismiss}>
-      <Column {...(showHeader ? {fill: true, safe: true} : {fill: true})}>
+      onRequestClose={onDismiss}
+      statusBarTranslucent={true}>
+      <Column fill={true} style={{paddingBottom: bottomInset}}>
         {showHeader ? (
-          <Row elevation={headerElevation}>
+          <Row elevation={headerElevation} style={{paddingTop: topInset}}>
             <View style={modalStyle}>
               {headerRight && !arrowLeft ? (
                 <Icon
@@ -94,7 +104,7 @@ export const Modal: React.FC<ModalProps> = ({
                     <Icon name="close" color={Theme.Colors.Details} size={27} />
                   </TouchableOpacity>
                 ))}
-              {headerRight}
+              {headerRight && headerRight}
             </View>
           </Row>
         ) : null}
@@ -103,7 +113,6 @@ export const Modal: React.FC<ModalProps> = ({
     </RNModal>
   );
 };
-
 export interface ModalProps {
   testID?: string;
   isVisible: boolean;
