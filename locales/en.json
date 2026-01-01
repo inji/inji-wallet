@@ -243,7 +243,8 @@
         "sharingCard": "Sharing card/cards",
         "downloadingCard": "Downloading card",
         "sharedCard": "Shared card/cards",
-        "downloadedCard": "Downloaded card"
+        "downloadedCard": "Downloaded card",
+        "redirectToHome": "Returning to home in {{remainingTime}} seconds"
       }
     },
     "offerTitle": "Scan & Download Card",

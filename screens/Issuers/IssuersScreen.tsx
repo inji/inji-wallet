@@ -31,7 +31,6 @@ import {Icon} from 'react-native-elements';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {CredentialTypeSelectionScreen} from './CredentialTypeSelectionScreen';
 import {QrScanner} from '../../components/QrScanner';
-import {IssuersModel} from '../../machines/Issuers/IssuersModel';
 import {AUTH_ROUTES} from '../../routes/routesConstants';
 import {TransactionCodeModal} from './TransactionCodeScreen';
 import {TrustModal} from '../../components/TrustModal';
@@ -40,11 +39,9 @@ import {
   ProcessingScreen,
   ProgressIndicator,
 } from '../../components/ui/processingScreen/ProcessingScreen';
-import {
-  selectIsPresentationAuthorization,
-  selectDownloadSuccess,
-} from '../../machines/Issuers/IssuersSelectors';
 import {AuthorizationType} from '../../shared/constants';
+import {useTimer} from '../../shared/hooks/UseTimer';
+import {issuerType} from '../../machines/Issuers/IssuersMachine';
 
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
@@ -52,11 +49,12 @@ export const IssuersScreen: React.FC<
   const controller = useIssuerScreenController(props);
   const {i18n, t} = useTranslation('IssuersScreen');
   const issuers = controller.issuers;
-  let [filteredSearchData, setFilteredSearchData] = useState(issuers);
+  const [filteredSearchData, setFilteredSearchData] = useState(issuers);
   const [search, setSearch] = useState('');
   const [tapToSearch, setTapToSearch] = useState(false);
   const [clearSearchIcon, setClearSearchIcon] = useState(false);
   const showFullScreenError = controller.isError;
+  const [time, initiateTimer] = useTimer({initialValue: 5});
 
   const isVerificationFailed = controller.verificationErrorMessage !== '';
 
@@ -90,17 +88,29 @@ export const IssuersScreen: React.FC<
   }, [
     controller.loadingReason,
     controller.errorMessageType,
-    controller.isStoring,
     controller.isQrScanning,
   ]);
 
-  if (controller.isStoring) {
-    props.navigation.goBack();
-  }
+  useEffect(() => {
+    if (controller.isDownloadSuccess) {
+      if (controller.authorizationType === AuthorizationType.IMPLICIT) {
+        props.navigation.goBack();
+      } else {
+        initiateTimer();
+      }
+    }
+  }, [controller.isDownloadSuccess]);
+
+  useEffect(() => {
+    if (time === 0 && controller.isDownloadSuccess) {
+      props.navigation.goBack();
+    }
+  }, [time]);
+
   useEffect(() => {
     if (controller.isAuthEndpointToOpen) {
       (props.navigation as any).navigate(AUTH_ROUTES.AuthView, {
-        authorizationURL: controller.authEndpount,
+        authorizationURL: controller.authEndpoint,
         clientId: controller.selectedIssuer.client_id ?? 'wallet',
         redirectUri:
           controller.selectedIssuer.redirect_uri ??
@@ -170,7 +180,7 @@ export const IssuersScreen: React.FC<
   };
 
   const filterIssuers = (searchText: string) => {
-    const filteredData = issuers.filter(item => {
+    const filteredData = issuers.filter((item: issuerType) => {
       if (
         getDisplayObjectForCurrentLanguage(item.display)
           ?.name.toLowerCase()
@@ -201,7 +211,13 @@ export const IssuersScreen: React.FC<
             ? t('downloadSuccess')
             : t('loaders.processing')
         }
-        subTitle={t('loaders.subTitle.inProgress')}
+        subTitle={
+          controller.isDownloadSuccess
+            ? t('loaders.progressIndicators.redirectToHome', {
+                remainingTime: time,
+              })
+            : t('loaders.subTitle.inProgress')
+        }
         progressSteps={[
           <ProgressIndicator
             key={1}
@@ -227,6 +243,7 @@ export const IssuersScreen: React.FC<
             title={t('goHome')}
             type={'gradient'}
             fill
+            onPress={props.navigation.goBack}
             disabled={!controller.isDownloadSuccess}
           />
         }

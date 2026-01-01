@@ -48,7 +48,7 @@ export const SearchBar = ({
 };
 
 interface SearchBarProps {
-  isVcSearch: Boolean;
+  isVcSearch?: boolean;
   searchIconTestID: string;
   searchBarTestID: string;
   search: string;
