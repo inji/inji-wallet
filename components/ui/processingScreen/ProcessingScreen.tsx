@@ -1,25 +1,38 @@
-import React from "react";
-import {Dimensions, StyleSheet, View, SafeAreaView} from "react-native";
+import React from 'react';
+import {Dimensions, SafeAreaView, StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {Text} from '../Text';
+import {Modal} from '../Modal';
+import {Button} from '../Button';
+import {SvgImage} from '../svg';
+import {Theme} from '../styleUtils';
 
 const injiLogoGif = require('../../../assets/gif/logo.gif');
-import FastImage from "react-native-fast-image";
-import {Text} from "../Text";
-import {Modal} from "../Modal";
-import {Button} from "../Button";
-import {SvgImage} from "../svg";
-import {Theme} from "../styleUtils";
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 
-export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({label, completed}) => {
+export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
+  label,
+  completed,
+}) => {
   return (
     <View style={styles.progressRow}>
       <View style={styles.progressIcon}>{SvgImage.circleArrowRight()}</View>
-      <Text size="small" weight={"semibold"} color={styles.progressText.color} style={styles.progressText}>{label}</Text>
-      <View style={styles.progressCheck}>{SvgImage.doneIcon(completed ? Theme.Colors.VerifiedIcon : Theme.Colors.disabled)}</View>
+      <Text
+        size="small"
+        weight={'semibold'}
+        color={styles.progressText.color}
+        style={styles.progressText}>
+        {label}
+      </Text>
+      <View style={styles.progressCheck}>
+        {SvgImage.doneIcon(
+          completed ? Theme.Colors.VerifiedIcon : Theme.Colors.disabled,
+        )}
+      </View>
     </View>
-  )
-}
+  );
+};
 
 export interface ProgressIndicatorProps {
   label: string;
@@ -27,11 +40,11 @@ export interface ProgressIndicatorProps {
 }
 
 export const ProcessingScreen: React.FC<ProcessingScreenProps> = ({
-                                                                    title,
-                                                                    subTitle,
-                                                                    progressSteps,
-  action
-                                                                  }) => {
+  title,
+  subTitle,
+  progressSteps,
+  action,
+}) => {
   return (
     <Modal isVisible={true} showHeader={false} modalStyle={styles.modalBg}>
       <SafeAreaView style={styles.container}>
@@ -42,8 +55,12 @@ export const ProcessingScreen: React.FC<ProcessingScreenProps> = ({
               style={styles.logo}
               resizeMode="contain"
             />
-            <Text weight={'bold'} size={'large'} style={styles.title}>{title}</Text>
-            <Text size={'small'} weight={'extraLight'} style={styles.subTitle}>{subTitle}</Text>
+            <Text weight={'bold'} size={'large'} style={styles.title}>
+              {title}
+            </Text>
+            <Text size={'small'} weight={'extraLight'} style={styles.subTitle}>
+              {subTitle}
+            </Text>
             <View style={styles.progressContainer}>
               {progressSteps.map((progressStep, idx) => (
                 <React.Fragment key={idx}>{progressStep}</React.Fragment>
@@ -51,13 +68,11 @@ export const ProcessingScreen: React.FC<ProcessingScreenProps> = ({
             </View>
           </View>
         </View>
-        <View style={styles.actionWrapper}>
-          {action}
-        </View>
+        <View style={styles.actionWrapper}>{action}</View>
       </SafeAreaView>
     </Modal>
-  )
-}
+  );
+};
 
 export interface ProcessingScreenProps {
   title: string;
@@ -66,9 +81,9 @@ export interface ProcessingScreenProps {
   action: React.ReactElement<typeof Button>;
 }
 
-const CARD_WIDTH = Math.min(SCREEN_WIDTH * 0.80, 340);
+const CARD_WIDTH = Math.min(SCREEN_WIDTH * 0.8, 340);
 const CARD_PADDING = SCREEN_HEIGHT * 0.03;
-const CARD_MARGIN_HORIZONTAL = 40
+const CARD_MARGIN_HORIZONTAL = 40;
 
 const styles = StyleSheet.create({
   modalBg: {
@@ -76,7 +91,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
   },
@@ -101,7 +115,7 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   logo: {
-    width: CARD_WIDTH * 0.70,
+    width: CARD_WIDTH * 0.7,
     height: CARD_WIDTH * 0.55,
     marginBottom: -5,
   },
