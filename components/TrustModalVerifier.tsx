@@ -44,11 +44,11 @@ export const TrustModalVerifier = ({
                         contentContainerStyle={{ alignItems: 'center', paddingBottom: 10 }}
                         showsVerticalScrollIndicator={true}>
                         <Text style={Theme.TrustVerifierScreenStyle.description}>
-                            {t(flowType == 'issuer' ? 'description' : 'verifierDescription')}
+                            {t(flowType === 'issuer' ? 'description' : 'verifierDescription')}
                         </Text>
 
                         <View style={Theme.TrustVerifierScreenStyle.infoContainer}>
-                            {t(flowType == 'issuer' ? 'infoPoints' : 'verifierInfoPoints', { returnObjects: true }).map((point, index) => (
+                            {t(flowType === 'issuer' ? 'infoPoints' : 'verifierInfoPoints', { returnObjects: true }).map((point, index) => (
                                 <View key={index} style={Theme.TrustVerifierScreenStyle.infoItem}>
                                     <Text style={Theme.TrustVerifierScreenStyle.info}>•</Text>
                                     <Text style={Theme.TrustVerifierScreenStyle.infoText}>

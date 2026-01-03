@@ -1,45 +1,57 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
-import {TrustModal} from './TrustModal';
+import { render } from '@testing-library/react-native';
+import { TrustModal } from './TrustModal';
 
-// Mock useTranslation hook
-const mockT = jest.fn((key: string) => {
-  if (key === 'infoPoints' || key === 'verifierInfoPoints') {
+// --------------------
+// i18n mock (IMPORTANT)
+// --------------------
+const mockT = jest.fn((key: string, options?: any) => {
+  if (key === 'infoPoints') {
     return ['Point 1', 'Point 2', 'Point 3'];
   }
+
+  if (key === 'successfullyTrustedSubtitle') {
+    return `Redirecting in ${options?.seconds} seconds…`;
+  }
+
   return key;
 });
 
 jest.mock('react-i18next', () => ({
-  ...jest.requireActual('react-i18next'),
   useTranslation: () => ({
     t: mockT,
-    i18n: {changeLanguage: jest.fn()},
+    i18n: { changeLanguage: jest.fn() },
   }),
+  // ✅ prevents i18next.use(initReactI18next) crash
+  initReactI18next: {
+    type: '3rdParty',
+    init: jest.fn(),
+  },
 }));
 
-// Mock ui components
+// --------------------
+// UI mock
+// --------------------
 jest.mock('./ui', () => ({
   Button: jest.fn(() => null),
-  Column: ({children}: {children: React.ReactNode}) => <>{children}</>,
-  Row: ({children}: {children: React.ReactNode}) => <>{children}</>,
-  Text: ({children}: {children: React.ReactNode}) => <>{children}</>,
 }));
 
-// Mock react-native components
+// --------------------
+// React Native mock
+// --------------------
 jest.mock('react-native', () => {
-  const ReactNative = jest.requireActual('react-native');
+  const RN = jest.requireActual('react-native');
   return {
-    ...ReactNative,
-    Modal: ({children}: {children: React.ReactNode}) => <>{children}</>,
-    View: ({children}: {children: React.ReactNode}) => <>{children}</>,
-    ScrollView: ({children}: {children: React.ReactNode}) => <>{children}</>,
+    ...RN,
+    Modal: ({ children }: any) => <>{children}</>,
+    View: ({ children }: any) => <>{children}</>,
     Image: jest.fn(() => null),
+    Text: ({ children }: any) => <>{children}</>,
   };
 });
 
-describe('TrustModal Component', () => {
-  const defaultProps = {
+describe('TrustModal', () => {
+  const baseProps = {
     isVisible: true,
     logo: 'https://example.com/logo.png',
     name: 'Test Issuer',
@@ -47,59 +59,87 @@ describe('TrustModal Component', () => {
     onCancel: jest.fn(),
   };
 
-  it('should match snapshot with issuer flow', () => {
-    const {toJSON} = render(<TrustModal {...defaultProps} flowType="issuer" />);
-    expect(toJSON()).toMatchSnapshot();
-  });
-
-  it('should match snapshot with verifier flow', () => {
-    const {toJSON} = render(
-      <TrustModal {...defaultProps} flowType="verifier" />,
-    );
-    expect(toJSON()).toMatchSnapshot();
-  });
-
-  it('should match snapshot when not visible', () => {
-    const {toJSON} = render(<TrustModal {...defaultProps} isVisible={false} />);
-    expect(toJSON()).toMatchSnapshot();
-  });
-
-  it('should match snapshot without logo', () => {
-    const {toJSON} = render(
-      <TrustModal {...defaultProps} logo={undefined} flowType="issuer" />,
-    );
-    expect(toJSON()).toMatchSnapshot();
-  });
-
-  it('should match snapshot without name', () => {
-    const {toJSON} = render(
-      <TrustModal {...defaultProps} name={''} flowType="issuer" />,
-    );
-    expect(toJSON()).toMatchSnapshot();
-  });
-
-  it('should match snapshot without logo and name', () => {
-    const {toJSON} = render(
+  it('matches snapshot in idle state', () => {
+    const { toJSON } = render(
       <TrustModal
-        isVisible={true}
+        {...baseProps}
+        consentStatus="idle"
+      />
+    );
+
+    expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('matches snapshot in loading state', () => {
+    const { toJSON } = render(
+      <TrustModal
+        {...baseProps}
+        consentStatus="loading"
+      />
+    );
+
+    expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('matches snapshot in success state', () => {
+    const { toJSON } = render(
+      <TrustModal
+        {...baseProps}
+        consentStatus="success"
+      />
+    );
+
+    expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('matches snapshot without logo', () => {
+    const { toJSON } = render(
+      <TrustModal
+        {...baseProps}
         logo={undefined}
-        name={''}
+        consentStatus="idle"
+      />
+    );
+
+    expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('matches snapshot without name', () => {
+    const { toJSON } = render(
+      <TrustModal
+        {...baseProps}
+        name=""
+        consentStatus="idle"
+      />
+    );
+
+    expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('matches snapshot without logo and name', () => {
+    const { toJSON } = render(
+      <TrustModal
+        isVisible
+        logo={undefined}
+        name=""
         onConfirm={jest.fn()}
         onCancel={jest.fn()}
-        flowType="issuer"
-      />,
+        consentStatus="idle"
+      />
     );
+
     expect(toJSON()).toMatchSnapshot();
   });
 
-  it('should match snapshot with long name', () => {
-    const {toJSON} = render(
+  it('matches snapshot with long issuer name', () => {
+    const { toJSON } = render(
       <TrustModal
-        {...defaultProps}
+        {...baseProps}
         name="Very Long Issuer Name That Should Wrap Properly"
-        flowType="verifier"
-      />,
+        consentStatus="idle"
+      />
     );
+
     expect(toJSON()).toMatchSnapshot();
   });
 });
