@@ -1,3 +1,5 @@
+import {View} from "react-native";
+
 jest.mock('react-native-fast-image', () => 'FastImage');
 jest.mock('../Modal', () => ({
   Modal: ({children}) => children,
@@ -12,18 +14,18 @@ jest.mock(
   () => 'CircleArrowRight',
 );
 jest.mock('../Button', () => ({
-  Button: ({title, testID}) => (
-    <button data-testid={testID || title}>{title}</button>
+  Button: ({title, testID}: {title: string; testID?: string}) => (
+    <View accessibilityRole="button" accessibilityLabel={title}>{title}</View>
   ),
 }));
 
 import React from 'react';
 import {render} from '@testing-library/react-native';
 import {
-  ProcessingScreen,
+  ProcessingModal,
   ProgressIndicator,
   ProcessingScreenProps,
-} from './ProcessingScreen';
+} from './ProcessingModal';
 import {Button} from '../Button';
 
 const mockAction = <Button title="Go to Home" type="gradient" />;
@@ -54,10 +56,11 @@ describe('ProcessingScreen', () => {
     subTitle: 'This will only take a moment',
     progressSteps,
     action: mockAction,
+    isVisible: true,
   };
 
   it('renders title, subtitle, and progress steps', () => {
-    const {getByText} = render(<ProcessingScreen {...props} />);
+    const {getByText} = render(<ProcessingModal {...props} />);
     expect(getByText('Processing...')).toBeTruthy();
     expect(getByText('This will only take a moment')).toBeTruthy();
     expect(getByText('Step 1')).toBeTruthy();
@@ -65,13 +68,14 @@ describe('ProcessingScreen', () => {
   });
 
   it('renders the action button', () => {
-    const {getByRole} = render(<ProcessingScreen {...props} />);
-    expect(getByRole('button', {name: 'Go to Home'})).toBeTruthy();
+    const { getByLabelText} = render(<ProcessingModal {...props} />);
+
+    expect(getByLabelText('Go to Home')).toBeTruthy();
   });
 
   it('renders with no progress steps', () => {
     const {getByText} = render(
-      <ProcessingScreen {...props} progressSteps={[]} />,
+      <ProcessingModal {...props} progressSteps={[]} />,
     );
     expect(getByText('Processing...')).toBeTruthy();
     expect(getByText('This will only take a moment')).toBeTruthy();

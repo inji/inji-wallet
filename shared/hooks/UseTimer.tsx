@@ -23,7 +23,9 @@ export function useTimer({
 
   React.useEffect(() => {
     return () => {
-      clearInterval(timerId);
+      if (timerId) {
+        clearInterval(timerId);
+      }
     };
   }, []);
 

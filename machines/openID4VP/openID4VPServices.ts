@@ -38,7 +38,7 @@ export const openID4VPServices = () => {
         context.authenticationResponse,
       );
       if (context.flowType === VCShareFlowType.OPENID4VP_AUTHORIZATION)
-        return false;
+        return true;
       const {RNSecureKeystoreModule} = NativeModules;
       const verifier = context.authenticationResponse?.client_id;
       try {

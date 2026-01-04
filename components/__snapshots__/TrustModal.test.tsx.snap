@@ -94,7 +94,7 @@ exports[`TrustModal Component should match snapshot with issuer flow 1`] = `
               }
             }
           >
-            description
+            Description
           </Text>
           <View
             style={
@@ -752,7 +752,7 @@ exports[`TrustModal Component should match snapshot without logo 1`] = `
               }
             }
           >
-            description
+            Description
           </Text>
           <View
             style={
@@ -941,7 +941,7 @@ exports[`TrustModal Component should match snapshot without logo and name 1`] = 
               }
             }
           >
-            description
+            Description
           </Text>
           <View
             style={
@@ -1154,7 +1154,7 @@ exports[`TrustModal Component should match snapshot without name 1`] = `
               }
             }
           >
-            description
+            Description
           </Text>
           <View
             style={
