@@ -39,14 +39,15 @@ export interface ProgressIndicatorProps {
   completed: boolean;
 }
 
-export const ProcessingScreen: React.FC<ProcessingScreenProps> = ({
+export const ProcessingModal: React.FC<ProcessingScreenProps> = ({
   title,
   subTitle,
   progressSteps,
   action,
+  isVisible,
 }) => {
   return (
-    <Modal isVisible={true} showHeader={false} modalStyle={styles.modalBg}>
+    <Modal isVisible={isVisible} showHeader={false} modalStyle={styles.modalBg}>
       <SafeAreaView style={styles.container}>
         <View style={styles.cardWrapper}>
           <View style={styles.card}>
@@ -79,6 +80,7 @@ export interface ProcessingScreenProps {
   subTitle: string;
   progressSteps: React.ReactElement<typeof ProgressIndicator>[];
   action: React.ReactElement<typeof Button>;
+  isVisible: boolean;
 }
 
 const CARD_WIDTH = Math.min(SCREEN_WIDTH * 0.8, 340);

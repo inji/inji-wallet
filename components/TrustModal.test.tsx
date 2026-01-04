@@ -2,11 +2,9 @@ import React from 'react';
 import { render } from '@testing-library/react-native';
 import { TrustModal } from './TrustModal';
 
-// --------------------
-// i18n mock (IMPORTANT)
-// --------------------
-const mockT = jest.fn((key: string, options?: any) => {
-  if (key === 'infoPoints') {
+// Mock useTranslation hook
+const mockT = jest.fn((key: string) => {
+  if (key.endsWith('InfoPoints')) {
     return ['Point 1', 'Point 2', 'Point 3'];
   }
 

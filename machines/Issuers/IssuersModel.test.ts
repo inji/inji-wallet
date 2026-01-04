@@ -159,7 +159,7 @@ describe('IssuersModel', () => {
 
     it('should have all 36 required properties', () => {
       const properties = Object.keys(initialContext);
-      expect(properties).toHaveLength(36);
+      expect(properties).toHaveLength(38);
     });
   });
 

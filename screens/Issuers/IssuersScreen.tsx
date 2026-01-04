@@ -37,9 +37,9 @@ import {TrustModal} from '../../components/TrustModal';
 import i18next from 'i18next';
 import {SendVPScreen} from '../Scan/SendVPScreen';
 import {
-  ProcessingScreen,
+  ProcessingModal,
   ProgressIndicator,
-} from '../../components/ui/processingScreen/ProcessingScreen';
+} from '../../components/ui/processingScreen/ProcessingModal';
 import {AuthorizationType} from '../../shared/constants';
 import {useTimer} from '../../shared/hooks/UseTimer';
 import {issuerType} from '../../machines/Issuers/IssuersMachine';
@@ -55,7 +55,7 @@ export const IssuersScreen: React.FC<
   const [tapToSearch, setTapToSearch] = useState(false);
   const [clearSearchIcon, setClearSearchIcon] = useState(false);
   const showFullScreenError = controller.isError;
-  const [time, initiateTimer] = useTimer({initialValue: 5});
+  const [successDownloadRedirectTimer, initiateSuccessDownloadRedirectTimer] = useTimer({initialValue: 5});
 
   const isVerificationFailed = controller.verificationErrorMessage !== '';
 
@@ -99,16 +99,16 @@ export const IssuersScreen: React.FC<
       if (controller.authorizationType === AuthorizationType.IMPLICIT) {
         props.navigation.goBack();
       } else {
-        initiateTimer();
+        initiateSuccessDownloadRedirectTimer();
       }
     }
   }, [controller.isDownloadSuccess]);
 
   useEffect(() => {
-    if (time === 0 && controller.isDownloadSuccess) {
+    if (successDownloadRedirectTimer === 0) {
       props.navigation.goBack();
     }
-  }, [time]);
+  }, [successDownloadRedirectTimer]);
 
   useEffect(() => {
     if (controller.isAuthEndpointToOpen) {
@@ -205,10 +205,16 @@ export const IssuersScreen: React.FC<
     controller.authorizationType === AuthorizationType.OPENID4VP_PRESENTATION &&
     (controller.isPresentationAuthorizationInProgress ||
       controller.isDownloadSuccess ||
-      controller.isAuthorizationSuccess)
+      controller.isAuthorizationSuccess) &&
+    !controller.isError
   ) {
     return (
-      <ProcessingScreen
+      <ProcessingModal
+        isVisible={controller.authorizationType === AuthorizationType.OPENID4VP_PRESENTATION &&
+          (controller.isPresentationAuthorizationInProgress ||
+            controller.isDownloadSuccess ||
+            controller.isAuthorizationSuccess) &&
+          !controller.isError}
         title={
           controller.isDownloadSuccess
             ? t('downloadSuccess')
@@ -217,7 +223,7 @@ export const IssuersScreen: React.FC<
         subTitle={
           controller.isDownloadSuccess
             ? t('loaders.progressIndicators.redirectToHome', {
-                remainingTime: time,
+                remainingTime: successDownloadRedirectTimer,
               })
             : t('loaders.subTitle.inProgress')
         }
