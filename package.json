@@ -126,6 +126,7 @@
     "@react-native/metro-config": "^0.76.5",
     "@react-navigation/devtools": "^6.0.19",
     "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/react-native": "^12.4.3",
     "@tsconfig/react-native": "^2.0.3",
     "@types/jest": "^29.5.11",
