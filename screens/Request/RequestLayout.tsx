@@ -16,6 +16,8 @@ import {SvgImage} from '../../components/ui/svg';
 import {I18nManager} from 'react-native';
 import {Theme} from '../../components/ui/styleUtils';
 import LinearGradient from 'react-native-linear-gradient';
+import {BackButton} from '../../components/ui/backButton/BackButton';
+import {useNavigation} from '@react-navigation/native';
 
 const RequestStack = createNativeStackNavigator();
 
@@ -23,6 +25,7 @@ export const RequestLayout: React.FC = () => {
   const {t} = useTranslation('RequestScreen');
   const controller = useRequestLayout();
   const receivedCardsController = useReceivedVcsTab();
+  const navigation = useNavigation();
   const bleErrorCode = controller.bleError.code;
 
   return (
@@ -77,22 +80,18 @@ export const RequestLayout: React.FC = () => {
             title: t('receiveCard'),
             headerLeft: () =>
               !I18nManager.isRTL && (
-                <HeaderBackButton
+                <BackButton
                   onPress={() => {
-                    controller.GOTO_HOME();
+                    navigation.goBack();
                   }}
-                  style={Theme.Styles.IconContainer}
-                  tintColor={Theme.Colors.Icon}
                 />
               ),
             headerRight: () =>
               I18nManager.isRTL && (
-                <HeaderBackButton
+                <BackButton
                   onPress={() => {
-                    controller.GOTO_HOME();
+                    navigation.goBack();
                   }}
-                  style={Theme.Styles.IconContainer}
-                  tintColor={Theme.Colors.Icon}
                 />
               ),
           }}

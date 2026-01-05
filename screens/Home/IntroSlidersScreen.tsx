@@ -84,6 +84,7 @@ export const IntroSlidersScreen: React.FC<RootRouteProps> = props => {
                 title={isPasscodeSet ? t('back') : t('skip')}
                 onPress={isPasscodeSet ? controller.BACK : controller.NEXT}
                 styles={{height: 40, maxWidth: 115}}
+                titleStyle={{color: '#FFFFFF', fontWeight: '600'}}
               />
             )}
           </Row>

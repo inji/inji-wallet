@@ -1061,7 +1061,7 @@
     "successBanner": "Your backup was successful!",
     "backupFailed": "Backup Failed",
     "ok": "OK",
-    "help": "Help?"
+    "help": "?"
   },
   "WelcomeScreen": {
     "title": "Open Source Identity Solution",

@@ -60,7 +60,7 @@ export const Button: React.FC<ButtonProps> = props => {
       raised={props.raised}
       title={
         <Text
-          style={{paddingTop: 3}}
+          style={[{paddingTop: 3}, props.titleStyle]}
           weight="semibold"
           align="center"
           color={
@@ -134,4 +134,5 @@ interface ButtonProps {
   colors?: (string | number)[];
   width?: number;
   size?: string;
+  titleStyle?: StyleProp<TextStyle>;
 }
