@@ -3,7 +3,12 @@ import {
   Button as RNEButton,
   ButtonProps as RNEButtonProps,
 } from 'react-native-elements';
-import {GestureResponderEvent, StyleProp, ViewStyle} from 'react-native';
+import {
+  GestureResponderEvent,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 import {Text} from './Text';
 import {Theme, Spacing} from './styleUtils';
 import testIDProps from '../../shared/commonUtil';
