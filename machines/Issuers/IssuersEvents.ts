@@ -43,9 +43,6 @@ export const IssuersEvents = {
   IN_PROGRESS: () => ({}),
   RETRY: () => ({}),
   STAY_IN_PROGRESS: () => ({}),
-  SELECTED_CREDENTIALS_FOR_PRESENTATION_AUTHORIZATION: (
-    selectedCredentials: Record<string, VC[]>,
-  ) => ({selectedCredentials}),
   SIGN_PRESENTATION: (unsignedVPToken: object) => ({unsignedVPToken}),
   SIGNED_DATA_FOR_VP: (signedVPToken: Record<any, any>) => ({signedVPToken}),
 };

@@ -186,6 +186,13 @@ export const openID4VPActions = (model: any) => {
       showTrustConsentModal: () => false,
     }),
 
+    setSignVPError: model.assign({
+      error: (_, event) => {
+        console.error('Error:', event.data.message, event.data.code);
+        return 'sign vp-' + event.data.message + '-' + event.data.code;
+      },
+    }),
+
     setSendVPShareError: model.assign({
       error: (_, event) => {
         console.error('Error:', event.data.message, event.data.code);

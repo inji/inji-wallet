@@ -24,7 +24,6 @@ import {
   selectOVPMachine,
   selectIsPresentationAuthorizationInProgress,
   selectAuthorizationType,
-  selectDownloadSuccess,
   selectIsAuthorizationSuccess,
 } from '../../machines/Issuers/IssuersSelectors';
 import {ActorRefFrom} from 'xstate';

@@ -55,7 +55,8 @@ export const IssuersScreen: React.FC<
   const [tapToSearch, setTapToSearch] = useState(false);
   const [clearSearchIcon, setClearSearchIcon] = useState(false);
   const showFullScreenError = controller.isError;
-  const [successDownloadRedirectTimer, initiateSuccessDownloadRedirectTimer] = useTimer({initialValue: 5});
+  const [successDownloadRedirectTimer, initiateSuccessDownloadRedirectTimer] =
+    useTimer({initialValue: 5});
 
   const isVerificationFailed = controller.verificationErrorMessage !== '';
 
@@ -210,11 +211,14 @@ export const IssuersScreen: React.FC<
   ) {
     return (
       <ProcessingModal
-        isVisible={controller.authorizationType === AuthorizationType.OPENID4VP_PRESENTATION &&
+        isVisible={
+          controller.authorizationType ===
+            AuthorizationType.OPENID4VP_PRESENTATION &&
           (controller.isPresentationAuthorizationInProgress ||
             controller.isDownloadSuccess ||
             controller.isAuthorizationSuccess) &&
-          !controller.isError}
+          !controller.isError
+        }
         title={
           controller.isDownloadSuccess
             ? t('downloadSuccess')
@@ -345,17 +349,6 @@ export const IssuersScreen: React.FC<
         }
         primaryButtonEvent={controller.TRY_AGAIN}
         onDismiss={goBack}
-      />
-    );
-  }
-
-  if (controller.isPresentationAuthorizationInProgress) {
-    return (
-      <Loader
-        title={'Presenting Credential'}
-        subTitle={t(
-          `Presenting your credential securely to download the credential...`,
-        )}
       />
     );
   }
