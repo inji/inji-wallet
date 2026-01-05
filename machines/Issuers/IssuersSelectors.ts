@@ -111,12 +111,18 @@ export function selectOVPMachine(state: State) {
 }
 
 export function selectIsPresentationAuthorization(state: State) {
-  return state.matches('credentialDownloadFromOffer.presentationAuthorization');
+  return (
+    state.matches('credentialDownloadFromOffer.presentationAuthorization') ||
+    state.matches('downloadCredentials.presentationAuthorization') ||
+    state.matches('downloadCredentials.presentationAuthorization.inProgress')
+  );
 }
-
 export function selectIsPresentationAuthorizationInProgress(state: State) {
-  return state.matches(
-    'credentialDownloadFromOffer.presentationAuthorization.inProgress',
+  return (
+    state.matches(
+      'credentialDownloadFromOffer.presentationAuthorization.inProgress',
+    ) ||
+    state.matches('downloadCredentials.presentationAuthorization.inProgress')
   );
 }
 

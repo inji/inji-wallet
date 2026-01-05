@@ -252,9 +252,9 @@ export const IssuersMachine = model.createMachine(
                   target: '.success',
                 },
               ],
-              // SHOW_ERROR: {
-              //   target: '.showError',
-              // },
+              SHOW_ERROR: {
+                target: '.showError',
+              },
               // SUCCESS: {
               //   target: '.success',
               // },
@@ -666,6 +666,7 @@ export const IssuersMachine = model.createMachine(
               //{"presentationRequest": {"client_id": "redirect_uri:https://example.com/iar/callback", "nonce": "e6562d6dfc8f6fc2", "presentation_definition": {"format": [Object], "id": "vp token example", "input_descriptors": [Array], "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication"}, "response_mode": "iar_post", "response_type": "vp_token", "response_uri": "https://example.com/iar/callback"}, "type": "PRESENTATION_REQUEST"}
               (_, event) =>
                 console.debug('RECEIVED PRESENTATION_REQUEST EVENT:', event),
+              'setAuthorizationTypeAsPresentation',
               'setOpenId4VPRef',
               'sendVPScanData',
             ],
@@ -772,6 +773,7 @@ export const IssuersMachine = model.createMachine(
               success: {
                 always: [
                   {
+                    actions: ['setPresentationAuthorizationSuccess'],
                     target: '#issuersMachine.downloadCredentials.idle',
                   },
                 ],
@@ -1051,9 +1053,7 @@ export const IssuersMachine = model.createMachine(
       },
       success: {
         initial: 'idle',
-        entry: [
-          send('HANDLE_DONE'),
-        ],
+        entry: [send('HANDLE_DONE')],
         states: {
           idle: {
             on: {
@@ -1064,9 +1064,9 @@ export const IssuersMachine = model.createMachine(
                 },
                 {
                   target: 'redirect',
-                }
-              ]
-            }
+                },
+              ],
+            },
           },
           showSuccessDownload: {
             on: {
@@ -1077,13 +1077,19 @@ export const IssuersMachine = model.createMachine(
             after: [
               {
                 delay: 5000,
-                actions: ()=> console.debug('Auto transitioning to redirect state after showing success message'),
+                actions: () =>
+                  console.debug(
+                    'Auto transitioning to redirect state after showing success message',
+                  ),
                 target: '#done',
               },
             ],
           },
           redirect: {
-            actions: ()=> console.debug('Direct transitioning to redirect state after showing success message'),
+            actions: () =>
+              console.debug(
+                'Direct transitioning to redirect state after showing success message',
+              ),
             type: '#done',
           },
         },
@@ -1091,7 +1097,7 @@ export const IssuersMachine = model.createMachine(
 
       done: {
         id: 'done',
-        type: "final"
+        type: 'final',
       },
     },
   },

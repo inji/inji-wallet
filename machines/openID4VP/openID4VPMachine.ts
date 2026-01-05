@@ -492,6 +492,15 @@ export const openID4VPMachine = model.createMachine(
                       ),
                     ],
                   },
+                  onError: {
+                    actions: [
+                      (_, event) =>
+                        console.debug('3177: VP signed failed ', event),
+                      'setSignVPError',
+                      sendParent('SHOW_ERROR'),
+                    ],
+                    target: '#showError',
+                  },
                 },
               },
             },
