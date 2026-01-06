@@ -68,24 +68,11 @@ export const IssuersScreen: React.FC<
     : t('errors.verificationFailed.ERR_GENERIC');
 
   useLayoutEffect(() => {
-    if (
-      controller.loadingReason ||
-      showFullScreenError ||
-      controller.authorizationType === AuthorizationType.OPENID4VP_PRESENTATION
-    ) {
+    if (controller.loadingReason || showFullScreenError) {
       props.navigation.setOptions({
         headerShown: false,
       });
     } else {
-      console.log(
-        'controller.authorizationType : ',
-        controller.authorizationType,
-      );
-      console.log(
-        'controller.isPresentationAuthorization ',
-        controller.isPresentationAuthorization,
-      );
-      console.log('controller.loadingReason ', controller.loadingReason);
       props.navigation.setOptions({
         headerShown: true,
         header: props => (
@@ -102,9 +89,22 @@ export const IssuersScreen: React.FC<
     controller.loadingReason,
     controller.errorMessageType,
     controller.isQrScanning,
-    controller.authorizationType,
-    controller.isPresentationAuthorization,
   ]);
+
+  useLayoutEffect(() => {
+    if (controller.loadingReason && controller.isPresentationAuthorization) {
+      props.navigation.setOptions({
+        headerShown: true,
+        header: props => (
+          <Header
+            goBack={props.navigation.goBack}
+            title={t('selectCard')}
+            testID="selectCardIssuersScreenHeader"
+          />
+        ),
+      });
+    }
+  }, [controller.loadingReason, controller.isPresentationAuthorization]);
 
   useEffect(() => {
     if (controller.isDownloadSuccess) {
