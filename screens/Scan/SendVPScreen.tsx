@@ -31,7 +31,7 @@ import {useSendVPScreen} from './SendVPScreenController';
 import LinearGradient from 'react-native-linear-gradient';
 import {ErrorView} from '../../components/ui/Error';
 import {SvgImage} from '../../components/ui/svg';
-import {Loader} from '../../components/ui/Loader';
+import {Loader, LoaderSkeleton} from '../../components/ui/Loader';
 import {Icon} from 'react-native-elements';
 import {ScanLayoutProps} from '../../routes/routeTypes';
 import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
@@ -228,6 +228,10 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   ]);
 
   if (controller.showLoadingScreen) {
+    if (controller.isAuthorizationFlow) {
+      return <LoaderSkeleton />;
+    }
+
     return (
       <Loader
         title={t('loaders.loading')}
