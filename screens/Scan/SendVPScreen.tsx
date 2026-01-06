@@ -1,5 +1,11 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import {useTranslation} from 'react-i18next';
 import {BackHandler, I18nManager, View} from 'react-native';
 import {Button, Column, Row, Text} from '../../components/ui';
@@ -39,6 +45,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
   const controller = useSendVPScreen(props);
   const scanScreenController = useScanScreen();
+  const downloadCard = props?.route?.params.downloadCard ?? 'Card';
 
   const [errorModal, resetErrorModal] = useOvpErrorModal({
     error: controller.error,
@@ -287,6 +294,57 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     noOfCardsSelected ===
     Object.values(controller.vcsMatchingAuthRequest).flatMap(vc => vc).length;
 
+  const shareActions = () => {
+    if (controller.isAuthorizationFlow) {
+      return (
+        <Button
+          type="gradient"
+          styles={{marginTop: 12}}
+          title={t('consentShare')}
+          disabled={Object.keys(controller.getSelectedVCs()).length === 0}
+          onPress={() =>
+            controller.checkIfAnyVCHasImage(controller.vcsMatchingAuthRequest)
+              ? controller.VERIFY_AND_ACCEPT_REQUEST(selectedDisclosuresByVc)
+              : controller.ACCEPT_REQUEST(selectedDisclosuresByVc)
+          }
+        />
+      );
+    }
+
+    return (
+      <Fragment>
+        {!controller.checkIfAllVCsHasImage(
+          controller.vcsMatchingAuthRequest,
+        ) && (
+          <Button
+            type="gradient"
+            styles={{marginTop: 12}}
+            title={t('SendVcScreen:acceptRequest')}
+            disabled={
+              Object.keys(controller.getSelectedVCs()).length === 0 ||
+              controller.checkIfAnyVCHasImage(controller.getSelectedVCs())
+            }
+            onPress={() => controller.ACCEPT_REQUEST(selectedDisclosuresByVc)}
+          />
+        )}
+        {/*If one of the selected vc has image, it needs to sent only after biometric authentication (Share with Selfie)*/}
+        {controller.checkIfAnyVCHasImage(controller.vcsMatchingAuthRequest) && (
+          <Button
+            type="gradient"
+            title={t('SendVcScreen:acceptRequestAndVerify')}
+            styles={{marginTop: 12}}
+            disabled={
+              Object.keys(controller.getSelectedVCs()).length === 0 ||
+              !controller.checkIfAnyVCHasImage(controller.getSelectedVCs())
+            }
+            onPress={() =>
+              controller.VERIFY_AND_ACCEPT_REQUEST(selectedDisclosuresByVc)
+            }
+          />
+        )}
+      </Fragment>
+    );
+  };
   return (
     <React.Fragment>
       {
@@ -299,7 +357,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           }
           onConfirm={controller.VERIFIER_TRUST_CONSENT_GIVEN}
           onCancel={controller.CANCEL}
-          flowType={controller.isAuthorizationFlow ? 'pdi' : 'verifier'}
+          flowType={'verifier'}
         />
       }
       {Object.keys(vcsMatchingAuthRequest).length > 0 && (
@@ -313,7 +371,9 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                 <Text
                   color={Theme.Colors.TimeoutHintText}
                   style={Theme.VPSharingStyles.purposeText}>
-                  {controller.purpose}
+                  {controller.isAuthorizationFlow
+                    ? t('authorizationPurpose', {downloadCard: downloadCard})
+                    : controller.purpose}
                 </Text>
               </Column>
             </View>
@@ -388,43 +448,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                 {position: 'relative'},
               ]}
               backgroundColor={Theme.Colors.whiteBackgroundColor}>
-              {!controller.checkIfAllVCsHasImage(
-                controller.vcsMatchingAuthRequest,
-              ) && (
-                <Button
-                  type="gradient"
-                  styles={{marginTop: 12}}
-                  title={t('SendVcScreen:acceptRequest')}
-                  disabled={
-                    Object.keys(controller.getSelectedVCs()).length === 0 ||
-                    controller.checkIfAnyVCHasImage(controller.getSelectedVCs())
-                  }
-                  onPress={() =>
-                    controller.ACCEPT_REQUEST(selectedDisclosuresByVc)
-                  }
-                />
-              )}
-              {/*If one of the selected vc has image, it needs to sent only after biometric authentication (Share with Selfie)*/}
-              {controller.checkIfAnyVCHasImage(
-                controller.vcsMatchingAuthRequest,
-              ) && (
-                <Button
-                  type="gradient"
-                  title={t('SendVcScreen:acceptRequestAndVerify')}
-                  styles={{marginTop: 12}}
-                  disabled={
-                    Object.keys(controller.getSelectedVCs()).length === 0 ||
-                    !controller.checkIfAnyVCHasImage(
-                      controller.getSelectedVCs(),
-                    )
-                  }
-                  onPress={() =>
-                    controller.VERIFY_AND_ACCEPT_REQUEST(
-                      selectedDisclosuresByVc,
-                    )
-                  }
-                />
-              )}
+              {shareActions()}
 
               <Button
                 type="clear"

@@ -283,7 +283,14 @@ export const openID4VPMachine = model.createMachine(
         },
       },
       getConsentForVPSharing: {
+        entry: send('CHECK_FOR_CONSENT'),
         on: {
+          CHECK_FOR_CONSENT: [
+            {
+              cond: 'isAuthorizationFlow',
+              actions: send('CONFIRM'),
+            },
+          ],
           CONFIRM: [
             {
               cond: 'showFaceAuthConsentScreen',

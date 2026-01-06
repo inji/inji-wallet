@@ -25,6 +25,7 @@ import {
   selectIsPresentationAuthorizationInProgress,
   selectAuthorizationType,
   selectIsAuthorizationSuccess,
+  selectSelectedCredentialType,
 } from '../../machines/Issuers/IssuersSelectors';
 import {ActorRefFrom} from 'xstate';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
@@ -60,6 +61,7 @@ export function useIssuerScreenController({route, navigation}) {
     txCodeDisplayDetails: useSelector(service, selectTxCodeDisplayDetails),
     authEndpoint: useSelector(service, selectAuthEndPoint),
     selectedIssuer: useSelector(service, selectSelectedIssuer),
+    selectedCredentialType: useSelector(service, selectSelectedCredentialType),
     errorMessageType: useSelector(service, selectErrorMessageType),
     isDownloadingCredentials: useSelector(service, selectIsDownloadCredentials),
     isBiometricsCancelled: useSelector(service, selectIsBiometricCancelled),

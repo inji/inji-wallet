@@ -117,8 +117,7 @@ export function selectOVPMachine(state: State) {
 export function selectIsPresentationAuthorization(state: State) {
   return (
     state.matches('credentialDownloadFromOffer.presentationAuthorization') ||
-    state.matches('downloadCredentials.presentationAuthorization') ||
-    state.matches('downloadCredentials.presentationAuthorization.inProgress')
+    state.matches('downloadCredentials.presentationAuthorization')
   );
 }
 export function selectIsPresentationAuthorizationInProgress(state: State) {
@@ -134,8 +133,8 @@ export function selectAuthorizationType(state: State) {
   return state.context.authorizationType;
 }
 
-export function selectDownloadSuccess(state: State) {
-  return state.matches('showSuccessDownload');
+export function selectSelectedCredentialType(state: State) {
+  return state.context.selectedCredentialType;
 }
 
 export function selectIsAuthorizationSuccess(state: State) {
