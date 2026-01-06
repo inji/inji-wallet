@@ -27,7 +27,10 @@ export function selectAreAllVCsChecked(state: State) {
 }
 
 export function selectIsGetVPSharingConsent(state: State) {
-  return state.matches('getConsentForVPSharing');
+  return (
+    state.matches('getConsentForVPSharing') &&
+    state.context.flowType !== VCShareFlowType.OPENID4VP_AUTHORIZATION
+  );
 }
 
 export function selectIsFaceVerificationConsent(state: State) {

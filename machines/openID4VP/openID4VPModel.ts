@@ -32,6 +32,7 @@ const openID4VPEvents = {
     selectedDisclosuresByVc,
   }),
   CONFIRM: () => ({}),
+  CHECK_FOR_CONSENT: () => ({}),
   CANCEL: () => ({}),
   FACE_VERIFICATION_CONSENT: (isDoNotAskAgainChecked: boolean) => ({
     isDoNotAskAgainChecked,

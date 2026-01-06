@@ -225,6 +225,7 @@
     "copyright": "© 2022 MOSIP. All rights reserved."
   },
   "IssuersScreen": {
+    "selectCard": "Select Card",
     "title": "Add new card",
     "description": "Please choose your preferred issuer from the options below to add a new card.",
     "searchByIssuersName": "Search by Issuer’s name",
@@ -905,6 +906,8 @@
     }
   },
   "SendVPScreen": {
+    "authorizationPurpose": "Present your card(s) to verify and proceed to obtain a {{downloadCard}} issued by a trusted issuer.",
+    "consentShare": "I consent and share",
     "requester": "Verification Entity",
     "cardsSelected": "cards selected",
     "cardSelected": "card selected",

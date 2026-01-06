@@ -69,12 +69,21 @@ export const IssuersScreen: React.FC<
     if (
       controller.loadingReason ||
       showFullScreenError ||
-      controller.isPresentationAuthorizationInProgress
+      controller.authorizationType === AuthorizationType.OPENID4VP_PRESENTATION
     ) {
       props.navigation.setOptions({
         headerShown: false,
       });
     } else {
+      console.log(
+        'controller.authorizationType : ',
+        controller.authorizationType,
+      );
+      console.log(
+        'controller.isPresentationAuthorization ',
+        controller.isPresentationAuthorization,
+      );
+      console.log('controller.loadingReason ', controller.loadingReason);
       props.navigation.setOptions({
         headerShown: true,
         header: props => (
@@ -90,6 +99,8 @@ export const IssuersScreen: React.FC<
     controller.loadingReason,
     controller.errorMessageType,
     controller.isQrScanning,
+    controller.authorizationType,
+    controller.isPresentationAuthorization,
   ]);
 
   useEffect(() => {
@@ -350,6 +361,13 @@ export const IssuersScreen: React.FC<
     );
   }
 
+  const getDownloadCardName = () => {
+    const display = getDisplayObjectForCurrentLanguage(
+      controller.selectedCredentialType.display,
+    );
+    return display.name;
+  };
+
   if (controller.loadingReason) {
     return (
       <Fragment>
@@ -361,6 +379,7 @@ export const IssuersScreen: React.FC<
               params: {
                 ...props.route.params,
                 ovpService: controller.ovpMachine,
+                downloadCard: getDownloadCardName(),
               },
             }}
           />
