@@ -140,6 +140,7 @@ export const IssuersMachine = model.createMachine(
               //{"presentationRequest": {"client_id": "redirect_uri:https://example.com/iar/callback", "nonce": "e6562d6dfc8f6fc2", "presentation_definition": {"format": [Object], "id": "vp token example", "input_descriptors": [Array], "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication"}, "response_mode": "iar_post", "response_type": "vp_token", "response_uri": "https://example.com/iar/callback"}, "type": "PRESENTATION_REQUEST"}
               (_, event) =>
                 console.debug('RECEIVED PRESENTATION_REQUEST EVENT:', event),
+              'sendPresentationAuthorizationImpressionEvent',
               'setOpenId4VPRef',
               'setAuthorizationTypeAsPresentation',
               'sendVPScanData',
@@ -666,6 +667,7 @@ export const IssuersMachine = model.createMachine(
               //{"presentationRequest": {"client_id": "redirect_uri:https://example.com/iar/callback", "nonce": "e6562d6dfc8f6fc2", "presentation_definition": {"format": [Object], "id": "vp token example", "input_descriptors": [Array], "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication"}, "response_mode": "iar_post", "response_type": "vp_token", "response_uri": "https://example.com/iar/callback"}, "type": "PRESENTATION_REQUEST"}
               (_, event) =>
                 console.debug('RECEIVED PRESENTATION_REQUEST EVENT:', event),
+              'sendPresentationAuthorizationImpressionEvent',
               'setAuthorizationTypeAsPresentation',
               'setOpenId4VPRef',
               'sendVPScanData',

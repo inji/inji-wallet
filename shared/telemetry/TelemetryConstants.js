@@ -1,6 +1,8 @@
 export const TelemetryConstants = {
   FlowType: Object.freeze({
     vcDownload: 'VC Download',
+    presentationAuthorizationForVcDownload:
+      'Presentation Authorization for VC Download',
     faceModelInit: 'Face SDK initialize',
     qrLogin: 'QR Login',
     vpSharing: 'VP Sharing',
