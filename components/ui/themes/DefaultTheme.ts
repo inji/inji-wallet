@@ -154,7 +154,7 @@ export const DefaultTheme = {
     selectIDTextGradient: ['#F5F5F5', '#FFFFFF'],
     unCheckText: Colors.Secondary,
     secondaryText: Colors.Secondary,
-    disabled: Colors.mildGray
+    disabled: Colors.mildGray,
   },
   Styles: StyleSheet.create({
     title: {
@@ -988,7 +988,7 @@ export const DefaultTheme = {
     },
     extraLight: {
       fontFamily: 'Montserrat_200ExtraLight',
-      fontWeight: "200"
+      fontWeight: '200',
     },
     small: {
       fontSize: 13,
@@ -1583,6 +1583,79 @@ export const DefaultTheme = {
       paddingVertical: 5,
       paddingHorizontal: 3,
       paddingTop: 1.4,
+    },
+  }),
+  ProcessingModalStyles: StyleSheet.create({
+    modalBg: {
+      backgroundColor: '#F5F5F5',
+    },
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      backgroundColor: '#F5F5F5',
+    },
+    cardWrapper: {
+      flex: 1,
+      top: 160,
+      alignItems: 'center',
+      width: '100%',
+      marginTop: 0,
+      marginBottom: 80,
+    },
+    card: {
+      width: Math.min(Dimensions.get('window').width * 0.8, 340),
+      backgroundColor: 'white',
+      borderRadius: 20,
+      alignItems: 'center',
+      paddingVertical: Dimensions.get('window').height * 0.03,
+      marginHorizontal: 40,
+      shadowColor: '#000',
+      shadowOpacity: 0.08,
+      shadowRadius: 12,
+      elevation: 1,
+    },
+    logo: {
+      width: Math.min(Dimensions.get('window').width * 0.8, 340) * 0.7,
+      height: Math.min(Dimensions.get('window').width * 0.8, 340) * 0.55,
+      marginBottom: -5,
+    },
+    title: {
+      marginTop: 0,
+      marginBottom: 6,
+      textAlign: 'center',
+    },
+    subTitle: {
+      color: '#888',
+      marginBottom: Dimensions.get('window').height * 0.025,
+      textAlign: 'center',
+    },
+    progressContainer: {
+      width: '100%',
+      marginTop: 7,
+      marginBottom: 0,
+      paddingHorizontal:
+        Math.min(Dimensions.get('window').width * 0.8, 340) * 0.15,
+    },
+    progressRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    progressIcon: {
+      marginRight: 8,
+    },
+    progressText: {
+      flex: 1,
+      color: '#B0B0B0',
+      fontWeight: '400',
+    },
+    progressCheck: {
+      marginLeft: 8,
+    },
+    actionWrapper: {
+      flex: 1,
+      position: 'absolute',
+      bottom: 62,
     },
   }),
   SendVcScreenStyles: StyleSheet.create({

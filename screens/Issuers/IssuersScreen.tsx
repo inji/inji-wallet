@@ -219,6 +219,7 @@ export const IssuersScreen: React.FC<
   ) {
     return (
       <ProcessingModal
+        testID={controller.isDownloadSuccess ? 'download-success' : 'download'}
         isVisible={
           controller.authorizationType ===
             AuthorizationType.OPENID4VP_PRESENTATION &&
@@ -248,6 +249,9 @@ export const IssuersScreen: React.FC<
                 : t('loaders.progressIndicators.sharingCard')
             }
             completed={controller.isAuthorizationSuccess}
+            testID={
+              controller.isAuthorizationSuccess ? 'shared-card' : 'sharing-card'
+            }
           />,
           <ProgressIndicator
             key={2}
@@ -257,10 +261,16 @@ export const IssuersScreen: React.FC<
                 : t('loaders.progressIndicators.downloadingCard')
             }
             completed={controller.isDownloadSuccess}
+            testID={
+              controller.isDownloadSuccess
+                ? 'downloaded-card'
+                : 'downloading-card'
+            }
           />,
         ]}
         action={
           <Button
+            testID={'go-home'}
             title={t('goHome')}
             type={'gradient'}
             fill

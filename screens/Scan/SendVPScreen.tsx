@@ -229,7 +229,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   if (controller.showLoadingScreen) {
     if (controller.isAuthorizationFlow) {
-      return <LoaderSkeleton />;
+      return <LoaderSkeleton testID={'presentation-authorization'} />;
     }
 
     return (
@@ -305,6 +305,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           type="gradient"
           styles={{marginTop: 12}}
           title={t('consentShare')}
+          testID={'consent-share-button'}
           disabled={Object.keys(controller.getSelectedVCs()).length === 0}
           onPress={() =>
             controller.checkIfAnyVCHasImage(controller.vcsMatchingAuthRequest)
@@ -323,6 +324,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           <Button
             type="gradient"
             styles={{marginTop: 12}}
+            testID={'accept-request-button'}
             title={t('SendVcScreen:acceptRequest')}
             disabled={
               Object.keys(controller.getSelectedVCs()).length === 0 ||
@@ -335,6 +337,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         {controller.checkIfAnyVCHasImage(controller.vcsMatchingAuthRequest) && (
           <Button
             type="gradient"
+            testID={'accept-request-and-verify-button'}
             title={t('SendVcScreen:acceptRequestAndVerify')}
             styles={{marginTop: 12}}
             disabled={
