@@ -510,7 +510,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           />
         </>
       )}
-      {errorModal.show && (
+      {errorModal.show && !controller.isAuthorizationFlow && (
         <ErrorView
           isModal
           alignActionsOnEnd

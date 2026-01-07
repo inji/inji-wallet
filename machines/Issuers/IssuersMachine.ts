@@ -1,12 +1,11 @@
-import {actions, EventFrom, send, sendParent, sendTo} from 'xstate';
+import {EventFrom, send, sendParent} from 'xstate';
 import {IssuersModel} from './IssuersModel';
 import {IssuersActions} from './IssuersActions';
 import {IssuersService} from './IssuersService';
 import {IssuersGuards} from './IssuersGuards';
 import {CredentialTypes} from '../VerifiableCredential/VCMetaMachine/vc';
 import {OpenID4VPEvents, openID4VPMachine} from '../openID4VP/openID4VPMachine';
-import {StoreEvents} from '../store';
-import {MY_VCS_STORE_KEY} from '../../shared/constants';
+import VciClient from '../../shared/vciClient/VciClient';
 
 const model = IssuersModel;
 
@@ -189,35 +188,41 @@ export const IssuersMachine = model.createMachine(
                   'Entered presentationAuthorization state in IssuersMachine',
                   JSON.stringify(event, null, 2),
                 ),
-              //TODO: telemetry for vp sharing
-              // () =>
-              //   sendStartEvent(
-              //     getStartEventData(TelemetryConstants.FlowType.vpSharing),
-              //   ),
             ],
             invoke: {
               id: 'OpenId4VP',
               src: openID4VPMachine,
               onDone: {},
+              onError: {
+                actions: ['setError', 'resetLoadingReason'],
+                target: '#issuersMachine.error',
+              },
             },
             on: {
               IN_PROGRESS: {
                 target: '.inProgress',
               },
-              // TIMEOUT: {
-              //   target: '.timeout',
-              // },
-              //TODO: is it required to have separate events for consent reject and dismiss?
               VP_CONSENT_REJECT: [
                 {
-                  actions: 'setConsentRejectedInOpenID4VP',
+                  actions: [
+                    () => console.log('vp consent reject'),
+                    () =>
+                      VciClient.getInstance().abortPresentationFlow({
+                        code: 'VP_CONSENT_REJECTED',
+                        message: 'User rejected presentation consent',
+                      }),
+                  ],
                 },
               ],
-              DISMISS: [
-                {
-                  actions: 'setConsentRejectedInOpenID4VP',
-                },
-              ],
+              SHOW_ERROR: {
+                actions: [
+                  () =>
+                    VciClient.getInstance().abortPresentationFlow({
+                      code: 'VP_CONSENT_REJECTED',
+                      message: 'User rejected presentation consent',
+                    }),
+                ],
+              },
               SIGN_PRESENTATION: [
                 {
                   actions: [
@@ -234,8 +239,7 @@ export const IssuersMachine = model.createMachine(
                         to: (context: any) => context.OpenId4VPRef,
                       },
                     ),
-                    // (context, event) => send( { type: 'SIGN_VP', value: event.presentationRequest }, {to: context.OpenId4VPRef,}),
-                    // 'setSignedPresentation',
+
                   ],
                 },
               ],
@@ -253,12 +257,6 @@ export const IssuersMachine = model.createMachine(
                   target: '.success',
                 },
               ],
-              SHOW_ERROR: {
-                target: '.showError',
-              },
-              // SUCCESS: {
-              //   target: '.success',
-              // },
             },
             states: {
               success: {
@@ -269,19 +267,8 @@ export const IssuersMachine = model.createMachine(
                   },
                 ],
               },
-              showError: {},
               inProgress: {
                 on: {
-                  // CANCEL: [
-                  //   {
-                  //     cond: 'isFlowTypeSimpleShare',
-                  //     actions: 'resetOpenID4VPFlowType',
-                  //     target: '#scan.checkStorage',
-                  //   },
-                  //   {
-                  //     target: '#scan.checkStorage',
-                  //   },
-                  // ],
                 },
               },
               timeout: {
@@ -293,20 +280,12 @@ export const IssuersMachine = model.createMachine(
                     {
                       cond: 'isFlowTypeSimpleShare',
                       actions: 'resetOpenID4VPFlowType',
-                      // target: '#scan.checkStorage',
-                    },
-                    {
-                      // target: '#scan.checkStorage',
-                    },
+                    }, 
                   ],
                   RETRY: [
                     {
                       cond: 'isFlowTypeSimpleShare',
                       actions: 'resetOpenID4VPFlowType',
-                      // target: '#scan.checkStorage',
-                    },
-                    {
-                      // target: '#scan.checkStorage',
                     },
                   ],
                 },
@@ -709,7 +688,6 @@ export const IssuersMachine = model.createMachine(
             invoke: {
               id: 'OpenId4VP',
               src: openID4VPMachine,
-              onDone: {},
             },
             on: {
               IN_PROGRESS: {
@@ -721,12 +699,14 @@ export const IssuersMachine = model.createMachine(
               //TODO: is it required to have separate events for consent reject and dismiss?
               VP_CONSENT_REJECT: [
                 {
-                  actions: 'setConsentRejectedInOpenID4VP',
-                },
-              ],
-              DISMISS: [
-                {
-                  actions: 'setConsentRejectedInOpenID4VP',
+                  actions: [
+                    () => console.log('vp consent reject'),
+                    () =>
+                      VciClient.getInstance().abortPresentationFlow({
+                        code: 'VP_CONSENT_REJECTED',
+                        message: 'User rejected presentation consent',
+                      }),
+                  ],
                 },
               ],
               SIGN_PRESENTATION: [
@@ -764,12 +744,15 @@ export const IssuersMachine = model.createMachine(
                   target: '.success',
                 },
               ],
-              // SHOW_ERROR: {
-              //   target: '.showError',
-              // },
-              // SUCCESS: {
-              //   target: '.success',
-              // },
+              SHOW_ERROR: {
+                actions: [
+                  () =>
+                    VciClient.getInstance().abortPresentationFlow({
+                      code: 'VP_CONSENT_REJECTED',
+                      message: 'User rejected presentation consent',
+                    }),
+                ],
+              },
             },
             states: {
               success: {

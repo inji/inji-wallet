@@ -245,6 +245,11 @@ class VciClient {
       credentialIssuer: parsedResponse.credentialIssuer ?? '',
     };
   }
+
+  abortPresentationFlow(error: {code: string; message: string}) {
+    console.log(`message ${error.message}`)
+    this.InjiVciClient.abortPresentationFlowFromJS(error.code, error.message);
+  }
 }
 
 export default VciClient;

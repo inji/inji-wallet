@@ -6,7 +6,7 @@ import {AppServices} from '../../shared/GlobalContext';
 import {openID4VPGuards} from './openID4VPGuards';
 import {send, sendParent} from 'xstate/lib/actions';
 import {IssuersModel} from '../Issuers/IssuersModel';
-import {parseJSON} from '../../shared/Utils';
+import {parseJSON, VCShareFlowType} from '../../shared/Utils';
 
 const model = openID4VPModel;
 
@@ -149,10 +149,17 @@ export const openID4VPMachine = model.createMachine(
             actions: 'setAuthenticationResponse',
             target: 'checkVerifierTrust',
           },
-          onError: {
-            actions: 'setAuthenticationError',
-            target: 'showError',
-          },
+          onError: [
+            {
+              cond: 'isAuthorizationFlow',
+              actions: 'setAuthenticationError',
+              target: '#OpenID4VP.authFlowFailed',
+            },
+            {
+              actions: 'setAuthenticationError',
+              target: 'showError',
+            },
+          ],
         },
         exit: 'resetIsShowLoadingScreen',
       },
@@ -189,9 +196,16 @@ export const openID4VPMachine = model.createMachine(
       },
 
       delayBeforeDismissToParent: {
-        after: {
-          200: 'sendDismissToParent',
-        },
+        always: [
+          {
+            cond: 'isAuthorizationFlow',
+            actions: [sendParent('VP_CONSENT_REJECT')],
+            target: 'waitingForData',
+          },
+          {
+            target: 'sendDismissToParent',
+          },
+        ],
       },
       sendDismissToParent: {
         entry: sendParent('DISMISS'),
@@ -204,12 +218,21 @@ export const openID4VPMachine = model.createMachine(
           onDone: {
             target: 'getVCsSatisfyingAuthRequest',
           },
-          onError: {
-            actions: model.assign({
-              error: () => 'failed to update trusted verifier list',
-            }),
-            target: 'showError',
-          },
+          onError: [
+            {
+              cond: 'isAuthorizationFlow',
+              actions: model.assign({
+                error: () => 'failed to update trusted verifier list',
+              }),
+              target: '#OpenID4VP.authFlowFailed',
+            },
+            {
+              actions: model.assign({
+                error: () => 'failed to update trusted verifier list',
+              }),
+              target: 'showError',
+            },
+          ],
         },
       },
 
@@ -249,7 +272,18 @@ export const openID4VPMachine = model.createMachine(
               target: 'getConsentForVPSharing',
             },
             {
+              cond: 'isAuthorizationFlow',
               actions: [
+                () => console.log('auth flow cred error'),
+                model.assign({
+                  error: () => 'credential mismatch detected',
+                }),
+              ],
+              target: '#OpenID4VP.authFlowFailed',
+            },
+            {
+              actions: [
+                () => console.log('normal flow cred error'),
                 model.assign({
                   error: () => 'credential mismatch detected',
                 }),
@@ -276,10 +310,20 @@ export const openID4VPMachine = model.createMachine(
               'resetFaceCaptureBannerStatus',
             ],
           },
-          CANCEL: {
-            actions: 'forwardToParent',
-            target: 'waitingForData',
-          },
+          CANCEL: [
+            {
+              cond: 'isAuthorizationFlow',
+              actions: [
+                () => console.log('auth flow cancelled by user'),
+                sendParent({type: 'VP_CONSENT_REJECT'}),
+              ],
+              target: 'waitingForData',
+            },
+            {
+              actions: 'forwardToParent',
+              target: 'waitingForData',
+            },
+          ],
         },
       },
       getConsentForVPSharing: {
@@ -349,11 +393,16 @@ export const openID4VPMachine = model.createMachine(
               target: 'verifyingIdentity',
             },
             {
-              actions: [
-                model.assign({
-                  error: () => 'none of the selected VC has image',
-                }),
-              ],
+              cond: 'isAuthorizationFlow',
+              actions: model.assign({
+                error: () => 'none of the selected VC has image',
+              }),
+              target: '#OpenID4VP.authFlowFailed',
+            },
+            {
+              actions: model.assign({
+                error: () => 'none of the selected VC has image',
+              }),
               target: 'showError',
             },
           ],
@@ -393,6 +442,11 @@ export const openID4VPMachine = model.createMachine(
           ],
           CANCEL: [
             {
+              cond: 'isAuthorizationFlow',
+              actions: 'resetIsShareWithSelfie',
+              target: 'selectingVCs',
+            },
+            {
               cond: 'isSimpleOpenID4VPShare',
               actions: 'resetIsShareWithSelfie',
               target: 'selectingVCs',
@@ -407,6 +461,19 @@ export const openID4VPMachine = model.createMachine(
         on: {
           DISMISS: [
             {
+              cond: 'isAuthorizationFlow',
+              actions: [
+                model.assign({error: () => 'face verification failed'}),
+                () => console.log("aith flow face fail"),
+                sendParent(ctx => ({
+                  type: 'SHOW_ERROR',
+                  error: ctx.error,
+                  source: 'OpenID4VP',
+                })),
+              ],
+              target: 'selectingVCs',
+            },
+            {
               cond: 'isSimpleOpenID4VPShare',
               actions: 'resetIsFaceVerificationRetryAttempt',
               target: 'selectingVCs',
@@ -418,6 +485,7 @@ export const openID4VPMachine = model.createMachine(
               ],
             },
           ],
+
           RETRY_VERIFICATION: {
             target: 'verifyingIdentity',
           },
@@ -468,22 +536,24 @@ export const openID4VPMachine = model.createMachine(
                       () => console.debug('3177: VP constructed successfully'),
                     ],
                   },
-                  onError: {
-                    actions: [
-                      (_, event) =>
-                        console.error(
-                          '3177: Error in constructing VP: ',
-                          event.data,
-                        ),
-                      send({
-                        type: 'LOG_ACTIVITY',
-                        logType: 'RETRY_ATTEMPT_FAILED',
-                      }),
-                      'setConstructVPError',
-                      sendParent('SHOW_ERROR'),
-                    ],
-                    target: '#OpenID4VP.showError',
-                  },
+                  onError: [
+                    {
+                      cond: 'isAuthorizationFlow',
+                      actions: 'setConstructVPError',
+                      target: '#OpenID4VP.authFlowFailed',
+                    },
+                    {
+                      actions: [
+                        send({
+                          type: 'LOG_ACTIVITY',
+                          logType: 'RETRY_ATTEMPT_FAILED',
+                        }),
+                        'setConstructVPError',
+                        sendParent('SHOW_ERROR'),
+                      ],
+                      target: '#OpenID4VP.showError',
+                    },
+                  ],
                 },
               },
               signVP: {
@@ -499,15 +569,17 @@ export const openID4VPMachine = model.createMachine(
                       ),
                     ],
                   },
-                  onError: {
-                    actions: [
-                      (_, event) =>
-                        console.debug('3177: VP signed failed ', event),
-                      'setSignVPError',
-                      sendParent('SHOW_ERROR'),
-                    ],
-                    target: '#showError',
-                  },
+                  onError: [
+                    {
+                      cond: 'isAuthorizationFlow',
+                      actions: 'setSignVPError',
+                      target: '#OpenID4VP.authFlowFailed',
+                    },
+                    {
+                      actions: ['setSignVPError', sendParent('SHOW_ERROR')],
+                      target: '#showError',
+                    },
+                  ],
                 },
               },
             },
@@ -538,17 +610,24 @@ export const openID4VPMachine = model.createMachine(
                   target: '#success',
                 },
               ],
-              onError: {
-                actions: [
-                  send({
-                    type: 'LOG_ACTIVITY',
-                    logType: 'RETRY_ATTEMPT_FAILED',
-                  }),
-                  'setSendVPShareError',
-                  sendParent('SHOW_ERROR'),
-                ],
-                target: '#showError',
-              },
+              onError: [
+                {
+                  cond: 'isAuthorizationFlow',
+                  actions: 'setSendVPShareError',
+                  target: '#OpenID4VP.authFlowFailed',
+                },
+                {
+                  actions: [
+                    send({
+                      type: 'LOG_ACTIVITY',
+                      logType: 'RETRY_ATTEMPT_FAILED',
+                    }),
+                    'setSendVPShareError',
+                    sendParent('SHOW_ERROR'),
+                  ],
+                  target: '#showError',
+                },
+              ],
             },
             after: {
               SHARING_TIMEOUT: {
@@ -569,7 +648,11 @@ export const openID4VPMachine = model.createMachine(
         },
         after: {
           200: {
-            actions: sendParent('DISMISS'),
+            actions: sendParent(ctx =>
+              ctx.flowType === VCShareFlowType.OPENID4VP_AUTHORIZATION
+                ? {type: 'VP_CONSENT_REJECT'}
+                : {type: 'DISMISS'},
+            ),
           },
         },
       },
@@ -590,6 +673,17 @@ export const openID4VPMachine = model.createMachine(
       },
       success: {
         id: 'success',
+      },
+      authFlowFailed: {
+        entry: [
+          () => console.log('[OpenID4VP] auth flow failed'),
+          sendParent((context) => ({
+            type: 'SHOW_ERROR',
+            source: 'OpenID4VP',
+            error: context.error,
+          })),
+        ],
+        always: 'waitingForData',
       },
     },
   },

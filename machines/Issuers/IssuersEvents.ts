@@ -8,6 +8,7 @@ export const IssuersEvents = {
   COMPLETED: () => ({}),
   TRY_AGAIN: () => ({}),
   RESET_ERROR: () => ({}),
+  SHOW_ERROR:(error: any) => ({error}),
   CHECK_KEY_PAIR: () => ({}),
   CANCEL: () => ({}),
   STORE_RESPONSE: (response?: unknown) => ({response}),
