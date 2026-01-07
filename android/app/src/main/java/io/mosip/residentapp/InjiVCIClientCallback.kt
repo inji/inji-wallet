@@ -35,6 +35,17 @@ object VCIClientCallbackBridge {
         return deferredPresentationRequest!!
     }
 
+    @JvmStatic
+    fun abortPresentationFlow(code: String, message: String) {
+        val ex = RuntimeException("$code: $message")
+
+        deferredPresentationRequest?.completeExceptionally(ex)
+        deferredSignedVPToken?.completeExceptionally(ex)
+
+        deferredPresentationRequest = null
+        deferredSignedVPToken = null
+    }
+
     fun emitPresentationRequest(
             context: ReactApplicationContext,
             presentationRequest: AuthorizationRequest

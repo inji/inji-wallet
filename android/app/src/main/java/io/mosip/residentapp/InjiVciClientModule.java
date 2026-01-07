@@ -21,6 +21,7 @@ import io.mosip.vciclient.credential.response.CredentialResponse;
 import io.mosip.vciclient.token.TokenResponse;
 
 public class InjiVciClientModule extends ReactContextBaseJavaModule {
+
     private static final String TAG = "InjiVciClientModule";
     private static final Gson GSON = new Gson();
     private VCIClient vciClient;
@@ -106,8 +107,8 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
             try {
                 ClientMetadata clientMetadata = GSON.fromJson(
                         clientMetadataJson, ClientMetadata.class);
-                CredentialResponse response =
-                        VCIClientBridge.requestCredentialByOfferSync(
+                CredentialResponse response
+                        = VCIClientBridge.requestCredentialByOfferSync(
                                 vciClient,
                                 credentialOffer,
                                 clientMetadata
@@ -130,8 +131,8 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
                 ClientMetadata clientMetadata = GSON.fromJson(
                         clientMetadataJson, ClientMetadata.class);
 
-                CredentialResponse response =
-                        VCIClientBridge.requestCredentialFromTrustedIssuerSync(
+                CredentialResponse response
+                        = VCIClientBridge.requestCredentialFromTrustedIssuerSync(
                                 vciClient,
                                 credentialIssuer,
                                 credentialConfigurationId,
@@ -147,5 +148,11 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
                 });
             }
         }).start();
+
+    }
+
+    @ReactMethod
+    public void abortPresentationFlowFromJS(String code, String message) {
+        VCIClientCallbackBridge.abortPresentationFlow(code, message);
     }
 }
