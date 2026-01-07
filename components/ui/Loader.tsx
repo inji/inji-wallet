@@ -7,12 +7,15 @@ import {LoaderAnimation} from './LoaderAnimation';
 import {Modal} from './Modal';
 import {BannerNotification} from '../../components/BannerNotification';
 import {BannerStatusType} from '../../components/BannerNotification';
+import testIDProps from '../../shared/commonUtil';
 
-export const LoaderSkeleton: React.FC<{children?: React.ReactNode}> = ({
-  children = null,
-}) => {
+export const LoaderSkeleton: React.FC<{
+  children?: React.ReactNode;
+  testID: string;
+}> = ({testID, children = null}) => {
   return (
     <Centered
+      {...testIDProps(`loader-skeleton-${testID}`)}
       style={{backgroundColor: Theme.Colors.whiteBackgroundColor}}
       crossAlign="center"
       fill>
@@ -51,7 +54,7 @@ export const Loader: React.FC<LoaderProps> = ({
 
   function loaderContent() {
     return (
-      <LoaderSkeleton>
+      <LoaderSkeleton testID={'loader-content'}>
         {(isHintVisible || onCancel) && (
           <Column style={Theme.SelectVcOverlayStyles.timeoutHintContainer}>
             {hint && (

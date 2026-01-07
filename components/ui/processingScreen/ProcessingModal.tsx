@@ -1,31 +1,40 @@
 import React from 'react';
-import {Dimensions, SafeAreaView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Text} from '../Text';
 import {Modal} from '../Modal';
 import {Button} from '../Button';
 import {SvgImage} from '../svg';
 import {Theme} from '../styleUtils';
+import testIDProps from '../../../shared/commonUtil';
 
 const injiLogoGif = require('../../../assets/gif/logo.gif');
-
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 
 export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
   label,
   completed,
+  testID,
 }) => {
   return (
-    <View style={styles.progressRow}>
-      <View style={styles.progressIcon}>{SvgImage.circleArrowRight()}</View>
+    <View
+      style={styles.progressRow}
+      {...testIDProps(`progress-indicator-${testID}`)}>
+      <View
+        style={styles.progressIcon}
+        {...testIDProps(`${testID}-circle-arrow-right`)}>
+        {SvgImage.circleArrowRight()}
+      </View>
       <Text
         size="small"
         weight={'semibold'}
         color={styles.progressText.color}
-        style={styles.progressText}>
+        style={styles.progressText}
+        {...testIDProps(`${testID}-label`)}>
         {label}
       </Text>
-      <View style={styles.progressCheck}>
+      <View
+        style={styles.progressCheck}
+        {...testIDProps(`${testID}-${completed ? 'done' : 'undone'}-icon`)}>
         {SvgImage.doneIcon(
           completed ? Theme.Colors.VerifiedIcon : Theme.Colors.disabled,
         )}
@@ -37,6 +46,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
 export interface ProgressIndicatorProps {
   label: string;
   completed: boolean;
+  testID: string;
 }
 
 export const ProcessingModal: React.FC<ProcessingScreenProps> = ({
@@ -45,6 +55,7 @@ export const ProcessingModal: React.FC<ProcessingScreenProps> = ({
   progressSteps,
   action,
   isVisible,
+  testID,
 }) => {
   return (
     <Modal isVisible={isVisible} showHeader={false} modalStyle={styles.modalBg}>
@@ -52,17 +63,28 @@ export const ProcessingModal: React.FC<ProcessingScreenProps> = ({
         <View style={styles.cardWrapper}>
           <View style={styles.card}>
             <FastImage
+              testID={`inji-logo-gif-${testID}`}
               source={injiLogoGif}
               style={styles.logo}
               resizeMode="contain"
             />
-            <Text weight={'bold'} size={'large'} style={styles.title}>
+            <Text
+              weight={'bold'}
+              size={'large'}
+              style={styles.title}
+              testID={`${testID}-title`}>
               {title}
             </Text>
-            <Text size={'small'} weight={'extraLight'} style={styles.subTitle}>
+            <Text
+              size={'small'}
+              weight={'extraLight'}
+              style={styles.subTitle}
+              testID={`${testID}-subtitle`}>
               {subTitle}
             </Text>
-            <View style={styles.progressContainer}>
+            <View
+              style={styles.progressContainer}
+              {...testIDProps(`progress-steps-${testID}`)}>
               {progressSteps.map((progressStep, idx) => (
                 <React.Fragment key={idx}>{progressStep}</React.Fragment>
               ))}
@@ -81,81 +103,7 @@ export interface ProcessingScreenProps {
   progressSteps: React.ReactElement<typeof ProgressIndicator>[];
   action: React.ReactElement<typeof Button>;
   isVisible: boolean;
+  testID: string;
 }
 
-const CARD_WIDTH = Math.min(SCREEN_WIDTH * 0.8, 340);
-const CARD_PADDING = SCREEN_HEIGHT * 0.03;
-const CARD_MARGIN_HORIZONTAL = 40;
-
-const styles = StyleSheet.create({
-  modalBg: {
-    backgroundColor: '#F5F5F5',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5',
-  },
-  cardWrapper: {
-    flex: 1,
-    top: 160,
-    alignItems: 'center',
-    width: '100%',
-    marginTop: 0,
-    marginBottom: 80,
-  },
-  card: {
-    width: CARD_WIDTH,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    alignItems: 'center',
-    paddingVertical: CARD_PADDING,
-    marginHorizontal: CARD_MARGIN_HORIZONTAL,
-    shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 1,
-  },
-  logo: {
-    width: CARD_WIDTH * 0.7,
-    height: CARD_WIDTH * 0.55,
-    marginBottom: -5,
-  },
-  title: {
-    marginTop: 0,
-    marginBottom: 6,
-    textAlign: 'center',
-  },
-  subTitle: {
-    color: '#888',
-    marginBottom: SCREEN_HEIGHT * 0.025,
-    textAlign: 'center',
-  },
-  progressContainer: {
-    width: '100%',
-    marginTop: 7,
-    marginBottom: 0,
-    paddingHorizontal: CARD_WIDTH * 0.15,
-  },
-  progressRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  progressIcon: {
-    marginRight: 8,
-  },
-  progressText: {
-    flex: 1,
-    color: '#B0B0B0',
-    fontWeight: '400',
-  },
-  progressCheck: {
-    marginLeft: 8,
-  },
-  actionWrapper: {
-    flex: 1,
-    position: 'absolute',
-    bottom: 62,
-  },
-});
+const styles = Theme.ProcessingModalStyles;
