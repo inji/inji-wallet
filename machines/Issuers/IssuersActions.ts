@@ -480,10 +480,20 @@ export const IssuersActions = (model: any) => {
         ),
       );
     },
+
     sendImpressionEvent: () => {
       sendImpressionEvent(
         getImpressionEventData(
           TelemetryConstants.FlowType.vcDownload,
+          TelemetryConstants.Screens.issuerList,
+        ),
+      );
+    },
+
+    sendPresentationAuthorizationImpressionEvent: () => {
+      sendImpressionEvent(
+        getImpressionEventData(
+          TelemetryConstants.FlowType.presentationAuthorizationForVcDownload,
           TelemetryConstants.Screens.issuerList,
         ),
       );
