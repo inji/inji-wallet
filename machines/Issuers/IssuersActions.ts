@@ -68,6 +68,9 @@ export const IssuersActions = (model: any) => {
     setLoadingReasonAsDownloadingCredentials: model.assign({
       loadingReason: 'downloadingCredentials',
     }),
+    setLoadingReasonAsPreparingRequest: model.assign({
+      loadingReason: 'preparingRequest',
+    }),
     setLoadingReasonAsSettingUp: model.assign({
       loadingReason: 'settingUp',
     }),
