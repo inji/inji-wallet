@@ -38,6 +38,9 @@ RCT_EXTERN_METHOD(
   sendVPTokenSigningResultFromJS:(NSDictionary *)vpTokenSigningResult // send VP token signing result back to native side (in response to onRequestSignedVPToken
 )
 
+RCT_EXTERN_METHOD(abortPresentationFlowFromJS:(NSString *)code
+                  message:(NSString *)message)
+
 // Sends tx_code back to native side (in response to onRequestTxCode)
 RCT_EXTERN_METHOD(sendTxCodeFromJS:(NSString *)txCode)
 
