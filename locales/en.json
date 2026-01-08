@@ -234,10 +234,12 @@
     "loaders": {
       "processing": "Processing...",
       "loading": "Loading...",
+      "preparingRequest": "Preparing your request",
       "subTitle": {
         "displayIssuers": "Fetching Issuers",
         "settingUp": "Setting up",
         "downloadingCredentials": "Downloading Credentials",
+        "preparingRequest": "Please wait while we load the details",
         "inProgress": "This will only take a moment"
       },
       "progressIndicators": {

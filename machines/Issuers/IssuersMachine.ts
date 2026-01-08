@@ -102,7 +102,7 @@ export const IssuersMachine = model.createMachine(
         description: 'waits for the user to scan the QR code',
         on: {
           QR_CODE_SCANNED: {
-            actions: ['setLoadingReasonAsDownloadingCredentials', 'setQrData'],
+            actions: ['setLoadingReasonAsPreparingRequest', 'setQrData'],
             target: 'credentialDownloadFromOffer',
           },
           CANCEL: {
@@ -147,7 +147,10 @@ export const IssuersMachine = model.createMachine(
             target: '.presentationAuthorization',
           },
           TOKEN_REQUEST: {
-            actions: ['setTokenRequestObject'],
+            actions: [
+              'setTokenRequestObject',
+              'setLoadingReasonAsDownloadingCredentials',
+            ],
             target: '.tokenRequest',
           },
           PROOF_REQUEST: {
@@ -164,6 +167,7 @@ export const IssuersMachine = model.createMachine(
                 authEndpointToOpen: () => true,
                 authEndpoint: (_, event) => event.authEndpoint,
               }),
+              'setLoadingReasonAsDownloadingCredentials',
             ],
           },
           TX_CODE_REQUEST: {
@@ -239,7 +243,6 @@ export const IssuersMachine = model.createMachine(
                         to: (context: any) => context.OpenId4VPRef,
                       },
                     ),
-
                   ],
                 },
               ],
@@ -268,8 +271,7 @@ export const IssuersMachine = model.createMachine(
                 ],
               },
               inProgress: {
-                on: {
-                },
+                on: {},
               },
               timeout: {
                 on: {
@@ -280,7 +282,7 @@ export const IssuersMachine = model.createMachine(
                     {
                       cond: 'isFlowTypeSimpleShare',
                       actions: 'resetOpenID4VPFlowType',
-                    }, 
+                    },
                   ],
                   RETRY: [
                     {
@@ -616,7 +618,7 @@ export const IssuersMachine = model.createMachine(
       },
 
       downloadCredentials: {
-        entry: ['setLoadingReasonAsDownloadingCredentials'],
+        entry: ['setLoadingReasonAsPreparingRequest'],
         invoke: {
           src: 'downloadCredential',
           onDone: {
@@ -659,6 +661,7 @@ export const IssuersMachine = model.createMachine(
                 authEndpointToOpen: () => true,
                 authEndpoint: (_, event) => event.authEndpoint,
               }),
+              'setLoadingReasonAsDownloadingCredentials',
             ],
           },
           TOKEN_REQUEST: {

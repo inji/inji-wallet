@@ -395,7 +395,11 @@ export const IssuersScreen: React.FC<
           />
         ) : (
           <Loader
-            title={t('loaders.loading')}
+            title={
+              controller.loadingReason === 'preparingRequest'
+                ? t('loaders.preparingRequest')
+                : t('loaders.loading')
+            }
             subTitle={t(`loaders.subTitle.${controller.loadingReason}`)}
           />
         )}
