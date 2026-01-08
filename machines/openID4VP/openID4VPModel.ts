@@ -90,6 +90,7 @@ export const openID4VPModel = createModel(
     isOVPViaDeepLink: false,
     showTrustConsentModal: false as boolean,
     unsignedVPToken: {} as object,
+    hasNoMatchingVCs: false as boolean,
   },
   {events: openID4VPEvents},
 );
