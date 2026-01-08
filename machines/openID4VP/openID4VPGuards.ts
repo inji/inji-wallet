@@ -39,5 +39,13 @@ export const openID4VPGuards = () => {
       context.isFaceVerificationRetryAttempt,
 
     isClientValidationRequred: (_, event) => event.data,
+
+    hasNoMatchingVCsAndIsAuthorizationFlow: (context: any) => {
+      const noMatchingVCs = context.hasNoMatchingVCs;
+      return (
+        noMatchingVCs &&
+        context.flowType === VCShareFlowType.OPENID4VP_AUTHORIZATION
+      );
+    },
   };
 };

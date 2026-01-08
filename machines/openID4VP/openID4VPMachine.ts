@@ -7,6 +7,7 @@ import {openID4VPGuards} from './openID4VPGuards';
 import {send, sendParent} from 'xstate/lib/actions';
 import {IssuersModel} from '../Issuers/IssuersModel';
 import {parseJSON, VCShareFlowType} from '../../shared/Utils';
+import {check} from 'react-native-permissions';
 
 const model = openID4VPModel;
 
@@ -239,19 +240,38 @@ export const openID4VPMachine = model.createMachine(
       getVCsSatisfyingAuthRequest: {
         entry: ['dismissTrustModal'],
         on: {
-          DOWNLOADED_VCS: [
-            {
-              cond: 'isSimpleOpenID4VPShare',
-              actions: 'getVcsMatchingAuthRequest',
-              target: 'selectingVCs',
-            },
-            {
-              actions: 'getVcsMatchingAuthRequest',
-              target: 'setSelectedVC',
-            },
-          ],
+          DOWNLOADED_VCS: {
+            actions: 'getVcsMatchingAuthRequest',
+            target: 'checkIfAnyMatchingVCs',
+          },
         },
       },
+
+      checkIfAnyMatchingVCs: {
+        always: [
+          {
+            cond: 'hasNoMatchingVCsAndIsAuthorizationFlow',
+            target: 'noMatchingVCs',
+          },
+          {
+            cond: 'isSimpleOpenID4VPShare',
+            target: 'selectingVCs',
+          },
+          {
+            target: 'setSelectedVC',
+          },
+        ],
+      },
+
+      noMatchingVCs: {
+        entry: [
+          model.assign({
+            error: () => 'No matching VCs satisfying the request',
+          }),
+        ],
+        always: [{target: 'authFlowFailed'}],
+      },
+
       setSelectedVC: {
         entry: send('SET_SELECTED_VC'),
         on: {
@@ -464,7 +484,7 @@ export const openID4VPMachine = model.createMachine(
               cond: 'isAuthorizationFlow',
               actions: [
                 model.assign({error: () => 'face verification failed'}),
-                () => console.log("aith flow face fail"),
+                () => console.log('aith flow face fail'),
                 sendParent(ctx => ({
                   type: 'SHOW_ERROR',
                   error: ctx.error,
@@ -677,7 +697,7 @@ export const openID4VPMachine = model.createMachine(
       authFlowFailed: {
         entry: [
           () => console.log('[OpenID4VP] auth flow failed'),
-          sendParent((context) => ({
+          sendParent(context => ({
             type: 'SHOW_ERROR',
             source: 'OpenID4VP',
             error: context.error,

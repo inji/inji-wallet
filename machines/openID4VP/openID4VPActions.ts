@@ -57,6 +57,9 @@ export const openID4VPActions = (model: any) => {
         const pd = response['presentation_definition'];
         return pd.purpose ?? '';
       },
+
+      hasNoMatchingVCs: () =>
+        !result.matchingVCs || Object.keys(result.matchingVCs).length === 0,
     }),
 
     setSelectedVCs: model.assign({
