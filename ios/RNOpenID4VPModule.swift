@@ -108,16 +108,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
                            resolver resolve: @escaping RCTPromiseResolveBlock,
                            rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
-      let exception: OpenID4VPException = {
-        switch errorCode {
-        case OpenID4VPErrorCodes.accessDenied:
-          return AccessDenied(message: error, className: Self.moduleName())
-        case OpenID4VPErrorCodes.invalidTransactionData:
-          return InvalidTransactionData(message: error, className: Self.moduleName())
-        default:
-          return GenericFailure(message: error, className: Self.moduleName())
-        }
-      }()
+      let exception: OpenID4VPException = OVPUtils.convertToOpenID4VPException(errorCode: errorCode, error: error, moduleName: Self.moduleName())
       
       do {
         let verifierResponse = try await openID4VP?.sendErrorInfoToVerifier(error: exception)

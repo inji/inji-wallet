@@ -92,6 +92,17 @@ class OVPUtils: NSObject {
     
     return formattedVPTokenSigningResults
   }
+  
+  static func convertToOpenID4VPException(errorCode: String, error: String, moduleName: String) -> OpenID4VPException {
+      switch errorCode {
+      case OpenID4VPErrorCodes.accessDenied:
+        return AccessDenied(message: error, className: moduleName)
+      case OpenID4VPErrorCodes.invalidTransactionData:
+        return InvalidTransactionData(message: error, className: moduleName)
+      default:
+        return GenericFailure(message: error, className: moduleName)
+      }
+  }
 }
 
 struct ParseError: Error {
