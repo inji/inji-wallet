@@ -22,7 +22,12 @@ import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.ldp.L
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.DeviceAuthentication;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.MdocVPTokenSigningResult;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.sdJwt.SdJwtVPTokenSigningResult;
+
+import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
 import io.mosip.openID4VP.constants.FormatType;
+
+import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
+import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
 
 public class OVPUtils {
   public static Map<String, Map<FormatType, List<Object>>> parseSelectedVCs(ReadableMap selectedVCs) {
@@ -82,7 +87,8 @@ public class OVPUtils {
     return formattedMetadata;
   }
 
-  private static List<Object> convertReadableArrayToListOfCredential(FormatType formatType, ReadableArray credentialList) {
+  private static List<Object> convertReadableArrayToListOfCredential(FormatType formatType,
+      ReadableArray credentialList) {
     switch (formatType) {
       case LDP_VC: {
         List<Object> ldpVcList = new ArrayList<>();
@@ -153,8 +159,8 @@ public class OVPUtils {
             String signature = requireNonNullString(deviceAuthenticationMap, "signature");
             String algorithm = requireNonNullString(deviceAuthenticationMap, "mdocAuthenticationAlgorithm");
             DeviceAuthentication deviceAuthentication = new DeviceAuthentication(
-              signature = signature,
-              algorithm = algorithm);
+                signature = signature,
+                algorithm = algorithm);
             signatureData.put(docType, deviceAuthentication);
           }
         }
@@ -181,5 +187,21 @@ public class OVPUtils {
   private static String requireNonNullString(ReadableMap map, String key) {
     String value = map.getString(key);
     return Objects.requireNonNull(value, key + " cannot be null");
+  }
+
+  public static OpenID4VPExceptions convertToOpenID4VPException(
+      String errorCode,
+      String message,
+      String moduleName) {
+    switch (errorCode) {
+      case ACCESS_DENIED:
+        return new OpenID4VPExceptions.AccessDenied(message, moduleName);
+
+      case INVALID_TRANSACTION_DATA:
+        return new OpenID4VPExceptions.InvalidTransactionData(message, moduleName);
+
+      default:
+        return new OpenID4VPExceptions.GenericFailure(message, moduleName);
+    }
   }
 }

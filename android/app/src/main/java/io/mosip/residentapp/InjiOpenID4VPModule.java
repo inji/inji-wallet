@@ -63,6 +63,8 @@ import io.mosip.openID4VP.constants.ResponseType;
 import io.mosip.openID4VP.constants.VPFormatType;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
 import io.mosip.residentapp.Utils.FormatConverter;
+import io.mosip.residentapp.Utils.*;
+
 
 public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     private static final String TAG = "InjiOpenID4VPModule";
@@ -158,24 +160,15 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendErrorToVerifier(String errorMessage, String errorCode, Promise promise) {
         try {
-            OpenID4VPExceptions exception;
-
-            switch (errorCode) {
-                case ACCESS_DENIED:
-                    exception = new OpenID4VPExceptions.AccessDenied(errorMessage, "InjiOpenID4VPModule");
-                    break;
-                case INVALID_TRANSACTION_DATA:
-                    exception = new OpenID4VPExceptions.InvalidTransactionData(errorMessage, "InjiOpenID4VPModule");
-                    break;
-                default:
-                    exception = new OpenID4VPExceptions.GenericFailure(errorMessage, "InjiOpenID4VPModule");
-                    break;
-            }
+            OpenID4VPExceptions exception = OVPUtils.convertToOpenID4VPException(
+                    errorCode,
+                    errorMessage,
+                    MODULE_NAME);
 
             VerifierResponse verifierResponse = openID4VP.sendErrorInfoToVerifier(exception);
-            String verifierResponseJson = gson.toJson(verifierResponse, VerifierResponse.class);
 
-            promise.resolve(verifierResponseJson);
+            promise.resolve(gson.toJson(verifierResponse, VerifierResponse.class));
+
         } catch (Exception exception) {
             rejectWithOpenID4VPExceptions(exception, promise);
         }
@@ -235,7 +228,8 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             ReadableMap formatMap = vpFormatsMap.getMap(key);
             if (formatMap != null && formatMap.hasKey("alg_values_supported")) {
                 ReadableArray algArray = formatMap.getArray("alg_values_supported");
-                List<String> algValuesList = algArray != null ? FormatConverter.convertReadableArrayToList(algArray) : null;
+                List<String> algValuesList = algArray != null ? FormatConverter.convertReadableArrayToList(algArray)
+                        : null;
                 vpFormatsSupportedMap.put(VPFormatType.Companion.fromValue(key), new VPFormatSupported(algValuesList));
             }
         }
@@ -257,7 +251,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                     e.printStackTrace();
                 }
             }
-            if(verifierMap.hasKey("allow_unsigned_request")){
+            if (verifierMap.hasKey("allow_unsigned_request")) {
                 boolean allowUnsignedRequest = verifierMap.getBoolean("allow_unsigned_request");
                 verifiers.add(new Verifier(clientId, responseUriList, jwksUri, allowUnsignedRequest));
                 continue;
@@ -336,7 +330,6 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         }
         return jsonArray;
     }
-
 
     private FormatType getFormatType(String formatStr) {
         if (LDP_VC.getValue().equals(formatStr)) {

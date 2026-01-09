@@ -6,6 +6,7 @@ import {IssuersGuards} from './IssuersGuards';
 import {CredentialTypes} from '../VerifiableCredential/VCMetaMachine/vc';
 import {OpenID4VPEvents, openID4VPMachine} from '../openID4VP/openID4VPMachine';
 import VciClient from '../../shared/vciClient/VciClient';
+import {OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../../shared/constants';
 
 const model = IssuersModel;
 
@@ -136,9 +137,6 @@ export const IssuersMachine = model.createMachine(
         on: {
           PRESENTATION_REQUEST: {
             actions: [
-              //{"presentationRequest": {"client_id": "redirect_uri:https://example.com/iar/callback", "nonce": "e6562d6dfc8f6fc2", "presentation_definition": {"format": [Object], "id": "vp token example", "input_descriptors": [Array], "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication"}, "response_mode": "iar_post", "response_type": "vp_token", "response_uri": "https://example.com/iar/callback"}, "type": "PRESENTATION_REQUEST"}
-              (_, event) =>
-                console.debug('RECEIVED PRESENTATION_REQUEST EVENT:', event),
               'sendPresentationAuthorizationImpressionEvent',
               'setOpenId4VPRef',
               'setAuthorizationTypeAsPresentation',
@@ -186,13 +184,6 @@ export const IssuersMachine = model.createMachine(
         states: {
           idle: {},
           presentationAuthorization: {
-            entry: [
-              (_, event) =>
-                console.debug(
-                  'Entered presentationAuthorization state in IssuersMachine',
-                  JSON.stringify(event, null, 2),
-                ),
-            ],
             invoke: {
               id: 'OpenId4VP',
               src: openID4VPMachine,
@@ -209,33 +200,27 @@ export const IssuersMachine = model.createMachine(
               VP_CONSENT_REJECT: [
                 {
                   actions: [
-                    () => console.log('vp consent reject'),
+                    () => console.debug('vp consent rejected'),
                     () =>
                       VciClient.getInstance().abortPresentationFlow({
-                        code: 'VP_CONSENT_REJECTED',
-                        message: 'User rejected presentation consent',
+                        code: OVP_ERROR_CODE.DECLINED,
+                        message: OVP_ERROR_MESSAGES.DECLINED,
                       }),
                   ],
                 },
               ],
               SHOW_ERROR: {
                 actions: [
-                  () =>
+                  (_, event) =>
                     VciClient.getInstance().abortPresentationFlow({
-                      code: 'VP_CONSENT_REJECTED',
-                      message: 'User rejected presentation consent',
+                      code: 'PRESENTATION_AUTHORIZATION_ERROR',
+                      message: event.error,
                     }),
                 ],
               },
               SIGN_PRESENTATION: [
                 {
                   actions: [
-                    (_, event) =>
-                      //{"presentationRequest": "{\"LDP_VC\":{\"dataToSign\":\"GJaCHvGSZev7bW1Q5g8Nl3IIB9gimTSf0unZGtoOtOaANAU-OJPOePA4Owp8MXlb0NQLmXy_k3iVRKLtlQl1xQ\"}}", "type": "SIGN_PRESENTATION"}
-                      console.debug(
-                        'SIGN_PRESENTATION EVENT RECEIVED IN ISSUERS MACHINE:',
-                        event,
-                      ),
                     send(
                       (_, event) =>
                         OpenID4VPEvents.SIGN_VP(event.presentationRequest),
@@ -248,15 +233,7 @@ export const IssuersMachine = model.createMachine(
               ],
               SIGNED_DATA_FOR_VP: [
                 {
-                  actions: [
-                    // {"signedVPToken": {"data": {"ldp_vc": [Object]}, "toString": [Function anonymous], "type": "done.invoke.signVP:invocation[0]"}, "type": "SIGNED_DATA_FOR_VP"}
-                    (_, event) =>
-                      console.debug(
-                        'SIGNED_DATA_FOR_VP EVENT RECEIVED IN ISSUERS MACHINE:',
-                        event,
-                      ),
-                    'sendSignedVP',
-                  ],
+                  actions: ['sendSignedVP'],
                   target: '.success',
                 },
               ],
@@ -660,9 +637,6 @@ export const IssuersMachine = model.createMachine(
         on: {
           PRESENTATION_REQUEST: {
             actions: [
-              //{"presentationRequest": {"client_id": "redirect_uri:https://example.com/iar/callback", "nonce": "e6562d6dfc8f6fc2", "presentation_definition": {"format": [Object], "id": "vp token example", "input_descriptors": [Array], "purpose": "Relying party is requesting your digital ID for the purpose of Self-Authentication"}, "response_mode": "iar_post", "response_type": "vp_token", "response_uri": "https://example.com/iar/callback"}, "type": "PRESENTATION_REQUEST"}
-              (_, event) =>
-                console.debug('RECEIVED PRESENTATION_REQUEST EVENT:', event),
               'sendPresentationAuthorizationImpressionEvent',
               'setAuthorizationTypeAsPresentation',
               'setOpenId4VPRef',
@@ -711,18 +685,14 @@ export const IssuersMachine = model.createMachine(
               IN_PROGRESS: {
                 target: '.inProgress',
               },
-              // TIMEOUT: {
-              //   target: '.timeout',
-              // },
-              //TODO: is it required to have separate events for consent reject and dismiss?
               VP_CONSENT_REJECT: [
                 {
                   actions: [
-                    () => console.log('vp consent reject'),
+                    () => console.debug('vp consent reject'),
                     () =>
                       VciClient.getInstance().abortPresentationFlow({
-                        code: 'VP_CONSENT_REJECTED',
-                        message: 'User rejected presentation consent',
+                        code: OVP_ERROR_CODE.DECLINED,
+                        message: OVP_ERROR_MESSAGES.DECLINED,
                       }),
                   ],
                 },
@@ -730,12 +700,6 @@ export const IssuersMachine = model.createMachine(
               SIGN_PRESENTATION: [
                 {
                   actions: [
-                    (_, event) =>
-                      //{"presentationRequest": "{\"LDP_VC\":{\"dataToSign\":\"GJaCHvGSZev7bW1Q5g8Nl3IIB9gimTSf0unZGtoOtOaANAU-OJPOePA4Owp8MXlb0NQLmXy_k3iVRKLtlQl1xQ\"}}", "type": "SIGN_PRESENTATION"}
-                      console.debug(
-                        'SIGN_PRESENTATION EVENT RECEIVED IN ISSUERS MACHINE:',
-                        event,
-                      ),
                     send(
                       (_, event) =>
                         OpenID4VPEvents.SIGN_VP(event.presentationRequest),
@@ -743,31 +707,21 @@ export const IssuersMachine = model.createMachine(
                         to: (context: any) => context.OpenId4VPRef,
                       },
                     ),
-                    // (context, event) => send( { type: 'SIGN_VP', value: event.presentationRequest }, {to: context.OpenId4VPRef,}),
-                    // 'setSignedPresentation',
                   ],
                 },
               ],
               SIGNED_DATA_FOR_VP: [
                 {
-                  actions: [
-                    // {"signedVPToken": {"data": {"ldp_vc": [Object]}, "toString": [Function anonymous], "type": "done.invoke.signVP:invocation[0]"}, "type": "SIGNED_DATA_FOR_VP"}
-                    (_, event) =>
-                      console.debug(
-                        'SIGNED_DATA_FOR_VP EVENT RECEIVED IN ISSUERS MACHINE:',
-                        event,
-                      ),
-                    'sendSignedVP',
-                  ],
+                  actions: ['sendSignedVP'],
                   target: '.success',
                 },
               ],
               SHOW_ERROR: {
                 actions: [
-                  () =>
+                  (_, event) =>
                     VciClient.getInstance().abortPresentationFlow({
-                      code: 'VP_CONSENT_REJECTED',
-                      message: 'User rejected presentation consent',
+                      code: 'PRESENTATION_AUTHORIZATION_ERROR',
+                      message: event.error,
                     }),
                 ],
               },
@@ -783,18 +737,7 @@ export const IssuersMachine = model.createMachine(
               },
               showError: {},
               inProgress: {
-                on: {
-                  // CANCEL: [
-                  //   {
-                  //     cond: 'isFlowTypeSimpleShare',
-                  //     actions: 'resetOpenID4VPFlowType',
-                  //     target: '#scan.checkStorage',
-                  //   },
-                  //   {
-                  //     target: '#scan.checkStorage',
-                  //   },
-                  // ],
-                },
+                on: {},
               },
               timeout: {
                 on: {
@@ -805,20 +748,12 @@ export const IssuersMachine = model.createMachine(
                     {
                       cond: 'isFlowTypeSimpleShare',
                       actions: 'resetOpenID4VPFlowType',
-                      // target: '#scan.checkStorage',
-                    },
-                    {
-                      // target: '#scan.checkStorage',
                     },
                   ],
                   RETRY: [
                     {
                       cond: 'isFlowTypeSimpleShare',
                       actions: 'resetOpenID4VPFlowType',
-                      // target: '#scan.checkStorage',
-                    },
-                    {
-                      // target: '#scan.checkStorage',
                     },
                   ],
                 },
@@ -1080,19 +1015,11 @@ export const IssuersMachine = model.createMachine(
             after: [
               {
                 delay: 5000,
-                actions: () =>
-                  console.debug(
-                    'Auto transitioning to redirect state after showing success message',
-                  ),
                 target: '#done',
               },
             ],
           },
           redirect: {
-            actions: () =>
-              console.debug(
-                'Direct transitioning to redirect state after showing success message',
-              ),
             type: '#done',
           },
         },

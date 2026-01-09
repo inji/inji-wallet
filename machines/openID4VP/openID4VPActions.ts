@@ -62,6 +62,10 @@ export const openID4VPActions = (model: any) => {
         !result.matchingVCs || Object.keys(result.matchingVCs).length === 0,
     }),
 
+    setAuthenticationResponseForPresentationAuthFlow: model.assign({
+      authenticationResponse: (context, _) => context.presentationRequest,
+    }),
+
     setSelectedVCs: model.assign({
       selectedVCs: (_, event) => event.selectedVCs,
       selectedDisclosuresByVc: (_, event) => event.selectedDisclosuresByVc,

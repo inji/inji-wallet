@@ -7,7 +7,7 @@ import {openID4VPGuards} from './openID4VPGuards';
 import {send, sendParent} from 'xstate/lib/actions';
 import {IssuersModel} from '../Issuers/IssuersModel';
 import {parseJSON, VCShareFlowType} from '../../shared/Utils';
-import {check} from 'react-native-permissions';
+import {OVP_ERROR_MESSAGES} from '../../shared/constants';
 
 const model = openID4VPModel;
 
@@ -126,10 +126,7 @@ export const openID4VPMachine = model.createMachine(
             {
               cond: 'isAuthorizationFlow',
               actions: [
-                model.assign({
-                  authenticationResponse: (context, _) =>
-                    context.presentationRequest,
-                }),
+                'setAuthenticationResponseForPresentationAuthFlow',
                 'resetIsShowLoadingScreen',
               ],
               target: 'checkVerifierTrust',
@@ -269,7 +266,7 @@ export const openID4VPMachine = model.createMachine(
       noMatchingVCs: {
         entry: [
           model.assign({
-            error: () => 'No matching VCs satisfying the request',
+            error: () => OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
           }),
         ],
         always: [{target: 'authFlowFailed'}],
@@ -306,7 +303,6 @@ export const openID4VPMachine = model.createMachine(
             },
             {
               actions: [
-                () => console.log('normal flow cred error'),
                 model.assign({
                   error: () => 'credential mismatch detected',
                 }),
@@ -487,7 +483,6 @@ export const openID4VPMachine = model.createMachine(
               cond: 'isAuthorizationFlow',
               actions: [
                 model.assign({error: () => 'face verification failed'}),
-                () => console.log('aith flow face fail'),
                 sendParent(ctx => ({
                   type: 'SHOW_ERROR',
                   error: ctx.error,
@@ -539,13 +534,11 @@ export const openID4VPMachine = model.createMachine(
             initial: 'constructing',
             on: {
               SIGN_VP: {
-                //{"data": "{\"LDP_VC\":{\"dataToSign\":\"xM-qsJdNufrbhx4Y1xc2zHQcQ2MijcuIq6CBxf1JQO_BAeGE7HzR0fg5_WTTjsw8KvUY0rCgEzSLzdLCyU5avw\"}}", "type": "SIGN_VP"}
                 actions: [
-                  (_, event) =>
-                    console.debug('3177: SIGN_DATA event received: ', event),
-                  model.assign({
-                    unsignedVPToken: (_, event) => parseJSON(event.data),
-                  }),
+                  () =>
+                    model.assign({
+                      unsignedVPToken: (_, event) => parseJSON(event.data),
+                    }),
                 ],
                 target: '#signVP',
               },
@@ -554,11 +547,7 @@ export const openID4VPMachine = model.createMachine(
               constructing: {
                 invoke: {
                   src: 'sendSelectedCredentialsForVP',
-                  onDone: {
-                    actions: [
-                      () => console.debug('3177: VP constructed successfully'),
-                    ],
-                  },
+                  onDone: {},
                   onError: [
                     {
                       cond: 'isAuthorizationFlow',
@@ -585,8 +574,6 @@ export const openID4VPMachine = model.createMachine(
                   src: 'signVP',
                   onDone: {
                     actions: [
-                      (_, event) =>
-                        console.debug('3177: VP signed successfully ', event),
                       sendParent((_context, event) =>
                         IssuersModel.events.SIGNED_DATA_FOR_VP(event),
                       ),
@@ -699,7 +686,7 @@ export const openID4VPMachine = model.createMachine(
       },
       authFlowFailed: {
         entry: [
-          () => console.log('[OpenID4VP] auth flow failed'),
+          () => console.debug('OpenID4VP auth flow failed state reached'),
           sendParent(context => ({
             type: 'SHOW_ERROR',
             source: 'OpenID4VP',

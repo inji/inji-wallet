@@ -14,11 +14,18 @@ import com.google.gson.Gson;
 
 import java.util.Map;
 
+import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
+import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
+
 import io.mosip.residentapp.Utils.OVPUtils;
 import io.mosip.vciclient.VCIClient;
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata;
 import io.mosip.vciclient.credential.response.CredentialResponse;
 import io.mosip.vciclient.token.TokenResponse;
+
+import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
+import io.mosip.residentapp.Utils.*;
+
 
 public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
@@ -107,12 +114,10 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
             try {
                 ClientMetadata clientMetadata = GSON.fromJson(
                         clientMetadataJson, ClientMetadata.class);
-                CredentialResponse response
-                        = VCIClientBridge.requestCredentialByOfferSync(
-                                vciClient,
-                                credentialOffer,
-                                clientMetadata
-                        );
+                CredentialResponse response = VCIClientBridge.requestCredentialByOfferSync(
+                        vciClient,
+                        credentialOffer,
+                        clientMetadata);
                 reactContext.runOnUiQueueThread(() -> {
                     promise.resolve(response != null ? response.toJsonString() : null);
                 });
@@ -125,19 +130,18 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void requestCredentialFromTrustedIssuer(String credentialIssuer, String credentialConfigurationId, String clientMetadataJson, Promise promise) {
+    public void requestCredentialFromTrustedIssuer(String credentialIssuer, String credentialConfigurationId,
+            String clientMetadataJson, Promise promise) {
         new Thread(() -> {
             try {
                 ClientMetadata clientMetadata = GSON.fromJson(
                         clientMetadataJson, ClientMetadata.class);
 
-                CredentialResponse response
-                        = VCIClientBridge.requestCredentialFromTrustedIssuerSync(
-                                vciClient,
-                                credentialIssuer,
-                                credentialConfigurationId,
-                                clientMetadata
-                        );
+                CredentialResponse response = VCIClientBridge.requestCredentialFromTrustedIssuerSync(
+                        vciClient,
+                        credentialIssuer,
+                        credentialConfigurationId,
+                        clientMetadata);
 
                 reactContext.runOnUiQueueThread(() -> {
                     promise.resolve(response != null ? response.toJsonString() : null);
@@ -153,6 +157,14 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void abortPresentationFlowFromJS(String code, String message) {
-        VCIClientCallbackBridge.abortPresentationFlow(code, message);
+        Log.d(TAG, "abortPresentationFlowFromJS called with code=" + code);
+
+        OpenID4VPExceptions exception = OVPUtils.convertToOpenID4VPException(
+                code,
+                message,
+                getName()
+        );
+
+        VCIClientCallbackBridge.abortPresentationFlow(exception);
     }
 }

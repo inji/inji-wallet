@@ -36,11 +36,9 @@ object VCIClientCallbackBridge {
     }
 
     @JvmStatic
-    fun abortPresentationFlow(code: String, message: String) {
-        val ex = RuntimeException("$code: $message")
-
-        deferredPresentationRequest?.completeExceptionally(ex)
-        deferredSignedVPToken?.completeExceptionally(ex)
+    fun abortPresentationFlow(exception: Throwable) {
+        deferredPresentationRequest?.completeExceptionally(exception)
+        deferredSignedVPToken?.completeExceptionally(exception)
 
         deferredPresentationRequest = null
         deferredSignedVPToken = null
@@ -148,8 +146,7 @@ object VCIClientCallbackBridge {
     }
 
     fun emitTokenRequest(context: ReactApplicationContext, payload: Map<String, Any?>) {
-        val params =
-                Arguments.createMap().apply { putString("tokenRequest", gson.toJson(payload)) }
+        val params = Arguments.createMap().apply { putString("tokenRequest", gson.toJson(payload)) }
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("onRequestTokenResponse", params)
     }
