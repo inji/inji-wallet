@@ -1,4 +1,5 @@
 import {IssuersModel} from './IssuersModel';
+import {AuthorizationType} from '../../shared/constants';
 
 describe('IssuersModel', () => {
   describe('Model structure', () => {
@@ -157,7 +158,19 @@ describe('IssuersModel', () => {
       expect(initialContext.credentialConfigurationId).toBe('');
     });
 
-    it('should have all 36 required properties', () => {
+    it('should have OpenId4VPRef as empty object', () => {
+      expect(initialContext.OpenId4VPRef).toEqual({});
+    });
+
+    it('should have authorizationType as Implicit', () => {
+      expect(initialContext.authorizationType).toBe(AuthorizationType.IMPLICIT);
+    });
+
+    it('should have authorizationSuccess as false initially', () => {
+      expect(initialContext.authorizationSuccess).toBe(false);
+    });
+
+    it('should have all 35 required properties', () => {
       const properties = Object.keys(initialContext);
       expect(properties).toHaveLength(38);
     });
@@ -232,6 +245,7 @@ describe('IssuersModel', () => {
         context.serviceRefs,
         context.vcMetadata,
         context.tokenRequestObject,
+        context.OpenId4VPRef,
       ];
 
       emptyObjects.forEach(obj => {
@@ -250,6 +264,7 @@ describe('IssuersModel', () => {
         context.isTransactionCodeRequested,
         context.isConsentRequested,
         context.isCredentialOfferFlow,
+        context.authorizationSuccess,
       ];
 
       booleans.forEach(bool => {

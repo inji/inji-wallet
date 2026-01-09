@@ -21,6 +21,12 @@ import {
   selectSelectingCredentialType,
   selectSupportedCredentialTypes,
   selectIsQrScanning,
+  selectOVPMachine,
+  selectIsAuthorizationSuccess,
+  selectAuthorizationType,
+  selectIsPresentationAuthorizationInProgress,
+  selectIsPresentationAuthorization,
+  selectSelectedCredentialType,
 } from './IssuersSelectors';
 
 describe('IssuersSelectors', () => {
@@ -367,6 +373,171 @@ describe('IssuersSelectors', () => {
       const result = selectIsQrScanning(scanningState);
       expect(result).toBe(true);
       expect(scanningState.matches).toHaveBeenCalledWith('waitingForQrScan');
+    });
+  });
+
+  describe('selectOVPMachine', () => {
+    it('should return the OVP machine state', () => {
+      const state: any = {
+        context: {
+          OpenId4VPRef: {id: 'OpenID4VP_1'},
+        },
+      };
+      const result = selectOVPMachine(state);
+
+      expect(result).toEqual({id: 'OpenID4VP_1'});
+    });
+  });
+
+  describe('selectIsPresentationAuthorization', () => {
+    it('should return true when in downloadCredentials.presentationAuthorization state', () => {
+      const state = {
+        matches: jest.fn(
+          (statePath: string) =>
+            statePath === 'downloadCredentials.presentationAuthorization',
+        ),
+      };
+      expect(selectIsPresentationAuthorization(state as any)).toBe(true);
+    });
+
+    it('should return true when in credentialDownloadFromOffer.presentationAuthorization state', () => {
+      const state = {
+        matches: jest.fn(
+          (statePath: string) =>
+            statePath ===
+            'credentialDownloadFromOffer.presentationAuthorization',
+        ),
+      };
+      expect(selectIsPresentationAuthorization(state as any)).toBe(true);
+    });
+
+    it('should return false when not in any presentationAuthorization state', () => {
+      const state = {
+        matches: jest.fn(() => false),
+      };
+      expect(selectIsPresentationAuthorization(state as any)).toBe(false);
+    });
+  });
+
+  describe('selectIsPresentationAuthorizationInProgress', () => {
+    it('should return true when in downloadCredentials.presentationAuthorization.inProgress state', () => {
+      const state = {
+        matches: jest.fn(
+          (statePath: string) =>
+            statePath ===
+            'downloadCredentials.presentationAuthorization.inProgress',
+        ),
+      };
+      expect(selectIsPresentationAuthorizationInProgress(state as any)).toBe(
+        true,
+      );
+    });
+
+    it('should return true when in credentialDownloadFromOffer.presentationAuthorization.inProgress state', () => {
+      const state = {
+        matches: jest.fn(
+          (statePath: string) =>
+            statePath ===
+            'credentialDownloadFromOffer.presentationAuthorization.inProgress',
+        ),
+      };
+      expect(selectIsPresentationAuthorizationInProgress(state as any)).toBe(
+        true,
+      );
+    });
+
+    it('should return false when not in any presentationAuthorization.inProgress state', () => {
+      const state = {
+        matches: jest.fn(() => false),
+      };
+      expect(selectIsPresentationAuthorizationInProgress(state as any)).toBe(
+        false,
+      );
+    });
+  });
+
+  describe('selectAuthorizationType', () => {
+    it('should return the authorization type from context', () => {
+      const state = {
+        context: {
+          authorizationType: 'presentation',
+        },
+      };
+      expect(selectAuthorizationType(state as any)).toBe('presentation');
+    });
+
+    it('should return undefined when authorization type is not set', () => {
+      const state = {
+        context: {},
+      };
+      expect(selectAuthorizationType(state as any)).toBeUndefined();
+    });
+
+    it('should return code authorization type', () => {
+      const state = {
+        context: {
+          authorizationType: 'code',
+        },
+      };
+      expect(selectAuthorizationType(state as any)).toBe('code');
+    });
+  });
+
+  describe('selectSelectedCredentialType', () => {
+    it('should return the selected credential type from context', () => {
+      const state = {
+        context: {
+          selectedCredentialType: 'VerifiableCredential',
+        },
+      };
+      expect(selectSelectedCredentialType(state as any)).toBe(
+        'VerifiableCredential',
+      );
+    });
+
+    it('should return undefined when selected credential type is not set', () => {
+      const state = {
+        context: {},
+      };
+      expect(selectSelectedCredentialType(state as any)).toBeUndefined();
+    });
+
+    it('should return insurance credential type', () => {
+      const state = {
+        context: {
+          selectedCredentialType: 'InsuranceCredential',
+        },
+      };
+      expect(selectSelectedCredentialType(state as any)).toBe(
+        'InsuranceCredential',
+      );
+    });
+  });
+
+  describe('selectIsAuthorizationSuccess', () => {
+    it('should return true when authorizationSuccess is true in context', () => {
+      const state = {
+        context: {
+          authorizationSuccess: true,
+        },
+      };
+      expect(selectIsAuthorizationSuccess(state as any)).toBe(true);
+    });
+
+    it('should return false when authorizationSuccess is false in context', () => {
+      const state = {
+        context: {
+          authorizationSuccess: false,
+        },
+      };
+      expect(selectIsAuthorizationSuccess(state as any)).toBe(false);
+    });
+
+    it('should return undefined when authorizationSuccess is not set in context', () => {
+      const state = {
+        context: {},
+      };
+      expect(selectIsAuthorizationSuccess(state as any)).toBeUndefined();
     });
   });
 });
