@@ -387,13 +387,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
   @objc(abortPresentationFlowFromJS:message:)
   func abortPresentationFlowFromJS(_ code: String, message: String) {
-    let error = NSError(
-      domain: "VP_ABORT",
-      code: 0,
-      userInfo: [
-        NSLocalizedDescriptionKey: "\(code): \(message)"
-      ]
-    )
+    let error = OVPUtils.convertToOpenID4VPException(errorCode: code, error: message, moduleName: Self.moduleName())
 
     pendingSelectedCredentialsContinuation?.resume(throwing: error)
     pendingSignVPContinuation?.resume(throwing: error)
@@ -401,5 +395,4 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     pendingSelectedCredentialsContinuation = nil
     pendingSignVPContinuation = nil
   }
-
 }
