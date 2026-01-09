@@ -31,20 +31,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   fileprivate func getSupportedAuthorizationMethods() -> [AuthorizationMethod] {
     return [
       .redirectToWeb(openWebPage: { authUrl in
-        var result: [String: String] = [:]
-        let semaphore = DispatchSemaphore(value: 0)
+        var result: [String: String] =  try await self.getAuthCodeContinuationHook(authUrl: authUrl)
 
-        Task {
-          do {
-            result = try await self.getAuthCodeContinuationHook(authUrl: authUrl)
-          } catch {
-            print("Error getting auth code: \(error)")
-            result = [:]
-          }
-          semaphore.signal()
-        }
-
-        semaphore.wait()
         return result
       }),
       .presentationDuringIssuance(
