@@ -6,6 +6,9 @@ export const openID4VPGuards = () => {
     isAuthorizationFlow: (context: any) =>
       context.flowType === VCShareFlowType.OPENID4VP_AUTHORIZATION,
 
+    isNotAuthorizationFlow: (context: any) =>
+      context.flowType !== VCShareFlowType.OPENID4VP_AUTHORIZATION,
+
     showFaceAuthConsentScreen: (context, event) => {
       return context.showFaceAuthConsent && context.isShareWithSelfie;
     },

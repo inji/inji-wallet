@@ -45,9 +45,12 @@ export const openID4VPMachine = model.createMachine(
           target: 'waitingForData',
         },
       ],
-      LOG_ACTIVITY: {
-        actions: 'logActivity',
-      },
+      LOG_ACTIVITY: [
+        {
+          cond: 'isNotAuthorizationFlow',
+          actions: 'logActivity',
+        },
+      ],
     },
     states: {
       waitingForData: {
