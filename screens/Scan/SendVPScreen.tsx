@@ -141,10 +141,13 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   const handleDismiss = async () => {
     // Send error to verifier is initiated and its response is not listened to here.
-    void OpenID4VP.sendErrorToVerifier(
-      OVP_ERROR_MESSAGES.DECLINED,
-      OVP_ERROR_CODE.DECLINED,
-    );
+    if (!controller.isAuthorizationFlow) {
+      void OpenID4VP.sendErrorToVerifier(
+        OVP_ERROR_MESSAGES.DECLINED,
+        OVP_ERROR_CODE.DECLINED,
+      );
+    }
+
 
     controller.generateAndStoreLogMessage('USER_DECLINED_CONSENT');
     if (controller.isOVPViaDeepLink) {
@@ -157,10 +160,13 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   const handleRejectButtonEvent = async () => {
     // Send error to verifier is initiated and its response is not listened to here.
-    void OpenID4VP.sendErrorToVerifier(
-      OVP_ERROR_MESSAGES.DECLINED,
-      OVP_ERROR_CODE.DECLINED,
-    );
+    if(!controller.isAuthorizationFlow) {
+      void OpenID4VP.sendErrorToVerifier(
+        OVP_ERROR_MESSAGES.DECLINED,
+        OVP_ERROR_CODE.DECLINED,
+      );
+    }
+
     controller.generateAndStoreLogMessage('USER_DECLINED_CONSENT');
     if (controller.isOVPViaDeepLink) {
       controller.GO_TO_HOME();
