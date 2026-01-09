@@ -25,7 +25,10 @@ export const TrustModal = ({
             <View style={Theme.TrustIssuerScreenStyle.modalOverlay}>
                 <View style={Theme.TrustIssuerScreenStyle.modalContainer}>
                     {(logo || name) && (
-                        <View style={Theme.TrustIssuerScreenStyle.issuerHeader}>
+                        <ScrollView 
+                            style={{ maxHeight: 120, width: '100%' }}
+                            contentContainerStyle={Theme.TrustIssuerScreenStyle.issuerHeader}
+                            showsVerticalScrollIndicator={true}>
                             {logo && (
                                 <Image
                                     source={{ uri: logo }}
@@ -37,7 +40,7 @@ export const TrustModal = ({
                                     {name}
                                 </Text>
                             )}
-                        </View>
+                        </ScrollView>
                     )}
                     <ScrollView
                         style={{ flex: 1, width: '100%' }}
