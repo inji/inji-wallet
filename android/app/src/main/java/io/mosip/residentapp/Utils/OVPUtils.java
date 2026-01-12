@@ -88,7 +88,7 @@ public class OVPUtils {
   }
 
   private static List<Object> convertReadableArrayToListOfCredential(FormatType formatType,
-      ReadableArray credentialList) {
+                                                                     ReadableArray credentialList) {
     switch (formatType) {
       case LDP_VC: {
         List<Object> ldpVcList = new ArrayList<>();
@@ -158,9 +158,7 @@ public class OVPUtils {
           if (deviceAuthenticationMap != null) {
             String signature = requireNonNullString(deviceAuthenticationMap, "signature");
             String algorithm = requireNonNullString(deviceAuthenticationMap, "mdocAuthenticationAlgorithm");
-            DeviceAuthentication deviceAuthentication = new DeviceAuthentication(
-                signature = signature,
-                algorithm = algorithm);
+            DeviceAuthentication deviceAuthentication = new DeviceAuthentication(signature, algorithm);
             signatureData.put(docType, deviceAuthentication);
           }
         }
@@ -190,9 +188,9 @@ public class OVPUtils {
   }
 
   public static OpenID4VPExceptions convertToOpenID4VPException(
-      String errorCode,
-      String message,
-      String moduleName) {
+    String errorCode,
+    String message,
+    String moduleName) {
     switch (errorCode) {
       case ACCESS_DENIED:
         return new OpenID4VPExceptions.AccessDenied(message, moduleName);
