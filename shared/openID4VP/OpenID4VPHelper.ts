@@ -52,10 +52,6 @@ export const signDataForVpPreparation = async (
   context: any,
 ) => {
   // private key, key type and selected VCs are available in context
-  console.debug(
-    'In signDataForVpPreparation, unSignedVpTokens:',
-    unSignedVpTokens,
-  );
   const vpTokenSigningResultMap: Record<any, any> = {};
   for (const formatType in unSignedVpTokens) {
     const credentials = unSignedVpTokens[formatType];

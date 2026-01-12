@@ -35,7 +35,6 @@ import {issuerType} from './IssuersMachine';
 import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
 import {logState} from '../../shared/commonUtil';
 import {createOpenID4VPMachine} from '../openID4VP/openID4VPMachine';
-import vciClient from '../../shared/vciClient/VciClient';
 import VciClient from '../../shared/vciClient/VciClient';
 
 const {RNSecureKeystoreModule} = NativeModules;
@@ -552,7 +551,7 @@ export const IssuersActions = (model: any) => {
     },
 
     sendSignedVP: (context, event) => {
-      vciClient.getInstance().sendSignedVP(event.signedVPToken.data);
+      VciClient.getInstance().sendSignedVP(event.signedVPToken.data);
     },
 
     sendVPConsentReject: () => {

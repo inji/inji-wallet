@@ -671,7 +671,7 @@ export const IssuersMachine = model.createMachine(
               VP_CONSENT_REJECT: [
                 {
                   actions: [
-                    () => console.debug('vp consent reject'),
+                    () => console.error('vp consent rejected'),
                     () =>
                       VciClient.getInstance().abortPresentationFlow({
                         code: OVP_ERROR_CODE.DECLINED,

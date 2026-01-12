@@ -289,7 +289,6 @@ export const openID4VPMachine = model.createMachine(
             {
               cond: 'isAuthorizationFlow',
               actions: [
-                () => console.log('auth flow cred error'),
                 model.assign({
                   error: () => 'credential mismatch detected',
                 }),
@@ -328,7 +327,7 @@ export const openID4VPMachine = model.createMachine(
             {
               cond: 'isAuthorizationFlow',
               actions: [
-                () => console.log('auth flow cancelled by user'),
+                () => console.warn('User cancelled the authorization flow'),
                 sendParent({type: 'VP_CONSENT_REJECT'}),
               ],
               target: 'waitingForData',
@@ -676,7 +675,6 @@ export const openID4VPMachine = model.createMachine(
       },
       authFlowFailed: {
         entry: [
-          () => console.debug('OpenID4VP auth flow failed state reached'),
           sendParent(context => ({
             type: 'SHOW_ERROR',
             source: 'OpenID4VP',

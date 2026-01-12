@@ -33,10 +33,6 @@ export const openID4VPServices = () => {
     },
 
     isVerifierTrusted: (context: any) => async () => {
-      console.debug(
-        'Checking if verifier is trusted:',
-        context.authenticationResponse,
-      );
       if (context.flowType === VCShareFlowType.OPENID4VP_AUTHORIZATION)
         return true;
       const {RNSecureKeystoreModule} = NativeModules;
@@ -102,13 +98,7 @@ export const openID4VPServices = () => {
     },
 
     signVP: (context: any) => async () => {
-      console.debug('Signing VP with data:', context.unsignedVPToken);
-      const newVar = await signDataForVpPreparation(
-        context.unsignedVPToken,
-        context,
-      );
-      console.debug('Signed VP:', newVar);
-      return newVar;
+      return await signDataForVpPreparation(context.unsignedVPToken, context);
     },
 
     sendVP: (context: any) => async () => {
