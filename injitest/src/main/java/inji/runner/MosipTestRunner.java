@@ -1,5 +1,23 @@
 package inji.runner;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.testng.TestNG;
+import org.testng.xml.SuiteXmlParser;
+import org.testng.xml.XmlClass;
+import org.testng.xml.XmlInclude;
+import org.testng.xml.XmlSuite;
+import org.testng.xml.XmlTest;
+
 import inji.constants.InjiWalletConstants;
 import inji.utils.InjiWalletConfigManager;
 import inji.utils.InjiWalletUtil;
@@ -9,17 +27,18 @@ import io.mosip.testrig.apirig.testrunner.BaseTestCase;
 import io.mosip.testrig.apirig.testrunner.ExtractResource;
 import io.mosip.testrig.apirig.testrunner.HealthChecker;
 import io.mosip.testrig.apirig.testrunner.OTPListener;
-import io.mosip.testrig.apirig.utils.*;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.testng.TestNG;
-import org.testng.xml.*;
+import io.mosip.testrig.apirig.utils.AdminTestUtil;
+import io.mosip.testrig.apirig.utils.AuthTestsUtil;
+import io.mosip.testrig.apirig.utils.CertsUtil;
+import io.mosip.testrig.apirig.utils.GlobalConstants;
+import io.mosip.testrig.apirig.utils.JWKKeyUtil;
+import io.mosip.testrig.apirig.utils.KernelAuthentication;
+import io.mosip.testrig.apirig.utils.KeyCloakUserAndAPIKeyGeneration;
+import io.mosip.testrig.apirig.utils.KeycloakUserManager;
+import io.mosip.testrig.apirig.utils.MispPartnerAndLicenseKeyGeneration;
+import io.mosip.testrig.apirig.utils.OutputValidationUtil;
+import io.mosip.testrig.apirig.utils.PartnerRegistration;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Class to initiate mosip api test execution
@@ -32,10 +51,14 @@ public class MosipTestRunner {
 
     public static String jarUrl = MosipTestRunner.class.getProtectionDomain().getCodeSource().getLocation().getPath();
     public static boolean skipAll = false;
+    
+    public static Map<String, String> knownIssues = new HashMap<>();
+
 
     /**
      * C Main method to start mosip test execution
      */
+    
     public static void main(String[] args) {
 
         try {
@@ -71,7 +94,68 @@ public class MosipTestRunner {
 
             // Generating biometric details with mock MDS
             BiometricDataProvider.generateBiometricTestData("Registration");
+            String platform = InjiWalletConfigManager.getproperty("browserstack_platformName");
 
+            if (platform == null || platform.trim().isEmpty()) {
+                throw new RuntimeException("browserstack_platformName not set");
+            }
+
+            String knownIssuesFile;
+            switch (platform.trim().toLowerCase()) {
+                case "android":
+                    knownIssuesFile = "Known_Issues_Android.txt";
+                    break;
+                case "ios":
+                    knownIssuesFile = "Known_Issues_iOS.txt";
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unsupported platform: " + platform);
+            }
+
+            String knownIssuesPath = getResourcePath() + "/config/" + knownIssuesFile;
+            LOGGER.info("Loading Known Issues from: " + knownIssuesPath);
+            
+    		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+    				new FileInputStream(knownIssuesPath), StandardCharsets.UTF_8))) {
+    			String line;
+    			while ((line = br.readLine()) != null) {
+    				line = line.trim();
+    				if (line.isEmpty() || line.startsWith("#") || !line.contains("------")) {
+    					continue;
+    				}
+    				String[] parts = line.split("------", 2);
+    				
+    				String bugId = parts[0].trim();
+    				String rawTc = parts[1].trim();
+
+    				// Normalize test case name
+    				String normalizedTc;
+
+    				// method-only → *.method
+    				if (!rawTc.contains(".")) {
+    				    normalizedTc = "*." + rawTc;
+    				} 
+    				// fully qualified class → SimpleClass.method
+    				else if (rawTc.contains(".")) {
+    				    String[] tokens = rawTc.split("\\.");
+    				    if (tokens.length >= 2) {
+    				        normalizedTc = tokens[tokens.length - 2] + "." + tokens[tokens.length - 1];
+    				    } else {
+    				        normalizedTc = rawTc;
+    				    }
+    				} 
+    				else {
+    				    normalizedTc = rawTc;
+    				}
+
+    				knownIssues.put(normalizedTc, bugId);
+
+    			}
+    			LOGGER.info("Known Issues Loaded: " + knownIssues);
+    		} catch (Exception e) {
+    			LOGGER.warn("Known_Issues.txt not found or unreadable: " + e.getMessage());
+    		}
+            
             startTestRunner();
         } catch (Exception e) {
             LOGGER.error("Exception " + e.getMessage());
@@ -152,8 +236,11 @@ public class MosipTestRunner {
         if (files != null) {
             for (File file : files) {
                 if (file.getName().toLowerCase().contains(System.getProperty("testngXmlFile").toLowerCase())) {
+                	
+                	TestNG runner = new TestNG();
+                	runner.setMethodInterceptor(new inji.utils.KnownIssueMethodInterceptor());
 
-                    TestNG runner = new TestNG();
+//                    TestNG runner = new TestNG();
                     List<String> suitefiles = new ArrayList<>();
 
                     BaseTestCase.setReportName(InjiWalletConstants.INJI_WALLET);
@@ -214,7 +301,7 @@ public class MosipTestRunner {
                         suitefiles.add(file.getAbsolutePath());
                         runner.setTestSuites(suitefiles);
                     }
-
+                    
                     runner.run();
                 }
             }
