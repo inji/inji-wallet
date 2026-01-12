@@ -395,7 +395,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
     pendingSelectedCredentialsContinuation = nil
     pendingSignVPContinuation = nil
-    
+
     pendingProofContinuation = nil
     pendingAuthCodeContinuation = nil
     pendingTxCodeContinuation = nil
