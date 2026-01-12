@@ -79,7 +79,7 @@
       "location" : "https://github.com/tw-mosip/inji-openid4vp-ios-swift.git",
       "state" : {
         "branch" : "injimob-3619",
-        "revision" : "4d98cead8822ca4fe48f4e98e47e9b15f51ba67a"
+        "revision" : "c5e486a4b2c6ed570b0fece35fc2ae418d9133f5"
       }
     },
     {
@@ -97,7 +97,7 @@
       "location" : "https://github.com/tw-mosip/inji-vci-client-ios-swift",
       "state" : {
         "branch" : "injimob-3598",
-        "revision" : "5518a2b5e02535dcdcfa276897f047096dcc61cd"
+        "revision" : "9afb135e0e1b4d2c26fc9c937149efb010c186fd"
       }
     },
     {
