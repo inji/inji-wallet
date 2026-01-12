@@ -4,6 +4,7 @@ import {
   SelectedCredentialsForVPSharing,
   VerifiableCredential,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {signatureSuite} from "../../machines/openID4VP/openID4VPServices";
 
 const emitter = new NativeEventEmitter(NativeModules.InjiVciClient);
 
@@ -140,6 +141,7 @@ class VciClient {
       response = await this.InjiVciClient.requestCredentialByOffer(
         credentialOffer,
         JSON.stringify(clientMetadata),
+        signatureSuite
       );
     } catch (error) {
       console.error('Error requesting credential by offer:', error);
@@ -224,6 +226,7 @@ class VciClient {
         credentialIssuerUri,
         credentialConfigurationId,
         JSON.stringify(clientMetadata),
+        signatureSuite
       );
     } catch (error) {
       console.error('Error requesting credential from trusted issuer:', error);

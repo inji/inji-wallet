@@ -28,10 +28,10 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
   // MARK: - Public API
 
-  fileprivate func getSupportedAuthorizationMethods() -> [AuthorizationMethod] {
+  fileprivate func getSupportedAuthorizationMethods(signatureSuite: String?) -> [AuthorizationMethod] {
     return [
       .redirectToWeb(openWebPage: { authUrl in
-        var result: [String: String] =  try await self.getAuthCodeContinuationHook(authUrl: authUrl)
+        let result: [String: String] =  try await self.getAuthCodeContinuationHook(authUrl: authUrl)
 
         return result
       }),
@@ -42,7 +42,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         signVerifiablePresentation: { unsignedVPTokens in
           try await self.getSignVerifiablePresentationContinuationHook(
             unsignedVPTokens: unsignedVPTokens)
-        }
+        },
+        signatureSuite: signatureSuite
       ),
     ]
   }
@@ -51,6 +52,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   func requestCredentialByOffer(
     _ credentialOffer: String,
     clientMetadata: String,
+    signatureSuite: String,
     resolver resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
   ) {
@@ -73,7 +75,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
               length: length
             )
           },
-          authorizationMethods: getSupportedAuthorizationMethods(),
+          authorizationMethods: getSupportedAuthorizationMethods(signatureSuite: signatureSuite),
           getTokenResponse: { tokenRequest in
             try await self.getTokenResponseHook(tokenRequest: tokenRequest)
           },
@@ -104,6 +106,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     _ credentialIssuer: String,
     credentialConfigurationId: String,
     clientMetadata: String,
+    signatureSuite: String,
     resolver resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
   ) {
@@ -123,7 +126,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
           getTokenResponse: { tokenRequest in
             try await self.getTokenResponseHook(tokenRequest: tokenRequest)
           },
-          authorizationMethods: getSupportedAuthorizationMethods(),
+          authorizationMethods: getSupportedAuthorizationMethods(signatureSuite: signatureSuite),
           getProofJwt: { credentialIssuer, cNonce, algos in
             try await self.getProofContinuationHook(
               credentialIssuer: credentialIssuer,
@@ -271,8 +274,6 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
       self.pendingSignVPContinuation = continuation
     }
 
-    //TODO: Check on Error handling
-
     return try OVPUtils.parseVPTokenSigningResult(signedVPTokens)
   }
 
@@ -394,5 +395,11 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
     pendingSelectedCredentialsContinuation = nil
     pendingSignVPContinuation = nil
+    
+    pendingProofContinuation = nil
+    pendingAuthCodeContinuation = nil
+    pendingTxCodeContinuation = nil
+    pendingTokenResponseContinuation = nil
+    pendingIssuerTrustDecision = nil
   }
 }

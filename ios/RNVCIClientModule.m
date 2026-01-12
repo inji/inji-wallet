@@ -9,6 +9,7 @@ RCT_EXTERN_METHOD(init:(NSString *)traceabilityId)
 // Requests a credential using a credential offer string and client metadata (both as JSON strings)
 RCT_EXTERN_METHOD(requestCredentialByOffer:(NSString *)credentialOffer
                   clientMetadata:(NSString *)clientMetadata
+                  signatureSuite:(NSString *)signatureSuite
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
@@ -16,6 +17,7 @@ RCT_EXTERN_METHOD(requestCredentialByOffer:(NSString *)credentialOffer
 RCT_EXTERN_METHOD(requestCredentialFromTrustedIssuer:(NSString *)credentialIssuer
                   credentialConfigurationId:(NSString *)credentialConfigurationId
                   clientMetadata:(NSString *)clientMetadata
+                  signatureSuite:(NSString *)signatureSuite
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
