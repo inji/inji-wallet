@@ -10,7 +10,7 @@ import com.facebook.react.bridge.WritableMap;
 
 import java.util.List;
 
-import io.mosip.residentapp.Utils.FormatConverter;
+import io.mosip.residentapp.utils.FormatConverter;
 import io.mosip.vercred.vcverifier.CredentialsVerifier;
 import io.mosip.vercred.vcverifier.constants.CredentialFormat;
 import io.mosip.vercred.vcverifier.data.CredentialVerificationSummary;
@@ -18,7 +18,7 @@ import io.mosip.vercred.vcverifier.data.VerificationResult;
 import io.mosip.vercred.vcverifier.exception.StatusCheckException;
 
 public class RNVCVerifierModule extends ReactContextBaseJavaModule {
-    
+
     private final CredentialsVerifier credentialsVerifier;
     public RNVCVerifierModule(ReactApplicationContext reactContext) {
         super(reactContext);

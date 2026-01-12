@@ -14,17 +14,13 @@ import com.google.gson.Gson;
 
 import java.util.Map;
 
-import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
-import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
-
-import io.mosip.residentapp.Utils.OVPUtils;
+import io.mosip.residentapp.utils.OVPUtils;
 import io.mosip.vciclient.VCIClient;
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata;
 import io.mosip.vciclient.credential.response.CredentialResponse;
 import io.mosip.vciclient.token.TokenResponse;
 
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
-import io.mosip.residentapp.Utils.*;
 
 
 public class InjiVciClientModule extends ReactContextBaseJavaModule {

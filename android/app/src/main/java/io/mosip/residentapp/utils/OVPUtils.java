@@ -1,4 +1,4 @@
-package io.mosip.residentapp.Utils;
+package io.mosip.residentapp.utils;
 
 import static io.mosip.openID4VP.constants.FormatType.DC_SD_JWT;
 import static io.mosip.openID4VP.constants.FormatType.LDP_VC;

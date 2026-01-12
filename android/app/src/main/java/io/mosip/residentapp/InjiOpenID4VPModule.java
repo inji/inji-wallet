@@ -1,14 +1,12 @@
 package io.mosip.residentapp;
 
 import static io.mosip.openID4VP.authorizationResponse.AuthorizationResponseUtilsKt.toJsonString;
-import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
-import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
 import static io.mosip.openID4VP.constants.FormatType.DC_SD_JWT;
 import static io.mosip.openID4VP.constants.FormatType.LDP_VC;
 import static io.mosip.openID4VP.constants.FormatType.MSO_MDOC;
 import static io.mosip.openID4VP.constants.FormatType.VC_SD_JWT;
-import static io.mosip.residentapp.Utils.OVPUtils.parseSelectedVCs;
-import static io.mosip.residentapp.Utils.OVPUtils.parseVPTokenSigningResult;
+import static io.mosip.residentapp.utils.OVPUtils.parseSelectedVCs;
+import static io.mosip.residentapp.utils.OVPUtils.parseVPTokenSigningResult;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -34,8 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,10 +46,6 @@ import io.mosip.openID4VP.authorizationRequest.WalletMetadata;
 import io.mosip.openID4VP.verifier.VerifierResponse;
 import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
-import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.ldp.LdpVPTokenSigningResult;
-import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.DeviceAuthentication;
-import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.MdocVPTokenSigningResult;
-import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.sdJwt.SdJwtVPTokenSigningResult;
 import io.mosip.openID4VP.constants.ClientIdScheme;
 import io.mosip.openID4VP.constants.ContentEncryptionAlgorithm;
 import io.mosip.openID4VP.constants.FormatType;
@@ -62,8 +54,8 @@ import io.mosip.openID4VP.constants.RequestSigningAlgorithm;
 import io.mosip.openID4VP.constants.ResponseType;
 import io.mosip.openID4VP.constants.VPFormatType;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
-import io.mosip.residentapp.Utils.FormatConverter;
-import io.mosip.residentapp.Utils.*;
+import io.mosip.residentapp.utils.FormatConverter;
+import io.mosip.residentapp.utils.*;
 
 
 public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {

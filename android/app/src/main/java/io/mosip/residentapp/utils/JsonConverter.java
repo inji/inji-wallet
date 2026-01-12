@@ -1,4 +1,4 @@
-package io.mosip.residentapp.Utils;
+package io.mosip.residentapp.utils;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;

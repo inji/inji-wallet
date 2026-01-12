@@ -10,7 +10,7 @@ import io.mosip.openID4VP.authorizationResponse.toJsonString
 import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult
 import io.mosip.openID4VP.constants.FormatType
-import io.mosip.residentapp.Utils.JsonConverter
+import io.mosip.residentapp.utils.JsonConverter
 import io.mosip.vciclient.token.TokenResponse
 import kotlinx.coroutines.CompletableDeferred
 
