@@ -544,17 +544,8 @@ export const IssuersActions = (model: any) => {
     }),
 
     sendVPScanData: (context, event) => {
-      const authorizer =
-        context?.issuerName ??
-        context?.selectedIssuer?.display?.[0]?.name ??
-        context?.selectedIssuerId;
-      console.debug(
-        'Issuance Flow - Sending VP Scan Data to OpenID4VP Service ',
-        authorizer,
-      );
       return context.OpenId4VPRef.send({
         type: 'AUTHENTICATE_VIA_PRESENTATION',
-        authorizer: authorizer,
         presentationRequest: event.presentationRequest,
         flowType: VCShareFlowType.OPENID4VP_AUTHORIZATION,
       });

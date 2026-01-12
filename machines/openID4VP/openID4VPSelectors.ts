@@ -136,12 +136,6 @@ export function selectshowTrustConsentModal(state: State) {
 }
 
 export function selectVerifierNameInTrustModal(state: State) {
-  if (state.context.flowType === VCShareFlowType.OPENID4VP_AUTHORIZATION) {
-    return (
-      state.context.authorizer ??
-      state.context.authenticationResponse['client_id']
-    );
-  }
   return state.context.authenticationResponse['client_metadata']?.[
     'client_name'
   ];

@@ -29,10 +29,6 @@ export const openID4VPActions = (model: any) => {
       presentationRequest: (_, event) => event.presentationRequest,
     }),
 
-    setAuthorizer: model.assign({
-      authorizer: (_, event) => event.authorizer,
-    }),
-
     setAuthenticationResponse: model.assign({
       authenticationResponse: (_, event) => event.data,
     }),
@@ -72,16 +68,16 @@ export const openID4VPActions = (model: any) => {
     }),
 
     setUnsignedVPToken: model.assign({
-        unsignedVPToken: (_, event) => {
-          console.log("event in setUnsignedVPToken action:", event);
-          try {
-            return parseJSON(event.data);
-          } catch (error) {
-            console.error("Error parsing unsignedVPToken:", error);
-            return null;
-          }
-        },
-      }),
+      unsignedVPToken: (_, event) => {
+        console.log('event in setUnsignedVPToken action:', event);
+        try {
+          return parseJSON(event.data);
+        } catch (error) {
+          console.error('Error parsing unsignedVPToken:', error);
+          return null;
+        }
+      },
+    }),
 
     compareAndStoreSelectedVC: model.assign({
       selectedVCs: context => {

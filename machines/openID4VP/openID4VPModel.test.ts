@@ -27,7 +27,6 @@ describe('openID4VPModel', () => {
       expect(initialContext.unsignedVPToken).toEqual({});
       expect(initialContext.hasNoMatchingVCs).toBe(false);
       expect(initialContext.presentationRequest).toEqual({});
-      expect(initialContext.authorizer).toBe('');
     });
 
     it('should initialize with empty object contexts', () => {

@@ -64,7 +64,6 @@ const openID4VPEvents = {
 export const openID4VPModel = createModel(
   {
     serviceRefs: {} as AppServices,
-    authorizer: '' as string,
     urlEncodedAuthorizationRequest: '' as string,
     presentationRequest: {} as object,
     authenticationResponse: {},

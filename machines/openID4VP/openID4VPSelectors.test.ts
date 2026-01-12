@@ -761,51 +761,6 @@ describe('openID4VPSelectors', () => {
   });
 
   describe('selectVerifierNameInTrustModal', () => {
-    it('should return authorizer when flowType is OPENID4VP_AUTHORIZATION and authorizer exists', () => {
-      const mockState = {
-        context: {
-          flowType: VCShareFlowType.OPENID4VP_AUTHORIZATION,
-          authorizer: 'Test Authorizer',
-          authenticationResponse: {
-            client_id: 'client123',
-          },
-        },
-      };
-
-      const result = selectVerifierNameInTrustModal(mockState as any);
-      expect(result).toBe('Test Authorizer');
-    });
-
-    it('should return client_id when flowType is OPENID4VP_AUTHORIZATION and authorizer is undefined', () => {
-      const mockState = {
-        context: {
-          flowType: VCShareFlowType.OPENID4VP_AUTHORIZATION,
-          authorizer: undefined,
-          authenticationResponse: {
-            client_id: 'client456',
-          },
-        },
-      };
-
-      const result = selectVerifierNameInTrustModal(mockState as any);
-      expect(result).toBe('client456');
-    });
-
-    it('should return empty string when flowType is OPENID4VP_AUTHORIZATION and authorizer is empty', () => {
-      const mockState = {
-        context: {
-          flowType: VCShareFlowType.OPENID4VP_AUTHORIZATION,
-          authorizer: '',
-          authenticationResponse: {
-            client_id: 'client789',
-          },
-        },
-      };
-
-      const result = selectVerifierNameInTrustModal(mockState as any);
-      expect(result).toBe('');
-    });
-
     it('should return client_name when flowType is not OPENID4VP_AUTHORIZATION', () => {
       const mockState = {
         context: {
