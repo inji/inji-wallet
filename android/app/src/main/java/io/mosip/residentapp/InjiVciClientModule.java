@@ -61,13 +61,11 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void sendSelectedCredentialsForVPSharingFromJS(ReadableMap selectedVCs) {
-        Log.d(TAG, "sendSelectedCredentialsForVPSharingFromJS called with selectedVCs: " + selectedVCs);
         VCIClientCallbackBridge.completePresentationRequest(OVPUtils.parseSelectedVCs(selectedVCs));
     }
 
     @ReactMethod
     public void sendVPTokenSigningResultFromJS(ReadableMap vpTokenSigningResult) {
-        Log.d(TAG, "sendVPTokenSigningResult called with vpTokenSigningResult: " + vpTokenSigningResult);
         VCIClientCallbackBridge.completeSignDataForVP(OVPUtils.parseVPTokenSigningResult(vpTokenSigningResult));
     }
 
