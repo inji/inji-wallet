@@ -26,6 +26,7 @@ import {
   selectAuthorizationType,
   selectIsAuthorizationSuccess,
   selectSelectedCredentialType,
+  selectTrustedIssuerConsentStatus,
 } from '../../machines/Issuers/IssuersSelectors';
 import {ActorRefFrom} from 'xstate';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';

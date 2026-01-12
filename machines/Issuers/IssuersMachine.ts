@@ -41,7 +41,7 @@ export const IssuersMachine = model.createMachine(
           },
           onError: {
             actions: ['setError'],
-            target: 'error',
+            target: '#issuersMachine.error',
           },
         },
       },
@@ -131,7 +131,7 @@ export const IssuersMachine = model.createMachine(
           onError: [
             {
               actions: ['setError', 'resetLoadingReason'],
-              target: 'error',
+              target: '#issuersMachine.error',
             },
           ],
         },
@@ -201,12 +201,12 @@ export const IssuersMachine = model.createMachine(
               VP_CONSENT_REJECT: [
                 {
                   actions: ['sendVPConsentReject'],
-                  target: 'error',
+                  target: '#issuersMachine.error',
                 },
               ],
               SHOW_ERROR: {
                 actions: ['sendPresentationAuthorizationError'],
-                target: 'error',
+                target: '#issuersMachine.error',
               },
               SIGN_PRESENTATION: [
                 {
@@ -538,7 +538,7 @@ export const IssuersMachine = model.createMachine(
           },
           onError: {
             actions: ['resetLoadingReason'],
-            target: 'error',
+            target: '#issuersMachine.error',
           },
         },
       },
@@ -560,7 +560,7 @@ export const IssuersMachine = model.createMachine(
           },
           onError: {
             actions: ['setError', 'resetLoadingReason'],
-            target: 'error',
+            target: '#issuersMachine.error',
           },
         },
       },
@@ -578,7 +578,7 @@ export const IssuersMachine = model.createMachine(
               'setCredentialTypeListDownloadFailureError',
               'resetLoadingReason',
             ],
-            target: 'error',
+            target: '#issuersMachine.error',
           },
         },
       },
@@ -620,7 +620,7 @@ export const IssuersMachine = model.createMachine(
             },
             {
               actions: ['setError', 'resetLoadingReason'],
-              target: 'error',
+              target: '#issuersMachine.error',
             },
           ],
         },
