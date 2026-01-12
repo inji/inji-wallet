@@ -352,16 +352,6 @@ export const IssuersService = () => {
         verifiableCredential,
         selectedCredentialType,
       } = context;
-      // TODO: remove this by passing verify credential for Presentation during issuance VC download
-      if (
-        context.authorizationType === AuthorizationType.OPENID4VP_PRESENTATION
-      ) {
-        return {
-          isVerified: true,
-          verificationMessage: '',
-          verificationErrorCode: '',
-        };
-      }
       if (isCredentialOfferFlow) {
         const configurations = await getAllConfigurations();
         if (configurations.disableCredentialOfferVcVerification) {
