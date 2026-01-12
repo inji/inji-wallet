@@ -5,6 +5,7 @@ import {
     Text,
     Image,
     Dimensions,
+    ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -134,7 +135,10 @@ const IssuerCardSection = ({
     infoPoints: string[];
 }) => (
     <View style={Theme.TrustIssuerScreenStyle.card}>
-        <View style={[Theme.TrustIssuerScreenStyle.cardHeader, { marginTop: 0.037 * SCREEN_HEIGHT }]}>
+        <ScrollView
+            style={{ maxHeight: 120, width: '100%' }}
+            contentContainerStyle={[Theme.TrustIssuerScreenStyle.cardHeader, { marginTop: 0.037 * SCREEN_HEIGHT }]}
+            showsVerticalScrollIndicator={true}>
             {logo && (
                 <Image
                     source={{ uri: logo }}
@@ -142,7 +146,7 @@ const IssuerCardSection = ({
                 />
             )}
             <Text style={Theme.TrustIssuerScreenStyle.issuerName}>{name}</Text>
-        </View>
+        </ScrollView>
 
         <Text style={Theme.TrustIssuerScreenStyle.cardDescription}>
             {t('description')}
