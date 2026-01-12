@@ -8,7 +8,7 @@ import {SvgImage} from '../svg';
 import {Theme} from '../styleUtils';
 import testIDProps from '../../../shared/commonUtil';
 
-const injiLogoGif = require('../../../assets/gif/logo.gif');
+import injiLogoGif from '../../../assets/gif/logo.gif';
 
 export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
   label,

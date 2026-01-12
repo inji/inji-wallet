@@ -39,7 +39,7 @@ import {GlobalContext} from '../../shared/GlobalContext';
 import {APP_EVENTS} from '../../machines/app';
 import {useScanScreen} from './ScanScreenController';
 import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
-import { TrustModalVerifier } from '../../components/TrustModalVerifier';
+import {TrustModalVerifier} from '../../components/TrustModalVerifier';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
@@ -148,7 +148,6 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
       );
     }
 
-
     controller.generateAndStoreLogMessage('USER_DECLINED_CONSENT');
     if (controller.isOVPViaDeepLink) {
       controller.GO_TO_HOME();
@@ -160,7 +159,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   const handleRejectButtonEvent = async () => {
     // Send error to verifier is initiated and its response is not listened to here.
-    if(!controller.isAuthorizationFlow) {
+    if (!controller.isAuthorizationFlow) {
       void OpenID4VP.sendErrorToVerifier(
         OVP_ERROR_MESSAGES.DECLINED,
         OVP_ERROR_CODE.DECLINED,
@@ -314,7 +313,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           testID={'consent-share-button'}
           disabled={Object.keys(controller.getSelectedVCs()).length === 0}
           onPress={() =>
-            controller.checkIfAnyVCHasImage(controller.vcsMatchingAuthRequest)
+            controller.checkIfAnyVCHasImage(controller.getSelectedVCs())
               ? controller.VERIFY_AND_ACCEPT_REQUEST(selectedDisclosuresByVc)
               : controller.ACCEPT_REQUEST(selectedDisclosuresByVc)
           }

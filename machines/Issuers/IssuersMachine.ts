@@ -975,7 +975,7 @@ export const IssuersMachine = model.createMachine(
           onDone: {
             cond: 'isSignedIn',
             actions: ['sendBackupEvent'],
-            target: 'success',
+            target: 'done',
           },
         },
       },
@@ -983,45 +983,10 @@ export const IssuersMachine = model.createMachine(
       idle: {
         on: {
           COMPLETED: {
-            target: 'success',
+            target: 'done',
           },
           CANCEL: {
             target: 'selectingIssuer',
-          },
-        },
-      },
-      success: {
-        initial: 'idle',
-        entry: [send('HANDLE_DONE')],
-        states: {
-          idle: {
-            on: {
-              HANDLE_DONE: [
-                {
-                  cond: 'isPresentationAuthorization',
-                  target: 'showSuccessDownload',
-                },
-                {
-                  target: 'redirect',
-                },
-              ],
-            },
-          },
-          showSuccessDownload: {
-            on: {
-              GO_TO_HOME: {
-                target: '#done',
-              },
-            },
-            after: [
-              {
-                delay: 5000,
-                target: '#done',
-              },
-            ],
-          },
-          redirect: {
-            type: '#done',
           },
         },
       },
