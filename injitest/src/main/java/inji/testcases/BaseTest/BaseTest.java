@@ -115,8 +115,7 @@ public abstract class BaseTest {
         }
         
         String reason = result.getMethod().getDescription();
-        
-        if (!reason.startsWith("KNOWN_ISSUE::")) {
+        if (reason == null || !reason.startsWith("KNOWN_ISSUE::")) {
  
         if (getPlatformType() == PlatformType.ANDROID) {
             DriverManager.getAndroidDriver();
@@ -154,9 +153,6 @@ public abstract class BaseTest {
         // Release test data
         releaseTestData(method,result);
 
-        // Quit driver
-        DriverManager.quitDriver();
-        ExtentReportManager.removeTest();
     }
 
     private void releaseTestData(Method method,ITestResult result) {

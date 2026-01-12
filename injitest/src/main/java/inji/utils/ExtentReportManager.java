@@ -89,7 +89,8 @@ public class ExtentReportManager {
 	private static String runCommand(String... command) throws IOException {
 		Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-			return reader.readLine().trim();
+			String line = reader.readLine();
+			return line != null ? line.trim() : "";
 		}
 	}
 
