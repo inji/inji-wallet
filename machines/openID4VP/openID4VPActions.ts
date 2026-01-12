@@ -9,7 +9,7 @@ import {VC} from '../VerifiableCredential/VCMetaMachine/vc';
 import {StoreEvents} from '../store';
 import {JSONPath} from 'jsonpath-plus';
 
-import {VCShareFlowType} from '../../shared/Utils';
+import {parseJSON, VCShareFlowType} from '../../shared/Utils';
 import {ActivityLogEvents} from '../activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
 import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
@@ -70,6 +70,18 @@ export const openID4VPActions = (model: any) => {
       selectedVCs: (_, event) => event.selectedVCs,
       selectedDisclosuresByVc: (_, event) => event.selectedDisclosuresByVc,
     }),
+
+    setUnsignedVPToken: model.assign({
+        unsignedVPToken: (_, event) => {
+          console.log("event in setUnsignedVPToken action:", event);
+          try {
+            return parseJSON(event.data);
+          } catch (error) {
+            console.error("Error parsing unsignedVPToken:", error);
+            return null;
+          }
+        },
+      }),
 
     compareAndStoreSelectedVC: model.assign({
       selectedVCs: context => {

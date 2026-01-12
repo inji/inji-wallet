@@ -534,12 +534,7 @@ export const openID4VPMachine = model.createMachine(
             initial: 'constructing',
             on: {
               SIGN_VP: {
-                actions: [
-                  () =>
-                    model.assign({
-                      unsignedVPToken: (_, event) => parseJSON(event.data),
-                    }),
-                ],
+                actions: ['setUnsignedVPToken'],
                 target: '#signVP',
               },
             },
