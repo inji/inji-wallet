@@ -200,24 +200,13 @@ export const IssuersMachine = model.createMachine(
               },
               VP_CONSENT_REJECT: [
                 {
-                  actions: [
-                    () => console.debug('vp consent rejected'),
-                    () =>
-                      VciClient.getInstance().abortPresentationFlow({
-                        code: OVP_ERROR_CODE.DECLINED,
-                        message: OVP_ERROR_MESSAGES.DECLINED,
-                      }),
-                  ],
+                  actions: ['sendVPConsentReject'],
+                  target: 'error',
                 },
               ],
               SHOW_ERROR: {
-                actions: [
-                  (_, event) =>
-                    VciClient.getInstance().abortPresentationFlow({
-                      code: 'PRESENTATION_AUTHORIZATION_ERROR',
-                      message: event.error,
-                    }),
-                ],
+                actions: ['sendPresentationAuthorizationError'],
+                target: 'error',
               },
               SIGN_PRESENTATION: [
                 {

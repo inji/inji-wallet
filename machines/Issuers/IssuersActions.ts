@@ -12,6 +12,8 @@ import {
   REQUEST_TIMEOUT,
   isIOS,
   AuthorizationType,
+  OVP_ERROR_CODE,
+  OVP_ERROR_MESSAGES,
 } from '../../shared/constants';
 import {assign, send, spawn} from 'xstate';
 import {StoreEvents} from '../store';
@@ -34,6 +36,7 @@ import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
 import {logState} from '../../shared/commonUtil';
 import {createOpenID4VPMachine} from '../openID4VP/openID4VPMachine';
 import vciClient from '../../shared/vciClient/VciClient';
+import VciClient from '../../shared/vciClient/VciClient';
 
 const {RNSecureKeystoreModule} = NativeModules;
 
@@ -559,6 +562,24 @@ export const IssuersActions = (model: any) => {
 
     sendSignedVP: (context, event) => {
       vciClient.getInstance().sendSignedVP(event.signedVPToken.data);
+    },
+
+    sendVPConsentReject: () => {
+      console.error('User declined to share VP for issuance authorization');
+      VciClient.getInstance().abortPresentationFlow({
+        code: OVP_ERROR_CODE.DECLINED,
+        message: OVP_ERROR_MESSAGES.DECLINED,
+      });
+    },
+
+    sendPresentationAuthorizationError: (_, event) => {
+      console.error(
+        'PRESENTATION_AUTHORIZATION_ERROR for issuance authorization',
+      );
+      VciClient.getInstance().abortPresentationFlow({
+        code: 'PRESENTATION_AUTHORIZATION_ERROR',
+        message: event.error,
+      });
     },
   };
 };
