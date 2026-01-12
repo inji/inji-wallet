@@ -48,6 +48,7 @@ export const IssuersMachine = model.createMachine(
 
       error: {
         description: 'reaches here when any error happens',
+        entry: ['resetAuthorization'],
         on: {
           TRY_AGAIN: [
             {

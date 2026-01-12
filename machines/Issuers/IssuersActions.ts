@@ -77,6 +77,10 @@ export const IssuersActions = (model: any) => {
     resetLoadingReason: model.assign({
       loadingReason: null,
     }),
+    resetAuthorization: model.assign({
+      authorizationType: AuthorizationType.IMPLICIT,
+      authorizationSuccess: false,
+    }),
     setSelectedCredentialType: model.assign({
       selectedCredentialType: (_: any, event: any) => event.credType,
       wellknownKeyTypes: (_: any, event: any) => {
