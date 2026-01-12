@@ -660,13 +660,6 @@ export const IssuersMachine = model.createMachine(
         states: {
           idle: {},
           presentationAuthorization: {
-            entry: [
-              //TODO: telemetry for vp sharing
-              // () =>
-              //   sendStartEvent(
-              //     getStartEventData(TelemetryConstants.FlowType.vpSharing),
-              //   ),
-            ],
             invoke: {
               id: 'OpenId4VP',
               src: openID4VPMachine,

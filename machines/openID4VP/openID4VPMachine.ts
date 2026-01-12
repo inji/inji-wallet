@@ -26,11 +26,7 @@ export const openID4VPMachine = model.createMachine(
     initial: 'waitingForData',
     on: {
       AUTHENTICATE_VIA_PRESENTATION: {
-        actions: [
-          (_, event) => console.debug('AUTHENTICATE_VIA_PRESENTATION ', event),
-          'setPresentationRequest',
-          'setFlowType',
-        ],
+        actions: ['setPresentationRequest', 'setFlowType'],
         target: 'checkFaceAuthConsent',
       },
       DISMISS_POPUP: [
