@@ -116,7 +116,6 @@ public abstract class BaseTest {
         
         String reason = result.getMethod().getDescription();
         if (reason == null || !reason.startsWith("KNOWN_ISSUE::")) {
- 
         if (getPlatformType() == PlatformType.ANDROID) {
             DriverManager.getAndroidDriver();
         } else if (getPlatformType() == PlatformType.IOS) {
@@ -214,9 +213,14 @@ public abstract class BaseTest {
 
         try {
             String reason = result.getMethod().getDescription();
-            if (!reason.startsWith("KNOWN_ISSUE::")) {
+            if (reason == null || !reason.startsWith("KNOWN_ISSUE::")) {
             	
             AppiumDriver driver = getDriver();
+            
+            if (driver == null) {
+            	LOGGER.warn("Driver is null, skipping BrowserStack session info fetch");
+            	return;
+            }
 
             String sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
             String jsonUrl = "https://app-automate.browserstack.com/sessions/" + sessionId + ".json";
@@ -244,9 +248,6 @@ public abstract class BaseTest {
 //            String buildHashedId = jsonResponse.getJSONObject("automation_session").getString("build_hashed_id");
             String publicUrl = jsonResponse.getJSONObject("automation_session").getString("public_url");
             String videoUrl = jsonResponse.getJSONObject("automation_session").getString("video_url");
-
-
-            
             
 //            String dashboardUrl = "https://app-automate.browserstack.com/dashboard/v2/builds/" + buildHashedId + "/sessions/" + sessionId;
             ExtentReportManager.getTest().log(Status.INFO,

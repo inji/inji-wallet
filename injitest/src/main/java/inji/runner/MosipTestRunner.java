@@ -126,6 +126,11 @@ public class MosipTestRunner {
 
 					String bugId = parts[0].trim();
 					String rawTc = parts[1].trim();
+					
+					if (bugId.isEmpty() || rawTc.isEmpty()) {
+						LOGGER.warn("Skipping malformed known issue line (empty bugId or testCase): " + line);
+						continue;
+						}
 
 					// Normalize test case name
 					String normalizedTc;
@@ -238,7 +243,7 @@ public class MosipTestRunner {
 					List<String> suitefiles = new ArrayList<>();
 
 					BaseTestCase.setReportName(InjiWalletConstants.INJI_WALLET);
-					System.getProperties().setProperty("testng.outpur.dir", "testng-report");
+					System.getProperties().setProperty("testng.output.dir", "testng-report");
 					runner.setOutputDirectory("testng-report");
 
 					if (testCases != null) {
