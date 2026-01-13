@@ -152,8 +152,9 @@ public class MosipTestRunner {
 
 				}
 				LOGGER.info("Known Issues Loaded: " + knownIssues);
+				
 			} catch (Exception e) {
-				LOGGER.warn("Known Issues file not found or unreadable: " + e.getMessage());
+				LOGGER.warn(knownIssuesFile + " not found or unreadable: " + e.getMessage());
 			}
 
 			startTestRunner();
@@ -233,8 +234,9 @@ public class MosipTestRunner {
 
 		File[] files = homeDir.listFiles();
 		if (files != null) {
-			for (File file : files) {
-				if (file.getName().toLowerCase().contains(System.getProperty("testngXmlFile").toLowerCase())) {
+			for (File file : files) {					
+					String testngXmlFile = System.getProperty("testngXmlFile");
+					if (testngXmlFile != null && file.getName().toLowerCase().contains(testngXmlFile.toLowerCase())) {
 
 					TestNG runner = new TestNG();
 					runner.setMethodInterceptor(new inji.utils.KnownIssueMethodInterceptor());
