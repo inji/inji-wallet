@@ -3,7 +3,7 @@ import {render} from '@testing-library/react-native';
 import {TrustModal} from './TrustModal';
 
 // Mock useTranslation hook
-const mockT = jest.fn((key: string) => {
+const mockT = jest.fn((key: string, options) => {
   if (key.endsWith('infoPoints')) {
     return ['Point 1', 'Point 2', 'Point 3'];
   }
