@@ -115,7 +115,7 @@ export const Button: React.FC<ButtonProps> = props => {
               justifyContent: 'center',
             }}>
             <Text
-              style={{marginLeft: 8}}
+              style={[{marginLeft: 8}, props.titleStyle]}
               weight="bold"
               color={Theme.Colors.whiteText}>
               {props.title}
