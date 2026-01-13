@@ -97,6 +97,7 @@ public class MosipTestRunner {
 			startTestRunner();
 		} catch (Exception e) {
 			LOGGER.error("Exception " + e.getMessage());
+			System.exit(1);
 		}
 
 		KeycloakUserManager.removeUser();
