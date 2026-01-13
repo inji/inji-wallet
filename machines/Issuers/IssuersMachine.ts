@@ -206,7 +206,7 @@ export const IssuersMachine = model.createMachine(
               onDone: [
                 {
                   cond: 'isIssuerIdInTrustedIssuers',
-                  target: 'sendConsentGiven',
+                  target: 'sendConsentGiven.sending',
                 },
                 {
                   actions: ['setRequestConsentToTrustIssuer'],
@@ -218,6 +218,7 @@ export const IssuersMachine = model.createMachine(
           credentialOfferDownloadConsent: {
             description:
               'waits for the user to give consent to download the credential offer',
+            entry: ['resetTrustedIssuerConsentStatus'],
             on: {
               CANCEL: {
                 actions: [
@@ -229,10 +230,10 @@ export const IssuersMachine = model.createMachine(
               },
               ON_CONSENT_GIVEN: {
                 actions: [
+                  'setTrustedIssuerConsentInProgress',
                   'setLoadingReasonAsDownloadingCredentials',
-                  'resetRequestConsentToTrustIssuer',
                 ],
-                target: 'sendConsentGiven',
+                target: 'consentGivenDelay',
               },
             },
           },
@@ -244,49 +245,63 @@ export const IssuersMachine = model.createMachine(
               },
             },
           },
-          sendConsentGiven: {
-            invoke: {
-              src: 'sendConsentGiven',
-              onDone: {
-                target: '.updatingTrustedIssuerList',
-              },
-              onError: {
-                actions: [
-                  'resetLoadingReason',
-                  'setError',
-                  'resetRequestConsentToTrustIssuer',
-                ],
-                target: '#issuersMachine.error',
-              },
+          consentGivenDelay: {
+            after: {
+              2000: 'sendConsentGiven',
             },
+          },
+          sendConsentGiven: {
+            initial: 'addingIssuerToTrustedIssuers',
+
             states: {
-              updatingTrustedIssuerList: {
-                invoke: {
-                  src: 'checkIssuerIdInStoredTrustedIssuers',
-                  onDone: [
-                    {
-                      cond: 'isIssuerIdInTrustedIssuers',
-                      target:
-                        '#issuersMachine.credentialDownloadFromOffer.idle',
-                    },
-                    {
-                      target: 'addingIssuerToTrustedIssuers',
-                    },
-                  ],
-                  onError: {
-                    target: 'addingIssuerToTrustedIssuers',
-                  },
-                },
-              },
               addingIssuerToTrustedIssuers: {
                 invoke: {
                   src: 'addIssuerToTrustedIssuers',
                   onDone: {
-                    target: '#issuersMachine.credentialDownloadFromOffer.idle',
+                    target: 'trustedIssuerConsentSuccessDelay',
+                    actions: ['setTrustedIssuerConsentSuccess'],
                   },
                   onError: {
-                    target: '#issuersMachine.credentialDownloadFromOffer.idle',
+                    actions: [
+                      'resetLoadingReason',
+                      'setError',
+                      'resetRequestConsentToTrustIssuer',
+                      'resetTrustedIssuerConsentStatus',
+                    ],
+                    target: '#issuersMachine.error',
                   },
+                },
+              },
+              trustedIssuerConsentSuccessDelay: {
+                after: {
+                  4000: 'sending',
+                },
+              },
+              sending: {
+                invoke: {
+                  src: 'sendConsentGiven',
+                  onDone: {
+                    target: 'trustedIssuerConsentSuccess',
+                  },
+                  onError: {
+                    actions: [
+                      'resetLoadingReason',
+                      'setError',
+                      'resetRequestConsentToTrustIssuer',
+                      'resetTrustedIssuerConsentStatus',
+                    ],
+                    target: '#issuersMachine.error',
+                  },
+                },
+              },
+
+              trustedIssuerConsentSuccess: {
+                entry: [
+                  'resetTrustedIssuerConsentStatus',
+                  'resetRequestConsentToTrustIssuer',
+                ],
+                always: {
+                  target: '#issuersMachine.credentialDownloadFromOffer.idle',
                 },
               },
             },
@@ -437,10 +452,7 @@ export const IssuersMachine = model.createMachine(
         invoke: {
           src: 'updateCredential',
           onDone: {
-            actions: [
-              'setVerifiableCredential',
-              'setCredentialWrapper',
-            ],
+            actions: ['setVerifiableCredential', 'setCredentialWrapper'],
             target: 'verifyingCredential',
           },
         },
@@ -708,7 +720,11 @@ export const IssuersMachine = model.createMachine(
         invoke: {
           src: 'verifyCredential',
           onDone: {
-            actions: ['sendSuccessEndEvent', 'setVerificationResult','resetCredentialOfferFlowType',],
+            actions: [
+              'sendSuccessEndEvent',
+              'setVerificationResult',
+              'resetCredentialOfferFlowType',
+            ],
             target: 'storing',
           },
           onError: [

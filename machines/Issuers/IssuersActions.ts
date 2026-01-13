@@ -350,6 +350,21 @@ export const IssuersActions = (model: any) => {
         return true;
       },
     }),
+    resetTrustedIssuerConsentStatus: model.assign({
+      trustedIssuerConsentStatus: () => {
+        return 'idle';
+      },
+    }),
+    setTrustedIssuerConsentInProgress: model.assign({
+      trustedIssuerConsentStatus: () => {
+        return 'loading';
+      },
+    }),
+    setTrustedIssuerConsentSuccess: model.assign({
+      trustedIssuerConsentStatus: () => {
+        return 'success';
+      },
+    }),
     setTxCodeDisplayDetails: model.assign({
       txCodeInputMode: (_: any, event: any) => event.inputMode,
       txCodeDescription: (_: any, event: any) => event.description,

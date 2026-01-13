@@ -1164,5 +1164,20 @@
     "confirm": "Oo, Pinagkakatiwalaan Ko ang Issuer na Ito",
     "verifierConfirm": "Oo, pinagkakatiwalaan ko ang verifier na ito",
     "cancel": "Hindi, Ibalik Mo Ako"
+  },
+  "issuerTrustScreen": {
+    "successfullyTrusted": "Matagumpay na pinagkakatiwalaan ang issuer",
+    "successfullyTrustedSubtitle": "Maaari ka nang ligtas na tumanggap ng mga card mula sa issuer na ito.\nIre-redirect sa loob ng {{seconds}} segundo…",
+    "confirm": "Oo, Pinagkakatiwalaan Ko ang Issuer na Ito",
+    "cancel": "Hindi, Bumalik Ako",
+    "inProgress": "Isinasagawa…",
+    "infoPoints": [
+      "Ang card ay ligtas na mase-save sa iyong wallet.",
+      "Idadagdag ang issuer na ito sa iyong listahan ng mga pinagkakatiwalaan.",
+      "Hindi mo na kailangang suriin muli ang tiwala sa susunod na pag-download mula sa kanila."
+    ],
+    "description": "Tiyaking kilala mo o pinagkakatiwalaan ang issuer na ito. Kapag pinagkatiwalaan na:",
+    "title": "Mabilis na Pagsusuri",
+    "subTitle": "Bago magpatuloy, kumpirmahin na kilala mo ang issuer na ito"
   }
 }

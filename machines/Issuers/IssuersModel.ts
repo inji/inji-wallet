@@ -1,14 +1,14 @@
-import { createModel } from 'xstate/lib/model';
+import {createModel} from 'xstate/lib/model';
 import {
   CredentialTypes,
   CredentialWrapper,
   IssuerWellknownResponse,
   VerifiableCredential,
 } from '../VerifiableCredential/VCMetaMachine/vc';
-import { AppServices } from '../../shared/GlobalContext';
-import { VCMetadata } from '../../shared/VCMetadata';
-import { IssuersEvents } from './IssuersEvents';
-import { issuerType } from './IssuersMachine';
+import {AppServices} from '../../shared/GlobalContext';
+import {VCMetadata} from '../../shared/VCMetadata';
+import {IssuersEvents} from './IssuersEvents';
+import {issuerType} from './IssuersMachine';
 
 export const IssuersModel = createModel(
   {
@@ -47,6 +47,7 @@ export const IssuersModel = createModel(
     credentialOfferCredentialIssuer: {} as string,
     tokenRequestObject: {} as object,
     credentialConfigurationId: '' as string,
+    trustedIssuerConsentStatus: 'idle' as 'idle' | 'success' | 'loading',
   },
   {
     events: IssuersEvents,

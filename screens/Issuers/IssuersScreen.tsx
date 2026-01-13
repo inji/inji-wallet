@@ -290,6 +290,7 @@ export const IssuersScreen: React.FC<
         logo={controller.issuerLogo}
         name={controller.issuerName}
         onConfirm={controller.ON_CONSENT_GIVEN}
+        consentStatus={controller.trustedIssuerConsentStatus}
         onCancel={controller.CANCEL}
       />
     );

@@ -1182,5 +1182,20 @@
     "confirm": "Yes, I Trust This Issuer",
     "verifierConfirm": "Yes, I Trust This Verifier",
     "cancel": "No, Take Me Back"
+  },
+  "issuerTrustScreen": {
+    "successfullyTrusted": "Issuer successfully trusted",
+    "successfullyTrustedSubtitle": "You can now safely receive cards from this issuer.\nRedirecting in {{seconds}} seconds…",
+    "confirm": "Yes, I Trust This Issuer",
+    "cancel": "No, Take Me Back",
+    "inProgress": "In Progress…",
+    "infoPoints": [ 
+      "The card will be securely saved in your wallet.",
+      "This issuer will be added to your trusted list.",
+      "You won't need to review trust again when downloading from them next time."
+    ],
+    "description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",
+    "title": "Quick Check",
+    "subTitle": "Before proceeding, confirm you recognize this issuer"
   }
 }
