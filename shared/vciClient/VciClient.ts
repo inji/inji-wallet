@@ -250,7 +250,7 @@ class VciClient {
   }
 
   abortPresentationFlow(error: {code: string; message: string}) {
-    console.log(`message ${error.message}`)
+    console.debug(`message ${error.message}`)
     this.InjiVciClient.abortPresentationFlowFromJS(error.code, error.message);
   }
 }

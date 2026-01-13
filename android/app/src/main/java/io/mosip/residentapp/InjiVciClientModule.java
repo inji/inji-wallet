@@ -22,7 +22,6 @@ import io.mosip.vciclient.token.TokenResponse;
 
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
 
-
 public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
     private static final String TAG = "InjiVciClientModule";
@@ -103,29 +102,32 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void requestCredentialByOffer(String credentialOffer, String clientMetadataJson, Promise promise) {
+    public void requestCredentialByOffer(
+            String credentialOffer,
+            String clientMetadataJson,
+            String signatureSuite,
+            Promise promise) {
         new Thread(() -> {
             try {
-                ClientMetadata clientMetadata = GSON.fromJson(
-                        clientMetadataJson, ClientMetadata.class);
+                ClientMetadata clientMetadata = GSON.fromJson(clientMetadataJson, ClientMetadata.class);
+
                 CredentialResponse response = VCIClientBridge.requestCredentialByOfferSync(
                         vciClient,
                         credentialOffer,
-                        clientMetadata);
-                reactContext.runOnUiQueueThread(() -> {
-                    promise.resolve(response != null ? response.toJsonString() : null);
-                });
+                        clientMetadata,
+                        signatureSuite);
+
+                reactContext
+                        .runOnUiQueueThread(() -> promise.resolve(response != null ? response.toJsonString() : null));
             } catch (Exception e) {
-                reactContext.runOnUiQueueThread(() -> {
-                    promise.reject("OFFER_FLOW_FAILED", e.getMessage(), e);
-                });
+                reactContext.runOnUiQueueThread(() -> promise.reject("OFFER_FLOW_FAILED", e.getMessage(), e));
             }
         }).start();
     }
 
     @ReactMethod
     public void requestCredentialFromTrustedIssuer(String credentialIssuer, String credentialConfigurationId,
-            String clientMetadataJson, Promise promise) {
+            String clientMetadataJson, String signatureSuite, Promise promise) {
         new Thread(() -> {
             try {
                 ClientMetadata clientMetadata = GSON.fromJson(
@@ -135,7 +137,9 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
                         vciClient,
                         credentialIssuer,
                         credentialConfigurationId,
-                        clientMetadata);
+                        clientMetadata,
+                        signatureSuite
+                    );
 
                 reactContext.runOnUiQueueThread(() -> {
                     promise.resolve(response != null ? response.toJsonString() : null);
@@ -156,8 +160,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
         OpenID4VPExceptions exception = OVPUtils.convertToOpenID4VPException(
                 code,
                 message,
-                getName()
-        );
+                getName());
 
         VCIClientCallbackBridge.abortPresentationFlow(exception);
     }

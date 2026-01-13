@@ -26,13 +26,14 @@ object VCIClientBridge {
     fun requestCredentialByOfferSync(
             client: VCIClient,
             offer: String,
-            clientMetaData: ClientMetadata
+            clientMetaData: ClientMetadata,
+            signatureSuite: String?
     ): CredentialResponse = runBlocking {
         client.fetchCredentialByCredentialOffer(
                 credentialOffer = offer,
                 clientMetadata = clientMetaData,
                 getTxCode = getTxCodeCallback(),
-                authorizations = authorizationMethods(),
+                authorizations = authorizationMethods(signatureSuite),
                 getTokenResponse = getTokenResponseCallback(),
                 getProofJwt = getProofJwtCallback(),
                 onCheckIssuerTrust = onCheckIssuerTrustCallback()
@@ -46,24 +47,26 @@ object VCIClientBridge {
             client: VCIClient,
             credentialIssuer: String,
             credentialConfigurationId: String,
-            clientMetaData: ClientMetadata
+            clientMetaData: ClientMetadata,
+            signatureSuite: String?
     ): CredentialResponse = runBlocking {
         client.fetchCredentialFromTrustedIssuer(
                 credentialIssuer = credentialIssuer,
                 credentialConfigurationId = credentialConfigurationId,
                 clientMetadata = clientMetaData,
                 getTokenResponse = getTokenResponseCallback(),
-                authorizations = authorizationMethods(),
+                authorizations = authorizationMethods(signatureSuite),
                 getProofJwt = getProofJwtCallback(),
         )
     }
 
-    private fun authorizationMethods(): List<AuthorizationMethod> =
+    private fun authorizationMethods(signatureSuite: String?): List<AuthorizationMethod> =
             listOf(
                     AuthorizationMethod.PresentationDuringIssuance(
                             selectCredentialsForPresentation =
                                     selectCredentialsForPresentationCallback(),
-                            signVerifiablePresentation = signVerifiablePresentationCallback()
+                            signVerifiablePresentation = signVerifiablePresentationCallback(),
+                            signatureSuite = signatureSuite
                     ),
                     // Uncomment when you want redirect-to-web to be enabled in V2 flow
                     AuthorizationMethod.RedirectToWeb(openWebPage = openWebPageCallback())

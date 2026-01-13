@@ -216,7 +216,7 @@ export const IssuersScreen: React.FC<
     (controller.isPresentationAuthorizationInProgress ||
       controller.isDownloadSuccess ||
       controller.isAuthorizationSuccess) &&
-    !controller.isError
+    !controller.isError && !isVerificationFailed
   ) {
     return (
       <ProcessingModal
