@@ -49,7 +49,7 @@ public class MosipTestRunner {
 	private static String cachedPath = null;
 
 	public static String jarUrl = MosipTestRunner.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-	public static boolean skipAll = false;
+
 
 	public static Map<String, String> knownIssues = new HashMap<>();
 
@@ -153,7 +153,7 @@ public class MosipTestRunner {
 				}
 				LOGGER.info("Known Issues Loaded: " + knownIssues);
 			} catch (Exception e) {
-				LOGGER.warn("Known_Issues.txt not found or unreadable: " + e.getMessage());
+				LOGGER.warn("Known Issues file not found or unreadable: " + e.getMessage());
 			}
 
 			startTestRunner();
