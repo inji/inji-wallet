@@ -45,7 +45,6 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
   const controller = useSendVPScreen(props);
   const scanScreenController = useScanScreen();
-  const downloadCard = props?.route?.params?.downloadCard ?? 'Card';
 
   const [errorModal, resetErrorModal] = useOvpErrorModal({
     error: controller.error,

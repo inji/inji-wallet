@@ -216,7 +216,8 @@ export const IssuersScreen: React.FC<
     (controller.isPresentationAuthorizationInProgress ||
       controller.isDownloadSuccess ||
       controller.isAuthorizationSuccess) &&
-    !controller.isError && !isVerificationFailed
+    !controller.isError &&
+    !isVerificationFailed
   ) {
     return (
       <ProcessingModal
@@ -372,13 +373,6 @@ export const IssuersScreen: React.FC<
     );
   }
 
-  const getDownloadCardName = () => {
-    const display = getDisplayObjectForCurrentLanguage(
-      controller.selectedCredentialType.display,
-    );
-    return display.name ?? 'Card';
-  };
-
   if (controller.loadingReason) {
     return (
       <Fragment>
@@ -390,7 +384,6 @@ export const IssuersScreen: React.FC<
               params: {
                 ...props.route.params,
                 ovpService: controller.ovpMachine,
-                downloadCard: getDownloadCardName(),
               },
             }}
           />
