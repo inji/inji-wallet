@@ -1186,24 +1186,18 @@
     "Description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",
     "pdiDescription": "To proceed with downloading the requested card, you will need to present another credential as part of the verification process.",
     "verifierDescription": "Make sure you recognize or trust this verifier. Once you do:",
-    "InfoPoints": [
+    "infoPoints": [
       "The card will be securely saved in your wallet.",
       "This issuer will be added to your trusted list.",
       "You won't need to review trust again when downloading from them next time."
-    ],
-    "pdiInfoPoints": [
-      "The issuer requires you to present another credential to prove your identity before you can receive the card.",
-      "Presenting the required credential will securely save the requested card in your wallet.",
-      "Provide your consent to proceed with presenting the credential and downloading the card."
     ],
     "verifierInfoPoints": [
       "The card will be securely shared with the verifier.",
       "The verifier will be added to your trusted list.",
       "You won’t need to review trust again when sharing with them in the future."
     ],
-    "Confirm": "Yes, I Trust This Issuer",
+    "confirm": "Yes, I Trust This Issuer",
     "verifierConfirm": "Yes, I Trust This Verifier",
-    "pdiConfirm": "Proceed",
     "cancel": "No, Take Me Back"
   },
   "issuerTrustScreen": {
@@ -1212,7 +1206,7 @@
     "confirm": "Yes, I Trust This Issuer",
     "cancel": "No, Take Me Back",
     "inProgress": "In Progress…",
-    "infoPoints": [ 
+    "infoPoints": [
       "The card will be securely saved in your wallet.",
       "This issuer will be added to your trusted list.",
       "You won't need to review trust again when downloading from them next time."

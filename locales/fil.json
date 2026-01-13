@@ -1168,24 +1168,18 @@
     "Description": "Tiyaking kilala mo o pinagkakatiwalaan mo ang issuer na ito. Kapag pinagkakatiwalaan mo na ang issuer na ito:",
     "pdiDescription": "Upang magpatuloy sa pag-download ng hinihinging card, kakailanganin mong magpakita ng isa pang credential bilang bahagi ng proseso ng pag-verify.",
     "verifierDescription": "Tiyaking kilala mo o pinagkakatiwalaan mo ang verifier na ito. Kapag nagtiwala ka na:",
-    "InfoPoints": [
+    "infoPoints": [
       "Ang card ay ligtas na mase-save sa iyong wallet.",
       "Ang issuer na ito ay idagdag sa iyong trusted list.",
       "Hindi mo na kailangang muling suriin ang tiwala kapag magda-download mula sa kanila sa susunod."
-    ],
-    "pdiInfoPoints": [
-      "Kinakailangan ng issuer na magpakita ka ng isa pang credential upang patunayan ang iyong pagkakakilanlan bago mo matanggap ang card.",
-      "Ang pagpapakita ng kinakailangang credential ay ligtas na magsi-save ng hinihinging card sa iyong wallet.",
-      "Ibigay ang iyong pahintulot upang magpatuloy sa pagpapakita ng credential at pag-download ng card."
     ],
     "verifierInfoPoints": [
       "Ang card ay ligtas na ibabahagi sa verifier.",
       "Ang verifier ay idaragdag sa iyong listahan ng pinagkakatiwalaan.",
       "Hindi mo na kailangang suriin muli ang tiwala kapag muling nagbahagi sa kanila sa hinaharap."
     ],
-    "Confirm": "Oo, Pinagkakatiwalaan Ko ang Issuer na Ito",
+    "confirm": "Oo, Pinagkakatiwalaan Ko ang Issuer na Ito",
     "verifierConfirm": "Oo, pinagkakatiwalaan ko ang verifier na ito",
-    "pdiConfirm": "Magpatuloy",
     "cancel": "Hindi, Ibalik Mo Ako"
   },
   "issuerTrustScreen": {
