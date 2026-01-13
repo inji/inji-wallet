@@ -384,7 +384,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                   color={Theme.Colors.TimeoutHintText}
                   style={Theme.VPSharingStyles.purposeText}>
                   {controller.isAuthorizationFlow
-                    ? t('authorizationPurpose', {downloadCard: downloadCard})
+                    ? t('authorizationPurpose')
                     : controller.purpose}
                 </Text>
               </Column>

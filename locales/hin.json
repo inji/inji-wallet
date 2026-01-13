@@ -234,7 +234,7 @@
     "loaders": {
       "processing": "प्रक्रिया जारी है...",
       "loading": "लोड हो रहा है...",
-      "preparingRequest": "आपका अनुरोध तैयार किया जा रहा है",
+      "preparingRequest": "आपके अनुरोध को संसाधित किया जा रहा है",
       "subTitle": {
         "displayIssuers": "जारीकर्ताओं को लाना",
         "settingUp": "की स्थापना",
@@ -253,7 +253,7 @@
     "offerTitle": "स्कैन करें और कार्ड डाउनलोड करें",
     "offerDescription": "अपना कार्ड तुरंत डाउनलोड करने के लिए QR कोड स्कैन करें।",
     "download": "कार्ड डाउनलोड करें",
-    "downloadSuccess": "कार्ड सफलतापूर्वक डाउनलोड हो गया",
+    "downloadSuccess": "कार्ड सफलतापूर्वक डाउनलोड हो गया है",
     "goHome": "होम जाएँ",
     "errors": {
       "noInternetConnection": {
@@ -883,7 +883,7 @@
     "acceptRequest": "शेयर करना",
     "acceptRequestAndVerify": "सेल्फी के साथ शेयर करें",
     "consentToPhotoVerification": "मैं सत्यापन के लिए अपना फोटो लेने की अनुमति देता हूं",
-    "pleaseSelectAnId": "कृपया एक आईडी चुनें",
+    "pleaseSelectAnId": "अनुरोध के अनुसार एक या अधिक कार्ड चुनें।",
     "reject": "अस्वीकार",
     "status": {
       "sharing": {
@@ -902,7 +902,7 @@
     }
   },
   "SendVPScreen": {
-    "authorizationPurpose": "सत्यापन के लिए अपने कार्ड प्रस्तुत करें और किसी विश्वसनीय जारीकर्ता द्वारा जारी किए गए {{downloadCard}} को प्राप्त करने के लिए आगे बढ़ें।",
+    "authorizationPurpose": "सत्यापन के लिए अनुरोधित कार्ड चुनें और विश्वसनीय जारीकर्ता से अपना नया कार्ड प्राप्त करें।",
     "consentShare": "मैं सहमत हूँ और साझा करता हूँ",
     "requester": "सत्यापन इकाई",
     "cardsSelected": "कार्ड चयनित",

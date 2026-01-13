@@ -232,7 +232,7 @@
     "loaders": {
       "processing": "Pinoproseso...",
       "loading": "Naglo-load...",
-      "preparingRequest": "Inihahanda ang iyong kahilingan",
+      "preparingRequest": "Pinoproseso ang iyong kahilingan",
       "subTitle": {
         "displayIssuers": "Kinukuha ang mga Isyu",
         "settingUp": "Inaayos",
@@ -251,7 +251,7 @@
     "offerTitle": "I-scan at I-download ang Card",
     "offerDescription": "I-scan ang QR code para agad ma-download ang iyong card.",
     "download": "I-download ang Card",
-    "downloadSuccess": "Matagumpay na na-download ang card",
+    "downloadSuccess": "Matagumpay na na-download ang iyong card",
     "goHome": "Pumunta sa Home",
     "errors": {
       "noInternetConnection": {
@@ -880,7 +880,7 @@
     "acceptRequestAndVerify": "Ibahagi sa Selfie",
     "reject": "Tanggihan",
     "consentToPhotoVerification": "Nagbibigay ako ng pahintulot na kunin ang aking larawan para sa pagpapatunay",
-    "pleaseSelectAnId": "Mangyaring pumili ng ID",
+    "pleaseSelectAnId": "Pumili ng isa o higit pang card ayon sa hinihingi.",
     "status": {
       "sharing": {
         "title": "Pagbabahagi",
@@ -898,7 +898,7 @@
     }
   },
   "SendVPScreen": {
-    "authorizationPurpose": "Ipakita ang iyong (mga) card upang ma-verify at magpatuloy sa pagkuha ng {{downloadCard}} na inisyu ng isang pinagkakatiwalaang issuer.",
+    "authorizationPurpose": "Piliin ang mga hinihinging card upang ma-verify at matanggap ang iyong bagong card mula sa pinagkakatiwalaang issuer.",
     "consentShare": "Ako ay pumapayag at nagbabahagi",
     "requester": "Entity ng Pagpapatunay",
     "cardsSelected": "mga card na napili",

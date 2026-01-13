@@ -233,7 +233,7 @@
     "loaders": {
       "processing": "جارٍ المعالجة...",
       "loading": "جار التحميل...",
-      "preparingRequest": "جارٍ تجهيز طلبك",
+      "preparingRequest": "جارٍ معالجة طلبك",
       "subTitle": {
         "displayIssuers": "جلب جهات الإصدار",
         "settingUp": "اعداد",
@@ -252,7 +252,7 @@
     "offerTitle": "امسح لتنزيل البطاقة",
     "offerDescription": "امسح رمز QR لتنزيل بطاقتك فورًا.",
     "download": "تنزيل البطاقة",
-    "downloadSuccess": "تم تنزيل البطاقة بنجاح",
+    "downloadSuccess": "اكتمل تنزيل البطاقة بنجاح",
     "goHome": "الانتقال إلى الصفحة الرئيسية",
     "errors": {
       "noInternetConnection": {
@@ -882,7 +882,7 @@
     "acceptRequestAndVerify": "شارك مع سيلفي",
     "reject": "رفض",
     "consentToPhotoVerification": "أوافق على التقاط صورتي للمصادقة",
-    "pleaseSelectAnId": "الرجاء تحديد معرف",
+    "pleaseSelectAnId": "يرجى تحديد بطاقة واحدة أو أكثر حسب المطلوب.",
     "status": {
       "sharing": {
         "title": "مشاركة...",
@@ -900,7 +900,7 @@
     }
   },
   "SendVPScreen": {
-    "authorizationPurpose": "قدّم بطاقتك (بطاقاتك) للتحقق والمتابعة للحصول على {{downloadCard}} صادرة من جهة موثوقة.",
+    "authorizationPurpose": "حدّد البطاقة/البطاقات المطلوبة للتحقق واستلام بطاقتك الجديدة من جهة الإصدار الموثوقة.",
     "consentShare": "أوافق وأشارك",
     "requester": "جهة التحقق",
     "cardsSelected": "البطاقات المختارة",

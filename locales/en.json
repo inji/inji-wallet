@@ -234,7 +234,7 @@
     "loaders": {
       "processing": "Processing...",
       "loading": "Loading...",
-      "preparingRequest": "Preparing your request",
+      "preparingRequest": "Processing your request",
       "subTitle": {
         "displayIssuers": "Fetching Issuers",
         "settingUp": "Setting up",
@@ -253,7 +253,7 @@
     "offerTitle": "Scan & Download Card",
     "offerDescription": "Scan a QR code to instantly download your card.",
     "download": " Download Card",
-    "downloadSuccess": "Card Download Successfully",
+    "downloadSuccess": "Card Downloaded Successfully",
     "goHome": "Go to Home",
     "errors": {
       "noInternetConnection": {
@@ -890,7 +890,7 @@
     "acceptRequestAndVerify": "Share with Selfie",
     "reject": "Reject",
     "consentToPhotoVerification": "I give consent to have my photo taken for authentication",
-    "pleaseSelectAnId": "Please select an ID",
+    "pleaseSelectAnId": "Select one or more cards as requested.",
     "status": {
       "sharing": {
         "title": "Sharing",
@@ -908,7 +908,7 @@
     }
   },
   "SendVPScreen": {
-    "authorizationPurpose": "Present your card(s) to verify and proceed to obtain a {{downloadCard}} issued by a trusted issuer.",
+    "authorizationPurpose": "Select the requested card(s) to get verified and receive your new card from the trusted issuer.",
     "consentShare": "I consent and share",
     "requester": "Verification Entity",
     "cardsSelected": "cards selected",
