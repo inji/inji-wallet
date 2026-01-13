@@ -186,7 +186,7 @@ export const IssuersMachine = model.createMachine(
           idle: {},
           presentationAuthorization: {
             invoke: {
-              id: 'OpenId4VP',
+              id: 'Presentation_During_Issuance_OpenID4VP_Service',
               src: openID4VPMachine,
               onDone: {},
               onError: {
@@ -661,7 +661,7 @@ export const IssuersMachine = model.createMachine(
           idle: {},
           presentationAuthorization: {
             invoke: {
-              id: 'OpenId4VP',
+              id: 'Presentation_During_Issuance_OpenID4VP_Service',
               src: openID4VPMachine,
             },
             on: {

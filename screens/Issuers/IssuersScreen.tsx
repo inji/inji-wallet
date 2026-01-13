@@ -376,7 +376,7 @@ export const IssuersScreen: React.FC<
     const display = getDisplayObjectForCurrentLanguage(
       controller.selectedCredentialType.display,
     );
-    return display.name;
+    return display.name ?? 'Card';
   };
 
   if (controller.loadingReason) {
