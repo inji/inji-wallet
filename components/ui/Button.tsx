@@ -6,6 +6,7 @@ import {
 import {
   GestureResponderEvent,
   StyleProp,
+  TextStyle,
   ViewStyle,
   ActivityIndicator,
   View,
@@ -66,7 +67,7 @@ export const Button: React.FC<ButtonProps> = props => {
       raised={props.raised}
       title={
         <Text
-          style={{paddingTop: 3}}
+          style={[{paddingTop: 3}, props.titleStyle]}
           weight="semibold"
           align="center"
           color={
@@ -127,7 +128,7 @@ export const Button: React.FC<ButtonProps> = props => {
           </View>
         ) : (
           <Text
-            style={{paddingLeft: props.icon ? 10 : 0}}
+            style={[{paddingLeft: props.icon ? 10 : 0}, props.titleStyle]}
             weight="bold"
             color={
               type === 'solid' || type === 'gradient' || type === 'radius'
@@ -165,4 +166,5 @@ interface ButtonProps {
   colors?: (string | number)[];
   width?: number;
   size?: string;
+  titleStyle?: StyleProp<TextStyle>;
 }
