@@ -5,8 +5,6 @@ import {IssuersService} from './IssuersService';
 import {IssuersGuards} from './IssuersGuards';
 import {CredentialTypes} from '../VerifiableCredential/VCMetaMachine/vc';
 import {OpenID4VPEvents, openID4VPMachine} from '../openID4VP/openID4VPMachine';
-import VciClient from '../../shared/vciClient/VciClient';
-import {OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../../shared/constants';
 
 const model = IssuersModel;
 
@@ -239,25 +237,6 @@ export const IssuersMachine = model.createMachine(
               },
               inProgress: {
                 on: {},
-              },
-              timeout: {
-                on: {
-                  STAY_IN_PROGRESS: {
-                    target: 'inProgress',
-                  },
-                  CANCEL: [
-                    {
-                      cond: 'isFlowTypeSimpleShare',
-                      actions: 'resetOpenID4VPFlowType',
-                    },
-                  ],
-                  RETRY: [
-                    {
-                      cond: 'isFlowTypeSimpleShare',
-                      actions: 'resetOpenID4VPFlowType',
-                    },
-                  ],
-                },
               },
             },
           },
@@ -663,6 +642,11 @@ export const IssuersMachine = model.createMachine(
             invoke: {
               id: 'Presentation_During_Issuance_OpenID4VP_Service',
               src: openID4VPMachine,
+              onDone: {},
+              onError: {
+                actions: ['setError', 'resetLoadingReason'],
+                target: '#issuersMachine.error',
+              },
             },
             on: {
               IN_PROGRESS: {
@@ -670,14 +654,7 @@ export const IssuersMachine = model.createMachine(
               },
               VP_CONSENT_REJECT: [
                 {
-                  actions: [
-                    () => console.error('vp consent rejected'),
-                    () =>
-                      VciClient.getInstance().abortPresentationFlow({
-                        code: OVP_ERROR_CODE.DECLINED,
-                        message: OVP_ERROR_MESSAGES.DECLINED,
-                      }),
-                  ],
+                  actions: ['sendVPConsentReject'],
                 },
               ],
               SIGN_PRESENTATION: [
@@ -700,13 +677,7 @@ export const IssuersMachine = model.createMachine(
                 },
               ],
               SHOW_ERROR: {
-                actions: [
-                  (_, event) =>
-                    VciClient.getInstance().abortPresentationFlow({
-                      code: 'PRESENTATION_AUTHORIZATION_ERROR',
-                      message: event.error,
-                    }),
-                ],
+                actions: ['sendPresentationAuthorizationError'],
               },
             },
             states: {
@@ -721,25 +692,6 @@ export const IssuersMachine = model.createMachine(
               showError: {},
               inProgress: {
                 on: {},
-              },
-              timeout: {
-                on: {
-                  STAY_IN_PROGRESS: {
-                    target: 'inProgress',
-                  },
-                  CANCEL: [
-                    {
-                      cond: 'isFlowTypeSimpleShare',
-                      actions: 'resetOpenID4VPFlowType',
-                    },
-                  ],
-                  RETRY: [
-                    {
-                      cond: 'isFlowTypeSimpleShare',
-                      actions: 'resetOpenID4VPFlowType',
-                    },
-                  ],
-                },
               },
             },
           },

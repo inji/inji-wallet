@@ -213,7 +213,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   ) async throws -> String {
     let jsonData = try JSONSerialization.data(
       withJSONObject: proofSigningAlgorithmsSupported, options: [])
-    let jsonString = String(data: jsonData, encoding: .utf8) ?? "{}"
+    let jsonString = String(data: jsonData, encoding: .utf8) ?? "[]"
     if let bridge = RCTBridge.current() {
       bridge.eventDispatcher().sendAppEvent(
         withName: "onRequestProof",

@@ -4,7 +4,7 @@ import {
   SelectedCredentialsForVPSharing,
   VerifiableCredential,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {signatureSuite} from "../../machines/openID4VP/openID4VPServices";
+import {signatureSuite} from '../../machines/openID4VP/openID4VPServices';
 
 const emitter = new NativeEventEmitter(NativeModules.InjiVciClient);
 
@@ -141,7 +141,7 @@ class VciClient {
       response = await this.InjiVciClient.requestCredentialByOffer(
         credentialOffer,
         JSON.stringify(clientMetadata),
-        signatureSuite
+        signatureSuite,
       );
     } catch (error) {
       console.error('Error requesting credential by offer:', error);
@@ -161,7 +161,7 @@ class VciClient {
       credential: {
         credential: parsedResponse.credential,
       } as VerifiableCredential,
-      credentialConfigurationId: parsedResponse.credentialConfigurationId ?? {},
+      credentialConfigurationId: parsedResponse.credentialConfigurationId ?? '',
       credentialIssuer: parsedResponse.credentialIssuer ?? '',
     };
   }
@@ -226,7 +226,7 @@ class VciClient {
         credentialIssuerUri,
         credentialConfigurationId,
         JSON.stringify(clientMetadata),
-        signatureSuite
+        signatureSuite,
       );
     } catch (error) {
       console.error('Error requesting credential from trusted issuer:', error);
@@ -244,13 +244,13 @@ class VciClient {
       credential: {
         credential: parsedResponse.credential,
       } as VerifiableCredential,
-      credentialConfigurationId: parsedResponse.credentialConfigurationId ?? {},
+      credentialConfigurationId: parsedResponse.credentialConfigurationId ?? '',
       credentialIssuer: parsedResponse.credentialIssuer ?? '',
     };
   }
 
   abortPresentationFlow(error: {code: string; message: string}) {
-    console.debug(`message ${error.message}`)
+    console.debug(`message ${error.message}`);
     this.InjiVciClient.abortPresentationFlowFromJS(error.code, error.message);
   }
 }

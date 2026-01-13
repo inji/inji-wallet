@@ -537,7 +537,9 @@ export const IssuersActions = (model: any) => {
           createOpenID4VPMachine(context.serviceRefs),
           OPENID4VP_REF_ID,
         );
-        service.subscribe(logState);
+        if (__DEV__) {
+          service.subscribe(logState);
+        }
         return service;
       },
     }),

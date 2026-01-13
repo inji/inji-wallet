@@ -6,7 +6,7 @@ import {AppServices} from '../../shared/GlobalContext';
 import {openID4VPGuards} from './openID4VPGuards';
 import {send, sendParent} from 'xstate/lib/actions';
 import {IssuersModel} from '../Issuers/IssuersModel';
-import {parseJSON, VCShareFlowType} from '../../shared/Utils';
+import {VCShareFlowType} from '../../shared/Utils';
 import {OVP_ERROR_MESSAGES} from '../../shared/constants';
 
 const model = openID4VPModel;
@@ -164,7 +164,7 @@ export const openID4VPMachine = model.createMachine(
           src: 'isVerifierTrusted',
           onDone: [
             {
-              cond: (ctx, e) => e.data === true,
+              cond: (_, e) => e.data === true,
               target: 'getVCsSatisfyingAuthRequest',
             },
             {

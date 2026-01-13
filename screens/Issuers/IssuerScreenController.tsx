@@ -40,7 +40,7 @@ import {CredentialTypes} from '../../machines/VerifiableCredential/VCMetaMachine
 
 export function useIssuerScreenController({route, navigation}) {
   const service = route.params.service;
-  service.subscribe(logState);
+  if (__DEV__) service.subscribe(logState);
 
   return {
     isPresentationAuthorization: useSelector(
@@ -74,11 +74,10 @@ export function useIssuerScreenController({route, navigation}) {
       service,
       selectSelectingCredentialType,
     ),
-    isConsentRequested: useSelector(
-      service, selectIsConsentRequested
-    ),
+    isConsentRequested: useSelector(service, selectIsConsentRequested),
     trustedIssuerConsentStatus: useSelector(
-      service, selectTrustedIssuerConsentStatus
+      service,
+      selectTrustedIssuerConsentStatus,
     ),
     supportedCredentialTypes: useSelector(
       service,

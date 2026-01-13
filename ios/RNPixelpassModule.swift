@@ -1,6 +1,8 @@
 import Foundation
 import pixelpass
 import React
+import os
+
 @objc(RNPixelpassModule)
 class RNPixelpassModule: NSObject, RCTBridgeModule {
     static func moduleName() -> String {

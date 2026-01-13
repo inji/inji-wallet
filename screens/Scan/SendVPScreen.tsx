@@ -465,7 +465,11 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
               <Button
                 type="clear"
                 loading={controller.isCancelling}
-                title={t('SendVcScreen:reject')}
+                title={
+                  controller.isAuthorizationFlow
+                    ? t('common:cancel')
+                    : t('SendVcScreen:reject')
+                }
                 onPress={handleRejectButtonEvent}
               />
             </Column>
