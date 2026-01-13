@@ -74,7 +74,7 @@ public class MosipTestRunner {
 			InjiWalletConfigManager.init();
 			suiteSetup(getRunType());
 			setLogLevels();
-
+			loadKnownIssues();
 			HealthChecker healthCheck = new HealthChecker();
 			healthCheck.setCurrentRunningModule(BaseTestCase.currentModule);
 			Thread trigger = new Thread(healthCheck);
@@ -93,69 +93,6 @@ public class MosipTestRunner {
 
 			// Generating biometric details with mock MDS
 			BiometricDataProvider.generateBiometricTestData("Registration");
-			String platform = InjiWalletConfigManager.getproperty("browserstack_platformName");
-
-			if (platform == null || platform.trim().isEmpty()) {
-				throw new RuntimeException("browserstack_platformName not set");
-			}
-
-			String knownIssuesFile;
-			switch (platform.trim().toLowerCase()) {
-			case "android":
-				knownIssuesFile = "Known_Issues_Android.txt";
-				break;
-			case "ios":
-				knownIssuesFile = "Known_Issues_ios.txt";
-				break;
-			default:
-				throw new IllegalArgumentException("Unsupported platform: " + platform);
-			}
-
-			String knownIssuesPath = getResourcePath() + "/config/" + knownIssuesFile;
-			LOGGER.info("Loading Known Issues from: " + knownIssuesPath);
-
-			try (BufferedReader br = new BufferedReader(
-					new InputStreamReader(new FileInputStream(knownIssuesPath), StandardCharsets.UTF_8))) {
-				String line;
-				while ((line = br.readLine()) != null) {
-					line = line.trim();
-					if (line.isEmpty() || line.startsWith("#") || !line.contains("------")) {
-						continue;
-					}
-					String[] parts = line.split("------", 2);
-
-					String bugId = parts[0].trim();
-					String rawTc = parts[1].trim();
-					
-					if (bugId.isEmpty() || rawTc.isEmpty()) {
-						LOGGER.warn("Skipping malformed known issue line (empty bugId or testCase): " + line);
-						continue;
-						}
-
-					// Normalize test case name
-					String normalizedTc;
-					
-					// method-only → *.method
-					if (!rawTc.contains(".")) {
-					    normalizedTc = "*." + rawTc;
-					}
-					// fully qualified or partially qualified → SimpleClass.method
-					else {
-					    String[] tokens = rawTc.split("\\.");
-					    if (tokens.length >= 2) {
-					        normalizedTc = tokens[tokens.length - 2] + "." + tokens[tokens.length - 1];
-					    } else {
-					        normalizedTc = rawTc;
-					    }
-					}
-					knownIssues.put(normalizedTc, bugId);
-
-				}
-				LOGGER.info("Known Issues Loaded: " + knownIssues);
-				
-			} catch (Exception e) {
-				LOGGER.warn(knownIssuesFile + " not found or unreadable: " + e.getMessage());
-			}
 
 			startTestRunner();
 		} catch (Exception e) {
@@ -418,5 +355,65 @@ public class MosipTestRunner {
 		else
 			return "IDE";
 	}
+	
+	
+	private static void loadKnownIssues() {
 
+	    String platform = InjiWalletConfigManager.getproperty("browserstack_platformName");
+	    if (platform == null || platform.trim().isEmpty()) {
+	        throw new RuntimeException("browserstack_platformName not set");
+	    }
+
+	    String knownIssuesFile;
+	    switch (platform.trim().toLowerCase()) {
+	        case "android":
+	            knownIssuesFile = "Known_Issues_Android.txt";
+	            break;
+	        case "ios":
+	            knownIssuesFile = "Known_Issues_ios.txt";
+	            break;
+	        default:
+	            throw new IllegalArgumentException("Unsupported platform: " + platform);
+	    }
+
+	    String knownIssuesPath = getResourcePath() + "/config/" + knownIssuesFile;
+	    LOGGER.info("Loading Known Issues from: " + knownIssuesPath);
+
+	    try (BufferedReader br = new BufferedReader(
+	            new InputStreamReader(new FileInputStream(knownIssuesPath), StandardCharsets.UTF_8))) {
+
+	        String line;
+	        while ((line = br.readLine()) != null) {
+	            line = line.trim();
+
+	            if (line.isEmpty() || line.startsWith("#") || !line.contains("------")) {
+	                continue;
+	            }
+
+	            String[] parts = line.split("------", 2);
+	            String bugId = parts[0].trim();
+	            String methodName = parts[1].trim();
+
+	            if (bugId.isEmpty() || methodName.isEmpty()) {
+	                LOGGER.warn("Skipping malformed known issue line: " + line);
+	                continue;
+	            }
+
+	            // Enforce method-name only (shared standard)
+	            if (!methodName.matches("^[A-Za-z0-9_]+$")) {
+	                LOGGER.warn(
+	                    "Skipping known issue entry. Expected method name only but found: " + methodName
+	                );
+	                continue;
+	            }
+
+	            knownIssues.put("*." + methodName, bugId);
+	        }
+
+	        LOGGER.info("Known Issues Loaded: " + knownIssues);
+
+	    } catch (Exception e) {
+	        LOGGER.warn(knownIssuesFile + " not found or unreadable: " + e.getMessage());
+	    }
+	}
 }
