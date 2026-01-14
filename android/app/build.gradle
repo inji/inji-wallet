@@ -112,8 +112,6 @@ android {
     namespace 'io.mosip.residentapp'
 
     defaultConfig {
-//      TODO: This can be removed?
-        multiDexEnabled true
         applicationId 'io.mosip.residentapp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -283,9 +281,7 @@ dependencies {
     implementation("io.mosip:pixelpass-aar:0.7.0")
     implementation("io.mosip:secure-keystore:0.3.0")
     implementation("io.mosip:tuvali:0.5.2")
-  //      TODO: This can be removed?
-    implementation 'androidx.multidex:multidex:2.0.1'
-    implementation("io.mosip:inji-vci-client-aar:0.5.0-local-SNAPSHOT"){
+    implementation("io.inji:inji-vci-client-aar:0.7.0-local-SNAPSHOT"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
