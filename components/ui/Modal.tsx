@@ -4,8 +4,6 @@ import {
   Modal as RNModal,
   TouchableOpacity,
   View,
-  Platform,
-  StatusBar,
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 import {Column, Row, Text} from '.';
@@ -35,12 +33,7 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   const controller = useSendVcScreen();
   const insets = useSafeAreaInsets();
-  const topInset =
-    insets.top && insets.top > 0
-      ? insets.top
-      : Platform.OS === 'android'
-      ? StatusBar.currentHeight || 0
-      : 0;
+  const topInset = Math.max(insets.top, 24);
   const bottomInset = insets.bottom ?? 0;
   return (
     <RNModal
