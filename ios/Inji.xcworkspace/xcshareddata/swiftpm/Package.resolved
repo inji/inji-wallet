@@ -1,5 +1,5 @@
 {
-  "originHash" : "96809352d10e69dfc0d851d08fa64a16964eb41ba42d0df91026ef4b88746170",
+  "originHash" : "a3146fb582ba55930e9db89f50cf0454e89ade6fb6a380b0e7d649e8527e703a",
   "pins" : [
     {
       "identity" : "aexml",
@@ -76,10 +76,10 @@
     {
       "identity" : "inji-openid4vp-ios-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tw-mosip/inji-openid4vp-ios-swift.git",
+      "location" : "https://github.com/mosip/inji-openid4vp-ios-swift.git",
       "state" : {
-        "branch" : "injimob-3619",
-        "revision" : "4d98cead8822ca4fe48f4e98e47e9b15f51ba67a"
+        "branch" : "develop",
+        "revision" : "d0de353b9ebb769220d40badd5308a0fb965a2c4"
       }
     },
     {
@@ -94,10 +94,10 @@
     {
       "identity" : "inji-vci-client-ios-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tw-mosip/inji-vci-client-ios-swift",
+      "location" : "https://github.com/mosip/inji-vci-client-ios-swift",
       "state" : {
-        "branch" : "injimob-3598",
-        "revision" : "b5cc9a0dc235e3753a0ae8490e816edb68e0bb01"
+        "branch" : "develop",
+        "revision" : "8c01bd99bd988b701fae84d6a1cf1d667fc5f96e"
       }
     },
     {
