@@ -307,6 +307,7 @@ export const openID4VPMachine = model.createMachine(
         },
       },
       selectingVCs: {
+        // TODO: On entering this state, an event can be sent to parent stating VCs matching done and ready for selection
         on: {
           VERIFY_AND_ACCEPT_REQUEST: {
             actions: [
