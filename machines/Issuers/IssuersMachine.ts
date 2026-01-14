@@ -199,12 +199,10 @@ export const IssuersMachine = model.createMachine(
               VP_CONSENT_REJECT: [
                 {
                   actions: ['sendVPConsentReject'],
-                  target: '#issuersMachine.error',
                 },
               ],
               SHOW_ERROR: {
                 actions: ['sendPresentationAuthorizationError'],
-                target: '#issuersMachine.error',
               },
               SIGN_PRESENTATION: [
                 {
