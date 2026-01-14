@@ -54,8 +54,15 @@ export const openID4VPActions = (model: any) => {
         return pd.purpose ?? '';
       },
 
-      hasNoMatchingVCs: () =>
-        !result.matchingVCs || Object.keys(result.matchingVCs).length === 0,
+      hasNoMatchingVCs: () => {
+        return (
+          !result.matchingVCs ||
+          Object.keys(result.matchingVCs).length === 0 ||
+          Object.values(result.matchingVCs).every(
+            value => Array.isArray(value) && value.length === 0,
+          )
+        );
+      },
     }),
 
     setAuthenticationResponseForPresentationAuthFlow: model.assign({
