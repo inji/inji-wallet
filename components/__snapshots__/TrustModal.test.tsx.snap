@@ -104,8 +104,8 @@ exports[`TrustModal matches snapshot in idle state 1`] = `
             }
           }
         >
-          <View
-            style={
+          <RCTScrollView
+            contentContainerStyle={
               [
                 {
                   "alignItems": "center",
@@ -118,36 +118,45 @@ exports[`TrustModal matches snapshot in idle state 1`] = `
                 },
               ]
             }
+            showsVerticalScrollIndicator={true}
+            style={
+              {
+                "maxHeight": 120,
+                "width": "100%",
+              }
+            }
           >
-            <Image
-              source={
-                {
-                  "uri": "https://example.com/logo.png",
+            <View>
+              <Image
+                source={
+                  {
+                    "uri": "https://example.com/logo.png",
+                  }
                 }
-              }
-              style={
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderRadius": 8,
-                  "height": 40,
-                  "marginRight": 12,
-                  "resizeMode": "contain",
-                  "width": 40,
+                style={
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 8,
+                    "height": 40,
+                    "marginRight": 12,
+                    "resizeMode": "contain",
+                    "width": 40,
+                  }
                 }
-              }
-            />
-            <Text
-              style={
-                {
-                  "color": "#111827",
-                  "fontSize": 18,
-                  "fontWeight": "600",
+              />
+              <Text
+                style={
+                  {
+                    "color": "#111827",
+                    "fontSize": 18,
+                    "fontWeight": "600",
+                  }
                 }
-              }
-            >
-              Test Issuer
-            </Text>
-          </View>
+              >
+                Test Issuer
+              </Text>
+            </View>
+          </RCTScrollView>
           <Text
             style={
               {
@@ -391,8 +400,8 @@ exports[`TrustModal matches snapshot in loading state 1`] = `
             }
           }
         >
-          <View
-            style={
+          <RCTScrollView
+            contentContainerStyle={
               [
                 {
                   "alignItems": "center",
@@ -405,36 +414,45 @@ exports[`TrustModal matches snapshot in loading state 1`] = `
                 },
               ]
             }
+            showsVerticalScrollIndicator={true}
+            style={
+              {
+                "maxHeight": 120,
+                "width": "100%",
+              }
+            }
           >
-            <Image
-              source={
-                {
-                  "uri": "https://example.com/logo.png",
+            <View>
+              <Image
+                source={
+                  {
+                    "uri": "https://example.com/logo.png",
+                  }
                 }
-              }
-              style={
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderRadius": 8,
-                  "height": 40,
-                  "marginRight": 12,
-                  "resizeMode": "contain",
-                  "width": 40,
+                style={
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 8,
+                    "height": 40,
+                    "marginRight": 12,
+                    "resizeMode": "contain",
+                    "width": 40,
+                  }
                 }
-              }
-            />
-            <Text
-              style={
-                {
-                  "color": "#111827",
-                  "fontSize": 18,
-                  "fontWeight": "600",
+              />
+              <Text
+                style={
+                  {
+                    "color": "#111827",
+                    "fontSize": 18,
+                    "fontWeight": "600",
+                  }
                 }
-              }
-            >
-              Test Issuer
-            </Text>
-          </View>
+              >
+                Test Issuer
+              </Text>
+            </View>
+          </RCTScrollView>
           <Text
             style={
               {
@@ -815,8 +833,8 @@ exports[`TrustModal matches snapshot with long issuer name 1`] = `
             }
           }
         >
-          <View
-            style={
+          <RCTScrollView
+            contentContainerStyle={
               [
                 {
                   "alignItems": "center",
@@ -829,36 +847,45 @@ exports[`TrustModal matches snapshot with long issuer name 1`] = `
                 },
               ]
             }
+            showsVerticalScrollIndicator={true}
+            style={
+              {
+                "maxHeight": 120,
+                "width": "100%",
+              }
+            }
           >
-            <Image
-              source={
-                {
-                  "uri": "https://example.com/logo.png",
+            <View>
+              <Image
+                source={
+                  {
+                    "uri": "https://example.com/logo.png",
+                  }
                 }
-              }
-              style={
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderRadius": 8,
-                  "height": 40,
-                  "marginRight": 12,
-                  "resizeMode": "contain",
-                  "width": 40,
+                style={
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 8,
+                    "height": 40,
+                    "marginRight": 12,
+                    "resizeMode": "contain",
+                    "width": 40,
+                  }
                 }
-              }
-            />
-            <Text
-              style={
-                {
-                  "color": "#111827",
-                  "fontSize": 18,
-                  "fontWeight": "600",
+              />
+              <Text
+                style={
+                  {
+                    "color": "#111827",
+                    "fontSize": 18,
+                    "fontWeight": "600",
+                  }
                 }
-              }
-            >
-              Very Long Issuer Name That Should Wrap Properly
-            </Text>
-          </View>
+              >
+                Very Long Issuer Name That Should Wrap Properly
+              </Text>
+            </View>
+          </RCTScrollView>
           <Text
             style={
               {
@@ -1102,8 +1129,8 @@ exports[`TrustModal matches snapshot without logo 1`] = `
             }
           }
         >
-          <View
-            style={
+          <RCTScrollView
+            contentContainerStyle={
               [
                 {
                   "alignItems": "center",
@@ -1116,19 +1143,28 @@ exports[`TrustModal matches snapshot without logo 1`] = `
                 },
               ]
             }
-          >
-            <Text
-              style={
-                {
-                  "color": "#111827",
-                  "fontSize": 18,
-                  "fontWeight": "600",
-                }
+            showsVerticalScrollIndicator={true}
+            style={
+              {
+                "maxHeight": 120,
+                "width": "100%",
               }
-            >
-              Test Issuer
-            </Text>
-          </View>
+            }
+          >
+            <View>
+              <Text
+                style={
+                  {
+                    "color": "#111827",
+                    "fontSize": 18,
+                    "fontWeight": "600",
+                  }
+                }
+              >
+                Test Issuer
+              </Text>
+            </View>
+          </RCTScrollView>
           <Text
             style={
               {
@@ -1372,8 +1408,8 @@ exports[`TrustModal matches snapshot without logo and name 1`] = `
             }
           }
         >
-          <View
-            style={
+          <RCTScrollView
+            contentContainerStyle={
               [
                 {
                   "alignItems": "center",
@@ -1386,17 +1422,26 @@ exports[`TrustModal matches snapshot without logo and name 1`] = `
                 },
               ]
             }
-          >
-            <Text
-              style={
-                {
-                  "color": "#111827",
-                  "fontSize": 18,
-                  "fontWeight": "600",
-                }
+            showsVerticalScrollIndicator={true}
+            style={
+              {
+                "maxHeight": 120,
+                "width": "100%",
               }
-            />
-          </View>
+            }
+          >
+            <View>
+              <Text
+                style={
+                  {
+                    "color": "#111827",
+                    "fontSize": 18,
+                    "fontWeight": "600",
+                  }
+                }
+              />
+            </View>
+          </RCTScrollView>
           <Text
             style={
               {
@@ -1640,8 +1685,8 @@ exports[`TrustModal matches snapshot without name 1`] = `
             }
           }
         >
-          <View
-            style={
+          <RCTScrollView
+            contentContainerStyle={
               [
                 {
                   "alignItems": "center",
@@ -1654,34 +1699,43 @@ exports[`TrustModal matches snapshot without name 1`] = `
                 },
               ]
             }
+            showsVerticalScrollIndicator={true}
+            style={
+              {
+                "maxHeight": 120,
+                "width": "100%",
+              }
+            }
           >
-            <Image
-              source={
-                {
-                  "uri": "https://example.com/logo.png",
+            <View>
+              <Image
+                source={
+                  {
+                    "uri": "https://example.com/logo.png",
+                  }
                 }
-              }
-              style={
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderRadius": 8,
-                  "height": 40,
-                  "marginRight": 12,
-                  "resizeMode": "contain",
-                  "width": 40,
+                style={
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 8,
+                    "height": 40,
+                    "marginRight": 12,
+                    "resizeMode": "contain",
+                    "width": 40,
+                  }
                 }
-              }
-            />
-            <Text
-              style={
-                {
-                  "color": "#111827",
-                  "fontSize": 18,
-                  "fontWeight": "600",
+              />
+              <Text
+                style={
+                  {
+                    "color": "#111827",
+                    "fontSize": 18,
+                    "fontWeight": "600",
+                  }
                 }
-              }
-            />
-          </View>
+              />
+            </View>
+          </RCTScrollView>
           <Text
             style={
               {
