@@ -17,7 +17,6 @@ import {I18nManager} from 'react-native';
 import {Theme} from '../../components/ui/styleUtils';
 import LinearGradient from 'react-native-linear-gradient';
 import {BackButton} from '../../components/ui/backButton/BackButton';
-import {useNavigation} from '@react-navigation/native';
 
 const RequestStack = createNativeStackNavigator();
 
@@ -25,7 +24,6 @@ export const RequestLayout: React.FC = () => {
   const {t} = useTranslation('RequestScreen');
   const controller = useRequestLayout();
   const receivedCardsController = useReceivedVcsTab();
-  const navigation = useNavigation();
 
   return (
     <React.Fragment>
@@ -81,7 +79,7 @@ export const RequestLayout: React.FC = () => {
               !I18nManager.isRTL && (
                 <BackButton
                   onPress={() => {
-                    navigation.goBack();
+                    controller.GOTO_HOME();
                   }}
                 />
               ),
@@ -89,7 +87,7 @@ export const RequestLayout: React.FC = () => {
               I18nManager.isRTL && (
                 <BackButton
                   onPress={() => {
-                    navigation.goBack();
+                    controller.GOTO_HOME();
                   }}
                 />
               ),
