@@ -9,7 +9,7 @@ import {VC} from '../VerifiableCredential/VCMetaMachine/vc';
 import {StoreEvents} from '../store';
 import {JSONPath} from 'jsonpath-plus';
 
-import {VCShareFlowType} from '../../shared/Utils';
+import {parseJSON, VCShareFlowType} from '../../shared/Utils';
 import {ActivityLogEvents} from '../activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
 import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
@@ -25,6 +25,10 @@ import {
 export const openID4VPActions = (model: any) => {
   let result;
   return {
+    setPresentationRequest: model.assign({
+      presentationRequest: (_, event) => event.presentationRequest,
+    }),
+
     setAuthenticationResponse: model.assign({
       authenticationResponse: (_, event) => event.data,
     }),
@@ -49,11 +53,37 @@ export const openID4VPActions = (model: any) => {
         const pd = response['presentation_definition'];
         return pd.purpose ?? '';
       },
+
+      hasNoMatchingVCs: () => {
+        return (
+          !result.matchingVCs ||
+          Object.keys(result.matchingVCs).length === 0 ||
+          Object.values(result.matchingVCs).every(
+            value => Array.isArray(value) && value.length === 0,
+          )
+        );
+      },
+    }),
+
+    setAuthenticationResponseForPresentationAuthFlow: model.assign({
+      authenticationResponse: (context, _) => context.presentationRequest,
     }),
 
     setSelectedVCs: model.assign({
       selectedVCs: (_, event) => event.selectedVCs,
       selectedDisclosuresByVc: (_, event) => event.selectedDisclosuresByVc,
+    }),
+
+    setUnsignedVPToken: model.assign({
+      unsignedVPToken: (_, event) => {
+        console.log('event in setUnsignedVPToken action:', event);
+        try {
+          return parseJSON(event.data);
+        } catch (error) {
+          console.error('Error parsing unsignedVPToken:', error);
+          return null;
+        }
+      },
     }),
 
     compareAndStoreSelectedVC: model.assign({
@@ -176,6 +206,12 @@ export const openID4VPActions = (model: any) => {
 
     dismissTrustModal: assign({
       showTrustConsentModal: () => false,
+    }),
+
+    setSignVPError: model.assign({
+      error: (_, event) => {
+        return 'sign vp-' + event.data.message + '-' + event.data.code;
+      },
     }),
 
     setSendVPShareError: model.assign({

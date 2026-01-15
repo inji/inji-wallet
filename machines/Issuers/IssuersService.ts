@@ -13,11 +13,15 @@ import {
   verifyCredentialData,
 } from '../../shared/openId4VCI/Utils';
 import VciClient from '../../shared/vciClient/VciClient';
-import { displayType, issuerType } from './IssuersMachine';
-import { setItem } from '../store';
-import { API_CACHED_STORAGE_KEYS } from '../../shared/constants';
-import { createCacheObject } from '../../shared/Utils';
-import { VerificationResult } from '../../shared/vcjs/verifyCredential';
+import {displayType, issuerType} from './IssuersMachine';
+import {setItem} from '../store';
+import {
+  API_CACHED_STORAGE_KEYS,
+  AuthorizationType,
+} from '../../shared/constants';
+import {createCacheObject} from '../../shared/Utils';
+import {VerificationResult} from '../../shared/vcjs/verifyCredential';
+import {sign} from '@noble/secp256k1';
 
 export const IssuersService = () => {
   return {
@@ -97,6 +101,20 @@ export const IssuersService = () => {
           tokenRequest: tokenRequest,
         });
       };
+      const handlePresentationRequest = (presentationRequest: object) => {
+        sendBack({
+          type: 'PRESENTATION_REQUEST',
+          presentationRequest: presentationRequest,
+        });
+      };
+
+      const signPresentation = (presentationRequest: object) => {
+        sendBack({
+          type: 'SIGN_PRESENTATION',
+          presentationRequest: presentationRequest,
+        });
+      };
+
       const {credential} =
         await VciClient.getInstance().requestCredentialFromTrustedIssuer(
           context.selectedIssuer.credential_issuer_host,
@@ -108,6 +126,8 @@ export const IssuersService = () => {
           getProofJwt,
           navigateToAuthView,
           getTokenResponse,
+          handlePresentationRequest,
+          signPresentation,
         );
       return updateCredentialInformation(context, credential);
     },
@@ -201,6 +221,20 @@ export const IssuersService = () => {
         });
       };
 
+      const handlePresentationRequest = (presentationRequest: object) => {
+        sendBack({
+          type: 'PRESENTATION_REQUEST',
+          presentationRequest: presentationRequest,
+        });
+      };
+
+      const signPresentation = (presentationRequest: object) => {
+        sendBack({
+          type: 'SIGN_PRESENTATION',
+          presentationRequest: presentationRequest,
+        });
+      };
+
       const credentialResponse =
         await VciClient.getInstance().requestCredentialByOffer(
           context.qrData,
@@ -209,6 +243,8 @@ export const IssuersService = () => {
           navigateToAuthView,
           getTokenResponse,
           requesTrustIssuerConsent,
+          handlePresentationRequest,
+          signPresentation,
         );
       return credentialResponse;
     },
@@ -216,7 +252,9 @@ export const IssuersService = () => {
       const tokenRequestObject = context.tokenRequestObject;
       return await sendTokenRequest(
         tokenRequestObject,
-        context.selectedIssuer?.token_endpoint,
+        context.authorizationType === AuthorizationType.IMPLICIT
+          ? context.selectedIssuer?.token_endpoint
+          : null,
       );
     },
     sendTokenResponse: async (context: any) => {
@@ -309,7 +347,11 @@ export const IssuersService = () => {
     },
 
     verifyCredential: async (context: any): Promise<VerificationResult> => {
-      const { isCredentialOfferFlow, verifiableCredential, selectedCredentialType } = context;
+      const {
+        isCredentialOfferFlow,
+        verifiableCredential,
+        selectedCredentialType,
+      } = context;
       if (isCredentialOfferFlow) {
         const configurations = await getAllConfigurations();
         if (configurations.disableCredentialOfferVcVerification) {
@@ -327,12 +369,11 @@ export const IssuersService = () => {
       if (!verificationResult.isVerified) {
         throw new Error(verificationResult.verificationErrorCode);
       }
-    
+
       return verificationResult;
-    }
-    
-}
-}
+    },
+  };
+};
 async function sendTokenRequest(
   tokenRequestObject: any,
   proxyTokenEndpoint: any = null,

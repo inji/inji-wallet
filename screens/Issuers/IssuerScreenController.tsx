@@ -1,9 +1,8 @@
-import { useSelector } from '@xstate/react';
+import {useSelector} from '@xstate/react';
 import {
   selectSupportedCredentialTypes,
   selectErrorMessageType,
   selectIsBiometricCancelled,
-  selectIsDone,
   selectIsDownloadCredentials,
   selectIsIdle,
   selectIssuers,
@@ -12,7 +11,8 @@ import {
   selectSelectedIssuer,
   selectSelectingCredentialType,
   selectStoring,
-  selectVerificationErrorMessage, selectIsQrScanning,
+  selectVerificationErrorMessage,
+  selectIsQrScanning,
   selectAuthWebViewStatus,
   selectAuthEndPoint,
   selectIsTxCodeRequested,
@@ -20,48 +20,64 @@ import {
   selectIssuerLogo,
   selectIssuerName,
   selectTxCodeDisplayDetails,
-  selectTrustedIssuerConsentStatus
+  selectIsPresentationAuthorization,
+  selectOVPMachine,
+  selectIsPresentationAuthorizationInProgress,
+  selectAuthorizationType,
+  selectIsAuthorizationSuccess,
+  selectSelectedCredentialType,
+  selectTrustedIssuerConsentStatus,
 } from '../../machines/Issuers/IssuersSelectors';
-import { ActorRefFrom } from 'xstate';
-import { BOTTOM_TAB_ROUTES } from '../../routes/routesConstants';
-import { logState } from '../../shared/commonUtil';
-import { isAndroid } from '../../shared/constants';
+import {ActorRefFrom} from 'xstate';
+import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
+import {logState} from '../../shared/commonUtil';
+import {isAndroid} from '../../shared/constants';
 import {
   IssuerScreenTabEvents,
   IssuersMachine,
 } from '../../machines/Issuers/IssuersMachine';
-import { CredentialTypes } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {CredentialTypes} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 
-export function useIssuerScreenController({ route, navigation }) {
+export function useIssuerScreenController({route, navigation}) {
   const service = route.params.service;
-  service.subscribe(logState);
+  if (__DEV__) service.subscribe(logState);
 
   return {
+    isPresentationAuthorization: useSelector(
+      service,
+      selectIsPresentationAuthorization,
+    ),
+    isPresentationAuthorizationInProgress: useSelector(
+      service,
+      selectIsPresentationAuthorizationInProgress,
+    ),
+    authorizationType: useSelector(service, selectAuthorizationType),
+    isDownloadSuccess: useSelector(service, selectStoring),
+    isAuthorizationSuccess: useSelector(service, selectIsAuthorizationSuccess),
     issuers: useSelector(service, selectIssuers),
+    ovpMachine: useSelector(service, selectOVPMachine),
     issuerLogo: useSelector(service, selectIssuerLogo),
     issuerName: useSelector(service, selectIssuerName),
     isTxCodeRequested: useSelector(service, selectIsTxCodeRequested),
     txCodeDisplayDetails: useSelector(service, selectTxCodeDisplayDetails),
-    authEndpount: useSelector(service, selectAuthEndPoint),
+    authEndpoint: useSelector(service, selectAuthEndPoint),
     selectedIssuer: useSelector(service, selectSelectedIssuer),
+    selectedCredentialType: useSelector(service, selectSelectedCredentialType),
     errorMessageType: useSelector(service, selectErrorMessageType),
     isDownloadingCredentials: useSelector(service, selectIsDownloadCredentials),
     isBiometricsCancelled: useSelector(service, selectIsBiometricCancelled),
-    isDone: useSelector(service, selectIsDone),
     isIdle: useSelector(service, selectIsIdle),
     loadingReason: useSelector(service, selectLoadingReason),
-    isStoring: useSelector(service, selectStoring),
     isQrScanning: useSelector(service, selectIsQrScanning),
     isAuthEndpointToOpen: useSelector(service, selectAuthWebViewStatus),
     isSelectingCredentialType: useSelector(
       service,
       selectSelectingCredentialType,
     ),
-    isConsentRequested: useSelector(
-      service, selectIsConsentRequested
-    ),
+    isConsentRequested: useSelector(service, selectIsConsentRequested),
     trustedIssuerConsentStatus: useSelector(
-      service, selectTrustedIssuerConsentStatus
+      service,
+      selectTrustedIssuerConsentStatus,
     ),
     supportedCredentialTypes: useSelector(
       service,
@@ -80,18 +96,18 @@ export function useIssuerScreenController({ route, navigation }) {
     RESET_ERROR: () => service.send(IssuerScreenTabEvents.RESET_ERROR()),
     DOWNLOAD_ID: () => {
       service.send(IssuerScreenTabEvents.DOWNLOAD_ID());
-      navigation.navigate(BOTTOM_TAB_ROUTES.home, { screen: 'HomeScreen' });
+      navigation.navigate(BOTTOM_TAB_ROUTES.home, {screen: 'HomeScreen'});
     },
     SELECTED_CREDENTIAL_TYPE: (credType: CredentialTypes) =>
       service.send(IssuerScreenTabEvents.SELECTED_CREDENTIAL_TYPE(credType)),
     RESET_VERIFY_ERROR: () => {
       service.send(IssuerScreenTabEvents.RESET_VERIFY_ERROR());
       if (isAndroid()) {
-        navigation.navigate(BOTTOM_TAB_ROUTES.home, { screen: 'HomeScreen' });
+        navigation.navigate(BOTTOM_TAB_ROUTES.home, {screen: 'HomeScreen'});
       } else {
         setTimeout(
           () =>
-            navigation.navigate(BOTTOM_TAB_ROUTES.home, { screen: 'HomeScreen' }),
+            navigation.navigate(BOTTOM_TAB_ROUTES.home, {screen: 'HomeScreen'}),
           0,
         );
       }
@@ -107,7 +123,7 @@ export function useIssuerScreenController({ route, navigation }) {
     },
     ON_CONSENT_GIVEN: () => {
       service.send(IssuerScreenTabEvents.ON_CONSENT_GIVEN());
-    }
+    },
   };
 }
 

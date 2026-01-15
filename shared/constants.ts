@@ -203,3 +203,8 @@ export const OVP_ERROR_CODE = {
 };
 
 export const QR_IMAGE_ID = 'qrCodeImage';
+
+export enum AuthorizationType {
+  OPENID4VP_PRESENTATION,
+  IMPLICIT,
+}

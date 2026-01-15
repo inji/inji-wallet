@@ -1,11 +1,11 @@
-package io.mosip.residentapp.Utils;
+package io.mosip.residentapp.utils;
 
 import java.util.List;
 import java.util.ArrayList;
 import com.facebook.react.bridge.ReadableArray;
 
 public class FormatConverter {
-    
+
      public static List<String> convertReadableArrayToList(ReadableArray readableArray) {
         List<String> list = new ArrayList<>();
 

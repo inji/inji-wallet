@@ -6,6 +6,7 @@ import {
   Credential,
   VerifiableCredentialData,
 } from '../VerifiableCredential/VCMetaMachine/vc';
+import {VCShareFlowType} from '../../shared/Utils';
 
 type State = StateFrom<typeof openID4VPMachine>;
 
@@ -26,7 +27,10 @@ export function selectAreAllVCsChecked(state: State) {
 }
 
 export function selectIsGetVPSharingConsent(state: State) {
-  return state.matches('getConsentForVPSharing');
+  return (
+    state.matches('getConsentForVPSharing') &&
+    state.context.flowType !== VCShareFlowType.OPENID4VP_AUTHORIZATION
+  );
 }
 
 export function selectIsFaceVerificationConsent(state: State) {
@@ -132,13 +136,15 @@ export function selectshowTrustConsentModal(state: State) {
 }
 
 export function selectVerifierNameInTrustModal(state: State) {
-  return (
-    state.context.authenticationResponse['client_metadata']?.['client_name']
-  );
+  return state.context.authenticationResponse['client_metadata']?.[
+    'client_name'
+  ];
 }
 
 export function selectVerifierLogoInTrustModal(state: State) {
-  return (
-    state.context.authenticationResponse['client_metadata']?.['logo_uri']
-  );
+  return state.context.authenticationResponse['client_metadata']?.['logo_uri'];
+}
+
+export function selectIsAuthorization(state: State) {
+  return state.context.flowType === VCShareFlowType.OPENID4VP_AUTHORIZATION;
 }

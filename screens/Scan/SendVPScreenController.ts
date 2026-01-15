@@ -11,6 +11,7 @@ import {
   selectIsSendingVPError,
 } from '../../machines/bleShare/scan/scanSelectors';
 import {
+  selectIsAuthorization,
   selectAreAllVCsChecked,
   selectCredentials,
   selectIsError,
@@ -56,14 +57,17 @@ const changeTabBarVisible = (visible: string) => {
   Theme.BottomTabBarStyle.tabBarStyle.display = visible;
 };
 
-export function useSendVPScreen() {
+export function useSendVPScreen(props) {
   const {t} = useTranslation('SendVPScreen');
   const {appService} = useContext(GlobalContext);
   const scanService = appService.children.get('scan')!!;
   const vcMetaService = appService.children.get('vcMeta')!!;
   const activityLogService = appService.children.get('activityLog')!!;
   const navigation = useNavigation<MyVcsTabNavigation>();
-  const openID4VPService = scanService.getSnapshot().context.OpenId4VPRef;
+  const openID4VPService =
+    props?.route?.name === 'IssuersScreen'
+      ? props.route.params.ovpService
+      : scanService.getSnapshot().context.OpenId4VPRef;
   // input descriptor id to VCs mapping
   const [
     inputDescriptorIdToSelectedVcKeys,
@@ -224,6 +228,7 @@ export function useSendVPScreen() {
   }
 
   return {
+    isAuthorizationFlow: useSelector(openID4VPService, selectIsAuthorization),
     isSendingVP: useSelector(openID4VPService, selectIsSharingVP),
     showLoadingScreen: useSelector(openID4VPService, selectIsShowLoadingScreen),
     vpVerifierName,

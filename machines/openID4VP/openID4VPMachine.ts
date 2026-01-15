@@ -5,6 +5,9 @@ import {openID4VPActions} from './openID4VPActions';
 import {AppServices} from '../../shared/GlobalContext';
 import {openID4VPGuards} from './openID4VPGuards';
 import {send, sendParent} from 'xstate/lib/actions';
+import {IssuersModel} from '../Issuers/IssuersModel';
+import {VCShareFlowType} from '../../shared/Utils';
+import {OVP_ERROR_MESSAGES} from '../../shared/constants';
 
 const model = openID4VPModel;
 
@@ -22,6 +25,10 @@ export const openID4VPMachine = model.createMachine(
     id: 'OpenID4VP',
     initial: 'waitingForData',
     on: {
+      AUTHENTICATE_VIA_PRESENTATION: {
+        actions: ['setPresentationRequest', 'setFlowType'],
+        target: 'checkFaceAuthConsent',
+      },
       DISMISS_POPUP: [
         {
           cond: 'isSimpleOpenID4VPShare',
@@ -33,9 +40,12 @@ export const openID4VPMachine = model.createMachine(
           target: 'waitingForData',
         },
       ],
-      LOG_ACTIVITY: {
-        actions: 'logActivity',
-      },
+      LOG_ACTIVITY: [
+        {
+          cond: 'isNotAuthorizationFlow',
+          actions: 'logActivity',
+        },
+      ],
     },
     states: {
       waitingForData: {
@@ -107,10 +117,20 @@ export const openID4VPMachine = model.createMachine(
         description: 'checks whether key pair is generated',
         invoke: {
           src: 'getSelectedKey',
-          onDone: {
-            cond: 'hasKeyPair',
-            target: 'authenticateVerifier',
-          },
+          onDone: [
+            {
+              cond: 'isAuthorizationFlow',
+              actions: [
+                'setAuthenticationResponseForPresentationAuthFlow',
+                'resetIsShowLoadingScreen',
+              ],
+              target: 'checkVerifierTrust',
+            },
+            {
+              cond: 'hasKeyPair',
+              target: 'authenticateVerifier',
+            },
+          ],
           onError: [
             {
               actions: 'setError',
@@ -125,10 +145,17 @@ export const openID4VPMachine = model.createMachine(
             actions: 'setAuthenticationResponse',
             target: 'checkVerifierTrust',
           },
-          onError: {
-            actions: 'setAuthenticationError',
-            target: 'showError',
-          },
+          onError: [
+            {
+              cond: 'isAuthorizationFlow',
+              actions: 'setAuthenticationError',
+              target: '#OpenID4VP.authFlowFailed',
+            },
+            {
+              actions: 'setAuthenticationError',
+              target: 'showError',
+            },
+          ],
         },
         exit: 'resetIsShowLoadingScreen',
       },
@@ -137,7 +164,7 @@ export const openID4VPMachine = model.createMachine(
           src: 'isVerifierTrusted',
           onDone: [
             {
-              cond: (ctx, e) => e.data === true,
+              cond: (_, e) => e.data === true,
               target: 'getVCsSatisfyingAuthRequest',
             },
             {
@@ -165,9 +192,16 @@ export const openID4VPMachine = model.createMachine(
       },
 
       delayBeforeDismissToParent: {
-        after: {
-          200: 'sendDismissToParent',
-        },
+        always: [
+          {
+            cond: 'isAuthorizationFlow',
+            actions: [sendParent('VP_CONSENT_REJECT')],
+            target: 'waitingForData',
+          },
+          {
+            target: 'sendDismissToParent',
+          },
+        ],
       },
       sendDismissToParent: {
         entry: sendParent('DISMISS'),
@@ -180,31 +214,59 @@ export const openID4VPMachine = model.createMachine(
           onDone: {
             target: 'getVCsSatisfyingAuthRequest',
           },
-          onError: {
-            actions: model.assign({
-              error: () => 'failed to update trusted verifier list',
-            }),
-            target: 'showError',
-          },
+          onError: [
+            {
+              cond: 'isAuthorizationFlow',
+              actions: model.assign({
+                error: () => 'failed to update trusted verifier list',
+              }),
+              target: '#OpenID4VP.authFlowFailed',
+            },
+            {
+              actions: model.assign({
+                error: () => 'failed to update trusted verifier list',
+              }),
+              target: 'showError',
+            },
+          ],
         },
       },
 
       getVCsSatisfyingAuthRequest: {
         entry: ['dismissTrustModal'],
         on: {
-          DOWNLOADED_VCS: [
-            {
-              cond: 'isSimpleOpenID4VPShare',
-              actions: 'getVcsMatchingAuthRequest',
-              target: 'selectingVCs',
-            },
-            {
-              actions: 'getVcsMatchingAuthRequest',
-              target: 'setSelectedVC',
-            },
-          ],
+          DOWNLOADED_VCS: {
+            actions: 'getVcsMatchingAuthRequest',
+            target: 'checkIfAnyMatchingVCs',
+          },
         },
       },
+
+      checkIfAnyMatchingVCs: {
+        always: [
+          {
+            cond: 'hasNoMatchingVCsAndIsAuthorizationFlow',
+            target: 'noMatchingVCs',
+          },
+          {
+            cond: 'isSimpleOpenID4VPShare',
+            target: 'selectingVCs',
+          },
+          {
+            target: 'setSelectedVC',
+          },
+        ],
+      },
+
+      noMatchingVCs: {
+        entry: [
+          model.assign({
+            error: () => OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
+          }),
+        ],
+        always: [{target: 'authFlowFailed'}],
+      },
+
       setSelectedVC: {
         entry: send('SET_SELECTED_VC'),
         on: {
@@ -225,6 +287,15 @@ export const openID4VPMachine = model.createMachine(
               target: 'getConsentForVPSharing',
             },
             {
+              cond: 'isAuthorizationFlow',
+              actions: [
+                model.assign({
+                  error: () => 'credential mismatch detected',
+                }),
+              ],
+              target: '#OpenID4VP.authFlowFailed',
+            },
+            {
               actions: [
                 model.assign({
                   error: () => 'credential mismatch detected',
@@ -236,6 +307,7 @@ export const openID4VPMachine = model.createMachine(
         },
       },
       selectingVCs: {
+        // TODO: On entering this state, an event can be sent to parent stating VCs matching done and ready for selection
         on: {
           VERIFY_AND_ACCEPT_REQUEST: {
             actions: [
@@ -252,14 +324,31 @@ export const openID4VPMachine = model.createMachine(
               'resetFaceCaptureBannerStatus',
             ],
           },
-          CANCEL: {
-            actions: 'forwardToParent',
-            target: 'waitingForData',
-          },
+          CANCEL: [
+            {
+              cond: 'isAuthorizationFlow',
+              actions: [
+                () => console.warn('User cancelled the authorization flow'),
+                sendParent({type: 'VP_CONSENT_REJECT'}),
+              ],
+              target: 'waitingForData',
+            },
+            {
+              actions: 'forwardToParent',
+              target: 'waitingForData',
+            },
+          ],
         },
       },
       getConsentForVPSharing: {
+        entry: send('CHECK_FOR_CONSENT'),
         on: {
+          CHECK_FOR_CONSENT: [
+            {
+              cond: 'isAuthorizationFlow',
+              actions: send('CONFIRM'),
+            },
+          ],
           CONFIRM: [
             {
               cond: 'showFaceAuthConsentScreen',
@@ -318,11 +407,16 @@ export const openID4VPMachine = model.createMachine(
               target: 'verifyingIdentity',
             },
             {
-              actions: [
-                model.assign({
-                  error: () => 'none of the selected VC has image',
-                }),
-              ],
+              cond: 'isAuthorizationFlow',
+              actions: model.assign({
+                error: () => 'none of the selected VC has image',
+              }),
+              target: '#OpenID4VP.authFlowFailed',
+            },
+            {
+              actions: model.assign({
+                error: () => 'none of the selected VC has image',
+              }),
               target: 'showError',
             },
           ],
@@ -362,6 +456,11 @@ export const openID4VPMachine = model.createMachine(
           ],
           CANCEL: [
             {
+              cond: 'isAuthorizationFlow',
+              actions: 'resetIsShareWithSelfie',
+              target: 'selectingVCs',
+            },
+            {
               cond: 'isSimpleOpenID4VPShare',
               actions: 'resetIsShareWithSelfie',
               target: 'selectingVCs',
@@ -376,6 +475,18 @@ export const openID4VPMachine = model.createMachine(
         on: {
           DISMISS: [
             {
+              cond: 'isAuthorizationFlow',
+              actions: [
+                model.assign({error: () => 'face verification failed'}),
+                sendParent(ctx => ({
+                  type: 'SHOW_ERROR',
+                  error: ctx.error,
+                  source: 'OpenID4VP',
+                })),
+              ],
+              target: 'selectingVCs',
+            },
+            {
               cond: 'isSimpleOpenID4VPShare',
               actions: 'resetIsFaceVerificationRetryAttempt',
               target: 'selectingVCs',
@@ -387,6 +498,7 @@ export const openID4VPMachine = model.createMachine(
               ],
             },
           ],
+
           RETRY_VERIFICATION: {
             target: 'verifyingIdentity',
           },
@@ -399,46 +511,129 @@ export const openID4VPMachine = model.createMachine(
             actions: 'resetFaceCaptureBannerStatus',
           },
         },
-        invoke: {
-          src: 'sendVP',
-          onDone: [
-            {
-              cond: 'isShareWithSelfie',
-              actions: [
-                send({
-                  type: 'LOG_ACTIVITY',
-                  logType: 'SHARED_WITH_FACE_VERIFIACTION',
-                }),
-                sendParent('SUCCESS'),
-              ],
-              target: 'success',
-            },
-            {
-              actions: [
-                send({
-                  type: 'LOG_ACTIVITY',
-                  logType: 'SHARED_SUCCESSFULLY',
-                }),
-                sendParent('SUCCESS'),
-              ],
-              target: 'success',
-            },
-          ],
-          onError: {
-            actions: [
-              send({
-                type: 'LOG_ACTIVITY',
-                logType: 'RETRY_ATTEMPT_FAILED',
-              }),
-              'setSendVPShareError',
-              sendParent('SHOW_ERROR'),
+        initial: 'prepare',
+        states: {
+          prepare: {
+            // if isAuthorizationFlow go to constructVP else sendVP
+            always: [
+              {
+                cond: 'isAuthorizationFlow',
+                target: 'constructVP',
+              },
+              {
+                target: 'sendVP',
+              },
             ],
-            target: 'showError',
           },
-        },
-        after: {
-          SHARING_TIMEOUT: {
-            actions: sendParent('TIMEOUT'),
+          constructVP: {
+            initial: 'constructing',
+            on: {
+              SIGN_VP: {
+                actions: ['setUnsignedVPToken'],
+                target: '#signVP',
+              },
+            },
+            states: {
+              constructing: {
+                invoke: {
+                  src: 'sendSelectedCredentialsForVP',
+                  onDone: {},
+                  onError: [
+                    {
+                      cond: 'isAuthorizationFlow',
+                      actions: 'setConstructVPError',
+                      target: '#OpenID4VP.authFlowFailed',
+                    },
+                    {
+                      actions: [
+                        send({
+                          type: 'LOG_ACTIVITY',
+                          logType: 'RETRY_ATTEMPT_FAILED',
+                        }),
+                        'setConstructVPError',
+                        sendParent('SHOW_ERROR'),
+                      ],
+                      target: '#OpenID4VP.showError',
+                    },
+                  ],
+                },
+              },
+              signVP: {
+                id: 'signVP',
+                invoke: {
+                  src: 'signVP',
+                  onDone: {
+                    actions: [
+                      sendParent((_context, event) =>
+                        IssuersModel.events.SIGNED_DATA_FOR_VP(event),
+                      ),
+                    ],
+                  },
+                  onError: [
+                    {
+                      cond: 'isAuthorizationFlow',
+                      actions: 'setSignVPError',
+                      target: '#OpenID4VP.authFlowFailed',
+                    },
+                    {
+                      actions: ['setSignVPError', sendParent('SHOW_ERROR')],
+                      target: '#showError',
+                    },
+                  ],
+                },
+              },
+            },
+          },
+          sendVP: {
+            invoke: {
+              src: 'sendVP',
+              onDone: [
+                {
+                  cond: 'isShareWithSelfie',
+                  actions: [
+                    send({
+                      type: 'LOG_ACTIVITY',
+                      logType: 'SHARED_WITH_FACE_VERIFIACTION',
+                    }),
+                    sendParent('SUCCESS'),
+                  ],
+                  target: '#success',
+                },
+                {
+                  actions: [
+                    send({
+                      type: 'LOG_ACTIVITY',
+                      logType: 'SHARED_SUCCESSFULLY',
+                    }),
+                    sendParent('SUCCESS'),
+                  ],
+                  target: '#success',
+                },
+              ],
+              onError: [
+                {
+                  cond: 'isAuthorizationFlow',
+                  actions: 'setSendVPShareError',
+                  target: '#OpenID4VP.authFlowFailed',
+                },
+                {
+                  actions: [
+                    send({
+                      type: 'LOG_ACTIVITY',
+                      logType: 'RETRY_ATTEMPT_FAILED',
+                    }),
+                    'setSendVPShareError',
+                    sendParent('SHOW_ERROR'),
+                  ],
+                  target: '#showError',
+                },
+              ],
+            },
+            after: {
+              SHARING_TIMEOUT: {
+                actions: sendParent('TIMEOUT'),
+              },
+            },
           },
         },
       },
@@ -453,11 +648,16 @@ export const openID4VPMachine = model.createMachine(
         },
         after: {
           200: {
-            actions: sendParent('DISMISS'),
+            actions: sendParent(ctx =>
+              ctx.flowType === VCShareFlowType.OPENID4VP_AUTHORIZATION
+                ? {type: 'VP_CONSENT_REJECT'}
+                : {type: 'DISMISS'},
+            ),
           },
         },
       },
       showError: {
+        id: 'showError',
         on: {
           RETRY: {
             actions: ['resetError', 'incrementOpenID4VPRetryCount'],
@@ -471,7 +671,19 @@ export const openID4VPMachine = model.createMachine(
           },
         },
       },
-      success: {},
+      success: {
+        id: 'success',
+      },
+      authFlowFailed: {
+        entry: [
+          sendParent(context => ({
+            type: 'SHOW_ERROR',
+            source: 'OpenID4VP',
+            error: context.error,
+          })),
+        ],
+        always: 'waitingForData',
+      },
     },
   },
   {

@@ -1,37 +1,5 @@
 package inji.testcases.BaseTest;
 
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
-import com.browserstack.local.Local;
-import inji.annotations.NeedsMockUIN;
-import inji.annotations.NeedsSunbirdPolicy;
-import inji.annotations.NeedsUIN;
-import inji.annotations.NeedsVID;
-import inji.constants.PlatformType;
-import inji.driver.DriverManager;
-import inji.models.Policy;
-import inji.models.Uin;
-import inji.models.Vid;
-import inji.utils.BrowserStackLocalManager;
-import inji.utils.ExtentReportManager;
-import inji.utils.InjiWalletConfigManager;
-import inji.utils.testdatamanager.MockUINManager;
-import inji.utils.testdatamanager.PolicyManager;
-import inji.utils.testdatamanager.UINManager;
-import inji.utils.testdatamanager.VIDManager;
-import io.appium.java_client.AppiumDriver;
-import io.mosip.testrig.apirig.testrunner.BaseTestCase;
-import io.mosip.testrig.apirig.utils.S3Adapter;
-import org.json.JSONObject;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -42,14 +10,46 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import inji.annotations.NeedsSvgWithFaceUIN;
+
+import org.json.JSONObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+import com.browserstack.local.Local;
+
 import inji.annotations.NeedsLandUIN;
+import inji.annotations.NeedsMockUIN;
+import inji.annotations.NeedsSunbirdPolicy;
+import inji.annotations.NeedsSvgWithFaceUIN;
 import inji.annotations.NeedsSvgWithOutFaceUIN;
+import inji.annotations.NeedsUIN;
+import inji.annotations.NeedsVID;
+import inji.constants.PlatformType;
+import inji.driver.DriverManager;
+import inji.models.Policy;
+import inji.models.Uin;
+import inji.models.Vid;
+import inji.utils.BrowserStackLocalManager;
+import inji.utils.ExtentReportManager;
+import inji.utils.InjiWalletConfigManager;
 import inji.utils.testdatamanager.LandRegistryUINManager;
+import inji.utils.testdatamanager.MockUINManager;
+import inji.utils.testdatamanager.PolicyManager;
 import inji.utils.testdatamanager.SvgWithFaceUINManager;
 import inji.utils.testdatamanager.SvgWithOutFaceUINManager;
+import inji.utils.testdatamanager.UINManager;
+import inji.utils.testdatamanager.VIDManager;
+import io.appium.java_client.AppiumDriver;
+import io.mosip.testrig.apirig.testrunner.BaseTestCase;
+import io.mosip.testrig.apirig.utils.S3Adapter;
 
 
 public abstract class BaseTest {
@@ -78,15 +78,13 @@ public abstract class BaseTest {
     }
 
     @BeforeMethod(alwaysRun = true)
-    public void setup(Method method) throws MalformedURLException, InterruptedException {
-
-        //Reporting
+    public void setup(Method method,ITestResult result) throws MalformedURLException, InterruptedException {
         String className = method.getDeclaringClass().getSimpleName();
         String methodName = method.getName();
         ExtentTest test = ExtentReportManager.createTest(className + " :: " + methodName);
         ExtentReportManager.setTest(test);
 
-        //Getting test data
+
         if (method.isAnnotationPresent(NeedsUIN.class)) {
             Uin uinDetails = UINManager.acquireUIN();
             threadUin.set(uinDetails);
@@ -115,32 +113,48 @@ public abstract class BaseTest {
             Uin svgWithOutFaceUinDetails = SvgWithOutFaceUINManager.acquireUIN();
             threadSvgWithOutFaceUin.set(svgWithOutFaceUinDetails);
         }
-
+        
+        String reason = result.getMethod().getDescription();
+        if (reason == null || !reason.startsWith("KNOWN_ISSUE::")) {
         if (getPlatformType() == PlatformType.ANDROID) {
             DriverManager.getAndroidDriver();
         } else if (getPlatformType() == PlatformType.IOS) {
             DriverManager.getIosDriver();
         } else {
             throw new IllegalArgumentException("Unsupported platform");
-        }
+        }}
     }
-
+    
     @AfterMethod(alwaysRun = true)
     public void teardown(ITestResult result) {
         Method method = result.getMethod().getConstructorOrMethod().getMethod();
         ExtentTest test = ExtentReportManager.getTest();
 
-        if (result.getStatus() == ITestResult.FAILURE) {
-            test.log(Status.FAIL, "Test Failed: " + result.getThrowable());
+        if (result.getStatus() == ITestResult.SKIP) {
+            String reason = result.getMethod().getDescription();
+            if (reason != null && reason.startsWith("KNOWN_ISSUE::")) {
+                String bugId = reason.replace("KNOWN_ISSUE::", "");
+                
+                test.log(Status.SKIP, "Known Issue: " + "<a href='" + "https://mosip.atlassian.net/browse/" + bugId + "' target='_blank'>Open known issue on jira</a>");
+                ExtentReportManager.incrementKnownIssue();
+            } else {
+                test.log(Status.SKIP, "Test Skipped: " + result.getThrowable());
+                ExtentReportManager.incrementSkipped();
+            }
+        } else if (result.getStatus() == ITestResult.FAILURE) {
+            test.log(Status.FAIL, result.getThrowable());
             ExtentReportManager.incrementFailed();
-        } else if (result.getStatus() == ITestResult.SKIP) {
-            test.log(Status.SKIP, "Test Skipped: " + result.getThrowable());
-            ExtentReportManager.incrementSkipped();
-        } else {
+        } else if (result.getStatus() == ITestResult.SUCCESS) {
             test.log(Status.PASS, "Test Passed");
             ExtentReportManager.incrementPassed();
         }
 
+        // Release test data
+        releaseTestData(method,result);
+
+    }
+
+    private void releaseTestData(Method method,ITestResult result) {
         if (method.isAnnotationPresent(NeedsUIN.class)) {
             Uin uin = threadUin.get();
             if (uin != null) {
@@ -198,7 +212,15 @@ public abstract class BaseTest {
         }
 
         try {
+            String reason = result.getMethod().getDescription();
+            if (reason == null || !reason.startsWith("KNOWN_ISSUE::")) {
+            	
             AppiumDriver driver = getDriver();
+            
+            if (driver == null) {
+            	LOGGER.warn("Driver is null, skipping BrowserStack session info fetch");
+            	return;
+            }
 
             String sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
             String jsonUrl = "https://app-automate.browserstack.com/sessions/" + sessionId + ".json";
@@ -226,12 +248,12 @@ public abstract class BaseTest {
 //            String buildHashedId = jsonResponse.getJSONObject("automation_session").getString("build_hashed_id");
             String publicUrl = jsonResponse.getJSONObject("automation_session").getString("public_url");
             String videoUrl = jsonResponse.getJSONObject("automation_session").getString("video_url");
-
+            
 //            String dashboardUrl = "https://app-automate.browserstack.com/dashboard/v2/builds/" + buildHashedId + "/sessions/" + sessionId;
             ExtentReportManager.getTest().log(Status.INFO,
                     "<a href='" + publicUrl + "' target='_blank'>View on BrowserStack</a>");
             ExtentReportManager.getTest().log(Status.INFO,
-                    "<a href='" + videoUrl + "' target='_blank'>Click here to view only Video</a>");
+                    "<a href='" + videoUrl + "' target='_blank'>Click here to view only Video</a>"); }
 
         } catch (Exception e) {
             ExtentReportManager.getTest().log(Status.WARNING, "Failed to fetch BrowserStack build/session info: " + e.getMessage());
@@ -254,9 +276,10 @@ public abstract class BaseTest {
         int passed = ExtentReportManager.getPassedCount();
         int failed = ExtentReportManager.getFailedCount();
         int skipped = ExtentReportManager.getSkippedCount();
+        int knownissue = ExtentReportManager.getKnownIssueCount();
 
-        String newFileName = String.format("InjiMobileUi-%s-%s-%s-T-%d_P-%d_S-%d_F-%d.html",
-                InjiWalletConfigManager.getproperty("browserstack_platformName"), envName, timestamp, total, passed, skipped, failed);
+        String newFileName = String.format("InjiMobileUi-%s-%s-%s-T-%d_P-%d_S-%d_F-%d_KI-%d.html",
+                InjiWalletConfigManager.getproperty("browserstack_platformName"), envName, timestamp, total, passed, skipped, failed,knownissue);
 
         File originalReport = new File("test-output/ExtentReport.html");
         File renamedReport = new File("test-output/" + newFileName);

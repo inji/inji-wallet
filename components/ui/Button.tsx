@@ -3,9 +3,16 @@ import {
   Button as RNEButton,
   ButtonProps as RNEButtonProps,
 } from 'react-native-elements';
-import { GestureResponderEvent, StyleProp, ViewStyle, ActivityIndicator, View } from 'react-native';
-import { Text } from './Text';
-import { Theme, Spacing } from './styleUtils';
+import {
+  GestureResponderEvent,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+  ActivityIndicator,
+  View,
+} from 'react-native';
+import {Text} from './Text';
+import {Theme, Spacing} from './styleUtils';
 import testIDProps from '../../shared/commonUtil';
 
 export const Button: React.FC<ButtonProps> = props => {
@@ -14,9 +21,9 @@ export const Button: React.FC<ButtonProps> = props => {
   const buttonStylesWithSize =
     props.size !== undefined
       ? {
-        ...Theme.ButtonStyles[type],
-        ...Theme.ButtonStyles[props.size],
-      }
+          ...Theme.ButtonStyles[type],
+          ...Theme.ButtonStyles[props.size],
+        }
       : Theme.ButtonStyles[type];
 
   const buttonStyle: StyleProp<ViewStyle> = [
@@ -25,13 +32,13 @@ export const Button: React.FC<ButtonProps> = props => {
     props.disabled && props.type === 'outline'
       ? Theme.ButtonStyles.disabledOutlineButton
       : null,
-    { width: props.width ?? '100%' },
+    {width: props.width ?? '100%'},
   ];
   const containerStyle: StyleProp<ViewStyle> = [
     !(type === 'gradient')
       ? Theme.ButtonStyles.container
-      : { flexDirection: 'row' },
-    props.disabled && (props.type !== 'outline' && props.type !== 'clear')
+      : {flexDirection: 'row'},
+    props.disabled && props.type !== 'outline' && props.type !== 'clear'
       ? Theme.ButtonStyles.disabled
       : null,
     props.margin ? Theme.spacing('margin', props.margin) : null,
@@ -60,17 +67,17 @@ export const Button: React.FC<ButtonProps> = props => {
       raised={props.raised}
       title={
         <Text
-          style={{ paddingTop: 3 }}
+          style={[{paddingTop: 3}, props.titleStyle]}
           weight="semibold"
           align="center"
           color={
             type === 'solid' || type === 'addId' || type === 'radius'
               ? Theme.Colors.whiteText
               : type === 'plain'
-                ? Theme.Colors.plainText + 66
-                : (type === 'outline' || type === 'clear') && props.disabled
-                  ? Theme.Colors.textLabel
-                  : Theme.Colors.AddIdBtnTxt
+              ? Theme.Colors.plainText + 66
+              : (type === 'outline' || type === 'clear') && props.disabled
+              ? Theme.Colors.textLabel
+              : Theme.Colors.AddIdBtnTxt
           }>
           {props.title}
         </Text>
@@ -106,38 +113,32 @@ export const Button: React.FC<ButtonProps> = props => {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-            }}
-          >
-            
+            }}>
             <Text
-              style={{ marginLeft: 8 }}
+              style={[{marginLeft: 8}, props.titleStyle]}
               weight="bold"
-              color={Theme.Colors.whiteText}
-            >
-              
+              color={Theme.Colors.whiteText}>
               {props.title}
             </Text>
             <ActivityIndicator
               size="small"
-              style={{ marginLeft: 15 }}
+              style={{marginLeft: 15}}
               color={Theme.Colors.whiteText}
             />
           </View>
         ) : (
           <Text
-            style={{ paddingLeft: props.icon ? 10 : 0 }}
+            style={[{paddingLeft: props.icon ? 10 : 0}, props.titleStyle]}
             weight="bold"
             color={
               type === 'solid' || type === 'gradient' || type === 'radius'
                 ? Theme.Colors.whiteText
                 : Theme.Colors.DownloadIdBtnTxt
-            }
-          >
+            }>
             {props.title}
           </Text>
         )
       }
-
       style={[buttonStyle]}
       icon={props.icon}
       iconPosition={props.iconPosition}
@@ -165,4 +166,5 @@ interface ButtonProps {
   colors?: (string | number)[];
   width?: number;
   size?: string;
+  titleStyle?: StyleProp<TextStyle>;
 }

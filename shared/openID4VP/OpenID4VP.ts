@@ -45,6 +45,15 @@ class OpenID4VP {
     return JSON.parse(authenticationResponse);
   }
 
+  static async prepareCredentialsForVPSharing(
+    selectedVCs: Record<string, VC[]>,
+    selectedDisclosuresByVc: any,
+  ) {
+    const openID4VP = await OpenID4VP.getInstance();
+
+    return openID4VP.processSelectedVCs(selectedVCs, selectedDisclosuresByVc);
+  }
+
   static async constructUnsignedVPToken(
     selectedVCs: Record<string, VC[]>,
     selectedDisclosuresByVc: any,

@@ -1,6 +1,7 @@
 import {ErrorMessage} from '../../shared/openId4VCI/Utils';
-import {StateFrom} from 'xstate';
+import {ActorRefFrom, StateFrom} from 'xstate';
 import {IssuersMachine} from './IssuersMachine';
+import {openID4VPMachine} from '../openID4VP/openID4VPMachine';
 
 type State = StateFrom<typeof IssuersMachine>;
 
@@ -107,4 +108,35 @@ export function selectIsQrScanning(state: State) {
 
 export function selectTrustedIssuerConsentStatus(state: State) {
   return state.context.trustedIssuerConsentStatus;
+}
+
+export function selectOVPMachine(state: State) {
+  return state.context.OpenId4VPRef as ActorRefFrom<typeof openID4VPMachine>;
+}
+
+export function selectIsPresentationAuthorization(state: State) {
+  return (
+    state.matches('credentialDownloadFromOffer.presentationAuthorization') ||
+    state.matches('downloadCredentials.presentationAuthorization')
+  );
+}
+export function selectIsPresentationAuthorizationInProgress(state: State) {
+  return (
+    state.matches(
+      'credentialDownloadFromOffer.presentationAuthorization.inProgress',
+    ) ||
+    state.matches('downloadCredentials.presentationAuthorization.inProgress')
+  );
+}
+
+export function selectAuthorizationType(state: State) {
+  return state.context.authorizationType;
+}
+
+export function selectSelectedCredentialType(state: State) {
+  return state.context.selectedCredentialType;
+}
+
+export function selectIsAuthorizationSuccess(state: State) {
+  return state.context.authorizationSuccess;
 }

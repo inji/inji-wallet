@@ -25,9 +25,12 @@ exports[`DualMessageOverlay Component should match snapshot with both buttons 1`
         },
         null,
         null,
-        {
-          "paddingLeft": 0,
-        },
+        [
+          {
+            "paddingLeft": 0,
+          },
+          undefined,
+        ],
       ]
     }
   >
@@ -54,9 +57,12 @@ exports[`DualMessageOverlay Component should match snapshot with both buttons 1`
         },
         null,
         null,
-        {
-          "paddingLeft": 0,
-        },
+        [
+          {
+            "paddingLeft": 0,
+          },
+          undefined,
+        ],
       ]
     }
   >
@@ -115,9 +121,12 @@ exports[`DualMessageOverlay Component should match snapshot with only ignore but
         },
         null,
         null,
-        {
-          "paddingLeft": 0,
-        },
+        [
+          {
+            "paddingLeft": 0,
+          },
+          undefined,
+        ],
       ]
     }
   >
@@ -151,9 +160,12 @@ exports[`DualMessageOverlay Component should match snapshot with only try again 
         },
         null,
         null,
-        {
-          "paddingLeft": 0,
-        },
+        [
+          {
+            "paddingLeft": 0,
+          },
+          undefined,
+        ],
       ]
     }
   >
