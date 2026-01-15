@@ -51,7 +51,7 @@ const Colors = {
   dorColor: '#CBCBCB',
   plainText: '#FFFFFF',
   walletbindingLabel: '#000000',
-  LightOrange: '#F7EDF3',
+  LightOrange: '#FDF1E6',
   GradientColors: ['#FF5300', '#5B03AD'],
   GradientColorsLight: ['#FF5300' + 14, '#5B03AD' + 14],
   DisabledColors: ['#C7C7C7', '#C7C7C7'],
