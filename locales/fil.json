@@ -223,22 +223,36 @@
     "copyright": "© 2022 MOSIP. Lahat ng karapatan ay nakalaan."
   },
   "IssuersScreen": {
+    "selectCard": "Pumili ng Card",
     "title": "Magdagdag ng bagong card",
     "description": "Mangyaring piliin ang iyong gustong tagabigay mula sa mga opsyon sa ibaba upang magdagdag ng bagong card.",
     "searchByIssuersName": "Maghanap ayon sa pangalan ng Nag-isyu",
     "credentialTypeDescription": "Mangyaring pumili ng kredensyal",
     "help": "Tulong?",
     "loaders": {
+      "processing": "Pinoproseso...",
       "loading": "Naglo-load...",
+      "preparingRequest": "Pinoproseso ang iyong kahilingan",
       "subTitle": {
         "displayIssuers": "Kinukuha ang mga Isyu",
         "settingUp": "Inaayos",
-        "downloadingCredentials": "Nagda-download ng Mga Kredensyal"
+        "downloadingCredentials": "Nagda-download ng Mga Kredensyal",
+        "preparingRequest": "Mangyaring maghintay habang nilo-load namin ang mga detalye",
+        "inProgress": "Sandali lang ito"
+      },
+      "progressIndicators": {
+        "sharingCard": "Ibinabahagi ang card/mga card",
+        "downloadingCard": "Dina-download ang card",
+        "sharedCard": "Naibahagi ang card/mga card",
+        "downloadedCard": "Na-download ang card",
+        "redirectToHome": "Bumabalik sa home sa loob ng {{remainingTime}} segundo"
       }
     },
     "offerTitle": "I-scan at I-download ang Card",
     "offerDescription": "I-scan ang QR code para agad ma-download ang iyong card.",
     "download": "I-download ang Card",
+    "downloadSuccess": "Matagumpay na na-download ang iyong card",
+    "goHome": "Pumunta sa Home",
     "errors": {
       "noInternetConnection": {
         "title": "Pakisuri ang iyong koneksyon at subukang muli",
@@ -716,7 +730,7 @@
   "ScanScreen": {
     "shareWithSelfie": "Ibahagi sa Selfie",
     "shareWithSelfieQrLogin": "Pag-login sa QR Code",
-    "shareWithSelfieMessage": "Para maibahagi ang iyong Verifiable Credentials, susuriin muna namin ang iyong pagkakakilanlan gamit ang facial authentication. Sa pagpapatuloy, sumasang-ayon ka na gamitin ng Inji Wallet ang camera ng iyong telepono para sa layuning ito. Ang iyong facial data ay gagamitin lamang para sa authentication at hindi ito itatago o ibabahagi sa kahit anong third party.",
+    "shareWithSelfieMessage": "Upang maibahagi ang iyong Verifiable Credentials, ligtas naming ibe-verify ang iyong pagkakakilanlan gamit ang face authentication. Sa pagpapatuloy, pumapayag kang gamitin ng Inji ang iyong camera para sa layuning ito. Ang iyong facial data ay gagamitin lamang para sa pag-verify at hindi ibabahagi sa anumang third party.",
     "shareWithSelfieMessageQrLogin": "Upang ma-access ang portal, kakailanganin mong ibahagi ang iyong Mga Na-verify na Kredensyal at secure na i-verify ang iyong pagkakakilanlan gamit ang pag-verify sa mukha. Sa pagpapatuloy, pumapayag ka sa Inji na gamitin ang iyong camera para sa layuning ito. \n\n Gagamitin lang ang iyong facial data para sa pag-verify at hindi ibabahagi. Pagkatapos ng matagumpay na pag-verify, maaari mong piliin kung aling mga detalye ang ibabahagi.",
     "ConfirmButton": "Naiintindihan ko",
     "doNotAskMessage": "Huwag mo na akong tanungin",
@@ -866,7 +880,7 @@
     "acceptRequestAndVerify": "Ibahagi sa Selfie",
     "reject": "Tanggihan",
     "consentToPhotoVerification": "Nagbibigay ako ng pahintulot na kunin ang aking larawan para sa pagpapatunay",
-    "pleaseSelectAnId": "Mangyaring pumili ng ID",
+    "pleaseSelectAnId": "Pumili ng isa o higit pang card ayon sa hinihingi.",
     "status": {
       "sharing": {
         "title": "Pagbabahagi",
@@ -884,6 +898,8 @@
     }
   },
   "SendVPScreen": {
+    "authorizationPurpose": "Piliin ang mga hinihinging card upang ma-verify at matanggap ang iyong bagong card mula sa pinagkakatiwalaang issuer.",
+    "consentShare": "Ako ay pumapayag at nagbabahagi",
     "requester": "Entity ng Pagpapatunay",
     "cardsSelected": "mga card na napili",
     "cardSelected": "card pinili",
@@ -1149,7 +1165,8 @@
     "TransactionCode": "Transaction Code"
   },
   "trustScreen": {
-    "description": "Siguraduhin mong kilala mo o pinagkakatiwalaan mo ang issuer na ito. Kapag pinagkatiwalaan mo sila:",
+    "Description": "Tiyaking kilala mo o pinagkakatiwalaan mo ang issuer na ito. Kapag pinagkakatiwalaan mo na ang issuer na ito:",
+    "pdiDescription": "Upang magpatuloy sa pag-download ng hinihinging card, kakailanganin mong magpakita ng isa pang credential bilang bahagi ng proseso ng pag-verify.",
     "verifierDescription": "Tiyaking kilala mo o pinagkakatiwalaan mo ang verifier na ito. Kapag nagtiwala ka na:",
     "infoPoints": [
       "Ang card ay ligtas na mase-save sa iyong wallet.",

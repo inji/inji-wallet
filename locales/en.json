@@ -225,22 +225,36 @@
     "copyright": "© 2022 MOSIP. All rights reserved."
   },
   "IssuersScreen": {
+    "selectCard": "Select Card",
     "title": "Add new card",
     "description": "Please choose your preferred issuer from the options below to add a new card.",
     "searchByIssuersName": "Search by Issuer’s name",
     "credentialTypeDescription": "Please select a credential",
     "help": "Help?",
     "loaders": {
+      "processing": "Processing...",
       "loading": "Loading...",
+      "preparingRequest": "Processing your request",
       "subTitle": {
         "displayIssuers": "Fetching Issuers",
         "settingUp": "Setting up",
-        "downloadingCredentials": "Downloading Credentials"
+        "downloadingCredentials": "Downloading Credentials",
+        "preparingRequest": "Please wait while we load the details",
+        "inProgress": "This will only take a moment"
+      },
+      "progressIndicators": {
+        "sharingCard": "Sharing card/cards",
+        "downloadingCard": "Downloading card",
+        "sharedCard": "Shared card/cards",
+        "downloadedCard": "Downloaded card",
+        "redirectToHome": "Returning to home in {{remainingTime}} seconds"
       }
     },
     "offerTitle": "Scan & Download Card",
     "offerDescription": "Scan a QR code to instantly download your card.",
     "download": " Download Card",
+    "downloadSuccess": "Card Downloaded Successfully",
+    "goHome": "Go to Home",
     "errors": {
       "noInternetConnection": {
         "title": "No internet connection",
@@ -722,7 +736,7 @@
   "ScanScreen": {
     "shareWithSelfie": "Share with Selfie",
     "shareWithSelfieQrLogin": "QR Code Login",
-    "shareWithSelfieMessage": "To share your Verifiable Credentials, we’ll verify your identity using face authentication. By continuing, you consent to Inji Wallet using your phone camera for this purpose. Your facial data will be used only for authentication and will not be stored or shared with any third parties.",
+    "shareWithSelfieMessage": "To share your Verifiable Credentials, we’ll securely verify your identity using face authentication. By continuing, you consent to Inji using your camera for this purpose. Your facial data will only be used for verification and will not be shared with any third parties.",
     "shareWithSelfieMessageQrLogin": "In order to access the portal, you’ll need to share your Verifiable Credentials and verify your identity securely using face verification. By continuing, you consent to Inji using your camera for this purpose. \n\n Your facial data will only be used for verification and will not be shared. After successful verification, you can choose which details to share.",
     "ConfirmButton": "I Understand",
     "doNotAskMessage": "Don't ask me again",
@@ -876,7 +890,7 @@
     "acceptRequestAndVerify": "Share with Selfie",
     "reject": "Reject",
     "consentToPhotoVerification": "I give consent to have my photo taken for authentication",
-    "pleaseSelectAnId": "Please select an ID",
+    "pleaseSelectAnId": "Select one or more cards as requested.",
     "status": {
       "sharing": {
         "title": "Sharing",
@@ -894,6 +908,8 @@
     }
   },
   "SendVPScreen": {
+    "authorizationPurpose": "Select the requested card(s) to get verified and receive your new card from the trusted issuer.",
+    "consentShare": "I consent and share",
     "requester": "Verification Entity",
     "cardsSelected": "cards selected",
     "cardSelected": "card selected",
@@ -1167,7 +1183,8 @@
     "TransactionCode": "Transasction Code"
   },
   "trustScreen": {
-    "description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",
+    "Description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",
+    "pdiDescription": "To proceed with downloading the requested card, you will need to present another credential as part of the verification process.",
     "verifierDescription": "Make sure you recognize or trust this verifier. Once you do:",
     "infoPoints": [
       "The card will be securely saved in your wallet.",
@@ -1189,7 +1206,7 @@
     "confirm": "Yes, I Trust This Issuer",
     "cancel": "No, Take Me Back",
     "inProgress": "In Progress…",
-    "infoPoints": [ 
+    "infoPoints": [
       "The card will be securely saved in your wallet.",
       "This issuer will be added to your trusted list.",
       "You won't need to review trust again when downloading from them next time."

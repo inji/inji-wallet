@@ -1,0 +1,58 @@
+{
+  "raw": "omppc3N1ZXJBdXRo0oRDoQEmoFkCyu-_vWdkb2NUeXBlayR7X2RvY1R5cGV9Z3ZlcnNpb25jMS4wbHZhbGlkaXR5SW5mb--_vWl2YWxpZEZyb214GDIwMjYtMDEtMTNUMDU6MTY6NTQuOTY0Wmp2YWxpZFVudGlseBgyMDI4LTAxLTEzVDA1OjE2OjU0Ljk2NFpsdmFsdWVEaWdlc3Rz77-9am5hbWVTcGFjZXPvv71xb3JnLmlzby4xODAxMy41LjHvv70AWCDvv73vv73vv710VHLvv71QZUPvv71A77-9KOS3t--_ve-_ve-_vW0c77-9x4IQbdiP77-9AVggPjMPce-_ve-_vQLvv70g77-977-9CO-_vSnvv70r77-9ex9-177vv71bcu-_vVcCcQDvv71VAlggLXjQlu-_vVrvv70977-9WBoSY--_vQDvv73vv71UWSHvv73vv73vv70YQe-_vTkmPi3vv70PBVgg77-977-977-9Wu-_ve-_ve-_ve-_vRlIaVbvv73vv70aLyxU77-93r91SF9277-977-9Gu-_vcaFBlgg77-9eO-_vRRD77-9VzLvv73vv70r77-977-977-977-9be-_ve-_vRQ877-9X0Pvv71E77-977-977-9Lu-_vWnvv70HWCAx77-977-977-9TWNBJG8iBu-_ve-_ve-_ve-_veqWi--_vTVmYu-_vQFZ77-9Ie-_vSY677-977-9bWRldmljZUtleUluZm_vv71pZGV2aWNlS2V577-9AQIDJiABIVggMu-_ve-_vRzvv73vv71677-9a3rvv70x77-9O--_ve-_ve-_ve-_ve-_ve-_vVAu77-977-90obvv71BDHY1Ilgg77-9X82J77-9D1rvv70BS1hVHO-_vQLvv71fYAXvv73vv717KiHvv71N77-9bycVWG9kaWdlc3RBbGdvcml0aG1nU0hBLTI1NlhA9iiuJ9DYySk5JxYGbcCCUI9fEjxg5uw_0ABCn-lzlrj1CwInBHftbwXovif2N94UWkfH2jsGly4MT2ReL-0qVGpuYW1lU3BhY2VzoXFvcmcuaXNvLjE4MDEzLjUuMYbYGFhcpGZyYW5kb21YGKTTO84OnhSYXE0uxP85EDPP-O_WDB66zmhkaWdlc3RJRABsZWxlbWVudFZhbHVlZFVzZXJxZWxlbWVudElkZW50aWZpZXJrZmFtaWx5X25hbWXYGFhcpGZyYW5kb21YGMIGEPw5VEwjrXq-F5c-1dwWrvSU82pos2hkaWdlc3RJRAFsZWxlbWVudFZhbHVlZVRlc3QycWVsZW1lbnRJZGVudGlmaWVyamdpdmVuX25hbWXYGFhkpGZyYW5kb21YGJXfWm87YTHypIxhZu6r7W14mH71Tr7Ui2hkaWdlc3RJRAJsZWxlbWVudFZhbHVl2QPsajE5OTItMDQtMTVxZWxlbWVudElkZW50aWZpZXJqYmlydGhfZGF0ZdgYWGikZnJhbmRvbVgYAEAydolcwr3cxUyw9ybCWEb1HR1m8ZGTaGRpZ2VzdElEBWxlbGVtZW50VmFsdWVsREwyMDQyMzUxMzA3cWVsZW1lbnRJZGVudGlmaWVyb2RvY3VtZW50X251bWJlctgYWOCkZnJhbmRvbVgYFaRAi7FNCiR0SaJgZyiRlpt3R4YrlwwwaGRpZ2VzdElEBmxlbGVtZW50VmFsdWV4imRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQndBQUFBRkNBWUFBQUJXMUl6SEFBQUFIa2xFUVZRb2tXTmdHUGFBa1pIeFB5TWo0MzlzWXJTUW81MVBCZ3NBQUxhMEVDRjMwSlNkQUFBQUFFbEZUa1N1UW1DQ3FlbGVtZW50SWRlbnRpZmllcmhwb3J0cmFpdNgYWI6kZnJhbmRvbVgY_dDtRUEkTRB-sL7G28yPJPaCwInV8XDpaGRpZ2VzdElEB2xlbGVtZW50VmFsdWWBomlpc3N1ZURhdGXZA-xqMjAyMy0wMS0xNXN2ZWhpY2xlQ2F0ZWdvcnlDb2RlYUJxZWxlbWVudElkZW50aWZpZXJyZHJpdmluZ19wcml2aWxlZ2Vz",
+  "parsed": {
+    "nameSpaces": {
+      "org.iso.18013.5.1": [
+        {
+          "digestID": 0,
+          "elementIdentifier": "family_name",
+          "elementValue": "User",
+          "random": "ï¿½ï¿½;ï¿½\u000eï¿½\u0014ï¿½\\M.ï¿½ï¿½9\u00103ï¿½ï¿½ï¿½ï¿½\f\u001eï¿½ï¿½"
+        },
+        {
+          "elementIdentifier": "given_name",
+          "digestID": 1,
+          "elementValue": "Test2",
+          "random": 6
+        },
+        {
+          "elementValue": "1992-04-15",
+          "digestID": 2,
+          "elementIdentifier": "birth_date",
+          "random": "ï¿½ï¿½Zo;a1ï¿½afï¿½ï¿½mxï¿½~ï¿½Nï¿½Ô"
+        },
+        {
+          "elementIdentifier": "document_number",
+          "elementValue": "DL2042351307",
+          "digestID": 5,
+          "random": 0
+        },
+        {
+          "elementValue": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAFCAYAAABW1IzHAAAAHklEQVQokWNgGPaAkZHxPyMj439sYrSQo51PBgsAALa0ECF30JSdAAAAAElFTkSuQmCC",
+          "elementIdentifier": "portrait",
+          "digestID": 6,
+          "random": 21
+        },
+        {
+          "elementValue": [
+            {
+              "issueDate": "2023-01-15",
+              "vehicleCategoryCode": "B"
+            }
+          ],
+          "digestID": 7,
+          "elementIdentifier": "driving_privileges",
+          "random": "ï¿½ï¿½ï¿½EA$M\u0010~ï¿½ï¿½ï¿½ï¿½Ì$ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½"
+        }
+      ]
+    },
+    "issuerAuth": [
+      {
+        "1": -7
+      },
+      {},
+      15,
+      null
+    ]
+  }
+}

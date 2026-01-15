@@ -3,7 +3,6 @@ import {
   selectSupportedCredentialTypes,
   selectErrorMessageType,
   selectIsBiometricCancelled,
-  selectIsDone,
   selectIsDownloadCredentials,
   selectIsIdle,
   selectIssuers,
@@ -21,6 +20,12 @@ import {
   selectIssuerLogo,
   selectIssuerName,
   selectTxCodeDisplayDetails,
+  selectIsPresentationAuthorization,
+  selectOVPMachine,
+  selectIsPresentationAuthorizationInProgress,
+  selectAuthorizationType,
+  selectIsAuthorizationSuccess,
+  selectSelectedCredentialType,
   selectTrustedIssuerConsentStatus,
 } from '../../machines/Issuers/IssuersSelectors';
 import {ActorRefFrom} from 'xstate';
@@ -35,23 +40,34 @@ import {CredentialTypes} from '../../machines/VerifiableCredential/VCMetaMachine
 
 export function useIssuerScreenController({route, navigation}) {
   const service = route.params.service;
-  service.subscribe(logState);
+  if (__DEV__) service.subscribe(logState);
 
   return {
+    isPresentationAuthorization: useSelector(
+      service,
+      selectIsPresentationAuthorization,
+    ),
+    isPresentationAuthorizationInProgress: useSelector(
+      service,
+      selectIsPresentationAuthorizationInProgress,
+    ),
+    authorizationType: useSelector(service, selectAuthorizationType),
+    isDownloadSuccess: useSelector(service, selectStoring),
+    isAuthorizationSuccess: useSelector(service, selectIsAuthorizationSuccess),
     issuers: useSelector(service, selectIssuers),
+    ovpMachine: useSelector(service, selectOVPMachine),
     issuerLogo: useSelector(service, selectIssuerLogo),
     issuerName: useSelector(service, selectIssuerName),
     isTxCodeRequested: useSelector(service, selectIsTxCodeRequested),
     txCodeDisplayDetails: useSelector(service, selectTxCodeDisplayDetails),
-    authEndpount: useSelector(service, selectAuthEndPoint),
+    authEndpoint: useSelector(service, selectAuthEndPoint),
     selectedIssuer: useSelector(service, selectSelectedIssuer),
+    selectedCredentialType: useSelector(service, selectSelectedCredentialType),
     errorMessageType: useSelector(service, selectErrorMessageType),
     isDownloadingCredentials: useSelector(service, selectIsDownloadCredentials),
     isBiometricsCancelled: useSelector(service, selectIsBiometricCancelled),
-    isDone: useSelector(service, selectIsDone),
     isIdle: useSelector(service, selectIsIdle),
     loadingReason: useSelector(service, selectLoadingReason),
-    isStoring: useSelector(service, selectStoring),
     isQrScanning: useSelector(service, selectIsQrScanning),
     isAuthEndpointToOpen: useSelector(service, selectAuthWebViewStatus),
     isSelectingCredentialType: useSelector(

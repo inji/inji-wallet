@@ -1,5 +1,5 @@
-import { CredentialTypes } from '../VerifiableCredential/VCMetaMachine/vc';
-import { issuerType } from './IssuersMachine';
+import {CredentialTypes, VC} from '../VerifiableCredential/VCMetaMachine/vc';
+import {issuerType} from './IssuersMachine';
 
 export const IssuersEvents = {
   SELECTED_ISSUER: (id: string) => ({id}),
@@ -8,6 +8,7 @@ export const IssuersEvents = {
   COMPLETED: () => ({}),
   TRY_AGAIN: () => ({}),
   RESET_ERROR: () => ({}),
+  SHOW_ERROR:(error: any) => ({error}),
   CHECK_KEY_PAIR: () => ({}),
   CANCEL: () => ({}),
   STORE_RESPONSE: (response?: unknown) => ({response}),
@@ -35,4 +36,14 @@ export const IssuersEvents = {
   ON_CONSENT_GIVEN: () => ({}),
   TRUST_ISSUER_CONSENT_REQUEST: (issuerMetadata: object) => ({issuerMetadata}),
   TOKEN_REQUEST: (tokenRequest: object) => ({tokenRequest}),
+  PRESENTATION_REQUEST: (presentationRequest: object) => ({
+    presentationRequest,
+  }),
+  VP_CONSENT_REJECT: () => ({}),
+  DISMISS: () => ({}),
+  IN_PROGRESS: () => ({}),
+  RETRY: () => ({}),
+  STAY_IN_PROGRESS: () => ({}),
+  SIGN_PRESENTATION: (unsignedVPToken: object) => ({unsignedVPToken}),
+  SIGNED_DATA_FOR_VP: (signedVPToken: Record<any, any>) => ({signedVPToken}),
 };

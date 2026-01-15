@@ -11,8 +11,11 @@ import {
   NO_INTERNET,
   REQUEST_TIMEOUT,
   isIOS,
+  AuthorizationType,
+  OVP_ERROR_CODE,
+  OVP_ERROR_MESSAGES,
 } from '../../shared/constants';
-import {assign, send} from 'xstate';
+import {assign, send, spawn} from 'xstate';
 import {StoreEvents} from '../store';
 import {BackupEvents} from '../backupAndRestore/backup/backupMachine';
 import {getVCMetadata, VCMetadata} from '../../shared/VCMetadata';
@@ -27,11 +30,16 @@ import {
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {NativeModules} from 'react-native';
 import {VCActivityLog} from '../../components/ActivityLogEvent';
-import {isNetworkError, parseJSON} from '../../shared/Utils';
+import {isNetworkError, parseJSON, VCShareFlowType} from '../../shared/Utils';
 import {issuerType} from './IssuersMachine';
 import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
+import {logState} from '../../shared/commonUtil';
+import {createOpenID4VPMachine} from '../openID4VP/openID4VPMachine';
+import VciClient from '../../shared/vciClient/VciClient';
 
 const {RNSecureKeystoreModule} = NativeModules;
+
+const OPENID4VP_REF_ID = 'Presentation_During_Issuance_OpenID4VP_Service';
 export const IssuersActions = (model: any) => {
   return {
     setVerificationResult: assign({
@@ -62,11 +70,18 @@ export const IssuersActions = (model: any) => {
     setLoadingReasonAsDownloadingCredentials: model.assign({
       loadingReason: 'downloadingCredentials',
     }),
+    setLoadingReasonAsPreparingRequest: model.assign({
+      loadingReason: 'preparingRequest',
+    }),
     setLoadingReasonAsSettingUp: model.assign({
       loadingReason: 'settingUp',
     }),
     resetLoadingReason: model.assign({
       loadingReason: null,
+    }),
+    resetAuthorization: model.assign({
+      authorizationType: AuthorizationType.IMPLICIT,
+      authorizationSuccess: false,
     }),
     setSelectedCredentialType: model.assign({
       selectedCredentialType: (_: any, event: any) => event.credType,
@@ -288,6 +303,12 @@ export const IssuersActions = (model: any) => {
         }
       },
     }),
+    setAuthorizationTypeAsPresentation: model.assign({
+      authorizationType: AuthorizationType.OPENID4VP_PRESENTATION,
+    }),
+    setPresentationAuthorizationSuccess: model.assign({
+      authorizationSuccess: true,
+    }),
     supportedCredentialTypes: (context: any, event: any) => {
       return event.credentialTypes;
     },
@@ -468,10 +489,20 @@ export const IssuersActions = (model: any) => {
         ),
       );
     },
+
     sendImpressionEvent: () => {
       sendImpressionEvent(
         getImpressionEventData(
           TelemetryConstants.FlowType.vcDownload,
+          TelemetryConstants.Screens.issuerList,
+        ),
+      );
+    },
+
+    sendPresentationAuthorizationImpressionEvent: () => {
+      sendImpressionEvent(
+        getImpressionEventData(
+          TelemetryConstants.FlowType.presentationAuthorizationForVcDownload,
           TelemetryConstants.Screens.issuerList,
         ),
       );
@@ -499,5 +530,48 @@ export const IssuersActions = (model: any) => {
         to: context => context.serviceRefs.vcMeta,
       },
     ),
+
+    setOpenId4VPRef: assign({
+      OpenId4VPRef: (context: any) => {
+        const service = spawn(
+          createOpenID4VPMachine(context.serviceRefs),
+          OPENID4VP_REF_ID,
+        );
+        if (__DEV__) {
+          service.subscribe(logState);
+        }
+        return service;
+      },
+    }),
+
+    sendVPScanData: (context, event) => {
+      return context.OpenId4VPRef.send({
+        type: 'AUTHENTICATE_VIA_PRESENTATION',
+        presentationRequest: event.presentationRequest,
+        flowType: VCShareFlowType.OPENID4VP_AUTHORIZATION,
+      });
+    },
+
+    sendSignedVP: (context, event) => {
+      VciClient.getInstance().sendSignedVP(event.signedVPToken.data);
+    },
+
+    sendVPConsentReject: () => {
+      console.error('User declined to share VP for issuance authorization');
+      VciClient.getInstance().abortPresentationFlow({
+        code: OVP_ERROR_CODE.DECLINED,
+        message: OVP_ERROR_MESSAGES.DECLINED,
+      });
+    },
+
+    sendPresentationAuthorizationError: (_, event) => {
+      console.error(
+        'PRESENTATION_AUTHORIZATION_ERROR for issuance authorization',
+      );
+      VciClient.getInstance().abortPresentationFlow({
+        code: 'PRESENTATION_AUTHORIZATION_ERROR',
+        message: event.error,
+      });
+    },
   };
 };

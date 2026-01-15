@@ -3,6 +3,16 @@ import {render} from '@testing-library/react-native';
 import {KebabPopUp} from './KebabPopUp';
 import {Text} from 'react-native';
 
+// Mock safe area insets
+jest.mock('react-native-safe-area-context', () => ({
+  useSafeAreaInsets: jest.fn(() => ({
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  })),
+}));
+
 // Mock controller
 jest.mock('./KebabPopUpController', () => ({
   useKebabPopUp: jest.fn(() => ({

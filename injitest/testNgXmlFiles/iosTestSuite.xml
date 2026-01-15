@@ -2,8 +2,10 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Ios Test Suite" parallel="methods" thread-count="1">
     <listeners>
-        <listener class-name="inji.utils.ThreadCountListener" />
-        <listener class-name="inji.utils.BrowserStackStatusListener" />
+         <listener class-name="inji.utils.KnownIssueInvocationListener" />
+         <listener class-name="inji.utils.KnownIssueMethodInterceptor" />
+         <listener class-name="inji.utils.ThreadCountListener" />
+         <listener class-name="inji.utils.BrowserStackStatusListener" />
     </listeners>
     <!-- Ios Tests -->
     <test verbose="2" preserve-order="true" name="ios">

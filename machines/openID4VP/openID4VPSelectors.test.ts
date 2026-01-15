@@ -23,7 +23,9 @@ import {
   selectshowTrustConsentModal,
   selectVerifierNameInTrustModal,
   selectVerifierLogoInTrustModal,
+  selectIsAuthorization,
 } from './openID4VPSelectors';
+import {VCShareFlowType} from '../../shared/Utils';
 
 describe('openID4VPSelectors', () => {
   describe('selectIsGetVCsSatisfyingAuthRequest', () => {
@@ -632,6 +634,189 @@ describe('openID4VPSelectors', () => {
       expect(result[0].issuer).toBe('Issuer1');
       expect(result[1].issuer).toBe('Issuer2');
       expect(result[2].issuer).toBe('Issuer3');
+    });
+  });
+
+  describe('selectIsAuthorization', () => {
+    it('should return true when flowType is OPENID4VP_AUTHORIZATION', () => {
+      const mockState = {
+        context: {
+          flowType: VCShareFlowType.OPENID4VP_AUTHORIZATION,
+        },
+      };
+
+      const result = selectIsAuthorization(mockState as any);
+      expect(result).toBe(true);
+    });
+
+    it('should return false when flowType is SIMPLE_SHARE', () => {
+      const mockState = {
+        context: {
+          flowType: VCShareFlowType.SIMPLE_SHARE,
+        },
+      };
+
+      const result = selectIsAuthorization(mockState as any);
+      expect(result).toBe(false);
+    });
+
+    it('should return false when flowType is OPENID4VP', () => {
+      const mockState = {
+        context: {
+          flowType: 'OpenID4VP',
+        },
+      };
+
+      const result = selectIsAuthorization(mockState as any);
+      expect(result).toBe(false);
+    });
+
+    it('should return false when flowType is empty', () => {
+      const mockState = {
+        context: {
+          flowType: '',
+        },
+      };
+
+      const result = selectIsAuthorization(mockState as any);
+      expect(result).toBe(false);
+    });
+
+    it('should return false when flowType is undefined', () => {
+      const mockState = {
+        context: {},
+      };
+
+      const result = selectIsAuthorization(mockState as any);
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('selectIsGetVPSharingConsent', () => {
+    it('should return true when state matches getConsentForVPSharing and flowType is not OPENID4VP_AUTHORIZATION', () => {
+      const mockState = {
+        matches: jest.fn(
+          (statePath: string) => statePath === 'getConsentForVPSharing',
+        ),
+        context: {
+          flowType: VCShareFlowType.SIMPLE_SHARE,
+        },
+      };
+
+      const result = selectIsGetVPSharingConsent(mockState as any);
+      expect(result).toBe(true);
+    });
+
+    it('should return true when state matches getConsentForVPSharing and flowType is OpenID4VP', () => {
+      const mockState = {
+        matches: jest.fn(
+          (statePath: string) => statePath === 'getConsentForVPSharing',
+        ),
+        context: {
+          flowType: 'OpenID4VP',
+        },
+      };
+
+      const result = selectIsGetVPSharingConsent(mockState as any);
+      expect(result).toBe(true);
+    });
+
+    it('should return false when state matches getConsentForVPSharing but flowType is OPENID4VP_AUTHORIZATION', () => {
+      const mockState = {
+        matches: jest.fn(
+          (statePath: string) => statePath === 'getConsentForVPSharing',
+        ),
+        context: {
+          flowType: VCShareFlowType.OPENID4VP_AUTHORIZATION,
+        },
+      };
+
+      const result = selectIsGetVPSharingConsent(mockState as any);
+      expect(result).toBe(false);
+    });
+
+    it('should return false when state does not match getConsentForVPSharing', () => {
+      const mockState = {
+        matches: jest.fn(() => false),
+        context: {
+          flowType: VCShareFlowType.SIMPLE_SHARE,
+        },
+      };
+
+      const result = selectIsGetVPSharingConsent(mockState as any);
+      expect(result).toBe(false);
+    });
+
+    it('should return false when state matches different state', () => {
+      const mockState = {
+        matches: jest.fn((statePath: string) => statePath === 'sendingVP'),
+        context: {
+          flowType: VCShareFlowType.SIMPLE_SHARE,
+        },
+      };
+
+      const result = selectIsGetVPSharingConsent(mockState as any);
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('selectVerifierNameInTrustModal', () => {
+    it('should return client_name when flowType is not OPENID4VP_AUTHORIZATION', () => {
+      const mockState = {
+        context: {
+          flowType: VCShareFlowType.SIMPLE_SHARE,
+          authenticationResponse: {
+            client_metadata: {
+              client_name: 'Verifier Company',
+            },
+            client_id: 'client123',
+          },
+        },
+      };
+
+      const result = selectVerifierNameInTrustModal(mockState as any);
+      expect(result).toBe('Verifier Company');
+    });
+
+    it('should return undefined when flowType is not OPENID4VP_AUTHORIZATION and client_name is missing', () => {
+      const mockState = {
+        context: {
+          flowType: 'OpenID4VP',
+          authenticationResponse: {
+            client_metadata: {},
+            client_id: 'client123',
+          },
+        },
+      };
+
+      const result = selectVerifierNameInTrustModal(mockState as any);
+      expect(result).toBeUndefined();
+    });
+
+    it('should return undefined when flowType is not OPENID4VP_AUTHORIZATION and client_metadata is missing', () => {
+      const mockState = {
+        context: {
+          flowType: VCShareFlowType.SIMPLE_SHARE,
+          authenticationResponse: {
+            client_id: 'client123',
+          },
+        },
+      };
+
+      const result = selectVerifierNameInTrustModal(mockState as any);
+      expect(result).toBeUndefined();
+    });
+
+    it('should handle empty authenticationResponse', () => {
+      const mockState = {
+        context: {
+          flowType: VCShareFlowType.SIMPLE_SHARE,
+          authenticationResponse: {},
+        },
+      };
+
+      const result = selectVerifierNameInTrustModal(mockState as any);
+      expect(result).toBeUndefined();
     });
   });
 });

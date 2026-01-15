@@ -1,8 +1,7 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React, {Fragment, useEffect, useLayoutEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, Pressable, View} from 'react-native';
 import {Issuer} from '../../components/openId4VCI/Issuer';
-import {ErrorView} from '../../components/ui/Error';
 import {Header} from '../../components/ui/Header';
 import {Button, Column, Row, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
@@ -31,23 +30,33 @@ import {Icon} from 'react-native-elements';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {CredentialTypeSelectionScreen} from './CredentialTypeSelectionScreen';
 import {QrScanner} from '../../components/QrScanner';
-import {IssuersModel} from '../../machines/Issuers/IssuersModel';
 import {AUTH_ROUTES} from '../../routes/routesConstants';
 import {TransactionCodeModal} from './TransactionCodeScreen';
 import {TrustModal} from '../../components/TrustModal';
+import {SendVPScreen} from '../Scan/SendVPScreen';
+
+import {AuthorizationType} from '../../shared/constants';
+import {useTimer} from '../../shared/hooks/UseTimer';
+import {issuerType} from '../../machines/Issuers/IssuersMachine';
+import {
+  ProcessingModal,
+  ProgressIndicator,
+} from '../../components/ui/processingScreen/ProcessingModal';
+import {ErrorView} from '../../components/ui/Error';
 
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
-  const model = IssuersModel;
   const controller = useIssuerScreenController(props);
   const {i18n, t} = useTranslation('IssuersScreen');
   const issuers = controller.issuers;
-  let [filteredSearchData, setFilteredSearchData] = useState(issuers);
+  const [filteredSearchData, setFilteredSearchData] = useState(issuers);
   const [search, setSearch] = useState('');
   const [tapToSearch, setTapToSearch] = useState(false);
   const [clearSearchIcon, setClearSearchIcon] = useState(false);
   const showFullScreenError = controller.isError;
+  const [successDownloadRedirectTimer, initiateSuccessDownloadRedirectTimer] =
+    useTimer({initialValue: 5});
 
   const isVerificationFailed = controller.verificationErrorMessage !== '';
 
@@ -77,17 +86,44 @@ export const IssuersScreen: React.FC<
   }, [
     controller.loadingReason,
     controller.errorMessageType,
-    controller.isStoring,
     controller.isQrScanning,
   ]);
 
-  if (controller.isStoring) {
-    props.navigation.goBack();
-  }
+  useLayoutEffect(() => {
+    if (controller.loadingReason && controller.isPresentationAuthorization) {
+      props.navigation.setOptions({
+        headerShown: true,
+        header: props => (
+          <Header
+            goBack={props.navigation.goBack}
+            title={t('selectCard')}
+            testID="selectCardIssuersScreenHeader"
+          />
+        ),
+      });
+    }
+  }, [controller.loadingReason, controller.isPresentationAuthorization]);
+
+  useEffect(() => {
+    if (controller.isDownloadSuccess) {
+      if (controller.authorizationType === AuthorizationType.IMPLICIT) {
+        props.navigation.goBack();
+      } else {
+        initiateSuccessDownloadRedirectTimer();
+      }
+    }
+  }, [controller.isDownloadSuccess]);
+
+  useEffect(() => {
+    if (successDownloadRedirectTimer === 0) {
+      props.navigation.goBack();
+    }
+  }, [successDownloadRedirectTimer]);
+
   useEffect(() => {
     if (controller.isAuthEndpointToOpen) {
       (props.navigation as any).navigate(AUTH_ROUTES.AuthView, {
-        authorizationURL: controller.authEndpount,
+        authorizationURL: controller.authEndpoint,
         clientId: controller.selectedIssuer.client_id ?? 'wallet',
         redirectUri:
           controller.selectedIssuer.redirect_uri ??
@@ -157,7 +193,7 @@ export const IssuersScreen: React.FC<
   };
 
   const filterIssuers = (searchText: string) => {
-    const filteredData = issuers.filter(item => {
+    const filteredData = issuers.filter((item: issuerType) => {
       if (
         getDisplayObjectForCurrentLanguage(item.display)
           ?.name.toLowerCase()
@@ -174,6 +210,80 @@ export const IssuersScreen: React.FC<
       setClearSearchIcon(false);
     }
   };
+
+  if (
+    controller.authorizationType === AuthorizationType.OPENID4VP_PRESENTATION &&
+    (controller.isPresentationAuthorizationInProgress ||
+      controller.isDownloadSuccess ||
+      controller.isAuthorizationSuccess) &&
+    !controller.isError &&
+    !isVerificationFailed
+  ) {
+    return (
+      <ProcessingModal
+        testID={controller.isDownloadSuccess ? 'download-success' : 'download'}
+        isVisible={
+          controller.authorizationType ===
+            AuthorizationType.OPENID4VP_PRESENTATION &&
+          (controller.isPresentationAuthorizationInProgress ||
+            controller.isDownloadSuccess ||
+            controller.isAuthorizationSuccess) &&
+          !controller.isError
+        }
+        title={
+          controller.isDownloadSuccess
+            ? t('downloadSuccess')
+            : t('loaders.processing')
+        }
+        subTitle={
+          controller.isDownloadSuccess
+            ? t('loaders.progressIndicators.redirectToHome', {
+                remainingTime: successDownloadRedirectTimer,
+              })
+            : t('loaders.subTitle.inProgress')
+        }
+        progressSteps={[
+          <ProgressIndicator
+            key={1}
+            label={
+              controller.isAuthorizationSuccess
+                ? t('loaders.progressIndicators.sharedCard')
+                : t('loaders.progressIndicators.sharingCard')
+            }
+            completed={controller.isAuthorizationSuccess}
+            testID={
+              controller.isAuthorizationSuccess ? 'shared-card' : 'sharing-card'
+            }
+          />,
+          <ProgressIndicator
+            key={2}
+            label={
+              controller.isDownloadSuccess
+                ? t('loaders.progressIndicators.downloadedCard')
+                : t('loaders.progressIndicators.downloadingCard')
+            }
+            completed={controller.isDownloadSuccess}
+            testID={
+              controller.isDownloadSuccess
+                ? 'downloaded-card'
+                : 'downloading-card'
+            }
+          />,
+        ]}
+        action={
+          <Button
+            testID={'go-home'}
+            title={t('goHome')}
+            type={'gradient'}
+            fill
+            onPress={props.navigation.goBack}
+            disabled={!controller.isDownloadSuccess}
+          />
+        }
+      />
+    );
+  }
+
   if (controller.isSelectingCredentialType) {
     return <CredentialTypeSelectionScreen {...props} />;
   }
@@ -265,10 +375,29 @@ export const IssuersScreen: React.FC<
 
   if (controller.loadingReason) {
     return (
-      <Loader
-        title={t('loaders.loading')}
-        subTitle={t(`loaders.subTitle.${controller.loadingReason}`)}
-      />
+      <Fragment>
+        {controller.isPresentationAuthorization ? (
+          <SendVPScreen
+            navigation={props.navigation}
+            route={{
+              ...props.route,
+              params: {
+                ...props.route.params,
+                ovpService: controller.ovpMachine,
+              },
+            }}
+          />
+        ) : (
+          <Loader
+            title={
+              controller.loadingReason === 'preparingRequest'
+                ? t('loaders.preparingRequest')
+                : t('loaders.loading')
+            }
+            subTitle={t(`loaders.subTitle.${controller.loadingReason}`)}
+          />
+        )}
+      </Fragment>
     );
   }
 
@@ -360,7 +489,6 @@ export const IssuersScreen: React.FC<
                 renderItem={({item}) => (
                   <Issuer
                     testID={removeWhiteSpace(item.issuer_id)}
-                    key={item.issuer_id}
                     displayDetails={getDisplayObjectForCurrentLanguage(
                       item.display,
                     )}
@@ -370,7 +498,6 @@ export const IssuersScreen: React.FC<
                     {...props}
                   />
                 )}
-                numColumns={1}
                 keyExtractor={item => item.issuer_id}
               />
             )}

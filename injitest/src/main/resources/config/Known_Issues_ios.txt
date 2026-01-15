@@ -1,0 +1,9 @@
+#Add the Known Issue Testcase with its bug id here
+#Ex:bugId------testcaseName
+INJIWEB-1799------verifyActiveVcAndWaitForOtpTimeOut
+INJIWEB-1799------verifyWelcomePagesFromInjiTourGuideWithArabicLangauge
+INJIMOB-3614------DownloadVcWithEsignetWithoutNetwork
+INJIMOB-3614------DownloadVcWithMockWithoutNetwork
+INJIMOB-3614------DownloadVcWithMdlWithoutNetwork
+INJIMOB-3614------DownloadVcWithLandRegistryWithoutNetwork
+INJIMOB-3614------DownloadVcWithStayProtectedWithoutNetwork

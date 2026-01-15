@@ -7,22 +7,41 @@ import {LoaderAnimation} from './LoaderAnimation';
 import {Modal} from './Modal';
 import {BannerNotification} from '../../components/BannerNotification';
 import {BannerStatusType} from '../../components/BannerNotification';
+import testIDProps from '../../shared/commonUtil';
+
+export const LoaderSkeleton: React.FC<{
+  children?: React.ReactNode;
+  testID: string;
+}> = ({testID, children = null}) => {
+  return (
+    <Centered
+      {...testIDProps(`loader-skeleton-${testID}`)}
+      style={{backgroundColor: Theme.Colors.whiteBackgroundColor}}
+      crossAlign="center"
+      fill>
+      <Column margin="24 0" align="space-around">
+        <LoaderAnimation testID={'loader'} />
+      </Column>
+      {children}
+    </Centered>
+  );
+};
 
 export const Loader: React.FC<LoaderProps> = ({
-                                                title,
-                                                subTitle,
-                                                isModal = false,
-                                                hint,
-                                                onStayInProgress,
-                                                isHintVisible,
-                                                onCancel,
-                                                onRetry,
-                                                showBanner,
-                                                bannerMessage,
-                                                onBannerClose,
-                                                bannerType,
-                                                bannerTestID,
-                                              }) => {
+  title,
+  subTitle,
+  isModal = false,
+  hint,
+  onStayInProgress,
+  isHintVisible,
+  onCancel,
+  onRetry,
+  showBanner,
+  bannerMessage,
+  onBannerClose,
+  bannerType,
+  bannerTestID,
+}) => {
   const {t} = useTranslation('ScanScreen');
 
   useEffect(() => {
@@ -35,13 +54,7 @@ export const Loader: React.FC<LoaderProps> = ({
 
   function loaderContent() {
     return (
-      <Centered
-        style={{backgroundColor: Theme.Colors.whiteBackgroundColor}}
-        crossAlign="center"
-        fill>
-        <Column margin="24 0" align="space-around">
-          <LoaderAnimation testID={'loader'} />
-        </Column>
+      <LoaderSkeleton testID={'loader-content'}>
         {(isHintVisible || onCancel) && (
           <Column style={Theme.SelectVcOverlayStyles.timeoutHintContainer}>
             {hint && (
@@ -77,7 +90,7 @@ export const Loader: React.FC<LoaderProps> = ({
             )}
           </Column>
         )}
-      </Centered>
+      </LoaderSkeleton>
     );
   }
 
@@ -126,19 +139,17 @@ export const Loader: React.FC<LoaderProps> = ({
           <View style={Theme.Styles.hrLineFill}></View>
           {showBanner && (
             <BannerNotification
-              type={
-                bannerType ? bannerType : BannerStatusType.SUCCESS
-              }
+              type={bannerType ? bannerType : BannerStatusType.SUCCESS}
               message={bannerMessage as string}
               onClosePress={onBannerClose as () => void}
               testId={bannerTestID as string}
             />
           )}
 
-              {loaderContent()}
-            </Fragment>
-        )}
-      </Fragment>
+          {loaderContent()}
+        </Fragment>
+      )}
+    </Fragment>
   );
 };
 

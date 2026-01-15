@@ -26,7 +26,6 @@ export const RequestLayout: React.FC = () => {
   const controller = useRequestLayout();
   const receivedCardsController = useReceivedVcsTab();
   const navigation = useNavigation();
-  const bleErrorCode = controller.bleError.code;
 
   return (
     <React.Fragment>
