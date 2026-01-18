@@ -3,7 +3,14 @@ import {
   Button as RNEButton,
   ButtonProps as RNEButtonProps,
 } from 'react-native-elements';
-import {GestureResponderEvent, StyleProp, ViewStyle} from 'react-native';
+import {
+  GestureResponderEvent,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+  ActivityIndicator,
+  View,
+} from 'react-native';
 import {Text} from './Text';
 import {Theme, Spacing} from './styleUtils';
 import testIDProps from '../../shared/commonUtil';
@@ -31,7 +38,7 @@ export const Button: React.FC<ButtonProps> = props => {
     !(type === 'gradient')
       ? Theme.ButtonStyles.container
       : {flexDirection: 'row'},
-    props.disabled && props.type !== 'outline'
+    props.disabled && props.type !== 'outline' && props.type !== 'clear'
       ? Theme.ButtonStyles.disabled
       : null,
     props.margin ? Theme.spacing('margin', props.margin) : null,
@@ -60,7 +67,7 @@ export const Button: React.FC<ButtonProps> = props => {
       raised={props.raised}
       title={
         <Text
-          style={{paddingTop: 3}}
+          style={[{paddingTop: 3}, props.titleStyle]}
           weight="semibold"
           align="center"
           color={
@@ -68,7 +75,7 @@ export const Button: React.FC<ButtonProps> = props => {
               ? Theme.Colors.whiteText
               : type === 'plain'
               ? Theme.Colors.plainText + 66
-              : type === 'outline' && props.disabled
+              : (type === 'outline' || type === 'clear') && props.disabled
               ? Theme.Colors.textLabel
               : Theme.Colors.AddIdBtnTxt
           }>
@@ -77,6 +84,7 @@ export const Button: React.FC<ButtonProps> = props => {
       }
       style={[buttonStyle]}
       icon={props.icon}
+      iconPosition={props.iconPosition}
       onPress={handleOnPress}
       loading={props.loading}
     />
@@ -99,19 +107,41 @@ export const Button: React.FC<ButtonProps> = props => {
       type={props.type}
       raised={props.raised}
       title={
-        <Text
-          style={props.icon ? {paddingLeft: 10} : {paddingLeft: 0}}
-          weight="bold"
-          color={
-            type === 'solid' || type === 'gradient' || type === 'radius'
-              ? Theme.Colors.whiteText
-              : Theme.Colors.DownloadIdBtnTxt
-          }>
-          {props.title}
-        </Text>
+        props.customLoader ? (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={[{marginLeft: 8}, props.titleStyle]}
+              weight="bold"
+              color={Theme.Colors.whiteText}>
+              {props.title}
+            </Text>
+            <ActivityIndicator
+              size="small"
+              style={{marginLeft: 15}}
+              color={Theme.Colors.whiteText}
+            />
+          </View>
+        ) : (
+          <Text
+            style={[{paddingLeft: props.icon ? 10 : 0}, props.titleStyle]}
+            weight="bold"
+            color={
+              type === 'solid' || type === 'gradient' || type === 'radius'
+                ? Theme.Colors.whiteText
+                : Theme.Colors.DownloadIdBtnTxt
+            }>
+            {props.title}
+          </Text>
+        )
       }
       style={[buttonStyle]}
       icon={props.icon}
+      iconPosition={props.iconPosition}
       onPress={handleOnPress}
       loading={props.loading}
     />
@@ -129,9 +159,12 @@ interface ButtonProps {
   fill?: boolean;
   raised?: boolean;
   loading?: boolean;
+  customLoader?: boolean;
   icon?: RNEButtonProps['icon'];
+  iconPosition?: RNEButtonProps['iconPosition'];
   styles?: StyleProp<ViewStyle>;
   colors?: (string | number)[];
   width?: number;
   size?: string;
+  titleStyle?: StyleProp<TextStyle>;
 }

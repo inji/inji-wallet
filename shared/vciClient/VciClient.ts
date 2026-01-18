@@ -1,6 +1,10 @@
 import {NativeModules, NativeEventEmitter} from 'react-native';
 import {__AppId} from '../GlobalVariables';
-import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {
+  SelectedCredentialsForVPSharing,
+  VerifiableCredential,
+} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {signatureSuite} from '../../machines/openID4VP/openID4VPServices';
 
 const emitter = new NativeEventEmitter(NativeModules.InjiVciClient);
 
@@ -21,6 +25,16 @@ class VciClient {
 
   async sendProof(jwt: string) {
     this.InjiVciClient.sendProofFromJS(jwt);
+  }
+
+  async sendSelectedCredentialsForVPSharing(
+    credentials: SelectedCredentialsForVPSharing,
+  ) {
+    this.InjiVciClient.sendSelectedCredentialsForVPSharingFromJS(credentials);
+  }
+
+  sendSignedVP(vpTokenSigningResult: object) {
+    this.InjiVciClient.sendVPTokenSigningResultFromJS(vpTokenSigningResult);
   }
 
   async sendAuthCode(authCode: string) {
@@ -62,12 +76,31 @@ class VciClient {
       credentialIssuer: string,
       issuerDisplay: object[],
     ) => void,
+    handlePresentationRequest: (presentationRequest: object) => void,
+    signPresentation: (vpTokenSigningRequest: object) => void,
   ): Promise<any> {
-
     const proofListener = emitter.addListener(
       'onRequestProof',
       ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
-        getProofJwt(credentialIssuer, cNonce, JSON.parse(proofSigningAlgorithmsSupported));
+        getProofJwt(
+          credentialIssuer,
+          cNonce,
+          JSON.parse(proofSigningAlgorithmsSupported),
+        );
+      },
+    );
+
+    const presentationRequestListener = emitter.addListener(
+      'onPresentationRequest',
+      ({presentationRequest}) => {
+        handlePresentationRequest(JSON.parse(presentationRequest));
+      },
+    );
+
+    const signVPListener = emitter.addListener(
+      'onRequestSignedVPToken',
+      ({vpTokenSigningRequest}) => {
+        signPresentation(vpTokenSigningRequest);
       },
     );
 
@@ -108,6 +141,7 @@ class VciClient {
       response = await this.InjiVciClient.requestCredentialByOffer(
         credentialOffer,
         JSON.stringify(clientMetadata),
+        signatureSuite,
       );
     } catch (error) {
       console.error('Error requesting credential by offer:', error);
@@ -118,6 +152,8 @@ class VciClient {
       txCodeListener.remove();
       tokenResponseListener.remove();
       trustIssuerListener.remove();
+      presentationRequestListener.remove();
+      signVPListener.remove();
     }
 
     const parsedResponse = JSON.parse(response);
@@ -125,8 +161,7 @@ class VciClient {
       credential: {
         credential: parsedResponse.credential,
       } as VerifiableCredential,
-      credentialConfigurationId:
-        parsedResponse.credentialConfigurationId ?? {},
+      credentialConfigurationId: parsedResponse.credentialConfigurationId ?? '',
       credentialIssuer: parsedResponse.credentialIssuer ?? '',
     };
   }
@@ -142,11 +177,32 @@ class VciClient {
     ) => void,
     navigateToAuthView: (authorizationEndpoint: string) => void,
     requestTokenResponse: (tokenRequest: object) => void,
+    handlePresentationRequest: (presentationRequest: object) => void,
+    signPresentation: (vpTokenSigningRequest: object) => void,
   ): Promise<any> {
     const proofListener = emitter.addListener(
       'onRequestProof',
       ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
-        getProofJwt(credentialIssuer, cNonce, JSON.parse(proofSigningAlgorithmsSupported));
+        getProofJwt(
+          credentialIssuer,
+          cNonce,
+          JSON.parse(proofSigningAlgorithmsSupported),
+        );
+      },
+    );
+
+    const presentationRequestListener = emitter.addListener(
+      'onPresentationRequest',
+      ({presentationRequest}) => {
+        //TODO: Handle presentation request
+        handlePresentationRequest(JSON.parse(presentationRequest));
+      },
+    );
+
+    const signVPListener = emitter.addListener(
+      'onRequestSignedVPToken',
+      ({vpTokenSigningRequest}) => {
+        signPresentation(vpTokenSigningRequest);
       },
     );
 
@@ -170,6 +226,7 @@ class VciClient {
         credentialIssuerUri,
         credentialConfigurationId,
         JSON.stringify(clientMetadata),
+        signatureSuite,
       );
     } catch (error) {
       console.error('Error requesting credential from trusted issuer:', error);
@@ -178,6 +235,8 @@ class VciClient {
       proofListener.remove();
       authListener.remove();
       tokenResponseListener.remove();
+      presentationRequestListener.remove();
+      signVPListener.remove();
     }
 
     const parsedResponse = JSON.parse(response);
@@ -185,10 +244,14 @@ class VciClient {
       credential: {
         credential: parsedResponse.credential,
       } as VerifiableCredential,
-      credentialConfigurationId:
-        parsedResponse.credentialConfigurationId ?? {},
+      credentialConfigurationId: parsedResponse.credentialConfigurationId ?? '',
       credentialIssuer: parsedResponse.credentialIssuer ?? '',
     };
+  }
+
+  abortPresentationFlow(error: {code: string; message: string}) {
+    console.debug(`message ${error.message}`);
+    this.InjiVciClient.abortPresentationFlowFromJS(error.code, error.message);
   }
 }
 

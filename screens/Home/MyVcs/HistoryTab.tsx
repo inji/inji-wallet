@@ -16,7 +16,7 @@ export const HistoryTab: React.FC<HistoryTabProps> = props => {
   return (
     <>
       <Modal
-        headerLabel={t('historyHeaderLabel')}
+        headerTitle={t('historyHeaderLabel')}
         isVisible={controller.isShowActivities}
         onDismiss={controller.DISMISS}>
         <Column fill>

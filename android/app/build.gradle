@@ -268,7 +268,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("io.mosip:injivcrenderer-aar:0.1.0")
-    implementation("io.mosip:inji-openid4vp-aar:0.6.0"){
+    implementation("io.inji:inji-openid4vp-aar:0.7.0-RC1"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
@@ -281,7 +281,15 @@ dependencies {
     implementation("io.mosip:pixelpass-aar:0.7.0")
     implementation("io.mosip:secure-keystore:0.3.0")
     implementation("io.mosip:tuvali:0.5.2")
-    implementation("io.mosip:inji-vci-client-aar:0.6.0")
+    implementation("io.inji:inji-vci-client-aar:0.7.0-RC1"){
+        changing = true
+        exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
+        exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
+        exclude group: 'io.mosip', module: 'vcverifier-jar'
+        exclude group: 'com.google.crypto.tink', module: 'tink'
+        exclude group: 'com.augustcellars.cose', module:'cose-java'
+        exclude group: 'io.inji', module: 'inji-openid4vp-aar'
+    }
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("io.mosip:vcverifier-aar:1.6.0-SNAPSHOT") {
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'

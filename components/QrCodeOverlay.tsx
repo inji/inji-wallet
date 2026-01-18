@@ -1,26 +1,26 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Pressable, View} from 'react-native';
-import {Icon, Overlay} from 'react-native-elements';
-import {Centered, Column, Row, Text, Button} from './ui';
+import React, { useEffect, useRef, useState } from 'react';
+import { Pressable, View } from 'react-native';
+import { Icon, Overlay } from 'react-native-elements';
+import { Centered, Column, Row, Text, Button } from './ui';
 import QRCode from 'react-native-qrcode-svg';
-import {Theme} from './ui/styleUtils';
-import {useTranslation} from 'react-i18next';
+import { Theme } from './ui/styleUtils';
+import { useTranslation } from 'react-i18next';
 import testIDProps from '../shared/commonUtil';
-import {SvgImage} from './ui/svg';
-import {NativeModules} from 'react-native';
-import {VerifiableCredential} from '../machines/VerifiableCredential/VCMetaMachine/vc';
-import {DEFAULT_ECL, MAX_QR_DATA_LENGTH} from '../shared/constants';
-import {VCMetadata} from '../shared/VCMetadata';
-import {shareImageToAllSupportedApps} from '../shared/sharing/imageUtils';
-import {ShareOptions} from 'react-native-share';
+import { SvgImage } from './ui/svg';
+import { NativeModules } from 'react-native';
+import { VerifiableCredential } from '../machines/VerifiableCredential/VCMetaMachine/vc';
+import { DEFAULT_ECL, MAX_QR_DATA_LENGTH } from '../shared/constants';
+import { VCMetadata } from '../shared/VCMetadata';
+import { shareImageToAllSupportedApps } from '../shared/sharing/imageUtils';
+import { ShareOptions } from 'react-native-share';
 
 export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
-  const {RNPixelpassModule} = NativeModules;
-  const {t} = useTranslation('VcDetails');
+  const { RNPixelpassModule } = NativeModules;
+  const { t } = useTranslation('VcDetails');
   const [qrString, setQrString] = useState('');
   const [qrError, setQrError] = useState(false);
   const base64ImageType = 'data:image/png;base64,';
-  const {RNSecureKeystoreModule} = NativeModules;
+  const { RNSecureKeystoreModule } = NativeModules;
 
   async function getQRData(): Promise<string> {
     let qrData: string;
@@ -32,15 +32,41 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
         throw new Error('No key data found');
       }
     } catch {
-      const {credential} = props.verifiableCredential;
-      qrData = await RNPixelpassModule.generateQRData(
-        JSON.stringify(credential),
-        '',
-      );
+      const { isIdentityQrPresent, identityQrData } = getIdentityQr()
+      if (isIdentityQrPresent) {
+        qrData = identityQrData
+      }
+      else {
+        const { credential } = props.verifiableCredential;
+        qrData = await RNPixelpassModule.generateQRData(
+          JSON.stringify(credential),
+          '',
+        );
+      }
       await RNSecureKeystoreModule.storeData(props.meta.id, qrData);
     }
     return qrData;
   }
+  function getIdentityQr(): {
+    isIdentityQrPresent: boolean;
+    identityQrData: string;
+  } {
+    const credential = props.verifiableCredential?.credential;
+    const subject = credential?.credentialSubject;
+
+    if (!subject || typeof subject !== 'object') {
+      return { isIdentityQrPresent: false, identityQrData: "" };
+    }
+
+    const qr = (subject as any).identityQRCode;
+
+    if (typeof qr === 'string' && qr.trim().length > 0) {
+      return { isIdentityQrPresent: true, identityQrData: qr };
+    }
+
+    return { isIdentityQrPresent: false, identityQrData: "" };
+  }
+
 
   let qrRef = useRef(null);
 
@@ -114,7 +140,7 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
         <Overlay
           isVisible={overlayVisible}
           onBackdropPress={toggleQrOverlay}
-          overlayStyle={{padding: 1, borderRadius: 21}}>
+          overlayStyle={{ padding: 1, borderRadius: 21 }}>
           <Column style={Theme.QrCodeStyles.expandedQrCode}>
             <Row pY={20} style={Theme.QrCodeStyles.QrCodeHeader}>
               <Text

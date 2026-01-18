@@ -9,6 +9,7 @@ RCT_EXTERN_METHOD(init:(NSString *)traceabilityId)
 // Requests a credential using a credential offer string and client metadata (both as JSON strings)
 RCT_EXTERN_METHOD(requestCredentialByOffer:(NSString *)credentialOffer
                   clientMetadata:(NSString *)clientMetadata
+                  signatureSuite:(NSString *)signatureSuite
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
@@ -16,6 +17,7 @@ RCT_EXTERN_METHOD(requestCredentialByOffer:(NSString *)credentialOffer
 RCT_EXTERN_METHOD(requestCredentialFromTrustedIssuer:(NSString *)credentialIssuer
                   credentialConfigurationId:(NSString *)credentialConfigurationId
                   clientMetadata:(NSString *)clientMetadata
+                  signatureSuite:(NSString *)signatureSuite
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
@@ -29,6 +31,19 @@ RCT_EXTERN_METHOD(sendProofFromJS:(NSString *)jwtProof)
 
 // Sends authorization code back to native side (in response to onRequestAuthCode)
 RCT_EXTERN_METHOD(sendAuthCodeFromJS:(NSString *)authCode)
+
+// send selected credentials back to native side (in response to onPresentationRequest
+RCT_EXTERN_METHOD(
+  sendSelectedCredentialsForVPSharingFromJS:(id)selectedCredentials
+)
+
+// send VP token signing result back to native side (in response to onRequestSignedVPToken
+RCT_EXTERN_METHOD(
+  sendVPTokenSigningResultFromJS:(NSDictionary *)vpTokenSigningResult
+)
+
+RCT_EXTERN_METHOD(abortPresentationFlowFromJS:(NSString *)code
+                  message:(NSString *)message)
 
 // Sends tx_code back to native side (in response to onRequestTxCode)
 RCT_EXTERN_METHOD(sendTxCodeFromJS:(NSString *)txCode)

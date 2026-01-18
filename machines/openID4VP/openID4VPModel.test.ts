@@ -24,6 +24,9 @@ describe('openID4VPModel', () => {
       expect(initialContext.showLoadingScreen).toBe(false);
       expect(initialContext.isOVPViaDeepLink).toBe(false);
       expect(initialContext.showTrustConsentModal).toBe(false);
+      expect(initialContext.unsignedVPToken).toEqual({});
+      expect(initialContext.hasNoMatchingVCs).toBe(false);
+      expect(initialContext.presentationRequest).toEqual({});
     });
 
     it('should initialize with empty object contexts', () => {
@@ -344,6 +347,91 @@ describe('openID4VPModel', () => {
         const event = openID4VPModel.events.LOG_ACTIVITY('');
 
         expect(event.logType).toBe('');
+      });
+    });
+
+    describe('AUTHENTICATE_VIA_PRESENTATION', () => {
+      it('should create AUTHENTICATE_VIA_PRESENTATION event with all parameters', () => {
+        const presentationRequest = 'presentation_request_123';
+        const flowType = 'OpenID4VP';
+        const selectedVC = {id: 'vc456'};
+        const isOVPViaDeepLink = true;
+
+        const event = openID4VPModel.events.AUTHENTICATE_VIA_PRESENTATION(
+          presentationRequest,
+          flowType,
+          selectedVC,
+          isOVPViaDeepLink,
+        );
+
+        expect(event.presentationRequest).toBe(presentationRequest);
+        expect(event.flowType).toBe(flowType);
+        expect(event.selectedVC).toEqual(selectedVC);
+        expect(event.isOVPViaDeepLink).toBe(isOVPViaDeepLink);
+      });
+
+      it('should create AUTHENTICATE_VIA_PRESENTATION event with false deeplink flag', () => {
+        const event = openID4VPModel.events.AUTHENTICATE_VIA_PRESENTATION(
+          'request',
+          'flow',
+          {},
+          false,
+        );
+
+        expect(event.isOVPViaDeepLink).toBe(false);
+        expect(event.presentationRequest).toBe('request');
+      });
+
+      it('should create AUTHENTICATE_VIA_PRESENTATION event with empty selectedVC', () => {
+        const event = openID4VPModel.events.AUTHENTICATE_VIA_PRESENTATION(
+          'presentation_request',
+          'OpenID4VP',
+          {},
+          true,
+        );
+
+        expect(event.selectedVC).toEqual({});
+        expect(event.flowType).toBe('OpenID4VP');
+      });
+    });
+
+    describe('SIGN_VP', () => {
+      it('should create SIGN_VP event with data object', () => {
+        const data = {
+          vpToken: 'token_123',
+          signature: 'sig_456',
+          claims: ['claim1', 'claim2'],
+        };
+
+        const event = openID4VPModel.events.SIGN_VP(data);
+
+        expect(event.data).toEqual(data);
+        expect(event.data.vpToken).toBe('token_123');
+        expect(event.data.signature).toBe('sig_456');
+      });
+
+      it('should create SIGN_VP event with null data', () => {
+        const event = openID4VPModel.events.SIGN_VP(null);
+
+        expect(event.data).toBeNull();
+      });
+
+      it('should create SIGN_VP event with empty object', () => {
+        const event = openID4VPModel.events.SIGN_VP({});
+
+        expect(event.data).toEqual({});
+      });
+
+      it('should create SIGN_VP event with complex data structure', () => {
+        const data = {
+          credentials: [{id: 'vc1'}, {id: 'vc2'}],
+          metadata: {timestamp: Date.now(), version: '1.0'},
+        };
+
+        const event = openID4VPModel.events.SIGN_VP(data);
+
+        expect(event.data.credentials).toHaveLength(2);
+        expect(event.data.metadata.version).toBe('1.0');
       });
     });
   });

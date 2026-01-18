@@ -14,12 +14,11 @@
 		1E6875EB2CA554FD0086D870 /* RNOpenID4VPModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E6875EA2CA554FD0086D870 /* RNOpenID4VPModule.m */; };
 		1E6875ED2CA5550F0086D870 /* RNOpenID4VPModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6875EC2CA5550F0086D870 /* RNOpenID4VPModule.swift */; };
 		1EED69F92DA913D30042EAFC /* IntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EED69F82DA913D30042EAFC /* IntentData.swift */; };
-		1EED69FB2DA914130042EAFC /* RNDeepLinkIntentModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EED69FA2DA914130042EAFC /* RNDeepLinkIntentModule.swift */; };
 		1EED69FD2DA914D00042EAFC /* RNDeepLinkIntentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EED69FC2DA914D00042EAFC /* RNDeepLinkIntentModule.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		61450CD968A57153077CB5A9 /* libPods-Inji.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 433CCC1AA8055E18ADC2C596 /* libPods-Inji.a */; };
 		717E6FEC33D6D8A2F9B01CBC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1D23B9CD47CFD7F3C87D202F /* PrivacyInfo.xcprivacy */; };
 		73295844242A4AD3AA52D0BE /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98B96A488E54CBDB286B26F /* noop-file.swift */; };
-		96905EF65AED1B983A6B3ABC /* libPods-Inji.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-Inji.a */; };
 		9C0E86B52BEE357A00E9F9F6 /* RNPixelpassModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0E86B42BEE357A00E9F9F6 /* RNPixelpassModule.swift */; };
 		9C0E86BB2BEE36C300E9F9F6 /* RNPixelpassModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0E86BA2BEE36C300E9F9F6 /* RNPixelpassModule.m */; };
 		9C3BD80E2EA8C8DE00101656 /* RNVCVerifierModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD80D2EA8C8D600101656 /* RNVCVerifierModule.swift */; };
@@ -55,6 +54,22 @@
 		C3F18B1D2E320C9A007DBE73 /* VCIClient in Frameworks */ = {isa = PBXBuildFile; productRef = C3F18B1C2E320C9A007DBE73 /* VCIClient */; };
 		C3F6A9DD2E661896006C9904 /* RNInjiVcRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3F6A9DC2E66188D006C9904 /* RNInjiVcRenderer.swift */; };
 		C3F6A9DF2E661903006C9904 /* RNInjiVcRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3F6A9DE2E6618F6006C9904 /* RNInjiVcRenderer.m */; };
+		E6D946DA2EFAA2FE004DA688 /* CredentialsVerifierConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946C62EFAA2FE004DA688 /* CredentialsVerifierConstant.swift */; };
+		E6D946DB2EFAA2FE004DA688 /* NetworkManagerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946D42EFAA2FE004DA688 /* NetworkManagerClient.swift */; };
+		E6D946DC2EFAA2FE004DA688 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946CF2EFAA2FE004DA688 /* Data.swift */; };
+		E6D946DD2EFAA2FE004DA688 /* OVPUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946C02EFAA2FE004DA688 /* OVPUtils.swift */; };
+		E6D946DE2EFAA2FE004DA688 /* VerifiableCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946CD2EFAA2FE004DA688 /* VerifiableCredential.swift */; };
+		E6D946DF2EFAA2FE004DA688 /* VciBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946C32EFAA2FE004DA688 /* VciBridge.swift */; };
+		E6D946E02EFAA2FE004DA688 /* CredentialsVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946D82EFAA2FE004DA688 /* CredentialsVerifier.swift */; };
+		E6D946E12EFAA2FE004DA688 /* LdpStatusChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946C82EFAA2FE004DA688 /* LdpStatusChecker.swift */; };
+		E6D946E22EFAA2FE004DA688 /* NetworkManagerClientExceptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946D12EFAA2FE004DA688 /* NetworkManagerClientExceptions.swift */; };
+		E6D946E32EFAA2FE004DA688 /* base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946D62EFAA2FE004DA688 /* base64.swift */; };
+		E6D946E42EFAA2FE004DA688 /* LdpVerifiableCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946CA2EFAA2FE004DA688 /* LdpVerifiableCredential.swift */; };
+		E6D946E52EFAA2FE004DA688 /* CredentialFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946C52EFAA2FE004DA688 /* CredentialFormat.swift */; };
+		E6D946E62EFAA2FE004DA688 /* RevocationCheckExceptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946D22EFAA2FE004DA688 /* RevocationCheckExceptions.swift */; };
+		E6D946E72EFAA2FE004DA688 /* CredentialsVerifierFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946CC2EFAA2FE004DA688 /* CredentialsVerifierFactory.swift */; };
+		E6D946ED2EFAA332004DA688 /* OVPUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946E82EFAA332004DA688 /* OVPUtils.swift */; };
+		E6D946EE2EFAA332004DA688 /* VciBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946EB2EFAA332004DA688 /* VciBridge.swift */; };
 		E86208152C0335C5007C3E24 /* RNVCIClientModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86208142C0335C5007C3E24 /* RNVCIClientModule.swift */; };
 		E86208172C0335EC007C3E24 /* RNVCIClientModule.m in Sources */ = {isa = PBXBuildFile; fileRef = E86208162C0335EC007C3E24 /* RNVCIClientModule.m */; };
 		FD8D20B92BBAACDF009AD01C /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD8D20A62BBAACDF009AD01C /* Fontisto.ttf */; };
@@ -86,6 +101,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Inji/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Inji/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Inji/main.m; sourceTree = "<group>"; };
+		19C0471A2692C2E972DFDED9 /* Pods-Inji.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Inji.debug.xcconfig"; path = "Target Support Files/Pods-Inji/Pods-Inji.debug.xcconfig"; sourceTree = "<group>"; };
 		1D23B9CD47CFD7F3C87D202F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Inji/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		1E55C20A2DB120C2009DF38B /* RNDeepLinkIntentModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNDeepLinkIntentModule.swift; sourceTree = "<group>"; };
 		1E6875EA2CA554FD0086D870 /* RNOpenID4VPModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNOpenID4VPModule.m; sourceTree = "<group>"; };
@@ -93,9 +109,8 @@
 		1EED69F82DA913D30042EAFC /* IntentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentData.swift; sourceTree = "<group>"; };
 		1EED69FA2DA914130042EAFC /* RNDeepLinkIntentModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNDeepLinkIntentModule.swift; sourceTree = "<group>"; };
 		1EED69FC2DA914D00042EAFC /* RNDeepLinkIntentModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDeepLinkIntentModule.m; sourceTree = "<group>"; };
-		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-Inji.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Inji.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6C2E3173556A471DD304B334 /* Pods-Inji.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Inji.debug.xcconfig"; path = "Target Support Files/Pods-Inji/Pods-Inji.debug.xcconfig"; sourceTree = "<group>"; };
-		7A4D352CD337FB3A3BF06240 /* Pods-Inji.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Inji.release.xcconfig"; path = "Target Support Files/Pods-Inji/Pods-Inji.release.xcconfig"; sourceTree = "<group>"; };
+		433CCC1AA8055E18ADC2C596 /* libPods-Inji.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Inji.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		457171B817B28D9B58D26B1A /* Pods-Inji.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Inji.release.xcconfig"; path = "Target Support Files/Pods-Inji/Pods-Inji.release.xcconfig"; sourceTree = "<group>"; };
 		9C0E86B42BEE357A00E9F9F6 /* RNPixelpassModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNPixelpassModule.swift; sourceTree = "<group>"; };
 		9C0E86BA2BEE36C300E9F9F6 /* RNPixelpassModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNPixelpassModule.m; sourceTree = "<group>"; };
 		9C3BD80D2EA8C8D600101656 /* RNVCVerifierModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNVCVerifierModule.swift; sourceTree = "<group>"; };
@@ -126,6 +141,22 @@
 		C3F6A9DC2E66188D006C9904 /* RNInjiVcRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNInjiVcRenderer.swift; sourceTree = "<group>"; };
 		C3F6A9DE2E6618F6006C9904 /* RNInjiVcRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNInjiVcRenderer.m; sourceTree = "<group>"; };
 		D98B96A488E54CBDB286B26F /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "Inji/noop-file.swift"; sourceTree = "<group>"; };
+		E6D946C02EFAA2FE004DA688 /* OVPUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OVPUtils.swift; sourceTree = "<group>"; };
+		E6D946C32EFAA2FE004DA688 /* VciBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VciBridge.swift; sourceTree = "<group>"; };
+		E6D946C52EFAA2FE004DA688 /* CredentialFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialFormat.swift; sourceTree = "<group>"; };
+		E6D946C62EFAA2FE004DA688 /* CredentialsVerifierConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsVerifierConstant.swift; sourceTree = "<group>"; };
+		E6D946C82EFAA2FE004DA688 /* LdpStatusChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LdpStatusChecker.swift; sourceTree = "<group>"; };
+		E6D946CA2EFAA2FE004DA688 /* LdpVerifiableCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LdpVerifiableCredential.swift; sourceTree = "<group>"; };
+		E6D946CC2EFAA2FE004DA688 /* CredentialsVerifierFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsVerifierFactory.swift; sourceTree = "<group>"; };
+		E6D946CD2EFAA2FE004DA688 /* VerifiableCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiableCredential.swift; sourceTree = "<group>"; };
+		E6D946CF2EFAA2FE004DA688 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		E6D946D12EFAA2FE004DA688 /* NetworkManagerClientExceptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerClientExceptions.swift; sourceTree = "<group>"; };
+		E6D946D22EFAA2FE004DA688 /* RevocationCheckExceptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevocationCheckExceptions.swift; sourceTree = "<group>"; };
+		E6D946D42EFAA2FE004DA688 /* NetworkManagerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerClient.swift; sourceTree = "<group>"; };
+		E6D946D62EFAA2FE004DA688 /* base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = base64.swift; sourceTree = "<group>"; };
+		E6D946D82EFAA2FE004DA688 /* CredentialsVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsVerifier.swift; sourceTree = "<group>"; };
+		E6D946E82EFAA332004DA688 /* OVPUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OVPUtils.swift; sourceTree = "<group>"; };
+		E6D946EB2EFAA332004DA688 /* VciBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VciBridge.swift; sourceTree = "<group>"; };
 		E86208142C0335C5007C3E24 /* RNVCIClientModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNVCIClientModule.swift; sourceTree = "<group>"; };
 		E86208162C0335EC007C3E24 /* RNVCIClientModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNVCIClientModule.m; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -162,7 +193,7 @@
 				9CAE74EE2E2E38F800C2532C /* pixelpass in Frameworks */,
 				9CCCA19E2CF87A8400D5A461 /* securekeystore in Frameworks */,
 				C3F18B1A2E320C85007DBE73 /* OpenID4VP in Frameworks */,
-				96905EF65AED1B983A6B3ABC /* libPods-Inji.a in Frameworks */,
+				61450CD968A57153077CB5A9 /* libPods-Inji.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,7 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				58EEBF8E8E6FB1BC6CAF49B5 /* libPods-Inji.a */,
+				433CCC1AA8055E18ADC2C596 /* libPods-Inji.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -235,6 +266,13 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				E6D946E92EFAA332004DA688 /* Utils */,
+				E6D946EA2EFAA332004DA688 /* VciClient */,
+				E6D946EC2EFAA332004DA688 /* VciClientBridge */,
+				E6D946C12EFAA2FE004DA688 /* Utils */,
+				E6D946C22EFAA2FE004DA688 /* VciClient */,
+				E6D946C42EFAA2FE004DA688 /* VciClientBridge */,
+				E6D946D92EFAA2FE004DA688 /* vcverifier */,
 				FD8D20A52BBAACDF009AD01C /* Fonts */,
 				13B07FAE1A68108700A75B9A /* Inji */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -369,8 +407,8 @@
 		D65327D7A22EEC0BE12398D9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6C2E3173556A471DD304B334 /* Pods-Inji.debug.xcconfig */,
-				7A4D352CD337FB3A3BF06240 /* Pods-Inji.release.xcconfig */,
+				19C0471A2692C2E972DFDED9 /* Pods-Inji.debug.xcconfig */,
+				457171B817B28D9B58D26B1A /* Pods-Inji.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -381,6 +419,135 @@
 				92DBD88DE9BF7D494EA9DA96 /* Inji */,
 			);
 			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
+		E6D946C12EFAA2FE004DA688 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				E6D946C02EFAA2FE004DA688 /* OVPUtils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		E6D946C22EFAA2FE004DA688 /* VciClient */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = VciClient;
+			sourceTree = "<group>";
+		};
+		E6D946C42EFAA2FE004DA688 /* VciClientBridge */ = {
+			isa = PBXGroup;
+			children = (
+				E6D946C32EFAA2FE004DA688 /* VciBridge.swift */,
+			);
+			path = VciClientBridge;
+			sourceTree = "<group>";
+		};
+		E6D946C72EFAA2FE004DA688 /* constants */ = {
+			isa = PBXGroup;
+			children = (
+				E6D946C52EFAA2FE004DA688 /* CredentialFormat.swift */,
+				E6D946C62EFAA2FE004DA688 /* CredentialsVerifierConstant.swift */,
+			);
+			path = constants;
+			sourceTree = "<group>";
+		};
+		E6D946C92EFAA2FE004DA688 /* statusChecker */ = {
+			isa = PBXGroup;
+			children = (
+				E6D946C82EFAA2FE004DA688 /* LdpStatusChecker.swift */,
+			);
+			path = statusChecker;
+			sourceTree = "<group>";
+		};
+		E6D946CB2EFAA2FE004DA688 /* types */ = {
+			isa = PBXGroup;
+			children = (
+				E6D946CA2EFAA2FE004DA688 /* LdpVerifiableCredential.swift */,
+			);
+			path = types;
+			sourceTree = "<group>";
+		};
+		E6D946CE2EFAA2FE004DA688 /* credentialVerifier */ = {
+			isa = PBXGroup;
+			children = (
+				E6D946C92EFAA2FE004DA688 /* statusChecker */,
+				E6D946CB2EFAA2FE004DA688 /* types */,
+				E6D946CC2EFAA2FE004DA688 /* CredentialsVerifierFactory.swift */,
+				E6D946CD2EFAA2FE004DA688 /* VerifiableCredential.swift */,
+			);
+			path = credentialVerifier;
+			sourceTree = "<group>";
+		};
+		E6D946D02EFAA2FE004DA688 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				E6D946CF2EFAA2FE004DA688 /* Data.swift */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		E6D946D32EFAA2FE004DA688 /* exception */ = {
+			isa = PBXGroup;
+			children = (
+				E6D946D12EFAA2FE004DA688 /* NetworkManagerClientExceptions.swift */,
+				E6D946D22EFAA2FE004DA688 /* RevocationCheckExceptions.swift */,
+			);
+			path = exception;
+			sourceTree = "<group>";
+		};
+		E6D946D52EFAA2FE004DA688 /* networkManager */ = {
+			isa = PBXGroup;
+			children = (
+				E6D946D42EFAA2FE004DA688 /* NetworkManagerClient.swift */,
+			);
+			path = networkManager;
+			sourceTree = "<group>";
+		};
+		E6D946D72EFAA2FE004DA688 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				E6D946D62EFAA2FE004DA688 /* base64.swift */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		E6D946D92EFAA2FE004DA688 /* vcverifier */ = {
+			isa = PBXGroup;
+			children = (
+				E6D946C72EFAA2FE004DA688 /* constants */,
+				E6D946CE2EFAA2FE004DA688 /* credentialVerifier */,
+				E6D946D02EFAA2FE004DA688 /* data */,
+				E6D946D32EFAA2FE004DA688 /* exception */,
+				E6D946D52EFAA2FE004DA688 /* networkManager */,
+				E6D946D72EFAA2FE004DA688 /* utils */,
+				E6D946D82EFAA2FE004DA688 /* CredentialsVerifier.swift */,
+			);
+			path = vcverifier;
+			sourceTree = "<group>";
+		};
+		E6D946E92EFAA332004DA688 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				E6D946E82EFAA332004DA688 /* OVPUtils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		E6D946EA2EFAA332004DA688 /* VciClient */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = VciClient;
+			sourceTree = "<group>";
+		};
+		E6D946EC2EFAA332004DA688 /* VciClientBridge */ = {
+			isa = PBXGroup;
+			children = (
+				E6D946EB2EFAA332004DA688 /* VciBridge.swift */,
+			);
+			path = VciClientBridge;
 			sourceTree = "<group>";
 		};
 		FD8D20A52BBAACDF009AD01C /* Fonts */ = {
@@ -417,7 +584,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Inji" */;
 			buildPhases = (
-				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
+				AC0BC808C43C177C38AFC3BD /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				654269ECFA0A4BA5DD24AB2B /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -425,8 +592,8 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				1E55884F2CC0EF2C00CF55B4 /* Copy FaceSDK Model */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				D11A8C363B4A5B625DB10379 /* [CP] Embed Pods Frameworks */,
+				D864AD95A969870E3F1029D7 /* [CP] Embed Pods Frameworks */,
+				467F10C0B5070779AA08A7BB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -532,28 +699,6 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" $PROJECT_ROOT ios relative | tail -n 1)\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n\n";
 		};
-		08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Inji-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		1E55884F2CC0EF2C00CF55B4 /* Copy FaceSDK Model */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
@@ -572,26 +717,7 @@
 			shellPath = /bin/sh;
 			shellScript = "MODEL_SRC_DIR=\"${PROJECT_DIR}/../assets/models\"\nMODEL_DST_DIR=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\n\ncp -v \"$MODEL_SRC_DIR/faceModel.tflite\" \"$MODEL_DST_DIR\" || {\n    echo \"Failed to copy face model\"\n    exit 1\n}\n";
 		};
-		654269ECFA0A4BA5DD24AB2B /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-Inji/expo-configure-project.sh\"\n";
-		};
-		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
+		467F10C0B5070779AA08A7BB /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -641,7 +767,48 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Inji/Pods-Inji-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D11A8C363B4A5B625DB10379 /* [CP] Embed Pods Frameworks */ = {
+		654269ECFA0A4BA5DD24AB2B /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-Inji/expo-configure-project.sh\"\n";
+		};
+		AC0BC808C43C177C38AFC3BD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Inji-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D864AD95A969870E3F1029D7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -700,11 +867,26 @@
 				9C4850532C3E59E2002ECBD5 /* RNEventEmitterProtocol.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				9C4850502C3E59B5002ECBD5 /* RNEventMapper.swift in Sources */,
-				1EED69FB2DA914130042EAFC /* RNDeepLinkIntentModule.swift in Sources */,
 				9C7CDF432C7CC13500243A9A /* RNSecureKeystoreModule.m in Sources */,
+				E6D946DA2EFAA2FE004DA688 /* CredentialsVerifierConstant.swift in Sources */,
+				E6D946DB2EFAA2FE004DA688 /* NetworkManagerClient.swift in Sources */,
+				E6D946DC2EFAA2FE004DA688 /* Data.swift in Sources */,
+				E6D946DD2EFAA2FE004DA688 /* OVPUtils.swift in Sources */,
+				E6D946DE2EFAA2FE004DA688 /* VerifiableCredential.swift in Sources */,
+				E6D946DF2EFAA2FE004DA688 /* VciBridge.swift in Sources */,
+				E6D946E02EFAA2FE004DA688 /* CredentialsVerifier.swift in Sources */,
+				E6D946E12EFAA2FE004DA688 /* LdpStatusChecker.swift in Sources */,
+				E6D946E22EFAA2FE004DA688 /* NetworkManagerClientExceptions.swift in Sources */,
+				E6D946E32EFAA2FE004DA688 /* base64.swift in Sources */,
+				E6D946E42EFAA2FE004DA688 /* LdpVerifiableCredential.swift in Sources */,
+				E6D946E52EFAA2FE004DA688 /* CredentialFormat.swift in Sources */,
+				E6D946E62EFAA2FE004DA688 /* RevocationCheckExceptions.swift in Sources */,
+				E6D946E72EFAA2FE004DA688 /* CredentialsVerifierFactory.swift in Sources */,
 				E86208172C0335EC007C3E24 /* RNVCIClientModule.m in Sources */,
 				9C48504E2C3E59B5002ECBD5 /* RNEventEmitter.swift in Sources */,
 				9C48504B2C3E59B5002ECBD5 /* RNWalletModule.swift in Sources */,
+				E6D946ED2EFAA332004DA688 /* OVPUtils.swift in Sources */,
+				E6D946EE2EFAA332004DA688 /* VciBridge.swift in Sources */,
 				1EED69F92DA913D30042EAFC /* IntentData.swift in Sources */,
 				9C48504D2C3E59B5002ECBD5 /* RNWalletModule.m in Sources */,
 				9C3BD83C2EA8D63A00101656 /* CredentialsVerifierFactory.swift in Sources */,
@@ -732,7 +914,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C2E3173556A471DD304B334 /* Pods-Inji.debug.xcconfig */;
+			baseConfigurationReference = 19C0471A2692C2E972DFDED9 /* Pods-Inji.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -774,7 +956,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A4D352CD337FB3A3BF06240 /* Pods-Inji.release.xcconfig */;
+			baseConfigurationReference = 457171B817B28D9B58D26B1A /* Pods-Inji.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1001,16 +1183,16 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/inji-openid4vp-ios-swift.git";
 			requirement = {
-				kind = exactVersion;
-				version = 0.6.0;
+				branch = develop;
+				kind = branch;
 			};
 		};
 		C3F18B1B2E320C9A007DBE73 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/inji-vci-client-ios-swift";
 			requirement = {
-				kind = exactVersion;
-				version = 0.6.0;
+				branch = develop;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

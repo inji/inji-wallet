@@ -2,6 +2,7 @@ import {isSignedInResult} from '../../shared/CloudBackupAndRestoreUtils';
 import {ErrorMessage, OIDCErrors} from '../../shared/openId4VCI/Utils';
 import {BiometricCancellationError} from '../../shared/error/BiometricCancellationError';
 import {VerificationErrorType} from '../../shared/vcjs/verifyCredential';
+import {AuthorizationType} from '../../shared/constants';
 
 export const IssuersGuards = () => {
   return {
@@ -30,6 +31,11 @@ export const IssuersGuards = () => {
     },
     isIssuerIdInTrustedIssuers: (_: any, event: any) => {
       return event.data;
+    },
+    isPresentationAuthorization: (context: any) => {
+      return (
+        context.authorizationType === AuthorizationType.OPENID4VP_PRESENTATION
+      );
     },
   };
 };

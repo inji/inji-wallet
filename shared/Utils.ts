@@ -23,6 +23,7 @@ export enum VCShareFlowType {
   MINI_VIEW_SHARE_WITH_SELFIE = 'mini view share with selfie',
   MINI_VIEW_QR_LOGIN = 'mini view qr login',
   OPENID4VP = 'OpenID4VP',
+  OPENID4VP_AUTHORIZATION = 'OpenID4VP authorization',
   MINI_VIEW_SHARE_OPENID4VP = 'OpenID4VP share from mini view',
   MINI_VIEW_SHARE_WITH_SELFIE_OPENID4VP = 'OpenID4VP share with selfie from mini view',
 }
