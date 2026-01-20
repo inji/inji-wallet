@@ -129,12 +129,14 @@ export const OtpVerificationModal: React.FC<
             autosubmit={true}
           />
           <Column crossAlign="center">
-            <Text
-              testID="otpVerificationTimer"
-              color={Theme.Colors.resendCodeTimer}
-              weight="regular">
-              {timer > 0 ? `${t('resendTheCode')} : ${formatTime(timer)}` : ''}
-            </Text>
+            {timer > 0 && (
+              <Text
+                testID="otpVerificationTimer"
+                color={Theme.Colors.resendCodeTimer}
+                weight="regular">
+                {`${t('resendTheCode')} : ${formatTime(timer)}`}
+              </Text>
+            )}
 
             <TouchableOpacity
               testID="resendCodeView"
