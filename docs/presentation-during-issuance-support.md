@@ -10,7 +10,7 @@ Example use cases:
 
 This document focuses on the technical design to support presentations during the issuance process, particularly in scenarios where the issuer requires a presentation to be made before issuing a credential.
 
-## Specication References
+## Specification References
 
 - [OpenID for Verifiable Credential Issuance 1.1 - Editor's draft](https://openid.github.io/OpenID4VCI/openid-4-verifiable-credential-issuance-1_1-wg-draft.html)
 - [OpenID for Verifiable Presentations 1.0](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)
@@ -313,7 +313,7 @@ POST Content-Type: application/x-www-form-urlencoded /iar
         ]
       },
       "nonce": "...nonce",
-      "state" : "...state"
+      "state" : "...state",
       "id": "vp token example",
     }
   }
@@ -367,7 +367,7 @@ Content-Type - application/x-www-form-urlencoded
 - If the Authorization Server supports non-interactive authorization, the _inji-vci-client_ builds the authorization request URL with the required parameters (as shown below):
 ```shell
 /authorize?
-  response_type=vp_token
+  response_type=code
   &client_id=redirect_uri%3Ahttps%3A%2F%2Fclient.example.org%2Fcb
   &redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb
   &presentation_definition=...
@@ -413,7 +413,7 @@ Content-Type - application/x-www-form-urlencoded
 - The Wallet processes the token request and returns the token response to the _inji-vci-client_.
 ```shell
 {
-    "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6Ikp..sHQ",
+    "access_token": <access_token>,
     "token_type": "bearer",
     "expires_in": 86400,
     "c_nonce": "tZignsnFbp",
