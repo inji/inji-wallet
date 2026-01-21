@@ -357,7 +357,7 @@ Content-Type - application/x-www-form-urlencoded
   ```shell
   {
     "status": "ok",
-    "authorization_code": "..."
+    "code": "..."
   }
   ```
 
