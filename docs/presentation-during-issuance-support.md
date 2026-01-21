@@ -104,12 +104,12 @@ sequenceDiagram
 ### Flows involved
 
 1. Download initiation by User
-1. Download credential from Trusted Issuer
-1. Download credential using Credential Offer
-1. Authorization to download credential
-1. Authorization Code Flow supporting two modes:
-1. Interactive Authorization Flow (using `interactive_authorization_endpoint`) - Presentation during Issuance
-1. Authorization Flow via Authorization Endpoint (using `authorization_endpoint`)
+   1. Download credential from Trusted Issuer
+   2. Download credential using Credential Offer
+2. Authorization to download credential
+   1. Authorization Code Flow supporting two modes:
+      1. Interactive Authorization Flow (using `interactive_authorization_endpoint`) - Presentation during Issuance
+      2. Authorization Flow via Authorization Endpoint (using `authorization_endpoint`)
 
 ### Sequence diagram of Credential download flow via Inji VCI client library
 
