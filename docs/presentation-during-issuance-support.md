@@ -94,6 +94,7 @@ sequenceDiagram
 ## Credential Download Via Inji VCI Client Library
 
 ### Actors involved
+
 1. **User**: The individual requesting the credential.
 2. **Wallet - Inji Wallet**: The digital wallet application used by the user to manage credentials.
 3. **VCI Client library**: The _inji-vci-client_ library that facilitates the credential download process.
@@ -103,12 +104,12 @@ sequenceDiagram
 ### Flows involved
 
 1. Download initiation by User
-  1. Download credential from Trusted Issuer
-  2. Download credential using Credential Offer
-2. Authorization to download credential
-  1. Authorization Code Flow supporting two modes:
-    1. Interactive Authorization Flow (using `interactive_authorization_endpoint`) - Presentation during Issuance
-    2. Authorization Flow via Authorization Endpoint (using `authorization_endpoint`)
+1. Download credential from Trusted Issuer
+1. Download credential using Credential Offer
+1. Authorization to download credential
+1. Authorization Code Flow supporting two modes:
+1. Interactive Authorization Flow (using `interactive_authorization_endpoint`) - Presentation during Issuance
+1. Authorization Flow via Authorization Endpoint (using `authorization_endpoint`)
 
 ### Sequence diagram of Credential download flow via Inji VCI client library
 
@@ -202,10 +203,9 @@ sequenceDiagram
 
 #### 1. Initiate Credential Download Request
 
-   - The user initiates a credential download request in the Wallet application.
-   - For the Trusted Issuer flow, the User opens the wallet and selects a credential to download from the list of trusted issuers.
-   - For the Credential Offer flow, the User opens the wallet and scans the QR code to download using a received credential offer.
-
+- The user initiates a credential download request in the Wallet application.
+- For the Trusted Issuer flow, the User opens the wallet and selects a credential to download from the list of trusted issuers.
+- For the Credential Offer flow, the User opens the wallet and scans the QR code to download using a received credential offer.
 
 #### 2. Fetch Credential from Trusted Issuer or Using Credential Offer
 
@@ -239,9 +239,9 @@ Based on the chosen flow, the Wallet invokes either `fetchCredentialFromTrustedI
 ```
 
 Note:
+
 - VCIClient exposes the AuthorizationMethod class.When consumers use this class, all OVP-related processing is handled internally by using `inji-openid4vp` library.
 - The wallet only needs to supply the required wallet communications via callbacks for credential selection, signing data during VP creation and signature suite used for signing.
-
 
 #### 3. Metadata Discovery
 
@@ -256,6 +256,7 @@ Note:
 Note: The Current implementation supports only Interactive Authorization flow for Presentation during Issuance
 
 - As a first step, the _inji-vci-client_ makes an initial request to the interactive authorization endpoint, including the details as below
+
 ```shell
 POST Content-Type: application/x-www-form-urlencoded /iar
 {
@@ -273,7 +274,9 @@ POST Content-Type: application/x-www-form-urlencoded /iar
   ]
 }
 ```
+
 - The Issuer responds with a 200 OK response, indicating that interactive authorization is required, along with the OVP request in the response body. The OVP request has the response mode as either `iar_post` or `iar_post.jwt` .The OVP request has the following structure:
+
 ```shell
 {
   "status": "require_interaction",
@@ -319,20 +322,21 @@ POST Content-Type: application/x-www-form-urlencoded /iar
   }
 }
 ```
-  - The _inji-vci-client_ validates the Interactive Authorization Response and the OVP request using the `inji-openid4vp` library.
-  - The _inji-vci-client_ then prepares to handle the presentation request
-    - Firstly, _inji_vci_client_ invokes the Wallet's callback to select credentials for presentation.
-    - The Wallet processes the OVP request, filters the user's downloaded credentials based on the presentation request criteria, and displays the filtered credentials for the user to select.
-    - The user selects the credential(s) to present.
-    - The Wallet then returns the selected credentials to the _inji-vci-client_.
-    - Next, the _inji-vci-client_ prepares the data for signing using the `inji-openid4vp` library, passing the selected credentials.
-    - The _inji-openid4vp_ library returns the unsigned data to the _inji-vci-client_.
-    - The _inji-vci-client_ invokes the Wallet's callback to sign the data for VP creation.
-    - The Wallet signs the data and returns the signed data to the _inji-vci-client_.
-    - The _inji-vci-client_ then creates the VP response using the `inji-openid4vp` library.
-    - The `inji-openid4vp` library returns the VP response as a Map<String, Any> to the _inji-vci-client_.
-  - The _inji-vci-client_ prepares the response to be sent to the Issuer's /iar endpoint, including the VP response and auth_session.
-  - Finally, the _inji-vci-client_ shares the VP response to the Issuer's /iar endpoint.
+
+- The _inji-vci-client_ validates the Interactive Authorization Response and the OVP request using the `inji-openid4vp` library.
+- The _inji-vci-client_ then prepares to handle the presentation request
+  - Firstly, _inji_vci_client_ invokes the Wallet's callback to select credentials for presentation.
+  - The Wallet processes the OVP request, filters the user's downloaded credentials based on the presentation request criteria, and displays the filtered credentials for the user to select.
+  - The user selects the credential(s) to present.
+  - The Wallet then returns the selected credentials to the _inji-vci-client_.
+  - Next, the _inji-vci-client_ prepares the data for signing using the `inji-openid4vp` library, passing the selected credentials.
+  - The _inji-openid4vp_ library returns the unsigned data to the _inji-vci-client_.
+  - The _inji-vci-client_ invokes the Wallet's callback to sign the data for VP creation.
+  - The Wallet signs the data and returns the signed data to the _inji-vci-client_.
+  - The _inji-vci-client_ then creates the VP response using the `inji-openid4vp` library.
+  - The `inji-openid4vp` library returns the VP response as a Map<String, Any> to the _inji-vci-client_.
+- The _inji-vci-client_ prepares the response to be sent to the Issuer's /iar endpoint, including the VP response and auth_session.
+- Finally, the _inji-vci-client_ shares the VP response to the Issuer's /iar endpoint.
 
 ```shell
 POST /iar
@@ -345,26 +349,30 @@ Content-Type - application/x-www-form-urlencoded
    }
 }
 ```
-  - The Issuer validates the auth_session and VP response.
-    - If the VP is valid, the Issuer responds with a 200 OK response, including the authorization code in the response body. The _inji-vci-client_ extracts the authorization code from the response and proceeds to exchange it for an access token.
+
+- The Issuer validates the auth_session and VP response.
+
+  - If the VP is valid, the Issuer responds with a 200 OK response, including the authorization code in the response body. The _inji-vci-client_ extracts the authorization code from the response and proceeds to exchange it for an access token.
+
+  ```shell
+  {
+    "status": "ok",
+    "authorization_code": "..."
+  }
+  ```
+
+  - If the VP is invalid, the Issuer responds with a 4xx Bad Request error, indicating that the VP verification failed. The _inji-vci-client_ propagates the error to the Wallet, which then shows an error screen to the user regarding the credential download failure.
     ```shell
     {
-      "status": "ok",
-      "authorization_code": "..."
+      "error": "invalid_request",
+      "error_description": "VP verification failed"
     }
     ```
-
-    - If the VP is invalid, the Issuer responds with a 4xx Bad Request error, indicating that the VP verification failed. The _inji-vci-client_ propagates the error to the Wallet, which then shows an error screen to the user regarding the credential download failure.
-      ```shell
-      {
-        "error": "invalid_request",
-        "error_description": "VP verification failed"
-      }
-      ```
 
 ##### **Authorization Flow via Authorization Endpoint:**
 
 - If the Authorization Server supports non-interactive authorization, the _inji-vci-client_ builds the authorization request URL with the required parameters (as shown below):
+
 ```shell
 /authorize?
   response_type=code
@@ -374,30 +382,35 @@ Content-Type - application/x-www-form-urlencoded
   &transaction_data=...
   &nonce=n-0S6_WzA2Mj HTTP/1.1
 ```
+
 - It then invokes the Wallet's callback to open the web page.
 - The Wallet opens the authorization URL in a web browser.
 - The user authenticates and authorizes the request in the web browser.
 - If authentication and authorization are successful, the Issuer redirects to the redirect_uri with the authorization response, including the authorization code (as shown below):
+
 ```shell
 {
   "status": "ok",
-  "code: "..."
+  "code": "..."
 }
 ```
 
-  - The Wallet returns the authorization response to the _inji-vci-client_. The _inji-vci-client_ extracts the authorization code from the response and proceeds to exchange it for an access token.
+- The Wallet returns the authorization response to the _inji-vci-client_. The _inji-vci-client_ extracts the authorization code from the response and proceeds to exchange it for an access token.
 - If authentication and authorization fail, the Issuer responds with an error response (as shown below):
+
 ```shell
 {
   "error": "access_denied",
   "error_description": "The resource owner or authorization server denied the request."
 }
 ```
+
 - The _inji-vci-client_ propagates the error to the Wallet, which then shows an error screen to the user regarding the credential download failure.
 
 #### 5. Exchange Authorization Code for Access Token
 
 - The _inji-vci-client_ invokes the Wallet's `getTokenResponse` callback function with the token request parameters to exchange the authorization code for an access token.
+
 ```shell
 {
   "grant_type": "authorization_code",
@@ -410,7 +423,9 @@ Content-Type - application/x-www-form-urlencoded
   "code_verifier": "sample_code_verifier"
 }
 ```
+
 - The Wallet processes the token request and returns the token response to the _inji-vci-client_.
+
 ```shell
 {
     "access_token": <access_token>,
@@ -418,8 +433,8 @@ Content-Type - application/x-www-form-urlencoded
     "expires_in": 86400,
     "c_nonce": "tZignsnFbp",
     "c_nonce_expires_in": 86400
+}
 ```
-
 
 #### 6. Credential Request
 
@@ -428,12 +443,12 @@ Content-Type - application/x-www-form-urlencoded
 - The Wallet creates the proof JWT and returns it to the _inji-vci-client_.
 - The _inji-vci-client_ requests the credential from the Issuer, attaching the proof JWT.
 - The Issuer issues the credential and responds to the _inji-vci-client_.
+
 ```shell
 # Successful Credential Response
 {
   "credential": <issued_credential>,
 }
 ```
+
 - Finally, the _inji-vci-client_ notifies the Wallet of the successful credential download, and the Wallet shows a success message to the user.
-
-
