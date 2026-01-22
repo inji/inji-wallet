@@ -151,7 +151,7 @@ export class SvgImage {
       <WalletActivatedIcon
         width={width}
         height={height}
-        {...testIDProps('walletActivatedIcon')}
+       {...testIDProps('wallet-activated-icon')}
       />
     );
   }
