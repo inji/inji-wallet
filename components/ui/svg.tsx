@@ -66,8 +66,8 @@ import WalletActivatedIcon from '../../assets/Wallet_Activated_Icon.svg';
 import WalletUnActivatedIcon from '../../assets/Wallet_UnActivated_Icon.svg';
 import WalletActivatedLargeIcon from '../../assets/Wallet_Activated_Large_Icon.svg';
 import WalletUnActivatedLargeIcon from '../../assets/Wallet_UnActivated_Large_Icon.svg';
-import DoneIcon from "../../assets/done-icon.svg"
-import CircleArrowRight from "../../assets/arrow-circle-broken-right.svg"
+import DoneIcon from '../../assets/done-icon.svg';
+import CircleArrowRight from '../../assets/arrow-circle-broken-right.svg';
 
 export class SvgImage {
   static selectedCheckBox() {
@@ -151,7 +151,7 @@ export class SvgImage {
       <WalletActivatedIcon
         width={width}
         height={height}
-        {...testIDProps('walletActivatedIcon')}
+        {...testIDProps('wallet-activated-icon')}
       />
     );
   }
@@ -656,7 +656,12 @@ export class SvgImage {
     );
   }
 
-  static doneIcon(color = Theme.Colors.disabled, height = 16, width = 16, testID = 'doneIcon') {
+  static doneIcon(
+    color = Theme.Colors.disabled,
+    height = 16,
+    width = 16,
+    testID = 'doneIcon',
+  ) {
     return (
       <DoneIcon
         color={color}
@@ -664,10 +669,15 @@ export class SvgImage {
         height={height}
         width={width}
       />
-    )
+    );
   }
 
-  static circleArrowRight(color = Theme.Colors.disabled, height = 16, width = 16, testID = 'circleArrowRightIcon') {
+  static circleArrowRight(
+    color = Theme.Colors.disabled,
+    height = 16,
+    width = 16,
+    testID = 'circleArrowRightIcon',
+  ) {
     return (
       <CircleArrowRight
         width={width}
@@ -675,7 +685,7 @@ export class SvgImage {
         color={color}
         {...testIDProps(testID)}
       />
-    )
+    );
   }
 }
 
