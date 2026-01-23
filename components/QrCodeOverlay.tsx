@@ -32,12 +32,11 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
         throw new Error('No key data found');
       }
     } catch {
-      const { isIdentityQrPresent, identityQrData } = getIdentityQr()
-      if (isIdentityQrPresent) {
-        qrData = identityQrData
-      }
-      else {
-        const { credential } = props.verifiableCredential;
+      const {isClaim169QrPresent, claim169QrData} = getClaim169Qr();
+      if (isClaim169QrPresent) {
+        qrData = claim169QrData;
+      } else {
+        const {credential} = props.verifiableCredential;
         qrData = await RNPixelpassModule.generateQRData(
           JSON.stringify(credential),
           '',
@@ -47,26 +46,24 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
     }
     return qrData;
   }
-  function getIdentityQr(): {
-    isIdentityQrPresent: boolean;
-    identityQrData: string;
+
+  function getClaim169Qr(): {
+    isClaim169QrPresent: boolean;
+    claim169QrData: string;
   } {
-    const credential = props.verifiableCredential?.credential;
-    const subject = credential?.credentialSubject;
-
-    if (!subject || typeof subject !== 'object') {
-      return { isIdentityQrPresent: false, identityQrData: "" };
-    }
-
-    const qr = (subject as any).identityQRCode;
+    const credentialSubject =
+      props.verifiableCredential?.credential?.credentialSubject;
+    const claim169Qrs = (credentialSubject as any)?.claim169;
+    const qr =
+      claim169Qrs && typeof claim169Qrs === 'object'
+        ? claim169Qrs[Object.keys(claim169Qrs)[0]]
+        : undefined;
 
     if (typeof qr === 'string' && qr.trim().length > 0) {
-      return { isIdentityQrPresent: true, identityQrData: qr };
+      return {isClaim169QrPresent: true, claim169QrData: qr};
     }
-
-    return { isIdentityQrPresent: false, identityQrData: "" };
+    return {isClaim169QrPresent: false, claim169QrData: ''};
   }
-
 
   let qrRef = useRef(null);
 
@@ -140,7 +137,7 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
         <Overlay
           isVisible={overlayVisible}
           onBackdropPress={toggleQrOverlay}
-          overlayStyle={{ padding: 1, borderRadius: 21 }}>
+          overlayStyle={{padding: 1, borderRadius: 21}}>
           <Column style={Theme.QrCodeStyles.expandedQrCode}>
             <Row pY={20} style={Theme.QrCodeStyles.QrCodeHeader}>
               <Text
