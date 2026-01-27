@@ -29,6 +29,7 @@ object VCIClientBridge {
             clientMetaData: ClientMetadata,
             signatureSuite: String?
     ): CredentialResponse = runBlocking {
+      //TODO: change method name to fetchCredentialUsingCredentialOffer
         client.fetchCredentialByCredentialOffer(
                 credentialOffer = offer,
                 clientMetadata = clientMetaData,
