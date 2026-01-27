@@ -186,12 +186,12 @@ export const openID4VPMachine = model.createMachine(
           },
           CANCEL: {
             actions: 'dismissTrustModal',
-            target: 'delayBeforeDismissToParent',
+            target: 'sendDismissToParent',
           },
         },
       },
 
-      delayBeforeDismissToParent: {
+      sendDismissToParent: {
         always: [
           {
             cond: 'isAuthorizationFlow',
@@ -199,13 +199,15 @@ export const openID4VPMachine = model.createMachine(
             target: 'waitingForData',
           },
           {
-            target: 'sendDismissToParent',
+            target: 'delayBeforeDismissToParent',
           },
         ],
       },
-      sendDismissToParent: {
-        entry: sendParent('DISMISS'),
-        always: 'waitingForData',
+
+      delayBeforeDismissToParent: {
+        after: {
+          200: 'sendDismissToParent',
+        },
       },
 
       storeTrustedVerifier: {
