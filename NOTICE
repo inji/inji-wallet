@@ -1,212 +1,97 @@
 NOTICE
 
-This product includes third-party open source software components.
-The following notices are provided to satisfy license attribution requirements.
+MOSIP
+Copyright (c) 2022–2025
+Modular Open Source Identity Platform
 
-================================================================================
-Jackson
-================================================================================
-Components:
-com.fasterxml.jackson.annotation
-com.fasterxml.jackson.core
-com.fasterxml.jackson.databind
+This product includes software developed by various open-source communities.
 
-License: Apache License, Version 2.0
-Copyright:
-Copyright © FasterXML, LLC
+Third-party attributions:
 
-License Text:
-http://www.apache.org/licenses/LICENSE-2.0
+This product bundles open-source components distributed under their respective
+licenses. Attribution and license details for each component are listed below.
 
-================================================================================
-Spring Framework Components
-================================================================================
-Components:
-org.springframework.asm
-org.springframework.beans
-org.springframework.cglib
-org.springframework.core
-org.springframework.http
-org.springframework.lang
-org.springframework.util
-org.springframework.web
-org.springframework.objenesis
 
-License: Apache License, Version 2.0
-Copyright:
-Copyright © VMware, Inc. and contributors
+-------------------------------------------------------------------------------
+Apache License 2.0 Components
+-------------------------------------------------------------------------------
 
-License Text:
-http://www.apache.org/licenses/LICENSE-2.0
+• Jackson (JSON Processor)
+  https://github.com/FasterXML/jackson
 
-================================================================================
-JSON / CBOR Utilities
-================================================================================
-Components:
-jakarta.json
-org.glassfish.json
-org.json
-com.upokecenter.cbor
-com.upokecenter.numbers
-com.upokecenter.util
-io.setl.rdf.normalization
+• Spring Framework
+  https://spring.io/projects/spring-framework
 
-License: Apache License, Version 2.0
-Copyright:
-Various contributors
+• Jakarta JSON Processing
+  https://projects.eclipse.org/projects/ee4j.jsonp
 
-License Text:
-http://www.apache.org/licenses/LICENSE-2.0
+• Nimbus JOSE + JWT
+  https://connect2id.com/products/nimbus-jose-jwt
 
-================================================================================
-Nimbus JOSE + JWT
-================================================================================
-Components:
-com.nimbusds.jose
-com.nimbusds.jwt
+• BitcoinJ
+  https://bitcoinj.github.io
 
-License: Apache License, Version 2.0
-Copyright:
-Copyright © Connect2ID Ltd.
+• Web3j
+  https://web3j.io
 
-License Text:
-http://www.apache.org/licenses/LICENSE-2.0
+• TensorFlow Lite
+  https://www.tensorflow.org/lite
 
-================================================================================
-BitcoinJ
-================================================================================
-Components:
-org.bitcoinj.*
+• MOSIP Open Source Components
+  https://github.com/mosip
 
-License: Apache License, Version 2.0
-Copyright:
-Copyright © BitcoinJ contributors
 
-License Text:
-http://www.apache.org/licenses/LICENSE-2.0
+-------------------------------------------------------------------------------
+MIT License Components
+-------------------------------------------------------------------------------
 
-================================================================================
-Web3j
-================================================================================
-Components:
-org.web3j.*
+• React Native
+  https://reactnative.dev
 
-License: Apache License, Version 2.0
-Copyright:
-Copyright © Web3 Labs Ltd.
+• Expo
+  https://expo.dev
 
-License Text:
-http://www.apache.org/licenses/LICENSE-2.0
+• Kotlin & Ktor Libraries
+  https://kotlinlang.org
 
-================================================================================
-React Native, Expo and Related Libraries
-================================================================================
-Components:
-com.facebook.react
-com.reactnativecommunity.*
-com.horcrux.*
-com.swmansion.*
-com.th3rdwave.safeareacontext
-expo.core
-expo.modules
+• Glide (Android Image Loading)
+  https://github.com/bumptech/glide
 
-License: MIT License
-Copyright:
-Copyright © Meta Platforms, Inc. and contributors
+• Android SpinKit
+  https://github.com/ybq/Android-SpinKit
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software.
+• Vector Icons
+  https://github.com/oblador/react-native-vector-icons
 
-================================================================================
-Kotlin, Ktor and Utility Libraries
-================================================================================
-Components:
-io.ktor.*
-io.github.aakira.napier
-com.soywiz.*
-okio
-org.jetbrains.annotations
-org.intellij.*
+• Timber Logging
+  https://github.com/JakeWharton/timber
 
-License: MIT License
-Copyright:
-Copyright © JetBrains s.r.o. and contributors
+• Zip4j
+  https://github.com/srikanth-lingala/zip4j
 
-================================================================================
-Android UI Utilities
-================================================================================
-Components:
-com.bumptech.glide
-com.github.ybq.android.spinkit
-com.oblador.vectoricons
-timber.log
 
-License: MIT License
-Copyright:
-Various contributors
+-------------------------------------------------------------------------------
+BSD License Components
+-------------------------------------------------------------------------------
 
-================================================================================
-ZIP / Archive Utilities
-================================================================================
-Components:
-net.lingala.zip4j
-org.zeroturnaround.zip
+• EdDSA Cryptography Utilities
+  https://github.com/str4d/ed25519-java
 
-License: MIT License
-Copyright:
-Various contributors
+• ThreeTen Backport
+  https://www.threeten.org/threetenbp/
 
-================================================================================
-EdDSA / Time Utilities
-================================================================================
-Components:
-net.i2p.crypto.eddsa
-org.threeten.bp
 
-License: BSD 3-Clause License
-Copyright:
-Various contributors
+-------------------------------------------------------------------------------
+BSD-style License Components
+-------------------------------------------------------------------------------
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-1. Redistributions of source code must retain the above copyright notice.
-2. Redistributions in binary form must reproduce the above copyright notice.
+• JAI ImageIO
+  https://github.com/jai-imageio/jai-imageio-core
 
-================================================================================
-JAI ImageIO
-================================================================================
-Components:
-com.github.jaiimageio.*
 
-License: BSD-style License
-Copyright:
-Copyright © JAI ImageIO Project
+-------------------------------------------------------------------------------
 
-================================================================================
-TensorFlow Lite
-================================================================================
-Components:
-org.tensorflow.lite
-
-License: Apache License, Version 2.0
-Copyright:
-Copyright © Google LLC
-
-License Text:
-http://www.apache.org/licenses/LICENSE-2.0
-
-================================================================================
-MOSIP Components
-================================================================================
-Components:
-io.mosip.*
-
-License: Apache License, Version 2.0
-Copyright:
-Copyright © MOSIP Contributors
-
-License Text:
-http://www.apache.org/licenses/LICENSE-2.0
+Full license texts for all components listed above are available in the
+`license/` directory of this distribution or from the respective project
+repositories. For complete legal terms and conditions, please refer to the
+original component sources.
