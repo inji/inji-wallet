@@ -4,7 +4,7 @@ import {openID4VPServices} from './openID4VPServices';
 import {openID4VPActions} from './openID4VPActions';
 import {AppServices} from '../../shared/GlobalContext';
 import {openID4VPGuards} from './openID4VPGuards';
-import {send, sendParent} from 'xstate/lib/actions';
+import {send, sendParent, choose} from 'xstate/lib/actions';
 import {IssuersModel} from '../Issuers/IssuersModel';
 import {VCShareFlowType} from '../../shared/Utils';
 import {OVP_ERROR_MESSAGES} from '../../shared/constants';
@@ -186,28 +186,30 @@ export const openID4VPMachine = model.createMachine(
           },
           CANCEL: {
             actions: 'dismissTrustModal',
-            target: 'sendDismissToParent',
+            target: 'consentRejected',
           },
         },
       },
 
-      sendDismissToParent: {
-        always: [
-          {
-            cond: 'isAuthorizationFlow',
-            actions: [sendParent('VP_CONSENT_REJECT')],
-            target: 'waitingForData',
-          },
-          {
-            target: 'delayBeforeDismissToParent',
-          },
-        ],
-      },
-
-      delayBeforeDismissToParent: {
+      consentRejected: {
         after: {
-          200: 'sendDismissToParent',
+          200: 'sendRejectionToParent',
         },
+      },
+
+      sendRejectionToParent: {
+        entry: [
+          choose([
+            {
+              cond: 'isAuthorizationFlow',
+              actions: sendParent('VP_CONSENT_REJECT'),
+            },
+            {
+              actions: sendParent('DISMISS'),
+            },
+          ]),
+        ],
+        always: 'waitingForData',
       },
 
       storeTrustedVerifier: {
