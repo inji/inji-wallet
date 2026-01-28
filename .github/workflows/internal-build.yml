@@ -98,7 +98,7 @@ jobs:
       RELEASE: ${{ inputs.release }}
       NODE_VERSION: '18.x'
       JAVA_VERSION: '17'
-      RELEASE_KEYSTORE_ALIAS: androidreleasekey
+      RELEASE_KEYSTORE_ALIAS: upload
       MIMOTO_HOST: ${{ inputs.mimotoBackendServiceUrl }}
       ESIGNET_HOST: ${{ inputs.esignetBackendServiceUrl }}
       APPLICATION_THEME: ${{ inputs.theme }}
@@ -126,7 +126,7 @@ jobs:
       RELEASE: ${{ inputs.release }}
       NODE_VERSION: '18.x'
       JAVA_VERSION: '17'
-      RELEASE_KEYSTORE_ALIAS: androidreleasekey
+      RELEASE_KEYSTORE_ALIAS: upload
       MIMOTO_HOST: ${{ inputs.mimotoBackendServiceUrl }}
       ESIGNET_HOST: ${{ inputs.esignetBackendServiceUrl }}
       APPLICATION_THEME: ${{ inputs.theme }}
