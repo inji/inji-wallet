@@ -145,18 +145,29 @@ Homepage:
 
 --------------------------------------------------------------------------------
 
-Package: Javax / Jakarta APIs
+Package: Javax APIs (Apache License 2.0)
 Coordinates:
-  - javax.annotation
   - javax.inject
   - javax.enterprise.*
+  - javax.portlet
+License: Apache License 2.0
+Homepage:
+  https://jakarta.ee
+
+--------------------------------------------------------------------------------
+
+Package: Javax APIs (Dual Licensed)
+Coordinates:
+  - javax.annotation
   - javax.servlet
   - javax.el
   - javax.interceptor
-  - javax.portlet
-License: GPL v2 with Classpath Exception
+License:
+  Dual-licensed under:
+    - Common Development and Distribution License (CDDL) 1.0 / 1.1
+    - GNU General Public License v2 with Classpath Exception
 Copyright:
-  © Oracle
+  © Oracle and Contributors
 Homepage:
   https://jakarta.ee
 
@@ -179,7 +190,7 @@ Coordinates:
   - com.lambdapioneer.argon2kt
   - com.poowf.argon2
 License:
-  Apache License 2.0 
+  Apache License 2.0
 Homepage:
   https://github.com/jedisct1/libsodium
 
