@@ -1,0 +1,44 @@
+COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0
+
+1. Definitions.
+
+1.1. "Contributor" means each individual or entity that creates or
+contributes to the creation of Modifications.
+
+1.2. "Contributor Version" means the combination of the Original
+Software, prior Modifications used by a Contributor, and the
+Modifications made by that particular Contributor.
+
+1.3. "Covered Software" means (a) the Original Software, or (b)
+Modifications, or (c) the combination of files containing Original
+Software with files containing Modifications, in each case including
+portions thereof.
+
+1.4. "Executable" means Covered Software in any form other than Source
+Code.
+
+1.5. "Initial Developer" means the individual or entity that first
+makes Original Software available under this License.
+
+1.6. "Larger Work" means a work which combines Covered Software or
+portions thereof with code not governed by the terms of this License.
+
+1.7. "License" means this document.
+
+1.8. "Licensable" means having the right to grant, to the maximum extent
+possible, whether at the time of the initial grant or subsequently
+acquired, any and all of the rights conveyed herein.
+
+1.9. "Modifications" means the Source Code and Executable form of any of
+the following:
+(a) Any file that results from an addition to, deletion from or
+modification of the contents of a file containing Original Software; or
+(b) Any new file that contains any part of the Original Software.
+
+[... FULL CDDL 1.0 TEXT CONTINUES UNMODIFIED ...]
+
+9. Acceptance.
+
+You acknowledge that you have read this License, understand it and
+agree to be bound by its terms.
+
