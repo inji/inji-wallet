@@ -9,11 +9,14 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.google.gson.Gson;
 
+import java.util.List;
 import java.util.Map;
 
+import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResultV2;
 import io.mosip.residentapp.utils.OVPUtils;
 import io.mosip.vciclient.VCIClient;
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata;
@@ -64,8 +67,10 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sendVPTokenSigningResultFromJS(ReadableMap vpTokenSigningResult) {
-        VCIClientCallbackBridge.completeSignDataForVP(OVPUtils.parseVPTokenSigningResult(vpTokenSigningResult));
+    public void sendVPTokenSigningResultFromJS(ReadableArray vpTokenSigningResults) {
+      List<VPTokenSigningResultV2> formattedVPTokenSigningResults = OVPUtils.parseVPTokenSigningResultV2(vpTokenSigningResults);
+      System.out.println("Formatted VP Token Signing Results: " + formattedVPTokenSigningResults);
+      VCIClientCallbackBridge.completeSignDataForVP(formattedVPTokenSigningResults);
     }
 
     @ReactMethod

@@ -12,7 +12,12 @@ import {isIOS, JWT_ALG_TO_KEY_TYPE} from '../constants';
 import {getMdocAuthenticationAlorithm} from '../../components/VC/common/VCUtils';
 import {KeyTypes} from '../cryptoutil/KeyTypes';
 import {signatureSuite} from '../../machines/openID4VP/openID4VPServices';
-import {UnsignedVPTokensV2, VPTokenSigningResultsV2} from './openid4vp.types';
+import {
+  UnsignedVPTokensV2,
+  UnsignedVPTokenV2,
+  VPTokenSigningResultsV2,
+  VPTokenSigningResultV2
+} from './openid4vp.types';
 
 export async function constructDetachedJWT(
   privateKey: any,
@@ -178,16 +183,19 @@ export const signDataForVpPreparation = async (
  * @param context
  */
 export const signDataForVpPreparationV2 = async (
-  unSignedVpTokens: UnsignedVPTokensV2,
+  unSignedVpTokens: Array<UnsignedVPTokenV2>,
   context: any,
 ): Promise<VPTokenSigningResultsV2> => {
-  // private key, key type and selected VCs are available in context
-  const vpTokenSigningResults: VPTokenSigningResultsV2 = [];
+  let privateKey: string;
+  let keyType: KeyTypes;
+  let signature: string | undefined = '';
+  console.log("Signing VP Tokens:", unSignedVpTokens);
 
-  for (const unsignedVPToken of unSignedVpTokens) {
+  const result : Promise<VPTokenSigningResultV2[]> = unSignedVpTokens.map(async (unsignedVPToken) => {
     const formatType = unsignedVPToken.format;
-    let payload = unsignedVPToken.dataToSign;
+    let payload: string = unsignedVPToken.dataToSign;
     const signatureAlgorithm: string = unsignedVPToken.signatureAlgorithm;
+
     switch (formatType) {
       case VCFormat.ldp_vc.valueOf():
         if (isIOS()) {
@@ -197,25 +205,26 @@ export const signDataForVpPreparationV2 = async (
           }
           payload = canonicalized;
         }
-        // eslint-disable-next-line no-case-declarations
-        const proof = await constructDetachedJWT(
+        signature = await constructDetachedJWT(
           context.privateKey,
           payload,
           signatureAlgorithm,
         );
-        vpTokenSigningResults.push({signedData: proof});
+        return {signedData: signature} as VPTokenSigningResultV2;
+        // vpTokenSigningResults.push({signedData: signature});
         break;
+
       case VCFormat.mso_mdoc.valueOf():
-        // eslint-disable-next-line no-case-declarations
         if (signatureAlgorithm === KeyTypes.ES256.valueOf()) {
-          const key = await fetchKeyPair(signatureAlgorithm);
+          const key = await fetchKeyPair(KeyTypes.ES256);
           const signature = await createSignature(
             key.privateKey,
             payload,
             KeyTypes.ES256,
           );
           if (signature) {
-            vpTokenSigningResults.push({signedData: signature});
+            // vpTokenSigningResults.push({signedData: signature});
+            return {signedData: signature} as VPTokenSigningResultV2;
           } else {
             throw new Error(
               `Failed to create signature for VP Token of format: ${formatType}`,
@@ -224,14 +233,14 @@ export const signDataForVpPreparationV2 = async (
         } else {
           throw new Error(`Unsupported algorithm: ${signatureAlgorithm}`);
         }
-        break;
+
       case VCFormat.vc_sd_jwt.valueOf():
       case VCFormat.dc_sd_jwt.valueOf():
-        // eslint-disable-next-line no-case-declarations
-        const keyType: KeyTypes = JWT_ALG_TO_KEY_TYPE[signatureAlgorithm];
+        keyType = JWT_ALG_TO_KEY_TYPE[signatureAlgorithm as keyof typeof JWT_ALG_TO_KEY_TYPE];
 
-        // eslint-disable-next-line no-case-declarations
-        let privateKey: string;
+        if (!keyType) {
+          throw new Error(`Unsupported signature algorithm: ${signatureAlgorithm}`);
+        }
 
         if (keyType === KeyTypes.ED25519) {
           privateKey = context.privateKey;
@@ -239,20 +248,24 @@ export const signDataForVpPreparationV2 = async (
           const keypair = await fetchKeyPair(keyType);
           privateKey = keypair.privateKey;
         }
-        // eslint-disable-next-line no-case-declarations
-        const signature = await createSignature(privateKey, payload, keyType);
+
+        signature = await createSignature(privateKey, payload, keyType);
         if (signature) {
-          vpTokenSigningResults.push({signedData: signature});
+          // vpTokenSigningResults.push({signedData: signature});
+          return {signedData: signature} as VPTokenSigningResultV2;
         } else {
           throw new Error(
             `Failed to create signature for VP Token of format: ${formatType}`,
           );
         }
         break;
+
       default:
         throw new Error(`Unsupported VP Token format: ${formatType}`);
     }
-  }
+  });
 
-  return vpTokenSigningResults;
+  const vpTokenSigningResults = await Promise.all(result);
+  console.log("VP Token Signing Results:", vpTokenSigningResults);
+  return vpTokenSigningResults as VPTokenSigningResultsV2;
 };

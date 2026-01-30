@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
+import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResultV2;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.ldp.LdpVPTokenSigningResult;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.DeviceAuthentication;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.MdocVPTokenSigningResult;
@@ -86,6 +87,26 @@ public class OVPUtils {
 
     return formattedMetadata;
   }
+
+  public static List<VPTokenSigningResultV2> parseVPTokenSigningResultV2(ReadableArray vpTokenSigningResults) {
+    if (vpTokenSigningResults == null) {
+      return Collections.emptyList();
+    }
+    List<VPTokenSigningResultV2> formattedVpTokenSigningResults = new ArrayList<>();
+    for (int i = 0; i < vpTokenSigningResults.size(); i++) {
+      ReadableMap vpTokenSigningResultMap = vpTokenSigningResults.getMap(i);
+      String signedData = vpTokenSigningResultMap.getString("signedData");
+      if (vpTokenSigningResultMap == null) {
+        continue;
+      }
+      assert signedData != null;
+      formattedVpTokenSigningResults.add(new VPTokenSigningResultV2(signedData));
+    }
+
+    return formattedVpTokenSigningResults;
+  }
+
+
 
   private static List<Object> convertReadableArrayToListOfCredential(FormatType formatType,
                                                                      ReadableArray credentialList) {
