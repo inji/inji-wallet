@@ -15,7 +15,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   private var pendingTokenResponseContinuation: ((String) -> Void)?
   private var pendingIssuerTrustDecision: ((Bool) -> Void)?
   private var pendingSelectedCredentialsContinuation: CheckedContinuation<AnyObject, Error>?
-  private var pendingSignVPContinuation: CheckedContinuation<[String: Any], Error>?
+  private var pendingSignVPContinuation: CheckedContinuation<[[String: Any]], Error>?
 
   static func moduleName() -> String {
     return "InjiVciClient"
@@ -43,7 +43,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
           try await self.getSignVerifiablePresentationContinuationHook(
             unsignedVPTokens: unsignedVPTokens)
         },
-        signatureSuite: signatureSuite
+        ldpVpSignatureSuite: signatureSuite
       ),
     ]
   }
@@ -257,8 +257,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   }
 
   private func getSignVerifiablePresentationContinuationHook(
-    unsignedVPTokens: [FormatType: UnsignedVPToken]
-  ) async throws -> [FormatType: VPTokenSigningResult] {
+    unsignedVPTokens: [UnsignedVPTokenV2]
+  ) async throws -> [VPTokenSigningResultV2] {
     let unsignedVPTokensJson = try OVPUtils.toJson(unsignedVPTokens)
     if let bridge = RCTBridge.current() {
       bridge.eventDispatcher().sendAppEvent(
@@ -270,11 +270,11 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     }
 
     let signedVPTokens = try await withCheckedThrowingContinuation {
-      (continuation: CheckedContinuation<[String: Any], Error>) in
+      (continuation: CheckedContinuation<[[String: Any]], Error>) in
       self.pendingSignVPContinuation = continuation
     }
 
-    return try OVPUtils.parseVPTokenSigningResult(signedVPTokens)
+    return try OVPUtils.parseVPTokenSigningResultV2(signedVPTokens)
   }
 
   private func getTokenResponseHook(tokenRequest: TokenRequest) async throws -> TokenResponse {
@@ -344,7 +344,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   }
 
   @objc(sendVPTokenSigningResultFromJS:)
-  func sendVPTokenSigningResultFromJS(_ vpTokenSigningResult: [String: Any]) {
+  func sendVPTokenSigningResultFromJS(_ vpTokenSigningResult: [[String: Any]]) {
+    print("vpTokenSigningResult - ",vpTokenSigningResult)
     pendingSignVPContinuation?.resume(returning: vpTokenSigningResult)
     pendingSignVPContinuation = nil
   }

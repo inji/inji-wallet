@@ -24,6 +24,19 @@ class OVPUtils: NSObject {
     }
   }
   
+  static func toJson(_ data: [UnsignedVPTokenV2]?) throws -> [[String: Any]] {
+    let encodableUnsignedVPToken : [[String: String]] = data?.map {
+      [
+        "dataToSign": $0.dataToSign,
+        "format": $0.format.rawValue,
+        "holderKeyReference": $0.holderKeyReference,
+        "signatureAlgorithm": $0.signatureAlgorithm
+      ]
+    } ?? []
+    
+    return encodableUnsignedVPToken
+  }
+  
   static func parseSelectedVCs(_ credentialsMap: [String: [String: [Any]]]) -> [String: [FormatType: [AnyCodable]]] {
     return credentialsMap.mapValues { selectedVcsFormatMap -> [FormatType: [AnyCodable]] in
       selectedVcsFormatMap.reduce(into: [:]) { result, entry in
@@ -91,6 +104,18 @@ class OVPUtils: NSObject {
     }
     
     return formattedVPTokenSigningResults
+  }
+  
+  static func parseVPTokenSigningResultV2(_ vpTokenSigningResults: [[String: Any]]) throws -> [VPTokenSigningResultV2] {
+    if(vpTokenSigningResults.isEmpty) {
+      return []
+    }
+    
+    let vpTokenSigningResultsData: [VPTokenSigningResultV2] = vpTokenSigningResults.map { vpTokenSigningResult in
+      VPTokenSigningResultV2(signedData: vpTokenSigningResult["signedData"] as? String ?? "")
+    }
+      
+    return vpTokenSigningResultsData
   }
   
   static func convertToOpenID4VPException(errorCode: String, error: String, moduleName: String) -> OpenID4VPException {

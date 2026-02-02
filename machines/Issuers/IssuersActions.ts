@@ -553,7 +553,12 @@ export const IssuersActions = (model: any) => {
     },
 
     sendSignedVP: (context, event) => {
-      VciClient.getInstance().sendSignedVP(event.signedVPToken.data);
+      const vpTokenSigningResult = event.signedVPToken.data;
+      console.log(
+        'Sending signed VP Token for issuance authorization:',
+        vpTokenSigningResult,
+      );
+      VciClient.getInstance().sendSignedVP(vpTokenSigningResult);
     },
 
     sendVPConsentReject: () => {
