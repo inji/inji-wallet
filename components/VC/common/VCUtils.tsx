@@ -63,12 +63,12 @@ function iterateMsoMdocFor(
   element: 'elementIdentifier' | 'elementValue',
   fieldName: string,
 ) {
-  const foundItem = credential['issuerSigned']['nameSpaces'][namespace].find(
+  const foundItem = credential['issuerSigned']['nameSpaces'][namespace]?.find(
     element => {
       return element.elementIdentifier === fieldName;
     },
   );
-  return foundItem[element];
+  return foundItem?.[element];
 }
 
 export const getFieldValue = (
