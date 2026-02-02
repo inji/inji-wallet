@@ -112,7 +112,7 @@ export const getFieldValue = (
             'elementValue',
             fieldName,
           );
-          if (Array.isArray(fieldValue) && typeof fieldValue === 'object') {
+          if (fieldValue && typeof fieldValue === 'object') {
             const elements = renderFieldRecursively(
               fieldName,
               fieldValue,
