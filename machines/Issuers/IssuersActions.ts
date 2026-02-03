@@ -250,7 +250,7 @@ export const IssuersActions = (model: any) => {
         credential_endpoint: event.data.credential_endpoint,
         credential_configurations_supported:
           event.data.credential_configurations_supported,
-        display: event.data.display,
+        display: context.selectedIssuer.display ?? event.data.display,
         authorization_servers: event.data.authorization_servers,
       }),
       selectedIssuerWellknownResponse: (_: any, event: any) => {
