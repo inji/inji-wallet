@@ -42,6 +42,7 @@ const settings: TabScreen = {
   component: SettingScreen,
   icon: 'settings',
   options: {
+    headerTitleAlign: 'left',
     headerTitleStyle: {
       fontSize: 26,
       fontFamily: 'Montserrat_600SemiBold',
