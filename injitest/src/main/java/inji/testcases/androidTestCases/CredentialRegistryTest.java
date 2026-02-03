@@ -78,7 +78,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         OtpVerificationPage otpVerification = new OtpVerificationPage(getDriver());
 
         otpVerification.clickOnGetOtpButton();
-        otpVerification.enterOtpFor(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpFor(uinGetOtp(), PlatformType.ANDROID);
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
         esignetLoginPage.clickOnVerifyButton();
         addNewCardPage.clickOnDoneButton();
