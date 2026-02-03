@@ -6,6 +6,7 @@ import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.AndroidBaseTest;
+import inji.utils.InjiWalletUtil;
 import inji.utils.ResourceBundleLoader;
 import inji.utils.TestDataReader;
 import inji.utils.UpdateNetworkSettings;
@@ -95,7 +96,7 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
         assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -115,7 +116,7 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         OtpVerificationPage otpVerificationPage = pleaseConfirmPopupPage.clickOnConfirmButton();
 
         assertTrue(otpVerificationPage.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerificationPage.enterOtp(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        otpVerificationPage.enterOtp(uinGetOtp(), PlatformType.ANDROID);
 
         assertTrue(detailedVcViewPage.isProfileAuthenticatedDisplayed(), "Verify if VC is activated");
     }
@@ -155,7 +156,7 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -213,7 +214,7 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -267,7 +268,7 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -296,7 +297,7 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
 //        addNewCardPage.clickOnDoneButton();
@@ -346,7 +347,7 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -403,7 +404,7 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -488,7 +489,7 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -545,7 +546,7 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();

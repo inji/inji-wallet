@@ -47,7 +47,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
         assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -131,7 +131,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends AndroidBaseTest {
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
         OtpVerificationPage otpVerification = new OtpVerificationPage(getDriver());
 
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
 //        addNewCardPage.clickOnDoneButton();
@@ -212,7 +212,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends AndroidBaseTest {
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
         OtpVerificationPage otpVerification = new OtpVerificationPage(getDriver());
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
 //        addNewCardPage.clickOnDoneButton();
@@ -279,7 +279,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -342,7 +342,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();

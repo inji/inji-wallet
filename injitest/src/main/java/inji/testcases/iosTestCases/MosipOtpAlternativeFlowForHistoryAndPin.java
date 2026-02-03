@@ -43,7 +43,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends IosBaseTest {
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
         esignetLoginPage.clickOnGetOtpButton();
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
         addNewCardPage.clickOnDoneButton();
@@ -103,7 +103,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends IosBaseTest {
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
         esignetLoginPage.clickOnGetOtpButton();
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
         addNewCardPage.clickOnDoneButton();
@@ -162,7 +162,7 @@ public class MosipOtpAlternativeFlowForHistoryAndPin extends IosBaseTest {
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
         esignetLoginPage.clickOnGetOtpButton();
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
         addNewCardPage.clickOnDoneButton();

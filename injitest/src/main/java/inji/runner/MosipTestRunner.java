@@ -6,7 +6,15 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Level;
@@ -21,12 +29,12 @@ import org.testng.xml.XmlTest;
 import inji.constants.InjiWalletConstants;
 import inji.utils.InjiWalletConfigManager;
 import inji.utils.InjiWalletUtil;
+import inji.utils.OTPListener;
 import io.mosip.testrig.apirig.dataprovider.BiometricDataProvider;
 import io.mosip.testrig.apirig.dbaccess.DBManager;
 import io.mosip.testrig.apirig.testrunner.BaseTestCase;
 import io.mosip.testrig.apirig.testrunner.ExtractResource;
 import io.mosip.testrig.apirig.testrunner.HealthChecker;
-import io.mosip.testrig.apirig.testrunner.OTPListener;
 import io.mosip.testrig.apirig.utils.AdminTestUtil;
 import io.mosip.testrig.apirig.utils.AuthTestsUtil;
 import io.mosip.testrig.apirig.utils.CertsUtil;
@@ -47,12 +55,10 @@ import io.mosip.testrig.apirig.utils.PartnerRegistration;
 public class MosipTestRunner {
 	private static final Logger LOGGER = Logger.getLogger(MosipTestRunner.class);
 	private static String cachedPath = null;
-
 	public static String jarUrl = MosipTestRunner.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-
-
 	public static Map<String, String> knownIssues = new HashMap<>();
-
+	public static OTPListener otpListener = null;
+	
 	/**
 	 * C Main method to start mosip test execution
 	 */
@@ -125,8 +131,8 @@ public class MosipTestRunner {
 		BaseTestCase.currentModule = InjiWalletConstants.INJI_WALLET;
 		BaseTestCase.certsForModule = InjiWalletConstants.INJI_WALLET;
 		BaseTestCase.copymoduleSpecificAndConfigFile(InjiWalletConstants.INJI_WALLET);
-		BaseTestCase.otpListener = new OTPListener();
-		BaseTestCase.otpListener.run();
+		otpListener = new OTPListener();
+		otpListener.run();
 	}
 
 	private static void setLogLevels() {

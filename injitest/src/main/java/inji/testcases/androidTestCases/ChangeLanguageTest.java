@@ -582,7 +582,7 @@ public class ChangeLanguageTest extends AndroidBaseTest {
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
         assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
 
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
         assertEquals(homePage.getFullNameValue(), "TEST_FULLNAMEara");
