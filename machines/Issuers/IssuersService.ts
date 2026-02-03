@@ -1,7 +1,7 @@
 import NetInfo from '@react-native-community/netinfo';
 import {NativeModules} from 'react-native';
 import Cloud from '../../shared/CloudBackupAndRestoreUtils';
-import getAllConfigurations, {CACHED_API} from '../../shared/api';
+import getAllConfigurations, {API_URLS, CACHED_API} from '../../shared/api';
 import {
   fetchKeyPair,
   generateKeyPair,
@@ -22,6 +22,8 @@ import {
 import {createCacheObject} from '../../shared/Utils';
 import {VerificationResult} from '../../shared/vcjs/verifyCredential';
 import {sign} from '@noble/secp256k1';
+import { WalletBindingResponse } from '../VerifiableCredential/VCMetaMachine/vc';
+import { request } from '../../shared/request';
 
 export const IssuersService = () => {
   return {
@@ -371,6 +373,64 @@ export const IssuersService = () => {
       }
 
       return verificationResult;
+    },
+
+    requestBindingOTP: async (context: any) => {
+      console.log('Requesting binding OTP for individualId:', context.vcMetadata.mosipIndividualId);
+      const response = await request(
+        API_URLS.bindingOtp.method,
+        API_URLS.bindingOtp.buildURL(),
+        {
+          requestTime: String(new Date().toISOString()),
+          request: {
+            individualId: context.vcMetadata.mosipIndividualId,
+            otpChannels: ['EMAIL', 'PHONE'],
+          },
+        },
+      );
+      if (response.response == null) {
+        throw new Error('Could not process request');
+      }
+      return response;
+    },
+
+    fetchKeyPair: async context => {
+      const keyType = context.vcMetadata?.downloadKeyType;
+      return await fetchKeyPair(keyType);
+    },
+
+    addWalletBindingId: async context => {
+      const response = await request(
+        API_URLS.walletBinding.method,
+        API_URLS.walletBinding.buildURL(),
+        //add logs
+        
+        {
+          requestTime: String(new Date().toISOString()),
+          request: {
+            authFactorType: 'WLA',
+            format: 'jwt',
+            individualId: context.vcMetadata.mosipIndividualId,
+            transactionId: 'tr',
+            publicKey: context.publicKey,
+            challengeList: [
+              {
+                authFactorType: 'OTP',
+                challenge: context.OTP,
+                format: 'alpha-numeric',
+              },
+            ],
+          },
+        },
+      );
+
+      const walletResponse: WalletBindingResponse = {
+        walletBindingId: response.response.encryptedWalletBindingId,
+        keyId: response.response.keyId,
+        thumbprint: response.response.thumbprint,
+        expireDateTime: response.response.expireDateTime,
+      };
+      return walletResponse;
     },
   };
 };

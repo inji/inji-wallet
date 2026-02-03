@@ -1,12 +1,13 @@
 import {request} from '../../shared/request';
 import getAllConfigurations, {API_URLS} from '../../shared/api';
-import {ESIGNET_BASE_URL} from '../../shared/constants';
+import {changeEsignetUrl, ESIGNET_BASE_URL} from '../../shared/constants';
 import {
   isHardwareKeystoreExists,
   getJWT,
   fetchKeyPair,
 } from '../../shared/cryptoutil/cryptoUtil';
 import {getPrivateKey} from '../../shared/keystore/SecureKeystore';
+import {ESIGNET_HOST} from 'react-native-dotenv';
 
 export const QrLoginServices = {
   linkTransaction: async context => {
@@ -26,6 +27,8 @@ export const QrLoginServices = {
 
   sendAuthenticate: async context => {
     let privateKey;
+    console.log('selectedVc:', context.selectedVc.vcMetadata.issuer);
+    
     const individualId = context.selectedVc.vcMetadata.mosipIndividualId;
     const keyType = context.selectedVc.vcMetadata.downloadKeyType;
     if (!isHardwareKeystoreExists) {
@@ -36,6 +39,7 @@ export const QrLoginServices = {
     const keyPair = await fetchKeyPair(keyType);
     privateKey = keyPair.privateKey;
     var config = await getAllConfigurations();
+    console.log('thumbprint:', context.thumbprint);
     const jwtHeader = {
       alg: keyType,
       'x5t#S256': context.thumbprint,
@@ -82,6 +86,10 @@ export const QrLoginServices = {
   sendConsent: async context => {
     let privateKey;
     const keyType = context.selectedVc.vcMetadata.downloadKeyType;
+    console.log(
+      'wallet binding response:',
+      context.selectedVc.walletBindingResponse,
+    );
     if (!isHardwareKeystoreExists) {
       privateKey = await getPrivateKey(
         context.selectedVc.walletBindingResponse?.walletBindingId,
@@ -121,5 +129,9 @@ export const QrLoginServices = {
       },
       ESIGNET_BASE_URL,
     );
+
+    if (context.selectedVc.vcMetadataissuer === 'GlobalIDPass') {
+      changeEsignetUrl(ESIGNET_HOST);
+    }
   },
 };

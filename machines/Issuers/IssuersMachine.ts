@@ -857,14 +857,25 @@ export const IssuersMachine = model.createMachine(
       verifyingCredential: {
         invoke: {
           src: 'verifyCredential',
-          onDone: {
-            actions: [
-              'sendSuccessEndEvent',
-              'setVerificationResult',
-              'resetCredentialOfferFlowType',
-            ],
-            target: 'storing',
-          },
+          onDone: [
+            {
+              cond: 'isAutoWalletBindingEnabled', 
+              actions: [
+                'sendSuccessEndEvent',
+                'setVerificationResult',
+                'setVCMetadata',
+              ],
+              target: 'requestingBindingOTP',
+            },
+            {
+              actions: [
+                'sendSuccessEndEvent',
+                'setVerificationResult',
+                'setVCMetadata',
+              ],
+              target: 'storing',
+            },
+          ],
           onError: [
             {
               cond: 'isVerificationPendingBecauseOfNetworkIssue',
@@ -890,6 +901,90 @@ export const IssuersMachine = model.createMachine(
             target: 'selectingIssuer',
           },
         },
+      },
+
+      requestingBindingOTP: {
+        entry: 'sendActivationStartEvent',
+        invoke: {
+          src: 'requestBindingOTP',
+          onDone: {
+            actions: ['unsetOTP', 'setOTP'],
+            target: 'addKeyPair',
+          },
+          onError: {
+            actions: 'setAutoWalletBindingFailure',
+            target: 'handleVCAutoWalletBindingFailure',
+          },
+        },
+      },
+
+      addKeyPair: {
+        invoke: {
+          src: 'fetchKeyPair',
+          onDone: [
+            {
+              cond: 'hasKeyPair',
+              actions: ['setPublicKey'],
+              target: 'addingWalletBindingId',
+            },
+            {
+              target: 'generateKeyPairForBinding',
+            },
+          ],
+          onError: {
+            actions: 'setAutoWalletBindingFailure',
+            target: 'handleVCAutoWalletBindingFailure',
+          },
+        },
+      },
+
+      generateKeyPairForBinding: {
+        invoke: {
+          src: 'generateKeyPair',
+          onDone: {
+            actions: ['setPublicKey', 'setPrivateKey', 'storeKeyPair'],
+            target: 'addingWalletBindingId',
+          },
+          onError: {
+            actions: 'setAutoWalletBindingFailure',
+            target: 'handleVCAutoWalletBindingFailure',
+          },
+        },
+      },
+
+      addingWalletBindingId: {
+        invoke: {
+          src: 'addWalletBindingId',
+          onDone: {
+            actions: ['setWalletBindingResponse'],
+            target: 'updatingContextVariables',
+          },
+          onError: {
+            actions: 'setAutoWalletBindingFailure',
+            target: 'handleVCAutoWalletBindingFailure',
+          },
+        },
+      },
+
+      updatingContextVariables: {
+        entry: [
+          'setThumbprintForWalletBindingId',
+          'resetPrivateKey',
+          send('SHOW_BINDING_STATUS'),
+        ],
+        on: {
+          SHOW_BINDING_STATUS: {
+            actions: 'sendWalletBindingSuccess',
+            target: 'storing',
+          },
+        },
+      },
+
+      handleVCAutoWalletBindingFailure: {
+        always: {
+          target:'#issuersMachine.error',
+        }
+
       },
 
       storing: {

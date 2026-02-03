@@ -189,8 +189,11 @@ const getMosipIndividualId = (
     const credentialSubject = credential?.credentialSubject;
     if (isMosipVC(issuer)) {
       return credentialSubject ? getMosipIdentifier(credentialSubject) : '';
+    } else if (credentialSubject && 'nationalIDNumber' in credentialSubject) {
+      return credentialSubject['nationalIDNumber'] as string;
+    } else {
+      return '';
     }
-    return '';
   } catch (error) {
     console.error('Error getting the display ID:', error);
     return null;

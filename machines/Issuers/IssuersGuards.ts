@@ -37,5 +37,7 @@ export const IssuersGuards = () => {
         context.authorizationType === AuthorizationType.OPENID4VP_PRESENTATION
       );
     },
+    isAutoWalletBindingEnabled: (context: any, event: any) =>
+      context?.selectedIssuer.issuer_id === "GlobalIDPass",
   };
 };

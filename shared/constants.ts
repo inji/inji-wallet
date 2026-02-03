@@ -208,3 +208,4 @@ export enum AuthorizationType {
   OPENID4VP_PRESENTATION,
   IMPLICIT,
 }
+export const DEFAULT_OTP = '111111'
