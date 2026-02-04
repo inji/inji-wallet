@@ -1,19 +1,39 @@
 diff --git a/node_modules/react-native-copilot/dist/index.js b/node_modules/react-native-copilot/dist/index.js
-index b9127da..509b57a 100644
+index b9127da..1ee63c2 100644
 --- a/node_modules/react-native-copilot/dist/index.js
 +++ b/node_modules/react-native-copilot/dist/index.js
-@@ -188,12 +188,12 @@ var init_SvgMask = __esm({
+@@ -188,11 +188,12 @@ var init_SvgMask = __esm({
        position,
        canvasSize
      }) => {
-+      const cornerRadius = 10;
-       const positionX = position.x._value;
-       const positionY = position.y._value;
-       const sizeX = size.x._value;
-       const sizeY = size.y._value;
+-      const positionX = position.x._value;
+-      const positionY = position.y._value;
+-      const sizeX = size.x._value;
+-      const sizeY = size.y._value;
 -      return `M0,0H${canvasSize.x}V${canvasSize.y}H0V0ZM${positionX},${positionY}H${positionX + sizeX}V${positionY + sizeY}H${positionX}V${positionY}Z`;
--    };
-+      return `M0,0H${canvasSize.x}V${canvasSize.y}H0V0ZM${positionX + cornerRadius}, ${positionY}H${positionX + sizeX - cornerRadius}Q${positionX + sizeX}, ${positionY} ${positionX + sizeX}, ${positionY + cornerRadius}V${positionY + sizeY - cornerRadius}Q${positionX + sizeX}, ${positionY + sizeY} ${positionX + sizeX - cornerRadius}, ${positionY + sizeY}H${positionX + cornerRadius}Q${positionX}, ${positionY + sizeY} ${positionX}, ${positionY + sizeY - cornerRadius}V${positionY + cornerRadius}Q${positionX}, ${positionY} ${positionX + cornerRadius}, ${positionY}Z`}
++      const cornerRadius = 10;
++      const positionX = Math.round(Math.max(0, position.x._value));
++      const positionY = Math.round(Math.max(0, position.y._value));
++      const sizeX = Math.round(Math.max(0, size.x._value));
++      const sizeY = Math.round(Math.max(0, size.y._value));
++      return `M0,0H${canvasSize.x}V${canvasSize.y}H0V0ZM${positionX + cornerRadius},${positionY}H${positionX + sizeX - cornerRadius}Q${positionX + sizeX},${positionY} ${positionX + sizeX},${positionY + cornerRadius}V${positionY + sizeY - cornerRadius}Q${positionX + sizeX},${positionY + sizeY} ${positionX + sizeX - cornerRadius},${positionY + sizeY}H${positionX + cornerRadius}Q${positionX},${positionY + sizeY} ${positionX},${positionY + sizeY - cornerRadius}V${positionY + cornerRadius}Q${positionX},${positionY} ${positionX + cornerRadius},${positionY}Z`;
+     };
      SvgMask = ({
        size,
-       position,
+@@ -544,6 +545,16 @@ var CopilotModal = (0, import_react5.forwardRef)(
+         if (!androidStatusBarVisible && import_react_native6.Platform.OS === "android") {
+           rect.y -= (_a = import_react_native6.StatusBar.currentHeight) != null ? _a : 0;
+         }
++        // Fix for curved/edge-to-edge Android devices with androidStatusBarVisible=true
++        if (androidStatusBarVisible && import_react_native6.Platform.OS === "android") {
++          const windowDim = import_react_native6.Dimensions.get('window');
++          const screenDim = import_react_native6.Dimensions.get('screen');
++          const statusBarHeight = import_react_native6.StatusBar.currentHeight || 0;
++          // If window height equals screen height, device is in edge-to-edge mode
++          if (Math.abs(screenDim.height - windowDim.height) <= 10) {
++            rect.y -= statusBarHeight;
++          }
++        }
+         let stepNumberLeft = rect.x - STEP_NUMBER_RADIUS;
+         if (stepNumberLeft < 0) {
+           stepNumberLeft = rect.x + rect.width - STEP_NUMBER_RADIUS;
