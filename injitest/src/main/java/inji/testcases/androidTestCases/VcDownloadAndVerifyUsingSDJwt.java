@@ -39,7 +39,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
-		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
 		addNewCardPage.clickOnDoneButton();
 		assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -135,7 +135,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
-		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
 		addNewCardPage.clickOnDoneButton();
 		assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -169,7 +169,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
-		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
 		addNewCardPage.clickOnDoneButton();
 		assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -184,7 +184,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain
 				.setEnterIdTextBox(getLandUIN());
 		esignetLoginPageAgain.clickOnHideKeyboardAndGetOtpButton();
-		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
 		esignetLoginPageAgain.clickOnVerifyButton();
 	}
 

@@ -53,8 +53,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends AndroidBaseTest {
 
         esignetLoginPage.clickOnGetOtpButton();
     //    assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
-
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -79,7 +78,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends AndroidBaseTest {
         pleaseConfirmPopupPage.clickOnConfirmButton();
     //    assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
 
-        otpVerification.enterOtp(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
         assertTrue(detailedVcViewPage.isProfileAuthenticatedDisplayed(), "Verify profile authenticated displayed");
 
         detailedVcViewPage.clickOnBackArrow();
@@ -118,7 +117,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends AndroidBaseTest {
 //        String vid = TestDataReader.readData("vid");
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getVID());
         esignetLoginPage.clickOnGetOtpButton();
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(vidGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
         homePage.clickOnDoneButton();
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
@@ -145,7 +144,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends AndroidBaseTest {
         pleaseConfirmPopupPage.clickOnConfirmButton();
         assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
 
-        otpVerification.enterOtp(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        otpVerification.enterOtp(vidGetOtp(), PlatformType.ANDROID);
         assertTrue(detailedVcViewPage.isProfileAuthenticatedDisplayed(), "Verify profile authenticated displayed");
 
     }
@@ -192,7 +191,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -205,7 +204,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends AndroidBaseTest {
         pleaseConfirmPopupPage.clickOnConfirmButton();
 //        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
 
-        otpVerification.enterOtp(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
         assertTrue(detailedVcViewPage.isProfileAuthenticatedDisplayed(), "Verify profile authenticated displayed");
 
         detailedVcViewPage.clickOnBackArrow();
@@ -225,7 +224,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -275,7 +274,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         assertTrue(esignetLoginPage.isInvalidOtpMessageDisplayed(), "verify if invalid otp message is displayed");

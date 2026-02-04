@@ -48,7 +48,7 @@ public class VerifyHistoryTest extends IosBaseTest {
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
         assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.IOS);
 
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -92,7 +92,7 @@ public class VerifyHistoryTest extends IosBaseTest {
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
 //        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.IOS);
 
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -151,7 +151,7 @@ public class VerifyHistoryTest extends IosBaseTest {
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
         assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.IOS);
 
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -210,7 +210,7 @@ public class VerifyHistoryTest extends IosBaseTest {
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
 //        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.IOS);
 
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -223,7 +223,7 @@ public class VerifyHistoryTest extends IosBaseTest {
         OtpVerificationPage otpVerificationPage = pleaseConfirmPopupPage.clickOnConfirmButton();
 
 //        assertTrue(otpVerificationPage.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerificationPage.enterOtp(TestDataReader.readData("passcode"), PlatformType.IOS);
+        otpVerificationPage.enterOtp(uinGetOtp(), PlatformType.IOS);
 
         assertTrue(moreOptionsPage.isVcActivatedForOnlineLogin(), "Verify if VC is activated");
         HistoryPage historyPage = homePage.clickOnHistoryButton();
@@ -267,7 +267,7 @@ public class VerifyHistoryTest extends IosBaseTest {
 
         esignetLoginPage.clickOnGetOtpButton();
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
         addNewCardPage.clickOnDoneButton();
@@ -282,7 +282,7 @@ public class VerifyHistoryTest extends IosBaseTest {
         pleaseConfirmPopupPage.clickOnConfirmButton();
 //        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
 
-        otpVerification.enterOtp(TestDataReader.readData("passcode"), PlatformType.IOS);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.IOS);
         assertTrue(detailedVcViewPage.isProfileAuthenticatedDisplayed(), "Verify profile authenticated displayed");
         detailedVcViewPage.clickOnBackArrow();
 
@@ -338,7 +338,7 @@ public class VerifyHistoryTest extends IosBaseTest {
 
         esignetLoginPage.clickOnGetOtpButton();
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(vidGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
         addNewCardPage.clickOnDoneButton();
@@ -353,7 +353,7 @@ public class VerifyHistoryTest extends IosBaseTest {
         pleaseConfirmPopupPage.clickOnConfirmButton();
 //        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
 
-        otpVerification.enterOtp(TestDataReader.readData("passcode"), PlatformType.IOS);
+        otpVerification.enterOtp(vidGetOtp(), PlatformType.IOS);
         assertTrue(detailedVcViewPage.isProfileAuthenticatedDisplayed(), "Verify profile authenticated displayed");
         detailedVcViewPage.clickOnBackArrow();
 
@@ -461,7 +461,7 @@ public class VerifyHistoryTest extends IosBaseTest {
 
         esignetLoginPage.clickOnGetOtpButton();
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
         addNewCardPage.clickOnDoneButton();
@@ -520,7 +520,7 @@ public class VerifyHistoryTest extends IosBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
         addNewCardPage.clickOnDoneButton();
         MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
@@ -576,7 +576,7 @@ public class VerifyHistoryTest extends IosBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
         addNewCardPage.clickOnDoneButton();
         MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
