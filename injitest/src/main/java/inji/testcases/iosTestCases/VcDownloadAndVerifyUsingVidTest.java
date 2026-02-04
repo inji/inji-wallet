@@ -42,7 +42,7 @@ public class VcDownloadAndVerifyUsingVidTest extends IosBaseTest {
         OtpVerificationPage otpVerification = retrieveIdPage.clickOnVid(PlatformType.IOS).setEnterIdTextBox(vid).clickOnGenerateCardButton();
 
         assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerification.enterOtp(uinGetOtp(), PlatformType.IOS);
+        otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.IOS);
 
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
