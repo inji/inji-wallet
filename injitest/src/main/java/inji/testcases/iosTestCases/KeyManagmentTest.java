@@ -126,7 +126,7 @@ public class KeyManagmentTest extends IosBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
         
         addNewCardPage.clickOnDoneButton();

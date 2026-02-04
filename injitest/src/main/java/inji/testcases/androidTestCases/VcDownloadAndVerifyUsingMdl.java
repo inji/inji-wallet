@@ -71,7 +71,7 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
         assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -238,7 +238,7 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -311,7 +311,7 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -337,7 +337,7 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
 //        addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");

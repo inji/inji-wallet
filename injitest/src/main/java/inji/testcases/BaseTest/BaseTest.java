@@ -403,26 +403,6 @@ public abstract class BaseTest {
         return getsvgWithOutFaceUinDetails() != null ? getsvgWithOutFaceUinDetails().getUin() : null;
     }
     
-    public String getOtp() {
-    	String channelConfig = InjiWalletConfigManager.getproperty("mockNotificationChannel");
-
-        if (channelConfig == null || channelConfig.isBlank()) {
-            throw new IllegalArgumentException("mockNotificationChannel is not configured");
-        }
-
-        String channel = channelConfig.toLowerCase();
-
-        // Preference order: email > phone
-        if (channel.contains("email")) {
-            return OTPListener.getOtp(getEmail());
-            		
-        } else if (channel.contains("phone")) {
-            return OTPListener.getOtp(getPhone());
-        } else {
-            throw new IllegalArgumentException("Unknown OTP channel: " + channelConfig);
-        }
-    }
-    
     public String getOtp(String email, String phone) {
         String channelConfig = InjiWalletConfigManager.getproperty("mockNotificationChannel");
 

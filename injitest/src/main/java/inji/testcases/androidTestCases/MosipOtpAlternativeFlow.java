@@ -13,7 +13,7 @@ import inji.utils.UpdateNetworkSettings;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static inji.utils.InjiWalletUtil.getOtp;
+import static inji.utils.InjiWalletUtil.getOtpForMock;
 import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -404,7 +404,7 @@ public class MosipOtpAlternativeFlow extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();

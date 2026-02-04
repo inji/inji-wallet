@@ -274,7 +274,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         assertTrue(esignetLoginPage.isInvalidOtpMessageDisplayed(), "verify if invalid otp message is displayed");

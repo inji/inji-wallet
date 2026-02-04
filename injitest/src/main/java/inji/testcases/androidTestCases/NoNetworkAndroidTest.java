@@ -309,7 +309,7 @@ public class NoNetworkAndroidTest extends AndroidBaseTest {
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
         mockCertifyLoginPage.clickOnGetOtpButton();
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();

@@ -132,7 +132,7 @@ public class InjiWalletUtil extends AdminTestUtil {
         }
     }
 
-    public static String getOtp() {
+    public static String getOtpForMock() {
         String otp = "111111";
         return otp;
     }

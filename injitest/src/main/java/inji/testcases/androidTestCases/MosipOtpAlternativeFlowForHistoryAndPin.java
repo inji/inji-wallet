@@ -7,8 +7,6 @@ import inji.pages.*;
 import inji.testcases.BaseTest.AndroidBaseTest;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
-
-import static inji.utils.InjiWalletUtil.getOtp;
 import static org.testng.Assert.assertTrue;
 
 public class MosipOtpAlternativeFlowForHistoryAndPin extends AndroidBaseTest {
