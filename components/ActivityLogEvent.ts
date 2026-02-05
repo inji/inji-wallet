@@ -3,7 +3,6 @@ import {getCredentialTypeFromWellKnown} from './VC/common/VCUtils';
 import * as DateFnsLocale from 'date-fns/locale';
 import {VCItemContainerFlowType} from '../shared/Utils';
 import {TFunction} from 'react-i18next';
-import i18n from '../i18n';
 
 export type ActivityLogType =
   | '' // replacement for undefined
@@ -41,7 +40,6 @@ export class VCActivityLog implements ActivityLog {
 
   constructor({
     id = '',
-    idType = [],
     _vcKey = '',
     type = '',
     timestamp = Date.now(),
@@ -52,7 +50,6 @@ export class VCActivityLog implements ActivityLog {
     vcStatus = '',
   } = {}) {
     this.id = id;
-    this.idType = idType;
     this._vcKey = _vcKey;
     this.type = type;
     this.timestamp = timestamp;
