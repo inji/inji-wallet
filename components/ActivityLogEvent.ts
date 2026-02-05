@@ -3,6 +3,7 @@ import {getCredentialTypeFromWellKnown} from './VC/common/VCUtils';
 import * as DateFnsLocale from 'date-fns/locale';
 import {VCItemContainerFlowType} from '../shared/Utils';
 import {TFunction} from 'react-i18next';
+import i18n from '../i18n';
 
 export type ActivityLogType =
   | '' // replacement for undefined
@@ -75,7 +76,10 @@ export class VCActivityLog implements ActivityLog {
       })}`;
     }
 
-    return `${t(this.type + formattedVcStatus, {idType: '', vcStatus: this.vcStatus})}`;
+    return `${t(this.type + formattedVcStatus, {
+      idType: i18n.t('VcDetails:identityCard'),
+      vcStatus: this.vcStatus,
+    })}`;
   }
 
   static getLogFromObject(data: Object): VCActivityLog {
