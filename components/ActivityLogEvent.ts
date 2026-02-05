@@ -77,7 +77,7 @@ export class VCActivityLog implements ActivityLog {
     }
 
     return `${t(this.type + formattedVcStatus, {
-      idType: i18n.t('VcDetails:identityCard'),
+      idType: t('VcDetails:identityCard'),
       vcStatus: this.vcStatus,
     })}`;
   }
