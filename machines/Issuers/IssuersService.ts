@@ -379,7 +379,7 @@ export const IssuersService = () => {
       console.log('Requesting binding OTP for individualId:', context.vcMetadata.mosipIndividualId);
       const response = await request(
         API_URLS.bindingOtp.method,
-        API_URLS.bindingOtp.buildURL(),
+        "https://esignet-globalid.collab.mosip.net/v1/esignet/binding/binding-otp",
         {
           requestTime: String(new Date().toISOString()),
           request: {
@@ -408,6 +408,7 @@ export const IssuersService = () => {
         {
           requestTime: String(new Date().toISOString()),
           request: {
+            issuerName: "GlobalIDPass",
             authFactorType: 'WLA',
             format: 'jwt',
             individualId: context.vcMetadata.mosipIndividualId,

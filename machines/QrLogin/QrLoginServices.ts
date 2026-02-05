@@ -1,34 +1,58 @@
-import {request} from '../../shared/request';
-import getAllConfigurations, {API_URLS} from '../../shared/api';
-import {changeEsignetUrl, ESIGNET_BASE_URL} from '../../shared/constants';
+import { request } from '../../shared/request';
+import getAllConfigurations, { API_URLS } from '../../shared/api';
+import { ESIGNET_BASE_URL } from '../../shared/constants';
 import {
   isHardwareKeystoreExists,
   getJWT,
   fetchKeyPair,
 } from '../../shared/cryptoutil/cryptoUtil';
-import {getPrivateKey} from '../../shared/keystore/SecureKeystore';
-import {ESIGNET_HOST} from 'react-native-dotenv';
+import { getPrivateKey } from '../../shared/keystore/SecureKeystore';
+const GLOBAL_ID_HOST = "https://esignet-globalid.collab.mosip.net";
+const DEFAULT_HOST = ESIGNET_BASE_URL;
 
 export const QrLoginServices = {
   linkTransaction: async context => {
-    const response = await request(
-      API_URLS.linkTransaction.method,
-      API_URLS.linkTransaction.buildURL(),
-      {
-        requestTime: String(new Date().toISOString()),
-        request: {
-          linkCode: context.linkCode,
-        },
-      },
-      ESIGNET_BASE_URL,
-    );
-    return response.response;
+    const body = {
+      requestTime: new Date().toISOString(),
+      request: { linkCode: context.linkCode },
+    };
+
+    try {
+      console.log("Trying GlobalID host...");
+      const res = await request(
+        API_URLS.linkTransaction.method,
+        API_URLS.linkTransaction.buildURL(),
+        body,
+        GLOBAL_ID_HOST,
+      );
+
+      context.esignetHost = GLOBAL_ID_HOST;
+      console.log("Using GlobalID host");
+      return res.response;
+
+    } catch (e) {
+      console.log("GlobalID failed, trying default host...");
+
+      const res = await request(
+        API_URLS.linkTransaction.method,
+        API_URLS.linkTransaction.buildURL(),
+        body,
+        DEFAULT_HOST,
+      );
+
+      context.esignetHost = DEFAULT_HOST;
+      console.log("Using default host");
+      return res.response;
+    }
   },
 
+
   sendAuthenticate: async context => {
+    const requestUrl = context.selectedVc.vcMetadata.issuer === "GlobalIDPass" ? "https://esignet-globalid.collab.mosip.net" : ESIGNET_BASE_URL
+
     let privateKey;
     console.log('selectedVc:', context.selectedVc.vcMetadata.issuer);
-    
+
     const individualId = context.selectedVc.vcMetadata.mosipIndividualId;
     const keyType = context.selectedVc.vcMetadata.downloadKeyType;
     if (!isHardwareKeystoreExists) {
@@ -78,12 +102,13 @@ export const QrLoginServices = {
           ],
         },
       },
-      ESIGNET_BASE_URL,
+      requestUrl,
     );
     return response.response;
   },
 
   sendConsent: async context => {
+    const requestUrl = context.selectedVc.vcMetadata.issuer === "GlobalIDPass" ? "https://esignet-globalid.collab.mosip.net" : ESIGNET_BASE_URL
     let privateKey;
     const keyType = context.selectedVc.vcMetadata.downloadKeyType;
     console.log(
@@ -127,11 +152,7 @@ export const QrLoginServices = {
           signature: detachedSignature,
         },
       },
-      ESIGNET_BASE_URL,
+      requestUrl,
     );
-
-    if (context.selectedVc.vcMetadataissuer === 'GlobalIDPass') {
-      changeEsignetUrl(ESIGNET_HOST);
-    }
   },
 };

@@ -82,6 +82,7 @@ export const ScanModel = createModel(
     OpenId4VPRef: {} as ActorRefFrom<typeof openID4VPMachine>,
     showQuickShareSuccessBanner: false,
     linkCode: '',
+    esignetHost: '',
     authorizationRequest: '',
     quickShareData: {},
     isQrLoginViaDeepLink: false,

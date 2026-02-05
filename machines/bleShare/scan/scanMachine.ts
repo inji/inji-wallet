@@ -373,6 +373,7 @@ export const scanMachine =
                   'setQrLoginRef',
                   'sendVcSharingStartEvent',
                   'setLinkCode',
+                  'setEsignetHostFromLink'
                 ],
               },
               {
