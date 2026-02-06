@@ -7,6 +7,7 @@ import {
   fetchKeyPair,
 } from '../../shared/cryptoutil/cryptoUtil';
 import { getPrivateKey } from '../../shared/keystore/SecureKeystore';
+import { KeyTypes } from '../../shared/cryptoutil/KeyTypes';
 const GLOBAL_ID_HOST = "https://esignet-globalid.collab.mosip.net";
 const DEFAULT_HOST = ESIGNET_BASE_URL;
 
@@ -49,9 +50,8 @@ export const QrLoginServices = {
     const requestUrl = context.selectedVc.vcMetadata.issuer === "GlobalIDPass" ? GLOBAL_ID_HOST : ESIGNET_BASE_URL
 
     let privateKey;
-
+    const keyType = KeyTypes.RS256
     const individualId = context.selectedVc.vcMetadata.mosipIndividualId;
-    const keyType = context.selectedVc.vcMetadata.downloadKeyType;
     if (!isHardwareKeystoreExists) {
       privateKey = await getPrivateKey(
         context.selectedVc.walletBindingResponse?.walletBindingId,
@@ -106,7 +106,7 @@ export const QrLoginServices = {
   sendConsent: async context => {
     const requestUrl = context.selectedVc.vcMetadata.issuer === "GlobalIDPass" ? GLOBAL_ID_HOST : ESIGNET_BASE_URL
     let privateKey;
-    const keyType = context.selectedVc.vcMetadata.downloadKeyType;
+    const keyType = KeyTypes.RS256
     if (!isHardwareKeystoreExists) {
       privateKey = await getPrivateKey(
         context.selectedVc.walletBindingResponse?.walletBindingId,
