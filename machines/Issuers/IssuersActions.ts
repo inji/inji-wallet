@@ -14,6 +14,7 @@ import {
   AuthorizationType,
   OVP_ERROR_CODE,
   OVP_ERROR_MESSAGES,
+  DEFAULT_OTP,
 } from '../../shared/constants';
 import {assign, send, spawn} from 'xstate';
 import {StoreEvents} from '../store';
@@ -24,8 +25,10 @@ import {ActivityLogEvents} from '../activityLog';
 import {
   getEndEventData,
   getImpressionEventData,
+  getStartEventData,
   sendEndEvent,
   sendImpressionEvent,
+  sendStartEvent,
 } from '../../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {NativeModules} from 'react-native';
@@ -36,6 +39,9 @@ import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
 import {logState} from '../../shared/commonUtil';
 import {createOpenID4VPMachine} from '../openID4VP/openID4VPMachine';
 import VciClient from '../../shared/vciClient/VciClient';
+import { getBindingCertificateConstant } from '../../shared/keystore/SecureKeystore';
+import { WalletBindingResponse } from '../VerifiableCredential/VCMetaMachine/vc';
+import { error } from 'xstate/lib/actions';
 
 const {RNSecureKeystoreModule} = NativeModules;
 
@@ -573,5 +579,73 @@ export const IssuersActions = (model: any) => {
         message: event.error,
       });
     },
+
+    unsetOTP: model.assign({OTP: () => ''}),
+    setOTP: model.assign({
+      OTP: (_, event) => {
+        return DEFAULT_OTP;
+      },
+    }),
+    setWalletBindingResponse: (context: any, event: any) => {
+      context.credentialWrapper = {
+        ...context.credentialWrapper,
+        walletBindingResponse: event.data as WalletBindingResponse,
+      };
+    },
+    sendActivationStartEvent: context => {
+      sendStartEvent(
+        getStartEventData(
+          context.isMachineInKebabPopupState
+            ? TelemetryConstants.FlowType.vcActivationFromKebab
+            : TelemetryConstants.FlowType.vcActivation,
+        ),
+      );
+    },
+    setThumbprintForWalletBindingId: send(
+      (context: any) => {
+        const {credentialWrapper} = context;
+        const walletBindingIdKey = getBindingCertificateConstant(
+          credentialWrapper.walletBindingResponse.walletBindingId,
+        );
+        return StoreEvents.SET(
+          walletBindingIdKey,
+          credentialWrapper.walletBindingResponse.thumbprint,
+        );
+      },
+      {
+        to: context => context.serviceRefs.store,
+      },
+    ),
+    resetPrivateKey: assign({
+      privateKey: () => '',
+    }),
+    sendActivationSuccessEvent: context =>
+      sendEndEvent(
+        getEndEventData(
+          context.isMachineInKebabPopupState
+            ? TelemetryConstants.FlowType.vcActivationFromKebab
+            : TelemetryConstants.FlowType.vcActivation,
+          TelemetryConstants.EndEventStatus.success,
+          {'Activation key': context.vcMetadata?.downloadKeyType},
+        ),
+      ),
+    sendWalletBindingSuccess: send(
+      context => {
+        return {
+          type: 'AUTO_WALLET_BINDING_SUCCESS',
+        };
+      },
+      {
+        to: (context: any) => context.serviceRefs.vcMeta,
+      },
+    ),
+
+    setAutoWalletBindingFailure: assign({
+      error: () => "Auto wallet binding failed",
+    }),
+
+    resetAutoWalletBindingFailure: model.assign({
+      isAutoWalletBindingFailed: () => false,
+    }),
   };
 };

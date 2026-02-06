@@ -18,6 +18,7 @@ import {CredentialDownloadResponse, request} from '../../../shared/request';
 import {WalletBindingResponse} from '../VCMetaMachine/vc';
 import {getVerifiableCredential} from './VCItemSelectors';
 import { VERIFICATION_TIMEOUT_IN_MS } from '../../../shared/vcjs/verifyCredential';
+import { KeyTypes } from '../../../shared/cryptoutil/KeyTypes';
 
 const {RNSecureKeystoreModule} = NativeModules;
 export const VCItemServices = model => {
@@ -79,7 +80,7 @@ export const VCItemServices = model => {
     },
     fetchKeyPair: async context => {
       const keyType = context.vcMetadata?.downloadKeyType;
-      return await fetchKeyPair(keyType);
+      return await fetchKeyPair(KeyTypes.RS256);
     },
     generateKeypairAndStore: async context => {
       const keyType = context.vcMetadata?.downloadKeyType;

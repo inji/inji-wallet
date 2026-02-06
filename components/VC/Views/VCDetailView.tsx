@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import {
@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {ActivityIndicator} from '../../ui/ActivityIndicator';
+import { ActivityIndicator } from '../../ui/ActivityIndicator';
 
 import {
   Credential,
@@ -20,28 +20,28 @@ import {
   VerifiableCredentialData,
   WalletBindingResponse,
 } from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {Button, Column, Row, Text} from '../../ui';
-import {Theme} from '../../ui/styleUtils';
-import {QrCodeOverlay} from '../../QrCodeOverlay';
-import {SvgImage} from '../../ui/svg';
-import {isActivationNeeded} from '../../../shared/openId4VCI/Utils';
+import { Button, Column, Row, Text } from '../../ui';
+import { Theme } from '../../ui/styleUtils';
+import { QrCodeOverlay } from '../../QrCodeOverlay';
+import { SvgImage } from '../../ui/svg';
+import { isActivationNeeded } from '../../../shared/openId4VCI/Utils';
 import {
   BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS,
   DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
   Display,
   fieldItemIterator,
 } from '../common/VCUtils';
-import {VCFormat} from '../../../shared/VCFormat';
+import { VCFormat } from '../../../shared/VCFormat';
 
 import testIDProps from '../../../shared/commonUtil';
-import {ShareableInfoModal} from './ShareableInfoModal';
-import {SvgCss} from 'react-native-svg/css';
-import {QR_IMAGE_ID} from '../../../shared/constants';
+import { ShareableInfoModal } from './ShareableInfoModal';
+import { SvgCss } from 'react-native-svg/css';
+import { QR_IMAGE_ID } from '../../../shared/constants';
 
 const getProfileImage = (face: any) => {
   if (face) {
     return (
-      <Image source={{uri: face}} style={Theme.Styles.detailedViewImage} />
+      <Image source={{ uri: face }} style={Theme.Styles.detailedViewImage} />
     );
   }
   return <></>;
@@ -50,13 +50,13 @@ const getProfileImage = (face: any) => {
 export const VCDetailView: React.FC<VCItemDetailsProps> = (
   props: VCItemDetailsProps,
 ) => {
-  const {t} = useTranslation('VcDetails');
+  const { t } = useTranslation('VcDetails');
   const logo = props.verifiableCredentialData.issuerLogo;
   const face = props.verifiableCredentialData.face;
   const verifiableCredential = props.credential;
   const wellknownDisplayProperty = new Display(props.wellknown);
 
-  const {width: deviceWidth} = Dimensions.get('window');
+  const { width: deviceWidth } = Dimensions.get('window');
   const CARD_WIDTH = deviceWidth * 0.8;
   const CARD_SPACING = 16;
 
@@ -104,7 +104,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
 
   if (props.loadingSvg) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator />
       </View>
     );
@@ -135,9 +135,9 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                   props.svgTemplate.length === 1 ? 'center' : 'flex-start',
               }}
               ItemSeparatorComponent={() => (
-                <View style={{width: CARD_SPACING}} />
+                <View style={{ width: CARD_SPACING }} />
               )}
-              renderItem={({item}) => {
+              renderItem={({ item }) => {
                 let aspectRatio: number | null = null;
                 const match = item.match(/viewBox="0 0 (\d+) (\d+)"/);
                 if (match) {
@@ -154,7 +154,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                   : targetWidth * 0.7;
 
                 return (
-                  <Column style={{width: targetWidth}}>
+                  <Column style={{ width: targetWidth }}>
                     <SvgCss
                       xml={item}
                       width="100%"
@@ -162,7 +162,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                       preserveAspectRatio="xMidYMid meet"
                     />
 
-                    <View style={{height: 12}} />
+                    <View style={{ height: 12 }} />
 
                     {item.includes(QR_IMAGE_ID) && (
                       <Button
@@ -225,10 +225,9 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                       margin="12 0 0 0">
                       <Image
                         {...testIDProps('issuerLogo')}
-                        src={logo?.url}
-                        alt={logo?.alt_text}
+                        source={{ uri: logo?.url }}
+                        accessibilityLabel={logo?.alt_text}
                         style={Theme.Styles.issuerLogo}
-                        resizeMethod="scale"
                         resizeMode="contain"
                       />
                     </Column>
@@ -236,7 +235,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                   <Column
                     align="space-evenly"
                     margin={'0 0 0 24'}
-                    style={{flex: 1}}>
+                    style={{ flex: 1 }}>
                     {fieldItemIterator(
                       props.fields,
                       props.wellknownFieldsFlag,
@@ -290,7 +289,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
             }}>
             {props.activeTab !== 1 &&
               (!props.walletBindingResponse &&
-              isActivationNeeded(props.verifiableCredentialData?.issuer) ? (
+                isActivationNeeded(props.verifiableCredentialData?.issuer) ? (
                 <Column
                   padding="10"
                   style={Theme.Styles.detailedViewActivationPopupContainer}>
@@ -373,7 +372,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
           <TouchableOpacity
             onPress={() => setShareModalVisible(true)}
             testID="viewShareableInfoLink"
-            style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
+            style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
             <Feather name="eye" size={20} color={'#007AFF'} />
             <Text
               style={{
@@ -397,7 +396,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
 };
 
 export const DisclosureInfoNote = () => {
-  const {t} = useTranslation('VcDetails');
+  const { t } = useTranslation('VcDetails');
   return (
     <View style={Theme.DisclosureInfo.view}>
       <Row align="flex-start">
@@ -405,7 +404,7 @@ export const DisclosureInfoNote = () => {
           name="share-square-o"
           size={18}
           color={Theme.Colors.DetailsLabel}
-          style={{marginTop: 2, marginRight: 8}}
+          style={{ marginTop: 2, marginRight: 8 }}
         />
         <Text style={Theme.DisclosureInfo.text}>{t('disclosureInfoNote')}</Text>
       </Row>

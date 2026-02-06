@@ -95,8 +95,7 @@ export const ScanActions = (model: any) => {
       {
         to: (context: any) => context.serviceRefs.store,
       },
-    ),
-
+    ), 
     sendScanData: context =>
       context.QrLoginRef.send({
         type: 'GET',
