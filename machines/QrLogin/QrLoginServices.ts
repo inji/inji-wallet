@@ -26,7 +26,6 @@ export const QrLoginServices = {
         GLOBAL_ID_HOST,
       );
 
-      context.esignetHost = GLOBAL_ID_HOST;
       console.log("Using GlobalID host");
       return res.response;
 
@@ -40,7 +39,6 @@ export const QrLoginServices = {
         DEFAULT_HOST,
       );
 
-      context.esignetHost = DEFAULT_HOST;
       console.log("Using default host");
       return res.response;
     }
@@ -48,10 +46,9 @@ export const QrLoginServices = {
 
 
   sendAuthenticate: async context => {
-    const requestUrl = context.selectedVc.vcMetadata.issuer === "GlobalIDPass" ? "https://esignet-globalid.collab.mosip.net" : ESIGNET_BASE_URL
+    const requestUrl = context.selectedVc.vcMetadata.issuer === "GlobalIDPass" ? GLOBAL_ID_HOST : ESIGNET_BASE_URL
 
     let privateKey;
-    console.log('selectedVc:', context.selectedVc.vcMetadata.issuer);
 
     const individualId = context.selectedVc.vcMetadata.mosipIndividualId;
     const keyType = context.selectedVc.vcMetadata.downloadKeyType;
@@ -63,7 +60,6 @@ export const QrLoginServices = {
     const keyPair = await fetchKeyPair(keyType);
     privateKey = keyPair.privateKey;
     var config = await getAllConfigurations();
-    console.log('thumbprint:', context.thumbprint);
     const jwtHeader = {
       alg: keyType,
       'x5t#S256': context.thumbprint,
@@ -108,7 +104,7 @@ export const QrLoginServices = {
   },
 
   sendConsent: async context => {
-    const requestUrl = context.selectedVc.vcMetadata.issuer === "GlobalIDPass" ? "https://esignet-globalid.collab.mosip.net" : ESIGNET_BASE_URL
+    const requestUrl = context.selectedVc.vcMetadata.issuer === "GlobalIDPass" ? GLOBAL_ID_HOST : ESIGNET_BASE_URL
     let privateKey;
     const keyType = context.selectedVc.vcMetadata.downloadKeyType;
     console.log(

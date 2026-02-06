@@ -52,7 +52,6 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
 ) => {
   const { t } = useTranslation('VcDetails');
   const logo = props.verifiableCredentialData.issuerLogo;
-  console.log("logo url", logo);
   const face = props.verifiableCredentialData.face;
   const verifiableCredential = props.credential;
   const wellknownDisplayProperty = new Display(props.wellknown);

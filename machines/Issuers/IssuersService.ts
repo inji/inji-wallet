@@ -25,6 +25,7 @@ import {sign} from '@noble/secp256k1';
 import { WalletBindingResponse } from '../VerifiableCredential/VCMetaMachine/vc';
 import { request } from '../../shared/request';
 
+const GLOBAL_BINDING_OTP_URL = "https://esignet-globalid.collab.mosip.net/v1/esignet/binding/binding-otp";
 export const IssuersService = () => {
   return {
     isUserSignedAlready: () => async () => {
@@ -376,10 +377,10 @@ export const IssuersService = () => {
     },
 
     requestBindingOTP: async (context: any) => {
-      console.log('Requesting binding OTP for individualId:', context.vcMetadata.mosipIndividualId);
+      console.debug('Requesting binding OTP for individualId:', context.vcMetadata.mosipIndividualId);
       const response = await request(
         API_URLS.bindingOtp.method,
-        "https://esignet-globalid.collab.mosip.net/v1/esignet/binding/binding-otp",
+        GLOBAL_BINDING_OTP_URL,
         {
           requestTime: String(new Date().toISOString()),
           request: {

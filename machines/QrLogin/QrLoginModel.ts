@@ -64,7 +64,6 @@ export const QrLoginmodel = createModel(
     linkedTransactionId: '',
     showFaceAuthConsent: true as boolean,
     isQrLoginViaDeepLink: false,
-    esignetHost:''
   },
   {
     events: QrLoginEvents,
