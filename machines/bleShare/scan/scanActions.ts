@@ -95,23 +95,11 @@ export const ScanActions = (model: any) => {
       {
         to: (context: any) => context.serviceRefs.store,
       },
-    ),
-    setEsignetHostFromLink: assign({
-      esignetHost: (_context, event) => {
-        console.log('Extracting esignet host from link:', event.params);
-        try {
-          const url = new URL(event.params);
-          return `${url.protocol}//${url.host}`;
-        } catch {
-          return '';
-        }
-      },
-    }),    
+    ), 
     sendScanData: context =>
       context.QrLoginRef.send({
         type: 'GET',
         linkCode: context.linkCode,
-        esignetHost: context.esignetHost,
         flowType: context.flowType,
         selectedVc: context.selectedVc,
         isQrLoginViaDeepLink: context.isQrLoginViaDeepLink,

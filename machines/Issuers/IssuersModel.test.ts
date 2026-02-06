@@ -15,7 +15,7 @@ describe('IssuersModel', () => {
       expect(IssuersModel.events).toBeDefined();
     });
   });
-}
+})
 
 //   describe('Initial Context', () => {
 //     const initialContext = IssuersModel.initialContext;

@@ -15,7 +15,7 @@ describe('ScanModel', () => {
       expect(ScanModel.events).toBeDefined();
     });
   });
-}
+})
 
 //   describe('Initial Context', () => {
 //     const initialContext = ScanModel.initialContext;

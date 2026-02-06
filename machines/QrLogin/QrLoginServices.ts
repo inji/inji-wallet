@@ -107,10 +107,6 @@ export const QrLoginServices = {
     const requestUrl = context.selectedVc.vcMetadata.issuer === "GlobalIDPass" ? GLOBAL_ID_HOST : ESIGNET_BASE_URL
     let privateKey;
     const keyType = context.selectedVc.vcMetadata.downloadKeyType;
-    console.log(
-      'wallet binding response:',
-      context.selectedVc.walletBindingResponse,
-    );
     if (!isHardwareKeystoreExists) {
       privateKey = await getPrivateKey(
         context.selectedVc.walletBindingResponse?.walletBindingId,
