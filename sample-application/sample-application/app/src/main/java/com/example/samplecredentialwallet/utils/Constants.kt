@@ -1,6 +1,7 @@
 package com.example.samplecredentialwallet.utils
 
 object Constants {
+  var selectedIssuer: String? = null
     var credentialIssuerHost: String? = null
     var credentialTypeId: String? = null
     var clientId: String? = null
