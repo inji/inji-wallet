@@ -680,7 +680,7 @@ export const DefaultTheme = {
     introSliderHeader: {
       marginTop: isIOS()
         ? Constants.statusBarHeight + 25
-        : StatusBar.currentHeight + 25,
+        : (StatusBar.currentHeight ?? 0) + 25,
       width: '100%',
       marginBottom: 20,
     },
