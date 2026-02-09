@@ -15,7 +15,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   private var pendingTokenResponseContinuation: ((String) -> Void)?
   private var pendingIssuerTrustDecision: ((Bool) -> Void)?
   private var pendingSelectedCredentialsContinuation: CheckedContinuation<AnyObject, Error>?
-  private var pendingSignVPContinuation: CheckedContinuation<[[String: Any]], Error>?
+  private var pendingSignVPContinuation: CheckedContinuation<NSArray, Error>?
 
   static func moduleName() -> String {
     return "InjiVciClient"
@@ -269,9 +269,15 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
       )
     }
 
-    let signedVPTokens = try await withCheckedThrowingContinuation {
-      (continuation: CheckedContinuation<[[String: Any]], Error>) in
+    let signedVPTokensAny = try await withCheckedThrowingContinuation { continuation in
       self.pendingSignVPContinuation = continuation
+    }
+    guard let signedVPTokens = signedVPTokensAny as? [[String: Any]] else {
+      throw NSError(
+        domain: "VPTokenSigning",
+        code: -1,
+        userInfo: [NSLocalizedDescriptionKey: "Invalid VP token structure from JS"]
+      )
     }
 
     return try OVPUtils.parseVPTokenSigningResultV2(signedVPTokens)
@@ -344,7 +350,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   }
 
   @objc(sendVPTokenSigningResultFromJS:)
-  func sendVPTokenSigningResultFromJS(_ vpTokenSigningResult: [[String: Any]]) {
+  func sendVPTokenSigningResultFromJS(_ vpTokenSigningResult: NSArray) {
     print("vpTokenSigningResult - ",vpTokenSigningResult)
     pendingSignVPContinuation?.resume(returning: vpTokenSigningResult)
     pendingSignVPContinuation = nil
