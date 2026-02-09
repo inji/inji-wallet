@@ -16,6 +16,7 @@ import com.example.samplecredentialwallet.ui.auth.AuthWebViewScreen
 import com.example.samplecredentialwallet.ui.splash.SplashScreen
 import com.example.samplecredentialwallet.utils.Constants
 import com.example.samplecredentialwallet.utils.IssuerRepository
+import com.example.samplecredentialwallet.utils.IssuerRepositoryV2
 
 sealed class Screen(val route: String) {
     object Splash : Screen("splash")
@@ -52,7 +53,7 @@ fun AppNavHost(navController: NavHostController) {
         composable(Screen.Home.route) {
             HomeScreen(
                 onNavigate = { navController.navigate(Screen.IssuerList.route) },
-                onViewCredential = { index -> 
+                onViewCredential = { index ->
                     navController.navigate(Screen.CredentialList.createRoute(index))
                 }
             )
@@ -61,7 +62,7 @@ fun AppNavHost(navController: NavHostController) {
             IssuerListScreen(
                 onIssuerClick = { issuerType ->
                     // Apply issuer configuration from repository
-                    if (IssuerRepository.applyConfiguration(issuerType)) {
+                    if (IssuerRepositoryV2.applyConfiguration(issuerType)) {
                         // Navigate to credential download
                         navController.navigate(Screen.CredentialDetail.route)
                     } else {
@@ -87,10 +88,10 @@ fun AppNavHost(navController: NavHostController) {
             val authCode = backStackEntry.arguments?.getString("authCode")
             CredentialDownloadScreen(navController, authCode)
         }
-        
+
         composable(
             route = Screen.CredentialList.route,
-            arguments = listOf(navArgument("index") { 
+            arguments = listOf(navArgument("index") {
                 type = androidx.navigation.NavType.IntType
                 defaultValue = -1
             })

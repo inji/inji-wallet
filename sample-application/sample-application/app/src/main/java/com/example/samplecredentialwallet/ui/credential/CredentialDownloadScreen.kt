@@ -24,6 +24,7 @@ import com.example.samplecredentialwallet.utils.CredentialStore
 import com.example.samplecredentialwallet.utils.CredentialVerifier
 import com.example.samplecredentialwallet.utils.SecureKeystoreManager
 import com.example.samplecredentialwallet.utils.EndpointConfig
+import com.example.samplecredentialwallet.utils.IssuerRepositoryV2
 import com.nimbusds.jose.JOSEObjectType
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jose.JWSHeader
@@ -35,6 +36,7 @@ import com.nimbusds.jose.jwk.Curve
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import io.mosip.vciclient.VCIClient
+import io.mosip.vciclient.authorizationCodeFlow.AuthorizationMethod
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata
 import io.mosip.vciclient.token.TokenRequest
 import io.mosip.vciclient.token.TokenResponse
@@ -73,10 +75,6 @@ fun CredentialDownloadScreen(
         }
     }
     val client = VCIClient("demo-123")
-    val clientMetadata = ClientMetadata(
-        clientId = Constants.clientId.toString(),
-        redirectUri = Constants.redirectUri.toString()
-    )
 
     var tokenResponseJson by remember { mutableStateOf<String?>(null) }
     val isLoading = remember { mutableStateOf(false) }
@@ -123,69 +121,143 @@ fun CredentialDownloadScreen(
                                 loadingMessage.value = "Starting credential download..."
                             }
 
-                        withTimeout(600000L) { 
-                            
-                            val credential = client.requestCredentialFromTrustedIssuer(
-                                credentialIssuer = Constants.credentialIssuerHost.toString(),
-                                credentialConfigurationId = Constants.credentialTypeId.toString(),
-                                clientMetadata = clientMetadata,
-                                
-                                authorizeUser = { url ->
-                                    Log.d("AUTH_FLOW", "Authorization flow started")
-                                    Log.d("AUTH_FLOW", "Authorization URL: $url")
-                                    withContext(Dispatchers.Main) {
-                                        loadingMessage.value = "Authenticating..."
-                                    }
-                                    val code = handleAuthorizationFlow(navController, url)
-                                    Log.d("AUTH_FLOW", "Authorization code received")
-                                    code
-                                },
-                                
-                                getTokenResponse = { tokenRequest ->
-                                    Log.d("TOKEN_EXCHANGE", "Token exchange started")
-                                    Log.d("TOKEN_EXCHANGE", "Token endpoint: ${tokenRequest.tokenEndpoint}")
-                                    withContext(Dispatchers.Main) {
-                                        loadingMessage.value = "Exchanging tokens..."
-                                    }
+                        withTimeout(600000L) {
+                          val selectedIssuer = IssuerRepositoryV2.getConfiguration(Constants.selectedIssuer ?: "")
+                          if (selectedIssuer == null) {
+                              withContext(Dispatchers.Main) {
+                                  isLoading.value = false
+                                  showError.value = true
+                                  errorMessage.value = "Issuer configuration not found!"
+                              }
+                              return@withTimeout
+                          }
 
-                                    // Resolve token endpoint using configuration
-                                    val endpoint = EndpointConfig.resolveTokenEndpoint(
-                                        tokenRequest.tokenEndpoint,
-                                        Constants.credentialIssuerHost
-                                    )
-                                    Log.d("TOKEN_EXCHANGE", "Using custom endpoint: $endpoint")
+                          val clientMetadata = ClientMetadata(
+                            clientId = selectedIssuer.clientId,
+                            redirectUri = selectedIssuer.redirectUri
+                          )
 
-                                    val response = sendTokenRequest(tokenRequest, endpoint)
-                                    Log.d("TOKEN_EXCHANGE", "Access token received")
-                                    Log.d("TOKEN_EXCHANGE", "c_nonce received")
 
-                                    TokenResponse(
-                                        accessToken = response.getString("access_token"),
-                                        tokenType = response.getString("token_type"),
-                                        expiresIn = response.optInt("expires_in"),
-                                        cNonce = response.optString("c_nonce"),
-                                        cNonceExpiresIn = response.optInt("c_nonce_expires_in")
-                                    )
-                                },
-                                
-                                getProofJwt = { issuer, cNonce, _ ->
-                                    Log.d("PROOF_JWT", "Proof JWT generation started")
-                                    Log.d("PROOF_JWT", "Issuer: $issuer")
-                                    Log.d("PROOF_JWT", "c_nonce: $cNonce")
-                                    withContext(Dispatchers.Main) {
-                                        loadingMessage.value = "Generating proof..."
-                                    }
-                                    val proofJwt = signProofJWT(cNonce, issuer, isTrusted = true, context = context)
-                                    proofJwt
+                          val credential = client.fetchCredentialFromTrustedIssuer(
+                            credentialIssuer = selectedIssuer.credentialIssuerHost,
+                            //TODO: remove the hardcoding of credential type ID
+                            credentialConfigurationId = "FarmerCredential_VCDM2.0",
+                            clientMetadata = clientMetadata,
+
+                            authorizations = listOf(
+                              AuthorizationMethod.RedirectToWeb(
+                                { url ->
+                                  Log.d("AUTH_FLOW", "Authorization flow started")
+                                  Log.d("AUTH_FLOW", "Authorization URL: $url")
+                                  withContext(Dispatchers.Main) {
+                                    loadingMessage.value = "Authenticating..."
+                                  }
+                                  val authorizationResult = handleAuthorizationFlowV2(navController, url)
+                                  Log.d("AUTH_FLOW", "Authorization result received")
+                                  authorizationResult
                                 }
-                            )
+                              )
+                            ),
+                            getTokenResponse = { tokenRequest ->
+                              Log.d("TOKEN_EXCHANGE", "Token exchange started")
+                              Log.d("TOKEN_EXCHANGE", "Token endpoint: ${tokenRequest.tokenEndpoint}")
+                              withContext(Dispatchers.Main) {
+                                loadingMessage.value = "Exchanging tokens..."
+                              }
+
+                              // Resolve token endpoint using configuration
+                              val endpoint = EndpointConfig.resolveTokenEndpoint(
+                                tokenRequest.tokenEndpoint,
+                                Constants.credentialIssuerHost
+                              )
+                              Log.d("TOKEN_EXCHANGE", "Using custom endpoint: $endpoint")
+
+                              val response = sendTokenRequest(tokenRequest, endpoint)
+                              Log.d("TOKEN_EXCHANGE", "Access token received")
+                              Log.d("TOKEN_EXCHANGE", "c_nonce received")
+
+                              TokenResponse(
+                                accessToken = response.getString("access_token"),
+                                tokenType = response.getString("token_type"),
+                                expiresIn = response.optInt("expires_in"),
+                                cNonce = response.optString("c_nonce"),
+                                cNonceExpiresIn = response.optInt("c_nonce_expires_in")
+                              )
+                            },
+
+                            getProofJwt = { issuer, cNonce, _ ->
+                              Log.d("PROOF_JWT", "Proof JWT generation started")
+                              Log.d("PROOF_JWT", "Issuer: $issuer")
+                              Log.d("PROOF_JWT", "c_nonce: $cNonce")
+                              withContext(Dispatchers.Main) {
+                                loadingMessage.value = "Generating proof..."
+                              }
+                              val proofJwt = signProofJWT(cNonce, issuer, isTrusted = true, context = context)
+                              proofJwt
+                            }
+                          )
+
+//                            val credential = client.requestCredentialFromTrustedIssuer(
+//                                credentialIssuer = Constants.credentialIssuerHost.toString(),
+//                                credentialConfigurationId = Constants.credentialTypeId.toString(),
+//                                clientMetadata = clientMetadata,
+//
+//                                authorizeUser = { url ->
+//                                    Log.d("AUTH_FLOW", "Authorization flow started")
+//                                    Log.d("AUTH_FLOW", "Authorization URL: $url")
+//                                    withContext(Dispatchers.Main) {
+//                                        loadingMessage.value = "Authenticating..."
+//                                    }
+//                                    val code = handleAuthorizationFlow(navController, url)
+//                                    Log.d("AUTH_FLOW", "Authorization code received")
+//                                    code
+//                                },
+//
+//                                getTokenResponse = { tokenRequest ->
+//                                    Log.d("TOKEN_EXCHANGE", "Token exchange started")
+//                                    Log.d("TOKEN_EXCHANGE", "Token endpoint: ${tokenRequest.tokenEndpoint}")
+//                                    withContext(Dispatchers.Main) {
+//                                        loadingMessage.value = "Exchanging tokens..."
+//                                    }
+//
+//                                    // Resolve token endpoint using configuration
+//                                    val endpoint = EndpointConfig.resolveTokenEndpoint(
+//                                        tokenRequest.tokenEndpoint,
+//                                        Constants.credentialIssuerHost
+//                                    )
+//                                    Log.d("TOKEN_EXCHANGE", "Using custom endpoint: $endpoint")
+//
+//                                    val response = sendTokenRequest(tokenRequest, endpoint)
+//                                    Log.d("TOKEN_EXCHANGE", "Access token received")
+//                                    Log.d("TOKEN_EXCHANGE", "c_nonce received")
+//
+//                                    TokenResponse(
+//                                        accessToken = response.getString("access_token"),
+//                                        tokenType = response.getString("token_type"),
+//                                        expiresIn = response.optInt("expires_in"),
+//                                        cNonce = response.optString("c_nonce"),
+//                                        cNonceExpiresIn = response.optInt("c_nonce_expires_in")
+//                                    )
+//                                },
+//
+//                                getProofJwt = { issuer, cNonce, _ ->
+//                                    Log.d("PROOF_JWT", "Proof JWT generation started")
+//                                    Log.d("PROOF_JWT", "Issuer: $issuer")
+//                                    Log.d("PROOF_JWT", "c_nonce: $cNonce")
+//                                    withContext(Dispatchers.Main) {
+//                                        loadingMessage.value = "Generating proof..."
+//                                    }
+//                                    val proofJwt = signProofJWT(cNonce, issuer, isTrusted = true, context = context)
+//                                    proofJwt
+//                                }
+//                            )
 
                             Log.d("VC_DOWNLOAD", "Credential download completed")
                             Log.d("VC_DOWNLOAD", "Credential object received: ${credential?.javaClass?.simpleName}")
 
                             withContext(Dispatchers.Main) {
                                 loadingMessage.value = "Processing credential..."
-                                
+
                                 if (credential == null) {
                                     Log.e("VC_DOWNLOAD", "Credential is null")
                                     isLoading.value = false
@@ -193,7 +265,7 @@ fun CredentialDownloadScreen(
                                     errorMessage.value = "Something went wrong!"
                                     return@withContext
                                 }
-                                
+
                                 credential.let { credObj ->
                                     // Extract credential string from response object
                                     val credentialStr = try {
@@ -205,7 +277,7 @@ fun CredentialDownloadScreen(
                                             Log.d("VC_EXTRACT", "Method  successful: getCredential()")
                                         } catch (e: Exception) {
                                             Log.d("VC_EXTRACT", "Method  failed: ${e.message}")
-        
+
                                         }
 
                                         if (credField == null) {
@@ -218,7 +290,7 @@ fun CredentialDownloadScreen(
                                                 Log.d("VC_EXTRACT", "Method  failed: ${e.message}")
                                             }
                                         }
-                                        
+
                                         if (credField == null) {
                                             Log.d("VC_EXTRACT", "Trying Method : regex parsing")
                                             val str = credObj.toString()
@@ -228,14 +300,14 @@ fun CredentialDownloadScreen(
                                                 Log.d("VC_EXTRACT", "Method  successful: regex parsing")
                                             }
                                         }
-                                        
+
                                         credField ?: credObj.toString()
                                     } catch (e: Exception) {
                                         Log.e("VC_EXTRACT", "Failed to extract credential: ${e.message}")
                                         e.printStackTrace()
                                         credObj.toString()
                                     }
-                                    
+
                                     Log.d("VC_EXTRACT", "Credential extracted successfully")
                                     Log.d("VC_EXTRACT", "Credential length: ${credentialStr.length} characters")
                                     tokenResponseJson = credentialStr
@@ -243,7 +315,7 @@ fun CredentialDownloadScreen(
                                     Log.d("VC_VERIFY", "Starting credential verification")
                                     val verified = CredentialVerifier.verifyCredential(credentialStr, demoMode = true)
                                     Log.d("VC_VERIFY", "Verification result: $verified")
-                                    
+
                                     // Add display name to credential before storing
                                     val credentialWithDisplayName = try {
                                         val credJson = org.json.JSONObject(credentialStr)
@@ -254,15 +326,15 @@ fun CredentialDownloadScreen(
                                         credJson.toString()
                                     } catch (e: Exception) {
                                         Log.e("VC_STORE", "Failed to add display name: ${e.message}")
-                                        credentialStr 
+                                        credentialStr
                                     }
-                                    
-                                    // Store credential 
+
+                                    // Store credential
                                     Log.d("VC_STORE", "Storing credential in credential store")
                                     CredentialStore.addCredential(credentialWithDisplayName)
                                     Log.d("VC_STORE", "Credential stored successfully")
                                     isLoading.value = false
-                                    
+
                                     // Navigate back to home screen
                                     navController.navigate(Screen.Home.route) {
                                         // Pop everything including auth_webview and credential_detail
@@ -274,12 +346,12 @@ fun CredentialDownloadScreen(
 
                     } catch (e: Exception) {
                         Log.e("CredentialDownload", "Download failed: ${e.message}", e)
-                        
+
                         // CRITICAL: Must switch to Main dispatcher to update UI state
                         withContext(Dispatchers.Main) {
                             isLoading.value = false
                             showError.value = true
-                            
+
                             // Different error messages based on error type
                             errorMessage.value = when {
                                 e is UnknownHostException -> "No internet connection"
@@ -289,7 +361,7 @@ fun CredentialDownloadScreen(
                                 e.message?.contains("timeout", ignoreCase = true) == true -> "No internet connection"
                                 else -> "Something went wrong!"
                             }
-                            
+
                             Log.e("CredentialDownload", "Error UI shown: ${errorMessage.value}")
 
                             // Also navigate away from AuthWebView so user doesn't get stuck on its loader
@@ -371,7 +443,7 @@ fun CredentialDownloadScreen(
                 }
             }
         }
-        
+
         // Error Screen Overlay
         if (showError.value && errorMessage.value != null) {
             Box(
@@ -402,18 +474,18 @@ fun CredentialDownloadScreen(
                             tint = Color(0xFFF57C00), // Orange color
                             modifier = Modifier.size(72.dp)
                         )
-                        
+
                         Spacer(modifier = Modifier.height(24.dp))
-                        
+
                         Text(
                             text = errorMessage.value ?: "Something went wrong!",
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold,
                             color = Color.Black
                         )
-                        
+
                         Spacer(modifier = Modifier.height(16.dp))
-                        
+
                         Text(
                             text = if (errorMessage.value == "No internet connection") {
                                 "Please check your internet connection and try again."
@@ -424,9 +496,9 @@ fun CredentialDownloadScreen(
                             color = Color.Gray,
                             modifier = Modifier.fillMaxWidth()
                         )
-                        
+
                         Spacer(modifier = Modifier.height(32.dp))
-                        
+
                         Button(
                             onClick = {
                                 showError.value = false
@@ -460,17 +532,30 @@ suspend fun handleAuthorizationFlow(
     return code
 }
 
+suspend fun handleAuthorizationFlowV2(
+    navController: NavController,
+    url: String
+): Map<String, String> {
+    withContext(Dispatchers.Main) {
+        navController.navigate(Screen.AuthWebView.createRoute(url))
+    }
+  return AuthCodeHolder.waitForAuthorizationResult()
+}
+
 private fun signProofJWT(
     cNonce: String?,
     issuer: String,
     isTrusted: Boolean,
     context: android.content.Context
 ): String {
+  val selectedIssuer = IssuerRepositoryV2.getConfiguration(Constants.selectedIssuer ?: "")
+  if(selectedIssuer == null) {
+      throw IllegalStateException("Issuer configuration not found for selected issuer: ${Constants.selectedIssuer}")
+  }
     // Validate required dynamic inputs
     val nonNullNonce = cNonce?.trim()?.takeIf { it.isNotEmpty() }
         ?: throw IllegalStateException("c_nonce missing from token response; cannot build proof JWT")
-    val clientId = Constants.clientId?.takeIf { it.isNotBlank() }
-        ?: throw IllegalStateException("clientId not initialized in Constants; call the appropriate ViewModel setup before starting download")
+    val clientId = selectedIssuer.clientId
 
     val manager = SecureKeystoreManager.getInstance(context)
     val useEc = manager.hasKey(SecureKeystoreManager.KeyType.ES256)
@@ -480,7 +565,7 @@ private fun signProofJWT(
         throw IllegalStateException("No keystore key available. Initialize keystore before signing.")
     }
 
-    
+
     val (alg, publicJwk) = if (useRsa) {
         JWSAlgorithm.RS256 to buildPublicRsaJwkFromAndroid(SecureKeystoreManager.KeyType.RS256.value)
     } else {

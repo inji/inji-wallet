@@ -1,7 +1,9 @@
 package com.example.samplecredentialwallet.utils
 
+import com.example.samplecredentialwallet.R
+
 data class IssuerDisplayLogo(
-  val url: String,
+  val url: Int,
   val altText: String
 )
 
@@ -14,6 +16,7 @@ data class IssuerDisplay(
 )
 
 data class IssuerConfigurationV2(
+  val id: String,
   val credentialIssuerHost: String,
   val clientId: String,
   val redirectUri: String,
@@ -24,13 +27,14 @@ data class IssuerConfigurationV2(
 object IssuerRepositoryV2 {
   private val configurations = mapOf(
     "Farmer" to IssuerConfigurationV2(
+      id = "Farmer",
       credentialIssuerHost = "https://injicertify-farmer.collab.mosip.net/",
       clientId = "mpartner-default-mimoto-land-oidc",
       redirectUri = "io.mosip.residentapp.inji://oauthredirect",
       display = IssuerDisplay(
         name = "Farmer ID Card",
         logo = IssuerDisplayLogo(
-          url = "https://inji.github.io/inji-config/logos/agro-vertias-logo.png",
+          url = R.drawable.agro_vertias_logo,
           altText = "mosip-logo"
         ),
         title = "Farmer ID Card",
@@ -40,6 +44,10 @@ object IssuerRepositoryV2 {
       proxyTokenEndpoint = "https://esignet-mock.collab.mosip.net/v1/esignet/oauth/v2/token"
     )
   )
+
+  fun getAllConfigurations(): List<IssuerConfigurationV2> {
+    return configurations.values.toList()
+  }
 
   fun getConfiguration(issuerType: String): IssuerConfigurationV2? {
     return configurations[issuerType]
