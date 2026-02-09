@@ -23,6 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.samplecredentialwallet.R
+import com.example.samplecredentialwallet.utils.IssuerConfigurationV2
+import com.example.samplecredentialwallet.utils.IssuerRepositoryV2
 
 data class Issuer(
     val id: String,
@@ -35,7 +37,8 @@ data class Issuer(
 @Composable
 fun IssuerListScreen(onIssuerClick: (String) -> Unit) {
     var searchQuery by remember { mutableStateOf("") }
-    
+    val issuersV2: List<IssuerConfigurationV2> = IssuerRepositoryV2.getAllConfigurations()
+
     val issuers = listOf(
         Issuer(
             id = "Mosip",
@@ -61,28 +64,28 @@ fun IssuerListScreen(onIssuerClick: (String) -> Unit) {
             description = "Download Land Registry credential from Collab environment",
             logoRes = R.drawable.agro_vertias_logo
         )
-        
+
     )
-    
+
     // Filter issuers based on search query
-    val filteredIssuers = if (searchQuery.isEmpty()) {
-        issuers
+   val filteredIssuers = if (searchQuery.isEmpty()) {
+        issuersV2
     } else {
-        issuers.filter { issuer ->
-            issuer.name.contains(searchQuery, ignoreCase = true) ||
-            issuer.description.contains(searchQuery, ignoreCase = true)
+        issuersV2.filter { issuer ->
+            issuer.display.name.contains(searchQuery, ignoreCase = true) ||
+            issuer.display.description.contains(searchQuery, ignoreCase = true)
         }
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { 
+                title = {
                     Text(
                         "Add new card",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
-                    ) 
+                    )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface
@@ -119,7 +122,7 @@ fun IssuerListScreen(onIssuerClick: (String) -> Unit) {
                 items(filteredIssuers) { issuer ->
                     IssuerCard(issuer = issuer, onClick = { onIssuerClick(issuer.id) })
                 }
-                
+
                 // Show "No results" message if search yields nothing
                 if (filteredIssuers.isEmpty() && searchQuery.isNotEmpty()) {
                     item {
@@ -141,6 +144,57 @@ fun IssuerListScreen(onIssuerClick: (String) -> Unit) {
         }
     }
 }
+
+@Composable
+fun IssuerCard(issuer: IssuerConfigurationV2, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        border = BorderStroke(1.dp, Color.LightGray),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Issuer Logo
+            Image(
+                painter = painterResource(id = issuer.display.logo.url),
+                contentDescription = "${issuer.display.name} Logo",
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(2.dp),
+                contentScale = ContentScale.Fit
+            )
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            // Issuer Info
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = issuer.display.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = issuer.display.description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray,
+                    fontSize = 11.sp
+                )
+            }
+        }
+    }
+}
+
 
 @Composable
 fun IssuerCard(issuer: Issuer, onClick: () -> Unit) {
