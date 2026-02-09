@@ -6,8 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,7 +20,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.samplecredentialwallet.R
 import com.example.samplecredentialwallet.utils.IssuerConfigurationV2
 import com.example.samplecredentialwallet.utils.IssuerRepositoryV2
 
@@ -39,35 +36,7 @@ fun IssuerListScreen(onIssuerClick: (String) -> Unit) {
     var searchQuery by remember { mutableStateOf("") }
     val issuersV2: List<IssuerConfigurationV2> = IssuerRepositoryV2.getAllConfigurations()
 
-    val issuers = listOf(
-        Issuer(
-            id = "Mosip",
-            name = "Republic of Veridonia National ID Department",
-            description = "Download National ID credential from Collab environment",
-            logoRes = R.drawable.veridonia_logo
-        ),
-        Issuer(
-            id = "StayProtected",
-            name = "StayProtected Insurance",
-            description = "Download insurance credential from Collab environment",
-            logoRes = R.drawable.stay_protected_logo
-        ),
-        Issuer(
-            id = "MosipTAN",
-            name = "Republic of Veridonia Tax Department",
-            description = "Download Tax ID credential from Collab environment",
-            logoRes = R.drawable.tan_logo
-        ),
-        Issuer(
-            id = "Land",
-            name = "AgroVeritas Property & Land Registry",
-            description = "Download Land Registry credential from Collab environment",
-            logoRes = R.drawable.agro_vertias_logo
-        )
-
-    )
-
-    // Filter issuers based on search query
+  // Filter issuers based on search query
    val filteredIssuers = if (searchQuery.isEmpty()) {
         issuersV2
     } else {

@@ -21,7 +21,7 @@ data class IssuerConfigurationV2(
   val clientId: String,
   val redirectUri: String,
   val display: IssuerDisplay,
-  val proxyTokenEndpoint: String
+  val proxyTokenEndpoint: String // Backend token endpoint which communicates with AS token endpoint
 )
 
 object IssuerRepositoryV2 {

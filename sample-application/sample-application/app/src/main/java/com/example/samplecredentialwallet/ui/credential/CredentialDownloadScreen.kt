@@ -1,5 +1,6 @@
 package com.example.samplecredentialwallet.ui.credential
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,7 +24,6 @@ import com.example.samplecredentialwallet.utils.Constants
 import com.example.samplecredentialwallet.utils.CredentialStore
 import com.example.samplecredentialwallet.utils.CredentialVerifier
 import com.example.samplecredentialwallet.utils.SecureKeystoreManager
-import com.example.samplecredentialwallet.utils.EndpointConfig
 import com.example.samplecredentialwallet.utils.IssuerRepositoryV2
 import com.nimbusds.jose.JOSEObjectType
 import com.nimbusds.jose.JWSAlgorithm
@@ -46,6 +46,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withTimeout
 import org.json.JSONObject
+import java.lang.RuntimeException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
@@ -165,11 +166,14 @@ fun CredentialDownloadScreen(
                                 loadingMessage.value = "Exchanging tokens..."
                               }
 
+                              val selectedIssuer = IssuerRepositoryV2.getConfiguration(Constants.selectedIssuer ?: "")
+
+                              if(selectedIssuer == null) {
+                                throw RuntimeException("Error : Issuer not available")
+                              }
+
                               // Resolve token endpoint using configuration
-                              val endpoint = EndpointConfig.resolveTokenEndpoint(
-                                tokenRequest.tokenEndpoint,
-                                Constants.credentialIssuerHost
-                              )
+                              val endpoint = selectedIssuer.proxyTokenEndpoint
                               Log.d("TOKEN_EXCHANGE", "Using custom endpoint: $endpoint")
 
                               val response = sendTokenRequest(tokenRequest, endpoint)
@@ -192,7 +196,8 @@ fun CredentialDownloadScreen(
                               withContext(Dispatchers.Main) {
                                 loadingMessage.value = "Generating proof..."
                               }
-                              val proofJwt = signProofJWT(cNonce, issuer, isTrusted = true, context = context)
+                              //TODO: Check if isTrusted is required?
+                              val proofJwt = signProofJWT(cNonce, issuer, context = context)
                               proofJwt
                             }
                           )
@@ -543,10 +548,9 @@ suspend fun handleAuthorizationFlowV2(
 }
 
 private fun signProofJWT(
-    cNonce: String?,
-    issuer: String,
-    isTrusted: Boolean,
-    context: android.content.Context
+  cNonce: String?,
+  issuer: String,
+  context: Context
 ): String {
   val selectedIssuer = IssuerRepositoryV2.getConfiguration(Constants.selectedIssuer ?: "")
   if(selectedIssuer == null) {
