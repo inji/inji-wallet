@@ -93,7 +93,6 @@ fun AuthWebViewScreen(
 
                                 if (code != null) {
                                     Log.d("AuthWebView", "Completing auth flow with code")
-                                    AuthCodeHolder.complete(code)
                                     AuthCodeHolder.completeV2(queryParams)
 
                                     isLoading = true
