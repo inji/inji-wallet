@@ -69,7 +69,6 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendVPTokenSigningResultFromJS(ReadableArray vpTokenSigningResults) {
       List<VPTokenSigningResultV2> formattedVPTokenSigningResults = OVPUtils.parseVPTokenSigningResultV2(vpTokenSigningResults);
-      System.out.println("Formatted VP Token Signing Results: " + formattedVPTokenSigningResults);
       VCIClientCallbackBridge.completeSignDataForVP(formattedVPTokenSigningResults);
     }
 

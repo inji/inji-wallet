@@ -186,12 +186,12 @@ export const signDataForVpPreparationV2 = async (
   unSignedVpTokens: Array<UnsignedVPTokenV2>,
   context: any,
 ): Promise<VPTokenSigningResultsV2> => {
-  let privateKey: string;
-  let keyType: KeyTypes;
-  let signature: string | undefined = '';
-  console.log("Signing VP Tokens:", unSignedVpTokens);
+
 
   const result : Promise<VPTokenSigningResultV2[]> = unSignedVpTokens.map(async (unsignedVPToken) => {
+    let privateKey: string;
+    let keyType: KeyTypes;
+    let signature: string | undefined = '';
     const formatType = unsignedVPToken.format;
     let payload: string = unsignedVPToken.dataToSign;
     const signatureAlgorithm: string = unsignedVPToken.signatureAlgorithm;
@@ -223,7 +223,6 @@ export const signDataForVpPreparationV2 = async (
             KeyTypes.ES256,
           );
           if (signature) {
-            // vpTokenSigningResults.push({signedData: signature});
             return {signedData: signature} as VPTokenSigningResultV2;
           } else {
             throw new Error(
@@ -237,7 +236,7 @@ export const signDataForVpPreparationV2 = async (
       case VCFormat.vc_sd_jwt.valueOf():
       case VCFormat.dc_sd_jwt.valueOf():
         keyType = JWT_ALG_TO_KEY_TYPE[signatureAlgorithm as keyof typeof JWT_ALG_TO_KEY_TYPE];
-
+        
         if (!keyType) {
           throw new Error(`Unsupported signature algorithm: ${signatureAlgorithm}`);
         }
@@ -266,6 +265,5 @@ export const signDataForVpPreparationV2 = async (
   });
 
   const vpTokenSigningResults = await Promise.all(result);
-  console.log("VP Token Signing Results:", vpTokenSigningResults);
   return vpTokenSigningResults as VPTokenSigningResultsV2;
 };

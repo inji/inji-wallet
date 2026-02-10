@@ -554,10 +554,6 @@ export const IssuersActions = (model: any) => {
 
     sendSignedVP: (context, event) => {
       const vpTokenSigningResult = event.signedVPToken.data;
-      console.log(
-        'Sending signed VP Token for issuance authorization:',
-        vpTokenSigningResult,
-      );
       VciClient.getInstance().sendSignedVP(vpTokenSigningResult);
     },
 
