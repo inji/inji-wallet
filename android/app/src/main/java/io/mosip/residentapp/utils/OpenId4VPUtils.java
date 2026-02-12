@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
+import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResultV2;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.ldp.LdpVPTokenSigningResult;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.DeviceAuthentication;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.MdocVPTokenSigningResult;
@@ -29,7 +30,7 @@ import io.mosip.openID4VP.constants.FormatType;
 import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
 import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
 
-public class OVPUtils {
+public class OpenId4VPUtils {
   public static Map<String, Map<FormatType, List<Object>>> parseSelectedVCs(ReadableMap selectedVCs) {
     if (selectedVCs == null) {
       return Collections.emptyMap();
@@ -87,8 +88,36 @@ public class OVPUtils {
     return formattedMetadata;
   }
 
+  public static List<VPTokenSigningResultV2> parseVPTokenSigningResultV2(
+      ReadableArray vpTokenSigningResults) {
+
+    if (vpTokenSigningResults == null) {
+      return Collections.emptyList();
+    }
+
+    List<VPTokenSigningResultV2> formattedVpTokenSigningResults = new ArrayList<>();
+
+    for (int i = 0; i < vpTokenSigningResults.size(); i++) {
+
+      ReadableMap vpTokenSigningResultMap = vpTokenSigningResults.getMap(i);
+
+      if (vpTokenSigningResultMap == null
+          || !vpTokenSigningResultMap.hasKey("signedData")
+          || vpTokenSigningResultMap.isNull("signedData")) {
+        continue;
+      }
+
+      String signedData = vpTokenSigningResultMap.getString("signedData");
+
+      formattedVpTokenSigningResults.add(
+          new VPTokenSigningResultV2(signedData));
+    }
+
+    return formattedVpTokenSigningResults;
+  }
+
   private static List<Object> convertReadableArrayToListOfCredential(FormatType formatType,
-                                                                     ReadableArray credentialList) {
+      ReadableArray credentialList) {
     switch (formatType) {
       case LDP_VC: {
         List<Object> ldpVcList = new ArrayList<>();
@@ -188,9 +217,9 @@ public class OVPUtils {
   }
 
   public static OpenID4VPExceptions convertToOpenID4VPException(
-    String errorCode,
-    String message,
-    String moduleName) {
+      String errorCode,
+      String message,
+      String moduleName) {
     switch (errorCode) {
       case ACCESS_DENIED:
         return new OpenID4VPExceptions.AccessDenied(message, moduleName);
