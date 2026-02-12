@@ -52,15 +52,15 @@ import io.mosip.testrig.apirig.utils.PartnerRegistration;
  *
  * @author Vignesh
  */
-public class MosipTestRunner {
-	private static final Logger LOGGER = Logger.getLogger(MosipTestRunner.class);
+public class InjiTestRunner {
+	private static final Logger LOGGER = Logger.getLogger(InjiTestRunner.class);
 	private static String cachedPath = null;
-	public static String jarUrl = MosipTestRunner.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+	public static String jarUrl = InjiTestRunner.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 	public static Map<String, String> knownIssues = new HashMap<>();
 	public static OTPListener otpListener = null;
 	
 	/**
-	 * C Main method to start mosip test execution
+	 * C Main method to start inji test execution
 	 */
 
 	public static void main(String[] args) {
@@ -121,7 +121,7 @@ public class MosipTestRunner {
 		if (InjiWalletConfigManager.IsDebugEnabled())
 			LOGGER.setLevel(Level.ALL);
 		else
-			LOGGER.info("Test Framework for Mosip Inji Mobile Initialized");
+			LOGGER.info("Test Framework for Inji Mobile Initialized");
 		BaseTestCase.initialize();
 		LOGGER.info("Done with BeforeSuite and test case setup! su TEST EXECUTION!\n\n");
 
@@ -152,7 +152,7 @@ public class MosipTestRunner {
 	}
 
 	/**
-	 * The method to start mosip testng execution
+	 * The method to start inji testng execution
 	 *
 	 * @throws IOException
 	 */
@@ -165,7 +165,7 @@ public class MosipTestRunner {
 			LOGGER.info("IDE :" + homeDir);
 		} else {
 			File dir = new File(System.getProperty("user.dir"));
-			homeDir = new File(dir.getParent() + "/mosip/testNgXmlFiles");
+			homeDir = new File(dir.getParent() + "/inji/testNgXmlFiles");
 			LOGGER.info("ELSE :" + homeDir);
 		}
 
@@ -317,7 +317,7 @@ public class MosipTestRunner {
 		if (getRunType().equalsIgnoreCase("JAR")) {
 			path = new File(jarUrl).getParentFile().getAbsolutePath() + "/MosipTestResource/MosipTemporaryTestResource";
 		} else if (getRunType().equalsIgnoreCase("IDE")) {
-			path = new File(MosipTestRunner.class.getClassLoader().getResource("").getPath()).getAbsolutePath()
+			path = new File(InjiTestRunner.class.getClassLoader().getResource("").getPath()).getAbsolutePath()
 					+ "/MosipTestResource/MosipTemporaryTestResource";
 			if (path.contains(GlobalConstants.TESTCLASSES))
 				path = path.replace(GlobalConstants.TESTCLASSES, "classes");
@@ -357,7 +357,7 @@ public class MosipTestRunner {
 	 * @return
 	 */
 	public static String getRunType() {
-		if (MosipTestRunner.class.getResource("MosipTestRunner.class").getPath().contains(".jar"))
+		if (InjiTestRunner.class.getResource("InjiTestRunner.class").getPath().contains(".jar"))
 			return "JAR";
 		else
 			return "IDE";
