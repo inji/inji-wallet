@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResultV2;
-import io.mosip.residentapp.utils.OVPUtils;
+import io.mosip.residentapp.utils.OpenId4VPUtils;
 import io.mosip.vciclient.VCIClient;
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata;
 import io.mosip.vciclient.credential.response.CredentialResponse;
@@ -63,12 +63,12 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void sendSelectedCredentialsForVPSharingFromJS(ReadableMap selectedVCs) {
-        VCIClientCallbackBridge.completePresentationRequest(OVPUtils.parseSelectedVCs(selectedVCs));
+        VCIClientCallbackBridge.completePresentationRequest(OpenId4VPUtils.parseSelectedVCs(selectedVCs));
     }
 
     @ReactMethod
     public void sendVPTokenSigningResultFromJS(ReadableArray vpTokenSigningResults) {
-      List<VPTokenSigningResultV2> formattedVPTokenSigningResults = OVPUtils.parseVPTokenSigningResultV2(vpTokenSigningResults);
+      List<VPTokenSigningResultV2> formattedVPTokenSigningResults = OpenId4VPUtils.parseVPTokenSigningResultV2(vpTokenSigningResults);
       VCIClientCallbackBridge.completeSignDataForVP(formattedVPTokenSigningResults);
     }
 
@@ -161,7 +161,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     public void abortPresentationFlowFromJS(String code, String message) {
         Log.d(TAG, "abortPresentationFlowFromJS called with code=" + code);
 
-        OpenID4VPExceptions exception = OVPUtils.convertToOpenID4VPException(
+        OpenID4VPExceptions exception = OpenId4VPUtils.convertToOpenID4VPException(
                 code,
                 message,
                 getName());

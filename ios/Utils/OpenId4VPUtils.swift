@@ -2,7 +2,7 @@ import Foundation
 import OpenID4VP
 import React
 
-class OVPUtils: NSObject {
+class OpenId4VPUtils: NSObject {
   static func toJsonString(jsonObject: AuthorizationRequest) throws -> String {
     let encoder = JSONEncoder()
     encoder.keyEncodingStrategy = .convertToSnakeCase
@@ -111,8 +111,11 @@ class OVPUtils: NSObject {
       return []
     }
     
-    let vpTokenSigningResultsData: [VPTokenSigningResultV2] = vpTokenSigningResults.map { vpTokenSigningResult in
-      VPTokenSigningResultV2(signedData: vpTokenSigningResult["signedData"] as? String ?? "")
+    let vpTokenSigningResultsData: [VPTokenSigningResultV2] = try vpTokenSigningResults.map { vpTokenSigningResult in
+      guard let signedData = vpTokenSigningResult["signedData"] as? String else {  
+        throw ParseError(message: "Invalid VP token signing result: missing or invalid 'signedData'")  
+      }  
+      return VPTokenSigningResultV2(signedData: signedData)
     }
       
     return vpTokenSigningResultsData

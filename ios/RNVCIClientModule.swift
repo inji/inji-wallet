@@ -233,7 +233,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   private func getSelectedCredentialsContinuationHook(vpRequest: AuthorizationRequest) async throws
     -> [String: [FormatType: [OpenID4VPAnyCodable]]]
   {
-    let vpRequestJson = try OVPUtils.toJsonString(jsonObject: vpRequest)
+    let vpRequestJson = try OpenId4VPUtils.toJsonString(jsonObject: vpRequest)
     if let bridge = RCTBridge.current() {
       bridge.eventDispatcher().sendAppEvent(
         withName: "onPresentationRequest",
@@ -253,13 +253,13 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
       return [:]
     }
 
-    return OVPUtils.parseSelectedVCs(credentialsMap)
+    return OpenId4VPUtils.parseSelectedVCs(credentialsMap)
   }
 
   private func getSignVerifiablePresentationContinuationHook(
     unsignedVPTokens: [UnsignedVPTokenV2]
   ) async throws -> [VPTokenSigningResultV2] {
-    let unsignedVPTokensJson = try OVPUtils.toJson(unsignedVPTokens)
+    let unsignedVPTokensJson = try OpenId4VPUtils.toJson(unsignedVPTokens)
     if let bridge = RCTBridge.current() {
       bridge.eventDispatcher().sendAppEvent(
         withName: "onRequestSignedVPToken",
@@ -280,7 +280,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
       )
     }
 
-    return try OVPUtils.parseVPTokenSigningResultV2(signedVPTokens)
+    return try OpenId4VPUtils.parseVPTokenSigningResultV2(signedVPTokens)
   }
 
   private func getTokenResponseHook(tokenRequest: TokenRequest) async throws -> TokenResponse {
@@ -351,7 +351,6 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
   @objc(sendVPTokenSigningResultFromJS:)
   func sendVPTokenSigningResultFromJS(_ vpTokenSigningResult: NSArray) {
-    print("vpTokenSigningResult - ",vpTokenSigningResult)
     pendingSignVPContinuation?.resume(returning: vpTokenSigningResult)
     pendingSignVPContinuation = nil
   }
@@ -395,7 +394,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
   @objc(abortPresentationFlowFromJS:message:)
   func abortPresentationFlowFromJS(_ code: String, message: String) {
-    let error = OVPUtils.convertToOpenID4VPException(errorCode: code, error: message, moduleName: Self.moduleName())
+    let error = OpenId4VPUtils.convertToOpenID4VPException(errorCode: code, error: message, moduleName: Self.moduleName())
 
     pendingSelectedCredentialsContinuation?.resume(throwing: error)
     pendingSignVPContinuation?.resume(throwing: error)

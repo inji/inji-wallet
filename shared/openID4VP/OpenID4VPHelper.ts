@@ -211,7 +211,6 @@ export const signDataForVpPreparationV2 = async (
           signatureAlgorithm,
         );
         return {signedData: signature} as VPTokenSigningResultV2;
-        // vpTokenSigningResults.push({signedData: signature});
         break;
 
       case VCFormat.mso_mdoc.valueOf():
@@ -250,14 +249,12 @@ export const signDataForVpPreparationV2 = async (
 
         signature = await createSignature(privateKey, payload, keyType);
         if (signature) {
-          // vpTokenSigningResults.push({signedData: signature});
           return {signedData: signature} as VPTokenSigningResultV2;
         } else {
           throw new Error(
             `Failed to create signature for VP Token of format: ${formatType}`,
           );
         }
-        break;
 
       default:
         throw new Error(`Unsupported VP Token format: ${formatType}`);
