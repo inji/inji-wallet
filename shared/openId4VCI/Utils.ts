@@ -334,7 +334,6 @@ export async function constructProofJWT(
       ? {kid: `did:jwk:${base64url(JSON.stringify(jwk))}#0`}
       : {jwk}),
   };
-
   const jwtPayload = {
     ...(client_id ? {iss: client_id} : {}),
     nonce,

@@ -1,14 +1,15 @@
 package io.mosip.residentapp
 
+import android.util.Log
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.google.gson.Gson
 import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest
-import io.mosip.openID4VP.authorizationResponse.toJsonString
-import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken
-import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult
+import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPTokenV2
+import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResultV2
 import io.mosip.openID4VP.constants.FormatType
 import io.mosip.residentapp.utils.JsonConverter
 import io.mosip.vciclient.token.TokenResponse
@@ -24,7 +25,7 @@ object VCIClientCallbackBridge {
     private var deferredPresentationRequest:
             CompletableDeferred<Map<String, Map<FormatType, List<Any>>>>? =
             null
-    private var deferredSignedVPToken: CompletableDeferred<Map<FormatType, VPTokenSigningResult>>? =
+    private var deferredSignedVPToken: CompletableDeferred<List<VPTokenSigningResultV2>>? =
             null
     private var deferredIssuerTrustResponse: CompletableDeferred<Boolean>? = null
     private var deferredTokenResponse: CompletableDeferred<TokenResponse>? = null
@@ -63,25 +64,37 @@ object VCIClientCallbackBridge {
                 ?: throw IllegalStateException("No selected credentials callback was set")
     }
 
-    fun createSignedVPTokenDeferred(): CompletableDeferred<Map<FormatType, VPTokenSigningResult>> {
+    fun createSignedVPTokenDeferred(): CompletableDeferred<List<VPTokenSigningResultV2>> {
         deferredSignedVPToken = CompletableDeferred()
         return deferredSignedVPToken!!
     }
 
     fun emitSignedVPTokenRequest(
             context: ReactApplicationContext,
-            payload: Map<FormatType, UnsignedVPToken>
+            payload: List<UnsignedVPTokenV2>
     ) {
-        val params =
-                Arguments.createMap().apply {
-                    putString("vpTokenSigningRequest", payload.toJsonString())
-                }
-        android.util.Log.d(TAG, "Emitting signed VP token request to JS")
+      val unsignedVPTokens: WritableArray? = Arguments.createArray().apply {
+        payload.forEach { v ->
+          pushMap(
+            Arguments.createMap().apply {
+              putString("dataToSign", v.dataToSign)
+              putString("signatureAlgorithm", v.signatureAlgorithm)
+              putString("holderKeyReference", v.holderKeyReference)
+              putString("format", v.format.value)
+            }
+          )
+        }
+      }
+      val params =
+        Arguments.createMap().apply {
+          putArray("vpTokenSigningRequest", unsignedVPTokens)
+        }
+        Log.d(TAG, "Emitting signed VP token request to JS")
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("onRequestSignedVPToken", params)
     }
 
-    suspend fun awaitSignedVPToken(): Map<FormatType, VPTokenSigningResult> {
+    suspend fun awaitSignedVPToken(): List<VPTokenSigningResultV2> {
         return deferredSignedVPToken?.await()
                 ?: throw IllegalStateException("No signed VP token callback was set")
     }
@@ -191,14 +204,14 @@ object VCIClientCallbackBridge {
     @JvmStatic
     fun completePresentationRequest(selectedVCs: Map<String, Map<FormatType, List<Object>>>) {
         deferredPresentationRequest?.complete(selectedVCs)
-        android.util.Log.d(TAG, "Completed presentation request")
+        Log.d(TAG, "Completed presentation request")
         deferredPresentationRequest = null
     }
 
     @JvmStatic
-    fun completeSignDataForVP(vpTokenSigningResult: MutableMap<FormatType, VPTokenSigningResult>) {
-        deferredSignedVPToken?.complete(vpTokenSigningResult)
-        android.util.Log.d(TAG, "Completed signed VP token")
+    fun completeSignDataForVP(vpTokenSigningResults: List<VPTokenSigningResultV2>) {
+        deferredSignedVPToken?.complete(vpTokenSigningResults)
+        Log.d(TAG, "Completed signed VP token")
         deferredSignedVPToken = null
     }
 

@@ -217,6 +217,12 @@ export const VCMetaActions = (model: any) => {
         context.myVcsMetadata.filter(
           (vc: VCMetadata) => !vc.equals(event.vcMetadata),
         ),
+      myVcs: (context, event) => {
+        const updated = {...context.myVcs};
+        const key = VCMetadata.fromVC(event.vcMetadata).getVcKey();
+        delete updated[key];
+        return updated;
+      },
     }),
 
     removeDownloadingFailedVcsFromMyVcs: model.assign({

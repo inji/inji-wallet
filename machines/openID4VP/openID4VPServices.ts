@@ -8,6 +8,7 @@ import {getVerifierKey, VCShareFlowType} from '../../shared/Utils';
 import {
   isClientValidationRequired,
   signDataForVpPreparation,
+  signDataForVpPreparationV2,
 } from '../../shared/openID4VP/OpenID4VPHelper';
 import {NativeModules} from 'react-native';
 import VciClient from '../../shared/vciClient/VciClient';
@@ -98,7 +99,7 @@ export const openID4VPServices = () => {
     },
 
     signVP: (context: any) => async () => {
-      return await signDataForVpPreparation(context.unsignedVPToken, context);
+      return await signDataForVpPreparationV2(context.unsignedVPToken, context);
     },
 
     sendVP: (context: any) => async () => {

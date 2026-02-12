@@ -76,7 +76,6 @@ export const openID4VPActions = (model: any) => {
 
     setUnsignedVPToken: model.assign({
       unsignedVPToken: (_, event) => {
-        console.log('event in setUnsignedVPToken action:', event);
         try {
           return parseJSON(event.data);
         } catch (error) {

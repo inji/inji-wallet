@@ -47,6 +47,7 @@
 		9CCC57772E9D7C7000669DB7 /* ios-tuvali-library in Frameworks */ = {isa = PBXBuildFile; productRef = 9CCC57762E9D7C7000669DB7 /* ios-tuvali-library */; };
 		9CCCA19E2CF87A8400D5A461 /* securekeystore in Frameworks */ = {isa = PBXBuildFile; productRef = 9CCCA19D2CF87A8400D5A461 /* securekeystore */; };
 		9CCDB2E02EAB63D9009E8E2B /* RNSecureKeystoreModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CCDB2DF2EAB63C9009E8E2B /* RNSecureKeystoreModule.swift */; };
+		9CE2B71D2F3E03B8001A3231 /* OpenId4VPUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2B71C2F3E03B8001A3231 /* OpenId4VPUtils.swift */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		C339223B2E79A536004A01EC /* InjiVcRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = C339223A2E79A536004A01EC /* InjiVcRenderer */; };
@@ -57,7 +58,6 @@
 		E6D946DA2EFAA2FE004DA688 /* CredentialsVerifierConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946C62EFAA2FE004DA688 /* CredentialsVerifierConstant.swift */; };
 		E6D946DB2EFAA2FE004DA688 /* NetworkManagerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946D42EFAA2FE004DA688 /* NetworkManagerClient.swift */; };
 		E6D946DC2EFAA2FE004DA688 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946CF2EFAA2FE004DA688 /* Data.swift */; };
-		E6D946DD2EFAA2FE004DA688 /* OVPUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946C02EFAA2FE004DA688 /* OVPUtils.swift */; };
 		E6D946DE2EFAA2FE004DA688 /* VerifiableCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946CD2EFAA2FE004DA688 /* VerifiableCredential.swift */; };
 		E6D946DF2EFAA2FE004DA688 /* VciBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946C32EFAA2FE004DA688 /* VciBridge.swift */; };
 		E6D946E02EFAA2FE004DA688 /* CredentialsVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946D82EFAA2FE004DA688 /* CredentialsVerifier.swift */; };
@@ -68,7 +68,6 @@
 		E6D946E52EFAA2FE004DA688 /* CredentialFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946C52EFAA2FE004DA688 /* CredentialFormat.swift */; };
 		E6D946E62EFAA2FE004DA688 /* RevocationCheckExceptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946D22EFAA2FE004DA688 /* RevocationCheckExceptions.swift */; };
 		E6D946E72EFAA2FE004DA688 /* CredentialsVerifierFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946CC2EFAA2FE004DA688 /* CredentialsVerifierFactory.swift */; };
-		E6D946ED2EFAA332004DA688 /* OVPUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946E82EFAA332004DA688 /* OVPUtils.swift */; };
 		E6D946EE2EFAA332004DA688 /* VciBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946EB2EFAA332004DA688 /* VciBridge.swift */; };
 		E86208152C0335C5007C3E24 /* RNVCIClientModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86208142C0335C5007C3E24 /* RNVCIClientModule.swift */; };
 		E86208172C0335EC007C3E24 /* RNVCIClientModule.m in Sources */ = {isa = PBXBuildFile; fileRef = E86208162C0335EC007C3E24 /* RNVCIClientModule.m */; };
@@ -136,12 +135,12 @@
 		9C4850522C3E59E2002ECBD5 /* RNEventEmitterProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNEventEmitterProtocol.swift; path = Inji/RNEventEmitterProtocol.swift; sourceTree = "<group>"; };
 		9C7CDF422C7CC13500243A9A /* RNSecureKeystoreModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNSecureKeystoreModule.m; sourceTree = "<group>"; };
 		9CCDB2DF2EAB63C9009E8E2B /* RNSecureKeystoreModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSecureKeystoreModule.swift; sourceTree = "<group>"; };
+		9CE2B71C2F3E03B8001A3231 /* OpenId4VPUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenId4VPUtils.swift; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = Inji/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		C3F6A9DC2E66188D006C9904 /* RNInjiVcRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNInjiVcRenderer.swift; sourceTree = "<group>"; };
 		C3F6A9DE2E6618F6006C9904 /* RNInjiVcRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNInjiVcRenderer.m; sourceTree = "<group>"; };
 		D98B96A488E54CBDB286B26F /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "Inji/noop-file.swift"; sourceTree = "<group>"; };
-		E6D946C02EFAA2FE004DA688 /* OVPUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OVPUtils.swift; sourceTree = "<group>"; };
 		E6D946C32EFAA2FE004DA688 /* VciBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VciBridge.swift; sourceTree = "<group>"; };
 		E6D946C52EFAA2FE004DA688 /* CredentialFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialFormat.swift; sourceTree = "<group>"; };
 		E6D946C62EFAA2FE004DA688 /* CredentialsVerifierConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsVerifierConstant.swift; sourceTree = "<group>"; };
@@ -155,7 +154,6 @@
 		E6D946D42EFAA2FE004DA688 /* NetworkManagerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerClient.swift; sourceTree = "<group>"; };
 		E6D946D62EFAA2FE004DA688 /* base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = base64.swift; sourceTree = "<group>"; };
 		E6D946D82EFAA2FE004DA688 /* CredentialsVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsVerifier.swift; sourceTree = "<group>"; };
-		E6D946E82EFAA332004DA688 /* OVPUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OVPUtils.swift; sourceTree = "<group>"; };
 		E6D946EB2EFAA332004DA688 /* VciBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VciBridge.swift; sourceTree = "<group>"; };
 		E86208142C0335C5007C3E24 /* RNVCIClientModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNVCIClientModule.swift; sourceTree = "<group>"; };
 		E86208162C0335EC007C3E24 /* RNVCIClientModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNVCIClientModule.m; sourceTree = "<group>"; };
@@ -424,7 +422,7 @@
 		E6D946C12EFAA2FE004DA688 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				E6D946C02EFAA2FE004DA688 /* OVPUtils.swift */,
+				9CE2B71C2F3E03B8001A3231 /* OpenId4VPUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -530,7 +528,6 @@
 		E6D946E92EFAA332004DA688 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				E6D946E82EFAA332004DA688 /* OVPUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -860,6 +857,7 @@
 				9C48504F2C3E59B5002ECBD5 /* RNVersionModule.swift in Sources */,
 				9C3BD80E2EA8C8DE00101656 /* RNVCVerifierModule.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				9CE2B71D2F3E03B8001A3231 /* OpenId4VPUtils.swift in Sources */,
 				9C0E86BB2BEE36C300E9F9F6 /* RNPixelpassModule.m in Sources */,
 				E86208152C0335C5007C3E24 /* RNVCIClientModule.swift in Sources */,
 				9C0E86B52BEE357A00E9F9F6 /* RNPixelpassModule.swift in Sources */,
@@ -871,7 +869,6 @@
 				E6D946DA2EFAA2FE004DA688 /* CredentialsVerifierConstant.swift in Sources */,
 				E6D946DB2EFAA2FE004DA688 /* NetworkManagerClient.swift in Sources */,
 				E6D946DC2EFAA2FE004DA688 /* Data.swift in Sources */,
-				E6D946DD2EFAA2FE004DA688 /* OVPUtils.swift in Sources */,
 				E6D946DE2EFAA2FE004DA688 /* VerifiableCredential.swift in Sources */,
 				E6D946DF2EFAA2FE004DA688 /* VciBridge.swift in Sources */,
 				E6D946E02EFAA2FE004DA688 /* CredentialsVerifier.swift in Sources */,
@@ -885,7 +882,6 @@
 				E86208172C0335EC007C3E24 /* RNVCIClientModule.m in Sources */,
 				9C48504E2C3E59B5002ECBD5 /* RNEventEmitter.swift in Sources */,
 				9C48504B2C3E59B5002ECBD5 /* RNWalletModule.swift in Sources */,
-				E6D946ED2EFAA332004DA688 /* OVPUtils.swift in Sources */,
 				E6D946EE2EFAA332004DA688 /* VciBridge.swift in Sources */,
 				1EED69F92DA913D30042EAFC /* IntentData.swift in Sources */,
 				9C48504D2C3E59B5002ECBD5 /* RNWalletModule.m in Sources */,
@@ -1181,17 +1177,17 @@
 		};
 		C3F18B182E320C85007DBE73 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mosip/inji-openid4vp-ios-swift.git";
+			repositoryURL = "https://github.com/inji/inji-openid4vp-ios-swift.git";
 			requirement = {
-				branch = develop;
+				branch = "release-0.7.x";
 				kind = branch;
 			};
 		};
 		C3F18B1B2E320C9A007DBE73 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mosip/inji-vci-client-ios-swift";
+			repositoryURL = "https://github.com/inji/inji-vci-client-ios-swift";
 			requirement = {
-				branch = develop;
+				branch = "release-0.7.x";
 				kind = branch;
 			};
 		};

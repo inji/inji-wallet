@@ -2,14 +2,13 @@ package io.mosip.residentapp
 
 import com.facebook.react.bridge.ReactApplicationContext
 import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest
-import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken
-import io.mosip.openID4VP.constants.FormatType
+import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPTokenV2
 import io.mosip.vciclient.VCIClient
 import io.mosip.vciclient.authorizationCodeFlow.AuthorizationMethod
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata
-import io.mosip.vciclient.constants.SelectCredentialsForPresentationCallback
 import io.mosip.vciclient.constants.OpenWebPageCallback
 import io.mosip.vciclient.constants.ProofJwtCallback
+import io.mosip.vciclient.constants.SelectCredentialsForPresentationCallback
 import io.mosip.vciclient.constants.SignVerifiablePresentationCallback
 import io.mosip.vciclient.credential.response.CredentialResponse
 import io.mosip.vciclient.token.TokenRequest
@@ -30,7 +29,7 @@ object VCIClientBridge {
             signatureSuite: String?
     ): CredentialResponse = runBlocking {
       //TODO: change method name to fetchCredentialUsingCredentialOffer
-        client.fetchCredentialByCredentialOffer(
+        client.fetchCredentialUsingCredentialOffer(
                 credentialOffer = offer,
                 clientMetadata = clientMetaData,
                 getTxCode = getTxCodeCallback(),
@@ -67,7 +66,7 @@ object VCIClientBridge {
                             selectCredentialsForPresentation =
                                     selectCredentialsForPresentationCallback(),
                             signVerifiablePresentation = signVerifiablePresentationCallback(),
-                            signatureSuite = signatureSuite
+                            ldpVpSignatureSuite = signatureSuite
                     ),
                     // Uncomment when you want redirect-to-web to be enabled in V2 flow
                     AuthorizationMethod.RedirectToWeb(openWebPage = openWebPageCallback())
@@ -81,7 +80,7 @@ object VCIClientBridge {
             }
 
     private fun signVerifiablePresentationCallback(): SignVerifiablePresentationCallback =
-            { payload: Map<FormatType, UnsignedVPToken> ->
+            { payload: List<UnsignedVPTokenV2> ->
                 VCIClientCallbackBridge.createSignedVPTokenDeferred()
                 VCIClientCallbackBridge.emitSignedVPTokenRequest(reactContext, payload)
                 VCIClientCallbackBridge.awaitSignedVPToken()

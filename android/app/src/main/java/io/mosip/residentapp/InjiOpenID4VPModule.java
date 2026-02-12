@@ -5,8 +5,8 @@ import static io.mosip.openID4VP.constants.FormatType.DC_SD_JWT;
 import static io.mosip.openID4VP.constants.FormatType.LDP_VC;
 import static io.mosip.openID4VP.constants.FormatType.MSO_MDOC;
 import static io.mosip.openID4VP.constants.FormatType.VC_SD_JWT;
-import static io.mosip.residentapp.utils.OVPUtils.parseSelectedVCs;
-import static io.mosip.residentapp.utils.OVPUtils.parseVPTokenSigningResult;
+import static io.mosip.residentapp.utils.OpenId4VPUtils.parseSelectedVCs;
+import static io.mosip.residentapp.utils.OpenId4VPUtils.parseVPTokenSigningResult;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -152,7 +152,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendErrorToVerifier(String errorMessage, String errorCode, Promise promise) {
         try {
-            OpenID4VPExceptions exception = OVPUtils.convertToOpenID4VPException(
+            OpenID4VPExceptions exception = OpenId4VPUtils.convertToOpenID4VPException(
                     errorCode,
                     errorMessage,
                     MODULE_NAME);

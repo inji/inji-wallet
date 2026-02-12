@@ -43,7 +43,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           shouldValidateClient: shouldValidateClient
         )
 
-        let response = try OVPUtils.toJsonString(jsonObject: authenticationResponse)
+        let response = try OpenId4VPUtils.toJsonString(jsonObject: authenticationResponse)
         resolve(response)
       } catch {
         rejectWithOpenID4VPError(error, reject: reject)
@@ -65,7 +65,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           return
         }
 
-        let formattedCredentialsMap: [String: [FormatType: [AnyCodable]]] = OVPUtils.parseSelectedVCs(credentialsMap)
+        let formattedCredentialsMap: [String: [FormatType: [AnyCodable]]] = OpenId4VPUtils.parseSelectedVCs(credentialsMap)
 
         let response = try await openID4VP?.constructUnsignedVPToken(
           verifiableCredentials: formattedCredentialsMap,
@@ -73,7 +73,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           signatureSuite: signatureSuite
         )
         
-        let parsedResponse = try OVPUtils.toJson(response)
+        let parsedResponse = try OpenId4VPUtils.toJson(response)
         resolve(parsedResponse)
       } catch {
         rejectWithOpenID4VPError(error, reject: reject)
@@ -89,7 +89,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
       do {
         let formattedVPTokenSigningResults: [FormatType: VPTokenSigningResult]
         do {
-          formattedVPTokenSigningResults = try OVPUtils.parseVPTokenSigningResult(vpTokenSigningResults)
+          formattedVPTokenSigningResults = try OpenId4VPUtils.parseVPTokenSigningResult(vpTokenSigningResults)
         } catch {
           reject("OPENID4VP", error.localizedDescription, nil)
           return
@@ -108,7 +108,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
                            resolver resolve: @escaping RCTPromiseResolveBlock,
                            rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
-      let exception: OpenID4VPException = OVPUtils.convertToOpenID4VPException(errorCode: errorCode, error: error, moduleName: Self.moduleName())
+      let exception: OpenID4VPException = OpenId4VPUtils.convertToOpenID4VPException(errorCode: errorCode, error: error, moduleName: Self.moduleName())
       
       do {
         let verifierResponse = try await openID4VP?.sendErrorInfoToVerifier(error: exception)

@@ -2,7 +2,7 @@ import Foundation
 import OpenID4VP
 import React
 
-class OVPUtils: NSObject {
+class OpenId4VPUtils: NSObject {
   static func toJsonString(jsonObject: AuthorizationRequest) throws -> String {
     let encoder = JSONEncoder()
     encoder.keyEncodingStrategy = .convertToSnakeCase
@@ -22,6 +22,19 @@ class OVPUtils: NSObject {
     } else {
       throw ParseError(message: "Failed to serialize JSON")
     }
+  }
+  
+  static func toJson(_ data: [UnsignedVPTokenV2]?) throws -> [[String: Any]] {
+    let encodableUnsignedVPToken : [[String: String]] = data?.map {
+      [
+        "dataToSign": $0.dataToSign,
+        "format": $0.format.rawValue,
+        "holderKeyReference": $0.holderKeyReference,
+        "signatureAlgorithm": $0.signatureAlgorithm
+      ]
+    } ?? []
+    
+    return encodableUnsignedVPToken
   }
   
   static func parseSelectedVCs(_ credentialsMap: [String: [String: [Any]]]) -> [String: [FormatType: [AnyCodable]]] {
@@ -91,6 +104,21 @@ class OVPUtils: NSObject {
     }
     
     return formattedVPTokenSigningResults
+  }
+  
+  static func parseVPTokenSigningResultV2(_ vpTokenSigningResults: [[String: Any]]) throws -> [VPTokenSigningResultV2] {
+    if(vpTokenSigningResults.isEmpty) {
+      return []
+    }
+    
+    let vpTokenSigningResultsData: [VPTokenSigningResultV2] = try vpTokenSigningResults.map { vpTokenSigningResult in
+      guard let signedData = vpTokenSigningResult["signedData"] as? String else {  
+        throw ParseError(message: "Invalid VP token signing result: missing or invalid 'signedData'")  
+      }  
+      return VPTokenSigningResultV2(signedData: signedData)
+    }
+      
+    return vpTokenSigningResultsData
   }
   
   static func convertToOpenID4VPException(errorCode: String, error: String, moduleName: String) -> OpenID4VPException {
