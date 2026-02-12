@@ -108,7 +108,7 @@ fun CredentialDownloadScreen(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                "Credential Type: ${Constants.credentialDisplayName ?: Constants.credentialTypeId}",
+                "Credential Type: ${"FarmerVerifiableCredential"}",
                 style = MaterialTheme.typography.bodyMedium
             )
             Spacer(modifier = Modifier.height(24.dp))
@@ -173,7 +173,7 @@ fun CredentialDownloadScreen(
                               }
 
                               // Resolve token endpoint using configuration
-                              val endpoint = selectedIssuer.proxyTokenEndpoint
+                              val endpoint = selectedIssuer.backendTokenEndpoint
                               Log.d("TOKEN_EXCHANGE", "Using custom endpoint: $endpoint")
 
                               val response = sendTokenRequest(tokenRequest, endpoint)

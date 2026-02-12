@@ -21,7 +21,7 @@ data class IssuerConfigurationV2(
   val clientId: String,
   val redirectUri: String,
   val display: IssuerDisplay,
-  val proxyTokenEndpoint: String // Backend token endpoint which communicates with AS token endpoint
+  val backendTokenEndpoint: String // Backend token endpoint which communicates with AS token endpoint
 )
 
 object IssuerRepositoryV2 {
@@ -41,7 +41,7 @@ object IssuerRepositoryV2 {
         description = "Download Farmer ID Card",
         language = "en"
       ),
-      proxyTokenEndpoint = "https://esignet-mock.collab.mosip.net/v1/esignet/oauth/v2/token"
+      backendTokenEndpoint = "https://api.collab.mosip.net/v1/mimoto/get-token/Farmer"
     )
   )
 
