@@ -7,4 +7,6 @@ object Constants {
     var clientId: String? = null
     var redirectUri: String? = null
     var credentialDisplayName: String? = null
+
+   var selectedCredentialType: String = "FarmerCredential_VCDM2.0"
 }

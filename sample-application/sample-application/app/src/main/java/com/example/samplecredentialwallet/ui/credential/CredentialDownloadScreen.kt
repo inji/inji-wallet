@@ -50,7 +50,6 @@ fun CredentialDownloadScreen(
       Log.e("CredentialDownload", "Keystore initialization failed: ${e.message}", e)
     }
   }
-  val client = VCIClient("demo-123")
 
   val isLoading = remember { mutableStateOf(false) }
   val loadingMessage = remember { mutableStateOf("Downloading Credential...") }
@@ -108,16 +107,9 @@ fun CredentialDownloadScreen(
                   return@withTimeout
                 }
 
-                val clientMetadata = ClientMetadata(
-                  clientId = selectedIssuer.clientId,
-                  redirectUri = selectedIssuer.redirectUri
-                )
-
 
                 val credential = downloadCredential(
-                  client,
                   selectedIssuer,
-                  clientMetadata,
                   loadingMessage,
                   navController,
                   context
