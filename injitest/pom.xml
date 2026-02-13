@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.mosip.inji</groupId>
+    <groupId>io.inji.wallet</groupId>
     <artifactId>inji-wallet</artifactId>
     <version>0.22.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>uitest-inji-wallet</name>
     <description>Project for Inji Mobile UI Automation</description>
-    <url>https://github.com/mosip/inji-wallet</url>
+    <url>https://github.com/inji/inji-wallet</url>
 
     <licenses>
         <license>
@@ -17,17 +17,17 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git://github.com/mosip/inji-wallet.git</connection>
-        <developerConnection>scm:git:ssh://github.com/mosip/inji-wallet.git</developerConnection>
-        <url>https://github.com/mosip/inji-wallet</url>
+        <connection>scm:git:git://github.com/inji/inji-wallet.git</connection>
+        <developerConnection>scm:git:ssh://github.com/inji/inji-wallet.git</developerConnection>
+        <url>https://github.com/inji/inji-wallet</url>
         <tag>HEAD</tag>
     </scm>
     <developers>
         <developer>
             <name>Mosip</name>
             <email>mosip.emailnotifier@gmail.com</email>
-            <organization>io.mosip</organization>
-            <organizationUrl>https://github.com/mosip/inji-wallet</organizationUrl>
+            <organization>io.inji</organization>
+            <organizationUrl>https://github.com/inji/inji-wallet</organizationUrl>
         </developer>
     </developers>
     <repositories>
@@ -280,10 +280,10 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>${jarName}}</finalName>
+                            <finalName>${jarName}</finalName>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>inji.runner.MosipTestRunner</mainClass>
+                                    <mainClass>inji.runner.InjiTestRunner</mainClass>
                                 </transformer>
                             </transformers>
                             <!-- add this to prevent some security issues when
