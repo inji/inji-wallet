@@ -24,6 +24,7 @@ import io.mosip.vciclient.token.TokenResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import java.lang.RuntimeException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
@@ -32,81 +33,61 @@ import java.security.PrivateKey
 import java.security.interfaces.ECPrivateKey
 import java.security.interfaces.ECPublicKey
 import java.security.interfaces.RSAPublicKey
-import java.util.Base64
 import java.util.Date
 
+val client = VCIClient("demo-123")
 
 suspend fun downloadCredential(
-  client: VCIClient,
   selectedIssuer: IssuerConfigurationV2,
-  clientMetadata: ClientMetadata,
   loadingMessage: MutableState<String>,
   navController: NavController,
   context: Context
 ): CredentialResponse {
 
-  val credential = client.fetchCredentialFromTrustedIssuer(
+  val credentialResponse = client.fetchCredentialFromTrustedIssuer(
     credentialIssuer = selectedIssuer.credentialIssuerHost,
-    credentialConfigurationId = "FarmerCredential_VCDM2.0",
-    clientMetadata = clientMetadata,
-
+    credentialConfigurationId = Constants.selectedCredentialType,
+    clientMetadata = ClientMetadata(
+      clientId = selectedIssuer.clientId,
+      redirectUri = selectedIssuer.redirectUri
+    ),
     authorizations = listOf(
       AuthorizationMethod.RedirectToWeb(
-        { url ->
-          Log.d("AUTH_FLOW", "Authorization flow started")
-          Log.d("AUTH_FLOW", "Authorization URL: $url")
-          withContext(Dispatchers.Main) {
-            loadingMessage.value = "Authenticating..."
-          }
-          //Handle authorization flow
-          val authorizationResult = handleAuthorizationFlow(navController, url)
-          Log.d("AUTH_FLOW", "Authorization result received")
-          // return authorizationResult
-          authorizationResult
-        }
+        openWebPage = { url -> handleAuthorizationFlow(navController, url, loadingMessage) }
       )
     ),
     getTokenResponse = { tokenRequest ->
-      Log.d("TOKEN_EXCHANGE", "Token exchange started")
-      Log.d("TOKEN_EXCHANGE", "Token endpoint: ${tokenRequest.tokenEndpoint}")
-      withContext(Dispatchers.Main) {
-        loadingMessage.value = "Exchanging tokens..."
-      }
-
-      Log.d("TOKEN_EXCHANGE", "Using custom endpoint: ${selectedIssuer.backendTokenEndpoint}")
-
-      val response = sendTokenRequest(tokenRequest, selectedIssuer.backendTokenEndpoint)
-      Log.d("TOKEN_EXCHANGE", "Access token received")
-      Log.d("TOKEN_EXCHANGE", "c_nonce received")
-
-      TokenResponse(
-        accessToken = response.getString("access_token"),
-        tokenType = response.getString("token_type"),
-        expiresIn = response.optInt("expires_in"),
-        cNonce = response.optString("c_nonce"),
-        cNonceExpiresIn = response.optInt("c_nonce_expires_in")
+      sendTokenRequest(
+        tokenRequest,
+        loadingMessage,
+        selectedIssuer.backendTokenEndpoint
       )
     },
-
-    getProofJwt = { issuer, cNonce, _ ->
-      Log.d("PROOF_JWT", "Proof JWT generation started")
-      Log.d("PROOF_JWT", "Issuer: $issuer")
-      Log.d("PROOF_JWT", "c_nonce: $cNonce")
-      withContext(Dispatchers.Main) {
-        loadingMessage.value = "Generating proof..."
-      }
-      val proofJwt = signProofJWT(cNonce, issuer, context = context)
-      proofJwt
-    }
+    getProofJwt = { credentialIssuer, cNonce, proofSigningAlgorithmsSupported ->
+      constructProofJWT(
+        cNonce = cNonce,
+        issuer = credentialIssuer,
+        supportedProofAlgorithms = proofSigningAlgorithmsSupported,
+        context = context,
+        loadingMessage = loadingMessage,
+        selectedIssuer = selectedIssuer
+      )
+    },
+    downloadTimeoutInMillis = 5000
   )
-  return credential
+
+  return credentialResponse
 }
 
 
 private suspend fun handleAuthorizationFlow(
   navController: NavController,
-  url: String
+  url: String,
+  loadingMessage: MutableState<String>,
 ): Map<String, String> {
+  withContext(Dispatchers.Main) {
+    loadingMessage.value = "Authenticating..."
+  }
   Log.d("AUTH_FLOW", "Authorization flow started")
   Log.d("AUTH_FLOW", "Authorization URL: $url")
   withContext(Dispatchers.Main) {
@@ -116,11 +97,17 @@ private suspend fun handleAuthorizationFlow(
 }
 
 
-private fun signProofJWT(
+private suspend fun constructProofJWT(
   cNonce: String?,
   issuer: String,
-  context: Context
+  supportedProofAlgorithms: List<String>,
+  loadingMessage: MutableState<String>,
+  context: Context,
+  selectedIssuer: IssuerConfigurationV2
 ): String {
+  withContext(Dispatchers.Main) {
+    loadingMessage.value = "Generating proof..."
+  }
   val selectedIssuer = IssuerRepositoryV2.getConfiguration(Constants.selectedIssuer ?: "")
   if (selectedIssuer == null) {
     throw IllegalStateException("Issuer configuration not found for selected issuer: ${Constants.selectedIssuer}")
@@ -128,11 +115,18 @@ private fun signProofJWT(
   // Validate required dynamic inputs
   val nonNullNonce = cNonce?.trim()?.takeIf { it.isNotEmpty() }
     ?: throw IllegalStateException("c_nonce missing from token response; cannot build proof JWT")
-  val clientId = selectedIssuer.clientId
 
   val manager = SecureKeystoreManager.getInstance(context)
+
+  // App supports RSA and ES types
+  if(!supportedProofAlgorithms.contains(SecureKeystoreManager.KeyType.ES256.value) &&
+    !supportedProofAlgorithms.contains(SecureKeystoreManager.KeyType.RS256.value)) {
+      throw RuntimeException("None of the supported algo of wallet is available in proof supported algorithms")
+  }
+
   val useEc = manager.hasKey(SecureKeystoreManager.KeyType.ES256)
   val useRsa = manager.hasKey(SecureKeystoreManager.KeyType.RS256)
+
 
   if (!useEc && !useRsa) {
     throw IllegalStateException("No keystore key available. Initialize keystore before signing.")
@@ -155,12 +149,11 @@ private fun signProofJWT(
 
   Log.d("PROOF_JWT", "JWT Header created with type: openid4vci-proof+jwt")
 
-  val audience = (Constants.credentialIssuerHost ?: issuer)
-
   val now = System.currentTimeMillis()
+
   val claimsSet = JWTClaimsSet.Builder()
-    .issuer(clientId)
-    .audience(audience)
+    .issuer(selectedIssuer.clientId)
+    .audience(issuer)
     .claim("nonce", nonNullNonce)
     .issueTime(Date(now))
     .expirationTime(Date(now + 3 * 60 * 1000))
@@ -216,8 +209,12 @@ private fun loadPrivateKey(alias: String): PrivateKey {
 
 suspend fun sendTokenRequest(
   tokenRequest: TokenRequest,
+  loadingMessage: MutableState<String>,
   tokenEndpoint: String
-): JSONObject {
+): TokenResponse {
+  withContext(Dispatchers.Main) {
+    loadingMessage.value = "Exchanging tokens..."
+  }
   val url = URL(tokenEndpoint)
   val conn = url.openConnection() as HttpURLConnection
   conn.requestMethod = "POST"
@@ -248,7 +245,15 @@ suspend fun sendTokenRequest(
 
     if (responseCode == HttpURLConnection.HTTP_OK) {
       val responseText = conn.inputStream.bufferedReader().readText()
-      return JSONObject(responseText)
+      val response = JSONObject(responseText)
+
+      return TokenResponse(
+        accessToken = response.getString("access_token"),
+        tokenType = response.getString("token_type"),
+        expiresIn = response.optInt("expires_in"),
+        cNonce = response.optString("c_nonce"),
+        cNonceExpiresIn = response.optInt("c_nonce_expires_in")
+      )
     } else {
       val errorText = conn.errorStream?.bufferedReader()?.readText() ?: "Unknown error"
       throw Exception("HTTP error $responseCode: $errorText")
