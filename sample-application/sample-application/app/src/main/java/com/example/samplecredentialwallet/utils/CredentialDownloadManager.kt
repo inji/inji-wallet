@@ -45,10 +45,10 @@ suspend fun downloadCredential(
 ): CredentialResponse {
 
   val credentialResponse = client.fetchCredentialFromTrustedIssuer(
-    credentialIssuer = selectedIssuer.credentialIssuerHost,
-    credentialConfigurationId = Constants.selectedCredentialType,
+    credentialIssuer = selectedIssuer.credentialIssuerHost, // issuer host - used for discovery of issuer metadata
+    credentialConfigurationId = Constants.selectedCredentialType, // The relevant credential type which is required for download
     clientMetadata = ClientMetadata(
-      clientId = selectedIssuer.clientId,
+      clientId = selectedIssuer.clientId, // client Identifier associated with the wallet for initiating the download
       redirectUri = selectedIssuer.redirectUri
     ),
     authorizations = listOf(
@@ -60,7 +60,7 @@ suspend fun downloadCredential(
       sendTokenRequest(
         tokenRequest,
         loadingMessage,
-        selectedIssuer.backendTokenEndpoint
+        selectedIssuer
       )
     },
     getProofJwt = { credentialIssuer, cNonce, proofSigningAlgorithmsSupported ->
@@ -85,11 +85,13 @@ private suspend fun handleAuthorizationFlow(
   url: String,
   loadingMessage: MutableState<String>,
 ): Map<String, String> {
+  // update loader
   withContext(Dispatchers.Main) {
     loadingMessage.value = "Authenticating..."
   }
   Log.d("AUTH_FLOW", "Authorization flow started")
   Log.d("AUTH_FLOW", "Authorization URL: $url")
+  // Open the webview of the authorization url provided by the vci client library
   withContext(Dispatchers.Main) {
     navController.navigate(Screen.AuthWebView.createRoute(url))
   }
@@ -210,12 +212,12 @@ private fun loadPrivateKey(alias: String): PrivateKey {
 suspend fun sendTokenRequest(
   tokenRequest: TokenRequest,
   loadingMessage: MutableState<String>,
-  tokenEndpoint: String
+  selectedIssuer: IssuerConfigurationV2
 ): TokenResponse {
   withContext(Dispatchers.Main) {
     loadingMessage.value = "Exchanging tokens..."
   }
-  val url = URL(tokenEndpoint)
+  val url = URL(selectedIssuer.backendTokenEndpoint)
   val conn = url.openConnection() as HttpURLConnection
   conn.requestMethod = "POST"
   conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
