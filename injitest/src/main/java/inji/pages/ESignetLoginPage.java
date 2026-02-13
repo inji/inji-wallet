@@ -30,8 +30,8 @@ public class ESignetLoginPage extends BasePage {
     @iOSXCUITFindBy(xpath = "//*[contains(@text,'Login with e-Signet')]")
     private WebElement esignetLoginHeader;
 
-    @AndroidFindBy(xpath = "//android.widget.Image[@text=\"brand_logo\"]")
-    @iOSXCUITFindBy(xpath = "//android.view.View[@resource-id=\"navbar-header\"]/android.widget.Image[1]")
+    @AndroidFindBy(accessibility = "brand_logo")
+    @iOSXCUITFindBy(accessibility = "brand_logo")
     private WebElement ESignetLogo;
 
     @AndroidFindBy(xpath = "//android.widget.EditText[@resource-id=\"Otp_vid\"]")

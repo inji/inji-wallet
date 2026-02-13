@@ -71,7 +71,7 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
         assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -238,7 +238,7 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -297,7 +297,9 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
 //        addNewCardPage.sendTextInIssuerSearchBar("Download MOSIP Credentials");
 //        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 //        assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(), "Verify if add new card guide message displayed");
-        assertTrue(addNewCardPage.isDownloadViaEsignetDisplayed(), "Verify if download via uin displayed");
+//        assertTrue(addNewCardPage.isDownloadViaEsignetDisplayed(), "Verify if download via uin displayed");
+// 		  Here it required scrolling to find the function, hence updated with the below function
+        assertTrue(addNewCardPage.isDownloadViaEsignetOptionDisplayed(), "Verify if download via uin displayed");
         MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 
         mockCertifyLoginPage.clickOnEsignetLoginWithOtpButton();
@@ -309,7 +311,7 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -335,7 +337,7 @@ public class VcDownloadAndVerifyUsingMdl extends AndroidBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
 //        addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
