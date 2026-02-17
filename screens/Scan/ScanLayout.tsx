@@ -152,13 +152,8 @@ export const ScanLayout: React.FC = () => {
             component={ScanScreen}
             options={{
               title: t('MainLayout:share'),
-              headerTitle: props => (
-                <View style={Theme.Styles.scanLayoutHeaderContainer}>
-                  <Text style={Theme.Styles.scanLayoutHeaderTitle}>
-                    {props.children}
-                  </Text>
-                </View>
-              ),
+              headerTitleAlign: 'left',
+              headerTitleStyle: Theme.Styles.scanLayoutHeaderTitle,
             }}
           />
         )}
