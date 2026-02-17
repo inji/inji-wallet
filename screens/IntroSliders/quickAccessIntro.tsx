@@ -2,7 +2,7 @@ import React from 'react';
 import {Column, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
 import {useTranslation} from 'react-i18next';
-import {View, Image, Platform} from 'react-native';
+import {View, Image, Platform, ScrollView} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const QRScannerComponent: React.FC = () => {
@@ -97,24 +97,33 @@ export const StaticScanScreen: React.FC = () => {
         testID="introScreenNotch"
         style={Theme.IntroSliderStyles.introScreenNotch}
       />
-      <Column
-        padding={[10, 25, 0, 32]}
-        fill
-        align="flex-start"
-        style={Theme.IntroSliderStyles.quickAccessIntroOuterColumn}>
-        <Column backgroundColor={Theme.Colors.whiteBackgroundColor}>
-          <Text
-            testID="shareText"
-            align="left"
-            style={{paddingBottom: 10, paddingLeft: 5, paddingTop: 10}}
-            weight="bold"
-            size="large"
-            color={Theme.Colors.blackIcon}>
-            {t('MainLayout:share') || 'Share'}
-          </Text>
+      <ScrollView
+        testID="quickAccessScrollView"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: 16}}>
+        <Column
+          padding={[10, 25, 0, 32]}
+          align="flex-start"
+          style={Theme.IntroSliderStyles.quickAccessIntroOuterColumn}>
+          <Column backgroundColor={Theme.Colors.whiteBackgroundColor}>
+            <Text
+              testID="shareText"
+              align="left"
+              style={{paddingBottom: 10, paddingLeft: 5, paddingTop: 10}}
+              weight="bold"
+              size="large"
+              color={Theme.Colors.blackIcon}>
+              {t('MainLayout:share') || 'Share'}
+            </Text>
+          </Column>
+          <QRScannerComponent />
+          <View
+            testID="footerSpacerView"
+            style={{height: 200}}
+            accessible={false}
+          />
         </Column>
-        <QRScannerComponent />
-      </Column>
+      </ScrollView>
     </View>
   );
 };
