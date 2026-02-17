@@ -250,7 +250,7 @@ export const IssuersActions = (model: any) => {
         credential_endpoint: event.data.credential_endpoint,
         credential_configurations_supported:
           event.data.credential_configurations_supported,
-        display: event.data.display,
+        display: context.selectedIssuer.display ?? event.data.display,
         authorization_servers: event.data.authorization_servers,
       }),
       selectedIssuerWellknownResponse: (_: any, event: any) => {
@@ -553,7 +553,8 @@ export const IssuersActions = (model: any) => {
     },
 
     sendSignedVP: (context, event) => {
-      VciClient.getInstance().sendSignedVP(event.signedVPToken.data);
+      const vpTokenSigningResult = event.signedVPToken.data;
+      VciClient.getInstance().sendSignedVP(vpTokenSigningResult);
     },
 
     sendVPConsentReject: () => {

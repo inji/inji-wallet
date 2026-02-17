@@ -15,7 +15,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   private var pendingTokenResponseContinuation: ((String) -> Void)?
   private var pendingIssuerTrustDecision: ((Bool) -> Void)?
   private var pendingSelectedCredentialsContinuation: CheckedContinuation<AnyObject, Error>?
-  private var pendingSignVPContinuation: CheckedContinuation<[String: Any], Error>?
+  private var pendingSignVPContinuation: CheckedContinuation<NSArray, Error>?
 
   static func moduleName() -> String {
     return "InjiVciClient"
@@ -43,7 +43,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
           try await self.getSignVerifiablePresentationContinuationHook(
             unsignedVPTokens: unsignedVPTokens)
         },
-        signatureSuite: signatureSuite
+        ldpVpSignatureSuite: signatureSuite
       ),
     ]
   }
@@ -233,7 +233,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   private func getSelectedCredentialsContinuationHook(vpRequest: AuthorizationRequest) async throws
     -> [String: [FormatType: [OpenID4VPAnyCodable]]]
   {
-    let vpRequestJson = try OVPUtils.toJsonString(jsonObject: vpRequest)
+    let vpRequestJson = try OpenId4VPUtils.toJsonString(jsonObject: vpRequest)
     if let bridge = RCTBridge.current() {
       bridge.eventDispatcher().sendAppEvent(
         withName: "onPresentationRequest",
@@ -253,13 +253,13 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
       return [:]
     }
 
-    return OVPUtils.parseSelectedVCs(credentialsMap)
+    return OpenId4VPUtils.parseSelectedVCs(credentialsMap)
   }
 
   private func getSignVerifiablePresentationContinuationHook(
-    unsignedVPTokens: [FormatType: UnsignedVPToken]
-  ) async throws -> [FormatType: VPTokenSigningResult] {
-    let unsignedVPTokensJson = try OVPUtils.toJson(unsignedVPTokens)
+    unsignedVPTokens: [UnsignedVPTokenV2]
+  ) async throws -> [VPTokenSigningResultV2] {
+    let unsignedVPTokensJson = try OpenId4VPUtils.toJson(unsignedVPTokens)
     if let bridge = RCTBridge.current() {
       bridge.eventDispatcher().sendAppEvent(
         withName: "onRequestSignedVPToken",
@@ -269,12 +269,18 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
       )
     }
 
-    let signedVPTokens = try await withCheckedThrowingContinuation {
-      (continuation: CheckedContinuation<[String: Any], Error>) in
+    let signedVPTokensAny = try await withCheckedThrowingContinuation { continuation in
       self.pendingSignVPContinuation = continuation
     }
+    guard let signedVPTokens = signedVPTokensAny as? [[String: Any]] else {
+      throw NSError(
+        domain: "VPTokenSigning",
+        code: -1,
+        userInfo: [NSLocalizedDescriptionKey: "Invalid VP token structure from JS"]
+      )
+    }
 
-    return try OVPUtils.parseVPTokenSigningResult(signedVPTokens)
+    return try OpenId4VPUtils.parseVPTokenSigningResultV2(signedVPTokens)
   }
 
   private func getTokenResponseHook(tokenRequest: TokenRequest) async throws -> TokenResponse {
@@ -344,7 +350,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   }
 
   @objc(sendVPTokenSigningResultFromJS:)
-  func sendVPTokenSigningResultFromJS(_ vpTokenSigningResult: [String: Any]) {
+  func sendVPTokenSigningResultFromJS(_ vpTokenSigningResult: NSArray) {
     pendingSignVPContinuation?.resume(returning: vpTokenSigningResult)
     pendingSignVPContinuation = nil
   }
@@ -388,7 +394,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
   @objc(abortPresentationFlowFromJS:message:)
   func abortPresentationFlowFromJS(_ code: String, message: String) {
-    let error = OVPUtils.convertToOpenID4VPException(errorCode: code, error: message, moduleName: Self.moduleName())
+    let error = OpenId4VPUtils.convertToOpenID4VPException(errorCode: code, error: message, moduleName: Self.moduleName())
 
     pendingSelectedCredentialsContinuation?.resume(throwing: error)
     pendingSignVPContinuation?.resume(throwing: error)

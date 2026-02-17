@@ -6,7 +6,7 @@ import {
   VerifiableCredential,
 } from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
 import i18n, {getLocalizedField} from '../../../i18n';
-import {Row} from '../../ui';
+import {Column, Row} from '../../ui';
 import {Text} from 'react-native';
 import {VCItemField} from './VCItemField';
 import React from 'react';
@@ -23,6 +23,7 @@ import {VCFormat} from '../../../shared/VCFormat';
 import {displayType} from '../../../machines/Issuers/IssuersMachine';
 import {Image} from 'react-native-elements/dist/image/Image';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 export const CARD_VIEW_DEFAULT_FIELDS = ['fullName'];
 export const DETAIL_VIEW_DEFAULT_FIELDS = [
   'fullName',
@@ -62,12 +63,12 @@ function iterateMsoMdocFor(
   element: 'elementIdentifier' | 'elementValue',
   fieldName: string,
 ) {
-  const foundItem = credential['issuerSigned']['nameSpaces'][namespace].find(
+  const foundItem = credential['issuerSigned']['nameSpaces'][namespace]?.find(
     element => {
       return element.elementIdentifier === fieldName;
     },
   );
-  return foundItem[element];
+  return foundItem?.[element];
 }
 
 export const getFieldValue = (
@@ -105,12 +106,27 @@ export const getFieldValue = (
         const splitField = field.split('~');
         if (splitField.length > 1) {
           const [namespace, fieldName] = splitField;
-          return iterateMsoMdocFor(
+          const fieldValue = iterateMsoMdocFor(
             verifiableCredential,
             namespace,
             'elementValue',
             fieldName,
           );
+          if (fieldValue && typeof fieldValue === 'object') {
+            const elements = renderFieldRecursively(
+              fieldName,
+              fieldValue,
+              display.getTextColor(Theme.Colors.DetailsLabel),
+              display.getTextColor(Theme.Colors.Details),
+              namespace,
+              0,
+              new Set<string>(),
+              verifiableCredential.disclosedKeys || [],
+            );
+            // exclude the first element which is the namespace title
+            return <Column>{elements.slice(1)}</Column>;
+          }
+          return fieldValue;
         }
       } else if (
         format === VCFormat.vc_sd_jwt ||
