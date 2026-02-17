@@ -1,0 +1,97 @@
+NOTICE
+
+MOSIP
+Copyright (c) 2022–2025
+Modular Open Source Identity Platform
+
+This product includes software developed by various open-source communities.
+
+Third-party attributions:
+
+This product bundles open-source components distributed under their respective
+licenses. Attribution and license details for each component are listed below.
+
+
+-------------------------------------------------------------------------------
+Apache License 2.0 Components
+-------------------------------------------------------------------------------
+
+• Jackson (JSON Processor)
+  https://github.com/FasterXML/jackson
+
+• Spring Framework
+  https://spring.io/projects/spring-framework
+
+• Jakarta JSON Processing
+  https://projects.eclipse.org/projects/ee4j.jsonp
+
+• Nimbus JOSE + JWT
+  https://connect2id.com/products/nimbus-jose-jwt
+
+• BitcoinJ
+  https://bitcoinj.github.io
+
+• Web3j
+  https://web3j.io
+
+• TensorFlow Lite
+  https://www.tensorflow.org/lite
+
+• MOSIP Open Source Components
+  https://github.com/mosip
+
+
+-------------------------------------------------------------------------------
+MIT License Components
+-------------------------------------------------------------------------------
+
+• React Native
+  https://reactnative.dev
+
+• Expo
+  https://expo.dev
+
+• Kotlin & Ktor Libraries
+  https://kotlinlang.org
+
+• Glide (Android Image Loading)
+  https://github.com/bumptech/glide
+
+• Android SpinKit
+  https://github.com/ybq/Android-SpinKit
+
+• Vector Icons
+  https://github.com/oblador/react-native-vector-icons
+
+• Timber Logging
+  https://github.com/JakeWharton/timber
+
+• Zip4j
+  https://github.com/srikanth-lingala/zip4j
+
+
+-------------------------------------------------------------------------------
+BSD License Components
+-------------------------------------------------------------------------------
+
+• EdDSA Cryptography Utilities
+  https://github.com/str4d/ed25519-java
+
+• ThreeTen Backport
+  https://www.threeten.org/threetenbp/
+
+
+-------------------------------------------------------------------------------
+BSD-style License Components
+-------------------------------------------------------------------------------
+
+• JAI ImageIO
+  https://github.com/jai-imageio/jai-imageio-core
+
+
+-------------------------------------------------------------------------------
+
+Full license texts for all components listed above are available in the
+`license/` directory of this distribution or from the respective project
+repositories. For complete legal terms and conditions, please refer to the
+original component sources.
