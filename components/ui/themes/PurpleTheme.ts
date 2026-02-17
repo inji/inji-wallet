@@ -685,10 +685,10 @@ export const PurpleTheme = {
     },
     introSliderHeader: {
       marginTop: isIOS()
-        ? Constants.statusBarHeight + 40
-        : StatusBar.currentHeight + 40,
+        ? Constants.statusBarHeight + 25
+        : (StatusBar.currentHeight ?? 0) + 25,
       width: '100%',
-      marginBottom: 50,
+      marginBottom: 20,
     },
     introSliderButton: {
       borderRadius: 10,
@@ -1535,8 +1535,8 @@ export const PurpleTheme = {
       padding: 20,
       borderTopLeftRadius: 30,
       borderTopRightRadius: 30,
-      marginTop: -185,
-      paddingBottom: 100,
+      marginTop: -Math.round(SCREEN_HEIGHT * 0.27),
+      paddingBottom: 120,
     },
   }),
   claimsContainer: StyleSheet.create({
@@ -1807,7 +1807,7 @@ export const PurpleTheme = {
     biometricIntroNotch: {
       height: 13,
       width: 100,
-      marginLeft: 80,
+      alignSelf: 'center',
       marginBottom: 20,
       borderBottomLeftRadius: 13,
       borderBottomRightRadius: 10,
@@ -1816,17 +1816,16 @@ export const PurpleTheme = {
     introScreenNotch: {
       height: 13,
       width: 100,
-      marginLeft: 100,
+      alignSelf: 'center',
       borderBottomLeftRadius: 13,
       borderBottomRightRadius: 10,
       backgroundColor: 'black',
     },
     biometricIntroOuterColumn: {
       borderRadius: 30,
+      width: 350,
+      flex: 1,
       maxHeight: 600,
-      maxWidth: 350,
-      minHeight: 600,
-      minWidth: 350,
       borderColor: Colors.Black,
       borderWidth: 12,
       overflow: 'hidden',
@@ -1835,7 +1834,8 @@ export const PurpleTheme = {
       borderRadius: 30,
       borderWidth: 12,
       borderColor: Colors.Black,
-      height: 600,
+      flex: 1,
+      maxHeight: 600,
       width: 350,
       alignSelf: 'center',
       overflow: 'hidden',
@@ -1863,6 +1863,7 @@ export const PurpleTheme = {
     },
     trustedDigitalWalletIntroOuterColumn: {
       flex: 1,
+      maxHeight: 600,
       width: 350,
       borderRadius: 20,
       borderColor: 'black',
@@ -1870,7 +1871,8 @@ export const PurpleTheme = {
       borderWidth: 12,
     },
     backupRestoreIntroOuterView: {
-      height: 600,
+      flex: 1,
+      maxHeight: 600,
       width: 350,
       alignSelf: 'center',
       overflow: 'hidden',
@@ -1891,6 +1893,9 @@ export const PurpleTheme = {
       borderColor: 'black',
       overflow: 'hidden',
       borderWidth: 12,
+      width: 350,
+      flex: 1,
+      maxHeight: 600,
     },
   }),
   VPSharingStyles: StyleSheet.create({

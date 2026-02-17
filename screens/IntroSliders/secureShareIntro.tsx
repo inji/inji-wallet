@@ -166,32 +166,34 @@ export const StaticSendVcScreen: React.FC = () => {
             </Row>
           </LinearGradient>
         ))}
-      </Column>
-      <Column
-        style={{
-          padding: 16,
-          backgroundColor: Theme.Colors.whiteBackgroundColor,
-        }}>
-        <Button
-          testID="shareButton"
-          type="gradient"
-          title="Share"
-          styles={{marginVertical: 8}}
-          onPress={handleShare}
-        />
-        <Button
-          testID="shareWithSelfieButton"
-          type="gradient"
-          title="Share with Selfie"
-          styles={{marginVertical: 8}}
-          onPress={handleShareWithSelfie}
-        />
-        <Button
-          testID="rejectButton"
-          type="clear"
-          title="Reject"
-          onPress={handleReject}
-        />
+        <Column
+          style={{
+            padding: 16,
+            backgroundColor: Theme.Colors.whiteBackgroundColor,
+          }}>
+          <Button
+            testID="shareButton"
+            type="gradient"
+            title="Share"
+            styles={{marginVertical: 8}}
+            onPress={handleShare}
+          />
+          <Button
+            testID="shareWithSelfieButton"
+            type="gradient"
+            title="Share with Selfie"
+            styles={{marginVertical: 8}}
+            onPress={handleShareWithSelfie}
+          />
+          <Button
+            testID="rejectButton"
+            type="clear"
+            title="Reject"
+            onPress={handleReject}
+          />
+        </Column>
+        {/* height increased to enable force scroll */}
+        <View testID="footerSpacerView" style={{height: 200}} />
       </Column>
     </Column>
   );
