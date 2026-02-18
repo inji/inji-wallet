@@ -61,7 +61,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
         addNewCardPage.clickOnDoneButton();
 
@@ -219,7 +219,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
         addNewCardPage.clickOnDoneButton();
 
@@ -278,7 +278,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -291,7 +291,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
         mockCertifyLoginPage.clickOnGetOtpButton();
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
 
     }
@@ -324,7 +324,7 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         esignetLoginPage.clickOnLoginWithOtpButton();
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
         mockCertifyLoginPage.clickOnGetOtpButton();
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
         // Click Done only for the first iteration
         if (iteration == 1) {

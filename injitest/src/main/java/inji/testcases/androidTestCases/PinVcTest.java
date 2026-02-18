@@ -46,7 +46,7 @@ public class PinVcTest extends AndroidBaseTest {
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
     //    assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
 
         addNewCardPage.clickOnDoneButton();
     //    assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -97,7 +97,7 @@ public class PinVcTest extends AndroidBaseTest {
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
 //        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
 
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -154,7 +154,7 @@ public class PinVcTest extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -179,7 +179,7 @@ public class PinVcTest extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         assertTrue(homePage.isPinIconDisplayed(), "Verify if pin icon on vc is displayed");
@@ -224,7 +224,7 @@ public class PinVcTest extends AndroidBaseTest {
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
 //        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
 
         addNewCardPage.clickOnDoneButton();
 //        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -274,7 +274,7 @@ public class PinVcTest extends AndroidBaseTest {
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
 //        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
 
 //        assertTrue(homePage.isDownloadingVcPopupDisplayed(), "verify downloading vc popup displayed");
         addNewCardPage.clickOnDoneButton();
@@ -335,7 +335,7 @@ public class PinVcTest extends AndroidBaseTest {
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
 //        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
 
         homePage.downloadCard();
 
@@ -351,7 +351,7 @@ public class PinVcTest extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -414,7 +414,7 @@ public class PinVcTest extends AndroidBaseTest {
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
 //        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerification.enterOtp(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
 
         homePage.downloadCard();
 
@@ -430,7 +430,7 @@ public class PinVcTest extends AndroidBaseTest {
         esignetLoginPage.clickOnGetOtpButton();
 //        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
         addNewCardPage.clickOnDoneButton();
 //        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");

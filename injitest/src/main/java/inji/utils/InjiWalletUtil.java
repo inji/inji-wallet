@@ -33,7 +33,7 @@ public class InjiWalletUtil extends AdminTestUtil {
 
     public static TestCaseDTO isTestCaseValidForTheExecution(TestCaseDTO testCaseDTO) {
         String testCaseName = testCaseDTO.getTestCaseName();
-
+        currentTestCaseName = testCaseName;
         int indexof = testCaseName.indexOf("_");
         String modifiedTestCaseName = testCaseName.substring(indexof + 1);
 
@@ -132,7 +132,7 @@ public class InjiWalletUtil extends AdminTestUtil {
         }
     }
 
-    public static String getOtp() {
+    public static String getOtpForMock() {
         String otp = "111111";
         return otp;
     }

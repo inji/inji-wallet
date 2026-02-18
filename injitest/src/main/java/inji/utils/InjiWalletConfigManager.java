@@ -1,6 +1,6 @@
 package inji.utils;
 
-import inji.runner.MosipTestRunner;
+import inji.runner.InjiTestRunner;
 import io.mosip.testrig.apirig.utils.ConfigManager;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -19,7 +19,7 @@ public class InjiWalletConfigManager extends ConfigManager {
         Map<String, Object> moduleSpecificPropertiesMap = new HashMap<>();
         // Load scope specific properties
         try {
-            String path = MosipTestRunner.getGlobalResourcePath() + "/config/injiWallet.properties";
+            String path = InjiTestRunner.getGlobalResourcePath() + "/config/injiWallet.properties";
             Properties props = getproperties(path);
             // Convert Properties to Map and add to moduleSpecificPropertiesMap
             for (String key : props.stringPropertyNames()) {

@@ -224,7 +224,7 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
 
         esignetLoginPage.clickOnGetOtpButton();
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
         addNewCardPage.clickOnDoneButton();
@@ -270,7 +270,7 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
         esignetLoginPage.setEnterIdTextBox(getUIN());
         esignetLoginPage.clickOnGetOtpButton();
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
 //        addNewCardPage.clickOnDoneButton();
@@ -345,7 +345,7 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
 
         esignetLoginPage.clickOnGetOtpButton();
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
         addNewCardPage.clickOnDoneButton();

@@ -5,13 +5,13 @@ import java.util.Map;
 import org.testng.IMethodInstance;
 import org.testng.IMethodInterceptor;
 import org.testng.ITestContext;
-import inji.runner.MosipTestRunner;
+import inji.runner.InjiTestRunner;
 
 public class KnownIssueMethodInterceptor implements IMethodInterceptor {
 	@Override
 	public List<IMethodInstance> intercept(List<IMethodInstance> methods, ITestContext context) {
 
-	    Map<String, String> knownIssues = MosipTestRunner.knownIssues;
+	    Map<String, String> knownIssues = InjiTestRunner.knownIssues;
 
 	    for (IMethodInstance mi : methods) {
 	        String methodName = mi.getMethod().getMethodName();

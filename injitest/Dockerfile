@@ -13,8 +13,8 @@ LABEL commit_id=${COMMIT_ID}
 LABEL build_time=${BUILD_TIME}
 
 # Define build-time arguments for user and group
-ARG container_user=mosip
-ARG container_user_group=mosip
+ARG container_user=inji
+ARG container_user_group=inji
 ARG container_user_uid=1001
 ARG container_user_gid=1001
 ARG KUBECTL_VERSION=1.22.9
@@ -49,8 +49,8 @@ RUN apt-get -y update \
 USER ${container_user_uid}:${container_user_gid}
 
 # Create necessary directories
-RUN mkdir -p /home/mosip/test-output && chmod -R 777 /home/mosip/test-output
-RUN mkdir -p /home/mosip/screenshots && chmod -R 777 /home/mosip/screenshots
+RUN mkdir -p /home/inji/test-output && chmod -R 777 /home/inji/test-output
+RUN mkdir -p /home/inji/screenshots && chmod -R 777 /home/inji/screenshots
 
 # Expose port if needed
 EXPOSE 8083

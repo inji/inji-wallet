@@ -45,7 +45,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends IosBaseTest {
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
 		esignetLoginPage.clickOnGetOtpButton();
-		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
 		esignetLoginPage.clickOnVerifyButtonIos();
 		addNewCardPage.clickOnDoneButton();
 		assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -129,7 +129,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends IosBaseTest {
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
 		esignetLoginPage.clickOnGetOtpButton();
-		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
 		esignetLoginPage.clickOnVerifyButtonIos();
 		addNewCardPage.clickOnDoneButton();
 		assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -159,7 +159,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends IosBaseTest {
 		esignetLoginPage.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
 		esignetLoginPage.clickOnGetOtpButton();
-		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
 		esignetLoginPage.clickOnVerifyButtonIos();
 		addNewCardPage.clickOnDoneButton();
 		assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -170,7 +170,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends IosBaseTest {
 		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain
 				.setEnterIdTextBox(getLandUIN());
 		esignetLoginPageAgain.clickOnGetOtpButton();
-		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
 		esignetLoginPageAgain.clickOnVerifyButtonIos();
 	}
 }
