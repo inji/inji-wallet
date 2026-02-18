@@ -40,6 +40,7 @@ import inji.models.Vid;
 import inji.utils.BrowserStackLocalManager;
 import inji.utils.ExtentReportManager;
 import inji.utils.InjiWalletConfigManager;
+import inji.utils.OTPListener;
 import inji.utils.testdatamanager.LandRegistryUINManager;
 import inji.utils.testdatamanager.MockUINManager;
 import inji.utils.testdatamanager.PolicyManager;
@@ -64,7 +65,7 @@ public abstract class BaseTest {
     private static final ThreadLocal<Uin> threadSvgWithFaceUin = new ThreadLocal<>();
     private static final ThreadLocal<Uin> threadSvgWithOutFaceUin = new ThreadLocal<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
-
+    
     protected abstract PlatformType getPlatformType();
 
     protected AppiumDriver getDriver() {
@@ -83,6 +84,8 @@ public abstract class BaseTest {
         String methodName = method.getName();
         ExtentTest test = ExtentReportManager.createTest(className + " :: " + methodName);
         ExtentReportManager.setTest(test);
+        
+        OTPListener.markRequestStart();
 
 
         if (method.isAnnotationPresent(NeedsUIN.class)) {
@@ -129,6 +132,7 @@ public abstract class BaseTest {
     public void teardown(ITestResult result) {
         Method method = result.getMethod().getConstructorOrMethod().getMethod();
         ExtentTest test = ExtentReportManager.getTest();
+        OTPListener.markRequestRemove();
 
         if (result.getStatus() == ITestResult.SKIP) {
             String reason = result.getMethod().getDescription();
@@ -316,7 +320,7 @@ public abstract class BaseTest {
     }
 
     public String getUIN() {
-        return getUinDetails() != null ? getUinDetails().getUin() : null;
+    	return getUinDetails() != null ? getUinDetails().getUin() : null;
     }
 
     public String getPhone() {
@@ -398,5 +402,29 @@ public abstract class BaseTest {
     public String getsvgWithOutFacedUIN() {
         return getsvgWithOutFaceUinDetails() != null ? getsvgWithOutFaceUinDetails().getUin() : null;
     }
-  
+    
+    public String getOtp(String email, String phone) {
+        String channelConfig = InjiWalletConfigManager.getproperty("mockNotificationChannel");
+
+        if (channelConfig == null || channelConfig.isBlank()) {
+            throw new IllegalArgumentException("mockNotificationChannel is not configured");
+        }
+
+        String channel = channelConfig.toLowerCase();
+
+        // Preference order: email > phone
+        if (channel.contains("email")) {
+            return OTPListener.getOtp(email);
+        } else if (channel.contains("phone")) {
+            return OTPListener.getOtp(phone);
+        } else {
+            throw new IllegalArgumentException("Unknown OTP channel: " + channelConfig);
+        }
+    }
+    public String uinGetOtp() {
+    	return getOtp(getEmail(),getPhone());
+    }
+    public String vidGetOtp() {
+    	return getOtp(getVidEmail(),getVidPhone());
+    }
 }

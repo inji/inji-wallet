@@ -108,7 +108,7 @@ public class ShareVcTest extends AndroidBaseTest {
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 		esignetLoginPage.clickOnGetOtpButton();
 
-		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+		otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
 
 		addNewCardPage.clickOnDoneButton();
@@ -167,7 +167,7 @@ public class ShareVcTest extends AndroidBaseTest {
 		esignetLoginPage.clickOnGetOtpButton();
 		assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+		otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
 		addNewCardPage.clickOnDoneButton();
 		assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");

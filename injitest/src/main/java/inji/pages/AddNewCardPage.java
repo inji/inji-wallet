@@ -132,7 +132,7 @@ public class AddNewCardPage extends BasePage {
         String accessibilityId = InjiWalletConfigManager.getproperty("mosip_issuer");
         return driver.findElement(MobileBy.AccessibilityId(accessibilityId));
     }
-
+    
     public String verifyLanguageForAddNewCardGuideMessage() {
         return getText(addNewCardGuideMessage, "Get text for guide message on Add New Card page");
     }
@@ -169,6 +169,10 @@ public class AddNewCardPage extends BasePage {
 
     public boolean isDownloadViaEsignetDisplayed() {
         return isElementVisible(getDownloadViaUinElement(), "Verify 'Download via Esignet' button is visible");
+    }
+    
+    public boolean isDownloadViaEsignetOptionDisplayed() {
+        return scrollAndCheckVisibilityByAccessibilityId(mosipIssuer, "Verify 'Download via Esignet' button is visible");
     }
 
     public boolean isDownloadViaEsignetDisplayedInHindi() {
@@ -249,11 +253,11 @@ public class AddNewCardPage extends BasePage {
     public boolean isIssuerDescriptionMosipDisplayed() {
         return isElementVisible(issuerDescriptionMosip, "Check if MOSIP issuer description is displayed");
     }
-
+    
     public boolean isIssuerDescriptionEsignetDisplayed() {
-        return isElementVisible(issuerDescriptionEsignet, "Check if Esignet issuer description is displayed");
+        return scrollAndCheckVisibilityBothDirections(issuerDescriptionEsignet, "Check if Esignet issuer description is displayed");
     }
-
+    
     public boolean isIssuerSearchBarDisplayed() {
         return isElementVisible(issuerSearchBar, "Verify Issuer search bar is visible");
     }
@@ -270,9 +274,10 @@ public class AddNewCardPage extends BasePage {
         clearAndSendKeys(issuerSearchBar, text, "Enter text in Issuer search bar: " + text);
     }
 
+    
     public boolean isDownloadViaSunbirdDisplayed() {
-        return isElementVisible(downloadViaSunbird, "Verify 'Download via Sunbird' option is visible");
-    }
+        return scrollAndCheckVisibilityBothDirections(downloadViaSunbird,"Verify 'Download via Sunbird' option is visible");
+}
 
     public SunbirdLoginPage clickOnDownloadViaSunbird() {
 //        click(continuePopupButton, "Click on Continue popup button");

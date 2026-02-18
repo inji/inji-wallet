@@ -33,7 +33,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends IosBaseTest {
         esignetLoginPage.clickOnLoginWithOtpButton();
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
         esignetLoginPage.clickOnGetOtpButton();
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -61,7 +61,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends IosBaseTest {
             esignetLoginPage.clickOnLoginWithOtpButton();
             OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
             esignetLoginPage.clickOnGetOtpButton();
-            otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+            otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
             esignetLoginPage.clickOnVerifyButtonIos();
             if (i==1) {addNewCardPage.clickOnDoneButton();}
             assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");

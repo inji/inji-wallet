@@ -463,6 +463,35 @@ public class BasePage {
 
         driver.perform(Collections.singletonList(swipe));
     }
+    
+    public void scrollUp() {
+        Dimension size = driver.manage().window().getSize();
+        int startX = size.width / 2;
+        int startY = (int) (size.height * 0.3);
+        int endY   = (int) (size.height * 0.7);
+
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Sequence swipe = new Sequence(finger, 1);
+
+        swipe.addAction(finger.createPointerMove(
+                Duration.ZERO,
+                PointerInput.Origin.viewport(),
+                startX,
+                startY
+        ));
+        swipe.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        swipe.addAction(finger.createPointerMove(
+                Duration.ofMillis(700),
+                PointerInput.Origin.viewport(),
+                startX,
+                endY
+        ));
+        swipe.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        driver.perform(Collections.singletonList(swipe));
+    }
+
+    
     public void scrollAndClickByAccessibilityIdForStale(String accessibilityId, String stepDesc) {
         for (int attempts = 0; attempts < maxPageScrolls; attempts++) {
             try {
@@ -487,5 +516,74 @@ public class BasePage {
         ExtentReportManager.getTest().log(Status.FAIL, errorMsg);
         throw new AssertionError(errorMsg);
     }
+    
+    public boolean scrollAndCheckVisibilityByAccessibilityId(String accessibilityId,String stepDesc) {
+        for (int attempts = 0; attempts < maxPageScrolls; attempts++) {
+            try {
+                int waitTime = (attempts == 0) ? 10 : 2;
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
+
+                WebElement element = wait.until(
+                        ExpectedConditions.visibilityOfElementLocated(
+                                AppiumBy.accessibilityId(accessibilityId)
+                        )
+                );
+
+                logStep(stepDesc + " - Visible", element);
+                return true;
+
+            } catch (StaleElementReferenceException e) {
+                // Element went stale after scroll → retry without scrolling
+                continue;
+
+            } catch (TimeoutException | NoSuchElementException e) {
+                // Not visible yet → scroll and retry
+                scrollDown();
+
+            } catch (Exception e) {
+                ExtentReportManager.getTest()
+                        .log(Status.FAIL, "Failed while checking visibility for element: " + accessibilityId);
+                throw e;
+            }
+        }
+
+        ExtentReportManager.getTest()
+                .log(Status.INFO,
+                        "Element with accessibilityId '" + accessibilityId +
+                        "' was NOT visible after " + maxPageScrolls + " scroll attempts.");
+
+        return false;
+    }
+
+    public boolean scrollAndCheckVisibilityBothDirections(WebElement element,String stepDesc) {
+        for (int i = 0; i < maxPageScrolls; i++) {
+            try {
+                if (element.isDisplayed()) {
+                    logStep(stepDesc + " - Visible", element);
+                    return true;
+                }
+                if (i % 2 == 0) {
+                    scrollDown();
+                } else {
+                    scrollUp();
+                }
+                Thread.sleep(300);
+            } catch (StaleElementReferenceException e) {
+                // Element got detached after scroll → retry
+                continue;
+            } catch (NoSuchElementException e) {
+                // Ignore and scroll again
+                continue;
+
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+        ExtentReportManager.getTest().log(Status.INFO,"Element NOT visible after bi-directional scrolling");
+        return false;
+    }
+
+
 
 }

@@ -53,7 +53,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
 
         esignetLoginPage.clickOnGetOtpButton();
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
         addNewCardPage.clickOnDoneButton();
@@ -81,7 +81,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
         pleaseConfirmPopupPage.clickOnConfirmButton();
 //        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
 
-        otpVerification.enterOtp(TestDataReader.readData("passcode"), PlatformType.IOS);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.IOS);
         assertTrue(detailedVcViewPage.isProfileAuthenticatedDisplayed(), "Verify profile authenticated displayed");
 
         detailedVcViewPage.clickOnBackArrow();
@@ -123,7 +123,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getVID());
         esignetLoginPage.clickOnGetOtpButton();
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(vidGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
         addNewCardPage.clickOnDoneButton();
@@ -147,7 +147,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
         pleaseConfirmPopupPage.clickOnConfirmButton();
 //        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
 
-        otpVerification.enterOtp(TestDataReader.readData("passcode"), PlatformType.IOS);
+        otpVerification.enterOtp(vidGetOtp(), PlatformType.IOS);
         assertTrue(detailedVcViewPage.isProfileAuthenticatedDisplayed(), "Verify profile authenticated displayed");
 
     }
@@ -219,7 +219,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
 
         esignetLoginPage.clickOnGetOtpButton();
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
         addNewCardPage.clickOnDoneButton();
@@ -245,7 +245,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
         pleaseConfirmPopupPage.clickOnConfirmButton();
         assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
 
-        otpVerification.enterOtp(TestDataReader.readData("passcode"), PlatformType.IOS);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.IOS);
         assertTrue(detailedVcViewPage.isProfileAuthenticatedDisplayed(), "Verify profile authenticated displayed");
         detailedVcViewPage.clickOnBackArrow();
 
@@ -258,7 +258,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
         esignetLoginPage.setEnterIdTextBox(getUIN());
 
         esignetLoginPage.clickOnGetOtpButton();
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
         addNewCardPage.clickOnDoneButton();
@@ -288,7 +288,7 @@ public class VcDownloadAndVerifyUsingEsignetTest extends IosBaseTest {
             addNewCardPage.clickOnContinueButtonInSigninPopupIos();
             OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
             esignetLoginPage.clickOnGetOtpButton();
-            otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+            otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
             esignetLoginPage.clickOnVerifyButtonIos();
             if (i==1) {addNewCardPage.clickOnDoneButton();}
 

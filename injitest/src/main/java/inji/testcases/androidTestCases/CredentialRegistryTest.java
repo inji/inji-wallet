@@ -78,7 +78,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         OtpVerificationPage otpVerification = new OtpVerificationPage(getDriver());
 
         otpVerification.clickOnGetOtpButton();
-        otpVerification.enterOtpFor(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpFor(uinGetOtp(), PlatformType.ANDROID);
         ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
         esignetLoginPage.clickOnVerifyButton();
         addNewCardPage.clickOnDoneButton();
@@ -92,7 +92,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         OtpVerificationPage otpVerificationPage = pleaseConfirmPopupPage.clickOnConfirmButton();
 
         assertTrue(otpVerificationPage.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerificationPage.enterOtp(TestDataReader.readData("otp"), PlatformType.ANDROID);
+        otpVerificationPage.enterOtp(uinGetOtp(), PlatformType.ANDROID);
 
         assertTrue(moreOptionsPage.isVcActivatedForOnlineLogin(), "Verify if VC is activated");
         moreOptionsPage.clickOnCloseButton();
@@ -448,7 +448,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
             OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
         esignetLoginPage.clickOnGetOtpButton();
         assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
-            otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+            otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
             esignetLoginPage.clickOnVerifyButton();
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
@@ -457,7 +457,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         assertTrue(detailedVcViewPage.isActivateButtonDisplayed(), "Verify if activate vc button displayed");
         PleaseConfirmPopupPage pleaseConfirmPopupPage = detailedVcViewPage.clickOnActivateButtonAndroid();
         pleaseConfirmPopupPage.clickOnConfirmButton();
-        otpVerification.enterOtp(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
         assertTrue(detailedVcViewPage.isProfileAuthenticatedDisplayed(), "Verify profile authenticated displayed");
         detailedVcViewPage.clickOnBackArrow();
         assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed");
@@ -680,7 +680,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
         assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -744,7 +744,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
         assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         mockCertifyLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();
@@ -803,7 +803,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         esignetLoginPage.clickOnLoginWithOtpButton();
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
         esignetLoginPage.clickOnGetOtpButton();
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.ANDROID);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
         esignetLoginPage.clickOnVerifyButton();
 
         addNewCardPage.clickOnDoneButton();

@@ -59,7 +59,7 @@ public class KeyManagmentTest extends IosBaseTest {
 
         esignetLoginPage.clickOnGetOtpButton();
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
         addNewCardPage.clickOnDoneButton();
@@ -110,7 +110,8 @@ public class KeyManagmentTest extends IosBaseTest {
 
 //        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(), "Verify if add new card guide message displayed");
-        assertTrue(addNewCardPage.isDownloadViaEsignetDisplayed(), "Verify if download via uin displayed");
+        assertTrue(addNewCardPage.isDownloadViaEsignetOptionDisplayed(), "Verify if download via uin displayed");
+
         MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
@@ -123,7 +124,7 @@ public class KeyManagmentTest extends IosBaseTest {
         mockCertifyLoginPage.clickOnGetOtpButton();
 //        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(),"verify if otp page is displayed");
 
-        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtp(), PlatformType.IOS);
+        otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
         
         addNewCardPage.clickOnDoneButton();
