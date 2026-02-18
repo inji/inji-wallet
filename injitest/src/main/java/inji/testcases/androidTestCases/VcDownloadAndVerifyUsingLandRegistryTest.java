@@ -85,7 +85,6 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
         esignetLoginPage.clickOnLoginWithOtpButton();
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
-//        esignetLoginPage.clickOnGetOtpButton();
         esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
@@ -212,7 +211,6 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
         esignetLoginPage.clickOnLoginWithOtpButton();
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
-        //esignetLoginPage.clickOnGetOtpButton();
         esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
         assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 

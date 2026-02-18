@@ -254,11 +254,6 @@ public class AddNewCardPage extends BasePage {
         return isElementVisible(issuerDescriptionMosip, "Check if MOSIP issuer description is displayed");
     }
     
-//  Here it requires scrolling, hence the below function commented and add new function added
-//    public boolean isIssuerDescriptionEsignetDisplayed() {
-//        return isElementVisible(issuerDescriptionEsignet, "Check if Esignet issuer description is displayed");
-//    }
-    
     public boolean isIssuerDescriptionEsignetDisplayed() {
         return scrollAndCheckVisibilityBothDirections(issuerDescriptionEsignet, "Check if Esignet issuer description is displayed");
     }
@@ -279,10 +274,6 @@ public class AddNewCardPage extends BasePage {
         clearAndSendKeys(issuerSearchBar, text, "Enter text in Issuer search bar: " + text);
     }
 
-//    Here it requires scrolling, hence the below function commented and add new function
-//    public boolean isDownloadViaSunbirdDisplayed() {
-//        return isElementVisible(downloadViaSunbird, "Verify 'Download via Sunbird' option is visible");
-//    }
     
     public boolean isDownloadViaSunbirdDisplayed() {
         return scrollAndCheckVisibilityBothDirections(downloadViaSunbird,"Verify 'Download via Sunbird' option is visible");
