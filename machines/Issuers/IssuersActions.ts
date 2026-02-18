@@ -131,6 +131,9 @@ export const IssuersActions = (model: any) => {
         ) {
           return ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED;
         }
+        if (error.includes(OIDCErrors.OIDC_CONFIG_ERROR_PREFIX)) {
+          return ErrorMessage.OIDC_CONFIG_ERROR;
+        }
         return ErrorMessage.GENERIC;
       },
     }),

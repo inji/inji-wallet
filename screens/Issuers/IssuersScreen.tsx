@@ -150,7 +150,10 @@ export const IssuersScreen: React.FC<
   };
 
   const isGenericError = () => {
-    return controller.errorMessageType === ErrorMessage.GENERIC;
+    return (
+      controller.errorMessageType === ErrorMessage.GENERIC ||
+      controller.errorMessageType === ErrorMessage.OIDC_CONFIG_ERROR
+    );
   };
 
   function isBackendError(): boolean {

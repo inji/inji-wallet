@@ -272,6 +272,10 @@
         "title": "Something went wrong!",
         "message": "We are having some trouble with your request. Please try again."
       },
+      "oidcConfigError": {
+        "title": "Something went wrong!",
+        "message": "We are having some trouble with your request. Please try again."
+      },
       "technicalDifficulty": {
         "title": "An error occurred!",
         "message": "Thank you for your patience! We're currently experiencing technical difficulties. Please try downloading again shortly."

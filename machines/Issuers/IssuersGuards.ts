@@ -1,5 +1,5 @@
 import {isSignedInResult} from '../../shared/CloudBackupAndRestoreUtils';
-import {ErrorMessage, OIDCErrors} from '../../shared/openId4VCI/Utils';
+import {ErrorMessage} from '../../shared/openId4VCI/Utils';
 import {BiometricCancellationError} from '../../shared/error/BiometricCancellationError';
 import {VerificationErrorType} from '../../shared/vcjs/verifyCredential';
 import {AuthorizationType} from '../../shared/constants';
@@ -19,8 +19,8 @@ export const IssuersGuards = () => {
     isInternetConnected: (_: any, event: any) => !!event.data.isConnected,
     canSelectIssuerAgain: (context: any) => {
       return (
-        context.errorMessage.includes(OIDCErrors.OIDC_CONFIG_ERROR_PREFIX) ||
-        context.errorMessage.includes(ErrorMessage.REQUEST_TIMEDOUT)
+        context.errorMessage === ErrorMessage.OIDC_CONFIG_ERROR ||
+        context.errorMessage === ErrorMessage.REQUEST_TIMEDOUT
       );
     },
     shouldFetchIssuersAgain: (context: any) => context.issuers.length === 0,

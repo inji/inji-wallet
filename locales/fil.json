@@ -270,6 +270,10 @@
         "title": "may nangyaring mali!",
         "message": "Nagkakaproblema kami sa iyong kahilingan. Pakisubukang muli."
       },
+      "oidcConfigError": {
+        "title": "may nangyaring mali!",
+        "message": "Nagkakaproblema kami sa iyong kahilingan. Pakisubukang muli."
+      },
       "technicalDifficulty": {
         "title": "May naganap na error!",
         "message": "Salamat sa iyong pasensya! Kasalukuyan kaming nakakaranas ng mga teknikal na paghihirap. Pakisubukang mag-download muli sa ilang sandali."
