@@ -1,152 +1,231 @@
 THIRD-PARTY-NOTICES
 
-This project includes third-party packages that are distributed under various open-source licenses. Below is a list of packages and their associated licenses.
+This project includes third-party software components distributed under various
+open-source licenses. The following notices are provided for informational and
+compliance purposes.
 
 ================================================================================
-Package: Apache Commons
-License: Apache License 2.0
-Homepage: https://commons.apache.org/
 
---------------------------------------------------------------------------------
-Package: Google Guava
-License: Apache License 2.0
-Homepage: https://github.com/google/guava
-
---------------------------------------------------------------------------------
 Package: Jackson
+Coordinates:
+  - com.fasterxml.jackson.annotation
+  - com.fasterxml.jackson.core
+  - com.fasterxml.jackson.databind
 License: Apache License 2.0
-Homepage: https://github.com/FasterXML/jackson
+Copyright:
+  © FasterXML
+Homepage:
+  https://github.com/FasterXML/jackson
 
 --------------------------------------------------------------------------------
-Package: SLF4J
-License: MIT License
-Homepage: https://www.slf4j.org/
 
---------------------------------------------------------------------------------
-Package: Logback
-License: Eclipse Public License 1.0
-Homepage: https://logback.qos.ch/
-
---------------------------------------------------------------------------------
-Package: Hibernate
-License: GNU Lesser General Public License (LGPL)
-Homepage: https://hibernate.org/
-
---------------------------------------------------------------------------------
 Package: Spring Framework
+Coordinates:
+  - org.springframework.asm
+  - org.springframework.beans
+  - org.springframework.cglib
+  - org.springframework.core
+  - org.springframework.http
+  - org.springframework.lang
+  - org.springframework.util
+  - org.springframework.web
+  - org.springframework.objenesis
 License: Apache License 2.0
-Homepage: https://spring.io/projects/spring-framework
+Copyright:
+  © VMware, Inc.
+Homepage:
+  https://spring.io
 
 --------------------------------------------------------------------------------
-Package: JUnit
-License: Eclipse Public License 1.0
-Homepage: https://junit.org/
+
+Package: OWASP / JSON / CBOR / Crypto Utilities
+Coordinates:
+  - jakarta.json
+  - org.glassfish.json
+  - org.json
+  - com.upokecenter.cbor
+  - com.upokecenter.numbers
+  - com.upokecenter.util
+  - io.setl.rdf.normalization
+License: Apache License 2.0
+Homepage:
+  https://projects.eclipse.org
+  https://github.com/peteroupc
 
 --------------------------------------------------------------------------------
-Package: Mockito
+
+Package: Nimbus JOSE + JWT
+Coordinates:
+  - com.nimbusds.jose
+  - com.nimbusds.jwt
+License: Apache License 2.0
+Homepage:
+  https://connect2id.com/products/nimbus-jose-jwt
+
+--------------------------------------------------------------------------------
+
+Package: BitcoinJ
+Coordinates:
+  - org.bitcoinj.*
+License: Apache License 2.0
+Homepage:
+  https://bitcoinj.github.io
+
+--------------------------------------------------------------------------------
+
+Package: Web3j
+Coordinates:
+  - org.web3j.*
+License: Apache License 2.0
+Homepage:
+  https://web3j.io
+
+--------------------------------------------------------------------------------
+
+Package: React Native & Expo Libraries
+Coordinates:
+  - com.facebook.react
+  - com.reactnativecommunity.*
+  - com.horcrux.*
+  - com.swmansion.*
+  - com.th3rdwave.safeareacontext
+  - expo.core
+  - expo.modules
 License: MIT License
-Homepage: https://site.mockito.org/
+Copyright:
+  © Meta Platforms, Inc. & Contributors
+Homepage:
+  https://reactnative.dev
 
 --------------------------------------------------------------------------------
-Package: Jetty
-License: Apache License 2.0 / Eclipse Public License
-Homepage: https://www.eclipse.org/jetty/
 
---------------------------------------------------------------------------------
-Package: Netty
-License: Apache License 2.0
-Homepage: https://netty.io/
-
---------------------------------------------------------------------------------
-Package: Bouncy Castle
+Package: Kotlin & Utility Libraries
+Coordinates:
+  - io.ktor.*
+  - io.github.aakira.napier
+  - com.soywiz.*
+  - okio
+  - org.jetbrains.annotations
+  - org.intellij.*
 License: MIT License
-Homepage: https://www.bouncycastle.org/
+Homepage:
+  https://kotlinlang.org
 
 --------------------------------------------------------------------------------
-Package: JSON.org
-License: JSON License
-Homepage: https://www.json.org/
 
---------------------------------------------------------------------------------
-Package: Eclipse Collections
-License: Eclipse Public License 1.0
-Homepage: https://www.eclipse.org/collections/
-
---------------------------------------------------------------------------------
-Package: FastUtil
-License: Apache License 2.0
-Homepage: https://fastutil.di.unimi.it/
-
---------------------------------------------------------------------------------
-Package: H2 Database
-License: MPL 2.0 or EPL
-Homepage: https://www.h2database.com/
-
---------------------------------------------------------------------------------
-Package: PostgreSQL JDBC Driver
-License: BSD License
-Homepage: https://jdbc.postgresql.org/
-
---------------------------------------------------------------------------------
-Package: MySQL Connector/J
-License: GPL v2 with FOSS exception
-Homepage: https://dev.mysql.com/downloads/connector/j/
-
---------------------------------------------------------------------------------
-Package: Apache HttpComponents
-License: Apache License 2.0
-Homepage: https://hc.apache.org/
-
---------------------------------------------------------------------------------
-Package: OkHttp
-License: Apache License 2.0
-Homepage: https://square.github.io/okhttp/
-
---------------------------------------------------------------------------------
-Package: Retrofit
-License: Apache License 2.0
-Homepage: https://square.github.io/retrofit/
-
---------------------------------------------------------------------------------
-Package: Gson
-License: Apache License 2.0
-Homepage: https://github.com/google/gson
-
---------------------------------------------------------------------------------
-Package: Lombok
+Package: Android UI Utilities
+Coordinates:
+  - com.bumptech.glide
+  - com.github.ybq.android.spinkit
+  - com.oblador.vectoricons
+  - timber.log
 License: MIT License
-Homepage: https://projectlombok.org/
+Homepage:
+  https://github.com/bumptech/glide
 
 --------------------------------------------------------------------------------
-Package: Apache Kafka
+
+Package: ZIP / IO Utilities
+Coordinates:
+  - net.lingala.zip4j
+  - org.zeroturnaround.zip
+License: MIT License
+Homepage:
+  https://github.com/srikanth-lingala/zip4j
+
+--------------------------------------------------------------------------------
+
+Package: Cryptography / Date-Time Utilities
+Coordinates:
+  - net.i2p.crypto.eddsa
+  - org.threeten.bp
+License: BSD 3-Clause License
+Homepage:
+  https://github.com/str4d/ed25519-java
+
+--------------------------------------------------------------------------------
+
+Package: Javax APIs (Apache License 2.0)
+Coordinates:
+  - javax.inject
+  - javax.enterprise.*
+  - javax.portlet
 License: Apache License 2.0
-Homepage: https://kafka.apache.org/
+Homepage:
+  https://jakarta.ee
 
 --------------------------------------------------------------------------------
-Package: Zookeeper
+
+Package: Javax APIs (Dual Licensed)
+Coordinates:
+  - javax.annotation
+  - javax.servlet
+  - javax.el
+  - javax.interceptor
+License:
+  Dual-licensed under:
+    - Common Development and Distribution License (CDDL) 1.0 / 1.1
+    - GNU General Public License v2 with Classpath Exception
+Copyright:
+  © Oracle and Contributors
+Homepage:
+  https://jakarta.ee
+
+--------------------------------------------------------------------------------
+
+Package: FreeMarker
+Coordinates:
+  - freemarker.*
 License: Apache License 2.0
-Homepage: https://zookeeper.apache.org/
+Copyright:
+  © Apache Software Foundation
+Homepage:
+  https://freemarker.apache.org
 
 --------------------------------------------------------------------------------
-Package: Avro
+
+Package: Sodium / Argon2 / Crypto Helpers
+Coordinates:
+  - com.goterl.lazysodium
+  - com.lambdapioneer.argon2kt
+  - com.poowf.argon2
+License:
+  Apache License 2.0
+Homepage:
+  https://github.com/jedisct1/libsodium
+
+--------------------------------------------------------------------------------
+
+Package: JAI ImageIO
+Coordinates:
+  - com.github.jaiimageio.*
+License: BSD-style License
+Homepage:
+  https://github.com/jai-imageio/jai-imageio-core
+
+--------------------------------------------------------------------------------
+
+Package: TensorFlow Lite
+Coordinates:
+  - org.tensorflow.lite
 License: Apache License 2.0
-Homepage: https://avro.apache.org/
+Copyright:
+  © Google LLC
+Homepage:
+  https://www.tensorflow.org/lite
 
 --------------------------------------------------------------------------------
-Package: Protocol Buffers
-License: BSD License
-Homepage: https://developers.google.com/protocol-buffers
 
---------------------------------------------------------------------------------
-Package: Thrift
+Package: MOSIP Modules
+Coordinates:
+  - io.mosip.*
 License: Apache License 2.0
-Homepage: https://thrift.apache.org/
-
---------------------------------------------------------------------------------
-Package: Apache Curator
-License: Apache License 2.0
-Homepage: https://curator.apache.org/
+Copyright:
+  © MOSIP
+Homepage:
+  https://www.mosip.io
 
 ================================================================================
-
-Full license texts and additional details for each of the above packages are available in the license/ directory of this repository. Please refer to those files or the original source of each package for complete legal terms and conditions.
+Full license texts and additional details for each of the above packages are available
+in the license/ directory of this repository. Please refer to those files or the
+original source of each package for complete legal terms and conditions.
