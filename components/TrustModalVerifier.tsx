@@ -1,8 +1,9 @@
 import React from 'react';
-import {Modal, View, Text, Image, ScrollView} from 'react-native';
+import {Modal, ScrollView, Text, View} from 'react-native';
 import {Button} from './ui';
 import {Theme} from './ui/styleUtils';
 import {useTranslation} from 'react-i18next';
+import {AdaptiveImage} from './ui/AdaptiveImage';
 
 export const TrustModalVerifier = ({
   isVisible,
@@ -27,8 +28,8 @@ export const TrustModalVerifier = ({
           {(logo || name) && (
             <View style={Theme.TrustVerifierScreenStyle.issuerHeader}>
               {logo && (
-                <Image
-                  source={{uri: logo}}
+                <AdaptiveImage
+                  uri={logo}
                   style={Theme.TrustVerifierScreenStyle.issuerLogo}
                 />
               )}
