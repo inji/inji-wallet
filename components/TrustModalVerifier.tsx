@@ -29,6 +29,7 @@ export const TrustModalVerifier = ({
             <View style={Theme.TrustVerifierScreenStyle.issuerHeader}>
               {logo && (
                 <AdaptiveImage
+                  testID="trustVerifierLogo"
                   uri={logo}
                   style={Theme.TrustVerifierScreenStyle.issuerLogo}
                 />
