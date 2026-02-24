@@ -40,13 +40,17 @@ export const BiometricScreen: React.FC<RootRouteProps> = props => {
       pX={32}
       backgroundColor={Theme.Colors.whiteBackgroundColor}>
       <Centered fill>
-        <TouchableOpacity onPress={controller.useBiometrics}>
+        <TouchableOpacity
+          onPress={controller.useBiometrics}
+          disabled={isLoading}>
           {!isLoading && SvgImage.adaptiveBiometricIcon(biometricType, 180)}
         </TouchableOpacity>
       </Centered>
 
       <Button
-        title={t(`unlock${translationSuffix}` as any) || t('unlock')}
+        title={t(`unlock${translationSuffix}` as any, {
+          defaultValue: t('unlock'),
+        })}
         margin="8 0"
         type="gradient"
         onPress={controller.useBiometrics}

@@ -62,7 +62,9 @@ export const StaticAuthScreen: React.FC = () => {
           <Column>
             <Button
               testID="useBiometricsButton"
-              title={t(`use${translationSuffix}` as any) || t('useBiometrics')}
+              title={t(`use${translationSuffix}` as any, {
+                defaultValue: t('useBiometrics'),
+              })}
               type="gradient"
               margin="0 0 8 0"
               onPress={() => {}}

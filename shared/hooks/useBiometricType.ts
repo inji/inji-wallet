@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from 'react';
+import {useState, useEffect, useCallback, useRef} from 'react';
 import {NativeModules, Platform, AppState} from 'react-native';
 
 export type BiometricType = 'FACE' | 'FINGERPRINT' | 'BOTH' | 'NONE';
@@ -8,10 +8,6 @@ const {RNSecureKeystoreModule} = NativeModules;
 /**
  * Fetches the supported biometric type from the native secure keystore module.
  * Returns "FACE", "FINGERPRINT", "BOTH", or "NONE".
- *
- * iOS only: Uses LAContext.biometryType to reliably detect Face ID vs Touch ID.
- * Android: Always returns 'FINGERPRINT' – adaptive biometric detection is not
- *   supported on Android in this release.
  */
 export async function getSupportedBiometricType(): Promise<BiometricType> {
   // Android: skip native call, always treat as fingerprint
@@ -35,13 +31,6 @@ export async function getSupportedBiometricType(): Promise<BiometricType> {
   }
 }
 
-/**
- * Returns a user-friendly label for the given biometric type,
- * adapting to the device's OS.
- *
- * iOS: "Face ID" / "Touch ID"
- * Android: Always returns "Biometrics" (no adaptive detection)
- */
 export function getBiometricLabel(biometricType: BiometricType): string {
   if (Platform.OS === 'ios') {
     switch (biometricType) {
@@ -77,38 +66,73 @@ export function getBiometricTranslationSuffix(
 export function useBiometricType() {
   const [biometricType, setBiometricType] = useState<BiometricType>('NONE');
   const [isLoading, setIsLoading] = useState(true);
+  const isLoadingRef = useRef(true);
+  const fallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const fetchBiometricType = useCallback(() => {
+    let cancelled = false;
+    isLoadingRef.current = true;
+
     getSupportedBiometricType()
       .then(type => {
-        setBiometricType(type);
+        if (!cancelled) {
+          setBiometricType(type);
+        }
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        if (!cancelled) {
+          isLoadingRef.current = false;
+          setIsLoading(false);
+          if (fallbackTimerRef.current) {
+            clearTimeout(fallbackTimerRef.current);
+            fallbackTimerRef.current = null;
+          }
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
-    fetchBiometricType();
+    const cancelFetch = fetchBiometricType();
 
-    // added a fallback timer to set biometric type to FINGERPRINT
-    const fallbackTimer = setTimeout(() => {
-      setIsLoading(prev => {
-        if (prev) {
-          setBiometricType('FINGERPRINT');
-        }
-        return false;
-      });
+    fallbackTimerRef.current = setTimeout(() => {
+      if (isLoadingRef.current) {
+        isLoadingRef.current = false;
+        setBiometricType('FINGERPRINT');
+        setIsLoading(false);
+      }
     }, 2000);
 
-    return () => clearTimeout(fallbackTimer);
+    return () => {
+      cancelFetch();
+      if (fallbackTimerRef.current) {
+        clearTimeout(fallbackTimerRef.current);
+        fallbackTimerRef.current = null;
+      }
+    };
   }, [fetchBiometricType]);
 
   useEffect(() => {
+    let cancelCurrentFetch: (() => void) | null = null;
+
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (nextAppState === 'active') {
-        fetchBiometricType();
+        if (cancelCurrentFetch) {
+          cancelCurrentFetch();
+        }
+        cancelCurrentFetch = fetchBiometricType();
       }
     });
-    return () => subscription.remove();
+
+    return () => {
+      if (cancelCurrentFetch) {
+        cancelCurrentFetch();
+      }
+      subscription.remove();
+    };
   }, [fetchBiometricType]);
 
   return {

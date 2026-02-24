@@ -174,7 +174,7 @@
     }
   },
   "BiometricScreen": {
-    "unlock": "Unlock with biometrics",
+    "unlock": "Unlock with Biometrics",
     "unlockBiometrics": "Unlock with Biometrics",
     "unlockFaceId": "Unlock with Face ID",
     "unlockTouchId": "Unlock with Touch ID"
@@ -192,7 +192,7 @@
     "injiAsVerifierApp": "Inji as verifier app",
     "receiveCard": "Receive Card",
     "basicSettings": "Basic settings",
-    "bioUnlock": "Unlock with Biometric",
+    "bioUnlock": "Unlock with Biometrics",
     "bioUnlockBiometrics": "Unlock with Biometrics",
     "bioUnlockFaceId": "Unlock with Face ID",
     "bioUnlockTouchId": "Unlock with Touch ID",

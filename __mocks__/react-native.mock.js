@@ -23,6 +23,7 @@ jest.mock('react-native', () => {
         decryptData: input => (input ? String(input) : 'mockedString'),
         deviceSupportsHardware: () => true,
         hasBiometricsEnabled: jest.fn().mockReturnValue(true),
+        getSupportedBiometricType: jest.fn().mockResolvedValue('FINGERPRINT'),
       },
     },
   });

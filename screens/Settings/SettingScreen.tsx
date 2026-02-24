@@ -137,7 +137,9 @@ export const SettingScreen: React.FC<
                 {...testIDProps('bioUnlock')}
                 style={{paddingTop: 3}}>
                 <Text weight="semibold" color={Theme.Colors.settingsLabel}>
-                  {t(`bioUnlock${translationSuffix}` as any) || t('bioUnlock')}
+                  {t(`bioUnlock${translationSuffix}` as any, {
+                    defaultValue: t('bioUnlock'),
+                  })}
                 </Text>
               </ListItem.Title>
             </ListItem.Content>

@@ -77,7 +77,9 @@ export const AuthScreen: React.FC<RootRouteProps> = props => {
       <Column>
         <Button
           testID="useBiometrics"
-          title={t(`use${translationSuffix}` as any) || t('useBiometrics')}
+          title={t(`use${translationSuffix}` as any, {
+            defaultValue: t('useBiometrics'),
+          })}
           type="gradient"
           margin="0 0 8 0"
           disabled={!controller.isBiometricsAvailable}
