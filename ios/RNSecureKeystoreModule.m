@@ -49,6 +49,9 @@ RCT_EXTERN_METHOD(getData:(NSString *)key
 RCT_EXTERN_METHOD(hasBiometricsEnabled:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getSupportedBiometricType:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(updatePopup:(NSString *)title
                   desc:(NSString *)desc)
 

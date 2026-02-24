@@ -436,5 +436,7 @@ fileignoreconfig:
     checksum: 6871fad16ecb5f019f502b2f7f715bc2a7b646ee08026b321aa1f8ce071dccc1
   - filename: shared/hooks/useScreenHeight.ts
     checksum: e3f13e7181efc6e6ad5896102bac1309bd8147ba711ff71f64a600a0dffc1364
+  - filename: shared/hooks/useBiometricType.test.ts
+    checksum: bac248155aee079e068d90ab721492b70fe3e5d9e91fa54e155cd49e50d61a13
     version: "1.0"
 

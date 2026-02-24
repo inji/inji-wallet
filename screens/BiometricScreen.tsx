@@ -13,10 +13,12 @@ import {
 } from '../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../shared/telemetry/TelemetryConstants';
 import {SvgImage} from '../components/ui/svg';
+import {useBiometricType} from '../shared/hooks/useBiometricType';
 
 export const BiometricScreen: React.FC<RootRouteProps> = props => {
   const {t} = useTranslation('BiometricScreen');
   const controller = useBiometricScreen(props);
+  const {biometricType, isLoading, translationSuffix} = useBiometricType();
 
   const handlePasscodeMismatch = (error: string) => {
     incrementRetryCount(
@@ -39,12 +41,12 @@ export const BiometricScreen: React.FC<RootRouteProps> = props => {
       backgroundColor={Theme.Colors.whiteBackgroundColor}>
       <Centered fill>
         <TouchableOpacity onPress={controller.useBiometrics}>
-          {SvgImage.fingerprintIcon(180)}
+          {!isLoading && SvgImage.adaptiveBiometricIcon(biometricType, 180)}
         </TouchableOpacity>
       </Centered>
 
       <Button
-        title={t('unlock')}
+        title={t(`unlock${translationSuffix}` as any) || t('unlock')}
         margin="8 0"
         type="gradient"
         onPress={controller.useBiometrics}

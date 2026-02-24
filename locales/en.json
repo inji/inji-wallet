@@ -163,6 +163,8 @@
     "Description": "To unlock the app securely, you can set up either biometric authentication, such as fingerprint or facial recognition or opt for a 6-digit Passcode for quick access.",
     "PasswordTypeDescription": "Choose ‘Use Biometrics’ to enable biometric authentication or ‘I’ll Do Later’ to set up a 6-digit passcode.",
     "useBiometrics": "Use Biometrics",
+    "useFaceId": "Use Face ID",
+    "useTouchId": "Use Touch ID",
     "usePasscode": "I'll Do Later",
     "errors": {
       "unavailable": "Device does not support Biometrics",
@@ -172,7 +174,10 @@
     }
   },
   "BiometricScreen": {
-    "unlock": "Unlock with biometrics"
+    "unlock": "Unlock with biometrics",
+    "unlockBiometrics": "Unlock with Biometrics",
+    "unlockFaceId": "Unlock with Face ID",
+    "unlockTouchId": "Unlock with Touch ID"
   },
   "HistoryScreen": {
     "noHistory": "No history available yet",
@@ -188,6 +193,9 @@
     "receiveCard": "Receive Card",
     "basicSettings": "Basic settings",
     "bioUnlock": "Unlock with Biometric",
+    "bioUnlockBiometrics": "Unlock with Biometrics",
+    "bioUnlockFaceId": "Unlock with Face ID",
+    "bioUnlockTouchId": "Unlock with Touch ID",
     "language": "Language",
     "aboutInji": "About Inji",
     "credentialRegistry": "Credential Registry",
