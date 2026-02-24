@@ -365,3 +365,65 @@ describe('useBiometricType hook integration', () => {
     expect(getBiometricTranslationSuffix(type)).toBe('Biometrics');
   });
 });
+
+describe('useBiometricType iOS end-to-end (function-level)', () => {
+  const originalOS = Platform.OS;
+
+  afterEach(() => {
+    (Platform as any).OS = originalOS;
+    jest.restoreAllMocks();
+  });
+
+  it('FACE resolves → Face ID label, FaceId suffix, isFace=true', async () => {
+    (Platform as any).OS = 'ios';
+    RNSecureKeystoreModule.getSupportedBiometricType = jest
+      .fn()
+      .mockResolvedValue('FACE');
+
+    const type = await getSupportedBiometricType();
+    expect(type).toBe('FACE');
+    expect(getBiometricLabel(type)).toBe('Face ID');
+    expect(getBiometricTranslationSuffix(type)).toBe('FaceId');
+    expect(type === 'FACE' || type === 'BOTH').toBe(true);
+    expect(type === 'FINGERPRINT').toBe(false);
+  });
+
+  it('FINGERPRINT resolves → Touch ID label, TouchId suffix, isFingerprint=true', async () => {
+    (Platform as any).OS = 'ios';
+    RNSecureKeystoreModule.getSupportedBiometricType = jest
+      .fn()
+      .mockResolvedValue('FINGERPRINT');
+
+    const type = await getSupportedBiometricType();
+    expect(type).toBe('FINGERPRINT');
+    expect(getBiometricLabel(type)).toBe('Touch ID');
+    expect(getBiometricTranslationSuffix(type)).toBe('TouchId');
+    expect(type === 'FINGERPRINT').toBe(true);
+    expect(type === 'FACE' || type === 'BOTH').toBe(false);
+  });
+
+  it('BOTH resolves → Face ID label (Face takes priority)', async () => {
+    (Platform as any).OS = 'ios';
+    RNSecureKeystoreModule.getSupportedBiometricType = jest
+      .fn()
+      .mockResolvedValue('BOTH');
+
+    const type = await getSupportedBiometricType();
+    expect(type).toBe('BOTH');
+    expect(getBiometricLabel(type)).toBe('Face ID');
+    expect(getBiometricTranslationSuffix(type)).toBe('FaceId');
+  });
+
+  it('error falls back to NONE → Biometrics label', async () => {
+    (Platform as any).OS = 'ios';
+    RNSecureKeystoreModule.getSupportedBiometricType = jest
+      .fn()
+      .mockRejectedValue(new Error('fail'));
+
+    const type = await getSupportedBiometricType();
+    expect(type).toBe('NONE');
+    expect(getBiometricLabel(type)).toBe('Biometrics');
+    expect(getBiometricTranslationSuffix(type)).toBe('Biometrics');
+    expect(type === 'NONE').toBe(true);
+  });
+});
