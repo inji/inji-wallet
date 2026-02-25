@@ -89,7 +89,7 @@ dependencies {
     implementation(libs.androidx.material3)
 
 
-    implementation("io.inji:inji-vci-client-aar:0.7.0-MC1") {
+    implementation("io.inji:inji-vci-client-aar:0.7.0-SNAPSHOT") { // Verifiable Credential Download
         // Exclude transitive dependencies to use explicitly declared versions
         exclude(group = "com.google.crypto.tink", module = "tink")
         exclude(group = "io.mosip", module = "vcverifier-jar")

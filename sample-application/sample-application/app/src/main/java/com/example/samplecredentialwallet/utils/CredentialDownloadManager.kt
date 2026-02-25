@@ -82,7 +82,7 @@ suspend fun downloadCredentialFromCredentialOffer( credentialOfferUri: String,
                                                    loadingMessage: MutableState<String>,
                                                    navController: NavController,
                                                    context: Context) : CredentialResponse {
-  val credentialResponse = client.fetchCredentialByCredentialOffer(
+  val credentialResponse = client.fetchCredentialUsingCredentialOffer(
     credentialOffer = credentialOfferUri,// The data extracted from the QR code
     clientMetadata = ClientMetadata(
       clientId = Constants.credentialOfferClientId,
@@ -108,21 +108,40 @@ suspend fun downloadCredentialFromCredentialOffer( credentialOfferUri: String,
         loadingMessage = loadingMessage,
       )
     },
+//    A transaction code is a one-time code that ensures only the right wallet can download a specific credential.
+//    Imagine you want to pick up a package from a friend. Your friend gives you a special number so only you can get it
     getTxCode = {inputMode, description, length -> getTransactionCode(inputMode, description, length)},
+    onCheckIssuerTrust = { credentialIssuer, issuerDisplay ->
+      Log.d("CHECK_ISSUER_TRUST", "Checking trust for issuer: $credentialIssuer")
+// check if the issuer is in the trusted list of issuers.
+// You can also use the issuerDisplay information to show user friendly name/logo of the issuer to users when asking them to confirm if they trust the issuer
+      true
+    },
     downloadTimeoutInMillis = 5000
   )
 
   return credentialResponse
 }
 
+/**
+ * inputMode - input character set. text / numeric
+ * length - length of the transaction code expected. This is just a hint.
+ * description - A user friendly description on how to obtain the Transaction Code, e.g., describing over which communication channel it is delivered.
+ *
+ */
 private suspend fun getTransactionCode(inputMode: String?, description: String?, length: Int?): String {
-  // For demo purposes, we return a dummy tx code. In real implementation, you would show UI to user to get this input.
   Log.d(
     "TX_CODE",
     "Requesting transaction code with inputMode=$inputMode, description=$description, length=$length"
   )
-  // Show UI to user for entering the transaction code and use the user entered transaction code
-  return "123456" // Dummy tx code
+
+  // Store metadata for the dialog to use
+  TransactionCodeHolder.inputMode = inputMode
+  TransactionCodeHolder.description = description
+  TransactionCodeHolder.length = length
+
+  // Wait for user to enter the transaction code via the dialog
+  return TransactionCodeHolder.waitForTransactionCode()
 }
 
 private suspend fun handleAuthorizationFlow(

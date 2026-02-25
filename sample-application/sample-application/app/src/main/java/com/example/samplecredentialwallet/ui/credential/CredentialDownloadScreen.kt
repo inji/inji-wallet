@@ -24,8 +24,10 @@ import com.example.samplecredentialwallet.utils.CredentialStore
 import com.example.samplecredentialwallet.utils.CredentialVerifier
 import com.example.samplecredentialwallet.utils.SecureKeystoreManager
 import com.example.samplecredentialwallet.utils.IssuerRepositoryV2
+import com.example.samplecredentialwallet.utils.TransactionCodeHolder
 import com.example.samplecredentialwallet.utils.downloadCredentialFromCredentialOffer
 import com.example.samplecredentialwallet.utils.downloadCredentialFromTrustedIssuer
+import com.example.samplecredentialwallet.ui.transaction.TransactionCodeDialog
 import io.mosip.vciclient.credential.response.CredentialResponse
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -36,6 +38,7 @@ import org.json.JSONObject
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import kotlin.reflect.typeOf
 
 
 @Composable
@@ -44,6 +47,7 @@ fun CredentialDownloadScreen(
   authCode: String? = null,
   credentialOfferUri: String? = null
 ) {
+  Log.d("CredentialDownload", "Entered CredentialDownloadScreen with authCode: $authCode and credentialOfferUri: $credentialOfferUri")
   val context = LocalContext.current
   // Initialize and ensure keys exist (hardware-backed when available)
   val keystoreManager = remember { SecureKeystoreManager.getInstance(context) }
@@ -60,6 +64,28 @@ fun CredentialDownloadScreen(
   val errorMessage = remember { mutableStateOf<String?>(null) }
   val showError = remember { mutableStateOf(false) }
 
+  // State to control the transaction code dialog
+  var showTransactionCodeDialog by remember { mutableStateOf(false) }
+
+  fun isTrustedIssuerFlow(): Boolean {
+    Log.d("CredentialDownload", "Checking flow type with credentialOfferUri: $credentialOfferUri, check : ${credentialOfferUri.isNullOrEmpty()}, type : ${credentialOfferUri?.javaClass?.simpleName}")
+
+    return credentialOfferUri.isNullOrEmpty() || credentialOfferUri.equals("null")
+  }
+
+
+  // Monitor when transaction code is needed
+  LaunchedEffect(isLoading.value) {
+    while (isLoading.value) {
+      kotlinx.coroutines.delay(200) // Check every 200ms
+      if (TransactionCodeHolder.inputMode != null ||
+          TransactionCodeHolder.description != null ||
+          TransactionCodeHolder.length != null) {
+        showTransactionCodeDialog = true
+      }
+    }
+  }
+
 
 
   Box(
@@ -74,14 +100,14 @@ fun CredentialDownloadScreen(
     ) {
       Spacer(modifier = Modifier.height(40.dp))
       Text(
-        text = if (credentialOfferUri != null) "QR scanned successfully" else "Download Credential",
+        text = if (isTrustedIssuerFlow()) "Download Credential" else "QR Scanned successfully. Ready to download credential.",
         style = MaterialTheme.typography.headlineMedium,
         color = MaterialTheme.colorScheme.primary,
         fontWeight = FontWeight.Bold
       )
       Spacer(modifier = Modifier.height(16.dp))
 
-     if(credentialOfferUri == null) {
+     if(isTrustedIssuerFlow()) {
        Text(
          "OpenID4VCI Flow",
          style = MaterialTheme.typography.titleMedium,
@@ -107,7 +133,7 @@ fun CredentialDownloadScreen(
               withTimeout(600000L) {
                 val selectedIssuer =
                   IssuerRepositoryV2.getConfiguration(Constants.selectedIssuer ?: "")
-                if (credentialOfferUri == null && selectedIssuer == null) {
+                if (isTrustedIssuerFlow() && selectedIssuer == null) {
                   withContext(Dispatchers.Main) {
                     isLoading.value = false
                     showError.value = true
@@ -117,19 +143,19 @@ fun CredentialDownloadScreen(
                 }
 
 
-                val credential = if (credentialOfferUri != null) {
-                  downloadCredentialFromCredentialOffer(
-                    credentialOfferUri = credentialOfferUri,
-                    loadingMessage = loadingMessage,
-                    navController = navController,
-                    context = context
-                  )
-                } else {
+                val credential = if (isTrustedIssuerFlow()) {
                   downloadCredentialFromTrustedIssuer(
                     selectedIssuer!!,
                     loadingMessage,
                     navController,
                     context
+                  )
+                } else {
+                  downloadCredentialFromCredentialOffer(
+                    credentialOfferUri = credentialOfferUri!!,
+                    loadingMessage = loadingMessage,
+                    navController = navController,
+                    context = context
                   )
                 }
 
@@ -251,7 +277,7 @@ fun CredentialDownloadScreen(
           Spacer(modifier = Modifier.width(8.dp))
           Text("Downloading...")
         } else {
-          Text(if (credentialOfferUri != null) "Proceed" else "Download Credential")
+          Text(if (isTrustedIssuerFlow()) "Download Credential" else "Proceed")
         }
       }
     }
@@ -369,9 +395,15 @@ fun CredentialDownloadScreen(
         }
       }
     }
+
+    // Transaction Code Dialog
+    if (showTransactionCodeDialog) {
+      TransactionCodeDialog(
+        onDismiss = { showTransactionCodeDialog = false }
+      )
+    }
   }
 }
-
 private fun extractCredentialFromResponse(credObj: CredentialResponse): String {
   val credentialStr = try {
     Log.d("VC_EXTRACT", "Extracting credential from response object")
