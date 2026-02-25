@@ -9,12 +9,15 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.google.gson.Gson;
 
+import java.util.List;
 import java.util.Map;
 
-import io.mosip.residentapp.utils.OVPUtils;
+import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResultV2;
+import io.mosip.residentapp.utils.OpenId4VPUtils;
 import io.mosip.vciclient.VCIClient;
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata;
 import io.mosip.vciclient.credential.response.CredentialResponse;
@@ -60,12 +63,13 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void sendSelectedCredentialsForVPSharingFromJS(ReadableMap selectedVCs) {
-        VCIClientCallbackBridge.completePresentationRequest(OVPUtils.parseSelectedVCs(selectedVCs));
+        VCIClientCallbackBridge.completePresentationRequest(OpenId4VPUtils.parseSelectedVCs(selectedVCs));
     }
 
     @ReactMethod
-    public void sendVPTokenSigningResultFromJS(ReadableMap vpTokenSigningResult) {
-        VCIClientCallbackBridge.completeSignDataForVP(OVPUtils.parseVPTokenSigningResult(vpTokenSigningResult));
+    public void sendVPTokenSigningResultFromJS(ReadableArray vpTokenSigningResults) {
+      List<VPTokenSigningResultV2> formattedVPTokenSigningResults = OpenId4VPUtils.parseVPTokenSigningResultV2(vpTokenSigningResults);
+      VCIClientCallbackBridge.completeSignDataForVP(formattedVPTokenSigningResults);
     }
 
     @ReactMethod
@@ -157,7 +161,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     public void abortPresentationFlowFromJS(String code, String message) {
         Log.d(TAG, "abortPresentationFlowFromJS called with code=" + code);
 
-        OpenID4VPExceptions exception = OVPUtils.convertToOpenID4VPException(
+        OpenID4VPExceptions exception = OpenId4VPUtils.convertToOpenID4VPException(
                 code,
                 message,
                 getName());

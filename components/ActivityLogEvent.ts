@@ -40,7 +40,6 @@ export class VCActivityLog implements ActivityLog {
 
   constructor({
     id = '',
-    idType = [],
     _vcKey = '',
     type = '',
     timestamp = Date.now(),
@@ -51,7 +50,6 @@ export class VCActivityLog implements ActivityLog {
     vcStatus = '',
   } = {}) {
     this.id = id;
-    this.idType = idType;
     this._vcKey = _vcKey;
     this.type = type;
     this.timestamp = timestamp;
@@ -75,7 +73,10 @@ export class VCActivityLog implements ActivityLog {
       })}`;
     }
 
-    return `${t(this.type + formattedVcStatus, {idType: '', vcStatus: this.vcStatus})}`;
+    return `${t(this.type + formattedVcStatus, {
+      idType: t('VcDetails:identityCard'),
+      vcStatus: this.vcStatus,
+    })}`;
   }
 
   static getLogFromObject(data: Object): VCActivityLog {
