@@ -38,12 +38,12 @@ describe('getAvailableBiometricType', () => {
       expect(result).toBe('FINGERPRINT');
     });
 
-    it('returns BOTH when native module returns BOTH', async () => {
+    it('returns NONE when native module returns unknown value BOTH', async () => {
       RNSecureKeystoreModule.getAvailableBiometricType = jest
         .fn()
         .mockResolvedValue('BOTH');
       const result = await getAvailableBiometricType();
-      expect(result).toBe('BOTH');
+      expect(result).toBe('NONE');
     });
 
     it('returns NONE when native module returns NONE', async () => {
@@ -111,7 +111,7 @@ describe('getAvailableBiometricType', () => {
       expect(result).toBe('FINGERPRINT');
     });
 
-    it('returns FINGERPRINT even if native module returns BOTH', async () => {
+    it('returns FINGERPRINT even if native module returns unknown value', async () => {
       RNSecureKeystoreModule.getAvailableBiometricType = jest
         .fn()
         .mockResolvedValue('BOTH');
@@ -152,8 +152,8 @@ describe('getBiometricLabel', () => {
       expect(getBiometricLabel('FACE')).toBe('Face ID');
     });
 
-    it('returns "Face ID" for BOTH', () => {
-      expect(getBiometricLabel('BOTH')).toBe('Face ID');
+    it('returns "Biometrics" for unknown type BOTH', () => {
+      expect(getBiometricLabel('BOTH' as any)).toBe('Biometrics');
     });
 
     it('returns "Touch ID" for FINGERPRINT', () => {
@@ -174,8 +174,8 @@ describe('getBiometricLabel', () => {
       expect(getBiometricLabel('FACE')).toBe('Biometrics');
     });
 
-    it('returns "Biometrics" for BOTH', () => {
-      expect(getBiometricLabel('BOTH')).toBe('Biometrics');
+    it('returns "Biometrics" for unknown type BOTH', () => {
+      expect(getBiometricLabel('BOTH' as any)).toBe('Biometrics');
     });
 
     it('returns "Biometrics" for FINGERPRINT', () => {
@@ -204,8 +204,8 @@ describe('getBiometricTranslationSuffix', () => {
       expect(getBiometricTranslationSuffix('FACE')).toBe('FaceId');
     });
 
-    it('returns "FaceId" for BOTH', () => {
-      expect(getBiometricTranslationSuffix('BOTH')).toBe('FaceId');
+    it('returns "Biometrics" for unknown type BOTH', () => {
+      expect(getBiometricTranslationSuffix('BOTH' as any)).toBe('Biometrics');
     });
 
     it('returns "TouchId" for FINGERPRINT', () => {
@@ -226,8 +226,8 @@ describe('getBiometricTranslationSuffix', () => {
       expect(getBiometricTranslationSuffix('FACE')).toBe('Biometrics');
     });
 
-    it('returns "Biometrics" for BOTH', () => {
-      expect(getBiometricTranslationSuffix('BOTH')).toBe('Biometrics');
+    it('returns "Biometrics" for unknown type BOTH', () => {
+      expect(getBiometricTranslationSuffix('BOTH' as any)).toBe('Biometrics');
     });
 
     it('returns "Biometrics" for FINGERPRINT', () => {
@@ -241,18 +241,13 @@ describe('getBiometricTranslationSuffix', () => {
 });
 
 describe('useBiometricType hook (return shape contract)', () => {
-  const biometricTypes: BiometricType[] = [
-    'FACE',
-    'FINGERPRINT',
-    'BOTH',
-    'NONE',
-  ];
+  const biometricTypes: BiometricType[] = ['FACE', 'FINGERPRINT', 'NONE'];
 
   biometricTypes.forEach(type => {
     it(`produces consistent label, suffix, and boolean flags for "${type}"`, () => {
       const label = getBiometricLabel(type);
       const suffix = getBiometricTranslationSuffix(type);
-      const isFace = type === 'FACE' || type === 'BOTH';
+      const isFace = type === 'FACE';
       const isFingerprint = type === 'FINGERPRINT';
       const isNone = type === 'NONE';
 
@@ -261,7 +256,7 @@ describe('useBiometricType hook (return shape contract)', () => {
       expect(typeof suffix).toBe('string');
       expect(suffix.length).toBeGreaterThan(0);
 
-      // Only one category should be true (except BOTH which maps to isFace)
+      // Only one category should be true
       if (type === 'NONE') {
         expect(isNone).toBe(true);
         expect(isFace).toBe(false);
@@ -271,7 +266,7 @@ describe('useBiometricType hook (return shape contract)', () => {
         expect(isFace).toBe(false);
         expect(isNone).toBe(false);
       } else {
-        // FACE or BOTH
+        // FACE
         expect(isFace).toBe(true);
         expect(isFingerprint).toBe(false);
         expect(isNone).toBe(false);
@@ -282,14 +277,14 @@ describe('useBiometricType hook (return shape contract)', () => {
   it('default initial state NONE produces isNone=true, isFace=false, isFingerprint=false', () => {
     const defaultType: BiometricType = 'NONE';
     expect(defaultType === 'NONE').toBe(true);
-    expect(defaultType === 'FACE' || defaultType === 'BOTH').toBe(false);
+    expect(defaultType === 'FACE').toBe(false);
     expect(defaultType === 'FINGERPRINT').toBe(false);
   });
 });
 
 describe('BiometricType mapping consistency', () => {
   // Ensure all valid types produce consistent label + suffix combinations
-  const types: BiometricType[] = ['FACE', 'FINGERPRINT', 'BOTH', 'NONE'];
+  const types: BiometricType[] = ['FACE', 'FINGERPRINT', 'NONE'];
 
   types.forEach(type => {
     it(`getBiometricLabel handles "${type}" without throwing`, () => {
@@ -324,7 +319,7 @@ describe('useBiometricType hook integration', () => {
     expect(type).toBe('FACE');
     expect(getBiometricLabel(type)).toBe('Face ID');
     expect(getBiometricTranslationSuffix(type)).toBe('FaceId');
-    expect(type === 'FACE' || type === 'BOTH').toBe(true); // isFace
+    expect(type === 'FACE').toBe(true); // isFace
     expect(type === 'FINGERPRINT').toBe(false); // isFingerprint
     expect(type === 'NONE').toBe(false); // isNone
   });
@@ -384,7 +379,7 @@ describe('useBiometricType iOS end-to-end (function-level)', () => {
     expect(type).toBe('FACE');
     expect(getBiometricLabel(type)).toBe('Face ID');
     expect(getBiometricTranslationSuffix(type)).toBe('FaceId');
-    expect(type === 'FACE' || type === 'BOTH').toBe(true);
+    expect(type === 'FACE').toBe(true);
     expect(type === 'FINGERPRINT').toBe(false);
   });
 
@@ -399,19 +394,19 @@ describe('useBiometricType iOS end-to-end (function-level)', () => {
     expect(getBiometricLabel(type)).toBe('Touch ID');
     expect(getBiometricTranslationSuffix(type)).toBe('TouchId');
     expect(type === 'FINGERPRINT').toBe(true);
-    expect(type === 'FACE' || type === 'BOTH').toBe(false);
+    expect(type === 'FACE').toBe(false);
   });
 
-  it('BOTH resolves → Face ID label (Face takes priority)', async () => {
+  it('unknown value BOTH resolves → NONE with Biometrics label', async () => {
     (Platform as any).OS = 'ios';
     RNSecureKeystoreModule.getAvailableBiometricType = jest
       .fn()
       .mockResolvedValue('BOTH');
 
     const type = await getAvailableBiometricType();
-    expect(type).toBe('BOTH');
-    expect(getBiometricLabel(type)).toBe('Face ID');
-    expect(getBiometricTranslationSuffix(type)).toBe('FaceId');
+    expect(type).toBe('NONE');
+    expect(getBiometricLabel(type)).toBe('Biometrics');
+    expect(getBiometricTranslationSuffix(type)).toBe('Biometrics');
   });
 
   it('error falls back to NONE → Biometrics label', async () => {
