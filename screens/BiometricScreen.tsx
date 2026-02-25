@@ -18,7 +18,8 @@ import {useBiometricType} from '../shared/hooks/useBiometricType';
 export const BiometricScreen: React.FC<RootRouteProps> = props => {
   const {t} = useTranslation('BiometricScreen');
   const controller = useBiometricScreen(props);
-  const {biometricType, isLoading, translationSuffix} = useBiometricType();
+  const {biometricType, isBiometricsLoading, translationSuffix} =
+    useBiometricType();
 
   const handlePasscodeMismatch = (error: string) => {
     incrementRetryCount(
@@ -42,8 +43,9 @@ export const BiometricScreen: React.FC<RootRouteProps> = props => {
       <Centered fill>
         <TouchableOpacity
           onPress={controller.useBiometrics}
-          disabled={isLoading}>
-          {!isLoading && SvgImage.adaptiveBiometricIcon(biometricType, 180)}
+          disabled={isBiometricsLoading}>
+          {!isBiometricsLoading &&
+            SvgImage.adaptiveBiometricIcon(biometricType, 180)}
         </TouchableOpacity>
       </Centered>
 

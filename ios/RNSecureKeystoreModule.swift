@@ -157,8 +157,8 @@ class RNSecureKeystoreModule: NSObject,RCTBridgeModule {
     }
 
     @objc
-    func getSupportedBiometricType(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
-        let biometricType = secureKeystore.getSupportedBiometricType()
+    func getAvailableBiometricType(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+        let biometricType = secureKeystore.getAvailableBiometricType()
         resolve(biometricType)
     }
 

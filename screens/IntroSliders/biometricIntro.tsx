@@ -8,7 +8,8 @@ import {useBiometricType} from '../../shared/hooks/useBiometricType';
 
 export const StaticAuthScreen: React.FC = () => {
   const {t} = useTranslation('AuthScreen');
-  const {biometricType, isLoading, translationSuffix} = useBiometricType();
+  const {biometricType, isBiometricsLoading, translationSuffix} =
+    useBiometricType();
 
   return (
     <Column
@@ -32,7 +33,8 @@ export const StaticAuthScreen: React.FC = () => {
             overflow: 'hidden',
           }}>
           <Column crossAlign="center">
-            {!isLoading && SvgImage.adaptiveBiometricIcon(biometricType, 66)}
+            {!isBiometricsLoading &&
+              SvgImage.adaptiveBiometricIcon(biometricType, 66)}
             <Column margin="30 0 0 0">
               <Text
                 testID="header"

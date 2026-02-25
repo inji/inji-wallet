@@ -1,6 +1,7 @@
 import React from 'react';
 import Svg, {Image} from 'react-native-svg';
 import {Theme} from './styleUtils';
+import {BiometricType} from '../../shared/hooks/useBiometricType';
 import Home from '../../assets/Home_tab_icon.svg';
 import History from '../../assets/History_tab_icon.svg';
 import ShareWithSelfie from '../../assets/Share_with_selfie.svg';
@@ -605,16 +606,6 @@ export class SvgImage {
     );
   }
 
-  /**
-   * Returns the appropriate biometric icon based on the detected biometric type
-   * and the device's OS platform.
-   *
-   * iOS: Adapts icon to Face ID / Touch ID based on biometricType.
-   * Android: Always returns the generic fingerprint icon regardless of type.
-   *
-   * @param biometricType - 'FACE' | 'FINGERPRINT' | 'BOTH' | 'NONE'
-   * @param size - icon size in pixels
-   */
   static adaptiveBiometricIcon(
     biometricType: string,
     size?: number | undefined,
@@ -623,12 +614,12 @@ export class SvgImage {
       return SvgImage.fingerprintIcon(size);
     }
     switch (biometricType) {
-      case 'FACE':
-      case 'BOTH':
+      case BiometricType.FACE:
+      case BiometricType.BOTH:
         return SvgImage.faceIdIcon(size);
-      case 'FINGERPRINT':
+      case BiometricType.FINGERPRINT:
         return SvgImage.fingerprintIcon(size);
-      case 'NONE':
+      case BiometricType.NONE:
       default:
         return SvgImage.fingerprintIcon(size);
     }

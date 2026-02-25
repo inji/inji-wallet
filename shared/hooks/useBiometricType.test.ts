@@ -1,6 +1,6 @@
 import {NativeModules, Platform} from 'react-native';
 import {
-  getSupportedBiometricType,
+  getAvailableBiometricType,
   getBiometricLabel,
   getBiometricTranslationSuffix,
   useBiometricType,
@@ -9,7 +9,7 @@ import {
 
 const {RNSecureKeystoreModule} = NativeModules;
 
-describe('getSupportedBiometricType', () => {
+describe('getAvailableBiometricType', () => {
   const originalOS = Platform.OS;
 
   afterEach(() => {
@@ -23,77 +23,77 @@ describe('getSupportedBiometricType', () => {
     });
 
     it('returns FACE when native module returns FACE', async () => {
-      RNSecureKeystoreModule.getSupportedBiometricType = jest
+      RNSecureKeystoreModule.getAvailableBiometricType = jest
         .fn()
         .mockResolvedValue('FACE');
-      const result = await getSupportedBiometricType();
+      const result = await getAvailableBiometricType();
       expect(result).toBe('FACE');
     });
 
     it('returns FINGERPRINT when native module returns FINGERPRINT', async () => {
-      RNSecureKeystoreModule.getSupportedBiometricType = jest
+      RNSecureKeystoreModule.getAvailableBiometricType = jest
         .fn()
         .mockResolvedValue('FINGERPRINT');
-      const result = await getSupportedBiometricType();
+      const result = await getAvailableBiometricType();
       expect(result).toBe('FINGERPRINT');
     });
 
     it('returns BOTH when native module returns BOTH', async () => {
-      RNSecureKeystoreModule.getSupportedBiometricType = jest
+      RNSecureKeystoreModule.getAvailableBiometricType = jest
         .fn()
         .mockResolvedValue('BOTH');
-      const result = await getSupportedBiometricType();
+      const result = await getAvailableBiometricType();
       expect(result).toBe('BOTH');
     });
 
     it('returns NONE when native module returns NONE', async () => {
-      RNSecureKeystoreModule.getSupportedBiometricType = jest
+      RNSecureKeystoreModule.getAvailableBiometricType = jest
         .fn()
         .mockResolvedValue('NONE');
-      const result = await getSupportedBiometricType();
+      const result = await getAvailableBiometricType();
       expect(result).toBe('NONE');
     });
 
     it('returns NONE for unknown/unexpected native values', async () => {
-      RNSecureKeystoreModule.getSupportedBiometricType = jest
+      RNSecureKeystoreModule.getAvailableBiometricType = jest
         .fn()
         .mockResolvedValue('IRIS');
-      const result = await getSupportedBiometricType();
+      const result = await getAvailableBiometricType();
       expect(result).toBe('NONE');
     });
 
     it('returns NONE when native value is null', async () => {
-      RNSecureKeystoreModule.getSupportedBiometricType = jest
+      RNSecureKeystoreModule.getAvailableBiometricType = jest
         .fn()
         .mockResolvedValue(null);
-      const result = await getSupportedBiometricType();
+      const result = await getAvailableBiometricType();
       expect(result).toBe('NONE');
     });
 
     it('returns NONE when native value is undefined', async () => {
-      RNSecureKeystoreModule.getSupportedBiometricType = jest
+      RNSecureKeystoreModule.getAvailableBiometricType = jest
         .fn()
         .mockResolvedValue(undefined);
-      const result = await getSupportedBiometricType();
+      const result = await getAvailableBiometricType();
       expect(result).toBe('NONE');
     });
 
     it('returns NONE when native module throws an error', async () => {
-      RNSecureKeystoreModule.getSupportedBiometricType = jest
+      RNSecureKeystoreModule.getAvailableBiometricType = jest
         .fn()
         .mockRejectedValue(new Error('Module not available'));
-      const result = await getSupportedBiometricType();
+      const result = await getAvailableBiometricType();
       expect(result).toBe('NONE');
     });
 
     it('returns NONE when native module is missing (undefined method)', async () => {
-      const original = RNSecureKeystoreModule.getSupportedBiometricType;
-      RNSecureKeystoreModule.getSupportedBiometricType = undefined;
+      const original = RNSecureKeystoreModule.getAvailableBiometricType;
+      RNSecureKeystoreModule.getAvailableBiometricType = undefined;
       try {
-        const result = await getSupportedBiometricType();
+        const result = await getAvailableBiometricType();
         expect(result).toBe('NONE');
       } finally {
-        RNSecureKeystoreModule.getSupportedBiometricType = original;
+        RNSecureKeystoreModule.getAvailableBiometricType = original;
       }
     });
   });
@@ -104,33 +104,33 @@ describe('getSupportedBiometricType', () => {
     });
 
     it('always returns FINGERPRINT regardless of native module value', async () => {
-      RNSecureKeystoreModule.getSupportedBiometricType = jest
+      RNSecureKeystoreModule.getAvailableBiometricType = jest
         .fn()
         .mockResolvedValue('FACE');
-      const result = await getSupportedBiometricType();
+      const result = await getAvailableBiometricType();
       expect(result).toBe('FINGERPRINT');
     });
 
     it('returns FINGERPRINT even if native module returns BOTH', async () => {
-      RNSecureKeystoreModule.getSupportedBiometricType = jest
+      RNSecureKeystoreModule.getAvailableBiometricType = jest
         .fn()
         .mockResolvedValue('BOTH');
-      const result = await getSupportedBiometricType();
+      const result = await getAvailableBiometricType();
       expect(result).toBe('FINGERPRINT');
     });
 
     it('returns FINGERPRINT even if native module returns NONE', async () => {
-      RNSecureKeystoreModule.getSupportedBiometricType = jest
+      RNSecureKeystoreModule.getAvailableBiometricType = jest
         .fn()
         .mockResolvedValue('NONE');
-      const result = await getSupportedBiometricType();
+      const result = await getAvailableBiometricType();
       expect(result).toBe('FINGERPRINT');
     });
 
     it('does not call native module on Android', async () => {
       const mockFn = jest.fn().mockResolvedValue('FACE');
-      RNSecureKeystoreModule.getSupportedBiometricType = mockFn;
-      await getSupportedBiometricType();
+      RNSecureKeystoreModule.getAvailableBiometricType = mockFn;
+      await getAvailableBiometricType();
       expect(mockFn).not.toHaveBeenCalled();
     });
   });
@@ -314,13 +314,13 @@ describe('useBiometricType hook integration', () => {
     (Platform as any).OS = originalOS;
   });
 
-  it('getSupportedBiometricType resolves FACE on iOS and maps to correct label/suffix', async () => {
+  it('getAvailableBiometricType resolves FACE on iOS and maps to correct label/suffix', async () => {
     (Platform as any).OS = 'ios';
-    RNSecureKeystoreModule.getSupportedBiometricType = jest
+    RNSecureKeystoreModule.getAvailableBiometricType = jest
       .fn()
       .mockResolvedValue('FACE');
 
-    const type = await getSupportedBiometricType();
+    const type = await getAvailableBiometricType();
     expect(type).toBe('FACE');
     expect(getBiometricLabel(type)).toBe('Face ID');
     expect(getBiometricTranslationSuffix(type)).toBe('FaceId');
@@ -329,13 +329,13 @@ describe('useBiometricType hook integration', () => {
     expect(type === 'NONE').toBe(false); // isNone
   });
 
-  it('getSupportedBiometricType resolves FINGERPRINT on iOS and maps to Touch ID', async () => {
+  it('getAvailableBiometricType resolves FINGERPRINT on iOS and maps to Touch ID', async () => {
     (Platform as any).OS = 'ios';
-    RNSecureKeystoreModule.getSupportedBiometricType = jest
+    RNSecureKeystoreModule.getAvailableBiometricType = jest
       .fn()
       .mockResolvedValue('FINGERPRINT');
 
-    const type = await getSupportedBiometricType();
+    const type = await getAvailableBiometricType();
     expect(type).toBe('FINGERPRINT');
     expect(getBiometricLabel(type)).toBe('Touch ID');
     expect(getBiometricTranslationSuffix(type)).toBe('TouchId');
@@ -343,11 +343,11 @@ describe('useBiometricType hook integration', () => {
 
   it('Android always returns FINGERPRINT with Biometrics label regardless of native value', async () => {
     (Platform as any).OS = 'android';
-    RNSecureKeystoreModule.getSupportedBiometricType = jest
+    RNSecureKeystoreModule.getAvailableBiometricType = jest
       .fn()
       .mockResolvedValue('FACE');
 
-    const type = await getSupportedBiometricType();
+    const type = await getAvailableBiometricType();
     expect(type).toBe('FINGERPRINT');
     expect(getBiometricLabel(type)).toBe('Biometrics');
     expect(getBiometricTranslationSuffix(type)).toBe('Biometrics');
@@ -355,11 +355,11 @@ describe('useBiometricType hook integration', () => {
 
   it('fallback to NONE when iOS native module rejects produces Biometrics', async () => {
     (Platform as any).OS = 'ios';
-    RNSecureKeystoreModule.getSupportedBiometricType = jest
+    RNSecureKeystoreModule.getAvailableBiometricType = jest
       .fn()
       .mockRejectedValue(new Error('unavailable'));
 
-    const type = await getSupportedBiometricType();
+    const type = await getAvailableBiometricType();
     expect(type).toBe('NONE');
     expect(getBiometricLabel(type)).toBe('Biometrics');
     expect(getBiometricTranslationSuffix(type)).toBe('Biometrics');
@@ -376,11 +376,11 @@ describe('useBiometricType iOS end-to-end (function-level)', () => {
 
   it('FACE resolves → Face ID label, FaceId suffix, isFace=true', async () => {
     (Platform as any).OS = 'ios';
-    RNSecureKeystoreModule.getSupportedBiometricType = jest
+    RNSecureKeystoreModule.getAvailableBiometricType = jest
       .fn()
       .mockResolvedValue('FACE');
 
-    const type = await getSupportedBiometricType();
+    const type = await getAvailableBiometricType();
     expect(type).toBe('FACE');
     expect(getBiometricLabel(type)).toBe('Face ID');
     expect(getBiometricTranslationSuffix(type)).toBe('FaceId');
@@ -390,11 +390,11 @@ describe('useBiometricType iOS end-to-end (function-level)', () => {
 
   it('FINGERPRINT resolves → Touch ID label, TouchId suffix, isFingerprint=true', async () => {
     (Platform as any).OS = 'ios';
-    RNSecureKeystoreModule.getSupportedBiometricType = jest
+    RNSecureKeystoreModule.getAvailableBiometricType = jest
       .fn()
       .mockResolvedValue('FINGERPRINT');
 
-    const type = await getSupportedBiometricType();
+    const type = await getAvailableBiometricType();
     expect(type).toBe('FINGERPRINT');
     expect(getBiometricLabel(type)).toBe('Touch ID');
     expect(getBiometricTranslationSuffix(type)).toBe('TouchId');
@@ -404,11 +404,11 @@ describe('useBiometricType iOS end-to-end (function-level)', () => {
 
   it('BOTH resolves → Face ID label (Face takes priority)', async () => {
     (Platform as any).OS = 'ios';
-    RNSecureKeystoreModule.getSupportedBiometricType = jest
+    RNSecureKeystoreModule.getAvailableBiometricType = jest
       .fn()
       .mockResolvedValue('BOTH');
 
-    const type = await getSupportedBiometricType();
+    const type = await getAvailableBiometricType();
     expect(type).toBe('BOTH');
     expect(getBiometricLabel(type)).toBe('Face ID');
     expect(getBiometricTranslationSuffix(type)).toBe('FaceId');
@@ -416,11 +416,11 @@ describe('useBiometricType iOS end-to-end (function-level)', () => {
 
   it('error falls back to NONE → Biometrics label', async () => {
     (Platform as any).OS = 'ios';
-    RNSecureKeystoreModule.getSupportedBiometricType = jest
+    RNSecureKeystoreModule.getAvailableBiometricType = jest
       .fn()
       .mockRejectedValue(new Error('fail'));
 
-    const type = await getSupportedBiometricType();
+    const type = await getAvailableBiometricType();
     expect(type).toBe('NONE');
     expect(getBiometricLabel(type)).toBe('Biometrics');
     expect(getBiometricTranslationSuffix(type)).toBe('Biometrics');

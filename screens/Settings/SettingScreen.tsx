@@ -55,7 +55,8 @@ export const SettingScreen: React.FC<
 > = props => {
   const {t} = useTranslation('SettingScreen');
   const controller = useSettingsScreen(props);
-  const {biometricType, isLoading, translationSuffix} = useBiometricType();
+  const {biometricType, isBiometricsLoading, translationSuffix} =
+    useBiometricType();
 
   const updateRegistry = items => {
     controller.UPDATE_CREDENTIAL_REGISTRY(items[0].value, items[1].value);
@@ -131,7 +132,8 @@ export const SettingScreen: React.FC<
           <LanguageSetting />
 
           <ListItem topDivider disabled={!controller.canUseBiometrics}>
-            {!isLoading && SvgImage.adaptiveBiometricIcon(biometricType, 24)}
+            {!isBiometricsLoading &&
+              SvgImage.adaptiveBiometricIcon(biometricType, 24)}
             <ListItem.Content>
               <ListItem.Title
                 {...testIDProps('bioUnlock')}

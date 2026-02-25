@@ -18,7 +18,8 @@ import {useBiometricType} from '../shared/hooks/useBiometricType';
 export const AuthScreen: React.FC<RootRouteProps> = props => {
   const {t} = useTranslation('AuthScreen');
   const controller = useAuthScreen(props);
-  const {biometricType, isLoading, translationSuffix} = useBiometricType();
+  const {biometricType, isBiometricsLoading, translationSuffix} =
+    useBiometricType();
 
   const handleUsePasscodeButtonPress = () => {
     sendStartEvent(
@@ -45,7 +46,8 @@ export const AuthScreen: React.FC<RootRouteProps> = props => {
         title={controller.alertMsg}
       />
       <Column crossAlign="center">
-        {!isLoading && SvgImage.adaptiveBiometricIcon(biometricType, 66)}
+        {!isBiometricsLoading &&
+          SvgImage.adaptiveBiometricIcon(biometricType, 66)}
         <Column margin="30 0 0 0">
           <Text
             testID="selectAppUnlockMethod"
