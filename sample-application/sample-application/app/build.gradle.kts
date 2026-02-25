@@ -16,6 +16,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Enable 16 KB page size support for Android 15+
+        ndk {
+            //noinspection ChromeOsAbiSupport
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        }
     }
 
     buildTypes {
@@ -51,6 +57,10 @@ android {
                 "META-INF/ASL2.0",
                 "META-INF/*.kotlin_module"
             )
+        }
+        jniLibs {
+            // Use legacy packaging for native libraries to maintain compatibility
+            useLegacyPackaging = true
         }
     }
 }
@@ -132,6 +142,13 @@ dependencies {
 
     implementation("org.bouncycastle:bcprov-jdk18on:1.74")
 
+    // CameraX dependencies for QR code scanning
+    implementation("androidx.camera:camera-camera2:1.3.1")
+    implementation("androidx.camera:camera-lifecycle:1.3.1")
+    implementation("androidx.camera:camera-view:1.3.1")
+
+    // ML Kit Barcode Scanning
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

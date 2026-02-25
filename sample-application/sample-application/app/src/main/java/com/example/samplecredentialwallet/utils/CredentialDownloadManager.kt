@@ -30,14 +30,13 @@ import java.net.URL
 import java.net.URLEncoder
 import java.security.KeyStore
 import java.security.PrivateKey
-import java.security.interfaces.ECPrivateKey
 import java.security.interfaces.ECPublicKey
 import java.security.interfaces.RSAPublicKey
 import java.util.Date
 
 val client = VCIClient("demo-123")
 
-suspend fun downloadCredential(
+suspend fun downloadCredentialFromTrustedIssuer(
   selectedIssuer: IssuerConfigurationV2,
   loadingMessage: MutableState<String>,
   navController: NavController,
@@ -70,7 +69,7 @@ suspend fun downloadCredential(
         supportedProofAlgorithms = proofSigningAlgorithmsSupported,
         context = context,
         loadingMessage = loadingMessage,
-        selectedIssuer = selectedIssuer
+        isTrustedIssuerFlow = true
       )
     },
     downloadTimeoutInMillis = 5000
@@ -79,6 +78,52 @@ suspend fun downloadCredential(
   return credentialResponse
 }
 
+suspend fun downloadCredentialFromCredentialOffer( credentialOfferUri: String,
+                                                   loadingMessage: MutableState<String>,
+                                                   navController: NavController,
+                                                   context: Context) : CredentialResponse {
+  val credentialResponse = client.fetchCredentialByCredentialOffer(
+    credentialOffer = credentialOfferUri,// The data extracted from the QR code
+    clientMetadata = ClientMetadata(
+      clientId = Constants.credentialOfferClientId,
+      redirectUri = "io.mosip.residentapp.inji://oauthredirect"
+    ),
+    authorizations = listOf(
+      AuthorizationMethod.RedirectToWeb(
+        openWebPage = { url -> handleAuthorizationFlow(navController, url, loadingMessage) }
+      )
+    ),
+    getTokenResponse = { tokenRequest ->
+      sendTokenRequest(
+        tokenRequest,
+        loadingMessage,
+      )
+    },
+    getProofJwt = { credentialIssuer, cNonce, proofSigningAlgorithmsSupported ->
+      constructProofJWT(
+        cNonce = cNonce,
+        issuer = credentialIssuer,
+        supportedProofAlgorithms = proofSigningAlgorithmsSupported,
+        context = context,
+        loadingMessage = loadingMessage,
+      )
+    },
+    getTxCode = {inputMode, description, length -> getTransactionCode(inputMode, description, length)},
+    downloadTimeoutInMillis = 5000
+  )
+
+  return credentialResponse
+}
+
+private suspend fun getTransactionCode(inputMode: String?, description: String?, length: Int?): String {
+  // For demo purposes, we return a dummy tx code. In real implementation, you would show UI to user to get this input.
+  Log.d(
+    "TX_CODE",
+    "Requesting transaction code with inputMode=$inputMode, description=$description, length=$length"
+  )
+  // Show UI to user for entering the transaction code and use the user entered transaction code
+  return "123456" // Dummy tx code
+}
 
 private suspend fun handleAuthorizationFlow(
   navController: NavController,
@@ -105,15 +150,19 @@ private suspend fun constructProofJWT(
   supportedProofAlgorithms: List<String>,
   loadingMessage: MutableState<String>,
   context: Context,
-  selectedIssuer: IssuerConfigurationV2
+  isTrustedIssuerFlow: Boolean = false
 ): String {
   withContext(Dispatchers.Main) {
     loadingMessage.value = "Generating proof..."
   }
   val selectedIssuer = IssuerRepositoryV2.getConfiguration(Constants.selectedIssuer ?: "")
-  if (selectedIssuer == null) {
+  if (isTrustedIssuerFlow && selectedIssuer == null) {
     throw IllegalStateException("Issuer configuration not found for selected issuer: ${Constants.selectedIssuer}")
   }
+  val clientId: String = (if (isTrustedIssuerFlow) selectedIssuer?.clientId else Constants.credentialOfferClientId).toString()
+
+  Log.d("PROOF_JWT", "Constructing proof JWT - supported algorithms: $supportedProofAlgorithms")
+
   // Validate required dynamic inputs
   val nonNullNonce = cNonce?.trim()?.takeIf { it.isNotEmpty() }
     ?: throw IllegalStateException("c_nonce missing from token response; cannot build proof JWT")
@@ -126,8 +175,8 @@ private suspend fun constructProofJWT(
       throw RuntimeException("None of the supported algo of wallet is available in proof supported algorithms")
   }
 
-  val useEc = manager.hasKey(SecureKeystoreManager.KeyType.ES256)
-  val useRsa = manager.hasKey(SecureKeystoreManager.KeyType.RS256)
+  val useEc = manager.hasKey(SecureKeystoreManager.KeyType.ES256) && supportedProofAlgorithms.contains("ES256")
+  val useRsa = manager.hasKey(SecureKeystoreManager.KeyType.RS256) && supportedProofAlgorithms.contains("RS256")
 
 
   if (!useEc && !useRsa) {
@@ -154,7 +203,7 @@ private suspend fun constructProofJWT(
   val now = System.currentTimeMillis()
 
   val claimsSet = JWTClaimsSet.Builder()
-    .issuer(selectedIssuer.clientId)
+    .issuer(clientId)
     .audience(issuer)
     .claim("nonce", nonNullNonce)
     .issueTime(Date(now))
@@ -170,8 +219,10 @@ private suspend fun constructProofJWT(
       sign(RSASSASigner(privateKey))
       Log.d("PROOF_JWT", "Signed with RS256 private key")
     } else {
-      val privateKey = loadPrivateKey(SecureKeystoreManager.KeyType.ES256.value) as ECPrivateKey
-      sign(ECDSASigner(privateKey))
+      // For EC keys, create an ECKey (JWK) with both public and private parts
+      val privateKey = loadPrivateKey(SecureKeystoreManager.KeyType.ES256.value)
+      val ecJwk = buildEcJwkWithPrivateKey(SecureKeystoreManager.KeyType.ES256.value, privateKey)
+      sign(ECDSASigner(ecJwk))
       Log.d("PROOF_JWT", "Signed with ES256 private key")
     }
   }
@@ -203,6 +254,21 @@ private fun buildPublicEcJwkFromAndroid(alias: String): ECKey {
     .build()
 }
 
+private fun buildEcJwkWithPrivateKey(alias: String, privateKey: PrivateKey): ECKey {
+  val ks = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
+  val cert = ks.getCertificate(alias)
+    ?: throw IllegalStateException("No certificate for alias: $alias")
+  val publicKey = cert.publicKey as? ECPublicKey
+    ?: throw IllegalStateException("Alias $alias is not an EC key")
+
+  // Build ECKey with both public and private key for signing
+  // The private key from Android Keystore can be used directly without casting
+  return ECKey.Builder(Curve.P_256, publicKey)
+    .privateKey(privateKey)
+    .keyID(alias)
+    .build()
+}
+
 private fun loadPrivateKey(alias: String): PrivateKey {
   val ks = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
   return ks.getKey(alias, null) as? PrivateKey
@@ -212,12 +278,27 @@ private fun loadPrivateKey(alias: String): PrivateKey {
 suspend fun sendTokenRequest(
   tokenRequest: TokenRequest,
   loadingMessage: MutableState<String>,
+): TokenResponse {
+  return handleTokenRequest(loadingMessage, tokenRequest.tokenEndpoint, tokenRequest)
+}
+
+suspend fun sendTokenRequest(
+  tokenRequest: TokenRequest,
+  loadingMessage: MutableState<String>,
   selectedIssuer: IssuerConfigurationV2
+): TokenResponse {
+  return handleTokenRequest(loadingMessage, selectedIssuer.backendTokenEndpoint, tokenRequest)
+}
+
+private suspend fun handleTokenRequest(
+  loadingMessage: MutableState<String>,
+  backendTokenEndpoint: String,
+  tokenRequest: TokenRequest
 ): TokenResponse {
   withContext(Dispatchers.Main) {
     loadingMessage.value = "Exchanging tokens..."
   }
-  val url = URL(selectedIssuer.backendTokenEndpoint)
+  val url = URL(backendTokenEndpoint)
   val conn = url.openConnection() as HttpURLConnection
   conn.requestMethod = "POST"
   conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
