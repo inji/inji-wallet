@@ -2,6 +2,7 @@ import React from 'react';
 import Svg, {Image} from 'react-native-svg';
 import {Theme} from './styleUtils';
 import {BiometricType} from '../../shared/hooks/useBiometricType';
+import {isAndroid} from '../../shared/constants';
 import Home from '../../assets/Home_tab_icon.svg';
 import History from '../../assets/History_tab_icon.svg';
 import ShareWithSelfie from '../../assets/Share_with_selfie.svg';
@@ -610,12 +611,11 @@ export class SvgImage {
     biometricType: string,
     size?: number | undefined,
   ) {
-    if (require('react-native').Platform.OS !== 'ios') {
+    if (isAndroid()) {
       return SvgImage.fingerprintIcon(size);
     }
     switch (biometricType) {
       case BiometricType.FACE:
-      case BiometricType.BOTH:
         return SvgImage.faceIdIcon(size);
       case BiometricType.FINGERPRINT:
         return SvgImage.fingerprintIcon(size);

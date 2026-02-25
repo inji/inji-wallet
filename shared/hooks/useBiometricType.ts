@@ -1,11 +1,10 @@
 import {useState, useEffect} from 'react';
 import {NativeModules, AppState} from 'react-native';
-import {isIOS} from '../constants';
+import {isAndroid} from '../constants';
 
 export enum BiometricType {
   FACE = 'FACE',
   FINGERPRINT = 'FINGERPRINT',
-  BOTH = 'BOTH',
   NONE = 'NONE',
 }
 
@@ -14,7 +13,7 @@ export type BiometricCategory = 'face' | 'fingerprint' | 'none';
 const {RNSecureKeystoreModule} = NativeModules;
 
 export async function getAvailableBiometricType(): Promise<BiometricType> {
-  if (!isIOS()) {
+  if (isAndroid()) {
     return BiometricType.FINGERPRINT;
   }
 
@@ -23,7 +22,6 @@ export async function getAvailableBiometricType(): Promise<BiometricType> {
     if (
       type === BiometricType.FACE ||
       type === BiometricType.FINGERPRINT ||
-      type === BiometricType.BOTH ||
       type === BiometricType.NONE
     ) {
       return type;
@@ -35,35 +33,33 @@ export async function getAvailableBiometricType(): Promise<BiometricType> {
 }
 
 export function getBiometricLabel(biometricType: BiometricType): string {
-  if (isIOS()) {
-    switch (biometricType) {
-      case BiometricType.FACE:
-      case BiometricType.BOTH:
-        return 'Face ID';
-      case BiometricType.FINGERPRINT:
-        return 'Touch ID';
-      default:
-        return 'Biometrics';
-    }
+  if (isAndroid()) {
+    return 'Biometrics';
   }
-  return 'Biometrics';
+  switch (biometricType) {
+    case BiometricType.FACE:
+      return 'Face ID';
+    case BiometricType.FINGERPRINT:
+      return 'Touch ID';
+    default:
+      return 'Biometrics';
+  }
 }
 
 export function getBiometricTranslationSuffix(
   biometricType: BiometricType,
 ): string {
-  if (isIOS()) {
-    switch (biometricType) {
-      case BiometricType.FACE:
-      case BiometricType.BOTH:
-        return 'FaceId';
-      case BiometricType.FINGERPRINT:
-        return 'TouchId';
-      default:
-        return 'Biometrics';
-    }
+  if (isAndroid()) {
+    return 'Biometrics';
   }
-  return 'Biometrics';
+  switch (biometricType) {
+    case BiometricType.FACE:
+      return 'FaceId';
+    case BiometricType.FINGERPRINT:
+      return 'TouchId';
+    default:
+      return 'Biometrics';
+  }
 }
 
 export function getBiometricCategory(
@@ -71,7 +67,6 @@ export function getBiometricCategory(
 ): BiometricCategory {
   switch (biometricType) {
     case BiometricType.FACE:
-    case BiometricType.BOTH:
       return 'face';
     case BiometricType.FINGERPRINT:
       return 'fingerprint';
