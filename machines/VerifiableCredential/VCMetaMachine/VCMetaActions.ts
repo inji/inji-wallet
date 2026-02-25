@@ -264,6 +264,22 @@ export const VCMetaActions = (model: any) => {
       ],
     }),
 
+    updateReceivedVcsMetadata: model.assign({
+      receivedVcsMetadata: (context, event) => [
+        ...getUpdatedVCMetadatas(context.receivedVcsMetadata, event.vcMetadata),
+      ],
+    }),
+
+    setUpdatedReceivedVcMetadatas: send(
+      (context: any) => {
+        return StoreEvents.SET(
+          RECEIVED_VCS_STORE_KEY,
+          context.receivedVcsMetadata,
+        );
+      },
+      {to: (context: any) => context.serviceRefs.store},
+    ),
+
     setWalletBindingSuccess: model.assign({
       walletBindingSuccess: () => true,
       myVcs: (
