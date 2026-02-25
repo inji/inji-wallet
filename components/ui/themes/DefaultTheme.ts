@@ -437,6 +437,7 @@ export const DefaultTheme = {
       resizeMode: 'contain',
       aspectRatio: 1,
       height: 35,
+      marginRight: 10,
     },
     vcDetailsLogo: {
       height: 65,
