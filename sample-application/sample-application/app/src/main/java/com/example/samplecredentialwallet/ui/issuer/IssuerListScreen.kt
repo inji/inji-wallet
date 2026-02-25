@@ -32,7 +32,10 @@ data class Issuer(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IssuerListScreen(onIssuerClick: (String) -> Unit) {
+fun IssuerListScreen(
+    onIssuerClick: (String) -> Unit,
+    onScanQrCode: () -> Unit // Added callback for QR code scanning
+) {
     var searchQuery by remember { mutableStateOf("") }
     val issuersV2: List<IssuerConfigurationV2> = IssuerRepositoryV2.getAllConfigurations()
 
@@ -81,6 +84,15 @@ fun IssuerListScreen(onIssuerClick: (String) -> Unit) {
                 ),
                 singleLine = true
             )
+
+            Button(
+                onClick = { onScanQrCode() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                Text("Scan QR Code")
+            }
 
             // Issuer List
             LazyColumn(

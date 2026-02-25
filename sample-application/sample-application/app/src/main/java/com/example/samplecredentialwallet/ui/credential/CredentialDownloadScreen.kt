@@ -18,27 +18,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.samplecredentialwallet.navigation.Screen
+import com.example.samplecredentialwallet.ui.theme.InjiOrange
 import com.example.samplecredentialwallet.utils.Constants
 import com.example.samplecredentialwallet.utils.CredentialStore
 import com.example.samplecredentialwallet.utils.CredentialVerifier
 import com.example.samplecredentialwallet.utils.SecureKeystoreManager
 import com.example.samplecredentialwallet.utils.IssuerRepositoryV2
-import com.example.samplecredentialwallet.utils.downloadCredential
-import io.mosip.vciclient.VCIClient
-import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata
+import com.example.samplecredentialwallet.utils.downloadCredentialFromCredentialOffer
+import com.example.samplecredentialwallet.utils.downloadCredentialFromTrustedIssuer
 import io.mosip.vciclient.credential.response.CredentialResponse
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withTimeout
+import org.json.JSONObject
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 
 @Composable
 fun CredentialDownloadScreen(
   navController: NavController,
-  authCode: String? = null
+  authCode: String? = null,
+  credentialOfferUri: String? = null
 ) {
   val context = LocalContext.current
   // Initialize and ensure keys exist (hardware-backed when available)
@@ -56,6 +60,8 @@ fun CredentialDownloadScreen(
   val errorMessage = remember { mutableStateOf<String?>(null) }
   val showError = remember { mutableStateOf(false) }
 
+
+
   Box(
     modifier = Modifier.fillMaxSize()
   ) {
@@ -66,25 +72,28 @@ fun CredentialDownloadScreen(
         .verticalScroll(rememberScrollState()),
       verticalArrangement = Arrangement.Top
     ) {
+      Spacer(modifier = Modifier.height(40.dp))
       Text(
-        text = "Download Credential",
+        text = if (credentialOfferUri != null) "QR scanned successfully" else "Download Credential",
         style = MaterialTheme.typography.headlineMedium,
         color = MaterialTheme.colorScheme.primary,
         fontWeight = FontWeight.Bold
       )
       Spacer(modifier = Modifier.height(16.dp))
 
-      Text(
-        "OpenID4VCI Flow",
-        style = MaterialTheme.typography.titleMedium,
-        color = Color.Gray
-      )
-      Spacer(modifier = Modifier.height(8.dp))
-      Text(
-        "Credential Type: ${"FarmerVerifiableCredential"}",
-        style = MaterialTheme.typography.bodyMedium
-      )
-      Spacer(modifier = Modifier.height(24.dp))
+     if(credentialOfferUri == null) {
+       Text(
+         "OpenID4VCI Flow",
+         style = MaterialTheme.typography.titleMedium,
+         color = Color.Gray
+       )
+       Spacer(modifier = Modifier.height(8.dp))
+       Text(
+         "Credential Type: ${"FarmerVerifiableCredential"}",
+         style = MaterialTheme.typography.bodyMedium
+       )
+       Spacer(modifier = Modifier.height(24.dp))
+     }
 
       Button(
         onClick = {
@@ -98,7 +107,7 @@ fun CredentialDownloadScreen(
               withTimeout(600000L) {
                 val selectedIssuer =
                   IssuerRepositoryV2.getConfiguration(Constants.selectedIssuer ?: "")
-                if (selectedIssuer == null) {
+                if (credentialOfferUri == null && selectedIssuer == null) {
                   withContext(Dispatchers.Main) {
                     isLoading.value = false
                     showError.value = true
@@ -108,12 +117,21 @@ fun CredentialDownloadScreen(
                 }
 
 
-                val credential = downloadCredential(
-                  selectedIssuer,
-                  loadingMessage,
-                  navController,
-                  context
-                )
+                val credential = if (credentialOfferUri != null) {
+                  downloadCredentialFromCredentialOffer(
+                    credentialOfferUri = credentialOfferUri,
+                    loadingMessage = loadingMessage,
+                    navController = navController,
+                    context = context
+                  )
+                } else {
+                  downloadCredentialFromTrustedIssuer(
+                    selectedIssuer!!,
+                    loadingMessage,
+                    navController,
+                    context
+                  )
+                }
 
                 Log.d("VC_DOWNLOAD", "Credential download completed")
                 Log.d(
@@ -143,7 +161,7 @@ fun CredentialDownloadScreen(
 
                     // Add display name to credential before storing
                     val credentialWithDisplayName = try {
-                      val credJson = org.json.JSONObject(credentialStr)
+                      val credJson = JSONObject(credentialStr)
                       Constants.credentialDisplayName?.let { displayName ->
                         credJson.put("credentialName", displayName)
                         Log.d("VC_STORE", "Added display name: $displayName")
@@ -180,8 +198,8 @@ fun CredentialDownloadScreen(
                 // Different error messages based on error type
                 errorMessage.value = when {
                   e is UnknownHostException -> "No internet connection"
-                  e is java.net.SocketTimeoutException -> "No internet connection"
-                  e is java.net.ConnectException -> "No internet connection"
+                  e is SocketTimeoutException -> "No internet connection"
+                  e is ConnectException -> "No internet connection"
                   e.message?.contains(
                     "Unable to resolve host",
                     ignoreCase = true
@@ -222,7 +240,7 @@ fun CredentialDownloadScreen(
         modifier = Modifier.fillMaxWidth(),
         enabled = !isLoading.value,
         colors = ButtonDefaults.buttonColors(
-          containerColor = com.example.samplecredentialwallet.ui.theme.InjiOrange
+          containerColor = InjiOrange
         )
       ) {
         if (isLoading.value) {
@@ -233,7 +251,7 @@ fun CredentialDownloadScreen(
           Spacer(modifier = Modifier.width(8.dp))
           Text("Downloading...")
         } else {
-          Text("Download Credential")
+          Text(if (credentialOfferUri != null) "Proceed" else "Download Credential")
         }
       }
     }
@@ -258,7 +276,7 @@ fun CredentialDownloadScreen(
           ) {
             CircularProgressIndicator(
               modifier = Modifier.size(48.dp),
-              color = com.example.samplecredentialwallet.ui.theme.InjiOrange
+              color = InjiOrange
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
@@ -342,7 +360,7 @@ fun CredentialDownloadScreen(
               },
               modifier = Modifier.fillMaxWidth(),
               colors = ButtonDefaults.buttonColors(
-                containerColor = com.example.samplecredentialwallet.ui.theme.InjiOrange
+                containerColor = InjiOrange
               )
             ) {
               Text("Try again", fontSize = 16.sp)

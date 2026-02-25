@@ -8,5 +8,7 @@ object Constants {
     var redirectUri: String? = null
     var credentialDisplayName: String? = null
 
+  val credentialOfferClientId: String = "wallet"
+
    var selectedCredentialType: String = "FarmerCredential_VCDM2.0"
 }
