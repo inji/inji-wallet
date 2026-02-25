@@ -132,8 +132,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/secure-keystore-ios-swift",
       "state" : {
-        "revision" : "1ea5182ca985302d11010b7a16ea496167969ab3",
-        "version" : "0.3.0"
+        "branch" : "develop",
+        "revision" : "0b73f3e520bcde43cfd4fb460333a19c581599ca"
       }
     },
     {
