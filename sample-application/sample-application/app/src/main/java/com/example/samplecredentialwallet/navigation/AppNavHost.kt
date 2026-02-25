@@ -68,7 +68,7 @@ sealed class Screen(val route: String) {
     }
     object CredentialDetail : Screen("credential_detail?authCode={authCode}&credentialOfferUri={credentialOfferUri}") {
         fun createRoute(authCode: String? = null, credentialOfferUri: String? = null): String {
-            return "credential_detail?authCode=$authCode&credentialOfferUri=${Uri.encode(credentialOfferUri ?: "")}"
+            return "credential_detail?authCode=$authCode&credentialOfferUri=$credentialOfferUri"
         }
     }
     object CredentialList : Screen("credential_list?index={index}") {
@@ -108,8 +108,8 @@ fun AppNavHost(navController: NavHostController) {
                 onIssuerClick = { issuerType ->
                     // Apply issuer configuration from repository
                     if (IssuerRepositoryV2.applyConfiguration(issuerType)) {
-                        // Navigate to credential download
-                        navController.navigate(Screen.CredentialDetail.route)
+                        // Navigate to credential download - use createRoute() to properly format the URL
+                        navController.navigate(Screen.CredentialDetail.createRoute())
                     } else {
                         Log.e("AppNavHost", "Unknown issuer type: $issuerType")
                     }
