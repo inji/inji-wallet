@@ -8,7 +8,6 @@ pluginManagement {
             }
         }
         mavenCentral()
-        mavenLocal()
         gradlePluginPortal()
     }
 }
@@ -20,7 +19,6 @@ dependencyResolutionManagement {
         maven("https://central.sonatype.com/repository/maven-snapshots/")
         maven("https://repo.danubetech.com/repository/maven-public/")
         maven("https://jitpack.io")
-        mavenLocal()
     }
 }
 

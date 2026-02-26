@@ -89,15 +89,6 @@ dependencies {
     implementation(libs.androidx.material3)
 
 
-    implementation("io.inji:inji-vci-client-aar:0.7.0-SNAPSHOT") { // Verifiable Credential Download
-        // Exclude transitive dependencies to use explicitly declared versions
-        exclude(group = "com.google.crypto.tink", module = "tink")
-        exclude(group = "io.mosip", module = "vcverifier-jar")
-        exclude(group = "com.google.protobuf", module = "protobuf-java")
-        exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
-        exclude(group = "org.bouncycastle")
-    }
-
     implementation("com.nimbusds:nimbus-jose-jwt:10.6") //JWT Signing Library
 
     implementation("io.mosip:secure-keystore:0.3.0") {   // Secure Keystore Library
@@ -106,6 +97,16 @@ dependencies {
         exclude(group = "org.springframework")
         exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
     }
+
+    implementation("io.inji:inji-vci-client-aar:0.7.0-SNAPSHOT") { // Verifiable Credential Download
+      // Exclude transitive dependencies to use explicitly declared versions
+      exclude(group = "com.google.crypto.tink", module = "tink")
+      exclude(group = "io.mosip", module = "vcverifier-jar")
+      exclude(group = "com.google.protobuf", module = "protobuf-java")
+      exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
+      exclude(group = "org.bouncycastle")
+    }
+
    implementation("io.mosip:vcverifier-aar:1.5.0") { // Verifiable Credential Verification Library
         // Exclude transitive dependencies to prevent conflicts and use explicitly declared versions
         exclude(group = "org.bouncycastle")

@@ -50,8 +50,13 @@ suspend fun downloadCredentialFromTrustedIssuer(
       clientId = selectedIssuer.clientId, // client Identifier associated with the wallet for initiating the download
       redirectUri = selectedIssuer.redirectUri
     ),
+//    supported authorizations of the Wallet for the download flow.
     authorizations = listOf(
+      // Redirect the user to the authorization endpoint (authorization server) in a web view or browser,
+      // and get the authorization response parameters back after successful authorization.
       AuthorizationMethod.RedirectToWeb(
+        // Callback function to open the authorization endpoint in a web view or browser,
+        // and return the authorization response parameters (e.g., code, state) after successful authorization.
         openWebPage = { url -> handleAuthorizationFlow(navController, url, loadingMessage) }
       )
     ),
@@ -108,15 +113,18 @@ suspend fun downloadCredentialFromCredentialOffer( credentialOfferUri: String,
         loadingMessage = loadingMessage,
       )
     },
-//    A transaction code is a one-time code that ensures only the right wallet can download a specific credential.
-//    Imagine you want to pick up a package from a friend. Your friend gives you a special number so only you can get it
-    getTxCode = {inputMode, description, length -> getTransactionCode(inputMode, description, length)},
+    // Callback function to get user trust with the Credential Issuer
     onCheckIssuerTrust = { credentialIssuer, issuerDisplay ->
       Log.d("CHECK_ISSUER_TRUST", "Checking trust for issuer: $credentialIssuer")
 // check if the issuer is in the trusted list of issuers.
 // You can also use the issuerDisplay information to show user friendly name/logo of the issuer to users when asking them to confirm if they trust the issuer
       true
     },
+//    Imagine you want to pick up a package from a friend.
+//    Your friend gives you a special number so only you can get it
+//    A transaction code is a one-time code that
+//    ensures only the right wallet can download a specific credential.
+    getTxCode = {inputMode, description, length -> getTransactionCode(inputMode, description, length)},
     downloadTimeoutInMillis = 5000
   )
 
@@ -186,6 +194,16 @@ private suspend fun constructProofJWT(
   val nonNullNonce = cNonce?.trim()?.takeIf { it.isNotEmpty() }
     ?: throw IllegalStateException("c_nonce missing from token response; cannot build proof JWT")
 
+  val now = System.currentTimeMillis()
+
+  val claimsSet = JWTClaimsSet.Builder()
+    .issuer(clientId)
+    .audience(issuer)
+    .claim("nonce", nonNullNonce)
+    .issueTime(Date(now))
+    .expirationTime(Date(now + 3 * 60 * 1000))
+    .build()
+
   val manager = SecureKeystoreManager.getInstance(context)
 
   // App supports RSA and ES types
@@ -218,16 +236,6 @@ private suspend fun constructProofJWT(
     .build()
 
   Log.d("PROOF_JWT", "JWT Header created with type: openid4vci-proof+jwt")
-
-  val now = System.currentTimeMillis()
-
-  val claimsSet = JWTClaimsSet.Builder()
-    .issuer(clientId)
-    .audience(issuer)
-    .claim("nonce", nonNullNonce)
-    .issueTime(Date(now))
-    .expirationTime(Date(now + 3 * 60 * 1000))
-    .build()
 
   // Note: JWT claims contain sensitive data (nonce, etc.) - avoid logging in production
 
