@@ -50,7 +50,7 @@ export const TelemetryConstants = {
     vcsAreTampered:
       'Tampered cards detected and removed for security reasons. Please download again',
     privateKeyUpdationFailed: 'Failed to store private key in keystore',
-    vcVerificationFailed: 'VC verification Failed with Range Error - ',
+    vcVerificationFailed: 'VC verification failed',
     wellknownConfigMismatch:
       'Selected credential type is not available in wellknown config supported credentials list',
   }),

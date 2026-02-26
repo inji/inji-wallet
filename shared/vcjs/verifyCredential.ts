@@ -10,7 +10,7 @@ import {
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {getErrorEventData, sendErrorEvent} from '../telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../telemetry/TelemetryConstants';
-import {getMosipIdentifier} from '../commonUtil';
+
 import {NativeModules} from 'react-native';
 import {isAndroid, isIOS} from '../constants';
 import {VCFormat} from '../VCFormat';
@@ -167,7 +167,6 @@ function handleResponse(
       errorMessage = VerificationErrorMessage.RANGE_ERROR;
       sendVerificationErrorEvent(
         TelemetryConstants.ErrorMessage.vcVerificationFailed,
-        verifiableCredential,
       );
       isVerifiedFlag = true;
       errorCode = VerificationErrorType.RANGE_ERROR;
@@ -193,8 +192,7 @@ async function handleVcVerifierResponse(
           ? VerificationErrorType.GENERIC_TECHNICAL_ERROR
           : verificationResult.verificationErrorCode;
       sendVerificationErrorEvent(
-        verificationResult.verificationMessage,
-        verifiableCredential,
+        TelemetryConstants.ErrorMessage.vcVerificationFailed,
       );
     }
     const isRevoked = await checkIsStatusRevoked(
@@ -211,7 +209,9 @@ async function handleVcVerifierResponse(
       'Error occurred while verifying the VC using VcVerifier Library:',
       error,
     );
-    sendVerificationErrorEvent(error, verifiableCredential);
+    sendVerificationErrorEvent(
+      TelemetryConstants.ErrorMessage.vcVerificationFailed,
+    );
     return {
       isVerified: false,
       verificationMessage: verificationResult.verificationMessage,
@@ -275,24 +275,12 @@ function createSuccessfulVerificationResult(): VerificationResult {
   };
 }
 
-function sendVerificationErrorEvent(
-  errorMessage: string,
-  verifiableCredential: any,
-) {
-  const stacktrace = __DEV__ ? verifiableCredential : {};
-  //Add only UIN / VID in the credential into telemetry error message and not document_number or other identifiers to avoid sensitivity issues
-  let detailedError = errorMessage;
-  if (verifiableCredential.credentialSubject)
-    detailedError += `-${getMosipIdentifier(
-      verifiableCredential.credentialSubject,
-    )}`;
-
+function sendVerificationErrorEvent(errorMessage: string) {
   sendErrorEvent(
     getErrorEventData(
       TelemetryConstants.FlowType.vcVerification,
       TelemetryConstants.ErrorId.vcVerificationFailed,
-      detailedError,
-      stacktrace,
+      errorMessage,
     ),
   );
 }
