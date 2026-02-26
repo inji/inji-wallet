@@ -21,7 +21,7 @@ object CredentialVerifier {
                 Log.d(LOG_TAG, "Credential hash: $credentialHash, length: ${credentialJson.length}")
 
 
-                val cleanCredential = if (credentialJson.startsWith("CredentialResponse(")) {
+                val verifiableCredential = if (credentialJson.startsWith("CredentialResponse(")) {
                     Log.d(LOG_TAG, "Extracting credential from response wrapper")
                     val credMatch = Regex("""credential=(\{.*\})(?:,|\))""").find(credentialJson)
                     credMatch?.groupValues?.get(1) ?: credentialJson
@@ -31,7 +31,7 @@ object CredentialVerifier {
 
                 // Validate JSON structure
                 try {
-                    JSONObject(cleanCredential)
+                    JSONObject(verifiableCredential)
                     Log.d(LOG_TAG, "JSON structure valid")
                 } catch (e: Exception) {
                     Log.e(LOG_TAG, "Invalid JSON structure: ${e.message}")
@@ -42,9 +42,19 @@ object CredentialVerifier {
                 Log.d(LOG_TAG, "Performing cryptographic verification with LDP_VC format")
 
                 try {
-                    val result: VerificationResult = verifier.verify(cleanCredential, CredentialFormat.LDP_VC)
+                    val verifier = CredentialsVerifier()
+                    val result: VerificationResult = verifier.verify(
+                      credential = verifiableCredential, //  the Verifiable Credential itself, provided as a string
+                      credentialFormat = CredentialFormat.LDP_VC
+                    )
 
-                    if (result.verificationStatus) {
+                  /**
+                   * verificationStatus — true if the credential is valid, false otherwise.
+                   * verificationMessage — details about validation or syntax errors.
+                   * verificationErrorCode — a standardized code indicating the type of error, such as VC_EXPIRED or SIGNATURE_INVALID.
+                   */
+
+                  if (result.verificationStatus) {
                         Log.i(LOG_TAG, "✓ Credential verified successfully")
                         Log.d(LOG_TAG, "Verification message: ${result.verificationMessage}")
                         return@withContext true

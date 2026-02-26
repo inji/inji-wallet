@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
         // Initialize keystore manager
         keystoreManager = SecureKeystoreManager.getInstance(this)
 
-        // Check and initialize keystore
+        // On app launch, initialize the keystore and generate keys.
         initializeKeystoreIfNeeded()
 
         setContent {
@@ -53,6 +53,11 @@ class MainActivity : ComponentActivity() {
         }
 
         // Generate keys for first time
+      /**
+       * On app launch, the Secure Keystore library is used to generate cryptographic keys,
+       * which are later used for signing purposes during credential download.
+       *
+       */
         lifecycleScope.launch {
             try {
                 val result = keystoreManager.initializeKeystore()
