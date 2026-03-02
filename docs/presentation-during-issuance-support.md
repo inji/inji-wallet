@@ -12,7 +12,7 @@ This document focuses on the technical design to support presentations during th
 
 ## Specification References
 
-- [OpenID for Verifiable Credential Issuance 1.1 - Editor's draft](https://openid.github.io/OpenID4VCI/openid-4-verifiable-credential-issuance-1_1-wg-draft.html)
+- [OpenID4VCI v1.1 Specification Commit](https://github.com/openid/OpenID4VCI/blob/31636e9bb7f0eef6933175e1e41c78ce79a69783/1.1/openid-4-verifiable-credential-issuance-1_1.md)
 - [OpenID for Verifiable Presentations 1.0](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)
 - [OAuth 2.0 Pushed Authorization Requests](https://www.rfc-editor.org/info/rfc9126)
 - [The OAuth 2.0 Authorization Framework](https://www.rfc-editor.org/info/rfc6749)
