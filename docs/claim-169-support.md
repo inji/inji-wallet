@@ -12,23 +12,23 @@
 
 ## Pre-requisites
 
-- VC should be valid and should contain claim 169 QR code data in the expected format. For e.g. for JSON-LD VC, claim 169 QR code data should be present in the `credentialSubject` section of the VC with the key `claim169`.
+- VC should be valid and should contain Claim 169 QR code data in the binary format. For e.g. for JSON-LD VC, Claim 169 QR code data should be present in the `credentialSubject` section of the VC with the key `claim169`.
 
   ```json
-    "claim169": {
+    "claim169" : {
     "identityQRCode": "NCF4:OCFBI%S:2EQ7NMC2558J6HW8VDQ0DW8V27MMSLYG%8WTGTEF9-8G7K6A5S+ORSWH4%F12802...",
     "faceQRCode": "NCF4:OCFBI%S:2EQ7NMC2558J6HW8VDQ0DW8V27MMSLYG%8WTSJSJGTEF9-8G7K6A5S+ORSWH4%F12802..."
     }
   ```
 
-- The claim 169 QR code data should be in the expected format as per the requirements of the application consuming it. Refer [Claim 169 QR Code specification](https://docs.mosip.io/1.2.0/readme/standards-and-specifications/mosip-standards/169-qr-code-specification) for further details.
+- The Claim 169 QR code data should be in the expected format as per the requirements of the application consuming it. Refer [Claim 169 QR Code specification](https://docs.mosip.io/1.2.0/readme/standards-and-specifications/mosip-standards/169-qr-code-specification) for further details.
 
 ## Credential Detail view - with Claim 169 QR code support
 
 ### Actors Involved
 
 - **User**: The individual who holds the Verifiable Credential and interacts with the Inji Wallet to view the credential details.
-- **Wallet**: The application that displays the credential details to the user, including the claim 169 QR code if present.
+- **Wallet**: The application that displays the credential details to the user, including the Claim 169 QR code if present.
 
 ```mermaid
 sequenceDiagram
@@ -38,12 +38,21 @@ sequenceDiagram
   Note over user,wallet: Credential already downloaded and stored in wallet
 
   user->>wallet: Opens credential detail view
-  wallet->>wallet: Retrieves credential from local storage
-  wallet->>wallet: Checks for claim 169 QR code data
-  alt claim 169 QR code data is present
-    wallet->>user: Displays credential with claim 169 QR code
-  else claim 169 QR code data is not present
-    wallet->>wallet: Generates QR code using Pixelpass library
-    wallet->>user: Displays credential with Pixelpass QR code
-  end
+  wallet->>wallet: Retrieves credential from app storage
+    wallet->>wallet: Checks for Claim 169 QR code data<br/>Is `claim169` key present in `credentialSubject` of credential data?
+    alt Claim 169 QR code data is present
+      wallet->>wallet: Create QR code using Claim 169 QR code data<br/> in the credential
+      wallet->>user: Displays credential with Claim 169 QR code
+    else Claim 169 QR code data is not present
+      wallet->>wallet: Generates QR code using Pixelpass library
+      wallet->>user: Displays credential with Pixelpass QR code
+    end
 ```
+
+**Detailed Flow:**
+
+- The Wallet checks if the `claim169` key is present in the `credentialSubject` of the credential data
+  - If present, the Wallet validates that the Claim 169 data is a non-empty string
+  - The Wallet selects the first QR code data available in the `claim169` object by using the first key (e.g., `identityQRCode`)
+  - The QR data is converted to QR format and displayed to the user in the credential detail view
+- If the `claim169` key is not present, the wallet falls back to generating a QR code using the Pixelpass library and displays it to the user
