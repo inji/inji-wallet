@@ -47,11 +47,11 @@ fun HomeScreen(
     val credentials = remember { mutableStateOf(CredentialStore.getAllCredentials()) }
     val verificationStatus = remember { mutableStateMapOf<Int, Boolean?>() }
     val coroutineScope = rememberCoroutineScope()
-    
+
     LaunchedEffect(Unit) {
         credentials.value = CredentialStore.getAllCredentials()
     }
-    
+
     // Verify credentials when they change
     LaunchedEffect(credentials.value) {
         credentials.value.forEachIndexed { index, credential ->
@@ -64,7 +64,7 @@ fun HomeScreen(
             }
         }
     }
-    
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -74,7 +74,7 @@ fun HomeScreen(
                 shape = CircleShape,
                 modifier = Modifier
                     .size(56.dp)
-                    .offset(y = (-40).dp) 
+                    .offset(y = (-40).dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -114,7 +114,7 @@ fun HomeScreen(
                         color = Color.Gray,
                         fontSize = 20.sp
                     )
-                    
+
                     // Clear All button (only show if there are credentials)
                     if (credentials.value.isNotEmpty()) {
                         TextButton(
@@ -191,13 +191,13 @@ fun CredentialHomeCard(
     onClick: () -> Unit
 ) {
     val parsedData = remember(credential) { parseCredential(credential) }
-    
+
     val vcTypeName = parsedData["credentialName"] ?: parsedData["type"]?.replace("VerifiableCredential", "Verifiable Credential") ?: "Verifiable Credential"
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(110.dp) 
+            .height(110.dp)
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = CardBlue
@@ -220,7 +220,7 @@ fun CredentialHomeCard(
                         null
                     }
                 }
-                
+
                 bitmap?.let {
                     Image(
                         bitmap = it.asImageBitmap(),
@@ -278,13 +278,13 @@ fun CredentialHomeCard(
                     fontSize = 14.sp,
                     maxLines = 1
                 )
-                
+
                 Spacer(modifier = Modifier.height(4.dp))
-                
+
                 // Verification status badge
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     when (isValid) {
-                        true -> {
+                        true, false -> {
                             Icon(
                                 imageVector = Icons.Default.CheckCircle,
                                 contentDescription = "Verified",
