@@ -10,11 +10,13 @@ apply plugin: 'kotlin-android'
 
 configurations.all {
     resolutionStrategy.force 'androidx.activity:activity-ktx:1.7.1', 'androidx.activity:activity:1.7.0', 'com.fasterxml.jackson.core:jackson-core:2.14.0'
-    all*.exclude module: 'bcprov-jdk15to18'
-    all*.exclude module: 'bcutil-jdk18on'
-    all*.exclude module: 'bcprov-jdk15on'
-    all*.exclude module: 'bcutil-jdk15on'
-    all*.exclude module: 'titanium-json-ld'
+    exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15to18'
+    exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
+    exclude module: 'bcprov-jdk15to18'
+    exclude module: 'bcutil-jdk18on'
+    exclude module: 'bcprov-jdk15on'
+    exclude module: 'bcutil-jdk15on'
+    exclude module: 'titanium-json-ld'
 }
 
 react {
@@ -291,7 +293,7 @@ dependencies {
         exclude group: 'io.inji', module: 'inji-openid4vp-aar'
     }
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("io.mosip:vcverifier-aar:1.6.0-SNAPSHOT") {
+    implementation("io.inji:vcverifier-aar:1.7.0") {
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
     }
 
