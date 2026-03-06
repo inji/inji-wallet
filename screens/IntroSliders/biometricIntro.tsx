@@ -4,9 +4,12 @@ import {Column, Text, Button} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
 import {SvgImage} from '../../components/ui/svg';
 import {View, ScrollView} from 'react-native';
+import {useBiometricType} from '../../shared/hooks/useBiometricType';
 
 export const StaticAuthScreen: React.FC = () => {
   const {t} = useTranslation('AuthScreen');
+  const {biometricType, isBiometricsLoading, translationSuffix} =
+    useBiometricType();
 
   return (
     <Column
@@ -30,7 +33,8 @@ export const StaticAuthScreen: React.FC = () => {
             overflow: 'hidden',
           }}>
           <Column crossAlign="center">
-            {SvgImage.fingerprintIcon(66)}
+            {!isBiometricsLoading &&
+              SvgImage.adaptiveBiometricIcon(biometricType, 66)}
             <Column margin="30 0 0 0">
               <Text
                 testID="header"
@@ -60,7 +64,9 @@ export const StaticAuthScreen: React.FC = () => {
           <Column>
             <Button
               testID="useBiometricsButton"
-              title={t('useBiometrics')}
+              title={t(`use${translationSuffix}` as any, {
+                defaultValue: t('useBiometrics'),
+              })}
               type="gradient"
               margin="0 0 8 0"
               onPress={() => {}}

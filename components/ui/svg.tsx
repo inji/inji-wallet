@@ -1,6 +1,8 @@
 import React from 'react';
 import Svg, {Image} from 'react-native-svg';
 import {Theme} from './styleUtils';
+import {BiometricType} from '../../shared/hooks/useBiometricType';
+import {isAndroid} from '../../shared/constants';
 import Home from '../../assets/Home_tab_icon.svg';
 import History from '../../assets/History_tab_icon.svg';
 import ShareWithSelfie from '../../assets/Share_with_selfie.svg';
@@ -48,6 +50,7 @@ import Search from '../../assets/Search.svg';
 import CloudUploadDoneIcon from '../../assets/Cloud_Upload_Done_Icon.svg';
 import SettingsLanguage from '../../assets/Language_Icon.svg';
 import SettingsBiometric from '../../assets/biometric_unlock.svg';
+import FaceIdIcon from '../../assets/Face_ID_Icon.svg';
 import SettingsAboutInji from '../../assets/about_inji.svg';
 import SettingsBackup from '../../assets/cloud_upload.svg';
 import SettingsLogOut from '../../assets/logout_icon.svg';
@@ -66,8 +69,8 @@ import WalletActivatedIcon from '../../assets/Wallet_Activated_Icon.svg';
 import WalletUnActivatedIcon from '../../assets/Wallet_UnActivated_Icon.svg';
 import WalletActivatedLargeIcon from '../../assets/Wallet_Activated_Large_Icon.svg';
 import WalletUnActivatedLargeIcon from '../../assets/Wallet_UnActivated_Large_Icon.svg';
-import DoneIcon from "../../assets/done-icon.svg"
-import CircleArrowRight from "../../assets/arrow-circle-broken-right.svg"
+import DoneIcon from '../../assets/done-icon.svg';
+import CircleArrowRight from '../../assets/arrow-circle-broken-right.svg';
 
 export class SvgImage {
   static selectedCheckBox() {
@@ -593,6 +596,35 @@ export class SvgImage {
     );
   }
 
+  static faceIdIcon(size?: number | undefined) {
+    return (
+      <FaceIdIcon
+        height={size}
+        width={size}
+        color1={Theme.Colors.linearIconGradientStart}
+        color2={Theme.Colors.linearIconGradientEnd}
+      />
+    );
+  }
+
+  static adaptiveBiometricIcon(
+    biometricType: string,
+    size?: number | undefined,
+  ) {
+    if (isAndroid()) {
+      return SvgImage.fingerprintIcon(size);
+    }
+    switch (biometricType) {
+      case BiometricType.FACE:
+        return SvgImage.faceIdIcon(size);
+      case BiometricType.FINGERPRINT:
+        return SvgImage.fingerprintIcon(size);
+      case BiometricType.NONE:
+      default:
+        return SvgImage.fingerprintIcon(size);
+    }
+  }
+
   static abotInjiIcon() {
     return (
       <SettingsAboutInji
@@ -656,7 +688,12 @@ export class SvgImage {
     );
   }
 
-  static doneIcon(color = Theme.Colors.disabled, height = 16, width = 16, testID = 'doneIcon') {
+  static doneIcon(
+    color = Theme.Colors.disabled,
+    height = 16,
+    width = 16,
+    testID = 'doneIcon',
+  ) {
     return (
       <DoneIcon
         color={color}
@@ -664,10 +701,15 @@ export class SvgImage {
         height={height}
         width={width}
       />
-    )
+    );
   }
 
-  static circleArrowRight(color = Theme.Colors.disabled, height = 16, width = 16, testID = 'circleArrowRightIcon') {
+  static circleArrowRight(
+    color = Theme.Colors.disabled,
+    height = 16,
+    width = 16,
+    testID = 'circleArrowRightIcon',
+  ) {
     return (
       <CircleArrowRight
         width={width}
@@ -675,7 +717,7 @@ export class SvgImage {
         color={color}
         {...testIDProps(testID)}
       />
-    )
+    );
   }
 }
 
