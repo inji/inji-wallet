@@ -122,7 +122,7 @@
       }
     },
     "shareQRCode": "Share QR Code",
-    "disclosureNote": "Your card includes specific details marked by the issuer as selectively shareable. These can be shared independently during credential presentation. Other fields not listed here can only be shared as part of the full credential, if requested by the verifier.",
+    "disclosureNote": "Only the listed items can be shared separately. All other details are shared only when you share the entire card, if a verifier asks for it.",
     "disclosureNoteTitle": "Please note",
     "disclosedFieldsDescription": "Your card includes the following selectively shareable details listed below.",
     "disclosedFieldsTitle": "Information you choose to share",
