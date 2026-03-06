@@ -40,7 +40,6 @@ import inji.models.Vid;
 import inji.utils.BrowserStackLocalManager;
 import inji.utils.ExtentReportManager;
 import inji.utils.InjiWalletConfigManager;
-import inji.utils.OTPListener;
 import inji.utils.testdatamanager.LandRegistryUINManager;
 import inji.utils.testdatamanager.MockUINManager;
 import inji.utils.testdatamanager.PolicyManager;
@@ -50,381 +49,385 @@ import inji.utils.testdatamanager.UINManager;
 import inji.utils.testdatamanager.VIDManager;
 import io.appium.java_client.AppiumDriver;
 import io.mosip.testrig.apirig.testrunner.BaseTestCase;
+import io.mosip.testrig.apirig.utils.NotificationListener;
 import io.mosip.testrig.apirig.utils.S3Adapter;
-
 
 public abstract class BaseTest {
 
-    protected Local bsLocal;
+	protected Local bsLocal;
 
-    private static final ThreadLocal<Uin> threadUin = new ThreadLocal<>();
-    private static final ThreadLocal<Vid> threadVid = new ThreadLocal<>();
-    private static final ThreadLocal<Uin> threadMockUin = new ThreadLocal<>();
-    private static final ThreadLocal<Policy> threadPolicy = new ThreadLocal<>();
-    private static final ThreadLocal<Uin> threadLandUin = new ThreadLocal<>();
-    private static final ThreadLocal<Uin> threadSvgWithFaceUin = new ThreadLocal<>();
-    private static final ThreadLocal<Uin> threadSvgWithOutFaceUin = new ThreadLocal<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
-    
-    protected abstract PlatformType getPlatformType();
+	private static final ThreadLocal<Uin> threadUin = new ThreadLocal<>();
+	private static final ThreadLocal<Vid> threadVid = new ThreadLocal<>();
+	private static final ThreadLocal<Uin> threadMockUin = new ThreadLocal<>();
+	private static final ThreadLocal<Policy> threadPolicy = new ThreadLocal<>();
+	private static final ThreadLocal<Uin> threadLandUin = new ThreadLocal<>();
+	private static final ThreadLocal<Uin> threadSvgWithFaceUin = new ThreadLocal<>();
+	private static final ThreadLocal<Uin> threadSvgWithOutFaceUin = new ThreadLocal<>();
+	private static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
 
-    protected AppiumDriver getDriver() {
-        return DriverManager.getDriver();
-    }
+	protected abstract PlatformType getPlatformType();
 
-    @BeforeSuite(alwaysRun = true)
-    public void beforeSuite() {
-        ExtentReportManager.initReport();
-        BrowserStackLocalManager.startLocal();
-    }
+	protected AppiumDriver getDriver() {
+		return DriverManager.getDriver();
+	}
 
-    @BeforeMethod(alwaysRun = true)
-    public void setup(Method method,ITestResult result) throws MalformedURLException, InterruptedException {
-        String className = method.getDeclaringClass().getSimpleName();
-        String methodName = method.getName();
-        ExtentTest test = ExtentReportManager.createTest(className + " :: " + methodName);
-        ExtentReportManager.setTest(test);
-        
-        OTPListener.markRequestStart();
+	@BeforeSuite(alwaysRun = true)
+	public void beforeSuite() {
+		ExtentReportManager.initReport();
+		BrowserStackLocalManager.startLocal();
+	}
 
+	@BeforeMethod(alwaysRun = true)
+	public void setup(Method method, ITestResult result) throws MalformedURLException, InterruptedException {
+		String className = method.getDeclaringClass().getSimpleName();
+		String methodName = method.getName();
+		ExtentTest test = ExtentReportManager.createTest(className + " :: " + methodName);
+		ExtentReportManager.setTest(test);
 
-        if (method.isAnnotationPresent(NeedsUIN.class)) {
-            Uin uinDetails = UINManager.acquireUIN();
-            threadUin.set(uinDetails);
-        }
-        if (method.isAnnotationPresent(NeedsSunbirdPolicy.class)) {
-            Policy policy = PolicyManager.acquirePolicy();
-            threadPolicy.set(policy);
-        }
-        if (method.isAnnotationPresent(NeedsVID.class)) {
-            Vid vidDetails = VIDManager.acquireVID();
-            threadVid.set(vidDetails);
-        }
-        if (method.isAnnotationPresent(NeedsMockUIN.class)) {
-            Uin mockUinDetails = MockUINManager.acquireUIN();
-            threadMockUin.set(mockUinDetails);
-        }
-        if (method.isAnnotationPresent(NeedsLandUIN.class)) {
-            Uin landUinDetails = LandRegistryUINManager.acquireUIN();
-            threadLandUin.set(landUinDetails);
-        }
-        if (method.isAnnotationPresent(NeedsSvgWithFaceUIN.class)) {
-            Uin svgWithFaceUinDetails = SvgWithFaceUINManager.acquireUIN();
-            threadSvgWithFaceUin.set(svgWithFaceUinDetails);
-        }
-        if (method.isAnnotationPresent(NeedsSvgWithOutFaceUIN.class)) {
-            Uin svgWithOutFaceUinDetails = SvgWithOutFaceUINManager.acquireUIN();
-            threadSvgWithOutFaceUin.set(svgWithOutFaceUinDetails);
-        }
-        
-        String reason = result.getMethod().getDescription();
-        if (reason == null || !reason.startsWith("KNOWN_ISSUE::")) {
-        if (getPlatformType() == PlatformType.ANDROID) {
-            DriverManager.getAndroidDriver();
-        } else if (getPlatformType() == PlatformType.IOS) {
-            DriverManager.getIosDriver();
-        } else {
-            throw new IllegalArgumentException("Unsupported platform");
-        }}
-    }
-    
-    @AfterMethod(alwaysRun = true)
-    public void teardown(ITestResult result) {
-        Method method = result.getMethod().getConstructorOrMethod().getMethod();
-        ExtentTest test = ExtentReportManager.getTest();
-        OTPListener.markRequestRemove();
+		NotificationListener.markRequestStart();
 
-        if (result.getStatus() == ITestResult.SKIP) {
-            String reason = result.getMethod().getDescription();
-            if (reason != null && reason.startsWith("KNOWN_ISSUE::")) {
-                String bugId = reason.replace("KNOWN_ISSUE::", "");
-                
-                test.log(Status.SKIP, "Known Issue: " + "<a href='" + "https://mosip.atlassian.net/browse/" + bugId + "' target='_blank'>Open known issue on jira</a>");
-                ExtentReportManager.incrementKnownIssue();
-            } else {
-                test.log(Status.SKIP, "Test Skipped: " + result.getThrowable());
-                ExtentReportManager.incrementSkipped();
-            }
-        } else if (result.getStatus() == ITestResult.FAILURE) {
-            test.log(Status.FAIL, result.getThrowable());
-            ExtentReportManager.incrementFailed();
-        } else if (result.getStatus() == ITestResult.SUCCESS) {
-            test.log(Status.PASS, "Test Passed");
-            ExtentReportManager.incrementPassed();
-        }
+		if (method.isAnnotationPresent(NeedsUIN.class)) {
+			Uin uinDetails = UINManager.acquireUIN();
+			threadUin.set(uinDetails);
+		}
+		if (method.isAnnotationPresent(NeedsSunbirdPolicy.class)) {
+			Policy policy = PolicyManager.acquirePolicy();
+			threadPolicy.set(policy);
+		}
+		if (method.isAnnotationPresent(NeedsVID.class)) {
+			Vid vidDetails = VIDManager.acquireVID();
+			threadVid.set(vidDetails);
+		}
+		if (method.isAnnotationPresent(NeedsMockUIN.class)) {
+			Uin mockUinDetails = MockUINManager.acquireUIN();
+			threadMockUin.set(mockUinDetails);
+		}
+		if (method.isAnnotationPresent(NeedsLandUIN.class)) {
+			Uin landUinDetails = LandRegistryUINManager.acquireUIN();
+			threadLandUin.set(landUinDetails);
+		}
+		if (method.isAnnotationPresent(NeedsSvgWithFaceUIN.class)) {
+			Uin svgWithFaceUinDetails = SvgWithFaceUINManager.acquireUIN();
+			threadSvgWithFaceUin.set(svgWithFaceUinDetails);
+		}
+		if (method.isAnnotationPresent(NeedsSvgWithOutFaceUIN.class)) {
+			Uin svgWithOutFaceUinDetails = SvgWithOutFaceUINManager.acquireUIN();
+			threadSvgWithOutFaceUin.set(svgWithOutFaceUinDetails);
+		}
 
-        // Release test data
-        releaseTestData(method,result);
+		String reason = result.getMethod().getDescription();
+		if (reason == null || !reason.startsWith("KNOWN_ISSUE::")) {
+			if (getPlatformType() == PlatformType.ANDROID) {
+				DriverManager.getAndroidDriver();
+			} else if (getPlatformType() == PlatformType.IOS) {
+				DriverManager.getIosDriver();
+			} else {
+				throw new IllegalArgumentException("Unsupported platform");
+			}
+		}
+	}
 
-    }
+	@AfterMethod(alwaysRun = true)
+	public void teardown(ITestResult result) {
+		Method method = result.getMethod().getConstructorOrMethod().getMethod();
+		ExtentTest test = ExtentReportManager.getTest();
+		NotificationListener.markRequestRemove();
 
-    private void releaseTestData(Method method,ITestResult result) {
-        if (method.isAnnotationPresent(NeedsUIN.class)) {
-            Uin uin = threadUin.get();
-            if (uin != null) {
-                UINManager.releaseUIN(uin);
-                threadUin.remove();
-            }
-        }
+		if (result.getStatus() == ITestResult.SKIP) {
+			String reason = result.getMethod().getDescription();
+			if (reason != null && reason.startsWith("KNOWN_ISSUE::")) {
+				String bugId = reason.replace("KNOWN_ISSUE::", "");
 
-        if (method.isAnnotationPresent(NeedsSunbirdPolicy.class)) {
-            Policy policy = threadPolicy.get();
-            if (policy != null) {
-                PolicyManager.releasePolicy(policy);
-                threadPolicy.remove();
-            }
-        }
+				test.log(Status.SKIP, "Known Issue: " + "<a href='" + "https://mosip.atlassian.net/browse/" + bugId
+						+ "' target='_blank'>Open known issue on jira</a>");
+				ExtentReportManager.incrementKnownIssue();
+			} else {
+				test.log(Status.SKIP, "Test Skipped: " + result.getThrowable());
+				ExtentReportManager.incrementSkipped();
+			}
+		} else if (result.getStatus() == ITestResult.FAILURE) {
+			test.log(Status.FAIL, result.getThrowable());
+			ExtentReportManager.incrementFailed();
+		} else if (result.getStatus() == ITestResult.SUCCESS) {
+			test.log(Status.PASS, "Test Passed");
+			ExtentReportManager.incrementPassed();
+		}
 
-        if (method.isAnnotationPresent(NeedsVID.class)) {
-            Vid vid = threadVid.get();
-            if (vid != null) {
-                VIDManager.releaseVID(vid);
-                threadVid.remove();
-            }
-        }
+		// Release test data
+		releaseTestData(method, result);
 
-        if (method.isAnnotationPresent(NeedsMockUIN.class)) {
-            Uin mockUin = threadMockUin.get();
-            if (mockUin != null) {
-                MockUINManager.releaseUIN(mockUin);
-                threadMockUin.remove();
-            }
-        }
-        
-        if (method.isAnnotationPresent(NeedsLandUIN.class)) {
-            Uin landUin = threadLandUin.get();
-            if (landUin != null) {
-            	LandRegistryUINManager.releaseUIN(landUin);
-            	threadLandUin.remove();
-            }
-        }
-        
-        if (method.isAnnotationPresent(NeedsSvgWithFaceUIN.class)) {
-            Uin svgWithFaceUin = threadSvgWithFaceUin.get();
-            if (svgWithFaceUin != null) {
-            	SvgWithFaceUINManager.releaseUIN(svgWithFaceUin);
-            	threadSvgWithFaceUin.remove();
-            }
-        }
-        
-        if (method.isAnnotationPresent(NeedsSvgWithOutFaceUIN.class)) {
-            Uin svgWithOutFaceUin = threadSvgWithOutFaceUin.get();
-            if (svgWithOutFaceUin != null) {
-            	SvgWithOutFaceUINManager.releaseUIN(svgWithOutFaceUin);
-            	threadSvgWithOutFaceUin.remove();
-            }
-        }
+	}
 
-        try {
-            String reason = result.getMethod().getDescription();
-            if (reason == null || !reason.startsWith("KNOWN_ISSUE::")) {
-            	
-            AppiumDriver driver = getDriver();
-            
-            if (driver == null) {
-            	LOGGER.warn("Driver is null, skipping BrowserStack session info fetch");
-            	return;
-            }
+	private void releaseTestData(Method method, ITestResult result) {
+		if (method.isAnnotationPresent(NeedsUIN.class)) {
+			Uin uin = threadUin.get();
+			if (uin != null) {
+				UINManager.releaseUIN(uin);
+				threadUin.remove();
+			}
+		}
 
-            String sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
-            String jsonUrl = "https://app-automate.browserstack.com/sessions/" + sessionId + ".json";
+		if (method.isAnnotationPresent(NeedsSunbirdPolicy.class)) {
+			Policy policy = threadPolicy.get();
+			if (policy != null) {
+				PolicyManager.releasePolicy(policy);
+				threadPolicy.remove();
+			}
+		}
 
-            // Call BrowserStack session API
-            String username = InjiWalletConfigManager.getproperty("browserstack_username");
-            String accessKey = InjiWalletConfigManager.getproperty("browserstack_accesskey");
-            String auth = username + ":" + accessKey;
-            String basicAuth = "Basic " + Base64.getEncoder().encodeToString(auth.getBytes());
+		if (method.isAnnotationPresent(NeedsVID.class)) {
+			Vid vid = threadVid.get();
+			if (vid != null) {
+				VIDManager.releaseVID(vid);
+				threadVid.remove();
+			}
+		}
 
-            URL url = new URL(jsonUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Authorization", basicAuth);
+		if (method.isAnnotationPresent(NeedsMockUIN.class)) {
+			Uin mockUin = threadMockUin.get();
+			if (mockUin != null) {
+				MockUINManager.releaseUIN(mockUin);
+				threadMockUin.remove();
+			}
+		}
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
+		if (method.isAnnotationPresent(NeedsLandUIN.class)) {
+			Uin landUin = threadLandUin.get();
+			if (landUin != null) {
+				LandRegistryUINManager.releaseUIN(landUin);
+				threadLandUin.remove();
+			}
+		}
 
-            JSONObject jsonResponse = new JSONObject(response.toString());
+		if (method.isAnnotationPresent(NeedsSvgWithFaceUIN.class)) {
+			Uin svgWithFaceUin = threadSvgWithFaceUin.get();
+			if (svgWithFaceUin != null) {
+				SvgWithFaceUINManager.releaseUIN(svgWithFaceUin);
+				threadSvgWithFaceUin.remove();
+			}
+		}
+
+		if (method.isAnnotationPresent(NeedsSvgWithOutFaceUIN.class)) {
+			Uin svgWithOutFaceUin = threadSvgWithOutFaceUin.get();
+			if (svgWithOutFaceUin != null) {
+				SvgWithOutFaceUINManager.releaseUIN(svgWithOutFaceUin);
+				threadSvgWithOutFaceUin.remove();
+			}
+		}
+
+		try {
+			String reason = result.getMethod().getDescription();
+			if (reason == null || !reason.startsWith("KNOWN_ISSUE::")) {
+
+				AppiumDriver driver = getDriver();
+
+				if (driver == null) {
+					LOGGER.warn("Driver is null, skipping BrowserStack session info fetch");
+					return;
+				}
+
+				String sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
+				String jsonUrl = "https://app-automate.browserstack.com/sessions/" + sessionId + ".json";
+
+				// Call BrowserStack session API
+				String username = InjiWalletConfigManager.getproperty("browserstack_username");
+				String accessKey = InjiWalletConfigManager.getproperty("browserstack_accesskey");
+				String auth = username + ":" + accessKey;
+				String basicAuth = "Basic " + Base64.getEncoder().encodeToString(auth.getBytes());
+
+				URL url = new URL(jsonUrl);
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				conn.setRequestMethod("GET");
+				conn.setRequestProperty("Authorization", basicAuth);
+
+				BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				String inputLine;
+				StringBuilder response = new StringBuilder();
+				while ((inputLine = in.readLine()) != null) {
+					response.append(inputLine);
+				}
+				in.close();
+
+				JSONObject jsonResponse = new JSONObject(response.toString());
 //            String buildHashedId = jsonResponse.getJSONObject("automation_session").getString("build_hashed_id");
-            String publicUrl = jsonResponse.getJSONObject("automation_session").getString("public_url");
-            String videoUrl = jsonResponse.getJSONObject("automation_session").getString("video_url");
-            
+				String publicUrl = jsonResponse.getJSONObject("automation_session").getString("public_url");
+				String videoUrl = jsonResponse.getJSONObject("automation_session").getString("video_url");
+
 //            String dashboardUrl = "https://app-automate.browserstack.com/dashboard/v2/builds/" + buildHashedId + "/sessions/" + sessionId;
-            ExtentReportManager.getTest().log(Status.INFO,
-                    "<a href='" + publicUrl + "' target='_blank'>View on BrowserStack</a>");
-            ExtentReportManager.getTest().log(Status.INFO,
-                    "<a href='" + videoUrl + "' target='_blank'>Click here to view only Video</a>"); }
+				ExtentReportManager.getTest().log(Status.INFO,
+						"<a href='" + publicUrl + "' target='_blank'>View on BrowserStack</a>");
+				ExtentReportManager.getTest().log(Status.INFO,
+						"<a href='" + videoUrl + "' target='_blank'>Click here to view only Video</a>");
+			}
 
-        } catch (Exception e) {
-            ExtentReportManager.getTest().log(Status.WARNING, "Failed to fetch BrowserStack build/session info: " + e.getMessage());
-        }
+		} catch (Exception e) {
+			ExtentReportManager.getTest().log(Status.WARNING,
+					"Failed to fetch BrowserStack build/session info: " + e.getMessage());
+		}
 
+		ExtentReportManager.removeTest();
+		DriverManager.quitDriver();
+	}
 
-        ExtentReportManager.removeTest();
-        DriverManager.quitDriver();
-    }
+	@AfterSuite(alwaysRun = true)
+	public void afterSuite() {
+		ExtentReportManager.flushReport();
+		BrowserStackLocalManager.stopLocal();
 
-    @AfterSuite(alwaysRun = true)
-    public void afterSuite() {
-        ExtentReportManager.flushReport();
-        BrowserStackLocalManager.stopLocal();
+		// Generate final report file name
+		String timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new Date());
+		String envName = ExtentReportManager.getEnvName(BaseTestCase.ApplnURI);
+		int total = ExtentReportManager.getTotalCount();
+		int passed = ExtentReportManager.getPassedCount();
+		int failed = ExtentReportManager.getFailedCount();
+		int skipped = ExtentReportManager.getSkippedCount();
+		int knownissue = ExtentReportManager.getKnownIssueCount();
 
-        // Generate final report file name
-        String timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new Date());
-        String envName = ExtentReportManager.getEnvName(BaseTestCase.ApplnURI);
-        int total = ExtentReportManager.getTotalCount();
-        int passed = ExtentReportManager.getPassedCount();
-        int failed = ExtentReportManager.getFailedCount();
-        int skipped = ExtentReportManager.getSkippedCount();
-        int knownissue = ExtentReportManager.getKnownIssueCount();
+		String newFileName = String.format("InjiMobileUi-%s-%s-%s-T-%d_P-%d_S-%d_F-%d_KI-%d.html",
+				InjiWalletConfigManager.getproperty("browserstack_platformName"), envName, timestamp, total, passed,
+				skipped, failed, knownissue);
 
-        String newFileName = String.format("InjiMobileUi-%s-%s-%s-T-%d_P-%d_S-%d_F-%d_KI-%d.html",
-                InjiWalletConfigManager.getproperty("browserstack_platformName"), envName, timestamp, total, passed, skipped, failed,knownissue);
+		File originalReport = new File("test-output/ExtentReport.html");
+		File renamedReport = new File("test-output/" + newFileName);
 
-        File originalReport = new File("test-output/ExtentReport.html");
-        File renamedReport = new File("test-output/" + newFileName);
+		if (originalReport.renameTo(renamedReport)) {
+			LOGGER.info("Report renamed to: {}", renamedReport.getName());
+		} else {
+			LOGGER.error("Failed to rename the report.");
+		}
 
-        if (originalReport.renameTo(renamedReport)) {
-            LOGGER.info("Report renamed to: {}", renamedReport.getName());
-        } else {
-            LOGGER.error("Failed to rename the report.");
-        }
+		// Upload to S3
+		if ("yes".equalsIgnoreCase(InjiWalletConfigManager.getPushReportsToS3())) {
+			try {
+				S3Adapter s3Adapter = new S3Adapter();
+				boolean success = s3Adapter.putObject(InjiWalletConfigManager.getS3Account(), // bucket
+						"", // folder
+						null, // metadata
+						null, // headers
+						newFileName, // s3 object name
+						renamedReport // file
+				);
+				LOGGER.info("Uploaded to S3: {}", success);
+			} catch (Exception e) {
+				LOGGER.error("S3 upload failed: {}", e.getMessage(), e);
+			}
+		}
+	}
 
-        // Upload to S3
-        if ("yes".equalsIgnoreCase(InjiWalletConfigManager.getPushReportsToS3())) {
-            try {
-                S3Adapter s3Adapter = new S3Adapter();
-                boolean success = s3Adapter.putObject(
-                        InjiWalletConfigManager.getS3Account(),  // bucket
-                        "",                                     // folder
-                        null,                                   // metadata
-                        null,                                   // headers
-                        newFileName,                            // s3 object name
-                        renamedReport                           // file
-                );
-                LOGGER.info("Uploaded to S3: {}", success);
-            } catch (Exception e) {
-                LOGGER.error("S3 upload failed: {}", e.getMessage(), e);
-            }
-        }
-    }
+	// Getters for tests
 
-    // Getters for tests
+	public Uin getUinDetails() {
+		return threadUin.get();
+	}
 
-    public Uin getUinDetails() {
-        return threadUin.get();
-    }
+	public String getUIN() {
+		return getUinDetails() != null ? getUinDetails().getUin() : null;
+	}
 
-    public String getUIN() {
-    	return getUinDetails() != null ? getUinDetails().getUin() : null;
-    }
+	public String getPhone() {
+		return getUinDetails() != null ? getUinDetails().getPhone() : null;
+	}
 
-    public String getPhone() {
-        return getUinDetails() != null ? getUinDetails().getPhone() : null;
-    }
+	public String getEmail() {
+		return getUinDetails() != null ? getUinDetails().getEmail() : null;
+	}
 
-    public String getEmail() {
-        return getUinDetails() != null ? getUinDetails().getEmail() : null;
-    }
+	public Policy getPolicy() {
+		return threadPolicy.get();
+	}
 
-    public Policy getPolicy() {
-        return threadPolicy.get();
-    }
+	public String getPolicyNumber() {
+		return getPolicy() != null ? getPolicy().getPolicyNumber() : null;
+	}
 
-    public String getPolicyNumber() {
-        return getPolicy() != null ? getPolicy().getPolicyNumber() : null;
-    }
+	public String getPolicyName() {
+		return getPolicy() != null ? getPolicy().getName() : null;
+	}
 
-    public String getPolicyName() {
-        return getPolicy() != null ? getPolicy().getName() : null;
-    }
+	public String getPolicyDob() {
+		return getPolicy() != null ? getPolicy().getDob() : null;
+	}
 
-    public String getPolicyDob() {
-        return getPolicy() != null ? getPolicy().getDob() : null;
-    }
+	public Vid getVidDetails() {
+		return threadVid.get();
+	}
 
-    public Vid getVidDetails() {
-        return threadVid.get();
-    }
+	public String getVID() {
+		return getVidDetails() != null ? getVidDetails().getVid() : null;
+	}
 
-    public String getVID() {
-        return getVidDetails() != null ? getVidDetails().getVid() : null;
-    }
+	public String getVidPhone() {
+		return getVidDetails() != null ? getVidDetails().getPhone() : null;
+	}
 
-    public String getVidPhone() {
-        return getVidDetails() != null ? getVidDetails().getPhone() : null;
-    }
+	public String getVidEmail() {
+		return getVidDetails() != null ? getVidDetails().getEmail() : null;
+	}
 
-    public String getVidEmail() {
-        return getVidDetails() != null ? getVidDetails().getEmail() : null;
-    }
+	public Uin getMockUinDetails() {
+		return threadMockUin.get();
+	}
 
-    public Uin getMockUinDetails() {
-        return threadMockUin.get();
-    }
+	public String getMockUIN() {
+		return getMockUinDetails() != null ? getMockUinDetails().getUin() : null;
+	}
 
-    public String getMockUIN() {
-        return getMockUinDetails() != null ? getMockUinDetails().getUin() : null;
-    }
+	public String getMockUINPhone() {
+		return getMockUinDetails() != null ? getMockUinDetails().getPhone() : null;
+	}
 
-    public String getMockUINPhone() {
-        return getMockUinDetails() != null ? getMockUinDetails().getPhone() : null;
-    }
+	public String getMockUINEmail() {
+		return getMockUinDetails() != null ? getMockUinDetails().getEmail() : null;
+	}
 
-    public String getMockUINEmail() {
-        return getMockUinDetails() != null ? getMockUinDetails().getEmail() : null;
-    }
-    
-    public Uin getLandUinDetails() {
-        return threadLandUin.get();
-    }
+	public Uin getLandUinDetails() {
+		return threadLandUin.get();
+	}
 
-    public String getLandUIN() {
-        return getLandUinDetails() != null ? getLandUinDetails().getUin() : null;
-    }
-    
-    public Uin getsvgWithFaceUinDetails() {
-        return threadSvgWithFaceUin.get();
-    }
+	public String getLandUIN() {
+		return getLandUinDetails() != null ? getLandUinDetails().getUin() : null;
+	}
 
-    public String getsvgWithFaceUIN() {
-        return getsvgWithFaceUinDetails() != null ? getsvgWithFaceUinDetails().getUin() : null;
-    }
-    
-    public Uin getsvgWithOutFaceUinDetails() {
-        return threadSvgWithOutFaceUin.get();
-    }
+	public Uin getsvgWithFaceUinDetails() {
+		return threadSvgWithFaceUin.get();
+	}
 
-    public String getsvgWithOutFacedUIN() {
-        return getsvgWithOutFaceUinDetails() != null ? getsvgWithOutFaceUinDetails().getUin() : null;
-    }
-    
-    public String getOtp(String email, String phone) {
-        String channelConfig = InjiWalletConfigManager.getproperty("mockNotificationChannel");
+	public String getsvgWithFaceUIN() {
+		return getsvgWithFaceUinDetails() != null ? getsvgWithFaceUinDetails().getUin() : null;
+	}
 
-        if (channelConfig == null || channelConfig.isBlank()) {
-            throw new IllegalArgumentException("mockNotificationChannel is not configured");
-        }
+	public Uin getsvgWithOutFaceUinDetails() {
+		return threadSvgWithOutFaceUin.get();
+	}
 
-        String channel = channelConfig.toLowerCase();
+	public String getsvgWithOutFacedUIN() {
+		return getsvgWithOutFaceUinDetails() != null ? getsvgWithOutFaceUinDetails().getUin() : null;
+	}
 
-        // Preference order: email > phone
-        if (channel.contains("email")) {
-            return OTPListener.getOtp(email);
-        } else if (channel.contains("phone")) {
-            return OTPListener.getOtp(phone);
-        } else {
-            throw new IllegalArgumentException("Unknown OTP channel: " + channelConfig);
-        }
-    }
-    public String uinGetOtp() {
-    	return getOtp(getEmail(),getPhone());
-    }
-    public String vidGetOtp() {
-    	return getOtp(getVidEmail(),getVidPhone());
-    }
+	public String getOtp(String email, String phone) {
+		String channelConfig = InjiWalletConfigManager.getproperty("mockNotificationChannel");
+
+		if (channelConfig == null || channelConfig.isBlank()) {
+			throw new IllegalArgumentException("mockNotificationChannel is not configured");
+		}
+
+		String channel = channelConfig.toLowerCase();
+
+		// Preference order: email > phone
+		if (channel.contains("email")) {
+			return NotificationListener.getOtp(email);
+		} else if (channel.contains("phone")) {
+			return NotificationListener.getOtp(phone);
+		} else {
+			throw new IllegalArgumentException("Unknown OTP channel: " + channelConfig);
+		}
+	}
+
+	public String uinGetOtp() {
+		return getOtp(getEmail(), getPhone());
+	}
+
+	public String vidGetOtp() {
+		return getOtp(getVidEmail(), getVidPhone());
+	}
 }

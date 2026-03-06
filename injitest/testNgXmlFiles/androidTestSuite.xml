@@ -177,11 +177,11 @@
             </class>
             <class name="inji.testcases.androidTestCases.VcDownloadAndVerifyUsingSDJwt">
                 <methods>
-                    <include name="downloadAndVerifyLandSdJwtVc"/>
-                    <include name="downloadAndVerifyLandSdJwtVcUsingInvalidCredential"/>
-                    <include name="downloadAndVerifyLandSdJwtVcUsingInvalidOtp"/>
-                    <include name="downloadAndVerifyLandSdJwtVcAndPinAndUnpin"/>
-                    <include name="downloadAndVerifyLandSdJwtVcMultipleTime"/>
+                    <include name="downloadAndVerifySdJwtVc"/>
+                    <include name="downloadAndVerifySdJwtVcUsingInvalidCredential"/>
+                    <include name="downloadAndVerifySdJwtVcUsingInvalidOtp"/>
+                    <include name="downloadAndVerifySdJwtVcAndPinAndUnpin"/>
+                    <include name="downloadAndVerifySdJwtVcMultipleTime"/>
                 </methods>
             </class>
             <class name="inji.testcases.androidTestCases.VcDownloadAndVerifyUsingSVG">
@@ -208,9 +208,9 @@
             </class>
         <!--    <class name="inji.testcases.androidTestCases.CredentialRegistryTest"> As this feature is only for internal testing purposes, these test cases have been disabled from execution.
                 <methods>
-                <include name="downloadAndVerifyVcInNewEnv"/> 
+                <include name="downloadAndVerifyVcInNewEnv"/>
                     <include name="cancelChangeEnvAndVerify"/>
-                    <include name="downloadAndVerifyVcInInvalidEnv"/> 
+                    <include name="downloadAndVerifyVcInInvalidEnv"/>
                     <include name="downloadAndVerifyVcInNewEnvForEsignet"/>
                     <include name="downloadAndVerifyVcInInvalidEnvForEsignet"/>
                     <include name="downloadAndVerifyVcInInvalidEnvForEsignetInFillpino"/>

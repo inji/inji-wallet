@@ -15,7 +15,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
-	
+
 	@Test
 	@NeedsSvgWithFaceUIN
 	public void downloadAndVerifyFarmerSVGVcWithFace() throws InterruptedException {
@@ -34,8 +34,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithFace();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
+		addNewCardPage.clickOnContinueButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithFaceUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
@@ -65,8 +64,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithOutFace();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
+		addNewCardPage.clickOnContinueButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithOutFacedUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
@@ -95,15 +93,11 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithFace();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage
-				.setEnterIdTextBox(TestDataReader.readData("invaliduin"));
+		addNewCardPage.clickOnContinueButton();
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(TestDataReader.readData("invaliduin"));
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
-		assertEquals(
-			    ResourceBundleLoader.get(InjiWalletConstants.invalid_individual_id),
-			    otpVerification.getInvalidIndividualErrorMessageForEsignet()
-			);
+		assertEquals(ResourceBundleLoader.get(InjiWalletConstants.invalid_individual_id),
+				otpVerification.getInvalidIndividualErrorMessageForEsignet());
 	}
 
 	@Test
@@ -123,15 +117,11 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithOutFace();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage
-				.setEnterIdTextBox(TestDataReader.readData("invaliduin"));
+		addNewCardPage.clickOnContinueButton();
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(TestDataReader.readData("invaliduin"));
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
-		assertEquals(
-			    ResourceBundleLoader.get(InjiWalletConstants.invalid_individual_id),
-			    otpVerification.getInvalidIndividualErrorMessageForEsignet()
-			);
+		assertEquals(ResourceBundleLoader.get(InjiWalletConstants.invalid_individual_id),
+				otpVerification.getInvalidIndividualErrorMessageForEsignet());
 	}
 
 	@Test
@@ -152,13 +142,13 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithFace();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
+		addNewCardPage.clickOnContinueButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithFaceUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
-		assertEquals(ResourceBundleLoader.get(InjiWalletConstants.auth_failed), otpVerification.getInvalidOtpMessageForEsignetFarmer());
+		assertEquals(ResourceBundleLoader.get(InjiWalletConstants.auth_failed),
+				otpVerification.getInvalidOtpMessageForEsignetFarmer());
 
 	}
 
@@ -180,13 +170,13 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithOutFace();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
+		addNewCardPage.clickOnContinueButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithOutFacedUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
-		assertEquals(ResourceBundleLoader.get(InjiWalletConstants.auth_failed), otpVerification.getInvalidOtpMessageForEsignetFarmer());
+		assertEquals(ResourceBundleLoader.get(InjiWalletConstants.auth_failed),
+				otpVerification.getInvalidOtpMessageForEsignetFarmer());
 
 	}
 
@@ -208,8 +198,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithFace();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
+		addNewCardPage.clickOnContinueButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithFaceUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
@@ -242,8 +231,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithOutFace();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
+		addNewCardPage.clickOnContinueButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithOutFacedUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
@@ -276,8 +264,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithFace();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
+		addNewCardPage.clickOnContinueButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithFaceUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
@@ -290,8 +277,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		assertTrue(addNewCardPageAgain.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
 		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaLandSVGWithFace();
-		esignetLoginPageAgain.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPageAgain.clickOnLoginWithOtpButton();
+		addNewCardPage.clickOnContinueButton();
 		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(getsvgWithFaceUIN());
 		esignetLoginPageAgain.clickOnHideKeyboardAndGetOtpButton();
 		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
@@ -316,8 +302,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSVGWithOutFace();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
+		addNewCardPage.clickOnContinueButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getsvgWithOutFacedUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
