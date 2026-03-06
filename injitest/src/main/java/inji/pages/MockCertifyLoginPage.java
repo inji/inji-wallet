@@ -26,7 +26,7 @@ public class MockCertifyLoginPage extends BasePage {
 	private WebElement esignetLoginHeader;
 
 	@AndroidFindBy(xpath = "//android.widget.EditText[@resource-id=\"Otp_vid\"]")
-	@iOSXCUITFindBy(xpath = "//*[contains(@text,'Please enter your UIN/VID'')]")
+	@iOSXCUITFindBy(xpath = "//*[contains(@text,'Please enter your UIN/VID')]")
 	private WebElement enterYourVidTextHeader;
 
 	@AndroidFindBy(uiAutomator = "UiSelector().className(\"android.widget.EditText\").instance(0)")

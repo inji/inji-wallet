@@ -10,7 +10,9 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
-
+import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.PointerInput;
@@ -19,17 +21,15 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
-
 public class BasePage {
 	protected AppiumDriver driver;
 	protected WebDriverWait wait;
 	protected static final Logger logger = Logger.getLogger(BasePage.class);
 
-	private static final int DEFAULT_WAIT = Integer.parseInt(InjiWalletConfigManager.getproperty("element_wait_time"));
-	private static final int maxPageScrolls = Integer.parseInt(InjiWalletConfigManager.getproperty("max_pageScroll"));
+  private static final int DEFAULT_WAIT =
+      Integer.parseInt(InjiWalletConfigManager.getproperty("element_wait_time"));
+  private static final int maxPageScrolls =
+      Integer.parseInt(InjiWalletConfigManager.getproperty("max_pageScroll"));
 	private static final int POLLING_INTERVAL = 500;
 
 	public BasePage(AppiumDriver driver) {
@@ -41,13 +41,23 @@ public class BasePage {
 	// -------- Enhanced Logging Methods --------
 
 	private void logStep(String description, WebElement element) {
-		ExtentReportManager.getTest().log(Status.INFO,
-				description + "<details><summary>Locator Details</summary><pre>" + element + "</pre></details>");
+    ExtentReportManager.getTest()
+        .log(
+            Status.INFO,
+            description
+                + "<details><summary>Locator Details</summary><pre>"
+                + element
+                + "</pre></details>");
 	}
 
 	private void logStep(String description, By locator) {
-		ExtentReportManager.getTest().log(Status.INFO, description + "<details><summary>Locator Details</summary><pre>"
-				+ formatLocator(locator) + "</pre></details>");
+    ExtentReportManager.getTest()
+        .log(
+            Status.INFO,
+            description
+                + "<details><summary>Locator Details</summary><pre>"
+                + formatLocator(locator)
+                + "</pre></details>");
 	}
 
 	// ---------- Element Visibility ----------
@@ -75,7 +85,8 @@ public class BasePage {
 			logStep(stepDesc, locator);
 			return true;
 		} catch (TimeoutException e) {
-			ExtentReportManager.getTest().log(Status.WARNING, "Element not visible: " + locator.toString());
+      ExtentReportManager.getTest()
+          .log(Status.WARNING, "Element not visible: " + locator.toString());
 			return false;
 		}
 	}
@@ -103,7 +114,8 @@ public class BasePage {
 			logStep(stepDesc, element);
 			return true;
 		} catch (TimeoutException e) {
-			ExtentReportManager.getTest().log(Status.WARNING, stepDesc + " - But Element not visible: " + element);
+      ExtentReportManager.getTest()
+          .log(Status.WARNING, stepDesc + " - But Element not visible: " + element);
 			return false;
 		}
 	}
@@ -127,8 +139,8 @@ public class BasePage {
 			logStep(stepDesc, element);
 			return true;
 		} catch (TimeoutException e) {
-			ExtentReportManager.getTest().log(Status.WARNING,
-					"Element did not become invisible: " + describeElement(element));
+      ExtentReportManager.getTest()
+          .log(Status.WARNING, "Element did not become invisible: " + describeElement(element));
 			return false;
 		}
 	}
@@ -145,8 +157,8 @@ public class BasePage {
 				element.click();
 				logStep(stepDesc + " - Clicked", element);
 			} catch (Exception e) {
-				ExtentReportManager.getTest().log(Status.FAIL,
-						"Failed to click on element: " + describeElement(element));
+        ExtentReportManager.getTest()
+            .log(Status.FAIL, "Failed to click on element: " + describeElement(element));
 				throw e;
 			}
 		} else {
@@ -155,7 +167,7 @@ public class BasePage {
 	}
 
 	protected void click(By locator, String stepDesc) {
-		WebElement element = driver.findElement(locator);
+		WebElement element = getWait(DEFAULT_WAIT).until(ExpectedConditions.elementToBeClickable(locator));
 		click(element, stepDesc);
 	}
 
@@ -163,15 +175,20 @@ public class BasePage {
 		for (int attempt = 0; attempt < maxRetries; attempt++) {
 			try {
 				click(element, stepDesc);
-				ExtentReportManager.getTest().log(Status.INFO, "Clicked after retry #" + (attempt + 1));
+        ExtentReportManager.getTest().log(Status.INFO, "Clicked after retry #" + (attempt + 1));
 				return;
 			} catch (StaleElementReferenceException | ElementClickInterceptedException e) {
 				sleep(500);
 			}
 		}
-		ExtentReportManager.getTest().log(Status.FAIL,
-				"Unable to click element after " + maxRetries + " retries: " + describeElement(element));
-		throw new RuntimeException("Unable to click element after " + maxRetries + " retries");
+    ExtentReportManager.getTest()
+        .log(
+            Status.FAIL,
+            "Unable to click element after "
+                + maxRetries
+                + " retries: "
+                + describeElement(element));
+    throw new RuntimeException("Unable to click element after " + maxRetries + " retries");
 	}
 
 	protected void enterText(WebElement element, String text, String stepDesc) {
@@ -197,7 +214,8 @@ public class BasePage {
 
 	protected boolean isElementEnabled(WebElement element) {
 		boolean enabled = isElementVisible(element, 30) && element.isEnabled();
-		ExtentReportManager.getTest().log(Status.INFO, "Element " + describeElement(element) + " enabled: " + enabled);
+    ExtentReportManager.getTest()
+        .log(Status.INFO, "Element " + describeElement(element) + " enabled: " + enabled);
 		return enabled;
 	}
 
@@ -224,15 +242,16 @@ public class BasePage {
 				sleep(500);
 			}
 		}
-		ExtentReportManager.getTest().log(Status.FAIL, "Failed to get text after retries: " + describeElement(element));
+    ExtentReportManager.getTest()
+        .log(Status.FAIL, "Failed to get text after retries: " + describeElement(element));
 		throw new RuntimeException("Unable to get text after retries");
 	}
 
 	protected String getText(WebElement element) {
 		if (isElementVisible(element)) {
 			String text = element.getText();
-			ExtentReportManager.getTest().log(Status.INFO,
-					"Text from element " + describeElement(element) + ": " + text);
+      ExtentReportManager.getTest()
+          .log(Status.INFO, "Text from element " + describeElement(element) + ": " + text);
 			return text;
 		}
 		return "";
@@ -246,7 +265,8 @@ public class BasePage {
 				sleep(500);
 			}
 		}
-		ExtentReportManager.getTest().log(Status.FAIL, "Failed to get text after retries: " + describeElement(element));
+    ExtentReportManager.getTest()
+        .log(Status.FAIL, "Failed to get text after retries: " + describeElement(element));
 		throw new RuntimeException("Unable to get text after retries");
 	}
 
@@ -275,7 +295,8 @@ public class BasePage {
 	protected void clickIfVisible(WebElement element) {
 		if (isElementVisible(element)) {
 			element.click();
-			ExtentReportManager.getTest().log(Status.INFO, "ClickIfVisible executed: " + describeElement(element));
+      ExtentReportManager.getTest()
+          .log(Status.INFO, "ClickIfVisible executed: " + describeElement(element));
 		}
 	}
 
@@ -291,6 +312,8 @@ public class BasePage {
 		try {
 			Thread.sleep(ms);
 		} catch (InterruptedException ignored) {
+      Thread.currentThread().interrupt();
+      logger.warn("Sleep interrupted", ignored);
 		}
 	}
 
@@ -299,12 +322,17 @@ public class BasePage {
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTimeInSeconds));
 			wait.until(ExpectedConditions.invisibilityOf(element));
 			logStep(stepDesc + " - Waited until element is invisible: '", element);
-			ExtentReportManager.getTest().log(Status.INFO,
-					"Waited until element is invisible: " + describeElement(element));
+      ExtentReportManager.getTest()
+          .log(Status.INFO, "Waited until element is invisible: " + describeElement(element));
 		} catch (TimeoutException e) {
-			ExtentReportManager.getTest().log(Status.FAIL,
-					"Element did not become invisible within " + waitTimeInSeconds + "s: " + describeElement(element));
-			throw new RuntimeException("Element did not become invisible within timeout", e);
+      ExtentReportManager.getTest()
+          .log(
+              Status.FAIL,
+              "Element did not become invisible within "
+                  + waitTimeInSeconds
+                  + "s: "
+                  + describeElement(element));
+      throw new RuntimeException("Element did not become invisible within timeout", e);
 		}
 	}
 
@@ -312,12 +340,17 @@ public class BasePage {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTimeInSeconds));
 			wait.until(ExpectedConditions.invisibilityOf(element));
-			ExtentReportManager.getTest().log(Status.INFO,
-					"Waited until element is invisible: " + describeElement(element));
+      ExtentReportManager.getTest()
+          .log(Status.INFO, "Waited until element is invisible: " + describeElement(element));
 		} catch (TimeoutException e) {
-			ExtentReportManager.getTest().log(Status.FAIL,
-					"Element did not become invisible within " + waitTimeInSeconds + "s: " + describeElement(element));
-			throw new RuntimeException("Element did not become invisible within timeout", e);
+      ExtentReportManager.getTest()
+          .log(
+              Status.FAIL,
+              "Element did not become invisible within "
+                  + waitTimeInSeconds
+                  + "s: "
+                  + describeElement(element));
+      throw new RuntimeException("Element did not become invisible within timeout", e);
 		}
 	}
 
@@ -325,11 +358,16 @@ public class BasePage {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTimeInSeconds));
 			wait.until(ExpectedConditions.visibilityOf(element));
-			ExtentReportManager.getTest().log(Status.INFO,
-					"Waited until element is visible: " + describeElement(element));
+      ExtentReportManager.getTest()
+          .log(Status.INFO, "Waited until element is visible: " + describeElement(element));
 		} catch (TimeoutException e) {
-			ExtentReportManager.getTest().log(Status.FAIL,
-					"Element was not visible within " + waitTimeInSeconds + "s: " + describeElement(element));
+      ExtentReportManager.getTest()
+          .log(
+              Status.FAIL,
+              "Element was not visible within "
+                  + waitTimeInSeconds
+                  + "s: "
+                  + describeElement(element));
 			throw new RuntimeException("Element was not visible within timeout", e);
 		}
 	}
@@ -337,8 +375,10 @@ public class BasePage {
 	protected List<WebElement> waitForAllInputs(By locator, int expectedSize) {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(locator, expectedSize - 1));
-		ExtentReportManager.getTest().log(Status.INFO,
-				"Located at least " + expectedSize + " elements for: " + locator.toString());
+    ExtentReportManager.getTest()
+        .log(
+            Status.INFO,
+            "Located at least " + expectedSize + " elements for: " + locator.toString());
 		return driver.findElements(locator);
 	}
 
@@ -354,7 +394,7 @@ public class BasePage {
 			} else if (text != null && !text.isEmpty()) {
 				return "\"" + text + "\"";
 			} else if (id != null && !id.isEmpty()) {
-				return "\"" + id.substring(id.lastIndexOf("/") + 1) + "\""; // just the id name
+        return "\"" + id.substring(id.lastIndexOf("/") + 1) + "\""; // just the id name
 			} else {
 				return "[Unnamed element]";
 			}
@@ -394,14 +434,19 @@ public class BasePage {
 			} catch (TimeoutException | NoSuchElementException e) {
 				scrollDown(); // only scroll if not found
 			} catch (Exception e) {
-				ExtentReportManager.getTest().log(Status.FAIL, "Failed to click on element: " + accessibilityId);
+        ExtentReportManager.getTest()
+            .log(Status.FAIL, "Failed to click on element: " + accessibilityId);
 				throw e;
 			}
 		}
 
-		// If we reach here, element was never found/clicked → fail the test
-		String errorMsg = "Element with accessibilityId '" + accessibilityId + "' was not found after " + maxScrolls
-				+ " scroll attempts.";
+    // If we reach here, element was never found/clicked → fail the test
+    String errorMsg =
+        "Element with accessibilityId '"
+            + accessibilityId
+            + "' was not found after "
+            + maxScrolls
+            + " scroll attempts.";
 		ExtentReportManager.getTest().log(Status.FAIL, errorMsg);
 		throw new AssertionError(errorMsg);
 	}
@@ -426,7 +471,8 @@ public class BasePage {
 				return; // success, exit method
 
 			} catch (TimeoutException | NoSuchElementException e) {
-				logger.info("Attempt " + attempts + " Element not found: " + accessibilityId + " → Scrolling");
+        logger.info(
+            "Attempt " + attempts + " Element not found: " + accessibilityId + " → Scrolling");
 
 				scrollDown();
 
@@ -436,14 +482,19 @@ public class BasePage {
 					Thread.currentThread().interrupt();
 				}
 			} catch (Exception e) {
-				ExtentReportManager.getTest().log(Status.FAIL, "Failed to click on element: " + accessibilityId);
+        ExtentReportManager.getTest()
+            .log(Status.FAIL, "Failed to click on element: " + accessibilityId);
 				throw e;
 			}
 		}
 
-		// If we reach here, element was never found/clicked → fail the test
-		String errorMsg = "Element with accessibilityId '" + accessibilityId + "' was not found after " + maxPageScrolls
-				+ " scroll attempts.";
+    // If we reach here, element was never found/clicked → fail the test
+    String errorMsg =
+        "Element with accessibilityId '"
+            + accessibilityId
+            + "' was not found after "
+            + maxPageScrolls
+            + " scroll attempts.";
 		ExtentReportManager.getTest().log(Status.FAIL, errorMsg);
 		throw new AssertionError(errorMsg);
 	}
@@ -468,8 +519,12 @@ public class BasePage {
 			}
 		}
 
-		throw new AssertionError("Element with accessibilityId '" + accessibilityId + "' not found after " + maxScrolls
-				+ " scroll attempts.");
+    throw new AssertionError(
+        "Element with accessibilityId '"
+            + accessibilityId
+            + "' not found after "
+            + maxScrolls
+            + " scroll attempts.");
 	}
 
 	public void scrollInsideElement(WebElement container) {
@@ -501,13 +556,18 @@ public class BasePage {
 			} catch (TimeoutException | NoSuchElementException e) {
 				scrollDown(); // scroll only when not found
 			} catch (Exception e) {
-				ExtentReportManager.getTest().log(Status.FAIL, "Failed to locate element: " + accessibilityId);
+        ExtentReportManager.getTest()
+            .log(Status.FAIL, "Failed to locate element: " + accessibilityId);
 				throw e;
 			}
 		}
 
-		String errorMsg = "Element with accessibilityId '" + accessibilityId + "' was not found after " + maxPageScrolls
-				+ " scroll attempts.";
+    String errorMsg =
+        "Element with accessibilityId '"
+            + accessibilityId
+            + "' was not found after "
+            + maxPageScrolls
+            + " scroll attempts.";
 		ExtentReportManager.getTest().log(Status.FAIL, errorMsg);
 		throw new AssertionError(errorMsg);
 	}
@@ -557,16 +617,22 @@ public class BasePage {
 				logStep(stepDesc + " - Clicked", element);
 				return;
 			} catch (StaleElementReferenceException e) {
+        sleep(500);
 				continue;
 			} catch (TimeoutException | NoSuchElementException e) {
 				scrollDown();
 			} catch (Exception e) {
-				ExtentReportManager.getTest().log(Status.FAIL, "Failed to click on element: " + accessibilityId);
+        ExtentReportManager.getTest()
+            .log(Status.FAIL, "Failed to click on element: " + accessibilityId);
 				throw e;
 			}
 		}
-		String errorMsg = "Element with accessibilityId '" + accessibilityId + "' was not found after " + maxPageScrolls
-				+ " scroll attempts.";
+    String errorMsg =
+        "Element with accessibilityId '"
+            + accessibilityId
+            + "' was not found after "
+            + maxPageScrolls
+            + " scroll attempts.";
 		ExtentReportManager.getTest().log(Status.FAIL, errorMsg);
 		throw new AssertionError(errorMsg);
 	}
@@ -593,14 +659,20 @@ public class BasePage {
 				scrollDown();
 
 			} catch (Exception e) {
-				ExtentReportManager.getTest().log(Status.FAIL,
-						"Failed while checking visibility for element: " + accessibilityId);
+        ExtentReportManager.getTest()
+            .log(Status.FAIL, "Failed while checking visibility for element: " + accessibilityId);
 				throw e;
 			}
 		}
 
-		ExtentReportManager.getTest().log(Status.INFO, "Element with accessibilityId '" + accessibilityId
-				+ "' was NOT visible after " + maxPageScrolls + " scroll attempts.");
+    ExtentReportManager.getTest()
+        .log(
+            Status.INFO,
+            "Element with accessibilityId '"
+                + accessibilityId
+                + "' was NOT visible after "
+                + maxPageScrolls
+                + " scroll attempts.");
 
 		return false;
 	}

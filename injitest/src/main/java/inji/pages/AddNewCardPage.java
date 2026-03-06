@@ -347,8 +347,8 @@ public class AddNewCardPage extends BasePage {
 	}
 
 	public ESignetLoginPage clickOnDownloadViaMockSdJwt() {
-		scrollAndClickByAccessibilityId(mockIssuer, "Click on 'Download via Land sd jwt'");
-		scrollAndClickByAccessibilityId(mockIssuerSdJwtCredentialType, "Click on 'Land Sd Jwt' option");
+		scrollAndClickByAccessibilityId(mockIssuer, "Click on 'Download via Mock sd jwt'");
+		scrollAndClickByAccessibilityId(mockIssuerSdJwtCredentialType, "Click on 'Mock Sd Jwt' option");
 		return new ESignetLoginPage(driver);
 	}
 
