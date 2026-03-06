@@ -16,10 +16,10 @@ import static org.testng.Assert.assertTrue;
 import inji.annotations.NeedsLandUIN;
 
 public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
-	
+
 	@Test
-	@NeedsLandUIN
-	public void downloadAndVerifyLandSdJwtVc() throws InterruptedException {
+	@NeedsMockUIN
+	public void downloadAndVerifySdJwtVc() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
@@ -34,10 +34,10 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 				"Verify if issuer description  esignet displayed");
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
-		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSdJwt();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
+		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaMockSdJwt();
+		addNewCardPage.clickOnContinueButton();
+		// esignetLoginPage.clickOnLoginWithOtpButton();
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getMockUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
@@ -58,7 +58,7 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 	}
 
 	@Test
-	public void downloadAndVerifyLandSdJwtVcUsingInvalidCredential() throws InterruptedException {
+	public void downloadAndVerifySdJwtVcUsingInvalidCredential() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
@@ -73,9 +73,8 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 				"Verify if issuer description  esignet displayed");
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
-		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSdJwt();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
+		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaMockSdJwt();
+		addNewCardPage.clickOnContinueButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(TestDataReader.readData("invaliduin"));
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		assertTrue(otpVerification.isInvalidIndividualErrorMessageDisplayed(),
@@ -85,8 +84,8 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsLandUIN
-	public void downloadAndVerifyLandSdJwtVcUsingInvalidOtp() throws InterruptedException {
+	@NeedsMockUIN
+	public void downloadAndVerifySdJwtVcUsingInvalidOtp() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
@@ -101,10 +100,9 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 				"Verify if issuer description  esignet displayed");
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
-		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSdJwt();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
+		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaMockSdJwt();
+		addNewCardPage.clickOnContinueButton();
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getMockUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(TestDataReader.readData("invalidOtp"), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
@@ -114,8 +112,8 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsLandUIN
-	public void downloadAndVerifyLandSdJwtVcAndPinAndUnpin() throws InterruptedException {
+	@NeedsMockUIN
+	public void downloadAndVerifySdJwtVcAndPinAndUnpin() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
@@ -130,10 +128,9 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 				"Verify if issuer description  esignet displayed");
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
-		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSdJwt();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
+		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaMockSdJwt();
+		addNewCardPage.clickOnContinueButton();
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getMockUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
@@ -148,8 +145,8 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 	}
 
 	@Test
-	@NeedsLandUIN
-	public void downloadAndVerifyLandSdJwtVcMultipleTime() throws InterruptedException {
+	@NeedsMockUIN
+	public void downloadAndVerifySdJwtVcMultipleTime() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
@@ -164,10 +161,9 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 				"Verify if issuer description esignet displayed");
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
-		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandSdJwt();
-		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPage.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
+		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaMockSdJwt();
+		addNewCardPage.clickOnContinueButton();
+		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getMockUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
@@ -178,11 +174,9 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 				"Verify if issuer description esignet displayed");
 		assertTrue(addNewCardPageAgain.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
-		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaLandSdJwt();
-		esignetLoginPageAgain.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPageAgain.clickOnLoginWithOtpButton();
-		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain
-				.setEnterIdTextBox(getLandUIN());
+		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaMockSdJwt();
+		addNewCardPageAgain.clickOnContinueButton();
+		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(getMockUIN());
 		esignetLoginPageAgain.clickOnHideKeyboardAndGetOtpButton();
 		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
 		esignetLoginPageAgain.clickOnVerifyButton();
