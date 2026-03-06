@@ -651,7 +651,8 @@ public class BasePage {
 				return true;
 
 			} catch (StaleElementReferenceException e) {
-				// Element went stale after scroll → retry without scrolling
+        // Element went stale after scroll → retry without scrolling
+        sleep(500);
 				continue;
 
 			} catch (TimeoutException | NoSuchElementException e) {
