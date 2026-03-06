@@ -315,8 +315,7 @@ public class VcDownloadAndVerifyUsingSVG extends AndroidBaseTest {
 		assertTrue(addNewCardPageAgain.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
 		ESignetLoginPage esignetLoginPageAgain = addNewCardPageAgain.clickOnDownloadViaLandSVGWithOutFace();
-		esignetLoginPageAgain.clickOnEsignetLoginWithOtpButton();
-		esignetLoginPageAgain.clickOnLoginWithOtpButton();
+		addNewCardPage.clickOnContinueButton();
 		OtpVerificationPage otpVerificationAgain = esignetLoginPageAgain.setEnterIdTextBox(getsvgWithOutFacedUIN());
 		esignetLoginPageAgain.clickOnHideKeyboardAndGetOtpButton();
 		otpVerificationAgain.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);

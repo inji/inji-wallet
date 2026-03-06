@@ -147,7 +147,6 @@
 			<version>5.1.0</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -198,12 +197,6 @@
 			<artifactId>apitest-commons</artifactId>
 			<version>1.5.0-SNAPSHOT</version>
 		</dependency>
-		<!-- <dependency>
-            <groupId>com.browserstack</groupId>
-            <artifactId>browserstack-java-sdk</artifactId>
-            <version>1.38.4</version>
-            <scope>compile</scope>
-        </dependency> -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
