@@ -268,7 +268,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("io.mosip:injivcrenderer-aar:0.1.0")
-    implementation("io.inji:inji-openid4vp-aar:0.7.0-SNAPSHOT"){
+    implementation("io.inji:inji-openid4vp-aar:0.7.0"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
@@ -281,7 +281,7 @@ dependencies {
     implementation("io.mosip:pixelpass-aar:0.7.0")
     implementation("io.mosip:secure-keystore:0.3.0")
     implementation("io.mosip:tuvali:0.5.2")
-    implementation("io.inji:inji-vci-client-aar:0.7.0-SNAPSHOT"){
+    implementation("io.inji:inji-vci-client-aar:0.7.0"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
