@@ -106,15 +106,11 @@ public class AddNewCardPage extends BasePage {
 
 	@AndroidFindBy(accessibility = "credentialTypeHeading-DrivingLicenseCredential")
 	@iOSXCUITFindBy(accessibility = "credentialTypeHeading-DrivingLicenseCredential")
-	private WebElement credentialTypeHeadingMockVerifiableCredential_mdoc;
+	private WebElement credentialTypeHeadingMockVerifiableCredentialMdoc;
 
 	@AndroidFindBy(accessibility = "credentialTypeHeading-MockVerifiableCredential")
 	@iOSXCUITFindBy(accessibility = "credentialTypeHeading-MockVerifiableCredential")
 	private WebElement credentialTypeHeadingMockVerifiableCredential;
-
-	@AndroidFindBy(xpath = "//*[@resource-id=\"issuerSearchBar\"]")
-	@iOSXCUITFindBy(accessibility = "issuerSearchBar")
-	private WebElement IssuerSearchBar;
 
 	@AndroidFindBy(accessibility = "issuerHeading-Mock")
 	@iOSXCUITFindBy(accessibility = "issuerHeading-Mock")

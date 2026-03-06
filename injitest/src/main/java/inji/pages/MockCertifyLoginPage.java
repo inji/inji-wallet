@@ -82,7 +82,7 @@ public class MockCertifyLoginPage extends BasePage {
 
 	@AndroidFindBy(accessibility = "Close tab")
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"Cancel\"]")
-	private WebElement CloseTab;
+	private WebElement closeTab;
 
 	@AndroidFindBy(accessibility = "credentialTypeHeading-MOSIPVerifiableCredential")
 	@iOSXCUITFindBy(accessibility = "credentialTypeHeading-MOSIPVerifiableCredential")
@@ -220,7 +220,7 @@ public class MockCertifyLoginPage extends BasePage {
 	}
 
 	public void clickOnCloseButton() {
-		click(CloseTab, "Clicking on Close tab button");
+		click(closeTab, "Clicking on Close tab button");
 	}
 
 	public String getText() {

@@ -49,7 +49,7 @@ public class SunbirdLoginPage extends BasePage {
 	private WebElement dateOfBirthSecond;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"January 2025\"]")
-	private WebElement January2025;
+	private WebElement january2025;
 
 	@AndroidFindBy(xpath = "//android.widget.Button[@resource-id=\"verify_form\"]")
 	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeButton[`name == \"Login\"`]")

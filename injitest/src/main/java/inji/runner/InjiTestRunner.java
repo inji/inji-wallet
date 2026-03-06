@@ -185,12 +185,9 @@ public class InjiTestRunner {
 					TestNG runner = new TestNG();
 					runner.setMethodInterceptor(new inji.utils.KnownIssueMethodInterceptor());
 
-//                    TestNG runner = new TestNG();
 					List<String> suitefiles = new ArrayList<>();
 
 					BaseTestCase.setReportName(InjiWalletConstants.INJI_WALLET);
-					// System.getProperties().setProperty("testng.output.dir", "testng-report");
-					// runner.setOutputDirectory("testng-report");
 
 					if (testCases != null) {
 						// ---- normalize and split the filter: support both ClassName.method and plain

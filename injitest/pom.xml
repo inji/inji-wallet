@@ -140,12 +140,6 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.14.0</version> <!-- upgraded to fix CVE-2024-47554 -->
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
-		<dependency>
-			<groupId>com.aventstack</groupId>
-			<artifactId>extentreports</artifactId>
-			<version>5.1.0</version>
-		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -207,6 +201,7 @@
 			<artifactId>browserstack-local-java</artifactId>
 			<version>1.1.6</version>
 		</dependency>
+    <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
 		<dependency>
 			<groupId>com.aventstack</groupId>
 			<artifactId>extentreports</artifactId>
