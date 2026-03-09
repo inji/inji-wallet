@@ -130,7 +130,7 @@ export const vcMetaMachine =
               actions: 'removeVcFromMyVcsMetadata',
             },
             VC_METADATA_UPDATED: {
-              actions: ['updateMyVcsMetadata', 'setUpdatedVcMetadatas'],
+              actions: ['updateMyVcsMetadata', 'updateReceivedVcsMetadata', 'setUpdatedVcMetadatas', 'setUpdatedReceivedVcMetadatas',],
             },
             VC_DOWNLOADED: {
               actions: ['setDownloadCredentialsSuccess', 'setDownloadedVc'],

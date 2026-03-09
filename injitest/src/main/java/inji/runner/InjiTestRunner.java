@@ -29,12 +29,12 @@ import org.testng.xml.XmlTest;
 import inji.constants.InjiWalletConstants;
 import inji.utils.InjiWalletConfigManager;
 import inji.utils.InjiWalletUtil;
-import inji.utils.OTPListener;
 import io.mosip.testrig.apirig.dataprovider.BiometricDataProvider;
 import io.mosip.testrig.apirig.dbaccess.DBManager;
 import io.mosip.testrig.apirig.testrunner.BaseTestCase;
 import io.mosip.testrig.apirig.testrunner.ExtractResource;
 import io.mosip.testrig.apirig.testrunner.HealthChecker;
+import io.mosip.testrig.apirig.testrunner.OTPListener;
 import io.mosip.testrig.apirig.utils.AdminTestUtil;
 import io.mosip.testrig.apirig.utils.AuthTestsUtil;
 import io.mosip.testrig.apirig.utils.CertsUtil;
@@ -58,7 +58,7 @@ public class InjiTestRunner {
 	public static String jarUrl = InjiTestRunner.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 	public static Map<String, String> knownIssues = new HashMap<>();
 	public static OTPListener otpListener = null;
-	
+
 	/**
 	 * C Main method to start inji test execution
 	 */
@@ -128,8 +128,8 @@ public class InjiTestRunner {
 		if (!runType.equalsIgnoreCase("JAR")) {
 			AuthTestsUtil.removeOldMosipTempTestResource();
 		}
-		BaseTestCase.currentModule = InjiWalletConstants.INJI_WALLET;
-		BaseTestCase.certsForModule = InjiWalletConstants.INJI_WALLET;
+		BaseTestCase.currentModule = BaseTestCase.runContext + InjiWalletConstants.INJI_WALLET;
+		BaseTestCase.certsForModule = BaseTestCase.runContext + InjiWalletConstants.INJI_WALLET;
 		BaseTestCase.copymoduleSpecificAndConfigFile(InjiWalletConstants.INJI_WALLET);
 		otpListener = new OTPListener();
 		otpListener.run();
@@ -178,19 +178,16 @@ public class InjiTestRunner {
 
 		File[] files = homeDir.listFiles();
 		if (files != null) {
-			for (File file : files) {					
-					String testngXmlFile = System.getProperty("testngXmlFile");
-					if (testngXmlFile != null && file.getName().toLowerCase().contains(testngXmlFile.toLowerCase())) {
+			for (File file : files) {
+				String testngXmlFile = System.getProperty("testngXmlFile");
+				if (testngXmlFile != null && file.getName().toLowerCase().contains(testngXmlFile.toLowerCase())) {
 
 					TestNG runner = new TestNG();
 					runner.setMethodInterceptor(new inji.utils.KnownIssueMethodInterceptor());
 
-//                    TestNG runner = new TestNG();
 					List<String> suitefiles = new ArrayList<>();
 
 					BaseTestCase.setReportName(InjiWalletConstants.INJI_WALLET);
-					System.getProperties().setProperty("testng.output.dir", "testng-report");
-					runner.setOutputDirectory("testng-report");
 
 					if (testCases != null) {
 						// ---- normalize and split the filter: support both ClassName.method and plain
@@ -249,6 +246,9 @@ public class InjiTestRunner {
 						suitefiles.add(file.getAbsolutePath());
 						runner.setTestSuites(suitefiles);
 					}
+
+					System.getProperties().setProperty("testng.outpur.dir", "testng-report");
+					runner.setOutputDirectory("testng-report");
 
 					runner.run();
 				}
@@ -362,65 +362,62 @@ public class InjiTestRunner {
 		else
 			return "IDE";
 	}
-	
-	
+
 	private static void loadKnownIssues() {
 
-	    String platform = InjiWalletConfigManager.getproperty("browserstack_platformName");
-	    if (platform == null || platform.trim().isEmpty()) {
-	        throw new RuntimeException("browserstack_platformName not set");
-	    }
+		String platform = InjiWalletConfigManager.getproperty("browserstack_platformName");
+		if (platform == null || platform.trim().isEmpty()) {
+			throw new RuntimeException("browserstack_platformName not set");
+		}
 
-	    String knownIssuesFile;
-	    switch (platform.trim().toLowerCase()) {
-	        case "android":
-	            knownIssuesFile = "Known_Issues_Android.txt";
-	            break;
-	        case "ios":
-	            knownIssuesFile = "Known_Issues_ios.txt";
-	            break;
-	        default:
-	            throw new IllegalArgumentException("Unsupported platform: " + platform);
-	    }
+		String knownIssuesFile;
+		switch (platform.trim().toLowerCase()) {
+		case "android":
+			knownIssuesFile = "Known_Issues_Android.txt";
+			break;
+		case "ios":
+			knownIssuesFile = "Known_Issues_ios.txt";
+			break;
+		default:
+			throw new IllegalArgumentException("Unsupported platform: " + platform);
+		}
 
-	    String knownIssuesPath = getResourcePath() + "/config/" + knownIssuesFile;
-	    LOGGER.info("Loading Known Issues from: " + knownIssuesPath);
+		String knownIssuesPath = getResourcePath() + "/config/" + knownIssuesFile;
+		LOGGER.info("Loading Known Issues from: " + knownIssuesPath);
 
-	    try (BufferedReader br = new BufferedReader(
-	            new InputStreamReader(new FileInputStream(knownIssuesPath), StandardCharsets.UTF_8))) {
+		try (BufferedReader br = new BufferedReader(
+				new InputStreamReader(new FileInputStream(knownIssuesPath), StandardCharsets.UTF_8))) {
 
-	        String line;
-	        while ((line = br.readLine()) != null) {
-	            line = line.trim();
+			String line;
+			while ((line = br.readLine()) != null) {
+				line = line.trim();
 
-	            if (line.isEmpty() || line.startsWith("#") || !line.contains("------")) {
-	                continue;
-	            }
+				if (line.isEmpty() || line.startsWith("#") || !line.contains("------")) {
+					continue;
+				}
 
-	            String[] parts = line.split("------", 2);
-	            String bugId = parts[0].trim();
-	            String methodName = parts[1].trim();
+				String[] parts = line.split("------", 2);
+				String bugId = parts[0].trim();
+				String methodName = parts[1].trim();
 
-	            if (bugId.isEmpty() || methodName.isEmpty()) {
-	                LOGGER.warn("Skipping malformed known issue line: " + line);
-	                continue;
-	            }
+				if (bugId.isEmpty() || methodName.isEmpty()) {
+					LOGGER.warn("Skipping malformed known issue line: " + line);
+					continue;
+				}
 
-	            // Enforce method-name only (shared standard)
-	            if (!methodName.matches("^[A-Za-z0-9_]+$")) {
-	                LOGGER.warn(
-	                    "Skipping known issue entry. Expected method name only but found: " + methodName
-	                );
-	                continue;
-	            }
+				// Enforce method-name only (shared standard)
+				if (!methodName.matches("^[A-Za-z0-9_]+$")) {
+					LOGGER.warn("Skipping known issue entry. Expected method name only but found: " + methodName);
+					continue;
+				}
 
-	            knownIssues.put("*." + methodName, bugId);
-	        }
+				knownIssues.put("*." + methodName, bugId);
+			}
 
-	        LOGGER.info("Known Issues Loaded: " + knownIssues);
+			LOGGER.info("Known Issues Loaded: " + knownIssues);
 
-	    } catch (Exception e) {
-	        LOGGER.warn(knownIssuesFile + " not found or unreadable: " + e.getMessage());
-	    }
+		} catch (Exception e) {
+			LOGGER.warn(knownIssuesFile + " not found or unreadable: " + e.getMessage());
+		}
 	}
 }

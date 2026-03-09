@@ -25,9 +25,9 @@ public class VIDManager {
     }
 
     //Sample data, data can be passed in this way as well
-//    static {
-//        availableVIDs.add(new Vid("3084260253624850", "4014236339", "Mimoto_AddIdentity_Binding_smoke_Pos@mosip.net"));
-//    }
+  //  static {
+  //      availableVIDs.add(new Vid("3758026815082738", "4014236339", "Mimoto_AddIdentity_Binding_smoke_Pos@mosip.net"));
+  //  }
 
     public static Vid acquireVID() throws InterruptedException {
         return availableVIDs.take();

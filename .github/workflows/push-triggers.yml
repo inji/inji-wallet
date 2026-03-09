@@ -67,16 +67,11 @@ jobs:
     with:
       SERVICE_LOCATION: '.'
       NODE_VERSION: '18.x'
-      NPM_BUILD_TYPE: 'BOB'
-      SONAR_SOURCES: '.'
-      SONAR_TESTS: '.'
-      SONAR_TEST_INCLUSIONS: '**/*.test.ts, **/*.test.tsx'
-      SONAR_EXCLUSIONS: '.github/**, .vscode/**, android/**, assets/**, build/**, ios/**, node_modules/**, scripts/**, **/*.java, **/*.typegen.ts, __mocks__/**'
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       ORG_KEY: ${{ secrets.ORG_KEY }}
       SLACK_WEBHOOK_URL: '${{ secrets.SLACK_WEBHOOK_INJI_TEAM }}'
-      
+
   build-maven-uitest-inji-wallet:
     uses: mosip/kattu/.github/workflows/maven-build.yml@master-java21
     with:
@@ -126,7 +121,7 @@ jobs:
       - name: Ready the springboot artifacts
         if: ${{ !contains(github.ref, 'master') || !contains(github.ref, 'main') }}
         run: |
-          ## FIND JARS & COPY ONLY EXECUTABLE JARs STORED UNDER TARGET DIRECTORY 
+          ## FIND JARS & COPY ONLY EXECUTABLE JARs STORED UNDER TARGET DIRECTORY
           find ${{ env.SERVICE_LOCATION }} -path '*/target/*' -name '*.jar'  -type f -exec zip ${{ env.BUILD_ARTIFACT }}.zip {} +
 
       - name: Upload the springboot jars
