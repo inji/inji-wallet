@@ -38,6 +38,18 @@ export class VCProcessor {
         pathToDisclosures,
       };
     }
+    if (vcFormat === VCFormat.jwt_vc_json) {
+      const rawJwt = vcData.credential.toString();
+      const payload: any = jwtDecode(rawJwt);
+      return {
+        fullResolvedPayload: payload.vc?.credentialSubject || {},
+        publicKeys: Object.keys(payload),
+        rawCredential: rawJwt,
+        issuer: payload.iss,
+        type: payload.vc?.type,
+        credentialSubject: payload.vc?.credentialSubject,
+      };
+    }
     return getVerifiableCredential(vcData);
   }
 }

@@ -81,6 +81,12 @@ export const updateCredentialInformation = async (
       context.selectedCredentialType.format,
     )
   }
+  if (context.selectedCredentialType.format === VCFormat.jwt_vc_json) {
+    processedCredential = await VCProcessor.processForRendering(
+      credential,
+      context.selectedCredentialType.format,
+    );
+  }
   let verifiableCredential;
   try {
     verifiableCredential = {
@@ -182,6 +188,16 @@ export const getCredentialIssuersWellKnownConfig = async (
           if (sdJwtFields.length > 0) {
             fields = sdJwtFields;
             wellknownFieldsFlag = true
+          }
+        }
+        else if (format === VCFormat.jwt_vc_json) {
+          const jwtVcJsonFields = Object.keys(
+            matchingWellknownDetails.credential_definition?.credentialSubject || {}
+          );
+          
+          if (jwtVcJsonFields.length > 0) {
+            fields = jwtVcJsonFields;
+            wellknownFieldsFlag = true;
           }
         }
         else {
