@@ -41,13 +41,14 @@ export class VCProcessor {
     if (vcFormat === VCFormat.jwt_vc_json) {
       const rawJwt = vcData.credential.toString();
       const payload: any = jwtDecode(rawJwt);
+      const credentialSubject = payload.vc?.credentialSubject ?? {};
       return {
-        fullResolvedPayload: payload.vc?.credentialSubject || {},
-        publicKeys: Object.keys(payload),
+        fullResolvedPayload: credentialSubject,
+        publicKeys: Object.keys(credentialSubject),
         rawCredential: rawJwt,
         issuer: payload.iss,
         type: payload.vc?.type,
-        credentialSubject: payload.vc?.credentialSubject,
+        credentialSubject,
       };
     }
     return getVerifiableCredential(vcData);
