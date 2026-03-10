@@ -17,9 +17,13 @@ describe('VCFormat', () => {
     expect(VCFormat.dc_sd_jwt).toBe('dc+sd-jwt');
   });
 
-  it('should have exactly 4 formats', () => {
+  it('should have jwt_vc_json format', () => {
+    expect(VCFormat.jwt_vc_json).toBe('jwt_vc_json');
+  });
+
+  it('should have exactly 5 formats', () => {
     const formatCount = Object.keys(VCFormat).length;
-    expect(formatCount).toBe(4);
+    expect(formatCount).toBe(5);
   });
 
   it('should allow access via enum key', () => {

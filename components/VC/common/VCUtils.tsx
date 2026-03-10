@@ -130,7 +130,8 @@ export const getFieldValue = (
         }
       } else if (
         format === VCFormat.vc_sd_jwt ||
-        format === VCFormat.dc_sd_jwt
+        format === VCFormat.dc_sd_jwt ||
+        format === VCFormat.jwt_vc_json
       ) {
         const fieldParts = field.split('.');
         let value: any = verifiableCredential?.fullResolvedPayload;
@@ -215,7 +216,11 @@ export const getFieldName = (
           return fieldName;
         }
       }
-    } else if (format === VCFormat.vc_sd_jwt || format === VCFormat.dc_sd_jwt) {
+    } else if (
+      format === VCFormat.vc_sd_jwt ||
+      format === VCFormat.dc_sd_jwt ||
+      format === VCFormat.jwt_vc_json
+    ) {
       const pathParts = field.split('.');
       let currentObj = wellknown.claims;
       for (const part of pathParts) {
@@ -769,7 +774,11 @@ export function getFaceAttribute(verifiableCredential, format) {
         acc[key] = value;
         return acc;
       }, {} as Record<string, any>);
-  } else if (format === VCFormat.vc_sd_jwt || format === VCFormat.dc_sd_jwt) {
+  } else if (
+    format === VCFormat.vc_sd_jwt ||
+    format === VCFormat.dc_sd_jwt ||
+    format === VCFormat.jwt_vc_json
+  ) {
     credentialSubject =
       verifiableCredential?.processedCredential?.fullResolvedPayload ?? {};
   }

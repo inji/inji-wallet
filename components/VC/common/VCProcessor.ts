@@ -45,9 +45,6 @@ export class VCProcessor {
       return {
         fullResolvedPayload: credentialSubject,
         publicKeys: Object.keys(credentialSubject),
-        rawCredential: rawJwt,
-        issuer: payload.iss,
-        type: payload.vc?.type,
         credentialSubject,
       };
     }
