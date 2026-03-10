@@ -163,6 +163,8 @@
     "Description": "لفتح التطبيق بشكل آمن، يمكنك إعداد إما المصادقة البيومترية، مثل بصمة الإصبع أو التعرف على الوجه أو اختيار رمز مرور مكون من 6 أرقام للوصول السريع.",
     "PasswordTypeDescription": "اختر 'استخدام القياسات الحيوية' لتمكين المصادقة البيومترية أو 'سأفعل لاحقًا' لإعداد رمز مرور مكون من 6 أرقام.",
     "useBiometrics": "استخدام القياسات الحيوية",
+    "useFaceId": "استخدام Face ID",
+    "useTouchId": "استخدام Touch ID",
     "usePasscode": "سأفعل لاحقا",
     "errors": {
       "unavailable": "س الحيوية",
@@ -172,7 +174,10 @@
     }
   },
   "BiometricScreen": {
-    "unlock": "افتح ببصمة الإصبع"
+    "unlock": "افتح ببصمة الإصبع",
+    "unlockBiometrics": "افتح بالقياسات الحيوية",
+    "unlockFaceId": "افتح بـ Face ID",
+    "unlockTouchId": "افتح بـ Touch ID"
   },
   "HistoryScreen": {
     "noHistory": "لا يوجد سجل حتى الان",
@@ -188,6 +193,9 @@
     "receiveCard": "البطاقة المستلمة",
     "basicSettings": "الإعدادات الأساسية",
     "bioUnlock": "افتح مع القياسات الحيوية",
+    "bioUnlockBiometrics": "افتح بالقياسات الحيوية",
+    "bioUnlockFaceId": "افتح بـ Face ID",
+    "bioUnlockTouchId": "افتح بـ Touch ID",
     "language": "لغة",
     "aboutInji": "حول إنجي",
     "credentialRegistry": "سجل الاعتماد",
