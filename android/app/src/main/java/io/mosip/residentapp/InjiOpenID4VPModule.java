@@ -335,7 +335,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         } else if (DC_SD_JWT.getValue().equals(formatStr)) {
             return DC_SD_JWT;
         }
-        else if (FormatType.JWT_VC_JSON.getValue().equals(formatStr)) {
+        else if (JWT_VC_JSON.getValue().equals(formatStr)) {
             return JWT_VC_JSON;
         }
         throw new UnsupportedOperationException("Credential format '" + formatStr + "' is not supported");
