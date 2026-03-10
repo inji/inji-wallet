@@ -50,6 +50,8 @@ class OpenId4VPUtils: NSObject {
           result[.dc_sd_jwt] = credentialsArray.map { AnyCodable($0) }
         case .vc_sd_jwt:
           result[.vc_sd_jwt] = credentialsArray.map { AnyCodable($0) }
+        case .jwt_vc_json:
+          result[.jwt_vc_json] = credentialsArray.map { AnyCodable($0) }
         default:
           break
         }
@@ -96,6 +98,11 @@ class OpenId4VPUtils: NSObject {
           throw ParseError(message: "Invalid VP token signing result format")
         }
         formattedVPTokenSigningResults[.dc_sd_jwt] = SdJwtVpTokenSigningResult(uuidToKbJWTSignature: vpResponse)
+      case FormatType.jwt_vc_json.rawValue:
+        guard let vpResponse = vpTokenSigningResult as? [String:String] else {
+          throw ParseError(message: "Invalid VP token signing result format")
+        }
+        formattedVPTokenSigningResults[.jwt_vc_json] = SdJwtVpTokenSigningResult(uuidToKbJWTSignature: vpResponse)
 
       default:
         let error = NSError(domain: "Credential format '\(credentialFormat)' is not supported", code: 0)

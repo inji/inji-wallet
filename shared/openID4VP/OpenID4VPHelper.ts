@@ -135,7 +135,8 @@ export const signDataForVpPreparation = async (
       vpTokenSigningResultMap[formatType] = signedData;
     } else if (
       formatType === VCFormat.vc_sd_jwt.valueOf() ||
-      formatType === VCFormat.dc_sd_jwt.valueOf()
+      formatType === VCFormat.dc_sd_jwt.valueOf() ||
+      formatType === VCFormat.jwt_vc_json.valueOf()
     ) {
       const uuidToUnsignedKBJWT = credentials.uuidToUnsignedKBT;
       const uuidToSignature: Record<string, string> = {};
@@ -233,6 +234,7 @@ export const signDataForVpPreparationV2 = async (
 
         case VCFormat.vc_sd_jwt.valueOf():
         case VCFormat.dc_sd_jwt.valueOf():
+        case VCFormat.jwt_vc_json.valueOf():
           keyType =
             JWT_ALG_TO_KEY_TYPE[
               signatureAlgorithm as keyof typeof JWT_ALG_TO_KEY_TYPE

@@ -82,7 +82,8 @@ async function verifyCredentialForIos(
   if (
     credentialFormat === VCFormat.mso_mdoc ||
     credentialFormat === VCFormat.vc_sd_jwt ||
-    credentialFormat === VCFormat.dc_sd_jwt
+    credentialFormat === VCFormat.dc_sd_jwt ||
+    credentialFormat === VCFormat.jwt_vc_json
   ) {
     return createSuccessfulVerificationResult();
   }

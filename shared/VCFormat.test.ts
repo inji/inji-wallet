@@ -31,6 +31,7 @@ describe('VCFormat', () => {
     expect(VCFormat['mso_mdoc']).toBe('mso_mdoc');
     expect(VCFormat['vc_sd_jwt']).toBe('vc+sd-jwt');
     expect(VCFormat['dc_sd_jwt']).toBe('dc+sd-jwt');
+    expect(VCFormat['jwt_vc_json']).toBe('jwt_vc_json');
   });
 
   it('should have all unique values', () => {

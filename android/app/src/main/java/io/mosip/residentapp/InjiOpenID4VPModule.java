@@ -5,6 +5,7 @@ import static io.mosip.openID4VP.constants.FormatType.DC_SD_JWT;
 import static io.mosip.openID4VP.constants.FormatType.LDP_VC;
 import static io.mosip.openID4VP.constants.FormatType.MSO_MDOC;
 import static io.mosip.openID4VP.constants.FormatType.VC_SD_JWT;
+import static io.mosip.openID4VP.constants.FormatType.JWT_VC_JSON;
 import static io.mosip.residentapp.utils.OpenId4VPUtils.parseSelectedVCs;
 import static io.mosip.residentapp.utils.OpenId4VPUtils.parseVPTokenSigningResult;
 
@@ -197,6 +198,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                 addVpFormatSupported(vpFormatsMap, "mso_mdoc", vpFormatsSupportedMap);
                 addVpFormatSupported(vpFormatsMap, "vc+sd-jwt", vpFormatsSupportedMap);
                 addVpFormatSupported(vpFormatsMap, "dc+sd-jwt", vpFormatsSupportedMap);
+                addVpFormatSupported(vpFormatsMap, "jwt_vc_json", vpFormatsSupportedMap);
             }
         }
         return vpFormatsSupportedMap;
@@ -332,6 +334,9 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             return VC_SD_JWT;
         } else if (DC_SD_JWT.getValue().equals(formatStr)) {
             return DC_SD_JWT;
+        }
+        else if (FormatType.JWT_VC_JSON.getValue().equals(formatStr)) {
+            return JWT_VC_JSON;
         }
         throw new UnsupportedOperationException("Credential format '" + formatStr + "' is not supported");
     }

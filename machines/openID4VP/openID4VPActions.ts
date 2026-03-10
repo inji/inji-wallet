@@ -403,15 +403,18 @@ function areVCFormatAndProofTypeMatchingRequest(
 
   if (
     vcFormatType === VCFormat.dc_sd_jwt ||
-    vcFormatType === VCFormat.vc_sd_jwt
+    vcFormatType === VCFormat.vc_sd_jwt ||
+    vcFormatType === VCFormat.jwt_vc_json
   ) {
     try {
-      const sdJwt = vc.verifiableCredential?.credential;
-      const alg = extractAlgFromSdJwt(sdJwt);
+      const jwt = vc.verifiableCredential?.credential;
+      const alg = extractAlgFromSdJwt(jwt);
 
       return Object.entries(requestFormat).some(
         ([type, value]) =>
-          type === vcFormatType && value['sd-jwt_alg_values']?.includes(alg),
+          type === vcFormatType &&
+          (value['sd-jwt_alg_values']?.includes(alg) ||
+            value['alg']?.includes(alg)),
       );
     } catch (e) {
       console.error('Error processing SD-JWT alg match:', e);
@@ -493,7 +496,8 @@ function fetchCredentialBasedOnFormat(vc: any) {
       break;
     }
     case VCFormat.vc_sd_jwt:
-    case VCFormat.dc_sd_jwt: {
+    case VCFormat.dc_sd_jwt:
+    case VCFormat.jwt_vc_json: {
       credential =
         vc.verifiableCredential.processedCredential.fullResolvedPayload;
       break;
