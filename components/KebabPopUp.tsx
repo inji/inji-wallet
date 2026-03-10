@@ -40,7 +40,8 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
         overlayStyle={[
           Theme.KebabPopUpStyles.kebabPopUp,
           {paddingBottom: insets.bottom},
-        ]}>
+        ]}
+        {...testIDProps('moreOptionsPopup')}>
         <Row
           style={Theme.KebabPopUpStyles.kebabHeaderStyle}
           margin="15"
