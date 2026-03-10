@@ -16,7 +16,7 @@ import inji.annotations.NeedsLandUIN;
 
 public class VcDownloadAndVerifyUsingLandRegistryTest extends IosBaseTest {
 	private static final Logger logger = LogManager.getLogger(VcDownloadAndVerifyUsingLandRegistryTest.class);
-	
+
     @Test
     @NeedsLandUIN
     public void downloadAndVerifyVcUsingLandStatement() throws InterruptedException {
@@ -30,7 +30,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends IosBaseTest {
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandRegistry();
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        esignetLoginPage.clickOnLoginWithOtpButton();
+        // esignetLoginPage.clickOnLoginWithOtpButton();
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
         esignetLoginPage.clickOnGetOtpButton();
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
@@ -58,7 +58,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends IosBaseTest {
             AddNewCardPage addNewCardPage = homePage.downloadCard();
             ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandRegistry();
             addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-            esignetLoginPage.clickOnLoginWithOtpButton();
+            // esignetLoginPage.clickOnLoginWithOtpButton();
             OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
             esignetLoginPage.clickOnGetOtpButton();
             otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);

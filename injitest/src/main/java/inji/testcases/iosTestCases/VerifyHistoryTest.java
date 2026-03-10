@@ -513,8 +513,8 @@ public class VerifyHistoryTest extends IosBaseTest {
         addNewCardPage.clickOnDownloadViaMock();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnLoginWithOtpButton();
+        // ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+        // esignetLoginPage.clickOnLoginWithOtpButton();
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
         mockCertifyLoginPage.clickOnGetOtpButton();
@@ -537,7 +537,7 @@ public class VerifyHistoryTest extends IosBaseTest {
         assertTrue(historyPage.isHistoryPageLoaded(), "Verify if history page is displayed");
         assertTrue(historyPage.verifyHistoryForMock(PlatformType.IOS));
     }
-    
+
     @Test
     @NeedsMockUIN
     public void downloadAndVerifyVcUsingMdlDeleteAndVerifyHistory() throws InterruptedException {
@@ -568,8 +568,8 @@ public class VerifyHistoryTest extends IosBaseTest {
         MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnLoginWithOtpButton();
+        // ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+        // esignetLoginPage.clickOnLoginWithOtpButton();
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
@@ -588,7 +588,7 @@ public class VerifyHistoryTest extends IosBaseTest {
         pleaseConfirmPopupPage.clickOnConfirmButton();
         assertEquals(homePage.verifyLanguageForNoVCDownloadedPageLoaded(), "Bring your digital identity");
         HistoryPage historyPage = homePage.clickOnHistoryButton();
-      
+
 
         assertTrue(historyPage.isHistoryPageLoaded(), "Verify if history page is displayed");
         assertTrue(historyPage.verifyHistory(PlatformType.IOS));

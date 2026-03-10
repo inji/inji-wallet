@@ -117,8 +117,8 @@ public class KeyManagmentTest extends IosBaseTest {
         MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnLoginWithOtpButton();
+        // ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+        // esignetLoginPage.clickOnLoginWithOtpButton();
 //        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
@@ -128,7 +128,7 @@ public class KeyManagmentTest extends IosBaseTest {
 
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
         mockCertifyLoginPage.clickOnVerifyButtonIos();
-        
+
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();

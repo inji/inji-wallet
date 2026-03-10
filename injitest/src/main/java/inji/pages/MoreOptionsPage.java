@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 public class MoreOptionsPage extends BasePage {
 
 	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.view.ViewGroup\").instance(3)")
-	@iOSXCUITFindBy(accessibility = "moreOptionsPopup")
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeOther[`name == \"More Options  Pin Share Share with Selfie Activate for online login View Activity Log Check Card Status NEW Remove from Wallet Horizontal scroll bar, 1 page Vertical scroll bar, 2 pages\"`][3]")
 	private WebElement moreOptionsPopup;
 
 	@AndroidFindBy(accessibility = "kebabTitle")
