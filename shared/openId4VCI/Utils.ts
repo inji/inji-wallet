@@ -69,22 +69,12 @@ export const updateCredentialInformation = async (
   credential: VerifiableCredential,
 ): Promise<CredentialWrapper> => {
   let processedCredential;
-  if (context.selectedCredentialType.format === VCFormat.mso_mdoc) {
-    processedCredential = await VCProcessor.processForRendering(
-      credential,
-      context.selectedCredentialType.format,
-    );
-  }
   if (
+    context.selectedCredentialType.format === VCFormat.mso_mdoc ||
     context.selectedCredentialType.format === VCFormat.vc_sd_jwt ||
-    context.selectedCredentialType.format === VCFormat.dc_sd_jwt
+    context.selectedCredentialType.format === VCFormat.dc_sd_jwt ||
+    context.selectedCredentialType.format === VCFormat.jwt_vc_json
   ) {
-    processedCredential = await VCProcessor.processForRendering(
-      credential,
-      context.selectedCredentialType.format,
-    );
-  }
-  if (context.selectedCredentialType.format === VCFormat.jwt_vc_json) {
     processedCredential = await VCProcessor.processForRendering(
       credential,
       context.selectedCredentialType.format,
@@ -196,18 +186,17 @@ export const getCredentialIssuersWellKnownConfig = async (
             fields = sdJwtFields;
             wellknownFieldsFlag = true;
           }
-        }
-        else if (format === VCFormat.jwt_vc_json) {
+        } else if (format === VCFormat.jwt_vc_json) {
           const jwtVcJsonFields = Object.keys(
-            matchingWellknownDetails.credential_definition?.credentialSubject || {}
+            matchingWellknownDetails.credential_definition?.credentialSubject ||
+              {},
           );
-          
+
           if (jwtVcJsonFields.length > 0) {
             fields = jwtVcJsonFields;
             wellknownFieldsFlag = true;
           }
-        }
-        else {
+        } else {
           console.error(`Unsupported credential format - ${format} found`);
           throw new UnsupportedVcFormat(format);
         }
