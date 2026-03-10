@@ -9,7 +9,7 @@
     </listeners>
     <!-- Ios Tests -->
     <test verbose="2" preserve-order="true" name="ios">
-        <classes>
+         <classes>
             <class name="inji.testcases.iosTestCases.AboutInjiTest">
                 <methods>
                     <include name="copyAppId"/>
@@ -165,11 +165,11 @@
             </class>
             <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingSDJwt">
                 <methods>
-                    <include name="downloadAndVerifyLandSdJwtVc"/>
-                    <include name="downloadAndVerifyLandSdJwtVcUsingInvalidCredential"/>
-                    <include name="downloadAndVerifyLandSdJwtVcUsingInvalidOtp"/>
-                    <include name="downloadAndVerifyLandSdJwtVcAndPinAndUnpin"/>
-                    <include name="downloadAndVerifyLandSdJwtVcMultipleTime"/>
+                    <include name="downloadAndVerifySdJwtVc"/>
+                    <include name="downloadAndVerifySdJwtVcUsingInvalidCredential"/>
+                    <include name="downloadAndVerifySdJwtVcUsingInvalidOtp"/>
+                    <include name="downloadAndVerifySdJwtVcAndPinAndUnpin"/>
+                    <include name="downloadAndVerifySdJwtVcMultipleTime"/>
                 </methods>
             </class>
             <class name="inji.testcases.iosTestCases.VcDownloadAndVerifyUsingSVG">

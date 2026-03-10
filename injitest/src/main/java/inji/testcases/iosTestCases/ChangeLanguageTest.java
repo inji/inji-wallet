@@ -1215,7 +1215,6 @@ public class ChangeLanguageTest extends IosBaseTest {
         assertTrue(homePage.verifyAppSettingsHeader("Arabic"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyAppSettingDescription("Arabic"), "Verify if app settings description displayed");
         homePage.clickOnNextButton();
-        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }

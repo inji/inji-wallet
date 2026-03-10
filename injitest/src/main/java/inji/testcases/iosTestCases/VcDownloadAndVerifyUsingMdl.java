@@ -16,9 +16,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
-	
+
 	private static final Logger logger = LogManager.getLogger(VcDownloadAndVerifyUsingMdl.class);
-	
+
     @Test
     @NeedsMockUIN
     public void downloadAndVerifyVcUsingMdl() throws InterruptedException {
@@ -53,9 +53,9 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnLoginWithOtpButton();
-    
+        // ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+        // esignetLoginPage.clickOnLoginWithOtpButton();
+
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
         mockCertifyLoginPage.clickOnGetOtpButton();
@@ -118,8 +118,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnLoginWithOtpButton();
+        // ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+        // esignetLoginPage.clickOnLoginWithOtpButton();
 
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(TestDataReader.readData("invaliduin"));
@@ -163,8 +163,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnLoginWithOtpButton();
+        // ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+        // esignetLoginPage.clickOnLoginWithOtpButton();
 
 
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
@@ -211,9 +211,9 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnLoginWithOtpButton();
-        
+        // ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+        // esignetLoginPage.clickOnLoginWithOtpButton();
+
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
         mockCertifyLoginPage.clickOnGetOtpButton();
@@ -271,8 +271,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnLoginWithOtpButton();
+        // ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+        // esignetLoginPage.clickOnLoginWithOtpButton();
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
         mockCertifyLoginPage.clickOnGetOtpButton();
@@ -286,8 +286,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         addNewCardPage.clickOnDownloadViaMockCertify();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        esignetLoginPage.clickOnLoginWithOtpButton();
-    
+        // esignetLoginPage.clickOnLoginWithOtpButton();
+
         mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
         mockCertifyLoginPage.clickOnGetOtpButton();
@@ -320,8 +320,8 @@ public class VcDownloadAndVerifyUsingMdl extends IosBaseTest {
         assertTrue(addNewCardPage.isDownloadViaEsignetDisplayed(), "Verify if download via uin displayed");
         MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-        ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
-        esignetLoginPage.clickOnLoginWithOtpButton();
+        // ESignetLoginPage esignetLoginPage = new ESignetLoginPage(getDriver());
+        // esignetLoginPage.clickOnLoginWithOtpButton();
         OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
         mockCertifyLoginPage.clickOnGetOtpButton();
         otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);
