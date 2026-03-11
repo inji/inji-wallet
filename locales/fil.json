@@ -262,6 +262,78 @@
     "downloadSuccess": "Matagumpay na na-download ang iyong card",
     "goHome": "Pumunta sa Home",
     "errors": {
+      "unsupported_grant_type": {
+        "title": "Hindi sinusuportahang paraan ng pag-login",
+        "message": "Hindi sinusuportahan ang paraang ito. Pakisubukan ang ibang paraan."
+      },
+      "invalid_scope_credential": {
+        "title": "Hindi available ang kredensyal",
+        "message": "Hindi maibibigay ang kredensyal na ito sa ngayon."
+      },
+      "unsupported_credential_format": {
+        "title": "Hindi sinusuportahang format",
+        "message": "Hindi maproseso ang format ng kredensyal na ito."
+      },
+      "invalid_encryption_parameters": {
+        "title": "Nabigo ang secure na koneksyon",
+        "message": "Pakisubukang muli."
+      },
+      "invalid_request_bearer": {
+        "title": "Hindi ma-verify ang kredensyal",
+        "message": "Pakisubukang muli o makipag-ugnayan sa support."
+      },
+      "insufficient_scope": {
+        "title": "Kinakailangan ang pahintulot",
+        "message": "Wala kang pahintulot na hilingin ang kredensyal na ito."
+      },
+      "credential_offer_fetch_failed": {
+        "title": "Hindi ma-load ang kahilingan",
+        "message": "Pakisuri ang iyong koneksyon sa internet."
+      },
+      "unsupported_grant": {
+        "title": "Hindi suportadong kahilingan",
+        "message": "Hindi sinusuportahan ng iyong wallet ang paraang ito."
+      },
+      "biometric_cancelled": {
+        "title": "Kinansela ang pag-verify",
+        "message": "Kinansela mo ang pag-verify ng pagkakakilanlan."
+      },
+      "user_cancelled": {
+        "title": "Kinansela ang kahilingan",
+        "message": "Itinigil mo ang proseso. Walang nabagong impormasyon."
+      },
+      "verification_failed": {
+        "title": "Nabigo ang pag-verify ng kredensyal",
+        "message": "Hindi namin makumpirma ang pagiging tunay ng kredensyal na ito."
+      },
+      "invalid_client": {
+        "title": "Nag-expire ang session",
+        "message": "Mangyaring mag-login muli upang magpatuloy."
+      },
+      "invalid_grant": {
+        "title": "Hindi namin ma-verify ang iyong request",
+        "message": "Pakisubukang muli."
+      },
+      "invalid_credential_request": {
+        "title": "Nag-expire na ang request na ito",
+        "message": "Pakisubukang muli na i-scan ang QR code upang magpatuloy."
+      },
+      "unsupported_credential_type": {
+        "title": "Hindi suportado ang credential",
+        "message": "Hindi available ang ganitong uri ng credential."
+      },
+      "invalid_proof": {
+        "title": "Nabigo ang pag-verify",
+        "message": "Hindi namin makumpirma ang iyong request. Pakisubukang muli."
+      },
+      "parsing_error": {
+        "title": "Hindi inaasahang tugon",
+        "message": "Hindi namin mabasa ang tugon. Pakisubukang muli."
+      },
+      "storage_error": {
+        "title": "Hindi ma-save ang credential",
+        "message": "Pakisuri ang storage ng iyong device at subukang muli."
+      },
       "invalid_request": {
         "title": "Hindi namin makumpleto ang iyong request",
         "message": "May problema sa request na ito. Pakisubukang muli."
@@ -1159,6 +1231,7 @@
     "cards": "mga card",
     "cancel": "Kanselahin",
     "accept": "Tanggapin",
+    "goHome": "Home",
     "save": "I-save",
     "ok": "OK",
     "dismiss": "Dismissed",

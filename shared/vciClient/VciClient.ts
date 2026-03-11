@@ -13,7 +13,7 @@ export type VciClientErrorResponse = {
   message?: string;
   serverErrorCode?: string;
   serverErrorMessage?: string;
-  rootCode?: string;
+  sourceErrorCode?: string;
 }
 class VciClient {
   private static instance: VciClient;
@@ -40,8 +40,8 @@ class VciClient {
     this.InjiVciClient.sendSelectedCredentialsForVPSharingFromJS(credentials);
   }
 
-  sendSignedVP(vpTokenSigningResult: object) {
-    this.InjiVciClient.sendVPTokenSigningResultFromJS(vpTokenSigningResult);
+  async sendSignedVP(vpTokenSigningResult: object) {
+    await this.InjiVciClient.sendVPTokenSigningResultFromJS(vpTokenSigningResult);
   }
 
   async sendAuthCode(authCode: string) {
@@ -157,7 +157,7 @@ class VciClient {
         message: error?.message ?? 'An unknown error occurred',
         serverErrorCode: error?.userInfo?.serverErrorCode,
         serverErrorMessage: error?.userInfo?.serverErrorDescription,
-        rootCode: error?.userInfo?.rootCode,
+        sourceErrorCode: error?.userInfo?.sourceErrorCode,
       }
       throw errorResponse;
     } finally {
@@ -248,8 +248,8 @@ class VciClient {
         code: error?.code ?? 'UNKNOWN_ERROR',
         message: error?.message ?? 'An unknown error occurred',
         serverErrorCode: error?.userInfo?.serverErrorCode,
-        serverErrorMessage: error?.userInfo?.servererrorDescription,
-        rootCode: error?.userInfo?.rootCode,
+        serverErrorMessage: error?.userInfo?.serverErrorDescription,
+        sourceErrorCode: error?.userInfo?.sourceErrorCode,
       }
       throw errorResponse;
     } finally {

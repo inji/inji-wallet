@@ -43,8 +43,8 @@ import {
   ProgressIndicator,
 } from '../../components/ui/processingScreen/ProcessingModal';
 import { ErrorView } from '../../components/ui/Error';
-import { goBackErrors, goHomeErrors } from '../../machines/Issuers/IssuersGuards';
-import { VCIServerErrorCode } from '../../machines/Issuers/IssuersActions';
+import { goBackErrors, goHomeErrors } from '../../shared/openId4VCI/Utils';
+import { VCIServerErrorCode } from '../../shared/openId4VCI/Utils';
 
 
 export const IssuersScreen: React.FC<
@@ -353,7 +353,7 @@ export const IssuersScreen: React.FC<
     return (
       <ErrorView
         testID={`${controller.errorMessageType}Error`}
-        customImageStyles={{ marginTop: 0 }}
+        customImageStyles={{ marginTop: controller.errorMessageType == ErrorMessage.NO_INTERNET ? 20 : 0 }}
         isVisible={controller.errorMessageType !== ''}
         title={t(`errors.${controller.errorMessageType}.title`)}
         message={t(`errors.${controller.errorMessageType}.message`)}
@@ -427,7 +427,7 @@ export const IssuersScreen: React.FC<
   return (
     <React.Fragment>
       <BannerNotificationContainer />
-      {controller.issuers.length > 0 && (
+      {(
         <Column style={Theme.IssuersScreenStyles.issuerListOuterContainer}>
           <Row
             style={

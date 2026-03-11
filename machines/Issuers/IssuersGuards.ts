@@ -1,9 +1,9 @@
 import { isSignedInResult } from '../../shared/CloudBackupAndRestoreUtils'
-import { ErrorMessage, OIDCErrors } from '../../shared/openId4VCI/Utils'
+import { ErrorMessage, goBackErrors, goHomeErrors, OIDCErrors, retryableErrors } from '../../shared/openId4VCI/Utils'
 import { BiometricCancellationError } from '../../shared/error/BiometricCancellationError'
 import { VerificationErrorType } from '../../shared/vcjs/verifyCredential'
 import { AuthorizationType } from '../../shared/constants'
-import { VCIServerErrorCode } from './IssuersActions'
+import { VCIServerErrorCode } from '../../shared/openId4VCI/Utils'
 
 export const IssuersGuards = () => {
 
@@ -67,3 +67,4 @@ export const IssuersGuards = () => {
 
   return guards
 }
+

@@ -182,8 +182,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         "code": vciError.code
       ]
 
-      if let rootCode = vciError.rootCode {
-        userInfo["rootCode"] = rootCode
+      if let sourceErrorCode = vciError.sourceErrorCode {
+        userInfo["sourceErrorCode"] = sourceErrorCode
       }
 
       if let serverErrorCode = vciError.serverErrorCode {

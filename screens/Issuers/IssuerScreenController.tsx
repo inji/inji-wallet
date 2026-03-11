@@ -37,7 +37,7 @@ import {
   IssuersMachine,
 } from '../../machines/Issuers/IssuersMachine';
 import { CredentialTypes } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import { goHomeErrors } from '../../machines/Issuers/IssuersGuards';
+import { goHomeErrors } from '../../shared/openId4VCI/Utils';
 
 export function useIssuerScreenController({ route, navigation }) {
   const service = route.params.service;
@@ -90,7 +90,10 @@ export function useIssuerScreenController({ route, navigation }) {
     ),
     isError: useSelector(service, selectIsError),
 
-    CANCEL: () => service.send(IssuerScreenTabEvents.CANCEL()),
+    CANCEL: ({
+      serverErrorCode = '',
+      serverErrorDescription = '',
+    } = {}) => service.send(IssuerScreenTabEvents.CANCEL({ serverErrorCode, serverErrorDescription })),
     SELECTED_ISSUER: id =>
       service.send(IssuerScreenTabEvents.SELECTED_ISSUER(id)),
     TRY_AGAIN: () => {

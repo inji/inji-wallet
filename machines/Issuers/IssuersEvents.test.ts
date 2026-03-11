@@ -60,14 +60,7 @@ describe('IssuersEvents', () => {
       expect(result).toEqual({});
     });
   });
-
-  describe('CANCEL', () => {
-    it('should create empty event', () => {
-      const result = IssuersEvents.CANCEL();
-      expect(result).toEqual({});
-    });
-  });
-
+  
   describe('STORE_RESPONSE', () => {
     it('should create event with response', () => {
       const response = {data: 'test'};

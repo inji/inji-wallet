@@ -374,6 +374,7 @@ export const retryableErrors = new Set([
   ErrorMessage.KEY_MANAGEMENT_ERROR,
   ErrorMessage.WALLET_GENERIC_ERROR,
   VCIServerErrorCode.INVALID_CREDENTIAL_OFFER,
+  ErrorMessage.NO_INTERNET
 ])
 
 export const goBackErrors = new Set([

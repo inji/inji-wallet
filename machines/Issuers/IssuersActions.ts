@@ -1,7 +1,8 @@
 import {
   ErrorMessage,
   getDisplayObjectForCurrentLanguage,
-  Issuers_Key_Ref, selectCredentialRequestKey
+  Issuers_Key_Ref, selectCredentialRequestKey,
+  VCIServerErrorCode
 } from '../../shared/openId4VCI/Utils';
 import {
   EXPIRED_VC_ERROR_CODE,
@@ -105,16 +106,20 @@ export const IssuersActions = (model: any) => {
       },
     }),
 
+    setIsInternetAvailable: model.assign({
+      isInternetAvailable: (_: any, event: any) => event.isInternetAvailable,
+    }),
+
     setError: model.assign({
       errorMessage: (context: any, event: any) => {
-        console.error(`Error occurred while ${event} -> `, event.data.message);
-        const error = event.data as VciClientErrorResponse;
+        const error = (event.data ?? event) as VciClientErrorResponse;
+        console.error(`Error occurred while ${event} -> `, error);
         if (error.serverErrorCode)
           return error.serverErrorCode as VCIServerErrorCode;
         if (!context.isInternetAvailable) {
           return ErrorMessage.NO_INTERNET
         }
-        else if (error.code === 'VCI-008') {
+        else if (error.sourceErrorCode === 'VCI-008') {
           return VCIServerErrorCode.INVALID_CREDENTIAL_OFFER
         }
         else if (error.code)
@@ -126,7 +131,7 @@ export const IssuersActions = (model: any) => {
       errorMessage: '',
     }),
 
-    setKeyManagemenError: model.assign({
+    setKeyManagementError: model.assign({
       errorMessage: (_: any, event: any) => ErrorMessage.KEY_MANAGEMENT_ERROR,
     }),
 
@@ -548,11 +553,6 @@ export const IssuersActions = (model: any) => {
       });
     },
 
-    sendSignedVP: (context, event) => {
-      const vpTokenSigningResult = event.signedVPToken.data;
-      VciClient.getInstance().sendSignedVP(vpTokenSigningResult);
-    },
-
     sendVPConsentReject: () => {
       console.error('User declined to share VP for issuance authorization');
       VciClient.getInstance().abortPresentationFlow({
@@ -572,3 +572,4 @@ export const IssuersActions = (model: any) => {
     },
   };
 };
+
