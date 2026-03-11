@@ -1,0 +1,783 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReceiveVcScreen should render accepting state 1`] = `
+<RCTScrollView
+  accessible={true}
+  contentContainerStyle={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      {
+        "paddingBottom": 48,
+        "paddingEnd": 0,
+        "paddingStart": 0,
+        "paddingTop": 24,
+      },
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 24,
+              "marginStart": 24,
+              "marginTop": 24,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        header
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 0,
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 32,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            goToReceivedVCTab
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`ReceiveVcScreen should render incoming VC display 1`] = `
+<RCTScrollView
+  accessible={true}
+  contentContainerStyle={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      {
+        "paddingBottom": 48,
+        "paddingEnd": 0,
+        "paddingStart": 0,
+        "paddingTop": 24,
+      },
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 24,
+              "marginStart": 24,
+              "marginTop": 24,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        header
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 0,
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 32,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            goToReceivedVCTab
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`ReceiveVcScreen should render saving failed state 1`] = `
+<RCTScrollView
+  accessible={true}
+  contentContainerStyle={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      {
+        "paddingBottom": 48,
+        "paddingEnd": 0,
+        "paddingStart": 0,
+        "paddingTop": 24,
+      },
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 24,
+              "marginStart": 24,
+              "marginTop": 24,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        header
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 0,
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 32,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            goToReceivedVCTab
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`ReceiveVcScreen should render when not displaying incoming VC 1`] = `null`;
+
+exports[`ReceiveVcScreen should render with face image 1`] = `
+<RCTScrollView
+  accessible={true}
+  contentContainerStyle={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      {
+        "paddingBottom": 48,
+        "paddingEnd": 0,
+        "paddingStart": 0,
+        "paddingTop": 24,
+      },
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 24,
+              "marginStart": 24,
+              "marginTop": 24,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        header
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 0,
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 32,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            goToReceivedVCTab
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;

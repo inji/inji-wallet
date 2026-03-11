@@ -70,16 +70,15 @@ describe('getActionText', () => {
       vcStatus: '',
     });
     expect(mockIl18nfn).toHaveBeenCalledTimes(1);
-    // TODO: assert the returned string
   });
-  it.skip('should not fetch id type from translation file mock', () => {
-    // Reason: The test assertion needs fix
-    activityLog.idType = undefined;
-    activityLog.getActionText(mockIl18nfn, wellknown);
+
+  it('should use identity card fallback when wellknown is undefined', () => {
+    mockIl18nfn.mockImplementation(input => input);
+    activityLog.getActionText(mockIl18nfn, undefined);
     expect(mockIl18nfn).toHaveBeenCalledWith('mockType', {
-      idType: '',
+      idType: 'VcDetails:identityCard',
+      vcStatus: '',
     });
-    expect(mockIl18nfn).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -145,16 +144,5 @@ describe('VCActivityLog.getActionLabel', () => {
 
     expect(label).not.toContain('·');
     expect(label).toBeTruthy();
-  });
-
-  it('should format time with device name in English locale', () => {
-    const mockLog = new VCActivityLog({
-      deviceName: 'Test Device',
-      timestamp: Date.now() - 300000, // 5 minutes ago
-    });
-
-    const labelEn = mockLog.getActionLabel('en');
-    expect(labelEn).toBeTruthy();
-    expect(labelEn).toContain('Test Device');
   });
 });

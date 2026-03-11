@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`VerifiedIcon should match snapshot 1`] = `
+exports[`VerifiedIcon should render and match snapshot 1`] = `
 <View
   style={
     {
@@ -15,6 +15,13 @@ exports[`VerifiedIcon should match snapshot 1`] = `
         "borderRadius": 10,
       }
     }
-  />
+  >
+    <View
+      color="#4B9D20"
+      name="check-circle"
+      size={12}
+      testID="statusIcon"
+    />
+  </View>
 </View>
 `;

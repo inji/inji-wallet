@@ -1,0 +1,254 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MyBindedVcs should render empty state 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={5}
+  headerTitle="selectId"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="modal"
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "display": "flex",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "column",
+              "justifyContent": "center",
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              {
+                "marginBottom": 8,
+                "marginEnd": 0,
+                "marginStart": 0,
+                "marginTop": 0,
+              },
+              null,
+              null,
+            ]
+          }
+        >
+          noBindedVc
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        buttonStyle={
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+              {
+                "marginBottom": 12,
+                "marginEnd": 20,
+                "marginStart": 20,
+                "marginTop": 0,
+              },
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              {
+                "backgroundColor": "#951F6F",
+                "borderRadius": 10,
+              },
+            ],
+          ]
+        }
+        linearGradientProps={
+          {
+            "colors": [
+              "#FF5300",
+              "#5B03AD",
+            ],
+            "end": {
+              "x": 1,
+              "y": 0.5,
+            },
+            "start": {
+              "x": 0.5,
+              "y": 0.5,
+            },
+          }
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ]
+            }
+            weight="bold"
+          >
+            back
+          </Text>
+        }
+        type="gradient"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          back
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

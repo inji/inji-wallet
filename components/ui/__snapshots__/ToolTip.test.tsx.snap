@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CustomTooltip should match snapshot 1`] = `
+<View
+  accessibilityLabel="tooltip"
+  accessible={true}
+  containerStyle={
+    {
+      "backgroundColor": "#FAFAFA",
+      "borderColor": "#E0E0E0",
+      "borderWidth": 1,
+      "marginLeft": 15,
+    }
+  }
+  height={30}
+  pointerColor="#E0E0E0"
+  popover={
+    <Text>
+      Tooltip content
+    </Text>
+  }
+  skipAndroidStatusBar={true}
+  width={150}
+  withOverlay={false}
+  withPointer={true}
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "padding": 4,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text>
+      Info
+    </Text>
+  </View>
+</View>
+`;

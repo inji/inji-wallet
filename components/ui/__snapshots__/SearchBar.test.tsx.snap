@@ -1,0 +1,229 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchBar should render as non-editable 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    color="#951F6F"
+    name="search"
+    size={27}
+    style={
+      {
+        "height": 73.37,
+        "justifyContent": "center",
+        "width": 75,
+      }
+    }
+    testID="searchIcon"
+  />
+  <TextInput
+    editable={false}
+    onChangeText={[Function]}
+    onFocus={[MockFunction]}
+    onLayout={[MockFunction]}
+    placeholder="Search..."
+    style={
+      {
+        "height": 73.37,
+        "textAlign": "left",
+        "width": 562.5,
+      }
+    }
+    testID="searchBar"
+    value=""
+  />
+</View>
+`;
+
+exports[`SearchBar should render with default props 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    color="#951F6F"
+    name="search"
+    size={27}
+    style={
+      {
+        "height": 73.37,
+        "justifyContent": "center",
+        "width": 75,
+      }
+    }
+    testID="searchIcon"
+  />
+  <TextInput
+    editable={true}
+    onChangeText={[Function]}
+    onFocus={[MockFunction]}
+    onLayout={[MockFunction]}
+    placeholder="Search..."
+    style={
+      {
+        "height": 73.37,
+        "textAlign": "left",
+        "width": 562.5,
+      }
+    }
+    testID="searchBar"
+    value=""
+  />
+</View>
+`;
+
+exports[`SearchBar should render with search value 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    color="#951F6F"
+    name="search"
+    size={27}
+    style={
+      {
+        "height": 73.37,
+        "justifyContent": "center",
+        "width": 75,
+      }
+    }
+    testID="searchIcon"
+  />
+  <TextInput
+    editable={true}
+    onChangeText={[Function]}
+    onFocus={[MockFunction]}
+    onLayout={[MockFunction]}
+    placeholder="Search..."
+    style={
+      {
+        "height": 73.37,
+        "textAlign": "left",
+        "width": 562.5,
+      }
+    }
+    testID="searchBar"
+    value="test query"
+  />
+</View>
+`;
+
+exports[`SearchBar should render with vc search style 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "height": 73.37,
+        "justifyContent": "center",
+        "paddingLeft": 15,
+        "width": 75,
+      }
+    }
+    testID="searchIcon"
+  >
+    SearchIcon
+  </View>
+  <TextInput
+    editable={true}
+    onChangeText={[Function]}
+    onFocus={[MockFunction]}
+    onLayout={[MockFunction]}
+    placeholder="Search..."
+    style={
+      {
+        "height": 73.37,
+        "textAlign": "left",
+        "width": 562.5,
+      }
+    }
+    testID="searchBar"
+    value=""
+  />
+</View>
+`;

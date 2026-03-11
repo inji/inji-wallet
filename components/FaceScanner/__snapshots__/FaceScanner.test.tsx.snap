@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FaceScanner should render checking permission state 1`] = `null`;
+
+exports[`FaceScanner should render with empty VC images 1`] = `null`;
+
+exports[`FaceScanner should render with multiple VC images 1`] = `null`;

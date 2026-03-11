@@ -1,0 +1,1578 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScanScreen should render QR login state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        {
+          "paddingBottom": 24,
+          "paddingEnd": 0,
+          "paddingStart": 0,
+          "paddingTop": 24,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        {
+          "justifyContent": "space-evenly",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`ScanScreen should render bluetooth denied state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        {
+          "paddingBottom": 24,
+          "paddingEnd": 0,
+          "paddingStart": 0,
+          "paddingTop": 24,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        {
+          "justifyContent": "space-evenly",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`ScanScreen should render bluetooth permission denied state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        {
+          "paddingBottom": 24,
+          "paddingEnd": 0,
+          "paddingStart": 0,
+          "paddingTop": 24,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        {
+          "justifyContent": "space-evenly",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          {
+            "paddingBottom": 24,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 24,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "column",
+              "justifyContent": "center",
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              {
+                "color": "#D52929",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          enableBluetoothMessage
+        </Text>
+      </View>
+      <View
+        buttonStyle={
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              undefined,
+            ],
+          ]
+        }
+        linearGradientProps={
+          {
+            "colors": [
+              "#FF5300",
+              "#5B03AD",
+            ],
+            "end": {
+              "x": 1,
+              "y": 0.5,
+            },
+            "start": {
+              "x": 0.5,
+              "y": 0.5,
+            },
+          }
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ]
+            }
+            weight="bold"
+          >
+            enableBluetoothButtonText
+          </Text>
+        }
+        type="gradient"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          enableBluetoothButtonText
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`ScanScreen should render default state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        {
+          "paddingBottom": 24,
+          "paddingEnd": 0,
+          "paddingStart": 0,
+          "paddingTop": 24,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        {
+          "justifyContent": "space-evenly",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`ScanScreen should render invalid QR state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        {
+          "paddingBottom": 24,
+          "paddingEnd": 0,
+          "paddingStart": 0,
+          "paddingTop": 24,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        {
+          "justifyContent": "space-evenly",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`ScanScreen should render location denied state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        {
+          "paddingBottom": 24,
+          "paddingEnd": 0,
+          "paddingStart": 0,
+          "paddingTop": 24,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        {
+          "justifyContent": "space-evenly",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          {
+            "paddingBottom": 24,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 24,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "column",
+              "justifyContent": "center",
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              {
+                "color": "#D52929",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          Location denied
+        </Text>
+      </View>
+      <View
+        buttonStyle={
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              undefined,
+            ],
+          ]
+        }
+        linearGradientProps={
+          {
+            "colors": [
+              "#FF5300",
+              "#5B03AD",
+            ],
+            "end": {
+              "x": 1,
+              "y": 0.5,
+            },
+            "start": {
+              "x": 0.5,
+              "y": 0.5,
+            },
+          }
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ]
+            }
+            weight="bold"
+          >
+            Settings
+          </Text>
+        }
+        type="gradient"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          Settings
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`ScanScreen should render location disabled state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        {
+          "paddingBottom": 24,
+          "paddingEnd": 0,
+          "paddingStart": 0,
+          "paddingTop": 24,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        {
+          "justifyContent": "space-evenly",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          {
+            "paddingBottom": 24,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 24,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "column",
+              "justifyContent": "center",
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              {
+                "color": "#D52929",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          Location off
+        </Text>
+      </View>
+      <View
+        buttonStyle={
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              undefined,
+            ],
+          ]
+        }
+        linearGradientProps={
+          {
+            "colors": [
+              "#FF5300",
+              "#5B03AD",
+            ],
+            "end": {
+              "x": 1,
+              "y": 0.5,
+            },
+            "start": {
+              "x": 0.5,
+              "y": 0.5,
+            },
+          }
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ]
+            }
+            weight="bold"
+          >
+            Enable
+          </Text>
+        }
+        type="gradient"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          Enable
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`ScanScreen should render nearby devices permission denied 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        {
+          "paddingBottom": 24,
+          "paddingEnd": 0,
+          "paddingStart": 0,
+          "paddingTop": 24,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        {
+          "justifyContent": "space-evenly",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          {
+            "paddingBottom": 24,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 24,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "column",
+              "justifyContent": "center",
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              {
+                "color": "#D52929",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          errors.nearbyDevicesPermissionDenied.message
+        </Text>
+      </View>
+      <View
+        buttonStyle={
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              undefined,
+            ],
+          ]
+        }
+        linearGradientProps={
+          {
+            "colors": [
+              "#FF5300",
+              "#5B03AD",
+            ],
+            "end": {
+              "x": 1,
+              "y": 0.5,
+            },
+            "start": {
+              "x": 0.5,
+              "y": 0.5,
+            },
+          }
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ]
+            }
+            weight="bold"
+          >
+            errors.nearbyDevicesPermissionDenied.button
+          </Text>
+        }
+        type="gradient"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          errors.nearbyDevicesPermissionDenied.button
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`ScanScreen should render no sharable VCs state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        {
+          "paddingBottom": 24,
+          "paddingEnd": 0,
+          "paddingStart": 0,
+          "paddingTop": 24,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        {
+          "justifyContent": "space-evenly",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#D52929",
+          },
+          {
+            "textAlign": "center",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 10,
+            "marginStart": 10,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "paddingTop": 3,
+          },
+        ]
+      }
+    >
+      noShareableVcs
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`ScanScreen should render quick share done state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        {
+          "paddingBottom": 24,
+          "paddingEnd": 0,
+          "paddingStart": 0,
+          "paddingTop": 24,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        {
+          "justifyContent": "space-evenly",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`ScanScreen should render scanning state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        {
+          "paddingBottom": 24,
+          "paddingEnd": 0,
+          "paddingStart": 0,
+          "paddingTop": 24,
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        {
+          "justifyContent": "space-evenly",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    />
+  </View>
+</View>
+`;

@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ToastItem should render with empty message 1`] = `
+<View
+  style={
+    {
+      "alignSelf": "center",
+      "backgroundColor": "#951F6F",
+      "borderRadius": 4,
+      "position": "absolute",
+      "top": 80,
+    }
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Montserrat_400Regular",
+          "fontSize": 14,
+        },
+        {
+          "color": "#FFFFFF",
+        },
+        {
+          "textAlign": "center",
+        },
+        {
+          "marginBottom": 8,
+          "marginEnd": 16,
+          "marginStart": 16,
+          "marginTop": 8,
+        },
+        null,
+        {
+          "fontSize": 12,
+        },
+      ]
+    }
+  />
+</View>
+`;

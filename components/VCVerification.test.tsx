@@ -30,7 +30,7 @@ describe('VCVerification Component', () => {
       <VCVerification vcMetadata={vcMetadata} display={mockDisplay} />,
     );
 
-    expect(toJSON()).toBeTruthy();
+    expect(toJSON()).toMatchSnapshot();
   });
 
   it('should render for verified but expired credential', () => {
@@ -43,7 +43,7 @@ describe('VCVerification Component', () => {
       <VCVerification vcMetadata={vcMetadata} display={mockDisplay} />,
     );
 
-    expect(toJSON()).toBeTruthy();
+    expect(toJSON()).toMatchSnapshot();
   });
 
   it('should render for pending/unverified credential', () => {
@@ -56,7 +56,7 @@ describe('VCVerification Component', () => {
       <VCVerification vcMetadata={vcMetadata} display={mockDisplay} />,
     );
 
-    expect(toJSON()).toBeTruthy();
+    expect(toJSON()).toMatchSnapshot();
   });
 
   it('should render verification status text', () => {

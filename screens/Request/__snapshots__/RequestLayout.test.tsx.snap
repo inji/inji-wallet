@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RequestLayout should render default state 1`] = `
+<View
+  testID="navigator"
+>
+  <View
+    testID="screen-Request"
+  />
+</View>
+`;

@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HelpIcon should render without crashing 1`] = `
+<LinearGradient
+  colors={
+    [
+      "#FF530014",
+      "#5B03AD14",
+    ]
+  }
+  end={
+    {
+      "x": 1,
+      "y": 0.5,
+    }
+  }
+  start={
+    {
+      "x": 0.5,
+      "y": 0.5,
+    }
+  }
+  style={
+    {
+      "borderRadius": 8,
+      "marginRight": 4,
+    }
+  }
+>
+  <View
+    testID="help"
+  />
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "borderRadius": 10,
+        "height": 36,
+        "justifyContent": "center",
+        "marginLeft": 4,
+        "marginRight": 4,
+        "padding": 6,
+        "width": 25,
+      }
+    }
+  >
+    QuestionIcon
+  </View>
+</LinearGradient>
+`;

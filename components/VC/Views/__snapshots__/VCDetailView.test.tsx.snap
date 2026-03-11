@@ -1,0 +1,569 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VCDetailView should render DisclosureInfoNote 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#EFF6FF",
+      "borderColor": "#BEDBFF",
+      "borderRadius": 10,
+      "borderWidth": 1,
+      "marginBottom": 16,
+      "marginHorizontal": 10,
+      "marginTop": -16,
+      "padding": 12,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "flex-start",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <FontAwesomeIcon
+      color="#666666"
+      name="share-square-o"
+      size={18}
+      style={
+        {
+          "marginRight": 8,
+          "marginTop": 2,
+        }
+      }
+    />
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "black",
+            "flex": 1,
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      disclosureInfoNote
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`VCDetailView should render VCDetailView 1`] = `
+[
+  <RCTScrollView
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View>
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              {
+                "paddingBottom": 3,
+                "paddingEnd": 10,
+                "paddingStart": 10,
+                "paddingTop": 10,
+              },
+              null,
+              {
+                "backgroundColor": "#F7F7F7",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          <View
+            accessibilityIgnoresInvertColors={true}
+            style={
+              [
+                {
+                  "backgroundColor": "#fff",
+                  "borderRadius": 10,
+                  "elevation": 4,
+                  "margin": 8,
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 1,
+                    "width": -1,
+                  },
+                  "shadowOpacity": 0.4,
+                  "shadowRadius": 3,
+                },
+                undefined,
+              ]
+            }
+          >
+            <Image
+              resizeMethod="scale"
+              resizeMode="stretch"
+              source=""
+              style={
+                [
+                  {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  },
+                  {
+                    "height": undefined,
+                    "width": undefined,
+                  },
+                  {
+                    "opacity": 0.1,
+                    "width": "100%",
+                  },
+                ]
+              }
+            />
+            <View
+              style={
+                [
+                  {
+                    "alignItems": undefined,
+                    "flexDirection": "row",
+                    "justifyContent": undefined,
+                  },
+                  null,
+                  {
+                    "paddingBottom": 0,
+                    "paddingEnd": 14,
+                    "paddingStart": 14,
+                    "paddingTop": 14,
+                  },
+                  {
+                    "marginBottom": 0,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 0,
+                  },
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                ]
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": undefined,
+                      "flexDirection": "column",
+                      "justifyContent": undefined,
+                    },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                      "alignItems": "center",
+                    },
+                    null,
+                    null,
+                    null,
+                    null,
+                  ]
+                }
+              >
+                <View
+                  style={
+                    [
+                      {
+                        "alignItems": undefined,
+                        "flexDirection": "column",
+                        "justifyContent": undefined,
+                      },
+                      null,
+                      null,
+                      {
+                        "marginBottom": 0,
+                        "marginEnd": 0,
+                        "marginStart": 0,
+                        "marginTop": 12,
+                      },
+                      null,
+                      {
+                        "width": 80,
+                      },
+                      {
+                        "height": 59,
+                      },
+                      null,
+                      {
+                        "alignItems": "center",
+                      },
+                      null,
+                      null,
+                      null,
+                      null,
+                    ]
+                  }
+                >
+                  <Image
+                    resizeMethod="scale"
+                    resizeMode="contain"
+                    style={
+                      {
+                        "aspectRatio": 1,
+                        "height": 35,
+                        "marginRight": 10,
+                        "resizeMode": "contain",
+                      }
+                    }
+                  />
+                </View>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": undefined,
+                      "flexDirection": "column",
+                      "justifyContent": undefined,
+                    },
+                    null,
+                    null,
+                    {
+                      "marginBottom": 0,
+                      "marginEnd": 0,
+                      "marginStart": 24,
+                      "marginTop": 0,
+                    },
+                    null,
+                    null,
+                    null,
+                    {
+                      "justifyContent": "space-evenly",
+                    },
+                    null,
+                    null,
+                    {
+                      "flex": 1,
+                    },
+                    null,
+                    null,
+                  ]
+                }
+              />
+            </View>
+            <View
+              style={
+                [
+                  {
+                    "borderBottomColor": "#707070",
+                    "borderBottomWidth": 1,
+                    "marginBottom": 20,
+                    "marginLeft": 14,
+                    "marginRight": 14,
+                    "marginTop": 10,
+                    "opacity": 0.2,
+                  },
+                  {
+                    "borderBottomColor": "#707070",
+                  },
+                ]
+              }
+            />
+            <View
+              style={
+                [
+                  {
+                    "alignItems": undefined,
+                    "flexDirection": "column",
+                    "justifyContent": undefined,
+                  },
+                  null,
+                  {
+                    "paddingBottom": 14,
+                    "paddingEnd": 14,
+                    "paddingStart": 14,
+                    "paddingTop": 0,
+                  },
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                ]
+              }
+            />
+            <View
+              style={
+                {
+                  "backgroundColor": "#EFF6FF",
+                  "borderColor": "#BEDBFF",
+                  "borderRadius": 10,
+                  "borderWidth": 1,
+                  "marginBottom": 16,
+                  "marginHorizontal": 10,
+                  "marginTop": -16,
+                  "padding": 12,
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": undefined,
+                      "flexDirection": "row",
+                      "justifyContent": undefined,
+                    },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                      "justifyContent": "flex-start",
+                    },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                  ]
+                }
+              >
+                <FontAwesomeIcon
+                  color="#666666"
+                  name="share-square-o"
+                  size={18}
+                  style={
+                    {
+                      "marginRight": 8,
+                      "marginTop": 2,
+                    }
+                  }
+                />
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "black",
+                        "flex": 1,
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                    ]
+                  }
+                >
+                  disclosureInfoNote
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>,
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#F7F7F7",
+        "borderTopColor": "#F8F8F8",
+        "borderTopWidth": 1,
+        "padding": 16,
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 8,
+          "opacity": 1,
+        }
+      }
+      testID="viewShareableInfoLink"
+    >
+      <FeatherIcon
+        color="#007AFF"
+        name="eye"
+        size={20}
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#007AFF",
+              "fontFamily": "Inter_500Medium",
+              "fontSize": 16,
+            },
+          ]
+        }
+      >
+        View Shareable Information
+      </Text>
+    </View>
+  </View>,
+]
+`;

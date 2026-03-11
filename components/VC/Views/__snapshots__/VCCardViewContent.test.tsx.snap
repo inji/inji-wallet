@@ -1,0 +1,3371 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VCCardViewContent should render VP_SHARE flow with no selection 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      <View
+        testID="checkbox"
+      />
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+      >
+        <View
+          testID="icon"
+        />
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render basic card content 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      WalletActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render downloading state 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      WalletActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render pinned card 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      WalletActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render when VC is not loaded 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      WalletActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render when activation is needed 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      WalletUnActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render with OPENID4VP flow 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      <View
+        testID="checkbox"
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render with VP_SHARE flow and selectable 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      <View
+        testID="checkbox"
+      />
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+      >
+        <View
+          testID="icon"
+        />
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render with VP_SHARE flow, selected, and disclosed keys 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      <View
+        testID="checkbox"
+      />
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+      >
+        <View
+          testID="icon"
+        />
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render with expired VC metadata 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render with face image in verifiable credential 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      WalletActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render with fields populated 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      WalletActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render with generatedOn date 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      WalletActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render with isInitialLaunch true 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View
+    onLayout={[Function]}
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      WalletActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render with kebab popup visible 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      WalletActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render with no wellknown display 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      WalletActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render with revoked VC 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      WalletActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render with selectable and selected 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      WalletActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+      <View
+        testID="checkbox"
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VCCardViewContent should render with wallet binding response 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    [
+      {
+        "borderRadius": 10,
+        "flex": 1,
+        "overflow": "hidden",
+        "padding": 10,
+      },
+      undefined,
+    ]
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        {
+          "opacity": 0.1,
+        },
+      ]
+    }
+  />
+  <View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 3,
+            "paddingTop": 3,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 10,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "space-around",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        />
+      </View>
+      <Image
+        resizeMode="cover"
+        style={
+          {
+            "aspectRatio": 1,
+            "height": 35,
+            "marginRight": 10,
+            "resizeMode": "contain",
+          }
+        }
+      />
+      WalletActivated
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "15%",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;

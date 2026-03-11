@@ -1,0 +1,1324 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TransactionCodeModal should not render when not visible 1`] = `null`;
+
+exports[`TransactionCodeModal should render numeric mode with length > 6 as text input 1`] = `
+<View
+  testID="modal"
+>
+  <View
+    onLayout={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessible={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "height": 700,
+        }
+      }
+    >
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+            },
+            null,
+            {
+              "flex": 1,
+              "justifyContent": "space-around",
+              "marginBottom": 20,
+              "maxHeight": 800,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        OtpVerificationIcon
+        <View>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "column",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              accessibilityLabel="otpVerificationHeader"
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#000000",
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 18,
+                    "lineHeight": 19,
+                    "paddingTop": 5,
+                  },
+                ]
+              }
+            >
+              TransactionCode
+            </Text>
+            <Text
+              accessibilityLabel="otpVerificationDescription"
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#6F6F6F",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  null,
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 21,
+                  },
+                  {
+                    "marginTop": 15,
+                  },
+                ]
+              }
+            >
+              description
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+            }
+          }
+        >
+          <View
+            testID="input"
+          >
+            <TextInput
+              onChangeText={[Function]}
+              placeholder="placeholder"
+              secureTextEntry={true}
+              testID="textInput"
+              value=""
+            />
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
+          >
+            <Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_700Bold",
+                      "fontSize": 15,
+                      "justifyContent": "center",
+                    },
+                    {
+                      "color": "#FFFFFF",
+                    },
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    [
+                      {
+                        "paddingLeft": 0,
+                      },
+                      undefined,
+                    ],
+                  ]
+                }
+              >
+                Verify
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`TransactionCodeModal should render with PinInput for numeric mode with length <= 6 1`] = `
+<View
+  testID="modal"
+>
+  <View
+    onLayout={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessible={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "height": 700,
+        }
+      }
+    >
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+            },
+            null,
+            {
+              "flex": 1,
+              "justifyContent": "space-around",
+              "marginBottom": 20,
+              "maxHeight": 800,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        OtpVerificationIcon
+        <View>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "column",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              accessibilityLabel="otpVerificationHeader"
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#000000",
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 18,
+                    "lineHeight": 19,
+                    "paddingTop": 5,
+                  },
+                ]
+              }
+            >
+              TransactionCode
+            </Text>
+            <Text
+              accessibilityLabel="otpVerificationDescription"
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#6F6F6F",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  null,
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 21,
+                  },
+                  {
+                    "marginTop": 15,
+                  },
+                ]
+              }
+            >
+              description
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+            }
+          }
+        >
+          <View
+            testID="pinInput"
+          />
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
+          >
+            <Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_700Bold",
+                      "fontSize": 15,
+                      "justifyContent": "center",
+                    },
+                    {
+                      "color": "#FFFFFF",
+                    },
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    [
+                      {
+                        "paddingLeft": 0,
+                      },
+                      undefined,
+                    ],
+                  ]
+                }
+              >
+                verify
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`TransactionCodeModal should render with description 1`] = `
+<View
+  testID="modal"
+>
+  <View
+    onLayout={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessible={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "height": 700,
+        }
+      }
+    >
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+            },
+            null,
+            {
+              "flex": 1,
+              "justifyContent": "space-around",
+              "marginBottom": 20,
+              "maxHeight": 800,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        OtpVerificationIcon
+        <View>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "column",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              accessibilityLabel="otpVerificationHeader"
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#000000",
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 18,
+                    "lineHeight": 19,
+                    "paddingTop": 5,
+                  },
+                ]
+              }
+            >
+              TransactionCode
+            </Text>
+            <Text
+              accessibilityLabel="otpVerificationDescription"
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#6F6F6F",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  null,
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 21,
+                  },
+                  {
+                    "marginTop": 15,
+                  },
+                ]
+              }
+            >
+              Enter the transaction code
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+            }
+          }
+        >
+          <View
+            testID="pinInput"
+          />
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
+          >
+            <Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_700Bold",
+                      "fontSize": 15,
+                      "justifyContent": "center",
+                    },
+                    {
+                      "color": "#FFFFFF",
+                    },
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    [
+                      {
+                        "paddingLeft": 0,
+                      },
+                      undefined,
+                    ],
+                  ]
+                }
+              >
+                verify
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`TransactionCodeModal should render with error prop 1`] = `
+<View
+  testID="modal"
+>
+  <View
+    onLayout={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessible={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "height": 700,
+        }
+      }
+    >
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+            },
+            null,
+            {
+              "flex": 1,
+              "justifyContent": "space-around",
+              "marginBottom": 20,
+              "maxHeight": 800,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        OtpVerificationIcon
+        <View>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "column",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              accessibilityLabel="otpVerificationHeader"
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#000000",
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 18,
+                    "lineHeight": 19,
+                    "paddingTop": 5,
+                  },
+                ]
+              }
+            >
+              TransactionCode
+            </Text>
+            <Text
+              accessibilityLabel="otpVerificationDescription"
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#6F6F6F",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  null,
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 21,
+                  },
+                  {
+                    "marginTop": 15,
+                  },
+                ]
+              }
+            >
+              description
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "backgroundColor": "#FAEFEF",
+              "borderRadius": 10,
+              "marginBottom": 10,
+              "marginTop": 10,
+              "padding": 8,
+              "width": "80%",
+            }
+          }
+        >
+          <Text
+            accessibilityLabel="otpVerificationError"
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_400Regular",
+                  "fontSize": 14,
+                },
+                {
+                  "color": "#D52929",
+                },
+                {
+                  "textAlign": "center",
+                },
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            Invalid code
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+            }
+          }
+        >
+          <View
+            testID="pinInput"
+          />
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
+          >
+            <Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_700Bold",
+                      "fontSize": 15,
+                      "justifyContent": "center",
+                    },
+                    {
+                      "color": "#FFFFFF",
+                    },
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    [
+                      {
+                        "paddingLeft": 0,
+                      },
+                      undefined,
+                    ],
+                  ]
+                }
+              >
+                verify
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`TransactionCodeModal should render with text Input for text mode 1`] = `
+<View
+  testID="modal"
+>
+  <View
+    onLayout={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessible={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "height": 700,
+        }
+      }
+    >
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+            },
+            null,
+            {
+              "flex": 1,
+              "justifyContent": "space-around",
+              "marginBottom": 20,
+              "maxHeight": 800,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        OtpVerificationIcon
+        <View>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "column",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              accessibilityLabel="otpVerificationHeader"
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#000000",
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 18,
+                    "lineHeight": 19,
+                    "paddingTop": 5,
+                  },
+                ]
+              }
+            >
+              TransactionCode
+            </Text>
+            <Text
+              accessibilityLabel="otpVerificationDescription"
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              onTextLayout={[Function]}
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#6F6F6F",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  null,
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 21,
+                  },
+                  {
+                    "marginTop": 15,
+                  },
+                ]
+              }
+            >
+              description
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+            }
+          }
+        >
+          <View
+            testID="input"
+          >
+            <TextInput
+              onChangeText={[Function]}
+              placeholder="placeholder"
+              secureTextEntry={true}
+              testID="textInput"
+              value=""
+            />
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
+          >
+            <Text>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_700Bold",
+                      "fontSize": 15,
+                      "justifyContent": "center",
+                    },
+                    {
+                      "color": "#FFFFFF",
+                    },
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    [
+                      {
+                        "paddingLeft": 0,
+                      },
+                      undefined,
+                    ],
+                  ]
+                }
+              >
+                Verify
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VerifyIdentityOverlay should render when not verifying 1`] = `
+<View
+  animationType="slide"
+  arrowLeft={true}
+  headerTitle="faceAuth"
+  isVisible={false}
+  onDismiss={[MockFunction]}
+  presentationStyle="overFullScreen"
+  showClose={true}
+  showHeader={true}
+  testID="modal"
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "center",
+        },
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+          "height": 1334,
+          "width": 750,
+        },
+        null,
+        null,
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`VerifyIdentityOverlay should render when verifying identity 1`] = `
+<View
+  animationType="slide"
+  arrowLeft={true}
+  headerTitle="faceAuth"
+  isVisible={true}
+  onDismiss={[MockFunction]}
+  presentationStyle="overFullScreen"
+  showClose={true}
+  showHeader={true}
+  testID="modal"
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "center",
+        },
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+          "height": 1334,
+          "width": 750,
+        },
+        null,
+        null,
+      ]
+    }
+  />
+</View>
+`;

@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VcItemContainer should match snapshot 1`] = `
+<View
+  testID="mockVCCardView"
+>
+  <Text>
+    {"issuer":"test-issuer","id":"test-id"}
+  </Text>
+</View>
+`;
+
+exports[`VcItemContainer should match snapshot when downloading 1`] = `
+<View
+  testID="mockVCCardView"
+>
+  <Text>
+    {"issuer":"test-issuer","id":"test-id"}
+  </Text>
+</View>
+`;
+
+exports[`VcItemContainer should match snapshot when pinned 1`] = `
+<View
+  testID="mockVCCardView"
+>
+  <Text>
+    {"issuer":"test-issuer","id":"test-id"}
+  </Text>
+</View>
+`;

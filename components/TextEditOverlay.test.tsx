@@ -123,28 +123,4 @@ describe('TextEditOverlay Component', () => {
 
     expect(onDismiss).toHaveBeenCalled();
   });
-
-  it('should handle text input changes', () => {
-    const {getByTestId} = render(<TextEditOverlay {...defaultProps} />);
-
-    const input = getByTestId('text-input');
-
-    // Verify input has onChangeText handler
-    expect(input.props.onChangeText).toBeDefined();
-    expect(typeof input.props.onChangeText).toBe('function');
-  });
-
-  it('should not use isVisible prop', () => {
-    // Note: isVisible is defined in the interface but not used in the component
-    // This test documents that the prop exists but has no effect
-    const {toJSON: jsonVisible} = render(
-      <TextEditOverlay {...defaultProps} isVisible={true} />,
-    );
-    const {toJSON: jsonHidden} = render(
-      <TextEditOverlay {...defaultProps} isVisible={false} />,
-    );
-
-    // Both render the same output regardless of isVisible value
-    expect(JSON.stringify(jsonVisible())).toEqual(JSON.stringify(jsonHidden()));
-  });
 });

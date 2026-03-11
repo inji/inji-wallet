@@ -5,15 +5,6 @@ import {Text} from 'react-native';
 
 describe('Layout Components', () => {
   describe('Column Component', () => {
-    it('should render Column component', () => {
-      const {toJSON} = render(
-        <Column>
-          <Text>Test</Text>
-        </Column>,
-      );
-      expect(toJSON()).toBeTruthy();
-    });
-
     it('should render children in column', () => {
       const {getByText} = render(
         <Column>
@@ -53,15 +44,6 @@ describe('Layout Components', () => {
   });
 
   describe('Row Component', () => {
-    it('should render Row component', () => {
-      const {toJSON} = render(
-        <Row>
-          <Text>Test</Text>
-        </Row>,
-      );
-      expect(toJSON()).toBeTruthy();
-    });
-
     it('should render children in row', () => {
       const {getByText} = render(
         <Row>

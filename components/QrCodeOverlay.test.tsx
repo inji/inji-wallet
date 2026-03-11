@@ -60,35 +60,34 @@ describe('QrCodeOverlay Component', () => {
     meta: mockMeta as any,
   };
 
-  // NOTE: CodeRabbit suggested making these tests async to wait for QR data loading.
-  // However, the component requires native module mocks (RNSecureKeystoreModule.getData)
-  // that are not properly initialized in the test environment, causing the component
-  // to always return null. These tests currently capture empty snapshots.
-  // TODO: Fix native module mocking to properly test the async QR data loading behavior.
-
-  it('should match snapshot with default props', () => {
+  it('should render null when qrString is empty (useEffect does not fire synchronously)', () => {
     const {toJSON} = render(<QrCodeOverlay {...defaultProps} />);
-    expect(toJSON()).toMatchSnapshot();
+    expect(toJSON()).toBeNull();
   });
 
-  it('should match snapshot with inline QR disabled', () => {
+  it('should render null with no credential subject', () => {
+    const vcEmpty = {credential: {id: 'test'}};
     const {toJSON} = render(
-      <QrCodeOverlay {...defaultProps} showInlineQr={false} />,
+      <QrCodeOverlay
+        verifiableCredential={vcEmpty as any}
+        meta={mockMeta as any}
+      />,
     );
-    expect(toJSON()).toMatchSnapshot();
+    expect(toJSON()).toBeNull();
   });
 
-  it('should match snapshot with force visible', () => {
-    const {toJSON} = render(
-      <QrCodeOverlay {...defaultProps} forceVisible={true} />,
+  it('should set qrError when data is too large', async () => {
+    const longData = 'x'.repeat(5000);
+    NativeModules.RNSecureKeystoreModule.getData = jest.fn(() =>
+      Promise.resolve(['key', longData]),
     );
+    const {toJSON} = render(<QrCodeOverlay {...defaultProps} />);
+    await new Promise(resolve => setTimeout(resolve, 50));
+    // With large data, qrError is set to true - component returns null
     expect(toJSON()).toMatchSnapshot();
-  });
-
-  it('should match snapshot with onClose handler', () => {
-    const {toJSON} = render(
-      <QrCodeOverlay {...defaultProps} onClose={jest.fn()} />,
+    // Reset
+    NativeModules.RNSecureKeystoreModule.getData = jest.fn(() =>
+      Promise.resolve(['key', 'mocked-qr-data']),
     );
-    expect(toJSON()).toMatchSnapshot();
   });
 });

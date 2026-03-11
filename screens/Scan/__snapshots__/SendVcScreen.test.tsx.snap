@@ -1,0 +1,370 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SendVcScreen should render empty state 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+          {
+            "color": "#000000",
+          },
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 13,
+            "marginEnd": 0,
+            "marginStart": 24,
+            "marginTop": 15,
+          },
+          null,
+          {
+            "position": "relative",
+          },
+        ]
+      }
+    >
+      pleaseSelectAnId
+    </Text>
+  </View>
+  <RCTScrollView
+    accessible={true}
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View />
+  </RCTScrollView>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "marginBottom": 1,
+          "marginTop": 1,
+          "rowGap": 8,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "alignSelf": "center",
+            "borderRadius": 9,
+            "height": 54,
+            "width": 540,
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+            },
+            {
+              "backgroundColor": "#C7C7C7",
+            },
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            {
+              "marginTop": 12,
+            },
+          ],
+        ]
+      }
+      linearGradientProps={
+        {
+          "colors": [
+            "#C7C7C7",
+            "#C7C7C7",
+          ],
+          "end": {
+            "x": 1,
+            "y": 0.5,
+          },
+          "start": {
+            "x": 0.5,
+            "y": 0.5,
+          },
+        }
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          color="#FFFFFF"
+          style={
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ]
+          }
+          weight="bold"
+        >
+          acceptRequest
+        </Text>
+      }
+      type="gradient"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        acceptRequest
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "backgroundColor": "transparent",
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+              "height": 45,
+            },
+            null,
+            null,
+            null,
+            undefined,
+          ],
+        ]
+      }
+      loading={false}
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "backgroundColor": "transparent",
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          align="center"
+          color="#951F6F"
+          style={
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ]
+          }
+          weight="semibold"
+        >
+          reject
+        </Text>
+      }
+      type="clear"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#951F6F",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        reject
+      </Text>
+    </View>
+  </View>
+</View>
+`;

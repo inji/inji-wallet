@@ -25,6 +25,9 @@ import {
   selectShowActivities,
   selectShowWalletBindingError,
   selectVc,
+  isReverifyingVc,
+  showReverificationSuccessBanner,
+  showVerificationFailureBanner,
 } from './VCItemSelectors';
 
 describe('VCItemSelectors', () => {
@@ -446,6 +449,55 @@ describe('VCItemSelectors', () => {
       expect(result.verificationStatus).toBe('verified');
       expect(result.generatedOn).toBe('2023-01-01');
       expect(result.serviceRefs).toBeUndefined();
+    });
+  });
+
+  describe('isReverifyingVc', () => {
+    it('should return true when in reverificationState', () => {
+      const mockState: any = {
+        matches: (val: string) =>
+          val === 'vcUtilitiesState.reverificationState',
+      };
+      expect(isReverifyingVc(mockState)).toBe(true);
+    });
+
+    it('should return false when not in reverificationState', () => {
+      const mockState: any = {
+        matches: (val: string) => false,
+      };
+      expect(isReverifyingVc(mockState)).toBe(false);
+    });
+  });
+
+  describe('showReverificationSuccessBanner', () => {
+    it('should return showReverificationSuccessBanner from context', () => {
+      const mockState: any = {
+        context: {showReverificationSuccessBanner: true},
+      };
+      expect(showReverificationSuccessBanner(mockState)).toBe(true);
+    });
+
+    it('should return false when not set', () => {
+      const mockState: any = {
+        context: {showReverificationSuccessBanner: false},
+      };
+      expect(showReverificationSuccessBanner(mockState)).toBe(false);
+    });
+  });
+
+  describe('showVerificationFailureBanner', () => {
+    it('should return showVerificationFailureBanner from context', () => {
+      const mockState: any = {
+        context: {showVerificationFailureBanner: true},
+      };
+      expect(showVerificationFailureBanner(mockState)).toBe(true);
+    });
+
+    it('should return false when not set', () => {
+      const mockState: any = {
+        context: {showVerificationFailureBanner: false},
+      };
+      expect(showVerificationFailureBanner(mockState)).toBe(false);
     });
   });
 });

@@ -1,0 +1,1153 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VPShareOverlay should match snapshot when not visible 1`] = `
+<View
+  isVisible={false}
+  onBackdropPress={[MockFunction]}
+  overlayStyle={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 15,
+      "elevation": 5,
+      "padding": 0,
+    }
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 10,
+          "paddingEnd": 10,
+          "paddingStart": 10,
+          "paddingTop": 10,
+        },
+        null,
+        null,
+        {
+          "width": 600,
+        },
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        {
+          "alignItems": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 0,
+            "paddingTop": 0,
+          },
+          {
+            "marginBottom": 15,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 10,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="shareTitle"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            {
+              "fontSize": 18,
+            },
+            {
+              "padding": 3,
+            },
+          ]
+        }
+      >
+        Share Credential
+      </Text>
+      <Text
+        accessibilityLabel="shareMessage"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#5D5D5D",
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            null,
+          ]
+        }
+      >
+        Do you want to share this credential?
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="primaryBtn"
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "alignSelf": "center",
+            "borderRadius": 9,
+            "height": 54,
+            "width": 540,
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            undefined,
+          ],
+        ]
+      }
+      linearGradientProps={
+        {
+          "colors": [
+            "#FF5300",
+            "#5B03AD",
+          ],
+          "end": {
+            "x": 1,
+            "y": 0.5,
+          },
+          "start": {
+            "x": 0.5,
+            "y": 0.5,
+          },
+        }
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          color="#FFFFFF"
+          style={
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ]
+          }
+          weight="bold"
+        >
+          Share
+        </Text>
+      }
+      type="gradient"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        Share
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="secondaryBtn"
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "backgroundColor": "transparent",
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+              "height": 45,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            null,
+            undefined,
+          ],
+        ]
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "backgroundColor": "transparent",
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          align="center"
+          color="#951F6F"
+          style={
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ]
+          }
+          weight="semibold"
+        >
+          Cancel
+        </Text>
+      }
+      type="clear"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#951F6F",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        Cancel
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VPShareOverlay should match snapshot when visible 1`] = `
+<View
+  isVisible={true}
+  onBackdropPress={[MockFunction]}
+  overlayStyle={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 15,
+      "elevation": 5,
+      "padding": 0,
+    }
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 10,
+          "paddingEnd": 10,
+          "paddingStart": 10,
+          "paddingTop": 10,
+        },
+        null,
+        null,
+        {
+          "width": 600,
+        },
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        {
+          "alignItems": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 0,
+            "paddingTop": 0,
+          },
+          {
+            "marginBottom": 15,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 10,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="shareTitle"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            {
+              "fontSize": 18,
+            },
+            {
+              "padding": 3,
+            },
+          ]
+        }
+      >
+        Share Credential
+      </Text>
+      <Text
+        accessibilityLabel="shareMessage"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#5D5D5D",
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            null,
+          ]
+        }
+      >
+        Do you want to share this credential?
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="primaryBtn"
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "alignSelf": "center",
+            "borderRadius": 9,
+            "height": 54,
+            "width": 540,
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            undefined,
+          ],
+        ]
+      }
+      linearGradientProps={
+        {
+          "colors": [
+            "#FF5300",
+            "#5B03AD",
+          ],
+          "end": {
+            "x": 1,
+            "y": 0.5,
+          },
+          "start": {
+            "x": 0.5,
+            "y": 0.5,
+          },
+        }
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          color="#FFFFFF"
+          style={
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ]
+          }
+          weight="bold"
+        >
+          Share
+        </Text>
+      }
+      type="gradient"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        Share
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="secondaryBtn"
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "backgroundColor": "transparent",
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+              "height": 45,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            null,
+            undefined,
+          ],
+        ]
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "backgroundColor": "transparent",
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          align="center"
+          color="#951F6F"
+          style={
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ]
+          }
+          weight="semibold"
+        >
+          Cancel
+        </Text>
+      }
+      type="clear"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#951F6F",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        Cancel
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`VPShareOverlay should match snapshot with different text 1`] = `
+<View
+  isVisible={true}
+  onBackdropPress={[MockFunction]}
+  overlayStyle={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 15,
+      "elevation": 5,
+      "padding": 0,
+    }
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 10,
+          "paddingEnd": 10,
+          "paddingStart": 10,
+          "paddingTop": 10,
+        },
+        null,
+        null,
+        {
+          "width": 600,
+        },
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        {
+          "alignItems": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 0,
+            "paddingTop": 0,
+          },
+          {
+            "marginBottom": 15,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 10,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="shareTitle"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            {
+              "fontSize": 18,
+            },
+            {
+              "padding": 3,
+            },
+          ]
+        }
+      >
+        VP Share
+      </Text>
+      <Text
+        accessibilityLabel="shareMessage"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#5D5D5D",
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            null,
+          ]
+        }
+      >
+        Share your verifiable presentation
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="primaryBtn"
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "alignSelf": "center",
+            "borderRadius": 9,
+            "height": 54,
+            "width": 540,
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            undefined,
+          ],
+        ]
+      }
+      linearGradientProps={
+        {
+          "colors": [
+            "#FF5300",
+            "#5B03AD",
+          ],
+          "end": {
+            "x": 1,
+            "y": 0.5,
+          },
+          "start": {
+            "x": 0.5,
+            "y": 0.5,
+          },
+        }
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          color="#FFFFFF"
+          style={
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ]
+          }
+          weight="bold"
+        >
+          Share
+        </Text>
+      }
+      type="gradient"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        Share
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="secondaryBtn"
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "backgroundColor": "transparent",
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+              "height": 45,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            null,
+            undefined,
+          ],
+        ]
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "backgroundColor": "transparent",
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          align="center"
+          color="#951F6F"
+          style={
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ]
+          }
+          weight="semibold"
+        >
+          Cancel
+        </Text>
+      }
+      type="clear"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#951F6F",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        Cancel
+      </Text>
+    </View>
+  </View>
+</View>
+`;

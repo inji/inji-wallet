@@ -1,3 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BackupAndRestoreBannerNotification Component should match snapshot with no banners 1`] = `null`;
+
+exports[`BackupAndRestoreBannerNotification Component should render backup failure banner 1`] = `null`;
+
+exports[`BackupAndRestoreBannerNotification Component should render restore failure banner 1`] = `null`;

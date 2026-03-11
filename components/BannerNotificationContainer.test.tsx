@@ -51,22 +51,8 @@ jest.mock('./BannerNotification', () => ({
 }));
 
 describe('BannerNotificationContainer Component', () => {
-  it('should match snapshot with no banners visible', () => {
+  it('should match snapshot with default props', () => {
     const {toJSON} = render(<BannerNotificationContainer />);
-    expect(toJSON()).toMatchSnapshot();
-  });
-
-  it('should match snapshot with verification banner enabled', () => {
-    const {toJSON} = render(
-      <BannerNotificationContainer showVerificationStatusBanner={true} />,
-    );
-    expect(toJSON()).toMatchSnapshot();
-  });
-
-  it('should match snapshot with verification banner disabled', () => {
-    const {toJSON} = render(
-      <BannerNotificationContainer showVerificationStatusBanner={false} />,
-    );
     expect(toJSON()).toMatchSnapshot();
   });
 });

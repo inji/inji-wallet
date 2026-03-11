@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QrLogin should render 1`] = `
+<View
+  headerRight={
+    <Icon
+      name=""
+    />
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[MockFunction]}
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  />
+</View>
+`;

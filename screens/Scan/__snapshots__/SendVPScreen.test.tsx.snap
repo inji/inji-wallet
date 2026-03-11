@@ -1,0 +1,5485 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SendVPScreen should render authorization flow purpose text 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#FFFFFF",
+      }
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 14,
+            "paddingEnd": 12,
+            "paddingStart": 12,
+            "paddingTop": 14,
+          },
+          {
+            "marginBottom": 20,
+            "marginEnd": 20,
+            "marginStart": 20,
+            "marginTop": 20,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFF7E5",
+            "borderColor": "#FFF2D6",
+            "borderRadius": 5,
+            "borderWidth": 1,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#8B6105",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "fontFamily": "Montserrat_500Medium",
+              "fontSize": 13,
+              "position": "relative",
+            },
+          ]
+        }
+      >
+        authorizationPurpose
+      </Text>
+    </View>
+  </View>,
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        {
+          "backgroundColor": "#F8F8F8",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <LinearGradient
+      colors={
+        [
+          "#F5F5F5",
+          "#FFFFFF",
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              {
+                "color": "#000000",
+              },
+              {
+                "textAlign": "left",
+              },
+              {
+                "marginBottom": 13,
+                "marginEnd": 0,
+                "marginStart": 24,
+                "marginTop": 15,
+              },
+              null,
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 16,
+                "position": "relative",
+              },
+            ]
+          }
+        >
+          SendVcScreen:pleaseSelectAnId
+        </Text>
+      </View>
+    </LinearGradient>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 11,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 11,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FAFAFA",
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#000000",
+              "fontFamily": "Montserrat_500Medium",
+              "fontSize": 14,
+            },
+          ]
+        }
+      >
+        0 cardsSelected
+      </Text>
+      <Text
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#951F6F",
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        checkAll
+      </Text>
+    </View>
+    <RCTScrollView
+      accessible={true}
+      contentContainerStyle={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View />
+    </RCTScrollView>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            {
+              "marginBottom": 1,
+              "marginTop": 1,
+              "rowGap": 8,
+            },
+            {
+              "position": "relative",
+            },
+          ],
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            consentShare
+          </Text>
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#951F6F",
+                },
+                {
+                  "textAlign": "center",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            common:cancel
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
+exports[`SendVPScreen should render authorization flow with consent share button 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#FFFFFF",
+      }
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 14,
+            "paddingEnd": 12,
+            "paddingStart": 12,
+            "paddingTop": 14,
+          },
+          {
+            "marginBottom": 20,
+            "marginEnd": 20,
+            "marginStart": 20,
+            "marginTop": 20,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFF7E5",
+            "borderColor": "#FFF2D6",
+            "borderRadius": 5,
+            "borderWidth": 1,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#8B6105",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "fontFamily": "Montserrat_500Medium",
+              "fontSize": 13,
+              "position": "relative",
+            },
+          ]
+        }
+      >
+        authorizationPurpose
+      </Text>
+    </View>
+  </View>,
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        {
+          "backgroundColor": "#F8F8F8",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <LinearGradient
+      colors={
+        [
+          "#F5F5F5",
+          "#FFFFFF",
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              {
+                "color": "#000000",
+              },
+              {
+                "textAlign": "left",
+              },
+              {
+                "marginBottom": 13,
+                "marginEnd": 0,
+                "marginStart": 24,
+                "marginTop": 15,
+              },
+              null,
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 16,
+                "position": "relative",
+              },
+            ]
+          }
+        >
+          SendVcScreen:pleaseSelectAnId
+        </Text>
+      </View>
+    </LinearGradient>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 11,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 11,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FAFAFA",
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#000000",
+              "fontFamily": "Montserrat_500Medium",
+              "fontSize": 14,
+            },
+          ]
+        }
+      >
+        0 cardsSelected
+      </Text>
+      <Text
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#951F6F",
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        checkAll
+      </Text>
+    </View>
+    <RCTScrollView
+      accessible={true}
+      contentContainerStyle={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View />
+    </RCTScrollView>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            {
+              "marginBottom": 1,
+              "marginTop": 1,
+              "rowGap": 8,
+            },
+            {
+              "position": "relative",
+            },
+          ],
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            consentShare
+          </Text>
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#951F6F",
+                },
+                {
+                  "textAlign": "center",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            common:cancel
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
+exports[`SendVPScreen should render empty state 1`] = `null`;
+
+exports[`SendVPScreen should render error modal for non-authorization flow 1`] = `null`;
+
+exports[`SendVPScreen should render loading screen for authorization flow 1`] = `null`;
+
+exports[`SendVPScreen should render loading screen for non-authorization flow 1`] = `null`;
+
+exports[`SendVPScreen should render non-authorization flow share actions with images 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <LinearGradient
+    colors={
+      [
+        "#F5F5F5",
+        "#FFFFFF",
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 13,
+              "marginEnd": 0,
+              "marginStart": 24,
+              "marginTop": 15,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 16,
+              "position": "relative",
+            },
+          ]
+        }
+      >
+        SendVcScreen:pleaseSelectAnId
+      </Text>
+    </View>
+  </LinearGradient>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 11,
+          "paddingEnd": 24,
+          "paddingStart": 24,
+          "paddingTop": 11,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FAFAFA",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#000000",
+            "fontFamily": "Montserrat_500Medium",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      0 cardsSelected
+    </Text>
+    <Text
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#951F6F",
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      checkAll
+    </Text>
+  </View>
+  <RCTScrollView
+    accessible={true}
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View />
+  </RCTScrollView>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "marginBottom": 1,
+            "marginTop": 1,
+            "rowGap": 8,
+          },
+          {
+            "position": "relative",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:acceptRequest
+        </Text>
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:acceptRequestAndVerify
+        </Text>
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#951F6F",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:reject
+        </Text>
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`SendVPScreen should render non-authorization flow with all VCs having images 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <LinearGradient
+    colors={
+      [
+        "#F5F5F5",
+        "#FFFFFF",
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 13,
+              "marginEnd": 0,
+              "marginStart": 24,
+              "marginTop": 15,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 16,
+              "position": "relative",
+            },
+          ]
+        }
+      >
+        SendVcScreen:pleaseSelectAnId
+      </Text>
+    </View>
+  </LinearGradient>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 11,
+          "paddingEnd": 24,
+          "paddingStart": 24,
+          "paddingTop": 11,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FAFAFA",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#000000",
+            "fontFamily": "Montserrat_500Medium",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      0 cardsSelected
+    </Text>
+    <Text
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#951F6F",
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      checkAll
+    </Text>
+  </View>
+  <RCTScrollView
+    accessible={true}
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View />
+  </RCTScrollView>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "marginBottom": 1,
+            "marginTop": 1,
+            "rowGap": 8,
+          },
+          {
+            "position": "relative",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:acceptRequestAndVerify
+        </Text>
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#951F6F",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:reject
+        </Text>
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`SendVPScreen should render trust consent modal 1`] = `null`;
+
+exports[`SendVPScreen should render with OVP deep link and retry count 1`] = `null`;
+
+exports[`SendVPScreen should render with all VCs checked 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <LinearGradient
+    colors={
+      [
+        "#F5F5F5",
+        "#FFFFFF",
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 13,
+              "marginEnd": 0,
+              "marginStart": 24,
+              "marginTop": 15,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 16,
+              "position": "relative",
+            },
+          ]
+        }
+      >
+        SendVcScreen:pleaseSelectAnId
+      </Text>
+    </View>
+  </LinearGradient>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 11,
+          "paddingEnd": 24,
+          "paddingStart": 24,
+          "paddingTop": 11,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FAFAFA",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#000000",
+            "fontFamily": "Montserrat_500Medium",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      1 cardSelected
+    </Text>
+    <Text
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#951F6F",
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      unCheck
+    </Text>
+  </View>
+  <RCTScrollView
+    accessible={true}
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View />
+  </RCTScrollView>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "marginBottom": 1,
+            "marginTop": 1,
+            "rowGap": 8,
+          },
+          {
+            "position": "relative",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:acceptRequest
+        </Text>
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#951F6F",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:reject
+        </Text>
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`SendVPScreen should render with cancelling state 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <LinearGradient
+    colors={
+      [
+        "#F5F5F5",
+        "#FFFFFF",
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 13,
+              "marginEnd": 0,
+              "marginStart": 24,
+              "marginTop": 15,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 16,
+              "position": "relative",
+            },
+          ]
+        }
+      >
+        SendVcScreen:pleaseSelectAnId
+      </Text>
+    </View>
+  </LinearGradient>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 11,
+          "paddingEnd": 24,
+          "paddingStart": 24,
+          "paddingTop": 11,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FAFAFA",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#000000",
+            "fontFamily": "Montserrat_500Medium",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      0 cardsSelected
+    </Text>
+    <Text
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#951F6F",
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      checkAll
+    </Text>
+  </View>
+  <RCTScrollView
+    accessible={true}
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View />
+  </RCTScrollView>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "marginBottom": 1,
+            "marginTop": 1,
+            "rowGap": 8,
+          },
+          {
+            "position": "relative",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:acceptRequest
+        </Text>
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#951F6F",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:reject
+        </Text>
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`SendVPScreen should render with confirmation popup overlay 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <LinearGradient
+    colors={
+      [
+        "#F5F5F5",
+        "#FFFFFF",
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 13,
+              "marginEnd": 0,
+              "marginStart": 24,
+              "marginTop": 15,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 16,
+              "position": "relative",
+            },
+          ]
+        }
+      >
+        SendVcScreen:pleaseSelectAnId
+      </Text>
+    </View>
+  </LinearGradient>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 11,
+          "paddingEnd": 24,
+          "paddingStart": 24,
+          "paddingTop": 11,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FAFAFA",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#000000",
+            "fontFamily": "Montserrat_500Medium",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      0 cardsSelected
+    </Text>
+    <Text
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#951F6F",
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      checkAll
+    </Text>
+  </View>
+  <RCTScrollView
+    accessible={true}
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View />
+  </RCTScrollView>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "marginBottom": 1,
+            "marginTop": 1,
+            "rowGap": 8,
+          },
+          {
+            "position": "relative",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:acceptRequest
+        </Text>
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#951F6F",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:reject
+        </Text>
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`SendVPScreen should render with face verification consent 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <LinearGradient
+    colors={
+      [
+        "#F5F5F5",
+        "#FFFFFF",
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 13,
+              "marginEnd": 0,
+              "marginStart": 24,
+              "marginTop": 15,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 16,
+              "position": "relative",
+            },
+          ]
+        }
+      >
+        SendVcScreen:pleaseSelectAnId
+      </Text>
+    </View>
+  </LinearGradient>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 11,
+          "paddingEnd": 24,
+          "paddingStart": 24,
+          "paddingTop": 11,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FAFAFA",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#000000",
+            "fontFamily": "Montserrat_500Medium",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      0 cardsSelected
+    </Text>
+    <Text
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#951F6F",
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      checkAll
+    </Text>
+  </View>
+  <RCTScrollView
+    accessible={true}
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View />
+  </RCTScrollView>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "marginBottom": 1,
+            "marginTop": 1,
+            "rowGap": 8,
+          },
+          {
+            "position": "relative",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:acceptRequest
+        </Text>
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#951F6F",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:reject
+        </Text>
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`SendVPScreen should render with invalid identity state 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <LinearGradient
+    colors={
+      [
+        "#F5F5F5",
+        "#FFFFFF",
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 13,
+              "marginEnd": 0,
+              "marginStart": 24,
+              "marginTop": 15,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 16,
+              "position": "relative",
+            },
+          ]
+        }
+      >
+        SendVcScreen:pleaseSelectAnId
+      </Text>
+    </View>
+  </LinearGradient>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 11,
+          "paddingEnd": 24,
+          "paddingStart": 24,
+          "paddingTop": 11,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FAFAFA",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#000000",
+            "fontFamily": "Montserrat_500Medium",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      0 cardsSelected
+    </Text>
+    <Text
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#951F6F",
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      checkAll
+    </Text>
+  </View>
+  <RCTScrollView
+    accessible={true}
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View />
+  </RCTScrollView>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "marginBottom": 1,
+            "marginTop": 1,
+            "rowGap": 8,
+          },
+          {
+            "position": "relative",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:acceptRequest
+        </Text>
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#951F6F",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:reject
+        </Text>
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`SendVPScreen should render with matching VCs and purpose 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#FFFFFF",
+      }
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 14,
+            "paddingEnd": 12,
+            "paddingStart": 12,
+            "paddingTop": 14,
+          },
+          {
+            "marginBottom": 20,
+            "marginEnd": 20,
+            "marginStart": 20,
+            "marginTop": 20,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFF7E5",
+            "borderColor": "#FFF2D6",
+            "borderRadius": 5,
+            "borderWidth": 1,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#8B6105",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "fontFamily": "Montserrat_500Medium",
+              "fontSize": 13,
+              "position": "relative",
+            },
+          ]
+        }
+      >
+        Identity verification
+      </Text>
+    </View>
+  </View>,
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        {
+          "backgroundColor": "#F8F8F8",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <LinearGradient
+      colors={
+        [
+          "#F5F5F5",
+          "#FFFFFF",
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              {
+                "color": "#000000",
+              },
+              {
+                "textAlign": "left",
+              },
+              {
+                "marginBottom": 13,
+                "marginEnd": 0,
+                "marginStart": 24,
+                "marginTop": 15,
+              },
+              null,
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 16,
+                "position": "relative",
+              },
+            ]
+          }
+        >
+          SendVcScreen:pleaseSelectAnId
+        </Text>
+      </View>
+    </LinearGradient>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 11,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 11,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FAFAFA",
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#000000",
+              "fontFamily": "Montserrat_500Medium",
+              "fontSize": 14,
+            },
+          ]
+        }
+      >
+        0 cardsSelected
+      </Text>
+      <Text
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#951F6F",
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        checkAll
+      </Text>
+    </View>
+    <RCTScrollView
+      accessible={true}
+      contentContainerStyle={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View />
+    </RCTScrollView>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            {
+              "marginBottom": 1,
+              "marginTop": 1,
+              "rowGap": 8,
+            },
+            {
+              "position": "relative",
+            },
+          ],
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            SendVcScreen:acceptRequest
+          </Text>
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#951F6F",
+                },
+                {
+                  "textAlign": "center",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            SendVcScreen:reject
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
+exports[`SendVPScreen should render with multiple input descriptors and cards selected 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#FFFFFF",
+      }
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 14,
+            "paddingEnd": 12,
+            "paddingStart": 12,
+            "paddingTop": 14,
+          },
+          {
+            "marginBottom": 20,
+            "marginEnd": 20,
+            "marginStart": 20,
+            "marginTop": 20,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFF7E5",
+            "borderColor": "#FFF2D6",
+            "borderRadius": 5,
+            "borderWidth": 1,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#8B6105",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "fontFamily": "Montserrat_500Medium",
+              "fontSize": 13,
+              "position": "relative",
+            },
+          ]
+        }
+      >
+        Multi-credential verification
+      </Text>
+    </View>
+  </View>,
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        {
+          "backgroundColor": "#F8F8F8",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <LinearGradient
+      colors={
+        [
+          "#F5F5F5",
+          "#FFFFFF",
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              {
+                "color": "#000000",
+              },
+              {
+                "textAlign": "left",
+              },
+              {
+                "marginBottom": 13,
+                "marginEnd": 0,
+                "marginStart": 24,
+                "marginTop": 15,
+              },
+              null,
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 16,
+                "position": "relative",
+              },
+            ]
+          }
+        >
+          SendVcScreen:pleaseSelectAnId
+        </Text>
+      </View>
+    </LinearGradient>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 11,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 11,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FAFAFA",
+            "justifyContent": "space-between",
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#000000",
+              "fontFamily": "Montserrat_500Medium",
+              "fontSize": 14,
+            },
+          ]
+        }
+      >
+        2 cardsSelected
+      </Text>
+      <Text
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#951F6F",
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        unCheck
+      </Text>
+    </View>
+    <RCTScrollView
+      accessible={true}
+      contentContainerStyle={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View />
+    </RCTScrollView>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            {
+              "marginBottom": 1,
+              "marginTop": 1,
+              "rowGap": 8,
+            },
+            {
+              "position": "relative",
+            },
+          ],
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            SendVcScreen:acceptRequest
+          </Text>
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#951F6F",
+                },
+                {
+                  "textAlign": "center",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            SendVcScreen:reject
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
+exports[`SendVPScreen should render with overlay details 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <LinearGradient
+    colors={
+      [
+        "#F5F5F5",
+        "#FFFFFF",
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 13,
+              "marginEnd": 0,
+              "marginStart": 24,
+              "marginTop": 15,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 16,
+              "position": "relative",
+            },
+          ]
+        }
+      >
+        SendVcScreen:pleaseSelectAnId
+      </Text>
+    </View>
+  </LinearGradient>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 11,
+          "paddingEnd": 24,
+          "paddingStart": 24,
+          "paddingTop": 11,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FAFAFA",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#000000",
+            "fontFamily": "Montserrat_500Medium",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      0 cardsSelected
+    </Text>
+    <Text
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#951F6F",
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      checkAll
+    </Text>
+  </View>
+  <RCTScrollView
+    accessible={true}
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View />
+  </RCTScrollView>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "marginBottom": 1,
+            "marginTop": 1,
+            "rowGap": 8,
+          },
+          {
+            "position": "relative",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:acceptRequest
+        </Text>
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#951F6F",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:reject
+        </Text>
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`SendVPScreen should render with verifying identity state 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <LinearGradient
+    colors={
+      [
+        "#F5F5F5",
+        "#FFFFFF",
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 13,
+              "marginEnd": 0,
+              "marginStart": 24,
+              "marginTop": 15,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 16,
+              "position": "relative",
+            },
+          ]
+        }
+      >
+        SendVcScreen:pleaseSelectAnId
+      </Text>
+    </View>
+  </LinearGradient>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 11,
+          "paddingEnd": 24,
+          "paddingStart": 24,
+          "paddingTop": 11,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FAFAFA",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#000000",
+            "fontFamily": "Montserrat_500Medium",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      0 cardsSelected
+    </Text>
+    <Text
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#951F6F",
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      checkAll
+    </Text>
+  </View>
+  <RCTScrollView
+    accessible={true}
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View />
+  </RCTScrollView>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          {
+            "marginBottom": 1,
+            "marginTop": 1,
+            "rowGap": 8,
+          },
+          {
+            "position": "relative",
+          },
+        ],
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:acceptRequest
+        </Text>
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#951F6F",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          SendVcScreen:reject
+        </Text>
+      </Text>
+    </View>
+  </View>
+</View>
+`;

@@ -166,7 +166,7 @@ describe('commonSelectors', () => {
     });
   });
 
-  describe('TODO selectors (hardcoded)', () => {
+  describe('hardcoded selectors (always return false)', () => {
     it('selectIsExchangingDeviceInfo should always return false', () => {
       expect(selectIsExchangingDeviceInfo()).toBe(false);
     });

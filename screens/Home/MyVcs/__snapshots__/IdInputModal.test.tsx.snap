@@ -1,0 +1,1107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IdInputModal should match snapshot 1`] = `
+<View
+  headerElevation={2}
+  headerTitle="header"
+  isVisible={true}
+  onDismiss={[Function]}
+  onShow={[Function]}
+  testID="retrieveIdHeader"
+>
+  <View
+    onLayout={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          {
+            "flex": 1,
+            "justifyContent": "space-between",
+            "maxHeight": 800,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 5,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#6F6F6F",
+              "fontFamily": "Montserrat_600SemiBold",
+              "lineHeight": 18,
+            },
+          ]
+        }
+      >
+        guideLabel
+      </Text>
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+            },
+            null,
+            {
+              "width": 645,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "borderBottomWidth": 1,
+                "borderColor": "#C7C7C7",
+                "bottom": 20,
+                "height": "auto",
+                "width": 240,
+              },
+              null,
+              null,
+            ]
+          }
+        >
+          <View
+            onValueChange={[MockFunction]}
+            selectedValue="UIN"
+            style={
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 18,
+              }
+            }
+          >
+            <View
+              label="UIN"
+              value="UIN"
+            />
+            <View
+              label="VID"
+              value="VID"
+            />
+          </View>
+        </View>
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "justifyContent": "center",
+              },
+              null,
+              null,
+              {
+                "height": 150,
+              },
+              null,
+              null,
+            ]
+          }
+        >
+          <View
+            errorMessage=""
+            errorStyle={
+              {
+                "color": "#D52929",
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 12,
+                "left": 5,
+                "minWidth": 200,
+                "position": "absolute",
+                "top": 65,
+              }
+            }
+            inputContainerStyle={
+              {
+                "bottom": 18,
+                "minWidth": 210,
+                "position": "relative",
+              }
+            }
+            inputStyle={
+              {
+                "fontWeight": "700",
+                "textAlign": "left",
+              }
+            }
+            keyboardType="number-pad"
+            onChangeText={[MockFunction]}
+            placeholder="enterId"
+            rightIcon={
+              <CustomTooltip
+                height={240.12}
+                testID="IdInputToolTip"
+                toolTipContent={
+                  <Layout>
+                    <Text
+                      weight="semibold"
+                    >
+                      toolTipTitle
+                    </Text>
+                    <View
+                      style={
+                        {
+                          "borderBottomColor": "#E0E0E0",
+                          "borderBottomWidth": 1,
+                          "marginTop": 10,
+                        }
+                      }
+                    />
+                    <Text
+                      style={
+                        {
+                          "color": "#4B4B4B",
+                          "marginTop": 10,
+                        }
+                      }
+                      weight="regular"
+                    >
+                      toolTipUINDescription
+                    </Text>
+                  </Layout>
+                }
+                triggerComponent={
+                  <Icon
+                    color="#B7B7B7"
+                    name="infocirlceo"
+                    type="antdesign"
+                  />
+                }
+                triggerComponentStyles={
+                  {
+                    "width": 32,
+                  }
+                }
+                width={637.5}
+              />
+            }
+            selectionColor="#951F6F"
+            value=""
+          />
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          buttonStyle={
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ]
+          }
+          containerStyle={
+            [
+              null,
+              [
+                {
+                  "flexDirection": "row",
+                },
+                {
+                  "backgroundColor": "#C7C7C7",
+                },
+                {
+                  "marginBottom": 10,
+                  "marginEnd": 0,
+                  "marginStart": 0,
+                  "marginTop": 0,
+                },
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                undefined,
+              ],
+            ]
+          }
+          linearGradientProps={
+            {
+              "colors": [
+                "#C7C7C7",
+                "#C7C7C7",
+              ],
+              "end": {
+                "x": 1,
+                "y": 0.5,
+              },
+              "start": {
+                "x": 0.5,
+                "y": 0.5,
+              },
+            }
+          }
+          loading={false}
+          onPress={[Function]}
+          style={
+            [
+              [
+                null,
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ],
+            ]
+          }
+          title={
+            <Text
+              color="#FFFFFF"
+              style={
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ]
+              }
+              weight="bold"
+            >
+              downloadID
+            </Text>
+          }
+          type="gradient"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            downloadID
+          </Text>
+        </View>
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "alignItems": "center",
+                "justifyContent": "center",
+                "marginVertical": 6,
+              },
+              null,
+              null,
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#5F5F5F",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                {
+                  "fontSize": 13,
+                  "lineHeight": 21,
+                },
+                null,
+              ]
+            }
+          >
+            noUIN/VID
+          </Text>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  {
+                    "color": "#951F6F",
+                  },
+                  {
+                    "textAlign": "left",
+                  },
+                  {
+                    "marginBottom": 0,
+                    "marginEnd": 0,
+                    "marginStart": 5,
+                    "marginTop": 0,
+                  },
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 21,
+                  },
+                  null,
+                ]
+              }
+            >
+              getItHere
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`IdInputModal should match snapshot when not visible 1`] = `
+<View
+  headerElevation={2}
+  headerTitle="header"
+  isVisible={false}
+  onDismiss={[Function]}
+  onShow={[Function]}
+  testID="retrieveIdHeader"
+>
+  <View
+    onLayout={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          {
+            "flex": 1,
+            "justifyContent": "space-between",
+            "maxHeight": 800,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 5,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#6F6F6F",
+              "fontFamily": "Montserrat_600SemiBold",
+              "lineHeight": 18,
+            },
+          ]
+        }
+      >
+        guideLabel
+      </Text>
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+            },
+            null,
+            {
+              "width": 645,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "borderBottomWidth": 1,
+                "borderColor": "#C7C7C7",
+                "bottom": 20,
+                "height": "auto",
+                "width": 240,
+              },
+              null,
+              null,
+            ]
+          }
+        >
+          <View
+            onValueChange={[MockFunction]}
+            selectedValue="UIN"
+            style={
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 18,
+              }
+            }
+          >
+            <View
+              label="UIN"
+              value="UIN"
+            />
+            <View
+              label="VID"
+              value="VID"
+            />
+          </View>
+        </View>
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "justifyContent": "center",
+              },
+              null,
+              null,
+              {
+                "height": 150,
+              },
+              null,
+              null,
+            ]
+          }
+        >
+          <View
+            errorMessage=""
+            errorStyle={
+              {
+                "color": "#D52929",
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 12,
+                "left": 5,
+                "minWidth": 200,
+                "position": "absolute",
+                "top": 65,
+              }
+            }
+            inputContainerStyle={
+              {
+                "bottom": 18,
+                "minWidth": 210,
+                "position": "relative",
+              }
+            }
+            inputStyle={
+              {
+                "fontWeight": "700",
+                "textAlign": "left",
+              }
+            }
+            keyboardType="number-pad"
+            onChangeText={[MockFunction]}
+            placeholder="enterId"
+            rightIcon={
+              <CustomTooltip
+                height={240.12}
+                testID="IdInputToolTip"
+                toolTipContent={
+                  <Layout>
+                    <Text
+                      weight="semibold"
+                    >
+                      toolTipTitle
+                    </Text>
+                    <View
+                      style={
+                        {
+                          "borderBottomColor": "#E0E0E0",
+                          "borderBottomWidth": 1,
+                          "marginTop": 10,
+                        }
+                      }
+                    />
+                    <Text
+                      style={
+                        {
+                          "color": "#4B4B4B",
+                          "marginTop": 10,
+                        }
+                      }
+                      weight="regular"
+                    >
+                      toolTipUINDescription
+                    </Text>
+                  </Layout>
+                }
+                triggerComponent={
+                  <Icon
+                    color="#B7B7B7"
+                    name="infocirlceo"
+                    type="antdesign"
+                  />
+                }
+                triggerComponentStyles={
+                  {
+                    "width": 32,
+                  }
+                }
+                width={637.5}
+              />
+            }
+            selectionColor="#951F6F"
+            value=""
+          />
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          buttonStyle={
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ]
+          }
+          containerStyle={
+            [
+              null,
+              [
+                {
+                  "flexDirection": "row",
+                },
+                {
+                  "backgroundColor": "#C7C7C7",
+                },
+                {
+                  "marginBottom": 10,
+                  "marginEnd": 0,
+                  "marginStart": 0,
+                  "marginTop": 0,
+                },
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                undefined,
+              ],
+            ]
+          }
+          linearGradientProps={
+            {
+              "colors": [
+                "#C7C7C7",
+                "#C7C7C7",
+              ],
+              "end": {
+                "x": 1,
+                "y": 0.5,
+              },
+              "start": {
+                "x": 0.5,
+                "y": 0.5,
+              },
+            }
+          }
+          loading={false}
+          onPress={[Function]}
+          style={
+            [
+              [
+                null,
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ],
+            ]
+          }
+          title={
+            <Text
+              color="#FFFFFF"
+              style={
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ]
+              }
+              weight="bold"
+            >
+              downloadID
+            </Text>
+          }
+          type="gradient"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            downloadID
+          </Text>
+        </View>
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "alignItems": "center",
+                "justifyContent": "center",
+                "marginVertical": 6,
+              },
+              null,
+              null,
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#5F5F5F",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                {
+                  "fontSize": 13,
+                  "lineHeight": 21,
+                },
+                null,
+              ]
+            }
+          >
+            noUIN/VID
+          </Text>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  {
+                    "color": "#951F6F",
+                  },
+                  {
+                    "textAlign": "left",
+                  },
+                  {
+                    "marginBottom": 0,
+                    "marginEnd": 0,
+                    "marginStart": 5,
+                    "marginTop": 0,
+                  },
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 21,
+                  },
+                  null,
+                ]
+              }
+            >
+              getItHere
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

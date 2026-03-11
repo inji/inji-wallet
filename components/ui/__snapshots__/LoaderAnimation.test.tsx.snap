@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoaderAnimation should render with showLogo=false 1`] = `
+<View
+  accessibilityLabel="test-loader-threeDotsLoader"
+  accessible={true}
+>
+  <View
+    color="#951F6F"
+    style={
+      {
+        "marginLeft": 6,
+      }
+    }
+    type="ThreeBounce"
+  />
+</View>
+`;
+
+exports[`LoaderAnimation should render with showLogo=true by default 1`] = `
+<View
+  accessibilityLabel="test-loader-threeDotsLoader"
+  accessible={true}
+>
+  <View
+    color="#951F6F"
+    style={
+      {
+        "marginLeft": 6,
+      }
+    }
+    type="ThreeBounce"
+  />
+</View>
+`;

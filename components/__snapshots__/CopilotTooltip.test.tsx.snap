@@ -7,3 +7,27 @@ exports[`CopilotTooltip Component should match snapshot with first step 1`] = `
   "1/5",
 ]
 `;
+
+exports[`CopilotTooltip Component should render final step with initial downloading 1`] = `
+[
+  "Step 1 Title",
+  "Step 1 Description",
+  "1 of 1",
+]
+`;
+
+exports[`CopilotTooltip Component should render last step with Done button 1`] = `
+[
+  "Last Step",
+  "Done!",
+  "5/5",
+]
+`;
+
+exports[`CopilotTooltip Component should render middle step with previous button 1`] = `
+[
+  "Step 3 Title",
+  "Step 3 Description",
+  "3/5",
+]
+`;

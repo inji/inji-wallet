@@ -1,0 +1,795 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OtpVerificationModal should match snapshot 1`] = `
+<View
+  isVisible={true}
+  onDismiss={[MockFunction]}
+  onShow={[Function]}
+  testID="modal"
+>
+  <View
+    onLayout={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          {
+            "flex": 1,
+            "justifyContent": "space-between",
+            "marginBottom": 20,
+            "maxHeight": 800,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      OtpVerificationIcon
+      <Text
+        accessibilityLabel="otpVerificationHeader"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#000000",
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 18,
+              "lineHeight": 19,
+              "paddingTop": 5,
+            },
+          ]
+        }
+      >
+        title
+      </Text>
+      <Text
+        accessibilityLabel="otpVerificationDescription"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#6F6F6F",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            {
+              "fontSize": 13,
+              "lineHeight": 21,
+            },
+            null,
+          ]
+        }
+      >
+        otpSentMessage
+      </Text>
+      <Text
+        accessibilityLabel="otpVerificationError"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#D52929",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      />
+      PinInput
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+            },
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="otpVerificationTimer"
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              {
+                "color": "#555555",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          resendTheCode : 03:00
+        </Text>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": true,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="resendCodeView"
+        >
+          <Text
+            accessibilityLabel="resendCode"
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#6F6F6F",
+                },
+                {
+                  "textAlign": "left",
+                },
+                {
+                  "marginBottom": 0,
+                  "marginEnd": 0,
+                  "marginStart": 0,
+                  "marginTop": 5,
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            resendOtp
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`OtpVerificationModal should match snapshot with error 1`] = `
+<View
+  isVisible={true}
+  onDismiss={[MockFunction]}
+  onShow={[Function]}
+  testID="modal"
+>
+  <View
+    onLayout={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          {
+            "flex": 1,
+            "justifyContent": "space-between",
+            "marginBottom": 20,
+            "maxHeight": 800,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      OtpVerificationIcon
+      <Text
+        accessibilityLabel="otpVerificationHeader"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#000000",
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 18,
+              "lineHeight": 19,
+              "paddingTop": 5,
+            },
+          ]
+        }
+      >
+        title
+      </Text>
+      <Text
+        accessibilityLabel="otpVerificationDescription"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#6F6F6F",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            {
+              "fontSize": 13,
+              "lineHeight": 21,
+            },
+            null,
+          ]
+        }
+      >
+        otpSentMessage
+      </Text>
+      <Text
+        accessibilityLabel="otpVerificationError"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#D52929",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        Invalid OTP
+      </Text>
+      PinInput
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+            },
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="otpVerificationTimer"
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              {
+                "color": "#555555",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          resendTheCode : 03:00
+        </Text>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": true,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="resendCodeView"
+        >
+          <Text
+            accessibilityLabel="resendCode"
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#6F6F6F",
+                },
+                {
+                  "textAlign": "left",
+                },
+                {
+                  "marginBottom": 0,
+                  "marginEnd": 0,
+                  "marginStart": 0,
+                  "marginTop": 5,
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            resendOtp
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`OtpVerificationModal should match snapshot with phone and email 1`] = `
+<View
+  isVisible={true}
+  onDismiss={[MockFunction]}
+  onShow={[Function]}
+  testID="modal"
+>
+  <View
+    onLayout={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          {
+            "flex": 1,
+            "justifyContent": "space-between",
+            "marginBottom": 20,
+            "maxHeight": 800,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      OtpVerificationIcon
+      <Text
+        accessibilityLabel="otpVerificationHeader"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#000000",
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 18,
+              "lineHeight": 19,
+              "paddingTop": 5,
+            },
+          ]
+        }
+      >
+        title
+      </Text>
+      <Text
+        accessibilityLabel="otpVerificationDescription"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#6F6F6F",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            {
+              "fontSize": 13,
+              "lineHeight": 21,
+            },
+            null,
+          ]
+        }
+      >
+        otpSentMessage
+      </Text>
+      <Text
+        accessibilityLabel="otpVerificationError"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#D52929",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      />
+      PinInput
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+            },
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="otpVerificationTimer"
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              {
+                "color": "#555555",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          resendTheCode : 03:00
+        </Text>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": true,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="resendCodeView"
+        >
+          <Text
+            accessibilityLabel="resendCode"
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#6F6F6F",
+                },
+                {
+                  "textAlign": "left",
+                },
+                {
+                  "marginBottom": 0,
+                  "marginEnd": 0,
+                  "marginStart": 0,
+                  "marginTop": 5,
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            resendOtp
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

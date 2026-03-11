@@ -40,4 +40,36 @@ describe('BackupAndRestoreBannerNotification Component', () => {
     const {toJSON} = render(<BackupAndRestoreBannerNotification />);
     expect(toJSON()).toMatchSnapshot();
   });
+
+  it('should render backup failure banner', () => {
+    const {
+      useBackupScreen,
+    } = require('../screens/backupAndRestore/BackupController');
+    useBackupScreen.mockReturnValueOnce({
+      showBackupInProgress: false,
+      isBackingUpSuccess: false,
+      isBackingUpFailure: true,
+      backupErrorReason: 'networkError',
+      DISMISS: jest.fn(),
+      DISMISS_SHOW_BACKUP_IN_PROGRESS: jest.fn(),
+    });
+    const {toJSON} = render(<BackupAndRestoreBannerNotification />);
+    expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should render restore failure banner', () => {
+    const {
+      useBackupRestoreScreen,
+    } = require('../screens/Settings/BackupRestoreController');
+    useBackupRestoreScreen.mockReturnValueOnce({
+      showRestoreInProgress: false,
+      isBackUpRestoreSuccess: false,
+      isBackUpRestoreFailure: true,
+      restoreErrorReason: 'networkError',
+      DISMISS: jest.fn(),
+      DISMISS_SHOW_RESTORE_IN_PROGRESS: jest.fn(),
+    });
+    const {toJSON} = render(<BackupAndRestoreBannerNotification />);
+    expect(toJSON()).toMatchSnapshot();
+  });
 });

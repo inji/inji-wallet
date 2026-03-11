@@ -1,0 +1,214 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LivenessDetection should render liveness detection view 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "justifyContent": "space-between",
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#0000ff",
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "flex-start",
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#ffffff",
+          "borderRadius": 9,
+          "marginTop": 160.07999999999998,
+          "padding": 3,
+          "width": 637.5,
+        }
+      }
+    >
+      <View
+        testID="spinner"
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "black",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            {
+              "fontSize": 13,
+              "lineHeight": 21,
+            },
+            null,
+          ]
+        }
+      >
+        Place your face in the guide
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "flex": 2,
+        "marginTop": 15,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignSelf": "center",
+          "borderRadius": 24,
+          "height": 350,
+          "overflow": "hidden",
+          "width": 320,
+        }
+      }
+    >
+      <View>
+        <View
+          testID="camera"
+        />
+        <View
+          testID="svg"
+        >
+          <View>
+            <View>
+              <View />
+              <View />
+            </View>
+          </View>
+          <View />
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "flex-end",
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "alignSelf": "center",
+          "backgroundColor": "#ffffff",
+          "borderRadius": 9,
+          "height": 40,
+          "marginBottom": 133.4,
+          "opacity": 1,
+          "width": 225,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "black",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 8,
+              "marginEnd": 8,
+              "marginStart": 8,
+              "marginTop": 8,
+            },
+            {
+              "fontSize": 13,
+              "lineHeight": 21,
+            },
+            null,
+          ]
+        }
+      >
+        cancel
+      </Text>
+    </View>
+  </View>
+</View>
+`;

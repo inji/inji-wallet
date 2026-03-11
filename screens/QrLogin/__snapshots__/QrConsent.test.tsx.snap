@@ -1,0 +1,1585 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QrConsent should match snapshot when not visible 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={5}
+  headerTitle="consent"
+  isVisible={false}
+  onDismiss={[MockFunction]}
+  testID="modal"
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        {
+          "paddingBottom": 0,
+          "paddingEnd": 24,
+          "paddingStart": 24,
+          "paddingTop": 24,
+        },
+        null,
+        {
+          "backgroundColor": "#F8F8F8",
+        },
+        null,
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+        {
+          "display": "none",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 9,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "center",
+            },
+            {
+              "alignItems": "center",
+            },
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Image
+          source={
+            {
+              "uri": "https://example.com/logo.png",
+            }
+          }
+          style={
+            {
+              "height": 65,
+              "width": 65,
+            }
+          }
+        />
+      </View>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            null,
+            {
+              "fontSize": 13,
+              "lineHeight": 21,
+            },
+          ]
+        }
+      >
+        Test Client
+         
+        access
+      </Text>
+    </View>
+    <RCTScrollView>
+      <View>
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                null,
+                {
+                  "textAlign": "left",
+                },
+                {
+                  "marginBottom": 0,
+                  "marginEnd": 0,
+                  "marginStart": 0,
+                  "marginTop": 10,
+                },
+                null,
+                {
+                  "fontSize": 13,
+                  "lineHeight": 21,
+                },
+              ]
+            }
+          >
+            essentialClaims
+          </Text>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                {
+                  "marginBottom": 0,
+                  "marginEnd": 20,
+                  "marginStart": 15,
+                  "marginTop": 10,
+                },
+                null,
+                null,
+                null,
+                {
+                  "justifyContent": "space-between",
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#000000",
+                  },
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                ]
+              }
+            >
+              Name
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  {
+                    "color": "#999999",
+                  },
+                  {
+                    "textAlign": "left",
+                  },
+                  {
+                    "marginBottom": 10,
+                    "marginEnd": 0,
+                    "marginStart": 6,
+                    "marginTop": 10,
+                  },
+                  null,
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 21,
+                  },
+                ]
+              }
+            >
+              required
+            </Text>
+          </View>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                {
+                  "marginBottom": 0,
+                  "marginEnd": 20,
+                  "marginStart": 15,
+                  "marginTop": 10,
+                },
+                null,
+                null,
+                null,
+                {
+                  "justifyContent": "space-between",
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#000000",
+                  },
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                ]
+              }
+            >
+              Email
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  {
+                    "color": "#999999",
+                  },
+                  {
+                    "textAlign": "left",
+                  },
+                  {
+                    "marginBottom": 10,
+                    "marginEnd": 0,
+                    "marginStart": 6,
+                    "marginTop": 10,
+                  },
+                  null,
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 21,
+                  },
+                ]
+              }
+            >
+              required
+            </Text>
+          </View>
+        </View>
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                null,
+                {
+                  "textAlign": "left",
+                },
+                {
+                  "marginBottom": 0,
+                  "marginEnd": 0,
+                  "marginStart": 0,
+                  "marginTop": 10,
+                },
+                null,
+                {
+                  "fontSize": 13,
+                  "lineHeight": 21,
+                },
+              ]
+            }
+          >
+            voluntaryClaims
+          </Text>
+          <View
+            bottomDivider={true}
+            containerStyle={
+              {
+                "backgroundColor": "transparent",
+              }
+            }
+          >
+            <View>
+              <View>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      {
+                        "color": "#000000",
+                      },
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      null,
+                    ]
+                  }
+                >
+                  Phone
+                </Text>
+              </View>
+            </View>
+            <View
+              color="#951F6F"
+              onValueChange={[Function]}
+              value={false}
+            />
+          </View>
+        </View>
+      </View>
+    </RCTScrollView>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          {
+            "marginBottom": 0,
+            "marginEnd": -20,
+            "marginStart": -20,
+            "marginTop": 0,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderRadius": 4,
+            "elevation": 5,
+            "shadowColor": "#000000",
+            "shadowOffset": {
+              "height": 2,
+              "width": 0,
+            },
+            "shadowOpacity": 0.25,
+            "shadowRadius": 3.84,
+            "zIndex": 5,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderTopLeftRadius": 27,
+            "borderTopRightRadius": 27,
+            "height": "auto",
+            "padding": 6,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        buttonStyle={
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+              {
+                "marginBottom": 0,
+                "marginEnd": 10,
+                "marginStart": 10,
+                "marginTop": 6,
+              },
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              {
+                "backgroundColor": "#951F6F",
+                "borderRadius": 10,
+              },
+            ],
+          ]
+        }
+        linearGradientProps={
+          {
+            "colors": [
+              "#FF5300",
+              "#5B03AD",
+            ],
+            "end": {
+              "x": 1,
+              "y": 0.5,
+            },
+            "start": {
+              "x": 0.5,
+              "y": 0.5,
+            },
+          }
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ]
+            }
+            weight="bold"
+          >
+            allow
+          </Text>
+        }
+        type="gradient"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          allow
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        buttonStyle={
+          [
+            null,
+            {
+              "backgroundColor": "transparent",
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+                "height": 45,
+              },
+              null,
+              {
+                "marginBottom": 0,
+                "marginEnd": 10,
+                "marginStart": 10,
+                "marginTop": 10,
+              },
+              null,
+              undefined,
+            ],
+          ]
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "backgroundColor": "transparent",
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            align="center"
+            color="#951F6F"
+            style={
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ]
+            }
+            weight="semibold"
+          >
+            cancel
+          </Text>
+        }
+        type="clear"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#951F6F",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          cancel
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`QrConsent should match snapshot when visible 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={5}
+  headerTitle="consent"
+  isVisible={true}
+  onDismiss={[MockFunction]}
+  testID="modal"
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        {
+          "paddingBottom": 0,
+          "paddingEnd": 24,
+          "paddingStart": 24,
+          "paddingTop": 24,
+        },
+        null,
+        {
+          "backgroundColor": "#F8F8F8",
+        },
+        null,
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+        {
+          "display": "flex",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 9,
+              "marginTop": 0,
+            },
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "center",
+            },
+            {
+              "alignItems": "center",
+            },
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Image
+          source={
+            {
+              "uri": "https://example.com/logo.png",
+            }
+          }
+          style={
+            {
+              "height": 65,
+              "width": 65,
+            }
+          }
+        />
+      </View>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            null,
+            {
+              "fontSize": 13,
+              "lineHeight": 21,
+            },
+          ]
+        }
+      >
+        Test Client
+         
+        access
+      </Text>
+    </View>
+    <RCTScrollView>
+      <View>
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                null,
+                {
+                  "textAlign": "left",
+                },
+                {
+                  "marginBottom": 0,
+                  "marginEnd": 0,
+                  "marginStart": 0,
+                  "marginTop": 10,
+                },
+                null,
+                {
+                  "fontSize": 13,
+                  "lineHeight": 21,
+                },
+              ]
+            }
+          >
+            essentialClaims
+          </Text>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                {
+                  "marginBottom": 0,
+                  "marginEnd": 20,
+                  "marginStart": 15,
+                  "marginTop": 10,
+                },
+                null,
+                null,
+                null,
+                {
+                  "justifyContent": "space-between",
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#000000",
+                  },
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                ]
+              }
+            >
+              Name
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  {
+                    "color": "#999999",
+                  },
+                  {
+                    "textAlign": "left",
+                  },
+                  {
+                    "marginBottom": 10,
+                    "marginEnd": 0,
+                    "marginStart": 6,
+                    "marginTop": 10,
+                  },
+                  null,
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 21,
+                  },
+                ]
+              }
+            >
+              required
+            </Text>
+          </View>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                {
+                  "marginBottom": 0,
+                  "marginEnd": 20,
+                  "marginStart": 15,
+                  "marginTop": 10,
+                },
+                null,
+                null,
+                null,
+                {
+                  "justifyContent": "space-between",
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#000000",
+                  },
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                ]
+              }
+            >
+              Email
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  {
+                    "color": "#999999",
+                  },
+                  {
+                    "textAlign": "left",
+                  },
+                  {
+                    "marginBottom": 10,
+                    "marginEnd": 0,
+                    "marginStart": 6,
+                    "marginTop": 10,
+                  },
+                  null,
+                  {
+                    "fontSize": 13,
+                    "lineHeight": 21,
+                  },
+                ]
+              }
+            >
+              required
+            </Text>
+          </View>
+        </View>
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                null,
+                {
+                  "textAlign": "left",
+                },
+                {
+                  "marginBottom": 0,
+                  "marginEnd": 0,
+                  "marginStart": 0,
+                  "marginTop": 10,
+                },
+                null,
+                {
+                  "fontSize": 13,
+                  "lineHeight": 21,
+                },
+              ]
+            }
+          >
+            voluntaryClaims
+          </Text>
+          <View
+            bottomDivider={true}
+            containerStyle={
+              {
+                "backgroundColor": "transparent",
+              }
+            }
+          >
+            <View>
+              <View>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      {
+                        "color": "#000000",
+                      },
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      null,
+                    ]
+                  }
+                >
+                  Phone
+                </Text>
+              </View>
+            </View>
+            <View
+              color="#951F6F"
+              onValueChange={[Function]}
+              value={false}
+            />
+          </View>
+        </View>
+      </View>
+    </RCTScrollView>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          {
+            "marginBottom": 0,
+            "marginEnd": -20,
+            "marginStart": -20,
+            "marginTop": 0,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderRadius": 4,
+            "elevation": 5,
+            "shadowColor": "#000000",
+            "shadowOffset": {
+              "height": 2,
+              "width": 0,
+            },
+            "shadowOpacity": 0.25,
+            "shadowRadius": 3.84,
+            "zIndex": 5,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderTopLeftRadius": 27,
+            "borderTopRightRadius": 27,
+            "height": "auto",
+            "padding": 6,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        buttonStyle={
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+              {
+                "marginBottom": 0,
+                "marginEnd": 10,
+                "marginStart": 10,
+                "marginTop": 6,
+              },
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              {
+                "backgroundColor": "#951F6F",
+                "borderRadius": 10,
+              },
+            ],
+          ]
+        }
+        linearGradientProps={
+          {
+            "colors": [
+              "#FF5300",
+              "#5B03AD",
+            ],
+            "end": {
+              "x": 1,
+              "y": 0.5,
+            },
+            "start": {
+              "x": 0.5,
+              "y": 0.5,
+            },
+          }
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ]
+            }
+            weight="bold"
+          >
+            allow
+          </Text>
+        }
+        type="gradient"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          allow
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        buttonStyle={
+          [
+            null,
+            {
+              "backgroundColor": "transparent",
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+                "height": 45,
+              },
+              null,
+              {
+                "marginBottom": 0,
+                "marginEnd": 10,
+                "marginStart": 10,
+                "marginTop": 10,
+              },
+              null,
+              undefined,
+            ],
+          ]
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "backgroundColor": "transparent",
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            align="center"
+            color="#951F6F"
+            style={
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ]
+            }
+            weight="semibold"
+          >
+            cancel
+          </Text>
+        }
+        type="clear"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#951F6F",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          cancel
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

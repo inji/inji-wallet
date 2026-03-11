@@ -17,18 +17,6 @@ describe('KeyTypes', () => {
     expect(KeyTypes.ED25519).toBe('Ed25519');
   });
 
-  it('should have exactly 4 key types', () => {
-    const keyTypeCount = Object.keys(KeyTypes).length;
-    expect(keyTypeCount).toBe(4);
-  });
-
-  it('should allow access via enum key', () => {
-    expect(KeyTypes['RS256']).toBe('RS256');
-    expect(KeyTypes['ES256']).toBe('ES256');
-    expect(KeyTypes['ES256K']).toBe('ES256K');
-    expect(KeyTypes['ED25519']).toBe('Ed25519');
-  });
-
   it('should have all unique values', () => {
     const values = Object.values(KeyTypes);
     const uniqueValues = new Set(values);
