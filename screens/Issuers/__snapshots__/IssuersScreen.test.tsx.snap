@@ -8,7 +8,130 @@ exports[`IssuersScreen should render error state with backend error 1`] = `null`
 
 exports[`IssuersScreen should render error state with generic error 1`] = `null`;
 
-exports[`IssuersScreen should render idle state 1`] = `null`;
+exports[`IssuersScreen should render idle state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "padding": 10,
+        "paddingHorizontal": 20,
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+          "borderBottomColor": "#666666",
+          "borderBottomWidth": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  />
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Montserrat_400Regular",
+          "fontSize": 14,
+        },
+        null,
+        {
+          "textAlign": "left",
+        },
+        null,
+        null,
+        {
+          "color": "#6F6F6F",
+          "fontFamily": "Montserrat_400Regular",
+          "fontSize": 12,
+          "lineHeight": 19,
+          "marginBottom": 14,
+          "marginHorizontal": 9,
+        },
+      ]
+    }
+  >
+    description
+  </Text>
+  <View
+    style={
+      {
+        "height": 85,
+      }
+    }
+  />
+  <RCTScrollView
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "marginHorizontal": 3,
+          "marginTop": 5,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View />
+  </RCTScrollView>
+</View>
+`;
 
 exports[`IssuersScreen should render loading state 1`] = `null`;
 

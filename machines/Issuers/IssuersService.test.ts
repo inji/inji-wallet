@@ -135,12 +135,10 @@ describe('IssuersService', () => {
     expect(result).toEqual([{issuer_id: 'iss1'}]);
   });
 
-  it('downloadIssuersList rejects when fetchIssuers fails', async () => {
+  it('downloadIssuersList returns empty list when fetchIssuers fails', async () => {
     const {CACHED_API} = require('../../shared/api');
     CACHED_API.fetchIssuers.mockRejectedValueOnce(new Error('network error'));
-    await expect(services.downloadIssuersList()).rejects.toThrow(
-      'network error',
-    );
+    await expect(services.downloadIssuersList()).resolves.toEqual([]);
   });
 
   it('checkInternet returns connection info', async () => {
@@ -443,11 +441,15 @@ describe('IssuersService', () => {
     );
   });
 
-  it('sendTokenRequest throws on non-ok response', async () => {
+  it('sendTokenRequest throws structured error on non-ok response', async () => {
     const mockResponse = {
       ok: false,
       status: 400,
-      text: jest.fn().mockResolvedValue('Bad Request'),
+      text: jest
+        .fn()
+        .mockResolvedValue(
+          '{"error":"invalid_request","error_description":"Bad Request"}',
+        ),
     };
     global.fetch = jest.fn().mockResolvedValue(mockResponse) as any;
     const context = {
@@ -457,9 +459,10 @@ describe('IssuersService', () => {
       },
       authorizationType: 'other',
     };
-    await expect(services.sendTokenRequest(context)).rejects.toThrow(
-      'Token request failed',
-    );
+    await expect(services.sendTokenRequest(context)).rejects.toMatchObject({
+      serverErrorCode: 'invalid_request',
+      serverErrorMessage: 'Bad Request',
+    });
   });
 
   it('sendTokenRequest throws when tokenEndpoint is missing', async () => {

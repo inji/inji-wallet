@@ -61,16 +61,28 @@ jest.mock('../../shared/commonUtil', () => ({
   logState: jest.fn(),
 }));
 
-jest.mock('../../shared/constants', () => ({
-  isAndroid: jest.fn(() => true),
-}));
+jest.mock('../../shared/constants', () => {
+  const actual = jest.requireActual('../../shared/constants');
+  return {
+    ...actual,
+    isIOS: jest.fn(() => false),
+    isAndroid: jest.fn(() => true),
+  };
+});
 
 import {useIssuerScreenController} from './IssuerScreenController';
 
 describe('useIssuerScreenController', () => {
   const mockSend = jest.fn();
   const mockSubscribe = jest.fn();
-  const mockService = {send: mockSend, subscribe: mockSubscribe} as any;
+  const mockGetSnapshot = jest.fn(() => ({
+    context: {errorMessage: ''},
+  }));
+  const mockService = {
+    send: mockSend,
+    subscribe: mockSubscribe,
+    getSnapshot: mockGetSnapshot,
+  } as any;
   const mockNavigate = jest.fn();
 
   const mockRoute = {params: {service: mockService}};
@@ -78,6 +90,7 @@ describe('useIssuerScreenController', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockGetSnapshot.mockReturnValue({context: {errorMessage: ''}});
   });
 
   it('should return expected properties', () => {
@@ -138,6 +151,22 @@ describe('useIssuerScreenController', () => {
     });
     result.TRY_AGAIN();
     expect(mockSend).toHaveBeenCalled();
+  });
+
+  it('TRY_AGAIN navigates home for go-home errors', () => {
+    mockGetSnapshot.mockReturnValue({
+      context: {errorMessage: 'invalid_request'},
+    });
+
+    const result = useIssuerScreenController({
+      route: mockRoute,
+      navigation: mockNavigation,
+    });
+
+    result.TRY_AGAIN();
+
+    expect(mockSend).not.toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith('Home', {screen: 'HomeScreen'});
   });
 
   it('RESET_ERROR sends event to service', () => {

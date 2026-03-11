@@ -11,9 +11,16 @@ jest.mock('../../shared/openId4VCI/Utils', () => ({
     REQUEST_TIMEDOUT: 'request_timeout',
     AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED: 'grant_type_not_supported',
     GENERIC: 'generic',
+    KEY_MANAGEMENT_ERROR: 'key_management_error',
+    WALLET_GENERIC_ERROR: 'wallet_generic_error',
   },
   getDisplayObjectForCurrentLanguage: jest.fn(arr => arr?.[0]),
   Issuers_Key_Ref: 'issuers_key_ref',
+  VCIServerErrorCode: {
+    SERVER_ERROR: 'server_error',
+    INVALID_CREDENTIAL_OFFER: 'invalid_credential_offer',
+    UNKNOWN_ERROR: 'unknown_error',
+  },
   OIDCErrors: {
     AUTHORIZATION_ENDPOINT_DISCOVERY: {
       GRANT_TYPE_NOT_SUPPORTED: 'grant_type_not_supported',
@@ -194,7 +201,6 @@ describe('IssuersActions', () => {
       'sendDownloadingFailedToVcMeta',
       'setOpenId4VPRef',
       'sendVPScanData',
-      'sendSignedVP',
       'sendVPConsentReject',
       'sendPresentationAuthorizationError',
     ];
@@ -344,41 +350,51 @@ describe('IssuersActions', () => {
     it('setError for no internet', () => {
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const fn = actions.setError.assignment.errorMessage;
-      expect(fn({}, {data: {message: 'No Internet'}})).toBe('no_internet');
+      expect(fn({isInternetAvailable: false}, {data: {message: 'No Internet'}})).toBe('no_internet');
       consoleSpy.mockRestore();
     });
 
-    it('setError for network error', () => {
+    it('setError returns server error when native error code is present', () => {
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const fn = actions.setError.assignment.errorMessage;
-      expect(fn({}, {data: {message: 'Network request'}})).toBe(
-        'network_failed',
+      expect(fn({isInternetAvailable: true}, {data: {code: 'VCI-001'}})).toBe(
+        'server_error',
       );
       consoleSpy.mockRestore();
     });
 
-    it('setError for request timeout', () => {
+    it('setError returns invalid credential offer for VCI-008 source error', () => {
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const fn = actions.setError.assignment.errorMessage;
-      expect(fn({}, {data: {message: 'Request Timeout'}})).toBe(
-        'request_timeout',
+      expect(
+        fn(
+          {isInternetAvailable: true},
+          {data: {sourceErrorCode: 'VCI-008'}},
+        ),
+      ).toBe('invalid_credential_offer');
+      consoleSpy.mockRestore();
+    });
+
+    it('setError returns server error code from payload when available', () => {
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+      const fn = actions.setError.assignment.errorMessage;
+      expect(
+        fn(
+          {isInternetAvailable: true},
+          {data: {serverErrorCode: 'unsupported_grant_type'}},
+        ),
+      ).toBe(
+        'unsupported_grant_type',
       );
       consoleSpy.mockRestore();
     });
 
-    it('setError for grant_type_not_supported', () => {
+    it('setError returns unknown error when no structured code is available', () => {
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const fn = actions.setError.assignment.errorMessage;
-      expect(fn({}, {data: {message: 'grant_type_not_supported'}})).toBe(
-        'grant_type_not_supported',
+      expect(fn({isInternetAvailable: true}, {data: {message: 'unknown'}})).toBe(
+        'unknown_error',
       );
-      consoleSpy.mockRestore();
-    });
-
-    it('setError for generic error', () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-      const fn = actions.setError.assignment.errorMessage;
-      expect(fn({}, {data: {message: 'unknown'}})).toBe('generic');
       consoleSpy.mockRestore();
     });
 
@@ -877,14 +893,6 @@ describe('IssuersActions', () => {
       expect(mockSend).toHaveBeenCalledWith(
         expect.objectContaining({type: 'AUTHENTICATE_VIA_PRESENTATION'}),
       );
-    });
-
-    it('sendSignedVP calls VciClient.sendSignedVP', () => {
-      const instance =
-        require('../../shared/vciClient/VciClient').default.getInstance();
-      instance.sendSignedVP.mockClear();
-      actions.sendSignedVP({}, {signedVPToken: {data: 'signed'}});
-      expect(instance.sendSignedVP).toHaveBeenCalledWith('signed');
     });
 
     it('sendPresentationAuthorizationError calls abortPresentationFlow', () => {

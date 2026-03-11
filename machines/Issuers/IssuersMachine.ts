@@ -56,7 +56,7 @@ export const IssuersMachine = model.createMachine(
             target: 'selectingIssuer',
           },
           onError: {
-            actions: ['setDisplayIssuerError'],
+            actions: ['setError'],
             target: '#issuersMachine.error',
           },
         },
@@ -201,8 +201,8 @@ export const IssuersMachine = model.createMachine(
             target: '.checkingIssuerTrust',
           },
           CANCEL: {
-            actions: ['resetLoadingReason'],
-            target: '#issuersMachine.selectingIssuer',
+            actions: ['resetLoadingReason','setError'],
+            target: '#issuersMachine.error',
           },
         },
         states: {
@@ -244,12 +244,23 @@ export const IssuersMachine = model.createMachine(
               ],
               SIGNED_DATA_FOR_VP: [
                 {
-                  actions: ['sendSignedVP'],
-                  target: '.success',
+                  target: '.signedVpPosting',
                 },
               ],
             },
             states: {
+              signedVpPosting: {
+                invoke: {
+                  src: 'sendSignedVP',
+                  onDone: {
+                    target: 'success'
+                  },
+                  onError: {
+                    actions: ['setError', 'resetLoadingReason'],
+                    target: '#issuersMachine.error'
+                  }
+                }
+              },
               success: {
                 always: [
                   {
@@ -669,9 +680,9 @@ export const IssuersMachine = model.createMachine(
             actions: ['setCNonce', 'setWellknwonKeyTypes'],
             target: '.keyManagement',
           },
-          CANCEL: {
-            target: 'selectingIssuer',
-            actions: ['resetSelectedCredentialType', 'resetLoadingReason'],
+          CANCEL: { // auth errors
+            target: 'error',
+            actions: ['resetSelectedCredentialType', 'resetLoadingReason', 'setError'],
           },
         },
         initial: 'idle',
@@ -711,8 +722,7 @@ export const IssuersMachine = model.createMachine(
               ],
               SIGNED_DATA_FOR_VP: [
                 {
-                  actions: ['sendSignedVP'],
-                  target: '.success',
+                  target: '.signedVpPosting',
                 },
               ],
               SHOW_ERROR: {
@@ -720,6 +730,18 @@ export const IssuersMachine = model.createMachine(
               },
             },
             states: {
+              signedVpPosting: {
+                invoke: {
+                  src: 'sendSignedVP',
+                  onDone: {
+                    target: 'success'
+                  },
+                  onError: {
+                    actions: ['setError', 'resetLoadingReason'],
+                    target: '#issuersMachine.error'
+                  }
+                }
+              },
               success: {
                 always: [
                   {
