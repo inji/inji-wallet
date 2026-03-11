@@ -1,17 +1,17 @@
-import {useFocusEffect} from '@react-navigation/native';
-import React, {Fragment, useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {BackHandler, Dimensions, View} from 'react-native';
-import {ButtonProps as RNEButtonProps} from 'react-native-elements';
-import {Button, Column, Row, Text} from '.';
-import {Header} from './Header';
-import {Theme} from './styleUtils';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { BackHandler, Dimensions, View } from 'react-native';
+import { ButtonProps as RNEButtonProps } from 'react-native-elements';
+import { Button, Column, Row, Text } from '.';
+import { Header } from './Header';
+import { Theme } from './styleUtils';
 import testIDProps from '../../shared/commonUtil';
-import {Modal} from './Modal';
-import {isIOS} from '../../shared/constants';
+import { Modal } from './Modal';
+import { isIOS } from '../../shared/constants';
 
 export const ErrorView: React.FC<ErrorProps> = props => {
-  const {t} = useTranslation('common');
+  const { t } = useTranslation('common');
   const {
     testID,
     customStyles = {},
@@ -65,7 +65,7 @@ export const ErrorView: React.FC<ErrorProps> = props => {
     return (
       <Fragment>
         <View
-          style={[{alignItems: 'center', marginHorizontal: 1}, customStyles]}>
+          style={[{ alignItems: 'center', marginHorizontal: 1 }, customStyles]}>
           <View>
             <Row
               align="center"
@@ -93,12 +93,7 @@ export const ErrorView: React.FC<ErrorProps> = props => {
                   onPress={primaryButtonEvent}
                   title={t(primaryButtonText)}
                   type={
-                    primaryButtonText === 'tryAgain' ? 'outline' : 'gradient'
-                  }
-                  width={
-                    primaryButtonText === 'tryAgain'
-                      ? Dimensions.get('screen').width * 0.54
-                      : undefined
+                    'gradient'
                   }
                   testID={primaryButtonTestID}
                 />
@@ -116,8 +111,8 @@ export const ErrorView: React.FC<ErrorProps> = props => {
           )}
         </View>
         {alignActionsOnEnd && (
-          <Column fill crossAlign="center" align="flex-end" margin="0 0 30 0">
-            <Row style={{marginHorizontal: 30, marginBottom: 15}}>
+          <Column fill crossAlign="center" align="flex-end" margin={isIOS()?"0 0 30 0": "0 0 100 0"}>
+            <Row style={{ marginHorizontal: 30, marginBottom: 15 }}>
               {primaryButtonText && (
                 <Button
                   fill

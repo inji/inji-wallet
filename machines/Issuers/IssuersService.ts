@@ -12,7 +12,7 @@ import {
   updateCredentialInformation,
   verifyCredentialData,
 } from '../../shared/openId4VCI/Utils';
-import VciClient from '../../shared/vciClient/VciClient';
+import VciClient, { VciClientErrorResponse } from '../../shared/vciClient/VciClient';
 import {displayType, issuerType} from './IssuersMachine';
 import {setItem} from '../store';
 import {
@@ -355,11 +355,7 @@ export const IssuersService = () => {
       if (isCredentialOfferFlow) {
         const configurations = await getAllConfigurations();
         if (configurations.disableCredentialOfferVcVerification) {
-          return {
-            isVerified: true,
-            verificationMessage: '',
-            verificationErrorCode: '',
-          };
+          throw new Error("ERR_GENERIC");
         }
       }
       const verificationResult = await verifyCredentialData(
@@ -423,7 +419,18 @@ async function sendTokenRequest(
       response.status,
       errorText,
     );
-    throw new Error(`Token request failed: ${response.status} ${errorText}`);
+    let parsedError: any;
+      try {
+        parsedError = JSON.parse(errorText);
+      } catch {
+        parsedError = {};
+      }
+    //have to throw error in vci error respons eformat
+    const errorResponse: VciClientErrorResponse = {
+        serverErrorCode: parsedError.error ?? 'UNKNOWN_ERROR',
+        serverErrorMessage: parsedError.error_description,
+      }
+      throw errorResponse;
   }
   const tokenResponse = await response.json();
   return tokenResponse;

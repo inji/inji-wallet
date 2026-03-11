@@ -1,13 +1,20 @@
-import {NativeModules, NativeEventEmitter} from 'react-native';
-import {__AppId} from '../GlobalVariables';
+import { NativeModules, NativeEventEmitter } from 'react-native';
+import { __AppId } from '../GlobalVariables';
 import {
   SelectedCredentialsForVPSharing,
   VerifiableCredential,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {signatureSuite} from '../../machines/openID4VP/openID4VPServices';
+import { signatureSuite } from '../../machines/openID4VP/openID4VPServices';
 
 const emitter = new NativeEventEmitter(NativeModules.InjiVciClient);
 
+export type VciClientErrorResponse = {
+  code?: string;
+  message?: string;
+  serverErrorCode?: string;
+  serverErrorMessage?: string;
+  rootCode?: string;
+}
 class VciClient {
   private static instance: VciClient;
   private InjiVciClient = NativeModules.InjiVciClient;
@@ -81,7 +88,7 @@ class VciClient {
   ): Promise<any> {
     const proofListener = emitter.addListener(
       'onRequestProof',
-      ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
+      ({ credentialIssuer, cNonce, proofSigningAlgorithmsSupported }) => {
         getProofJwt(
           credentialIssuer,
           cNonce,
@@ -92,42 +99,42 @@ class VciClient {
 
     const presentationRequestListener = emitter.addListener(
       'onPresentationRequest',
-      ({presentationRequest}) => {
+      ({ presentationRequest }) => {
         handlePresentationRequest(JSON.parse(presentationRequest));
       },
     );
 
     const signVPListener = emitter.addListener(
       'onRequestSignedVPToken',
-      ({vpTokenSigningRequest}) => {
+      ({ vpTokenSigningRequest }) => {
         signPresentation(vpTokenSigningRequest);
       },
     );
 
     const authListener = emitter.addListener(
       'onRequestAuthCode',
-      ({authorizationUrl}) => {
+      ({ authorizationUrl }) => {
         navigateToAuthView(authorizationUrl);
       },
     );
 
     const txCodeListener = emitter.addListener(
       'onRequestTxCode',
-      ({inputMode, description, length}) => {
+      ({ inputMode, description, length }) => {
         getTxCode(inputMode, description, length);
       },
     );
 
     const tokenResponseListener = emitter.addListener(
       'onRequestTokenResponse',
-      ({tokenRequest}) => {
+      ({ tokenRequest }) => {
         requestTokenResponse(tokenRequest);
       },
     );
 
     const trustIssuerListener = emitter.addListener(
       'onCheckIssuerTrust',
-      ({credentialIssuer, issuerDisplay}) => {
+      ({ credentialIssuer, issuerDisplay }) => {
         requestTrustIssuerConsent(credentialIssuer, JSON.parse(issuerDisplay));
       },
     );
@@ -145,7 +152,14 @@ class VciClient {
       );
     } catch (error) {
       console.error('Error requesting credential by offer:', error);
-      throw error;
+      const errorResponse: VciClientErrorResponse = {
+        code: error?.code ?? 'UNKNOWN_ERROR',
+        message: error?.message ?? 'An unknown error occurred',
+        serverErrorCode: error?.userInfo?.serverErrorCode,
+        serverErrorMessage: error?.userInfo?.serverErrorDescription,
+        rootCode: error?.userInfo?.rootCode,
+      }
+      throw errorResponse;
     } finally {
       proofListener.remove();
       authListener.remove();
@@ -182,7 +196,7 @@ class VciClient {
   ): Promise<any> {
     const proofListener = emitter.addListener(
       'onRequestProof',
-      ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
+      ({ credentialIssuer, cNonce, proofSigningAlgorithmsSupported }) => {
         getProofJwt(
           credentialIssuer,
           cNonce,
@@ -193,7 +207,7 @@ class VciClient {
 
     const presentationRequestListener = emitter.addListener(
       'onPresentationRequest',
-      ({presentationRequest}) => {
+      ({ presentationRequest }) => {
         //TODO: Handle presentation request
         handlePresentationRequest(JSON.parse(presentationRequest));
       },
@@ -201,21 +215,21 @@ class VciClient {
 
     const signVPListener = emitter.addListener(
       'onRequestSignedVPToken',
-      ({vpTokenSigningRequest}) => {
+      ({ vpTokenSigningRequest }) => {
         signPresentation(vpTokenSigningRequest);
       },
     );
 
     const authListener = emitter.addListener(
       'onRequestAuthCode',
-      ({authorizationUrl}) => {
+      ({ authorizationUrl }) => {
         navigateToAuthView(authorizationUrl);
       },
     );
 
     const tokenResponseListener = emitter.addListener(
       'onRequestTokenResponse',
-      ({tokenRequest}) => {
+      ({ tokenRequest }) => {
         requestTokenResponse(tokenRequest);
       },
     );
@@ -230,7 +244,14 @@ class VciClient {
       );
     } catch (error) {
       console.error('Error requesting credential from trusted issuer:', error);
-      throw error;
+      const errorResponse: VciClientErrorResponse = {
+        code: error?.code ?? 'UNKNOWN_ERROR',
+        message: error?.message ?? 'An unknown error occurred',
+        serverErrorCode: error?.userInfo?.serverErrorCode,
+        serverErrorMessage: error?.userInfo?.servererrorDescription,
+        rootCode: error?.userInfo?.rootCode,
+      }
+      throw errorResponse;
     } finally {
       proofListener.remove();
       authListener.remove();
@@ -249,7 +270,7 @@ class VciClient {
     };
   }
 
-  abortPresentationFlow(error: {code: string; message: string}) {
+  abortPresentationFlow(error: { code: string; message: string }) {
     console.debug(`message ${error.message}`);
     this.InjiVciClient.abortPresentationFlowFromJS(error.code, error.message);
   }

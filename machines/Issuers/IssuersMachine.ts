@@ -1,11 +1,11 @@
-import {EventFrom, send, sendParent} from 'xstate';
-import {IssuersModel} from './IssuersModel';
-import {IssuersActions} from './IssuersActions';
-import {IssuersService} from './IssuersService';
-import {IssuersGuards} from './IssuersGuards';
-import {CredentialTypes} from '../VerifiableCredential/VCMetaMachine/vc';
-import {OpenID4VPEvents, openID4VPMachine} from '../openID4VP/openID4VPMachine';
-
+import { EventFrom, send, sendParent } from 'xstate';
+import { IssuersModel } from './IssuersModel';
+import { IssuersActions } from './IssuersActions';
+import { IssuersService } from './IssuersService';
+import { IssuersGuards } from './IssuersGuards';
+import { CredentialTypes } from '../VerifiableCredential/VCMetaMachine/vc';
+import { OpenID4VPEvents, openID4VPMachine } from '../openID4VP/openID4VPMachine';
+import NetInfo from '@react-native-community/netinfo';
 const model = IssuersModel;
 
 export const IssuerScreenTabEvents = model.events;
@@ -24,6 +24,24 @@ export const IssuersMachine = model.createMachine(
       context: model.initialContext,
       events: {} as EventFrom<typeof model>,
     },
+    on: {
+      NETWORK_STATUS_CHANGED: {
+        actions: ['setIsInternetAvailable'],
+      },
+    },
+    invoke: {
+      id: "networkListener",
+      src: () => (sendBack) => {
+        const newtworkListener = NetInfo.addEventListener(state => {
+          sendBack({
+            type: "NETWORK_STATUS_CHANGED",
+            isInternetAvailable: state.isConnected ?? true,
+          });
+        });
+
+        return newtworkListener;
+      },
+    },
     states: {
       displayIssuers: {
         description: 'displays the issuers downloaded from the server',
@@ -38,7 +56,7 @@ export const IssuersMachine = model.createMachine(
             target: 'selectingIssuer',
           },
           onError: {
-            actions: ['setError'],
+            actions: ['setDisplayIssuerError'],
             target: '#issuersMachine.error',
           },
         },
@@ -47,30 +65,37 @@ export const IssuersMachine = model.createMachine(
       error: {
         description: 'reaches here when any error happens',
         entry: ['resetAuthorization'],
+        exit: ['resetError', 'resetCredentialOfferFlowType'],
         on: {
           TRY_AGAIN: [
             {
               cond: 'shouldFetchIssuersAgain',
-              actions: ['setLoadingReasonAsDisplayIssuers', 'resetError'],
+              actions: ['setLoadingReasonAsDisplayIssuers'],
               target: 'displayIssuers',
             },
             {
-              cond: 'canSelectIssuerAgain',
-              actions: 'resetError',
+              cond: 'shouldGoBackHomeOnError',
+              target: 'done',
+            },
+            {
+              cond: 'shouldGoBack',
               target: 'selectingIssuer',
             },
             {
-              cond: 'isCredentialOfferFlow',
-              actions: ['resetError', 'resetCredentialOfferFlowType'],
+              cond: 'shouldRetryOnErrorAndCredentialOfferFlow',
+              actions: send('SCAN_CREDENTIAL_OFFER_QR_CODE'),
               target: 'selectingIssuer',
             },
             {
-              actions: ['setLoadingReasonAsSettingUp', 'resetError'],
+              cond: 'shouldRetryOnError',
+              target: 'downloadIssuerWellknown',
+            },
+            {
+              actions: ['setLoadingReasonAsSettingUp'],
               target: 'downloadIssuerWellknown',
             },
           ],
           RESET_ERROR: {
-            actions: ['resetError', 'resetCredentialOfferFlowType'],
             target: 'selectingIssuer',
           },
         },
@@ -335,7 +360,7 @@ export const IssuersMachine = model.createMachine(
                   onError: {
                     actions: [
                       'resetLoadingReason',
-                      'setError',
+                      'setIssuerConsentStoreError',
                       'resetRequestConsentToTrustIssuer',
                       'resetTrustedIssuerConsentStatus',
                     ],
@@ -357,7 +382,7 @@ export const IssuersMachine = model.createMachine(
                   onError: {
                     actions: [
                       'resetLoadingReason',
-                      'setError',
+                      'setGenericError',
                       'resetRequestConsentToTrustIssuer',
                       'resetTrustedIssuerConsentStatus',
                     ],
@@ -422,7 +447,7 @@ export const IssuersMachine = model.createMachine(
                   },
                   onError: {
                     actions: [
-                      'setError',
+                      'setKeyManagementError',
                       'resetLoadingReason',
                       'sendDownloadingFailedToVcMeta',
                     ],
@@ -445,7 +470,7 @@ export const IssuersMachine = model.createMachine(
                     {
                       cond: 'isKeyTypeNotFound',
                       actions: [
-                        'setError',
+                        'setKeyManagementError',
                         'resetLoadingReason',
                         'sendDownloadingFailedToVcMeta',
                       ],
@@ -480,6 +505,14 @@ export const IssuersMachine = model.createMachine(
                     ],
                     target: 'constructProof',
                   },
+                  onError: {
+                    actions: [
+                      'setKeyManagementError',
+                      'resetLoadingReason',
+                      'sendDownloadingFailedToVcMeta',
+                    ],
+                    target: '#issuersMachine.error',
+                  },
                 },
               },
               constructProof: {
@@ -490,7 +523,7 @@ export const IssuersMachine = model.createMachine(
                   },
                   onError: {
                     actions: [
-                      'setError',
+                      'setGenericError',
                       'resetLoadingReason',
                       'sendDownloadingFailedToVcMeta',
                     ],
@@ -514,7 +547,7 @@ export const IssuersMachine = model.createMachine(
             target: 'proccessingCredential',
           },
           onError: {
-            actions: ['resetLoadingReason'],
+            actions: ['resetLoadingReason', 'setGenericError'],
             target: '#issuersMachine.error',
           },
         },
@@ -526,6 +559,14 @@ export const IssuersMachine = model.createMachine(
             actions: ['setVerifiableCredential', 'setCredentialWrapper'],
             target: 'verifyingCredential',
           },
+          onError: {
+            actions: [
+              'setGenericError',
+              'resetLoadingReason',
+              'sendDownloadingFailedToVcMeta',
+            ],
+            target: '#issuersMachine.error',
+          }
         },
       },
       downloadIssuerWellknown: {
@@ -552,7 +593,7 @@ export const IssuersMachine = model.createMachine(
           },
           onError: {
             actions: [
-              'setCredentialTypeListDownloadFailureError',
+              'setError',
               'resetLoadingReason',
             ],
             target: '#issuersMachine.error',
@@ -747,7 +788,7 @@ export const IssuersMachine = model.createMachine(
                 },
                 {
                   actions: [
-                    'setError',
+                    'setGenericError',
                     'resetLoadingReason',
                     'sendDownloadingFailedToVcMeta',
                   ],
@@ -779,7 +820,7 @@ export const IssuersMachine = model.createMachine(
                   },
                   onError: {
                     actions: [
-                      'setError',
+                      'setKeyManagementError',
                       'resetLoadingReason',
                       'sendDownloadingFailedToVcMeta',
                     ],
@@ -803,7 +844,7 @@ export const IssuersMachine = model.createMachine(
                     {
                       cond: 'isKeyTypeNotFound',
                       actions: [
-                        'setError',
+                        'setKeyManagementError',
                         'resetLoadingReason',
                         'sendDownloadingFailedToVcMeta',
                       ],
@@ -841,7 +882,7 @@ export const IssuersMachine = model.createMachine(
                   },
                   onError: {
                     actions: [
-                      'setError',
+                      'setKeyManagementError',
                       'resetLoadingReason',
                       'sendDownloadingFailedToVcMeta',
                     ],
@@ -909,6 +950,10 @@ export const IssuersMachine = model.createMachine(
             actions: ['sendBackupEvent'],
             target: 'done',
           },
+          onError: {
+            actions: ['setStorageError', 'resetLoadingReason'],
+            target: '#issuersMachine.error',
+          },
         },
       },
 
@@ -949,7 +994,7 @@ export interface displayType {
   language: string;
   logo: logoType;
   background_color: string;
-  background_image: {uri: string};
+  background_image: { uri: string };
   text_color: string;
   title: string;
   description: string;

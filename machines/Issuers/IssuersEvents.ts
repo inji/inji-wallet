@@ -46,4 +46,5 @@ export const IssuersEvents = {
   STAY_IN_PROGRESS: () => ({}),
   SIGN_PRESENTATION: (unsignedVPToken: object) => ({unsignedVPToken}),
   SIGNED_DATA_FOR_VP: (signedVPToken: Record<any, any>) => ({signedVPToken}),
+  NETWORK_STATUS_CHANGED: (isInternetAvailable: boolean) => ({isInternetAvailable}),
 };

@@ -264,6 +264,142 @@
     "downloadSuccess": "Card Downloaded Successfully",
     "goHome": "Go to Home",
     "errors": {
+      "invalid_request": {
+        "title": "We couldn’t complete your request",
+        "message": "Something didn’t look right with this request. Please try again."
+      },
+      "unauthorized_client": {
+        "title": "This action isn’t allowed",
+        "message": "Your account isn’t authorized to use this feature."
+      },
+      "access_denied": {
+        "title": "Access was denied",
+        "message": "The request was declined. You can try again if needed."
+      },
+      "unsupported_response_type": {
+        "title": "This login method isn’t supported",
+        "message": "Please try a different method to continue."
+      },
+      "invalid_scope": {
+        "title": "Permission not available",
+        "message": "You don’t have permission for this action."
+      },
+      "server_error": {
+        "title": "Server issue",
+        "message": "We’re having trouble right now. Please try again shortly."
+      },
+      "temporarily_unavailable": {
+        "title": "Service temporarily unavailable",
+        "message": "Please try again in a few minutes."
+      },
+      "invalid_request_session_expired": {
+        "title": "Session expired",
+        "message": "Your session is no longer valid. Please log in again."
+      },
+      "invalid_client": {
+        "title": "Session expired",
+        "message": "Please log in again to continue."
+      },
+      "invalid_grant": {
+        "title": "We couldn’t verify your request",
+        "message": "Please try again."
+      },
+      "unauthorized_client_waiting": {
+        "title": "Waiting for approval",
+        "message": "Please wait while we complete your request."
+      },
+      "unsupported_grant_type": {
+        "title": "Please wait a moment",
+        "message": "We’re still processing your request."
+      },
+      "invalid_scope_credential": {
+        "title": "Credential not available",
+        "message": "This credential can’t be issued right now."
+      },
+      "authorization_pending": {
+        "title": "Almost there",
+        "message": "We’re waiting for confirmation. Please hold on."
+      },
+      "slow_down": {
+        "title": "Still processing",
+        "message": "Please wait a little longer before trying again."
+      },
+      "invalid_credential_request": {
+        "title": "This request has expired",
+        "message": "Please scan the QR code again to continue."
+      },
+      "unsupported_credential_type": {
+        "title": "Credential not supported",
+        "message": "This type of credential isn’t available."
+      },
+      "unsupported_credential_format": {
+        "title": "Format not supported",
+        "message": "This credential format can’t be processed."
+      },
+      "invalid_proof": {
+        "title": "Verification failed",
+        "message": "We couldn’t confirm your request. Please try again."
+      },
+      "invalid_encryption_parameters": {
+        "title": "Secure connection failed",
+        "message": "Please try again."
+      },
+      "invalid_request_bearer": {
+        "title": "Credential couldn’t be verified",
+        "message": "Please try again or contact support."
+      },
+      "invalid_token": {
+        "title": "Session expired",
+        "message": "Please log in again to continue."
+      },
+      "insufficient_scope": {
+        "title": "Permission required",
+        "message": "You don’t have access to request this credential."
+      },
+      "invalid_credential_offer": {
+        "title": "Invalid request link",
+        "message": "This link isn’t valid. Please check and try again."
+      },
+      "credential_offer_fetch_failed": {
+        "title": "Unable to load request",
+        "message": "Please check your internet connection."
+      },
+      "unsupported_grant": {
+        "title": "Request not supported",
+        "message": "This method isn’t supported by your wallet."
+      },
+      "biometric_cancelled": {
+        "title": "Verification cancelled",
+        "message": "You cancelled identity verification."
+      },
+      "user_cancelled": {
+        "title": "Request cancelled",
+        "message": "You stopped the process. No changes were made."
+      },
+      "network_error": {
+        "title": "No internet connection",
+        "message": "Please check your connection and try again."
+      },
+      "timeout_error": {
+        "title": "Request timed out",
+        "message": "The server took too long to respond."
+      },
+      "parsing_error": {
+        "title": "Unexpected response",
+        "message": "We couldn’t read the response. Please try again."
+      },
+      "verification_failed": {
+        "title": "Credential verification failed",
+        "message": "We couldn’t confirm this credential’s authenticity."
+      },
+      "storage_error": {
+        "title": "Unable to save credential",
+        "message": "Please check device storage and try again."
+      },
+      "unknown_error": {
+        "title": "Something went wrong",
+        "message": "Please try again."
+      },
       "noInternetConnection": {
         "title": "No internet connection",
         "message": "Please check your connection and retry"
@@ -1124,6 +1260,7 @@
     "card": "card",
     "cards": "cards",
     "cancel": "Cancel",
+    "goHome": "Hpme",
     "accept": "Accept",
     "save": "Save",
     "ok": "OK",
