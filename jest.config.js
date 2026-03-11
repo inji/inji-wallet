@@ -13,8 +13,8 @@ module.exports = {
     __DEV__: true,
   },
   transform: {
-    '^.+\\.jsx$': 'babel-jest',
-    '^.+\\.tsx?$': [
+    '^.+.jsx$': 'babel-jest',
+    '^.+.tsx?$': [
       'ts-jest',
       {
         // TODO: Remove this to log the type mismatch errors later.
@@ -36,8 +36,7 @@ module.exports = {
     '__mocks__/*',
     '__snapshots__/',
     '\\.snap$',
-    'coverage/',
-    'tools/',
+    '/tools/',
     'babel\\.config\\.js',
     'metro\\.config\\.js',
     'jest\\.config\\.js',
@@ -70,17 +69,18 @@ module.exports = {
     // https://github.com/react-native-google-signin/google-signin?tab=readme-ov-file#jest-module-mock
     '<rootDir>/node_modules/@react-native-google-signin/google-signin/jest/build/setup.js',
   ],
-  // TODO: enable this to also collect coverage
-  collectCoverage: false,
+  collectCoverage: true,
+  coverageProvider: 'v8',
   collectCoverageFrom: [
-    'routes/*.ts',
-    'screens/**',
-    'machines/**',
-    'lib/jsonld-signatures/**',
-    'components/**',
-    'machines/**',
-    'shared/**',
-    '**/*.{js,jsx}',
+    'routes/**/*.{ts,tsx,js,jsx}',
+    'screens/**/*.{ts,tsx,js,jsx}',
+    'machines/**/*.{ts,tsx,js,jsx}',
+    'lib/jsonld-signatures/**/*.{ts,tsx,js,jsx}',
+    'components/**/*.{ts,tsx,js,jsx}',
+    'shared/**/*.{ts,tsx,js,jsx}',
+    '!**/*.test.{ts,tsx,js,jsx}',
+    '!**/*.spec.{ts,tsx,js,jsx}',
+    '!**/__tests__/**',
     '!**/node_modules/**',
   ],
   coverageDirectory: 'coverage',
