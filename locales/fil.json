@@ -262,6 +262,58 @@
     "downloadSuccess": "Matagumpay na na-download ang iyong card",
     "goHome": "Pumunta sa Home",
     "errors": {
+      "invalid_request": {
+        "title": "Hindi namin makumpleto ang iyong request",
+        "message": "May problema sa request na ito. Pakisubukang muli."
+      },
+      "unauthorized_client": {
+        "title": "Hindi pinapayagan ang aksyong ito",
+        "message": "Hindi awtorisado ang iyong account para gamitin ang feature na ito."
+      },
+      "access_denied": {
+        "title": "Tinanggihan ang access",
+        "message": "Tinanggihan ang request. Maaari mong subukang muli."
+      },
+      "unsupported_response_type": {
+        "title": "Hindi suportado ang login method na ito",
+        "message": "Subukan ang ibang paraan upang magpatuloy."
+      },
+      "invalid_scope": {
+        "title": "Walang pahintulot",
+        "message": "Wala kang pahintulot para sa aksyong ito."
+      },
+      "server_error": {
+        "title": "Problema sa server",
+        "message": "Nagkakaroon kami ng problema ngayon. Pakisubukang muli mamaya."
+      },
+      "temporarily_unavailable": {
+        "title": "Pansamantalang hindi available ang serbisyo",
+        "message": "Pakisubukang muli pagkalipas ng ilang minuto."
+      },
+      "invalid_request_session_expired": {
+        "title": "Nag-expire ang session",
+        "message": "Hindi na valid ang iyong session. Pakilogin muli."
+      },
+      "authorization_pending": {
+        "title": "Malapit na",
+        "message": "Naghihintay kami ng kumpirmasyon. Pakihintay."
+      },
+      "slow_down": {
+        "title": "Pinoproseso pa",
+        "message": "Mangyaring maghintay bago muling subukan."
+      },
+      "network_error": {
+        "title": "Walang internet connection",
+        "message": "Pakisuri ang iyong koneksyon at subukang muli."
+      },
+      "timeout_error": {
+        "title": "Nag-time out ang request",
+        "message": "Masyadong matagal bago sumagot ang server."
+      },
+      "unknown_error": {
+        "title": "May nangyaring error",
+        "message": "Pakisubukang muli."
+      },
       "noInternetConnection": {
         "title": "Pakisuri ang iyong koneksyon at subukang muli",
         "message": "Mangyaring kumonekta sa internet at subukang muli."

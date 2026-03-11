@@ -54,6 +54,7 @@ export const IssuersModel = createModel(
     tokenRequestObject: {} as object,
     credentialConfigurationId: '' as string,
     trustedIssuerConsentStatus: 'idle' as 'idle' | 'success' | 'loading',
+    isInternetAvailable: true as boolean,
   },
   {
     events: IssuersEvents,

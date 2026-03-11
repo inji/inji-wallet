@@ -28,10 +28,12 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
   // MARK: - Public API
 
-  fileprivate func getSupportedAuthorizationMethods(signatureSuite: String?) -> [AuthorizationMethod] {
+  fileprivate func getSupportedAuthorizationMethods(signatureSuite: String?)
+    -> [AuthorizationMethod]
+  {
     return [
       .redirectToWeb(openWebPage: { authUrl in
-        let result: [String: String] =  try await self.getAuthCodeContinuationHook(authUrl: authUrl)
+        let result: [String: String] = try await self.getAuthCodeContinuationHook(authUrl: authUrl)
 
         return result
       }),
@@ -96,7 +98,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
         resolve(try response?.toJsonString())
       } catch {
-        reject(nil, error.localizedDescription, nil)
+        rejectVCIError(error, reject: reject)
       }
     }
   }
@@ -138,7 +140,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
         resolve(try response?.toJsonString())
       } catch {
-        reject(nil, error.localizedDescription, nil)
+        rejectVCIError(error, reject: reject)
       }
     }
   }
@@ -165,8 +167,47 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
         resolve(jsonString)
       } catch {
-        reject(nil, error.localizedDescription, nil)
+        rejectVCIError(error, reject: reject)
       }
+    }
+  }
+
+  private func rejectVCIError(
+    _ error: Error,
+    reject: RCTPromiseRejectBlock
+  ) {
+    if let vciError = error as? VCIClientException {
+
+      var userInfo: [String: Any] = [
+        "code": vciError.code
+      ]
+
+      if let rootCode = vciError.rootCode {
+        userInfo["rootCode"] = rootCode
+      }
+
+      if let serverErrorCode = vciError.serverErrorCode {
+        userInfo["serverErrorCode"] = serverErrorCode
+      }
+
+      if let serverErrorDescription = vciError.serverErrorDescription {
+        userInfo["serverErrorDescription"] = serverErrorDescription
+      }
+
+      let nsError = NSError(
+        domain: "InjiVciClient",
+        code: 0,
+        userInfo: userInfo
+      )
+
+      reject(vciError.code, vciError.message, nsError)
+
+    } else {
+      reject(
+        "UNKNOWN_ERROR",
+        (error as NSError).localizedDescription,
+        error
+      )
     }
   }
 
@@ -394,7 +435,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
   @objc(abortPresentationFlowFromJS:message:)
   func abortPresentationFlowFromJS(_ code: String, message: String) {
-    let error = OpenId4VPUtils.convertToOpenID4VPException(errorCode: code, error: message, moduleName: Self.moduleName())
+    let error = OpenId4VPUtils.convertToOpenID4VPException(
+      errorCode: code, error: message, moduleName: Self.moduleName())
 
     pendingSelectedCredentialsContinuation?.resume(throwing: error)
     pendingSignVPContinuation?.resume(throwing: error)
