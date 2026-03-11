@@ -317,6 +317,8 @@ export enum ErrorMessage {
   NETWORK_REQUEST_FAILED = 'networkRequestFailed',
   KEY_MANAGEMENT_ERROR = 'unknown_error',
   WALLET_GENERIC_ERROR = 'unknown_error',
+  STORAGE_ERROR = "storage_error",
+  PARSING_ERROR = "parsing_error",
 }
 
 export enum VCIServerErrorCode {
@@ -356,9 +358,7 @@ export enum VCIServerErrorCode {
   NETWORK_ERROR = "network_error",
   TIMEOUT_ERROR = "timeout_error",
 
-  PARSING_ERROR = "parsing_error",
-  VERIFICATION_FAILED = "verification_failed",
-  STORAGE_ERROR = "storage_error",
+  VERIFICATION_FAILED = "verification_failed", 
 
   UNKNOWN_ERROR = "unknown_error",
 }
@@ -372,8 +372,8 @@ export const retryableErrors = new Set([
   VCIServerErrorCode.CREDENTIAL_OFFER_FETCH_FAILED,
   VCIServerErrorCode.NETWORK_ERROR,
   VCIServerErrorCode.TIMEOUT_ERROR,
-  VCIServerErrorCode.PARSING_ERROR,
-  VCIServerErrorCode.STORAGE_ERROR,
+  ErrorMessage.PARSING_ERROR,
+  ErrorMessage.STORAGE_ERROR,
   VCIServerErrorCode.UNKNOWN_ERROR,
   VCIServerErrorCode.ACCESS_DENIED,
   VCIServerErrorCode.UNSUPPORTED_GRANT_TYPE,

@@ -32,14 +32,14 @@ export const IssuersMachine = model.createMachine(
     invoke: {
       id: "networkListener",
       src: () => (sendBack) => {
-        const newtworkListener = NetInfo.addEventListener(state => {
+        const networkListener = NetInfo.addEventListener(state => {
           sendBack({
             type: "NETWORK_STATUS_CHANGED",
             isInternetAvailable: state.isConnected ?? true,
           });
         });
 
-        return newtworkListener;
+        return networkListener;
       },
     },
     states: {
@@ -572,7 +572,7 @@ export const IssuersMachine = model.createMachine(
           },
           onError: {
             actions: [
-              'setGenericError',
+              'setParsingError',
               'resetLoadingReason',
               'sendDownloadingFailedToVcMeta',
             ],
