@@ -12,8 +12,8 @@ export const walletMetadata = {
     mso_mdoc: {
       alg_values_supported: ['ES256'],
     },
-    'vc+sd-jwt': {
-      alg_values_supported: ['EdDSA', 'ES256'],
+    "vc+sd-jwt": {
+      alg_values_supported: ['EdDSA','ES256'],
     },
   },
   client_id_schemes_supported: ['redirect_uri', 'did', 'pre-registered'],
