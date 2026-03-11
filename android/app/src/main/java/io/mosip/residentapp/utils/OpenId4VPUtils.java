@@ -4,7 +4,6 @@ import static io.mosip.openID4VP.constants.FormatType.DC_SD_JWT;
 import static io.mosip.openID4VP.constants.FormatType.LDP_VC;
 import static io.mosip.openID4VP.constants.FormatType.MSO_MDOC;
 import static io.mosip.openID4VP.constants.FormatType.VC_SD_JWT;
-import static io.mosip.openID4VP.constants.FormatType.JWT_VC_JSON;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -153,14 +152,6 @@ public class OpenId4VPUtils {
         }
         return dcSdJwtList;
       }
-      case JWT_VC_JSON: {
-        List<Object> jwtList = new ArrayList<>();
-        for (int i = 0; i < credentialList.size(); i++) {
-            String credential = credentialList.getString(i);
-            jwtList.add(credential);
-        }
-        return jwtList;
-      }
       default:
         return null;
     }
@@ -175,8 +166,6 @@ public class OpenId4VPUtils {
       return VC_SD_JWT;
     } else if (DC_SD_JWT.getValue().equals(formatStr)) {
       return DC_SD_JWT;
-    } else if (JWT_VC_JSON.getValue().equals(formatStr)) {
-      return JWT_VC_JSON;
     }
     throw new UnsupportedOperationException("Credential format '" + formatStr + "' is not supported");
   }
@@ -205,8 +194,7 @@ public class OpenId4VPUtils {
         return new MdocVPTokenSigningResult(signatureData);
       }
       case VC_SD_JWT:
-      case DC_SD_JWT:
-      case JWT_VC_JSON: {
+      case DC_SD_JWT: {
         Map<String, String> uuidToSignature = new HashMap<>();
         ReadableMapKeySetIterator uuidIterator = metadata.keySetIterator();
         while (uuidIterator.hasNextKey()) {

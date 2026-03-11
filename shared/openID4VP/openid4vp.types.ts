@@ -1,7 +1,7 @@
 export type UnsignedVPTokensV2 = Array<UnsignedVPTokenV2>;
 
 export interface UnsignedVPTokenV2 {
-  format: 'ldp_vc' | 'mso_mdoc' | 'vc_sd_jwt' | 'dc_sd_jwt' | 'jwt_vc_json';
+  format: 'ldp_vc' | 'mso_mdoc' | 'vc_sd_jwt' | 'dc_sd_jwt';
   holderKeyReference: string;
   signatureAlgorithm: string;
   dataToSign: string;

@@ -127,8 +127,7 @@ class OpenID4VP {
   ) {
     if (
       credentialFormat === VCFormat.mso_mdoc ||
-      credentialFormat === VCFormat.ldp_vc ||
-      credentialFormat === VCFormat.jwt_vc_json
+      credentialFormat === VCFormat.ldp_vc
     ) {
       return vcData.verifiableCredential.credential;
     }
