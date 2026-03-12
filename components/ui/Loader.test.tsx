@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({t: (key: string) => key}),
@@ -130,5 +130,30 @@ describe('Loader', () => {
       }),
     );
     expect(getByText('status.retry')).toBeTruthy();
+  });
+
+  it('should call onCancel when cancel button is pressed', () => {
+    const onCancel = jest.fn();
+    const {getByText} = render(
+      React.createElement(Loader, {
+        title: 'Loading',
+        onCancel,
+      }),
+    );
+    fireEvent.press(getByText('common:cancel'));
+    expect(onCancel).toHaveBeenCalled();
+  });
+
+  it('should call onRetry when retry button is pressed', () => {
+    const onRetry = jest.fn();
+    const {getByText} = render(
+      React.createElement(Loader, {
+        title: 'Loading',
+        isHintVisible: true,
+        onRetry,
+      }),
+    );
+    fireEvent.press(getByText('status.retry'));
+    expect(onRetry).toHaveBeenCalled();
   });
 });

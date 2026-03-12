@@ -135,6 +135,14 @@ describe('IssuersService', () => {
     expect(result).toEqual([{issuer_id: 'iss1'}]);
   });
 
+  it('downloadIssuersList rejects when fetchIssuers fails', async () => {
+    const {CACHED_API} = require('../../shared/api');
+    CACHED_API.fetchIssuers.mockRejectedValueOnce(new Error('network error'));
+    await expect(services.downloadIssuersList()).rejects.toThrow(
+      'network error',
+    );
+  });
+
   it('checkInternet returns connection info', async () => {
     const result = await services.checkInternet();
     expect(result).toEqual({isConnected: true});
@@ -461,6 +469,26 @@ describe('IssuersService', () => {
     };
     await expect(services.sendTokenRequest(context)).rejects.toThrow(
       'tokenEndpoint is required',
+    );
+  });
+
+  it('sendTokenRequest includes correct Content-Type header', async () => {
+    const mockResponse = {
+      ok: true,
+      json: jest.fn().mockResolvedValue({access_token: 'tok'}),
+    };
+    global.fetch = jest.fn().mockResolvedValue(mockResponse) as any;
+    const context = {
+      tokenRequestObject: {
+        tokenEndpoint: 'https://token.example.com/token',
+        grantType: 'authorization_code',
+      },
+      authorizationType: 'other',
+    };
+    await services.sendTokenRequest(context);
+    const [, opts] = (global.fetch as jest.Mock).mock.calls[0];
+    expect(opts.headers['Content-Type']).toBe(
+      'application/x-www-form-urlencoded',
     );
   });
 

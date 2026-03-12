@@ -4,11 +4,11 @@ import {VcItemContainer} from './VcItemContainer';
 
 jest.mock('./Views/VCCardView', () => ({
   VCCardView: (props: any) => {
-    const {View, Text} = require('react-native');
+    const {TouchableOpacity, Text} = require('react-native');
     return (
-      <View testID="mockVCCardView">
+      <TouchableOpacity testID="mockVCCardView" onPress={props.onPress}>
         <Text>{JSON.stringify(props.vcMetadata)}</Text>
-      </View>
+      </TouchableOpacity>
     );
   },
 }));
@@ -43,5 +43,14 @@ describe('VcItemContainer', () => {
   it('should render VCCardView mock', () => {
     const {getByTestId} = render(<VcItemContainer {...defaultProps} />);
     expect(getByTestId('mockVCCardView')).toBeTruthy();
+  });
+
+  it('should call onPress when card is pressed', () => {
+    const onPress = jest.fn();
+    const {getByTestId} = render(
+      <VcItemContainer {...defaultProps} onPress={onPress} />,
+    );
+    fireEvent.press(getByTestId('mockVCCardView'));
+    expect(onPress).toHaveBeenCalled();
   });
 });

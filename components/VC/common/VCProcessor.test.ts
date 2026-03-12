@@ -91,6 +91,17 @@ describe('VCProcessor', () => {
       expect(getVerifiableCredential).toHaveBeenCalledWith(vcData);
     });
 
+    it('should return processed ldp_vc credential', async () => {
+      const mockCred = {credentialSubject: {name: 'Test User'}, id: 'vc-123'};
+      (getVerifiableCredential as jest.Mock).mockReturnValueOnce(mockCred);
+      const vcData = {credential: {}} as any;
+      const result = await VCProcessor.processForRendering(
+        vcData,
+        VCFormat.ldp_vc,
+      );
+      expect(result).toEqual(mockCred);
+    });
+
     it('should reconstruct sd-jwt for vc_sd_jwt format', async () => {
       // Create a minimal SD-JWT: header.payload~
       const header = Buffer.from(JSON.stringify({alg: 'ES256'}))

@@ -1,28 +1,30 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
+
+const mockSettingsController = {
+  alertMsg: '',
+  hideAlert: jest.fn(),
+  canUseBiometrics: true,
+  isBiometricUnlockEnabled: false,
+  isPasscodeSet: jest.fn(() => false),
+  CHANGE_UNLOCK_METHOD: jest.fn(),
+  useBiometrics: jest.fn(),
+  TOGGLE_BIOMETRIC: jest.fn(),
+  appId: 'test-app-id',
+  credentialRegistry: 'https://test.registry.com',
+  esignetHostUrl: 'https://esignet.test.com',
+  credentialRegistryResponse: '',
+  CANCEL: jest.fn(),
+  TOGGLE_SETTINGS: jest.fn(),
+  RECEIVE_CARD: jest.fn(),
+  INJI_TOUR_GUIDE: jest.fn(),
+  LOGOUT: jest.fn(),
+  UPDATE_CREDENTIAL_REGISTRY: jest.fn(),
+  isResetInjiProps: false,
+};
 
 jest.mock('./SettingScreenController', () => ({
-  useSettingsScreen: () => ({
-    alertMsg: '',
-    hideAlert: jest.fn(),
-    canUseBiometrics: true,
-    isBiometricUnlockEnabled: false,
-    isPasscodeSet: jest.fn(() => false),
-    CHANGE_UNLOCK_METHOD: jest.fn(),
-    useBiometrics: jest.fn(),
-    TOGGLE_BIOMETRIC: jest.fn(),
-    appId: 'test-app-id',
-    credentialRegistry: 'https://test.registry.com',
-    esignetHostUrl: 'https://esignet.test.com',
-    credentialRegistryResponse: '',
-    CANCEL: jest.fn(),
-    TOGGLE_SETTINGS: jest.fn(),
-    RECEIVE_CARD: jest.fn(),
-    INJI_TOUR_GUIDE: jest.fn(),
-    LOGOUT: jest.fn(),
-    UPDATE_CREDENTIAL_REGISTRY: jest.fn(),
-    isResetInjiProps: false,
-  }),
+  useSettingsScreen: () => mockSettingsController,
 }));
 
 jest.mock('react-native-elements', () => {
@@ -119,8 +121,18 @@ describe('SettingScreen', () => {
     route: {params: {}},
   } as any;
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should render settings screen', () => {
     const {toJSON} = render(<SettingScreen {...defaultProps} />);
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should call TOGGLE_BIOMETRIC when switch is toggled', () => {
+    const {getByTestId} = render(<SettingScreen {...defaultProps} />);
+    fireEvent(getByTestId('switch'), 'valueChange', true);
+    expect(mockSettingsController.TOGGLE_BIOMETRIC).toHaveBeenCalledWith(true);
   });
 });

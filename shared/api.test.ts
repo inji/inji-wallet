@@ -395,6 +395,17 @@ describe('CACHED_API', () => {
       expect(result).toEqual({verifiers: ['cached']});
       expect(mockRequest).not.toHaveBeenCalled();
     });
+
+    it('should fetch from API when cache is expired', async () => {
+      mockGetItem.mockResolvedValueOnce({
+        response: {verifiers: ['stale']},
+        cachedTime: Date.now() - 86400000 - 1,
+      });
+      mockRequest.mockResolvedValueOnce({verifiers: ['fresh']});
+      const result = await CACHED_API.fetchTrustedVerifiersList(true);
+      expect(mockRequest).toHaveBeenCalled();
+      expect(result).toEqual({verifiers: ['fresh']});
+    });
   });
 
   describe('fetchIssuers', () => {

@@ -5,6 +5,7 @@ jest.mock('../../shared/GlobalContext', () => ({
 }));
 
 const mockSend = jest.fn();
+const mockActivitySend = jest.fn();
 
 jest.mock('@xstate/react', () => ({
   useInterpret: () => ({send: mockSend, getSnapshot: () => ({})}),
@@ -58,7 +59,7 @@ const ReactModule = require('react');
 jest.spyOn(ReactModule, 'useContext').mockReturnValue({
   appService: {
     getSnapshot: () => ({context: {serviceRefs: {}}}),
-    children: {get: () => ({send: jest.fn()})},
+    children: {get: () => ({send: mockActivitySend})},
     send: jest.fn(),
   },
 });
@@ -69,10 +70,11 @@ import {useVcItemController} from './VCItemController';
 describe('useVcItemController', () => {
   beforeEach(() => {
     mockSend.mockClear();
+    mockActivitySend.mockClear();
     jest.spyOn(ReactModule, 'useContext').mockReturnValue({
       appService: {
         getSnapshot: () => ({context: {serviceRefs: {}}}),
-        children: {get: () => ({send: jest.fn()})},
+        children: {get: () => ({send: mockActivitySend})},
         send: jest.fn(),
       },
     });
@@ -116,5 +118,13 @@ describe('useVcItemController', () => {
   it('storeErrorTranslationPath should be correct', () => {
     const result = useVcItemController({} as any);
     expect(result.storeErrorTranslationPath).toBe('errors.savingFailed');
+  });
+
+  it('STORE_INCOMING_VC_WELLKNOWN_CONFIG should send to activity service', () => {
+    const result = useVcItemController({} as any);
+    result.STORE_INCOMING_VC_WELLKNOWN_CONFIG('test-issuer', {display: []});
+    expect(mockActivitySend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'STORE'}),
+    );
   });
 });

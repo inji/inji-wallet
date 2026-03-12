@@ -55,6 +55,11 @@ describe('VCItemGaurds', () => {
       const event = {data: {publicKey: ''}};
       expect(guards.hasKeyPair({}, event)).toBe(false);
     });
+
+    it('should return false when data is undefined', () => {
+      const event = {data: undefined};
+      expect(guards.hasKeyPair({}, event)).toBe(false);
+    });
   });
 
   describe('isSignedIn', () => {

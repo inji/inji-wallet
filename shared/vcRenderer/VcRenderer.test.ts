@@ -157,5 +157,16 @@ describe('VcRenderer', () => {
         NativeModules.InjiVcRenderer.generateCredentialDisplayContent,
       ).toHaveBeenCalledWith('ldp_vc', null, expect.any(String));
     });
+
+    it('should throw when vcJson is undefined', async () => {
+      mockMMKV.getItem.mockResolvedValue(null);
+      await expect(
+        renderer.generateCredentialDisplayContent(
+          'ldp_vc',
+          '{}',
+          undefined as any,
+        ),
+      ).rejects.toThrow();
+    });
   });
 });

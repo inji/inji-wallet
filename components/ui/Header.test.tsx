@@ -18,4 +18,11 @@ describe('Header', () => {
     const {toJSON} = render(<Header goBack={jest.fn()} testID="header" />);
     expect(toJSON()).toMatchSnapshot();
   });
+
+  it('should display title text', () => {
+    const {getByText} = render(
+      <Header title="My Title" goBack={jest.fn()} testID="header" />,
+    );
+    expect(getByText('My Title')).toBeTruthy();
+  });
 });

@@ -17,6 +17,7 @@ exports[`StatusInfoModal should match snapshot when not visible 1`] = `
       "width": 750,
     }
   }
+  testID="statusInfoModal"
 >
   <View
     style={
@@ -138,6 +139,7 @@ exports[`StatusInfoModal should match snapshot when not visible 1`] = `
             "padding": 4,
           }
         }
+        testID="closeStatusInfoModal"
       >
         <View
           color="#000"
@@ -706,6 +708,7 @@ exports[`StatusInfoModal should match snapshot when visible 1`] = `
       "width": 750,
     }
   }
+  testID="statusInfoModal"
 >
   <View
     style={
@@ -827,6 +830,7 @@ exports[`StatusInfoModal should match snapshot when visible 1`] = `
             "padding": 4,
           }
         }
+        testID="closeStatusInfoModal"
       >
         <View
           color="#000"

@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 
 jest.mock('react-native', () => {
   const actual = jest.requireActual('react-native');
@@ -89,5 +89,18 @@ describe('Modal', () => {
       } as any),
     );
     expect(getAllByLabelText('myModal').length).toBeGreaterThan(0);
+  });
+
+  it('should call onDismiss when back button is pressed', () => {
+    const onDismiss = jest.fn();
+    const {getByTestId} = render(
+      React.createElement(Modal, {
+        isVisible: true,
+        arrowLeft: true,
+        onDismiss,
+      } as any),
+    );
+    fireEvent.press(getByTestId('backButton'));
+    expect(onDismiss).toHaveBeenCalled();
   });
 });

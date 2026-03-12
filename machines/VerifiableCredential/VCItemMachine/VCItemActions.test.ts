@@ -214,6 +214,16 @@ describe('VCItemActions', () => {
     expect(sendEndEvent).toHaveBeenCalled();
   });
 
+  it('sendActivationSuccessEvent handles undefined downloadKeyType', () => {
+    const {sendEndEvent} = require('../../../shared/telemetry/TelemetryUtils');
+    sendEndEvent.mockClear();
+    actions.sendActivationSuccessEvent({
+      isMachineInKebabPopupState: false,
+      vcMetadata: {} as any,
+    });
+    expect(sendEndEvent).toHaveBeenCalled();
+  });
+
   it('sendTelemetryEvents fires end event', () => {
     const {sendEndEvent} = require('../../../shared/telemetry/TelemetryUtils');
     actions.sendTelemetryEvents();

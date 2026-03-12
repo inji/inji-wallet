@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 
 jest.mock('react-native-elements', () => {
   const React = require('react');
@@ -59,5 +59,19 @@ describe('SetupPicker', () => {
       />,
     );
     expect(tree.toJSON()).toMatchSnapshot();
+  });
+
+  it('should call onValueChange when item is pressed', () => {
+    const onValueChange = jest.fn();
+    const {getByText} = render(
+      <SetupPicker
+        testID="picker"
+        items={mockItems}
+        selectedValue="en"
+        onValueChange={onValueChange}
+      />,
+    );
+    fireEvent.press(getByText('Hindi'));
+    expect(onValueChange).toHaveBeenCalledWith('hi', 1);
   });
 });

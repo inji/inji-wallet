@@ -123,4 +123,13 @@ describe('TextEditOverlay Component', () => {
 
     expect(onDismiss).toHaveBeenCalled();
   });
+
+  it('should call onSave with empty string when value is empty', () => {
+    const onSave = jest.fn();
+    const {getByTestId} = render(
+      <TextEditOverlay {...defaultProps} onSave={onSave} value="" />,
+    );
+    fireEvent.press(getByTestId('button-save'));
+    expect(onSave).toHaveBeenCalledWith('');
+  });
 });

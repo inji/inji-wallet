@@ -149,6 +149,13 @@ describe('VciClient', () => {
       );
       expect(result).toEqual({issuer: 'test', credential_endpoint: 'url'});
     });
+
+    it('should reject when native returns malformed JSON', async () => {
+      mockGetIssuerMetadata.mockResolvedValueOnce('not-valid-json');
+      await expect(
+        VciClient.getInstance().getIssuerMetadata('https://issuer.example.com'),
+      ).rejects.toThrow();
+    });
   });
 
   describe('abortPresentationFlow', () => {

@@ -9,7 +9,8 @@ jest.mock('react-native-elements', () => {
   return {
     Icon: ({name}: any) => R.createElement('View', {testID: `icon-${name}`}),
     ListItem: Object.assign(
-      ({children}: any) => R.createElement('View', null, children),
+      ({children, onPress}: any) =>
+        R.createElement('View', {onPress}, children),
       {
         Content: ({children}: any) => R.createElement('View', null, children),
         Title: ({children}: any) => R.createElement('View', null, children),

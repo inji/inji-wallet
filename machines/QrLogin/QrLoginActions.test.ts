@@ -303,6 +303,11 @@ describe('QrLoginActions', () => {
       expect(actions.storeShowFaceAuthConsent).toBeDefined();
       expect(actions.storeShowFaceAuthConsent.type).toBe('xstate.send');
     });
+
+    it('opts.to returns context.serviceRefs.store', () => {
+      const to = actions.storeShowFaceAuthConsent.opts.to;
+      expect(to({serviceRefs: {store: 'store-ref'}})).toBe('store-ref');
+    });
   });
 
   describe('forwardToParent', () => {
@@ -322,11 +327,21 @@ describe('QrLoginActions', () => {
     it('is defined', () => {
       expect(actions.loadMyVcs).toBeDefined();
     });
+
+    it('opts.to returns context.serviceRefs.store', () => {
+      const to = actions.loadMyVcs.opts.to;
+      expect(to({serviceRefs: {store: 'store-ref'}})).toBe('store-ref');
+    });
   });
 
   describe('loadThumbprint', () => {
     it('is defined', () => {
       expect(actions.loadThumbprint).toBeDefined();
+    });
+
+    it('opts.to returns context.serviceRefs.store', () => {
+      const to = actions.loadThumbprint.opts.to;
+      expect(to({serviceRefs: {store: 'store-ref'}})).toBe('store-ref');
     });
   });
 });

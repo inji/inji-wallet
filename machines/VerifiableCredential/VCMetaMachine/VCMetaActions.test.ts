@@ -404,6 +404,12 @@ describe('VCMetaActions', () => {
       expect(actions.sendBackupEvent.type).toBe('xstate.send');
     });
 
+    it('sendBackupEvent to returns backup ref', () => {
+      expect(
+        actions.sendBackupEvent.opts.to({serviceRefs: {backup: 'backup-ref'}}),
+      ).toBe('backup-ref');
+    });
+
     it('loadMyVcs is a send action', () => {
       expect(actions.loadMyVcs).toBeDefined();
       expect(actions.loadMyVcs.type).toBe('xstate.send');
@@ -422,6 +428,14 @@ describe('VCMetaActions', () => {
     it('setUpdatedReceivedVcMetadatas is a send action', () => {
       expect(actions.setUpdatedReceivedVcMetadatas).toBeDefined();
       expect(actions.setUpdatedReceivedVcMetadatas.type).toBe('xstate.send');
+    });
+
+    it('setUpdatedReceivedVcMetadatas to returns store ref', () => {
+      expect(
+        actions.setUpdatedReceivedVcMetadatas.opts.to({
+          serviceRefs: {store: 'store-ref'},
+        }),
+      ).toBe('store-ref');
     });
 
     it('removeDownloadFailedVcsFromStorage is a send action', () => {

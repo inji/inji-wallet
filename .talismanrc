@@ -499,7 +499,7 @@ fileignoreconfig:
   - filename: shared/telemetry/TelemetryUtils.test.js
     checksum: 9b1fc611937e6916cdd6fd87302013b2988d46bdbe63bf6f8d4825289344dbd3
   - filename: screens/Settings/SettingScreen.test.tsx
-    checksum: 12b38a58824f24de836ae447b59b3d608a95ce51b57b30a48eb580620ee3f5a7
+    checksum: c2bf4896d85b036aedb56cb0799476b379d6c4c9ab1b13d85aaf96b150e3f89a
   - filename: machines/backupAndRestore/restore/restoreService.test.ts
     checksum: e294b73073d44db1833d4202153c78667797a2784db4844798594e0933195ed0
   - filename: shared/vcRenderer/VcRenderer.test.ts
@@ -561,7 +561,7 @@ fileignoreconfig:
   - filename: machines/Issuers/IssuersService.test.ts
     checksum: 34b7ffe81d54bd3f124cef4a0c18297a152692dabd8aadf47195732f74fc6fd5
   - filename: machines/VerifiableCredential/VCItemMachine/VCItemGaurds.test.ts
-    checksum: e605bbe650434e94d0c9171f7bf4be01e919fe408d698ed8535a2252f88a87b1
+    checksum: ccc360edfacaea11ddf0ff46f361301bcb102bb7982ed894e7bc37d37226ccc7
   - filename: screens/BiometricScreen.test.tsx
     checksum: 909f77ae04be76a62687d94f21b4bdf385380186cfeaa0bce733dbc1cfc6ed23
   - filename: screens/Home/ViewVcModalController.test.ts
@@ -575,7 +575,7 @@ fileignoreconfig:
   - filename: machines/VerifiableCredential/VCItemMachine/VCItemServices.test.ts
     checksum: 0b744e1826ab31f6895e7b22119e9fd305a3a2be0749091e080614decc183267
   - filename: machines/VerifiableCredential/VCItemMachine/VCItemActions.test.ts
-    checksum: b8d9e713cc787af667ad6bf130b6ce5ef126f9dfbf7e07d5ae0f26bdcc0bb609
+    checksum: 5ea7a0dfa29e620209a0cfc8b7b01651b7d666acfd840bc43aefa2ae3ed6ae63
   - filename: screens/Home/IntroSlidersScreen.test.tsx
     checksum: 5bdb81b2a5ac70c8572d412a6af6f006c51f76abb8b0dc8daa30a0911fb5f49f
   - filename: screens/AppController.test.ts
@@ -664,5 +664,7 @@ fileignoreconfig:
     checksum: c04ac406cea5d136f4f5e1e64560d6ff721880653cd8ef5a5d3425b6a8a023dd
   - filename: components/VC/Views/__snapshots__/VCDetailView.test.tsx.snap
     checksum: 68b4eeb0362b4253cab87bf01f28ccc1b835acee63d5db54707dc466f698c2fe
+  - filename: components/VC/VcDetailsContainer.test.tsx
+    checksum: 45b35c6fe899aa7c7f1c76dfea43e76acd939c1752bfa94b9539d2a56c721647
 version: "1.0"
 

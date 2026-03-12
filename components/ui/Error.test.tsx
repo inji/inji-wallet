@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({t: (key: string) => key}),
@@ -132,5 +132,31 @@ describe('ErrorView', () => {
     );
     expect(getByText('retry')).toBeTruthy();
     expect(getByText('cancel')).toBeTruthy();
+  });
+
+  it('should call primaryButtonEvent when primary button is pressed', () => {
+    const onPress = jest.fn();
+    const {getByText} = render(
+      React.createElement(ErrorView, {
+        ...defaultProps,
+        primaryButtonText: 'tryAgain',
+        primaryButtonEvent: onPress,
+      }),
+    );
+    fireEvent.press(getByText('tryAgain'));
+    expect(onPress).toHaveBeenCalled();
+  });
+
+  it('should call textButtonEvent when text button is pressed', () => {
+    const onPress = jest.fn();
+    const {getByText} = render(
+      React.createElement(ErrorView, {
+        ...defaultProps,
+        textButtonText: 'goBack',
+        textButtonEvent: onPress,
+      }),
+    );
+    fireEvent.press(getByText('goBack'));
+    expect(onPress).toHaveBeenCalled();
   });
 });

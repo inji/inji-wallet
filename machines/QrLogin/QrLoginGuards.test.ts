@@ -43,5 +43,10 @@ describe('QrLoginGuards', () => {
       const context = {flowType: VCShareFlowType.MINI_VIEW_SHARE};
       expect(QrLoginGuards.isSimpleShareFlow(context, {})).toBe(false);
     });
+
+    it('should return false for mini view qr login flow type', () => {
+      const context = {flowType: VCShareFlowType.MINI_VIEW_QR_LOGIN};
+      expect(QrLoginGuards.isSimpleShareFlow(context, {})).toBe(false);
+    });
   });
 });

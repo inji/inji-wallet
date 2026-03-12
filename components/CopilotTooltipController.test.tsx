@@ -87,4 +87,12 @@ describe('UseCopilotTooltip', () => {
     expect(result.titleTestID).toBe('step1Title');
     expect(result.descriptionTestID).toBe('step1Description');
   });
+
+  it('INITIAL_DOWNLOAD_DONE should send auth event', () => {
+    const result = UseCopilotTooltip();
+    result.INITIAL_DOWNLOAD_DONE();
+    expect(mockAuthSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'INITIAL_DOWNLOAD_DONE'}),
+    );
+  });
 });

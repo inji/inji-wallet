@@ -77,6 +77,16 @@ describe('getActionText', () => {
       vcStatus: '',
     });
   });
+
+  it('should append vcStatus to type when vcStatus is set', () => {
+    mockIl18nfn.mockImplementation(input => input);
+    activityLog.vcStatus = 'expired';
+    activityLog.getActionText(mockIl18nfn, wellknown);
+    expect(mockIl18nfn).toHaveBeenCalledWith('mockType.expired', {
+      idType: 'fake VC',
+      vcStatus: 'expired',
+    });
+  });
 });
 
 describe('VCActivityLog.getLogFromObject', () => {

@@ -121,7 +121,21 @@ describe('request module', () => {
         status: 200,
         json: jest.fn().mockRejectedValue(new Error('parse error')),
       });
-      await expect(request('GET', '/api/test')).rejects.toThrow();
+      await expect(request('GET', '/api/test')).rejects.toThrow(
+        'Network request failed Invalid JSON response',
+      );
+    });
+
+    it('should stringify error object in HTTP 400+ response', async () => {
+      mockFetch.mockResolvedValue({
+        status: 500,
+        json: jest.fn().mockResolvedValue({
+          error: {code: 'INTERNAL', detail: 'server failure'},
+        }),
+      });
+      await expect(request('GET', '/api/test')).rejects.toThrow(
+        JSON.stringify({code: 'INTERNAL', detail: 'server failure'}),
+      );
     });
 
     it('should handle timeout with AbortController', async () => {

@@ -92,4 +92,13 @@ describe('QrLoginServices', () => {
       expect(request).toHaveBeenCalled();
     });
   });
+
+  describe('linkTransaction - error path', () => {
+    it('should reject when request fails', async () => {
+      (request as jest.Mock).mockRejectedValueOnce(new Error('network error'));
+      await expect(
+        QrLoginServices.linkTransaction({linkCode: 'abc'}),
+      ).rejects.toThrow('network error');
+    });
+  });
 });

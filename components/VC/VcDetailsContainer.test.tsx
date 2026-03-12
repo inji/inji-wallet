@@ -32,4 +32,12 @@ describe('VcDetailsContainer', () => {
     );
     expect(toJSON()).toMatchSnapshot();
   });
+
+  it('should pass vcMetadata to VCDetailView', () => {
+    const {getByTestId, getByText} = render(
+      <VcDetailsContainer {...defaultProps} />,
+    );
+    expect(getByTestId('mockVCDetailView')).toBeTruthy();
+    expect(getByText(JSON.stringify(defaultProps.vcMetadata))).toBeTruthy();
+  });
 });

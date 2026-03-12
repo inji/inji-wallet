@@ -154,5 +154,9 @@ describe('IssuersGuards', () => {
         }),
       ).toBe(false);
     });
+
+    it('should return false when authorizationType is undefined', () => {
+      expect(guards.isPresentationAuthorization({} as any)).toBe(false);
+    });
   });
 });

@@ -210,6 +210,24 @@ describe('CloudBackupAndRestoreUtils', () => {
       const result = await Cloud.signIn();
       expect(result.status).toBe('FAILURE');
     });
+
+    it('returns FAILURE when profileInfo throws after successful signIn', async () => {
+      const {
+        GoogleSignin,
+      } = require('@react-native-google-signin/google-signin');
+      GoogleSignin.signIn.mockResolvedValueOnce({
+        scopes: [
+          'https://www.googleapis.com/auth/drive.appdata',
+          'https://www.googleapis.com/auth/drive.file',
+        ],
+      });
+      const {API} = require('./api');
+      API.getGoogleAccountProfileInfo.mockRejectedValueOnce(
+        new Error('Profile fetch failed'),
+      );
+      const result = await Cloud.signIn();
+      expect(result.status).toBe('FAILURE');
+    });
   });
 
   describe('signIn - iOS', () => {

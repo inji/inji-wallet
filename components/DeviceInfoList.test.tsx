@@ -18,17 +18,19 @@ describe('DeviceInfoList Component', () => {
   });
 
   it('should render with receiver mode', () => {
-    const {toJSON} = render(
+    const {toJSON, getByText} = render(
       <DeviceInfoList deviceInfo={mockDeviceInfo} of="receiver" />,
     );
     expect(toJSON()).toMatchSnapshot();
+    expect(getByText('requestedBy')).toBeTruthy();
   });
 
   it('should render with sender mode', () => {
-    const {toJSON} = render(
+    const {toJSON, getByText} = render(
       <DeviceInfoList deviceInfo={mockDeviceInfo} of="sender" />,
     );
     expect(toJSON()).toMatchSnapshot();
+    expect(getByText('sentBy')).toBeTruthy();
   });
 
   it('should handle empty device name', () => {

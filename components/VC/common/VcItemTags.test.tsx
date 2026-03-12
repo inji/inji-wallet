@@ -18,8 +18,11 @@ import {VcItemTags} from './VcItemTags';
 
 describe('VcItemTags', () => {
   it('should render tag when tag is non-empty', () => {
-    const {toJSON} = render(React.createElement(VcItemTags, {tag: 'TestTag'}));
+    const {toJSON, getByText} = render(
+      React.createElement(VcItemTags, {tag: 'TestTag'}),
+    );
     expect(toJSON()).not.toBeNull();
+    expect(getByText('TestTag')).toBeTruthy();
   });
 
   it('should render nothing when tag is empty string', () => {

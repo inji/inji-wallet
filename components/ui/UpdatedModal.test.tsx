@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 
 jest.mock('react-native-elements', () => ({
   Icon: ({name, onPress}: any) =>
@@ -43,5 +43,18 @@ describe('UpdatedModal', () => {
       }),
     );
     expect(toJSON()).not.toBeNull();
+  });
+
+  it('should call onDismiss when back icon is pressed', () => {
+    const onDismiss = jest.fn();
+    const {getByTestId} = render(
+      React.createElement(Modal, {
+        isVisible: true,
+        onDismiss,
+        headerRight: React.createElement('View', {testID: 'right'}),
+      }),
+    );
+    fireEvent.press(getByTestId('icon-chevron-left'));
+    expect(onDismiss).toHaveBeenCalled();
   });
 });

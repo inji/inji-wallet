@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 
 jest.mock('react-native-elements', () => {
   const {View, TouchableOpacity, Text: RNText} = require('react-native');
@@ -165,6 +165,35 @@ describe('VCDetailView', () => {
       />,
     );
     expect(getByText('profileAuthenticated')).toBeTruthy();
+
+    isActivationNeeded.mockReturnValue(false);
+  });
+
+  it('should call onBinding when enable verification button is pressed', () => {
+    const {isActivationNeeded} = require('../../../shared/openId4VCI/Utils');
+    isActivationNeeded.mockReturnValue(true);
+    const onBinding = jest.fn();
+
+    const {getByText} = render(
+      <VCDetailView
+        {...defaultProps}
+        vcHasImage={true}
+        walletBindingResponse={null}
+        onBinding={onBinding}
+        verifiableCredentialData={{
+          face: undefined,
+          vcMetadata: {
+            format: 'ldp_vc',
+            issuerHost: 'test',
+            isExpired: false,
+            isVerified: true,
+          },
+          issuer: 'test-issuer',
+        }}
+      />,
+    );
+    fireEvent.press(getByText('enableVerification'));
+    expect(onBinding).toHaveBeenCalled();
 
     isActivationNeeded.mockReturnValue(false);
   });
