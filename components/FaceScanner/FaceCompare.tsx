@@ -53,7 +53,9 @@ const FaceCompare: React.FC<FaceCompareProps> = ({
         ) : (
           <Row align="center">
             <Centered style={Theme.Styles.imageCaptureButton}>
-              <TouchableOpacity onPress={() => service.send('CAPTURE')}>
+              <TouchableOpacity
+                testID="captureButton"
+                onPress={() => service.send('CAPTURE')}>
                 {SvgImage.CameraCaptureIcon()}
               </TouchableOpacity>
               <Text
@@ -63,7 +65,7 @@ const FaceCompare: React.FC<FaceCompareProps> = ({
               </Text>
             </Centered>
             <Centered>
-              <TouchableOpacity onPress={flipCamera}>
+              <TouchableOpacity testID="flipCameraButton" onPress={flipCamera}>
                 {SvgImage.FlipCameraIcon()}
               </TouchableOpacity>
               <Text

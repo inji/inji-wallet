@@ -196,6 +196,7 @@ exports[`FaceCompare should render camera view with buttons 1`] = `
               "opacity": 1,
             }
           }
+          testID="captureButton"
         >
           CameraCaptureIcon
         </View>
@@ -284,6 +285,7 @@ exports[`FaceCompare should render camera view with buttons 1`] = `
               "opacity": 1,
             }
           }
+          testID="flipCameraButton"
         >
           FlipCameraIcon
         </View>

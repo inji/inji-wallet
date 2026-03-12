@@ -1,14 +1,19 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 import {CopilotTooltip} from './CopilotTooltip';
 
 // Mock ui components
-jest.mock('./ui', () => ({
-  Button: jest.fn(() => null),
-  Column: ({children}: {children: React.ReactNode}) => <>{children}</>,
-  Row: ({children}: {children: React.ReactNode}) => <>{children}</>,
-  Text: ({children}: {children: React.ReactNode}) => <>{children}</>,
-}));
+jest.mock('./ui', () => {
+  const {TouchableOpacity} = require('react-native');
+  return {
+    Button: ({testID, onPress}: any) => (
+      <TouchableOpacity testID={testID} onPress={onPress} />
+    ),
+    Column: ({children}: {children: React.ReactNode}) => <>{children}</>,
+    Row: ({children}: {children: React.ReactNode}) => <>{children}</>,
+    Text: ({children}: {children: React.ReactNode}) => <>{children}</>,
+  };
+});
 
 // Mock controller
 const defaultCopilotValues = {
@@ -53,6 +58,7 @@ jest.mock('../screens/Settings/SettingScreenController', () => ({
 describe('CopilotTooltip Component', () => {
   beforeEach(() => {
     mockCopilotOverrides = {};
+    jest.clearAllMocks();
   });
 
   it('should match snapshot with first step', () => {
@@ -97,5 +103,25 @@ describe('CopilotTooltip Component', () => {
     };
     const {toJSON} = render(<CopilotTooltip />);
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should call goToNext when next button is pressed', () => {
+    const {getByTestId} = render(<CopilotTooltip />);
+    fireEvent.press(getByTestId('copilot-next-action'));
+    expect(defaultCopilotValues.goToNext).toHaveBeenCalled();
+  });
+
+  it('should call stop when done button is pressed on last step', () => {
+    mockCopilotOverrides = {isLastStep: true, isFirstStep: false};
+    const {getByTestId} = render(<CopilotTooltip />);
+    fireEvent.press(getByTestId('copilot-next-action'));
+    expect(defaultCopilotValues.stop).toHaveBeenCalled();
+  });
+
+  it('should call goToPrev when previous button is pressed', () => {
+    mockCopilotOverrides = {isFirstStep: false, CURRENT_STEP: 3};
+    const {getByTestId} = render(<CopilotTooltip />);
+    fireEvent.press(getByTestId('copilot-prev-action'));
+    expect(defaultCopilotValues.goToPrev).toHaveBeenCalled();
   });
 });

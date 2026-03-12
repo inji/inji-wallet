@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 
 jest.mock('expo-camera', () => ({
   CameraView: (props: any) => {
@@ -51,5 +51,17 @@ describe('FaceCompare', () => {
       <FaceCompare {...defaultProps} isVerifying={true} />,
     );
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should call service.send(CAPTURE) when capture button is pressed', () => {
+    const {getByTestId} = render(<FaceCompare {...defaultProps} />);
+    fireEvent.press(getByTestId('captureButton'));
+    expect(defaultProps.service.send).toHaveBeenCalledWith('CAPTURE');
+  });
+
+  it('should call flipCamera when flip button is pressed', () => {
+    const {getByTestId} = render(<FaceCompare {...defaultProps} />);
+    fireEvent.press(getByTestId('flipCameraButton'));
+    expect(defaultProps.flipCamera).toHaveBeenCalled();
   });
 });

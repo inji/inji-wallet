@@ -24,12 +24,13 @@ describe('SquircleIconPopUpModal', () => {
     expect(toJSON()).toMatchSnapshot();
   });
 
-  it('should handle backdrop press', () => {
+  it('should call onBackdropPress when backdrop is pressed', () => {
     const onPress = jest.fn();
-    const {toJSON} = render(
+    const {getByLabelText} = render(
       <SquircleIconPopUpModal {...defaultProps} onBackdropPress={onPress} />,
     );
-    expect(toJSON()).toMatchSnapshot();
+    fireEvent(getByLabelText('squircleModal'), 'touchStart');
+    expect(onPress).toHaveBeenCalled();
   });
 
   it('should display the message text', () => {
