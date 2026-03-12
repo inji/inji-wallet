@@ -55,4 +55,19 @@ describe('changeLanguage', () => {
     expect(mockI18n.changeLanguage).toHaveBeenCalledWith('fr');
     expect(setItem).toHaveBeenCalled();
   });
+
+  it('should propagate error when setItem fails', async () => {
+    const {setItem} = require('../machines/store');
+    setItem.mockRejectedValueOnce(new Error('storage write failed'));
+    const mockI18n = {
+      language: 'en',
+      changeLanguage: jest.fn().mockImplementation(async lang => {
+        mockI18n.language = lang;
+      }),
+    } as any;
+    await expect(changeLanguage(mockI18n, 'fr')).rejects.toThrow(
+      'storage write failed',
+    );
+    expect(mockI18n.changeLanguage).toHaveBeenCalledWith('fr');
+  });
 });

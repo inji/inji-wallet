@@ -662,5 +662,7 @@ fileignoreconfig:
     checksum: de0ba08b904c04675846c355d4f67ced8e70a7578d61d0d807ff1d799c18186f
   - filename: components/BannerNotificationContainer.test.tsx
     checksum: c04ac406cea5d136f4f5e1e64560d6ff721880653cd8ef5a5d3425b6a8a023dd
-    version: "1.0"
+  - filename: components/VC/Views/__snapshots__/VCDetailView.test.tsx.snap
+    checksum: 68b4eeb0362b4253cab87bf01f28ccc1b835acee63d5db54707dc466f698c2fe
+version: "1.0"
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 import {VcItemContainer} from './VcItemContainer';
 
 jest.mock('./Views/VCCardView', () => ({
@@ -38,5 +38,10 @@ describe('VcItemContainer', () => {
       <VcItemContainer {...defaultProps} isPinned={true} />,
     );
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should render VCCardView mock', () => {
+    const {getByTestId} = render(<VcItemContainer {...defaultProps} />);
+    expect(getByTestId('mockVCCardView')).toBeTruthy();
   });
 });

@@ -34,9 +34,7 @@ jest.mock('../machines/bleShare/scan/scanMachine', () => ({
     })),
   },
 }));
-jest.mock('../machines/bleShare/scan/scanSelectors', () => ({
-  selectIsScanning: jest.fn(),
-}));
+jest.mock('../machines/bleShare/scan/scanSelectors', () => ({}));
 jest.mock(
   '../machines/VerifiableCredential/VCItemMachine/VCItemMachine',
   () => ({

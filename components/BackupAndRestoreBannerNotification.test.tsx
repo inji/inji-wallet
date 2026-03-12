@@ -55,6 +55,11 @@ describe('BackupAndRestoreBannerNotification Component', () => {
     });
     const {toJSON} = render(<BackupAndRestoreBannerNotification />);
     expect(toJSON()).toMatchSnapshot();
+    const {BannerNotification} = require('./BannerNotification');
+    expect(BannerNotification).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'error'}),
+      expect.anything(),
+    );
   });
 
   it('should render restore failure banner', () => {
@@ -71,5 +76,10 @@ describe('BackupAndRestoreBannerNotification Component', () => {
     });
     const {toJSON} = render(<BackupAndRestoreBannerNotification />);
     expect(toJSON()).toMatchSnapshot();
+    const {BannerNotification} = require('./BannerNotification');
+    expect(BannerNotification).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'error'}),
+      expect.anything(),
+    );
   });
 });

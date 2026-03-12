@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 import {SearchBar} from './SearchBar';
 
 jest.mock('./svg', () => ({
@@ -37,5 +37,23 @@ describe('SearchBar', () => {
   it('should render as non-editable', () => {
     const {toJSON} = render(<SearchBar {...defaultProps} editable={false} />);
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should call onChangeText when text is entered', () => {
+    const onChangeText = jest.fn();
+    const {getByTestId} = render(
+      <SearchBar {...defaultProps} onChangeText={onChangeText} />,
+    );
+    fireEvent.changeText(getByTestId('searchBar'), 'hello');
+    expect(onChangeText).toHaveBeenCalledWith('hello');
+  });
+
+  it('should call onFocus when search bar is focused', () => {
+    const onFocus = jest.fn();
+    const {getByTestId} = render(
+      <SearchBar {...defaultProps} onFocus={onFocus} />,
+    );
+    fireEvent(getByTestId('searchBar'), 'focus');
+    expect(onFocus).toHaveBeenCalled();
   });
 });

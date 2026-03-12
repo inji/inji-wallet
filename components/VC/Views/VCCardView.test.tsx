@@ -66,6 +66,7 @@ jest.mock('../common/VCProcessor', () => ({
 jest.mock('../../../shared/VCMetadata', () => ({VCMetadata: jest.fn()}));
 
 import {VCCardView} from './VCCardView';
+import {isVCLoaded} from '../common/VCUtils';
 
 describe('VCCardView', () => {
   const defaultProps = {
@@ -90,6 +91,7 @@ describe('VCCardView', () => {
   it('should render card view', () => {
     const {toJSON} = render(<VCCardView {...defaultProps} />);
     expect(toJSON()).toMatchSnapshot();
+    expect(isVCLoaded).toHaveBeenCalled();
   });
 
   it('should render with selected state', () => {

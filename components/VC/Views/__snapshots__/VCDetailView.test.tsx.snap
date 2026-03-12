@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`VCDetailView should render ActivityIndicator when loadingSvg is true 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+/>
+`;
+
 exports[`VCDetailView should render DisclosureInfoNote 1`] = `
 <View
   style={
@@ -82,6 +94,234 @@ exports[`VCDetailView should render DisclosureInfoNote 1`] = `
     </Text>
   </View>
 </View>
+`;
+
+exports[`VCDetailView should render SVG template when svgTemplate is provided 1`] = `
+[
+  <RCTScrollView
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View>
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            {
+              "paddingBottom": 0,
+              "paddingEnd": 0,
+              "paddingStart": 0,
+              "paddingTop": 30,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <RCTScrollView
+          ItemSeparatorComponent={[Function]}
+          contentContainerStyle={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+            }
+          }
+          data={
+            [
+              "<svg viewBox="0 0 300 200"></svg>",
+            ]
+          }
+          decelerationRate="fast"
+          getItem={[Function]}
+          getItemCount={[Function]}
+          horizontal={true}
+          keyExtractor={[Function]}
+          onContentSizeChange={[Function]}
+          onLayout={[Function]}
+          onMomentumScrollBegin={[Function]}
+          onMomentumScrollEnd={[Function]}
+          onScroll={[Function]}
+          onScrollBeginDrag={[Function]}
+          onScrollEndDrag={[Function]}
+          pagingEnabled={false}
+          removeClippedSubviews={false}
+          renderItem={[Function]}
+          scrollEventThrottle={0.0001}
+          showsHorizontalScrollIndicator={false}
+          snapToAlignment="start"
+          stickyHeaderIndices={[]}
+          viewabilityConfigCallbackPairs={[]}
+        >
+          <View>
+            <View
+              onFocusCapture={[Function]}
+              onLayout={[Function]}
+              style={
+                [
+                  {
+                    "flexDirection": "row",
+                  },
+                  null,
+                ]
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": undefined,
+                      "flexDirection": "column",
+                      "justifyContent": undefined,
+                    },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                      "width": 718,
+                    },
+                    null,
+                    null,
+                  ]
+                }
+              >
+                <View
+                  style={
+                    {
+                      "height": 12,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+        </RCTScrollView>
+      </View>
+    </View>
+  </RCTScrollView>,
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#F7F7F7",
+        "borderTopColor": "#F8F8F8",
+        "borderTopWidth": 1,
+        "padding": 16,
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 8,
+          "opacity": 1,
+        }
+      }
+      testID="viewShareableInfoLink"
+    >
+      <FeatherIcon
+        color="#007AFF"
+        name="eye"
+        size={20}
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#007AFF",
+              "fontFamily": "Inter_500Medium",
+              "fontSize": 16,
+            },
+          ]
+        }
+      >
+        View Shareable Information
+      </Text>
+    </View>
+  </View>,
+]
 `;
 
 exports[`VCDetailView should render VCDetailView 1`] = `

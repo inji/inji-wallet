@@ -10,8 +10,11 @@ describe('DeviceInfoList Component', () => {
   };
 
   it('should render DeviceInfoList component', () => {
-    const {toJSON} = render(<DeviceInfoList deviceInfo={mockDeviceInfo} />);
+    const {toJSON, getByText} = render(
+      <DeviceInfoList deviceInfo={mockDeviceInfo} />,
+    );
     expect(toJSON()).toMatchSnapshot();
+    expect(getByText('Samsung Galaxy S21')).toBeTruthy();
   });
 
   it('should render with receiver mode', () => {

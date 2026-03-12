@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 
 jest.mock('./ui/AdaptiveImage', () => ({
   AdaptiveImage: (props: any) => null,
@@ -58,5 +58,23 @@ describe('TrustModalVerifier', () => {
       <TrustModalVerifier {...defaultProps} isVisible={false} />,
     );
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should call onConfirm when confirm button is pressed', () => {
+    const onConfirm = jest.fn();
+    const {getByText} = render(
+      <TrustModalVerifier {...defaultProps} onConfirm={onConfirm} />,
+    );
+    fireEvent.press(getByText('confirm'));
+    expect(onConfirm).toHaveBeenCalled();
+  });
+
+  it('should call onCancel when cancel button is pressed', () => {
+    const onCancel = jest.fn();
+    const {getByText} = render(
+      <TrustModalVerifier {...defaultProps} onCancel={onCancel} />,
+    );
+    fireEvent.press(getByText('cancel'));
+    expect(onCancel).toHaveBeenCalled();
   });
 });

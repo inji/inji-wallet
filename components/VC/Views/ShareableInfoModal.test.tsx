@@ -18,8 +18,12 @@ describe('ShareableInfoModal', () => {
   };
 
   it('should match snapshot when visible with disclosed paths', () => {
-    const {toJSON} = render(<ShareableInfoModal {...defaultProps} />);
+    const {toJSON, getByText} = render(
+      <ShareableInfoModal {...defaultProps} />,
+    );
     expect(toJSON()).toMatchSnapshot();
+    expect(getByText('Name')).toBeTruthy();
+    expect(getByText('Address')).toBeTruthy();
   });
 
   it('should match snapshot when not visible', () => {

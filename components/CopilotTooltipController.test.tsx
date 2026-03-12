@@ -64,13 +64,17 @@ describe('UseCopilotTooltip', () => {
   it('ONBOARDING_DONE should send auth event', () => {
     const result = UseCopilotTooltip();
     result.ONBOARDING_DONE();
-    expect(mockAuthSend).toHaveBeenCalled();
+    expect(mockAuthSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'ONBOARDING_DONE'}),
+    );
   });
 
   it('SET_TOUR_GUIDE should send tour guide event', () => {
     const result = UseCopilotTooltip();
     result.SET_TOUR_GUIDE(true);
-    expect(mockAuthSend).toHaveBeenCalled();
+    expect(mockAuthSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'SET_TOUR_GUIDE'}),
+    );
   });
 
   it('should compute stepCount correctly', () => {

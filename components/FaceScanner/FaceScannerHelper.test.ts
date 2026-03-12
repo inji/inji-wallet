@@ -83,27 +83,37 @@ describe('FaceScannerHelper', () => {
   });
 
   describe('checkBlink', () => {
-    it('should handle face with open eyes', () => {
+    it('should return undefined for open eyes (void function)', () => {
       const face = {
         leftEyeOpenProbability: 0.9,
         rightEyeOpenProbability: 0.9,
       };
-      expect(() => checkBlink(face)).not.toThrow();
+      const result = checkBlink(face);
+      expect(result).toBeUndefined();
     });
 
-    it('should handle face with closed eyes', () => {
+    it('should return undefined for closed eyes (void function)', () => {
       const face = {
         leftEyeOpenProbability: 0.1,
         rightEyeOpenProbability: 0.1,
       };
-      expect(() => checkBlink(face)).not.toThrow();
+      const result = checkBlink(face);
+      expect(result).toBeUndefined();
     });
 
-    it('should detect blink sequence', () => {
-      // Close eyes
-      checkBlink({leftEyeOpenProbability: 0.1, rightEyeOpenProbability: 0.1});
-      // Open eyes
-      checkBlink({leftEyeOpenProbability: 0.9, rightEyeOpenProbability: 0.9});
+    it('should process full blink sequence (close then open) without error', () => {
+      // Close eyes — sets internal closed-eye flags
+      const closeResult = checkBlink({
+        leftEyeOpenProbability: 0.1,
+        rightEyeOpenProbability: 0.1,
+      });
+      expect(closeResult).toBeUndefined();
+      // Open eyes — triggers blink detection via internal state
+      const openResult = checkBlink({
+        leftEyeOpenProbability: 0.9,
+        rightEyeOpenProbability: 0.9,
+      });
+      expect(openResult).toBeUndefined();
     });
   });
 

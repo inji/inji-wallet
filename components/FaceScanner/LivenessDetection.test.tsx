@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 
 jest.mock('expo-camera', () => ({
   Camera: (props: any) => {
@@ -51,6 +51,27 @@ describe('LivenessDetection', () => {
 
   it('should render liveness detection view', () => {
     const {toJSON} = render(<LivenessDetection {...defaultProps} />);
+    expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should call handleOnCancel when cancel is pressed', () => {
+    const handleOnCancel = jest.fn();
+    const {getByText} = render(
+      <LivenessDetection {...defaultProps} handleOnCancel={handleOnCancel} />,
+    );
+    fireEvent.press(getByText('cancel'));
+    expect(handleOnCancel).toHaveBeenCalled();
+  });
+
+  it('should display infoText', () => {
+    const {getByText} = render(<LivenessDetection {...defaultProps} />);
+    expect(getByText('Place your face in the guide')).toBeTruthy();
+  });
+
+  it('should render with different screenColor', () => {
+    const {toJSON} = render(
+      <LivenessDetection {...defaultProps} screenColor="#ff0000" />,
+    );
     expect(toJSON()).toMatchSnapshot();
   });
 });

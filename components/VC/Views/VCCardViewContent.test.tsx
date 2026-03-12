@@ -186,6 +186,10 @@ describe('VCCardViewContent', () => {
         }}
       />,
     );
+    const tree = JSON.stringify(toJSON());
+    // Expired VCs should not show activation icons
+    expect(tree).not.toContain('WalletUnActivated');
+    expect(tree).not.toContain('WalletActivated');
     expect(toJSON()).toMatchSnapshot();
     // Activation check is skipped for expired VCs due to short-circuit evaluation
     expect(isActivationNeeded).not.toHaveBeenCalled();
@@ -204,6 +208,9 @@ describe('VCCardViewContent', () => {
     const {toJSON} = render(
       <VCCardViewContent {...defaultProps} walletBindingResponse={null} />,
     );
+    const tree = JSON.stringify(toJSON());
+    expect(tree).toContain('WalletUnActivated');
+    expect(tree).not.toContain('WalletActivated');
     expect(isActivationNeeded).toHaveBeenCalled();
     expect(toJSON()).toMatchSnapshot();
   });
@@ -293,6 +300,9 @@ describe('VCCardViewContent', () => {
         }}
       />,
     );
+    const tree = JSON.stringify(toJSON());
+    // Revoked but not expired — activation icons still rendered
+    expect(tree).toContain('WalletActivated');
     expect(toJSON()).toMatchSnapshot();
     // Activation check still runs for non-expired revoked VC
     expect(isActivationNeeded).toHaveBeenCalled();

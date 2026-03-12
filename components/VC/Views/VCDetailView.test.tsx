@@ -103,4 +103,69 @@ describe('VCDetailView', () => {
     const {toJSON} = render(<DisclosureInfoNote />);
     expect(toJSON()).toMatchSnapshot();
   });
+
+  it('should render ActivityIndicator when loadingSvg is true', () => {
+    const {toJSON} = render(
+      <VCDetailView {...defaultProps} loadingSvg={true} />,
+    );
+    expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should render SVG template when svgTemplate is provided', () => {
+    const {toJSON} = render(
+      <VCDetailView
+        {...defaultProps}
+        svgTemplate={['<svg viewBox="0 0 300 200"></svg>']}
+      />,
+    );
+    expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should show wallet unactivated section when activation is needed', () => {
+    const {isActivationNeeded} = require('../../../shared/openId4VCI/Utils');
+    isActivationNeeded.mockReturnValue(true);
+
+    const {getByText} = render(
+      <VCDetailView
+        {...defaultProps}
+        vcHasImage={true}
+        walletBindingResponse={null}
+        verifiableCredentialData={{
+          face: undefined,
+          vcMetadata: {
+            format: 'ldp_vc',
+            issuerHost: 'test',
+            isExpired: false,
+            isVerified: true,
+          },
+          issuer: 'test-issuer',
+        }}
+      />,
+    );
+    expect(getByText('offlineAuthDisabledHeader')).toBeTruthy();
+    expect(getByText('enableVerification')).toBeTruthy();
+
+    isActivationNeeded.mockReturnValue(false);
+  });
+
+  it('should show wallet activated section when walletBindingResponse exists', () => {
+    const {isActivationNeeded} = require('../../../shared/openId4VCI/Utils');
+    isActivationNeeded.mockReturnValue(true);
+
+    const {getByText} = render(
+      <VCDetailView
+        {...defaultProps}
+        vcHasImage={true}
+        walletBindingResponse={{walletBindingId: 'abc'}}
+        verifiableCredentialData={{
+          face: undefined,
+          vcMetadata: {format: 'ldp_vc', issuerHost: 'test', isExpired: false},
+          issuer: 'test-issuer',
+        }}
+      />,
+    );
+    expect(getByText('profileAuthenticated')).toBeTruthy();
+
+    isActivationNeeded.mockReturnValue(false);
+  });
 });

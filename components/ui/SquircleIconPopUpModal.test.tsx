@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 import {SquircleIconPopUpModal} from './SquircleIconPopUpModal';
 
 jest.mock('./svg', () => ({
@@ -30,5 +30,10 @@ describe('SquircleIconPopUpModal', () => {
       <SquircleIconPopUpModal {...defaultProps} onBackdropPress={onPress} />,
     );
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should display the message text', () => {
+    const {getByText} = render(<SquircleIconPopUpModal {...defaultProps} />);
+    expect(getByText('Success!')).toBeTruthy();
   });
 });
