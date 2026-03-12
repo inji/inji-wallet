@@ -29,6 +29,7 @@ jest.mock('../../shared/constants', () => ({
 
 const RealDate = global.Date;
 const FIXED_DATE = new RealDate('2025-01-15T12:30:00');
+FIXED_DATE.toLocaleTimeString = () => '12:30 PM';
 
 beforeEach(() => {
   const MockDate = function (...args: any[]) {

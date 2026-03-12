@@ -1156,7 +1156,7 @@ exports[`SharingStatusModal should match snapshot with verifier info 1`] = `
             ]
           }
         >
-          Today at 12:30 pm
+          Today at 12:30 PM
         </Text>
       </View>
     </View>
