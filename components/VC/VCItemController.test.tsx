@@ -92,19 +92,25 @@ describe('useVcItemController', () => {
   it('DISMISS should send DISMISS event', () => {
     const result = useVcItemController({} as any);
     result.DISMISS();
-    expect(mockSend).toHaveBeenCalled();
+    expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'DISMISS'}),
+    );
   });
 
   it('KEBAB_POPUP should send KEBAB_POPUP event', () => {
     const result = useVcItemController({} as any);
     result.KEBAB_POPUP();
-    expect(mockSend).toHaveBeenCalled();
+    expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'KEBAB_POPUP'}),
+    );
   });
 
   it('UPDATE_VC_METADATA should send with metadata', () => {
     const result = useVcItemController({} as any);
     result.UPDATE_VC_METADATA({id: 'test'});
-    expect(mockSend).toHaveBeenCalled();
+    expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'UPDATE_VC_METADATA'}),
+    );
   });
 
   it('storeErrorTranslationPath should be correct', () => {

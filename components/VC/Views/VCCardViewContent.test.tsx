@@ -70,6 +70,10 @@ jest.mock('../../../shared/commonUtil', () => {
 import {VCCardViewContent} from './VCCardViewContent';
 
 describe('VCCardViewContent', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   const defaultProps = {
     credential: {
       credentialSubject: {name: 'Test User'},
@@ -172,6 +176,7 @@ describe('VCCardViewContent', () => {
   });
 
   it('should render with expired VC metadata', () => {
+    const {isActivationNeeded} = require('../../../shared/openId4VCI/Utils');
     const {toJSON} = render(
       <VCCardViewContent
         {...defaultProps}
@@ -182,6 +187,8 @@ describe('VCCardViewContent', () => {
       />,
     );
     expect(toJSON()).toMatchSnapshot();
+    // Activation check is skipped for expired VCs due to short-circuit evaluation
+    expect(isActivationNeeded).not.toHaveBeenCalled();
   });
 
   it('should render with isInitialLaunch true', () => {
@@ -197,6 +204,7 @@ describe('VCCardViewContent', () => {
     const {toJSON} = render(
       <VCCardViewContent {...defaultProps} walletBindingResponse={null} />,
     );
+    expect(isActivationNeeded).toHaveBeenCalled();
     expect(toJSON()).toMatchSnapshot();
   });
 
@@ -266,10 +274,12 @@ describe('VCCardViewContent', () => {
     const {isVCLoaded} = require('../common/VCUtils');
     isVCLoaded.mockReturnValueOnce(false);
     const {toJSON} = render(<VCCardViewContent {...defaultProps} />);
+    expect(isVCLoaded).toHaveBeenCalled();
     expect(toJSON()).toMatchSnapshot();
   });
 
   it('should render with revoked VC', () => {
+    const {isActivationNeeded} = require('../../../shared/openId4VCI/Utils');
     const {toJSON} = render(
       <VCCardViewContent
         {...defaultProps}
@@ -284,6 +294,8 @@ describe('VCCardViewContent', () => {
       />,
     );
     expect(toJSON()).toMatchSnapshot();
+    // Activation check still runs for non-expired revoked VC
+    expect(isActivationNeeded).toHaveBeenCalled();
   });
 
   it('should render VP_SHARE flow with no selection', () => {

@@ -85,42 +85,56 @@ describe('BannerNotificationController', () => {
   it('DISMISS sends settings DISMISS', () => {
     const result = UseBannerNotification();
     result.DISMISS();
-    expect(mockSettingsSend).toHaveBeenCalled();
+    expect(mockSettingsSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'DISMISS'}),
+    );
   });
 
   it('RESET_WALLET_BINDING_SUCCESS sends event', () => {
     const result = UseBannerNotification();
     result.RESET_WALLET_BINDING_SUCCESS();
-    expect(mockVcMetaSend).toHaveBeenCalled();
+    expect(mockVcMetaSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'RESET_WALLET_BINDING_SUCCESS'}),
+    );
   });
 
   it('RESET_VERIFICATION_STATUS sends event with null', () => {
     const result = UseBannerNotification();
     result.RESET_VERIFICATION_STATUS();
-    expect(mockVcMetaSend).toHaveBeenCalled();
+    expect(mockVcMetaSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'RESET_VERIFICATION_STATUS'}),
+    );
   });
 
   it('RESET_DOWNLOADING_FAILED sends event', () => {
     const result = UseBannerNotification();
     result.RESET_DOWNLOADING_FAILED();
-    expect(mockVcMetaSend).toHaveBeenCalled();
+    expect(mockVcMetaSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'RESET_DOWNLOADING_FAILED'}),
+    );
   });
 
   it('RESET_DOWNLOADING_SUCCESS sends event', () => {
     const result = UseBannerNotification();
     result.RESET_DOWNLOADING_SUCCESS();
-    expect(mockVcMetaSend).toHaveBeenCalled();
+    expect(mockVcMetaSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'RESET_DOWNLOADING_SUCCESS'}),
+    );
   });
 
   it('RESET_REVIRIFICATION_SUCCESS sends event', () => {
     const result = UseBannerNotification();
     result.RESET_REVIRIFICATION_SUCCESS();
-    expect(mockVcMetaSend).toHaveBeenCalled();
+    expect(mockVcMetaSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'RESET_REVERIFY_VC_SUCCESS'}),
+    );
   });
 
   it('RESET_REVERIFICATION_FAILURE sends event', () => {
     const result = UseBannerNotification();
     result.RESET_REVERIFICATION_FAILURE();
-    expect(mockVcMetaSend).toHaveBeenCalled();
+    expect(mockVcMetaSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'RESET_REVERIFY_VC_FAILED'}),
+    );
   });
 });

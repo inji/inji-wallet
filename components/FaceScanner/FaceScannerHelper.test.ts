@@ -42,6 +42,11 @@ jest.mock('@iriscan/biometric-sdk-react-native', () => ({
   faceCompare: jest.fn().mockResolvedValue(true),
   configure: jest.fn(),
 }));
+jest.mock('../../shared/constants', () => ({
+  ...jest.requireActual('../../shared/constants'),
+  isAndroid: () => true,
+  LIVENESS_THRESHOLD: 0.4,
+}));
 
 import {
   checkBlink,
@@ -144,11 +149,6 @@ describe('FaceScannerHelper', () => {
 
   describe('getNormalizedFacePoints', () => {
     it('should extract Android face points', () => {
-      jest.mock('../../shared/constants', () => ({
-        ...jest.requireActual('../../shared/constants'),
-        isAndroid: () => true,
-        LIVENESS_THRESHOLD: 0.4,
-      }));
       const facePoints = {
         LEFT_EYE: {x: 10, y: 20},
         RIGHT_EYE: {x: 30, y: 40},

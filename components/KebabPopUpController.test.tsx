@@ -101,67 +101,89 @@ describe('KebabPopUpController', () => {
   it('PIN_CARD sends event', () => {
     const result = useKebabPopUp(mockProps);
     result.PIN_CARD();
-    expect(mockServiceSend).toHaveBeenCalled();
+    expect(mockServiceSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'PIN_CARD'}),
+    );
   });
 
   it('KEBAB_POPUP sends event', () => {
     const result = useKebabPopUp(mockProps);
     result.KEBAB_POPUP();
-    expect(mockServiceSend).toHaveBeenCalled();
+    expect(mockServiceSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'KEBAB_POPUP'}),
+    );
   });
 
   it('ADD_WALLET_BINDING_ID sends event', () => {
     const result = useKebabPopUp(mockProps);
     result.ADD_WALLET_BINDING_ID();
-    expect(mockServiceSend).toHaveBeenCalled();
+    expect(mockServiceSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'ADD_WALLET_BINDING_ID'}),
+    );
   });
 
   it('CONFIRM sends event', () => {
     const result = useKebabPopUp(mockProps);
     result.CONFIRM();
-    expect(mockServiceSend).toHaveBeenCalled();
+    expect(mockServiceSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'CONFIRM'}),
+    );
   });
 
   it('REMOVE sends event with vcMetadata', () => {
     const result = useKebabPopUp(mockProps);
     result.REMOVE({id: 'vc-1'} as any);
-    expect(mockServiceSend).toHaveBeenCalled();
+    expect(mockServiceSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'REMOVE'}),
+    );
   });
 
   it('DISMISS sends event', () => {
     const result = useKebabPopUp(mockProps);
     result.DISMISS();
-    expect(mockServiceSend).toHaveBeenCalled();
+    expect(mockServiceSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'DISMISS'}),
+    );
   });
 
   it('CANCEL sends event', () => {
     const result = useKebabPopUp(mockProps);
     result.CANCEL();
-    expect(mockServiceSend).toHaveBeenCalled();
+    expect(mockServiceSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'CANCEL'}),
+    );
   });
 
   it('SHOW_ACTIVITY sends event', () => {
     const result = useKebabPopUp(mockProps);
     result.SHOW_ACTIVITY();
-    expect(mockServiceSend).toHaveBeenCalled();
+    expect(mockServiceSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'SHOW_ACTIVITY'}),
+    );
   });
 
   it('REVERIFY_VC sends event', () => {
     const result = useKebabPopUp(mockProps);
     result.REVERIFY_VC();
-    expect(mockServiceSend).toHaveBeenCalled();
+    expect(mockServiceSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'REVERIFY_VC'}),
+    );
   });
 
   it('INPUT_OTP sends event with otp', () => {
     const result = useKebabPopUp(mockProps);
     result.INPUT_OTP('123456');
-    expect(mockServiceSend).toHaveBeenCalled();
+    expect(mockServiceSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'INPUT_OTP'}),
+    );
   });
 
   it('RESEND_OTP sends event', () => {
     const result = useKebabPopUp(mockProps);
     result.RESEND_OTP();
-    expect(mockServiceSend).toHaveBeenCalled();
+    expect(mockServiceSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'RESEND_OTP'}),
+    );
   });
 
   it('GOTO_SCANSCREEN navigates to Share', () => {
@@ -176,6 +198,8 @@ describe('KebabPopUpController', () => {
     };
     const result = useKebabPopUp(mockProps);
     result.SELECT_VC_ITEM(mockVcRef as any, 'share');
-    expect(mockScanSend).toHaveBeenCalled();
+    expect(mockScanSend).toHaveBeenCalledWith(
+      expect.objectContaining({type: 'SELECT_VC'}),
+    );
   });
 });

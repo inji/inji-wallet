@@ -14,16 +14,10 @@ jest.mock('../../shared/GlobalContext', () => {
   };
 });
 
-jest.mock('@xstate/react', () => {
-  let selectorReturnValue = false;
-  return {
-    useInterpret: () => ({send: jest.fn(), getSnapshot: () => ({})}),
-    useSelector: jest.fn((service, selector) => selectorReturnValue),
-    __setSelectorReturn: (val: any) => {
-      selectorReturnValue = val;
-    },
-  };
-});
+jest.mock('@xstate/react', () => ({
+  useInterpret: () => ({send: jest.fn(), getSnapshot: () => ({})}),
+  useSelector: jest.fn((_service, selector) => selector()),
+}));
 
 jest.mock('expo-camera', () => ({
   CameraView: 'CameraView',
@@ -83,6 +77,10 @@ jest.mock('react-native-elements', () => {
 });
 
 import {FaceScanner} from './FaceScanner';
+import {
+  selectIsCheckingPermission,
+  selectIsPermissionDenied,
+} from '../../machines/faceScanner';
 
 describe('FaceScanner', () => {
   const defaultProps = {
@@ -94,6 +92,8 @@ describe('FaceScanner', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    (selectIsCheckingPermission as jest.Mock).mockImplementation(() => true);
+    (selectIsPermissionDenied as jest.Mock).mockImplementation(() => false);
   });
 
   it('should render checking permission state', () => {
@@ -101,15 +101,25 @@ describe('FaceScanner', () => {
     expect(toJSON()).toMatchSnapshot();
   });
 
-  it('should render with multiple VC images', () => {
-    const {toJSON} = render(
-      <FaceScanner {...defaultProps} vcImages={['img1', 'img2', 'img3']} />,
-    );
+  it('should render permission denied state', () => {
+    (selectIsCheckingPermission as jest.Mock).mockReturnValue(false);
+    (selectIsPermissionDenied as jest.Mock).mockReturnValue(true);
+    const {toJSON, getByText} = render(<FaceScanner {...defaultProps} />);
+    expect(getByText(/allowCamera/)).toBeTruthy();
     expect(toJSON()).toMatchSnapshot();
   });
 
-  it('should render with empty VC images', () => {
-    const {toJSON} = render(<FaceScanner {...defaultProps} vcImages={[]} />);
+  it('should render face compare state', () => {
+    (selectIsCheckingPermission as jest.Mock).mockReturnValue(false);
+    const {toJSON} = render(<FaceScanner {...defaultProps} />);
+    expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should render face compare with multiple VC images', () => {
+    (selectIsCheckingPermission as jest.Mock).mockReturnValue(false);
+    const {toJSON} = render(
+      <FaceScanner {...defaultProps} vcImages={['img1', 'img2', 'img3']} />,
+    );
     expect(toJSON()).toMatchSnapshot();
   });
 });

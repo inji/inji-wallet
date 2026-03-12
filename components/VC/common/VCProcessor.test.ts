@@ -82,6 +82,7 @@ describe('VCProcessor', () => {
       expect(
         NativeModules.RNPixelpassModule.decodeBase64UrlEncodedCBORData,
       ).toHaveBeenCalledWith('base64data');
+      expect(result).toEqual({issuerSigned: {nameSpaces: {}}});
     });
 
     it('should call getVerifiableCredential for ldp_vc format', async () => {

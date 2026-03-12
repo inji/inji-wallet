@@ -1,5 +1,3 @@
-import {renderHook} from '@testing-library/react-native';
-
 const mockAuthSend = jest.fn();
 
 jest.mock('react-native-copilot', () => ({

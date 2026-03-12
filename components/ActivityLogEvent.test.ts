@@ -1,14 +1,15 @@
 import {VCActivityLog} from './ActivityLogEvent';
 
+jest.mock('jsonld', () => ({
+  compact: jest.fn(),
+  expand: jest.fn(),
+}));
+
 describe('ActivityLog', () => {
   let instance: {timestamp: any};
 
   beforeEach(() => {
     instance = new VCActivityLog();
-    jest.mock('jsonld', () => ({
-      compact: jest.fn(),
-      expand: jest.fn(),
-    }));
   });
 
   it('Activity log instance should have a timestamp set', () => {
@@ -42,10 +43,6 @@ describe('getActionText', () => {
   };
   beforeEach(() => {
     mockIl18nfn = jest.fn();
-    jest.mock('jsonld', () => ({
-      compact: jest.fn(),
-      expand: jest.fn(),
-    }));
     activityLog = new VCActivityLog({
       id: 'mockId',
       credentialConfigurationId: 'mockId',

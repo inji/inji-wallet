@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, act} from '@testing-library/react-native';
 import {QrCodeOverlay} from './QrCodeOverlay';
 import {NativeModules} from 'react-native';
 
@@ -82,7 +82,9 @@ describe('QrCodeOverlay Component', () => {
       Promise.resolve(['key', longData]),
     );
     const {toJSON} = render(<QrCodeOverlay {...defaultProps} />);
-    await new Promise(resolve => setTimeout(resolve, 50));
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve, 50));
+    });
     // With large data, qrError is set to true - component returns null
     expect(toJSON()).toMatchSnapshot();
     // Reset

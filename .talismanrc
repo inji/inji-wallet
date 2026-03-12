@@ -660,5 +660,7 @@ fileignoreconfig:
     checksum: 18d0daf16263d9446ce3fd06925a0b88c2a4a701aeb3717d5809bc9a6509b540
   - filename: machines/openID4VP/openID4VPActions.test.ts
     checksum: de0ba08b904c04675846c355d4f67ced8e70a7578d61d0d807ff1d799c18186f
+  - filename: components/BannerNotificationContainer.test.tsx
+    checksum: c04ac406cea5d136f4f5e1e64560d6ff721880653cd8ef5a5d3425b6a8a023dd
     version: "1.0"
 
