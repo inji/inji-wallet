@@ -44,8 +44,6 @@ export class VCProcessor {
       const credentialSubject = payload.vc?.credentialSubject ?? {};
       return {
         fullResolvedPayload: credentialSubject,
-        publicKeys: Object.keys(credentialSubject),
-        credentialSubject,
       };
     }
     return getVerifiableCredential(vcData);
