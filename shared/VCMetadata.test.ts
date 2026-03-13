@@ -367,6 +367,26 @@ describe('getVCMetadata', () => {
     expect(result.downloadKeyType).toBe('ECDSA');
   });
 
+  it('should handle JWT_VC_JSON format in getVCMetadata', () => {
+    const mockContext: any = {
+      selectedIssuer: {
+        credential_issuer_host: 'https://issuer.example.com',
+        issuer_id: 'TestIssuer',
+        protocol: 'OpenId4VCI',
+      },
+      timestamp: '1234567890',
+      vcMetadata: {},
+      verifiableCredential: null,
+      credentialWrapper: {format: VCFormat.jwt_vc_json},
+      selectedCredentialType: null,
+    };
+
+    const result = getVCMetadata(mockContext, 'ES256');
+
+    expect(result.format).toBe(VCFormat.jwt_vc_json);
+    expect(result.downloadKeyType).toBe('ES256');
+  });
+
   it('should extract issuer name from URL', () => {
     const mockContext: any = {
       selectedIssuer: {

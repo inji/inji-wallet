@@ -87,6 +87,12 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
       availableFieldNames = Object.keys(
         verifiableCredential?.fullResolvedPayload,
       );
+    } else if (
+      props.verifiableCredentialData.vcMetadata.format === VCFormat.jwt_vc_json
+    ) {
+      availableFieldNames = Object.keys(
+        verifiableCredential?.fullResolvedPayload,
+      );
     }
     for (const fieldName of availableFieldNames) {
       if (
