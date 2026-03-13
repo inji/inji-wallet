@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 import {Header} from './Header';
 
 jest.mock('react-native-safe-area-context', () => ({
@@ -24,5 +24,15 @@ describe('Header', () => {
       <Header title="My Title" goBack={jest.fn()} testID="header" />,
     );
     expect(getByText('My Title')).toBeTruthy();
+  });
+
+  it('should call goBack when back button is pressed', () => {
+    const goBack = jest.fn();
+    const {getByLabelText} = render(
+      <Header title="My Title" goBack={goBack} testID="header" />,
+    );
+
+    fireEvent.press(getByLabelText('goBack'));
+    expect(goBack).toHaveBeenCalled();
   });
 });

@@ -39,10 +39,11 @@ jest.mock('../../machines/Issuers/IssuersMachine', () => ({
   displayType: {},
 }));
 jest.mock('../VC/common/VCUtils', () => ({
-  getCredentialType: jest.fn(() => 'National ID'),
+  getCredentialType: jest.fn(() => 'identityCard'),
 }));
 
 import {CredentialType} from './CredentialType';
+import {getCredentialType} from '../VC/common/VCUtils';
 
 describe('CredentialType', () => {
   it('should render with display name from wellknown', () => {
@@ -70,6 +71,7 @@ describe('CredentialType', () => {
         testID: 'test2',
       }),
     );
-    expect(getByText('National ID')).toBeTruthy();
+    expect(getCredentialType).toHaveBeenCalledWith(item);
+    expect(getByText('identityCard')).toBeTruthy();
   });
 });
