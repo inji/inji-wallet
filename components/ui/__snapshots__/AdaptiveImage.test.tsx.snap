@@ -1,9 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AdaptiveImage should handle svg uri with hash fragment 1`] = `null`;
-
-exports[`AdaptiveImage should handle svg uri with query params 1`] = `null`;
-
 exports[`AdaptiveImage should render Image for non-svg uri 1`] = `
 <Image
   accessibilityLabel="test-img"
@@ -16,5 +12,3 @@ exports[`AdaptiveImage should render Image for non-svg uri 1`] = `
   }
 />
 `;
-
-exports[`AdaptiveImage should render SvgUri for svg uri 1`] = `null`;

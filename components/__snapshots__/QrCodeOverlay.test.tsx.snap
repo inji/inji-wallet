@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`QrCodeOverlay Component should set qrError when data is too large 1`] = `null`;

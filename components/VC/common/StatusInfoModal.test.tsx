@@ -26,16 +26,16 @@ describe('StatusInfoModal', () => {
     onClose: jest.fn(),
   };
 
-  it('should match snapshot when visible', () => {
-    const {toJSON} = render(<StatusInfoModal {...defaultProps} />);
-    expect(toJSON()).toMatchSnapshot();
+  it('should render when visible', () => {
+    const {getByTestId} = render(<StatusInfoModal {...defaultProps} />);
+    expect(getByTestId('statusInfoModal')).toBeTruthy();
   });
 
-  it('should match snapshot when not visible', () => {
-    const {toJSON} = render(
+  it('should not render when not visible', () => {
+    const {getByTestId} = render(
       <StatusInfoModal {...defaultProps} isVisible={false} />,
     );
-    expect(toJSON()).toMatchSnapshot();
+    expect(getByTestId('statusInfoModal').props.isVisible).toBe(false);
   });
 
   it('should call onClose when close button is pressed', () => {

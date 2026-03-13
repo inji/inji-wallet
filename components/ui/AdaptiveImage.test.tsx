@@ -19,7 +19,7 @@ describe('AdaptiveImage', () => {
     const tree = render(
       <AdaptiveImage uri="https://example.com/logo.svg" testID="test-svg" />,
     );
-    expect(tree.toJSON()).toMatchSnapshot();
+    expect(tree.toJSON()).toBeNull();
   });
 
   it('should handle svg uri with query params', () => {
@@ -29,7 +29,7 @@ describe('AdaptiveImage', () => {
         testID="test-svg-query"
       />,
     );
-    expect(tree.toJSON()).toMatchSnapshot();
+    expect(tree.toJSON()).toBeNull();
   });
 
   it('should handle svg uri with hash fragment', () => {
@@ -39,6 +39,6 @@ describe('AdaptiveImage', () => {
         testID="test-svg-hash"
       />,
     );
-    expect(tree.toJSON()).toMatchSnapshot();
+    expect(tree.toJSON()).toBeNull();
   });
 });

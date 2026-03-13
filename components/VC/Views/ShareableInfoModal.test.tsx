@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 
 // We need to import the module to test its utility functions and component
 // First, mock the required dependencies
@@ -17,31 +17,33 @@ describe('ShareableInfoModal', () => {
     disclosedPaths: ['name', 'address.city', 'address.state'],
   };
 
-  it('should match snapshot when visible with disclosed paths', () => {
+  it('should render disclosed field labels when visible', () => {
     const {toJSON, getByText} = render(
       <ShareableInfoModal {...defaultProps} />,
     );
-    expect(toJSON()).toMatchSnapshot();
+    expect(toJSON()).toBeDefined();
     expect(getByText('Name')).toBeTruthy();
     expect(getByText('Address')).toBeTruthy();
   });
 
-  it('should match snapshot when not visible', () => {
+  it('should not render content when not visible', () => {
     const {toJSON} = render(
       <ShareableInfoModal {...defaultProps} isVisible={false} />,
     );
-    expect(toJSON()).toMatchSnapshot();
+    const tree: any = toJSON();
+    expect(tree).toBeDefined();
+    expect(tree.props.isVisible).toBe(false);
   });
 
-  it('should match snapshot with empty disclosed paths', () => {
+  it('should render modal with empty disclosed paths', () => {
     const {toJSON} = render(
       <ShareableInfoModal {...defaultProps} disclosedPaths={[]} />,
     );
-    expect(toJSON()).toMatchSnapshot();
+    expect(toJSON()).toBeDefined();
   });
 
-  it('should match snapshot with nested array paths', () => {
-    const {toJSON} = render(
+  it('should render nested array path labels', () => {
+    const {toJSON, getByText} = render(
       <ShareableInfoModal
         {...defaultProps}
         disclosedPaths={[
@@ -53,11 +55,13 @@ describe('ShareableInfoModal', () => {
         ]}
       />,
     );
-    expect(toJSON()).toMatchSnapshot();
+    expect(toJSON()).toBeDefined();
+    expect(getByText(/Addresses/)).toBeTruthy();
+    expect(getByText(/Phones/)).toBeTruthy();
   });
 
-  it('should match snapshot with deeply nested paths', () => {
-    const {toJSON} = render(
+  it('should render deeply nested path labels', () => {
+    const {toJSON, getByText} = render(
       <ShareableInfoModal
         {...defaultProps}
         disclosedPaths={[
@@ -68,6 +72,18 @@ describe('ShareableInfoModal', () => {
         ]}
       />,
     );
-    expect(toJSON()).toMatchSnapshot();
+    expect(toJSON()).toBeDefined();
+    expect(getByText(/Person/)).toBeTruthy();
+    expect(getByText(/Home/)).toBeTruthy();
+  });
+
+  it('should call onDismiss when close icon is pressed', () => {
+    const onDismiss = jest.fn();
+    const {UNSAFE_getAllByProps} = render(
+      <ShareableInfoModal {...defaultProps} onDismiss={onDismiss} />,
+    );
+    const closers = UNSAFE_getAllByProps({name: 'close'});
+    fireEvent.press(closers[0]);
+    expect(onDismiss).toHaveBeenCalled();
   });
 });

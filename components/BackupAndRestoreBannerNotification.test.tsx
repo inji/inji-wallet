@@ -38,7 +38,7 @@ jest.mock('./BannerNotification', () => ({
 describe('BackupAndRestoreBannerNotification Component', () => {
   it('should match snapshot with no banners', () => {
     const {toJSON} = render(<BackupAndRestoreBannerNotification />);
-    expect(toJSON()).toMatchSnapshot();
+    expect(toJSON()).toBeNull();
   });
 
   it('should render backup failure banner', () => {
@@ -54,7 +54,7 @@ describe('BackupAndRestoreBannerNotification Component', () => {
       DISMISS_SHOW_BACKUP_IN_PROGRESS: jest.fn(),
     });
     const {toJSON} = render(<BackupAndRestoreBannerNotification />);
-    expect(toJSON()).toMatchSnapshot();
+    expect(toJSON()).toBeNull();
     const {BannerNotification} = require('./BannerNotification');
     expect(BannerNotification).toHaveBeenCalledWith(
       expect.objectContaining({type: 'error'}),
@@ -75,7 +75,7 @@ describe('BackupAndRestoreBannerNotification Component', () => {
       DISMISS_SHOW_RESTORE_IN_PROGRESS: jest.fn(),
     });
     const {toJSON} = render(<BackupAndRestoreBannerNotification />);
-    expect(toJSON()).toMatchSnapshot();
+    expect(toJSON()).toBeNull();
     const {BannerNotification} = require('./BannerNotification');
     expect(BannerNotification).toHaveBeenCalledWith(
       expect.objectContaining({type: 'error'}),

@@ -61,6 +61,10 @@ import {
 } from './FaceScannerHelper';
 
 describe('FaceScannerHelper', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('imageCaptureConfig', () => {
     it('should have correct defaults', () => {
       expect(imageCaptureConfig.base64).toBe(true);

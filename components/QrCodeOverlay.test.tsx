@@ -86,7 +86,7 @@ describe('QrCodeOverlay Component', () => {
       await new Promise(resolve => setTimeout(resolve, 50));
     });
     // With large data, qrError is set to true - component returns null
-    expect(toJSON()).toMatchSnapshot();
+    expect(toJSON()).toBeNull();
     // Reset
     NativeModules.RNSecureKeystoreModule.getData = jest.fn(() =>
       Promise.resolve(['key', 'mocked-qr-data']),

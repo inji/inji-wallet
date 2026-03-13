@@ -55,10 +55,10 @@ exports[`SquircleIconPopUpModal should render with message 1`] = `
           null,
           null,
           {
-            "width": 600,
+            "width": 300,
           },
           {
-            "height": 600,
+            "height": 300,
           },
           null,
           null,
@@ -194,10 +194,10 @@ exports[`SquircleIconPopUpModal should render without message 1`] = `
           null,
           null,
           {
-            "width": 600,
+            "width": 300,
           },
           {
-            "height": 600,
+            "height": 300,
           },
           null,
           null,

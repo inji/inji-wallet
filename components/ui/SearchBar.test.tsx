@@ -1,5 +1,6 @@
 import React from 'react';
 import {render, fireEvent} from '@testing-library/react-native';
+import {Dimensions} from 'react-native';
 import {SearchBar} from './SearchBar';
 
 jest.mock('./svg', () => ({
@@ -7,6 +8,19 @@ jest.mock('./svg', () => ({
 }));
 
 describe('SearchBar', () => {
+  beforeEach(() => {
+    jest.spyOn(Dimensions, 'get').mockReturnValue({
+      width: 375,
+      height: 667,
+      scale: 2,
+      fontScale: 2,
+    } as any);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   const defaultProps = {
     searchIconTestID: 'searchIcon',
     searchBarTestID: 'searchBar',

@@ -1,5 +1,6 @@
 import React from 'react';
 import {render, fireEvent} from '@testing-library/react-native';
+import {Dimensions} from 'react-native';
 
 jest.mock('expo-camera', () => ({
   Camera: (props: any) => {
@@ -36,6 +37,19 @@ jest.mock('./FaceScannerHelper', () => ({FaceDetectorConfig: {}}));
 import LivenessDetection from './LivenessDetection';
 
 describe('LivenessDetection', () => {
+  beforeEach(() => {
+    jest.spyOn(Dimensions, 'get').mockReturnValue({
+      width: 375,
+      height: 667,
+      scale: 2,
+      fontScale: 2,
+    } as any);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   const defaultProps = {
     screenColor: '#0000ff',
     infoText: 'Place your face in the guide',

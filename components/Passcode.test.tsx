@@ -1,5 +1,6 @@
 import React from 'react';
 import {render} from '@testing-library/react-native';
+import {Dimensions} from 'react-native';
 import {Passcode} from './Passcode';
 
 // Mock PasscodeVerify
@@ -14,6 +15,19 @@ jest.mock('../shared/telemetry/TelemetryUtils', () => ({
 }));
 
 describe('Passcode Component', () => {
+  beforeEach(() => {
+    jest.spyOn(Dimensions, 'get').mockReturnValue({
+      width: 375,
+      height: 667,
+      scale: 2,
+      fontScale: 2,
+    } as any);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   const defaultProps = {
     error: '',
     storedPasscode: 'hashed-passcode',
