@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RequestScreen should render default state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      {
+        "paddingBottom": 24,
+        "paddingEnd": 24,
+        "paddingStart": 24,
+        "paddingTop": 24,
+      },
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      {
+        "justifyContent": "space-between",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "flex-end",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  />
+</View>
+`;

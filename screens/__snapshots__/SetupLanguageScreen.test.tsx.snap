@@ -1,0 +1,252 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SetupLanguageScreen should render setup language screen 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-around",
+        "maxHeight": 1334,
+      },
+      null,
+      null,
+    ]
+  }
+>
+  settingsLanguageIcon
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        {
+          "width": 600,
+        },
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      accessibilityLabel="chooseLanguage"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+            "fontSize": 15,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 10,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 10,
+          },
+          {
+            "fontSize": 18,
+          },
+          {
+            "paddingTop": 3,
+          },
+        ]
+      }
+    >
+      header
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+            "fontSize": 15,
+          },
+          {
+            "color": "#6F6F6F",
+          },
+          {
+            "textAlign": "center",
+          },
+          null,
+          {
+            "fontSize": 15,
+            "lineHeight": 18,
+          },
+          {
+            "paddingTop": 3,
+          },
+        ]
+      }
+    >
+      description
+    </Text>
+  </View>
+  <View
+    accessibilityLabel="savePreference"
+    accessible={true}
+    buttonStyle={
+      [
+        null,
+        {
+          "alignSelf": "center",
+          "borderRadius": 9,
+          "height": 54,
+          "width": 540,
+        },
+        null,
+        {
+          "width": "100%",
+        },
+      ]
+    }
+    containerStyle={
+      [
+        null,
+        [
+          {
+            "flexDirection": "row",
+          },
+          null,
+          null,
+          {
+            "alignSelf": "center",
+            "borderRadius": 9,
+            "height": 54,
+            "width": 540,
+          },
+          undefined,
+        ],
+      ]
+    }
+    linearGradientProps={
+      {
+        "colors": [
+          "#FF5300",
+          "#5B03AD",
+        ],
+        "end": {
+          "x": 1,
+          "y": 0.5,
+        },
+        "start": {
+          "x": 0.5,
+          "y": 0.5,
+        },
+      }
+    }
+    onPress={[Function]}
+    style={
+      [
+        [
+          null,
+          {
+            "alignSelf": "center",
+            "borderRadius": 9,
+            "height": 54,
+            "width": 540,
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ],
+      ]
+    }
+    title={
+      <Text
+        color="#FFFFFF"
+        style={
+          [
+            {
+              "paddingLeft": 0,
+            },
+            undefined,
+          ]
+        }
+        weight="bold"
+      >
+        save
+      </Text>
+    }
+    type="gradient"
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+          {
+            "color": "#FFFFFF",
+          },
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          [
+            {
+              "paddingLeft": 0,
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      save
+    </Text>
+  </View>
+</View>
+`;

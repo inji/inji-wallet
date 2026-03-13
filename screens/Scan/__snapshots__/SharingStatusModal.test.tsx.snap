@@ -1,0 +1,1371 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SharingStatusModal should match snapshot with gradient and clear buttons 1`] = `
+<View
+  isVisible={true}
+  showClose={false}
+  testID="modal"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        {
+          "marginBottom": 64,
+          "marginEnd": 0,
+          "marginStart": 0,
+          "marginTop": 64,
+        },
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      testID="statusImage"
+    />
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 20,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 20,
+          },
+          {
+            "fontSize": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+        ]
+      }
+    >
+      Shared Successfully
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#666666",
+          },
+          {
+            "textAlign": "center",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 33,
+            "marginStart": 33,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      Your credential has been shared
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 20,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 20,
+          },
+          {
+            "fontSize": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+        ]
+      }
+    />
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "marginBottom": 16.008,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      buttonStyle={
+        [
+          null,
+          {
+            "alignSelf": "center",
+            "borderRadius": 9,
+            "height": 54,
+            "width": 540,
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            undefined,
+          ],
+        ]
+      }
+      linearGradientProps={
+        {
+          "colors": [
+            "#FF5300",
+            "#5B03AD",
+          ],
+          "end": {
+            "x": 1,
+            "y": 0.5,
+          },
+          "start": {
+            "x": 0.5,
+            "y": 0.5,
+          },
+        }
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          color="#FFFFFF"
+          style={
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ]
+          }
+          weight="bold"
+        >
+          Retry
+        </Text>
+      }
+      type="gradient"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        Retry
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      buttonStyle={
+        [
+          null,
+          {
+            "backgroundColor": "transparent",
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+              "height": 45,
+            },
+            null,
+            null,
+            null,
+            {
+              "marginBottom": 9,
+            },
+          ],
+        ]
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "backgroundColor": "transparent",
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          align="center"
+          color="#951F6F"
+          style={
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ]
+          }
+          weight="semibold"
+        >
+          Home
+        </Text>
+      }
+      type="clear"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#951F6F",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        Home
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`SharingStatusModal should match snapshot with home and history buttons 1`] = `
+<View
+  isVisible={true}
+  showClose={false}
+  testID="modal"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        {
+          "marginBottom": 64,
+          "marginEnd": 0,
+          "marginStart": 0,
+          "marginTop": 64,
+        },
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      testID="statusImage"
+    />
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 20,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 20,
+          },
+          {
+            "fontSize": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+        ]
+      }
+    >
+      Shared Successfully
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#666666",
+          },
+          {
+            "textAlign": "center",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 33,
+            "marginStart": 33,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      Your credential has been shared
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 20,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 20,
+          },
+          {
+            "fontSize": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+        ]
+      }
+    />
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "space-evenly",
+        },
+        null,
+        null,
+        {
+          "marginBottom": 80.03999999999999,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "height": 75,
+            "justifyContent": "space-between",
+          }
+        }
+        testID="successfullyVcSharedHomeIcon"
+      >
+        SuccessHomeIcon
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              null,
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          status.accepted.home
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "height": 75,
+            "justifyContent": "space-between",
+          }
+        }
+        testID="successfullyVcSharedHistoryIcon"
+      >
+        SuccessHistoryIcon
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              null,
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          status.accepted.history
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`SharingStatusModal should match snapshot with no buttons 1`] = `
+<View
+  isVisible={true}
+  showClose={false}
+  testID="modal"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        {
+          "marginBottom": 64,
+          "marginEnd": 0,
+          "marginStart": 0,
+          "marginTop": 64,
+        },
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      testID="statusImage"
+    />
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 20,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 20,
+          },
+          {
+            "fontSize": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+        ]
+      }
+    >
+      Shared Successfully
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#666666",
+          },
+          {
+            "textAlign": "center",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 33,
+            "marginStart": 33,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      Your credential has been shared
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 20,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 20,
+          },
+          {
+            "fontSize": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+        ]
+      }
+    />
+  </View>
+</View>
+`;
+
+exports[`SharingStatusModal should match snapshot with verifier info 1`] = `
+<View
+  isVisible={true}
+  showClose={false}
+  testID="modal"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        {
+          "marginBottom": 64,
+          "marginEnd": 0,
+          "marginStart": 0,
+          "marginTop": 64,
+        },
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      testID="statusImage"
+    />
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 20,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 20,
+          },
+          {
+            "fontSize": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+        ]
+      }
+    >
+      Shared Successfully
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#666666",
+          },
+          {
+            "textAlign": "center",
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 33,
+            "marginStart": 33,
+            "marginTop": 0,
+          },
+          null,
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      Your credential has been shared
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 20,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 20,
+          },
+          {
+            "fontSize": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+        ]
+      }
+    />
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "center",
+          },
+          null,
+          null,
+          {
+            "alignSelf": "center",
+            "backgroundColor": "#F5F5F5",
+            "borderRadius": 16,
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "paddingHorizontal": 16,
+            "paddingVertical": 12,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "flex-start",
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+            ]
+          }
+        >
+          Test Verifier
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              {
+                "color": "#666",
+                "fontSize": 13,
+                "marginTop": 2,
+              },
+            ]
+          }
+        >
+          Today at 12:30 PM
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "space-evenly",
+        },
+        null,
+        null,
+        {
+          "marginBottom": 80.03999999999999,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "height": 75,
+            "justifyContent": "space-between",
+          }
+        }
+        testID="successfullyVcSharedHomeIcon"
+      >
+        SuccessHomeIcon
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              null,
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          status.accepted.home
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={false}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "height": 75,
+            "justifyContent": "space-between",
+          }
+        }
+        testID="successfullyVcSharedHistoryIcon"
+      >
+        SuccessHistoryIcon
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              null,
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          status.accepted.history
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

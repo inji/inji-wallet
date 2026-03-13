@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WalletBinding should match snapshot 1`] = `"BindingVcWarningOverlay"`;
+
+exports[`WalletVerified should match snapshot 1`] = `
+<View
+  color="#4B9D20"
+  containerStyle={
+    {
+      "bottom": 1,
+      "marginStart": 4,
+    }
+  }
+  name="verified-user"
+  size={28}
+/>
+`;

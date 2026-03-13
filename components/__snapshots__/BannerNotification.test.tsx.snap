@@ -164,7 +164,13 @@ exports[`BannerNotification Component should match snapshot with different testI
             "paddingLeft": 9,
           }
         }
-      />
+      >
+        <View
+          color="#FFFFFF"
+          name="close"
+          size={19}
+        />
+      </View>
     </View>
   </View>
 </View>
@@ -334,7 +340,13 @@ exports[`BannerNotification Component should match snapshot with error status 1`
             "paddingLeft": 9,
           }
         }
-      />
+      >
+        <View
+          color="#FFFFFF"
+          name="close"
+          size={19}
+        />
+      </View>
     </View>
   </View>
 </View>
@@ -504,7 +516,13 @@ exports[`BannerNotification Component should match snapshot with in progress sta
             "paddingLeft": 9,
           }
         }
-      />
+      >
+        <View
+          color="#FFFFFF"
+          name="close"
+          size={19}
+        />
+      </View>
     </View>
   </View>
 </View>
@@ -674,7 +692,13 @@ exports[`BannerNotification Component should match snapshot with long message 1`
             "paddingLeft": 9,
           }
         }
-      />
+      >
+        <View
+          color="#FFFFFF"
+          name="close"
+          size={19}
+        />
+      </View>
     </View>
   </View>
 </View>
@@ -844,7 +868,13 @@ exports[`BannerNotification Component should match snapshot with success status 
             "paddingLeft": 9,
           }
         }
-      />
+      >
+        <View
+          color="#FFFFFF"
+          name="close"
+          size={19}
+        />
+      </View>
     </View>
   </View>
 </View>

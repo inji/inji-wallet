@@ -1,0 +1,445 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthScreen should match snapshot 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      {
+        "paddingBottom": 32,
+        "paddingEnd": 25,
+        "paddingStart": 32,
+        "paddingTop": 32,
+      },
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      {
+        "justifyContent": "space-between",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    AdaptiveBiometricIcon
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 30,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="selectAppUnlockMethod"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            {
+              "color": "#000000",
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 18,
+              "lineHeight": 19,
+              "paddingTop": 5,
+            },
+          ]
+        }
+      >
+        header
+      </Text>
+      <Text
+        accessibilityLabel="description"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#6F6F6F",
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "marginBottom": 6,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 6,
+            },
+            null,
+            {
+              "paddingTop": 3,
+            },
+          ]
+        }
+      >
+        Description
+      </Text>
+      <Text
+        accessibilityLabel="passwordTypeDescription"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#6F6F6F",
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "marginBottom": 6,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 6,
+            },
+            null,
+            {
+              "paddingTop": 3,
+            },
+          ]
+        }
+      >
+        PasswordTypeDescription
+      </Text>
+    </View>
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="useBiometrics"
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "alignSelf": "center",
+            "borderRadius": 9,
+            "height": 54,
+            "width": 540,
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+            {
+              "marginBottom": 8,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 0,
+            },
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            undefined,
+          ],
+        ]
+      }
+      linearGradientProps={
+        {
+          "colors": [
+            "#FF5300",
+            "#5B03AD",
+          ],
+          "end": {
+            "x": 1,
+            "y": 0.5,
+          },
+          "start": {
+            "x": 0.5,
+            "y": 0.5,
+          },
+        }
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          color="#FFFFFF"
+          style={
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ]
+          }
+          weight="bold"
+        >
+          useBiometrics
+        </Text>
+      }
+      type="gradient"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        useBiometrics
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="usePasscode"
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "backgroundColor": "transparent",
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+              "height": 45,
+            },
+            null,
+            null,
+            null,
+            undefined,
+          ],
+        ]
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "backgroundColor": "transparent",
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          align="center"
+          color="#951F6F"
+          style={
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ]
+          }
+          weight="semibold"
+        >
+          usePasscode
+        </Text>
+      }
+      type="clear"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#951F6F",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        usePasscode
+      </Text>
+    </View>
+  </View>
+</View>
+`;

@@ -1,0 +1,554 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FaceCompare should render camera view with buttons 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "justifyContent": "space-between",
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#ffffff",
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "flex": 2,
+        "marginTop": 15,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignSelf": "center",
+          "borderRadius": 24,
+          "height": 350,
+          "overflow": "hidden",
+          "width": 320,
+        }
+      }
+    >
+      <View>
+        <View
+          testID="cameraView"
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+            "fontSize": 15,
+          },
+          null,
+          {
+            "textAlign": "center",
+          },
+          {
+            "marginBottom": 80,
+            "marginEnd": 57,
+            "marginStart": 57,
+            "marginTop": 80,
+          },
+          null,
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+        ]
+      }
+    >
+      imageCaptureGuide
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "column",
+              "justifyContent": "center",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "marginLeft": 130,
+              "marginRight": 50,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="captureButton"
+        >
+          CameraCaptureIcon
+        </View>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 12,
+                "marginTop": 6,
+              },
+            ]
+          }
+        >
+          capture
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "column",
+              "justifyContent": "center",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="flipCameraButton"
+        >
+          FlipCameraIcon
+        </View>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 12,
+                "marginTop": 6,
+              },
+            ]
+          }
+        >
+          flipCamera
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`FaceCompare should render rotating icon when capturing 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "justifyContent": "space-between",
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#ffffff",
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "flex": 2,
+        "marginTop": 15,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignSelf": "center",
+          "borderRadius": 24,
+          "height": 350,
+          "overflow": "hidden",
+          "width": 320,
+        }
+      }
+    >
+      <View>
+        <View
+          testID="cameraView"
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+            "fontSize": 15,
+          },
+          null,
+          {
+            "textAlign": "center",
+          },
+          {
+            "marginBottom": 80,
+            "marginEnd": 57,
+            "marginStart": 57,
+            "marginTop": 80,
+          },
+          null,
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+        ]
+      }
+    >
+      imageCaptureGuide
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`FaceCompare should render rotating icon when verifying 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "justifyContent": "space-between",
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#ffffff",
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "flex": 2,
+        "marginTop": 15,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignSelf": "center",
+          "borderRadius": 24,
+          "height": 350,
+          "overflow": "hidden",
+          "width": 320,
+        }
+      }
+    >
+      <View>
+        <View
+          testID="cameraView"
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_600SemiBold",
+            "fontSize": 15,
+          },
+          null,
+          {
+            "textAlign": "center",
+          },
+          {
+            "marginBottom": 80,
+            "marginEnd": 57,
+            "marginStart": 57,
+            "marginTop": 80,
+          },
+          null,
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+        ]
+      }
+    >
+      imageCaptureGuide
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  />
+</View>
+`;

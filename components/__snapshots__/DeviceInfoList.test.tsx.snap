@@ -1,0 +1,391 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeviceInfoList Component should handle empty device name 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "alignItems": "flex-start",
+        "borderBottomWidth": 2,
+        "borderColor": "#F2F2F2",
+        "borderTopWidth": 0,
+      },
+      {
+        "paddingVertical": 16,
+      },
+      {
+        "paddingHorizontal": 24,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Montserrat_600SemiBold",
+          "fontSize": 15,
+        },
+        {
+          "color": "#000000",
+        },
+        {
+          "textAlign": "left",
+        },
+        null,
+        null,
+        {
+          "textAlign": "left",
+        },
+      ]
+    }
+  />
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Montserrat_600SemiBold",
+          "fontSize": 15,
+        },
+        {
+          "color": "#C7C7C7",
+        },
+        {
+          "textAlign": "left",
+        },
+        null,
+        {
+          "fontSize": 11,
+          "lineHeight": 18,
+        },
+        {
+          "textAlign": "left",
+        },
+      ]
+    }
+  >
+    sentBy
+  </Text>
+</View>
+`;
+
+exports[`DeviceInfoList Component should render DeviceInfoList component 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "alignItems": "flex-start",
+        "borderBottomWidth": 2,
+        "borderColor": "#F2F2F2",
+        "borderTopWidth": 0,
+      },
+      {
+        "paddingVertical": 16,
+      },
+      {
+        "paddingHorizontal": 24,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Montserrat_600SemiBold",
+          "fontSize": 15,
+        },
+        {
+          "color": "#000000",
+        },
+        {
+          "textAlign": "left",
+        },
+        null,
+        null,
+        {
+          "textAlign": "left",
+        },
+      ]
+    }
+  >
+    Samsung Galaxy S21
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Montserrat_600SemiBold",
+          "fontSize": 15,
+        },
+        {
+          "color": "#C7C7C7",
+        },
+        {
+          "textAlign": "left",
+        },
+        null,
+        {
+          "fontSize": 11,
+          "lineHeight": 18,
+        },
+        {
+          "textAlign": "left",
+        },
+      ]
+    }
+  >
+    sentBy
+  </Text>
+</View>
+`;
+
+exports[`DeviceInfoList Component should render with receiver mode 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "alignItems": "flex-start",
+        "borderBottomWidth": 2,
+        "borderColor": "#F2F2F2",
+        "borderTopWidth": 0,
+      },
+      {
+        "paddingVertical": 16,
+      },
+      {
+        "paddingHorizontal": 24,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Montserrat_600SemiBold",
+          "fontSize": 15,
+        },
+        {
+          "color": "#000000",
+        },
+        {
+          "textAlign": "left",
+        },
+        null,
+        null,
+        {
+          "textAlign": "left",
+        },
+      ]
+    }
+  >
+    Samsung Galaxy S21
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Montserrat_600SemiBold",
+          "fontSize": 15,
+        },
+        {
+          "color": "#C7C7C7",
+        },
+        {
+          "textAlign": "left",
+        },
+        null,
+        {
+          "fontSize": 11,
+          "lineHeight": 18,
+        },
+        {
+          "textAlign": "left",
+        },
+      ]
+    }
+  >
+    requestedBy
+  </Text>
+</View>
+`;
+
+exports[`DeviceInfoList Component should render with sender mode 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "alignItems": "flex-start",
+        "borderBottomWidth": 2,
+        "borderColor": "#F2F2F2",
+        "borderTopWidth": 0,
+      },
+      {
+        "paddingVertical": 16,
+      },
+      {
+        "paddingHorizontal": 24,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Montserrat_600SemiBold",
+          "fontSize": 15,
+        },
+        {
+          "color": "#000000",
+        },
+        {
+          "textAlign": "left",
+        },
+        null,
+        null,
+        {
+          "textAlign": "left",
+        },
+      ]
+    }
+  >
+    Samsung Galaxy S21
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Montserrat_600SemiBold",
+          "fontSize": 15,
+        },
+        {
+          "color": "#C7C7C7",
+        },
+        {
+          "textAlign": "left",
+        },
+        null,
+        {
+          "fontSize": 11,
+          "lineHeight": 18,
+        },
+        {
+          "textAlign": "left",
+        },
+      ]
+    }
+  >
+    sentBy
+  </Text>
+</View>
+`;

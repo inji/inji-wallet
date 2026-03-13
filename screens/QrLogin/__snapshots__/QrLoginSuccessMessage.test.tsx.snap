@@ -1,0 +1,607 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QrLoginSuccess should match snapshot 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={5}
+  headerTitle="status"
+  isVisible={true}
+  testID="modal"
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+        {
+          "display": "flex",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "column",
+            "justifyContent": "center",
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 25,
+            "paddingStart": 25,
+            "paddingTop": 60,
+          },
+          {
+            "marginBottom": 60,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 60,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Image
+        source={
+          {
+            "uri": "https://example.com/logo.png",
+          }
+        }
+        style={
+          {
+            "height": 60,
+            "width": 60,
+          }
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            null,
+            {
+              "textAlign": "center",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 20,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "fontWeight": "bold",
+            },
+          ]
+        }
+      >
+        successMessage
+        Test Client
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 10,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 10,
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 2,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderRadius": 4,
+            "elevation": 2,
+            "shadowColor": "#000000",
+            "shadowOffset": {
+              "height": 1,
+              "width": 0,
+            },
+            "shadowOpacity": 0.2,
+            "shadowRadius": 1.41,
+            "zIndex": 2,
+          },
+          {
+            "borderTopLeftRadius": 27,
+            "borderTopRightRadius": 27,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        buttonStyle={
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+              {
+                "marginBottom": 12,
+                "marginEnd": 0,
+                "marginStart": 0,
+                "marginTop": 0,
+              },
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              {
+                "backgroundColor": "#951F6F",
+                "borderRadius": 10,
+              },
+            ],
+          ]
+        }
+        linearGradientProps={
+          {
+            "colors": [
+              "#FF5300",
+              "#5B03AD",
+            ],
+            "end": {
+              "x": 1,
+              "y": 0.5,
+            },
+            "start": {
+              "x": 0.5,
+              "y": 0.5,
+            },
+          }
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ]
+            }
+            weight="bold"
+          >
+            ok
+          </Text>
+        }
+        type="gradient"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          ok
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`QrLoginSuccess should match snapshot when not visible 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={5}
+  headerTitle="status"
+  isVisible={true}
+  testID="modal"
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+        {
+          "display": "none",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "column",
+            "justifyContent": "center",
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 25,
+            "paddingStart": 25,
+            "paddingTop": 60,
+          },
+          {
+            "marginBottom": 60,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 60,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Image
+        source={
+          {
+            "uri": "https://example.com/logo.png",
+          }
+        }
+        style={
+          {
+            "height": 60,
+            "width": 60,
+          }
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            null,
+            {
+              "textAlign": "center",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 20,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "fontWeight": "bold",
+            },
+          ]
+        }
+      >
+        successMessage
+        Test Client
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 10,
+            "paddingEnd": 24,
+            "paddingStart": 24,
+            "paddingTop": 10,
+          },
+          {
+            "marginBottom": 0,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 2,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderRadius": 4,
+            "elevation": 2,
+            "shadowColor": "#000000",
+            "shadowOffset": {
+              "height": 1,
+              "width": 0,
+            },
+            "shadowOpacity": 0.2,
+            "shadowRadius": 1.41,
+            "zIndex": 2,
+          },
+          {
+            "borderTopLeftRadius": 27,
+            "borderTopRightRadius": 27,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        buttonStyle={
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+              {
+                "marginBottom": 12,
+                "marginEnd": 0,
+                "marginStart": 0,
+                "marginTop": 0,
+              },
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              {
+                "backgroundColor": "#951F6F",
+                "borderRadius": 10,
+              },
+            ],
+          ]
+        }
+        linearGradientProps={
+          {
+            "colors": [
+              "#FF5300",
+              "#5B03AD",
+            ],
+            "end": {
+              "x": 1,
+              "y": 0.5,
+            },
+            "start": {
+              "x": 0.5,
+              "y": 0.5,
+            },
+          }
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ]
+            }
+            weight="bold"
+          >
+            ok
+          </Text>
+        }
+        type="gradient"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          ok
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

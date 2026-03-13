@@ -1,0 +1,1530 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IntroSlidersScreen should render intro sliders 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    testID="appIntroSlider"
+  >
+    <View>
+      <View
+        accessibilityIgnoresInvertColors={true}
+        style={
+          {
+            "flex": 1,
+            "width": "100%",
+          }
+        }
+      >
+        <Image
+          resizeMode="cover"
+          source=""
+          style={
+            [
+              {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              },
+              {
+                "height": undefined,
+                "width": "100%",
+              },
+              undefined,
+            ]
+          }
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "justifyContent": "space-between",
+                },
+                null,
+                null,
+                {
+                  "marginBottom": 20,
+                  "marginTop": 25,
+                  "width": "100%",
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": undefined,
+                    "flexDirection": "column",
+                    "justifyContent": undefined,
+                  },
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  {
+                    "marginLeft": 10,
+                  },
+                  null,
+                  null,
+                ]
+              }
+            >
+              InjiSmallLogo
+            </View>
+            <View
+              buttonStyle={
+                [
+                  null,
+                  undefined,
+                  null,
+                  {
+                    "width": "100%",
+                  },
+                ]
+              }
+              containerStyle={
+                [
+                  null,
+                  [
+                    {
+                      "flexDirection": "row",
+                      "height": 45,
+                    },
+                    null,
+                    null,
+                    null,
+                    {
+                      "height": 40,
+                      "maxWidth": 115,
+                    },
+                  ],
+                ]
+              }
+              onPress={[Function]}
+              style={
+                [
+                  [
+                    null,
+                    undefined,
+                    null,
+                    {
+                      "width": "100%",
+                    },
+                  ],
+                ]
+              }
+              title={
+                <Text
+                  align="center"
+                  color="#FFFFFF66"
+                  style={
+                    [
+                      {
+                        "paddingTop": 3,
+                      },
+                      {
+                        "color": "#FFFFFF",
+                        "fontWeight": "600",
+                      },
+                    ]
+                  }
+                  weight="semibold"
+                >
+                  skip
+                </Text>
+              }
+              type="plain"
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontSize": 15,
+                    },
+                    {
+                      "color": "#FFFFFF66",
+                    },
+                    {
+                      "textAlign": "center",
+                    },
+                    null,
+                    null,
+                    [
+                      {
+                        "paddingTop": 3,
+                      },
+                      {
+                        "color": "#FFFFFF",
+                        "fontWeight": "600",
+                      },
+                    ],
+                  ]
+                }
+              >
+                skip
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+              }
+            }
+          >
+            StaticAuthScreen
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "column",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                {
+                  "backgroundColor": "#FFFFFF",
+                },
+                {
+                  "width": 750,
+                },
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                {
+                  "borderTopLeftRadius": 30,
+                  "borderTopRightRadius": 30,
+                  "marginTop": -360,
+                  "padding": 20,
+                  "paddingBottom": 120,
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  {
+                    "marginBottom": 18,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 0,
+                  },
+                  {
+                    "fontSize": 18,
+                  },
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              stepOneTitle
+            </Text>
+            <RCTScrollView
+              persistentScrollbar={true}
+              showsVerticalScrollIndicator={true}
+              style={
+                {
+                  "maxHeight": 60,
+                  "paddingHorizontal": 10,
+                  "width": "100%",
+                }
+              }
+            >
+              <View>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      {
+                        "color": "#6F6F6F",
+                      },
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      {
+                        "fontSize": 18,
+                      },
+                      {
+                        "paddingTop": 7,
+                      },
+                    ]
+                  }
+                >
+                  stepOneText
+                </Text>
+              </View>
+            </RCTScrollView>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View>
+      <View
+        accessibilityIgnoresInvertColors={true}
+        style={
+          {
+            "flex": 1,
+            "width": "100%",
+          }
+        }
+      >
+        <Image
+          resizeMode="cover"
+          source=""
+          style={
+            [
+              {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              },
+              {
+                "height": undefined,
+                "width": "100%",
+              },
+              undefined,
+            ]
+          }
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "justifyContent": "space-between",
+                },
+                null,
+                null,
+                {
+                  "marginBottom": 20,
+                  "marginTop": 25,
+                  "width": "100%",
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": undefined,
+                    "flexDirection": "column",
+                    "justifyContent": undefined,
+                  },
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  {
+                    "marginLeft": 10,
+                  },
+                  null,
+                  null,
+                ]
+              }
+            >
+              InjiSmallLogo
+            </View>
+            <View
+              buttonStyle={
+                [
+                  null,
+                  undefined,
+                  null,
+                  {
+                    "width": "100%",
+                  },
+                ]
+              }
+              containerStyle={
+                [
+                  null,
+                  [
+                    {
+                      "flexDirection": "row",
+                      "height": 45,
+                    },
+                    null,
+                    null,
+                    null,
+                    {
+                      "height": 40,
+                      "maxWidth": 115,
+                    },
+                  ],
+                ]
+              }
+              onPress={[Function]}
+              style={
+                [
+                  [
+                    null,
+                    undefined,
+                    null,
+                    {
+                      "width": "100%",
+                    },
+                  ],
+                ]
+              }
+              title={
+                <Text
+                  align="center"
+                  color="#FFFFFF66"
+                  style={
+                    [
+                      {
+                        "paddingTop": 3,
+                      },
+                      {
+                        "color": "#FFFFFF",
+                        "fontWeight": "600",
+                      },
+                    ]
+                  }
+                  weight="semibold"
+                >
+                  skip
+                </Text>
+              }
+              type="plain"
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontSize": 15,
+                    },
+                    {
+                      "color": "#FFFFFF66",
+                    },
+                    {
+                      "textAlign": "center",
+                    },
+                    null,
+                    null,
+                    [
+                      {
+                        "paddingTop": 3,
+                      },
+                      {
+                        "color": "#FFFFFF",
+                        "fontWeight": "600",
+                      },
+                    ],
+                  ]
+                }
+              >
+                skip
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+              }
+            }
+          >
+            StaticSendVcScreen
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "column",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                {
+                  "backgroundColor": "#FFFFFF",
+                },
+                {
+                  "width": 750,
+                },
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                {
+                  "borderTopLeftRadius": 30,
+                  "borderTopRightRadius": 30,
+                  "marginTop": -360,
+                  "padding": 20,
+                  "paddingBottom": 120,
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  {
+                    "marginBottom": 18,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 0,
+                  },
+                  {
+                    "fontSize": 18,
+                  },
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              stepTwoTitle
+            </Text>
+            <RCTScrollView
+              persistentScrollbar={true}
+              showsVerticalScrollIndicator={true}
+              style={
+                {
+                  "maxHeight": 60,
+                  "paddingHorizontal": 10,
+                  "width": "100%",
+                }
+              }
+            >
+              <View>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      {
+                        "color": "#6F6F6F",
+                      },
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      {
+                        "fontSize": 18,
+                      },
+                      {
+                        "paddingTop": 7,
+                      },
+                    ]
+                  }
+                >
+                  stepTwoText
+                </Text>
+              </View>
+            </RCTScrollView>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View>
+      <View
+        accessibilityIgnoresInvertColors={true}
+        style={
+          {
+            "flex": 1,
+            "width": "100%",
+          }
+        }
+      >
+        <Image
+          resizeMode="cover"
+          source=""
+          style={
+            [
+              {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              },
+              {
+                "height": undefined,
+                "width": "100%",
+              },
+              undefined,
+            ]
+          }
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "justifyContent": "space-between",
+                },
+                null,
+                null,
+                {
+                  "marginBottom": 20,
+                  "marginTop": 25,
+                  "width": "100%",
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": undefined,
+                    "flexDirection": "column",
+                    "justifyContent": undefined,
+                  },
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  {
+                    "marginLeft": 10,
+                  },
+                  null,
+                  null,
+                ]
+              }
+            >
+              InjiSmallLogo
+            </View>
+            <View
+              buttonStyle={
+                [
+                  null,
+                  undefined,
+                  null,
+                  {
+                    "width": "100%",
+                  },
+                ]
+              }
+              containerStyle={
+                [
+                  null,
+                  [
+                    {
+                      "flexDirection": "row",
+                      "height": 45,
+                    },
+                    null,
+                    null,
+                    null,
+                    {
+                      "height": 40,
+                      "maxWidth": 115,
+                    },
+                  ],
+                ]
+              }
+              onPress={[Function]}
+              style={
+                [
+                  [
+                    null,
+                    undefined,
+                    null,
+                    {
+                      "width": "100%",
+                    },
+                  ],
+                ]
+              }
+              title={
+                <Text
+                  align="center"
+                  color="#FFFFFF66"
+                  style={
+                    [
+                      {
+                        "paddingTop": 3,
+                      },
+                      {
+                        "color": "#FFFFFF",
+                        "fontWeight": "600",
+                      },
+                    ]
+                  }
+                  weight="semibold"
+                >
+                  skip
+                </Text>
+              }
+              type="plain"
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontSize": 15,
+                    },
+                    {
+                      "color": "#FFFFFF66",
+                    },
+                    {
+                      "textAlign": "center",
+                    },
+                    null,
+                    null,
+                    [
+                      {
+                        "paddingTop": 3,
+                      },
+                      {
+                        "color": "#FFFFFF",
+                        "fontWeight": "600",
+                      },
+                    ],
+                  ]
+                }
+              >
+                skip
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+              }
+            }
+          >
+            StaticHomeScreen
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "column",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                {
+                  "backgroundColor": "#FFFFFF",
+                },
+                {
+                  "width": 750,
+                },
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                {
+                  "borderTopLeftRadius": 30,
+                  "borderTopRightRadius": 30,
+                  "marginTop": -360,
+                  "padding": 20,
+                  "paddingBottom": 120,
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  {
+                    "marginBottom": 18,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 0,
+                  },
+                  {
+                    "fontSize": 18,
+                  },
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              stepThreeTitle
+            </Text>
+            <RCTScrollView
+              persistentScrollbar={true}
+              showsVerticalScrollIndicator={true}
+              style={
+                {
+                  "maxHeight": 60,
+                  "paddingHorizontal": 10,
+                  "width": "100%",
+                }
+              }
+            >
+              <View>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      {
+                        "color": "#6F6F6F",
+                      },
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      {
+                        "fontSize": 18,
+                      },
+                      {
+                        "paddingTop": 7,
+                      },
+                    ]
+                  }
+                >
+                  stepThreeText
+                </Text>
+              </View>
+            </RCTScrollView>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View>
+      <View
+        accessibilityIgnoresInvertColors={true}
+        style={
+          {
+            "flex": 1,
+            "width": "100%",
+          }
+        }
+      >
+        <Image
+          resizeMode="cover"
+          source=""
+          style={
+            [
+              {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              },
+              {
+                "height": undefined,
+                "width": "100%",
+              },
+              undefined,
+            ]
+          }
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "justifyContent": "space-between",
+                },
+                null,
+                null,
+                {
+                  "marginBottom": 20,
+                  "marginTop": 25,
+                  "width": "100%",
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": undefined,
+                    "flexDirection": "column",
+                    "justifyContent": undefined,
+                  },
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  {
+                    "marginLeft": 10,
+                  },
+                  null,
+                  null,
+                ]
+              }
+            >
+              InjiSmallLogo
+            </View>
+            <View
+              buttonStyle={
+                [
+                  null,
+                  undefined,
+                  null,
+                  {
+                    "width": "100%",
+                  },
+                ]
+              }
+              containerStyle={
+                [
+                  null,
+                  [
+                    {
+                      "flexDirection": "row",
+                      "height": 45,
+                    },
+                    null,
+                    null,
+                    null,
+                    {
+                      "height": 40,
+                      "maxWidth": 115,
+                    },
+                  ],
+                ]
+              }
+              onPress={[Function]}
+              style={
+                [
+                  [
+                    null,
+                    undefined,
+                    null,
+                    {
+                      "width": "100%",
+                    },
+                  ],
+                ]
+              }
+              title={
+                <Text
+                  align="center"
+                  color="#FFFFFF66"
+                  style={
+                    [
+                      {
+                        "paddingTop": 3,
+                      },
+                      {
+                        "color": "#FFFFFF",
+                        "fontWeight": "600",
+                      },
+                    ]
+                  }
+                  weight="semibold"
+                >
+                  skip
+                </Text>
+              }
+              type="plain"
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontSize": 15,
+                    },
+                    {
+                      "color": "#FFFFFF66",
+                    },
+                    {
+                      "textAlign": "center",
+                    },
+                    null,
+                    null,
+                    [
+                      {
+                        "paddingTop": 3,
+                      },
+                      {
+                        "color": "#FFFFFF",
+                        "fontWeight": "600",
+                      },
+                    ],
+                  ]
+                }
+              >
+                skip
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+              }
+            }
+          >
+            StaticScanScreen
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "column",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                {
+                  "backgroundColor": "#FFFFFF",
+                },
+                {
+                  "width": 750,
+                },
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                {
+                  "borderTopLeftRadius": 30,
+                  "borderTopRightRadius": 30,
+                  "marginTop": -360,
+                  "padding": 20,
+                  "paddingBottom": 120,
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  {
+                    "marginBottom": 18,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 0,
+                  },
+                  {
+                    "fontSize": 18,
+                  },
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              stepFourTitle
+            </Text>
+            <RCTScrollView
+              persistentScrollbar={true}
+              showsVerticalScrollIndicator={true}
+              style={
+                {
+                  "maxHeight": 60,
+                  "paddingHorizontal": 10,
+                  "width": "100%",
+                }
+              }
+            >
+              <View>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      {
+                        "color": "#6F6F6F",
+                      },
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      {
+                        "fontSize": 18,
+                      },
+                      {
+                        "paddingTop": 7,
+                      },
+                    ]
+                  }
+                >
+                  stepFourText
+                </Text>
+              </View>
+            </RCTScrollView>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View>
+      <View
+        accessibilityIgnoresInvertColors={true}
+        style={
+          {
+            "flex": 1,
+            "width": "100%",
+          }
+        }
+      >
+        <Image
+          resizeMode="cover"
+          source=""
+          style={
+            [
+              {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              },
+              {
+                "height": undefined,
+                "width": "100%",
+              },
+              undefined,
+            ]
+          }
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "justifyContent": "space-between",
+                },
+                null,
+                null,
+                {
+                  "marginBottom": 20,
+                  "marginTop": 25,
+                  "width": "100%",
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": undefined,
+                    "flexDirection": "column",
+                    "justifyContent": undefined,
+                  },
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  {
+                    "marginLeft": 10,
+                  },
+                  null,
+                  null,
+                ]
+              }
+            >
+              InjiSmallLogo
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+              }
+            }
+          >
+            StaticBackupAndRestoreScreen
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "column",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                {
+                  "backgroundColor": "#FFFFFF",
+                },
+                {
+                  "width": 750,
+                },
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                {
+                  "borderTopLeftRadius": 30,
+                  "borderTopRightRadius": 30,
+                  "marginTop": -360,
+                  "padding": 20,
+                  "paddingBottom": 120,
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  {
+                    "marginBottom": 18,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 0,
+                  },
+                  {
+                    "fontSize": 18,
+                  },
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              stepFiveTitle
+            </Text>
+            <RCTScrollView
+              persistentScrollbar={true}
+              showsVerticalScrollIndicator={true}
+              style={
+                {
+                  "maxHeight": 60,
+                  "paddingHorizontal": 10,
+                  "width": "100%",
+                }
+              }
+            >
+              <View>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      {
+                        "color": "#6F6F6F",
+                      },
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      {
+                        "fontSize": 18,
+                      },
+                      {
+                        "paddingTop": 7,
+                      },
+                    ]
+                  }
+                >
+                  stepFiveText
+                </Text>
+              </View>
+            </RCTScrollView>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

@@ -1,0 +1,620 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StaticBackupAndRestoreScreen should render backup restore intro 1`] = `
+<View
+  style={
+    {
+      "alignSelf": "center",
+      "backgroundColor": "#FFFFFF",
+      "borderColor": "black",
+      "borderRadius": 20,
+      "borderWidth": 12,
+      "flex": 1,
+      "maxHeight": 600,
+      "overflow": "hidden",
+      "width": 350,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignSelf": "center",
+        "backgroundColor": "black",
+        "borderBottomLeftRadius": 13,
+        "borderBottomRightRadius": 10,
+        "height": 13,
+        "width": 100,
+      }
+    }
+  />
+  <View
+    style={
+      {
+        "backgroundColor": "#F8F8F8",
+        "height": "120%",
+        "marginTop": -50,
+        "transform": [
+          {
+            "scale": 0.85,
+          },
+          {
+            "translateX": -40,
+          },
+        ],
+        "width": "120%",
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#FFFFFF",
+          "borderBottomColor": "#F8F8F8",
+          "borderBottomWidth": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "padding": 10,
+        }
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      />
+      <Text
+        accessibilityLabel="screenTitle"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "maxWidth": 185,
+              "paddingTop": 5,
+            },
+          ]
+        }
+      >
+        title
+      </Text>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      />
+    </View>
+    <RCTScrollView
+      contentContainerStyle={
+        {
+          "paddingBottom": 16,
+        }
+      }
+      showsVerticalScrollIndicator={false}
+    >
+      <View>
+        <View
+          testID="sectionLayout"
+        >
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "alignItems": undefined,
+                    "flexDirection": "column",
+                    "justifyContent": undefined,
+                  },
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                ]
+              }
+            >
+              backUpAndRestoreIcon
+            </View>
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "alignItems": undefined,
+                    "flexDirection": "column",
+                    "justifyContent": undefined,
+                  },
+                  null,
+                  null,
+                  {
+                    "marginBottom": 0,
+                    "marginEnd": 0,
+                    "marginStart": 9,
+                    "marginTop": 0,
+                  },
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                ]
+              }
+            >
+              <Text
+                accessibilityLabel="backupCreationTime"
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    null,
+                  ]
+                }
+              >
+                20 January 2021, 10:00 AM
+              </Text>
+              <Text
+                accessibilityLabel="backupFileSize"
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_400Regular",
+                      "fontSize": 14,
+                    },
+                    {
+                      "color": "grey",
+                    },
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    null,
+                  ]
+                }
+              >
+                size
+                 
+                15.4
+                 MB
+              </Text>
+            </View>
+          </View>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "marginTop": 16,
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_700Bold",
+                        "fontSize": 15,
+                        "justifyContent": "center",
+                      },
+                      {
+                        "color": "#FFFFFF",
+                      },
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      [
+                        {
+                          "paddingLeft": 0,
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  backup
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          testID="sectionLayout"
+        >
+          <View
+            style={
+              {
+                "marginBottom": 19,
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="storageInfoText"
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#707070",
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                ]
+              }
+            >
+              storage
+            </Text>
+          </View>
+        </View>
+        <View
+          testID="sectionLayout"
+        >
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <View
+              style={
+                {
+                  "marginBottom": 19,
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="restoreInfoText"
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Montserrat_400Regular",
+                      "fontSize": 14,
+                    },
+                  ]
+                }
+              >
+                restoreInfo
+              </Text>
+              <View
+                accessible={true}
+                style={
+                  [
+                    {
+                      "alignItems": undefined,
+                      "flexDirection": "row",
+                      "justifyContent": undefined,
+                    },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                      "marginTop": 16,
+                    },
+                    null,
+                    null,
+                  ]
+                }
+              >
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "opacity": 1,
+                    }
+                  }
+                >
+                  <Text>
+                    <Text
+                      style={
+                        [
+                          {
+                            "color": "#000000",
+                            "fontSize": 16,
+                            "lineHeight": 18,
+                          },
+                          {
+                            "fontFamily": "Montserrat_600SemiBold",
+                            "fontSize": 15,
+                          },
+                          {
+                            "color": "#951F6F",
+                          },
+                          {
+                            "textAlign": "center",
+                          },
+                          null,
+                          null,
+                          [
+                            {
+                              "paddingTop": 3,
+                            },
+                            undefined,
+                          ],
+                        ]
+                      }
+                    >
+                      restore
+                    </Text>
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "height": 200,
+            }
+          }
+        />
+      </View>
+    </RCTScrollView>
+  </View>
+</View>
+`;

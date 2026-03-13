@@ -1,0 +1,178 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SetupPicker should match snapshot 1`] = `
+<View
+  accessibilityLabel="picker"
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      {
+        "width": 600,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    bottomDivider={true}
+    onPress={[Function]}
+    topDivider={false}
+  >
+    <View>
+      <View
+        accessibilityLabel="en"
+        accessible={true}
+        style={
+          {
+            "paddingTop": 3,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              null,
+              {
+                "fontSize": 16,
+              },
+              null,
+            ]
+          }
+        >
+          English
+        </Text>
+      </View>
+    </View>
+    <View
+      color="#999999"
+      testID="radio-button-unchecked"
+    />
+  </View>
+  <View
+    bottomDivider={true}
+    onPress={[Function]}
+    topDivider={true}
+  >
+    <View>
+      <View
+        accessibilityLabel="hi"
+        accessible={true}
+        style={
+          {
+            "paddingTop": 3,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              null,
+              {
+                "fontSize": 16,
+              },
+              null,
+            ]
+          }
+        >
+          Hindi
+        </Text>
+      </View>
+    </View>
+    <View
+      color="#999999"
+      testID="radio-button-unchecked"
+    />
+  </View>
+  <View
+    bottomDivider={true}
+    onPress={[Function]}
+    topDivider={true}
+  >
+    <View>
+      <View
+        accessibilityLabel="ta"
+        accessible={true}
+        style={
+          {
+            "paddingTop": 3,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              null,
+              {
+                "fontSize": 16,
+              },
+              null,
+            ]
+          }
+        >
+          Tamil
+        </Text>
+      </View>
+    </View>
+    <View
+      color="#999999"
+      testID="radio-button-unchecked"
+    />
+  </View>
+</View>
+`;

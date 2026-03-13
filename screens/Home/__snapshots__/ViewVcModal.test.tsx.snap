@@ -1,0 +1,816 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewVcModal should render when not visible 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={false}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render when visible 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with OTP error 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with activeTab 1 (history) 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with binding OTP state 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with binding error 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with binding warning 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with different flow type 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with expired status 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with reverifying Vc 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with revoked status 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "TRUE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with toast visible 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with verification completed 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with verification in progress 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with verification status banner 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with wallet binding in progress 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;
+
+exports[`ViewVcModal should render with walletBindingResponse 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerRight={
+    <Layout
+      align="space-between"
+    >
+      <HelpScreen
+        source="Inji"
+        triggerComponent="HelpIcon"
+      />
+      <Memo(Pressable)
+        accessible={false}
+        onPress={[Function]}
+      >
+        <KebabPopUp
+          icon="kebabIcon"
+          isVisible={false}
+          onDismiss={[Function]}
+          service={
+            {
+              "getSnapshot": [Function],
+              "send": [MockFunction],
+            }
+          }
+          vcHasImage={true}
+          vcMetadata={
+            {
+              "format": "ldp_vc",
+              "isRevoked": "FALSE",
+              "isVerified": true,
+              "issuerHost": "https://issuer.test",
+            }
+          }
+        />
+      </Memo(Pressable)>
+    </Layout>
+  }
+  headerTitle="title"
+  isVisible={true}
+  onDismiss={[Function]}
+  testID="idDetailsHeader"
+>
+  <View
+    testID="vcDetailsContainer"
+  />
+</View>
+`;

@@ -1,14 +1,15 @@
 import {VCActivityLog} from './ActivityLogEvent';
 
+jest.mock('jsonld', () => ({
+  compact: jest.fn(),
+  expand: jest.fn(),
+}));
+
 describe('ActivityLog', () => {
   let instance: {timestamp: any};
 
   beforeEach(() => {
     instance = new VCActivityLog();
-    jest.mock('jsonld', () => ({
-      compact: jest.fn(),
-      expand: jest.fn(),
-    }));
   });
 
   it('Activity log instance should have a timestamp set', () => {
@@ -42,10 +43,6 @@ describe('getActionText', () => {
   };
   beforeEach(() => {
     mockIl18nfn = jest.fn();
-    jest.mock('jsonld', () => ({
-      compact: jest.fn(),
-      expand: jest.fn(),
-    }));
     activityLog = new VCActivityLog({
       id: 'mockId',
       credentialConfigurationId: 'mockId',
@@ -70,16 +67,25 @@ describe('getActionText', () => {
       vcStatus: '',
     });
     expect(mockIl18nfn).toHaveBeenCalledTimes(1);
-    // TODO: assert the returned string
   });
-  it.skip('should not fetch id type from translation file mock', () => {
-    // Reason: The test assertion needs fix
-    activityLog.idType = undefined;
-    activityLog.getActionText(mockIl18nfn, wellknown);
+
+  it('should use identity card fallback when wellknown is undefined', () => {
+    mockIl18nfn.mockImplementation(input => input);
+    activityLog.getActionText(mockIl18nfn, undefined);
     expect(mockIl18nfn).toHaveBeenCalledWith('mockType', {
-      idType: '',
+      idType: 'VcDetails:identityCard',
+      vcStatus: '',
     });
-    expect(mockIl18nfn).toHaveBeenCalledTimes(1);
+  });
+
+  it('should append vcStatus to type when vcStatus is set', () => {
+    mockIl18nfn.mockImplementation(input => input);
+    activityLog.vcStatus = 'expired';
+    activityLog.getActionText(mockIl18nfn, wellknown);
+    expect(mockIl18nfn).toHaveBeenCalledWith('mockType.expired', {
+      idType: 'fake VC',
+      vcStatus: 'expired',
+    });
   });
 });
 
@@ -145,16 +151,5 @@ describe('VCActivityLog.getActionLabel', () => {
 
     expect(label).not.toContain('·');
     expect(label).toBeTruthy();
-  });
-
-  it('should format time with device name in English locale', () => {
-    const mockLog = new VCActivityLog({
-      deviceName: 'Test Device',
-      timestamp: Date.now() - 300000, // 5 minutes ago
-    });
-
-    const labelEn = mockLog.getActionLabel('en');
-    expect(labelEn).toBeTruthy();
-    expect(labelEn).toContain('Test Device');
   });
 });

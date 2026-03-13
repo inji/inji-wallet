@@ -1,0 +1,1747 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TrustModalVerifier should match snapshot when not visible 1`] = `null`;
+
+exports[`TrustModalVerifier should match snapshot with issuer flowType 1`] = `
+<Modal
+  animationType="fade"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={true}
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0, 0, 0, 0.5)",
+        "flex": 1,
+        "justifyContent": "center",
+        "padding": 20,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#fff",
+          "borderRadius": 20,
+          "height": 470,
+          "padding": 20,
+          "width": "100%",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "marginBottom": 16,
+            "padding": 10,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "fontSize": 16,
+              "fontWeight": "bold",
+              "marginTop": 8,
+            }
+          }
+        >
+          Test Issuer
+        </Text>
+      </View>
+      <RCTScrollView
+        contentContainerStyle={
+          {
+            "alignItems": "center",
+            "paddingBottom": 10,
+          }
+        }
+        showsVerticalScrollIndicator={true}
+        style={
+          {
+            "flex": 1,
+            "width": "100%",
+          }
+        }
+      >
+        <View>
+          <Text
+            style={
+              {
+                "color": "#666",
+                "fontSize": 14,
+                "lineHeight": 20,
+                "marginBottom": 16,
+                "textAlign": "center",
+              }
+            }
+          >
+            description
+          </Text>
+          <View
+            style={
+              {
+                "marginBottom": 10,
+                "width": "100%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "marginBottom": 6,
+                  "paddingHorizontal": 4,
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "fontSize": 14,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "flex": 1,
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  }
+                }
+              >
+                Point 1
+              </Text>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "marginBottom": 6,
+                  "paddingHorizontal": 4,
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "fontSize": 14,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "flex": 1,
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  }
+                }
+              >
+                Point 2
+              </Text>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "marginBottom": 6,
+                  "paddingHorizontal": 4,
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "fontSize": 14,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "flex": 1,
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  }
+                }
+              >
+                Point 3
+              </Text>
+            </View>
+          </View>
+        </View>
+      </RCTScrollView>
+      <View
+        style={
+          {
+            "paddingBottom": 5,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          accessible={true}
+          buttonStyle={
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ]
+          }
+          containerStyle={
+            [
+              null,
+              [
+                {
+                  "flexDirection": "row",
+                },
+                null,
+                null,
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "marginBottom": 3,
+                  "minHeight": 50,
+                },
+              ],
+            ]
+          }
+          linearGradientProps={
+            {
+              "colors": [
+                "#FF5300",
+                "#5B03AD",
+              ],
+              "end": {
+                "x": 1,
+                "y": 0.5,
+              },
+              "start": {
+                "x": 0.5,
+                "y": 0.5,
+              },
+            }
+          }
+          onPress={[Function]}
+          style={
+            [
+              [
+                null,
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ],
+            ]
+          }
+          title={
+            <Text
+              color="#FFFFFF"
+              style={
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ]
+              }
+              weight="bold"
+            >
+              confirm
+            </Text>
+          }
+          type="gradient"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            confirm
+          </Text>
+        </View>
+        <View
+          accessible={true}
+          buttonStyle={
+            [
+              null,
+              {
+                "backgroundColor": "transparent",
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ]
+          }
+          containerStyle={
+            [
+              null,
+              [
+                {
+                  "flexDirection": "row",
+                  "height": 45,
+                },
+                null,
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "marginBottom": -10,
+                  "maxWidth": "100%",
+                  "minHeight": 60,
+                  "paddingBottom": 20,
+                },
+              ],
+            ]
+          }
+          onPress={[Function]}
+          style={
+            [
+              [
+                null,
+                {
+                  "backgroundColor": "transparent",
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ],
+            ]
+          }
+          title={
+            <Text
+              align="center"
+              color="#951F6F"
+              style={
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ]
+              }
+              weight="semibold"
+            >
+              cancel
+            </Text>
+          }
+          type="clear"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#951F6F",
+                },
+                {
+                  "textAlign": "center",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            cancel
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</Modal>
+`;
+
+exports[`TrustModalVerifier should match snapshot with verifier flowType 1`] = `
+<Modal
+  animationType="fade"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={true}
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0, 0, 0, 0.5)",
+        "flex": 1,
+        "justifyContent": "center",
+        "padding": 20,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#fff",
+          "borderRadius": 20,
+          "height": 470,
+          "padding": 20,
+          "width": "100%",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "marginBottom": 16,
+            "padding": 10,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "fontSize": 16,
+              "fontWeight": "bold",
+              "marginTop": 8,
+            }
+          }
+        >
+          Test Issuer
+        </Text>
+      </View>
+      <RCTScrollView
+        contentContainerStyle={
+          {
+            "alignItems": "center",
+            "paddingBottom": 10,
+          }
+        }
+        showsVerticalScrollIndicator={true}
+        style={
+          {
+            "flex": 1,
+            "width": "100%",
+          }
+        }
+      >
+        <View>
+          <Text
+            style={
+              {
+                "color": "#666",
+                "fontSize": 14,
+                "lineHeight": 20,
+                "marginBottom": 16,
+                "textAlign": "center",
+              }
+            }
+          >
+            verifierDescription
+          </Text>
+          <View
+            style={
+              {
+                "marginBottom": 10,
+                "width": "100%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "marginBottom": 6,
+                  "paddingHorizontal": 4,
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "fontSize": 14,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "flex": 1,
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  }
+                }
+              >
+                Point 1
+              </Text>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "marginBottom": 6,
+                  "paddingHorizontal": 4,
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "fontSize": 14,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "flex": 1,
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  }
+                }
+              >
+                Point 2
+              </Text>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "marginBottom": 6,
+                  "paddingHorizontal": 4,
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "fontSize": 14,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "flex": 1,
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  }
+                }
+              >
+                Point 3
+              </Text>
+            </View>
+          </View>
+        </View>
+      </RCTScrollView>
+      <View
+        style={
+          {
+            "paddingBottom": 5,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          accessible={true}
+          buttonStyle={
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ]
+          }
+          containerStyle={
+            [
+              null,
+              [
+                {
+                  "flexDirection": "row",
+                },
+                null,
+                null,
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "marginBottom": 3,
+                  "minHeight": 50,
+                },
+              ],
+            ]
+          }
+          linearGradientProps={
+            {
+              "colors": [
+                "#FF5300",
+                "#5B03AD",
+              ],
+              "end": {
+                "x": 1,
+                "y": 0.5,
+              },
+              "start": {
+                "x": 0.5,
+                "y": 0.5,
+              },
+            }
+          }
+          onPress={[Function]}
+          style={
+            [
+              [
+                null,
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ],
+            ]
+          }
+          title={
+            <Text
+              color="#FFFFFF"
+              style={
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ]
+              }
+              weight="bold"
+            >
+              verifierConfirm
+            </Text>
+          }
+          type="gradient"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            verifierConfirm
+          </Text>
+        </View>
+        <View
+          accessible={true}
+          buttonStyle={
+            [
+              null,
+              {
+                "backgroundColor": "transparent",
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ]
+          }
+          containerStyle={
+            [
+              null,
+              [
+                {
+                  "flexDirection": "row",
+                  "height": 45,
+                },
+                null,
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "marginBottom": -10,
+                  "maxWidth": "100%",
+                  "minHeight": 60,
+                  "paddingBottom": 20,
+                },
+              ],
+            ]
+          }
+          onPress={[Function]}
+          style={
+            [
+              [
+                null,
+                {
+                  "backgroundColor": "transparent",
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ],
+            ]
+          }
+          title={
+            <Text
+              align="center"
+              color="#951F6F"
+              style={
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ]
+              }
+              weight="semibold"
+            >
+              cancel
+            </Text>
+          }
+          type="clear"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#951F6F",
+                },
+                {
+                  "textAlign": "center",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            cancel
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</Modal>
+`;
+
+exports[`TrustModalVerifier should match snapshot without logo 1`] = `
+<Modal
+  animationType="fade"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={true}
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0, 0, 0, 0.5)",
+        "flex": 1,
+        "justifyContent": "center",
+        "padding": 20,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#fff",
+          "borderRadius": 20,
+          "height": 470,
+          "padding": 20,
+          "width": "100%",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "marginBottom": 16,
+            "padding": 10,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "fontSize": 16,
+              "fontWeight": "bold",
+              "marginTop": 8,
+            }
+          }
+        >
+          Test Issuer
+        </Text>
+      </View>
+      <RCTScrollView
+        contentContainerStyle={
+          {
+            "alignItems": "center",
+            "paddingBottom": 10,
+          }
+        }
+        showsVerticalScrollIndicator={true}
+        style={
+          {
+            "flex": 1,
+            "width": "100%",
+          }
+        }
+      >
+        <View>
+          <Text
+            style={
+              {
+                "color": "#666",
+                "fontSize": 14,
+                "lineHeight": 20,
+                "marginBottom": 16,
+                "textAlign": "center",
+              }
+            }
+          >
+            description
+          </Text>
+          <View
+            style={
+              {
+                "marginBottom": 10,
+                "width": "100%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "marginBottom": 6,
+                  "paddingHorizontal": 4,
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "fontSize": 14,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "flex": 1,
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  }
+                }
+              >
+                Point 1
+              </Text>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "marginBottom": 6,
+                  "paddingHorizontal": 4,
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "fontSize": 14,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "flex": 1,
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  }
+                }
+              >
+                Point 2
+              </Text>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "marginBottom": 6,
+                  "paddingHorizontal": 4,
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "fontSize": 14,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "flex": 1,
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  }
+                }
+              >
+                Point 3
+              </Text>
+            </View>
+          </View>
+        </View>
+      </RCTScrollView>
+      <View
+        style={
+          {
+            "paddingBottom": 5,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          accessible={true}
+          buttonStyle={
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ]
+          }
+          containerStyle={
+            [
+              null,
+              [
+                {
+                  "flexDirection": "row",
+                },
+                null,
+                null,
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "marginBottom": 3,
+                  "minHeight": 50,
+                },
+              ],
+            ]
+          }
+          linearGradientProps={
+            {
+              "colors": [
+                "#FF5300",
+                "#5B03AD",
+              ],
+              "end": {
+                "x": 1,
+                "y": 0.5,
+              },
+              "start": {
+                "x": 0.5,
+                "y": 0.5,
+              },
+            }
+          }
+          onPress={[Function]}
+          style={
+            [
+              [
+                null,
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ],
+            ]
+          }
+          title={
+            <Text
+              color="#FFFFFF"
+              style={
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ]
+              }
+              weight="bold"
+            >
+              confirm
+            </Text>
+          }
+          type="gradient"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            confirm
+          </Text>
+        </View>
+        <View
+          accessible={true}
+          buttonStyle={
+            [
+              null,
+              {
+                "backgroundColor": "transparent",
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ]
+          }
+          containerStyle={
+            [
+              null,
+              [
+                {
+                  "flexDirection": "row",
+                  "height": 45,
+                },
+                null,
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "marginBottom": -10,
+                  "maxWidth": "100%",
+                  "minHeight": 60,
+                  "paddingBottom": 20,
+                },
+              ],
+            ]
+          }
+          onPress={[Function]}
+          style={
+            [
+              [
+                null,
+                {
+                  "backgroundColor": "transparent",
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ],
+            ]
+          }
+          title={
+            <Text
+              align="center"
+              color="#951F6F"
+              style={
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ]
+              }
+              weight="semibold"
+            >
+              cancel
+            </Text>
+          }
+          type="clear"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#951F6F",
+                },
+                {
+                  "textAlign": "center",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            cancel
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</Modal>
+`;
+
+exports[`TrustModalVerifier should match snapshot without name 1`] = `
+<Modal
+  animationType="fade"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={true}
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0, 0, 0, 0.5)",
+        "flex": 1,
+        "justifyContent": "center",
+        "padding": 20,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#fff",
+          "borderRadius": 20,
+          "height": 470,
+          "padding": 20,
+          "width": "100%",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "marginBottom": 16,
+            "padding": 10,
+          }
+        }
+      />
+      <RCTScrollView
+        contentContainerStyle={
+          {
+            "alignItems": "center",
+            "paddingBottom": 10,
+          }
+        }
+        showsVerticalScrollIndicator={true}
+        style={
+          {
+            "flex": 1,
+            "width": "100%",
+          }
+        }
+      >
+        <View>
+          <Text
+            style={
+              {
+                "color": "#666",
+                "fontSize": 14,
+                "lineHeight": 20,
+                "marginBottom": 16,
+                "textAlign": "center",
+              }
+            }
+          >
+            description
+          </Text>
+          <View
+            style={
+              {
+                "marginBottom": 10,
+                "width": "100%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "marginBottom": 6,
+                  "paddingHorizontal": 4,
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "fontSize": 14,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "flex": 1,
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  }
+                }
+              >
+                Point 1
+              </Text>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "marginBottom": 6,
+                  "paddingHorizontal": 4,
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "fontSize": 14,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "flex": 1,
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  }
+                }
+              >
+                Point 2
+              </Text>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "marginBottom": 6,
+                  "paddingHorizontal": 4,
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "fontSize": 14,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#666",
+                    "flex": 1,
+                    "fontSize": 14,
+                    "lineHeight": 18,
+                  }
+                }
+              >
+                Point 3
+              </Text>
+            </View>
+          </View>
+        </View>
+      </RCTScrollView>
+      <View
+        style={
+          {
+            "paddingBottom": 5,
+            "paddingTop": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          accessible={true}
+          buttonStyle={
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ]
+          }
+          containerStyle={
+            [
+              null,
+              [
+                {
+                  "flexDirection": "row",
+                },
+                null,
+                null,
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "marginBottom": 3,
+                  "minHeight": 50,
+                },
+              ],
+            ]
+          }
+          linearGradientProps={
+            {
+              "colors": [
+                "#FF5300",
+                "#5B03AD",
+              ],
+              "end": {
+                "x": 1,
+                "y": 0.5,
+              },
+              "start": {
+                "x": 0.5,
+                "y": 0.5,
+              },
+            }
+          }
+          onPress={[Function]}
+          style={
+            [
+              [
+                null,
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ],
+            ]
+          }
+          title={
+            <Text
+              color="#FFFFFF"
+              style={
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ]
+              }
+              weight="bold"
+            >
+              confirm
+            </Text>
+          }
+          type="gradient"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            confirm
+          </Text>
+        </View>
+        <View
+          accessible={true}
+          buttonStyle={
+            [
+              null,
+              {
+                "backgroundColor": "transparent",
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ]
+          }
+          containerStyle={
+            [
+              null,
+              [
+                {
+                  "flexDirection": "row",
+                  "height": 45,
+                },
+                null,
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "marginBottom": -10,
+                  "maxWidth": "100%",
+                  "minHeight": 60,
+                  "paddingBottom": 20,
+                },
+              ],
+            ]
+          }
+          onPress={[Function]}
+          style={
+            [
+              [
+                null,
+                {
+                  "backgroundColor": "transparent",
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ],
+            ]
+          }
+          title={
+            <Text
+              align="center"
+              color="#951F6F"
+              style={
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ]
+              }
+              weight="semibold"
+            >
+              cancel
+            </Text>
+          }
+          type="clear"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#951F6F",
+                },
+                {
+                  "textAlign": "center",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            cancel
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</Modal>
+`;

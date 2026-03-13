@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RotatingIcon Component should match snapshot with clockwise rotation 1`] = `
+<View
+  collapsable={false}
+  style={
+    {
+      "transform": [
+        {
+          "rotate": "0deg",
+        },
+      ],
+    }
+  }
+>
+  <View
+    color="#000000"
+    name="sync"
+    size={24}
+  />
+</View>
+`;
+
+exports[`RotatingIcon Component should match snapshot with counter-clockwise rotation 1`] = `
+<View
+  collapsable={false}
+  style={
+    {
+      "transform": [
+        {
+          "rotate": "360deg",
+        },
+      ],
+    }
+  }
+>
+  <View
+    color="#0000FF"
+    name="refresh"
+    size={30}
+  />
+</View>
+`;

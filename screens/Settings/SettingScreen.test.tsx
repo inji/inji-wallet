@@ -1,46 +1,138 @@
 import React from 'react';
+import {render, fireEvent} from '@testing-library/react-native';
+
+const mockSettingsController = {
+  alertMsg: '',
+  hideAlert: jest.fn(),
+  canUseBiometrics: true,
+  isBiometricUnlockEnabled: false,
+  isPasscodeSet: jest.fn(() => false),
+  CHANGE_UNLOCK_METHOD: jest.fn(),
+  useBiometrics: jest.fn(),
+  TOGGLE_BIOMETRIC: jest.fn(),
+  appId: 'test-app-id',
+  credentialRegistry: 'https://test.registry.com',
+  esignetHostUrl: 'https://esignet.test.com',
+  credentialRegistryResponse: '',
+  CANCEL: jest.fn(),
+  TOGGLE_SETTINGS: jest.fn(),
+  RECEIVE_CARD: jest.fn(),
+  INJI_TOUR_GUIDE: jest.fn(),
+  LOGOUT: jest.fn(),
+  UPDATE_CREDENTIAL_REGISTRY: jest.fn(),
+  isResetInjiProps: false,
+};
+
+jest.mock('./SettingScreenController', () => ({
+  useSettingsScreen: () => mockSettingsController,
+}));
+
+jest.mock('react-native-elements', () => {
+  const {
+    View,
+    TouchableOpacity,
+    Text: RNText,
+    Switch: RNSwitch,
+  } = require('react-native');
+  const MockListItem = (props: any) => (
+    <TouchableOpacity {...props}>{props.children}</TouchableOpacity>
+  );
+  MockListItem.Content = (props: any) => (
+    <View {...props}>{props.children}</View>
+  );
+  MockListItem.Title = (props: any) => <View {...props}>{props.children}</View>;
+  return {
+    Icon: (props: any) => <View testID="icon" />,
+    ListItem: MockListItem,
+    Switch: (props: any) => (
+      <RNSwitch
+        testID="switch"
+        value={props.value}
+        onValueChange={props.onValueChange}
+      />
+    ),
+    Button: (props: any) => (
+      <TouchableOpacity testID={props.testID} onPress={props.onPress}>
+        <RNText>{props.title}</RNText>
+      </TouchableOpacity>
+    ),
+  };
+});
+
+jest.mock('../../components/LanguageSelector', () => ({
+  LanguageSelector: (props: any) => {
+    const {View} = require('react-native');
+    return <View testID="languageSelector">{props.triggerComponent}</View>;
+  },
+}));
+
+jest.mock('react-native-gesture-handler', () => {
+  const {ScrollView} = require('react-native');
+  return {ScrollView};
+});
+
+jest.mock('react-native-dotenv', () => ({CREDENTIAL_REGISTRY_EDIT: 'false'}));
+
+jest.mock('./AboutInji', () => ({AboutInji: () => null}));
+jest.mock('../../components/EditableListItem', () => ({
+  EditableListItem: () => null,
+}));
+jest.mock('./ReceivedCards', () => ({ReceivedCards: () => null}));
+jest.mock('../../shared/commonUtil', () => {
+  const fn = jest.fn(() => ({}));
+  return {__esModule: true, default: fn};
+});
+jest.mock('../../components/ui/svg', () => ({
+  SvgImage: {
+    settingsLanguageIcon: () => 'LanguageIcon',
+    ReceiveCard: () => 'ReceiveCard',
+    fingerprintIcon: () => 'FingerprintIcon',
+    adaptiveBiometricIcon: () => 'AdaptiveBiometricIcon',
+    coloredInfo: () => 'ColoredInfo',
+    logOutIcon: () => 'LogOutIcon',
+  },
+}));
+jest.mock('../../shared/hooks/useBiometricType', () => ({
+  useBiometricType: () => ({
+    biometricType: 'FINGERPRINT',
+    isBiometricsLoading: false,
+    biometricLabel: 'Biometrics',
+    translationSuffix: 'Biometrics',
+    biometricCategory: 'fingerprint',
+  }),
+}));
+jest.mock('./DataBackupAndRestore', () => ({DataBackupAndRestore: () => null}));
+jest.mock('../../components/BannerNotificationContainer', () => ({
+  BannerNotificationContainer: () => null,
+}));
+jest.mock('./SettingsKeyManagement', () => ({
+  SettingsKeyManagementScreen: () => null,
+}));
+jest.mock('../../components/MessageOverlay', () => ({
+  MessageOverlay: () => null,
+}));
+
 import {SettingScreen} from './SettingScreen';
-import ShallowRenderer from 'react-test-renderer/shallow';
-import mockedConstants from '../../__mocks__/react-native.mock';
 
-describe('testing the settingsScreen component in Android and IOS', () => {
+describe('SettingScreen', () => {
+  const defaultProps = {
+    triggerComponent: <></>,
+    navigation: {navigate: jest.fn()},
+    route: {params: {}},
+  } as any;
+
   beforeEach(() => {
-    // Mock Platform module for Android
-    jest.mock('expo-constants', () => {
-      mockedConstants.Platform.OS = 'android';
-      return mockedConstants;
-    });
+    jest.clearAllMocks();
   });
 
-  it.skip('renders the SettingScreen component in android', () => {
-    // const renderer = new ShallowRenderer();
-    // const result = renderer.render(
-    //   <SettingScreen
-    //     triggerComponent={undefined}
-    //     navigation={undefined}
-    //     route={undefined}
-    //   />,
-    // );
-  //   expect(result).toMatchSnapshot();
+  it('should render settings screen', () => {
+    const {toJSON} = render(<SettingScreen {...defaultProps} />);
+    expect(toJSON()).toMatchSnapshot();
   });
 
-  it.skip('renders the SettingScreen component in IOS', () => {
-    // // Clear the previous mock
-    // jest.resetModules();
-    // // Mock Platform module for IOS
-    // jest.mock('expo-constants', () => {
-    //   mockedConstants.Platform.OS = 'ios';
-    //   return mockedConstants;
-    // });
-    //
-    // const renderer = new ShallowRenderer();
-    // const result = renderer.render(
-    //   <SettingScreen
-    //     triggerComponent={undefined}
-    //     navigation={undefined}
-    //     route={undefined}
-    //   />,
-    // );
-    // expect(result).toMatchSnapshot();
+  it('should call TOGGLE_BIOMETRIC when switch is toggled', () => {
+    const {getByTestId} = render(<SettingScreen {...defaultProps} />);
+    fireEvent(getByTestId('switch'), 'valueChange', true);
+    expect(mockSettingsController.TOGGLE_BIOMETRIC).toHaveBeenCalledWith(true);
   });
 });

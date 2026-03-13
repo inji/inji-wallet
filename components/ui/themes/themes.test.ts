@@ -1,106 +1,40 @@
 import {DefaultTheme} from './DefaultTheme';
 import {PurpleTheme} from './PurpleTheme';
 
-describe('DefaultTheme', () => {
-  it('should be defined', () => {
-    expect(DefaultTheme).toBeDefined();
+describe('Themes', () => {
+  it.each([
+    ['DefaultTheme', DefaultTheme],
+    ['PurpleTheme', PurpleTheme],
+  ])('%s should have all required properties', (_name, theme) => {
+    expect(theme.Colors).toEqual(expect.any(Object));
+    expect(theme.Colors.ProfileIconColor).toBeDefined();
+    expect(theme.TextStyles).toEqual(expect.any(Object));
+    expect(theme.ButtonStyles).toEqual(expect.any(Object));
+    expect(typeof theme.spacing).toBe('function');
+    expect(typeof theme.elevation).toBe('function');
   });
 
-  it('should have Colors property', () => {
-    expect(DefaultTheme.Colors).toBeDefined();
-    expect(typeof DefaultTheme.Colors).toBe('object');
-  });
-
-  it('should have ProfileIconColor', () => {
-    expect(DefaultTheme.Colors.ProfileIconColor).toBeDefined();
-  });
-
-  it('should have TextStyles property', () => {
-    expect(DefaultTheme.TextStyles).toBeDefined();
-    expect(typeof DefaultTheme.TextStyles).toBe('object');
-  });
-
-  it('should have ButtonStyles property', () => {
-    expect(DefaultTheme.ButtonStyles).toBeDefined();
-    expect(typeof DefaultTheme.ButtonStyles).toBe('object');
-  });
-
-  it('should have spacing function', () => {
-    expect(DefaultTheme.spacing).toBeDefined();
-    expect(typeof DefaultTheme.spacing).toBe('function');
-  });
-
-  it('should have elevation function', () => {
-    expect(DefaultTheme.elevation).toBeDefined();
-    expect(typeof DefaultTheme.elevation).toBe('function');
-  });
-});
-
-describe('PurpleTheme', () => {
-  it('should be defined', () => {
-    expect(PurpleTheme).toBeDefined();
-  });
-
-  it('should have Colors property', () => {
-    expect(PurpleTheme.Colors).toBeDefined();
-    expect(typeof PurpleTheme.Colors).toBe('object');
-  });
-
-  it('should have ProfileIconColor', () => {
-    expect(PurpleTheme.Colors.ProfileIconColor).toBeDefined();
-  });
-
-  it('should have different colors than Default', () => {
+  it('PurpleTheme should have different colors than DefaultTheme', () => {
     expect(PurpleTheme.Colors).not.toEqual(DefaultTheme.Colors);
   });
 
-  it('should have TextStyles property', () => {
-    expect(PurpleTheme.TextStyles).toBeDefined();
-    expect(typeof PurpleTheme.TextStyles).toBe('object');
-  });
-
-  it('should have ButtonStyles property', () => {
-    expect(PurpleTheme.ButtonStyles).toBeDefined();
-    expect(typeof PurpleTheme.ButtonStyles).toBe('object');
-  });
-
-  it('should have spacing function', () => {
-    expect(PurpleTheme.spacing).toBeDefined();
-    expect(typeof PurpleTheme.spacing).toBe('function');
-  });
-
-  it('should have elevation function', () => {
-    expect(PurpleTheme.elevation).toBeDefined();
-    expect(typeof PurpleTheme.elevation).toBe('function');
-  });
-
-  it('should have same structure as DefaultTheme', () => {
+  it('PurpleTheme should have same structure as DefaultTheme', () => {
     const defaultKeys = Object.keys(DefaultTheme);
     const purpleKeys = Object.keys(PurpleTheme);
     expect(purpleKeys.sort()).toEqual(defaultKeys.sort());
   });
-});
 
-describe('Theme spacing function', () => {
-  it('should return spacing styles for Default theme', () => {
-    const spacing = DefaultTheme.spacing('margin', 'xs');
-    expect(spacing).toBeDefined();
+  it('spacing should return styles', () => {
+    const defaultSpacing = DefaultTheme.spacing('margin', 'xs');
+    const purpleSpacing = PurpleTheme.spacing('padding', 'sm');
+    expect(defaultSpacing).toBeDefined();
+    expect(purpleSpacing).toBeDefined();
   });
 
-  it('should return spacing styles for Purple theme', () => {
-    const spacing = PurpleTheme.spacing('padding', 'sm');
-    expect(spacing).toBeDefined();
-  });
-});
-
-describe('Theme elevation function', () => {
-  it('should return elevation styles for Default theme', () => {
-    const elevation = DefaultTheme.elevation(2);
-    expect(elevation).toBeDefined();
-  });
-
-  it('should return elevation styles for Purple theme', () => {
-    const elevation = PurpleTheme.elevation(3);
-    expect(elevation).toBeDefined();
+  it('elevation should return styles', () => {
+    const defaultElevation = DefaultTheme.elevation(2);
+    const purpleElevation = PurpleTheme.elevation(3);
+    expect(defaultElevation).toBeDefined();
+    expect(purpleElevation).toBeDefined();
   });
 });

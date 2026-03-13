@@ -1,0 +1,324 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CancelDownloadModal should match snapshot when not visible 1`] = `null`;
+
+exports[`CancelDownloadModal should match snapshot when visible 1`] = `
+<Modal
+  hardwareAccelerated={false}
+  onRequestClose={[MockFunction]}
+  transparent={true}
+  visible={true}
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0, 0, 0, 0.4)",
+        "flex": 1,
+        "justifyContent": "center",
+        "paddingHorizontal": 40,
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessible={true}
+      focusable={false}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "white",
+          "borderRadius": 20,
+          "paddingHorizontal": 24,
+          "paddingVertical": 35,
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "fontSize": 18,
+            "fontWeight": "600",
+            "marginBottom": 5,
+            "textAlign": "center",
+          }
+        }
+        testID="cancelDownoadModalHeading"
+      >
+        heading
+      </Text>
+      <Text
+        style={
+          {
+            "color": "#888",
+            "fontSize": 14,
+            "lineHeight": 20,
+            "marginBottom": 20,
+            "marginTop": 12,
+            "textAlign": "center",
+          }
+        }
+        testID="cancelDownoadModalSubHeading"
+      >
+        subHeading
+      </Text>
+      <View
+        accessibilityLabel="cancelDownloadModalNoButton"
+        accessible={true}
+        buttonStyle={
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              {
+                "marginTop": 24,
+              },
+            ],
+          ]
+        }
+        linearGradientProps={
+          {
+            "colors": [
+              "#FF5300",
+              "#5B03AD",
+            ],
+            "end": {
+              "x": 1,
+              "y": 0.5,
+            },
+            "start": {
+              "x": 0.5,
+              "y": 0.5,
+            },
+          }
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ]
+            }
+            weight="bold"
+          >
+            cancel
+          </Text>
+        }
+        type="gradient"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          cancel
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="cancelDownloadModalYesButton"
+        accessible={true}
+        buttonStyle={
+          [
+            null,
+            {
+              "backgroundColor": "transparent",
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+                "height": 45,
+              },
+              null,
+              null,
+              null,
+              {
+                "marginBottom": -20,
+                "marginTop": 12,
+              },
+            ],
+          ]
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "backgroundColor": "transparent",
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            align="center"
+            color="#951F6F"
+            style={
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ]
+            }
+            weight="semibold"
+          >
+            confirm
+          </Text>
+        }
+        type="clear"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#951F6F",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          confirm
+        </Text>
+      </View>
+    </View>
+  </View>
+</Modal>
+`;

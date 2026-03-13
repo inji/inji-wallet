@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomeScreenLayout should render home screen layout 1`] = `
+<View
+  testID="navigator"
+>
+  <View
+    testID="screen-HomeScreen"
+  />
+  <View
+    testID="screen-IssuersScreen"
+  />
+</View>
+`;

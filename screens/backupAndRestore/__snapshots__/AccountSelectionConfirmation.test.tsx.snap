@@ -1,0 +1,498 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccountSelectionConfirmation should render when visible 1`] = `
+<View
+  isVisible={true}
+  onDismiss={[MockFunction]}
+  showClose={false}
+  testID="modal"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "flex": 1,
+          "justifyContent": "space-around",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "paddingBottom": 30,
+          "paddingTop": 10,
+        }
+      }
+    >
+      DataBackupIcon
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            {
+              "fontSize": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 17,
+              "fontWeight": "bold",
+              "lineHeight": 22,
+              "marginHorizontal": 30,
+              "paddingHorizontal": 20,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        backupProcessInfo
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#6F6F6F",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "paddingHorizontal": 20,
+              "paddingVertical": 15,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        cloudInfo
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "column",
+            "justifyContent": "flex-start",
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          {
+            "paddingHorizontal": 120,
+            "paddingTop": 50,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        GoogleDriveIcon
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "flex-end",
+          },
+          {
+            "alignItems": "center",
+          },
+          null,
+          {
+            "paddingBottom": 30,
+            "paddingHorizontal": 17,
+            "rowGap": 15,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          buttonStyle={
+            [
+              {
+                "flex": 1,
+              },
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ]
+          }
+          containerStyle={
+            [
+              {
+                "flex": 1,
+              },
+              [
+                {
+                  "flexDirection": "row",
+                },
+                null,
+                null,
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                undefined,
+              ],
+            ]
+          }
+          linearGradientProps={
+            {
+              "colors": [
+                "#FF5300",
+                "#5B03AD",
+              ],
+              "end": {
+                "x": 1,
+                "y": 0.5,
+              },
+              "start": {
+                "x": 0.5,
+                "y": 0.5,
+              },
+            }
+          }
+          onPress={[Function]}
+          style={
+            [
+              [
+                {
+                  "flex": 1,
+                },
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ],
+            ]
+          }
+          title={
+            <Text
+              color="#FFFFFF"
+              style={
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ]
+              }
+              weight="bold"
+            >
+              proceed
+            </Text>
+          }
+          type="gradient"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#FFFFFF",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingLeft": 0,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            proceed
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          buttonStyle={
+            [
+              null,
+              {
+                "backgroundColor": "transparent",
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ]
+          }
+          containerStyle={
+            [
+              null,
+              [
+                {
+                  "flexDirection": "row",
+                  "height": 45,
+                },
+                null,
+                null,
+                null,
+                undefined,
+              ],
+            ]
+          }
+          onPress={[Function]}
+          style={
+            [
+              [
+                null,
+                {
+                  "backgroundColor": "transparent",
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ],
+            ]
+          }
+          title={
+            <Text
+              align="center"
+              color="#951F6F"
+              style={
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ]
+              }
+              weight="semibold"
+            >
+              goBack
+            </Text>
+          }
+          type="clear"
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 15,
+                },
+                {
+                  "color": "#951F6F",
+                },
+                {
+                  "textAlign": "center",
+                },
+                null,
+                null,
+                [
+                  {
+                    "paddingTop": 3,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            goBack
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

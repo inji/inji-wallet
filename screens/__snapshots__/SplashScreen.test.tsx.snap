@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SplashScreen should render splash screen 1`] = `
+<View
+  crossAlign="center"
+  style={
+    {
+      "flex": 1,
+      "height": 1334,
+      "justifyContent": "center",
+      "width": 750,
+    }
+  }
+>
+  <Image
+    resizeMode="stretch"
+    source=""
+    style={
+      {
+        "height": 450,
+        "width": 400,
+      }
+    }
+  />
+</View>
+`;

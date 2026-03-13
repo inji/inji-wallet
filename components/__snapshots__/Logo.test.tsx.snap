@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Logo Component should render Logo with custom dimensions 1`] = `
+<View>
+  <Image
+    style={
+      {
+        "height": 100,
+        "resizeMode": "contain",
+        "width": 100,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`Logo Component should render Logo with default props 1`] = `
+<View>
+  <Image
+    style={
+      {
+        "resizeMode": "contain",
+      }
+    }
+  />
+</View>
+`;

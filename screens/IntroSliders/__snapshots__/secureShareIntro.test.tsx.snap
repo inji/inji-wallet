@@ -1,0 +1,634 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StaticSendVcScreen should render secure share intro 1`] = `
+<View
+  accessibilityLabel="sendVcScreen"
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#F8F8F8",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "borderColor": "black",
+        "borderRadius": 20,
+        "borderWidth": 12,
+        "flex": 1,
+        "maxHeight": 600,
+        "overflow": "hidden",
+        "width": 350,
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "alignSelf": "center",
+        "backgroundColor": "black",
+        "borderBottomLeftRadius": 13,
+        "borderBottomRightRadius": 10,
+        "height": 13,
+        "width": 100,
+      }
+    }
+    testID="introScreenNotch"
+  />
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+        {
+          "borderBottomColor": "#F8F8F8",
+          "borderBottomWidth": 1,
+          "marginTop": 16,
+          "paddingLeft": 16,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      accessibilityLabel="introTitle"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          {
+            "fontSize": 16,
+          },
+          null,
+        ]
+      }
+    >
+      SendVcScreen:introTitle
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "paddingHorizontal": 16,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      accessibilityLabel="issuerName"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 15,
+            "justifyContent": "center",
+          },
+          {
+            "color": "#951F6F",
+          },
+          {
+            "textAlign": "left",
+          },
+          null,
+          {
+            "fontSize": 12,
+          },
+          null,
+        ]
+      }
+    >
+      Relying Party
+    </Text>
+  </View>
+  <View
+    testID="divider"
+  />
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFF2D6",
+          "borderRadius": 8,
+          "justifyContent": "center",
+          "margin": 16,
+          "padding": 10,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      accessibilityLabel="requestMessage"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#8B6105",
+          },
+          {
+            "textAlign": "left",
+          },
+          null,
+          {
+            "fontSize": 13,
+            "lineHeight": 21,
+          },
+          null,
+        ]
+      }
+    >
+      &lt;Relying Party&gt;
+       
+      SendVcScreen:requestMessage
+      &lt;Self-Authentication&gt;
+      .
+    </Text>
+  </View>
+  <Text
+    accessibilityLabel="pleaseSelectAnId"
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Montserrat_700Bold",
+          "fontSize": 15,
+          "justifyContent": "center",
+        },
+        {
+          "color": "#000000",
+        },
+        {
+          "textAlign": "left",
+        },
+        {
+          "marginBottom": 8,
+          "marginEnd": 0,
+          "marginStart": 16,
+          "marginTop": 0,
+        },
+        {
+          "fontSize": 13,
+          "lineHeight": 21,
+        },
+        {
+          "position": "relative",
+        },
+      ]
+    }
+  >
+    SendVcScreen:pleaseSelectAnId
+  </Text>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+        {
+          "paddingHorizontal": 16,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      accessibilityLabel="cardsSelected"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          {
+            "marginBottom": 10,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 3,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      2 
+      SendVPScreen:cardsSelected
+    </Text>
+    <Text
+      accessibilityLabel="uncheckText"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#951F6F",
+          },
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      SendVPScreen:unCheck
+    </Text>
+  </View>
+  <RCTScrollView
+    accessible={true}
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View>
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "backgroundColor": "#FFFFFF",
+              "padding": 16,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  {
+                    "color": "#FFFFFF",
+                  },
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  [
+                    {
+                      "paddingLeft": 0,
+                    },
+                    undefined,
+                  ],
+                ]
+              }
+            >
+              Share
+            </Text>
+          </Text>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  {
+                    "color": "#FFFFFF",
+                  },
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  [
+                    {
+                      "paddingLeft": 0,
+                    },
+                    undefined,
+                  ],
+                ]
+              }
+            >
+              Share with Selfie
+            </Text>
+          </Text>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#951F6F",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  null,
+                  null,
+                  [
+                    {
+                      "paddingTop": 3,
+                    },
+                    undefined,
+                  ],
+                ]
+              }
+            >
+              Reject
+            </Text>
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "height": 200,
+          }
+        }
+        testID="footerSpacerView"
+      />
+    </View>
+  </RCTScrollView>
+</View>
+`;

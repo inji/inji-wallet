@@ -47,6 +47,11 @@ exports[`Passcode Component should match snapshot with both message and error 1`
     }
   >
     <View
+      color="#951F6F"
+      name="lock"
+      size={60}
+    />
+    <View
       accessible={true}
       style={
         [
@@ -205,6 +210,11 @@ exports[`Passcode Component should match snapshot with custom message 1`] = `
     }
   >
     <View
+      color="#951F6F"
+      name="lock"
+      size={60}
+    />
+    <View
       accessible={true}
       style={
         [
@@ -361,6 +371,11 @@ exports[`Passcode Component should match snapshot with default props 1`] = `
     }
   >
     <View
+      color="#951F6F"
+      name="lock"
+      size={60}
+    />
+    <View
       accessible={true}
       style={
         [
@@ -516,6 +531,11 @@ exports[`Passcode Component should match snapshot with error message 1`] = `
       ]
     }
   >
+    <View
+      color="#951F6F"
+      name="lock"
+      size={60}
+    />
     <View
       accessible={true}
       style={
