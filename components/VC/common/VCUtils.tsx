@@ -273,7 +273,7 @@ export const getFieldName = (
 
         const newFieldObj: LocalizedEntry[] = currentObj.display.map(
           (obj: any) => ({
-            language: obj.locale || obj.language,
+            language: obj.locale,
             value: obj.name,
           }),
         );
