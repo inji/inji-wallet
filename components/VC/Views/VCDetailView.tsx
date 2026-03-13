@@ -82,7 +82,12 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
       });
     } else if (
       props.verifiableCredentialData.vcMetadata.format === VCFormat.vc_sd_jwt ||
-      props.verifiableCredentialData.vcMetadata.format === VCFormat.dc_sd_jwt ||
+      props.verifiableCredentialData.vcMetadata.format === VCFormat.dc_sd_jwt
+    ) {
+      availableFieldNames = Object.keys(
+        verifiableCredential?.fullResolvedPayload,
+      );
+    } else if (
       props.verifiableCredentialData.vcMetadata.format === VCFormat.jwt_vc_json
     ) {
       availableFieldNames = Object.keys(

@@ -323,7 +323,7 @@ describe('getFieldValue', () => {
     });
   });
 
-  describe('JWT formats (vc_sd_jwt, dc_sd_jwt, and jwt_vc_json)', () => {
+  describe('SD-JWT formats (vc_sd_jwt and dc_sd_jwt)', () => {
     it('should extract nested field value using dot notation', () => {
       const verifiableCredential = {
         fullResolvedPayload: {user: {profile: {name: 'John Doe'}}},
@@ -521,8 +521,10 @@ describe('getFieldValue', () => {
       expect(i18n.getLocalizedField).toHaveBeenCalledWith('30');
       expect(i18n.getLocalizedField).toHaveBeenCalledWith('true');
     });
+  });
 
-    it('should work with jwt_vc_json format and extract claims', () => {
+  describe('JWT_VC_JSON format', () => {
+    it('should work with jwt_vc_json format and extract flat claims', () => {
       const verifiableCredential = {
         fullResolvedPayload: {employeeId: 'EMP-99'},
       } as any;
@@ -538,6 +540,56 @@ describe('getFieldValue', () => {
 
       expect(result).toBe('EMP-99');
       expect(i18n.getLocalizedField).toHaveBeenCalledWith('EMP-99');
+    });
+
+    it('should handle nested paths in jwt_vc_json', () => {
+      const verifiableCredential = {
+        fullResolvedPayload: {credentialSubject: {role: 'Developer'}},
+      } as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'credentialSubject.role',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.jwt_vc_json,
+      );
+
+      expect(result).toBe('Developer');
+      expect(i18n.getLocalizedField).toHaveBeenCalledWith('Developer');
+    });
+
+    it('should handle array of simple values in jwt_vc_json', () => {
+      const verifiableCredential = {
+        fullResolvedPayload: {hobbies: ['Reading', 'Gaming']},
+      } as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'hobbies',
+        {},
+        {},
+        new MockDisplay() as any,
+        VCFormat.jwt_vc_json,
+      );
+
+      expect(result).toBe('Reading, Gaming');
+    });
+
+    it('should return undefined for non-existent nested paths in jwt_vc_json', () => {
+      const verifiableCredential = {fullResolvedPayload: {user: {}}} as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'user.profile.name',
+        {},
+        {},
+        new MockDisplay() as any,
+        VCFormat.jwt_vc_json,
+      );
+
+      expect(result).toBeUndefined();
     });
   });
 
