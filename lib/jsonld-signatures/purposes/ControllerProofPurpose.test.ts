@@ -243,5 +243,56 @@ describe('ControllerProofPurpose', () => {
       );
       expect(result.valid).toBe(true);
     });
+
+    it('calls documentLoader with controller id and frames non-DID context documents', async () => {
+      const jsonld = require('jsonld');
+      const mockDocLoader = jest.fn().mockResolvedValue({
+        document: {
+          '@context': 'https://example.com/context',
+          id: 'did:example:123',
+          assertionMethod: ['did:example:123#key1'],
+        },
+      });
+
+      const pp = new ControllerProofPurpose({term: 'assertionMethod'});
+      const result = await pp.validate(
+        {created: new Date().toISOString()},
+        {
+          verificationMethod: {
+            id: 'did:example:123#key1',
+            controller: 'did:example:123',
+          },
+          documentLoader: mockDocLoader,
+          expansionMap: jest.fn(),
+        },
+      );
+
+      expect(result.valid).toBe(true);
+      expect(mockDocLoader).toHaveBeenCalledWith('did:example:123');
+      expect(jsonld.frame).toHaveBeenCalled();
+    });
+
+    it('returns invalid when created timestamp is outside allowed maxTimestampDelta', async () => {
+      const pp = new ControllerProofPurpose({
+        term: 'assertionMethod',
+        controller: {
+          assertionMethod: ['did:example:123#key1'],
+        },
+        date: new Date('2024-01-01T00:00:00Z'),
+        maxTimestampDelta: 10,
+      });
+
+      const result = await pp.validate(
+        {created: '2000-01-01T00:00:00Z'},
+        {
+          verificationMethod: {id: 'did:example:123#key1'},
+          documentLoader: jest.fn(),
+          expansionMap: jest.fn(),
+        },
+      );
+
+      expect(result.valid).toBe(false);
+      expect(result.error.message).toContain('out of range');
+    });
   });
 });

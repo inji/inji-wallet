@@ -69,6 +69,10 @@ import {VCCardView} from './VCCardView';
 import {isVCLoaded} from '../common/VCUtils';
 
 describe('VCCardView', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   const defaultProps = {
     vcMetadata: {isPinned: false, issuerHost: 'test'},
     onPress: jest.fn(),

@@ -88,6 +88,17 @@ describe('ProofPurpose', () => {
       const result = await pp.validate({created: 'not-a-date'});
       expect(result.valid).toBe(false);
     });
+
+    it('returns valid:false when created is missing and timestamp delta is finite', async () => {
+      const pp = new ProofPurpose({
+        term: 'test',
+        date: new Date(),
+        maxTimestampDelta: 10,
+      });
+      const result = await pp.validate({});
+      expect(result.valid).toBe(false);
+      expect(result.error).toBeDefined();
+    });
   });
 
   describe('update', () => {
