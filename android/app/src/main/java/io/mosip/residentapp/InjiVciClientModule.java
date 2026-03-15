@@ -11,6 +11,8 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -22,7 +24,7 @@ import io.mosip.vciclient.VCIClient;
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata;
 import io.mosip.vciclient.credential.response.CredentialResponse;
 import io.mosip.vciclient.token.TokenResponse;
-
+import io.mosip.vciclient.exception.VCIClientException;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
 
 public class InjiVciClientModule extends ReactContextBaseJavaModule {
@@ -68,8 +70,9 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void sendVPTokenSigningResultFromJS(ReadableArray vpTokenSigningResults) {
-      List<VPTokenSigningResultV2> formattedVPTokenSigningResults = OpenId4VPUtils.parseVPTokenSigningResultV2(vpTokenSigningResults);
-      VCIClientCallbackBridge.completeSignDataForVP(formattedVPTokenSigningResults);
+        List<VPTokenSigningResultV2> formattedVPTokenSigningResults = OpenId4VPUtils
+                .parseVPTokenSigningResultV2(vpTokenSigningResults);
+        VCIClientCallbackBridge.completeSignDataForVP(formattedVPTokenSigningResults);
     }
 
     @ReactMethod
@@ -98,9 +101,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
                     promise.resolve(json);
                 });
             } catch (Exception e) {
-                reactContext.runOnUiQueueThread(() -> {
-                    promise.reject("GET_ISSUER_METADATA_FAILED", e.getMessage(), e);
-                });
+                reactContext.runOnUiQueueThread(() -> rejectVCIException(promise, e));
             }
         }).start();
     }
@@ -124,7 +125,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
                 reactContext
                         .runOnUiQueueThread(() -> promise.resolve(response != null ? response.toJsonString() : null));
             } catch (Exception e) {
-                reactContext.runOnUiQueueThread(() -> promise.reject("OFFER_FLOW_FAILED", e.getMessage(), e));
+                reactContext.runOnUiQueueThread(() -> rejectVCIException(promise, e));
             }
         }).start();
     }
@@ -142,16 +143,13 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
                         credentialIssuer,
                         credentialConfigurationId,
                         clientMetadata,
-                        signatureSuite
-                    );
+                        signatureSuite);
 
                 reactContext.runOnUiQueueThread(() -> {
                     promise.resolve(response != null ? response.toJsonString() : null);
                 });
             } catch (Exception e) {
-                reactContext.runOnUiQueueThread(() -> {
-                    promise.reject("TRUSTED_ISSUER_FAILED", e.getMessage(), e);
-                });
+                reactContext.runOnUiQueueThread(() -> rejectVCIException(promise, e));
             }
         }).start();
 
@@ -167,5 +165,41 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
                 getName());
 
         VCIClientCallbackBridge.abortPresentationFlow(exception);
+    }
+
+    private void rejectVCIException(Promise promise, Exception e) {
+
+        if (e instanceof VCIClientException) {
+    
+            VCIClientException ex = (VCIClientException) e;
+    
+            WritableMap userInfo = Arguments.createMap();
+    
+            if (ex.getSourceErrorCode() != null) {
+                userInfo.putString("sourceErrorCode", ex.getSourceErrorCode());
+            }
+    
+            if (ex.getServerErrorCode() != null) {
+                userInfo.putString("serverErrorCode", ex.getServerErrorCode());
+            }
+    
+            if (ex.getServerErrorDescription() != null) {
+                userInfo.putString("serverErrorDescription", ex.getServerErrorDescription());
+            }
+    
+            promise.reject(
+                    ex.getCode() != null ? ex.getCode() : "VCI_CLIENT_ERROR",
+                    ex.getMessage(),
+                    userInfo
+            );
+    
+        } else {
+    
+            promise.reject(
+                    "UNKNOWN_ERROR",
+                    e.getMessage() != null ? e.getMessage() : "Unknown error occurred",
+                    e
+            );
+        }
     }
 }

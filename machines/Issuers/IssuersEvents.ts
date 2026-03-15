@@ -10,7 +10,10 @@ export const IssuersEvents = {
   RESET_ERROR: () => ({}),
   SHOW_ERROR:(error: any) => ({error}),
   CHECK_KEY_PAIR: () => ({}),
-  CANCEL: () => ({}),
+  CANCEL: ({
+    serverErrorCode,
+    serverErrorDescription,
+  }) => ({serverErrorCode, serverErrorDescription}),
   STORE_RESPONSE: (response?: unknown) => ({response}),
   STORE_ERROR: (error: Error, requester?: string) => ({error, requester}),
   RESET_VERIFY_ERROR: () => ({}),
@@ -46,4 +49,5 @@ export const IssuersEvents = {
   STAY_IN_PROGRESS: () => ({}),
   SIGN_PRESENTATION: (unsignedVPToken: object) => ({unsignedVPToken}),
   SIGNED_DATA_FOR_VP: (signedVPToken: Record<any, any>) => ({signedVPToken}),
+  NETWORK_STATUS_CHANGED: (isInternetAvailable: boolean) => ({isInternetAvailable}),
 };
