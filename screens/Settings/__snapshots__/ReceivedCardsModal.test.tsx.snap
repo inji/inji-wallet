@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReceivedCardsModal should render empty state 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerTitle="header"
+  isVisible={true}
+  onDismiss={[MockFunction]}
+  testID="receivedCardsModal"
+>
+  <RCTScrollView
+    accessible={true}
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "paddingHorizontal": 15,
+        },
+      ]
+    }
+    refreshControl={
+      <RefreshControlMock
+        onRefresh={[MockFunction]}
+        refreshing={false}
+      />
+    }
+  >
+    <RCTRefreshControl />
+    <View>
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "column",
+              "justifyContent": "center",
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          name="sentiment-dissatisfied"
+          size={40}
+          style={
+            {
+              "marginBottom": 20,
+            }
+          }
+        />
+        <Text
+          accessibilityLabel="noReceivedVcsTitle"
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              null,
+              {
+                "textAlign": "center",
+              },
+              {
+                "marginBottom": 4,
+                "marginEnd": 0,
+                "marginStart": 0,
+                "marginTop": 0,
+              },
+              null,
+              {
+                "paddingTop": 3,
+              },
+            ]
+          }
+        >
+          noReceivedVcsTitle
+        </Text>
+        <Text
+          accessibilityLabel="noReceivedVcsText"
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              {
+                "color": "#C7C7C7",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              {
+                "paddingTop": 3,
+              },
+            ]
+          }
+        >
+          noReceivedVcsText
+        </Text>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;

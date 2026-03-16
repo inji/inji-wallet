@@ -3,17 +3,13 @@ import {render} from '@testing-library/react-native';
 import {Column, Row} from './Layout';
 import {Text} from 'react-native';
 
+jest.mock('../../shared/commonUtil', () => ({
+  __esModule: true,
+  default: (id: string) => ({testID: id}),
+}));
+
 describe('Layout Components', () => {
   describe('Column Component', () => {
-    it('should render Column component', () => {
-      const {toJSON} = render(
-        <Column>
-          <Text>Test</Text>
-        </Column>,
-      );
-      expect(toJSON()).toBeTruthy();
-    });
-
     it('should render children in column', () => {
       const {getByText} = render(
         <Column>
@@ -27,16 +23,16 @@ describe('Layout Components', () => {
     });
 
     it('should render with fill prop', () => {
-      const {getByLabelText} = render(
+      const {getByTestId} = render(
         <Column fill testID="fill-column">
           <Text>Fill Column</Text>
         </Column>,
       );
-      expect(getByLabelText('fill-column')).toBeTruthy();
+      expect(getByTestId('fill-column')).toBeTruthy();
     });
 
     it('should render with multiple layout props', () => {
-      const {getByLabelText} = render(
+      const {getByTestId} = render(
         <Column
           testID="complex-column"
           fill
@@ -48,20 +44,11 @@ describe('Layout Components', () => {
           <Text>Complex Column</Text>
         </Column>,
       );
-      expect(getByLabelText('complex-column')).toBeTruthy();
+      expect(getByTestId('complex-column')).toBeTruthy();
     });
   });
 
   describe('Row Component', () => {
-    it('should render Row component', () => {
-      const {toJSON} = render(
-        <Row>
-          <Text>Test</Text>
-        </Row>,
-      );
-      expect(toJSON()).toBeTruthy();
-    });
-
     it('should render children in row', () => {
       const {getByText} = render(
         <Row>
@@ -77,16 +64,16 @@ describe('Layout Components', () => {
     });
 
     it('should render with fill prop', () => {
-      const {getByLabelText} = render(
+      const {getByTestId} = render(
         <Row fill testID="fill-row">
           <Text>Fill Row</Text>
         </Row>,
       );
-      expect(getByLabelText('fill-row')).toBeTruthy();
+      expect(getByTestId('fill-row')).toBeTruthy();
     });
 
     it('should render with multiple layout props', () => {
-      const {getByLabelText} = render(
+      const {getByTestId} = render(
         <Row
           testID="complex-row"
           fill
@@ -98,7 +85,7 @@ describe('Layout Components', () => {
           <Text>Complex Row</Text>
         </Row>,
       );
-      expect(getByLabelText('complex-row')).toBeTruthy();
+      expect(getByTestId('complex-row')).toBeTruthy();
     });
 
     it('should handle nested layouts', () => {

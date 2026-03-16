@@ -20,7 +20,15 @@ exports[`ProfileIcon Component should match snapshot with custom container style
         "padding": 5,
       }
     }
-  />
+  >
+    <View
+      accessibilityLabel="ProfileIcon"
+      accessible={true}
+      color="#A5A5A5"
+      name="person"
+      size={40}
+    />
+  </View>
 </View>
 `;
 
@@ -38,7 +46,15 @@ exports[`ProfileIcon Component should match snapshot with custom icon size 1`] =
     accessibilityLabel="ProfileIconInner"
     accessible={true}
     style={{}}
-  />
+  >
+    <View
+      accessibilityLabel="ProfileIcon"
+      accessible={true}
+      color="#A5A5A5"
+      name="person"
+      size={60}
+    />
+  </View>
 </View>
 `;
 
@@ -56,7 +72,15 @@ exports[`ProfileIcon Component should match snapshot with pinned icon 1`] = `
     accessibilityLabel="ProfileIconInner"
     accessible={true}
     style={{}}
-  />
+  >
+    <View
+      accessibilityLabel="ProfileIcon"
+      accessible={true}
+      color="#A5A5A5"
+      name="person"
+      size={40}
+    />
+  </View>
   <View
     testID="mockPinIcon"
   />
@@ -77,6 +101,14 @@ exports[`ProfileIcon Component should match snapshot without pinned icon 1`] = `
     accessibilityLabel="ProfileIconInner"
     accessible={true}
     style={{}}
-  />
+  >
+    <View
+      accessibilityLabel="ProfileIcon"
+      accessible={true}
+      color="#A5A5A5"
+      name="person"
+      size={40}
+    />
+  </View>
 </View>
 `;

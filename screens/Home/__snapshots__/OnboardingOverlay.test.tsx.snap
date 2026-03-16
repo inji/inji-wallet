@@ -1,0 +1,695 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OnboardingOverlay should render when not visible 1`] = `
+<View
+  isVisible={false}
+  onBackdropPress={[MockFunction]}
+  overlayStyle={
+    {
+      "backgroundColor": "transparent",
+      "bottom": 86,
+      "padding": 24,
+      "shadowColor": "transparent",
+    }
+  }
+  testID="overlay"
+  transparent={true}
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "flex-end",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      testID="icon"
+    />
+    <View
+      style={
+        {
+          "backgroundColor": "#951F6F",
+          "borderRadius": 4,
+          "margin": 0,
+          "minHeight": 300,
+          "width": "100%",
+        }
+      }
+    >
+      <View
+        testID="appIntroSlider"
+      >
+        <View>
+          <View
+            style={
+              {
+                "padding": 20,
+                "width": "100%",
+              }
+            }
+          >
+            <RCTScrollView
+              showsVerticalScrollIndicator={true}
+            >
+              <View>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#FFFFFF",
+                        "fontFamily": "Montserrat_700Bold",
+                        "marginBottom": 20,
+                      },
+                    ]
+                  }
+                >
+                  stepOneTitle
+                </Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#FFFFFF",
+                      },
+                    ]
+                  }
+                >
+                  stepOneText
+                </Text>
+              </View>
+            </RCTScrollView>
+          </View>
+        </View>
+        <View>
+          <View
+            style={
+              {
+                "padding": 20,
+                "width": "100%",
+              }
+            }
+          >
+            <RCTScrollView
+              showsVerticalScrollIndicator={true}
+            >
+              <View>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#FFFFFF",
+                        "fontFamily": "Montserrat_700Bold",
+                        "marginBottom": 20,
+                      },
+                    ]
+                  }
+                >
+                  stepTwoTitle
+                </Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#FFFFFF",
+                      },
+                    ]
+                  }
+                >
+                  stepTwoText
+                </Text>
+              </View>
+            </RCTScrollView>
+          </View>
+        </View>
+        <View>
+          <View
+            style={
+              {
+                "padding": 20,
+                "width": "100%",
+              }
+            }
+          >
+            <RCTScrollView
+              showsVerticalScrollIndicator={true}
+            >
+              <View>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#FFFFFF",
+                        "fontFamily": "Montserrat_700Bold",
+                        "marginBottom": 20,
+                      },
+                    ]
+                  }
+                >
+                  stepThreeTitle
+                </Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#FFFFFF",
+                      },
+                    ]
+                  }
+                >
+                  stepThreeText
+                </Text>
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "opacity": 1,
+                    }
+                  }
+                >
+                  <Text>
+                    <Text
+                      style={
+                        [
+                          {
+                            "color": "#000000",
+                            "fontSize": 16,
+                            "lineHeight": 18,
+                          },
+                          {
+                            "fontFamily": "Montserrat_600SemiBold",
+                            "fontSize": 15,
+                          },
+                          {
+                            "color": "#951F6F",
+                          },
+                          {
+                            "textAlign": "center",
+                          },
+                          null,
+                          null,
+                          [
+                            {
+                              "paddingTop": 3,
+                            },
+                            undefined,
+                          ],
+                        ]
+                      }
+                    >
+                      stepThreeButton
+                    </Text>
+                  </Text>
+                </View>
+              </View>
+            </RCTScrollView>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`OnboardingOverlay should render when visible 1`] = `
+<View
+  isVisible={true}
+  onBackdropPress={[MockFunction]}
+  overlayStyle={
+    {
+      "backgroundColor": "transparent",
+      "bottom": 86,
+      "padding": 24,
+      "shadowColor": "transparent",
+    }
+  }
+  testID="overlay"
+  transparent={true}
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "flex-end",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      testID="icon"
+    />
+    <View
+      style={
+        {
+          "backgroundColor": "#951F6F",
+          "borderRadius": 4,
+          "margin": 0,
+          "minHeight": 300,
+          "width": "100%",
+        }
+      }
+    >
+      <View
+        testID="appIntroSlider"
+      >
+        <View>
+          <View
+            style={
+              {
+                "padding": 20,
+                "width": "100%",
+              }
+            }
+          >
+            <RCTScrollView
+              showsVerticalScrollIndicator={true}
+            >
+              <View>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#FFFFFF",
+                        "fontFamily": "Montserrat_700Bold",
+                        "marginBottom": 20,
+                      },
+                    ]
+                  }
+                >
+                  stepOneTitle
+                </Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#FFFFFF",
+                      },
+                    ]
+                  }
+                >
+                  stepOneText
+                </Text>
+              </View>
+            </RCTScrollView>
+          </View>
+        </View>
+        <View>
+          <View
+            style={
+              {
+                "padding": 20,
+                "width": "100%",
+              }
+            }
+          >
+            <RCTScrollView
+              showsVerticalScrollIndicator={true}
+            >
+              <View>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#FFFFFF",
+                        "fontFamily": "Montserrat_700Bold",
+                        "marginBottom": 20,
+                      },
+                    ]
+                  }
+                >
+                  stepTwoTitle
+                </Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#FFFFFF",
+                      },
+                    ]
+                  }
+                >
+                  stepTwoText
+                </Text>
+              </View>
+            </RCTScrollView>
+          </View>
+        </View>
+        <View>
+          <View
+            style={
+              {
+                "padding": 20,
+                "width": "100%",
+              }
+            }
+          >
+            <RCTScrollView
+              showsVerticalScrollIndicator={true}
+            >
+              <View>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#FFFFFF",
+                        "fontFamily": "Montserrat_700Bold",
+                        "marginBottom": 20,
+                      },
+                    ]
+                  }
+                >
+                  stepThreeTitle
+                </Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_400Regular",
+                        "fontSize": 14,
+                      },
+                      null,
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      {
+                        "color": "#FFFFFF",
+                      },
+                    ]
+                  }
+                >
+                  stepThreeText
+                </Text>
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "opacity": 1,
+                    }
+                  }
+                >
+                  <Text>
+                    <Text
+                      style={
+                        [
+                          {
+                            "color": "#000000",
+                            "fontSize": 16,
+                            "lineHeight": 18,
+                          },
+                          {
+                            "fontFamily": "Montserrat_600SemiBold",
+                            "fontSize": 15,
+                          },
+                          {
+                            "color": "#951F6F",
+                          },
+                          {
+                            "textAlign": "center",
+                          },
+                          null,
+                          null,
+                          [
+                            {
+                              "paddingTop": 3,
+                            },
+                            undefined,
+                          ],
+                        ]
+                      }
+                    >
+                      stepThreeButton
+                    </Text>
+                  </Text>
+                </View>
+              </View>
+            </RCTScrollView>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

@@ -1,0 +1,440 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RemoveVcWarningOverlay should match snapshot when visible 1`] = `
+<View
+  isVisible={true}
+  overlayStyle={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 15,
+      "elevation": 5,
+      "padding": 0,
+    }
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 10,
+          "paddingEnd": 10,
+          "paddingStart": 10,
+          "paddingTop": 10,
+        },
+        null,
+        null,
+        {
+          "width": 600,
+        },
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        {
+          "alignItems": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          {
+            "marginBottom": -10,
+            "marginEnd": 80,
+            "marginStart": 0,
+            "marginTop": 0,
+          },
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "center",
+          },
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      WarningLogo
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": -80,
+              "marginTop": 0,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        !
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          {
+            "marginBottom": 20,
+            "marginEnd": 10,
+            "marginStart": 10,
+            "marginTop": 0,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="alert"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            {
+              "fontSize": 18,
+            },
+            {
+              "marginBottom": 16,
+            },
+          ]
+        }
+      >
+        alert
+      </Text>
+      <Text
+        accessibilityLabel="warningMsg"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#6F6F6F",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+          ]
+        }
+      >
+        removeWarning
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="yesConfirm"
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "alignSelf": "center",
+            "borderRadius": 9,
+            "height": 54,
+            "width": 540,
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 30,
+            },
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            undefined,
+          ],
+        ]
+      }
+      linearGradientProps={
+        {
+          "colors": [
+            "#FF5300",
+            "#5B03AD",
+          ],
+          "end": {
+            "x": 1,
+            "y": 0.5,
+          },
+          "start": {
+            "x": 0.5,
+            "y": 0.5,
+          },
+        }
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          color="#FFFFFF"
+          style={
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ]
+          }
+          weight="bold"
+        >
+          confirm
+        </Text>
+      }
+      type="gradient"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        confirm
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="no"
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "backgroundColor": "transparent",
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+              "height": 45,
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            null,
+            undefined,
+          ],
+        ]
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "backgroundColor": "transparent",
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          align="center"
+          color="#951F6F"
+          style={
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ]
+          }
+          weight="semibold"
+        >
+          cancel
+        </Text>
+      }
+      type="clear"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            {
+              "color": "#951F6F",
+            },
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingTop": 3,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        cancel
+      </Text>
+    </View>
+  </View>
+</View>
+`;

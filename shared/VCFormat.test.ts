@@ -17,6 +17,7 @@ describe('VCFormat', () => {
     expect(VCFormat.dc_sd_jwt).toBe('dc+sd-jwt');
   });
 
+
   it('should have jwt_vc_json format', () => {
     expect(VCFormat.jwt_vc_json).toBe('jwt_vc_json');
   });

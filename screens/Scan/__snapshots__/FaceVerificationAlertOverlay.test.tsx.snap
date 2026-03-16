@@ -1,0 +1,1159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FaceVerificationAlertOverlay should match snapshot when not visible 1`] = `
+<View
+  isVisible={false}
+  onBackdropPress={[MockFunction]}
+  overlayStyle={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 15,
+      "elevation": 5,
+      "padding": 0,
+    }
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 10,
+          "paddingEnd": 10,
+          "paddingStart": 10,
+          "paddingTop": 10,
+        },
+        null,
+        null,
+        {
+          "width": 600,
+        },
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        {
+          "alignItems": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          {
+            "marginBottom": 20,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 30,
+          },
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "center",
+          },
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      ShareWithSelfie
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 0,
+            "paddingTop": 0,
+          },
+          {
+            "marginBottom": 15,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 10,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="shareWithSelfieAlert"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            {
+              "fontSize": 18,
+            },
+            {
+              "padding": 3,
+            },
+          ]
+        }
+      >
+        shareWithSelfie
+      </Text>
+      <Text
+        accessibilityLabel="shareWithSelfieConsentMsg"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#5D5D5D",
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            null,
+          ]
+        }
+      >
+        shareWithSelfieMessage
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="iUnderstand"
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "alignSelf": "center",
+            "borderRadius": 9,
+            "height": 54,
+            "width": 540,
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            undefined,
+          ],
+        ]
+      }
+      linearGradientProps={
+        {
+          "colors": [
+            "#FF5300",
+            "#5B03AD",
+          ],
+          "end": {
+            "x": 1,
+            "y": 0.5,
+          },
+          "start": {
+            "x": 0.5,
+            "y": 0.5,
+          },
+        }
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          color="#FFFFFF"
+          style={
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ]
+          }
+          weight="bold"
+        >
+          ConfirmButton
+        </Text>
+      }
+      type="gradient"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        ConfirmButton
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": -25,
+            "marginTop": 5,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        checked={false}
+        checkedIcon="CheckedIcon"
+        onPress={[Function]}
+        uncheckedIcon="UnCheckedIcon"
+      />
+      <Text
+        accessibilityLabel="doNotAskMsg"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            {
+              "fontSize": 13,
+              "lineHeight": 21,
+            },
+            {
+              "alignSelf": "center",
+              "color": "#9B9B9B",
+              "marginLeft": -15,
+            },
+          ]
+        }
+      >
+        doNotAskMessage
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`FaceVerificationAlertOverlay should match snapshot when visible 1`] = `
+<View
+  isVisible={true}
+  onBackdropPress={[MockFunction]}
+  overlayStyle={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 15,
+      "elevation": 5,
+      "padding": 0,
+    }
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 10,
+          "paddingEnd": 10,
+          "paddingStart": 10,
+          "paddingTop": 10,
+        },
+        null,
+        null,
+        {
+          "width": 600,
+        },
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        {
+          "alignItems": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          {
+            "marginBottom": 20,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 30,
+          },
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "center",
+          },
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      ShareWithSelfie
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 0,
+            "paddingTop": 0,
+          },
+          {
+            "marginBottom": 15,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 10,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="shareWithSelfieAlert"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            {
+              "fontSize": 18,
+            },
+            {
+              "padding": 3,
+            },
+          ]
+        }
+      >
+        shareWithSelfie
+      </Text>
+      <Text
+        accessibilityLabel="shareWithSelfieConsentMsg"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#5D5D5D",
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            null,
+          ]
+        }
+      >
+        shareWithSelfieMessage
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="iUnderstand"
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "alignSelf": "center",
+            "borderRadius": 9,
+            "height": 54,
+            "width": 540,
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            undefined,
+          ],
+        ]
+      }
+      linearGradientProps={
+        {
+          "colors": [
+            "#FF5300",
+            "#5B03AD",
+          ],
+          "end": {
+            "x": 1,
+            "y": 0.5,
+          },
+          "start": {
+            "x": 0.5,
+            "y": 0.5,
+          },
+        }
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          color="#FFFFFF"
+          style={
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ]
+          }
+          weight="bold"
+        >
+          ConfirmButton
+        </Text>
+      }
+      type="gradient"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        ConfirmButton
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": -25,
+            "marginTop": 5,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        checked={false}
+        checkedIcon="CheckedIcon"
+        onPress={[Function]}
+        uncheckedIcon="UnCheckedIcon"
+      />
+      <Text
+        accessibilityLabel="doNotAskMsg"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            {
+              "fontSize": 13,
+              "lineHeight": 21,
+            },
+            {
+              "alignSelf": "center",
+              "color": "#9B9B9B",
+              "marginLeft": -15,
+            },
+          ]
+        }
+      >
+        doNotAskMessage
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`FaceVerificationAlertOverlay should match snapshot with QR login variant 1`] = `
+<View
+  isVisible={true}
+  onBackdropPress={[MockFunction]}
+  overlayStyle={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 15,
+      "elevation": 5,
+      "padding": 0,
+    }
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 10,
+          "paddingEnd": 10,
+          "paddingStart": 10,
+          "paddingTop": 10,
+        },
+        null,
+        null,
+        {
+          "width": 600,
+        },
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        {
+          "alignItems": "center",
+        },
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          {
+            "marginBottom": 20,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 30,
+          },
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "center",
+          },
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      ShareWithSelfie
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          {
+            "paddingBottom": 0,
+            "paddingEnd": 0,
+            "paddingStart": 0,
+            "paddingTop": 0,
+          },
+          {
+            "marginBottom": 15,
+            "marginEnd": 0,
+            "marginStart": 0,
+            "marginTop": 10,
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        accessibilityLabel="shareWithSelfieAlert"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#000000",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            {
+              "fontSize": 18,
+            },
+            {
+              "padding": 3,
+            },
+          ]
+        }
+      >
+        shareWithSelfieQrLogin
+      </Text>
+      <Text
+        accessibilityLabel="shareWithSelfieConsentMsg"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#5D5D5D",
+            },
+            {
+              "textAlign": "center",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            {
+              "fontSize": 15,
+              "lineHeight": 18,
+            },
+            null,
+          ]
+        }
+      >
+        shareWithSelfieMessageQrLogin
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="iUnderstand"
+      accessible={true}
+      buttonStyle={
+        [
+          null,
+          {
+            "alignSelf": "center",
+            "borderRadius": 9,
+            "height": 54,
+            "width": 540,
+          },
+          null,
+          {
+            "width": "100%",
+          },
+        ]
+      }
+      containerStyle={
+        [
+          null,
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 0,
+              "marginTop": 10,
+            },
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            undefined,
+          ],
+        ]
+      }
+      linearGradientProps={
+        {
+          "colors": [
+            "#FF5300",
+            "#5B03AD",
+          ],
+          "end": {
+            "x": 1,
+            "y": 0.5,
+          },
+          "start": {
+            "x": 0.5,
+            "y": 0.5,
+          },
+        }
+      }
+      onPress={[Function]}
+      style={
+        [
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ],
+        ]
+      }
+      title={
+        <Text
+          color="#FFFFFF"
+          style={
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ]
+          }
+          weight="bold"
+        >
+          ConfirmButton
+        </Text>
+      }
+      type="gradient"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_700Bold",
+              "fontSize": 15,
+              "justifyContent": "center",
+            },
+            {
+              "color": "#FFFFFF",
+            },
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            [
+              {
+                "paddingLeft": 0,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        ConfirmButton
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": -25,
+            "marginTop": 5,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        checked={false}
+        checkedIcon="CheckedIcon"
+        onPress={[Function]}
+        uncheckedIcon="UnCheckedIcon"
+      />
+      <Text
+        accessibilityLabel="doNotAskMsg"
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            {
+              "fontSize": 13,
+              "lineHeight": 21,
+            },
+            {
+              "alignSelf": "center",
+              "color": "#9B9B9B",
+              "marginLeft": -15,
+            },
+          ]
+        }
+      >
+        doNotAskMessage
+      </Text>
+    </View>
+  </View>
+</View>
+`;

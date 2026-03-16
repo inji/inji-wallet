@@ -1,0 +1,481 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DownloadingVcModal should match snapshot when not visible 1`] = `
+<View
+  isVisible={false}
+  onDismiss={[MockFunction]}
+  testID="modal"
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+        null,
+        {
+          "paddingVertical": 32,
+        },
+        {
+          "paddingHorizontal": 24,
+        },
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            null,
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        header
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        bodyText
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "flex-end",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        buttonStyle={
+          [
+            null,
+            {
+              "backgroundColor": "#951F6F",
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+                "height": 45,
+              },
+              null,
+              null,
+              null,
+              undefined,
+            ],
+          ]
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "backgroundColor": "#951F6F",
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            align="center"
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ]
+            }
+            weight="semibold"
+          >
+            backButton
+          </Text>
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          backButton
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`DownloadingVcModal should match snapshot when visible 1`] = `
+<View
+  isVisible={true}
+  onDismiss={[MockFunction]}
+  testID="modal"
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+        null,
+        {
+          "paddingVertical": 32,
+        },
+        {
+          "paddingHorizontal": 24,
+        },
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 15,
+            },
+            null,
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        header
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "center",
+            },
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        bodyText
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "flex-end",
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        buttonStyle={
+          [
+            null,
+            {
+              "backgroundColor": "#951F6F",
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+                "height": 45,
+              },
+              null,
+              null,
+              null,
+              undefined,
+            ],
+          ]
+        }
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "backgroundColor": "#951F6F",
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            align="center"
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ]
+            }
+            weight="semibold"
+          >
+            backButton
+          </Text>
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 15,
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "center",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingTop": 3,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          backButton
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

@@ -1,14 +1,16 @@
-const Button = jest.fn().mockReturnValue(null);
-const Icon = jest.fn().mockReturnValue(null);
+import React from 'react';
 
-// Mock the ButtonProps
-const ButtonProps = {
-  // Add any mocked props you need
-};
+const Button = props => React.createElement('View', props, props.title);
+const Icon = props => React.createElement('View', props);
+const Tooltip = props => React.createElement('View', props, props.children);
 
-const ListItem = {
-  Content: ({children}) => <div>{children}</div>,
-};
+const ButtonProps = {};
 
-// Export the mock
-export {Button as RNEButton, ButtonProps as RNEButtonProps, Icon, ListItem};
+const ListItem = props => React.createElement('View', props, props.children);
+ListItem.Content = ({children}) => React.createElement('View', null, children);
+
+const CheckBox = props => React.createElement('View', props);
+const Input = props => React.createElement('View', props);
+const Overlay = props => React.createElement('View', props, props.children);
+
+export {Button, ButtonProps, Icon, ListItem, Tooltip, CheckBox, Input, Overlay};

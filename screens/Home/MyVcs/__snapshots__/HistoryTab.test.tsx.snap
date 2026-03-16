@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HistoryTab should match snapshot with activities 1`] = `
+<View
+  headerTitle="historyHeaderLabel"
+  isVisible={true}
+  onDismiss={[MockFunction]}
+  testID="modal"
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <Text>
+      ActivityLog
+    </Text>
+  </View>
+</View>
+`;

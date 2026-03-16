@@ -1,0 +1,389 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header should render with title 1`] = `
+<RCTSafeAreaView
+  accessibilityLabel="header"
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "justifyContent": "center",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 4,
+          "elevation": 2,
+          "shadowColor": "#000000",
+          "shadowOffset": {
+            "height": 1,
+            "width": 0,
+          },
+          "shadowOpacity": 0.2,
+          "shadowRadius": 1.41,
+          "zIndex": 2,
+        },
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "paddingBottom": 16,
+          "paddingHorizontal": 10,
+          "paddingTop": 44,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="goBack"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+            "zIndex": 1,
+          }
+        }
+      />
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "center",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "marginLeft": -40,
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="title"
+              accessible={true}
+              style={
+                {
+                  "color": "#000000",
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 18,
+                  "lineHeight": 21,
+                  "paddingTop": 4,
+                }
+              }
+            >
+              Test Title
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTSafeAreaView>
+`;
+
+exports[`Header should render without title 1`] = `
+<RCTSafeAreaView
+  accessibilityLabel="header"
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "justifyContent": "center",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 4,
+          "elevation": 2,
+          "shadowColor": "#000000",
+          "shadowOffset": {
+            "height": 1,
+            "width": 0,
+          },
+          "shadowOpacity": 0.2,
+          "shadowRadius": 1.41,
+          "zIndex": 2,
+        },
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "paddingBottom": 16,
+          "paddingHorizontal": 10,
+          "paddingTop": 44,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="goBack"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+            "zIndex": 1,
+          }
+        }
+      />
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "center",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "marginLeft": -40,
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="title"
+              accessible={true}
+              style={
+                {
+                  "color": "#000000",
+                  "fontFamily": "Montserrat_600SemiBold",
+                  "fontSize": 18,
+                  "lineHeight": 21,
+                  "paddingTop": 4,
+                }
+              }
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTSafeAreaView>
+`;

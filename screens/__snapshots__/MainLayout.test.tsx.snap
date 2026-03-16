@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainLayout should render bottom tab navigator 1`] = `
+<View
+  testID="bottomTabNavigator"
+>
+  <View
+    testID="screen-home"
+  />
+</View>
+`;

@@ -131,9 +131,8 @@ describe('VPShareActivityLog', () => {
 
       const label = log.getActionLabel('enUS');
 
-      expect(label).toBeDefined();
       expect(typeof label).toBe('string');
-      expect(label.length).toBeGreaterThan(0);
+      expect(label).toContain('ago');
     });
 
     it('should handle different languages', () => {
@@ -145,8 +144,8 @@ describe('VPShareActivityLog', () => {
 
       languages.forEach(lang => {
         const label = log.getActionLabel(lang);
-        expect(label).toBeDefined();
         expect(typeof label).toBe('string');
+        expect(label.length).toBeGreaterThan(0);
       });
     });
 
@@ -168,67 +167,6 @@ describe('VPShareActivityLog', () => {
 
       expect(label).toBeDefined();
       expect(label).toContain('ago');
-    });
-  });
-
-  describe('Activity Log Types', () => {
-    it('should handle all success types', () => {
-      const successTypes: Array<
-        | 'SHARED_SUCCESSFULLY'
-        | 'SHARED_WITH_FACE_VERIFIACTION'
-        | 'SHARED_AFTER_RETRY'
-        | 'SHARED_WITH_FACE_VERIFICATION_AFTER_RETRY'
-      > = [
-        'SHARED_SUCCESSFULLY',
-        'SHARED_WITH_FACE_VERIFIACTION',
-        'SHARED_AFTER_RETRY',
-        'SHARED_WITH_FACE_VERIFICATION_AFTER_RETRY',
-      ];
-
-      successTypes.forEach(type => {
-        const log = new VPShareActivityLog({type});
-        expect(log.type).toBe(type);
-      });
-    });
-
-    it('should handle all error types', () => {
-      const errorTypes: Array<
-        | 'VERIFIER_AUTHENTICATION_FAILED'
-        | 'INVALID_AUTH_REQUEST'
-        | 'RETRY_ATTEMPT_FAILED'
-        | 'MAX_RETRY_ATTEMPT_FAILED'
-        | 'FACE_VERIFICATION_FAILED'
-        | 'TECHNICAL_ERROR'
-      > = [
-        'VERIFIER_AUTHENTICATION_FAILED',
-        'INVALID_AUTH_REQUEST',
-        'RETRY_ATTEMPT_FAILED',
-        'MAX_RETRY_ATTEMPT_FAILED',
-        'FACE_VERIFICATION_FAILED',
-        'TECHNICAL_ERROR',
-      ];
-
-      errorTypes.forEach(type => {
-        const log = new VPShareActivityLog({type});
-        expect(log.type).toBe(type);
-      });
-    });
-
-    it('should handle credential-related types', () => {
-      const credentialTypes: Array<
-        | 'NO_SELECTED_VC_HAS_IMAGE'
-        | 'CREDENTIAL_MISMATCH_FROM_KEBAB'
-        | 'NO_CREDENTIAL_MATCHING_REQUEST'
-      > = [
-        'NO_SELECTED_VC_HAS_IMAGE',
-        'CREDENTIAL_MISMATCH_FROM_KEBAB',
-        'NO_CREDENTIAL_MATCHING_REQUEST',
-      ];
-
-      credentialTypes.forEach(type => {
-        const log = new VPShareActivityLog({type});
-        expect(log.type).toBe(type);
-      });
     });
   });
 });

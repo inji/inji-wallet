@@ -1,0 +1,425 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BackupAndRestoreScreen should render default state 1`] = `
+<View
+  testID="backupAndRestore"
+>
+  <View
+    style={
+      {
+        "backgroundColor": "#F8F8F8",
+        "flex": 1,
+      }
+    }
+  >
+    <RCTScrollView>
+      <View>
+        <View
+          testID="LastBackupSection"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <View
+              style={
+                {
+                  "marginBottom": 19,
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Montserrat_400Regular",
+                      "fontSize": 14,
+                    },
+                  ]
+                }
+              >
+                noBackup
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "marginLeft": 1,
+                  "marginRight": 1,
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_700Bold",
+                        "fontSize": 15,
+                        "justifyContent": "center",
+                      },
+                      {
+                        "color": "#FFFFFF",
+                      },
+                      {
+                        "textAlign": "left",
+                      },
+                      null,
+                      null,
+                      [
+                        {
+                          "paddingLeft": 0,
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  backup
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          testID="AccountSection"
+        >
+          <View
+            style={
+              {
+                "marginBottom": 19,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#707070",
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                ]
+              }
+            >
+              storage
+            </Text>
+          </View>
+        </View>
+        <View
+          testID="restoreSection"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <View
+              style={
+                {
+                  "marginBottom": 19,
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#707070",
+                      "fontFamily": "Montserrat_400Regular",
+                      "fontSize": 14,
+                    },
+                  ]
+                }
+              >
+                restoreInfo
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "marginLeft": 1,
+                  "marginRight": 1,
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#000000",
+                        "fontSize": 16,
+                        "lineHeight": 18,
+                      },
+                      {
+                        "fontFamily": "Montserrat_600SemiBold",
+                        "fontSize": 15,
+                      },
+                      {
+                        "color": "#951F6F",
+                      },
+                      {
+                        "textAlign": "center",
+                      },
+                      null,
+                      null,
+                      [
+                        {
+                          "paddingTop": 3,
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  restore
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </RCTScrollView>
+  </View>
+</View>
+`;
+
+exports[`BackupAndRestoreScreen should render loading state when signing in 1`] = `
+<View
+  testID="backupAndRestore"
+>
+  <View
+    style={
+      {
+        "backgroundColor": "#F8F8F8",
+        "flex": 1,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "justifyContent": "center",
+          },
+          {
+            "alignItems": "center",
+          },
+          null,
+          null,
+          null,
+          null,
+        ]
+      }
+    />
+  </View>
+</View>
+`;

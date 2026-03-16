@@ -398,8 +398,12 @@ describe('getVerifierKey', () => {
 });
 
 describe('canonicalize', () => {
-  it('should be defined', async () => {
+  it('should return undefined on canonization failure', async () => {
     const {canonicalize} = await import('./Utils');
-    expect(canonicalize).toBeDefined();
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const result = await canonicalize(null);
+    expect(result).toBeUndefined();
+    expect(spy).toHaveBeenCalledWith('Canonization failed:', expect.any(Error));
+    spy.mockRestore();
   });
 });

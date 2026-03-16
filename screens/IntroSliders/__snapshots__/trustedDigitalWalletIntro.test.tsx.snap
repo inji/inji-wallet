@@ -1,0 +1,761 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StaticHomeScreen should render trusted digital wallet intro 1`] = `
+<View
+  accessibilityLabel="homeScreen"
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "borderColor": "black",
+        "borderRadius": 20,
+        "borderWidth": 12,
+        "flex": 1,
+        "maxHeight": 600,
+        "overflow": "hidden",
+        "width": 350,
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "alignSelf": "center",
+        "backgroundColor": "black",
+        "borderBottomLeftRadius": 13,
+        "borderBottomRightRadius": 10,
+        "height": 13,
+        "width": 100,
+      }
+    }
+    testID="introScreenNotch"
+  />
+  <View
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "alignItems": "center",
+          "borderBottomColor": "#F8F8F8",
+          "borderBottomWidth": 1,
+          "justifyContent": "space-between",
+          "padding": 16,
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    InjiLogo
+  </View>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "flexGrow": 1,
+      }
+    }
+    showsVerticalScrollIndicator={false}
+    testID="cardsScrollView"
+  >
+    <View>
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "justifyContent": "space-between",
+              "padding": 16,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="totalCardsText"
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              {
+                "fontSize": 13,
+                "fontWeight": "bold",
+              },
+            ]
+          }
+        >
+          4 
+          common:cards
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="cardRow-1"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "borderBottomColor": "#F8F8F8",
+              "borderBottomWidth": 1,
+              "padding": 16,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          testID="image"
+        />
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "flex": 1,
+                "marginLeft": 0,
+              },
+              null,
+              null,
+            ]
+          }
+        >
+          <Text
+            accessibilityLabel="cardName-1"
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_400Regular",
+                  "fontSize": 14,
+                },
+                null,
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                {
+                  "fontWeight": "bold",
+                },
+              ]
+            }
+          >
+            Abigail
+          </Text>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            statusValidIcon
+            <Text
+              accessibilityLabel="cardStatus-1"
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#6F6F6F",
+                    "marginLeft": 4,
+                  },
+                ]
+              }
+            >
+              VcDetails:valid
+            </Text>
+          </View>
+        </View>
+        walletActivatedIcon
+        <View
+          testID="icon"
+        />
+      </View>
+      <View
+        accessibilityLabel="cardRow-2"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "borderBottomColor": "#F8F8F8",
+              "borderBottomWidth": 1,
+              "padding": 16,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          testID="image"
+        />
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "flex": 1,
+                "marginLeft": 0,
+              },
+              null,
+              null,
+            ]
+          }
+        >
+          <Text
+            accessibilityLabel="cardName-2"
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_400Regular",
+                  "fontSize": 14,
+                },
+                null,
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                {
+                  "fontWeight": "bold",
+                },
+              ]
+            }
+          >
+            Patricia
+          </Text>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            statusValidIcon
+            <Text
+              accessibilityLabel="cardStatus-2"
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#6F6F6F",
+                    "marginLeft": 4,
+                  },
+                ]
+              }
+            >
+              VcDetails:valid
+            </Text>
+          </View>
+        </View>
+        walletActivatedIcon
+        <View
+          testID="icon"
+        />
+      </View>
+      <View
+        accessibilityLabel="cardRow-3"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "borderBottomColor": "#F8F8F8",
+              "borderBottomWidth": 1,
+              "padding": 16,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          testID="image"
+        />
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "flex": 1,
+                "marginLeft": 0,
+              },
+              null,
+              null,
+            ]
+          }
+        >
+          <Text
+            accessibilityLabel="cardName-3"
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_400Regular",
+                  "fontSize": 14,
+                },
+                null,
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                {
+                  "fontWeight": "bold",
+                },
+              ]
+            }
+          >
+            Timara
+          </Text>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            statusPendingIcon
+            <Text
+              accessibilityLabel="cardStatus-3"
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#6F6F6F",
+                    "marginLeft": 4,
+                  },
+                ]
+              }
+            >
+              VcDetails:pending
+            </Text>
+          </View>
+        </View>
+        walletUnActivatedIcon
+        <View
+          testID="icon"
+        />
+      </View>
+      <View
+        accessibilityLabel="cardRow-4"
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "row",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "borderBottomColor": "#F8F8F8",
+              "borderBottomWidth": 1,
+              "padding": 16,
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          testID="image"
+        />
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "flex": 1,
+                "marginLeft": 0,
+              },
+              null,
+              null,
+            ]
+          }
+        >
+          <Text
+            accessibilityLabel="cardName-4"
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_400Regular",
+                  "fontSize": 14,
+                },
+                null,
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                {
+                  "fontWeight": "bold",
+                },
+              ]
+            }
+          >
+            Abishek
+          </Text>
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "row",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "alignItems": "center",
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            statusValidIcon
+            <Text
+              accessibilityLabel="cardStatus-4"
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#6F6F6F",
+                    "marginLeft": 4,
+                  },
+                ]
+              }
+            >
+              VcDetails:valid
+            </Text>
+          </View>
+        </View>
+        walletActivatedIcon
+        <View
+          testID="icon"
+        />
+      </View>
+      <View
+        style={
+          {
+            "height": 200,
+          }
+        }
+        testID="spacerView"
+      />
+    </View>
+  </RCTScrollView>
+</View>
+`;

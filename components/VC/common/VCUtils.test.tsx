@@ -1,12 +1,37 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import {getFieldValue} from './VCUtils';
+import {
+  getFieldValue,
+  getFieldName,
+  getFaceField,
+  getAddressFields,
+  formatKeyLabel,
+  isVCLoaded,
+  getMosipLogo,
+  getCredentialType,
+  getCredentialTypeFromWellKnown,
+  Display,
+  getIssuerAuthenticationAlorithmForMdocVC,
+  getMdocAuthenticationAlorithm,
+  getFaceAttribute,
+  fieldItemIterator,
+  CARD_VIEW_DEFAULT_FIELDS,
+  DETAIL_VIEW_DEFAULT_FIELDS,
+  STATUS_FIELD_NAME,
+  VC_STATUS_KEYS,
+  CARD_VIEW_ADD_ON_FIELDS,
+  DETAIL_VIEW_ADD_ON_FIELDS,
+  DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
+  BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS,
+} from './VCUtils';
 import {VCFormat} from '../../../shared/VCFormat';
 import * as i18n from '../../../i18n';
 
 // Mock dependencies
 jest.mock('../../../i18n', () => ({
+  __esModule: true,
+  default: {t: jest.fn(key => key)},
   getLocalizedField: jest.fn(value => {
     if (typeof value === 'string') return value;
     if (Array.isArray(value)) {
@@ -26,7 +51,46 @@ jest.mock('../../ui', () => ({
   Row: ({children}: any) => <div data-testid="row">{children}</div>,
 }));
 
+jest.mock('../../ui/styleUtils', () => ({
+  Theme: {
+    Colors: {
+      DetailsLabel: '#333',
+      Details: '#666',
+      whiteBackgroundColor: '#FFFFFF',
+    },
+  },
+}));
+
 jest.mock('react-native-vector-icons/FontAwesome', () => 'Icon');
+
+jest.mock('react-native-dotenv', () => ({
+  CREDENTIAL_REGISTRY_EDIT: 'true',
+  MIMOTO_BASE_URL: 'https://api.example.com',
+}));
+
+jest.mock('../../../shared/constants', () => ({
+  MIMOTO_BASE_URL: 'https://api.example.com',
+}));
+
+jest.mock('../../../shared/openId4VCI/Utils', () => ({
+  getDisplayObjectForCurrentLanguage: jest.fn(display => {
+    if (!display || !display.length) return {};
+    const en = display.find((d: any) => d.locale === 'en');
+    return en || display[0];
+  }),
+  getMatchingCredentialIssuerMetadata: jest.fn((wellknown, configId) => {
+    return wellknown?.credential_configurations_supported?.[configId] || null;
+  }),
+}));
+
+jest.mock('../../../shared/VCFormat', () => ({
+  VCFormat: {
+    ldp_vc: 'ldp_vc',
+    mso_mdoc: 'mso_mdoc',
+    vc_sd_jwt: 'vc_sd_jwt',
+    dc_sd_jwt: 'dc_sd_jwt',
+  },
+}));
 
 // Mock Display class
 class MockDisplay {
@@ -647,8 +711,6 @@ describe('getFieldValue', () => {
       );
 
       expect(result).toBeUndefined();
-      expect(result).not.toBeNull();
-      expect(typeof result).toBe('undefined');
     });
 
     it('should handle empty array', () => {
@@ -668,10 +730,865 @@ describe('getFieldValue', () => {
       );
 
       expect(result).toBe('');
-      expect(typeof result).toBe('string');
-      expect(result).toHaveLength(0);
-      expect(result).not.toBeNull();
-      expect(result).not.toBeUndefined();
     });
+  });
+});
+
+describe('Constants', () => {
+  it('should have correct CARD_VIEW_DEFAULT_FIELDS', () => {
+    expect(CARD_VIEW_DEFAULT_FIELDS).toEqual(['fullName']);
+  });
+
+  it('should have correct DETAIL_VIEW_DEFAULT_FIELDS', () => {
+    expect(DETAIL_VIEW_DEFAULT_FIELDS).toEqual([
+      'fullName',
+      'gender',
+      'phone',
+      'dateOfBirth',
+      'email',
+      'address',
+    ]);
+  });
+
+  it('should have correct STATUS_FIELD_NAME', () => {
+    expect(STATUS_FIELD_NAME).toBe('Status');
+  });
+
+  it('should have correct VC_STATUS_KEYS', () => {
+    expect(VC_STATUS_KEYS).toEqual(['valid', 'pending', 'expired', 'revoked']);
+  });
+
+  it('should have correct CARD_VIEW_ADD_ON_FIELDS', () => {
+    expect(CARD_VIEW_ADD_ON_FIELDS).toEqual(['UIN', 'VID']);
+  });
+
+  it('should have correct DETAIL_VIEW_ADD_ON_FIELDS', () => {
+    expect(DETAIL_VIEW_ADD_ON_FIELDS).toEqual([
+      'status',
+      'idType',
+      'credentialRegistry',
+    ]);
+  });
+
+  it('should have correct DETAIL_VIEW_BOTTOM_SECTION_FIELDS', () => {
+    expect(DETAIL_VIEW_BOTTOM_SECTION_FIELDS).toEqual([
+      'email',
+      'address',
+      'credentialRegistry',
+    ]);
+  });
+
+  it('should have correct BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS', () => {
+    expect(BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS).toContain(
+      'addressLine1',
+    );
+    expect(BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS).toContain(
+      'email',
+    );
+    expect(BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS).toContain(
+      'credentialRegistry',
+    );
+  });
+});
+
+describe('getFieldName', () => {
+  it('should return field name from ldp_vc wellknown definition', () => {
+    const wellknown = {
+      credential_definition: {
+        credentialSubject: {
+          fullName: {
+            display: [{locale: 'en', name: 'Full Name'}],
+          },
+        },
+      },
+    };
+    const result = getFieldName('fullName', wellknown, VCFormat.ldp_vc);
+    expect(result).toBe('Full Name');
+  });
+
+  it('should return raw field if no display in ldp_vc', () => {
+    const wellknown = {
+      credential_definition: {
+        credentialSubject: {
+          fullName: {},
+        },
+      },
+    };
+    const result = getFieldName('fullName', wellknown, VCFormat.ldp_vc);
+    expect(result).toBe('fullName');
+  });
+
+  it('should handle missing credential_definition in ldp_vc', () => {
+    const wellknown = {};
+    const result = getFieldName('fullName', wellknown, VCFormat.ldp_vc);
+    expect(result).toBe('Full Name');
+  });
+
+  it('should return field name from mso_mdoc wellknown', () => {
+    const wellknown = {
+      claims: {
+        'org.iso.18013.5.1': {
+          given_name: {
+            display: [{locale: 'en', name: 'Given Name'}],
+          },
+        },
+      },
+    };
+    const result = getFieldName(
+      'org.iso.18013.5.1~given_name',
+      wellknown,
+      VCFormat.mso_mdoc,
+    );
+    expect(result).toBe('Given Name');
+  });
+
+  it('should return raw fieldName for mso_mdoc without display', () => {
+    const wellknown = {
+      claims: {
+        'org.iso.18013.5.1': {
+          given_name: {},
+        },
+      },
+    };
+    const result = getFieldName(
+      'org.iso.18013.5.1~given_name',
+      wellknown,
+      VCFormat.mso_mdoc,
+    );
+    expect(result).toBe('given_name');
+  });
+
+  it('should return field name from vc_sd_jwt wellknown', () => {
+    const wellknown = {
+      claims: {
+        user: {
+          name: {
+            display: [{locale: 'en', name: 'User Name'}],
+          },
+        },
+      },
+    };
+    const result = getFieldName('user.name', wellknown, VCFormat.vc_sd_jwt);
+    expect(result).toBe('User Name');
+  });
+
+  it('should return formatted label for vc_sd_jwt without display', () => {
+    const wellknown = {claims: {}};
+    const result = getFieldName(
+      'user.firstName',
+      wellknown,
+      VCFormat.vc_sd_jwt,
+    );
+    expect(result).toContain('Name');
+  });
+
+  it('should work with dc_sd_jwt format', () => {
+    const wellknown = {
+      claims: {
+        given_name: {
+          display: [{locale: 'en', name: 'Given Name'}],
+        },
+      },
+    };
+    const result = getFieldName('given_name', wellknown, VCFormat.dc_sd_jwt);
+    expect(result).toBe('Given Name');
+  });
+
+  it('should return formatted label when no wellknown', () => {
+    const result = getFieldName('firstName', null, VCFormat.ldp_vc);
+    expect(result).toBe('First Name');
+  });
+
+  it('should handle mso_mdoc field without namespace delimiter', () => {
+    const wellknown = {claims: {}};
+    const result = getFieldName('simpleField', wellknown, VCFormat.mso_mdoc);
+    expect(typeof result).toBe('string');
+  });
+});
+
+describe('getFaceField', () => {
+  it('should return null for non-object input', () => {
+    expect(getFaceField(null)).toBeNull();
+    expect(getFaceField('string')).toBeNull();
+    expect(getFaceField(123)).toBeNull();
+  });
+
+  it('should find face field directly', () => {
+    const obj = {face: 'base64imagedata'};
+    expect(getFaceField(obj)).toBe('base64imagedata');
+  });
+
+  it('should find photo field', () => {
+    const obj = {photo: 'photodata'};
+    expect(getFaceField(obj)).toBe('photodata');
+  });
+
+  it('should find picture field', () => {
+    const obj = {picture: 'picturedata'};
+    expect(getFaceField(obj)).toBe('picturedata');
+  });
+
+  it('should find portrait field', () => {
+    const obj = {portrait: 'portraitdata'};
+    expect(getFaceField(obj)).toBe('portraitdata');
+  });
+
+  it('should find image field', () => {
+    const obj = {image: 'imagedata'};
+    expect(getFaceField(obj)).toBe('imagedata');
+  });
+
+  it('should find nested face field', () => {
+    const obj = {nested: {deep: {face: 'deepfacedata'}}};
+    expect(getFaceField(obj)).toBe('deepfacedata');
+  });
+
+  it('should return null when no image key found', () => {
+    const obj = {name: 'John', age: 30};
+    expect(getFaceField(obj)).toBeNull();
+  });
+
+  it('should skip non-string values for image keys', () => {
+    const obj = {face: {nested: 'value'}};
+    // face is object not string, so it recurses into it
+    expect(getFaceField(obj)).toBeNull();
+  });
+});
+
+describe('getAddressFields', () => {
+  it('should return all address field names', () => {
+    const fields = getAddressFields();
+    expect(fields).toContain('addressLine1');
+    expect(fields).toContain('addressLine2');
+    expect(fields).toContain('addressLine3');
+    expect(fields).toContain('city');
+    expect(fields).toContain('province');
+    expect(fields).toContain('region');
+    expect(fields).toContain('postalCode');
+    expect(fields).toHaveLength(7);
+  });
+});
+
+describe('formatKeyLabel', () => {
+  it('should convert camelCase to spaced words', () => {
+    expect(formatKeyLabel('firstName')).toBe('First Name');
+  });
+
+  it('should convert snake_case to spaced words', () => {
+    expect(formatKeyLabel('first_name')).toBe('First Name');
+  });
+
+  it('should remove array indices', () => {
+    expect(formatKeyLabel('items[0]')).toBe('Items');
+  });
+
+  it('should handle single word', () => {
+    expect(formatKeyLabel('name')).toBe('Name');
+  });
+
+  it('should handle complex camelCase', () => {
+    expect(formatKeyLabel('dateOfBirth')).toBe('Date Of Birth');
+  });
+
+  it('should handle multiple array indices', () => {
+    expect(formatKeyLabel('items[0][1]')).toBe('Items');
+  });
+});
+
+describe('isVCLoaded', () => {
+  it('should return true for non-null credential', () => {
+    expect(isVCLoaded({credentialSubject: {}} as any)).toBe(true);
+  });
+
+  it('should return false for null credential', () => {
+    expect(isVCLoaded(null)).toBe(false);
+  });
+
+  it('should return true for empty object (still non-null)', () => {
+    expect(isVCLoaded({} as any)).toBe(true);
+  });
+});
+
+describe('getMosipLogo', () => {
+  it('should return logo object with url and alt_text', () => {
+    const logo = getMosipLogo();
+    expect(logo).toHaveProperty('url');
+    expect(logo).toHaveProperty('alt_text');
+    expect(logo.url).toContain('mosip-logo.png');
+    expect(logo.alt_text).toBe('a square logo of mosip');
+  });
+});
+
+describe('getCredentialType', () => {
+  it('should return identityCard translation when no wellknown', () => {
+    const result = getCredentialType(null as any);
+    expect(result).toBe('VcDetails:identityCard');
+  });
+
+  it('should return display name when display exists', () => {
+    const wellknown = {
+      display: [{name: 'National ID', locale: 'en'}],
+    } as any;
+    const result = getCredentialType(wellknown);
+    expect(result).toBe('National ID');
+  });
+
+  it('should return last type for ldp_vc format', () => {
+    const wellknown = {
+      format: VCFormat.ldp_vc,
+      credential_definition: {
+        type: ['VerifiableCredential', 'NationalIDCredential'],
+      },
+    } as any;
+    const result = getCredentialType(wellknown);
+    expect(result).toBe('NationalIDCredential');
+  });
+
+  it('should return identityCard for non-ldp_vc without display', () => {
+    const wellknown = {
+      format: VCFormat.mso_mdoc,
+    } as any;
+    const result = getCredentialType(wellknown);
+    expect(result).toBe('VcDetails:identityCard');
+  });
+});
+
+describe('getCredentialTypeFromWellKnown', () => {
+  it('should return credential type from matching config', () => {
+    const wellknown = {
+      credential_configurations_supported: {
+        'national-id': {
+          display: [{name: 'National ID', locale: 'en'}],
+        },
+      },
+    } as any;
+    const result = getCredentialTypeFromWellKnown(wellknown, 'national-id');
+    expect(result).toBeDefined();
+  });
+
+  it('should return identityCard when credentialConfigurationId is undefined', () => {
+    const wellknown = {} as any;
+    const result = getCredentialTypeFromWellKnown(wellknown, undefined);
+    expect(result).toBe('VcDetails:identityCard');
+  });
+
+  it('should return identityCard on error', () => {
+    // getMatchingCredentialIssuerMetadata returns null → getCredentialType(null) returns identityCard
+    const result = getCredentialTypeFromWellKnown({} as any, 'nonexistent');
+    expect(result).toBe('VcDetails:identityCard');
+  });
+});
+
+describe('Display class', () => {
+  it('should use default background color when no wellknown', () => {
+    const display = new Display(null);
+    const bg = display.getBackgroundColor();
+    expect(bg).toHaveProperty('backgroundColor');
+  });
+
+  it('should use default background color when wellknown has no display', () => {
+    const display = new Display({});
+    const bg = display.getBackgroundColor();
+    expect(bg).toHaveProperty('backgroundColor');
+  });
+
+  it('should set background color from wellknown', () => {
+    const display = new Display({
+      display: [{background_color: '#FF0000', locale: 'en'}],
+    });
+    const bg = display.getBackgroundColor();
+    expect(bg.backgroundColor).toBe('#FF0000');
+  });
+
+  it('should return default color when no text_color set', () => {
+    const display = new Display({});
+    expect(display.getTextColor('#000')).toBe('#000');
+  });
+
+  it('should return text_color from wellknown', () => {
+    const display = new Display({
+      display: [{text_color: '#00FF00', locale: 'en'}],
+    });
+    expect(display.getTextColor('#000')).toBe('#00FF00');
+  });
+
+  it('should return background image from wellknown', () => {
+    const display = new Display({
+      display: [
+        {background_image: {uri: 'https://img.com/bg.png'}, locale: 'en'},
+      ],
+    });
+    expect(display.getBackgroundImage('default.png')).toEqual({
+      uri: 'https://img.com/bg.png',
+    });
+  });
+
+  it('should return default background image when not set', () => {
+    const display = new Display({});
+    expect(display.getBackgroundImage('default.png')).toBe('default.png');
+  });
+
+  it('should use default when display array is empty', () => {
+    const display = new Display({display: []});
+    const bg = display.getBackgroundColor();
+    expect(bg).toHaveProperty('backgroundColor');
+  });
+});
+
+describe('getIssuerAuthenticationAlorithmForMdocVC', () => {
+  it('should return ES256 for proof type -7', () => {
+    expect(getIssuerAuthenticationAlorithmForMdocVC(-7)).toBe('ES256');
+  });
+
+  it('should return empty string for unknown proof type', () => {
+    expect(getIssuerAuthenticationAlorithmForMdocVC(99)).toBe('');
+  });
+
+  it('should return empty string for undefined', () => {
+    expect(getIssuerAuthenticationAlorithmForMdocVC(undefined)).toBe('');
+  });
+});
+
+describe('getMdocAuthenticationAlorithm', () => {
+  it('should return ES256 for EC2 key with P256 curve', () => {
+    const issuerAuth = {
+      deviceKeyInfo: {
+        deviceKey: {'1': 2, '-1': 1},
+      },
+    };
+    expect(getMdocAuthenticationAlorithm(issuerAuth)).toBe('ES256');
+  });
+
+  it('should return empty string for non-EC2 key', () => {
+    const issuerAuth = {
+      deviceKeyInfo: {
+        deviceKey: {'1': 3, '-1': 1},
+      },
+    };
+    expect(getMdocAuthenticationAlorithm(issuerAuth)).toBe('');
+  });
+
+  it('should return empty string for wrong curve', () => {
+    const issuerAuth = {
+      deviceKeyInfo: {
+        deviceKey: {'1': 2, '-1': 2},
+      },
+    };
+    expect(getMdocAuthenticationAlorithm(issuerAuth)).toBe('');
+  });
+
+  it('should return empty string when no deviceKey', () => {
+    expect(getMdocAuthenticationAlorithm({})).toBe('');
+    expect(getMdocAuthenticationAlorithm({deviceKeyInfo: {}})).toBe('');
+    expect(getMdocAuthenticationAlorithm(null)).toBe('');
+  });
+});
+
+describe('getFaceAttribute', () => {
+  it('should extract face from ldp_vc credential', () => {
+    const vc = {
+      credential: {
+        credentialSubject: {face: 'faceData'},
+      },
+    };
+    expect(getFaceAttribute(vc, VCFormat.ldp_vc)).toBe('faceData');
+  });
+
+  it('should extract face from ldp_vc verifiableCredential fallback', () => {
+    const vc = {
+      verifiableCredential: {
+        credential: {
+          credentialSubject: {photo: 'photoData'},
+        },
+      },
+    };
+    expect(getFaceAttribute(vc, VCFormat.ldp_vc)).toBe('photoData');
+  });
+
+  it('should extract face from mso_mdoc processedCredential', () => {
+    const vc = {
+      processedCredential: {
+        issuerSigned: {
+          nameSpaces: {
+            'org.iso.18013.5.1': [
+              {elementIdentifier: 'portrait', elementValue: 'portraitData'},
+            ],
+          },
+        },
+      },
+    };
+    expect(getFaceAttribute(vc, VCFormat.mso_mdoc)).toBe('portraitData');
+  });
+
+  it('should extract face from mso_mdoc nameSpaces fallback', () => {
+    const vc = {
+      processedCredential: {
+        nameSpaces: {
+          'org.iso.18013.5.1': [
+            {elementIdentifier: 'photo', elementValue: 'photoVal'},
+          ],
+        },
+      },
+    };
+    expect(getFaceAttribute(vc, VCFormat.mso_mdoc)).toBe('photoVal');
+  });
+
+  it('should extract face from vc_sd_jwt fullResolvedPayload', () => {
+    const vc = {
+      processedCredential: {
+        fullResolvedPayload: {face: 'sdJwtFace'},
+      },
+    };
+    expect(getFaceAttribute(vc, VCFormat.vc_sd_jwt)).toBe('sdJwtFace');
+  });
+
+  it('should extract face from dc_sd_jwt fullResolvedPayload', () => {
+    const vc = {
+      processedCredential: {
+        fullResolvedPayload: {picture: 'dcSdJwtPic'},
+      },
+    };
+    expect(getFaceAttribute(vc, VCFormat.dc_sd_jwt)).toBe('dcSdJwtPic');
+  });
+
+  it('should return null when no face attribute found', () => {
+    const vc = {credential: {credentialSubject: {name: 'John'}}};
+    expect(getFaceAttribute(vc, VCFormat.ldp_vc)).toBeNull();
+  });
+
+  it('should handle empty mso_mdoc nameSpaces', () => {
+    const vc = {processedCredential: {}};
+    expect(getFaceAttribute(vc, VCFormat.mso_mdoc)).toBeNull();
+  });
+});
+
+describe('fieldItemIterator', () => {
+  const mockDisplay = new Display({
+    name: 'Test',
+    locale: 'en',
+    logo: {url: ''},
+    description: '',
+    text_color: '#000000',
+    background_color: '#FFFFFF',
+    background_image: {url: ''},
+  });
+
+  const baseProps = {
+    verifiableCredentialData: {
+      vcMetadata: {
+        isVerified: true,
+        format: VCFormat.ldp_vc,
+      },
+    },
+    vc: {},
+  } as any;
+
+  it('should render main fields from wellknown', () => {
+    const verifiableCredential = {
+      credentialSubject: {fullName: 'John Doe', dateOfBirth: '1990-01-01'},
+    } as any;
+    const wellknown = {
+      credential_definition: {
+        credentialSubject: {
+          fullName: {display: [{name: 'Full Name', locale: 'en'}]},
+        },
+      },
+    };
+    const result = fieldItemIterator(
+      ['fullName'],
+      true,
+      verifiableCredential,
+      wellknown,
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBeGreaterThanOrEqual(1);
+    // Each element should be a valid React element
+    result.forEach((el: any) => expect(React.isValidElement(el)).toBe(true));
+  });
+
+  it('should render extra fields when wellknownFieldsFlag is false', () => {
+    const verifiableCredential = {
+      credentialSubject: {fullName: 'John', age: 30, city: 'NYC'},
+    } as any;
+    const result = fieldItemIterator(
+      ['fullName'],
+      false,
+      verifiableCredential,
+      {},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    // Should include extra fields beyond the main field list
+    expect(result.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('should render nested object fields via renderFieldRecursively', () => {
+    const verifiableCredential = {
+      credentialSubject: {
+        address: {street: '123 Main St', city: 'NYC', zip: '10001'},
+      },
+    } as any;
+    const result = fieldItemIterator(
+      [],
+      false,
+      verifiableCredential,
+      {},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    // Nested object fields are rendered recursively by the component
+    result.forEach((el: any) => expect(React.isValidElement(el)).toBe(true));
+  });
+
+  it('should render array fields via renderFieldRecursively', () => {
+    const verifiableCredential = {
+      credentialSubject: {
+        hobbies: ['reading', 'coding'],
+      },
+    } as any;
+    const result = fieldItemIterator(
+      [],
+      false,
+      verifiableCredential,
+      {},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBeGreaterThan(0);
+    result.forEach((el: any) => expect(React.isValidElement(el)).toBe(true));
+  });
+
+  it('should handle image values in fields', () => {
+    const verifiableCredential = {
+      credentialSubject: {
+        photo: 'data:image/png;base64,abc123',
+      },
+    } as any;
+    const result = fieldItemIterator(
+      [],
+      false,
+      verifiableCredential,
+      {},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    // Image data URI fields are handled as image values, not regular text
+    result.forEach((el: any) => expect(React.isValidElement(el)).toBe(true));
+  });
+
+  it('should handle timestamp numeric fields (iat, nbf, exp)', () => {
+    const verifiableCredential = {
+      credentialSubject: {
+        iat: 1700000000,
+        exp: 1800000000,
+      },
+    } as any;
+    const result = fieldItemIterator(
+      [],
+      false,
+      verifiableCredential,
+      {},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    // Should produce entries for both iat and exp
+    expect(result.length).toBe(2);
+    result.forEach((el: any) => expect(React.isValidElement(el)).toBe(true));
+  });
+
+  it('should handle string timestamp fields', () => {
+    const verifiableCredential = {
+      credentialSubject: {
+        iat: '1700000000',
+      },
+    } as any;
+    const result = fieldItemIterator(
+      [],
+      false,
+      verifiableCredential,
+      {},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBe(1);
+    result.forEach((el: any) => expect(React.isValidElement(el)).toBe(true));
+  });
+
+  it('should handle ISO date string fields', () => {
+    const verifiableCredential = {
+      credentialSubject: {
+        issuedDate: '2024-01-15T10:30:00Z',
+      },
+    } as any;
+    const result = fieldItemIterator(
+      [],
+      false,
+      verifiableCredential,
+      {},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBe(1);
+    result.forEach((el: any) => expect(React.isValidElement(el)).toBe(true));
+  });
+
+  it('should truncate long string values', () => {
+    const verifiableCredential = {
+      credentialSubject: {
+        longField: 'x'.repeat(200),
+      },
+    } as any;
+    const result = fieldItemIterator(
+      [],
+      false,
+      verifiableCredential,
+      {},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBe(1);
+    result.forEach((el: any) => expect(React.isValidElement(el)).toBe(true));
+  });
+
+  it('should map known keys to labels (iss, sub, etc)', () => {
+    const verifiableCredential = {
+      credentialSubject: {
+        iss: 'https://issuer.example.com',
+        sub: 'user123',
+        vct: 'NationalID',
+      },
+    } as any;
+    const result = fieldItemIterator(
+      [],
+      false,
+      verifiableCredential,
+      {},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBe(3);
+    result.forEach((el: any) => expect(React.isValidElement(el)).toBe(true));
+  });
+
+  it('should render mso_mdoc nameSpaces entries', () => {
+    const verifiableCredential = {
+      credentialSubject: {},
+      nameSpaces: {
+        'org.iso.18013.5.1': [
+          {elementIdentifier: 'given_name', elementValue: 'Alice'},
+          {elementIdentifier: 'family_name', elementValue: 'Smith'},
+        ],
+      },
+    } as any;
+    const result = fieldItemIterator(
+      [],
+      false,
+      verifiableCredential,
+      {},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBeGreaterThan(0);
+  });
+
+  it('should render fullResolvedPayload extra fields', () => {
+    const verifiableCredential = {
+      credentialSubject: {},
+      fullResolvedPayload: {
+        name: 'Jane',
+        country: 'US',
+      },
+    } as any;
+    const result = fieldItemIterator(
+      [],
+      true,
+      verifiableCredential,
+      {},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    result.forEach((el: any) => expect(React.isValidElement(el)).toBe(true));
+  });
+
+  it('should handle URL image fields', () => {
+    const verifiableCredential = {
+      credentialSubject: {
+        profileImage: 'https://example.com/image.jpg',
+      },
+    } as any;
+    const result = fieldItemIterator(
+      [],
+      false,
+      verifiableCredential,
+      {},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBeGreaterThan(0);
+    result.forEach((el: any) => expect(React.isValidElement(el)).toBe(true));
+  });
+
+  it('should handle disclosedKeys from verifiableCredential', () => {
+    const verifiableCredential = {
+      credentialSubject: {name: 'John'},
+      disclosedKeys: ['name'],
+    } as any;
+    const result = fieldItemIterator(
+      [],
+      false,
+      verifiableCredential,
+      {},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBeGreaterThan(0);
+    result.forEach((el: any) => expect(React.isValidElement(el)).toBe(true));
+  });
+
+  it('should skip null field values', () => {
+    const verifiableCredential = {
+      credentialSubject: {name: null, age: 30},
+    } as any;
+    const result = fieldItemIterator(
+      ['name', 'age'],
+      true,
+      verifiableCredential,
+      {credential_definition: {credentialSubject: {name: {}, age: {}}}},
+      mockDisplay,
+      false,
+      baseProps,
+    );
+    // name renders as null value field, age renders normally — both produce entries
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBe(2);
   });
 });

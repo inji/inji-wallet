@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VcDetailsContainer should match snapshot 1`] = `
+<View
+  testID="mockVCDetailView"
+>
+  <Text>
+    {"issuer":"test-issuer","id":"test-id"}
+  </Text>
+</View>
+`;
+
+exports[`VcDetailsContainer should match snapshot with different props 1`] = `
+<View
+  testID="mockVCDetailView"
+>
+  <Text>
+    {"issuer":"test-issuer","id":"test-id"}
+  </Text>
+</View>
+`;

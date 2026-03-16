@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdaptiveImage should render Image for non-svg uri 1`] = `
+<Image
+  accessibilityLabel="test-img"
+  accessible={true}
+  resizeMode="contain"
+  source={
+    {
+      "uri": "https://example.com/image.png",
+    }
+  }
+/>
+`;

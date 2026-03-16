@@ -1,0 +1,2192 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MyVcsTab should render AddVcModal when AddVcModalService is set 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "display": "flex",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "paddingVertical": 2,
+          },
+          {
+            "paddingHorizontal": 8,
+          },
+        ]
+      }
+    >
+      <RCTScrollView
+        contentContainerStyle={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "backgroundColor": "#fff",
+              "borderRadius": 10,
+              "elevation": 5,
+              "justifyContent": "center",
+              "padding": 10,
+              "shadowColor": "#000",
+              "shadowOpacity": 0.4,
+            },
+            null,
+            null,
+          ]
+        }
+        refreshControl={
+          <RefreshControlMock
+            onRefresh={[MockFunction]}
+            refreshing={false}
+          />
+        }
+      >
+        <RCTRefreshControl />
+        <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+              }
+            }
+          >
+            DigitalIdentity
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 6,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 33,
+                  },
+                  null,
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              bringYourDigitalID
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#C7C7C7",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 30,
+                    "marginEnd": 12,
+                    "marginStart": 12,
+                    "marginTop": 0,
+                  },
+                  null,
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              generateVcFABDescription
+            </Text>
+          </View>
+        </View>
+      </RCTScrollView>
+    </View>
+  </View>,
+  "AddVcModal",
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+]
+`;
+
+exports[`MyVcsTab should render GetVcModal when GetVcModalService is set 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "display": "flex",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "paddingVertical": 2,
+          },
+          {
+            "paddingHorizontal": 8,
+          },
+        ]
+      }
+    >
+      <RCTScrollView
+        contentContainerStyle={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "backgroundColor": "#fff",
+              "borderRadius": 10,
+              "elevation": 5,
+              "justifyContent": "center",
+              "padding": 10,
+              "shadowColor": "#000",
+              "shadowOpacity": 0.4,
+            },
+            null,
+            null,
+          ]
+        }
+        refreshControl={
+          <RefreshControlMock
+            onRefresh={[MockFunction]}
+            refreshing={false}
+          />
+        }
+      >
+        <RCTRefreshControl />
+        <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+              }
+            }
+          >
+            DigitalIdentity
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 6,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 33,
+                  },
+                  null,
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              bringYourDigitalID
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#C7C7C7",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 30,
+                    "marginEnd": 12,
+                    "marginStart": 12,
+                    "marginTop": 0,
+                  },
+                  null,
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              generateVcFABDescription
+            </Text>
+          </View>
+        </View>
+      </RCTScrollView>
+    </View>
+  </View>,
+  "GetVcModal",
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+]
+`;
+
+exports[`MyVcsTab should render binding error overlay 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "display": "flex",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "paddingVertical": 2,
+          },
+          {
+            "paddingHorizontal": 8,
+          },
+        ]
+      }
+    >
+      <RCTScrollView
+        contentContainerStyle={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "backgroundColor": "#fff",
+              "borderRadius": 10,
+              "elevation": 5,
+              "justifyContent": "center",
+              "padding": 10,
+              "shadowColor": "#000",
+              "shadowOpacity": 0.4,
+            },
+            null,
+            null,
+          ]
+        }
+        refreshControl={
+          <RefreshControlMock
+            onRefresh={[MockFunction]}
+            refreshing={false}
+          />
+        }
+      >
+        <RCTRefreshControl />
+        <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+              }
+            }
+          >
+            DigitalIdentity
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 6,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 33,
+                  },
+                  null,
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              bringYourDigitalID
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#C7C7C7",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 30,
+                    "marginEnd": 12,
+                    "marginStart": 12,
+                    "marginTop": 0,
+                  },
+                  null,
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              generateVcFABDescription
+            </Text>
+          </View>
+        </View>
+      </RCTScrollView>
+    </View>
+  </View>,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+]
+`;
+
+exports[`MyVcsTab should render download failed VCs error 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "display": "flex",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "paddingVertical": 2,
+          },
+          {
+            "paddingHorizontal": 8,
+          },
+        ]
+      }
+    >
+      <RCTScrollView
+        contentContainerStyle={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "backgroundColor": "#fff",
+              "borderRadius": 10,
+              "elevation": 5,
+              "justifyContent": "center",
+              "padding": 10,
+              "shadowColor": "#000",
+              "shadowOpacity": 0.4,
+            },
+            null,
+            null,
+          ]
+        }
+        refreshControl={
+          <RefreshControlMock
+            onRefresh={[MockFunction]}
+            refreshing={false}
+          />
+        }
+      >
+        <RCTRefreshControl />
+        <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+              }
+            }
+          >
+            DigitalIdentity
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 6,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 33,
+                  },
+                  null,
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              bringYourDigitalID
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#C7C7C7",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 30,
+                    "marginEnd": 12,
+                    "marginStart": 12,
+                    "marginTop": 0,
+                  },
+                  null,
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              generateVcFABDescription
+            </Text>
+          </View>
+        </View>
+      </RCTScrollView>
+    </View>
+  </View>,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+]
+`;
+
+exports[`MyVcsTab should render empty state with no VCs 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "display": "flex",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "paddingVertical": 2,
+          },
+          {
+            "paddingHorizontal": 8,
+          },
+        ]
+      }
+    >
+      <RCTScrollView
+        contentContainerStyle={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "backgroundColor": "#fff",
+              "borderRadius": 10,
+              "elevation": 5,
+              "justifyContent": "center",
+              "padding": 10,
+              "shadowColor": "#000",
+              "shadowOpacity": 0.4,
+            },
+            null,
+            null,
+          ]
+        }
+        refreshControl={
+          <RefreshControlMock
+            onRefresh={[MockFunction]}
+            refreshing={false}
+          />
+        }
+      >
+        <RCTRefreshControl />
+        <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+              }
+            }
+          >
+            DigitalIdentity
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 6,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 33,
+                  },
+                  null,
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              bringYourDigitalID
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#C7C7C7",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 30,
+                    "marginEnd": 12,
+                    "marginStart": 12,
+                    "marginTop": 0,
+                  },
+                  null,
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              generateVcFABDescription
+            </Text>
+          </View>
+        </View>
+      </RCTScrollView>
+    </View>
+  </View>,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+]
+`;
+
+exports[`MyVcsTab should render hardware keystore alert overlay 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "display": "flex",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "paddingVertical": 2,
+          },
+          {
+            "paddingHorizontal": 8,
+          },
+        ]
+      }
+    >
+      <RCTScrollView
+        contentContainerStyle={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "backgroundColor": "#fff",
+              "borderRadius": 10,
+              "elevation": 5,
+              "justifyContent": "center",
+              "padding": 10,
+              "shadowColor": "#000",
+              "shadowOpacity": 0.4,
+            },
+            null,
+            null,
+          ]
+        }
+        refreshControl={
+          <RefreshControlMock
+            onRefresh={[MockFunction]}
+            refreshing={false}
+          />
+        }
+      >
+        <RCTRefreshControl />
+        <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+              }
+            }
+          >
+            DigitalIdentity
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 6,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 33,
+                  },
+                  null,
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              bringYourDigitalID
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#C7C7C7",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 30,
+                    "marginEnd": 12,
+                    "marginStart": 12,
+                    "marginTop": 0,
+                  },
+                  null,
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              generateVcFABDescription
+            </Text>
+          </View>
+        </View>
+      </RCTScrollView>
+    </View>
+  </View>,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+]
+`;
+
+exports[`MyVcsTab should render isRequestSuccessful banner 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "display": "flex",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "paddingVertical": 2,
+          },
+          {
+            "paddingHorizontal": 8,
+          },
+        ]
+      }
+    >
+      <RCTScrollView
+        contentContainerStyle={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "backgroundColor": "#fff",
+              "borderRadius": 10,
+              "elevation": 5,
+              "justifyContent": "center",
+              "padding": 10,
+              "shadowColor": "#000",
+              "shadowOpacity": 0.4,
+            },
+            null,
+            null,
+          ]
+        }
+        refreshControl={
+          <RefreshControlMock
+            onRefresh={[MockFunction]}
+            refreshing={false}
+          />
+        }
+      >
+        <RCTRefreshControl />
+        <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+              }
+            }
+          >
+            DigitalIdentity
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 6,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 33,
+                  },
+                  null,
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              bringYourDigitalID
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#C7C7C7",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 30,
+                    "marginEnd": 12,
+                    "marginStart": 12,
+                    "marginTop": 0,
+                  },
+                  null,
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              generateVcFABDescription
+            </Text>
+          </View>
+        </View>
+      </RCTScrollView>
+    </View>
+  </View>,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+]
+`;
+
+exports[`MyVcsTab should render network off error 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "display": "flex",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "paddingVertical": 2,
+          },
+          {
+            "paddingHorizontal": 8,
+          },
+        ]
+      }
+    >
+      <RCTScrollView
+        contentContainerStyle={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "backgroundColor": "#fff",
+              "borderRadius": 10,
+              "elevation": 5,
+              "justifyContent": "center",
+              "padding": 10,
+              "shadowColor": "#000",
+              "shadowOpacity": 0.4,
+            },
+            null,
+            null,
+          ]
+        }
+        refreshControl={
+          <RefreshControlMock
+            onRefresh={[MockFunction]}
+            refreshing={false}
+          />
+        }
+      >
+        <RCTRefreshControl />
+        <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+              }
+            }
+          >
+            DigitalIdentity
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 6,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 33,
+                  },
+                  null,
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              bringYourDigitalID
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#C7C7C7",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 30,
+                    "marginEnd": 12,
+                    "marginStart": 12,
+                    "marginTop": 0,
+                  },
+                  null,
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              generateVcFABDescription
+            </Text>
+          </View>
+        </View>
+      </RCTScrollView>
+    </View>
+  </View>,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+]
+`;
+
+exports[`MyVcsTab should render tampered VCs overlay 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "display": "flex",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "paddingVertical": 2,
+          },
+          {
+            "paddingHorizontal": 8,
+          },
+        ]
+      }
+    >
+      <RCTScrollView
+        contentContainerStyle={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "backgroundColor": "#fff",
+              "borderRadius": 10,
+              "elevation": 5,
+              "justifyContent": "center",
+              "padding": 10,
+              "shadowColor": "#000",
+              "shadowOpacity": 0.4,
+            },
+            null,
+            null,
+          ]
+        }
+        refreshControl={
+          <RefreshControlMock
+            onRefresh={[MockFunction]}
+            refreshing={false}
+          />
+        }
+      >
+        <RCTRefreshControl />
+        <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+              }
+            }
+          >
+            DigitalIdentity
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 6,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 33,
+                  },
+                  null,
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              bringYourDigitalID
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#C7C7C7",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 30,
+                    "marginEnd": 12,
+                    "marginStart": 12,
+                    "marginTop": 0,
+                  },
+                  null,
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              generateVcFABDescription
+            </Text>
+          </View>
+        </View>
+      </RCTScrollView>
+    </View>
+  </View>,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+]
+`;
+
+exports[`MyVcsTab should render verification error overlay 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "display": "flex",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "paddingVertical": 2,
+          },
+          {
+            "paddingHorizontal": 8,
+          },
+        ]
+      }
+    >
+      <RCTScrollView
+        contentContainerStyle={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "backgroundColor": "#fff",
+              "borderRadius": 10,
+              "elevation": 5,
+              "justifyContent": "center",
+              "padding": 10,
+              "shadowColor": "#000",
+              "shadowOpacity": 0.4,
+            },
+            null,
+            null,
+          ]
+        }
+        refreshControl={
+          <RefreshControlMock
+            onRefresh={[MockFunction]}
+            refreshing={false}
+          />
+        }
+      >
+        <RCTRefreshControl />
+        <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+              }
+            }
+          >
+            DigitalIdentity
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 6,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 33,
+                  },
+                  null,
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              bringYourDigitalID
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#C7C7C7",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 30,
+                    "marginEnd": 12,
+                    "marginStart": 12,
+                    "marginTop": 0,
+                  },
+                  null,
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              generateVcFABDescription
+            </Text>
+          </View>
+        </View>
+      </RCTScrollView>
+    </View>
+  </View>,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+]
+`;
+
+exports[`MyVcsTab should render when not visible 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        {
+          "flex": 1,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "display": "none",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          {
+            "flex": 1,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "paddingVertical": 2,
+          },
+          {
+            "paddingHorizontal": 8,
+          },
+        ]
+      }
+    >
+      <RCTScrollView
+        contentContainerStyle={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "alignItems": "center",
+              "backgroundColor": "#fff",
+              "borderRadius": 10,
+              "elevation": 5,
+              "justifyContent": "center",
+              "padding": 10,
+              "shadowColor": "#000",
+              "shadowOpacity": 0.4,
+            },
+            null,
+            null,
+          ]
+        }
+        refreshControl={
+          <RefreshControlMock
+            onRefresh={[MockFunction]}
+            refreshing={false}
+          />
+        }
+      >
+        <RCTRefreshControl />
+        <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+              }
+            }
+          >
+            DigitalIdentity
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  null,
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 6,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 33,
+                  },
+                  null,
+                  {
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              bringYourDigitalID
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  {
+                    "color": "#C7C7C7",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 30,
+                    "marginEnd": 12,
+                    "marginStart": 12,
+                    "marginTop": 0,
+                  },
+                  null,
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                    "paddingTop": 3,
+                  },
+                ]
+              }
+            >
+              generateVcFABDescription
+            </Text>
+          </View>
+        </View>
+      </RCTScrollView>
+    </View>
+  </View>,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+  <View
+    testID="messageOverlay"
+  />,
+]
+`;

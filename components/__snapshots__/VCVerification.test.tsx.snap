@@ -1,0 +1,181 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VCVerification Component should render for pending/unverified credential 1`] = `
+<View
+  accessibilityLabel="verified"
+  accessible={true}
+  style={
+    {
+      "alignItems": "flex-start",
+      "flexDirection": "column",
+      "paddingVertical": 6,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
+    }
+  >
+    StatusPendingIcon
+    <Text
+      accessibilityLabel="verificationStatus"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#000000",
+          },
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          [
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 12,
+            },
+            {
+              "marginLeft": 4,
+            },
+          ],
+        ]
+      }
+    >
+      pending
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`VCVerification Component should render for verified and valid credential 1`] = `
+<View
+  accessibilityLabel="verified"
+  accessible={true}
+  style={
+    {
+      "alignItems": "flex-start",
+      "flexDirection": "column",
+      "paddingVertical": 6,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
+    }
+  >
+    StatusValidIcon
+    <Text
+      accessibilityLabel="verificationStatus"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#000000",
+          },
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          [
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 12,
+            },
+            {
+              "marginLeft": 4,
+            },
+          ],
+        ]
+      }
+    >
+      valid
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`VCVerification Component should render for verified but expired credential 1`] = `
+<View
+  accessibilityLabel="verified"
+  accessible={true}
+  style={
+    {
+      "alignItems": "flex-start",
+      "flexDirection": "column",
+      "paddingVertical": 6,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
+    }
+  >
+    StatusExpiredIcon
+    <Text
+      accessibilityLabel="verificationStatus"
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          {
+            "color": "#000000",
+          },
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          [
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 12,
+            },
+            {
+              "marginLeft": 4,
+            },
+          ],
+        ]
+      }
+    >
+      expired
+    </Text>
+  </View>
+</View>
+`;

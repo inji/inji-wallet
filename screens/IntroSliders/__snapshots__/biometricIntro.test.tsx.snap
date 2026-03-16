@@ -1,0 +1,527 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StaticAuthScreen should render biometric intro 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      {
+        "flex": 1,
+      },
+      {
+        "paddingBottom": 0,
+        "paddingEnd": 5,
+        "paddingStart": 5,
+        "paddingTop": 0,
+      },
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "borderColor": "#000000",
+        "borderRadius": 30,
+        "borderWidth": 12,
+        "flex": 1,
+        "maxHeight": 600,
+        "overflow": "hidden",
+        "width": 350,
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "alignSelf": "center",
+        "backgroundColor": "black",
+        "borderBottomLeftRadius": 13,
+        "borderBottomRightRadius": 10,
+        "height": 13,
+        "marginBottom": 20,
+        "width": 100,
+      }
+    }
+    testID="notchView"
+  />
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "flexGrow": 1,
+      }
+    }
+    showsVerticalScrollIndicator={false}
+  >
+    <View>
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            {
+              "flex": 1,
+            },
+            {
+              "paddingBottom": 0,
+              "paddingEnd": 20,
+              "paddingStart": 20,
+              "paddingTop": 0,
+            },
+            null,
+            {
+              "backgroundColor": "#FFFFFF",
+            },
+            null,
+            null,
+            {
+              "justifyContent": "space-between",
+            },
+            null,
+            null,
+            {
+              "borderRadius": 30,
+              "overflow": "hidden",
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "alignItems": "center",
+              },
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          AdaptiveBiometricIcon
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "column",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                {
+                  "marginBottom": 0,
+                  "marginEnd": 0,
+                  "marginStart": 0,
+                  "marginTop": 30,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ]
+            }
+          >
+            <Text
+              accessibilityLabel="header"
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  null,
+                  {
+                    "textAlign": "center",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#000000",
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 18,
+                    "lineHeight": 19,
+                    "paddingTop": 5,
+                  },
+                ]
+              }
+            >
+              header
+            </Text>
+            <Text
+              accessibilityLabel="description"
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#6F6F6F",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 6,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 6,
+                  },
+                  null,
+                  null,
+                ]
+              }
+            >
+              Description
+            </Text>
+            <Text
+              accessibilityLabel="passwordTypeDescription"
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#6F6F6F",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  {
+                    "marginBottom": 6,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 6,
+                  },
+                  null,
+                  null,
+                ]
+              }
+            >
+              PasswordTypeDescription
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "height": 100,
+            }
+          }
+          testID="spacerView"
+        />
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          <View
+            accessibilityLabel="useBiometricsButton"
+            accessible={true}
+            buttonStyle={
+              [
+                null,
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 9,
+                  "height": 54,
+                  "width": 540,
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ]
+            }
+            containerStyle={
+              [
+                null,
+                [
+                  {
+                    "flexDirection": "row",
+                  },
+                  null,
+                  {
+                    "marginBottom": 8,
+                    "marginEnd": 0,
+                    "marginStart": 0,
+                    "marginTop": 0,
+                  },
+                  {
+                    "alignSelf": "center",
+                    "borderRadius": 9,
+                    "height": 54,
+                    "width": 540,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+            linearGradientProps={
+              {
+                "colors": [
+                  "#FF5300",
+                  "#5B03AD",
+                ],
+                "end": {
+                  "x": 1,
+                  "y": 0.5,
+                },
+                "start": {
+                  "x": 0.5,
+                  "y": 0.5,
+                },
+              }
+            }
+            onPress={[Function]}
+            style={
+              [
+                [
+                  null,
+                  {
+                    "alignSelf": "center",
+                    "borderRadius": 9,
+                    "height": 54,
+                    "width": 540,
+                  },
+                  null,
+                  {
+                    "width": "100%",
+                  },
+                ],
+              ]
+            }
+            title={
+              <Text
+                color="#FFFFFF"
+                style={
+                  [
+                    {
+                      "paddingLeft": 0,
+                    },
+                    undefined,
+                  ]
+                }
+                weight="bold"
+              >
+                useBiometrics
+              </Text>
+            }
+            type="gradient"
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_700Bold",
+                    "fontSize": 15,
+                    "justifyContent": "center",
+                  },
+                  {
+                    "color": "#FFFFFF",
+                  },
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  [
+                    {
+                      "paddingLeft": 0,
+                    },
+                    undefined,
+                  ],
+                ]
+              }
+            >
+              useBiometrics
+            </Text>
+          </View>
+          <View
+            accessibilityLabel="usePasscodeButton"
+            accessible={true}
+            buttonStyle={
+              [
+                null,
+                {
+                  "backgroundColor": "transparent",
+                },
+                null,
+                {
+                  "width": "100%",
+                },
+              ]
+            }
+            containerStyle={
+              [
+                null,
+                [
+                  {
+                    "flexDirection": "row",
+                    "height": 45,
+                  },
+                  null,
+                  null,
+                  null,
+                  undefined,
+                ],
+              ]
+            }
+            onPress={[Function]}
+            style={
+              [
+                [
+                  null,
+                  {
+                    "backgroundColor": "transparent",
+                  },
+                  null,
+                  {
+                    "width": "100%",
+                  },
+                ],
+              ]
+            }
+            title={
+              <Text
+                align="center"
+                color="#951F6F"
+                style={
+                  [
+                    {
+                      "paddingTop": 3,
+                    },
+                    undefined,
+                  ]
+                }
+                weight="semibold"
+              >
+                usePasscode
+              </Text>
+            }
+            type="clear"
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 15,
+                  },
+                  {
+                    "color": "#951F6F",
+                  },
+                  {
+                    "textAlign": "center",
+                  },
+                  null,
+                  null,
+                  [
+                    {
+                      "paddingTop": 3,
+                    },
+                    undefined,
+                  ],
+                ]
+              }
+            >
+              usePasscode
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "height": 200,
+            }
+          }
+          testID="footerSpacerView"
+        />
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;

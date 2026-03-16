@@ -1,0 +1,685 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GetIdInputModal should match snapshot 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerTitle="header"
+  isVisible={true}
+  onDismiss={[MockFunction]}
+  testID="getIdHeader"
+>
+  <View
+    onLayout={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "flex": 1,
+            "justifyContent": "space-between",
+            "maxHeight": 800,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              {
+                "marginBottom": 10,
+                "marginEnd": 10,
+                "marginStart": 10,
+                "marginTop": 10,
+              },
+              null,
+              {
+                "color": "#6F6F6F",
+              },
+            ]
+          }
+        >
+          applicationIdLabel
+        </Text>
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "alignItems": "flex-end",
+              },
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          <View
+            errorMessage=""
+            errorProps={
+              {
+                "testID": "getIdInputErrorMessage",
+              }
+            }
+            errorStyle={
+              {
+                "color": "#D52929",
+              }
+            }
+            inputStyle={
+              {
+                "textAlign": "left",
+              }
+            }
+            keyboardType="number-pad"
+            labelStyle={
+              {
+                "color": "#000000",
+                "textAlign": "left",
+              }
+            }
+            onChangeText={[MockFunction]}
+            placeholder="enterApplicationId"
+            rightIcon={
+              <CustomTooltip
+                height={333.5}
+                testID="GetIdInputToolTip"
+                toolTipContent={
+                  <Layout>
+                    <Text
+                      weight="semibold"
+                    >
+                      toolTipTitle
+                    </Text>
+                    <View
+                      style={
+                        {
+                          "borderBottomColor": "#E0E0E0",
+                          "borderBottomWidth": 1,
+                          "marginTop": 10,
+                        }
+                      }
+                    />
+                    <Text
+                      style={
+                        {
+                          "color": "#4B4B4B",
+                          "marginTop": 10,
+                        }
+                      }
+                      weight="regular"
+                    >
+                      toolTipDescription
+                    </Text>
+                  </Layout>
+                }
+                triggerComponent={
+                  <Icon
+                    color="#B7B7B7"
+                    name="infocirlceo"
+                    type="antdesign"
+                  />
+                }
+                triggerComponentStyles={
+                  {
+                    "width": 32,
+                  }
+                }
+                width={652.5}
+              />
+            }
+            selectionColor="#951F6F"
+            style={
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+              }
+            }
+            value=""
+          />
+        </View>
+      </View>
+      <View
+        buttonStyle={
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "backgroundColor": "#C7C7C7",
+              },
+              {
+                "marginBottom": 10,
+                "marginEnd": 0,
+                "marginStart": 0,
+                "marginTop": 0,
+              },
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              undefined,
+            ],
+          ]
+        }
+        linearGradientProps={
+          {
+            "colors": [
+              "#C7C7C7",
+              "#C7C7C7",
+            ],
+            "end": {
+              "x": 1,
+              "y": 0.5,
+            },
+            "start": {
+              "x": 0.5,
+              "y": 0.5,
+            },
+          }
+        }
+        loading={false}
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ]
+            }
+            weight="bold"
+          >
+            getUIN
+          </Text>
+        }
+        type="gradient"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          getUIN
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`GetIdInputModal should match snapshot when not visible 1`] = `
+<View
+  arrowLeft={true}
+  headerElevation={2}
+  headerTitle="header"
+  isVisible={false}
+  onDismiss={[MockFunction]}
+  testID="getIdHeader"
+>
+  <View
+    onLayout={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "paddingHorizontal": 24,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": undefined,
+            "flexDirection": "column",
+            "justifyContent": undefined,
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "flex": 1,
+            "justifyContent": "space-between",
+            "maxHeight": 800,
+          },
+          null,
+          null,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              {
+                "marginBottom": 10,
+                "marginEnd": 10,
+                "marginStart": 10,
+                "marginTop": 10,
+              },
+              null,
+              {
+                "color": "#6F6F6F",
+              },
+            ]
+          }
+        >
+          applicationIdLabel
+        </Text>
+        <View
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "row",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "alignItems": "flex-end",
+              },
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          <View
+            errorMessage=""
+            errorProps={
+              {
+                "testID": "getIdInputErrorMessage",
+              }
+            }
+            errorStyle={
+              {
+                "color": "#D52929",
+              }
+            }
+            inputStyle={
+              {
+                "textAlign": "left",
+              }
+            }
+            keyboardType="number-pad"
+            labelStyle={
+              {
+                "color": "#000000",
+                "textAlign": "left",
+              }
+            }
+            onChangeText={[MockFunction]}
+            placeholder="enterApplicationId"
+            rightIcon={
+              <CustomTooltip
+                height={333.5}
+                testID="GetIdInputToolTip"
+                toolTipContent={
+                  <Layout>
+                    <Text
+                      weight="semibold"
+                    >
+                      toolTipTitle
+                    </Text>
+                    <View
+                      style={
+                        {
+                          "borderBottomColor": "#E0E0E0",
+                          "borderBottomWidth": 1,
+                          "marginTop": 10,
+                        }
+                      }
+                    />
+                    <Text
+                      style={
+                        {
+                          "color": "#4B4B4B",
+                          "marginTop": 10,
+                        }
+                      }
+                      weight="regular"
+                    >
+                      toolTipDescription
+                    </Text>
+                  </Layout>
+                }
+                triggerComponent={
+                  <Icon
+                    color="#B7B7B7"
+                    name="infocirlceo"
+                    type="antdesign"
+                  />
+                }
+                triggerComponentStyles={
+                  {
+                    "width": 32,
+                  }
+                }
+                width={652.5}
+              />
+            }
+            selectionColor="#951F6F"
+            style={
+              {
+                "fontFamily": "Montserrat_600SemiBold",
+              }
+            }
+            value=""
+          />
+        </View>
+      </View>
+      <View
+        buttonStyle={
+          [
+            null,
+            {
+              "alignSelf": "center",
+              "borderRadius": 9,
+              "height": 54,
+              "width": 540,
+            },
+            null,
+            {
+              "width": "100%",
+            },
+          ]
+        }
+        containerStyle={
+          [
+            null,
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "backgroundColor": "#C7C7C7",
+              },
+              {
+                "marginBottom": 10,
+                "marginEnd": 0,
+                "marginStart": 0,
+                "marginTop": 0,
+              },
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              undefined,
+            ],
+          ]
+        }
+        linearGradientProps={
+          {
+            "colors": [
+              "#C7C7C7",
+              "#C7C7C7",
+            ],
+            "end": {
+              "x": 1,
+              "y": 0.5,
+            },
+            "start": {
+              "x": 0.5,
+              "y": 0.5,
+            },
+          }
+        }
+        loading={false}
+        onPress={[Function]}
+        style={
+          [
+            [
+              null,
+              {
+                "alignSelf": "center",
+                "borderRadius": 9,
+                "height": 54,
+                "width": 540,
+              },
+              null,
+              {
+                "width": "100%",
+              },
+            ],
+          ]
+        }
+        title={
+          <Text
+            color="#FFFFFF"
+            style={
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ]
+            }
+            weight="bold"
+          >
+            getUIN
+          </Text>
+        }
+        type="gradient"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_700Bold",
+                "fontSize": 15,
+                "justifyContent": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              [
+                {
+                  "paddingLeft": 0,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          getUIN
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

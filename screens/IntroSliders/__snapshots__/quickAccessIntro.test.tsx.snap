@@ -1,0 +1,332 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StaticScanScreen should render quick access intro 1`] = `
+<View
+  style={
+    {
+      "alignSelf": "center",
+      "backgroundColor": "#FFFFFF",
+      "borderColor": "#000000",
+      "borderRadius": 30,
+      "borderWidth": 12,
+      "flex": 1,
+      "maxHeight": 600,
+      "overflow": "hidden",
+      "width": 350,
+    }
+  }
+  testID="staticScanScreen"
+>
+  <View
+    style={
+      {
+        "alignSelf": "center",
+        "backgroundColor": "black",
+        "borderBottomLeftRadius": 13,
+        "borderBottomRightRadius": 10,
+        "height": 13,
+        "width": 100,
+      }
+    }
+    testID="introScreenNotch"
+  />
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "paddingBottom": 16,
+      }
+    }
+    showsVerticalScrollIndicator={false}
+    testID="quickAccessScrollView"
+  >
+    <View>
+      <View
+        accessible={true}
+        style={
+          [
+            {
+              "alignItems": undefined,
+              "flexDirection": "column",
+              "justifyContent": undefined,
+            },
+            null,
+            {
+              "paddingBottom": 0,
+              "paddingEnd": 25,
+              "paddingStart": 32,
+              "paddingTop": 10,
+            },
+            null,
+            null,
+            null,
+            null,
+            {
+              "justifyContent": "flex-start",
+            },
+            null,
+            null,
+            {
+              "borderRadius": 30,
+              "overflow": "hidden",
+            },
+            null,
+            null,
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              {
+                "backgroundColor": "#FFFFFF",
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          <Text
+            accessibilityLabel="shareText"
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 15,
+                  "justifyContent": "center",
+                },
+                {
+                  "color": "#000000",
+                },
+                {
+                  "textAlign": "left",
+                },
+                null,
+                {
+                  "fontSize": 18,
+                },
+                {
+                  "paddingBottom": 10,
+                  "paddingLeft": 5,
+                  "paddingTop": 10,
+                },
+              ]
+            }
+          >
+            MainLayout:share
+          </Text>
+        </View>
+        <View
+          accessible={true}
+          style={
+            [
+              {
+                "alignItems": undefined,
+                "flexDirection": "column",
+                "justifyContent": undefined,
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              {
+                "alignItems": "center",
+              },
+              null,
+              null,
+              null,
+              null,
+            ]
+          }
+        >
+          <View
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": undefined,
+                  "flexDirection": "column",
+                  "justifyContent": undefined,
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                  "alignSelf": "center",
+                  "borderRadius": 24,
+                  "height": 350,
+                  "overflow": "hidden",
+                  "width": 320,
+                },
+                null,
+                null,
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignSelf": "center",
+                    "borderRadius": 24,
+                    "height": 350,
+                    "overflow": "hidden",
+                    "width": 320,
+                  },
+                  {
+                    "backgroundColor": "#F8F8F8",
+                    "borderRadius": 20,
+                    "height": 250,
+                    "overflow": "hidden",
+                    "width": 280,
+                  },
+                  {
+                    "overflow": "visible",
+                    "position": "relative",
+                  },
+                ]
+              }
+              testID="qrScannerView"
+            >
+              <Image
+                source=""
+                style={
+                  {
+                    "height": "100%",
+                    "resizeMode": "cover",
+                    "width": "100%",
+                  }
+                }
+                testID="qrScannerImage"
+              />
+              <View
+                style={
+                  {
+                    "left": -12,
+                    "overflow": "visible",
+                    "position": "absolute",
+                    "right": -12,
+                    "top": 62.5,
+                    "zIndex": 2,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "backgroundColor": "#5b03ad26",
+                      "borderRadius": 3,
+                      "height": 5,
+                      "left": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 1,
+                    }
+                  }
+                />
+              </View>
+            </View>
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "alignItems": undefined,
+                    "flexDirection": "column",
+                    "justifyContent": undefined,
+                  },
+                  {
+                    "flex": 1,
+                  },
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  {
+                    "justifyContent": "flex-start",
+                  },
+                  null,
+                  null,
+                  {
+                    "marginTop": 24,
+                  },
+                  null,
+                  null,
+                ]
+              }
+            >
+              <Text
+                accessibilityLabel="scanningGuideText"
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "center",
+                    },
+                    null,
+                    null,
+                    {
+                      "color": "#000000",
+                      "fontFamily": "Montserrat_600SemiBold",
+                      "fontSize": 15,
+                    },
+                  ]
+                }
+              >
+                scanningGuide
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          accessible={false}
+          style={
+            {
+              "height": 200,
+            }
+          }
+          testID="footerSpacerView"
+        />
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;

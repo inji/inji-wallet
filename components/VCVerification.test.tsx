@@ -4,6 +4,14 @@ import {VCVerification} from './VCVerification';
 import {VCMetadata} from '../shared/VCMetadata';
 import {Display} from './VC/common/VCUtils';
 
+jest.mock('../shared/vcVerifier/VcVerifier', () => ({
+  RevocationStatus: {
+    TRUE: 'TRUE',
+    FALSE: 'FALSE',
+    UNDETERMINED: 'UNDETERMINED',
+  },
+}));
+
 // Mock SvgImage
 jest.mock('./ui/svg', () => ({
   SvgImage: {
@@ -30,7 +38,7 @@ describe('VCVerification Component', () => {
       <VCVerification vcMetadata={vcMetadata} display={mockDisplay} />,
     );
 
-    expect(toJSON()).toBeTruthy();
+    expect(toJSON()).toMatchSnapshot();
   });
 
   it('should render for verified but expired credential', () => {
@@ -43,7 +51,7 @@ describe('VCVerification Component', () => {
       <VCVerification vcMetadata={vcMetadata} display={mockDisplay} />,
     );
 
-    expect(toJSON()).toBeTruthy();
+    expect(toJSON()).toMatchSnapshot();
   });
 
   it('should render for pending/unverified credential', () => {
@@ -56,7 +64,7 @@ describe('VCVerification Component', () => {
       <VCVerification vcMetadata={vcMetadata} display={mockDisplay} />,
     );
 
-    expect(toJSON()).toBeTruthy();
+    expect(toJSON()).toMatchSnapshot();
   });
 
   it('should render verification status text', () => {
@@ -81,5 +89,33 @@ describe('VCVerification Component', () => {
     render(<VCVerification vcMetadata={vcMetadata} display={mockDisplay} />);
 
     expect(mockDisplay.getTextColor).toHaveBeenCalled();
+  });
+
+  it('should render for revoked credential', () => {
+    const vcMetadata = new VCMetadata({
+      isVerified: true,
+      isExpired: false,
+      isRevoked: 'TRUE',
+    });
+
+    const {getByText} = render(
+      <VCVerification vcMetadata={vcMetadata} display={mockDisplay} />,
+    );
+
+    expect(getByText('revoked')).toBeTruthy();
+  });
+
+  it('should render for undetermined revocation status', () => {
+    const vcMetadata = new VCMetadata({
+      isVerified: true,
+      isExpired: false,
+      isRevoked: 'UNDETERMINED',
+    });
+
+    const {getByText} = render(
+      <VCVerification vcMetadata={vcMetadata} display={mockDisplay} />,
+    );
+
+    expect(getByText('pending')).toBeTruthy();
   });
 });
