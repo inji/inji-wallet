@@ -525,7 +525,6 @@ export const fieldItemIterator = (
   isBottomSectionFields: boolean,
   props: VCItemDetailsProps,
 ): JSX.Element[] => {
-  const format = props.verifiableCredentialData.vcMetadata.format;
   const fieldNameColor = display.getTextColor(Theme.Colors.DetailsLabel);
   const fieldValueColor = display.getTextColor(Theme.Colors.Details);
   const disclosedKeys =
