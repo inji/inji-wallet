@@ -1,43 +1,39 @@
 import {
   ErrorMessage,
   getDisplayObjectForCurrentLanguage,
-  Issuers_Key_Ref,
-  OIDCErrors,
-  selectCredentialRequestKey,
+  Issuers_Key_Ref, selectCredentialRequestKey,
+  VCIServerErrorCode
 } from '../../shared/openId4VCI/Utils';
 import {
   EXPIRED_VC_ERROR_CODE,
-  MY_VCS_STORE_KEY,
-  NO_INTERNET,
-  REQUEST_TIMEOUT,
-  isIOS,
+  MY_VCS_STORE_KEY, isIOS,
   AuthorizationType,
   OVP_ERROR_CODE,
-  OVP_ERROR_MESSAGES,
+  OVP_ERROR_MESSAGES
 } from '../../shared/constants';
-import {assign, send, spawn} from 'xstate';
-import {StoreEvents} from '../store';
-import {BackupEvents} from '../backupAndRestore/backup/backupMachine';
-import {getVCMetadata, VCMetadata} from '../../shared/VCMetadata';
-import {isHardwareKeystoreExists} from '../../shared/cryptoutil/cryptoUtil';
-import {ActivityLogEvents} from '../activityLog';
+import { assign, send, spawn } from 'xstate';
+import { StoreEvents } from '../store';
+import { BackupEvents } from '../backupAndRestore/backup/backupMachine';
+import { getVCMetadata, VCMetadata } from '../../shared/VCMetadata';
+import { isHardwareKeystoreExists } from '../../shared/cryptoutil/cryptoUtil';
+import { ActivityLogEvents } from '../activityLog';
 import {
   getEndEventData,
   getImpressionEventData,
   sendEndEvent,
   sendImpressionEvent,
 } from '../../shared/telemetry/TelemetryUtils';
-import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
-import {NativeModules} from 'react-native';
-import {VCActivityLog} from '../../components/ActivityLogEvent';
-import {isNetworkError, parseJSON, VCShareFlowType} from '../../shared/Utils';
-import {issuerType} from './IssuersMachine';
-import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
-import {logState} from '../../shared/commonUtil';
-import {createOpenID4VPMachine} from '../openID4VP/openID4VPMachine';
-import VciClient from '../../shared/vciClient/VciClient';
+import { TelemetryConstants } from '../../shared/telemetry/TelemetryConstants';
+import { NativeModules } from 'react-native';
+import { VCActivityLog } from '../../components/ActivityLogEvent';
+import { isNetworkError, parseJSON, VCShareFlowType } from '../../shared/Utils';
+import { issuerType } from './IssuersMachine';
+import { RevocationStatus } from '../../shared/vcVerifier/VcVerifier';
+import { logState } from '../../shared/commonUtil';
+import { createOpenID4VPMachine } from '../openID4VP/openID4VPMachine';
+import VciClient, { VciClientErrorResponse } from '../../shared/vciClient/VciClient';
 
-const {RNSecureKeystoreModule} = NativeModules;
+const { RNSecureKeystoreModule } = NativeModules;
 
 const OPENID4VP_REF_ID = 'Presentation_During_Issuance_OpenID4VP_Service';
 export const IssuersActions = (model: any) => {
@@ -110,32 +106,37 @@ export const IssuersActions = (model: any) => {
       },
     }),
 
+    setIsInternetAvailable: model.assign({
+      isInternetAvailable: (_: any, event: any) => event.isInternetAvailable,
+    }),
+
     setError: model.assign({
-      errorMessage: (_: any, event: any) => {
-        console.error(`Error occurred while ${event} -> `, event.data.message);
-        const error = event.data.message;
-        if (error.includes(NO_INTERNET)) {
-          return ErrorMessage.NO_INTERNET;
+      errorMessage: (context: any, event: any) => {
+        const error = (event.data ?? event) as VciClientErrorResponse;
+        console.error(`Error occurred while ${event} -> `, error);
+        if (error.serverErrorCode)
+          return error.serverErrorCode as VCIServerErrorCode;
+        if (!context.isInternetAvailable) {
+          return ErrorMessage.NO_INTERNET
         }
-        if (isNetworkError(error)) {
-          return ErrorMessage.NETWORK_REQUEST_FAILED;
+        else if (error.sourceErrorCode === 'VCI-008') {
+          return VCIServerErrorCode.INVALID_CREDENTIAL_OFFER
         }
-        if (error.includes(REQUEST_TIMEOUT)) {
-          return ErrorMessage.REQUEST_TIMEDOUT;
-        }
-        if (
-          error.includes(
-            OIDCErrors.AUTHORIZATION_ENDPOINT_DISCOVERY
-              .GRANT_TYPE_NOT_SUPPORTED,
-          )
-        ) {
-          return ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED;
-        }
-        return ErrorMessage.GENERIC;
-      },
+        else if (error.code)
+          return VCIServerErrorCode.SERVER_ERROR
+        else return VCIServerErrorCode.UNKNOWN_ERROR;
+      }
     }),
     resetError: model.assign({
       errorMessage: '',
+    }),
+
+    setKeyManagementError: model.assign({
+      errorMessage: (_: any, event: any) => ErrorMessage.KEY_MANAGEMENT_ERROR,
+    }),
+
+    setGenericError: model.assign({
+      errorMessage: (_: any, event: any) => ErrorMessage.WALLET_GENERIC_ERROR,
     }),
 
     loadKeyPair: assign({
@@ -285,18 +286,18 @@ export const IssuersActions = (model: any) => {
     }),
     setCredentialOfferCredentialType: model.assign({
       selectedCredentialType: (context: any, event: any) => {
-        let credentialTypes: Array<{id: string; [key: string]: any}> = [];
+        let credentialTypes: Array<{ id: string;[key: string]: any }> = [];
         const credentialConfigurationId = context.credentialConfigurationId;
         const issuerMetadata = context.selectedIssuerWellknownResponse;
         if (
           issuerMetadata.credential_configurations_supported[
-            credentialConfigurationId
+          credentialConfigurationId
           ]
         ) {
           credentialTypes.push({
             id: credentialConfigurationId,
             ...issuerMetadata.credential_configurations_supported[
-              credentialConfigurationId
+            credentialConfigurationId
             ],
           });
           return credentialTypes[0];
@@ -475,7 +476,7 @@ export const IssuersActions = (model: any) => {
         getEndEventData(
           TelemetryConstants.FlowType.vcDownload,
           TelemetryConstants.EndEventStatus.success,
-          {'VC Key': context.keyType},
+          { 'VC Key': context.keyType },
         ),
       );
     },
@@ -485,7 +486,7 @@ export const IssuersActions = (model: any) => {
         getEndEventData(
           TelemetryConstants.FlowType.vcDownload,
           TelemetryConstants.EndEventStatus.failure,
-          {'VC Key': context.keyType},
+          { 'VC Key': context.keyType },
         ),
       );
     },
@@ -552,11 +553,6 @@ export const IssuersActions = (model: any) => {
       });
     },
 
-    sendSignedVP: (context, event) => {
-      const vpTokenSigningResult = event.signedVPToken.data;
-      VciClient.getInstance().sendSignedVP(vpTokenSigningResult);
-    },
-
     sendVPConsentReject: () => {
       console.error('User declined to share VP for issuance authorization');
       VciClient.getInstance().abortPresentationFlow({
@@ -576,3 +572,4 @@ export const IssuersActions = (model: any) => {
     },
   };
 };
+

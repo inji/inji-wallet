@@ -1187,7 +1187,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/inji/inji-vci-client-ios-swift";
 			requirement = {
-				branch = "release-0.7.x";
+				branch = develop;
 				kind = branch;
 			};
 		};

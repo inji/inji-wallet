@@ -142,12 +142,19 @@ jest.mock('../../shared/commonUtil', () => {
 });
 
 jest.mock('../../shared/openId4VCI/Utils', () => ({
-  ErrorMessage: {},
-  getDisplayObjectForCurrentLanguage: jest.fn(() => ({
+  ErrorMessage: {
+    GENERIC: 'GENERIC',
+    TECHNICAL_DIFFICULTIES: 'TECHNICAL_DIFFICULTIES',
+    NO_INTERNET: 'NO_INTERNET',
+  },
+  getDisplayObjectForCurrentLanguage: jest.fn(display => display?.[0] ?? {
     name: 'Test',
     logo: {url: ''},
-  })),
-  Protocols: {OpenId4VCI: 'OpenId4VCI'},
+  }),
+  Protocols: {OpenId4VCI: 'OpenId4VCI', OTP: 'OTP'},
+  goBackErrors: new Set(),
+  goHomeErrors: new Set(),
+  VCIServerErrorCode: {},
 }));
 
 jest.mock('../../shared/telemetry/TelemetryUtils', () => ({
@@ -212,7 +219,10 @@ jest.mock('../Scan/SendVPScreen', () => ({
 jest.mock('../../shared/constants', () => ({
   isIOS: () => false,
   isAndroid: () => true,
-  AuthorizationType: {presentation: 'presentation'},
+  AuthorizationType: {
+    IMPLICIT: 'implicit',
+    OPENID4VP_PRESENTATION: 'presentation',
+  },
 }));
 
 jest.mock('../../machines/Issuers/IssuersMachine', () => ({

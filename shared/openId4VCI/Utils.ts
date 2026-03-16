@@ -315,7 +315,183 @@ export enum ErrorMessage {
   CREDENTIAL_TYPE_DOWNLOAD_FAILURE = 'credentialTypeListDownloadFailure',
   AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED = 'authorizationGrantTypeNotSupportedByWallet',
   NETWORK_REQUEST_FAILED = 'networkRequestFailed',
+  KEY_MANAGEMENT_ERROR = 'unknown_error',
+  WALLET_GENERIC_ERROR = 'unknown_error',
 }
+
+export enum VCIServerErrorCode {
+  INVALID_REQUEST = "invalid_request",
+  UNAUTHORIZED_CLIENT = "unauthorized_client",
+  ACCESS_DENIED = "access_denied",
+  UNSUPPORTED_RESPONSE_TYPE = "unsupported_response_type",
+  INVALID_SCOPE = "invalid_scope",
+
+  SERVER_ERROR = "server_error",
+  TEMPORARILY_UNAVAILABLE = "temporarily_unavailable",
+
+  INVALID_CLIENT = "invalid_client",
+  INVALID_GRANT = "invalid_grant",
+  UNSUPPORTED_GRANT_TYPE = "unsupported_grant_type",
+
+  AUTHORIZATION_PENDING = "authorization_pending",
+  SLOW_DOWN = "slow_down",
+
+  INVALID_CREDENTIAL_REQUEST = "invalid_credential_request",
+  UNSUPPORTED_CREDENTIAL_TYPE = "unsupported_credential_type",
+  UNSUPPORTED_CREDENTIAL_FORMAT = "unsupported_credential_format",
+
+  INVALID_PROOF = "invalid_proof",
+  INVALID_ENCRYPTION_PARAMETERS = "invalid_encryption_parameters",
+
+  INVALID_TOKEN = "invalid_token",
+  INSUFFICIENT_SCOPE = "insufficient_scope",
+
+  INVALID_CREDENTIAL_OFFER = "invalid_credential_offer",
+  CREDENTIAL_OFFER_FETCH_FAILED = "credential_offer_fetch_failed",
+  UNSUPPORTED_GRANT = "unsupported_grant",
+
+  BIOMETRIC_CANCELLED = "biometric_cancelled",
+  USER_CANCELLED = "user_cancelled",
+
+  NETWORK_ERROR = "network_error",
+  TIMEOUT_ERROR = "timeout_error",
+
+  PARSING_ERROR = "parsing_error",
+  VERIFICATION_FAILED = "verification_failed",
+  STORAGE_ERROR = "storage_error",
+
+  UNKNOWN_ERROR = "unknown_error",
+}
+
+export const retryableErrors = new Set([
+  VCIServerErrorCode.SERVER_ERROR,
+  VCIServerErrorCode.INVALID_GRANT,
+  VCIServerErrorCode.SLOW_DOWN,
+  VCIServerErrorCode.INVALID_PROOF,
+  VCIServerErrorCode.INVALID_ENCRYPTION_PARAMETERS,
+  VCIServerErrorCode.CREDENTIAL_OFFER_FETCH_FAILED,
+  VCIServerErrorCode.NETWORK_ERROR,
+  VCIServerErrorCode.TIMEOUT_ERROR,
+  VCIServerErrorCode.PARSING_ERROR,
+  VCIServerErrorCode.STORAGE_ERROR,
+  VCIServerErrorCode.UNKNOWN_ERROR,
+  VCIServerErrorCode.ACCESS_DENIED,
+  VCIServerErrorCode.UNSUPPORTED_GRANT_TYPE,
+  ErrorMessage.KEY_MANAGEMENT_ERROR,
+  ErrorMessage.WALLET_GENERIC_ERROR,
+  VCIServerErrorCode.INVALID_CREDENTIAL_OFFER,
+  ErrorMessage.NO_INTERNET
+])
+
+export const goBackErrors = new Set([
+  VCIServerErrorCode.UNAUTHORIZED_CLIENT,
+  VCIServerErrorCode.UNSUPPORTED_RESPONSE_TYPE,
+  VCIServerErrorCode.INVALID_SCOPE,
+  VCIServerErrorCode.UNSUPPORTED_CREDENTIAL_TYPE,
+  VCIServerErrorCode.UNSUPPORTED_CREDENTIAL_FORMAT,
+  VCIServerErrorCode.INSUFFICIENT_SCOPE,
+  VCIServerErrorCode.UNSUPPORTED_GRANT
+])
+
+export const goHomeErrors = new Set([
+  VCIServerErrorCode.INVALID_REQUEST,
+  VCIServerErrorCode.INVALID_CLIENT,
+  VCIServerErrorCode.TEMPORARILY_UNAVAILABLE,
+  VCIServerErrorCode.INVALID_CREDENTIAL_REQUEST
+])
+
+export const ErrorLogMessages: Record<VCIServerErrorCode, string> = {
+
+  [VCIServerErrorCode.INVALID_REQUEST]:
+    "Invalid request sent to authorization server.",
+
+  [VCIServerErrorCode.UNAUTHORIZED_CLIENT]:
+    "Client is not authorized to perform this request.",
+
+  [VCIServerErrorCode.ACCESS_DENIED]:
+    "Authorization request was denied by the user or server.",
+
+  [VCIServerErrorCode.UNSUPPORTED_RESPONSE_TYPE]:
+    "Authorization server does not support the requested response type.",
+
+  [VCIServerErrorCode.INVALID_SCOPE]:
+    "Requested scope is invalid or unsupported.",
+
+  [VCIServerErrorCode.SERVER_ERROR]:
+    "Authorization server encountered an internal error.",
+
+  [VCIServerErrorCode.TEMPORARILY_UNAVAILABLE]:
+    "Authorization server is temporarily unavailable.",
+
+  [VCIServerErrorCode.INVALID_CLIENT]:
+    "Client authentication with the authorization server failed.",
+
+  [VCIServerErrorCode.INVALID_GRANT]:
+    "Provided authorization grant is invalid or expired.",
+
+  [VCIServerErrorCode.UNSUPPORTED_GRANT_TYPE]:
+    "Authorization server does not support the requested grant type.",
+
+  [VCIServerErrorCode.AUTHORIZATION_PENDING]:
+    "Authorization still pending; polling should continue.",
+
+  [VCIServerErrorCode.SLOW_DOWN]:
+    "Authorization server requested slower polling.",
+
+  [VCIServerErrorCode.INVALID_CREDENTIAL_REQUEST]:
+    "Credential request is invalid or malformed.",
+
+  [VCIServerErrorCode.UNSUPPORTED_CREDENTIAL_TYPE]:
+    "Issuer does not support the requested credential type.",
+
+  [VCIServerErrorCode.UNSUPPORTED_CREDENTIAL_FORMAT]:
+    "Issuer does not support the requested credential format.",
+
+  [VCIServerErrorCode.INVALID_PROOF]:
+    "Provided proof is invalid or failed verification.",
+
+  [VCIServerErrorCode.INVALID_ENCRYPTION_PARAMETERS]:
+    "Invalid encryption parameters were provided.",
+
+  [VCIServerErrorCode.INVALID_TOKEN]:
+    "Access token is invalid or expired.",
+
+  [VCIServerErrorCode.INSUFFICIENT_SCOPE]:
+    "Access token does not contain the required scope.",
+
+  [VCIServerErrorCode.INVALID_CREDENTIAL_OFFER]:
+    "Credential offer received is invalid.",
+
+  [VCIServerErrorCode.CREDENTIAL_OFFER_FETCH_FAILED]:
+    "Failed to fetch credential offer from issuer.",
+
+  [VCIServerErrorCode.UNSUPPORTED_GRANT]:
+    "Issuer does not support this credential issuance grant.",
+
+  [VCIServerErrorCode.BIOMETRIC_CANCELLED]:
+    "User cancelled biometric authentication.",
+
+  [VCIServerErrorCode.USER_CANCELLED]:
+    "User cancelled the operation.",
+
+  [VCIServerErrorCode.NETWORK_ERROR]:
+    "Network request failed while communicating with issuer.",
+
+  [VCIServerErrorCode.TIMEOUT_ERROR]:
+    "Network request timed out.",
+
+  [VCIServerErrorCode.PARSING_ERROR]:
+    "Failed to parse response from issuer.",
+
+  [VCIServerErrorCode.VERIFICATION_FAILED]:
+    "Credential verification failed.",
+
+  [VCIServerErrorCode.STORAGE_ERROR]:
+    "Failed to store credential or metadata.",
+
+  [VCIServerErrorCode.UNKNOWN_ERROR]:
+    "Unknown error occurred during credential issuance flow.",
+};
 
 export async function constructProofJWT(
   publicKey: any,

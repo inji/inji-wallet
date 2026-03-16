@@ -221,7 +221,10 @@ describe('VciClient', () => {
           jest.fn(),
           jest.fn(),
         ),
-      ).rejects.toThrow('native error');
+      ).rejects.toMatchObject({
+        code: 'UNKNOWN_ERROR',
+        message: 'native error',
+      });
 
       expect(mockRemove).toHaveBeenCalledTimes(7);
     });
@@ -362,7 +365,10 @@ describe('VciClient', () => {
           jest.fn(),
           jest.fn(),
         ),
-      ).rejects.toThrow('fail');
+      ).rejects.toMatchObject({
+        code: 'UNKNOWN_ERROR',
+        message: 'fail',
+      });
 
       expect(mockRemove).toHaveBeenCalledTimes(5);
     });
