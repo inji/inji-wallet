@@ -2,7 +2,7 @@ import {UnsupportedVcFormat} from './UnsupportedVCFormat';
 
 describe('UnsupportedVcFormat', () => {
   it('should create an error instance with the correct format message', () => {
-    const format = 'jwt_vc_json';
+    const format = 'unknown_format_example';
     const error = new UnsupportedVcFormat(format);
 
     expect(error).toBeInstanceOf(Error);
