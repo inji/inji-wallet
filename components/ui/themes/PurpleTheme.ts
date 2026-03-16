@@ -2315,7 +2315,7 @@ export const PurpleTheme = {
       backgroundColor: '#fff',
       borderRadius: 20,
       width: '100%',
-      height: 470,
+      height: SCREEN_HEIGHT * 0.55,
       padding: 20,
       alignItems: 'center',
     },
@@ -2333,6 +2333,7 @@ export const PurpleTheme = {
       marginTop: 8,
       fontWeight: 'bold',
       fontSize: 16,
+      textAlign: 'center',
     },
     description: {
       fontSize: 14,
