@@ -587,6 +587,76 @@ describe('getFieldValue', () => {
     });
   });
 
+  describe('JWT_VC_JSON format', () => {
+    it('should work with jwt_vc_json format and extract flat claims', () => {
+      const verifiableCredential = {
+        fullResolvedPayload: {employeeId: 'EMP-99'},
+      } as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'employeeId',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.jwt_vc_json,
+      );
+
+      expect(result).toBe('EMP-99');
+      expect(i18n.getLocalizedField).toHaveBeenCalledWith('EMP-99');
+    });
+
+    it('should handle nested paths in jwt_vc_json', () => {
+      const verifiableCredential = {
+        fullResolvedPayload: {credentialSubject: {role: 'Developer'}},
+      } as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'credentialSubject.role',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.jwt_vc_json,
+      );
+
+      expect(result).toBe('Developer');
+      expect(i18n.getLocalizedField).toHaveBeenCalledWith('Developer');
+    });
+
+    it('should handle array of simple values in jwt_vc_json', () => {
+      const verifiableCredential = {
+        fullResolvedPayload: {hobbies: ['Reading', 'Gaming']},
+      } as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'hobbies',
+        {},
+        {},
+        new MockDisplay() as any,
+        VCFormat.jwt_vc_json,
+      );
+
+      expect(result).toBe('Reading, Gaming');
+    });
+
+    it('should return undefined for non-existent nested paths in jwt_vc_json', () => {
+      const verifiableCredential = {fullResolvedPayload: {user: {}}} as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'user.profile.name',
+        {},
+        {},
+        new MockDisplay() as any,
+        VCFormat.jwt_vc_json,
+      );
+
+      expect(result).toBeUndefined();
+    });
+  });
+
   describe('Edge cases', () => {
     it('should handle missing credentialSubject', () => {
       const verifiableCredential = {
