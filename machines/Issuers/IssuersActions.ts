@@ -110,6 +110,13 @@ export const IssuersActions = (model: any) => {
       isInternetAvailable: (_: any, event: any) => event.isInternetAvailable,
     }),
 
+    setParsingError: model.assign({
+      errorMessage: () => ErrorMessage.PARSING_ERROR,
+    }),
+
+    setStorageError: model.assign({
+      errorMessage: () => ErrorMessage.STORAGE_ERROR,
+    }),
     setError: model.assign({
       errorMessage: (context: any, event: any) => {
         const error = (event.data ?? event) as VciClientErrorResponse;
@@ -121,6 +128,9 @@ export const IssuersActions = (model: any) => {
         }
         else if (error.sourceErrorCode === 'VCI-008') {
           return VCIServerErrorCode.INVALID_CREDENTIAL_OFFER
+        }
+        else if(error.sourceErrorCode === 'VCI-007') {
+          return VCIServerErrorCode.TIMEOUT_ERROR
         }
         else if (error.code)
           return VCIServerErrorCode.SERVER_ERROR
@@ -572,4 +582,3 @@ export const IssuersActions = (model: any) => {
     },
   };
 };
-
