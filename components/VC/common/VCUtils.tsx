@@ -268,16 +268,7 @@ export const getFieldName = (
           value: obj.name,
         }));
 
-        const currentAppLang = i18n.language;
-        const matchedEntry = newFieldObj.find(
-          (entry: any) =>
-            entry.language === currentAppLang ||
-            entry.language.startsWith(currentAppLang.split('-')[0]),
-        );
-
-        return matchedEntry
-          ? matchedEntry.value
-          : getLocalizedField(newFieldObj);
+        return getLocalizedField(newFieldObj);
       }
 
       return formatKeyLabel(pathParts[pathParts.length - 1]);
@@ -541,31 +532,7 @@ export const fieldItemIterator = (
     (verifiableCredential as {disclosedKeys?: string[]}).disclosedKeys || [];
   const renderedFields = new Set<string>();
 
-  const sortedFields = [...fields].sort((a, b) => {
-    if (format === VCFormat.jwt_vc_json) {
-      const config =
-        wellknown.credential_configurations_supported?.[
-          'JwtVerifiableCredential'
-        ] || wellknown;
-      const metadataOrder = config?.order as string[];
-
-      if (metadataOrder && Array.isArray(metadataOrder)) {
-        const getIndex = (key: string) => {
-          const index = metadataOrder.indexOf(key);
-          if (index !== -1) return index;
-          if (key === 'fullName') return metadataOrder.indexOf('name');
-          return 999;
-        };
-
-        const orderA = getIndex(a);
-        const orderB = getIndex(b);
-        return (orderA === -1 ? 999 : orderA) - (orderB === -1 ? 999 : orderB);
-      }
-    }
-    return 0;
-  });
-
-  const renderedMainFields = sortedFields.map(field => {
+  const renderedMainFields = fields.map(field => {
     const fieldName = getFieldName(
       field,
       wellknown,
