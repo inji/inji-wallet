@@ -1,6 +1,26 @@
 package inji.pages;
 
+import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Rectangle;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.aventstack.extentreports.Status;
+
 import inji.utils.ExtentReportManager;
 import inji.utils.InjiWalletConfigManager;
 import io.appium.java_client.AppiumBy;
@@ -10,16 +30,6 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
-import org.apache.log4j.Logger;
-import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.PointerInput;
-import org.openqa.selenium.interactions.Sequence;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BasePage {
 	protected AppiumDriver driver;
@@ -308,7 +318,7 @@ public class BasePage {
 				.ignoring(StaleElementReferenceException.class);
 	}
 
-	void sleep(long ms) {
+	public static void sleep(long ms) {
 		try {
 			Thread.sleep(ms);
 		} catch (InterruptedException ignored) {
