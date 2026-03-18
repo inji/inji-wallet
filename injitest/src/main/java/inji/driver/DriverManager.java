@@ -75,20 +75,25 @@ public class DriverManager {
 
   public static void quitDriver() {
     if (appiumDriver.get() != null) {
-      appiumDriver.get().quit();
-      appiumDriver.remove();
+      try {
+        appiumDriver.get().quit();
+      } finally {
+        appiumDriver.remove();
+      }
     }
   }
 
   private static AppiumDriver createDriverWithRetry(Supplier<AppiumDriver> supplier) {
     int maxRetries = 3;
     int waitTime = 2000;
+    Exception lastFailure = null;
 
     for (int attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         return supplier.get();
 
       } catch (Exception e) {
+        lastFailure = e;
 
         if (!shouldRetry(e, attempt, maxRetries)) {
           throw new DriverInitializationException(
@@ -99,6 +104,7 @@ public class DriverManager {
           Thread.sleep(waitTime);
         } catch (InterruptedException ie) {
           Thread.currentThread().interrupt();
+          throw new DriverInitializationException("Interrupted while retrying driver creation", ie);
         }
         waitTime *= 2;
         LOGGER.warn(
@@ -112,7 +118,8 @@ public class DriverManager {
     throw new DriverInitializationException(
         "Driver creation failed after "
             + maxRetries
-            + " attempts. Possible causes: BrowserStack Local not ready or session limit exceeded");
+            + " attempts. Possible causes: BrowserStack Local not ready or session limit exceeded",
+        lastFailure);
   }
 
   private static boolean shouldRetry(Exception e, int attempt, int maxRetries) {
