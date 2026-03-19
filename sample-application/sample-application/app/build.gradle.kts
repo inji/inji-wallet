@@ -98,7 +98,7 @@ dependencies {
         exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
     }
 
-    implementation("io.inji:inji-vci-client-aar:0.7.0-SNAPSHOT") { // Verifiable Credential Download
+    implementation("io.inji:inji-vci-client-aar:0.7.0") { // Verifiable Credential Download
       // Exclude transitive dependencies to use explicitly declared versions
       exclude(group = "com.google.crypto.tink", module = "tink")
       exclude(group = "io.mosip", module = "vcverifier-jar")
@@ -131,8 +131,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
     implementation("io.mosip:pixelpass-aar:0.7.0") {
-      exclude(group = "io.mosip:vcverifier-jar")
-      exclude(group = "io.mosip:vcverifier-aar")
+      exclude(group = "io.mosip", module = "vcverifier-jar")
+      exclude(group = "io.mosip", module = "vcverifier-aar")
         // Exclude transitive dependencies to prevent conflicts and use explicitly declared versions
         exclude(group = "org.bouncycastle")
         exclude(group = "org.springframework")

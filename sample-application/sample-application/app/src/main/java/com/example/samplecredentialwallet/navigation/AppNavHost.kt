@@ -68,7 +68,9 @@ sealed class Screen(val route: String) {
     }
     object CredentialDetail : Screen("credential_detail?authCode={authCode}&credentialOfferUri={credentialOfferUri}") {
         fun createRoute(authCode: String? = null, credentialOfferUri: String? = null): String {
-            return "credential_detail?authCode=$authCode&credentialOfferUri=$credentialOfferUri"
+            val encodedAuthCode = authCode?.let { Uri.encode(it) }
+            val encodedCredentialOfferUri = credentialOfferUri?.let { Uri.encode(it) }
+            return "credential_detail?authCode=$encodedAuthCode&credentialOfferUri=$encodedCredentialOfferUri"
         }
     }
     object CredentialList : Screen("credential_list?index={index}") {
@@ -150,11 +152,12 @@ fun AppNavHost(navController: NavHostController) {
                 navArgument("credentialOfferUri") { nullable = true }
             )
         ) { backStackEntry ->
-            val authCode = backStackEntry.arguments?.getString("authCode")
+            val encodedAuthCode = backStackEntry.arguments?.getString("authCode")
+            val authCode = encodedAuthCode?.let { Uri.decode(it) }
             val encodedCredentialOfferUri = backStackEntry.arguments?.getString("credentialOfferUri")
             val credentialOfferUri = encodedCredentialOfferUri?.let { Uri.decode(it) }
 
-            Log.d("AppNavHost", "CredentialDetail - authCode: $authCode, credentialOfferUri: $credentialOfferUri")
+            Log.d("AppNavHost", "CredentialDetail - authCode: $encodedAuthCode, credentialOfferUri: $credentialOfferUri")
             CredentialDownloadScreen(navController, authCode, credentialOfferUri)
         }
 
@@ -325,6 +328,10 @@ fun CameraPreview(
             .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
             .build()
         BarcodeScanning.getClient(options)
+    }
+
+    DisposableEffect(barcodeScanner) {
+      onDispose { barcodeScanner.close() }
     }
 
     AndroidView(
