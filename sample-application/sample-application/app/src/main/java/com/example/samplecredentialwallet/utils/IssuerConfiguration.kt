@@ -26,22 +26,22 @@ data class IssuerConfigurationV2(
 
 object IssuerRepositoryV2 {
   private val configurations = mapOf(
-    "Farmer" to IssuerConfigurationV2(
-      id = "Farmer",
-      credentialIssuerHost = "https://injicertify-farmer.collab.mosip.net/",
-      clientId = "mpartner-default-mimoto-land-oidc",
+    "Mosip" to IssuerConfigurationV2(
+      id = "Mosip",
+      credentialIssuerHost = "https://injicertify-mosipid-dp.collab.mosip.net",
+      clientId = "mpartner-default-mimoto-mosipid-oidc",
       redirectUri = "io.mosip.residentapp.inji://oauthredirect",
       display = IssuerDisplay(
-        name = "Farmer ID Card",
+        name = "Republic of Veridonia National ID Department",
         logo = IssuerDisplayLogo(
-          url = R.drawable.agro_vertias_logo,
-          altText = "mosip-logo"
+          url = R.drawable.veridonia_logo,
+          altText = "a square logo of veridonia"
         ),
-        title = "Farmer ID Card",
-        description = "Download Farmer ID Card",
+        title = "Republic of Veridonia National ID Department",
+        description = "Download National ID credential",
         language = "en"
       ),
-      backendTokenEndpoint = "https://api.collab.mosip.net/v1/mimoto/get-token/Farmer"
+      backendTokenEndpoint = "https://api.collab.mosip.net/v1/mimoto/get-token/Mosip"
     )
   )
 
