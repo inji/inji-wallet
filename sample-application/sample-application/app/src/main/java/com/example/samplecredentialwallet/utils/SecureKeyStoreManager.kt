@@ -109,13 +109,6 @@ class SecureKeystoreManager(private val context: Context) {
     private suspend fun generateKeyPairRSA(isBiometricsEnabled: Boolean) = withContext(Dispatchers.IO) {
         val alias = KeyType.RS256.value
 
-        val keyGenerator = KeyGeneratorImpl()
-        val cipherBox = CipherBoxImpl()
-        val biometrics = Biometrics()
-        val preferences = PreferencesImpl(context)
-
-      val keystore = SecureKeystoreImpl(keyGenerator, cipherBox, biometrics, preferences)
-
         try {
             if (!keystore.hasAlias(alias)) {
                 val publicKeyPem = keystore.generateKeyPair(

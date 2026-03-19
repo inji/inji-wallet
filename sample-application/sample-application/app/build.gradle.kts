@@ -16,12 +16,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        // Enable 16 KB page size support for Android 15+
-        ndk {
-            //noinspection ChromeOsAbiSupport
-            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
-        }
     }
 
     buildTypes {
@@ -58,23 +52,8 @@ android {
                 "META-INF/*.kotlin_module"
             )
         }
-        jniLibs {
-            // Use legacy packaging for native libraries to maintain compatibility
-            useLegacyPackaging = true
-        }
     }
 }
-
-//configurations.all {
-//  resolutionStrategy {
-//    eachDependency {
-//      if (requested.group == "io.mosip" && requested.name == "vcverifier-jar") {
-//        useTarget("io.mosip:vcverifier-jar:999.0.0-does-not-exist") // Forces a non-existent version
-//        because("Exclude all vcverifier-jar to avoid duplicate class issues")
-//      }
-//    }
-//  }
-//}
 
 dependencies {
 

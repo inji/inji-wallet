@@ -14,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,11 +32,9 @@ import com.example.samplecredentialwallet.utils.downloadCredentialFromCredential
 import com.example.samplecredentialwallet.utils.downloadCredentialFromTrustedIssuer
 import com.example.samplecredentialwallet.ui.transaction.TransactionCodeDialog
 import com.example.samplecredentialwallet.utils.OpenID4VCI
-import io.mosip.vciclient.credential.response.CredentialResponse
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withTimeout
 import org.json.JSONObject
@@ -65,6 +65,8 @@ fun CredentialDownloadScreen(
   val loadingMessage = remember { mutableStateOf("Downloading Credential...") }
   val errorMessage = remember { mutableStateOf<String?>(null) }
   val showError = remember { mutableStateOf(false) }
+  val lifecycleOwner = LocalLifecycleOwner.current
+  val coroutineScope = lifecycleOwner.lifecycleScope
 
   // State to control the transaction code dialog
   var showTransactionCodeDialog by remember { mutableStateOf(false) }
@@ -72,7 +74,7 @@ fun CredentialDownloadScreen(
   fun isTrustedIssuerFlow(): Boolean {
     Log.d("CredentialDownload", "Checking flow type with credentialOfferUri: $credentialOfferUri, check : ${credentialOfferUri.isNullOrEmpty()}, type : ${credentialOfferUri?.javaClass?.simpleName}")
 
-    return credentialOfferUri.isNullOrEmpty() || credentialOfferUri.equals("null")
+    return credentialOfferUri.isNullOrEmpty() || credentialOfferUri == "null"
   }
 
 
@@ -171,7 +173,7 @@ fun CredentialDownloadScreen(
 
       Button(
         onClick = {
-          GlobalScope.launch(Dispatchers.IO) {
+          coroutineScope.launch(Dispatchers.IO) {
             try {
               withContext(Dispatchers.Main) {
                 isLoading.value = true
@@ -190,6 +192,14 @@ fun CredentialDownloadScreen(
 
 
                 val credential = if (isTrustedIssuerFlow()) {
+                  if (selectedCredentialType.isBlank()) {
+                    withContext(Dispatchers.Main) {
+                      isLoading.value = false
+                      showError.value = true
+                      errorMessage.value = "Please select a credential type."
+                    }
+                    return@withTimeout
+                  }
                   downloadCredentialFromTrustedIssuer(
                     selectedIssuer!!,
                     selectedCredentialType,
@@ -225,7 +235,7 @@ fun CredentialDownloadScreen(
 
                   credential.let { credObj ->
                     // Extract credential string from response object
-                    val credentialStr = extractCredentialFromResponse(credObj)
+                    val credentialStr = credObj.credential.toString()
 
                     Log.d("VC_VERIFY", "Starting credential verification")
                     val verified =
@@ -311,7 +321,7 @@ fun CredentialDownloadScreen(
           }
         },
         modifier = Modifier.fillMaxWidth(),
-        enabled = !isLoading.value,
+        enabled = !isLoading.value && (!isTrustedIssuerFlow() || selectedCredentialType.isNotEmpty()),
         colors = ButtonDefaults.buttonColors(
           containerColor = InjiOrange
         )
@@ -446,54 +456,12 @@ fun CredentialDownloadScreen(
     // Transaction Code Dialog
     if (showTransactionCodeDialog) {
       TransactionCodeDialog(
-        onDismiss = { showTransactionCodeDialog = false }
+        onDismiss = {
+          showTransactionCodeDialog = false
+          TransactionCodeHolder.cancelTransactionCode()
+        }
       )
     }
   }
-}
-private fun extractCredentialFromResponse(credObj: CredentialResponse): String {
-  val credentialStr = try {
-    Log.d("VC_EXTRACT", "Extracting credential from response object")
-    var credField: String? = null
-    try {
-      val method = credObj.javaClass.getMethod("getCredential")
-      credField = method.invoke(credObj) as? String
-      Log.d("VC_EXTRACT", "Method  successful: getCredential()")
-    } catch (e: Exception) {
-      Log.d("VC_EXTRACT", "Method  failed: ${e.message}")
-
-    }
-
-    if (credField == null) {
-      try {
-        val field = credObj.javaClass.getDeclaredField("credential")
-        field.isAccessible = true
-        credField = field.get(credObj) as? String
-        Log.d("VC_EXTRACT", "Method  successful: field access")
-      } catch (e: Exception) {
-        Log.d("VC_EXTRACT", "Method  failed: ${e.message}")
-      }
-    }
-
-    if (credField == null) {
-      Log.d("VC_EXTRACT", "Trying Method : regex parsing")
-      val str = credObj.toString()
-      val credentialMatch = Regex("""credential=(\{.*\})(?:,|\))""").find(str)
-      if (credentialMatch != null) {
-        credField = credentialMatch.groupValues[1]
-        Log.d("VC_EXTRACT", "Method  successful: regex parsing")
-      }
-    }
-
-    credField ?: credObj.toString()
-  } catch (e: Exception) {
-    Log.e("VC_EXTRACT", "Failed to extract credential: ${e.message}")
-    e.printStackTrace()
-    credObj.toString()
-  }
-
-  Log.d("VC_EXTRACT", "Credential extracted successfully")
-  Log.d("VC_EXTRACT", "Credential length: ${credentialStr.length} characters")
-  return credentialStr
 }
 

@@ -185,7 +185,12 @@ private suspend fun constructProofJWT(
   if (isTrustedIssuerFlow && selectedIssuer == null) {
     throw IllegalStateException("Issuer configuration not found for selected issuer: ${Constants.selectedIssuer}")
   }
-  val clientId: String = (if (isTrustedIssuerFlow) selectedIssuer?.clientId else Constants.credentialOfferClientId).toString()
+  val clientId: String = if (isTrustedIssuerFlow) {
+    selectedIssuer?.clientId
+      ?: throw IllegalStateException("clientId is not configured for issuer: ${Constants.selectedIssuer}")
+  } else {
+    Constants.credentialOfferClientId
+  }
 
   Log.d("PROOF_JWT", "Constructing proof JWT - supported algorithms: $supportedProofAlgorithms")
 

@@ -68,9 +68,11 @@ sealed class Screen(val route: String) {
     }
     object CredentialDetail : Screen("credential_detail?authCode={authCode}&credentialOfferUri={credentialOfferUri}") {
         fun createRoute(authCode: String? = null, credentialOfferUri: String? = null): String {
-            val encodedAuthCode = authCode?.let { Uri.encode(it) }
-            val encodedCredentialOfferUri = credentialOfferUri?.let { Uri.encode(it) }
-            return "credential_detail?authCode=$encodedAuthCode&credentialOfferUri=$encodedCredentialOfferUri"
+            val params = buildList {
+                authCode?.let { add("authCode=${Uri.encode(it)}") }
+                credentialOfferUri?.let { add("credentialOfferUri=${Uri.encode(it)}") }
+            }
+            return if (params.isEmpty()) "credential_detail" else "credential_detail?${params.joinToString("&")}"
         }
     }
     object CredentialList : Screen("credential_list?index={index}") {

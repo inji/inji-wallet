@@ -37,6 +37,7 @@ object AuthCodeHolder {
             if (authorizationResult != null) {
                 Log.d("AuthCodeHolder", "Fulfilling deferred with buffered code")
                 deferredV2?.complete(authorizationResult)
+                authorizationResult = null
                 lastCode = null
             }
         } else {

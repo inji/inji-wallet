@@ -10,5 +10,4 @@ object Constants {
 
   val credentialOfferClientId: String = "wallet"
 
-   var selectedCredentialType: String = "FarmerCredential_VCDM2.0"
 }
