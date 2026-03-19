@@ -107,6 +107,8 @@ fun CredentialDownloadScreen(
       Log.d("CredentialDownload", "Credential configs supported: $credentialConfigurationsSupported")
     } catch (e: Exception) {
       Log.e("CredentialDownload", "Failed to fetch credential configurations: ${e.message}", e)
+      showError.value = true
+      errorMessage.value = "Unable to load Credential types from issuer. Please try again."
     }
   }
 
