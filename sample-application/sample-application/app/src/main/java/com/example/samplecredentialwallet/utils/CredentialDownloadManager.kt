@@ -15,7 +15,6 @@ import com.nimbusds.jose.jwk.ECKey
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
-import io.mosip.vciclient.VCIClient
 import io.mosip.vciclient.authorizationCodeFlow.AuthorizationMethod
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata
 import io.mosip.vciclient.credential.response.CredentialResponse
@@ -34,18 +33,18 @@ import java.security.interfaces.ECPublicKey
 import java.security.interfaces.RSAPublicKey
 import java.util.Date
 
-val client = VCIClient("demo-123")
 
 suspend fun downloadCredentialFromTrustedIssuer(
   selectedIssuer: IssuerConfigurationV2,
+  selectedCredentialType: String,
   loadingMessage: MutableState<String>,
   navController: NavController,
   context: Context
 ): CredentialResponse {
 
-  val credentialResponse = client.fetchCredentialFromTrustedIssuer(
+  val credentialResponse = OpenID4VCI.client.fetchCredentialFromTrustedIssuer(
     credentialIssuer = selectedIssuer.credentialIssuerHost, // issuer host - used for discovery of issuer metadata
-    credentialConfigurationId = Constants.selectedCredentialType, // The relevant credential type which is required for download
+    credentialConfigurationId = selectedCredentialType, // The relevant credential type which is required for download
     clientMetadata = ClientMetadata(
       clientId = selectedIssuer.clientId, // client Identifier associated with the wallet for initiating the download
       redirectUri = selectedIssuer.redirectUri
@@ -87,7 +86,7 @@ suspend fun downloadCredentialFromCredentialOffer( credentialOfferUri: String,
                                                    loadingMessage: MutableState<String>,
                                                    navController: NavController,
                                                    context: Context) : CredentialResponse {
-  val credentialResponse = client.fetchCredentialUsingCredentialOffer(
+  val credentialResponse = OpenID4VCI.client.fetchCredentialUsingCredentialOffer(
     credentialOffer = credentialOfferUri,// The data extracted from the QR code
     clientMetadata = ClientMetadata(
       clientId = Constants.credentialOfferClientId,

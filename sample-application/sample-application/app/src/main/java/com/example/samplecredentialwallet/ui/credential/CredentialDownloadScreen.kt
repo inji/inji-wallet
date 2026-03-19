@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
@@ -28,11 +29,13 @@ import com.example.samplecredentialwallet.utils.TransactionCodeHolder
 import com.example.samplecredentialwallet.utils.downloadCredentialFromCredentialOffer
 import com.example.samplecredentialwallet.utils.downloadCredentialFromTrustedIssuer
 import com.example.samplecredentialwallet.ui.transaction.TransactionCodeDialog
+import com.example.samplecredentialwallet.utils.OpenID4VCI
 import io.mosip.vciclient.credential.response.CredentialResponse
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withTimeout
 import org.json.JSONObject
 import java.net.ConnectException
@@ -76,7 +79,7 @@ fun CredentialDownloadScreen(
   // Monitor when transaction code is needed
   LaunchedEffect(isLoading.value) {
     while (isLoading.value) {
-      kotlinx.coroutines.delay(200) // Check every 200ms
+      delay(200) // Check every 200ms
       if (TransactionCodeHolder.inputMode != null ||
           TransactionCodeHolder.description != null ||
           TransactionCodeHolder.length != null) {
@@ -85,6 +88,25 @@ fun CredentialDownloadScreen(
     }
   }
 
+
+  val selectedIssuer = IssuerRepositoryV2.getConfiguration(Constants.selectedIssuer ?: "")
+
+  // Credential configuration keys fetched from the issuer
+  var credentialConfigurationsSupported by remember { mutableStateOf<List<String>>(emptyList()) }
+  var selectedCredentialType by remember { mutableStateOf("") }
+  LaunchedEffect(selectedIssuer?.credentialIssuerHost) {
+    val host = selectedIssuer?.credentialIssuerHost ?: return@LaunchedEffect
+    try {
+      val configs = withContext(Dispatchers.IO) {
+        OpenID4VCI.client.getCredentialConfigurationsSupported(host)
+      }
+      credentialConfigurationsSupported = configs.keys.toList()
+      if (selectedCredentialType.isEmpty()) selectedCredentialType = credentialConfigurationsSupported.firstOrNull() ?: ""
+      Log.d("CredentialDownload", "Credential configs supported: $credentialConfigurationsSupported")
+    } catch (e: Exception) {
+      Log.e("CredentialDownload", "Failed to fetch credential configurations: ${e.message}", e)
+    }
+  }
 
 
   Box(
@@ -113,10 +135,37 @@ fun CredentialDownloadScreen(
          color = Color.Gray
        )
        Spacer(modifier = Modifier.height(8.dp))
-       Text(
-         "Credential Type: ${"FarmerVerifiableCredential"}",
-         style = MaterialTheme.typography.bodyMedium
-       )
+
+       if (credentialConfigurationsSupported.isEmpty()) {
+         Text(
+           "Loading credential types...",
+           style = MaterialTheme.typography.bodyMedium,
+           color = Color.Gray
+         )
+       } else {
+         credentialConfigurationsSupported.forEach { credentialConfigurationId ->
+           Row(
+             verticalAlignment = Alignment.CenterVertically,
+             modifier = Modifier
+               .fillMaxWidth()
+               .selectable(
+                 selected = selectedCredentialType == credentialConfigurationId,
+                 onClick = { selectedCredentialType = credentialConfigurationId }
+               )
+               .padding(vertical = 4.dp)
+           ) {
+             RadioButton(
+               selected = selectedCredentialType == credentialConfigurationId,
+               onClick = { selectedCredentialType = credentialConfigurationId }
+             )
+             Spacer(modifier = Modifier.width(8.dp))
+             Text(
+               text = credentialConfigurationId,
+               style = MaterialTheme.typography.bodyMedium
+             )
+           }
+         }
+       }
        Spacer(modifier = Modifier.height(24.dp))
      }
 
@@ -130,8 +179,6 @@ fun CredentialDownloadScreen(
               }
 
               withTimeout(600000L) {
-                val selectedIssuer =
-                  IssuerRepositoryV2.getConfiguration(Constants.selectedIssuer ?: "")
                 if (isTrustedIssuerFlow() && selectedIssuer == null) {
                   withContext(Dispatchers.Main) {
                     isLoading.value = false
@@ -145,9 +192,10 @@ fun CredentialDownloadScreen(
                 val credential = if (isTrustedIssuerFlow()) {
                   downloadCredentialFromTrustedIssuer(
                     selectedIssuer!!,
+                    selectedCredentialType,
                     loadingMessage,
                     navController,
-                    context
+                    context,
                   )
                 } else {
                   downloadCredentialFromCredentialOffer(
