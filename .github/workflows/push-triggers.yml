@@ -63,7 +63,7 @@ jobs:
     name: Sonar check
     if: ${{ github.event_name != 'pull_request' }}
     needs: [build-android, build-ios, run-tests]
-    uses: mosip/kattu/.github/workflows/npm-sonar-analysis.yml@dsd9685
+    uses: Mahesh-Binayak/kattu/.github/workflows/npm-sonar-analysis.yml@dsd9685
     with:
       SERVICE_LOCATION: '.'
       NODE_VERSION: '18.x'
