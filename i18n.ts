@@ -60,13 +60,14 @@ export function getValueForCurrentLanguage(
   localizedData: LocalizedField[] | Object,
   defaultLanguage = '@none',
 ) {
-  const currentLanguage = i18next.language;
-  const currentLanguageCode = languageCodeMap[currentLanguage];
+  const currentTwoLetterLanguageCode = i18next.language;
+  const currentThreeLetterLanguageCode =
+    languageCodeMap[currentTwoLetterLanguageCode];
   if (Array.isArray(localizedData)) {
     const valueForCurrentLanguage = localizedData.filter(
       obj =>
-        obj.language === currentLanguageCode ||
-        obj.language === currentLanguage,
+        obj.language === currentThreeLetterLanguageCode ||
+        obj.language === currentTwoLetterLanguageCode,
     );
 
     return valueForCurrentLanguage[0]?.value
@@ -81,14 +82,15 @@ export function getClientNameForCurrentLanguage(
   localizedData: Object,
   defaultLanguage = '@none',
 ) {
-  const currentLanguage = i18next.language;
-  const currentLanguageCode = languageCodeMap[currentLanguage];
+  const currentTwoLetterLanguageCode = i18next.language;
+  const currentThreeLetterLanguageCode =
+    languageCodeMap[currentTwoLetterLanguageCode];
   const localizedDataObject = localizedData as {[key: string]: string};
-  if (localizedDataObject.hasOwnProperty(currentLanguageCode)) {
-    return localizedDataObject[currentLanguageCode];
+  if (localizedDataObject.hasOwnProperty(currentThreeLetterLanguageCode)) {
+    return localizedDataObject[currentThreeLetterLanguageCode];
   }
-  if (localizedDataObject.hasOwnProperty(currentLanguage)) {
-    return localizedDataObject[currentLanguage];
+  if (localizedDataObject.hasOwnProperty(currentTwoLetterLanguageCode)) {
+    return localizedDataObject[currentTwoLetterLanguageCode];
   }
   return localizedDataObject[defaultLanguage];
 }
