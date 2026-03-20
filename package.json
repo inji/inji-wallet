@@ -8,7 +8,7 @@
     "build:android:mosip": "cd android && ./gradlew :app:assembleResidentappRelease && cd ..",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "jest",
-    "test-coverage": "jest --coverage",
+    "test:ci": "jest --ci --coverage --passWithNoTests",
     "postinstall": "patch-package && npm run jetify && sh tools/talisman/talisman-precommit.sh",
     "build": "jest --coverage",
     "sonar": "node_modules/sonar-scanner/bin/sonar-scanner"
