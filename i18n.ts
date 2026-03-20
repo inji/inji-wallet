@@ -64,7 +64,9 @@ export function getValueForCurrentLanguage(
   const currentLanguageCode = languageCodeMap[currentLanguage];
   if (Array.isArray(localizedData)) {
     const valueForCurrentLanguage = localizedData.filter(
-      obj => obj.language === currentLanguageCode,
+      obj =>
+        obj.language === currentLanguageCode ||
+        obj.language === currentLanguage,
     );
 
     return valueForCurrentLanguage[0]?.value
@@ -82,9 +84,13 @@ export function getClientNameForCurrentLanguage(
   const currentLanguage = i18next.language;
   const currentLanguageCode = languageCodeMap[currentLanguage];
   const localizedDataObject = localizedData as {[key: string]: string};
-  return localizedDataObject.hasOwnProperty(currentLanguageCode)
-    ? localizedDataObject[currentLanguageCode]
-    : localizedDataObject[defaultLanguage];
+  if (localizedDataObject.hasOwnProperty(currentLanguageCode)) {
+    return localizedDataObject[currentLanguageCode];
+  }
+  if (localizedDataObject.hasOwnProperty(currentLanguage)) {
+    return localizedDataObject[currentLanguage];
+  }
+  return localizedDataObject[defaultLanguage];
 }
 
 // This method gets the value from iso-639-3 package, which contains key value pairs of three letter language codes[key] and two letter langugae code[value]. These values are according to iso standards.
