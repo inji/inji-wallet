@@ -17,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
-import com.example.samplecredentialwallet.navigation.Screen
 import com.example.samplecredentialwallet.utils.AuthCodeHolder
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -83,6 +82,10 @@ fun AuthWebViewScreen(
                                 Log.d("AuthWebView", "Redirect URI matched: $url")
 
                                 val uri = Uri.parse(url)
+                                val queryParams = mutableMapOf<String, String>()
+                                uri.queryParameterNames.forEach { name ->
+                                  queryParams[name] = uri.getQueryParameter(name) ?: ""
+                                }
                                 val code = uri.getQueryParameter("code")
                                 val error = uri.getQueryParameter("error")
 
@@ -90,8 +93,8 @@ fun AuthWebViewScreen(
 
                                 if (code != null) {
                                     Log.d("AuthWebView", "Completing auth flow with code")
-                                    AuthCodeHolder.complete(code)
-                                    isLoading = true
+                                    AuthCodeHolder.completeV2(queryParams)
+                                    isLoading = false
                                     isDownloading = true
                                     errorMessage = null
                                 } else if (error != null) {
@@ -137,7 +140,7 @@ fun AuthWebViewScreen(
             modifier = Modifier.fillMaxSize()
         )
         }
-        
+
         // Loading overlay when page is loading or downloading
         if (isLoading || isDownloading) {
             Box(
@@ -176,7 +179,7 @@ fun AuthWebViewScreen(
                 }
             }
         }
-        
+
         // Error overlay when there's an error
         errorMessage?.let { message ->
             Box(
@@ -209,7 +212,7 @@ fun AuthWebViewScreen(
                         )
                         Spacer(modifier = Modifier.height(24.dp))
                         Button(
-                            onClick = { 
+                            onClick = {
                                 errorMessage = null
                                 navController.popBackStack()
                             },

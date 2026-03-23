@@ -16,7 +16,7 @@ class SecureKeystoreManager(private val context: Context) {
         private const val KEY_KEYS_GENERATED = "keys_generated"
         private const val KEY_ORDER_PREFERENCE = "keyPreference"
 
-       
+
         @Volatile
         private var INSTANCE: SecureKeystoreManager? = null
 
@@ -87,13 +87,13 @@ class SecureKeystoreManager(private val context: Context) {
 
     private suspend fun generateAndStoreKeyPairs() {
         val deviceBiometricsEnabled = isBiometricsEnabled()
-        val isHardwareSupported = isHardwareKeystoreSupported()
+        val isHardwareKeystoreSupported = isHardwareKeystoreSupported()
 
-        Log.i(TAG, "Hardware keystore supported: $isHardwareSupported")
+        Log.i(TAG, "Hardware keystore supported: $isHardwareKeystoreSupported")
         Log.i(TAG, "Biometrics enabled on device: $deviceBiometricsEnabled")
-        val isBiometricsEnabledForKeys = false
+        val isBiometricsEnabledForKeys = isHardwareKeystoreSupported && deviceBiometricsEnabled
 
-        if (isHardwareSupported) {
+        if (isHardwareKeystoreSupported) {
             generateKeyPairRSA(isBiometricsEnabledForKeys)
             generateKeyPairECR1(isBiometricsEnabledForKeys)
         } else {
@@ -112,10 +112,12 @@ class SecureKeystoreManager(private val context: Context) {
         try {
             if (!keystore.hasAlias(alias)) {
                 val publicKeyPem = keystore.generateKeyPair(
-                    KeyType.RS256.value,
-                    alias,
+                    KeyType.RS256.value, // type of the keypair
+                    alias, // alias to identify the keypair
                     isBiometricsEnabled,
-                    0
+                    // flag to indicate whether auth is required for key access
+                    0 // auth timeout associated with the key
+                    // (0 means no timeout, i.e., require auth for every use)
                 )
 
                 Log.i(TAG, "Generated RS256 key pair with alias: $alias")

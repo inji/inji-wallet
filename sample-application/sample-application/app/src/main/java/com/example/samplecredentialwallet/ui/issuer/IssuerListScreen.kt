@@ -6,8 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,7 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.samplecredentialwallet.R
+import com.example.samplecredentialwallet.utils.IssuerConfigurationV2
+import com.example.samplecredentialwallet.utils.IssuerRepositoryV2
 
 data class Issuer(
     val id: String,
@@ -33,56 +32,32 @@ data class Issuer(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IssuerListScreen(onIssuerClick: (String) -> Unit) {
+fun IssuerListScreen(
+    onIssuerClick: (String) -> Unit,
+    onScanQrCode: () -> Unit // Added callback for QR code scanning
+) {
     var searchQuery by remember { mutableStateOf("") }
-    
-    val issuers = listOf(
-        Issuer(
-            id = "Mosip",
-            name = "Republic of Veridonia National ID Department",
-            description = "Download National ID credential from Collab environment",
-            logoRes = R.drawable.veridonia_logo
-        ),
-        Issuer(
-            id = "StayProtected",
-            name = "StayProtected Insurance",
-            description = "Download insurance credential from Collab environment",
-            logoRes = R.drawable.stay_protected_logo
-        ),
-        Issuer(
-            id = "MosipTAN",
-            name = "Republic of Veridonia Tax Department",
-            description = "Download Tax ID credential from Collab environment",
-            logoRes = R.drawable.tan_logo
-        ),
-        Issuer(
-            id = "Land",
-            name = "AgroVeritas Property & Land Registry",
-            description = "Download Land Registry credential from Collab environment",
-            logoRes = R.drawable.agro_vertias_logo
-        )
-        
-    )
-    
-    // Filter issuers based on search query
-    val filteredIssuers = if (searchQuery.isEmpty()) {
-        issuers
+    val issuersV2: List<IssuerConfigurationV2> = IssuerRepositoryV2.getAllConfigurations()
+
+  // Filter issuers based on search query
+   val filteredIssuers = if (searchQuery.isEmpty()) {
+        issuersV2
     } else {
-        issuers.filter { issuer ->
-            issuer.name.contains(searchQuery, ignoreCase = true) ||
-            issuer.description.contains(searchQuery, ignoreCase = true)
+        issuersV2.filter { issuer ->
+            issuer.display.name.contains(searchQuery, ignoreCase = true) ||
+            issuer.display.description.contains(searchQuery, ignoreCase = true)
         }
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { 
+                title = {
                     Text(
                         "Add new card",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
-                    ) 
+                    )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface
@@ -110,6 +85,15 @@ fun IssuerListScreen(onIssuerClick: (String) -> Unit) {
                 singleLine = true
             )
 
+            Button(
+                onClick = { onScanQrCode() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                Text("Scan QR Code")
+            }
+
             // Issuer List
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -119,7 +103,7 @@ fun IssuerListScreen(onIssuerClick: (String) -> Unit) {
                 items(filteredIssuers) { issuer ->
                     IssuerCard(issuer = issuer, onClick = { onIssuerClick(issuer.id) })
                 }
-                
+
                 // Show "No results" message if search yields nothing
                 if (filteredIssuers.isEmpty() && searchQuery.isNotEmpty()) {
                     item {
@@ -141,6 +125,57 @@ fun IssuerListScreen(onIssuerClick: (String) -> Unit) {
         }
     }
 }
+
+@Composable
+fun IssuerCard(issuer: IssuerConfigurationV2, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        border = BorderStroke(1.dp, Color.LightGray),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Issuer Logo
+            Image(
+                painter = painterResource(id = issuer.display.logo.url),
+                contentDescription = "${issuer.display.name} Logo",
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(2.dp),
+                contentScale = ContentScale.Fit
+            )
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            // Issuer Info
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = issuer.display.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = issuer.display.description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray,
+                    fontSize = 11.sp
+                )
+            }
+        }
+    }
+}
+
 
 @Composable
 fun IssuerCard(issuer: Issuer, onClick: () -> Unit) {
