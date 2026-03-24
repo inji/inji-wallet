@@ -108,8 +108,8 @@ After obtaining the credential from the issuing authority through the _inji-vci-
 
 1. [x] Confirm the credential is not tampered with. (Cryptographic Signature Verification)
 
-- **Android** — delegates to the _vc-verifier_ native library (`vcVerifier.verifyAndGetCredentialStatus`).
-- **iOS** — returns a successful verification result directly, consistent with `mso_mdoc`, `vc+sd-jwt`, and `dc+sd-jwt` on iOS.
+- **Android** — delegates to the _vc-verifier_ native library, which performs cryptographic signature verification of the JWT.
+- **iOS** — ⚠️ **Signature verification is skipped entirely.** On iOS, `jwt_vc_json` credentials (along with `mso_mdoc`, `vc+sd-jwt`, and `dc+sd-jwt`) are accepted unconditionally without any cryptographic verification. A tampered or forged credential will pass this step and be saved to the Wallet. This is a known limitation — the Digital Bazaar library used on iOS does not support the signature schemes required for these formats, and this behaviour is temporary until VcVerifier is implemented for iOS.
 
 ##### 6. Return Verification Result
 
@@ -161,10 +161,11 @@ The Wallet uses the cached issuer metadata to render the credential. Field order
 
 #### Field Ordering
 
-Field ordering for `jwt_vc_json` is resolved from the issuer's well-known configuration:
+Field ordering for `jwt_vc_json` is resolved from `matchingWellknownDetails` — the entry in `credential_configurations_supported` that matches the selected `credentialConfigurationId` — using the following fallback chain:
 
-1. If the well-known config contains an `order` array, those field names are used as-is.
-2. Otherwise, the keys of `credential_definition.credentialSubject` are used as the ordered field list.
+1. **`matchingWellknownDetails.order`** — if the `order` array is present and non-empty, those field names are used as-is.
+2. **`matchingWellknownDetails.credential_definition.credentialSubject`** — if `order` is absent, the keys of `credentialSubject` are used as the ordered field list, provided at least one key is present.
+3. **Default fields** — if neither `order` nor `credential_definition.credentialSubject` yields any fields, the wallet falls back to a pre-configured default field list.
 
 #### Field Label Resolution
 
