@@ -127,7 +127,7 @@ The raw JWT credential is decoded and the `credentialSubject` is extracted from 
 
 The Wallet fetches the issuer's well-known configuration to determine how the credential should be displayed.
 
-```
+```http request
 GET credentialIssuer/.well-known/openid-credential-issuer
 ```
 

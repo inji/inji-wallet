@@ -149,6 +149,47 @@ describe('VCProcessor', () => {
       expect(result).toHaveProperty('fullResolvedPayload');
     });
   });
+
+  it('should extract credentialSubject from payload.vc for jwt_vc_json', async () => {
+    (jwtDecode as jest.Mock).mockReturnValue({
+      iss: 'https://example.com/issuer',
+      vc: {
+        credentialSubject: {given_name: 'John', family_name: 'Doe'},
+      },
+    });
+    const vcData = {credential: 'header.payload.signature'} as any;
+    const result = await VCProcessor.processForRendering(
+      vcData,
+      VCFormat.jwt_vc_json,
+    );
+    expect(result).toEqual({
+      fullResolvedPayload: {given_name: 'John', family_name: 'Doe'},
+    });
+  });
+
+  it.each([
+    [
+      'payload.vc.credentialSubject is missing',
+      {
+        iss: 'https://example.com/issuer',
+        vc: {},
+      },
+    ],
+    [
+      'payload.vc is missing entirely',
+      {
+        iss: 'https://example.com/issuer',
+      },
+    ],
+  ])('should throw when %s for jwt_vc_json', async (_desc, mockPayload) => {
+    (jwtDecode as jest.Mock).mockReturnValue(mockPayload);
+    const vcData = {credential: 'header.payload.signature'} as any;
+    await expect(
+      VCProcessor.processForRendering(vcData, VCFormat.jwt_vc_json),
+    ).rejects.toThrow(
+      'Invalid jwt_vc_json: missing payload.vc.credentialSubject',
+    );
+  });
 });
 
 describe('reconstructSdJwtFromCompact', () => {
