@@ -76,10 +76,10 @@
     {
       "identity" : "inji-openid4vp-ios-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/inji/inji-openid4vp-ios-swift.git",
+      "location" : "https://github.com/inji/inji-openid4vp-ios-swift",
       "state" : {
-        "branch" : "release-0.7.x",
-        "revision" : "b5d0cd00b726ffef428e7e5d95d75fc094da07f3"
+        "version" : "0.7.0",
+        "revision" : "38e12ead6805da5cc2e214f065a5451f699e91dc"
       }
     },
     {
@@ -132,8 +132,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/secure-keystore-ios-swift",
       "state" : {
-        "branch" : "develop",
-        "revision" : "0b73f3e520bcde43cfd4fb460333a19c581599ca"
+        "revision" : "1ea5182ca985302d11010b7a16ea496167969ab3",
+        "version" : "0.3.0"
       }
     },
     {
