@@ -40,26 +40,28 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
         overlayStyle={[
           Theme.KebabPopUpStyles.kebabPopUp,
           {paddingBottom: insets.bottom},
-        ]}
-        {...testIDProps('moreOptionsPopup')}>
-        <Row
-          style={Theme.KebabPopUpStyles.kebabHeaderStyle}
-          margin="15"
-          crossAlign="center">
-          <Text testID="kebabTitle" weight="bold">
-            {t('title')}
-          </Text>
-          <Icon
-            {...testIDProps('close')}
-            name="close"
-            onPress={props.onDismiss}
-            color={Theme.Colors.Details}
-            size={25}
-          />
-        </Row>
-
+        ]}>
         <FlatList
+          {...testIDProps('moreOptionsPopup')}
+          accessible={true}
           data={getKebabMenuOptions(props)}
+          ListHeaderComponent={
+            <Row
+              style={Theme.KebabPopUpStyles.kebabHeaderStyle}
+              margin="15"
+              crossAlign="center">
+              <Text testID="kebabTitle" weight="bold">
+                {t('title')}
+              </Text>
+              <Icon
+                {...testIDProps('close')}
+                name="close"
+                onPress={props.onDismiss}
+                color={Theme.Colors.Details}
+                size={25}
+              />
+            </Row>
+          }
           renderItem={({item}) => (
             <ListItem topDivider onPress={item.onPress}>
               <Row crossAlign="center" style={{flex: 1}}>

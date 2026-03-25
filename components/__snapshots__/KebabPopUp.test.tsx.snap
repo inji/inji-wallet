@@ -36,67 +36,6 @@ exports[`KebabPopUp Component should match snapshot when not visible 1`] = `
         },
         null,
         null,
-        {
-          "marginBottom": 15,
-          "marginEnd": 15,
-          "marginStart": 15,
-          "marginTop": 15,
-        },
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "fontFamily": "Montserrat_700Bold",
-          "justifyContent": "space-between",
-        },
-        null,
-        null,
-      ]
-    }
-  >
-    <Text
-      accessibilityLabel="kebabTitle"
-      style={
-        [
-          {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "fontFamily": "Montserrat_700Bold",
-            "fontSize": 15,
-            "justifyContent": "center",
-          },
-          null,
-          {
-            "textAlign": "left",
-          },
-          null,
-          null,
-          null,
-        ]
-      }
-    >
-      title
-    </Text>
-  </View>
-  <View
-    accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
         null,
         null,
         null,
@@ -265,67 +204,6 @@ exports[`KebabPopUp Component should match snapshot with VC that has image 1`] =
         },
         null,
         null,
-        {
-          "marginBottom": 15,
-          "marginEnd": 15,
-          "marginStart": 15,
-          "marginTop": 15,
-        },
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "fontFamily": "Montserrat_700Bold",
-          "justifyContent": "space-between",
-        },
-        null,
-        null,
-      ]
-    }
-  >
-    <Text
-      accessibilityLabel="kebabTitle"
-      style={
-        [
-          {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "fontFamily": "Montserrat_700Bold",
-            "fontSize": 15,
-            "justifyContent": "center",
-          },
-          null,
-          {
-            "textAlign": "left",
-          },
-          null,
-          null,
-          null,
-        ]
-      }
-    >
-      title
-    </Text>
-  </View>
-  <View
-    accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
         null,
         null,
         null,
@@ -483,67 +361,6 @@ exports[`KebabPopUp Component should match snapshot with custom icon color 1`] =
     ]
   }
 >
-  <View
-    accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
-        {
-          "marginBottom": 15,
-          "marginEnd": 15,
-          "marginStart": 15,
-          "marginTop": 15,
-        },
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "fontFamily": "Montserrat_700Bold",
-          "justifyContent": "space-between",
-        },
-        null,
-        null,
-      ]
-    }
-  >
-    <Text
-      accessibilityLabel="kebabTitle"
-      style={
-        [
-          {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "fontFamily": "Montserrat_700Bold",
-            "fontSize": 15,
-            "justifyContent": "center",
-          },
-          null,
-          {
-            "textAlign": "left",
-          },
-          null,
-          null,
-          null,
-        ]
-      }
-    >
-      title
-    </Text>
-  </View>
   <View
     accessible={true}
     style={
@@ -726,67 +543,6 @@ exports[`KebabPopUp Component should match snapshot with custom icon component 1
         },
         null,
         null,
-        {
-          "marginBottom": 15,
-          "marginEnd": 15,
-          "marginStart": 15,
-          "marginTop": 15,
-        },
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "fontFamily": "Montserrat_700Bold",
-          "justifyContent": "space-between",
-        },
-        null,
-        null,
-      ]
-    }
-  >
-    <Text
-      accessibilityLabel="kebabTitle"
-      style={
-        [
-          {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "fontFamily": "Montserrat_700Bold",
-            "fontSize": 15,
-            "justifyContent": "center",
-          },
-          null,
-          {
-            "textAlign": "left",
-          },
-          null,
-          null,
-          null,
-        ]
-      }
-    >
-      title
-    </Text>
-  </View>
-  <View
-    accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
         null,
         null,
         null,
@@ -944,67 +700,6 @@ exports[`KebabPopUp Component should match snapshot with default icon 1`] = `
     ]
   }
 >
-  <View
-    accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
-        {
-          "marginBottom": 15,
-          "marginEnd": 15,
-          "marginStart": 15,
-          "marginTop": 15,
-        },
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "fontFamily": "Montserrat_700Bold",
-          "justifyContent": "space-between",
-        },
-        null,
-        null,
-      ]
-    }
-  >
-    <Text
-      accessibilityLabel="kebabTitle"
-      style={
-        [
-          {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "fontFamily": "Montserrat_700Bold",
-            "fontSize": 15,
-            "justifyContent": "center",
-          },
-          null,
-          {
-            "textAlign": "left",
-          },
-          null,
-          null,
-          null,
-        ]
-      }
-    >
-      title
-    </Text>
-  </View>
   <View
     accessible={true}
     style={
