@@ -68,20 +68,20 @@ export const updateCredentialInformation = async (
   context: any,
   credential: VerifiableCredential,
 ): Promise<CredentialWrapper> => {
-  let processedCredential;
-  if (
-    context.selectedCredentialType.format === VCFormat.mso_mdoc ||
-    context.selectedCredentialType.format === VCFormat.vc_sd_jwt ||
-    context.selectedCredentialType.format === VCFormat.dc_sd_jwt ||
-    context.selectedCredentialType.format === VCFormat.jwt_vc_json
-  ) {
-    processedCredential = await VCProcessor.processForRendering(
-      credential,
-      context.selectedCredentialType.format,
-    );
-  }
   let verifiableCredential;
   try {
+    let processedCredential;
+    if (
+      context.selectedCredentialType.format === VCFormat.mso_mdoc ||
+      context.selectedCredentialType.format === VCFormat.vc_sd_jwt ||
+      context.selectedCredentialType.format === VCFormat.dc_sd_jwt ||
+      context.selectedCredentialType.format === VCFormat.jwt_vc_json
+    ) {
+      processedCredential = await VCProcessor.processForRendering(
+        credential,
+        context.selectedCredentialType.format,
+      );
+    }
     verifiableCredential = {
       ...credential,
       credentialConfigurationId: context.selectedCredentialType.id,

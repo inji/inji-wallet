@@ -41,8 +41,10 @@ export class VCProcessor {
     if (vcFormat === VCFormat.jwt_vc_json) {
       const rawJwt = vcData.credential.toString();
       const payload: any = jwtDecode(rawJwt);
-      const credentialSubject =
-        payload.vc?.credentialSubject ?? payload.credentialSubject ?? payload;
+      const credentialSubject = payload.vc?.credentialSubject;
+      if (credentialSubject == null) {
+        throw new Error('Invalid jwt_vc_json: missing payload.vc.credentialSubject');
+      }
       return {
         fullResolvedPayload: credentialSubject,
       };
