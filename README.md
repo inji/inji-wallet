@@ -15,7 +15,7 @@ for more details refer [here](https://docs.mosip.io/inji/inji-wallet/overview)
 Be sure to have the following build tools installed before proceeding:
 
 - [React Native 0.74.5](https://reactnative.dev/docs/0.74/getting-started)
-  - Hermes Engine enabled
+- Hermes Engine enabled
 - [Expo 51.0.0](https://docs.expo.dev/get-started/installation/)
 - [node v18.17.1](https://nodejs.org/en/blog/release/v18.17.1)
 - [npm 8.19.3](https://www.npmjs.com/package/npm/v/8.19.3)
