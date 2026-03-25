@@ -1163,7 +1163,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/secure-keystore-ios-swift";
 			requirement = {
-				branch = develop;
+				branch = "release-0.4.x";
 				kind = branch;
 			};
 		};
@@ -1187,7 +1187,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/inji/inji-vci-client-ios-swift";
 			requirement = {
-				branch = develop;
+				branch = "release-0.8.x";
 				kind = branch;
 			};
 		};

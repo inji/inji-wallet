@@ -96,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/inji/inji-vci-client-ios-swift",
       "state" : {
-        "branch" : "develop",
-        "revision" : "46e977b7041d871da8f6d217c3d9ccb4743baec0"
+        "branch" : "release-0.8.x",
+        "revision" : "fba7e072f77a2ebe4feb81b614f349c6d6163918"
       }
     },
     {
@@ -132,8 +132,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/secure-keystore-ios-swift",
       "state" : {
-        "branch" : "develop",
-        "revision" : "c8e4f8ffbba75761fc95e769e7355e463ed7406c"
+        "branch" : "release-0.4.x",
+        "revision" : "9e5dc2075eb96d00e9c2ef8f846c6451725f6e6b"
       }
     },
     {
