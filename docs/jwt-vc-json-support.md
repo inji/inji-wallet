@@ -32,9 +32,7 @@ sequenceDiagram
   VCVerifier -) W: 6. Return Verification Result
   W ->> W: 7. Save Verified VC
   W ->> W: 8. Decode JWT, extract credentialSubject as fullResolvedPayload
-  W ->> Issuer: 9. Get credential issuer metadata for rendering (GET /.well-known/openid-credential-issuer)
-  Issuer ->> W: 10. Return credential issuer metadata
-  W ->> W: 11. Use issuer metadata for rendering VC
+  W ->> W: 9. Use issuer metadata for rendering VC
 ```
 
 #### Steps involved
@@ -70,7 +68,32 @@ The _inji-vci-client_ receives the credential response as a signed JWT string.
 }
 ```
 
-The decoded JWT payload:
+##### 4. Return the Credential Response
+
+Once the response is received in _inji-vci-client_, it is returned to the Wallet.
+
+##### 5. Perform VC verification
+
+After obtaining the credential from the issuing authority through the _inji-vci-client_ library, a verification process ensures that the issued Verifiable Credential (VC) remains unaltered. The following validations are performed using the _vc-verifier_ library:
+
+1. [x] Confirm the credential is not tampered with. (Cryptographic Signature Verification)
+
+- **Android** — delegates to the _vc-verifier_ native library, which performs cryptographic signature verification of the JWT.
+- **iOS** — ⚠️ **Signature verification is skipped entirely.** On iOS, `jwt_vc_json` credentials (along with `mso_mdoc`, `vc+sd-jwt`, and `dc+sd-jwt`) are accepted unconditionally without any cryptographic verification. A tampered or forged credential will pass this step and be saved to the Wallet. This is a known limitation — the Digital Bazaar library used on iOS does not support the signature schemes required for these formats, and this behaviour is temporary until VcVerifier is implemented for iOS.
+
+##### 6. Return Verification Result
+
+The verification result is returned to the Wallet.
+
+##### 7. Save Verified VC
+
+If verification succeeds, the credential is saved to the Wallet's store.
+
+##### 8. Decode JWT, extract credentialSubject as fullResolvedPayload
+
+The raw JWT credential is decoded and the `credentialSubject` is extracted from `payload.vc.credentialSubject`. This is stored as `fullResolvedPayload` on the processed credential and is used for all subsequent field rendering.
+
+The decoded payload of the JWT credential looks like the following:
 
 ```json
 {
@@ -98,42 +121,11 @@ The decoded JWT payload:
 }
 ```
 
-##### 4. Return the Credential Response
+##### 9. Use issuer metadata for rendering VC
 
-Once the response is received in _inji-vci-client_, it is returned to the Wallet.
+The Wallet uses the cached issuer metadata to render the credential. Field ordering is driven by the `order` array if present, otherwise by the keys of `credential_definition.credentialSubject`. Field labels are resolved from each field's `display` array using the wallet's active locale.
 
-##### 5. Perform VC verification
-
-After obtaining the credential from the issuing authority through the _inji-vci-client_ library, a verification process ensures that the issued Verifiable Credential (VC) remains unaltered. The following validations are performed using the _vc-verifier_ library:
-
-1. [x] Confirm the credential is not tampered with. (Cryptographic Signature Verification)
-
-- **Android** — delegates to the _vc-verifier_ native library, which performs cryptographic signature verification of the JWT.
-- **iOS** — ⚠️ **Signature verification is skipped entirely.** On iOS, `jwt_vc_json` credentials (along with `mso_mdoc`, `vc+sd-jwt`, and `dc+sd-jwt`) are accepted unconditionally without any cryptographic verification. A tampered or forged credential will pass this step and be saved to the Wallet. This is a known limitation — the Digital Bazaar library used on iOS does not support the signature schemes required for these formats, and this behaviour is temporary until VcVerifier is implemented for iOS.
-
-##### 6. Return Verification Result
-
-The verification result is returned to the Wallet.
-
-##### 7. Save Verified VC
-
-If verification succeeds, the credential is saved to the Wallet's store.
-
-##### 8. Decode JWT, extract credentialSubject as fullResolvedPayload
-
-The raw JWT credential is decoded and the `credentialSubject` is extracted from `payload.vc.credentialSubject`. This is stored as `fullResolvedPayload` on the processed credential and is used for all subsequent field rendering.
-
-##### 9. Get credential issuer metadata for rendering
-
-The Wallet fetches the issuer's well-known configuration to determine how the credential should be displayed.
-
-```http request
-GET credentialIssuer/.well-known/openid-credential-issuer
-```
-
-##### 10. Return credential issuer metadata
-
-The issuing authority returns the well-known metadata, which includes field labels, ordering, and display properties.
+Sample issuing metadata, which includes field labels, ordering, and display properties.
 
 ```json
 {
@@ -152,10 +144,6 @@ The issuing authority returns the well-known metadata, which includes field labe
   }
 }
 ```
-
-##### 11. Use issuer metadata for rendering VC
-
-The Wallet uses the cached issuer metadata to render the credential. Field ordering is driven by the `order` array if present, otherwise by the keys of `credential_definition.credentialSubject`. Field labels are resolved from each field's `display` array using the wallet's active locale.
 
 ### Processing and Rendering
 
@@ -178,6 +166,4 @@ The wallet inspects the resolved credential claims for a face/photo field by rec
 
 ### Out of scope
 
-- **Revocation** — Inji Wallet does not support revocation for any credential format. This document does not cover revocation of `jwt_vc_json` credentials.
-- **SVG Rendering** — Inji Wallet does not support SVG rendering for any credential format. This document does not cover SVG rendering of `jwt_vc_json` credentials.
-- **OpenID4VP presentation** — Presentation of `jwt_vc_json` credentials to a Verifier is not covered in this document.
+- **Revocation** — Revocation is not supported for `jwt_vc_json` credentials.
