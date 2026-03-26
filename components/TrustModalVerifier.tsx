@@ -25,26 +25,26 @@ export const TrustModalVerifier = ({
     <Modal transparent={true} visible={isVisible} animationType="fade">
       <View style={Theme.TrustVerifierScreenStyle.modalOverlay}>
         <View style={Theme.TrustVerifierScreenStyle.modalContainer}>
-          {(logo || name) && (
-            <View style={Theme.TrustVerifierScreenStyle.issuerHeader}>
-              {logo && (
-                <AdaptiveImage
-                  testID="trustVerifierLogo"
-                  uri={logo}
-                  style={Theme.TrustVerifierScreenStyle.issuerLogo}
-                />
-              )}
-              {name && (
-                <Text style={Theme.TrustVerifierScreenStyle.issuerName}>
-                  {name}
-                </Text>
-              )}
-            </View>
-          )}
           <ScrollView
             style={{flex: 1, width: '100%'}}
             contentContainerStyle={{alignItems: 'center', paddingBottom: 10}}
             showsVerticalScrollIndicator={true}>
+            {(logo || name) && (
+              <View style={Theme.TrustVerifierScreenStyle.issuerHeader}>
+                {logo && (
+                  <AdaptiveImage
+                    testID="trustVerifierLogo"
+                    uri={logo}
+                    style={Theme.TrustVerifierScreenStyle.issuerLogo}
+                  />
+                )}
+                {name && (
+                  <Text style={Theme.TrustVerifierScreenStyle.issuerName}>
+                    {name}
+                  </Text>
+                )}
+              </View>
+            )}
             <Text style={Theme.TrustVerifierScreenStyle.description}>
               {t(flowType === 'issuer' ? 'description' : 'verifierDescription')}
             </Text>

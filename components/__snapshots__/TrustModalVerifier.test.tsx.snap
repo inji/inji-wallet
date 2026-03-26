@@ -26,33 +26,12 @@ exports[`TrustModalVerifier should match snapshot with issuer flowType 1`] = `
           "alignItems": "center",
           "backgroundColor": "#fff",
           "borderRadius": 20,
-          "height": 470,
+          "height": 733.7,
           "padding": 20,
           "width": "100%",
         }
       }
     >
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "marginBottom": 16,
-            "padding": 10,
-          }
-        }
-      >
-        <Text
-          style={
-            {
-              "fontSize": 16,
-              "fontWeight": "bold",
-              "marginTop": 8,
-            }
-          }
-        >
-          Test Issuer
-        </Text>
-      </View>
       <RCTScrollView
         contentContainerStyle={
           {
@@ -69,6 +48,28 @@ exports[`TrustModalVerifier should match snapshot with issuer flowType 1`] = `
         }
       >
         <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "padding": 10,
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "fontSize": 16,
+                  "fontWeight": "bold",
+                  "marginTop": 8,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Test Issuer
+            </Text>
+          </View>
           <Text
             style={
               {
@@ -465,33 +466,12 @@ exports[`TrustModalVerifier should match snapshot with verifier flowType 1`] = `
           "alignItems": "center",
           "backgroundColor": "#fff",
           "borderRadius": 20,
-          "height": 470,
+          "height": 733.7,
           "padding": 20,
           "width": "100%",
         }
       }
     >
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "marginBottom": 16,
-            "padding": 10,
-          }
-        }
-      >
-        <Text
-          style={
-            {
-              "fontSize": 16,
-              "fontWeight": "bold",
-              "marginTop": 8,
-            }
-          }
-        >
-          Test Issuer
-        </Text>
-      </View>
       <RCTScrollView
         contentContainerStyle={
           {
@@ -508,6 +488,28 @@ exports[`TrustModalVerifier should match snapshot with verifier flowType 1`] = `
         }
       >
         <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "padding": 10,
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "fontSize": 16,
+                  "fontWeight": "bold",
+                  "marginTop": 8,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Test Issuer
+            </Text>
+          </View>
           <Text
             style={
               {
@@ -904,33 +906,12 @@ exports[`TrustModalVerifier should match snapshot without logo 1`] = `
           "alignItems": "center",
           "backgroundColor": "#fff",
           "borderRadius": 20,
-          "height": 470,
+          "height": 733.7,
           "padding": 20,
           "width": "100%",
         }
       }
     >
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "marginBottom": 16,
-            "padding": 10,
-          }
-        }
-      >
-        <Text
-          style={
-            {
-              "fontSize": 16,
-              "fontWeight": "bold",
-              "marginTop": 8,
-            }
-          }
-        >
-          Test Issuer
-        </Text>
-      </View>
       <RCTScrollView
         contentContainerStyle={
           {
@@ -947,6 +928,28 @@ exports[`TrustModalVerifier should match snapshot without logo 1`] = `
         }
       >
         <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "padding": 10,
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "fontSize": 16,
+                  "fontWeight": "bold",
+                  "marginTop": 8,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Test Issuer
+            </Text>
+          </View>
           <Text
             style={
               {
@@ -1343,21 +1346,12 @@ exports[`TrustModalVerifier should match snapshot without name 1`] = `
           "alignItems": "center",
           "backgroundColor": "#fff",
           "borderRadius": 20,
-          "height": 470,
+          "height": 733.7,
           "padding": 20,
           "width": "100%",
         }
       }
     >
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "marginBottom": 16,
-            "padding": 10,
-          }
-        }
-      />
       <RCTScrollView
         contentContainerStyle={
           {
@@ -1374,6 +1368,15 @@ exports[`TrustModalVerifier should match snapshot without name 1`] = `
         }
       >
         <View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "padding": 10,
+              }
+            }
+          />
           <Text
             style={
               {
