@@ -128,6 +128,10 @@ public class AddNewCardPage extends BasePage {
 	@iOSXCUITFindBy(accessibility = "issuerHeading-Land")
 	private WebElement downloadViaLand;
 
+  @AndroidFindBy(accessibility = "issuerHeading-credentalOfferButton")
+  @iOSXCUITFindBy(accessibility = "issuerHeading-credentalOfferButton")
+  private WebElement scanAndDownloadCardButton;
+
 	public AddNewCardPage(AppiumDriver driver) {
 		super(driver);
 	}
@@ -260,11 +264,6 @@ public class AddNewCardPage extends BasePage {
 		return isElementVisible(issuerDescriptionMosip, "Check if MOSIP issuer description is displayed");
 	}
 
-//  Here it requires scrolling, hence the below function commented and add new function added
-//    public boolean isIssuerDescriptionEsignetDisplayed() {
-//        return isElementVisible(issuerDescriptionEsignet, "Check if Esignet issuer description is displayed");
-//    }
-
 	public boolean isIssuerDescriptionEsignetDisplayed() {
 		return scrollAndCheckVisibilityByAccessibilityId(mosipIssuerDescription,
 				"Check if Esignet issuer description is displayed");
@@ -314,17 +313,21 @@ public class AddNewCardPage extends BasePage {
 		click(loginWithKbiButton, "Clicking on login with KBI button");
 	}
 
+  public void clickOnScanAndDownloadCardButton() {
+    click(scanAndDownloadCardButton, "Clicking on scan and download card button");
+  }
+
 	public MockCertifyLoginPage clickOnDownloadViaMockCertify() {
 		scrollAndClickByAccessibilityId(mdlIssuer, "Click on 'Download via Mdl'");
 		scrollAndClickByAccessibilityId(mdlIssuerCredentialType, "Click on 'Mdl Verifiable Credential' option");
 		return new MockCertifyLoginPage(driver);
 	}
 
-	public ESignetLoginPage clickOnDownloadViaMock() {
+	public void clickOnDownloadViaMock() {
 		scrollAndClickByAccessibilityId(mockIssuer, "Click on 'Download via mock'");
 		scrollAndClickByAccessibilityId(mockIssuerCredentialType, "Click on 'mock Verifiable Credential' option");
-		return new ESignetLoginPage(driver);
-	}
+    new ESignetLoginPage(driver);
+  }
 
 	public ESignetLoginPage clickOnDownloadViaLandRegistry() {
 		scrollAndClickByAccessibilityId(landRegistryIssuer, "Click on 'Download via Land'");

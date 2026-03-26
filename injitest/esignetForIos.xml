@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="esignet">
     <suite-files>
-        <suite-file path="iosSanity.xml"/>
+        <suite-file path="testNgXmlFiles/iosSanity.xml"/>
     </suite-files>
 	<test verbose="2" preserve-order="true" name="ios">
         <classes>

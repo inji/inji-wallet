@@ -19,14 +19,14 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 
 	@Test
 	@NeedsMockUIN
-	public void downloadAndVerifySdJwtVc() throws InterruptedException {
+	public void downloadAndVerifySdJwtVc() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -36,7 +36,6 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 				"Verify if add new card guide message displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaMockSdJwt();
 		addNewCardPage.clickOnContinueButton();
-		// esignetLoginPage.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getMockUIN());
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
@@ -58,14 +57,14 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 	}
 
 	@Test
-	public void downloadAndVerifySdJwtVcUsingInvalidCredential() throws InterruptedException {
+	public void downloadAndVerifySdJwtVcUsingInvalidCredential() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -85,14 +84,14 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 
 	@Test
 	@NeedsMockUIN
-	public void downloadAndVerifySdJwtVcUsingInvalidOtp() throws InterruptedException {
+	public void downloadAndVerifySdJwtVcUsingInvalidOtp() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -118,9 +117,9 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -146,14 +145,14 @@ public class VcDownloadAndVerifyUsingSDJwt extends AndroidBaseTest {
 
 	@Test
 	@NeedsMockUIN
-	public void downloadAndVerifySdJwtVcMultipleTime() throws InterruptedException {
+	public void downloadAndVerifySdJwtVcMultipleTime() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();

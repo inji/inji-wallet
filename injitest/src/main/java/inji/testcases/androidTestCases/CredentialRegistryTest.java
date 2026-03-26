@@ -1,43 +1,26 @@
 package inji.testcases.androidTestCases;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
-import org.testng.annotations.Test;
-
 import inji.annotations.NeedsLandUIN;
 import inji.annotations.NeedsMockUIN;
 import inji.annotations.NeedsUIN;
 import inji.constants.PlatformType;
-import inji.pages.AddNewCardPage;
-import inji.pages.AppUnlockMethodPage;
-import inji.pages.ChooseLanguagePage;
-import inji.pages.ConfirmPasscode;
-import inji.pages.CredentialRegistryPage;
-import inji.pages.DetailedVcViewPage;
-import inji.pages.ESignetLoginPage;
-import inji.pages.HomePage;
-import inji.pages.MockCertifyLoginPage;
-import inji.pages.MoreOptionsPage;
-import inji.pages.OtpVerificationPage;
-import inji.pages.PleaseConfirmPopupPage;
-import inji.pages.RetrieveIdPage;
-import inji.pages.SetPasscode;
-import inji.pages.SettingsPage;
-import inji.pages.WelcomePage;
+import inji.pages.*;
 import inji.testcases.BaseTest.AndroidBaseTest;
 import inji.utils.InjiWalletConfigManager;
-import inji.utils.InjiWalletUtil;
 import inji.utils.TestDataReader;
+import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 
 
 
 public class CredentialRegistryTest extends AndroidBaseTest {
-	
+
     private static final String credentialRegistry_url = InjiWalletConfigManager.getproperty("credentialRegistry_url");
     private static final String credentialRegistry_esignet_url = InjiWalletConfigManager.getproperty("credentialRegistry_esignet_url");
-    
+
     @Test
     public void downloadAndVerifyVcInNewEnv() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
@@ -99,12 +82,12 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
-        DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
+        homePage.openDetailedVcView();
 
     }
 
     @Test
-    public void cancelChangeEnvAndVerify() throws InterruptedException {
+    public void cancelChangeEnvAndVerify() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -129,19 +112,19 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         CredentialRegistryPage credentialRegistryPage = settingsPage.clickOnCredentialRegistry();
 
         assertTrue(credentialRegistryPage.isCredentialRegistryTextBoxHeaderDisplayed(), "Verify if CredentialRegistry page is displayed");
-        String before_cancel_env_value= credentialRegistryPage.getCurrentEnvValue();
+        String beforeCancelEnvValue= credentialRegistryPage.getCurrentEnvValue();
         credentialRegistryPage.setEnterIdTextBox(credentialRegistry_url).clickOnCancelButton();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         homePage.clickOnSettingIcon();
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         settingsPage.clickOnCredentialRegistry();
-        String after_update_env_Value= credentialRegistryPage.getCurrentEnvValue();
-        assertEquals(before_cancel_env_value,after_update_env_Value,"Verify env value remains unchanged after cancel");
+        String afterUpdateEnvValue= credentialRegistryPage.getCurrentEnvValue();
+        assertEquals(beforeCancelEnvValue,afterUpdateEnvValue,"Verify env value remains unchanged after cancel");
     }
 
     @Test
-    public void downloadAndVerifyVcInInvalidEnv() throws InterruptedException {
+    public void downloadAndVerifyVcInInvalidEnv() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -408,7 +391,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 //
     @Test
     @NeedsUIN
-    public void downloadAndVerifyVcInNewEnvForEsignet() throws InterruptedException {
+    public void downloadAndVerifyVcInNewEnvForEsignet() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -465,7 +448,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
     }
 
     @Test
-    public void downloadAndVerifyVcInInvalidEnvForEsignet() throws InterruptedException {
+    public void downloadAndVerifyVcInInvalidEnvForEsignet() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -499,7 +482,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
     }
 
     @Test
-    public void downloadAndVerifyVcInInvalidEnvForEsignetInFillpino() throws InterruptedException {
+    public void downloadAndVerifyVcInInvalidEnvForEsignetInFillpino() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -698,7 +681,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 
     @Test
     @NeedsMockUIN
-    public void downloadAndVerifyVcInNewEnvForMock() throws InterruptedException {
+    public void downloadAndVerifyVcInNewEnvForMock() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -763,7 +746,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 
     @Test
     @NeedsLandUIN
-    public void downloadAndVerifyVcInNewEnvForLandStatementCredential() throws InterruptedException {
+    public void downloadAndVerifyVcInNewEnvForLandStatementCredential() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -797,7 +780,7 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 
-        
+
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandRegistry();
         esignetLoginPage.clickOnEsignetLoginWithOtpButton();
         esignetLoginPage.clickOnLoginWithOtpButton();
@@ -815,5 +798,4 @@ public class CredentialRegistryTest extends AndroidBaseTest {
         assertTrue(detailedVcViewPage.isEsignetLogoDisplayed(), "Verify if detailed Vc esignet logo is displayed");
         assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed Vc view page is displayed");
     }
-
 }

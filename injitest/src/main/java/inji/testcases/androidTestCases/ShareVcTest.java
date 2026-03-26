@@ -1,6 +1,7 @@
 package inji.testcases.androidTestCases;
 
 import inji.annotations.NeedsUIN;
+import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.AndroidBaseTest;
@@ -16,25 +17,19 @@ public class ShareVcTest extends AndroidBaseTest {
 	public void noCardsAvailableToShare() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 		SharePage scanPage = homePage.clickOnShareButton();
 		assertTrue(scanPage.isNoShareableCardsMessageDisplayed(),
 				"Verify if no shareable cards are available message is displayed");
@@ -44,25 +39,19 @@ public class ShareVcTest extends AndroidBaseTest {
 	public void verifyReceivedCardTabPresent() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 		SettingsPage settingsPage = homePage.clickOnSettingIcon();
 
 		assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
@@ -85,11 +74,11 @@ public class ShareVcTest extends AndroidBaseTest {
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
 		assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
@@ -118,19 +107,17 @@ public class ShareVcTest extends AndroidBaseTest {
 
 		moreOptionsPage.clickOnShareVcWithSelfieFromKebabButton();
 
-		SharePage SharePage = new SharePage(getDriver());
+		SharePage sharePage = new SharePage(getDriver());
 
-		SharePage.acceptPermissionPopupBluetooth();
-		SharePage.acceptPermissionPopupCamera();
-//        SharePage.clickOnAllowLocationPopupButton(); #Location permission disabled from the apk
-//        SharePage.clickOnAllowGallaryAccessButton(); #Gallery action button disabled from the apk
-		assertTrue(SharePage.isCameraPageLoaded(), "Verify camera page is displayed");
-		assertTrue(SharePage.isFlipCameraClickable(), "Verify if flip camera is enabled");
+		sharePage.acceptPermissionPopupBluetooth();
+		sharePage.acceptPermissionPopupCamera();
+		assertTrue(sharePage.isCameraPageLoaded(), "Verify camera page is displayed");
+		assertTrue(sharePage.isFlipCameraClickable(), "Verify if flip camera is enabled");
 	}
 
 	@Test
 	@NeedsUIN
-	public void rejectingCameraAccessesOnShareScreen() throws InterruptedException {
+	public void rejectingCameraAccessesOnShareScreen() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
 		assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -143,11 +130,11 @@ public class ShareVcTest extends AndroidBaseTest {
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
 		assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
@@ -161,7 +148,6 @@ public class ShareVcTest extends AndroidBaseTest {
 		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
 		assertTrue(esignetLoginPage.isESignetLogoDisplayed(), "");
-//        String uin=TestDataReader.readData("uin");
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
 		esignetLoginPage.clickOnGetOtpButton();
@@ -172,16 +158,16 @@ public class ShareVcTest extends AndroidBaseTest {
 		addNewCardPage.clickOnDoneButton();
 		assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 
-		SharePage SharePage = homePage.clickOnShareButton();
+		SharePage sharePage = homePage.clickOnShareButton();
 
-		SharePage.clickOnAllowLocationPopupButton();
-		SharePage.acceptPermissionPopupBluetooth();
+		sharePage.clickOnAllowLocationPopupButton();
+		sharePage.acceptPermissionPopupBluetooth();
 
-		SharePage.clickOnDontAllowCameraAccessButton();
+		sharePage.clickOnDontAllowCameraAccessButton();
 
-		assertTrue(SharePage.isCameraDisabledToasterLoaded(), "Verify camera disabled toaster displayed");
-		SharePage.clickOnCameraDisabledToasterClose();
-		assertTrue(SharePage.isCameraAccessLostPageLoaded(), "Verify Proper error message is shown");
+		assertTrue(sharePage.isCameraDisabledToasterLoaded(), "Verify camera disabled toaster displayed");
+		sharePage.clickOnCameraDisabledToasterClose();
+		assertTrue(sharePage.isCameraAccessLostPageLoaded(), "Verify Proper error message is shown");
 	}
 
 }

@@ -16,7 +16,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
 
 	@Test
 	@NeedsLandUIN
-	public void downloadAndVerifyVcUsingUinViaLand() throws InterruptedException {
+	public void downloadAndVerifyVcUsingUinViaLand() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
@@ -77,7 +77,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
 
 	@Test
 	@NeedsLandUIN
-	public void downloadAndVerifyVcUsingUinViaLandStatementCredential() throws InterruptedException {
+	public void downloadAndVerifyVcUsingUinViaLandStatementCredential() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
@@ -95,9 +95,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
 		assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaLandRegistry();
 		addNewCardPage.clickOnContinueButton();
-		// esignetLoginPage.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
-//        esignetLoginPage.clickOnGetOtpButton();
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
@@ -117,7 +115,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
 	}
 
 	@Test
-	public void downloadAndVerifyVcUsingUinViaLandStatementVCDM2() throws InterruptedException {
+	public void downloadAndVerifyVcUsingUinViaLandStatementVCDM2() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
 		assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -202,8 +200,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
 
 	@Test
 	@NeedsLandUIN
-	public void downloadAndVerifyVcUsingUinViaLandStatementRegistrationReceiptOfTheRuralProperty()
-			throws InterruptedException {
+	public void downloadAndVerifyVcUsingUinViaLandStatementRegistrationReceiptOfTheRuralProperty() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
 		assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -238,9 +235,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaRuralLandRegistry();
 
 		addNewCardPage.clickOnContinueButton();
-		// esignetLoginPage.clickOnLoginWithOtpButton();
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getLandUIN());
-		// esignetLoginPage.clickOnGetOtpButton();
 		esignetLoginPage.clickOnHideKeyboardAndGetOtpButton();
 		assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
@@ -263,7 +258,7 @@ public class VcDownloadAndVerifyUsingLandRegistryTest extends AndroidBaseTest {
 	}
 
 	@Test
-	public void downloadAndVerifyVcUsingUinViaLandStatementVCDM1() throws InterruptedException {
+	public void downloadAndVerifyVcUsingUinViaLandStatementVCDM1() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
 		assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
