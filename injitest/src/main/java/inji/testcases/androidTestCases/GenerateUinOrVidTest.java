@@ -3,7 +3,6 @@ package inji.testcases.androidTestCases;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.AndroidBaseTest;
-import inji.utils.InjiWalletUtil;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
 
@@ -142,11 +141,10 @@ public class GenerateUinOrVidTest extends AndroidBaseTest {
         assertTrue(generateUinOrVidPage.isGenerateUinOrVidPageLoaded(), "Verify if generate uin or vid page page is displayed");
         assertEquals(generateUinOrVidPage.getGenerateUinOrVidPageTextloaded(), "Get your UIN/VID");
 
-        OtpVerificationPage otpVerification = generateUinOrVidPage.enterApplicationID(TestDataReader.readData("invalidaid")).clickOnGetUinOrVidButton();
+        generateUinOrVidPage.enterApplicationID(TestDataReader.readData("invalidaid")).clickOnGetUinOrVidButton();
 
         assertTrue(retrieveIdPage.isIncorrectInputFormatErrorAidMessageDisplayed(), "Verify if correct error message displayed");
 
     }
-
 
 }

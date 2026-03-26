@@ -5,7 +5,6 @@ import inji.annotations.NeedsUIN;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.AndroidBaseTest;
-import inji.utils.InjiWalletUtil;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
 
@@ -520,7 +519,7 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 
 	@Test
 	@NeedsSunbirdPolicy
-	public void downloadVcAndChnageLangaugeVerifyVcViaSunbird() throws InterruptedException {
+	public void downloadVcAndChnageLangaugeVerifyVcViaSunbird() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
 		assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -545,12 +544,8 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
 
 		assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
-		// assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if
-		// issuer description esignet displayed");
 		assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(), "Verify if issuer search bar displayed");
 		assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
-		// assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
-		// "Verify if add new card guide message displayed");
 		assertTrue(addNewCardPage.isDownloadViaSunbirdDisplayed(), "Verify if download sunbird displayed");
 		SunbirdLoginPage sunbirdLoginPage = addNewCardPage.clickOnDownloadViaSunbird();
 		addNewCardPage.clickOnCredentialTypeHeadingInsuranceCredential();
@@ -570,7 +565,6 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 		homePage.clickOnHomeButton();
 
 		assertTrue(sunbirdLoginPage.isSunbirdCardLogoDisplayed(), "Verify if download sunbird logo displayed");
-		// assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(),TestDataReader.readData("fullNameSunbird"));
 		sunbirdLoginPage.openDetailedSunbirdVcView();
 
 		assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(), getPolicyName());
@@ -638,7 +632,7 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 		assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
 		otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
 
-		DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
+		homePage.openDetailedVcView();
 		assertEquals(homePage.getFullNameValue(), "TEST_FULLNAMEara");
 		assertEquals(homePage.GetActivationPendingHeaderText(), "التنشيط معلق لتسجيل الدخول عبر الإنترنت!");
 	}
@@ -683,7 +677,6 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
 		esignetLoginPage.clickOnCredentialTypeHeadingMOSIPVerifiableCredential();
-//        assertTrue(esignetLoginPage.verifyLanguageEnterUinOrVidBoxTextDisplayed("Hindi"),"verify if enter uin or vid text hindi");
 		assertTrue(esignetLoginPage.verifyLoginHeader("Hindi"), "verify login text in hindi");
 		assertTrue(esignetLoginPage.verifyLanguagePleaseEnterUinHeaderTextDisplayed("Hindi"),
 				"verify if enter uin/vid header in hindi");
@@ -1004,8 +997,6 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 		welcomePage.clickOnNextButton();
 
 		SecureSharingPage secureSharingPage = new SecureSharingPage(getDriver());
-//        assertTrue(secureSharingPage.isRequesterHeaderTextDisplayed(), "Verify if requester header displayed");
-//        assertTrue(secureSharingPage.isPleaseSelectIdTextDisplayed(), "Verify if please select id text displayed");
 		assertTrue(secureSharingPage.verifyLanguageForSecureSharingPageLoaded("Filipino"), "Secure Sharing");
 		assertTrue(secureSharingPage.getSecureSharingDescription("Filipino"),
 				"Share your cards securely in a hassle free way and avail various services.");
@@ -1032,7 +1023,6 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 		assertTrue(backupDataPage.isAccountSectionHeaderDisplayed(), "Verify if account section header displayed");
 		assertTrue(backupDataPage.isLastBackupSectionHeaderDisplayed(),
 				"Verify if last backup section header displayed");
-//        assertTrue(backupDataPage.isBackupAndRestoreDisplayed(), "Verify if backup and restore displayed");
 		assertTrue(backupDataPage.verifyBackupDataAndRestoreTitle("Filipino"), "Backup & Restore");
 		assertTrue(backupDataPage.verifyBackupDataDescription("Filipino"),
 				"Protect your data with ease using our Backup & Restore feature. Safely store your VCs against loss or accidents by creating regular backups and recover it effortlessly whenever needed for seamless continuity.");
@@ -1058,8 +1048,6 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 		welcomePage.clickOnNextButton();
 
 		SecureSharingPage secureSharingPage = new SecureSharingPage(getDriver());
-//        assertTrue(secureSharingPage.isRequesterHeaderTextDisplayed(), "Verify if requester header displayed");
-//        assertTrue(secureSharingPage.isPleaseSelectIdTextDisplayed(), "Verify if please select id text displayed");
 		assertTrue(secureSharingPage.verifyLanguageForSecureSharingPageLoaded("Hindi"), "Secure Sharing");
 		assertTrue(secureSharingPage.getSecureSharingDescription("Hindi"),
 				"Share your cards securely in a hassle free way and avail various services.");
@@ -1086,7 +1074,6 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 		assertTrue(backupDataPage.isAccountSectionHeaderDisplayed(), "Verify if account section header displayed");
 		assertTrue(backupDataPage.isLastBackupSectionHeaderDisplayed(),
 				"Verify if last backup section header displayed");
-//        assertTrue(backupDataPage.isBackupAndRestoreDisplayed(), "Verify if backup and restore displayed");
 		assertTrue(backupDataPage.verifyBackupDataAndRestoreTitle("Hindi"), "Backup & Restore");
 		assertTrue(backupDataPage.verifyBackupDataDescription("Hindi"),
 				"Protect your data with ease using our Backup & Restore feature. Safely store your VCs against loss or accidents by creating regular backups and recover it effortlessly whenever needed for seamless continuity.");
@@ -1112,8 +1099,6 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 		welcomePage.clickOnNextButton();
 
 		SecureSharingPage secureSharingPage = new SecureSharingPage(getDriver());
-//        assertTrue(secureSharingPage.isRequesterHeaderTextDisplayed(), "Verify if requester header displayed");
-//        assertTrue(secureSharingPage.isPleaseSelectIdTextDisplayed(), "Verify if please select id text displayed");
 		assertTrue(secureSharingPage.verifyLanguageForSecureSharingPageLoaded("Kannada"), "Secure Sharing");
 		assertTrue(secureSharingPage.getSecureSharingDescription("Kannada"),
 				"Share your cards securely in a hassle free way and avail various services.");
@@ -1140,7 +1125,6 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 		assertTrue(backupDataPage.isAccountSectionHeaderDisplayed(), "Verify if account section header displayed");
 		assertTrue(backupDataPage.isLastBackupSectionHeaderDisplayed(),
 				"Verify if last backup section header displayed");
-//        assertTrue(backupDataPage.isBackupAndRestoreDisplayed(), "Verify if backup and restore displayed");
 		assertTrue(backupDataPage.verifyBackupDataAndRestoreTitle("Kannada"), "Backup & Restore");
 		assertTrue(backupDataPage.verifyBackupDataDescription("Kannada"),
 				"Protect your data with ease using our Backup & Restore feature. Safely store your VCs against loss or accidents by creating regular backups and recover it effortlessly whenever needed for seamless continuity.");
@@ -1166,8 +1150,6 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 		welcomePage.clickOnNextButton();
 
 		SecureSharingPage secureSharingPage = new SecureSharingPage(getDriver());
-//        assertTrue(secureSharingPage.isRequesterHeaderTextDisplayed(), "Verify if requester header displayed");
-//        assertTrue(secureSharingPage.isPleaseSelectIdTextDisplayed(), "Verify if please select id text displayed");
 		assertTrue(secureSharingPage.verifyLanguageForSecureSharingPageLoaded("Tamil"), "Secure Sharing");
 		assertTrue(secureSharingPage.getSecureSharingDescription("Tamil"),
 				"Share your cards securely in a hassle free way and avail various services.");
@@ -1194,7 +1176,6 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 		assertTrue(backupDataPage.isAccountSectionHeaderDisplayed(), "Verify if account section header displayed");
 		assertTrue(backupDataPage.isLastBackupSectionHeaderDisplayed(),
 				"Verify if last backup section header displayed");
-//        assertTrue(backupDataPage.isBackupAndRestoreDisplayed(), "Verify if backup and restore displayed");
 		assertTrue(backupDataPage.verifyBackupDataAndRestoreTitle("Tamil"), "Backup & Restore");
 		assertTrue(backupDataPage.verifyBackupDataDescription("Tamil"),
 				"Protect your data with ease using our Backup & Restore feature. Safely store your VCs against loss or accidents by creating regular backups and recover it effortlessly whenever needed for seamless continuity.");
@@ -1220,8 +1201,6 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 		welcomePage.clickOnNextButton();
 
 		SecureSharingPage secureSharingPage = new SecureSharingPage(getDriver());
-//        assertTrue(secureSharingPage.isRequesterHeaderTextDisplayed(), "Verify if requester header displayed");
-//        assertTrue(secureSharingPage.isPleaseSelectIdTextDisplayed(), "Verify if please select id text displayed");
 		assertTrue(secureSharingPage.verifyLanguageForSecureSharingPageLoaded("Arabic"), "Secure Sharing");
 		assertTrue(secureSharingPage.getSecureSharingDescription("Arabic"),
 				"Share your cards securely in a hassle free way and avail various services.");
@@ -1248,7 +1227,6 @@ public class ChangeLanguageTest extends AndroidBaseTest {
 		assertTrue(backupDataPage.isAccountSectionHeaderDisplayed(), "Verify if account section header displayed");
 		assertTrue(backupDataPage.isLastBackupSectionHeaderDisplayed(),
 				"Verify if last backup section header displayed");
-//        assertTrue(backupDataPage.isBackupAndRestoreDisplayed(), "Verify if backup and restore displayed");
 		assertTrue(backupDataPage.verifyBackupDataAndRestoreTitle("Arabic"), "Backup & Restore");
 		assertTrue(backupDataPage.verifyBackupDataDescription("Arabic"),
 				"Protect your data with ease using our Backup & Restore feature. Safely store your VCs against loss or accidents by creating regular backups and recover it effortlessly whenever needed for seamless continuity.");

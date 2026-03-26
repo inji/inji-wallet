@@ -1,6 +1,7 @@
 package inji.utils;
 
 import com.github.javafaker.Faker;
+import io.appium.java_client.AppiumDriver;
 import io.mosip.testrig.apirig.dto.TestCaseDTO;
 import io.mosip.testrig.apirig.utils.*;
 import io.restassured.response.Response;
@@ -8,11 +9,14 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.openqa.selenium.JavascriptExecutor;
 import org.testng.SkipException;
 
 import javax.ws.rs.core.MediaType;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class InjiWalletUtil extends AdminTestUtil {
 
@@ -133,7 +137,6 @@ public class InjiWalletUtil extends AdminTestUtil {
     }
 
     public static String getOtpForMock() {
-        String otp = "111111";
-        return otp;
+      return "111111";
     }
 }

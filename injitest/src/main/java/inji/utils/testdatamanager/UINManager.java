@@ -25,13 +25,13 @@ public class UINManager {
     }
 
     //Sample data, data can be passed in this way as well
-  //  static {
-  //      availableUINs.add(new Uin("6379306910", "3602485447", "Mimoto_AddIdentity_withValidParameters_smoke_Pos_698_@mosip.net"));
-  //      availableUINs.add(new Uin("2038930429", "+4317909080", "Mimoto_AddIdentity_Binding_smoke_Pos_698_@mosip.net"));
-  //      availableUINs.add(new Uin("3985781534", "1048876755", "Mimoto_AddIdentity_downloadIssuerCredential_smoke_Pos_698_@mosip.net"));
-  //      availableUINs.add(new Uin("4517095619", "2002563005", "Mimoto_AddIdentity_downloadIssuerCredentialWithGoogleLogin_smoke_Pos_698_@mosip.net"));
-  //      availableUINs.add(new Uin("4527046734", "8548612682", "Mimoto_AddIdentity_withValidParameters_smoke_Pos_0cb_@mosip.net"));
-  //  }
+//    static {
+//        availableUINs.add(new Uin("6379306910", "3602485447", "Mimoto_AddIdentity_withValidParameters_smoke_Pos_698_@mosip.net"));
+//        availableUINs.add(new Uin("2038930429", "+4317909080", "Mimoto_AddIdentity_Binding_smoke_Pos_698_@mosip.net"));
+//        availableUINs.add(new Uin("3985781534", "1048876755", "Mimoto_AddIdentity_downloadIssuerCredential_smoke_Pos_698_@mosip.net"));
+//        availableUINs.add(new Uin("4517095619", "2002563005", "Mimoto_AddIdentity_downloadIssuerCredentialWithGoogleLogin_smoke_Pos_698_@mosip.net"));
+//        availableUINs.add(new Uin("4527046734", "8548612682", "Mimoto_AddIdentity_withValidParameters_smoke_Pos_0cb_@mosip.net"));
+//    }
 
     public static Uin acquireUIN() throws InterruptedException {
         return availableUINs.take();

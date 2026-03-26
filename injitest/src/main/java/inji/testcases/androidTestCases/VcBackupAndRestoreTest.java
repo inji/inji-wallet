@@ -1,6 +1,7 @@
 package inji.testcases.androidTestCases;
 
 import inji.annotations.NeedsUIN;
+import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.AndroidBaseTest;
@@ -14,7 +15,7 @@ import static org.testng.Assert.*;
 public class VcBackupAndRestoreTest extends AndroidBaseTest {
     @Test
     @NeedsUIN
-    public void VcBackupAndRestoreTest() throws InterruptedException {
+    public void vcBackupAndRestoreTest() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -27,10 +28,10 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -60,8 +61,6 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         backupAndRestorePage.enterPasswordTextBox(TestDataReader.readData("emailPassword"));
         backupAndRestorePage.clickOnNextButton();
         backupAndRestorePage.clickOnAgreeButton();
-
-//        backupAndRestorePage.clickOnEmailHeader();
 
         assertTrue(backupAndRestorePage.isLastBackupSectionHeaderDisplayed(), "Verify if last backup section displayed");
         backupAndRestorePage.clickOnBackUpButton();
@@ -104,12 +103,11 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
-//        assertEquals(homePage.GetActivationPendingText(), "Activation pending for online login");
     }
 
 //    @Test
 //    @NeedsUIN
-//    public void DenyPermissionForInji() throws InterruptedException {
+//    public void denyPermissionForInji() throws InterruptedException {
 //        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 //
 //        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -122,10 +120,10 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 //        SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 //
 //        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-//        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), Target.ANDROID);
+//        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), Target.ANDROID);
 //
 //        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-//        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), Target.ANDROID);
+//        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), Target.ANDROID);
 //
 //        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 //        AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -172,7 +170,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 
     @Test
     @NeedsUIN
-    public void RestoreVcTwoTimes() throws InterruptedException {
+    public void restoreVcTwoTimes() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -185,16 +183,15 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
-        String uin = TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
         otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
@@ -248,7 +245,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
     }
 
 //    @Test
-//    public void VcRestoreWithoutBackup() throws InterruptedException {
+//    public void vcRestoreWithoutBackup() throws InterruptedException {
 //        ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 //
 //        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -261,10 +258,10 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 //        SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 //
 //        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-//        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), Target.ANDROID);
+//        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), Target.ANDROID);
 //
 //        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-//        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), Target.ANDROID);
+//        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), Target.ANDROID);
 //
 //        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 //        SettingsPage settingsPage = homePage.clickOnSettingIcon();
@@ -291,7 +288,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 
     @Test
     @NeedsUIN
-    public void VerifyBackUpAndRestorePageInMultipleLanguge() throws InterruptedException {
+    public void verifyBackUpAndRestorePageInMultipleLanguage() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -304,10 +301,10 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -330,18 +327,15 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         assertTrue(backupAndRestorePage.isCloudInfoDisplayed(), "Verify if cloud information displayed");
         backupAndRestorePage.clickOnProceedButton();
 
-        String email = TestDataReader.readData("emailsForBackupAndRestore");
         backupAndRestorePage.enterEmailTextBox("mosiptest20@gmail.com");
         backupAndRestorePage.clickOnNextButton();
         backupAndRestorePage.enterPasswordTextBox(TestDataReader.readData("Hello@20"));
         backupAndRestorePage.clickOnNextButton();
         backupAndRestorePage.clickOnAgreeButton();
 
-//        backupAndRestorePage.clickOnEmailHeader();
         assertTrue(backupAndRestorePage.isLastBackupSectionHeaderDisplayed(), "Verify if last backup section displayed");
         backupAndRestorePage.clickOnBackUpButton();
 
-//
         assertTrue(backupAndRestorePage.isAccountSectionHeaderDisplayed(), "Verify if account section header displayed");
         assertTrue(backupAndRestorePage.isStorageInfoDisplayed(), "Verify if account storage info displayed");
         assertTrue(backupAndRestorePage.isAssociatedAccountDisplayed(), "Verify if associated account displayed");
@@ -375,9 +369,9 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 
         assertTrue(unlockApplicationPage.isUnlockApplicationPageLoadedInArabic(), "Verify if language is changed to arabic");
         unlockApplicationPage.clickOnUnlockApplicationButton();
-        setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
-        //arabic
+        //Arabic
         homePage.clickOnSettingIcon();
         settingsPage.clickOnDataBackupAndRestoreButton();
 
@@ -403,12 +397,11 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 
         assertTrue(unlockApplicationPage.isUnlockApplicationPageLoadedInArabic(), "Verify if language is changed to arabic");
         unlockApplicationPage.clickOnUnlockApplicationButton();
-        setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         homePage.clickOnSettingIcon();
 
-        //hindi
-//        assertEquals(settingsPage.getDataBackupAndRestoreText(), "बैकअप बहाल");
+        //Hindi
         settingsPage.clickOnDataBackupAndRestoreButton();
         assertEquals(backupAndRestorePage.getBackupAndRestoreHeaderText(), "बैकअप और पुनर्स्थापना");
         assertEquals(backupAndRestorePage.getLastBackupSectionHeaderText(), "अंतिम बैकअप विवरण");
@@ -430,7 +423,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         backupAndRestorePage.clickOnArrowLeftButton();
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
 
-        //kannada
+        //Kannada
         settingsPage.clickOnLanguage().clickOnKannadaLanguage();
         settingsPage.clickOnDataBackupAndRestoreButton();
 
@@ -481,7 +474,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 
     @Test
     @NeedsUIN
-    public void ActiveVcAfterBackup() throws InterruptedException {
+    public void activeVcAfterBackup() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -494,10 +487,10 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -528,8 +521,6 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         backupAndRestorePage.clickOnNextButton();
         backupAndRestorePage.clickOnAgreeButton();
 
-//        backupAndRestorePage.clickOnEmailHeader();
-
         assertTrue(backupAndRestorePage.isLastBackupSectionHeaderDisplayed(), "Verify if last backup section displayed");
         backupAndRestorePage.clickOnBackUpButton();
         assertTrue(backupAndRestorePage.isAccountSectionHeaderDisplayed(), "Verify if account section header displayed");
@@ -550,13 +541,13 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         OtpVerificationPage otpVerificationPage = pleaseConfirmPopupPage.clickOnConfirmButton();
 
         assertTrue(otpVerificationPage.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerificationPage.enterOtp(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        otpVerificationPage.enterOtp(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(moreOptionsPage.isVcActivatedForOnlineLogin(), "Verify if VC is activated");
     }
 
     @Test
-    public void VerifyHelpInBackupAndRestore() throws InterruptedException {
+    public void verifyHelpInBackupAndRestore() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -569,10 +560,10 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         homePage.clickOnNextButtonForInjiTour();
         SettingsPage settingsPage = homePage.clickOnSettingIcon();
@@ -585,7 +576,6 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         assertTrue(backupAndRestorePage.isCloudInfoDisplayed(), "Verify if cloud information displayed");
         backupAndRestorePage.clickOnProceedButton();
 
-//        backupAndRestorePage.clickOnAddAnotherAccount();
         String email = TestDataReader.readData("emailsForBackupAndRestore");
         backupAndRestorePage.enterEmailTextBox(email);
         backupAndRestorePage.clickOnNextButton();
@@ -602,7 +592,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 
     @Test
     @NeedsUIN
-    public void VerifyDeletingDownloadedvc() throws InterruptedException {
+    public void verifyDeletingDownloadedVc() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -615,15 +605,14 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
-        String uin = TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
         otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
@@ -642,7 +631,6 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         assertTrue(backupAndRestorePage.isCloudInfoDisplayed(), "Verify if cloud information displayed");
         backupAndRestorePage.clickOnProceedButton();
 
-//        backupAndRestorePage.clickOnAddAnotherAccount();
         String email = TestDataReader.readData("emailsForBackupAndRestore");
         backupAndRestorePage.enterEmailTextBox(email);
         backupAndRestorePage.clickOnNextButton();
@@ -683,7 +671,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         OtpVerificationPage otpVerificationPage = pleaseConfirmPopupPage.clickOnConfirmButton();
 
         assertTrue(otpVerificationPage.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerificationPage.enterOtp(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        otpVerificationPage.enterOtp(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(moreOptionsPage.isVcActivatedForOnlineLogin(), "Verify if VC is activated");
 
@@ -705,7 +693,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 
     @Test
     @NeedsUIN
-    public void VerifyDeletingRestoredvc() throws InterruptedException {
+    public void verifyDeletingRestoredVc() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -718,15 +706,14 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
-        String uin = TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
         otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
@@ -745,7 +732,6 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         assertTrue(backupAndRestorePage.isCloudInfoDisplayed(), "Verify if cloud information displayed");
         backupAndRestorePage.clickOnProceedButton();
 
-//        backupAndRestorePage.clickOnAddAnotherAccount();
         String email = TestDataReader.readData("emailsForBackupAndRestore");
         backupAndRestorePage.enterEmailTextBox(email);
         backupAndRestorePage.clickOnNextButton();
@@ -788,7 +774,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         OtpVerificationPage otpVerificationPage = pleaseConfirmPopupPage.clickOnConfirmButton();
 
         assertTrue(otpVerificationPage.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerificationPage.enterOtp(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        otpVerificationPage.enterOtp(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(moreOptionsPage.isVcActivatedForOnlineLogin(), "Verify if VC is activated");
         assertTrue(homePage.isActivatedVcPopupTextDisplayed(), "Verify if VC is activated popup displayed");
@@ -807,7 +793,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 
     @Test
     @NeedsUIN
-    public void VerifyPiningDownloadedVc() throws InterruptedException {
+    public void verifyPiningDownloadedVc() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -820,10 +806,10 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -845,7 +831,6 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         assertTrue(backupAndRestorePage.isCloudInfoDisplayed(), "Verify if cloud information displayed");
         backupAndRestorePage.clickOnProceedButton();
 
-//        backupAndRestorePage.clickOnAddAnotherAccount();
         String email = TestDataReader.readData("emailsForBackupAndRestore");
         backupAndRestorePage.enterEmailTextBox(email);
         backupAndRestorePage.clickOnNextButton();
@@ -887,7 +872,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         OtpVerificationPage otpVerificationPage = pleaseConfirmPopupPage.clickOnConfirmButton();
 
         assertTrue(otpVerificationPage.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerificationPage.enterOtp(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        otpVerificationPage.enterOtp(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(moreOptionsPage.isVcActivatedForOnlineLogin(), "Verify if VC is activated");
         homePage.clickOnSecondVcsEllipsisButton();
@@ -902,7 +887,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 
     @Test
     @NeedsUIN
-    public void VerifyPiningRestoredVc() throws InterruptedException {
+    public void verifyPiningRestoredVc() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -915,10 +900,10 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -982,7 +967,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         OtpVerificationPage otpVerificationPage = pleaseConfirmPopupPage.clickOnConfirmButton();
 
         assertTrue(otpVerificationPage.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerificationPage.enterOtp(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        otpVerificationPage.enterOtp(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(moreOptionsPage.isVcActivatedForOnlineLogin(), "Verify if VC is activated");
         homePage.clickOnFirstVcsEllipsisButton();
@@ -998,7 +983,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 
     @Test
     @NeedsUIN
-    public void ActiveVcBeforeAndAfterBackup() throws InterruptedException {
+    public void activeVcBeforeAndAfterBackup() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -1011,10 +996,10 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -1023,7 +1008,6 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
 
         assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");
-        String uin = TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
         assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
@@ -1040,7 +1024,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         OtpVerificationPage otpVerificationPage = pleaseConfirmPopupPage.clickOnConfirmButton();
 
         assertTrue(otpVerificationPage.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-        otpVerificationPage.enterOtp(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        otpVerificationPage.enterOtp(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(moreOptionsPage.isVcActivatedForOnlineLogin(), "Verify if VC is activated");
         SettingsPage settingsPage = homePage.clickOnSettingIcon();
@@ -1053,7 +1037,6 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         assertTrue(backupAndRestorePage.isCloudInfoDisplayed(), "Verify if cloud information displayed");
         backupAndRestorePage.clickOnProceedButton();
 
-//        backupAndRestorePage.clickOnAddAnotherAccount();
         String email = TestDataReader.readData("emailsForBackupAndRestore");
         backupAndRestorePage.enterEmailTextBox(email);
         backupAndRestorePage.clickOnNextButton();
@@ -1089,7 +1072,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 
     @Test
     @NeedsUIN
-    public void VcBackupAndRestoreTestAndCheckBackupTosterInOtherPages() throws InterruptedException {
+    public void vcBackupAndRestoreTestAndCheckBackupTosterInOtherPages() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -1102,15 +1085,14 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
-        String uin = TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
         otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
@@ -1136,8 +1118,6 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         backupAndRestorePage.enterPasswordTextBox(TestDataReader.readData("emailPassword"));
         backupAndRestorePage.clickOnNextButton();
         backupAndRestorePage.clickOnAgreeButton();
-
-//        backupAndRestorePage.clickOnEmailHeader();
 
         assertTrue(backupAndRestorePage.isLastBackupSectionHeaderDisplayed(), "Verify if last backup section displayed");
         backupAndRestorePage.clickOnBackUpButton();
@@ -1184,7 +1164,7 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
 
     @Test
     @NeedsUIN
-    public void VcBackupAndRestoreTestAndCheckRestoreTosterInOtherPages() throws InterruptedException {
+    public void vcBackupAndRestoreTestAndCheckRestoreTosterInOtherPages() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -1197,15 +1177,14 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
-        String uin = TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
         otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
@@ -1231,8 +1210,6 @@ public class VcBackupAndRestoreTest extends AndroidBaseTest {
         backupAndRestorePage.enterPasswordTextBox(TestDataReader.readData("emailPassword"));
         backupAndRestorePage.clickOnNextButton();
         backupAndRestorePage.clickOnAgreeButton();
-
-//        backupAndRestorePage.clickOnEmailHeader();
 
         assertTrue(backupAndRestorePage.isLastBackupSectionHeaderDisplayed(), "Verify if last backup section displayed");
         backupAndRestorePage.clickOnBackUpButton();

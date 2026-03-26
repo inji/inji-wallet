@@ -3,6 +3,7 @@ package inji.testcases.androidTestCases;
 import inji.annotations.NeedsMockUIN;
 import inji.annotations.NeedsSunbirdPolicy;
 import inji.annotations.NeedsUIN;
+import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.AndroidBaseTest;
@@ -20,32 +21,24 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 	public void downloadVcAndVerifyHistory() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 		RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
 
 		assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");
-//        String uin = TestDataReader.readData("uin");
 		OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
 		assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
@@ -67,25 +60,19 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 	public void verifyActivationFailedRecordInHistory() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
 
@@ -93,7 +80,6 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 		RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
 
 		assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");
-//        String uin = TestDataReader.readData("uin");
 		OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
 		assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
@@ -103,13 +89,10 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 		assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 		MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
 
-//        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
 		PleaseConfirmPopupPage pleaseConfirmPopupPage = moreOptionsPage.clickOnActivationPending();
 
-//        assertTrue(pleaseConfirmPopupPage.isPleaseConfirmPopupPageLoaded(), "Verify if pop up page is displayed");
 		OtpVerificationPage otpVerificationPage = pleaseConfirmPopupPage.clickOnConfirmButton();
 
-//        assertTrue(otpVerificationPage.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
 		otpVerificationPage.enterOtp(TestDataReader.readData("invalidOtp"), PlatformType.ANDROID);
 
 		assertTrue(otpVerification.invalidOtpMessageDisplayed(), "Verify if OTP is invalid message is displayed");
@@ -126,48 +109,36 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 
 	@Test
 	@NeedsUIN
-	public void verifyActivationFailedRecordInHistoryFromDetailedView() throws InterruptedException {
+	public void verifyActivationFailedRecordInHistoryFromDetailedView() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 		RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
 
 		assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");
-//        String uin = TestDataReader.readData("uin");
 		OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
-//        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
 		otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
 
 		addNewCardPage.clickOnDoneButton();
-//        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 		DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
-//        assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed Vc view page is displayed");
 		PleaseConfirmPopupPage pleaseConfirmPopupPage = detailedVcViewPage.clickOnActivateButtonAndroid();
 
-//        assertTrue(pleaseConfirmPopupPage.isPleaseConfirmPopupPageLoaded(), "Verify if pop up page is displayed");
 		OtpVerificationPage otpVerificationPage = pleaseConfirmPopupPage.clickOnConfirmButton();
 
 		assertTrue(otpVerificationPage.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
@@ -188,50 +159,37 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 	public void activateVcAndVerifyInHistory() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 		RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
 
 		assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");
-//        String uin = TestDataReader.readData("uin");
 		OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
-//        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
 		otpVerification.enterOtp(uinGetOtp(), PlatformType.ANDROID);
 
 		addNewCardPage.clickOnDoneButton();
-//        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 		MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
 
-//        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
 		PleaseConfirmPopupPage pleaseConfirmPopupPage = moreOptionsPage.clickOnActivationPending();
 
-//        assertTrue(pleaseConfirmPopupPage.isPleaseConfirmPopupPageLoaded(), "Verify if pop up page is displayed");
 		OtpVerificationPage otpVerificationPage = pleaseConfirmPopupPage.clickOnConfirmButton();
 
-//        assertTrue(otpVerificationPage.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
-		otpVerificationPage.enterOtp(TestDataReader.readData("passcode"), PlatformType.ANDROID);
+		otpVerificationPage.enterOtp(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.ANDROID);
 
 		assertTrue(moreOptionsPage.isVcActivatedForOnlineLogin(), "Verify if VC is activated");
 		HistoryPage historyPage = homePage.clickOnHistoryButton();
@@ -245,34 +203,26 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 	public void downloadAndVerifyHistoryUsingUinViaEsignet() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
 
 		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
 		assertTrue(esignetLoginPage.isESignetLogoDisplayed(), "Verify if Esignet Login page is landed");
-//        String uin = TestDataReader.readData("uin");
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
 		esignetLoginPage.clickOnGetOtpButton();
@@ -282,13 +232,11 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 		esignetLoginPage.clickOnVerifyButton();
 
 		addNewCardPage.clickOnDoneButton();
-//        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 		DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
 
 		assertTrue(detailedVcViewPage.isActivateButtonDisplayed(), "Verify if activate vc button displayed");
 
 		PleaseConfirmPopupPage pleaseConfirmPopupPage = detailedVcViewPage.clickOnActivateButtonAndroid();
-//        assertTrue(pleaseConfirmPopupPage.isPleaseConfirmPopupPageLoaded(), "Verify if confirm popup page is displayed");
 
 		pleaseConfirmPopupPage.clickOnConfirmButton();
 		assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
@@ -299,10 +247,8 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 		detailedVcViewPage.clickOnBackArrow();
 
 		MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
-//        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
 
 		moreOptionsPage.clickOnRemoveFromWallet();
-//        assertTrue(pleaseConfirmPopupPage.isPleaseConfirmPopupPageLoaded(), "Verify if pop up page is displayed");
 
 		pleaseConfirmPopupPage.clickOnConfirmButton();
 		assertEquals(homePage.verifyLanguageForNoVCDownloadedPageLoaded(), "Bring your digital identity");
@@ -320,44 +266,34 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 	public void downloadAndVerifyHistoryUsingVidViaEsignet() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 		ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
 
 		esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
-//        assertTrue(esignetLoginPage.isESignetLogoDisplayed(), "Verify if Esignet Login page is landed");
 		String vid = TestDataReader.readData("vid");
 		OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(vid);
 
 		esignetLoginPage.clickOnGetOtpButton();
-//        assertTrue(esignetLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
 		otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
 		esignetLoginPage.clickOnVerifyButton();
 
 		addNewCardPage.clickOnDoneButton();
-//        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 		DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
 
 		assertTrue(detailedVcViewPage.isActivateButtonDisplayed(), "Verify if activate vc button displayed");
@@ -390,32 +326,24 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 
 	@Test
 	@NeedsSunbirdPolicy
-	public void downloadAndVerifyHistoryForSunbird() throws InterruptedException {
+	public void downloadAndVerifyHistoryForSunbird() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
-//        assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description  esignet displayed");
 		assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(), "Verify if issuer search bar displayed");
 		assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
@@ -423,23 +351,18 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 		assertTrue(addNewCardPage.isDownloadViaSunbirdDisplayed(), "Verify if download sunbird displayed");
 		SunbirdLoginPage sunbirdLoginPage = addNewCardPage.clickOnDownloadViaSunbird();
 		addNewCardPage.clickOnCredentialTypeHeadingInsuranceCredential();
-//        assertTrue(sunbirdLoginPage.isSunbirdRCInsuranceVerifiableCredentialHeaderDisplayed(), "Verify if sunbirdRC insurance verifiable credential displayed");
-//        sunbirdLoginPage.clickOnMosipInsurance();
 
 		sunbirdLoginPage.enterPolicyNumber(getPolicyNumber());
 		sunbirdLoginPage.enterFullName(getPolicyName());
 		sunbirdLoginPage.enterDateOfBirth();
 		sunbirdLoginPage.clickOnLoginButton();
 
-//        assertTrue(sunbirdLoginPage.isSunbirdCardActive(), "Verify if download sunbird displayed active");
 		addNewCardPage.clickOnDoneButton();
 		assertTrue(sunbirdLoginPage.isSunbirdCardLogoDisplayed(), "Verify if download sunbird logo displayed");
-//        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(),TestDataReader.readData("fullNameSunbird"));
 
 		sunbirdLoginPage.openDetailedSunbirdVcView();
 
 		assertEquals(sunbirdLoginPage.getFullNameForSunbirdCardForDetailView(), getPolicyName());
-//        assertEquals(sunbirdLoginPage.getPolicyNameForSunbirdCard(),TestDataReader.readData("policyNameSunbird"));
 		assertEquals(sunbirdLoginPage.getPhoneNumberForSunbirdCard(), TestDataReader.readData("phoneNumberSunbird"));
 		assertTrue(sunbirdLoginPage.isDateOfBirthValueForSunbirdCardDisplayed());
 		assertEquals(sunbirdLoginPage.getGenderValueForSunbirdCard(), TestDataReader.readData("genderValueSunbird"));
@@ -460,32 +383,24 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 	public void downloadVcAndVerifyHistoryFromMoreOptions() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 		RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
 
 		assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");
-//        String uin = TestDataReader.readData("uin");
 		OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
 		assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
@@ -494,7 +409,6 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 		addNewCardPage.clickOnDoneButton();
 		assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 		MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
-//        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
 
 		moreOptionsPage.clickOnViewActivityLog();
 		HistoryPage historyPage = new HistoryPage(getDriver());
@@ -506,25 +420,19 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 	public void downloadAndVerifyVcUsingMdlDeleteAndVerifyHistory() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
 		SettingsPage settingsPage = homePage.clickOnSettingIcon();
 		settingsPage.clickOnKeyManagement();
@@ -542,32 +450,23 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 		assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(),
 				"Verify if issuer description  esignet displayed");
 		assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(), "Verify if issuer search bar displayed");
-//        addNewCardPage.sendTextInIssuerSearchBar("Download MOSIP Credentials");
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
-//        assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(), "Verify if add new card guide message displayed");
-//        assertTrue(addNewCardPage.isDownloadViaEsignetDisplayed(), "Verify if download via uin displayed");
 		MockCertifyLoginPage mockCertifyLoginPage = addNewCardPage.clickOnDownloadViaMockCertify();
 		addNewCardPage.clickOnContinueButton();
-		// mockCertifyLoginPage.clickOnEsignetLoginWithOtpButton();
 
 		assertTrue(mockCertifyLoginPage.isEnterYourVidTextDisplayed(), "Verify if Esignet Login page is landed");
 
 		OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
 
 		mockCertifyLoginPage.clickOnGetOtpButton();
-//        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
 		otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
 		mockCertifyLoginPage.clickOnVerifyButton();
 
 		addNewCardPage.clickOnDoneButton();
-//        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 		MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
-//        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
 
 		moreOptionsPage.clickOnViewActivityLog();
 		HistoryPage historyPage = new HistoryPage(getDriver());
@@ -584,32 +483,21 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 	public void downloadAndVerifyVcUsingMockDeleteAndVerifyHistory() throws InterruptedException {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.ANDROID);
 
 		homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
-//        assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description  esignet displayed");
-//        assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(), "Verify if issuer search bar displayed");
-//        addNewCardPage.sendTextInIssuerSearchBar("Download MOSIP Credentials");
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 		assertTrue(addNewCardPage.isAddNewCardPageGuideMessageForEsignetDisplayed(),
 				"Verify if add new card guide message displayed");
 		assertTrue(addNewCardPage.isDownloadViaEsignetDisplayed(), "Verify if download via uin displayed");
@@ -618,20 +506,15 @@ public class VerifyHistoryTest extends AndroidBaseTest {
 		addNewCardPage.clickOnDownloadViaMock();
 		mockCertifyLoginPage.clickOnEsignetLoginWithOtpButton();
 
-//        assertTrue(mockCertifyLoginPage.isEnterYourVidTextDisplayed(), "Verify if Esignet Login page is landed");
-
 		OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(TestDataReader.readData("Mock"));
 
 		mockCertifyLoginPage.clickOnGetOtpButton();
-//        assertTrue(mockCertifyLoginPage.isOtpHasSendMessageDisplayed(), "verify if otp page is displayed");
 
 		otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.ANDROID);
 		mockCertifyLoginPage.clickOnVerifyButton();
 
 		addNewCardPage.clickOnDoneButton();
-//        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 		MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
-//        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
 
 		moreOptionsPage.clickOnViewActivityLog();
 		HistoryPage historyPage = new HistoryPage(getDriver());
