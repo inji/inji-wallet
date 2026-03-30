@@ -115,7 +115,7 @@ platform :ios do
     match(
       type: 'appstore',
       app_identifier: "#{generate_app_bundle_id}",
-      git_basic_authorization: Base64.strict_encode64("#{GIT_AUTHORIZATION}"),
+      git_basic_authorization: "#{GIT_AUTHORIZATION}",
       readonly: false,
       keychain_name: keychain_name,
       keychain_password: keychain_password,
@@ -191,7 +191,7 @@ platform :ios do
     match(
       type: 'appstore',
       app_identifier: "#{generate_app_bundle_id}",
-      git_basic_authorization: Base64.strict_encode64("#{GIT_AUTHORIZATION}"),
+      git_basic_authorization: "#{GIT_AUTHORIZATION}",
       readonly: false,
       keychain_name: keychain_name,
       keychain_password: keychain_password,
