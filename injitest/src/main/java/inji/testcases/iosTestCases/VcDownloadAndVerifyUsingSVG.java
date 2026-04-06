@@ -1,34 +1,32 @@
 package inji.testcases.iosTestCases;
 
-import inji.annotations.NeedsUIN;
-import inji.annotations.NeedsVID;
+import inji.annotations.NeedsSvgWithFaceUIN;
+import inji.annotations.NeedsSvgWithOutFaceUIN;
 import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.IosBaseTest;
 import inji.utils.InjiWalletUtil;
+import inji.utils.ResourceBundleLoader;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-import inji.utils.ResourceBundleLoader;
-import inji.annotations.NeedsSvgWithFaceUIN;
-import inji.annotations.NeedsSvgWithOutFaceUIN;
 
 
 public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 
 	@Test
 	@NeedsSvgWithFaceUIN
-	public void downloadAndVerifyFarmerSVGVcWithFace() throws InterruptedException {
+	public void downloadAndVerifyFarmerSVGVcWithFace() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -41,19 +39,19 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		addNewCardPage.clickOnDoneButton();
 		assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 		DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
-
-	}
+    assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed Vc view page is displayed");
+  }
 
 	@Test
 	@NeedsSvgWithOutFaceUIN
-	public void downloadAndVerifyFarmerSVGVcWithoutFace() throws InterruptedException {
+	public void downloadAndVerifyFarmerSVGVcWithoutFace() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -66,18 +64,19 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		addNewCardPage.clickOnDoneButton();
 		assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 		DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
+    assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed Vc view page is displayed");
 
-	}
+  }
 
 	@Test
-	public void downloadAndVerifyFarmerSVGVcWithFaceUsingInvalidCredential() throws InterruptedException {
+	public void downloadAndVerifyFarmerSVGVcWithFaceUsingInvalidCredential() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -93,14 +92,14 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 	}
 
 	@Test
-	public void downloadAndVerifyFarmerSVGVcWithOutFaceUsingInvalidCredential() throws InterruptedException {
+	public void downloadAndVerifyFarmerSVGVcWithOutFaceUsingInvalidCredential() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -117,14 +116,14 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 
 	@Test
 	@NeedsSvgWithFaceUIN
-	public void downloadAndVerifyFarmerSVGVcWithFaceUsingInvalidOtp() throws InterruptedException {
+	public void downloadAndVerifyFarmerSVGVcWithFaceUsingInvalidOtp() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -140,14 +139,14 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 
 	@Test
 	@NeedsSvgWithOutFaceUIN
-	public void downloadAndVerifyFarmerSVGVcWithOutFaceUsingInvalidOtp() throws InterruptedException {
+	public void downloadAndVerifyFarmerSVGVcWithOutFaceUsingInvalidOtp() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -168,9 +167,9 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -197,9 +196,9 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -221,14 +220,14 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 
 	@Test
 	@NeedsSvgWithFaceUIN
-	public void downloadAndVerifyFarmerSVGVcWithFaceMultipleTime() throws InterruptedException {
+	public void downloadAndVerifyFarmerSVGVcWithFaceMultipleTime() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -252,14 +251,14 @@ public class VcDownloadAndVerifyUsingSVG extends IosBaseTest {
 
 	@Test
 	@NeedsSvgWithOutFaceUIN
-	public void downloadAndVerifyFarmerSVGVcWithOutFaceMultipleTime() throws InterruptedException {
+	public void downloadAndVerifyFarmerSVGVcWithOutFaceMultipleTime() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"),
+		ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
-		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"),
+		HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE),
 				PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();

@@ -1,42 +1,32 @@
 package inji.testcases.iosTestCases;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
 import inji.annotations.NeedsLandUIN;
 import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
-import inji.pages.AddNewCardPage;
-import inji.pages.AppUnlockMethodPage;
-import inji.pages.ChooseLanguagePage;
-import inji.pages.ConfirmPasscode;
-import inji.pages.DetailedVcViewPage;
-import inji.pages.ESignetLoginPage;
-import inji.pages.HomePage;
-import inji.pages.MoreOptionsPage;
-import inji.pages.OtpVerificationPage;
-import inji.pages.SetPasscode;
-import inji.pages.WelcomePage;
+import inji.pages.*;
 import inji.testcases.BaseTest.IosBaseTest;
 import inji.utils.InjiWalletUtil;
 import inji.utils.ResourceBundleLoader;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
 public class VcDownloadAndVerifyUsingSDJwt extends IosBaseTest {
 
 	@Test
 	@NeedsLandUIN
-	public void downloadAndVerifySdJwtVc() throws InterruptedException {
+	public void downloadAndVerifySdJwtVc() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
     ConfirmPasscode confirmPasscode =
-        setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
     HomePage homePage =
         confirmPasscode.enterPasscodeInConfirmPasscodePage(
-            TestDataReader.readData("passcode"), PlatformType.IOS);
+            TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
     ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaMockSdJwt();
@@ -67,16 +57,16 @@ public class VcDownloadAndVerifyUsingSDJwt extends IosBaseTest {
 	}
 
 	@Test
-	public void downloadAndVerifySdJwtVcUsingInvalidCredential() throws InterruptedException {
+	public void downloadAndVerifySdJwtVcUsingInvalidCredential() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
     ConfirmPasscode confirmPasscode =
-        setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
     HomePage homePage =
         confirmPasscode.enterPasscodeInConfirmPasscodePage(
-            TestDataReader.readData("passcode"), PlatformType.IOS);
+            TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
     ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaMockSdJwt();
@@ -90,16 +80,16 @@ public class VcDownloadAndVerifyUsingSDJwt extends IosBaseTest {
 
 	@Test
 	@NeedsLandUIN
-	public void downloadAndVerifySdJwtVcUsingInvalidOtp() throws InterruptedException {
+	public void downloadAndVerifySdJwtVcUsingInvalidOtp() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
     ConfirmPasscode confirmPasscode =
-        setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
     HomePage homePage =
         confirmPasscode.enterPasscodeInConfirmPasscodePage(
-            TestDataReader.readData("passcode"), PlatformType.IOS);
+            TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
     ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaMockSdJwt();
@@ -121,10 +111,10 @@ public class VcDownloadAndVerifyUsingSDJwt extends IosBaseTest {
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
     ConfirmPasscode confirmPasscode =
-        setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
     HomePage homePage =
         confirmPasscode.enterPasscodeInConfirmPasscodePage(
-            TestDataReader.readData("passcode"), PlatformType.IOS);
+            TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
     ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaMockSdJwt();
@@ -147,16 +137,16 @@ public class VcDownloadAndVerifyUsingSDJwt extends IosBaseTest {
 
 	@Test
 	@NeedsLandUIN
-	public void downloadAndVerifySdJwtVcMultipleTime() throws InterruptedException {
+	public void downloadAndVerifySdJwtVcMultipleTime() {
 		ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 		WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 		AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 		SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
     ConfirmPasscode confirmPasscode =
-        setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
     HomePage homePage =
         confirmPasscode.enterPasscodeInConfirmPasscodePage(
-            TestDataReader.readData("passcode"), PlatformType.IOS);
+            TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 		homePage.clickOnNextButtonForInjiTour();
 		AddNewCardPage addNewCardPage = homePage.downloadCard();
     ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaMockSdJwt();
