@@ -252,6 +252,10 @@ android {
     }
 
     packagingOptions {
+        pickFirst 'lib/arm64-v8a/libopencv_java4.so'
+        pickFirst 'lib/armeabi-v7a/libopencv_java4.so'
+        pickFirst 'lib/x86/libopencv_java4.so'
+        pickFirst 'lib/x86_64/libopencv_java4.so'
         pickFirst 'lib/arm64-v8a/liblog.so'
         pickFirst 'lib/armeabi-v7a/liblog.so'
         pickFirst 'lib/x86/liblog.so'
@@ -267,6 +271,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation project(':react-native-nprime-face')
     implementation("io.mosip:injivcrenderer-aar:0.1.0")
     implementation("io.mosip:inji-openid4vp-aar:0.5.0"){
         changing = true

@@ -9,7 +9,7 @@ import {
 import {INITIAL_CONFIG} from './InitialConfig';
 import {getItem, setItem} from '../machines/store';
 import {faceMatchConfig} from './commonUtil';
-import {configure} from '@iriscan/biometric-sdk-react-native';
+import {faceCompare, configure} from 'react-native-nprime-face';
 import {
   getErrorEventData,
   getImpressionEventData,
@@ -29,6 +29,7 @@ const isCacheValid = (cachedData: any) => {
   return currentTime < expiryTime;
 };
 
+let isFaceModelInitialized = false;
 export const API_URLS: ApiUrls = {
   trustedVerifiersList: {
     method: 'GET',
@@ -53,7 +54,6 @@ export const API_URLS: ApiUrls = {
     buildURL: (authorizationServerUrl: string): string =>
       `${authorizationServerUrl}/.well-known/oauth-authorization-server`,
   },
-
   allProperties: {
     method: 'GET',
     buildURL: (): `/${string}` => '/v1/mimoto/allProperties',
@@ -257,7 +257,6 @@ async function generateCacheAPIFunctionWithCachePreference(
       setItem(cacheKey, cacheObject, '').then(() =>
         console.info('Cached response for ' + cacheKey),
       );
-
       return response;
     }
   } catch (error) {
@@ -266,7 +265,6 @@ async function generateCacheAPIFunctionWithCachePreference(
       onErrorHardCodedValue != undefined
     }`);
     console.log(error);
-
     if (onErrorHardCodedValue != undefined) {
       return onErrorHardCodedValue;
     } else {
@@ -323,30 +321,44 @@ export default async function getAllConfigurations(
 }
 
 export async function initializeFaceModel() {
-  const config = faceMatchConfig();
-  const result = await configure(config);
-  if (result) {
-    sendImpressionEvent(
-      getImpressionEventData(
-        TelemetryConstants.FlowType.faceModelInit,
-        TelemetryConstants.Screens.home,
-        {status: TelemetryConstants.EndEventStatus.success},
-      ),
-    );
-  } else {
-    sendErrorEvent(
-      getErrorEventData(
-        TelemetryConstants.FlowType.faceModelInit,
-        TelemetryConstants.ErrorId.failure,
-        TelemetryConstants.ErrorMessage.faceModelInitFailed,
-      ),
-    );
+  if (isFaceModelInitialized) {
+    console.info('NPrime: Already initialized. Skipping.');
+    return;
+  }
+
+  try {
+    //  configure() ignores config — just calls NprFaceModule.configure()
+    const result = await configure({});
+    console.log('NPrime configure result:', result);
+
+    if (result) {
+      isFaceModelInitialized = true;
+      console.info('NPrime: Initialized successfully.');
+      sendImpressionEvent(
+        getImpressionEventData(
+          TelemetryConstants.FlowType.faceModelInit,
+          TelemetryConstants.Screens.home,
+          {status: TelemetryConstants.EndEventStatus.success},
+        ),
+      );
+    } else {
+      console.warn('NPrime: configure() returned false.');
+      sendErrorEvent(
+        getErrorEventData(
+          TelemetryConstants.FlowType.faceModelInit,
+          TelemetryConstants.ErrorId.failure,
+          TelemetryConstants.ErrorMessage.faceModelInitFailed,
+        ),
+      );
+    }
+  } catch (error) {
+    console.error('NPrime configure error:', error);
   }
 }
 
 type Api_Params = {
-  method: 'GET' | 'POST' | 'PATCH'; // Define the HTTP methods
-  buildURL: (param?: string) => `/${string}`; // Define the buildURL function signature
+  method: 'GET' | 'POST' | 'PATCH';
+  buildURL: (param?: string) => `/${string}`;
 };
 
 type ApiUrls = {

@@ -3,7 +3,7 @@
 buildscript {
     ext {
         buildToolsVersion = "35.0.0"
-        minSdkVersion = 24
+        minSdkVersion = 26
         compileSdkVersion = 35
         targetSdkVersion = 35
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
@@ -16,7 +16,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.4.0")
+        classpath("com.android.tools.build:gradle:8.3.0")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
@@ -30,6 +30,9 @@ allprojects { repositories {
     maven{url("https://central.sonatype.com/repository/maven-snapshots/")}
     maven { url(expoCameraMavenPath) }
     mavenCentral()
+    flatDir {
+        dirs "$rootDir/../node_modules/react-native-nprime-face/android/libs"
+    }
     maven {url("https://repo.danubetech.com/repository/maven-public/")}
     configurations.all {
         resolutionStrategy {

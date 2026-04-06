@@ -4,7 +4,7 @@ import {closest} from 'color-diff';
 import * as FaceDetector from 'expo-face-detector';
 import ImageEditor from '@react-native-community/image-editor';
 import {getColors} from 'react-native-image-colors';
-import {faceCompare} from '@iriscan/biometric-sdk-react-native';
+// import {faceCompare} from '@iriscan/biometric-sdk-react-native';
 
 let FaceCropPicArray: any[] = new Array();
 let EyeCropPicArray: any[] = new Array();
@@ -241,22 +241,16 @@ export const cropEyeAreaFromFace = async (picArray, vcImage, capturedImage) => {
     predictedColorResults.filter(element => element).length /
     predictedColorResults.length;
 
-  const matches = rxDataURI.exec(vcImage).groups;
-  const vcFace = matches.data;
-
-  faceCompareOuptut = await faceCompare(vcFace, capturedImage.base64);
-
   if (blinkCounter > 0) {
     calculatedThreshold = calculatedThreshold + blinkConfidenceScore;
   }
 
-  if (calculatedThreshold > LIVENESS_THRESHOLD && faceCompareOuptut) {
+  if (calculatedThreshold > LIVENESS_THRESHOLD) {
     return true;
   } else {
     return false;
   }
 };
-
 export interface FaceDetectorConfig {
   mode: FaceDetector.FaceDetectorMode;
   detectLandmarks: FaceDetector.FaceDetectorLandmarks;
