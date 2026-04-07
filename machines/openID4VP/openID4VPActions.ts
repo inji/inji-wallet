@@ -49,9 +49,7 @@ export const openID4VPActions = (model: any) => {
       requestedClaims: () => result.requestedClaims,
 
       purpose: context => {
-        const response = context.authenticationResponse;
-        const pd = response['presentation_definition'];
-        return pd.purpose ?? '';
+        return result.purpose ?? '';
       },
 
       hasNoMatchingVCs: () => {
@@ -288,78 +286,89 @@ function getVcsMatchingAuthRequest(context, event) {
   const requestedClaimsByVerifier = new Set<string>();
   const presentationDefinition =
     context.authenticationResponse['presentation_definition'];
-  const inputDescriptors = presentationDefinition['input_descriptors'];
-  let hasFormatOrConstraints = false;
+  if (presentationDefinition) {
+    const inputDescriptors = presentationDefinition['input_descriptors'];
+    let hasFormatOrConstraints = false;
 
-  vcs.forEach(vc => {
-    inputDescriptors.forEach(inputDescriptor => {
-      const format = inputDescriptor.format ?? presentationDefinition.format;
-      hasFormatOrConstraints =
-        hasFormatOrConstraints ||
-        format !== undefined ||
-        inputDescriptor.constraints.fields !== undefined;
+    vcs.forEach(vc => {
+      inputDescriptors.forEach(inputDescriptor => {
+        const format = inputDescriptor.format ?? presentationDefinition.format;
+        hasFormatOrConstraints =
+          hasFormatOrConstraints ||
+          format !== undefined ||
+          inputDescriptor.constraints.fields !== undefined;
 
-      const areMatchingFormatAndProofType =
-        areVCFormatAndProofTypeMatchingRequest(format, vc);
-      if (areMatchingFormatAndProofType == false) {
-        inputDescriptors.forEach(inputDescriptor => {
-          if (inputDescriptor.constraints?.fields) {
-            inputDescriptor.constraints.fields.forEach(field => {
-              if (field.path) {
-                field.path.forEach(path => {
-                  try {
-                    const pathArray = JSONPath.toPathArray(path);
-                    const claimName = pathArray[pathArray.length - 1];
-                    requestedClaimsByVerifier.add(claimName);
-                  } catch (error) {
-                    console.error('Error parsing path:', path, error);
-                  }
-                });
-              }
-            });
-          }
-        });
-        return;
-      }
-      const isMatchingConstraints = isVCMatchingRequestConstraints(
-        inputDescriptor.constraints,
-        vc,
-        requestedClaimsByVerifier,
-      );
-
-      let shouldInclude: boolean;
-      if (inputDescriptor.constraints.fields && format) {
-        shouldInclude = isMatchingConstraints && areMatchingFormatAndProofType;
-      } else {
-        shouldInclude = isMatchingConstraints || areMatchingFormatAndProofType;
-      }
-
-      if (shouldInclude) {
-        if (!matchingVCs[inputDescriptor.id]) {
-          matchingVCs[inputDescriptor.id] = [];
+        const areMatchingFormatAndProofType =
+          areVCFormatAndProofTypeMatchingRequest(format, vc);
+        if (areMatchingFormatAndProofType == false) {
+          inputDescriptors.forEach(inputDescriptor => {
+            if (inputDescriptor.constraints?.fields) {
+              inputDescriptor.constraints.fields.forEach(field => {
+                if (field.path) {
+                  field.path.forEach(path => {
+                    try {
+                      const pathArray = JSONPath.toPathArray(path);
+                      const claimName = pathArray[pathArray.length - 1];
+                      requestedClaimsByVerifier.add(claimName);
+                    } catch (error) {
+                      console.error('Error parsing path:', path, error);
+                    }
+                  });
+                }
+              });
+            }
+          });
+          return;
         }
-        matchingVCs[inputDescriptor.id].push(vc);
-      }
+        const isMatchingConstraints = isVCMatchingRequestConstraints(
+          inputDescriptor.constraints,
+          vc,
+          requestedClaimsByVerifier,
+        );
+
+        let shouldInclude: boolean;
+        if (inputDescriptor.constraints.fields && format) {
+          shouldInclude =
+            isMatchingConstraints && areMatchingFormatAndProofType;
+        } else {
+          shouldInclude =
+            isMatchingConstraints || areMatchingFormatAndProofType;
+        }
+
+        if (shouldInclude) {
+          if (!matchingVCs[inputDescriptor.id]) {
+            matchingVCs[inputDescriptor.id] = [];
+          }
+          matchingVCs[inputDescriptor.id].push(vc);
+        }
+      });
     });
-  });
 
-  if (!hasFormatOrConstraints && inputDescriptors.length > 0) {
-    matchingVCs[inputDescriptors[0].id] = vcs;
+    if (!hasFormatOrConstraints && inputDescriptors.length > 0) {
+      matchingVCs[inputDescriptors[0].id] = vcs;
+    }
+
+    if (Object.keys(matchingVCs).length === 0) {
+      // Error is only sent when there are no VCs matching the request
+      void OpenID4VP.sendErrorToVerifier(
+        OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
+        OVP_ERROR_CODE.NO_MATCHING_VCS,
+      );
+    }
+
+    return {
+      matchingVCs,
+      requestedClaims: Array.from(requestedClaimsByVerifier).join(','),
+      purpose: presentationDefinition.purpose ?? '',
+    };
+  } else {
+    // DCQL query
+    return {
+      matchingVCs: {'dummy-id': vcs},
+      requestedClaims: '',
+      purpose: '',
+    };
   }
-
-  if (Object.keys(matchingVCs).length === 0) {
-    // Error is only sent when there are no VCs matching the request
-    void OpenID4VP.sendErrorToVerifier(
-      OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
-      OVP_ERROR_CODE.NO_MATCHING_VCS,
-    );
-  }
-
-  return {
-    matchingVCs,
-    requestedClaims: Array.from(requestedClaimsByVerifier).join(','),
-    purpose: presentationDefinition.purpose ?? '',
-  };
 }
 
 function areVCFormatAndProofTypeMatchingRequest(

@@ -37,16 +37,16 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
         return result
       }),
-      .presentationDuringIssuance(
-        selectCredentialsForPresentation: { vpRequest in
-          try await self.getSelectedCredentialsContinuationHook(vpRequest: vpRequest)
-        },
-        signVerifiablePresentation: { unsignedVPTokens in
-          try await self.getSignVerifiablePresentationContinuationHook(
-            unsignedVPTokens: unsignedVPTokens)
-        },
-        ldpVpSignatureSuite: signatureSuite
-      ),
+//      .presentationDuringIssuance(
+//        selectCredentialsForPresentation: { vpRequest in
+//          try await self.getSelectedCredentialsContinuationHook(vpRequest: vpRequest)
+//        },
+//        signVerifiablePresentation: { unsignedVPTokens in
+//          try await self.getSignVerifiablePresentationContinuationHook(
+//            unsignedVPTokens: unsignedVPTokens)
+//        },
+//        ldpVpSignatureSuite: signatureSuite
+//      ),
     ]
   }
 
@@ -271,31 +271,31 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     }
   }
 
-  private func getSelectedCredentialsContinuationHook(vpRequest: AuthorizationRequest) async throws
-    -> [String: [FormatType: [OpenID4VPAnyCodable]]]
-  {
-    let vpRequestJson = try OpenId4VPUtils.toJsonString(jsonObject: vpRequest)
-    if let bridge = RCTBridge.current() {
-      bridge.eventDispatcher().sendAppEvent(
-        withName: "onPresentationRequest",
-        body: [
-          "presentationRequest": vpRequestJson
-        ]
-      )
-    }
-
-    let selectedCredentials = try await withCheckedThrowingContinuation {
-      (continuation: CheckedContinuation<AnyObject, Error>) in
-      self.pendingSelectedCredentialsContinuation = continuation
-    }
-
-    guard let credentialsMap = selectedCredentials as? [String: [String: [Any]]] else {
-      print("Invalid credentials map format")
-      return [:]
-    }
-
-    return OpenId4VPUtils.parseSelectedVCs(credentialsMap)
-  }
+//  private func getSelectedCredentialsContinuationHook(vpRequest: AuthorizationRequest) async throws
+//    -> [String: [FormatType: [OpenID4VPAnyCodable]]]
+//  {
+//    let vpRequestJson = try OpenId4VPUtils.toJsonString(jsonObject: vpRequest)
+//    if let bridge = RCTBridge.current() {
+//      bridge.eventDispatcher().sendAppEvent(
+//        withName: "onPresentationRequest",
+//        body: [
+//          "presentationRequest": vpRequestJson
+//        ]
+//      )
+//    }
+//
+//    let selectedCredentials = try await withCheckedThrowingContinuation {
+//      (continuation: CheckedContinuation<AnyObject, Error>) in
+//      self.pendingSelectedCredentialsContinuation = continuation
+//    }
+//
+//    guard let credentialsMap = selectedCredentials as? [String: [String: [Any]]] else {
+//      print("Invalid credentials map format")
+//      return [:]
+//    }
+//
+//    return OpenId4VPUtils.parseSelectedVCs(credentialsMap)
+//  }
 
   private func getSignVerifiablePresentationContinuationHook(
     unsignedVPTokens: [UnsignedVPTokenV2]

@@ -10,6 +10,7 @@ class OpenId4VPUtils: NSObject {
     guard let jsonString = String(data: jsonData, encoding: .utf8) else {
       throw NSError(domain: "OPENID4VP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to encode JSON"])
     }
+    //TODO: append draft version into json string
     return jsonString
   }
   

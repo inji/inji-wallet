@@ -14,10 +14,11 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   @objc
   func `initSdk`(_ appId: String, walletMetadata: AnyObject?,resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     do {
-      let walletMetadataObject = try getWalletMetadataFromDict(walletMetadata, reject: reject)
+      let walletMetadataObject : WalletMetadata = try getWalletMetadataFromDict(walletMetadata, reject: reject)
       openID4VP = OpenID4VP(traceabilityId: appId, walletMetadata: walletMetadataObject)
       resolve(true)
     } catch {
+      os_log("Error occurred \(error)")
       reject("OPENID4VP", error.localizedDescription, error)
     }
   }
@@ -39,7 +40,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
         let authenticationResponse: AuthorizationRequest = try await openID4VP!.authenticateVerifier(
           urlEncodedAuthorizationRequest: urlEncodedAuthorizationRequest,
-          trustedVerifierJSON: trustedVerifiersList,
+          trustedVerifiers: trustedVerifiersList,
           shouldValidateClient: shouldValidateClient
         )
 
@@ -132,7 +133,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
         return Verifier(clientId: clientId, responseUris: responseUris, jwksUri: jwksUri, allowUnsignedRequest: allowUnsignedRequest)
       }
       
-      return Verifier(clientId: clientId, responseUris: responseUris,jwksUri: jwksUri)
+      return Verifier(clientId: clientId, responseUris: responseUris, jwksUri: jwksUri)
     }
   }
 
@@ -192,19 +193,33 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
       guard let formatType = VPFormatType.fromValue(format) else {
         throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unsupported VP format: \(format)"])
       }
-      if let formatDetails = formatDict as? [String: Any] {
-        let algValuesSupported = formatDetails["alg_values_supported"] as? [String]
-        vpFormatsSupported[formatType] = VPFormatSupported(algValuesSupported: algValuesSupported)
-      } else {
-        vpFormatsSupported[formatType] = VPFormatSupported(algValuesSupported: nil)
+      
+      guard let formatDictMap = formatDict as? [String: Any] else {
+        throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid format dictionary for format: \(format)"])
       }
+      
+      let vpFormatSupported: VPFormatSupported
+      switch formatType {
+        case .ldp_vc, .ldp_vp:
+          let proofTypes: [SignatureAlgorithm] = try mapStringsToRawEnum((formatDictMap["proof_type_values"] as? [String]) ?? [])
+          let cryptoSuites: [String]? = formatDictMap["cryptosuite_values"] as? [String]
+          vpFormatSupported = LdpVcFormatSupported(proofTypeValues: proofTypes, cryptoSuiteValues: cryptoSuites)
+        case .mso_mdoc:
+          let issuerAlgs: [Int]? = formatDictMap["issuerauth_alg_values"] as? [Int]
+          let deviceAlgs: [Int]? = formatDictMap["deviceauth_alg_values"] as? [Int]
+          vpFormatSupported = MsoMdocVcFormatSupported(issuerAuthAlgValues: issuerAlgs, deviceAuthAlgValues: deviceAlgs)
+        case .dc_sd_jwt, .vc_sd_jwt:
+          let sdjwtAlgValues: [String]? = formatDictMap["sd-jwt_alg_values"] as? [String]
+          let kbJwtAlgValues: [String]? = formatDictMap["kb-jwt_alg_values"] as? [String]
+          vpFormatSupported = SdJwtVcFormatSupported(sdJwtAlgValues: sdjwtAlgValues, kbJwtAlgValues: kbJwtAlgValues)
+      }
+      vpFormatsSupported[formatType] = vpFormatSupported
     }
   }
   
   let walletMetadataObject = try WalletMetadata(
-    presentationDefinitionURISupported: metadata["presentation_definition_uri_supported"] as? Bool ?? true,
     vpFormatsSupported: vpFormatsSupported,
-    clientIdSchemesSupported: mapStringsToEnum(metadata["client_id_schemes_supported"] as? [String] ?? [], using: ClientIdScheme.fromValue),
+    clientIdPrefixesSupported: mapStringsToEnum(metadata["client_id_prefixes_supported"] as? [String] ?? [], using: ClientIdPrefix.fromValue),
     requestObjectSigningAlgValuesSupported: mapStringsToEnum(metadata["request_object_signing_alg_values_supported"] as? [String] ?? [], using: RequestSigningAlgorithm.fromValue),
     authorizationEncryptionAlgValuesSupported: mapStringsToEnum(metadata["authorization_encryption_alg_values_supported"] as? [String] ?? [], using: KeyManagementAlgorithm.fromValue),
     authorizationEncryptionEncValuesSupported: mapStringsToEnum(metadata["authorization_encryption_enc_values_supported"] as? [String] ?? [], using: ContentEncryptionAlgorithm.fromValue),
@@ -226,6 +241,19 @@ func mapStringsToEnum<T: RawRepresentable>(
       )
     }
     return match
+  }
+}
+
+func mapStringsToRawEnum<T: RawRepresentable>(_ input: [String]) throws -> [T] where T.RawValue == String {
+  return try input.map { str in
+    guard let value = T(rawValue: str) else {
+      throw NSError(
+        domain: "EnumMappingError",
+        code: 1002,
+        userInfo: [NSLocalizedDescriptionKey: "Invalid value '\(str)' for enum \(T.self)"]
+      )
+    }
+    return value
   }
 }
 
@@ -253,3 +281,4 @@ fileprivate func toJsonData<T>(_ input: T) throws -> Data where T: Encodable {
   encoder.keyEncodingStrategy = .convertToSnakeCase
   return try encoder.encode(input)
 }
+
