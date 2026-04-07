@@ -112,12 +112,12 @@ export const openID4VPServices = () => {
         holderId,
         signatureSuite,
       );
-      const vpTokenSigningResultMap = await signDataForVpPreparation(
+      const vpTokenSigningResults = await signDataForVpPreparationV2(
         unSignedVpTokens,
         context,
       );
       const verifierResponse = await OpenID4VP.shareVerifiablePresentation(
-        vpTokenSigningResultMap,
+        vpTokenSigningResults,
       );
       if (verifierResponse['status_code'] !== 200) {
         console.error(

@@ -68,7 +68,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
         let formattedCredentialsMap: [String: [FormatType: [AnyCodable]]] = OpenId4VPUtils.parseSelectedVCs(credentialsMap)
 
-        let response = try await openID4VP?.constructUnsignedVPToken(
+        let response = try await openID4VP?.constructUnsignedVPTokenV2(
           verifiableCredentials: formattedCredentialsMap,
           holderId: holderId,
           signatureSuite: signatureSuite
@@ -83,14 +83,22 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   }
 
   @objc
-  func shareVerifiablePresentation(_ vpTokenSigningResults: [String: Any],
+  func shareVerifiablePresentation(_ vpTokenSigningResults: NSArray,
                                    resolver resolve: @escaping RCTPromiseResolveBlock,
                                    rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
       do {
-        let formattedVPTokenSigningResults: [FormatType: VPTokenSigningResult]
+        let formattedVPTokenSigningResults: [VPTokenSigningResultV2]
         do {
-          formattedVPTokenSigningResults = try OpenId4VPUtils.parseVPTokenSigningResult(vpTokenSigningResults)
+          guard let signedVPTokens = vpTokenSigningResults as? [[String: Any]] else {
+            throw NSError(
+              domain: "VPTokenSigning",
+              code: -1,
+              userInfo: [NSLocalizedDescriptionKey: "Invalid VP token structure from JS"]
+            )
+          }
+
+          formattedVPTokenSigningResults = try OpenId4VPUtils.parseVPTokenSigningResultV2(signedVPTokens)
         } catch {
           reject("OPENID4VP", error.localizedDescription, nil)
           return
@@ -201,7 +209,7 @@ func getWalletMetadataFromDict(_ walletMetadata: Any,
       let vpFormatSupported: VPFormatSupported
       switch formatType {
         case .ldp_vc, .ldp_vp:
-          let proofTypes: [SignatureAlgorithm] = try mapStringsToRawEnum((formatDictMap["proof_type_values"] as? [String]) ?? [])
+          let proofTypes: [ProofType] = try mapStringsToRawEnum((formatDictMap["proof_type_values"] as? [String]) ?? [])
           let cryptoSuites: [String]? = formatDictMap["cryptosuite_values"] as? [String]
           vpFormatSupported = LdpVcFormatSupported(proofTypeValues: proofTypes, cryptoSuiteValues: cryptoSuites)
         case .mso_mdoc:

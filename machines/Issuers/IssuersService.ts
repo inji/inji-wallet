@@ -21,8 +21,6 @@ import {
 } from '../../shared/constants';
 import { createCacheObject } from '../../shared/Utils';
 import { VerificationResult } from '../../shared/vcjs/verifyCredential';
-import { sign } from '@noble/secp256k1';
-import { ca } from 'date-fns/locale';
 
 export const IssuersService = () => {
   return {
@@ -36,7 +34,7 @@ export const IssuersService = () => {
         console.error('Error fetching issuers list:', error);
        trustedIssuersList = [];
       }
-      
+
       return trustedIssuersList;
     },
     checkInternet: async () => await NetInfo.fetch(),
@@ -442,7 +440,7 @@ async function sendTokenRequest(
     } catch {
       parsedError = {};
     }
-    //have to throw error in vci error respons eformat
+    //have to throw error in vci error response format
     const errorResponse: VciClientErrorResponse = {
       serverErrorCode: parsedError.error ?? 'UNKNOWN_ERROR',
       serverErrorMessage: parsedError.error_description,
