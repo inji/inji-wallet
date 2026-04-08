@@ -177,7 +177,7 @@ exports[`SharingStatusModal should match snapshot with gradient and clear button
           {
             "alignSelf": "center",
             "borderRadius": 9,
-            "height": 54,
+            "minHeight": 54,
             "width": 540,
           },
           null,
@@ -198,7 +198,7 @@ exports[`SharingStatusModal should match snapshot with gradient and clear button
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             undefined,
@@ -229,7 +229,7 @@ exports[`SharingStatusModal should match snapshot with gradient and clear button
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,

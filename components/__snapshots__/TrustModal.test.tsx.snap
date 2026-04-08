@@ -25,108 +25,108 @@ exports[`TrustModal matches snapshot in idle state 1`] = `
       }
     }
   >
-    <View
-      style={
+    <RCTScrollView
+      bounces={false}
+      contentContainerStyle={
         {
           "flexGrow": 1,
-          "maxHeight": 333.5,
         }
       }
-    />
-    <View>
-      <View
-        style={
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": 20,
-            "marginBottom": 27,
-          }
-        }
-      >
+      showsVerticalScrollIndicator={false}
+    >
+      <View>
         <View
           style={
             {
-              "alignItems": "center",
+              "flexGrow": 1,
+              "maxHeight": 333.5,
             }
           }
-        >
-          <Image
-            source=""
-            style={
-              {
-                "height": 93.38000000000001,
-                "marginBottom": 21.344,
-                "marginTop": 106.72,
-                "resizeMode": "contain",
-                "width": 93.38000000000001,
-              }
-            }
-          />
-          <Text
-            style={
-              {
-                "color": "#111827",
-                "fontFamily": "Montserrat_700Bold",
-                "fontSize": 24,
-                "fontWeight": "700",
-                "marginBottom": 16.008,
-              }
-            }
-          >
-            title
-          </Text>
-          <Text
-            style={
-              {
-                "color": "#6B7280",
-                "fontFamily": "Montserrat_500Medium",
-                "fontSize": 14,
-                "lineHeight": 20,
-                "marginBottom": 76.038,
-                "marginHorizontal": 82.5,
-                "textAlign": "center",
-              }
-            }
-          >
-            subTitle
-          </Text>
-        </View>
+        />
         <View
           style={
             {
-              "alignItems": "center",
-              "backgroundColor": "#EDF6FB",
+              "backgroundColor": "#FFFFFF",
               "borderRadius": 20,
-              "height": 533.6,
-              "marginBottom": 16,
-              "marginHorizontal": 18,
-              "minHeight": 300,
+              "marginBottom": 27,
             }
           }
         >
-          <RCTScrollView
-            contentContainerStyle={
-              [
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                  "marginHorizontal": 15,
-                },
-                {
-                  "marginTop": 49.358,
-                },
-              ]
-            }
-            showsVerticalScrollIndicator={true}
+          <View
             style={
               {
-                "maxHeight": 120,
-                "width": "100%",
+                "alignItems": "center",
               }
             }
           >
-            <View>
+            <Image
+              source=""
+              style={
+                {
+                  "height": 93.38000000000001,
+                  "marginBottom": 21.344,
+                  "marginTop": 106.72,
+                  "resizeMode": "contain",
+                  "width": 93.38000000000001,
+                }
+              }
+            />
+            <Text
+              style={
+                {
+                  "color": "#111827",
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "marginBottom": 16.008,
+                }
+              }
+            >
+              title
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#6B7280",
+                  "fontFamily": "Montserrat_500Medium",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                  "marginBottom": 76.038,
+                  "marginHorizontal": 82.5,
+                  "textAlign": "center",
+                }
+              }
+            >
+              subTitle
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#EDF6FB",
+                "borderRadius": 20,
+                "marginBottom": 16,
+                "marginHorizontal": 18,
+                "minHeight": 533.6,
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "justifyContent": "center",
+                    "marginHorizontal": 15,
+                  },
+                  {
+                    "marginTop": 49.358,
+                  },
+                ]
+              }
+            >
               <Image
                 source={
                   {
@@ -148,6 +148,7 @@ exports[`TrustModal matches snapshot in idle state 1`] = `
                 style={
                   {
                     "color": "#111827",
+                    "flexShrink": 1,
                     "fontSize": 18,
                     "fontWeight": "600",
                   }
@@ -156,142 +157,142 @@ exports[`TrustModal matches snapshot in idle state 1`] = `
                 Test Issuer
               </Text>
             </View>
-          </RCTScrollView>
-          <Text
-            style={
-              {
-                "color": "#5D5D5D",
-                "fontFamily": "Montserrat_500Medium",
-                "fontSize": 14,
-                "lineHeight": 20,
-                "marginBottom": 41.354,
-                "marginHorizontal": 75,
-                "marginTop": 41.354,
-                "textAlign": "center",
-              }
-            }
-          >
-            description
-          </Text>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
-              style={
-                {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
-                }
-              }
-            >
-              •
-            </Text>
             <Text
               style={
                 {
                   "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
+                  "fontFamily": "Montserrat_500Medium",
                   "fontSize": 14,
                   "lineHeight": 20,
-                  "textAlign": "left",
+                  "marginBottom": 41.354,
+                  "marginHorizontal": 75,
+                  "marginTop": 41.354,
+                  "textAlign": "center",
                 }
               }
             >
-              Point 1
+              description
             </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
+            <View
               style={
                 {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              •
-            </Text>
-            <Text
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 1
+              </Text>
+            </View>
+            <View
               style={
                 {
-                  "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
-                  "fontSize": 14,
-                  "lineHeight": 20,
-                  "textAlign": "left",
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              Point 2
-            </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 2
+              </Text>
+            </View>
+            <View
               style={
                 {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              •
-            </Text>
-            <Text
-              style={
-                {
-                  "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
-                  "fontSize": 14,
-                  "lineHeight": 20,
-                  "textAlign": "left",
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
                 }
-              }
-            >
-              Point 3
-            </Text>
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 3
+              </Text>
+            </View>
           </View>
         </View>
+        <View
+          style={
+            {
+              "gap": 12,
+              "paddingBottom": 8,
+            }
+          }
+        />
       </View>
-    </View>
-    <View
-      style={
-        {
-          "gap": 12,
-          "paddingBottom": 8,
-        }
-      }
-    />
+    </RCTScrollView>
   </RNCSafeAreaView>
 </Modal>
 `;
@@ -321,108 +322,108 @@ exports[`TrustModal matches snapshot in loading state 1`] = `
       }
     }
   >
-    <View
-      style={
+    <RCTScrollView
+      bounces={false}
+      contentContainerStyle={
         {
           "flexGrow": 1,
-          "maxHeight": 333.5,
         }
       }
-    />
-    <View>
-      <View
-        style={
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": 20,
-            "marginBottom": 27,
-          }
-        }
-      >
+      showsVerticalScrollIndicator={false}
+    >
+      <View>
         <View
           style={
             {
-              "alignItems": "center",
+              "flexGrow": 1,
+              "maxHeight": 333.5,
             }
           }
-        >
-          <Image
-            source=""
-            style={
-              {
-                "height": 93.38000000000001,
-                "marginBottom": 21.344,
-                "marginTop": 106.72,
-                "resizeMode": "contain",
-                "width": 93.38000000000001,
-              }
-            }
-          />
-          <Text
-            style={
-              {
-                "color": "#111827",
-                "fontFamily": "Montserrat_700Bold",
-                "fontSize": 24,
-                "fontWeight": "700",
-                "marginBottom": 16.008,
-              }
-            }
-          >
-            title
-          </Text>
-          <Text
-            style={
-              {
-                "color": "#6B7280",
-                "fontFamily": "Montserrat_500Medium",
-                "fontSize": 14,
-                "lineHeight": 20,
-                "marginBottom": 76.038,
-                "marginHorizontal": 82.5,
-                "textAlign": "center",
-              }
-            }
-          >
-            subTitle
-          </Text>
-        </View>
+        />
         <View
           style={
             {
-              "alignItems": "center",
-              "backgroundColor": "#EDF6FB",
+              "backgroundColor": "#FFFFFF",
               "borderRadius": 20,
-              "height": 533.6,
-              "marginBottom": 16,
-              "marginHorizontal": 18,
-              "minHeight": 300,
+              "marginBottom": 27,
             }
           }
         >
-          <RCTScrollView
-            contentContainerStyle={
-              [
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                  "marginHorizontal": 15,
-                },
-                {
-                  "marginTop": 49.358,
-                },
-              ]
-            }
-            showsVerticalScrollIndicator={true}
+          <View
             style={
               {
-                "maxHeight": 120,
-                "width": "100%",
+                "alignItems": "center",
               }
             }
           >
-            <View>
+            <Image
+              source=""
+              style={
+                {
+                  "height": 93.38000000000001,
+                  "marginBottom": 21.344,
+                  "marginTop": 106.72,
+                  "resizeMode": "contain",
+                  "width": 93.38000000000001,
+                }
+              }
+            />
+            <Text
+              style={
+                {
+                  "color": "#111827",
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "marginBottom": 16.008,
+                }
+              }
+            >
+              title
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#6B7280",
+                  "fontFamily": "Montserrat_500Medium",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                  "marginBottom": 76.038,
+                  "marginHorizontal": 82.5,
+                  "textAlign": "center",
+                }
+              }
+            >
+              subTitle
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#EDF6FB",
+                "borderRadius": 20,
+                "marginBottom": 16,
+                "marginHorizontal": 18,
+                "minHeight": 533.6,
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "justifyContent": "center",
+                    "marginHorizontal": 15,
+                  },
+                  {
+                    "marginTop": 49.358,
+                  },
+                ]
+              }
+            >
               <Image
                 source={
                   {
@@ -444,6 +445,7 @@ exports[`TrustModal matches snapshot in loading state 1`] = `
                 style={
                   {
                     "color": "#111827",
+                    "flexShrink": 1,
                     "fontSize": 18,
                     "fontWeight": "600",
                   }
@@ -452,142 +454,142 @@ exports[`TrustModal matches snapshot in loading state 1`] = `
                 Test Issuer
               </Text>
             </View>
-          </RCTScrollView>
-          <Text
-            style={
-              {
-                "color": "#5D5D5D",
-                "fontFamily": "Montserrat_500Medium",
-                "fontSize": 14,
-                "lineHeight": 20,
-                "marginBottom": 41.354,
-                "marginHorizontal": 75,
-                "marginTop": 41.354,
-                "textAlign": "center",
-              }
-            }
-          >
-            description
-          </Text>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
-              style={
-                {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
-                }
-              }
-            >
-              •
-            </Text>
             <Text
               style={
                 {
                   "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
+                  "fontFamily": "Montserrat_500Medium",
                   "fontSize": 14,
                   "lineHeight": 20,
-                  "textAlign": "left",
+                  "marginBottom": 41.354,
+                  "marginHorizontal": 75,
+                  "marginTop": 41.354,
+                  "textAlign": "center",
                 }
               }
             >
-              Point 1
+              description
             </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
+            <View
               style={
                 {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              •
-            </Text>
-            <Text
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 1
+              </Text>
+            </View>
+            <View
               style={
                 {
-                  "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
-                  "fontSize": 14,
-                  "lineHeight": 20,
-                  "textAlign": "left",
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              Point 2
-            </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 2
+              </Text>
+            </View>
+            <View
               style={
                 {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              •
-            </Text>
-            <Text
-              style={
-                {
-                  "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
-                  "fontSize": 14,
-                  "lineHeight": 20,
-                  "textAlign": "left",
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
                 }
-              }
-            >
-              Point 3
-            </Text>
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 3
+              </Text>
+            </View>
           </View>
         </View>
+        <View
+          style={
+            {
+              "gap": 12,
+              "paddingBottom": 8,
+            }
+          }
+        />
       </View>
-    </View>
-    <View
-      style={
-        {
-          "gap": 12,
-          "paddingBottom": 8,
-        }
-      }
-    />
+    </RCTScrollView>
   </RNCSafeAreaView>
 </Modal>
 `;
@@ -617,97 +619,40 @@ exports[`TrustModal matches snapshot in success state 1`] = `
       }
     }
   >
-    <View
-      style={
+    <RCTScrollView
+      bounces={false}
+      contentContainerStyle={
         {
           "flexGrow": 1,
-          "maxHeight": 333.5,
         }
       }
-    />
-    <View>
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "paddingHorizontal": 24,
-          }
-        }
-      >
-        <Image
-          source=""
+      showsVerticalScrollIndicator={false}
+    >
+      <View>
+        <View
           style={
             {
-              "height": 108,
-              "marginBottom": 36,
-              "width": 108,
+              "flexGrow": 1,
+              "maxHeight": 333.5,
             }
           }
         />
-        <Text
-          style={
-            {
-              "color": "#111827",
-              "fontSize": 20,
-              "fontWeight": "700",
-              "marginBottom": 7,
-              "textAlign": "center",
-            }
-          }
-        >
-          successfullyTrusted
-        </Text>
-        <Text
-          style={
-            {
-              "color": "#6B7280",
-              "fontSize": 14,
-              "lineHeight": 20,
-              "marginBottom": 28,
-              "textAlign": "center",
-            }
-          }
-        >
-          Redirecting in 3 seconds…
-        </Text>
-      </View>
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "backgroundColor": "#EDF6FB",
-            "borderRadius": 20,
-            "height": 107,
-            "justifyContent": "center",
-            "marginBottom": 24,
-          }
-        }
-      >
         <View
           style={
             {
               "alignItems": "center",
-              "flexDirection": "row",
               "justifyContent": "center",
-              "marginHorizontal": 15,
+              "paddingHorizontal": 24,
             }
           }
         >
           <Image
-            source={
-              {
-                "uri": "https://example.com/logo.png",
-              }
-            }
+            source=""
             style={
               {
-                "backgroundColor": "#FFFFFF",
-                "borderRadius": 8,
-                "height": 40,
-                "marginRight": 12,
-                "resizeMode": "contain",
-                "width": 40,
+                "height": 108,
+                "marginBottom": 36,
+                "width": 108,
               }
             }
           />
@@ -715,16 +660,84 @@ exports[`TrustModal matches snapshot in success state 1`] = `
             style={
               {
                 "color": "#111827",
-                "fontSize": 18,
-                "fontWeight": "600",
+                "fontSize": 20,
+                "fontWeight": "700",
+                "marginBottom": 7,
+                "textAlign": "center",
               }
             }
           >
-            Test Issuer
+            successfullyTrusted
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#6B7280",
+                "fontSize": 14,
+                "lineHeight": 20,
+                "marginBottom": 28,
+                "textAlign": "center",
+              }
+            }
+          >
+            Redirecting in 3 seconds…
           </Text>
         </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#EDF6FB",
+              "borderRadius": 20,
+              "height": 107,
+              "justifyContent": "center",
+              "marginBottom": 24,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "marginHorizontal": 15,
+              }
+            }
+          >
+            <Image
+              source={
+                {
+                  "uri": "https://example.com/logo.png",
+                }
+              }
+              style={
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderRadius": 8,
+                  "height": 40,
+                  "marginRight": 12,
+                  "resizeMode": "contain",
+                  "width": 40,
+                }
+              }
+            />
+            <Text
+              style={
+                {
+                  "color": "#111827",
+                  "flexShrink": 1,
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                }
+              }
+            >
+              Test Issuer
+            </Text>
+          </View>
+        </View>
       </View>
-    </View>
+    </RCTScrollView>
   </RNCSafeAreaView>
 </Modal>
 `;
@@ -754,108 +767,108 @@ exports[`TrustModal matches snapshot with long issuer name 1`] = `
       }
     }
   >
-    <View
-      style={
+    <RCTScrollView
+      bounces={false}
+      contentContainerStyle={
         {
           "flexGrow": 1,
-          "maxHeight": 333.5,
         }
       }
-    />
-    <View>
-      <View
-        style={
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": 20,
-            "marginBottom": 27,
-          }
-        }
-      >
+      showsVerticalScrollIndicator={false}
+    >
+      <View>
         <View
           style={
             {
-              "alignItems": "center",
+              "flexGrow": 1,
+              "maxHeight": 333.5,
             }
           }
-        >
-          <Image
-            source=""
-            style={
-              {
-                "height": 93.38000000000001,
-                "marginBottom": 21.344,
-                "marginTop": 106.72,
-                "resizeMode": "contain",
-                "width": 93.38000000000001,
-              }
-            }
-          />
-          <Text
-            style={
-              {
-                "color": "#111827",
-                "fontFamily": "Montserrat_700Bold",
-                "fontSize": 24,
-                "fontWeight": "700",
-                "marginBottom": 16.008,
-              }
-            }
-          >
-            title
-          </Text>
-          <Text
-            style={
-              {
-                "color": "#6B7280",
-                "fontFamily": "Montserrat_500Medium",
-                "fontSize": 14,
-                "lineHeight": 20,
-                "marginBottom": 76.038,
-                "marginHorizontal": 82.5,
-                "textAlign": "center",
-              }
-            }
-          >
-            subTitle
-          </Text>
-        </View>
+        />
         <View
           style={
             {
-              "alignItems": "center",
-              "backgroundColor": "#EDF6FB",
+              "backgroundColor": "#FFFFFF",
               "borderRadius": 20,
-              "height": 533.6,
-              "marginBottom": 16,
-              "marginHorizontal": 18,
-              "minHeight": 300,
+              "marginBottom": 27,
             }
           }
         >
-          <RCTScrollView
-            contentContainerStyle={
-              [
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                  "marginHorizontal": 15,
-                },
-                {
-                  "marginTop": 49.358,
-                },
-              ]
-            }
-            showsVerticalScrollIndicator={true}
+          <View
             style={
               {
-                "maxHeight": 120,
-                "width": "100%",
+                "alignItems": "center",
               }
             }
           >
-            <View>
+            <Image
+              source=""
+              style={
+                {
+                  "height": 93.38000000000001,
+                  "marginBottom": 21.344,
+                  "marginTop": 106.72,
+                  "resizeMode": "contain",
+                  "width": 93.38000000000001,
+                }
+              }
+            />
+            <Text
+              style={
+                {
+                  "color": "#111827",
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "marginBottom": 16.008,
+                }
+              }
+            >
+              title
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#6B7280",
+                  "fontFamily": "Montserrat_500Medium",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                  "marginBottom": 76.038,
+                  "marginHorizontal": 82.5,
+                  "textAlign": "center",
+                }
+              }
+            >
+              subTitle
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#EDF6FB",
+                "borderRadius": 20,
+                "marginBottom": 16,
+                "marginHorizontal": 18,
+                "minHeight": 533.6,
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "justifyContent": "center",
+                    "marginHorizontal": 15,
+                  },
+                  {
+                    "marginTop": 49.358,
+                  },
+                ]
+              }
+            >
               <Image
                 source={
                   {
@@ -877,6 +890,7 @@ exports[`TrustModal matches snapshot with long issuer name 1`] = `
                 style={
                   {
                     "color": "#111827",
+                    "flexShrink": 1,
                     "fontSize": 18,
                     "fontWeight": "600",
                   }
@@ -885,142 +899,142 @@ exports[`TrustModal matches snapshot with long issuer name 1`] = `
                 Very Long Issuer Name That Should Wrap Properly
               </Text>
             </View>
-          </RCTScrollView>
-          <Text
-            style={
-              {
-                "color": "#5D5D5D",
-                "fontFamily": "Montserrat_500Medium",
-                "fontSize": 14,
-                "lineHeight": 20,
-                "marginBottom": 41.354,
-                "marginHorizontal": 75,
-                "marginTop": 41.354,
-                "textAlign": "center",
-              }
-            }
-          >
-            description
-          </Text>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
-              style={
-                {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
-                }
-              }
-            >
-              •
-            </Text>
             <Text
               style={
                 {
                   "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
+                  "fontFamily": "Montserrat_500Medium",
                   "fontSize": 14,
                   "lineHeight": 20,
-                  "textAlign": "left",
+                  "marginBottom": 41.354,
+                  "marginHorizontal": 75,
+                  "marginTop": 41.354,
+                  "textAlign": "center",
                 }
               }
             >
-              Point 1
+              description
             </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
+            <View
               style={
                 {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              •
-            </Text>
-            <Text
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 1
+              </Text>
+            </View>
+            <View
               style={
                 {
-                  "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
-                  "fontSize": 14,
-                  "lineHeight": 20,
-                  "textAlign": "left",
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              Point 2
-            </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 2
+              </Text>
+            </View>
+            <View
               style={
                 {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              •
-            </Text>
-            <Text
-              style={
-                {
-                  "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
-                  "fontSize": 14,
-                  "lineHeight": 20,
-                  "textAlign": "left",
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
                 }
-              }
-            >
-              Point 3
-            </Text>
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 3
+              </Text>
+            </View>
           </View>
         </View>
+        <View
+          style={
+            {
+              "gap": 12,
+              "paddingBottom": 8,
+            }
+          }
+        />
       </View>
-    </View>
-    <View
-      style={
-        {
-          "gap": 12,
-          "paddingBottom": 8,
-        }
-      }
-    />
+    </RCTScrollView>
   </RNCSafeAreaView>
 </Modal>
 `;
@@ -1050,112 +1064,113 @@ exports[`TrustModal matches snapshot without logo 1`] = `
       }
     }
   >
-    <View
-      style={
+    <RCTScrollView
+      bounces={false}
+      contentContainerStyle={
         {
           "flexGrow": 1,
-          "maxHeight": 333.5,
         }
       }
-    />
-    <View>
-      <View
-        style={
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": 20,
-            "marginBottom": 27,
-          }
-        }
-      >
+      showsVerticalScrollIndicator={false}
+    >
+      <View>
         <View
           style={
             {
-              "alignItems": "center",
+              "flexGrow": 1,
+              "maxHeight": 333.5,
             }
           }
-        >
-          <Image
-            source=""
-            style={
-              {
-                "height": 93.38000000000001,
-                "marginBottom": 21.344,
-                "marginTop": 106.72,
-                "resizeMode": "contain",
-                "width": 93.38000000000001,
-              }
-            }
-          />
-          <Text
-            style={
-              {
-                "color": "#111827",
-                "fontFamily": "Montserrat_700Bold",
-                "fontSize": 24,
-                "fontWeight": "700",
-                "marginBottom": 16.008,
-              }
-            }
-          >
-            title
-          </Text>
-          <Text
-            style={
-              {
-                "color": "#6B7280",
-                "fontFamily": "Montserrat_500Medium",
-                "fontSize": 14,
-                "lineHeight": 20,
-                "marginBottom": 76.038,
-                "marginHorizontal": 82.5,
-                "textAlign": "center",
-              }
-            }
-          >
-            subTitle
-          </Text>
-        </View>
+        />
         <View
           style={
             {
-              "alignItems": "center",
-              "backgroundColor": "#EDF6FB",
+              "backgroundColor": "#FFFFFF",
               "borderRadius": 20,
-              "height": 533.6,
-              "marginBottom": 16,
-              "marginHorizontal": 18,
-              "minHeight": 300,
+              "marginBottom": 27,
             }
           }
         >
-          <RCTScrollView
-            contentContainerStyle={
-              [
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                  "marginHorizontal": 15,
-                },
-                {
-                  "marginTop": 49.358,
-                },
-              ]
-            }
-            showsVerticalScrollIndicator={true}
+          <View
             style={
               {
-                "maxHeight": 120,
-                "width": "100%",
+                "alignItems": "center",
               }
             }
           >
-            <View>
+            <Image
+              source=""
+              style={
+                {
+                  "height": 93.38000000000001,
+                  "marginBottom": 21.344,
+                  "marginTop": 106.72,
+                  "resizeMode": "contain",
+                  "width": 93.38000000000001,
+                }
+              }
+            />
+            <Text
+              style={
+                {
+                  "color": "#111827",
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "marginBottom": 16.008,
+                }
+              }
+            >
+              title
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#6B7280",
+                  "fontFamily": "Montserrat_500Medium",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                  "marginBottom": 76.038,
+                  "marginHorizontal": 82.5,
+                  "textAlign": "center",
+                }
+              }
+            >
+              subTitle
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#EDF6FB",
+                "borderRadius": 20,
+                "marginBottom": 16,
+                "marginHorizontal": 18,
+                "minHeight": 533.6,
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "justifyContent": "center",
+                    "marginHorizontal": 15,
+                  },
+                  {
+                    "marginTop": 49.358,
+                  },
+                ]
+              }
+            >
               <Text
                 style={
                   {
                     "color": "#111827",
+                    "flexShrink": 1,
                     "fontSize": 18,
                     "fontWeight": "600",
                   }
@@ -1164,142 +1179,142 @@ exports[`TrustModal matches snapshot without logo 1`] = `
                 Test Issuer
               </Text>
             </View>
-          </RCTScrollView>
-          <Text
-            style={
-              {
-                "color": "#5D5D5D",
-                "fontFamily": "Montserrat_500Medium",
-                "fontSize": 14,
-                "lineHeight": 20,
-                "marginBottom": 41.354,
-                "marginHorizontal": 75,
-                "marginTop": 41.354,
-                "textAlign": "center",
-              }
-            }
-          >
-            description
-          </Text>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
-              style={
-                {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
-                }
-              }
-            >
-              •
-            </Text>
             <Text
               style={
                 {
                   "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
+                  "fontFamily": "Montserrat_500Medium",
                   "fontSize": 14,
                   "lineHeight": 20,
-                  "textAlign": "left",
+                  "marginBottom": 41.354,
+                  "marginHorizontal": 75,
+                  "marginTop": 41.354,
+                  "textAlign": "center",
                 }
               }
             >
-              Point 1
+              description
             </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
+            <View
               style={
                 {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              •
-            </Text>
-            <Text
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 1
+              </Text>
+            </View>
+            <View
               style={
                 {
-                  "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
-                  "fontSize": 14,
-                  "lineHeight": 20,
-                  "textAlign": "left",
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              Point 2
-            </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 2
+              </Text>
+            </View>
+            <View
               style={
                 {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              •
-            </Text>
-            <Text
-              style={
-                {
-                  "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
-                  "fontSize": 14,
-                  "lineHeight": 20,
-                  "textAlign": "left",
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
                 }
-              }
-            >
-              Point 3
-            </Text>
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 3
+              </Text>
+            </View>
           </View>
         </View>
+        <View
+          style={
+            {
+              "gap": 12,
+              "paddingBottom": 8,
+            }
+          }
+        />
       </View>
-    </View>
-    <View
-      style={
-        {
-          "gap": 12,
-          "paddingBottom": 8,
-        }
-      }
-    />
+    </RCTScrollView>
   </RNCSafeAreaView>
 </Modal>
 `;
@@ -1329,254 +1344,255 @@ exports[`TrustModal matches snapshot without logo and name 1`] = `
       }
     }
   >
-    <View
-      style={
+    <RCTScrollView
+      bounces={false}
+      contentContainerStyle={
         {
           "flexGrow": 1,
-          "maxHeight": 333.5,
         }
       }
-    />
-    <View>
-      <View
-        style={
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": 20,
-            "marginBottom": 27,
-          }
-        }
-      >
+      showsVerticalScrollIndicator={false}
+    >
+      <View>
         <View
           style={
             {
-              "alignItems": "center",
+              "flexGrow": 1,
+              "maxHeight": 333.5,
             }
           }
-        >
-          <Image
-            source=""
-            style={
-              {
-                "height": 93.38000000000001,
-                "marginBottom": 21.344,
-                "marginTop": 106.72,
-                "resizeMode": "contain",
-                "width": 93.38000000000001,
-              }
-            }
-          />
-          <Text
-            style={
-              {
-                "color": "#111827",
-                "fontFamily": "Montserrat_700Bold",
-                "fontSize": 24,
-                "fontWeight": "700",
-                "marginBottom": 16.008,
-              }
-            }
-          >
-            title
-          </Text>
-          <Text
-            style={
-              {
-                "color": "#6B7280",
-                "fontFamily": "Montserrat_500Medium",
-                "fontSize": 14,
-                "lineHeight": 20,
-                "marginBottom": 76.038,
-                "marginHorizontal": 82.5,
-                "textAlign": "center",
-              }
-            }
-          >
-            subTitle
-          </Text>
-        </View>
+        />
         <View
           style={
             {
-              "alignItems": "center",
-              "backgroundColor": "#EDF6FB",
+              "backgroundColor": "#FFFFFF",
               "borderRadius": 20,
-              "height": 533.6,
-              "marginBottom": 16,
-              "marginHorizontal": 18,
-              "minHeight": 300,
+              "marginBottom": 27,
             }
           }
         >
-          <RCTScrollView
-            contentContainerStyle={
-              [
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                  "marginHorizontal": 15,
-                },
-                {
-                  "marginTop": 49.358,
-                },
-              ]
-            }
-            showsVerticalScrollIndicator={true}
+          <View
             style={
               {
-                "maxHeight": 120,
-                "width": "100%",
+                "alignItems": "center",
               }
             }
           >
-            <View>
+            <Image
+              source=""
+              style={
+                {
+                  "height": 93.38000000000001,
+                  "marginBottom": 21.344,
+                  "marginTop": 106.72,
+                  "resizeMode": "contain",
+                  "width": 93.38000000000001,
+                }
+              }
+            />
+            <Text
+              style={
+                {
+                  "color": "#111827",
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "marginBottom": 16.008,
+                }
+              }
+            >
+              title
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#6B7280",
+                  "fontFamily": "Montserrat_500Medium",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                  "marginBottom": 76.038,
+                  "marginHorizontal": 82.5,
+                  "textAlign": "center",
+                }
+              }
+            >
+              subTitle
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#EDF6FB",
+                "borderRadius": 20,
+                "marginBottom": 16,
+                "marginHorizontal": 18,
+                "minHeight": 533.6,
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "justifyContent": "center",
+                    "marginHorizontal": 15,
+                  },
+                  {
+                    "marginTop": 49.358,
+                  },
+                ]
+              }
+            >
               <Text
                 style={
                   {
                     "color": "#111827",
+                    "flexShrink": 1,
                     "fontSize": 18,
                     "fontWeight": "600",
                   }
                 }
               />
             </View>
-          </RCTScrollView>
-          <Text
-            style={
-              {
-                "color": "#5D5D5D",
-                "fontFamily": "Montserrat_500Medium",
-                "fontSize": 14,
-                "lineHeight": 20,
-                "marginBottom": 41.354,
-                "marginHorizontal": 75,
-                "marginTop": 41.354,
-                "textAlign": "center",
-              }
-            }
-          >
-            description
-          </Text>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
-              style={
-                {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
-                }
-              }
-            >
-              •
-            </Text>
             <Text
               style={
                 {
                   "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
+                  "fontFamily": "Montserrat_500Medium",
                   "fontSize": 14,
                   "lineHeight": 20,
-                  "textAlign": "left",
+                  "marginBottom": 41.354,
+                  "marginHorizontal": 75,
+                  "marginTop": 41.354,
+                  "textAlign": "center",
                 }
               }
             >
-              Point 1
+              description
             </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
+            <View
               style={
                 {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              •
-            </Text>
-            <Text
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 1
+              </Text>
+            </View>
+            <View
               style={
                 {
-                  "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
-                  "fontSize": 14,
-                  "lineHeight": 20,
-                  "textAlign": "left",
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              Point 2
-            </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 2
+              </Text>
+            </View>
+            <View
               style={
                 {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              •
-            </Text>
-            <Text
-              style={
-                {
-                  "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
-                  "fontSize": 14,
-                  "lineHeight": 20,
-                  "textAlign": "left",
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
                 }
-              }
-            >
-              Point 3
-            </Text>
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 3
+              </Text>
+            </View>
           </View>
         </View>
+        <View
+          style={
+            {
+              "gap": 12,
+              "paddingBottom": 8,
+            }
+          }
+        />
       </View>
-    </View>
-    <View
-      style={
-        {
-          "gap": 12,
-          "paddingBottom": 8,
-        }
-      }
-    />
+    </RCTScrollView>
   </RNCSafeAreaView>
 </Modal>
 `;
@@ -1606,108 +1622,108 @@ exports[`TrustModal matches snapshot without name 1`] = `
       }
     }
   >
-    <View
-      style={
+    <RCTScrollView
+      bounces={false}
+      contentContainerStyle={
         {
           "flexGrow": 1,
-          "maxHeight": 333.5,
         }
       }
-    />
-    <View>
-      <View
-        style={
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": 20,
-            "marginBottom": 27,
-          }
-        }
-      >
+      showsVerticalScrollIndicator={false}
+    >
+      <View>
         <View
           style={
             {
-              "alignItems": "center",
+              "flexGrow": 1,
+              "maxHeight": 333.5,
             }
           }
-        >
-          <Image
-            source=""
-            style={
-              {
-                "height": 93.38000000000001,
-                "marginBottom": 21.344,
-                "marginTop": 106.72,
-                "resizeMode": "contain",
-                "width": 93.38000000000001,
-              }
-            }
-          />
-          <Text
-            style={
-              {
-                "color": "#111827",
-                "fontFamily": "Montserrat_700Bold",
-                "fontSize": 24,
-                "fontWeight": "700",
-                "marginBottom": 16.008,
-              }
-            }
-          >
-            title
-          </Text>
-          <Text
-            style={
-              {
-                "color": "#6B7280",
-                "fontFamily": "Montserrat_500Medium",
-                "fontSize": 14,
-                "lineHeight": 20,
-                "marginBottom": 76.038,
-                "marginHorizontal": 82.5,
-                "textAlign": "center",
-              }
-            }
-          >
-            subTitle
-          </Text>
-        </View>
+        />
         <View
           style={
             {
-              "alignItems": "center",
-              "backgroundColor": "#EDF6FB",
+              "backgroundColor": "#FFFFFF",
               "borderRadius": 20,
-              "height": 533.6,
-              "marginBottom": 16,
-              "marginHorizontal": 18,
-              "minHeight": 300,
+              "marginBottom": 27,
             }
           }
         >
-          <RCTScrollView
-            contentContainerStyle={
-              [
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                  "marginHorizontal": 15,
-                },
-                {
-                  "marginTop": 49.358,
-                },
-              ]
-            }
-            showsVerticalScrollIndicator={true}
+          <View
             style={
               {
-                "maxHeight": 120,
-                "width": "100%",
+                "alignItems": "center",
               }
             }
           >
-            <View>
+            <Image
+              source=""
+              style={
+                {
+                  "height": 93.38000000000001,
+                  "marginBottom": 21.344,
+                  "marginTop": 106.72,
+                  "resizeMode": "contain",
+                  "width": 93.38000000000001,
+                }
+              }
+            />
+            <Text
+              style={
+                {
+                  "color": "#111827",
+                  "fontFamily": "Montserrat_700Bold",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "marginBottom": 16.008,
+                }
+              }
+            >
+              title
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#6B7280",
+                  "fontFamily": "Montserrat_500Medium",
+                  "fontSize": 14,
+                  "lineHeight": 20,
+                  "marginBottom": 76.038,
+                  "marginHorizontal": 82.5,
+                  "textAlign": "center",
+                }
+              }
+            >
+              subTitle
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#EDF6FB",
+                "borderRadius": 20,
+                "marginBottom": 16,
+                "marginHorizontal": 18,
+                "minHeight": 533.6,
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "justifyContent": "center",
+                    "marginHorizontal": 15,
+                  },
+                  {
+                    "marginTop": 49.358,
+                  },
+                ]
+              }
+            >
               <Image
                 source={
                   {
@@ -1729,148 +1745,149 @@ exports[`TrustModal matches snapshot without name 1`] = `
                 style={
                   {
                     "color": "#111827",
+                    "flexShrink": 1,
                     "fontSize": 18,
                     "fontWeight": "600",
                   }
                 }
               />
             </View>
-          </RCTScrollView>
-          <Text
-            style={
-              {
-                "color": "#5D5D5D",
-                "fontFamily": "Montserrat_500Medium",
-                "fontSize": 14,
-                "lineHeight": 20,
-                "marginBottom": 41.354,
-                "marginHorizontal": 75,
-                "marginTop": 41.354,
-                "textAlign": "center",
-              }
-            }
-          >
-            description
-          </Text>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
-              style={
-                {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
-                }
-              }
-            >
-              •
-            </Text>
             <Text
               style={
                 {
                   "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
+                  "fontFamily": "Montserrat_500Medium",
                   "fontSize": 14,
                   "lineHeight": 20,
-                  "textAlign": "left",
+                  "marginBottom": 41.354,
+                  "marginHorizontal": 75,
+                  "marginTop": 41.354,
+                  "textAlign": "center",
                 }
               }
             >
-              Point 1
+              description
             </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
+            <View
               style={
                 {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              •
-            </Text>
-            <Text
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 1
+              </Text>
+            </View>
+            <View
               style={
                 {
-                  "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
-                  "fontSize": 14,
-                  "lineHeight": 20,
-                  "textAlign": "left",
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              Point 2
-            </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "flex-start",
-                "flexDirection": "row",
-                "paddingHorizontal": 37.5,
-              }
-            }
-          >
-            <Text
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
+                }
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 2
+              </Text>
+            </View>
+            <View
               style={
                 {
-                  "color": "#374151",
-                  "fontSize": 16,
-                  "marginRight": 8,
-                  "marginTop": 1,
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "paddingHorizontal": 37.5,
                 }
               }
             >
-              •
-            </Text>
-            <Text
-              style={
-                {
-                  "color": "#5D5D5D",
-                  "flex": 1,
-                  "fontFamily": "Montserrat_400Regular",
-                  "fontSize": 14,
-                  "lineHeight": 20,
-                  "textAlign": "left",
+              <Text
+                style={
+                  {
+                    "color": "#374151",
+                    "fontSize": 16,
+                    "marginRight": 8,
+                    "marginTop": 1,
+                  }
                 }
-              }
-            >
-              Point 3
-            </Text>
+              >
+                •
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#5D5D5D",
+                    "flex": 1,
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Point 3
+              </Text>
+            </View>
           </View>
         </View>
+        <View
+          style={
+            {
+              "gap": 12,
+              "paddingBottom": 8,
+            }
+          }
+        />
       </View>
-    </View>
-    <View
-      style={
-        {
-          "gap": 12,
-          "paddingBottom": 8,
-        }
-      }
-    />
+    </RCTScrollView>
   </RNCSafeAreaView>
 </Modal>
 `;

@@ -161,7 +161,7 @@ exports[`VPShareOverlay should match snapshot when not visible 1`] = `
           {
             "alignSelf": "center",
             "borderRadius": 9,
-            "height": 54,
+            "minHeight": 54,
             "width": 540,
           },
           null,
@@ -187,7 +187,7 @@ exports[`VPShareOverlay should match snapshot when not visible 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             undefined,
@@ -218,7 +218,7 @@ exports[`VPShareOverlay should match snapshot when not visible 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,
@@ -545,7 +545,7 @@ exports[`VPShareOverlay should match snapshot when visible 1`] = `
           {
             "alignSelf": "center",
             "borderRadius": 9,
-            "height": 54,
+            "minHeight": 54,
             "width": 540,
           },
           null,
@@ -571,7 +571,7 @@ exports[`VPShareOverlay should match snapshot when visible 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             undefined,
@@ -602,7 +602,7 @@ exports[`VPShareOverlay should match snapshot when visible 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,
@@ -929,7 +929,7 @@ exports[`VPShareOverlay should match snapshot with different text 1`] = `
           {
             "alignSelf": "center",
             "borderRadius": 9,
-            "height": 54,
+            "minHeight": 54,
             "width": 540,
           },
           null,
@@ -955,7 +955,7 @@ exports[`VPShareOverlay should match snapshot with different text 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             undefined,
@@ -986,7 +986,7 @@ exports[`VPShareOverlay should match snapshot with different text 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,
