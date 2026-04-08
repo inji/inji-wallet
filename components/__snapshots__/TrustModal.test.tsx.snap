@@ -4,7 +4,7 @@ exports[`TrustModal matches snapshot in idle state 1`] = `
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
-  onRequestClose={[Function]}
+  onRequestClose={[MockFunction]}
   visible={true}
 >
   <RNCSafeAreaView
@@ -301,7 +301,7 @@ exports[`TrustModal matches snapshot in loading state 1`] = `
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
-  onRequestClose={[Function]}
+  onRequestClose={[MockFunction]}
   visible={true}
 >
   <RNCSafeAreaView
@@ -598,7 +598,7 @@ exports[`TrustModal matches snapshot in success state 1`] = `
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
-  onRequestClose={[Function]}
+  onRequestClose={[MockFunction]}
   visible={true}
 >
   <RNCSafeAreaView
@@ -746,7 +746,7 @@ exports[`TrustModal matches snapshot with long issuer name 1`] = `
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
-  onRequestClose={[Function]}
+  onRequestClose={[MockFunction]}
   visible={true}
 >
   <RNCSafeAreaView
@@ -1043,7 +1043,7 @@ exports[`TrustModal matches snapshot without logo 1`] = `
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
-  onRequestClose={[Function]}
+  onRequestClose={[MockFunction]}
   visible={true}
 >
   <RNCSafeAreaView
@@ -1323,7 +1323,7 @@ exports[`TrustModal matches snapshot without logo and name 1`] = `
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
-  onRequestClose={[Function]}
+  onRequestClose={[MockFunction]}
   visible={true}
 >
   <RNCSafeAreaView
@@ -1601,7 +1601,7 @@ exports[`TrustModal matches snapshot without name 1`] = `
 <Modal
   animationType="fade"
   hardwareAccelerated={false}
-  onRequestClose={[Function]}
+  onRequestClose={[MockFunction]}
   visible={true}
 >
   <RNCSafeAreaView
