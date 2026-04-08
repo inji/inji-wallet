@@ -67,12 +67,7 @@ export const TrustModal = memo(
     }, [isSuccess]);
 
     return (
-      <Modal
-        onRequestClose={() => {
-          null;
-        }}
-        visible={isVisible}
-        animationType="fade">
+      <Modal onRequestClose={onCancel} visible={isVisible} animationType="fade">
         <SafeAreaView style={Theme.TrustIssuerScreenStyle.container}>
           <ScrollView
             bounces={false}
