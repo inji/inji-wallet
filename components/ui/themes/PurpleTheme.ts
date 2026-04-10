@@ -1162,7 +1162,7 @@ export const PurpleTheme = {
       borderRadius: 9,
       width: Dimensions.get('window').width * 0.72,
       alignSelf: 'center',
-      height: 54,
+      minHeight: 54,
     },
     float: {
       borderRadius: 9,
@@ -2215,8 +2215,7 @@ export const PurpleTheme = {
       marginBottom: 16,
       marginHorizontal: 18,
       alignItems: 'center',
-      height: SCREEN_HEIGHT * 0.4,
-      minHeight: 300,
+      minHeight: SCREEN_HEIGHT * 0.4,
     },
     successCard: {
       backgroundColor: '#EDF6FB',
@@ -2245,6 +2244,7 @@ export const PurpleTheme = {
       fontSize: 18,
       fontWeight: '600',
       color: '#111827',
+      flexShrink: 1,
     },
     cardDescription: {
       fontSize: 14,

@@ -196,7 +196,7 @@ exports[`FaceVerificationAlertOverlay should match snapshot when not visible 1`]
           {
             "alignSelf": "center",
             "borderRadius": 9,
-            "height": 54,
+            "minHeight": 54,
             "width": 540,
           },
           null,
@@ -222,7 +222,7 @@ exports[`FaceVerificationAlertOverlay should match snapshot when not visible 1`]
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             undefined,
@@ -253,7 +253,7 @@ exports[`FaceVerificationAlertOverlay should match snapshot when not visible 1`]
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,
@@ -582,7 +582,7 @@ exports[`FaceVerificationAlertOverlay should match snapshot when visible 1`] = `
           {
             "alignSelf": "center",
             "borderRadius": 9,
-            "height": 54,
+            "minHeight": 54,
             "width": 540,
           },
           null,
@@ -608,7 +608,7 @@ exports[`FaceVerificationAlertOverlay should match snapshot when visible 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             undefined,
@@ -639,7 +639,7 @@ exports[`FaceVerificationAlertOverlay should match snapshot when visible 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,
@@ -968,7 +968,7 @@ exports[`FaceVerificationAlertOverlay should match snapshot with QR login varian
           {
             "alignSelf": "center",
             "borderRadius": 9,
-            "height": 54,
+            "minHeight": 54,
             "width": 540,
           },
           null,
@@ -994,7 +994,7 @@ exports[`FaceVerificationAlertOverlay should match snapshot with QR login varian
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             undefined,
@@ -1025,7 +1025,7 @@ exports[`FaceVerificationAlertOverlay should match snapshot with QR login varian
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,

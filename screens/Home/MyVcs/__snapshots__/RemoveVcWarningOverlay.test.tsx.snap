@@ -216,7 +216,7 @@ exports[`RemoveVcWarningOverlay should match snapshot when visible 1`] = `
           {
             "alignSelf": "center",
             "borderRadius": 9,
-            "height": 54,
+            "minHeight": 54,
             "width": 540,
           },
           null,
@@ -242,7 +242,7 @@ exports[`RemoveVcWarningOverlay should match snapshot when visible 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             undefined,
@@ -273,7 +273,7 @@ exports[`RemoveVcWarningOverlay should match snapshot when visible 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,

@@ -216,7 +216,7 @@ exports[`TrustModalVerifier should match snapshot with issuer flowType 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               null,
@@ -237,7 +237,7 @@ exports[`TrustModalVerifier should match snapshot with issuer flowType 1`] = `
                 {
                   "alignSelf": "center",
                   "borderRadius": 9,
-                  "height": 54,
+                  "minHeight": 54,
                   "width": 540,
                 },
                 {
@@ -273,7 +273,7 @@ exports[`TrustModalVerifier should match snapshot with issuer flowType 1`] = `
                 {
                   "alignSelf": "center",
                   "borderRadius": 9,
-                  "height": 54,
+                  "minHeight": 54,
                   "width": 540,
                 },
                 null,
@@ -656,7 +656,7 @@ exports[`TrustModalVerifier should match snapshot with verifier flowType 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               null,
@@ -677,7 +677,7 @@ exports[`TrustModalVerifier should match snapshot with verifier flowType 1`] = `
                 {
                   "alignSelf": "center",
                   "borderRadius": 9,
-                  "height": 54,
+                  "minHeight": 54,
                   "width": 540,
                 },
                 {
@@ -713,7 +713,7 @@ exports[`TrustModalVerifier should match snapshot with verifier flowType 1`] = `
                 {
                   "alignSelf": "center",
                   "borderRadius": 9,
-                  "height": 54,
+                  "minHeight": 54,
                   "width": 540,
                 },
                 null,
@@ -1096,7 +1096,7 @@ exports[`TrustModalVerifier should match snapshot without logo 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               null,
@@ -1117,7 +1117,7 @@ exports[`TrustModalVerifier should match snapshot without logo 1`] = `
                 {
                   "alignSelf": "center",
                   "borderRadius": 9,
-                  "height": 54,
+                  "minHeight": 54,
                   "width": 540,
                 },
                 {
@@ -1153,7 +1153,7 @@ exports[`TrustModalVerifier should match snapshot without logo 1`] = `
                 {
                   "alignSelf": "center",
                   "borderRadius": 9,
-                  "height": 54,
+                  "minHeight": 54,
                   "width": 540,
                 },
                 null,
@@ -1523,7 +1523,7 @@ exports[`TrustModalVerifier should match snapshot without name 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               null,
@@ -1544,7 +1544,7 @@ exports[`TrustModalVerifier should match snapshot without name 1`] = `
                 {
                   "alignSelf": "center",
                   "borderRadius": 9,
-                  "height": 54,
+                  "minHeight": 54,
                   "width": 540,
                 },
                 {
@@ -1580,7 +1580,7 @@ exports[`TrustModalVerifier should match snapshot without name 1`] = `
                 {
                   "alignSelf": "center",
                   "borderRadius": 9,
-                  "height": 54,
+                  "minHeight": 54,
                   "width": 540,
                 },
                 null,

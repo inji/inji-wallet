@@ -297,7 +297,7 @@ exports[`StaticAuthScreen should render biometric intro 1`] = `
                 {
                   "alignSelf": "center",
                   "borderRadius": 9,
-                  "height": 54,
+                  "minHeight": 54,
                   "width": 540,
                 },
                 null,
@@ -323,7 +323,7 @@ exports[`StaticAuthScreen should render biometric intro 1`] = `
                   {
                     "alignSelf": "center",
                     "borderRadius": 9,
-                    "height": 54,
+                    "minHeight": 54,
                     "width": 540,
                   },
                   undefined,
@@ -354,7 +354,7 @@ exports[`StaticAuthScreen should render biometric intro 1`] = `
                   {
                     "alignSelf": "center",
                     "borderRadius": 9,
-                    "height": 54,
+                    "minHeight": 54,
                     "width": 540,
                   },
                   null,
