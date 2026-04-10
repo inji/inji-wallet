@@ -133,7 +133,9 @@ export function sleep(timeInMillSeconds = 1000) {
 }
 
 export const getMosipIdentifier = (credentialSubject: CredentialSubject) => {
-  return credentialSubject.UIN ? credentialSubject.UIN : credentialSubject.VID;
+  return (
+    credentialSubject.UIN ?? credentialSubject.VID ?? credentialSubject.HANDLE
+  );
 };
 
 export const isTranslationKeyFound = (
