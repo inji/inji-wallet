@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.background
@@ -75,48 +76,13 @@ fun AuthWebViewScreen(
                             isLoading = false
                         }
 
+                        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                            return handleRedirect(request?.url?.toString())
+                        }
+
+                        @Deprecated("Deprecated in Java")
                         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                            Log.d("AuthWebView", "shouldOverrideUrlLoading: $url")
-
-                            if (url != null && url.startsWith(redirectUri)) {
-                                Log.d("AuthWebView", "Redirect URI matched: $url")
-
-                                val uri = Uri.parse(url)
-                                val queryParams = mutableMapOf<String, String>()
-                                uri.queryParameterNames.forEach { name ->
-                                  queryParams[name] = uri.getQueryParameter(name) ?: ""
-                                }
-                                val code = uri.getQueryParameter("code")
-                                val error = uri.getQueryParameter("error")
-
-                                Log.d("AuthWebView", "Auth code present: ${code != null}, Error: $error")
-
-                                if (code != null) {
-                                    Log.d("AuthWebView", "Completing auth flow with code")
-                                    AuthCodeHolder.completeV2(queryParams)
-                                    isLoading = false
-                                    isDownloading = true
-                                    errorMessage = null
-                                } else if (error != null) {
-                                    Log.e("AuthWebView", "Auth error: $error")
-                                    isLoading = false
-                                    isDownloading = false
-                                    errorMessage = "Authentication failed: $error"
-                                    AuthCodeHolder.complete(null)
-                                } else {
-                                    Log.w("AuthWebView", "No code or error in redirect")
-                                    isLoading = false
-                                    isDownloading = false
-                                    errorMessage = "Authentication failed: No authorization code received"
-                                    AuthCodeHolder.complete(null)
-                                }
-
-                                // Don't navigate back - stay on this screen with loader
-                                // The download will complete in background and navigate when done
-                                return true
-                            }
-
-                            return false
+                            return handleRedirect(url)
                         }
 
                         override fun onReceivedError(
@@ -130,6 +96,51 @@ fun AuthWebViewScreen(
                             isLoading = false
                             isDownloading = false
                             errorMessage = "Failed to load page: ${description ?: "Unknown error"}"
+                        }
+
+                        private fun handleRedirect(url: String?): Boolean {
+                            Log.d("AuthWebView", "shouldOverrideUrlLoading: $url")
+
+                            if (url == null || !url.startsWith(redirectUri)) {
+                                return false
+                            }
+
+                            Log.d("AuthWebView", "Redirect URI matched: $url")
+
+                            val uri = Uri.parse(url)
+                            val queryParams = mutableMapOf<String, String>()
+                            uri.queryParameterNames.forEach { name ->
+                                queryParams[name] = uri.getQueryParameter(name) ?: ""
+                            }
+                            val code = uri.getQueryParameter("code")
+                            val error = uri.getQueryParameter("error")
+
+                            Log.d("AuthWebView", "Auth redirect params: codePresent=${code != null}, error=$error, keys=${queryParams.keys}")
+
+                            if (code != null) {
+                                AuthCodeHolder.completeV2(queryParams)
+                                AuthCodeHolder.complete(code)
+                                isLoading = false
+                                isDownloading = true
+                                errorMessage = null
+                            } else if (error != null) {
+                                Log.e("AuthWebView", "Auth error: $error")
+                                isLoading = false
+                                isDownloading = false
+                                errorMessage = "Authentication failed: $error"
+                                AuthCodeHolder.completeV2(null)
+                                AuthCodeHolder.complete(null)
+                            } else {
+                                Log.w("AuthWebView", "No code or error in redirect")
+                                isLoading = false
+                                isDownloading = false
+                                errorMessage = "Authentication failed: No authorization code received"
+                                AuthCodeHolder.completeV2(null)
+                                AuthCodeHolder.complete(null)
+                            }
+
+                            // Keep current screen while background download continues.
+                            return true
                         }
                     }
 

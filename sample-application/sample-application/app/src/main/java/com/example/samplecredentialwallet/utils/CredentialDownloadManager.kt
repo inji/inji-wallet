@@ -41,6 +41,10 @@ suspend fun downloadCredentialFromTrustedIssuer(
   navController: NavController,
   context: Context
 ): CredentialResponse {
+  Log.d(
+    "VCI_FLOW",
+    "downloadCredentialFromTrustedIssuer start issuer=${selectedIssuer.id}, host=${selectedIssuer.credentialIssuerHost}, credentialType=$selectedCredentialType"
+  )
 
   val credentialResponse = OpenID4VCI.client.fetchCredentialFromTrustedIssuer(
     credentialIssuer = selectedIssuer.credentialIssuerHost, // issuer host - used for discovery of issuer metadata
@@ -79,6 +83,8 @@ suspend fun downloadCredentialFromTrustedIssuer(
     downloadTimeoutInMillis = 5000
   )
 
+  Log.d("VCI_FLOW", "downloadCredentialFromTrustedIssuer completed for issuer=${selectedIssuer.id}")
+
   return credentialResponse
 }
 
@@ -86,6 +92,7 @@ suspend fun downloadCredentialFromCredentialOffer( credentialOfferUri: String,
                                                    loadingMessage: MutableState<String>,
                                                    navController: NavController,
                                                    context: Context) : CredentialResponse {
+  Log.d("VCI_FLOW", "downloadCredentialFromCredentialOffer start offerUriLength=${credentialOfferUri.length}")
   val credentialResponse = OpenID4VCI.client.fetchCredentialUsingCredentialOffer(
     credentialOffer = credentialOfferUri,// The data extracted from the QR code
     clientMetadata = ClientMetadata(
@@ -127,6 +134,8 @@ suspend fun downloadCredentialFromCredentialOffer( credentialOfferUri: String,
     downloadTimeoutInMillis = 5000
   )
 
+  Log.d("VCI_FLOW", "downloadCredentialFromCredentialOffer completed")
+
   return credentialResponse
 }
 
@@ -166,7 +175,10 @@ private suspend fun handleAuthorizationFlow(
   withContext(Dispatchers.Main) {
     navController.navigate(Screen.AuthWebView.createRoute(url))
   }
-  return AuthCodeHolder.waitForAuthorizationResult()
+  Log.d("AUTH_FLOW", "Waiting for authorization result from AuthCodeHolder")
+  val result = AuthCodeHolder.waitForAuthorizationResult()
+  Log.d("AUTH_FLOW", "Authorization result received with keys=${result.keys}")
+  return result
 }
 
 
@@ -330,6 +342,10 @@ private suspend fun handleTokenRequest(
     loadingMessage.value = "Exchanging tokens..."
   }
   val url = URL(backendTokenEndpoint)
+  Log.d(
+    "VCI_TOKEN",
+    "Sending token request to backend endpoint=$backendTokenEndpoint grantType=${tokenRequest.grantType.value}"
+  )
   val conn = url.openConnection() as HttpURLConnection
   conn.requestMethod = "POST"
   conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
@@ -350,16 +366,26 @@ private suspend fun handleTokenRequest(
     tokenRequest.codeVerifier?.let { append("&code_verifier=${enc(it)}") }
   }
 
+  Log.d(
+    "VCI_TOKEN",
+    "Token request payload flags: hasAuthCode=${tokenRequest.authCode != null}, hasPreAuthCode=${tokenRequest.preAuthCode != null}, hasTxCode=${tokenRequest.txCode != null}, hasCodeVerifier=${tokenRequest.codeVerifier != null}"
+  )
+
   try {
     conn.outputStream.use { os ->
       os.write(formBody.toByteArray())
     }
 
     val responseCode = conn.responseCode
+    Log.d("VCI_TOKEN", "Token endpoint HTTP status=$responseCode")
 
     if (responseCode == HttpURLConnection.HTTP_OK) {
       val responseText = conn.inputStream.bufferedReader().readText()
       val response = JSONObject(responseText)
+      Log.d(
+        "VCI_TOKEN",
+        "Token response received: tokenType=${response.optString("token_type")}, hasAccessToken=${response.optString("access_token").isNotEmpty()}, hasCNonce=${response.optString("c_nonce").isNotEmpty()}"
+      )
 
       return TokenResponse(
         accessToken = response.getString("access_token"),
@@ -370,9 +396,11 @@ private suspend fun handleTokenRequest(
       )
     } else {
       val errorText = conn.errorStream?.bufferedReader()?.readText() ?: "Unknown error"
+      Log.e("VCI_TOKEN", "Token endpoint error $responseCode: $errorText")
       throw Exception("HTTP error $responseCode: $errorText")
     }
   } catch (e: Exception) {
+    Log.e("VCI_TOKEN", "Token request exception: ${e.message}", e)
     throw e
   } finally {
     conn.disconnect()

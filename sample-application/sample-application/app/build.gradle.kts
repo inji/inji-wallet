@@ -30,6 +30,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -53,6 +54,15 @@ android {
             )
         }
     }
+}
+
+configurations.configureEach {
+    exclude(group = "org.bouncycastle", module = "bcprov-jdk15on")
+    exclude(group = "org.bouncycastle", module = "bcprov-jdk15to18")
+    exclude(group = "org.bouncycastle", module = "bcpkix-jdk15on")
+    exclude(group = "org.bouncycastle", module = "bcpkix-jdk15to18")
+    exclude(group = "io.mosip", module = "vcverifier-jar")
+    exclude(group = "com.apicatalog", module = "titanium-json-ld")
 }
 
 dependencies {
@@ -93,6 +103,20 @@ dependencies {
         exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
     }
 
+    implementation("io.inji:inji-openid4vp-aar:0.7.0-SNAPSHOT") {
+        exclude(group = "org.bouncycastle", module = "bcpkix-jdk15on")
+        exclude(group = "org.bouncycastle", module = "bcpkix-jdk18on")
+        exclude(group = "com.google.crypto.tink", module = "tink")
+        exclude(group = "com.augustcellars.cose", module = "cose-java")
+        exclude(group = "io.mosip", module = "vcverifier-jar")
+        exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
+    }
+
+    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("com.jayway.jsonpath:json-path:2.9.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.0")
+    implementation("com.google.crypto.tink:tink-android:1.6.1")
+
     implementation("androidx.navigation:navigation-compose:2.8.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.5")
@@ -118,7 +142,7 @@ dependencies {
         exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
     }
 
-    implementation("com.apicatalog:titanium-json-ld:1.3.2")
+    implementation("com.apicatalog:titanium-json-ld-jre8:1.3.2")
 
     implementation("org.bouncycastle:bcprov-jdk18on:1.74")
 
@@ -129,6 +153,8 @@ dependencies {
 
     // ML Kit Barcode Scanning
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
+
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

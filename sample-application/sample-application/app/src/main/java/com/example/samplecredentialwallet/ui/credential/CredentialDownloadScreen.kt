@@ -285,6 +285,8 @@ fun CredentialDownloadScreen(
                   e is UnknownHostException -> "No internet connection"
                   e is SocketTimeoutException -> "No internet connection"
                   e is ConnectException -> "No internet connection"
+                  e.message?.contains("KEY_USER_NOT_AUTHENTICATED", ignoreCase = true) == true ->
+                    "Key authentication failed. Please retry after reopening the app once."
                   e.message?.contains(
                     "Unable to resolve host",
                     ignoreCase = true

@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,11 +44,13 @@ import org.json.JSONObject
 @Composable
 fun HomeScreen(
     onNavigate: () -> Unit,
-    onViewCredential: (Int) -> Unit = {}
+    onViewCredential: (Int) -> Unit = {},
+    onShareCredentials: () -> Unit = {}
 ) {
     val credentials = remember { mutableStateOf(CredentialStore.getAllCredentials()) }
     val verificationStatus = remember { mutableStateMapOf<Int, Boolean?>() }
     val coroutineScope = rememberCoroutineScope()
+    var showNoVcDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         credentials.value = CredentialStore.getAllCredentials()
@@ -67,20 +71,44 @@ fun HomeScreen(
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = onNavigate,
-                containerColor = InjiOrange,
-                contentColor = Color.White,
-                shape = CircleShape,
-                modifier = Modifier
-                    .size(56.dp)
-                    .offset(y = (-40).dp)
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.offset(y = (-40).dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add New Card",
-                    modifier = Modifier.size(28.dp)
-                )
+                FloatingActionButton(
+                    onClick = {
+                        if (credentials.value.isEmpty()) {
+                            showNoVcDialog = true
+                        } else {
+                            onShareCredentials()
+                        }
+                    },
+                    containerColor = Color.White,
+                    contentColor = InjiOrange,
+                    shape = CircleShape,
+                    modifier = Modifier.size(48.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = "Share Credentials",
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                FloatingActionButton(
+                    onClick = onNavigate,
+                    containerColor = InjiOrange,
+                    contentColor = Color.White,
+                    shape = CircleShape,
+                    modifier = Modifier.size(56.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add New Card",
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
             }
         },
         floatingActionButtonPosition = androidx.compose.material3.FabPosition.End
@@ -180,6 +208,19 @@ fun HomeScreen(
                     }
                 }
             }
+        }
+
+        if (showNoVcDialog) {
+            AlertDialog(
+                onDismissRequest = { showNoVcDialog = false },
+                title = { Text(stringResource(R.string.no_vc_to_share)) },
+                text = { Text(stringResource(R.string.no_verifiable_credential_found_to_share)) },
+                confirmButton = {
+                    TextButton(onClick = { showNoVcDialog = false }) {
+                        Text(stringResource(R.string.ok))
+                    }
+                }
+            )
         }
     }
 }

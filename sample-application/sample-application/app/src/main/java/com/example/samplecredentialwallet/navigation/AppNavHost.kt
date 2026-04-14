@@ -41,16 +41,19 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.samplecredentialwallet.ovp.ui.MatchingCredentialsScreen
+import com.example.samplecredentialwallet.ovp.ui.VPShareScreen
+import com.example.samplecredentialwallet.ovp.ui.VPSuccessScreen
+import com.example.samplecredentialwallet.ovp.viewmodel.OVPViewModel
 import com.example.samplecredentialwallet.ui.credential.CredentialDownloadScreen
 import com.example.samplecredentialwallet.ui.credential.CredentialListScreen
 import com.example.samplecredentialwallet.ui.home.HomeScreen
 import com.example.samplecredentialwallet.ui.issuer.IssuerListScreen
-import com.example.samplecredentialwallet.ui.issuer.IssuerDetailScreen
 import androidx.compose.material3.*
 import com.example.samplecredentialwallet.ui.auth.AuthWebViewScreen
 import com.example.samplecredentialwallet.ui.splash.SplashScreen
 import com.example.samplecredentialwallet.utils.Constants
-import com.example.samplecredentialwallet.utils.IssuerRepository
 import com.example.samplecredentialwallet.utils.IssuerRepositoryV2
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -87,10 +90,15 @@ sealed class Screen(val route: String) {
     }
 
     object QrScanner : Screen("qr_scanner")
+    object VPShare : Screen("vp_share")
+    object MatchingCredentials : Screen("matching_credentials")
+    object VPSuccess : Screen("vp_success")
 }
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
+    val ovpViewModel: OVPViewModel = viewModel()
+
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
             SplashScreen {
@@ -104,6 +112,9 @@ fun AppNavHost(navController: NavHostController) {
                 onNavigate = { navController.navigate(Screen.IssuerList.route) },
                 onViewCredential = { index ->
                     navController.navigate(Screen.CredentialList.createRoute(index))
+                },
+                onShareCredentials = {
+                    navController.navigate(Screen.VPShare.route)
                 }
             )
         }
@@ -173,6 +184,38 @@ fun AppNavHost(navController: NavHostController) {
             val credentialIndex = backStackEntry.arguments?.getInt("index") ?: -1
             Log.d("AppNavHost", "Navigating to credential list with index: $credentialIndex")
             CredentialListScreen(navController, credentialIndex)
+        }
+
+        composable(Screen.VPShare.route) {
+            VPShareScreen(
+                ovpViewModel = ovpViewModel,
+                onNavigateToMatching = {
+                    navController.navigate(Screen.MatchingCredentials.route)
+                }
+            )
+        }
+
+        composable(Screen.MatchingCredentials.route) {
+            MatchingCredentialsScreen(
+                ovpViewModel = ovpViewModel,
+                navController = navController,
+                onSuccess = {
+                    navController.navigate(Screen.VPSuccess.route)
+                },
+                onBackToShare = {
+                    navController.popBackStack(Screen.VPShare.route, inclusive = false)
+                }
+            )
+        }
+
+        composable(Screen.VPSuccess.route) {
+            VPSuccessScreen(
+                onGoHome = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Home.route) { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }
