@@ -151,9 +151,17 @@ fun AppNavHost(navController: NavHostController) {
         composable(Screen.AuthWebView.route) { backStackEntry ->
             val encodedUrl = backStackEntry.arguments?.getString("authUrl") ?: ""
             val authUrl = Uri.decode(encodedUrl)   //  decode back
+            // Use Constants.redirectUri if set (trusted issuer flow).
+            // Fall back to the credential-offer redirect URI so that
+            // AuthWebViewScreen's startsWith check never fires on every URL
+            // (empty string always matches startsWith in Kotlin, which was
+            // causing the auth flow to fail immediately for credential offer).
+            val redirectUri = Constants.redirectUri
+                ?.takeIf { it.isNotEmpty() }
+                ?: "io.mosip.residentapp.inji://oauthredirect"
             AuthWebViewScreen(
                 authorizationUrl = authUrl,
-                redirectUri = Constants.redirectUri ?: "",
+                redirectUri = redirectUri,
                 navController = navController
             )
         }

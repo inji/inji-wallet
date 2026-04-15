@@ -18,6 +18,8 @@ class MatchingVcsHelper {
         authRequest: JsonObject
     ): MatchingResult {
         val matchingVCs = mutableMapOf<String, MutableList<VCMetadata>>()
+        val lenientCandidates = mutableMapOf<String, MutableList<VCMetadata>>()
+        val interopCandidates = mutableMapOf<String, MutableSet<String>>()
         val requestedClaims = mutableSetOf<String>()
         val presentationDefinition = getAsJsonObjectByKeys(
             authRequest,
@@ -48,45 +50,78 @@ class MatchingVcsHelper {
                 val format = inputDescriptor.getAsJsonObject("format")
                     ?: presentationDefinition.getAsJsonObject("format")
                 val constraints = inputDescriptor.getAsJsonObject("constraints")
+                val descriptorSchemas = extractDescriptorSchemas(inputDescriptor)
                 val descriptorId = inputDescriptor.get("id")?.asString ?: "unknown-descriptor"
+                val hasFormat = format != null
+                val hasConstraintFields = constraints?.has("fields") == true
+                val hasSchema = descriptorSchemas.isNotEmpty()
 
                 hasFormatOrConstraints = hasFormatOrConstraints ||
-                    format != null || (constraints?.has("fields") == true)
+                    hasFormat || hasConstraintFields || hasSchema
 
                 val matchesFormat = areVCFormatAndProofTypeMatchingRequest(format, vcMetadata)
                 val matchesConstraints =
                     isVCMatchingRequestConstraints(constraints, vcMetadata, requestedClaims)
-
-                val strictInclude = if (constraints?.has("fields") == true && format != null) {
-                    matchesFormat && matchesConstraints
+                val matchesSchema = if (hasSchema) {
+                    isVCMatchingDescriptorSchema(descriptorSchemas, vcMetadata)
                 } else {
-                    matchesFormat || matchesConstraints
+                    true
                 }
+
+                val strictIncludeBase = if (hasConstraintFields && hasFormat) {
+                    matchesFormat && matchesConstraints
+                } else if (hasFormat || hasConstraintFields) {
+                    matchesFormat || matchesConstraints
+                } else if (hasSchema) {
+                    true
+                } else {
+                    false
+                }
+
+                val strictInclude = strictIncludeBase && matchesSchema
 
                 // Fallback for interoperability: if format matches but constraints are too strict,
                 // allow the VC as a candidate and let verifier perform final validation.
-                val lenientInclude = matchesFormat && !matchesConstraints && constraints?.has("fields") == true
+                val lenientInclude =
+                    matchesFormat && !matchesConstraints && hasConstraintFields && hasFormat && matchesSchema
 
                 if (lenientInclude) {
                     Log.w(
                         "OVP_MATCH",
                         "Lenient include applied for descriptor=$descriptorId vcFormat=${vcMetadata.format} due to constraint mismatch"
                     )
+
+                    if (!strictInclude) {
+                        val descriptorCandidates =
+                            interopCandidates.getOrPut(descriptorId) { mutableSetOf() }
+                        descriptorCandidates.add(vcMetadata.format)
+
+                        val list = lenientCandidates.getOrPut(descriptorId) { mutableListOf() }
+                        val candidate = VCMetadata(
+                            vcFormat,
+                            vc.deepCopy(),
+                            rawCBORData,
+                            vcMetadata.deviceKeyAlias
+                        )
+                        if (list.none { it.vc == candidate.vc && it.format == candidate.format }) {
+                            list.add(candidate)
+                        }
+                    }
                 }
 
                 Log.d(
                     "OVP_MATCH",
-                    "Descriptor=$descriptorId vcFormat=${vcMetadata.format} matchesFormat=$matchesFormat matchesConstraints=$matchesConstraints hasFormat=${format != null} hasFields=${constraints?.has("fields") == true}"
+                    "Descriptor=$descriptorId vcFormat=${vcMetadata.format} matchesFormat=$matchesFormat matchesConstraints=$matchesConstraints matchesSchema=$matchesSchema hasFormat=$hasFormat hasFields=$hasConstraintFields hasSchema=$hasSchema"
                 )
 
-                val shouldInclude = strictInclude || lenientInclude
+                val shouldInclude = strictInclude
 
                 if (shouldInclude) {
                     val descriptorId = inputDescriptor.get("id")?.asString ?: continue
                     val list = matchingVCs.getOrPut(descriptorId) { mutableListOf() }
 
                     if (list.none { it.vc == vc && it.format == vcFormat }) {
-                        list.add(VCMetadata(vcFormat, vc.deepCopy(), rawCBORData))
+                        list.add(VCMetadata(vcFormat, vc.deepCopy(), rawCBORData, vcMetadata.deviceKeyAlias))
                         Log.d(
                             "OVP_MATCH",
                             "Included VC for descriptor=$descriptorId format=${vcMetadata.format}"
@@ -96,11 +131,23 @@ class MatchingVcsHelper {
             }
         }
 
+        // Controlled fallback: only use interoperability candidates when strict matching produced none for a descriptor.
+        lenientCandidates.forEach { (descriptorId, candidates) ->
+            val strictMatches = matchingVCs[descriptorId]
+            if ((strictMatches == null || strictMatches.isEmpty()) && candidates.isNotEmpty()) {
+                matchingVCs[descriptorId] = candidates.toMutableList()
+                Log.w(
+                    "OVP_MATCH",
+                    "Applying interoperability fallback for descriptor=$descriptorId candidateCount=${candidates.size}"
+                )
+            }
+        }
+
         if (!hasFormatOrConstraints && inputDescriptors.size() > 0) {
             val fallbackId = inputDescriptors[0].asJsonObject.get("id")?.asString
             if (!fallbackId.isNullOrBlank()) {
                 matchingVCs[fallbackId] = vcList.map {
-                    VCMetadata(it.format, it.vc.deepCopy(), it.rawCBORData)
+                    VCMetadata(it.format, it.vc.deepCopy(), it.rawCBORData, it.deviceKeyAlias)
                 }.toMutableList()
             }
         }
@@ -108,7 +155,8 @@ class MatchingVcsHelper {
         return MatchingResult(
             matchingVCs,
             requestedClaims.joinToString(","),
-            presentationDefinition.get("purpose")?.asString ?: ""
+            presentationDefinition.get("purpose")?.asString ?: "",
+            interopCandidates.mapValues { (_, formats) -> formats.toList() }
         )
     }
 
@@ -118,6 +166,173 @@ class MatchingVcsHelper {
             if (element.isJsonObject) return element.asJsonObject
         }
         return null
+    }
+
+    private fun extractDescriptorSchemas(inputDescriptor: JsonObject): Set<String> {
+        val schemaElement = inputDescriptor.get("schema") ?: return emptySet()
+
+        val schemaValues = when {
+            schemaElement.isJsonArray -> schemaElement.asJsonArray.mapNotNull { extractSchemaValue(it) }
+            else -> listOfNotNull(extractSchemaValue(schemaElement))
+        }
+
+        return schemaValues
+            .map { it.trim() }
+            .filter { it.isNotBlank() }
+            .toSet()
+    }
+
+    private fun extractSchemaValue(schemaElement: JsonElement): String? {
+        if (schemaElement.isJsonPrimitive) {
+            return schemaElement.asString
+        }
+
+        if (!schemaElement.isJsonObject) {
+            return null
+        }
+
+        val schemaObject = schemaElement.asJsonObject
+
+        val uri = schemaObject.get("uri")
+            ?.takeIf { it.isJsonPrimitive }
+            ?.asString
+            ?.trim()
+        if (!uri.isNullOrBlank()) {
+            return uri
+        }
+
+        val id = schemaObject.get("id")
+            ?.takeIf { it.isJsonPrimitive }
+            ?.asString
+            ?.trim()
+        if (!id.isNullOrBlank()) {
+            return id
+        }
+
+        return null
+    }
+
+    private fun isVCMatchingDescriptorSchema(
+        descriptorSchemas: Set<String>,
+        vcMetadata: VCMetadata
+    ): Boolean {
+        if (descriptorSchemas.isEmpty()) return false
+
+        val vc = unwrapVcPayload(vcMetadata.vc)
+        val credentialSchemaValues = extractCredentialSchemaValues(vcMetadata, vc)
+
+        val matches = descriptorSchemas.any { descriptorSchema ->
+            credentialSchemaValues.any { credentialSchema ->
+                schemaValuesMatch(descriptorSchema, credentialSchema)
+            }
+        }
+
+        if (!matches) {
+            Log.d(
+                "OVP_MATCH",
+                "Schema mismatch requested=$descriptorSchemas credentialValues=$credentialSchemaValues format=${vcMetadata.format}"
+            )
+        }
+
+        return matches
+    }
+
+    private fun extractCredentialSchemaValues(vcMetadata: VCMetadata, vc: JsonObject): Set<String> {
+        val values = mutableSetOf<String>()
+
+        collectTypeValues(vcMetadata.vc, values)
+        collectTypeValues(vc, values)
+        collectSchemaValues(vcMetadata.vc, values)
+        collectSchemaValues(vc, values)
+        collectCredentialSchemaValues(vcMetadata.vc, values)
+        collectCredentialSchemaValues(vc, values)
+        collectDocTypeValues(vcMetadata.vc, values)
+        collectDocTypeValues(vc, values)
+
+        return values
+            .map { it.trim() }
+            .filter { it.isNotBlank() }
+            .toSet()
+    }
+
+    private fun collectTypeValues(source: JsonObject, values: MutableSet<String>) {
+        val typeElement = source.get("type") ?: return
+        when {
+            typeElement.isJsonPrimitive -> values.add(typeElement.asString)
+            typeElement.isJsonArray -> {
+                typeElement.asJsonArray.forEach { item ->
+                    if (item.isJsonPrimitive) {
+                        values.add(item.asString)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectSchemaValues(source: JsonObject, values: MutableSet<String>) {
+        val schemaElement = source.get("schema") ?: return
+        when {
+            schemaElement.isJsonObject -> extractSchemaValue(schemaElement)?.let { values.add(it) }
+            schemaElement.isJsonArray -> {
+                schemaElement.asJsonArray.forEach { item ->
+                    extractSchemaValue(item)?.let { values.add(it) }
+                }
+            }
+        }
+    }
+
+    private fun collectCredentialSchemaValues(source: JsonObject, values: MutableSet<String>) {
+        val credentialSchemaElement = source.get("credentialSchema") ?: return
+        when {
+            credentialSchemaElement.isJsonObject -> extractSchemaValue(credentialSchemaElement)?.let { values.add(it) }
+            credentialSchemaElement.isJsonArray -> {
+                credentialSchemaElement.asJsonArray.forEach { item ->
+                    extractSchemaValue(item)?.let { values.add(it) }
+                }
+            }
+        }
+    }
+
+    private fun collectDocTypeValues(source: JsonObject, values: MutableSet<String>) {
+        source.get("docType")
+            ?.takeIf { it.isJsonPrimitive }
+            ?.asString
+            ?.let { values.add(it) }
+    }
+
+    private fun schemaValuesMatch(descriptorSchema: String, credentialSchema: String): Boolean {
+        if (credentialSchema.equals(descriptorSchema, ignoreCase = true)) {
+            return true
+        }
+
+        if (stringsEquivalent(credentialSchema, descriptorSchema)) {
+            return true
+        }
+
+        val descriptorTokens = extractSchemaTokens(descriptorSchema)
+        val credentialTokens = extractSchemaTokens(credentialSchema)
+
+        return descriptorTokens.any { descriptorToken ->
+            credentialTokens.any { credentialToken ->
+                stringsEquivalent(descriptorToken, credentialToken)
+            }
+        }
+    }
+
+    private fun extractSchemaTokens(value: String): Set<String> {
+        val trimmed = value.trim()
+        if (trimmed.isBlank()) {
+            return emptySet()
+        }
+
+        val tokens = mutableSetOf(trimmed)
+        val separators = charArrayOf('/', '#', ':', '?', '&', '=')
+        trimmed.split(*separators)
+            .map { it.trim() }
+            .filter { it.isNotBlank() }
+            .forEach { tokens.add(it) }
+
+        return tokens
     }
 
     private fun getAsJsonArrayByKeys(jsonObject: JsonObject, vararg keys: String): JsonArray? {
@@ -535,5 +750,6 @@ class MatchingVcsHelper {
 data class MatchingResult(
     val matchingVCs: Map<String, List<VCMetadata>>,
     val requestedClaims: String,
-    val purpose: String
+    val purpose: String,
+    val interopWarnings: Map<String, List<String>> = emptyMap()
 )

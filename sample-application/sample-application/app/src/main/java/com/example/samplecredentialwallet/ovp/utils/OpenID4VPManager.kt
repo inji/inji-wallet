@@ -2,6 +2,7 @@ package com.example.samplecredentialwallet.ovp.utils
 
 import android.util.Log
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import com.google.gson.JsonObject
 import com.nimbusds.jose.jwk.OctetKeyPair
 import com.example.samplecredentialwallet.ovp.data.OVPData
 import com.example.samplecredentialwallet.ovp.data.VCMetadata
@@ -22,7 +23,6 @@ import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
-import java.security.KeyPair
 
 object OpenID4VPManager {
     private var instance: OpenID4VP? = null
@@ -54,13 +54,19 @@ object OpenID4VPManager {
                     "OpenID4VPManager",
                     "shareVerifiablePresentation success redirectUriPresent=${!result.redirectUri.isNullOrBlank()}"
                 )
-                onResult(result)
+                withContext(Dispatchers.Main) {
+                    onResult(result)
+                }
             } catch (e: TimeoutCancellationException) {
                 Log.e("OpenID4VPManager", "VP share timed out after 45s", e)
-                onError(IllegalStateException("VP share timed out. Please try again."))
+                withContext(Dispatchers.Main) {
+                    onError(IllegalStateException("VP share timed out. Please try again."))
+                }
             } catch (e: Throwable) {
                 Log.e("OpenID4VPManager", "Error sharing VP", e)
-                onError(e)
+                withContext(Dispatchers.Main) {
+                    onError(e)
+                }
             }
         }
     }
@@ -85,6 +91,7 @@ object OpenID4VPManager {
         selectedItems: SnapshotStateList<Pair<String, VCMetadata>>
     ): VerifierResponse = withContext(Dispatchers.IO) {
         val parsedSelectedItems = MatchingVcsHelper().buildSelectedVCsMapPlain(selectedItems)
+        val mdocDeviceKeyAliasByDocType = buildMdocDeviceKeyAliasByDocType(selectedItems)
         Log.d(
             "OpenID4VPManager",
             "sendVP parsedSelectedItems descriptors=${parsedSelectedItems.keys} formats=${parsedSelectedItems.values.flatMap { it.keys }.toSet()}"
@@ -114,27 +121,45 @@ object OpenID4VPManager {
         }
 
         val mdocKeyType = OVPKeyType.ES256
-        val mdocKeyPair = OVPKeyManager.generateKeyPair(mdocKeyType)
 
         val mdocSigningResult = unsignedVpTokenMap[FormatType.MSO_MDOC]?.let { payload ->
             val mdocPayload = payload as UnsignedMdocVPToken
             val docTypeToDeviceAuthenticationBytes = mdocPayload.docTypeToDeviceAuthenticationBytes
 
             val docTypeToDeviceAuthentication =
-                docTypeToDeviceAuthenticationBytes.mapValues { (_, deviceAuthBytes) ->
+                docTypeToDeviceAuthenticationBytes.entries.associate { (docType, deviceAuthBytes) ->
                     val bytes = if (deviceAuthBytes is String) {
                         deviceAuthBytes.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
                     } else {
                         deviceAuthBytes as ByteArray
                     }
+
+                    val alias = mdocDeviceKeyAliasByDocType[docType]
+                    if (alias.isNullOrBlank()) {
+                        Log.e(
+                            "OpenID4VPManager",
+                            "Missing device key alias for mdoc docType=$docType. Cannot sign device authentication."
+                        )
+                        throw IllegalStateException("Missing device key alias for mdoc docType=$docType")
+                    }
+
+                    val mdocKeyPair = OVPKeyManager.getKeyPairByAlias(alias)
+                    if (mdocKeyPair == null) {
+                        Log.e(
+                            "OpenID4VPManager",
+                            "Device key not found for alias=$alias and docType=$docType. Cannot sign device authentication."
+                        )
+                        throw IllegalStateException("Device key not found for alias=$alias")
+                    }
+
                     val signed = OVPKeyManager.signDeviceAuthentication(
-                        mdocKeyPair as KeyPair,
+                        mdocKeyPair,
                         mdocKeyType,
                         bytes
                     )
                     val jwsParts = signed.jws.split(".")
                     val signaturePart = if (jwsParts.size == 3) jwsParts[2] else signed.jws
-                    DeviceAuthentication(
+                    docType to DeviceAuthentication(
                         signature = signaturePart,
                         algorithm = signed.signatureAlgorithm
                     )
@@ -159,5 +184,37 @@ object OpenID4VPManager {
             "sendVP verifier response received redirectUriPresent=${!response.redirectUri.isNullOrBlank()}"
         )
         response
+    }
+
+    private fun buildMdocDeviceKeyAliasByDocType(
+        selectedItems: List<Pair<String, VCMetadata>>
+    ): Map<String, String> {
+        val aliasesByDocType = mutableMapOf<String, String>()
+
+        selectedItems.forEach { (_, metadata) ->
+            val isMdoc = metadata.format.equals(FormatType.MSO_MDOC.value, ignoreCase = true) ||
+                (metadata.vc.has("issuerSigned") && metadata.vc.has("docType"))
+            if (!isMdoc) {
+                return@forEach
+            }
+
+            val docType = extractMdocDocType(metadata.vc)
+            val alias = metadata.deviceKeyAlias?.trim().orEmpty()
+
+            if (!docType.isNullOrBlank() && alias.isNotBlank() && !aliasesByDocType.containsKey(docType)) {
+                aliasesByDocType[docType] = alias
+            }
+        }
+
+        return aliasesByDocType
+    }
+
+    private fun extractMdocDocType(vcObject: JsonObject): String? {
+        val unwrapped = vcObject.getAsJsonObject("vc") ?: vcObject
+        return unwrapped.get("docType")
+            ?.takeIf { it.isJsonPrimitive }
+            ?.asString
+            ?.trim()
+            ?.takeIf { it.isNotBlank() }
     }
 }

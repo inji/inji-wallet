@@ -23,6 +23,8 @@ import com.nimbusds.jwt.SignedJWT
 import java.nio.charset.StandardCharsets
 import java.security.KeyPair
 import java.security.KeyPairGenerator
+import java.security.KeyStore
+import java.security.PrivateKey
 import java.security.interfaces.ECPrivateKey
 import java.security.interfaces.ECPublicKey
 import java.security.interfaces.RSAPrivateKey
@@ -42,6 +44,17 @@ data class SignedVPJWT(
 
 object OVPKeyManager {
     const val SIGNATURE_SUITE = "JsonWebSignature2020"
+
+    fun getKeyPairByAlias(alias: String): KeyPair? {
+        return try {
+            val keyStore = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
+            val certificate = keyStore.getCertificate(alias) ?: return null
+            val privateKey = keyStore.getKey(alias, null) as? PrivateKey ?: return null
+            KeyPair(certificate.publicKey, privateKey)
+        } catch (_: Exception) {
+            null
+        }
+    }
 
     fun generateKeyPair(keyType: OVPKeyType): Any {
         return when (keyType) {
@@ -89,7 +102,13 @@ object OVPKeyManager {
         keyType: OVPKeyType,
         deviceAuthBytes: ByteArray
     ): SignedVPJWT {
-        val header = JWSHeader.Builder(JWSAlgorithm.ES256).type(JOSEObjectType.JWT).build()
+        val algorithm = when (keyType) {
+            OVPKeyType.ES256 -> JWSAlgorithm.ES256
+            OVPKeyType.RSA -> JWSAlgorithm.RS256
+            OVPKeyType.Ed25519 -> throw IllegalArgumentException("Unsupported key type for device auth")
+        }
+
+        val header = JWSHeader.Builder(algorithm).type(JOSEObjectType.JWT).build()
         val payload = Payload(deviceAuthBytes)
         val jwsObject = JWSObject(header, payload)
 
@@ -102,7 +121,7 @@ object OVPKeyManager {
 
         return SignedVPJWT(
             jws = jwsObject.serialize(),
-            signatureAlgorithm = jwsObject.header.algorithm.name
+            signatureAlgorithm = algorithm.name
         )
     }
 

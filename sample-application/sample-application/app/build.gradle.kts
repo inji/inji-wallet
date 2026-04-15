@@ -61,8 +61,6 @@ configurations.configureEach {
     exclude(group = "org.bouncycastle", module = "bcprov-jdk15to18")
     exclude(group = "org.bouncycastle", module = "bcpkix-jdk15on")
     exclude(group = "org.bouncycastle", module = "bcpkix-jdk15to18")
-    exclude(group = "io.mosip", module = "vcverifier-jar")
-    exclude(group = "com.apicatalog", module = "titanium-json-ld")
 }
 
 dependencies {
@@ -92,6 +90,7 @@ dependencies {
       exclude(group = "com.google.crypto.tink", module = "tink")
       exclude(group = "io.mosip", module = "vcverifier-jar")
       exclude(group = "com.google.protobuf", module = "protobuf-java")
+            exclude(group = "com.apicatalog", module = "titanium-json-ld")
       exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
       exclude(group = "org.bouncycastle")
     }
@@ -100,6 +99,7 @@ dependencies {
         // Exclude transitive dependencies to prevent conflicts and use explicitly declared versions
         exclude(group = "org.bouncycastle")
         exclude(group = "org.springframework")
+       exclude(group = "com.apicatalog", module = "titanium-json-ld")
         exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
     }
 
@@ -109,6 +109,7 @@ dependencies {
         exclude(group = "com.google.crypto.tink", module = "tink")
         exclude(group = "com.augustcellars.cose", module = "cose-java")
         exclude(group = "io.mosip", module = "vcverifier-jar")
+        exclude(group = "com.apicatalog", module = "titanium-json-ld")
         exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
     }
 

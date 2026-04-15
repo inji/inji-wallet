@@ -54,6 +54,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 
 @Composable
 fun MatchingCredentialsScreen(
@@ -305,14 +306,37 @@ private fun handleDecline(
     onDeclineConfirmed: () -> Unit,
 ) {
     coroutineScope.launch(Dispatchers.IO) {
-        val verifierResponse = OpenID4VPManager.sendErrorToVerifier(
-            OpenID4VPExceptions.AccessDenied(
-                OVPConstants.ERR_DECLINED,
-                "MatchingCredentialsScreen"
-            )
-        )
-        handleVerifierResponse(verifierResponse, navController) {
-            onDeclineConfirmed()
+        val verifierResponse = try {
+            withTimeoutOrNull(8_000L) {
+                OpenID4VPManager.sendErrorToVerifier(
+                    OpenID4VPExceptions.AccessDenied(
+                        OVPConstants.ERR_DECLINED,
+                        "MatchingCredentialsScreen"
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("OVP_DECLINE", "sendErrorToVerifier failed; continuing decline flow", e)
+            null
+        }
+
+        if (verifierResponse == null) {
+            Log.w("OVP_DECLINE", "sendErrorToVerifier timed out or failed; continuing decline flow")
+        }
+
+        try {
+            verifierResponse?.let { response ->
+                handleVerifierResponse(response, navController) {
+                    onDeclineConfirmed()
+                }
+            } ?: withContext(Dispatchers.Main) {
+                onDeclineConfirmed()
+            }
+        } catch (e: Exception) {
+            Log.e("OVP_DECLINE", "Decline callback handling failed; continuing decline flow", e)
+            withContext(Dispatchers.Main) {
+                onDeclineConfirmed()
+            }
         }
     }
 }

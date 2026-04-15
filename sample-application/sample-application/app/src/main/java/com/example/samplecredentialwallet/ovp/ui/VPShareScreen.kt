@@ -27,6 +27,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -55,7 +57,6 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.util.concurrent.Executors
 
@@ -115,12 +116,39 @@ private fun CameraPreviewAndScanner(
     onNavigateToMatching: () -> Unit
 ) {
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     val executor = remember { Executors.newSingleThreadExecutor() }
+    val barcodeScanner = remember {
+        BarcodeScanning.getClient(
+            BarcodeScannerOptions.Builder()
+                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                .build()
+        )
+    }
+
+    var boundCameraProvider by remember { mutableStateOf<ProcessCameraProvider?>(null) }
+    var analysisUseCase by remember { mutableStateOf<ImageAnalysis?>(null) }
 
     var scannedText by remember { mutableStateOf<String?>(null) }
     var showErrorDialog by remember { mutableStateOf(false) }
     var scanningEnabled by remember { mutableStateOf(true) }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            analysisUseCase?.clearAnalyzer()
+            boundCameraProvider?.unbindAll()
+            barcodeScanner.close()
+            executor.shutdownNow()
+        }
+    }
+
+    LaunchedEffect(scanningEnabled) {
+        if (!scanningEnabled) {
+            analysisUseCase?.clearAnalyzer()
+            boundCameraProvider?.unbindAll()
+        }
+    }
 
     LaunchedEffect(scannedText) {
         scannedText?.let {
@@ -138,52 +166,52 @@ private fun CameraPreviewAndScanner(
         AndroidView(factory = { ctx ->
             val previewView = PreviewView(ctx)
 
-            val cameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder().build().also {
-                it.setSurfaceProvider(previewView.surfaceProvider)
-            }
+            cameraProviderFuture.addListener({
+                val cameraProvider = cameraProviderFuture.get()
+                boundCameraProvider = cameraProvider
 
-            val barcodeScanner = BarcodeScanning.getClient(
-                BarcodeScannerOptions.Builder()
-                    .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                    .build()
-            )
-
-            val analysisUseCase = ImageAnalysis.Builder()
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build()
-
-            analysisUseCase.setAnalyzer(executor) { imageProxy ->
-                if (!scanningEnabled) {
-                    imageProxy.close()
-                    return@setAnalyzer
+                val preview = Preview.Builder().build().also {
+                    it.setSurfaceProvider(previewView.surfaceProvider)
                 }
 
-                processImageProxy(
-                    imageProxy = imageProxy,
-                    barcodeScanner = barcodeScanner,
-                    onQrCodeDetected = { value ->
-                        if (scannedText != value) {
-                            scannedText = value
-                            scanningEnabled = false
-                        }
+                val imageAnalysis = ImageAnalysis.Builder()
+                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                    .build()
+
+                analysisUseCase = imageAnalysis
+
+                imageAnalysis.setAnalyzer(executor) { imageProxy ->
+                    if (!scanningEnabled) {
+                        imageProxy.close()
+                        return@setAnalyzer
                     }
-                )
-            }
 
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+                    processImageProxy(
+                        imageProxy = imageProxy,
+                        barcodeScanner = barcodeScanner,
+                        onQrCodeDetected = { value ->
+                            if (scannedText != value) {
+                                scannedText = value
+                                scanningEnabled = false
+                            }
+                        }
+                    )
+                }
 
-            try {
-                cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(
-                    context as androidx.lifecycle.LifecycleOwner,
-                    cameraSelector,
-                    preview,
-                    analysisUseCase
-                )
-            } catch (e: Exception) {
-                Log.e("VPShareScreen", "Use case binding failed", e)
-            }
+                val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+                try {
+                    cameraProvider.unbindAll()
+                    cameraProvider.bindToLifecycle(
+                        lifecycleOwner,
+                        cameraSelector,
+                        preview,
+                        imageAnalysis
+                    )
+                } catch (e: Exception) {
+                    Log.e("VPShareScreen", "Use case binding failed", e)
+                }
+            }, ContextCompat.getMainExecutor(ctx))
 
             previewView
         })
@@ -287,8 +315,6 @@ private suspend fun handleScannedText(
         )
 
         ovpViewModel.storeMatchResult(matchingVcsResult)
-
-        delay(100)
 
         val hasMatchingVCs = matchingVcsResult.matchingVCs.values.any { it.isNotEmpty() }
 

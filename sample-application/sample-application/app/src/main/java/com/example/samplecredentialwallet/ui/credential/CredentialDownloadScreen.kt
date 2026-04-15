@@ -251,6 +251,21 @@ fun CredentialDownloadScreen(
                         credJson.put("credentialName", displayName)
                         Log.d("VC_STORE", "Added display name: $displayName")
                       }
+
+                      val isMdocCredential =
+                        (credJson.optString("format").equals("mso_mdoc", ignoreCase = true)) ||
+                          (credJson.has("issuerSigned") && credJson.has("docType"))
+
+                      if (isMdocCredential) {
+                        val alias = SecureKeystoreManager.KeyType.ES256.value
+                        if (keystoreManager.hasKey(SecureKeystoreManager.KeyType.ES256)) {
+                          credJson.put("deviceKeyAlias", alias)
+                          Log.d("VC_STORE", "Persisted mdoc device key alias: $alias")
+                        } else {
+                          Log.e("VC_STORE", "Cannot persist mdoc device key alias; key not found for alias: $alias")
+                        }
+                      }
+
                       credJson.toString()
                     } catch (e: Exception) {
                       Log.e("VC_STORE", "Failed to add display name: ${e.message}")

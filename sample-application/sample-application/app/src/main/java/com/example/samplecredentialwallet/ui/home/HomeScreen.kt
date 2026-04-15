@@ -52,8 +52,11 @@ fun HomeScreen(
     val coroutineScope = rememberCoroutineScope()
     var showNoVcDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
+    // Reload credentials every time HomeScreen enters composition
+    // (e.g. when navigating back after a successful VC download).
+    DisposableEffect(Unit) {
         credentials.value = CredentialStore.getAllCredentials()
+        onDispose { }
     }
 
     // Verify credentials when they change

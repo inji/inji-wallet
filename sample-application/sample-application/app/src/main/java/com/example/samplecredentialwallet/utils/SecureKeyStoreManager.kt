@@ -76,10 +76,11 @@ class SecureKeystoreManager(private val context: Context) {
             Log.i(TAG, "Key policy migration required. Regenerating keys with background-signing policy")
             try {
                 keystore.removeAllKeys()
+                prefs.edit().putBoolean(KEY_KEYS_GENERATED, false).apply()
             } catch (e: Exception) {
-                Log.w(TAG, "Failed to clear old keys during migration; continuing with regeneration", e)
+                Log.e(TAG, "Failed to clear old keys during migration; aborting initialization", e)
+                return@withContext Result.failure(e)
             }
-            prefs.edit().putBoolean(KEY_KEYS_GENERATED, false).apply()
         }
 
         if (areKeysGenerated()) {

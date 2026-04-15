@@ -80,10 +80,8 @@ suspend fun downloadCredentialFromTrustedIssuer(
         isTrustedIssuerFlow = true
       )
     },
-    downloadTimeoutInMillis = 5000
+    downloadTimeoutInMillis = 120000
   )
-
-  Log.d("VCI_FLOW", "downloadCredentialFromTrustedIssuer completed for issuer=${selectedIssuer.id}")
 
   return credentialResponse
 }
@@ -131,7 +129,7 @@ suspend fun downloadCredentialFromCredentialOffer( credentialOfferUri: String,
 //    A transaction code is a one-time code that
 //    ensures only the right wallet can download a specific credential.
     getTxCode = {inputMode, description, length -> getTransactionCode(inputMode, description, length)},
-    downloadTimeoutInMillis = 5000
+    downloadTimeoutInMillis = 120000
   )
 
   Log.d("VCI_FLOW", "downloadCredentialFromCredentialOffer completed")

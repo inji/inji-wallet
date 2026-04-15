@@ -101,19 +101,43 @@ fun AuthWebViewScreen(
                         private fun handleRedirect(url: String?): Boolean {
                             Log.d("AuthWebView", "shouldOverrideUrlLoading: $url")
 
-                            if (url == null || !url.startsWith(redirectUri)) {
+                            if (url == null || redirectUri.isBlank()) {
+                                return false
+                            }
+
+                            val expected = try {
+                                Uri.parse(redirectUri)
+                            } catch (e: Exception) {
+                                Log.e("AuthWebView", "Invalid configured redirectUri: $redirectUri", e)
+                                return false
+                            }
+
+                            val actual = try {
+                                Uri.parse(url)
+                            } catch (e: Exception) {
+                                Log.e("AuthWebView", "Invalid redirect url: $url", e)
+                                return false
+                            }
+
+                            val expectedPath = expected.path ?: ""
+                            val actualPath = actual.path ?: ""
+                            val isExpectedRedirect =
+                                expected.scheme == actual.scheme &&
+                                expected.authority == actual.authority &&
+                                expectedPath == actualPath
+
+                            if (!isExpectedRedirect) {
                                 return false
                             }
 
                             Log.d("AuthWebView", "Redirect URI matched: $url")
 
-                            val uri = Uri.parse(url)
                             val queryParams = mutableMapOf<String, String>()
-                            uri.queryParameterNames.forEach { name ->
-                                queryParams[name] = uri.getQueryParameter(name) ?: ""
+                            actual.queryParameterNames.forEach { name ->
+                                queryParams[name] = actual.getQueryParameter(name) ?: ""
                             }
-                            val code = uri.getQueryParameter("code")
-                            val error = uri.getQueryParameter("error")
+                            val code = actual.getQueryParameter("code")
+                            val error = actual.getQueryParameter("error")
 
                             Log.d("AuthWebView", "Auth redirect params: codePresent=${code != null}, error=$error, keys=${queryParams.keys}")
 
