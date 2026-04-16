@@ -54,7 +54,5 @@ RCT_EXTERN_METHOD(sendIssuerTrustResponseFromJS:(BOOL)isTrusted)
 // Sends token response JSON back to native side (in response to onRequestTokenResponse)
 RCT_EXTERN_METHOD(sendTokenResponseFromJS:(NSString *)tokenResponseJson)
 
-// Required by React Native
-RCT_EXTERN_METHOD(requiresMainQueueSetup:(BOOL)isRequired)
 
 @end

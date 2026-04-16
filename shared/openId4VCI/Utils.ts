@@ -151,7 +151,19 @@ export const getCredentialIssuersWellKnownConfig = async (
         wellknownResponse,
         credentialConfigurationId,
       );
-      if (
+      // OpenID4VCI Final 1.0: credential_metadata.claims is a flat array of
+      // claim description objects (Appendix B.2). Array order defines display
+      // order (Appendix B.3), superseding any legacy `order` field.
+      const normalizedClaims = matchingWellknownDetails.claims;
+      if (Array.isArray(normalizedClaims)) {
+        const extracted = normalizedClaims
+          .map(c => serializeClaimPath(c?.path, format))
+          .filter((p): p is string => !!p);
+        if (extracted.length > 0) {
+          fields = extracted;
+          wellknownFieldsFlag = true;
+        }
+      } else if (
         matchingWellknownDetails.order != null &&
         matchingWellknownDetails.order.length > 0
       ) {
@@ -221,6 +233,50 @@ export const getCredentialIssuersWellKnownConfig = async (
       wellknownFieldsFlag || matchingWellknownDetails?.order?.length > 0,
   };
 };
+// OpenID4VCI Final 1.0 moved per-credential `display` and `claims` into a
+// nested `credential_metadata` object. Lift them up so consumers can keep
+// reading `display`/`claims` directly. Legacy issuers (pre-Final-1.0) that
+// still put these at the top level continue to work via the `??` fallback.
+function normalizeCredentialMetadata(entry: any): any {
+  if (!entry || !entry.credential_metadata) return entry;
+  const cm = entry.credential_metadata;
+  return {
+    ...entry,
+    display: cm.display ?? entry.display,
+    claims: cm.claims ?? entry.claims,
+  };
+}
+
+// Serializes an Appendix C claims path pointer into the internal field key
+// convention used elsewhere in this codebase.
+//  - string segments → object keys
+//  - non-negative integer segments → preserved as digit strings; walkers
+//    resolve them via bracket access (works for both arrays and numeric
+//    map keys).
+//  - null segments (wildcard "all array elements") → dropped. Walkers
+//    auto-iterate remaining path across array values, so the pointer still
+//    resolves correctly.
+export function serializeClaimPath(
+  path: unknown,
+  format: string,
+): string | null {
+  if (!Array.isArray(path) || path.length === 0) return null;
+  const segs: string[] = [];
+  for (const p of path) {
+    if (typeof p === 'string') segs.push(p);
+    else if (typeof p === 'number' && Number.isInteger(p) && p >= 0)
+      segs.push(String(p));
+    // null (wildcard) is skipped — see comment above.
+  }
+  if (segs.length === 0) return null;
+  if (format === VCFormat.mso_mdoc) return segs.join('~');
+  if (format === VCFormat.ldp_vc || format === VCFormat.jwt_vc_json) {
+    const stripped = segs[0] === 'credentialSubject' ? segs.slice(1) : segs;
+    return stripped.length ? stripped.join('.') : null;
+  }
+  return segs.join('.');
+}
+
 const flattenClaimPaths = (
   claims: Record<string, any>,
   prefix = '',
@@ -639,7 +695,9 @@ export function getMatchingCredentialIssuerMetadata(
 ): any {
   for (const credentialTypeKey in wellknown.credential_configurations_supported) {
     if (credentialTypeKey === credentialConfigurationId) {
-      return wellknown.credential_configurations_supported[credentialTypeKey];
+      return normalizeCredentialMetadata(
+        wellknown.credential_configurations_supported[credentialTypeKey],
+      );
     }
   }
   console.error(

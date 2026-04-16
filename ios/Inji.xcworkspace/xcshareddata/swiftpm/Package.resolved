@@ -96,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/inji/inji-vci-client-ios-swift",
       "state" : {
-        "branch" : "release-0.8.x",
-        "revision" : "fba7e072f77a2ebe4feb81b614f349c6d6163918"
+        "branch" : "develop",
+        "revision" : "5a76ed0f74a366c222516e07427e4701aac7e517"
       }
     },
     {

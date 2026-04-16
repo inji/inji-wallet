@@ -159,6 +159,18 @@ PODS:
   - hermes-engine/Pre-built (0.74.5)
   - ImageColors (2.4.0):
     - ExpoModulesCore
+  - libwebp (1.5.0):
+    - libwebp/demux (= 1.5.0)
+    - libwebp/mux (= 1.5.0)
+    - libwebp/sharpyuv (= 1.5.0)
+    - libwebp/webp (= 1.5.0)
+  - libwebp/demux (1.5.0):
+    - libwebp/webp
+  - libwebp/mux (1.5.0):
+    - libwebp/demux
+  - libwebp/sharpyuv (1.5.0)
+  - libwebp/webp (1.5.0):
+    - libwebp/sharpyuv
   - MLImage (1.0.0-beta2)
   - MLKitCommon (5.0.0):
     - GoogleDataTransport (~> 9.0)
@@ -1449,6 +1461,10 @@ PODS:
     - React-Core
   - RNDeviceInfo (10.14.0):
     - React-Core
+  - RNFastImage (8.6.3):
+    - React-Core
+    - SDWebImage (~> 5.11.1)
+    - SDWebImageWebPCoder (~> 0.8.4)
   - RNFS (2.20.0):
     - React-Core
   - RNGestureHandler (2.16.2):
@@ -1514,6 +1530,12 @@ PODS:
   - RNZipArchive/Core (6.1.0):
     - React-Core
     - SSZipArchive (~> 2.2)
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
+  - SDWebImageWebPCoder (0.8.5):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.7.0)
   - "sqlite3 (3.45.3+1)":
     - "sqlite3/common (= 3.45.3+1)"
@@ -1634,6 +1656,7 @@ DEPENDENCIES:
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
@@ -1659,6 +1682,7 @@ SPEC REPOS:
     - GoogleUtilitiesComponents
     - GTMAppAuth
     - GTMSessionFetcher
+    - libwebp
     - MLImage
     - MLKitCommon
     - MLKitFaceDetection
@@ -1669,6 +1693,8 @@ SPEC REPOS:
     - PromisesObjC
     - Protobuf
     - ReachabilitySwift
+    - SDWebImage
+    - SDWebImageWebPCoder
     - SocketRocket
     - sqlite3
     - SSZipArchive
@@ -1874,6 +1900,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-picker/picker"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
+  RNFastImage:
+    :path: "../node_modules/react-native-fast-image"
   RNFS:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
@@ -1939,6 +1967,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   hermes-engine: 8c1577f3fdb849cbe7729c2e7b5abc4b845e88f8
   ImageColors: 88be684570585c07ae2750bff34eb7b78bfc53b4
+  libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   MLImage: a454f9f8ecfd537783a12f9488f5be1a68820829
   MLKitCommon: 3bc17c6f7d25ce3660f030350b46ae7ec9ebca6e
   MLKitFaceDetection: 617cb847441868a8bfd4b48d751c9b33c1104948
@@ -2017,6 +2046,7 @@ SPEC CHECKSUMS:
   RNCClipboard: 3f0451a8100393908bea5c5c5b16f96d45f30bfc
   RNCPicker: 3e2c37a8328f368ce14da050cdc8231deb5fc9f9
   RNDeviceInfo: 59344c19152c4b2b32283005f9737c5c64b42fba
+  RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 2282cfbcf86c360d29f44ace393203afd5c6cff7
   RNGoogleSignin: aac5c1ec73422109dec1da770247a1e410dcc620
@@ -2027,6 +2057,8 @@ SPEC CHECKSUMS:
   RNShare: 0fad69ae2d71de9d1f7b9a43acf876886a6cb99c
   RNSVG: 43b64ed39c14ce830d840903774154ca0c1f27ec
   RNZipArchive: ef9451b849c45a29509bf44e65b788829ab07801
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   sqlite3: 02d1f07eaaa01f80a1c16b4b31dfcbb3345ee01a
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
@@ -2035,6 +2067,6 @@ SPEC CHECKSUMS:
   Yoga: 950bbfd7e6f04790fdb51149ed51df41f329fcc8
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: a555e3bf20e7a7fbd521747ca919066410e3af18
+PODFILE CHECKSUM: faf338f6b9b723ac762519a2d1ba0e7314d95755
 
 COCOAPODS: 1.16.2
