@@ -151,6 +151,7 @@ jobs:
           - SERVICE_LOCATION: 'injitest'
             SERVICE_NAME: 'uitest-inji-wallet'
             BUILD_ARTIFACT: 'uitest-inji-wallet-local'
+            PLATFORMS: "linux/amd64"
             ONLY_DOCKER: true
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
@@ -159,6 +160,7 @@ jobs:
       SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
       SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
       BUILD_ARTIFACT: ${{ matrix.BUILD_ARTIFACT }}
+      PLATFORMS: ${{ matrix.PLATFORMS }}
       ONLY_DOCKER: ${{ matrix.ONLY_DOCKER }}
     secrets:
       DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
