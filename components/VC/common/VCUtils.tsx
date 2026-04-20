@@ -18,6 +18,7 @@ import {VCItemDetailsProps} from '../Views/VCDetailView';
 import {
   getDisplayObjectForCurrentLanguage,
   getMatchingCredentialIssuerMetadata,
+  serializeClaimPath,
 } from '../../../shared/openId4VCI/Utils';
 import {VCFormat} from '../../../shared/VCFormat';
 import {displayType} from '../../../machines/Issuers/IssuersMachine';
@@ -97,25 +98,72 @@ export const getFieldValue = (
       );
     default: {
       if (format === VCFormat.ldp_vc) {
-        const fieldValue = verifiableCredential?.credentialSubject[field];
-        if (Array.isArray(fieldValue) && typeof fieldValue[0] !== 'object') {
-          return fieldValue.join(', ');
+        const fieldParts = field.split('.');
+        let value: any = verifiableCredential?.credentialSubject;
+
+        for (let i = 0; i < fieldParts.length; i++) {
+          const part = fieldParts[i];
+          if (value == null) break;
+          value = value[part];
+
+          if (Array.isArray(value) && i < fieldParts.length - 1) {
+            if (/^\d+$/.test(fieldParts[i + 1])) continue;
+            const remainingPath = fieldParts.slice(i + 1);
+            value = value.map(item => {
+              let inner = item;
+              for (const p of remainingPath) inner = inner?.[p];
+              return inner;
+            });
+            break;
+          }
         }
-        return getLocalizedField(fieldValue);
+
+        if (Array.isArray(value) && typeof value[0] !== 'object') {
+          return value.join(', ');
+        }
+        return getLocalizedField(value);
       } else if (format === VCFormat.mso_mdoc) {
         const splitField = field.split('~');
         if (splitField.length > 1) {
-          const [namespace, fieldName] = splitField;
-          const fieldValue = iterateMsoMdocFor(
+          const [namespace, fieldName, ...rest] = splitField;
+          let value: any = iterateMsoMdocFor(
             verifiableCredential,
             namespace,
             'elementValue',
             fieldName,
           );
-          if (fieldValue && typeof fieldValue === 'object') {
+
+          for (let i = 0; i < rest.length; i++) {
+            if (value == null) break;
+            const part = rest[i];
+            if (Array.isArray(value)) {
+              if (/^\d+$/.test(part)) {
+                value = value[Number(part)];
+              } else {
+                const remainingPath = rest.slice(i);
+                value = value.map(item => {
+                  let inner = item;
+                  for (const p of remainingPath) inner = inner?.[p];
+                  return inner;
+                });
+                break;
+              }
+            } else if (typeof value === 'object') {
+              value = value[part];
+            } else {
+              value = undefined;
+              break;
+            }
+          }
+
+          if (Array.isArray(value) && typeof value[0] !== 'object') {
+            return value.join(', ');
+          }
+          if (value && typeof value === 'object') {
+            const leafKey = rest.length ? rest[rest.length - 1] : fieldName;
             const elements = renderFieldRecursively(
-              fieldName,
-              fieldValue,
+              leafKey,
+              value,
               display.getTextColor(Theme.Colors.DetailsLabel),
               display.getTextColor(Theme.Colors.Details),
               namespace,
@@ -126,7 +174,7 @@ export const getFieldValue = (
             // exclude the first element which is the namespace title
             return <Column>{elements.slice(1)}</Column>;
           }
-          return fieldValue;
+          return value;
         }
       } else if (
         format === VCFormat.vc_sd_jwt ||
@@ -144,6 +192,11 @@ export const getFieldValue = (
 
           // If we hit an array and we still have more path to go...
           if (Array.isArray(value) && i < fieldParts.length - 1) {
+            // Explicit non-negative integer index (Appendix C.1): bracket
+            // access on the next loop iteration handles it correctly.
+            if (/^\d+$/.test(fieldParts[i + 1])) continue;
+            // Otherwise iterate the remaining path across all elements
+            // (implicit null-wildcard behavior).
             const remainingPath = fieldParts.slice(i + 1);
             value = value.map(item => {
               let inner = item;
@@ -195,6 +248,24 @@ export const getFieldName = (
   format: string,
 ): string => {
   if (wellknown) {
+    // OpenID4VCI Final 1.0: claims is a flat array of {path, display}
+    // (Appendix B.2). Match by serialized path rather than tree-walk.
+    if (Array.isArray(wellknown.claims)) {
+      const match = wellknown.claims.find(
+        (c: any) => serializeClaimPath(c?.path, format) === field,
+      );
+      if (match?.display && Array.isArray(match.display)) {
+        const newFieldObj = match.display.map((obj: any) => ({
+          language: obj.locale,
+          value: obj.name,
+        }));
+        return getLocalizedField(newFieldObj);
+      }
+      const leaf = field.includes('~')
+        ? field.split('~').pop()!
+        : field.split('.').pop()!;
+      return formatKeyLabel(leaf);
+    }
     if (format === VCFormat.ldp_vc) {
       const credentialDefinition = wellknown.credential_definition;
       if (!credentialDefinition) {
@@ -532,6 +603,10 @@ export const fieldItemIterator = (
   const renderedFields = new Set<string>();
 
   const renderedMainFields = fields.map(field => {
+    if (shouldExcludeField(field)) {
+      renderedFields.add(field);
+      return null;
+    }
     const fieldName = getFieldName(
       field,
       wellknown,

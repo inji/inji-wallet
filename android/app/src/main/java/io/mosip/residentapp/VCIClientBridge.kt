@@ -6,11 +6,14 @@ import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPTokenV
 import io.mosip.vciclient.VCIClient
 import io.mosip.vciclient.authorizationCodeFlow.AuthorizationMethod
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata
+import com.google.gson.JsonObject
 import io.mosip.vciclient.constants.OpenWebPageCallback
-import io.mosip.vciclient.constants.ProofJwtCallback
+import io.mosip.vciclient.constants.ProofsCallback
 import io.mosip.vciclient.constants.SelectCredentialsForPresentationCallback
 import io.mosip.vciclient.constants.SignVerifiablePresentationCallback
 import io.mosip.vciclient.credential.response.CredentialResponse
+import io.mosip.vciclient.exception.DownloadFailedException
+import io.mosip.vciclient.proof.CredentialRequestProofs
 import io.mosip.vciclient.token.TokenRequest
 import io.mosip.vciclient.token.TokenResponse
 import kotlinx.coroutines.runBlocking
@@ -22,22 +25,30 @@ object VCIClientBridge {
 
 
     @JvmStatic
+    fun getIssuerMetadataSync(
+            client: VCIClient,
+            credentialIssuer: String
+    ): Map<String, Any?> = runBlocking {
+        client.getIssuerMetadata(credentialIssuer)
+    }
+
+    @JvmStatic
     fun requestCredentialByOfferSync(
             client: VCIClient,
             offer: String,
             clientMetaData: ClientMetadata,
             signatureSuite: String?
-    ): CredentialResponse = runBlocking {
-      //TODO: change method name to fetchCredentialUsingCredentialOffer
-        client.fetchCredentialUsingCredentialOffer(
+    ): String = runBlocking {
+       val response = client.fetchCredentialsUsingCredentialOffer(
                 credentialOffer = offer,
                 clientMetadata = clientMetaData,
                 getTxCode = getTxCodeCallback(),
                 authorizations = authorizationMethods(signatureSuite),
                 getTokenResponse = getTokenResponseCallback(),
-                getProofJwt = getProofJwtCallback(),
+                getProofs = getProofsCallback(),
                 onCheckIssuerTrust = onCheckIssuerTrustCallback()
         )
+        response.toSingleCredentialResponseJson()
     }
 
 
@@ -49,15 +60,15 @@ object VCIClientBridge {
             credentialConfigurationId: String,
             clientMetaData: ClientMetadata,
             signatureSuite: String?
-    ): CredentialResponse = runBlocking {
-        client.fetchCredentialFromTrustedIssuer(
+    ): String = runBlocking {
+        client.fetchCredentialsFromTrustedIssuer(
                 credentialIssuer = credentialIssuer,
                 credentialConfigurationId = credentialConfigurationId,
                 clientMetadata = clientMetaData,
                 getTokenResponse = getTokenResponseCallback(),
                 authorizations = authorizationMethods(signatureSuite),
-                getProofJwt = getProofJwtCallback(),
-        )
+                getProofs = getProofsCallback(),
+        ).toSingleCredentialResponseJson()
     }
 
     private fun authorizationMethods(signatureSuite: String?): List<AuthorizationMethod> =
@@ -115,7 +126,7 @@ object VCIClientBridge {
     }
 
 
-    private fun getProofJwtCallback(): ProofJwtCallback =
+    private fun getProofsCallback(): ProofsCallback =
             {
                     credentialIssuer: String,
                     cNonce: String?,
@@ -127,7 +138,7 @@ object VCIClientBridge {
                         cNonce,
                         proofSigningAlgorithmsSupported
                 )
-                VCIClientCallbackBridge.awaitProof()
+                CredentialRequestProofs(proofs = listOf(VCIClientCallbackBridge.awaitProof()))
             }
 
     private fun getTokenResponseCallback(): suspend (TokenRequest) -> TokenResponse =
@@ -171,4 +182,17 @@ object VCIClientBridge {
                 )
                 VCIClientCallbackBridge.awaitIssuerTrustResponse()
             }
+
+        private fun CredentialResponse.toSingleCredentialResponseJson(): String {
+
+        val firstItem = credentials?.firstOrNull()
+                ?: throw DownloadFailedException("No credential returned from issuer")
+
+        val json = JsonObject().apply {
+            add("credential", firstItem.credential)
+            credentialIssuer?.let { addProperty("credentialIssuer", it) }
+            credentialConfigurationId?.let { addProperty("credentialConfigurationId", it) }
+        }
+        return json.toString()
+    }
 }

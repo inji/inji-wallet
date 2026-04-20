@@ -82,6 +82,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
   let [fields, setFields] = useState([]);
   const [wellknown, setWellknown] = useState(null);
   const [wellknownFieldsFlag, setWellknownFieldsFlag] = useState(false);
+  const [wellknownSettled, setWellknownSettled] = useState(false);
   const verifiableCredentialData = controller.verifiableCredentialData;
 
   const [loadingSvg, setLoadingSvg] = useState<boolean>(true);
@@ -131,6 +132,9 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
       })
       .catch(error => {
         console.error('Error fetching well-known fields:', error);
+      })
+      .finally(() => {
+        setWellknownSettled(true);
       });
   }, [verifiableCredentialData?.wellKnown]);
 
@@ -198,7 +202,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
         />
       )}
 
-      {!isVCLoaded(verifiableCredential) ? (
+      {!isVCLoaded(verifiableCredential) || !wellknownSettled ? (
         <ActivityIndicator />
       ) : (
         <VcDetailsContainer
