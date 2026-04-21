@@ -114,7 +114,7 @@ However, if app is built via npm commands, metro starts automatically (For insta
 
 Please refer [here](https://docs.mosip.io/inji/inji-mobile-wallet/contribution) for contributing to Inji
 
-## Credits 
+## Credits
 
 Credits listed [here](/Credits.md)
 
