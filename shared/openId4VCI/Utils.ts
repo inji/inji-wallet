@@ -8,7 +8,6 @@ import {
   BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS,
   DETAIL_VIEW_ADD_ON_FIELDS,
   DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
-  getCredentialTypeFromWellKnown,
 } from '../../components/VC/common/VCUtils';
 import {displayType} from '../../machines/Issuers/IssuersMachine';
 import {
@@ -25,7 +24,6 @@ import {
 } from '../constants';
 import {getJWT} from '../cryptoutil/cryptoUtil';
 import {verifyCredential} from '../vcjs/verifyCredential';
-import {getVerifiableCredential} from '../../machines/VerifiableCredential/VCItemMachine/VCItemSelectors';
 import {getErrorEventData, sendErrorEvent} from '../telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../telemetry/TelemetryConstants';
 import {KeyTypes} from '../cryptoutil/KeyTypes';
@@ -47,10 +45,10 @@ export function getVcVerificationDetails(
   statusType,
   vcMetadata: VCMetadata,
 ): vcVerificationBannerDetails {
-  const credentialType = vcMetadata.credentialType
+  const credentialType = vcMetadata.credentialType;
   return {
     statusType: statusType,
-    isRevoked:vcMetadata.isRevoked,
+    isRevoked: vcMetadata.isRevoked,
     isExpired: vcMetadata.isExpired,
     vcType: credentialType,
   };
@@ -75,20 +73,23 @@ export const updateCredentialInformation = async (
       context.selectedCredentialType.format,
     );
   }
-  if( context.selectedCredentialType.format === VCFormat.vc_sd_jwt || context.selectedCredentialType.format === VCFormat.dc_sd_jwt) {
+  if (
+    context.selectedCredentialType.format === VCFormat.vc_sd_jwt ||
+    context.selectedCredentialType.format === VCFormat.dc_sd_jwt
+  ) {
     processedCredential = await VCProcessor.processForRendering(
       credential,
       context.selectedCredentialType.format,
-    )
+    );
   }
   let verifiableCredential;
   try {
     verifiableCredential = {
       ...credential,
       credentialConfigurationId: context.selectedCredentialType.id,
-      issuerLogo: getDisplayObjectForCurrentLanguage(
-        context.selectedIssuer.display,
-      )?.logo ?? "",
+      issuerLogo:
+        getDisplayObjectForCurrentLanguage(context.selectedIssuer.display)
+          ?.logo ?? '',
       processedCredential,
     };
   } catch (e) {
@@ -163,7 +164,7 @@ export const getCredentialIssuersWellKnownConfig = async (
           Object.keys(matchingWellknownDetails.claims).forEach(namespace => {
             Object.keys(matchingWellknownDetails.claims[namespace]).forEach(
               claim => {
-                fields.concat(`${namespace}~${claim}`);
+                fields = fields.concat(`${namespace}~${claim}`);
               },
             );
           });
@@ -175,16 +176,19 @@ export const getCredentialIssuersWellKnownConfig = async (
             fields = ldpFields;
             wellknownFieldsFlag = true;
           }
-        }
-        else if( format === VCFormat.vc_sd_jwt || format === VCFormat.dc_sd_jwt) {
-          const sdJwtFields = flattenClaimPaths(matchingWellknownDetails.claims);
+        } else if (
+          format === VCFormat.vc_sd_jwt ||
+          format === VCFormat.dc_sd_jwt
+        ) {
+          const sdJwtFields = flattenClaimPaths(
+            matchingWellknownDetails.claims,
+          );
 
           if (sdJwtFields.length > 0) {
             fields = sdJwtFields;
-            wellknownFieldsFlag = true
+            wellknownFieldsFlag = true;
           }
-        }
-        else {
+        } else {
           console.error(`Unsupported credential format - ${format} found`);
           throw new UnsupportedVcFormat(format);
         }
@@ -231,7 +235,6 @@ const flattenClaimPaths = (
   });
 };
 
-
 export const getDetailedViewFields = async (
   issuerCacheKey: string,
   credentialConfigurationId: string,
@@ -239,7 +242,7 @@ export const getDetailedViewFields = async (
   format: string,
   issuerHost: string,
 ) => {
-  let response = await getCredentialIssuersWellKnownConfig(
+  const response = await getCredentialIssuersWellKnownConfig(
     issuerCacheKey,
     defaultFields,
     credentialConfigurationId,
@@ -249,7 +252,7 @@ export const getDetailedViewFields = async (
 
   let updatedFieldsList = response.fields.concat(DETAIL_VIEW_ADD_ON_FIELDS);
 
-  updatedFieldsList = removeBottomSectionFields(updatedFieldsList,format);
+  updatedFieldsList = removeBottomSectionFields(updatedFieldsList, format);
   return {
     matchingCredentialIssuerMetadata: response.matchingCredentialIssuerMetadata,
     fields: updatedFieldsList,
@@ -488,7 +491,7 @@ function resolveEd25519Alg(proofSigningAlgosSupported: string[]) {
     : ED25519_PROOF_SIGNING_ALGO;
 }
 
-export function formattedDate(time: number|string): React.ReactNode {
+export function formattedDate(time: number | string): React.ReactNode {
   const date = new Date(time);
   const day = date.getDate();
   const month = date.toLocaleString('default', {month: 'long'});
