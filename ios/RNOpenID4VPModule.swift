@@ -68,7 +68,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
         let formattedCredentialsMap: [String: [FormatType: [AnyCodable]]] = OpenId4VPUtils.parseSelectedVCs(credentialsMap)
 
-        let response = try await openID4VP?.constructUnsignedVPTokenV2(
+        let response = try await openID4VP?.constructUnsignedVPToken(
           verifiableCredentials: formattedCredentialsMap,
           holderId: holderId,
           signatureSuite: signatureSuite
