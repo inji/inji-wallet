@@ -1,7 +1,6 @@
 package com.example.samplecredentialwallet.ovp.utils
 
 import android.util.Log
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.google.gson.JsonObject
 import com.nimbusds.jose.jwk.OctetKeyPair
 import com.example.samplecredentialwallet.ovp.data.OVPData
@@ -40,15 +39,17 @@ object OpenID4VPManager {
     }
 
     fun shareVerifiablePresentation(
-        selectedItems: SnapshotStateList<Pair<String, VCMetadata>>,
+        selectedItems: List<Pair<String, VCMetadata>>,
         onResult: (VerifierResponse) -> Unit,
         onError: (Throwable) -> Unit
     ) {
+        val selectedItemsSnapshot = selectedItems.toList()
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                Log.d("OpenID4VPManager", "shareVerifiablePresentation started selectedItems=${selectedItems.size}")
+                Log.d("OpenID4VPManager", "shareVerifiablePresentation started selectedItems=${selectedItemsSnapshot.size}")
                 val result = withTimeout(45_000L) {
-                    sendVP(selectedItems)
+                    sendVP(selectedItemsSnapshot)
                 }
                 Log.d(
                     "OpenID4VPManager",
@@ -88,7 +89,7 @@ object OpenID4VPManager {
     }
 
     private suspend fun sendVP(
-        selectedItems: SnapshotStateList<Pair<String, VCMetadata>>
+        selectedItems: List<Pair<String, VCMetadata>>
     ): VerifierResponse = withContext(Dispatchers.IO) {
         val parsedSelectedItems = MatchingVcsHelper().buildSelectedVCsMapPlain(selectedItems)
         val mdocDeviceKeyAliasByDocType = buildMdocDeviceKeyAliasByDocType(selectedItems)
@@ -201,8 +202,20 @@ object OpenID4VPManager {
             val docType = extractMdocDocType(metadata.vc)
             val alias = metadata.deviceKeyAlias?.trim().orEmpty()
 
-            if (!docType.isNullOrBlank() && alias.isNotBlank() && !aliasesByDocType.containsKey(docType)) {
+            if (docType.isNullOrBlank() || alias.isBlank()) {
+                return@forEach
+            }
+
+            val existingAlias = aliasesByDocType[docType]
+            if (existingAlias == null) {
                 aliasesByDocType[docType] = alias
+                return@forEach
+            }
+
+            if (existingAlias != alias) {
+                throw IllegalStateException(
+                    "Conflicting device key alias for mdoc docType=$docType: existingAlias=$existingAlias, newAlias=$alias"
+                )
             }
         }
 

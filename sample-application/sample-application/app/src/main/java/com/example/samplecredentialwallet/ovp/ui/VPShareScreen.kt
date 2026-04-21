@@ -133,6 +133,7 @@ private fun CameraPreviewAndScanner(
     var scannedText by remember { mutableStateOf<String?>(null) }
     var showErrorDialog by remember { mutableStateOf(false) }
     var scanningEnabled by remember { mutableStateOf(true) }
+    var hasSentVerifierError by remember { mutableStateOf(false) }
 
     DisposableEffect(Unit) {
         onDispose {
@@ -217,7 +218,11 @@ private fun CameraPreviewAndScanner(
         })
 
         if (showErrorDialog) {
-            LaunchedEffect(Unit) {
+            LaunchedEffect(showErrorDialog, hasSentVerifierError) {
+                if (!showErrorDialog || hasSentVerifierError) {
+                    return@LaunchedEffect
+                }
+
                 withContext(Dispatchers.IO) {
                     try {
                         OpenID4VPManager.sendErrorToVerifier(
@@ -226,6 +231,7 @@ private fun CameraPreviewAndScanner(
                                 "VPShareScreen"
                             )
                         )
+                        hasSentVerifierError = true
                     } catch (e: Exception) {
                         Log.e("VPShareScreen", "Failed to send error to verifier", e)
                     }
@@ -233,6 +239,7 @@ private fun CameraPreviewAndScanner(
             }
 
             ErrorOverlay {
+                hasSentVerifierError = false
                 showErrorDialog = false
                 scanningEnabled = true
                 scannedText = null
