@@ -242,7 +242,7 @@ export const getDetailedViewFields = async (
   format: string,
   issuerHost: string,
 ) => {
-  const response = await getCredentialIssuersWellKnownConfig(
+  let response = await getCredentialIssuersWellKnownConfig(
     issuerCacheKey,
     defaultFields,
     credentialConfigurationId,
