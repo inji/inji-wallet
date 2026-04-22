@@ -47,7 +47,7 @@ import com.example.samplecredentialwallet.ovp.data.VCMetadata
 import com.example.samplecredentialwallet.ovp.utils.OVPConstants
 import com.example.samplecredentialwallet.ovp.utils.OpenID4VPManager
 import com.example.samplecredentialwallet.ovp.viewmodel.OVPViewModel
-import io.mosip.openID4VP.constants.FormatType
+import com.example.samplecredentialwallet.utils.CredentialDisplayNameResolver
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions
 import io.mosip.openID4VP.verifier.VerifierResponse
 import kotlinx.coroutines.CoroutineScope
@@ -290,14 +290,8 @@ fun MatchingCredentialsScreen(
 }
 
 private fun getDisplayLabel(vcMetadata: VCMetadata): String {
-    return when (vcMetadata.format) {
-        FormatType.LDP_VC.value -> {
-            val typeArray = vcMetadata.vc.getAsJsonArray("type")
-            if (typeArray != null && typeArray.size() > 1) typeArray[1].asString else "Verifiable Credential"
-        }
-        FormatType.MSO_MDOC.value -> "Mobile Driving License"
-        else -> "Verifiable Credential"
-    }
+    return CredentialDisplayNameResolver.resolveFromJson(vcMetadata.vc)
+        ?: CredentialDisplayNameResolver.toDisplayName("VerifiableCredential")
 }
 
 private fun handleDecline(

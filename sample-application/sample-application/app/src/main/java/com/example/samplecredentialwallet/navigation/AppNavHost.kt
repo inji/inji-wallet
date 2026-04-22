@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
+import android.util.Size
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
@@ -199,6 +200,12 @@ fun AppNavHost(navController: NavHostController) {
                 ovpViewModel = ovpViewModel,
                 onNavigateToMatching = {
                     navController.navigate(Screen.MatchingCredentials.route)
+                },
+                onGoHome = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Home.route) { inclusive = false }
+                        launchSingleTop = true
+                    }
                 }
             )
         }
@@ -211,7 +218,10 @@ fun AppNavHost(navController: NavHostController) {
                     navController.navigate(Screen.VPSuccess.route)
                 },
                 onBackToShare = {
-                    navController.popBackStack(Screen.VPShare.route, inclusive = false)
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Home.route) { inclusive = false }
+                        launchSingleTop = true
+                    }
                 }
             )
         }
@@ -379,6 +389,7 @@ fun CameraPreview(
     val barcodeScanner = remember {
         val options = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+            .enableAllPotentialBarcodes()
             .build()
         BarcodeScanning.getClient(options)
     }
@@ -390,6 +401,7 @@ fun CameraPreview(
     AndroidView(
         factory = { ctx ->
             val previewView = PreviewView(ctx)
+            previewView.implementationMode = PreviewView.ImplementationMode.COMPATIBLE
             val cameraProviderFuture = ProcessCameraProvider.getInstance(ctx)
 
             cameraProviderFuture.addListener({
@@ -403,6 +415,7 @@ fun CameraPreview(
                 // Image analysis use case for QR code detection
                 val imageAnalysis = ImageAnalysis.Builder()
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                    .setTargetResolution(Size(1920, 1080))
                     .build()
 
                 imageAnalysis.setAnalyzer(cameraExecutor) { imageProxy ->
@@ -450,7 +463,8 @@ private fun processImageProxy(
         barcodeScanner.process(image)
             .addOnSuccessListener { barcodes ->
                 for (barcode in barcodes) {
-                    barcode.rawValue?.let { qrData ->
+                    val qrData = barcode.rawValue ?: barcode.rawBytes?.toString(Charsets.UTF_8)
+                    qrData?.let {
                         Log.d("QrScanner", "Detected QR code: $qrData")
                         onQrCodeDetected(qrData)
                     }

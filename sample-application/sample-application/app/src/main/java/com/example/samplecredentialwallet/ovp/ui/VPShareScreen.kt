@@ -3,6 +3,7 @@ package com.example.samplecredentialwallet.ovp.ui
 import android.Manifest
 import android.content.pm.PackageManager
 import android.util.Log
+import android.util.Size
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
@@ -64,7 +65,8 @@ import java.util.concurrent.Executors
 @Composable
 fun VPShareScreen(
     ovpViewModel: OVPViewModel,
-    onNavigateToMatching: () -> Unit
+    onNavigateToMatching: () -> Unit,
+    onGoHome: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -91,7 +93,11 @@ fun VPShareScreen(
 
     when {
         hasCameraPermission -> {
-            CameraPreviewAndScanner(ovpViewModel, onNavigateToMatching)
+            CameraPreviewAndScanner(
+                ovpViewModel = ovpViewModel,
+                onNavigateToMatching = onNavigateToMatching,
+                onGoHome = onGoHome
+            )
         }
         else -> {
             Column(
@@ -113,7 +119,8 @@ fun VPShareScreen(
 @Composable
 private fun CameraPreviewAndScanner(
     ovpViewModel: OVPViewModel,
-    onNavigateToMatching: () -> Unit
+    onNavigateToMatching: () -> Unit,
+    onGoHome: () -> Unit
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -123,6 +130,7 @@ private fun CameraPreviewAndScanner(
         BarcodeScanning.getClient(
             BarcodeScannerOptions.Builder()
                 .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                .enableAllPotentialBarcodes()
                 .build()
         )
     }
@@ -134,6 +142,8 @@ private fun CameraPreviewAndScanner(
     var showErrorDialog by remember { mutableStateOf(false) }
     var scanningEnabled by remember { mutableStateOf(true) }
     var hasSentVerifierError by remember { mutableStateOf(false) }
+    var pendingQrCandidate by remember { mutableStateOf<String?>(null) }
+    var pendingQrCandidateHits by remember { mutableStateOf(0) }
 
     DisposableEffect(Unit) {
         onDispose {
@@ -141,13 +151,6 @@ private fun CameraPreviewAndScanner(
             boundCameraProvider?.unbindAll()
             barcodeScanner.close()
             executor.shutdownNow()
-        }
-    }
-
-    LaunchedEffect(scanningEnabled) {
-        if (!scanningEnabled) {
-            analysisUseCase?.clearAnalyzer()
-            boundCameraProvider?.unbindAll()
         }
     }
 
@@ -166,6 +169,7 @@ private fun CameraPreviewAndScanner(
     Box(modifier = Modifier.fillMaxSize()) {
         AndroidView(factory = { ctx ->
             val previewView = PreviewView(ctx)
+            previewView.implementationMode = PreviewView.ImplementationMode.COMPATIBLE
 
             cameraProviderFuture.addListener({
                 val cameraProvider = cameraProviderFuture.get()
@@ -177,6 +181,7 @@ private fun CameraPreviewAndScanner(
 
                 val imageAnalysis = ImageAnalysis.Builder()
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                    .setTargetResolution(Size(1920, 1080))
                     .build()
 
                 analysisUseCase = imageAnalysis
@@ -191,9 +196,28 @@ private fun CameraPreviewAndScanner(
                         imageProxy = imageProxy,
                         barcodeScanner = barcodeScanner,
                         onQrCodeDetected = { value ->
-                            if (scannedText != value) {
-                                scannedText = value
+                            if (scannedText != null) {
+                                return@processImageProxy
+                            }
+
+                            val normalizedValue = value.trim()
+                            if (!isLikelyOpenId4VpRequest(normalizedValue)) {
+                                return@processImageProxy
+                            }
+
+                            if (pendingQrCandidate == normalizedValue) {
+                                pendingQrCandidateHits += 1
+                            } else {
+                                pendingQrCandidate = normalizedValue
+                                pendingQrCandidateHits = 1
+                            }
+
+                            // Require two consistent detections before committing to avoid false positives.
+                            if (pendingQrCandidateHits >= 2) {
+                                scannedText = normalizedValue
                                 scanningEnabled = false
+                                pendingQrCandidate = null
+                                pendingQrCandidateHits = 0
                             }
                         }
                     )
@@ -241,8 +265,11 @@ private fun CameraPreviewAndScanner(
             ErrorOverlay {
                 hasSentVerifierError = false
                 showErrorDialog = false
-                scanningEnabled = true
+                scanningEnabled = false
                 scannedText = null
+                pendingQrCandidate = null
+                pendingQrCandidateHits = 0
+                onGoHome()
             }
         }
     }
@@ -355,7 +382,8 @@ private fun processImageProxy(
         barcodeScanner.process(image)
             .addOnSuccessListener { barcodes ->
                 for (barcode in barcodes) {
-                    barcode.rawValue?.let { qrData ->
+                    val qrData = barcode.rawValue?.trim()
+                    if (!qrData.isNullOrBlank()) {
                         onQrCodeDetected(qrData)
                     }
                 }
@@ -369,4 +397,21 @@ private fun processImageProxy(
     } else {
         imageProxy.close()
     }
+}
+
+private fun isLikelyOpenId4VpRequest(payload: String): Boolean {
+    if (payload.isBlank() || payload.length < 20) {
+        return false
+    }
+
+    val normalized = payload.lowercase()
+
+    return normalized.startsWith("openid4vp://") ||
+        normalized.startsWith("openid-vc://") ||
+        normalized.contains("request_uri=") ||
+        normalized.contains("client_id=") ||
+        normalized.contains("presentation_definition") ||
+        normalized.contains("response_type=vp_token") ||
+        normalized.contains("response_type%3dvp_token") ||
+        payload.matches(Regex("^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"))
 }

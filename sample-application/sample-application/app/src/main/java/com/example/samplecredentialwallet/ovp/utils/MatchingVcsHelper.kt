@@ -18,8 +18,6 @@ class MatchingVcsHelper {
         authRequest: JsonObject
     ): MatchingResult {
         val matchingVCs = mutableMapOf<String, MutableList<VCMetadata>>()
-        val lenientCandidates = mutableMapOf<String, MutableList<VCMetadata>>()
-        val interopCandidates = mutableMapOf<String, MutableSet<String>>()
         val requestedClaims = mutableSetOf<String>()
         val presentationDefinition = getAsJsonObjectByKeys(
             authRequest,
@@ -80,41 +78,24 @@ class MatchingVcsHelper {
 
                 val strictInclude = strictIncludeBase && matchesSchema
 
-                // Fallback for interoperability: if format matches but constraints are too strict,
-                // allow the VC as a candidate and let verifier perform final validation.
-                val lenientInclude =
-                    matchesFormat && !matchesConstraints && hasConstraintFields && hasFormat && matchesSchema
-
-                if (lenientInclude) {
-                    Log.w(
-                        "OVP_MATCH",
-                        "Lenient include applied for descriptor=$descriptorId vcFormat=${vcMetadata.format} due to constraint mismatch"
-                    )
-
-                    if (!strictInclude) {
-                        val descriptorCandidates =
-                            interopCandidates.getOrPut(descriptorId) { mutableSetOf() }
-                        descriptorCandidates.add(vcMetadata.format)
-
-                        val list = lenientCandidates.getOrPut(descriptorId) { mutableListOf() }
-                        val candidate = VCMetadata(
-                            vcFormat,
-                            vc.deepCopy(),
-                            rawCBORData,
-                            vcMetadata.deviceKeyAlias
-                        )
-                        if (list.none { it.vc == candidate.vc && it.format == candidate.format }) {
-                            list.add(candidate)
-                        }
-                    }
+                // Type-aware fallback: when format matches but full constraint evaluation
+                // fails (due to JSONPath structural mismatches), check whether the credential
+                // type requested in the constraint fields matches the VC's actual type.
+                // This ensures:
+                //   - health insurance VC matches a health insurance request ✓
+                //   - health insurance VC does NOT match a life insurance request ✗
+                val typeAwareFallback = if (!strictInclude && matchesFormat && hasConstraintFields && hasFormat && matchesSchema) {
+                    isVCTypeMatchingConstraintTypeFilter(constraints, vcMetadata)
+                } else {
+                    false
                 }
+
+                val shouldInclude = strictInclude || typeAwareFallback
 
                 Log.d(
                     "OVP_MATCH",
-                    "Descriptor=$descriptorId vcFormat=${vcMetadata.format} matchesFormat=$matchesFormat matchesConstraints=$matchesConstraints matchesSchema=$matchesSchema hasFormat=$hasFormat hasFields=$hasConstraintFields hasSchema=$hasSchema"
+                    "Descriptor=$descriptorId vcFormat=${vcMetadata.format} matchesFormat=$matchesFormat matchesConstraints=$matchesConstraints matchesSchema=$matchesSchema hasFormat=$hasFormat hasFields=$hasConstraintFields hasSchema=$hasSchema strictInclude=$strictInclude typeAwareFallback=$typeAwareFallback shouldInclude=$shouldInclude"
                 )
-
-                val shouldInclude = strictInclude
 
                 if (shouldInclude) {
                     val descriptorId = inputDescriptor.get("id")?.asString ?: continue
@@ -124,22 +105,10 @@ class MatchingVcsHelper {
                         list.add(VCMetadata(vcFormat, vc.deepCopy(), rawCBORData, vcMetadata.deviceKeyAlias))
                         Log.d(
                             "OVP_MATCH",
-                            "Included VC for descriptor=$descriptorId format=${vcMetadata.format}"
+                            "Included VC for descriptor=$descriptorId format=${vcMetadata.format} via=${if (strictInclude) "strict" else "typeAwareFallback"}"
                         )
                     }
                 }
-            }
-        }
-
-        // Controlled fallback: only use interoperability candidates when strict matching produced none for a descriptor.
-        lenientCandidates.forEach { (descriptorId, candidates) ->
-            val strictMatches = matchingVCs[descriptorId]
-            if ((strictMatches == null || strictMatches.isEmpty()) && candidates.isNotEmpty()) {
-                matchingVCs[descriptorId] = candidates.toMutableList()
-                Log.w(
-                    "OVP_MATCH",
-                    "Applying interoperability fallback for descriptor=$descriptorId candidateCount=${candidates.size}"
-                )
             }
         }
 
@@ -155,8 +124,7 @@ class MatchingVcsHelper {
         return MatchingResult(
             matchingVCs,
             requestedClaims.joinToString(","),
-            presentationDefinition.get("purpose")?.asString ?: "",
-            interopCandidates.mapValues { (_, formats) -> formats.toList() }
+            presentationDefinition.get("purpose")?.asString ?: ""
         )
     }
 
@@ -489,6 +457,101 @@ class MatchingVcsHelper {
         return nestedVc ?: credential
     }
 
+    /**
+     * Type-aware fallback for constraint matching. When full JSONPath constraint
+     * evaluation fails (due to structural mismatches between the stored VC and
+     * the verifier's expected paths), this method checks whether the credential
+     * type requested in the constraint fields matches the VC's actual type.
+     *
+     * This provides the correct behavior:
+     * - same type (health ↔ health): matches ✓
+     * - different type (health ↔ life): does not match ✗
+     */
+    private fun isVCTypeMatchingConstraintTypeFilter(
+        constraints: JsonObject?,
+        vcMetadata: VCMetadata
+    ): Boolean {
+        val fields = constraints?.getAsJsonArray("fields") ?: return false
+
+        // Extract the requested types from the constraint fields that target $.type or $.vc.type
+        val requestedTypes = mutableSetOf<String>()
+        var hasTypeConstraint = false
+
+        for (fieldElem in fields) {
+            val field = fieldElem.asJsonObject
+            val paths = field.getAsJsonArray("path") ?: continue
+            val filter = field.getAsJsonObject("filter") ?: continue
+
+            val isTypePath = paths.any { pathElem ->
+                val path = pathElem.asString.lowercase()
+                path == "\$.type" || path == "\$.vc.type" ||
+                    path.endsWith("['type']") || path.endsWith(".type")
+            }
+
+            if (!isTypePath) continue
+            hasTypeConstraint = true
+
+            // Extract requested type values from the filter
+            val containsFilter = filter.getAsJsonObject("contains")
+            if (containsFilter != null) {
+                containsFilter.get("const")?.takeIf { it.isJsonPrimitive }?.asString?.let {
+                    requestedTypes.add(it)
+                }
+                containsFilter.get("pattern")?.takeIf { it.isJsonPrimitive }?.asString?.let {
+                    requestedTypes.add(it)
+                }
+                containsFilter.getAsJsonArray("enum")?.forEach { enumElem ->
+                    if (enumElem.isJsonPrimitive) requestedTypes.add(enumElem.asString)
+                }
+            }
+
+            filter.get("const")?.takeIf { it.isJsonPrimitive }?.asString?.let {
+                requestedTypes.add(it)
+            }
+            filter.get("pattern")?.takeIf { it.isJsonPrimitive }?.asString?.let {
+                requestedTypes.add(it)
+            }
+            filter.getAsJsonArray("enum")?.forEach { enumElem ->
+                if (enumElem.isJsonPrimitive) requestedTypes.add(enumElem.asString)
+            }
+        }
+
+        if (!hasTypeConstraint) {
+            // No type constraint in the fields — the constraint fields are about
+            // other claims. Since format already matches, allow it through.
+            Log.d("OVP_MATCH", "typeAwareFallback: no type constraint in fields, allowing format-matched VC")
+            return true
+        }
+
+        if (requestedTypes.isEmpty()) {
+            // Type constraint exists but has no specific filter values (existence check only).
+            // Since the VC has a type field, allow it.
+            Log.d("OVP_MATCH", "typeAwareFallback: type constraint has no filter values, allowing")
+            return true
+        }
+
+        // Collect the VC's actual types from all structural variations
+        val vcTypes = mutableSetOf<String>()
+        collectTypeValues(vcMetadata.vc, vcTypes)
+        collectTypeValues(unwrapVcPayload(vcMetadata.vc), vcTypes)
+
+        Log.d(
+            "OVP_MATCH",
+            "typeAwareFallback: requestedTypes=$requestedTypes vcTypes=$vcTypes"
+        )
+
+        // Check if any requested type matches any VC type
+        return requestedTypes.any { requested ->
+            // Filter out the generic "VerifiableCredential" — we want specific type matches
+            vcTypes.filter { !it.equals("VerifiableCredential", ignoreCase = true) }
+                .any { vcType ->
+                    stringsEquivalent(vcType, requested) ||
+                        // Handle regex patterns from the filter
+                        try { Regex(requested).containsMatchIn(vcType) } catch (_: Exception) { false }
+                }
+        }
+    }
+
     private fun isVCMatchingRequestConstraints(
         constraints: JsonObject?,
         vcMetadata: VCMetadata,
@@ -750,6 +813,5 @@ class MatchingVcsHelper {
 data class MatchingResult(
     val matchingVCs: Map<String, List<VCMetadata>>,
     val requestedClaims: String,
-    val purpose: String,
-    val interopWarnings: Map<String, List<String>> = emptyMap()
+    val purpose: String
 )
