@@ -341,24 +341,45 @@ private suspend fun handleScannedText(
 
         val matchingVcsResult = MatchingVcsHelper().getVcsMatchingAuthRequest(downloadedVcs, authRequestJson)
 
+        val expectedDescriptorIds = inputDescriptors
+            ?.mapNotNull { descriptorElement ->
+                descriptorElement
+                    .asJsonObject
+                    .get("id")
+                    ?.takeIf { it.isJsonPrimitive }
+                    ?.asString
+                    ?.trim()
+                    ?.takeIf { it.isNotBlank() }
+            }
+            ?.toSet()
+            ?: emptySet()
+        val expectedDescriptorCount = inputDescriptors?.size() ?: 0
         val matchedDescriptorCount = matchingVcsResult.matchingVCs.keys.size
         val totalMatchedVCs = matchingVcsResult.matchingVCs.values.sumOf { it.size }
+        val hasNonEmptyMatchesForAllDescriptors = expectedDescriptorIds.all { descriptorId ->
+            matchingVcsResult.matchingVCs[descriptorId]?.isNotEmpty() == true
+        }
+        val hasCompleteDescriptorMatches = expectedDescriptorCount > 0 &&
+            expectedDescriptorIds.size == expectedDescriptorCount &&
+            matchedDescriptorCount == expectedDescriptorCount &&
+            hasNonEmptyMatchesForAllDescriptors
         Log.d(
             "OVP_SCAN",
-            "Matching completed: matchedDescriptorCount=$matchedDescriptorCount, totalMatchedVCs=$totalMatchedVCs, requestedClaims=${matchingVcsResult.requestedClaims}"
+            "Matching completed: expectedDescriptorCount=$expectedDescriptorCount, matchedDescriptorCount=$matchedDescriptorCount, totalMatchedVCs=$totalMatchedVCs, completeDescriptorMatch=$hasCompleteDescriptorMatches, requestedClaims=${matchingVcsResult.requestedClaims}"
         )
 
         ovpViewModel.storeMatchResult(matchingVcsResult)
 
-        val hasMatchingVCs = matchingVcsResult.matchingVCs.values.any { it.isNotEmpty() }
-
-        if (hasMatchingVCs) {
+        if (hasCompleteDescriptorMatches) {
             withContext(Dispatchers.Main) {
                 Log.d("OVP_SCAN", "Navigating to matching credentials screen")
                 onNavigateToMatching()
             }
         } else {
-            Log.w("OVP_SCAN", "No matching VCs found for scanned request")
+            Log.w(
+                "OVP_SCAN",
+                "Descriptor coverage check failed; refusing navigation. expectedDescriptorIds=$expectedDescriptorIds, matchedDescriptorIds=${matchingVcsResult.matchingVCs.keys}, matchedDescriptorCount=$matchedDescriptorCount, expectedDescriptorCount=$expectedDescriptorCount"
+            )
             showError()
             disableScanning()
         }

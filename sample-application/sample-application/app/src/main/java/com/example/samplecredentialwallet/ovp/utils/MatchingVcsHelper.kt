@@ -281,7 +281,15 @@ class MatchingVcsHelper {
         val credentialTokens = extractSchemaTokens(credentialSchema)
 
         return descriptorTokens.any { descriptorToken ->
+            if (isGenericSchemaToken(descriptorToken)) {
+                return@any false
+            }
+
             credentialTokens.any { credentialToken ->
+                if (isGenericSchemaToken(credentialToken)) {
+                    return@any false
+                }
+
                 stringsEquivalent(descriptorToken, credentialToken)
             }
         }
@@ -301,6 +309,13 @@ class MatchingVcsHelper {
             .forEach { tokens.add(it) }
 
         return tokens
+    }
+
+    private fun isGenericSchemaToken(token: String): Boolean {
+        return when (token.trim().lowercase()) {
+            "http", "https", "www", "schema", "schemas", "vc" -> true
+            else -> false
+        }
     }
 
     private fun getAsJsonArrayByKeys(jsonObject: JsonObject, vararg keys: String): JsonArray? {
@@ -413,8 +428,11 @@ class MatchingVcsHelper {
 
             val proofType = vc.getAsJsonObject("proof")?.get("type")?.asString
             if (proofType.isNullOrBlank()) {
-                Log.d("OVP_MATCH", "No proof.type in VC, accepting format-only match")
-                return true
+                Log.d(
+                    "OVP_MATCH",
+                    "No proof.type in VC while verifier requested proof_type=$requestedProofTypes; failing proof-type match"
+                )
+                return false
             }
 
             return requestedProofTypes.contains(proofType)
@@ -620,6 +638,10 @@ class MatchingVcsHelper {
     }
 
     private fun evaluateFilter(filter: JsonObject, rawResult: Any?, flattenedResults: List<Any?>): Boolean {
+        if (!hasOnlyAllowedFilterKeys(filter)) {
+            return false
+        }
+
         val expectedType = filter.get("type")?.asString
         val pattern = filter.get("pattern")?.asString
         val constValue = filter.get("const")
@@ -669,6 +691,10 @@ class MatchingVcsHelper {
     }
 
     private fun evaluatePrimitiveMatch(filter: JsonObject, match: Any?): Boolean {
+        if (!hasOnlyAllowedFilterKeys(filter)) {
+            return false
+        }
+
         val expectedType = filter.get("type")?.asString
         val pattern = filter.get("pattern")?.asString
         val constValue = filter.get("const")
@@ -692,6 +718,22 @@ class MatchingVcsHelper {
         if (!enumValues.isNullOrEmpty()) {
             val actual = match.toComparableString()
             if (!enumValues.any { stringsEquivalent(it, actual) }) return false
+        }
+
+        return true
+    }
+
+    private fun hasOnlyAllowedFilterKeys(filter: JsonObject): Boolean {
+        val allowedKeys = setOf("type", "pattern", "const", "enum", "contains")
+        val unsupportedKeys = filter.keySet().filterNot { allowedKeys.contains(it) }
+        if (unsupportedKeys.isNotEmpty()) {
+            Log.d("OVP_MATCH", "Unsupported filter keys=$unsupportedKeys in filter=$filter")
+            return false
+        }
+
+        val containsFilter = filter.getAsJsonObject("contains")
+        if (containsFilter != null && !hasOnlyAllowedFilterKeys(containsFilter)) {
+            return false
         }
 
         return true

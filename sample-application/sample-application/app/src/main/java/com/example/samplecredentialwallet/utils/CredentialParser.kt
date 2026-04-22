@@ -131,11 +131,11 @@ object CredentialDisplayNameResolver {
     }
 
     fun resolveFromJson(credentialJson: JSONObject): String? {
-        val direct = credentialJson.optString("credentialName").trim()
+        val direct = extractCredentialNameFromContainer(credentialJson)
         if (direct.isNotEmpty()) return direct
 
         val nestedVc = credentialJson.optJSONObject("vc")
-        val nestedDirect = nestedVc?.optString("credentialName")?.trim().orEmpty()
+        val nestedDirect = extractCredentialNameFromContainer(nestedVc)
         if (nestedDirect.isNotEmpty()) return nestedDirect
 
         val subjectName = extractCredentialNameFromSubject(credentialJson.optJSONObject("credentialSubject"))
@@ -250,12 +250,24 @@ object CredentialDisplayNameResolver {
 
     private fun extractCredentialNameFromSubject(subject: JSONObject?): String? {
         if (subject == null) return null
-        val direct = subject.optString("credentialName").trim()
-        if (direct.isNotEmpty()) return direct
+        val credentialName = subject.opt("credentialName")
+        return when (credentialName) {
+            is String -> credentialName.trim().ifEmpty { null }
+            is JSONObject -> credentialName.optString("value")?.trim()?.ifEmpty { null }
+            else -> null
+        }
+    }
 
-        val valueObject = subject.optJSONObject("credentialName")
-        val localized = valueObject?.optString("value")?.trim().orEmpty()
-        return localized.ifEmpty { null }
+    private fun extractCredentialNameFromContainer(source: JSONObject?): String {
+        if (source == null) return ""
+
+        // Reuse subject extractor so top-level and nested vc credentialName
+        // both support plain strings and localized-object shapes.
+        val wrapper = JSONObject()
+        if (source.has("credentialName")) {
+            wrapper.put("credentialName", source.opt("credentialName"))
+        }
+        return extractCredentialNameFromSubject(wrapper).orEmpty()
     }
 
     private fun extractCredentialNameFromSubject(subject: JsonObject?): String? {

@@ -71,6 +71,12 @@ fun MatchingCredentialsScreen(
     var isSharing by remember { mutableStateOf(false) }
     var shareErrorMessage by remember { mutableStateOf<String?>(null) }
     val coroutineScope = rememberCoroutineScope()
+    val matchingVCsByDescriptor = matchResult?.matchingVCs.orEmpty()
+    val requiredDescriptorCount = matchingVCsByDescriptor.size
+    val coveredDescriptors = selectedItems.map { it.first }.toSet()
+    val hasCompleteDescriptorCoverage = requiredDescriptorCount > 0 &&
+        coveredDescriptors.size == requiredDescriptorCount &&
+        coveredDescriptors.all { matchingVCsByDescriptor.containsKey(it) }
 
     Column(
         modifier = Modifier
@@ -167,8 +173,17 @@ fun MatchingCredentialsScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
-                onClick = { showConsentDialog = true },
-                enabled = selectedItems.isNotEmpty() && !isSharing
+                onClick = {
+                    val latestMatchingVCsByDescriptor = matchResult?.matchingVCs.orEmpty()
+                    val latestCoveredDescriptors = selectedItems.map { it.first }.toSet()
+                    val hasCompleteSelection = latestMatchingVCsByDescriptor.isNotEmpty() &&
+                        latestCoveredDescriptors.size == latestMatchingVCsByDescriptor.size &&
+                        latestCoveredDescriptors.all { latestMatchingVCsByDescriptor.containsKey(it) }
+
+                    if (!hasCompleteSelection || isSharing) return@Button
+                    showConsentDialog = true
+                },
+                enabled = hasCompleteDescriptorCoverage && !isSharing
             ) {
                 Text(stringResource(R.string.share))
             }
@@ -197,26 +212,39 @@ fun MatchingCredentialsScreen(
                     showConsentDialog = false
                     isSharing = true
                     Log.d("OVP_SHARE", "Share initiated with selectedCount=${selectedItems.size}")
-                    OpenID4VPManager.shareVerifiablePresentation(
-                        selectedItems = selectedItems,
-                        onResult = { result ->
-                            coroutineScope.launch {
-                                isSharing = false
-                                Log.d("OVP_SHARE", "Share completed. redirectUriPresent=${!result.redirectUri.isNullOrBlank()}")
-                                handleVerifierResponse(result, navController) {
-                                    selectedItems.clear()
-                                    onSuccess()
+                    try {
+                        OpenID4VPManager.shareVerifiablePresentation(
+                            selectedItems = selectedItems,
+                            onResult = { result ->
+                                coroutineScope.launch {
+                                    try {
+                                        Log.d("OVP_SHARE", "Share completed. redirectUriPresent=${!result.redirectUri.isNullOrBlank()}")
+                                        handleVerifierResponse(result, navController) {
+                                            selectedItems.clear()
+                                            onSuccess()
+                                        }
+                                        isSharing = false
+                                    } catch (e: Exception) {
+                                        isSharing = false
+                                        Log.e("MatchingCredentialsScreen", "Verifier response handling failed", e)
+                                        shareErrorMessage = e.message
+                                            ?: "Unable to process verifier response. Please try again."
+                                    }
+                                }
+                            },
+                            onError = {
+                                Log.e("MatchingCredentialsScreen", "VP share failed", it)
+                                coroutineScope.launch {
+                                    isSharing = false
+                                    shareErrorMessage = it.message ?: "Unable to share credentials. Please try again."
                                 }
                             }
-                        },
-                        onError = {
-                            Log.e("MatchingCredentialsScreen", "VP share failed", it)
-                            coroutineScope.launch {
-                                isSharing = false
-                                shareErrorMessage = it.message ?: "Unable to share credentials. Please try again."
-                            }
-                        }
-                    )
+                        )
+                    } catch (e: Exception) {
+                        isSharing = false
+                        Log.e("MatchingCredentialsScreen", "shareVerifiablePresentation failed synchronously", e)
+                        shareErrorMessage = e.message ?: "Unable to share credentials. Please try again."
+                    }
                 }) {
                     Text(stringResource(R.string.yes_proceed))
                 }
