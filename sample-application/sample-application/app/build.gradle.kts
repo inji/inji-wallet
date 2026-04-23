@@ -103,7 +103,7 @@ dependencies {
         exclude(group = "com.apicatalog", module = "titanium-json-ld-jre8")
     }
 
-    implementation("io.inji:inji-openid4vp-aar:0.7.0-SNAPSHOT") {
+    implementation("io.inji:inji-openid4vp-aar:0.7.0") {
         exclude(group = "org.bouncycastle", module = "bcpkix-jdk15on")
         exclude(group = "org.bouncycastle", module = "bcpkix-jdk18on")
         exclude(group = "com.google.crypto.tink", module = "tink")
