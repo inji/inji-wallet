@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 jest.mock('react-native', () => {
   const ReactNative = jest.requireActual('react-native');
 
@@ -32,6 +33,15 @@ jest.mock('react-native', () => {
       OS: 'android', // or 'ios' based on your requirement
       Version: 42, // Set a version number that you expect to use in your test
       select: jest.fn(),
+    },
+  });
+
+  Object.defineProperty(ReactNative, 'AppState', {
+    value: {
+      addEventListener: jest.fn(() => ({
+        remove: jest.fn(),
+      })),
+      currentState: 'active',
     },
   });
 

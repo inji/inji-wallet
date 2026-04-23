@@ -1,5 +1,5 @@
 import NetInfo, {NetInfoStateType} from '@react-native-community/netinfo';
-import {AppState, AppStateStatus, NativeModules} from 'react-native';
+import {NativeModules} from 'react-native';
 import {getDeviceId, getDeviceName} from 'react-native-device-info';
 import {assign, EventFrom, send, spawn, StateFrom} from 'xstate';
 import {createModel} from 'xstate/lib/model';
@@ -20,7 +20,6 @@ import {
   changeEsignetUrl,
   ESIGNET_BASE_URL,
   isAndroid,
-  updateCacheTTL,
   MIMOTO_BASE_URL,
   SETTINGS_STORE_KEY,
 } from '../shared/constants';
@@ -42,6 +41,7 @@ import {
   generateKeyPairsAndStoreOrder,
 } from '../shared/cryptoutil/cryptoUtil';
 import getAllConfigurations from '../shared/api';
+import {createCheckFocusStateService} from './checkFocusState';
 
 const DeepLinkIntent = NativeModules.DeepLinkIntent;
 
@@ -290,7 +290,7 @@ export const appMachine = model.createMachine(
       setLinkCode: assign({
         linkCode: (_, event) => {
           if (event.data != '')
-            return new URL(event.data).searchParams.get('linkCode')!!;
+            return new URL(event.data).searchParams.get('linkCode') || '';
           return '';
         },
       }),
@@ -479,47 +479,7 @@ export const appMachine = model.createMachine(
       },
 
       checkFocusState: () => callback => {
-        const changeHandler = (newState: AppStateStatus) => {
-          switch (newState) {
-            case 'background':
-            case 'inactive':
-              callback({type: 'INACTIVE'});
-              break;
-            case 'active':
-              callback({type: 'ACTIVE'});
-              break;
-          }
-        };
-
-        const blurHandler = () => callback({type: 'INACTIVE'});
-        const focusHandler = () => callback({type: 'ACTIVE'});
-
-        let changeEventSubscription = AppState.addEventListener(
-          'change',
-          changeHandler,
-        );
-        AppState.addEventListener('change', changeHandler);
-
-        let blurEventSubscription, focusEventSubscription;
-
-        if (isAndroid()) {
-          blurEventSubscription = AppState.addEventListener(
-            'blur',
-            blurHandler,
-          );
-          focusEventSubscription = AppState.addEventListener(
-            'focus',
-            focusHandler,
-          );
-        }
-
-        return () => {
-          changeEventSubscription.remove();
-          if (isAndroid()) {
-            blurEventSubscription.remove();
-            focusEventSubscription.remove();
-          }
-        };
+        return createCheckFocusStateService(callback);
       },
 
       checkKeyPairs: async () => {
