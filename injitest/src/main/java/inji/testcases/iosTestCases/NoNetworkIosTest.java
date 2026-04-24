@@ -198,8 +198,11 @@ public class NoNetworkIosTest extends IosBaseTest {
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
 
-        homePage.openDetailedVcView();
-        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
+      DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
+      assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed VC view page is displayed");
+      detailedVcViewPage.clickOnQrCodeButton();
+      assertTrue(detailedVcViewPage.isQrCodeDisplayed(), "Verify if QR code is displayed offline");
+      assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
     }
 
     @Test
