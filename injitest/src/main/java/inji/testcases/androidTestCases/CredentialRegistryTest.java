@@ -82,7 +82,8 @@ public class CredentialRegistryTest extends AndroidBaseTest {
 
         addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
-        homePage.openDetailedVcView();
+        DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
+        assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed Vc view page is displayed");
 
     }
 

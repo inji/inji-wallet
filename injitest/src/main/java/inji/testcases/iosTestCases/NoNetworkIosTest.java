@@ -1,13 +1,14 @@
 package inji.testcases.iosTestCases;
 
 import inji.annotations.NeedsUIN;
+import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.IosBaseTest;
-import inji.utils.InjiWalletUtil;
 import inji.utils.IosUtil;
 import inji.utils.TestDataReader;
 import inji.utils.UpdateNetworkSettings;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -21,71 +22,48 @@ public class NoNetworkIosTest extends IosBaseTest {
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
 
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         AddNewCardPage addNewCardPage = homePage.downloadCard();
+        Assert.assertFalse(addNewCardPage.isIssuerDescriptionEsignetDisplayed());
 
-        assertTrue(homePage.verifyLanguageForNoInternetConnectionDisplayed("English"), "Verify if no internet connection is displayed");
-        IosUtil.disableAirplaneMode();
-
-        assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
-
-        homePage.clickOnTryAgainButton();
-        assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
-
+        //Below lines are commented as scan feature is required
+//        assertTrue(homePage.verifyLanguageForNoInternetConnectionDisplayed("English"), "Verify if no internet connection is displayed");
+//        IosUtil.disableAirplaneMode();
+//
+//        assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
+//
+//        homePage.clickOnTryAgainButton();
+//        assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
     }
 
     @Test
     @NeedsUIN
     public void openCameraOnFlightMode() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         AddNewCardPage addNewCardPage = homePage.downloadCard();
-
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
-
-//        assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
-
-//        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
         otpVerification.enterOtp(uinGetOtp(), PlatformType.IOS);
 
         addNewCardPage.clickOnDoneButton();
-//        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
@@ -96,34 +74,16 @@ public class NoNetworkIosTest extends IosBaseTest {
     @NeedsUIN
     public void activateVcWithoutInternet() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
-
         AddNewCardPage addNewCardPage = homePage.downloadCard();
-
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
-
-//        assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
-
-//        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
         otpVerification.enterOtp(uinGetOtp(), PlatformType.IOS);
 
         addNewCardPage.clickOnDoneButton();
@@ -140,7 +100,6 @@ public class NoNetworkIosTest extends IosBaseTest {
         OtpVerificationPage otpVerificationPage = pleaseConfirmPopupPage.clickOnConfirmButton();
 
         assertTrue(otpVerificationPage.somethingWetWrongInVcActivationDisplayed(), "Verify if Something is wrong. Please try again later! is displayed");
-
     }
 
     @Test
@@ -148,24 +107,13 @@ public class NoNetworkIosTest extends IosBaseTest {
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         SettingsPage settingsPage = homePage.clickOnSettingIcon();
 
         assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
@@ -180,30 +128,17 @@ public class NoNetworkIosTest extends IosBaseTest {
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
 
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         HelpPage helpPage = homePage.clickOnHelpIcon();
 
         assertTrue(helpPage.isHelpPageLoaded(), "Verify if help page is displayed");
         helpPage.exitHelpPage();
-
-//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
     }
 
@@ -211,33 +146,16 @@ public class NoNetworkIosTest extends IosBaseTest {
     @NeedsUIN
     public void deleteDownloadedVcInOfflineMode() throws InterruptedException {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         AddNewCardPage addNewCardPage = homePage.downloadCard();
-
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
-
-//        assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
-
-//        assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
         otpVerification.enterOtp(uinGetOtp(), PlatformType.IOS);
 
         addNewCardPage.clickOnDoneButton();
@@ -246,44 +164,25 @@ public class NoNetworkIosTest extends IosBaseTest {
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
 
         MoreOptionsPage moreOptionsPage = homePage.clickOnMoreOptionsButton();
-//        assertTrue(moreOptionsPage.isMoreOptionsPageLoaded(), "Verify if more options page is displayed");
-
         PleaseConfirmPopupPage pleaseConfirmPopupPage = moreOptionsPage.clickOnRemoveFromWallet();
-//        assertTrue(pleaseConfirmPopupPage.isPleaseConfirmPopupPageLoaded(), "Verify if pop up page is displayed");
-
         pleaseConfirmPopupPage.clickOnConfirmButton();
 
         UpdateNetworkSettings.resetNetworkProfile(sessionId);
         assertEquals(homePage.verifyLanguageForNoVCDownloadedPageLoaded(), "Bring your digital identity");
-
     }
 
     @Test
     @NeedsUIN
-    public void openQrOffline() throws InterruptedException {
+    public void openQrOffline() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
-
         AddNewCardPage addNewCardPage = homePage.downloadCard();
-
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
 
@@ -299,77 +198,55 @@ public class NoNetworkIosTest extends IosBaseTest {
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
 
-        DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
-        assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
+      DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
+      assertTrue(detailedVcViewPage.isDetailedVcViewPageLoaded(), "Verify if detailed VC view page is displayed");
+      detailedVcViewPage.clickOnQrCodeButton();
+      assertTrue(detailedVcViewPage.isQrCodeDisplayed(), "Verify if QR code is displayed offline");
+      assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
     }
 
     @Test
-    public void downloadCardWithoutInternetRetryWithInternet() throws InterruptedException {
+    public void downloadCardWithoutInternetRetryWithInternet() {
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
 
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-        assertTrue(homePage.verifyLanguageForNoInternetConnectionDisplayed("English"), "Verify if no internet connection is displayed");
-        assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if try again button displayed");
+        Assert.assertFalse(addNewCardPage.isIssuerDescriptionEsignetDisplayed());
 
         UpdateNetworkSettings.resetNetworkProfile(sessionId);
-        homePage.clickOnTryAgainButton();
+        addNewCardPage.clickOnBack();
+        homePage.downloadCard();
         assertTrue(homePage.isTryAgainButtonNotDisplayed(), "Wating for network come online");
 
         assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
     }
 
     @Test
-    public void DownloadVcWithUinWithoutNetwork() throws InterruptedException {
+    public void DownloadVcWithUinWithoutNetwork() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
-
         AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
         addNewCardPage.clickOnBack();
 
         homePage.downloadCard();
-//        assertTrue(addNewCardPage.isIssuerDescriptionMosipDisplayed(), "Verify if issuer description  mosip displayed");
         assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(), "Verify if issuer description  esignet displayed");
 
         addNewCardPage.clickOnDownloadViaUin();
@@ -380,7 +257,7 @@ public class NoNetworkIosTest extends IosBaseTest {
     }
 
     @Test
-    public void DownloadVcWithEsignetWithoutNetwork() throws InterruptedException {
+    public void DownloadVcWithEsignetWithoutNetwork() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -388,9 +265,9 @@ public class NoNetworkIosTest extends IosBaseTest {
 
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
 
@@ -399,7 +276,6 @@ public class NoNetworkIosTest extends IosBaseTest {
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
 
-        
         addNewCardPage.clickOnBack();
 
         homePage.downloadCard();
@@ -411,21 +287,20 @@ public class NoNetworkIosTest extends IosBaseTest {
         assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
     }
 
-    
     @Test
-    public void DownloadVcWithMockWithoutNetwork() throws InterruptedException {
+    public void DownloadVcWithMockWithoutNetwork() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
-        
+
         addNewCardPage.clickOnBack();
 
         homePage.downloadCard();
@@ -435,41 +310,41 @@ public class NoNetworkIosTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
     }
-    
+
     @Test
-    public void DownloadVcWithMdlWithoutNetwork() throws InterruptedException {
+    public void DownloadVcWithMdlWithoutNetwork() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         String sessionId = getDriver().getSessionId().toString();
         UpdateNetworkSettings.setNoNetworkProfile(sessionId);
-        
+
         addNewCardPage.clickOnBack();
 
         homePage.downloadCard();
 
         addNewCardPage.clickOnMdlIssuer();
         assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
-        
+
         homePage.clickOnTryAgainButton();
 
         assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
     }
-    
+
     @Test
-    public void DownloadVcWithLandRegistryWithoutNetwork() throws InterruptedException {
+    public void DownloadVcWithLandRegistryWithoutNetwork() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
 
@@ -486,18 +361,17 @@ public class NoNetworkIosTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
     }
-    
-    
+
     @Test
-    public void DownloadVcWithStayProtectedWithoutNetwork() throws InterruptedException {
+    public void DownloadVcWithStayProtectedWithoutNetwork() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         AddNewCardPage addNewCardPage = homePage.downloadCard();
@@ -514,31 +388,18 @@ public class NoNetworkIosTest extends IosBaseTest {
 
         assertTrue(homePage.verifyLanguageForTryAgainButtonDisplayed("English"), "Verify if Try again button displayed");
     }
-    
+
     @Test
     public void verifyGetUinHeaderOffline() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
-
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
-
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
-
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
-
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
-
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         AddNewCardPage addNewCardPage = homePage.downloadCard();
-
-//        assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
 
         assertTrue(retrieveIdPage.isRetrieveIdPageLoaded(), "Verify if retrieve id page is displayed");

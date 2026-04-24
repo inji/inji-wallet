@@ -1,5 +1,6 @@
 package inji.testcases.iosTestCases;
 
+import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.IosBaseTest;
@@ -17,20 +18,15 @@ public class VerifyHelpPageTest extends IosBaseTest {
 
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
-//        assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
         WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
 
-//        assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -40,7 +36,6 @@ public class VerifyHelpPageTest extends IosBaseTest {
         assertFalse(helpPage.isHelpPageContentEmpty(), "verifying if help page is not empty");
         helpPage.exitHelpPage();
 
-//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
     }
 
