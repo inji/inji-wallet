@@ -26,10 +26,11 @@ public class BrowserStackCapabilitiesLoader {
 		Map<String, Object> bStackOptions = new HashMap<>();
 		bStackOptions.put("projectName", "InjiTests");
 		bStackOptions.put("buildName", buildName + " " + buildIdentifier);
-		bStackOptions.put("debug", true); // for visual logs
-		bStackOptions.put("networkLogs", true); // network logs
-		bStackOptions.put("interactiveDebugging", true); // optional
-		bStackOptions.put("local", true); // set to true only if testing local resources
+		bStackOptions.put("debug", true);
+		bStackOptions.put("networkLogs", true);
+		bStackOptions.put("interactiveDebugging",
+				Boolean.parseBoolean(InjiWalletConfigManager.getproperty("browserstack_interactiveDebugging")));
+		bStackOptions.put("local", true);
 		bStackOptions.put("localIdentifier", BrowserStackLocalManager.getLocalIdentifier());// set localIdentifier for browserstack local
 
 		// passing credentials here instead of setting via -D
@@ -43,6 +44,7 @@ public class BrowserStackCapabilitiesLoader {
 		capabilities.setCapability("appium:app", appId);
 		capabilities.setCapability("browserstack.idleTimeout",
 				InjiWalletConfigManager.getproperty("browserstack_idleTimeout"));
+		capabilities.setCapability("appium:newCommandTimeout", 60);
 
 		// Set the automationName based on platform
 		if ("android".equalsIgnoreCase(platform)) {

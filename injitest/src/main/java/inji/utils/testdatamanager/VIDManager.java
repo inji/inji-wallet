@@ -17,7 +17,10 @@ public class VIDManager {
     private static final String EMAIL_KEY = "AddIdentity_withValidParameters_smoke_UIN1_Pos_EMAIL";
 
     static {
-        availableVIDs.add(new Vid(get(VID_KEY), get(PHONE_KEY), get(EMAIL_KEY)));
+        // 3 copies so up to 3 parallel threads can acquire a VID concurrently
+        for (int i = 0; i < 3; i++) {
+            availableVIDs.add(new Vid(get(VID_KEY), get(PHONE_KEY), get(EMAIL_KEY)));
+        }
     }
 
     private static String get(String key) {

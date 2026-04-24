@@ -429,7 +429,7 @@ public class BasePage {
 	public void scrollAndClickByAccessibilityId(String accessibilityId, int maxScrolls, String stepDesc) {
 		for (int attempts = 0; attempts < maxScrolls; attempts++) {
 			try {
-				int waitTime = (attempts == 0) ? 10 : 2; // long wait first time, short later
+				int waitTime = (attempts == 0) ? 5 : 2; // long wait first time, short later
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
 
 				// Wait for element to be visible
@@ -464,7 +464,7 @@ public class BasePage {
 	public void scrollAndClickByAccessibilityId(String accessibilityId, String stepDesc) {
 		for (int attempts = 0; attempts < maxPageScrolls; attempts++) {
 			try {
-				int waitTime = (attempts == 0) ? 10 : 2; // long wait first time, short later
+				int waitTime = (attempts == 0) ? 5 : 2; // long wait first time, short later
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
 
 				// Wait for element to be clickable
@@ -514,7 +514,7 @@ public class BasePage {
 
 		for (int attempts = 0; attempts < maxScrolls; attempts++) {
 			try {
-				int waitTime = (attempts == 0) ? 10 : 2;
+				int waitTime = (attempts == 0) ? 5 : 2;
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
 
 				WebElement element = wait.until(
@@ -553,7 +553,7 @@ public class BasePage {
 	public String scrollToElementByAccessibilityIdGetText(String accessibilityId, String stepDesc) {
 		for (int attempts = 0; attempts < maxPageScrolls; attempts++) {
 			try {
-				int waitTime = (attempts == 0) ? 10 : 2; // long wait first time, short later
+				int waitTime = (attempts == 0) ? 5 : 2; // long wait first time, short later
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
 
 				// Wait for element to be visible
@@ -593,7 +593,7 @@ public class BasePage {
 
 		swipe.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY));
 		swipe.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
-		swipe.addAction(finger.createPointerMove(Duration.ofMillis(700), PointerInput.Origin.viewport(), startX, endY));
+		swipe.addAction(finger.createPointerMove(Duration.ofMillis(400), PointerInput.Origin.viewport(), startX, endY));
 		swipe.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
 		driver.perform(Collections.singletonList(swipe));
@@ -610,7 +610,7 @@ public class BasePage {
 
 		swipe.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY));
 		swipe.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
-		swipe.addAction(finger.createPointerMove(Duration.ofMillis(700), PointerInput.Origin.viewport(), startX, endY));
+		swipe.addAction(finger.createPointerMove(Duration.ofMillis(400), PointerInput.Origin.viewport(), startX, endY));
 		swipe.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
 		driver.perform(Collections.singletonList(swipe));
@@ -619,7 +619,7 @@ public class BasePage {
 	public void scrollAndClickByAccessibilityIdForStale(String accessibilityId, String stepDesc) {
 		for (int attempts = 0; attempts < maxPageScrolls; attempts++) {
 			try {
-				int waitTime = (attempts == 0) ? 10 : 2;
+				int waitTime = (attempts == 0) ? 5 : 2;
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
 				WebElement element = wait
 						.until(ExpectedConditions.elementToBeClickable(AppiumBy.accessibilityId(accessibilityId)));
@@ -648,10 +648,21 @@ public class BasePage {
 	}
 
 	public boolean scrollAndCheckVisibilityByAccessibilityId(String accessibilityId, String stepDesc) {
-		scrollToTop();
+		// Fast check at current scroll position — avoids scrollToTop when element is already visible
+		try {
+			new WebDriverWait(driver, Duration.ofSeconds(2))
+					.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.accessibilityId(accessibilityId)));
+			logStep(stepDesc + " - Visible at current position", AppiumBy.accessibilityId(accessibilityId));
+			return true;
+		} catch (TimeoutException | NoSuchElementException e) {
+			// Not visible at current position — scroll to top and search from beginning
+			// This handles the case where the element is above the current scroll position
+			scrollToTop();
+		}
+
 		for (int attempts = 0; attempts < maxPageScrolls; attempts++) {
 			try {
-				int waitTime = (attempts == 0) ? 10 : 2;
+				int waitTime = (attempts == 0) ? 5 : 2;
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
 
 				WebElement element = wait.until(
@@ -661,12 +672,10 @@ public class BasePage {
 				return true;
 
 			} catch (StaleElementReferenceException e) {
-        // Element went stale after scroll → retry without scrolling
-        sleep(500);
+				sleep(500);
 				continue;
 
 			} catch (TimeoutException | NoSuchElementException e) {
-				// Not visible yet → scroll and retry
 				scrollDown();
 
 			} catch (Exception e) {

@@ -429,9 +429,7 @@ public class VcDownloadAndVerifyUsingUinTest extends AndroidBaseTest {
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 
         AndroidUtil.forceStopApp();
-        Thread.sleep(4000);
         AndroidUtil.invokeAppFromBackGroundAndroid();
-        Thread.sleep(4000);
         UnlockApplicationPage unlockApplicationPage = new UnlockApplicationPage(getDriver());
         unlockApplicationPage.clickOnUnlockApplicationButton();
 
