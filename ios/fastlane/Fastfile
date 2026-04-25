@@ -129,12 +129,10 @@ platform :ios do
       workspace: "Inji.xcworkspace",
       scheme: "Inji",
       export_method: "app-store",
-      output_directory: "./fastlane/Inji_artifacts", 
+      output_directory: "./fastlane/Inji_artifacts",
       output_name: "#{generate_app_name}.ipa",
       export_options: {
-        provisioningProfiles: {
-          "#{generate_app_bundle_id}" => "match AppStore #{generate_app_bundle_id}"
-        }
+        provisioningProfiles: profile_mapping
       }
     )
   
@@ -205,11 +203,8 @@ platform :ios do
       workspace: "Inji.xcworkspace",
       scheme: "Inji",
       export_method: "app-store",
-
       export_options: {
-        provisioningProfiles: {
-          "#{generate_app_bundle_id}" => "match AppStore #{generate_app_bundle_id}"
-        }
+        provisioningProfiles: profile_mapping
       }
     )
 
