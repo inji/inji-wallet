@@ -5,6 +5,8 @@ fileignoreconfig:
     checksum: e89fb09400c82b0e8bade0c16ad168babd1182685773b982f83bfff250e9fdb4
   - filename: components/VC/common/VCProcessor.ts
     checksum: e4d65665ce4ef34805578961e8dbfd9845ded937bebbe57e6da35098ad31fbd3
+  - filename: components/VC/common/VCProcessor.test.ts
+    checksum: 86473e785955ec292bc7dd714793f9b50c79e437fc98d505feeadca885c3ae6a
   - filename: components/VC/common/VCUtils.tsx
     checksum: 7894949f973ea15a532a5fc537e09c5993e5e54b763195302f999afe5fc87d03
   - filename: screens/Settings/KeyManagementScreen.tsx
