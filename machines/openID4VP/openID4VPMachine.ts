@@ -91,12 +91,23 @@ export const openID4VPMachine = model.createMachine(
             actions: 'setTrustedVerifiers',
             target: 'getKeyPairFromKeystore',
           },
-          onError: {
-            actions: [
-              'setTrustedVerifiersApiCallError',
-              'resetIsShowLoadingScreen',
-            ],
-          },
+          onError: [
+            {
+              cond: 'isAuthorizationFlow',
+              actions: [
+                'setTrustedVerifiersApiCallError',
+                'resetIsShowLoadingScreen',
+              ],
+              target: '#OpenID4VP.authFlowFailed',
+            },
+            {
+              actions: [
+                'setTrustedVerifiersApiCallError',
+                'resetIsShowLoadingScreen',
+              ],
+              target: 'showError',
+            },
+          ],
         },
       },
       getKeyPairFromKeystore: {
@@ -108,7 +119,13 @@ export const openID4VPMachine = model.createMachine(
           },
           onError: [
             {
+              cond: 'isAuthorizationFlow',
               actions: 'setError',
+              target: '#OpenID4VP.authFlowFailed',
+            },
+            {
+              actions: 'setError',
+              target: 'showError',
             },
           ],
         },
@@ -133,7 +150,13 @@ export const openID4VPMachine = model.createMachine(
           ],
           onError: [
             {
+              cond: 'isAuthorizationFlow',
               actions: 'setError',
+              target: '#OpenID4VP.authFlowFailed',
+            },
+            {
+              actions: 'setError',
+              target: 'showError',
             },
           ],
         },
