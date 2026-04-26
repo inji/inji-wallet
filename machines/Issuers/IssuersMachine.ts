@@ -526,6 +526,10 @@ export const IssuersMachine = model.createMachine(
             actions: ['setVerifiableCredential', 'setCredentialWrapper'],
             target: 'verifyingCredential',
           },
+          onError: {
+            actions: ['setError'],
+            target: '#issuersMachine.error',
+          },
         },
       },
       downloadIssuerWellknown: {
@@ -896,18 +900,25 @@ export const IssuersMachine = model.createMachine(
         entry: [
           'setVCMetadata',
           'setMetadataInCredentialData',
-          'storeVerifiableCredentialMeta',
           'storeVerifiableCredentialData',
+          'storeVerifiableCredentialMeta',
           'storeVcsContext',
           'storeVcMetaContext',
           'logDownloaded',
         ],
         invoke: {
           src: 'isUserSignedAlready',
-          onDone: {
-            cond: 'isSignedIn',
-            actions: ['sendBackupEvent'],
-            target: 'done',
+          onDone: [
+            {
+              cond: 'isSignedIn',
+              actions: ['sendBackupEvent'],
+              target: 'done',
+            },
+            {target: 'done'},
+          ],
+          onError: {
+            actions: ['setError'],
+            target: '#issuersMachine.error',
           },
         },
       },
