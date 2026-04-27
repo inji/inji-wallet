@@ -123,7 +123,20 @@ platform :ios do
     )
 
     profile_mapping = Actions.lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING]
+    profile_name = profile_mapping[generate_app_bundle_id] || profile_mapping[generate_app_bundle_id.to_sym]
 
+    UI.message("Using provisioning profile: #{profile_name}")
+
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Inji.xcodeproj",
+      team_id: TEAM_ID,
+      profile_name: profile_name,
+      code_sign_identity: "Apple Distribution",
+      targets: ["Inji"],
+      build_configurations: ["Release"]
+    )
+    # folder to copy artifacts to upload to github actions\
     gym(
       configuration: "Release",
       workspace: "Inji.xcworkspace",
@@ -197,7 +210,19 @@ platform :ios do
     )
 
     profile_mapping = Actions.lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING]
+    profile_name = profile_mapping[generate_app_bundle_id] || profile_mapping[generate_app_bundle_id.to_sym]
 
+    UI.message("Using provisioning profile: #{profile_name}")
+
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Inji.xcodeproj",
+      team_id: TEAM_ID,
+      profile_name: profile_name,
+      code_sign_identity: "Apple Distribution",
+      targets: ["Inji"],
+      build_configurations: ["Release"]
+    )
     gym(
       configuration: "Release",
       workspace: "Inji.xcworkspace",
