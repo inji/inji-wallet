@@ -211,7 +211,7 @@ fileignoreconfig:
 - filename: screens/Home/IntroSlidersScreen.tsx
   checksum: 9880724461b194db7651737576ad2fd2db9cf3b4e732747f59be422a7ff4e4a1
 - filename: .env
-  checksum: ac76b852842c44ff5dac96c1fa5061e569bea4f54b3080d869a9dc25abd17991
+  checksum: adaba979277161534c4f20dd34740be9fb84cbed8a3466f143b629b3c979c223
 - filename: machines/VCItemMachine/VCItemMachine.typegen.ts
   checksum: 850b5d02636bef9e286fc0fbc4ffffbd38068f332c319302a906496f4bc1c8a1
 - filename: machines/VerifiableCredential/VCItemMachine/VCItemModel.ts
