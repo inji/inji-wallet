@@ -130,7 +130,7 @@ platform :ios do
     update_code_signing_settings(
       use_automatic_signing: false,
       path: "Inji.xcodeproj",
-      team_id: TEAM_ID,
+      team_id: "V2ABX7953Z",
       profile_name: profile_name,
       code_sign_identity: "Apple Distribution",
       targets: ["Inji"],
@@ -217,7 +217,7 @@ platform :ios do
     update_code_signing_settings(
       use_automatic_signing: false,
       path: "Inji.xcodeproj",
-      team_id: TEAM_ID,
+      team_id: "V2ABX7953Z",
       profile_name: profile_name,
       code_sign_identity: "Apple Distribution",
       targets: ["Inji"],
