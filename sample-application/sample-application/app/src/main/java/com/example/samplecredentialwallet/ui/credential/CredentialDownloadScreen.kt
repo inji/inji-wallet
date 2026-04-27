@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import com.example.samplecredentialwallet.navigation.Screen
 import com.example.samplecredentialwallet.ui.theme.InjiOrange
 import com.example.samplecredentialwallet.utils.Constants
+import com.example.samplecredentialwallet.utils.CredentialDisplayNameResolver
 import com.example.samplecredentialwallet.utils.CredentialStore
 import com.example.samplecredentialwallet.utils.CredentialVerifier
 import com.example.samplecredentialwallet.utils.SecureKeystoreManager
@@ -41,6 +42,7 @@ import org.json.JSONObject
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.util.Locale
 
 
 @Composable
@@ -95,6 +97,7 @@ fun CredentialDownloadScreen(
 
   // Credential configuration keys fetched from the issuer
   var credentialConfigurationsSupported by remember { mutableStateOf<List<String>>(emptyList()) }
+  var credentialConfigurationDisplayNames by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
   var selectedCredentialType by remember { mutableStateOf("") }
   LaunchedEffect(selectedIssuer?.credentialIssuerHost) {
     val host = selectedIssuer?.credentialIssuerHost ?: return@LaunchedEffect
@@ -103,6 +106,9 @@ fun CredentialDownloadScreen(
         OpenID4VCI.client.getCredentialConfigurationsSupported(host)
       }
       credentialConfigurationsSupported = configs.keys.toList()
+      credentialConfigurationDisplayNames = configs.entries.associate { entry ->
+        entry.key to resolveCredentialConfigurationDisplayName(entry.key, entry.value)
+      }
       if (selectedCredentialType.isEmpty()) selectedCredentialType = credentialConfigurationsSupported.firstOrNull() ?: ""
       Log.d("CredentialDownload", "Credential configs supported: $credentialConfigurationsSupported")
     } catch (e: Exception) {
@@ -164,7 +170,8 @@ fun CredentialDownloadScreen(
              )
              Spacer(modifier = Modifier.width(8.dp))
              Text(
-               text = credentialConfigurationId,
+               text = credentialConfigurationDisplayNames[credentialConfigurationId]
+                 ?: CredentialDisplayNameResolver.resolveCredentialConfigurationName(credentialConfigurationId),
                style = MaterialTheme.typography.bodyMedium
              )
            }
@@ -247,10 +254,35 @@ fun CredentialDownloadScreen(
                     // Add display name to credential before storing
                     val credentialWithDisplayName = try {
                       val credJson = JSONObject(credentialStr)
-                      Constants.credentialDisplayName?.let { displayName ->
+                      val resolvedDisplayName = if (isTrustedIssuerFlow()) {
+                        credentialConfigurationDisplayNames[selectedCredentialType]
+                          ?: CredentialDisplayNameResolver.resolveCredentialConfigurationName(selectedCredentialType)
+                      } else {
+                        Constants.credentialDisplayName
+                          ?: CredentialDisplayNameResolver.resolveFromJson(credJson)
+                      }
+
+                      resolvedDisplayName?.let { displayName ->
                         credJson.put("credentialName", displayName)
                         Log.d("VC_STORE", "Added display name: $displayName")
                       }
+
+                      credJson.put("isVerified", verified)
+
+                      val isMdocCredential =
+                        (credJson.optString("format").equals("mso_mdoc", ignoreCase = true)) ||
+                          (credJson.has("issuerSigned") && credJson.has("docType"))
+
+                      if (isMdocCredential) {
+                        val alias = SecureKeystoreManager.KeyType.ES256.value
+                        if (keystoreManager.hasKey(SecureKeystoreManager.KeyType.ES256)) {
+                          credJson.put("deviceKeyAlias", alias)
+                          Log.d("VC_STORE", "Persisted mdoc device key alias: $alias")
+                        } else {
+                          Log.e("VC_STORE", "Cannot persist mdoc device key alias; key not found for alias: $alias")
+                        }
+                      }
+
                       credJson.toString()
                     } catch (e: Exception) {
                       Log.e("VC_STORE", "Failed to add display name: ${e.message}")
@@ -285,6 +317,8 @@ fun CredentialDownloadScreen(
                   e is UnknownHostException -> "No internet connection"
                   e is SocketTimeoutException -> "No internet connection"
                   e is ConnectException -> "No internet connection"
+                  e.message?.contains("KEY_USER_NOT_AUTHENTICATED", ignoreCase = true) == true ->
+                    "Key authentication failed. Please retry after reopening the app once."
                   e.message?.contains(
                     "Unable to resolve host",
                     ignoreCase = true
@@ -464,6 +498,102 @@ fun CredentialDownloadScreen(
         }
       )
     }
+  }
+}
+
+private fun resolveCredentialConfigurationDisplayName(
+  configurationId: String,
+  configurationValue: Any?
+): String {
+  extractDisplayNameFromConfiguration(configurationValue)?.let { return it }
+  return CredentialDisplayNameResolver.resolveCredentialConfigurationName(configurationId)
+}
+
+private fun extractDisplayNameFromConfiguration(configurationValue: Any?): String? {
+  if (configurationValue == null) return null
+
+  val configMap = configurationValue as? Map<*, *>
+  val displaySource = configMap?.get("display") ?: readProperty(configurationValue, "display")
+  getLocalizedDisplayName(displaySource)?.let { return it }
+
+  val credentialDefinition = configMap?.get("credential_definition")
+    ?: configMap?.get("credentialDefinition")
+    ?: readProperty(configurationValue, "credentialDefinition")
+    ?: readProperty(configurationValue, "credential_definition")
+
+  val rawType = extractPreferredCredentialType(readProperty(credentialDefinition, "type"))
+    ?: readProperty(configurationValue, "vct")?.toString()
+    ?: readProperty(configurationValue, "docType")?.toString()
+
+  return rawType?.trim()?.takeIf { it.isNotBlank() }?.let {
+    CredentialDisplayNameResolver.toDisplayName(it)
+  }
+}
+
+private fun getLocalizedDisplayName(displayValue: Any?): String? {
+  val displayList = when (displayValue) {
+    is List<*> -> displayValue
+    is Array<*> -> displayValue.toList()
+    else -> return null
+  }
+  val currentLanguage = Locale.getDefault().language
+
+  val currentLangName = displayList.firstNotNullOfOrNull { item ->
+    val locale = readProperty(item, "locale")?.toString()
+      ?: readProperty(item, "language")?.toString()
+    val name = readProperty(item, "name")?.toString()?.trim()
+    if (!name.isNullOrBlank() && locale.equals(currentLanguage, ignoreCase = true)) {
+      name
+    } else {
+      null
+    }
+  }
+  if (!currentLangName.isNullOrBlank()) return currentLangName
+
+  val englishName = displayList.firstNotNullOfOrNull { item ->
+    val locale = readProperty(item, "locale")?.toString()
+      ?: readProperty(item, "language")?.toString()
+    val name = readProperty(item, "name")?.toString()?.trim()
+    if (!name.isNullOrBlank() && (locale.equals("en", ignoreCase = true) || locale.equals("en-US", ignoreCase = true))) {
+      name
+    } else {
+      null
+    }
+  }
+  if (!englishName.isNullOrBlank()) return englishName
+
+  return displayList.firstNotNullOfOrNull {
+    readProperty(it, "name")?.toString()?.trim()?.takeIf { text -> text.isNotBlank() }
+  }
+}
+
+private fun extractPreferredCredentialType(typeValue: Any?): String? {
+  val types = when (typeValue) {
+    is List<*> -> typeValue
+    is Array<*> -> typeValue.toList()
+    else -> return null
+  }
+  val typeStrings = types.mapNotNull { it?.toString()?.trim() }.filter { it.isNotBlank() }
+  return typeStrings.firstOrNull { !it.equals("VerifiableCredential", ignoreCase = true) }
+    ?: typeStrings.lastOrNull()
+}
+
+private fun readProperty(target: Any?, property: String): Any? {
+  if (target == null) return null
+  if (target is Map<*, *>) return target[property]
+
+  return try {
+    val getterSuffix = property.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+    val getterName = "get$getterSuffix"
+    target.javaClass.methods.firstOrNull { method ->
+      method.name == getterName && method.parameterCount == 0
+    }?.invoke(target)
+      ?: target.javaClass.declaredFields.firstOrNull { it.name == property }?.let { field ->
+        field.isAccessible = true
+        field.get(target)
+      }
+  } catch (_: Exception) {
+    null
   }
 }
 

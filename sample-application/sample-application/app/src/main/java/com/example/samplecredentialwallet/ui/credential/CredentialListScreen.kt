@@ -132,6 +132,7 @@ fun CredentialCard(
     onToggle: () -> Unit
 ) {
     val parsedData = remember(credential) { parseCredential(credential) }
+    val credentialName = parsedData["credentialName"] ?: parsedData["type"] ?: "Verifiable Credential"
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -179,9 +180,18 @@ fun CredentialCard(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
+                Text(
+                    text = credentialName,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 // Display ALL fields from received credential data
                 parsedData.forEach { (key, value) ->
-                    if (key != "faceImage" && key != "type" && key != "error" && key != "raw") {
+                    if (key != "faceImage" && key != "type" && key != "credentialName" && key != "error" && key != "raw") {
                         CredentialFieldInCard(
                             label = key.replaceFirstChar { it.uppercase() }.replace(Regex("([a-z])([A-Z])"), "$1 $2"),
                             value = value

@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Sample Credential Wallet</string>
+    <string name="requested_claims">Requested Claims: %1$s</string>
+    <string name="matching_credentials">Matching Credentials</string>
+    <string name="no_matching_credentials_found">No matching credentials found.</string>
+    <string name="share">Share</string>
+    <string name="reject">Reject</string>
+    <string name="consent_required">Consent Required</string>
+    <string name="do_you_want_to_share_selected_credentials">Do you want to share the selected credentials?</string>
+    <string name="yes_proceed">Yes, Proceed</string>
+    <string name="decline">Decline</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="do_you_want_to_go_back_to_scanning">Do you want to go back to the home screen?</string>
+    <string name="yes">Yes</string>
+    <string name="go_back">Go Back</string>
+    <string name="ok">OK</string>
+    <string name="invalid_qr_code">Invalid QR Code</string>
+    <string name="no_matching_credential_found_for_the_scanned_qr_code">No matching credential found for the scanned QR code.</string>
+    <string name="credentials_shared_successfully">Credentials shared successfully</string>
+    <string name="go_to_home">Go to Home</string>
+    <string name="no_vc_to_share">No VC to Share</string>
+    <string name="no_verifiable_credential_found_to_share">No verifiable credential found to share.</string>
 </resources>

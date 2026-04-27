@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,16 +26,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.samplecredentialwallet.R
 import com.example.samplecredentialwallet.ui.theme.CardBlue
 import com.example.samplecredentialwallet.ui.theme.InjiOrange
+import com.example.samplecredentialwallet.utils.CredentialDisplayNameResolver
 import com.example.samplecredentialwallet.utils.CredentialParser
 import com.example.samplecredentialwallet.utils.CredentialStore
-import com.example.samplecredentialwallet.utils.CredentialVerifier
-import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -42,45 +43,59 @@ import org.json.JSONObject
 @Composable
 fun HomeScreen(
     onNavigate: () -> Unit,
-    onViewCredential: (Int) -> Unit = {}
+    onViewCredential: (Int) -> Unit = {},
+    onShareCredentials: () -> Unit = {}
 ) {
     val credentials = remember { mutableStateOf(CredentialStore.getAllCredentials()) }
-    val verificationStatus = remember { mutableStateMapOf<Int, Boolean?>() }
-    val coroutineScope = rememberCoroutineScope()
+    var showNoVcDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
+    // Reload credentials every time HomeScreen enters composition
+    // (e.g. when navigating back after a successful VC download).
+    DisposableEffect(Unit) {
         credentials.value = CredentialStore.getAllCredentials()
-    }
-
-    // Verify credentials when they change
-    LaunchedEffect(credentials.value) {
-        credentials.value.forEachIndexed { index, credential ->
-            if (!verificationStatus.containsKey(index)) {
-                verificationStatus[index] = null // Start as unverified
-                coroutineScope.launch {
-                    val isValid = CredentialVerifier.verifyCredential(credential, demoMode = true)
-                    verificationStatus[index] = isValid
-                }
-            }
-        }
+        onDispose { }
     }
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = onNavigate,
-                containerColor = InjiOrange,
-                contentColor = Color.White,
-                shape = CircleShape,
-                modifier = Modifier
-                    .size(56.dp)
-                    .offset(y = (-40).dp)
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.offset(y = (-40).dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add New Card",
-                    modifier = Modifier.size(28.dp)
-                )
+                FloatingActionButton(
+                    onClick = {
+                        if (credentials.value.isEmpty()) {
+                            showNoVcDialog = true
+                        } else {
+                            onShareCredentials()
+                        }
+                    },
+                    containerColor = Color.White,
+                    contentColor = InjiOrange,
+                    shape = CircleShape,
+                    modifier = Modifier.size(48.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = "Share Credentials",
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                FloatingActionButton(
+                    onClick = onNavigate,
+                    containerColor = InjiOrange,
+                    contentColor = Color.White,
+                    shape = CircleShape,
+                    modifier = Modifier.size(56.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add New Card",
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
             }
         },
         floatingActionButtonPosition = androidx.compose.material3.FabPosition.End
@@ -173,7 +188,6 @@ fun HomeScreen(
                         itemsIndexed(credentials.value) { index, credential ->
                             CredentialHomeCard(
                                 credential = credential,
-                                isValid = verificationStatus[index],
                                 onClick = { onViewCredential(index) }
                             )
                         }
@@ -181,23 +195,38 @@ fun HomeScreen(
                 }
             }
         }
+
+        if (showNoVcDialog) {
+            AlertDialog(
+                onDismissRequest = { showNoVcDialog = false },
+                title = { Text(stringResource(R.string.no_vc_to_share)) },
+                text = { Text(stringResource(R.string.no_verifiable_credential_found_to_share)) },
+                confirmButton = {
+                    TextButton(onClick = { showNoVcDialog = false }) {
+                        Text(stringResource(R.string.ok))
+                    }
+                }
+            )
+        }
     }
 }
 
 @Composable
 fun CredentialHomeCard(
     credential: String,
-    isValid: Boolean? = null,
     onClick: () -> Unit
 ) {
     val parsedData = remember(credential) { parseCredential(credential) }
+    val isValid = remember(credential) { parseStoredVerificationStatus(credential) }
 
-    val vcTypeName = parsedData["credentialName"] ?: parsedData["type"]?.replace("VerifiableCredential", "Verifiable Credential") ?: "Verifiable Credential"
+    val vcTypeName = parsedData["credentialName"]
+        ?: parsedData["type"]
+        ?: CredentialDisplayNameResolver.toDisplayName("VerifiableCredential")
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(110.dp)
+            .heightIn(min = 110.dp)
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = CardBlue
@@ -275,8 +304,7 @@ fun CredentialHomeCard(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
-                    fontSize = 14.sp,
-                    maxLines = 1
+                    fontSize = 14.sp
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -284,7 +312,7 @@ fun CredentialHomeCard(
                 // Verification status badge
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     when (isValid) {
-                        true, false -> {
+                        true -> {
                             Icon(
                                 imageVector = Icons.Default.CheckCircle,
                                 contentDescription = "Verified",
@@ -317,13 +345,13 @@ fun CredentialHomeCard(
                         null -> {
                             Icon(
                                 imageVector = Icons.Default.Info,
-                                contentDescription = "Checking",
+                                contentDescription = "Not Verified",
                                 tint = Color(0xFFBDBDBD),
                                 modifier = Modifier.size(14.dp)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "Checking...",
+                                text = "Not Verified",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = Color.White,
                                 fontSize = 11.sp
@@ -354,4 +382,18 @@ fun CredentialHomeCard(
 
 private fun parseCredential(credentialJson: String): Map<String, String> {
     return CredentialParser.parseCredential(credentialJson)
+}
+
+private fun parseStoredVerificationStatus(credentialJson: String): Boolean? {
+    return try {
+        val root = JSONObject(credentialJson)
+        when (val raw = root.opt("isVerified")) {
+            is Boolean -> raw
+            is String -> raw.equals("true", ignoreCase = true)
+            is Number -> raw.toInt() != 0
+            else -> null
+        }
+    } catch (_: Exception) {
+        null
+    }
 }
