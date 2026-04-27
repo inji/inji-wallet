@@ -115,7 +115,7 @@ platform :ios do
     match(
       type: 'appstore',
       app_identifier: "#{generate_app_bundle_id}",
-      git_basic_authorization: Base64.strict_encode64("#{GIT_AUTHORIZATION}"),
+      git_basic_authorization: "#{GIT_AUTHORIZATION}",
       readonly: false,
       keychain_name: keychain_name,
       keychain_password: keychain_password,
@@ -123,18 +123,29 @@ platform :ios do
     )
 
     profile_mapping = Actions.lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING]
+    profile_name = profile_mapping[generate_app_bundle_id] || profile_mapping[generate_app_bundle_id.to_sym]
+
+    UI.message("Using provisioning profile: #{profile_name}")
+
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Inji.xcodeproj",
+      team_id: "V2ABX7953Z",
+      profile_name: profile_name,
+      code_sign_identity: "Apple Distribution",
+      targets: ["Inji"],
+      build_configurations: ["Release"]
+    )
 
     gym(
       configuration: "Release",
       workspace: "Inji.xcworkspace",
       scheme: "Inji",
       export_method: "app-store",
-      output_directory: "./fastlane/Inji_artifacts", 
+      output_directory: "./fastlane/Inji_artifacts",
       output_name: "#{generate_app_name}.ipa",
       export_options: {
-        provisioningProfiles: {
-          "#{generate_app_bundle_id}" => "match AppStore #{generate_app_bundle_id}"
-        }
+        provisioningProfiles: profile_mapping
       }
     )
   
@@ -191,7 +202,7 @@ platform :ios do
     match(
       type: 'appstore',
       app_identifier: "#{generate_app_bundle_id}",
-      git_basic_authorization: Base64.strict_encode64("#{GIT_AUTHORIZATION}"),
+      git_basic_authorization: "#{GIT_AUTHORIZATION}",
       readonly: false,
       keychain_name: keychain_name,
       keychain_password: keychain_password,
@@ -199,17 +210,27 @@ platform :ios do
     )
 
     profile_mapping = Actions.lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING]
+    profile_name = profile_mapping[generate_app_bundle_id] || profile_mapping[generate_app_bundle_id.to_sym]
+
+    UI.message("Using provisioning profile: #{profile_name}")
+
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Inji.xcodeproj",
+      team_id: "V2ABX7953Z",
+      profile_name: profile_name,
+      code_sign_identity: "Apple Distribution",
+      targets: ["Inji"],
+      build_configurations: ["Release"]
+    )
 
     gym(
       configuration: "Release",
       workspace: "Inji.xcworkspace",
       scheme: "Inji",
       export_method: "app-store",
-
       export_options: {
-        provisioningProfiles: {
-          "#{generate_app_bundle_id}" => "match AppStore #{generate_app_bundle_id}"
-        }
+        provisioningProfiles: profile_mapping
       }
     )
 
