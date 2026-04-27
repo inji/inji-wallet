@@ -73,15 +73,18 @@ public class MoreOptionsPage extends BasePage {
 	}
 
 	public PleaseConfirmPopupPage clickOnRemoveFromWallet() {
+		IosUtil.scrollToElement(driver, 171, 2149, 625, 1944);
 		click(removeFromWalletButton, "Clicking on 'Remove from Wallet' button");
 		return new PleaseConfirmPopupPage(driver);
 	}
 
 	public void clickOnCheckCardStatus() {
+		IosUtil.scrollToElement(driver, 171, 2149, 625, 1944);
 		click(checkCardStatusButton, "Clicking on 'Check Card Status' button");
 	}
 
 	public void clickOnShareVcFromKebab() {
+		IosUtil.scrollToElement(driver, 171, 2149, 625, 1944);
 		click(shareVcFromKebabButton, "Clicking on 'Share' button from kebab menu");
 	}
 

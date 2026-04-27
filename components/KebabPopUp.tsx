@@ -42,8 +42,7 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
           {paddingBottom: insets.bottom},
         ]}>
         <FlatList
-          accessibilityLabel={'moreOptionsPopup'}
-          testID={'moreOptionsPopup'}
+          {...testIDProps('moreOptionsPopup')}
           data={getKebabMenuOptions(props)}
           ListHeaderComponent={
             <Row
