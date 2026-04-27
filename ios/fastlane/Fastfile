@@ -130,13 +130,13 @@ platform :ios do
     update_code_signing_settings(
       use_automatic_signing: false,
       path: "Inji.xcodeproj",
-      team_id: "V2ABX7953Z",
+      team_id: TEAM_ID,
       profile_name: profile_name,
       code_sign_identity: "Apple Distribution",
       targets: ["Inji"],
       build_configurations: ["Release"]
     )
-
+    # folder to copy artifacts to upload to github actions\
     gym(
       configuration: "Release",
       workspace: "Inji.xcworkspace",
@@ -217,13 +217,12 @@ platform :ios do
     update_code_signing_settings(
       use_automatic_signing: false,
       path: "Inji.xcodeproj",
-      team_id: "V2ABX7953Z",
+      team_id: TEAM_ID,
       profile_name: profile_name,
       code_sign_identity: "Apple Distribution",
       targets: ["Inji"],
       build_configurations: ["Release"]
     )
-
     gym(
       configuration: "Release",
       workspace: "Inji.xcworkspace",
