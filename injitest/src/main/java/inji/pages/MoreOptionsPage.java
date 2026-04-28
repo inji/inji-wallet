@@ -52,18 +52,6 @@ public class MoreOptionsPage extends BasePage {
 	@iOSXCUITFindBy(accessibility = "shareVcWithSelfieFromKebab")
 	private WebElement shareVcWithSelfieFromKebab;
 
-	@AndroidFindBy(accessibility = "reverify")
-	@iOSXCUITFindBy(accessibility = "reverify")
-	private WebElement checkCardStatusButton;
-
-	@AndroidFindBy(accessibility = "shareVcFromKebab")
-	@iOSXCUITFindBy(accessibility = "shareVcFromKebab")
-	private WebElement shareVcFromKebabButton;
-
-	@AndroidFindBy(accessibility = "removeFromWallet")
-	@iOSXCUITFindBy(accessibility = "removeFromWallet")
-	private WebElement removeFromWalletButton;
-
 	public MoreOptionsPage(AppiumDriver driver) {
 		super(driver);
 	}
@@ -73,23 +61,9 @@ public class MoreOptionsPage extends BasePage {
 	}
 
 	public PleaseConfirmPopupPage clickOnRemoveFromWallet() {
-		IosUtil.scrollToElement(driver, 171, 2149, 625, 1944);
-		click(removeFromWalletButton, "Clicking on 'Remove from Wallet' button");
+		scrollAndClickByAccessibilityId("removeFromWallet", moreOptionsPopup, 3,
+				"Clicking on 'Remove from Wallet' button");
 		return new PleaseConfirmPopupPage(driver);
-	}
-
-	public void clickOnCheckCardStatus() {
-		IosUtil.scrollToElement(driver, 171, 2149, 625, 1944);
-		click(checkCardStatusButton, "Clicking on 'Check Card Status' button");
-	}
-
-	public void clickOnShareVcFromKebab() {
-		IosUtil.scrollToElement(driver, 171, 2149, 625, 1944);
-		click(shareVcFromKebabButton, "Clicking on 'Share' button from kebab menu");
-	}
-
-	public boolean isCheckCardStatusDisplayed() {
-		return isElementVisible(checkCardStatusButton, "Checking if 'Check Card Status' button is visible");
 	}
 
 	public void clickOnPinOrUnPinCard() {
