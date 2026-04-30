@@ -10,8 +10,10 @@ import {CredentialTypes} from '../../machines/VerifiableCredential/VCMetaMachine
 import { getCredentialType } from '../VC/common/VCUtils';
 
 export const CredentialType: React.FC<CredentialTypeProps> = props => {
-  const selectedIssuerDisplayObject = props.item.display?.length
-    ? getDisplayObjectForCurrentLanguage(props.item.display)
+  const credentialDisplay =
+    (props.item as any).credential_metadata?.display ?? props.item.display;
+  const selectedIssuerDisplayObject = credentialDisplay?.length
+    ? getDisplayObjectForCurrentLanguage(credentialDisplay)
     : {name:getCredentialType(props.item)};
 
   return (

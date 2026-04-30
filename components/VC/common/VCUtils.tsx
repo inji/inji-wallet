@@ -750,9 +750,12 @@ export const getCredentialType = (
   if (!supportedCredentialsWellknown) {
     return i18n.t('VcDetails:identityCard');
   }
-  if (supportedCredentialsWellknown['display']) {
+  const credentialDisplay =
+    (supportedCredentialsWellknown as any).credential_metadata?.display ??
+    supportedCredentialsWellknown.display;
+  if (credentialDisplay) {
     const wellknownDisplayProperty = getDisplayObjectForCurrentLanguage(
-      supportedCredentialsWellknown.display,
+      credentialDisplay,
     );
     return wellknownDisplayProperty.name;
   }
