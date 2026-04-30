@@ -6,21 +6,53 @@ import React
 class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
   private var openID4VP: OpenID4VP?
+  private var pendingJsonLdCanonicalizeContinuation: ((String) -> Void)?
+  private var jsonLdCanonicalizeCallback: RCTResponseSenderBlock?
 
   static func moduleName() -> String {
     return "InjiOpenID4VP"
   }
-
+  
   @objc
-  func `initSdk`(_ appId: String, walletMetadata: AnyObject?,resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+  func `initSdk`(_ appId: String, walletMetadata: AnyObject?, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     do {
-      let walletMetadataObject : WalletMetadata = try getWalletMetadataFromDict(walletMetadata, reject: reject)
-      openID4VP = OpenID4VP(traceabilityId: appId, walletMetadata: walletMetadataObject)
+      let walletMetadataObject: WalletMetadata = try getWalletMetadataFromDict(walletMetadata, reject: reject)
+      
+      openID4VP = OpenID4VP(
+        traceabilityId: appId,
+        walletMetadata: walletMetadataObject,
+        jsonLdCanonicalizer: { data in
+          try await self.invokeJsonLdCanonicalize(data)
+        }
+      )
       resolve(true)
     } catch {
       os_log("Error occurred \(error)")
       reject("OPENID4VP", error.localizedDescription, error)
     }
+  }
+  
+  private func invokeJsonLdCanonicalize(_ data: String) async throws -> String {
+    print("data = \(data)")
+    
+    if let bridge = RCTBridge.current() {
+      bridge.eventDispatcher().sendAppEvent(
+        withName: "onJsonLdCanonicalize",
+        body: [
+          "data": data,
+        ]
+      )
+    }
+    
+    return try await withCheckedThrowingContinuation { continuation in
+      self.pendingJsonLdCanonicalizeContinuation = { result in continuation.resume(returning: result) }
+    }
+  }
+  
+  @objc(sendJsonLdCanonicalizeResultFromJS:)
+  func sendJsonLdCanonicalizeResultFromJS(_ result: String) {
+    pendingJsonLdCanonicalizeContinuation?(result)
+    pendingJsonLdCanonicalizeContinuation = nil
   }
 
   @objc
@@ -68,10 +100,35 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
         let formattedCredentialsMap: [String: [FormatType: [AnyCodable]]] = OpenId4VPUtils.parseSelectedVCs(credentialsMap)
 
-        let response = try await openID4VP?.constructUnsignedVPToken(
+        let response : [UnsignedVPToken]? = try await openID4VP?.constructUnsignedVPToken(
           verifiableCredentials: formattedCredentialsMap,
           holderId: holderId,
           signatureSuite: signatureSuite
+        )
+        
+        let parsedResponse = try OpenId4VPUtils.toJson(response)
+        resolve(parsedResponse)
+      } catch {
+        rejectWithOpenID4VPError(error, reject: reject)
+      }
+    }
+  }
+  
+  @objc
+  func constructUnsignedVPTokenDCQL(_ credentialsMap: AnyObject,
+                                resolver resolve: @escaping RCTPromiseResolveBlock,
+                                rejecter reject: @escaping RCTPromiseRejectBlock) {
+    Task {
+      do {
+        guard let rawCredentialsMap = credentialsMap as? [String: [Any]] else {
+          reject("OPENID4VP", "Invalid credentials map format", nil)
+          return
+        }
+
+        let formattedCredentialsMap: [String: [SelectedCredential]] = try OpenId4VPUtils.parseSelectedVCs(rawCredentialsMap)
+
+        let response = try await openID4VP?.constructUnsignedVPToken(
+          selectedCredentials: formattedCredentialsMap
         )
         
         let parsedResponse = try OpenId4VPUtils.toJson(response)
@@ -88,7 +145,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
                                    rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
       do {
-        let formattedVPTokenSigningResults: [VPTokenSigningResultV2]
+        let formattedVPTokenSigningResults: [VPTokenSigningResult]
         do {
           guard let signedVPTokens = vpTokenSigningResults as? [[String: Any]] else {
             throw NSError(

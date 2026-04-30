@@ -126,6 +126,7 @@ export async function canonicalize(unsignedVp: any) {
     return base64url(canonicalizationResult);
   } catch (err) {
     console.error('Canonization failed:', err);
+    throw err;
   }
 }
 

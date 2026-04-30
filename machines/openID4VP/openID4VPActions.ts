@@ -364,7 +364,7 @@ function getVcsMatchingAuthRequest(context, event) {
   } else {
     // DCQL query
     return {
-      matchingVCs: {'dummy-id': vcs},
+      matchingVCs: {mvrc: vcs},
       requestedClaims: '',
       purpose: '',
     };

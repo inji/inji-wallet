@@ -28,6 +28,7 @@ import {
   sendImpressionEvent,
   getImpressionEventData,
 } from '../telemetry/TelemetryUtils';
+import {base64ToByteArray} from '../Utils';
 
 //polyfills setup
 secp.etc.hmacSha256Sync = (k, ...m) =>
@@ -209,6 +210,35 @@ export async function createSignature(privateKey, payload, keyType: string) {
       return createSignatureECK1(privateKey, payload);
     case KeyTypes.ED25519: {
       const payloadBytes = new TextEncoder().encode(payload);
+      return createSignatureED(privateKey, payloadBytes);
+    }
+    case 'EdDSA': {
+      const payloadBytes: Uint8Array = new TextEncoder().encode(payload);
+      return createSignatureED(privateKey, payloadBytes);
+    }
+    default:
+      break;
+  }
+}
+
+export async function createSignatureForVP(
+  privateKey,
+  base64EncodedPayload,
+  keyType: string,
+) {
+  switch (keyType) {
+    case KeyTypes.RS256:
+      return createSignatureRSA(privateKey, base64EncodedPayload);
+    case KeyTypes.ES256:
+      return createSignatureECR1(privateKey, base64EncodedPayload);
+    case KeyTypes.ES256K:
+      return createSignatureECK1(privateKey, base64EncodedPayload);
+    case KeyTypes.ED25519: {
+      const payloadBytes = base64ToByteArray(base64EncodedPayload);
+      return createSignatureED(privateKey, payloadBytes);
+    }
+    case 'EdDSA': {
+      const payloadBytes = base64ToByteArray(base64EncodedPayload);
       return createSignatureED(privateKey, payloadBytes);
     }
     default:

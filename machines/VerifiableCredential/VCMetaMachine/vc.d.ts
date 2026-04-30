@@ -14,7 +14,16 @@ export interface VC {
   vcMetadata: VCMetadata;
 }
 
-export type SelectedCredentialsForVPSharing = Record<string,Record<string, Array<any>>;
+export type SelectedCredentialsForVPSharing = Record<
+  string,
+  Record<string, Array<any>>
+>;
+
+export interface SelectedCredentialForVPSharing {
+  format: string;
+  credential: Credential;
+  credentialId: string;
+}
 
 export type VcIdType = 'UIN' | 'VID';
 
@@ -97,7 +106,7 @@ export interface CredentialTypes {
   proof_types_supported: Object;
   credential_definition: {
     type: Object[];
-    context:string[]
+    context: string[];
     credentialSubject: CredentialSubject;
   };
   doctype: string;

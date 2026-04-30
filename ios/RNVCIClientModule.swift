@@ -298,8 +298,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   }
 
   private func getSignVerifiablePresentationContinuationHook(
-    unsignedVPTokens: [UnsignedVPTokenV2]
-  ) async throws -> [VPTokenSigningResultV2] {
+    unsignedVPTokens: [UnsignedVPToken]
+  ) async throws -> [VPTokenSigningResult] {
     let unsignedVPTokensJson = try OpenId4VPUtils.toJson(unsignedVPTokens)
     if let bridge = RCTBridge.current() {
       bridge.eventDispatcher().sendAppEvent(

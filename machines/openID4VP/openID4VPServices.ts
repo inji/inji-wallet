@@ -107,6 +107,7 @@ export const openID4VPServices = () => {
       const holderId = 'did:jwk:' + base64url(JSON.stringify(jwk)) + '#0';
 
       const unSignedVpTokens = await OpenID4VP.constructUnsignedVPToken(
+        context.authenticationResponse,
         context.selectedVCs,
         context.selectedDisclosuresByVc,
         holderId,

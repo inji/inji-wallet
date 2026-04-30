@@ -1,22 +1,41 @@
-import {NativeModules} from 'react-native';
+import {NativeEventEmitter, NativeModules} from 'react-native';
 import {__AppId} from '../GlobalVariables';
 import {
   SelectedCredentialsForVPSharing,
   VC,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {walletMetadata} from './walletMetadata';
-import {getWalletMetadata, isClientValidationRequired} from './OpenID4VPHelper';
+import {
+  getWalletMetadata,
+  isClientValidationRequired,
+  jsonLdCanonicalize,
+} from './OpenID4VPHelper';
 import {parseJSON} from '../Utils';
 import {VCFormat} from '../VCFormat';
 import {VCMetadata} from '../VCMetadata';
 
 export const OpenID4VP_Proof_Sign_Algo = 'EdDSA';
+const emitter = new NativeEventEmitter(NativeModules.InjiOpenID4VP);
 
 class OpenID4VP {
   private static instance: OpenID4VP;
   private InjiOpenID4VP = NativeModules.InjiOpenID4VP;
 
   private constructor(walletMetadata: any) {
+    const jsonLdCanonicalListener = emitter.addListener(
+      'onJsonLdCanonicalize',
+      ({data}: {data: string}) => {
+        jsonLdCanonicalize(data)
+          .then(result => {
+            console.log('Canonicalization result sent to native: ', result);
+            this.InjiOpenID4VP.sendJsonLdCanonicalizeResultFromJS(result);
+          })
+          .catch(error => {
+            //TODO: abort the canonicalizer and notify native about the failure so that it can handle the error gracefully
+            console.error('Error during JSON-LD canonicalization: ', error);
+          });
+      },
+    );
     this.InjiOpenID4VP.initSdk(__AppId.getValue(), walletMetadata);
   }
 
@@ -55,6 +74,7 @@ class OpenID4VP {
   }
 
   static async constructUnsignedVPToken(
+    vpRequest: any,
     selectedVCs: Record<string, VC[]>,
     selectedDisclosuresByVc: any,
     holderId: string,
@@ -62,17 +82,59 @@ class OpenID4VP {
   ) {
     const openID4VP = await OpenID4VP.getInstance();
 
-    const updatedSelectedVCs = openID4VP.processSelectedVCs(
-      selectedVCs,
-      selectedDisclosuresByVc,
+    console.debug(
+      'Constructing unsigned VP token with the following parameters:',
     );
-    const unSignedVpTokens =
-      await openID4VP.InjiOpenID4VP.constructUnsignedVPToken(
-        updatedSelectedVCs,
-        holderId,
-        signatureAlgorithm,
+    console.debug(
+      'Has presentation_definition: ',
+      vpRequest.hasOwnProperty('presentation_definition'),
+    );
+
+    if (vpRequest.hasOwnProperty('presentation_definition')) {
+      const updatedSelectedVCs = openID4VP.processSelectedVCs(
+        selectedVCs,
+        selectedDisclosuresByVc,
       );
-    return parseJSON(unSignedVpTokens);
+      const unSignedVpTokens =
+        await openID4VP.InjiOpenID4VP.constructUnsignedVPToken(
+          updatedSelectedVCs,
+          holderId,
+          signatureAlgorithm,
+        );
+      return parseJSON(unSignedVpTokens);
+    } else {
+      // DCQL Query flow
+      const updatedSelectedVCs: Record<
+        string,
+        Array<SelectedCredentialsForVPSharing>
+      > = {};
+      Object.entries(selectedVCs).forEach(([credentialQueryId, vcsArray]) => {
+        updatedSelectedVCs[credentialQueryId] = vcsArray.map(credential => {
+          const credentialFormat = credential.vcMetadata.format;
+          const newVar = {
+            format: credentialFormat,
+            credentialId: credential.vcMetadata.id,
+            credential: openID4VP.extractCredential(
+              credential,
+              credentialFormat,
+              selectedDisclosuresByVc[
+                VCMetadata.fromVcMetadataString(
+                  credential.vcMetadata,
+                ).getVcKey()
+              ],
+            ),
+          };
+          console.debug('Credential prepared for VP sharing: ', newVar);
+          return newVar;
+        });
+      });
+
+      const unSignedVpTokens =
+        await openID4VP.InjiOpenID4VP.constructUnsignedVPTokenDCQL(
+          updatedSelectedVCs,
+        );
+      return parseJSON(unSignedVpTokens);
+    }
   }
 
   static async shareVerifiablePresentation(
@@ -91,6 +153,12 @@ class OpenID4VP {
     const openID4VP = await OpenID4VP.getInstance();
 
     return openID4VP.InjiOpenID4VP.sendErrorToVerifier(errorMessage, errorCode);
+  }
+
+  static async sendCanonicalizedData(data: string) {
+    const openID4VP = await OpenID4VP.getInstance();
+
+    openID4VP.InjiOpenID4VP.sendJsonLdCanonicalizeResultFromJS(data);
   }
 
   private processSelectedVCs(

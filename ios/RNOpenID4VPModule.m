@@ -8,6 +8,8 @@ RCT_EXTERN_METHOD(initSdk:(NSString *)appId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(sendJsonLdCanonicalizeResultFromJS:(NSString *)result)
+
 RCT_EXTERN_METHOD(authenticateVerifier:(NSString *)urlEncodedAuthorizationRequest
                   trustedVerifierJSON:(id)trustedVerifierJSON
                   shouldValidateClient:(BOOL)shouldValidateClient
@@ -17,6 +19,10 @@ RCT_EXTERN_METHOD(authenticateVerifier:(NSString *)urlEncodedAuthorizationReques
 RCT_EXTERN_METHOD(constructUnsignedVPToken:(id)credentialsMap
                   holderId:(NSString *)holderId
                   signatureSuite:(NSString *)signatureSuite
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(constructUnsignedVPTokenDCQL:(id)credentialsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
