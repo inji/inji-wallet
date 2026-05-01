@@ -38,6 +38,22 @@ Be sure to have the following build tools installed before proceeding:
 - cocoapods > 1.12
 - Ruby >= 2.6.10
 
+## ⚠️ Expo Go Compatibility Issue
+
+This project uses Expo SDK 51, while the latest Expo Go app supports SDK 54.
+
+If you encounter an incompatibility error when using Expo Go, this is expected due to SDK version mismatch.
+
+### Recommended solutions:
+
+- Use a development build:
+
+  ```bash
+  npx expo run:android
+  ```
+
+- Or run the app on an Android emulator
+
 ## Configuring the Environment
 
 If you ever want to use something in your local environment based on your customization and in need of using environment files other than default (.env), you can add some variables to your .env.local file.
@@ -103,11 +119,9 @@ However, if app is built via npm commands, metro starts automatically (For insta
   ```
 
   **Cause:**
-
   - This issue occurs due to missing or incorrect terminal configuration or environment settings.
 
   **Workaround:**
-
   - Start the development server manually by running `npm start` in a separate terminal window.
 
 ## Contributions
