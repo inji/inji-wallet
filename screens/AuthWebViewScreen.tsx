@@ -16,14 +16,22 @@ import {useTranslation} from 'react-i18next';
 import {isAndroid} from '../shared/constants';
 
 const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
-  const {authorizationURL, clientId, redirectUri, controller} = route.params;
+  const {authorizationURL, clientId, redirectUri, controller} =
+    route.params ?? {};
   const webViewRef = useRef<WebView>(null);
   const [showWebView, setShowWebView] = useState(false);
   const [shouldRenderWebView, setShouldRenderWebView] = useState(false);
   const {t} = useTranslation('authWebView');
   const WEBVIEW_INIT_DELAY_MS = 300;
 
-  const hostName = new URL(authorizationURL).hostname; // example.mosip.net
+  let hostName = 'mosip.net';
+  if (authorizationURL) {
+    try {
+      hostName = new URL(authorizationURL).hostname;
+    } catch {
+      console.warn('Invalid authorizationURL');
+    }
+  }
   const parsed = psl.parse(hostName);
   const rootDomain = parsed.domain || hostName;
   const ALERT_TITLE = t('title', {
@@ -37,7 +45,7 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   }, []);
 
   useEffect(() => {
-    if (!authorizationURL || !clientId || !redirectUri) {
+    if (!authorizationURL || !clientId || !redirectUri || !controller) {
       console.error('Missing required parameters for authentication');
       navigation.goBack();
       return;
@@ -94,7 +102,7 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
 
   const handleNavigationRequest = (request: any) => {
     const {url} = request;
-    if (url.startsWith(redirectUri)) {
+    if (redirectUri && url.startsWith(redirectUri)) {
       try {
         const uri = new URL(url);
         const code = uri.searchParams.get('code');
