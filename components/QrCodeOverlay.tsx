@@ -26,7 +26,7 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
     let qrData: string;
     try {
       const keyData = await RNSecureKeystoreModule.getData(props.meta.id);
-      if (keyData[1] && keyData.length > 0) {
+      if (keyData?.length > 1 && keyData?.[1]) {
         qrData = keyData[1];
       } else {
         throw new Error('No key data found');
@@ -54,10 +54,12 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
     const credentialSubject =
       props.verifiableCredential?.credential?.credentialSubject;
     const claim169Qrs = (credentialSubject as any)?.claim169;
-    const qr =
-      claim169Qrs && typeof claim169Qrs === 'object'
-        ? claim169Qrs[Object.keys(claim169Qrs)[0]]
-        : undefined;
+    const keys =
+          claim169Qrs && typeof claim169Qrs === 'object'
+            ? Object.keys(claim169Qrs)
+            : [];
+
+    const qr = keys.length > 0 ? claim169Qrs?.[keys[0]] : undefined;
 
     if (typeof qr === 'string' && qr.trim().length > 0) {
       return {isClaim169QrPresent: true, claim169QrData: qr};
@@ -68,9 +70,11 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
   let qrRef = useRef(null);
 
   function handleShareQRCodePress() {
-    qrRef.current.toDataURL(dataURL => {
-      shareImage(`${base64ImageType}${dataURL}`);
-    });
+    if (qrRef.current?.toDataURL) {
+      qrRef.current.toDataURL(dataURL => {
+        shareImage(`${base64ImageType}${dataURL}`);
+      });
+    }
   }
 
   async function shareImage(base64String: string) {
