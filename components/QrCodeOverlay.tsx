@@ -1,32 +1,32 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Pressable, View } from 'react-native';
-import { Icon, Overlay } from 'react-native-elements';
-import { Centered, Column, Row, Text, Button } from './ui';
+import React, {useEffect, useRef, useState} from 'react';
+import {Pressable, View} from 'react-native';
+import {Icon, Overlay} from 'react-native-elements';
+import {Centered, Column, Row, Text, Button} from './ui';
 import QRCode from 'react-native-qrcode-svg';
-import { Theme } from './ui/styleUtils';
-import { useTranslation } from 'react-i18next';
+import {Theme} from './ui/styleUtils';
+import {useTranslation} from 'react-i18next';
 import testIDProps from '../shared/commonUtil';
-import { SvgImage } from './ui/svg';
-import { NativeModules } from 'react-native';
-import { VerifiableCredential } from '../machines/VerifiableCredential/VCMetaMachine/vc';
-import { DEFAULT_ECL, MAX_QR_DATA_LENGTH } from '../shared/constants';
-import { VCMetadata } from '../shared/VCMetadata';
-import { shareImageToAllSupportedApps } from '../shared/sharing/imageUtils';
-import { ShareOptions } from 'react-native-share';
+import {SvgImage} from './ui/svg';
+import {NativeModules} from 'react-native';
+import {VerifiableCredential} from '../machines/VerifiableCredential/VCMetaMachine/vc';
+import {DEFAULT_ECL, MAX_QR_DATA_LENGTH} from '../shared/constants';
+import {VCMetadata} from '../shared/VCMetadata';
+import {shareImageToAllSupportedApps} from '../shared/sharing/imageUtils';
+import {ShareOptions} from 'react-native-share';
 
 export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
-  const { RNPixelpassModule } = NativeModules;
-  const { t } = useTranslation('VcDetails');
+  const {RNPixelpassModule} = NativeModules;
+  const {t} = useTranslation('VcDetails');
   const [qrString, setQrString] = useState('');
   const [qrError, setQrError] = useState(false);
   const base64ImageType = 'data:image/png;base64,';
-  const { RNSecureKeystoreModule } = NativeModules;
+  const {RNSecureKeystoreModule} = NativeModules;
 
   async function getQRData(): Promise<string> {
     let qrData: string;
     try {
       const keyData = await RNSecureKeystoreModule.getData(props.meta.id);
-      if (keyData[1] && keyData.length > 0) {
+      if (keyData?.length > 1 && keyData?.[1]) {
         qrData = keyData[1];
       } else {
         throw new Error('No key data found');
@@ -54,10 +54,12 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
     const credentialSubject =
       props.verifiableCredential?.credential?.credentialSubject;
     const claim169Qrs = (credentialSubject as any)?.claim169;
-    const qr =
+    const keys =
       claim169Qrs && typeof claim169Qrs === 'object'
-        ? claim169Qrs[Object.keys(claim169Qrs)[0]]
-        : undefined;
+        ? Object.keys(claim169Qrs)
+        : [];
+
+    const qr = keys.length > 0 ? claim169Qrs?.[keys[0]] : undefined;
 
     if (typeof qr === 'string' && qr.trim().length > 0) {
       return {isClaim169QrPresent: true, claim169QrData: qr};
@@ -68,9 +70,11 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
   let qrRef = useRef(null);
 
   function handleShareQRCodePress() {
-    qrRef.current.toDataURL(dataURL => {
-      shareImage(`${base64ImageType}${dataURL}`);
-    });
+    if (qrRef.current?.toDataURL) {
+      qrRef.current.toDataURL(dataURL => {
+        shareImage(`${base64ImageType}${dataURL}`);
+      });
+    }
   }
 
   async function shareImage(base64String: string) {
