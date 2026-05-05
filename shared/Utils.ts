@@ -81,7 +81,7 @@ export enum DEEPLINK_FLOWS {
   OVP = 'ovpFlow',
 }
 
-export function base64ToByteArray(base64String) {
+export function base64ToByteArray(base64String: string) {
   try {
     let cleanBase64 = base64String.trim();
     cleanBase64 = cleanBase64.replace(/-/g, '+').replace(/_/g, '/');
@@ -99,6 +99,15 @@ export function base64ToByteArray(base64String) {
   }
 }
 
+export function base64UrlToUint8Array(base64Url : string) {
+  const base64 = base64Url
+    .replace(/-/g, '+')
+    .replace(/_/g, '/')
+    .padEnd(base64Url.length + (4 - (base64Url.length % 4)) % 4, '=');
+
+  return Uint8Array.from(Buffer.from(base64, 'base64'));
+}
+
 export async function canonicalize(unsignedVp: any) {
   try {
     const jsonldProof = {...unsignedVp['proof']};
@@ -114,6 +123,35 @@ export async function canonicalize(unsignedVp: any) {
 
     const expandedJsonldProof = await jsonld.expand(jsonldProof);
     const normalizedJsonldProof = await jsonld.canonize(expandedJsonldProof, {
+      algorithm: 'URDNA2015',
+    });
+
+    const canonicalizationResult = Buffer.alloc(64);
+    Buffer.concat([
+      //noble sha256 deprecated need to use alternative library
+      sha256(utf8ToBytes(normalizedJsonldProof)),
+      sha256(utf8ToBytes(normalizedJsonldObject)),
+    ]).copy(canonicalizationResult, 0);
+    return base64url(canonicalizationResult);
+  } catch (err) {
+    console.error('Canonization failed:', err);
+    throw err;
+  }
+}
+
+export async function canonicalize2(unsignedVp: any) {
+  try {
+    const jsonldProof = {...unsignedVp['proof']};
+    jsonldProof['@context'] = unsignedVp['@context'];
+    const jsonldObjectClone = {...unsignedVp};
+    if ('proof' in jsonldObjectClone) {
+      delete jsonldObjectClone.proof;
+    }
+    const normalizedJsonldObject = await jsonld.canonize(jsonldObjectClone, {
+      algorithm: 'URDNA2015',
+    });
+
+    const normalizedJsonldProof = await jsonld.canonize(jsonldProof, {
       algorithm: 'URDNA2015',
     });
 

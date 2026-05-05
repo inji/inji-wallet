@@ -7,7 +7,6 @@ import {OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../../shared/constants';
 import {getVerifierKey, VCShareFlowType} from '../../shared/Utils';
 import {
   isClientValidationRequired,
-  signDataForVpPreparation,
   signDataForVpPreparationV2,
 } from '../../shared/openID4VP/OpenID4VPHelper';
 import {NativeModules} from 'react-native';

@@ -14,21 +14,11 @@ class OpenId4VPUtils: NSObject {
     return jsonString
   }
   
-  static func toJson(_ data:  [FormatType : UnsignedVPToken]?) throws -> [String: Any] {
-    let encodableDict = data?.mapKeys { $0.rawValue }.mapValues { EncodableWrapper($0) }
-    let jsonData = try JSONEncoder().encode(encodableDict)
-
-    if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-      return jsonObject
-    } else {
-      throw ParseError(message: "Failed to serialize JSON")
-    }
-  }
-  
   static func toJson(_ data: [UnsignedVPToken]?) throws -> [[String: Any]] {
+    print(data!.first!.dataToSign.map { String(format: "%02hhx", $0) }.joined(separator: " "))
     let encodableUnsignedVPToken : [[String: String]] = data?.map {
       [
-        "dataToSign": $0.dataToSign,
+        "dataToSign": $0.dataToSign.toBase64UrlEncoded(),
         "format": $0.format.rawValue,
         "holderKeyReference": $0.holderKeyReference,
         "signatureAlgorithm": $0.signatureAlgorithm
@@ -139,11 +129,19 @@ class OpenId4VPUtils: NSObject {
     let vpTokenSigningResultsData: [VPTokenSigningResult] = try vpTokenSigningResults.map { vpTokenSigningResult in
       guard let signedData = vpTokenSigningResult["signedData"] as? String else {  
         throw ParseError(message: "Invalid VP token signing result: missing or invalid 'signedData'")  
-      }  
-      return VPTokenSigningResult(signedData: signedData)
+      }
+      let decodedSignedData = try decodeBase64ToData(signedData)
+      return VPTokenSigningResult(signedData: decodedSignedData)
     }
       
     return vpTokenSigningResultsData
+  }
+  
+  private static func decodeBase64ToData(_ base64String: String) throws -> Data {
+    guard let decodedData = Data(base64UrlEncoded: base64String) else {
+      throw NSError(domain: "OPENID4VP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Base64 decoding failed"])
+    }
+    return decodedData
   }
   
   static func convertToOpenID4VPException(errorCode: String, error: String, moduleName: String) -> OpenID4VPException {

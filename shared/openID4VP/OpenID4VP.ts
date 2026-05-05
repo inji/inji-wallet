@@ -22,7 +22,7 @@ class OpenID4VP {
   private InjiOpenID4VP = NativeModules.InjiOpenID4VP;
 
   private constructor(walletMetadata: any) {
-    const jsonLdCanonicalListener = emitter.addListener(
+    emitter.addListener(
       'onJsonLdCanonicalize',
       ({data}: {data: string}) => {
         jsonLdCanonicalize(data)
@@ -73,6 +73,23 @@ class OpenID4VP {
     return openID4VP.processSelectedVCs(selectedVCs, selectedDisclosuresByVc);
   }
 
+  static getSignatureSuite(key: string): string {
+    // The key is in did:jwk format, we need to extract the "crv" & "kty" parameter from the JWK to determine the signature algorithm
+    try {
+      const jwk = decodeDidJwk(key);
+      if (jwk.kty === 'OKP' && jwk.crv === 'Ed25519') {
+        return 'Ed25519Signature2020';
+      } else if (jwk.kty === 'RSA') {
+        return 'RsaSignature2018';
+      } else {
+        return "JsonWebSignature2020"
+      }
+    } catch (error) {
+      console.error('Error parsing JWK from key: ', error);
+      return "JsonWebSignature2020"; // default to JsonWebSignature2020 if we can't determine the algorithm
+    }
+  }
+
   static async constructUnsignedVPToken(
     vpRequest: any,
     selectedVCs: Record<string, VC[]>,
@@ -95,11 +112,32 @@ class OpenID4VP {
         selectedVCs,
         selectedDisclosuresByVc,
       );
+
+      let holder = holderId;
+      let signatureAlgorithmForCredential = signatureAlgorithm;
+
+      for (const [_, vcsArray] of Object.entries(updatedSelectedVCs)) {
+        if(vcsArray["ldp_vc"]) {
+          // extract the holderId from the very first entry
+          const firstLdpVc = vcsArray["ldp_vc"][0];
+          holder = firstLdpVc["credentialSubject"]["id"];
+          signatureAlgorithmForCredential = this.getSignatureSuite(holder)
+          if(signatureAlgorithmForCredential === "Ed25519Signature2020") {
+            // convert holder from did:jwk to did:key format for Ed25519 keys
+            holder = "did:web:KiruthikaJeyashankar.github.io:did#key-0";
+            console.log("Holder uses Ed25519 key, converted holder id to did:key format: ", holder);
+          }
+          break;
+        }
+      }
+
+      console.log("The holder id for signing the VP token is determined to be: ", holder);
+      console.log("The signature algorithm for signing the VP token is determined to be: ", signatureAlgorithmForCredential);
       const unSignedVpTokens =
         await openID4VP.InjiOpenID4VP.constructUnsignedVPToken(
           updatedSelectedVCs,
-          holderId,
-          signatureAlgorithm,
+          holder,
+          signatureAlgorithmForCredential,
         );
       return parseJSON(unSignedVpTokens);
     } else {
@@ -239,3 +277,35 @@ class OpenID4VP {
 }
 
 export default OpenID4VP;
+
+function decodeDidJwk(didJwk: string) {
+  const encoded = didJwk.replace('did:jwk:', '').split("#")[0];
+  const json = Buffer.from(encoded, 'base64').toString('utf-8');
+  return JSON.parse(json);
+}
+
+function didJwkToDidKey(didJwk) {
+  // 1. decode JWK
+  const jwk = decodeDidJwk(didJwk)
+
+  // 2. validate
+  if (jwk.kty !== 'OKP' || jwk.crv !== 'Ed25519') {
+    throw new Error('Only Ed25519 did:jwk supported');
+  }
+
+  // 3. extract public key
+  const pubKeyBytes = Buffer.from(jwk.x, 'base64');
+
+  if (pubKeyBytes.length !== 32) {
+    throw new Error('Invalid Ed25519 key length');
+  }
+
+  // 4. add multicodec prefix
+  const multicodec = Buffer.concat([
+    Buffer.from([0xed, 0x01]),
+    pubKeyBytes
+  ]);
+
+  // 5. base58btc + multibase
+  return `did:key:z${bs58.encode(multicodec)}`;
+}

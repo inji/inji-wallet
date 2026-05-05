@@ -1,14 +1,10 @@
-export type UnsignedVPTokensV2 = Array<UnsignedVPTokenV2>;
-
-export interface UnsignedVPTokenV2 {
+export interface UnsignedVPToken {
   format: 'ldp_vc' | 'mso_mdoc' | 'vc_sd_jwt' | 'dc_sd_jwt';
   holderKeyReference: string;
   signatureAlgorithm: string;
   dataToSign: string;
 }
 
-export type VPTokenSigningResultsV2 = Array<VPTokenSigningResultV2>;
-
-export interface VPTokenSigningResultV2 {
+export interface VPTokenSigningResult {
   signedData: string;
 }

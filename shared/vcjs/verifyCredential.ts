@@ -41,7 +41,6 @@ export async function verifyCredential(
   credentialFormat: string,
 ): Promise<VerificationResult> {
   try {
-    jsonld.expand;
     if (isAndroid()) {
       return await verifyCredentialForAndroid(
         verifiableCredential,

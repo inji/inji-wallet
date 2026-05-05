@@ -1,23 +1,19 @@
 import {
-  createSignature,
-  createSignatureED,
-  createSignatureForVP,
+  createSignature, createSignatureECK1, createSignatureECR1, createSignatureED, createSignatureRSA,
   encodeB64,
   fetchKeyPair,
 } from '../cryptoutil/cryptoUtil';
-import {base64ToByteArray, canonicalize} from '../Utils';
+import {base64ToByteArray, canonicalize, canonicalize2} from '../Utils';
 import getAllConfigurations from '../api';
-import OpenID4VP, {OpenID4VP_Proof_Sign_Algo} from './OpenID4VP';
+import {OpenID4VP_Proof_Sign_Algo} from './OpenID4VP';
 import {VCFormat} from '../VCFormat';
 import {isIOS, JWT_ALG_TO_KEY_TYPE} from '../constants';
 import {getMdocAuthenticationAlorithm} from '../../components/VC/common/VCUtils';
-import {KeyTypes} from '../cryptoutil/KeyTypes';
+import {KeyTypes, SignatureAlgorithms} from '../cryptoutil/KeyTypes';
 import {signatureSuite} from '../../machines/openID4VP/openID4VPServices';
 import {
-  UnsignedVPTokensV2,
-  UnsignedVPTokenV2,
-  VPTokenSigningResultsV2,
-  VPTokenSigningResultV2,
+  UnsignedVPToken,
+  VPTokenSigningResult,
 } from './openid4vp.types';
 
 export async function constructDetachedJWT(
@@ -59,13 +55,15 @@ export const jsonLdCanonicalize = async (data: string) => {
   console.log('Canonicalizing data: ', typeof data);
   const parsedData = JSON.parse(data);
   console.log('type of parsedData: ', typeof parsedData);
-  const canonicalized = await canonicalize(parsedData);
+  // const canonicalized = await canonicalize(parsedData);
+  const canonicalized = await canonicalize2(parsedData);
   if (!canonicalized) {
     throw new Error('Canonicalized data to sign is undefined');
   }
   return canonicalized;
 };
 
+// TODO: remove this function and fix the tests
 export const signDataForVpPreparation = async (
   unSignedVpTokens,
   context: any,
@@ -197,95 +195,75 @@ export const signDataForVpPreparation = async (
  * @param context
  */
 export const signDataForVpPreparationV2 = async (
-  unSignedVpTokens: Array<UnsignedVPTokenV2>,
+  unSignedVpTokens: Array<UnsignedVPToken>,
   context: any,
-): Promise<VPTokenSigningResultsV2> => {
-  const result: Promise<VPTokenSigningResultV2[]> = unSignedVpTokens.map(
+): Promise<Array<VPTokenSigningResult>> => {
+  const keyTypeToKeys: Record<string, any> = {};
+
+  const getKeyInfo = async (keyType: string) => {
+    if (keyTypeToKeys[keyType]) {
+      return keyTypeToKeys[keyType];
+    } else {
+      const key = await fetchKeyPair(keyType);
+      keyTypeToKeys[keyType] = key;
+      return key
+    }
+  }
+
+  const result: Promise<VPTokenSigningResult>[] = unSignedVpTokens.map(
     async unsignedVPToken => {
-      let privateKey: string;
-      let keyType: KeyTypes;
       let signature: string | undefined = '';
       const formatType = unsignedVPToken.format;
-      let payload: string = unsignedVPToken.dataToSign;
+      const payload: string = unsignedVPToken.dataToSign;
       const signatureAlgorithm: string = unsignedVPToken.signatureAlgorithm;
+      console.log("Signing VP Token with format: ", formatType);
+      console.log("Signature Algorithm: ", signatureAlgorithm);
 
-      switch (formatType) {
-        /**
-         Right now, it is defined as a String, but that can cause issues when the data is not text-encoded (for example, with ldp_vcpayloads). Since signing operations work on raw bytes, I’m considering changing dataToSign to Data in Swift so it correctly represents binary data.
-         This library is mainly used by native consumers like the Inji Wallet through React Native native modules. Because of that, it is acceptable for the bridge layer to handle any necessary conversions.
-         On the React Native side, the app can convert Data to Base64 when passing it across the bridge. Since the React Native bridge only supports JSON-friendly types, binary data must be encoded anyway at the boundary, so this change should fit well within the existing architecture.
-         */
-        case VCFormat.ldp_vc.valueOf():
-          // if (isIOS()) {
-          //   const canonicalized = await canonicalize(JSON.parse(payload));
-          //   if (!canonicalized) {
-          //     throw new Error('Canonicalized data to sign is undefined');
-          //   }
-          //   payload = canonicalized;
-          // }
-          console.log('Data - before signing for LDP VC: ', signatureAlgorithm);
-          signature = await createSignatureForVP(
-            context.privateKey,
-            payload, // Payload is in base64 url encoded form - decode it before signing
-            signatureAlgorithm,
-          );
-          return {signedData: signature} as VPTokenSigningResultV2;
-          break;
-
-        case VCFormat.mso_mdoc.valueOf():
-          if (signatureAlgorithm === KeyTypes.ES256.valueOf()) {
-            const key = await fetchKeyPair(KeyTypes.ES256);
-            const signature = await createSignature(
-              key.privateKey,
-              payload,
-              KeyTypes.ES256,
-            );
-            if (signature) {
-              return {signedData: signature} as VPTokenSigningResultV2;
-            } else {
-              throw new Error(
-                `Failed to create signature for VP Token of format: ${formatType}`,
-              );
-            }
-          } else {
-            throw new Error(`Unsupported algorithm: ${signatureAlgorithm}`);
-          }
-
-        case VCFormat.vc_sd_jwt.valueOf():
-        case VCFormat.dc_sd_jwt.valueOf():
-          keyType =
-            JWT_ALG_TO_KEY_TYPE[
-              signatureAlgorithm as keyof typeof JWT_ALG_TO_KEY_TYPE
-            ];
-
-          if (!keyType) {
-            throw new Error(
-              `Unsupported signature algorithm: ${signatureAlgorithm}`,
-            );
-          }
-
-          if (keyType === KeyTypes.ED25519) {
-            privateKey = context.privateKey;
-          } else {
-            const keypair = await fetchKeyPair(keyType);
-            privateKey = keypair.privateKey;
-          }
-
-          signature = await createSignature(privateKey, payload, keyType);
-          if (signature) {
-            return {signedData: signature} as VPTokenSigningResultV2;
-          } else {
-            throw new Error(
-              `Failed to create signature for VP Token of format: ${formatType}`,
-            );
-          }
-
-        default:
-          throw new Error(`Unsupported VP Token format: ${formatType}`);
-      }
+      const keyType =
+        JWT_ALG_TO_KEY_TYPE[
+          signatureAlgorithm as keyof typeof JWT_ALG_TO_KEY_TYPE
+          ];
+      const key = await getKeyInfo(keyType);
+      console.log("Key Info = ", JSON.stringify(key, null, 2))
+      signature = await signData(
+        key.privateKey,
+        payload, // Payload is in base64 url encoded form - decode it before signing
+        signatureAlgorithm,
+      );
+      return {signedData: signature} as VPTokenSigningResult;
     },
   );
 
   const vpTokenSigningResults = await Promise.all(result);
-  return vpTokenSigningResults as VPTokenSigningResultsV2;
+  return vpTokenSigningResults as Array<VPTokenSigningResult>;
 };
+
+
+async function signData(
+  privateKey: string,
+  base64EncodedPayload: string,
+  keyType: string,
+) {
+  const payloadBytes = base64ToByteArray(base64EncodedPayload);
+  // const payloadBytes = base64UrlToUint8Array(base64EncodedPayload);
+  console.log("Signing data with key type: ", keyType);
+  console.log("payloadBytes: ", payloadBytes);
+  // const hexString = Array.from(payloadBytes)
+  //   .map(b => b.toString(16).padStart(2, '0'))
+  //   .join(' ');
+  // console.log("payloadBytes in hex: ", hexString);
+
+  switch (keyType) {
+    case SignatureAlgorithms.RS256: // Life Insurance credential
+      return createSignatureRSA(privateKey, payloadBytes);
+    case SignatureAlgorithms.ES256: // Insurance credential
+      return createSignatureECR1(privateKey, payloadBytes);
+    case SignatureAlgorithms.ES256K: // Mock VC DM 1.1
+      return createSignatureECK1(privateKey, payloadBytes);
+    case SignatureAlgorithms.EdDSA: {
+      return createSignatureED(privateKey, payloadBytes);
+    }
+    default:
+      break;
+  }
+}

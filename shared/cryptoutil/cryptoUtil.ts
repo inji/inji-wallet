@@ -1,13 +1,7 @@
 import 'react-native-get-random-values';
 import {RSA} from 'react-native-rsa-native';
 import forge from 'node-forge';
-import {
-  BIOMETRIC_CANCELLED,
-  DEBUG_MODE_ENABLED,
-  SUPPORTED_KEY_TYPES,
-  isAndroid,
-  isIOS,
-} from '../constants';
+import {BIOMETRIC_CANCELLED, DEBUG_MODE_ENABLED, isAndroid, isIOS, SUPPORTED_KEY_TYPES,} from '../constants';
 import {NativeModules} from 'react-native';
 import {BiometricCancellationError} from '../error/BiometricCancellationError';
 import {EncryptedOutput} from './encryptedOutput';
@@ -24,11 +18,6 @@ import {KeyTypes} from './KeyTypes';
 import convertDerToRsFormat from './signFormatConverter';
 import {hasKeyPair} from '../openId4VCI/Utils';
 import {TelemetryConstants} from '../telemetry/TelemetryConstants';
-import {
-  sendImpressionEvent,
-  getImpressionEventData,
-} from '../telemetry/TelemetryUtils';
-import {base64ToByteArray} from '../Utils';
 
 //polyfills setup
 secp.etc.hmacSha256Sync = (k, ...m) =>
@@ -221,37 +210,13 @@ export async function createSignature(privateKey, payload, keyType: string) {
   }
 }
 
-export async function createSignatureForVP(
-  privateKey,
-  base64EncodedPayload,
-  keyType: string,
-) {
-  switch (keyType) {
-    case KeyTypes.RS256:
-      return createSignatureRSA(privateKey, base64EncodedPayload);
-    case KeyTypes.ES256:
-      return createSignatureECR1(privateKey, base64EncodedPayload);
-    case KeyTypes.ES256K:
-      return createSignatureECK1(privateKey, base64EncodedPayload);
-    case KeyTypes.ED25519: {
-      const payloadBytes = base64ToByteArray(base64EncodedPayload);
-      return createSignatureED(privateKey, payloadBytes);
-    }
-    case 'EdDSA': {
-      const payloadBytes = base64ToByteArray(base64EncodedPayload);
-      return createSignatureED(privateKey, payloadBytes);
-    }
-    default:
-      break;
-  }
-}
-
 export async function createSignatureRSA(privateKey: string, payload: string) {
   let signature64;
 
   if (!isHardwareKeystoreExists) {
     throw Error;
   } else {
+    // If android signing input is required to b64?
     if (isAndroid())
       signature64 = await RNSecureKeystoreModule.sign(
         KeyTypes.RS256,
@@ -271,9 +236,25 @@ export async function createSignatureRSA(privateKey: string, payload: string) {
 }
 
 export async function createSignatureECK1(privateKey, payload) {
-  const sha = sha256(payload);
-  const sign = await secp.signAsync(sha, privateKey, {lowS: false});
-  return base64url(Buffer.from(sign.toCompactRawBytes()));
+  let payloadBytes;
+  if (typeof payload === 'string') {
+    payloadBytes = new TextEncoder().encode(payload);
+  } else if (payload instanceof Uint8Array) {
+    payloadBytes = payload;
+  } else {
+    throw new Error('Unsupported payload type');
+  }
+
+  const msgHash = sha256(payloadBytes);
+  const privKeyBytes = Buffer.from(privateKey, 'base64');
+
+  const signatureBytes = await secp.signAsync(msgHash, privKeyBytes, {
+    lowS: false,
+    extraEntropy: true
+  });
+  const compactSignatureBytes: Uint8Array = signatureBytes.toCompactRawBytes();
+
+  return base64url(Buffer.from(compactSignatureBytes));
 }
 
 export async function createSignatureED(privateKey, payloadBytes) {
@@ -303,11 +284,14 @@ export async function createSignatureECR1(privateKey, payload) {
     }
   }
   const sha = sha256(payload);
+  const privKeyBytes = Buffer.from(privateKey, 'base64');
 
-  const sign = await p256.sign(sha, Buffer.from(privateKey, 'base64'), {
+  const sign = p256.sign(sha, privKeyBytes, {
     lowS: false,
   });
-  return base64url(Buffer.from(sign.toCompactRawBytes()));
+  const compactSignatureBytes = sign.toCompactRawBytes();
+
+  return base64url(Buffer.from(compactSignatureBytes));
 }
 
 export function replaceCharactersInB64(encodedB64: string) {
