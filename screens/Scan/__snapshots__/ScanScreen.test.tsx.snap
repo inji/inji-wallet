@@ -277,7 +277,7 @@ exports[`ScanScreen should render bluetooth permission denied state 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,
@@ -298,7 +298,7 @@ exports[`ScanScreen should render bluetooth permission denied state 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               undefined,
@@ -329,7 +329,7 @@ exports[`ScanScreen should render bluetooth permission denied state 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               null,
@@ -672,7 +672,7 @@ exports[`ScanScreen should render location denied state 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,
@@ -693,7 +693,7 @@ exports[`ScanScreen should render location denied state 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               undefined,
@@ -724,7 +724,7 @@ exports[`ScanScreen should render location denied state 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               null,
@@ -941,7 +941,7 @@ exports[`ScanScreen should render location disabled state 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,
@@ -962,7 +962,7 @@ exports[`ScanScreen should render location disabled state 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               undefined,
@@ -993,7 +993,7 @@ exports[`ScanScreen should render location disabled state 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               null,
@@ -1210,7 +1210,7 @@ exports[`ScanScreen should render nearby devices permission denied 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,
@@ -1231,7 +1231,7 @@ exports[`ScanScreen should render nearby devices permission denied 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               undefined,
@@ -1262,7 +1262,7 @@ exports[`ScanScreen should render nearby devices permission denied 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               null,

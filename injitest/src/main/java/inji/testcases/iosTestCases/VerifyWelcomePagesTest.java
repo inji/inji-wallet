@@ -1,10 +1,10 @@
 package inji.testcases.iosTestCases;
 
 import inji.annotations.NeedsUIN;
+import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.IosBaseTest;
-import inji.utils.InjiWalletUtil;
 import inji.utils.IosUtil;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
@@ -54,20 +54,15 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
         assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         SettingsPage settingsPage = homePage.clickOnSettingIcon();
 
-//        assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         settingsPage.clickOnInjiTourGuide();
 
         assertTrue(homePage.verifyHelpFAQsHeader("English"), "Verify if help and frequently asked quations header displayed");
@@ -89,7 +84,6 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
         assertTrue(homePage.verifyAppSettingsHeader("English"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyAppSettingDescription("English"), "Verify if app settings description displayed");
         homePage.clickOnNextButton();
-//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }
@@ -104,20 +98,15 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
         assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
         SettingsPage settingsPage = homePage.clickOnSettingIcon();
 
-//        assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         settingsPage.clickOnInjiTourGuide();
 
         assertTrue(homePage.verifyHelpFAQsHeader("English"), "Verify if help and frequently asked quations header displayed");
@@ -170,10 +159,10 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -200,26 +189,20 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
         assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
         AddNewCardPage addNewCardPage = homePage.downloadCard();
         ESignetLoginPage esignetLoginPage = addNewCardPage.clickOnDownloadViaEsignet();
 
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
-//        String uin=TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
         esignetLoginPage.clickOnGetOtpButton();
@@ -232,7 +215,6 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
 
         SettingsPage settingsPage = homePage.clickOnSettingIcon();
 
-//        assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         settingsPage.clickOnInjiTourGuide();
 
         assertTrue(homePage.verifyHelpFAQsHeader("English"), "Verify if help and frequently asked quations header displayed");
@@ -265,7 +247,6 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
         addNewCardPage.clickOnDownloadViaEsignet();
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
         esignetLoginPage.setEnterIdTextBox(getUIN());
         esignetLoginPage.clickOnGetOtpButton();
@@ -273,7 +254,6 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
         otpVerification.enterOtpForeSignet(uinGetOtp(), PlatformType.IOS);
         esignetLoginPage.clickOnVerifyButtonIos();
 
-//        addNewCardPage.clickOnDoneButton();
         assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
         homePage.clickOnSettingIcon();
 
@@ -314,17 +294,13 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
         assertTrue(welcomePage.isWelcomePageLoaded(), "Verify if welcome page is loaded");
         AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
 
-//        assertTrue(appUnlockMethodPage.isAppUnlockMethodPageLoaded(), "Verify if app unlocked page is displayed");
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
-//        assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
-//        assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
-//        assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
         AddNewCardPage addNewCardPage = homePage.downloadCard();
 
@@ -338,9 +314,7 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
 
 
         addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-//        esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 
-//        String uin=TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
 
         esignetLoginPage.clickOnGetOtpButton();
@@ -353,7 +327,6 @@ public class VerifyWelcomePagesTest extends IosBaseTest {
 
         SettingsPage settingsPage = homePage.clickOnSettingIcon();
 
-//        assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
         settingsPage.clickOnInjiTourGuide();
 
         assertTrue(homePage.verifyHelpFAQsHeader("English"), "Verify if help and frequently asked quations header displayed");

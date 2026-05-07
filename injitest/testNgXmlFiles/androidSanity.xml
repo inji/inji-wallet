@@ -25,7 +25,6 @@
 			<class name="inji.testcases.androidTestCases.PinVcTest">
 				<methods>
 					<include name="downloadVcViaEsignetAndPinUnpin" />
-					<include name="downloadVcViaEsignetAndPinUnpin" />
 				</methods>
 			</class>
 			<class name="inji.testcases.androidTestCases.AboutInjiTest">

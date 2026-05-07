@@ -2,10 +2,10 @@ package inji.testcases.iosTestCases;
 
 import inji.annotations.NeedsSunbirdPolicy;
 import inji.annotations.NeedsUIN;
+import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.IosBaseTest;
-import inji.utils.InjiWalletUtil;
 import inji.utils.IosUtil;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
@@ -30,10 +30,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -59,10 +59,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -89,10 +89,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -116,10 +116,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -130,7 +130,7 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         assertTrue(unlockApplicationPage.isUnlockApplicationPageLoadedInArabic(), "Verify if language is changed to arabic");
         unlockApplicationPage.clickOnUnlockApplicationButton();
-        setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
         HistoryPage historyPage = homePage.clickOnHistoryButton();
 
         assertTrue(historyPage.noHistoryAvailable(), "verify no history available in arabic");
@@ -150,10 +150,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -193,10 +193,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -237,10 +237,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -282,10 +282,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -334,10 +334,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -386,10 +386,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -439,10 +439,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -492,10 +492,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -519,7 +519,7 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         assertTrue(unlockApplicationPage.isUnlockApplicationPageLoadedInArabic(), "Verify if language is changed to arabic");
         unlockApplicationPage.clickOnUnlockApplicationButton();
-        setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
         DetailedVcViewPage detailedVcViewPage = homePage.openDetailedVcView();
         assertEquals(homePage.getFullNameTitleText(), "الاسم الكامل");
         detailedVcViewPage.clickOnBackArrow();
@@ -529,7 +529,7 @@ public class ChangeLanguageTest extends IosBaseTest {
         settingsPage.clickOnHindiLanguage();
 
         unlockApplicationPage.clickOnUnlockApplicationButton();
-        setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
         homePage.openDetailedVcView();
         assertEquals(homePage.getFullNameTitleText(), "पूरा नाम");
     }
@@ -549,10 +549,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -563,12 +563,11 @@ public class ChangeLanguageTest extends IosBaseTest {
 
         assertTrue(unlockApplicationPage.isUnlockApplicationPageLoadedInArabic(), "Verify if language is changed to arabic");
         unlockApplicationPage.clickOnUnlockApplicationButton();
-        setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
         AddNewCardPage addNewCardPage = homePage.downloadCard();
 
         assertEquals(addNewCardPage.verifyLanguageForAddNewCardGuideMessage(), "يرجى اختيار جهة الإصدار المفضلة لديك من الخيارات أدناه لإضافة بطاقة جديدة.");
         RetrieveIdPage retrieveIdPage = addNewCardPage.clickOnDownloadViaUin();
-//        String uin = TestDataReader.readData("uin");
         OtpVerificationPage otpVerification = retrieveIdPage.setEnterIdTextBox(getUIN()).clickOnGenerateCardButton();
 
         assertTrue(otpVerification.isOtpVerificationPageLoaded(), "Verify if otp verification page is displayed");
@@ -580,7 +579,7 @@ public class ChangeLanguageTest extends IosBaseTest {
 
     @Test
     @NeedsSunbirdPolicy
-    public void downloadVcAndChnageLangaugeVerifyVcViaSunbird() throws InterruptedException {
+    public void downloadVcAndChnageLangaugeVerifyVcViaSunbird() {
         ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
         assertTrue(chooseLanguagePage.isChooseLanguagePageLoaded(), "Verify if choose language page is displayed");
@@ -593,10 +592,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -606,7 +605,6 @@ public class ChangeLanguageTest extends IosBaseTest {
         assertTrue(addNewCardPage.isDownloadViaSunbirdDisplayed(), "Verify if download sunbird displayed");
         SunbirdLoginPage sunbirdLoginPage = addNewCardPage.clickOnDownloadViaSunbird();
         addNewCardPage.clickOnCredentialTypeHeadingInsuranceCredential();
-//        addNewCardPage.clickOnContinueButtonInSigninPopupIos();
         sunbirdLoginPage.enterPolicyNumber(getPolicyNumber());
         sunbirdLoginPage.enterFullName(getPolicyName());
         sunbirdLoginPage.enterDateOfBirth();
@@ -623,7 +621,6 @@ public class ChangeLanguageTest extends IosBaseTest {
         homePage.clickOnHomeButton();
 
         assertTrue(sunbirdLoginPage.isSunbirdCardLogoDisplayed(), "Verify if download sunbird logo displayed");
-//        assertEquals(sunbirdLoginPage.getFullNameForSunbirdCard(),TestDataReader.readData("fullNameSunbird"));
 
         sunbirdLoginPage.openDetailedSunbirdVcView();
 
@@ -653,10 +650,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -697,10 +694,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -739,10 +736,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -779,10 +776,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -794,7 +791,7 @@ public class ChangeLanguageTest extends IosBaseTest {
         UnlockApplicationPage unlockApplicationPage = new UnlockApplicationPage(getDriver());
         assertTrue(unlockApplicationPage.isUnlockApplicationPageLoadedInArabic(), "Verify if language is changed to arabic");
         unlockApplicationPage.clickOnUnlockApplicationButton();
-        setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -821,10 +818,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -877,10 +874,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -934,10 +931,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -965,7 +962,6 @@ public class ChangeLanguageTest extends IosBaseTest {
         assertTrue(homePage.verifyAppSettingsHeader("English"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyAppSettingDescription("English"), "Verify if app settings description displayed");
         homePage.clickOnNextButton();
-//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }
@@ -984,10 +980,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -1015,7 +1011,6 @@ public class ChangeLanguageTest extends IosBaseTest {
         assertTrue(homePage.verifyAppSettingsHeader("Hindi"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyAppSettingDescription("Hindi"), "Verify if app settings description displayed");
         homePage.clickOnNextButton();
-//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }
@@ -1034,10 +1029,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -1065,7 +1060,6 @@ public class ChangeLanguageTest extends IosBaseTest {
         assertTrue(homePage.verifyAppSettingsHeader("Kannada"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyAppSettingDescription("Kannada"), "Verify if app settings description displayed");
         homePage.clickOnNextButton();
-//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }
@@ -1084,10 +1078,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -1115,7 +1109,6 @@ public class ChangeLanguageTest extends IosBaseTest {
         assertTrue(homePage.verifyAppSettingsHeader("Tamil"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyAppSettingDescription("Tamil"), "Verify if app settings description displayed");
         homePage.clickOnNextButton();
-//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }
@@ -1134,10 +1127,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
@@ -1165,7 +1158,6 @@ public class ChangeLanguageTest extends IosBaseTest {
         assertTrue(homePage.verifyAppSettingsHeader("Filipino"), "Verify if app settings header text displayed");
         assertTrue(homePage.verifyAppSettingDescription("Filipino"), "Verify if app settings description displayed");
         homePage.clickOnNextButton();
-//        homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");
 
     }
@@ -1184,10 +1176,10 @@ public class ChangeLanguageTest extends IosBaseTest {
         SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
 
         assertTrue(setPasscode.isSetPassCodePageLoaded(), "Verify if set passcode page is displayed");
-        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData("passcode"), PlatformType.IOS);
+        ConfirmPasscode confirmPasscode = setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         assertTrue(confirmPasscode.isConfirmPassCodePageLoaded(), "Verify if confirm passcode page is displayed");
-        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
+        HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
 
         homePage.clickOnNextButtonForInjiTour();
         assertTrue(homePage.isHomePageLoaded(), "Verify if home page is displayed");

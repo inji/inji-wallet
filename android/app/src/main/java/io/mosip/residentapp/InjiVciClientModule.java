@@ -22,7 +22,6 @@ import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSign
 import io.mosip.residentapp.utils.OpenId4VPUtils;
 import io.mosip.vciclient.VCIClient;
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata;
-import io.mosip.vciclient.credential.response.CredentialResponse;
 import io.mosip.vciclient.token.TokenResponse;
 import io.mosip.vciclient.exception.VCIClientException;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
@@ -95,7 +94,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     public void getIssuerMetadata(String credentialIssuer, Promise promise) {
         new Thread(() -> {
             try {
-                Map<String, Object> issuerMetadata = vciClient.getIssuerMetadata(credentialIssuer);
+                Map<String, Object> issuerMetadata = VCIClientBridge.getIssuerMetadataSync(vciClient, credentialIssuer);
                 reactContext.runOnUiQueueThread(() -> {
                     String json = GSON.toJson(issuerMetadata, Map.class);
                     promise.resolve(json);
@@ -116,14 +115,14 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
             try {
                 ClientMetadata clientMetadata = GSON.fromJson(clientMetadataJson, ClientMetadata.class);
 
-                CredentialResponse response = VCIClientBridge.requestCredentialByOfferSync(
+                String response = VCIClientBridge.requestCredentialByOfferSync(
                         vciClient,
                         credentialOffer,
                         clientMetadata,
                         signatureSuite);
 
                 reactContext
-                        .runOnUiQueueThread(() -> promise.resolve(response != null ? response.toJsonString() : null));
+                        .runOnUiQueueThread(() -> promise.resolve(response));
             } catch (Exception e) {
                 reactContext.runOnUiQueueThread(() -> rejectVCIException(promise, e));
             }
@@ -138,7 +137,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
                 ClientMetadata clientMetadata = GSON.fromJson(
                         clientMetadataJson, ClientMetadata.class);
 
-                CredentialResponse response = VCIClientBridge.requestCredentialFromTrustedIssuerSync(
+                String response = VCIClientBridge.requestCredentialFromTrustedIssuerSync(
                         vciClient,
                         credentialIssuer,
                         credentialConfigurationId,
@@ -146,7 +145,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
                         signatureSuite);
 
                 reactContext.runOnUiQueueThread(() -> {
-                    promise.resolve(response != null ? response.toJsonString() : null);
+                    promise.resolve(response);
                 });
             } catch (Exception e) {
                 reactContext.runOnUiQueueThread(() -> rejectVCIException(promise, e));

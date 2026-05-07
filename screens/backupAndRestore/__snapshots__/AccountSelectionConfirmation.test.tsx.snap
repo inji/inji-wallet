@@ -256,7 +256,7 @@ exports[`AccountSelectionConfirmation should render when visible 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               null,
@@ -279,7 +279,7 @@ exports[`AccountSelectionConfirmation should render when visible 1`] = `
                 {
                   "alignSelf": "center",
                   "borderRadius": 9,
-                  "height": 54,
+                  "minHeight": 54,
                   "width": 540,
                 },
                 undefined,
@@ -312,7 +312,7 @@ exports[`AccountSelectionConfirmation should render when visible 1`] = `
                 {
                   "alignSelf": "center",
                   "borderRadius": 9,
-                  "height": 54,
+                  "minHeight": 54,
                   "width": 540,
                 },
                 null,

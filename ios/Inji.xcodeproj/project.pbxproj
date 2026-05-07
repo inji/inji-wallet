@@ -980,8 +980,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = io.mosip.inji.wallet.mobileid;
 				PRODUCT_NAME = Inji;
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore io.mosip.inji.wallet.mobileid";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore io.mosip.inji.wallet.mobileid";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1050,7 +1049,10 @@
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -1111,7 +1113,10 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -1179,15 +1184,15 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/inji/inji-openid4vp-ios-swift.git";
 			requirement = {
-				kind = exactVersion;
-				version = 0.7.0;
+				branch = "release-0.7.x";
+				kind = branch;
 			};
 		};
 		C3F18B1B2E320C9A007DBE73 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/inji/inji-vci-client-ios-swift";
 			requirement = {
-				branch = "release-0.8.x";
+				branch = develop;
 				kind = branch;
 			};
 		};

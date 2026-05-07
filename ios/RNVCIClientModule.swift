@@ -67,7 +67,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
         let clientMeta = try parseClientMetadata(from: clientMetadata)
 
-        let response = try await vciClient.fetchCredentialUsingCredentialOffer(
+        let response = try await vciClient.fetchCredentialsUsingCredentialOffer(
           credentialOffer: credentialOffer,
           clientMetadata: clientMeta,
           getTxCode: { inputMode, description, length in
@@ -81,8 +81,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
           getTokenResponse: { tokenRequest in
             try await self.getTokenResponseHook(tokenRequest: tokenRequest)
           },
-          getProofJwt: { credentialIssuer, cNonce, algos in
-            try await self.getProofContinuationHook(
+          getProofs: { credentialIssuer, cNonce, algos in
+            try await self.getProofsContinuationHook(
               credentialIssuer: credentialIssuer,
               cNonce: cNonce,
               proofSigningAlgorithmsSupported: algos
@@ -96,7 +96,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
           }
         )
 
-        resolve(try response?.toJsonString())
+        resolve(try self.toSingleCredentialResponseJson(response))
       } catch {
         rejectVCIError(error, reject: reject)
       }
@@ -121,7 +121,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
         let clientMeta = try parseClientMetadata(from: clientMetadata)
 
-        let response = try await vciClient.fetchCredentialFromTrustedIssuer(
+        let response = try await vciClient.fetchCredentialsFromTrustedIssuer(
           credentialIssuer: credentialIssuer,
           credentialConfigurationId: credentialConfigurationId,
           clientMetadata: clientMeta,
@@ -129,8 +129,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
             try await self.getTokenResponseHook(tokenRequest: tokenRequest)
           },
           authorizationMethods: getSupportedAuthorizationMethods(signatureSuite: signatureSuite),
-          getProofJwt: { credentialIssuer, cNonce, algos in
-            try await self.getProofContinuationHook(
+          getProofs: { credentialIssuer, cNonce, algos in
+            try await self.getProofsContinuationHook(
               credentialIssuer: credentialIssuer,
               cNonce: cNonce,
               proofSigningAlgorithmsSupported: algos
@@ -138,7 +138,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
           },
           downloadTimeoutInMillis: 200000)
 
-        resolve(try response?.toJsonString())
+        resolve(try self.toSingleCredentialResponseJson(response))
       } catch {
         rejectVCIError(error, reject: reject)
       }
@@ -245,6 +245,20 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     return try await withCheckedThrowingContinuation { continuation in
       self.pendingAuthCodeContinuation = { code in continuation.resume(returning: ["code": code]) }
     }
+  }
+
+  private func getProofsContinuationHook(
+    credentialIssuer: String,
+    cNonce: String?,
+    proofSigningAlgorithmsSupported: [String]
+  ) async throws -> CredentialRequestProofs {
+    let proof = try await getProofContinuationHook(
+      credentialIssuer: credentialIssuer,
+      cNonce: cNonce,
+      proofSigningAlgorithmsSupported: proofSigningAlgorithmsSupported
+    )
+
+    return CredentialRequestProofs(proofs: [proof])
   }
 
   private func getProofContinuationHook(
@@ -374,6 +388,30 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     return try await withCheckedThrowingContinuation { continuation in
       self.pendingIssuerTrustDecision = { decision in continuation.resume(returning: decision) }
     }
+  }
+
+  private func toSingleCredentialResponseJson(
+    _ response: CredentialResponse
+  ) throws -> String {
+    guard let firstItem = response.credentials?.first else {
+      throw VCIClientException(code: "DOWNLOAD_FAILED", message: "No credential returned from issuer", serverErrorCode: nil, serverErrorDescription: nil)
+    }
+
+    var dict: [String: Any] = [
+      "credential": firstItem.credential?.value
+    ]
+    if let issuer = response.credentialIssuer {
+      dict["credentialIssuer"] = issuer
+    }
+    if let configId = response.credentialConfigurationId {
+      dict["credentialConfigurationId"] = configId
+    }
+
+    let data = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+    guard let jsonString = String(data: data, encoding: .utf8) else {
+      throw VCIClientException(code: "DOWNLOAD_FAILED", message: "Failed to serialize credential response")
+    }
+    return jsonString
   }
 
   // MARK: - Receivers from JS

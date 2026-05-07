@@ -177,7 +177,7 @@ exports[`QrLoginSuccess should match snapshot 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,
@@ -203,7 +203,7 @@ exports[`QrLoginSuccess should match snapshot 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               {
@@ -237,7 +237,7 @@ exports[`QrLoginSuccess should match snapshot 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               null,
@@ -480,7 +480,7 @@ exports[`QrLoginSuccess should match snapshot when not visible 1`] = `
             {
               "alignSelf": "center",
               "borderRadius": 9,
-              "height": 54,
+              "minHeight": 54,
               "width": 540,
             },
             null,
@@ -506,7 +506,7 @@ exports[`QrLoginSuccess should match snapshot when not visible 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               {
@@ -540,7 +540,7 @@ exports[`QrLoginSuccess should match snapshot when not visible 1`] = `
               {
                 "alignSelf": "center",
                 "borderRadius": 9,
-                "height": 54,
+                "minHeight": 54,
                 "width": 540,
               },
               null,

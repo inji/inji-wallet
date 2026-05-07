@@ -43,11 +43,7 @@ exports[`ViewVcModal should render when not visible 1`] = `
   isVisible={false}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render when visible 1`] = `
@@ -93,11 +89,7 @@ exports[`ViewVcModal should render when visible 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with OTP error 1`] = `
@@ -143,11 +135,7 @@ exports[`ViewVcModal should render with OTP error 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with activeTab 1 (history) 1`] = `
@@ -193,11 +181,7 @@ exports[`ViewVcModal should render with activeTab 1 (history) 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with binding OTP state 1`] = `
@@ -243,11 +227,7 @@ exports[`ViewVcModal should render with binding OTP state 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with binding error 1`] = `
@@ -293,11 +273,7 @@ exports[`ViewVcModal should render with binding error 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with binding warning 1`] = `
@@ -343,11 +319,7 @@ exports[`ViewVcModal should render with binding warning 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with different flow type 1`] = `
@@ -358,11 +330,7 @@ exports[`ViewVcModal should render with different flow type 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with expired status 1`] = `
@@ -408,11 +376,7 @@ exports[`ViewVcModal should render with expired status 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with reverifying Vc 1`] = `
@@ -458,11 +422,7 @@ exports[`ViewVcModal should render with reverifying Vc 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with revoked status 1`] = `
@@ -508,11 +468,7 @@ exports[`ViewVcModal should render with revoked status 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with toast visible 1`] = `
@@ -558,11 +514,7 @@ exports[`ViewVcModal should render with toast visible 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with verification completed 1`] = `
@@ -608,11 +560,7 @@ exports[`ViewVcModal should render with verification completed 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with verification in progress 1`] = `
@@ -658,11 +606,7 @@ exports[`ViewVcModal should render with verification in progress 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with verification status banner 1`] = `
@@ -708,11 +652,7 @@ exports[`ViewVcModal should render with verification status banner 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with wallet binding in progress 1`] = `
@@ -758,11 +698,7 @@ exports[`ViewVcModal should render with wallet binding in progress 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;
 
 exports[`ViewVcModal should render with walletBindingResponse 1`] = `
@@ -808,9 +744,5 @@ exports[`ViewVcModal should render with walletBindingResponse 1`] = `
   isVisible={true}
   onDismiss={[Function]}
   testID="idDetailsHeader"
->
-  <View
-    testID="vcDetailsContainer"
-  />
-</View>
+/>
 `;

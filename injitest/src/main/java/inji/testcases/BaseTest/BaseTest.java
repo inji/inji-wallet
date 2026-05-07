@@ -237,6 +237,8 @@ public abstract class BaseTest {
 
 				URL url = new URL(jsonUrl);
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				conn.setConnectTimeout(10000);
+				conn.setReadTimeout(15000);
 				conn.setRequestMethod("GET");
 				conn.setRequestProperty("Authorization", basicAuth);
 

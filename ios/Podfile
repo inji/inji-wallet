@@ -47,6 +47,15 @@ target 'Inji' do
 
   post_install do |installer|
     installer.pods_project.targets.each do |target|
+      if ['RNArgon2'].include?(target.name)
+        target.build_configurations.each do |config|
+          config.build_settings['SWIFT_ENABLE_EXPLICIT_MODULES'] = 'NO'
+          config.build_settings['DEFINES_MODULE'] = 'YES'
+          config.build_settings['CLANG_ENABLE_MODULES'] = 'YES'
+        end
+      end
+    end
+    installer.pods_project.targets.each do |target|
       if target.name == 'RNZipArchive'
         target.source_build_phase.files.each do |file|
           if file.settings && file.settings['COMPILER_FLAGS']
