@@ -15,14 +15,8 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
-import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResultV2;
-import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.ldp.LdpVPTokenSigningResult;
-import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.DeviceAuthentication;
-import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.mdoc.MdocVPTokenSigningResult;
-import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.types.sdJwt.SdJwtVPTokenSigningResult;
 
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
 import io.mosip.openID4VP.constants.FormatType;
@@ -66,36 +60,14 @@ public class OpenId4VPUtils {
     return selectedVCsMap;
   }
 
-  public static Map<FormatType, VPTokenSigningResult> parseVPTokenSigningResult(ReadableMap vpTokenSigningResultMap) {
-    if (vpTokenSigningResultMap == null) {
-      return Collections.emptyMap();
-    }
-    Map<FormatType, VPTokenSigningResult> formattedMetadata = new EnumMap<>(FormatType.class);
-    ReadableMapKeySetIterator iterator = vpTokenSigningResultMap.keySetIterator();
-    while (iterator.hasNextKey()) {
-      String formatStr = iterator.nextKey();
-      ReadableMap metadata = vpTokenSigningResultMap.getMap(formatStr);
-      if (metadata == null) {
-        continue;
-      }
-      FormatType formatType = getFormatType(formatStr);
-      VPTokenSigningResult vpTokenSigningResult = createVPTokenSigningResult(formatType, metadata);
-      if (vpTokenSigningResult != null) {
-        formattedMetadata.put(formatType, vpTokenSigningResult);
-      }
-    }
-
-    return formattedMetadata;
-  }
-
-  public static List<VPTokenSigningResultV2> parseVPTokenSigningResultV2(
+  public static List<VPTokenSigningResult> parseVPTokenSigningResults(
       ReadableArray vpTokenSigningResults) {
 
     if (vpTokenSigningResults == null) {
       return Collections.emptyList();
     }
 
-    List<VPTokenSigningResultV2> formattedVpTokenSigningResults = new ArrayList<>();
+    List<VPTokenSigningResult> formattedVpTokenSigningResults = new ArrayList<>();
 
     for (int i = 0; i < vpTokenSigningResults.size(); i++) {
 
@@ -110,7 +82,7 @@ public class OpenId4VPUtils {
       String signedData = vpTokenSigningResultMap.getString("signedData");
 
       formattedVpTokenSigningResults.add(
-          new VPTokenSigningResultV2(signedData));
+          new VPTokenSigningResult(signedData));
     }
 
     return formattedVpTokenSigningResults;
@@ -168,52 +140,6 @@ public class OpenId4VPUtils {
       return DC_SD_JWT;
     }
     throw new UnsupportedOperationException("Credential format '" + formatStr + "' is not supported");
-  }
-
-  private static VPTokenSigningResult createVPTokenSigningResult(FormatType formatType, ReadableMap metadata) {
-    switch (formatType) {
-      case LDP_VC: {
-        String jws = metadata.getString("jws");
-        String proofValue = metadata.getString("proofValue");
-        String signatureAlgorithm = metadata.getString("signatureAlgorithm");
-        return new LdpVPTokenSigningResult(jws, proofValue, signatureAlgorithm);
-      }
-      case MSO_MDOC: {
-        Map<String, DeviceAuthentication> signatureData = new HashMap<>();
-        ReadableMapKeySetIterator docTypeIterator = metadata.keySetIterator();
-        while (docTypeIterator.hasNextKey()) {
-          String docType = docTypeIterator.nextKey();
-          ReadableMap deviceAuthenticationMap = metadata.getMap(docType);
-          if (deviceAuthenticationMap != null) {
-            String signature = requireNonNullString(deviceAuthenticationMap, "signature");
-            String algorithm = requireNonNullString(deviceAuthenticationMap, "mdocAuthenticationAlgorithm");
-            DeviceAuthentication deviceAuthentication = new DeviceAuthentication(signature, algorithm);
-            signatureData.put(docType, deviceAuthentication);
-          }
-        }
-        return new MdocVPTokenSigningResult(signatureData);
-      }
-      case VC_SD_JWT:
-      case DC_SD_JWT: {
-        Map<String, String> uuidToSignature = new HashMap<>();
-        ReadableMapKeySetIterator uuidIterator = metadata.keySetIterator();
-        while (uuidIterator.hasNextKey()) {
-          String uuid = uuidIterator.nextKey();
-          String signature = metadata.getString(uuid);
-          if (signature != null) {
-            uuidToSignature.put(uuid, signature);
-          }
-        }
-        return new SdJwtVPTokenSigningResult(uuidToSignature);
-      }
-      default:
-        return null;
-    }
-  }
-
-  private static String requireNonNullString(ReadableMap map, String key) {
-    String value = map.getString(key);
-    return Objects.requireNonNull(value, key + " cannot be null");
   }
 
   public static OpenID4VPExceptions convertToOpenID4VPException(

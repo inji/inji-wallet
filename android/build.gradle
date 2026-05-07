@@ -14,6 +14,7 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        mavenLocal()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:8.4.0")
@@ -27,6 +28,7 @@ buildscript {
 // @generated begin expo-camera-import - expo prebuild (DO NOT MODIFY) sync-f244f4f3d8bf7229102e8f992b525b8602c74770
 def expoCameraMavenPath = new File(["node", "--print", "require.resolve('expo-camera/package.json')"].execute(null, rootDir).text.trim(), "../android/maven")
 allprojects { repositories {
+    mavenLocal()
     maven{url("https://central.sonatype.com/repository/maven-snapshots/")}
     maven { url(expoCameraMavenPath) }
     mavenCentral()
