@@ -7,6 +7,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
   private var openID4VP: OpenID4VP?
   private var pendingJsonLdCanonicalizeContinuation: ((String) -> Void)?
+  private var pendingJsonLdExpandContinuation: (([String: Any]) -> Void)?
   private var jsonLdCanonicalizeCallback: RCTResponseSenderBlock?
 
   static func moduleName() -> String {
@@ -49,10 +50,42 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
     }
   }
   
+  private func invokeJsonLdExpand(_ data: [String: Any]) async throws -> [String: Any] {
+    print("data = \(data)")
+    
+    if let bridge = RCTBridge.current() {
+      bridge.eventDispatcher().sendAppEvent(
+        withName: "onJsonLdExpand",
+        body: [
+          "data": data,
+        ]
+      )
+    }
+    
+    return try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[String: Any], Error>) in
+      self.pendingJsonLdExpandContinuation = { result in
+        continuation.resume(returning: result)
+      }
+    }
+  }
+  
   @objc(sendJsonLdCanonicalizeResultFromJS:)
   func sendJsonLdCanonicalizeResultFromJS(_ result: String) {
     pendingJsonLdCanonicalizeContinuation?(result)
     pendingJsonLdCanonicalizeContinuation = nil
+  }
+  
+  @objc
+  func sendJsonLdExpandResultFromJS(_ result: AnyObject,
+                                    resolver resolve: @escaping RCTPromiseResolveBlock,
+                                    rejecter reject: @escaping RCTPromiseRejectBlock) {
+    guard let resultDict = result as? [[String: Any]] else {
+      os_log("Invalid result format for JSON-LD expand")
+      rejectWithOpenID4VPError(NSError(domain: "OPENID4VP", code: 0, userInfo: nil), reject: reject)
+      return
+    }
+    pendingJsonLdExpandContinuation?(resultDict[0])
+    pendingJsonLdExpandContinuation = nil
   }
 
   @objc
@@ -81,6 +114,35 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
       } catch {
         rejectWithOpenID4VPError(error, reject: reject)
 
+      }
+    }
+  }
+  
+  @objc
+  func getMatchingCredentials(_ vpRequest: AnyObject,
+                              availableWalletCredentials: AnyObject,
+                                resolver resolve: @escaping RCTPromiseResolveBlock,
+                              rejecter reject: @escaping RCTPromiseRejectBlock) {
+    Task {
+      do {
+        guard let vpRequest = vpRequest as? [String: Any],
+          let dcqlQuery = vpRequest["dcql_query"] as? [String: Any] else {
+          reject("OPENID4VP", "Invalid VP request format or missing DCQL query", nil)
+          return
+        }
+        let parsedDCQLQuery: DCQLQuery = try JSONDecoder().decode(DCQLQuery.self, from: try JSONSerialization.data(withJSONObject: dcqlQuery, options: []))
+        let credentials : [Credential] = try OpenId4VPUtils.parseCredentials(availableWalletCredentials)
+        
+        let response = try await DCQLHelper(
+          jsonLdExpander: { data in
+            try await self.invokeJsonLdExpand(data)
+          }
+        ).getMatchingCredentials(inputCredentials: credentials, dcqlQuery: parsedDCQLQuery)
+        let parsedResponse = try OpenId4VPUtils.toJson(response)
+        
+        resolve(parsedResponse)
+      } catch {
+        rejectWithOpenID4VPError(error, reject: reject)
       }
     }
   }
@@ -125,7 +187,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           return
         }
 
-        let formattedCredentialsMap: [String: [SelectedCredential]] = try OpenId4VPUtils.parseSelectedVCs(rawCredentialsMap)
+        let formattedCredentialsMap: [String: [Credential]] = try OpenId4VPUtils.parseSelectedVCs(rawCredentialsMap)
 
         let response = try await openID4VP?.constructUnsignedVPToken(
           selectedCredentials: formattedCredentialsMap
@@ -155,7 +217,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
             )
           }
 
-          formattedVPTokenSigningResults = try OpenId4VPUtils.parseVPTokenSigningResultV2(signedVPTokens)
+          formattedVPTokenSigningResults = try OpenId4VPUtils.parseVPTokenSigningResult(signedVPTokens)
         } catch {
           reject("OPENID4VP", error.localizedDescription, nil)
           return

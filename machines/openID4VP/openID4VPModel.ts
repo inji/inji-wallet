@@ -90,6 +90,7 @@ export const openID4VPModel = createModel(
     showTrustConsentModal: false as boolean,
     unsignedVPToken: {} as object,
     hasNoMatchingVCs: false as boolean,
+    availableWalletCredentials: [] as VC[],
   },
   {events: openID4VPEvents},
 );

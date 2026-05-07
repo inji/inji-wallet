@@ -16,6 +16,16 @@ RCT_EXTERN_METHOD(authenticateVerifier:(NSString *)urlEncodedAuthorizationReques
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(sendJsonLdExpandResultFromJS:(id)result
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject
+                  )
+
+RCT_EXTERN_METHOD(getMatchingCredentials:(id)vpRequest
+                  availableWalletCredentials:(id)availableWalletCredentials
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(constructUnsignedVPToken:(id)credentialsMap
                   holderId:(NSString *)holderId
                   signatureSuite:(NSString *)signatureSuite

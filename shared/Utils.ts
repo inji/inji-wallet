@@ -99,11 +99,11 @@ export function base64ToByteArray(base64String: string) {
   }
 }
 
-export function base64UrlToUint8Array(base64Url : string) {
+export function base64UrlToUint8Array(base64Url: string) {
   const base64 = base64Url
     .replace(/-/g, '+')
     .replace(/_/g, '/')
-    .padEnd(base64Url.length + (4 - (base64Url.length % 4)) % 4, '=');
+    .padEnd(base64Url.length + ((4 - (base64Url.length % 4)) % 4), '=');
 
   return Uint8Array.from(Buffer.from(base64, 'base64'));
 }
@@ -137,6 +137,10 @@ export async function canonicalize(unsignedVp: any) {
     console.error('Canonization failed:', err);
     throw err;
   }
+}
+
+export async function jsonLdExpand(data: any) {
+  return await jsonld.expand(data);
 }
 
 export async function canonicalize2(unsignedVp: any) {

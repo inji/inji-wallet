@@ -321,7 +321,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
       )
     }
 
-    return try OpenId4VPUtils.parseVPTokenSigningResultV2(signedVPTokens)
+    return try OpenId4VPUtils.parseVPTokenSigningResult(signedVPTokens)
   }
 
   private func getTokenResponseHook(tokenRequest: TokenRequest) async throws -> TokenResponse {

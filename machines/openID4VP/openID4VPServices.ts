@@ -86,6 +86,13 @@ export const openID4VPServices = () => {
       );
     },
 
+    getMatchingCredentialsForVPRequest: (context: any) => async () => {
+      return await OpenID4VP.getMatchingCredentials(
+        context.authenticationResponse,
+        context.availableWalletCredentials,
+      );
+    },
+
     sendSelectedCredentialsForVP: (context: any) => async () => {
       const selectedCredentials: SelectedCredentialsForVPSharing =
         await OpenID4VP.prepareCredentialsForVPSharing(

@@ -15,7 +15,6 @@ class OpenId4VPUtils: NSObject {
   }
   
   static func toJson(_ data: [UnsignedVPToken]?) throws -> [[String: Any]] {
-    print(data!.first!.dataToSign.map { String(format: "%02hhx", $0) }.joined(separator: " "))
     let encodableUnsignedVPToken : [[String: String]] = data?.map {
       [
         "dataToSign": $0.dataToSign.toBase64UrlEncoded(),
@@ -26,6 +25,14 @@ class OpenId4VPUtils: NSObject {
     } ?? []
     
     return encodableUnsignedVPToken
+  }
+  
+  static func toJson(_ matchingCredentialsResult: MatchingCredentialsResult) throws -> [String: Any] {
+    let data = try JSONEncoder().encode(matchingCredentialsResult)
+    guard let jsonObject = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+      throw NSError(domain: "OPENID4VP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to serialize JSON"])
+    }
+    return jsonObject
   }
   
   static func parseSelectedVCs(_ credentialsMap: [String: [String: [Any]]]) -> [String: [FormatType: [AnyCodable]]] {
@@ -48,8 +55,8 @@ class OpenId4VPUtils: NSObject {
     }
   }
   
-  static func parseSelectedVCs(_ credentialsMap: [String: [Any]]) throws -> [String: [SelectedCredential]] {
-    var parsedCredentialsMap: [String: [SelectedCredential]] = [:]
+  static func parseSelectedVCs(_ credentialsMap: [String: [Any]]) throws -> [String: [Credential]] {
+    var parsedCredentialsMap: [String: [Credential]] = [:]
     
     for (credentialQueryId, credentials) in credentialsMap {
       parsedCredentialsMap[credentialQueryId] = try credentials.map { credential in
@@ -58,7 +65,7 @@ class OpenId4VPUtils: NSObject {
            let format = FormatType(rawValue: formatString),
            let credentialData = credentialDict["credential"],
            let credentialId = credentialDict["credentialId"] as? String {
-          return SelectedCredential(format: format, credential: AnyCodable(credentialData), credentialId: credentialId)
+          return Credential(format: format, data: AnyCodable(credentialData), credentialId: credentialId)
         } else {
           throw NSError(
             domain: "OpenID4VP",
@@ -72,56 +79,38 @@ class OpenId4VPUtils: NSObject {
     return parsedCredentialsMap
   }
   
-//  static func parseVPTokenSigningResult(_ vpTokenSigningResults: [String: Any]) throws -> [FormatType: VPTokenSigningResult] {
-//    var formattedVPTokenSigningResults: [FormatType: VPTokenSigningResult] = [:]
-//
-//    for (credentialFormat, vpTokenSigningResult) in vpTokenSigningResults {
-//      switch credentialFormat {
-//      case FormatType.ldp_vc.rawValue:
-//        guard let vpResponse = vpTokenSigningResult as? [String: Any],
-//                 let signatureAlgorithm = vpResponse["signatureAlgorithm"] as? String else {
-//               throw ParseError(message: "Invalid VP token signing result for LDP_VC")
-//           }
-//
-//           let jws = vpResponse["jws"] as? String
-//           let proofValue = vpResponse["proofValue"] as? String
-//        formattedVPTokenSigningResults[.ldp_vc] = LdpVPTokenSigningResult(jws: jws, proofValue: proofValue, signatureAlgorithm: signatureAlgorithm)
-//
-//      case FormatType.mso_mdoc.rawValue:
-//        var docTypeToDeviceAuthentication : [String: DeviceAuthentication] = [:]
-//        guard let vpResponse = vpTokenSigningResult as? [String:[String: String]] else {
-//         throw ParseError(message: "Invalid VP token signing result format")
-//        }
-//        for (docType, deviceAuthentication) in vpResponse {
-//          guard let signature = deviceAuthentication["signature"],
-//                let algorithm = deviceAuthentication["mdocAuthenticationAlgorithm"] else {
-//            throw ParseError(message: "Invalid VP token signing result provided for mdoc format")
-//          }
-//          docTypeToDeviceAuthentication[docType] = DeviceAuthentication(signature: signature, algorithm: algorithm)
-//        }
-//        formattedVPTokenSigningResults[.mso_mdoc] = MdocVPTokenSigningResult(docTypeToDeviceAuthentication: docTypeToDeviceAuthentication)
-//        
-//      case FormatType.vc_sd_jwt.rawValue :
-//        guard let vpResponse = vpTokenSigningResult as? [String:String] else {
-//          throw ParseError(message: "Invalid VP token signing result format")
-//        }
-//        formattedVPTokenSigningResults[.vc_sd_jwt] = SdJwtVpTokenSigningResult(uuidToKbJWTSignature: vpResponse)
-//      case FormatType.dc_sd_jwt.rawValue :
-//        guard let vpResponse = vpTokenSigningResult as? [String:String] else {
-//          throw ParseError(message: "Invalid VP token signing result format")
-//        }
-//        formattedVPTokenSigningResults[.dc_sd_jwt] = SdJwtVpTokenSigningResult(uuidToKbJWTSignature: vpResponse)
-//
-//      default:
-//        let error = NSError(domain: "Credential format '\(credentialFormat)' is not supported", code: 0)
-//        throw ParseError(message: error.localizedDescription)
-//      }
-//    }
-//    
-//    return formattedVPTokenSigningResults
-//  }
+  static func parseCredentials(_ credentials: AnyObject) throws -> [Credential] {
+    guard let credentials = credentials as? [[String: Any]] else {
+      throw NSError(
+        domain: "OpenID4VP",
+        code: -1,
+        userInfo: [NSLocalizedDescriptionKey: "Unable to parse the provided credentials"]
+      )
+    }
+    
+    var parsedCredentials: [Credential] = []
+    
+    for credential in credentials {
+      if let formatString = credential["format"] as? String,
+         let format = FormatType(rawValue: formatString),
+         let credentialData = credential["credential"],
+         let credentialId = credential["credentialId"] as? String {
+        parsedCredentials.append(
+          Credential(format: format, data: AnyCodable(credentialData), credentialId: credentialId)
+        )
+      } else {
+        throw NSError(
+          domain: "OpenID4VP",
+          code: -1,
+          userInfo: [NSLocalizedDescriptionKey: "Unable to parse the provided credentials map"]
+        )
+      }
+    }
+    
+    return parsedCredentials
+  }
   
-  static func parseVPTokenSigningResultV2(_ vpTokenSigningResults: [[String: Any]]) throws -> [VPTokenSigningResult] {
+  static func parseVPTokenSigningResult(_ vpTokenSigningResults: [[String: Any]]) throws -> [VPTokenSigningResult] {
     if(vpTokenSigningResults.isEmpty) {
       return []
     }
