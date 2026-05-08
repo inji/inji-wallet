@@ -364,7 +364,7 @@ export const storeMachine =
               );
             } catch (e) {
               if (e instanceof BiometricCancellationError) {
-                callback(model.events.BIOMETRIC_CANCELLED(event.requester));
+                callback(model.events.BIOMETRIC_CANCELLED());
               }
               sendErrorEvent(getErrorEventData('ENCRYPTION', '', e));
 
