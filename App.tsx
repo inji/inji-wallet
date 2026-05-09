@@ -24,6 +24,7 @@ import {
 } from './shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from './shared/telemetry/TelemetryConstants';
 import {MessageOverlay} from './components/MessageOverlay';
+import {Button, Column} from './components/ui';
 import {NativeModules} from 'react-native';
 import {isHardwareKeystoreExists} from './shared/cryptoutil/cryptoUtil';
 import i18n from './i18n';
@@ -85,12 +86,29 @@ const AppLayoutWrapper: React.FC = () => {
         isVisible={isDeepLinkOverlayVisible && !isAppSetupComplete}
         title={t('errors.appSetupIncomplete.title')}
         message={t('errors.appSetupIncomplete.message')}
-        onButtonPress={() => {
-          setDeepLinkOverlayVisible(false);
-        }}
-        buttonText={t('common:ok')}
         minHeight={'auto'}
-      />
+        testID="appSetupIncompleteOverlay">
+        <Column style={{marginTop: 12, width: '100%'}}>
+          <Button
+            testID="proceedToSetup"
+            type="gradient"
+            title={t('common:proceed')}
+            onPress={() => {
+              setDeepLinkOverlayVisible(false);
+            }}
+            styles={Theme.MessageOverlayStyles.button}
+          />
+          <Button
+            testID="dismissSetupError"
+            type="clear"
+            title={t('common:ok')}
+            onPress={() => {
+              setDeepLinkOverlayVisible(false);
+            }}
+            styles={{marginTop: 8}}
+          />
+        </Column>
+      </MessageOverlay>
     </>
   );
 };
