@@ -1,0 +1,44 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    { "type": "rectangle", "id": "b1", "x": 200, "y": 100, "width": 220, "height": 60, "strokeColor": "#000000", "backgroundColor": "#ffffff", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "version": 1, "versionNonce": 1, "isDeleted": false },
+    { "type": "text", "id": "t1", "x": 215, "y": 118, "width": 190, "height": 25, "text": "Deep Link Clicked", "fontSize": 20, "fontFamily": 1, "strokeColor": "#000", "textAlign": "center", "version": 1, "versionNonce": 2, "isDeleted": false },
+
+    { "type": "arrow", "id": "a1", "x": 310, "y": 160, "width": 0, "height": 40, "points": [[0,0], [0,40]], "strokeColor": "#000", "strokeWidth": 2, "roughness": 1, "version": 1, "versionNonce": 3, "isDeleted": false },
+    
+    { "type": "diamond", "id": "d1", "x": 210, "y": 200, "width": 200, "height": 100, "strokeColor": "#000", "backgroundColor": "#ffffff", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "version": 1, "versionNonce": 4, "isDeleted": false },
+    { "type": "text", "id": "t2", "x": 225, "y": 238, "width": 170, "height": 25, "text": "Setup Complete?", "fontSize": 18, "fontFamily": 1, "strokeColor": "#000", "textAlign": "center", "version": 1, "versionNonce": 5, "isDeleted": false },
+
+    { "type": "arrow", "id": "a2", "x": 210, "y": 250, "width": 100, "height": 0, "points": [[0,0], [-80,0]], "strokeColor": "#000", "strokeWidth": 2, "roughness": 1, "version": 1, "versionNonce": 6, "isDeleted": false },
+    { "type": "text", "id": "t3", "x": 160, "y": 220, "width": 40, "height": 20, "text": "Yes", "fontSize": 16, "fontFamily": 1, "strokeColor": "#15803d", "textAlign": "center", "version": 1, "versionNonce": 7, "isDeleted": false },
+
+    { "type": "rectangle", "id": "r1", "x": -90, "y": 220, "width": 220, "height": 60, "strokeColor": "#15803d", "backgroundColor": "#dcfce7", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "version": 1, "versionNonce": 8, "isDeleted": false },
+    { "type": "text", "id": "t4", "x": -80, "y": 238, "width": 200, "height": 25, "text": "Navigate to Destination", "fontSize": 16, "fontFamily": 1, "strokeColor": "#000", "textAlign": "center", "version": 1, "versionNonce": 9, "isDeleted": false },
+
+    { "type": "arrow", "id": "a3", "x": 410, "y": 250, "width": 100, "height": 0, "points": [[0,0], [80,0]], "strokeColor": "#000", "strokeWidth": 2, "roughness": 1, "version": 1, "versionNonce": 10, "isDeleted": false },
+    { "type": "text", "id": "t5", "x": 440, "y": 220, "width": 30, "height": 20, "text": "No", "fontSize": 16, "fontFamily": 1, "strokeColor": "#b91c1c", "textAlign": "center", "version": 1, "versionNonce": 11, "isDeleted": false },
+
+    { "type": "rectangle", "id": "r2", "x": 490, "y": 220, "width": 220, "height": 60, "strokeColor": "#b91c1c", "backgroundColor": "#fee2e2", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "version": 1, "versionNonce": 12, "isDeleted": false },
+    { "type": "text", "id": "t6", "x": 510, "y": 238, "width": 180, "height": 25, "text": "Show Error Overlay", "fontSize": 18, "fontFamily": 1, "strokeColor": "#000", "textAlign": "center", "version": 1, "versionNonce": 13, "isDeleted": false },
+
+    { "type": "arrow", "id": "a4", "x": 550, "y": 280, "width": 50, "height": 50, "points": [[0,0], [-50,50]], "strokeColor": "#000", "strokeWidth": 2, "roughness": 1, "version": 1, "versionNonce": 14, "isDeleted": false },
+    { "type": "text", "id": "t7", "x": 390, "y": 300, "width": 150, "height": 20, "text": "'Proceed' Clicked", "fontSize": 14, "fontFamily": 1, "strokeColor": "#0284c7", "textAlign": "center", "version": 1, "versionNonce": 15, "isDeleted": false },
+
+    { "type": "rectangle", "id": "r3", "x": 380, "y": 330, "width": 200, "height": 60, "strokeColor": "#000", "backgroundColor": "#e9ecef", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "version": 1, "versionNonce": 16, "isDeleted": false },
+    { "type": "text", "id": "t8", "x": 400, "y": 348, "width": 160, "height": 25, "text": "Navigate to Setup", "fontSize": 16, "fontFamily": 1, "strokeColor": "#000", "textAlign": "center", "version": 1, "versionNonce": 17, "isDeleted": false },
+
+    { "type": "arrow", "id": "a5", "x": 650, "y": 280, "width": 50, "height": 50, "points": [[0,0], [50,50]], "strokeColor": "#000", "strokeWidth": 2, "roughness": 1, "version": 1, "versionNonce": 18, "isDeleted": false },
+    { "type": "text", "id": "t9", "x": 680, "y": 300, "width": 100, "height": 20, "text": "'OK' Clicked", "fontSize": 14, "fontFamily": 1, "strokeColor": "#0284c7", "textAlign": "center", "version": 1, "versionNonce": 19, "isDeleted": false },
+
+    { "type": "rectangle", "id": "r4", "x": 620, "y": 330, "width": 200, "height": 60, "strokeColor": "#000", "backgroundColor": "#ffffff", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "version": 1, "versionNonce": 20, "isDeleted": false },
+    { "type": "text", "id": "t10", "x": 640, "y": 348, "width": 160, "height": 25, "text": "Dismiss Overlay", "fontSize": 16, "fontFamily": 1, "strokeColor": "#000", "textAlign": "center", "version": 1, "versionNonce": 21, "isDeleted": false },
+
+    { "type": "arrow", "id": "a6", "x": 600, "y": 280, "width": 0, "height": 130, "points": [[0,0], [0,130]], "strokeColor": "#64748b", "strokeStyle": "dashed", "strokeWidth": 2, "roughness": 1, "version": 1, "versionNonce": 22, "isDeleted": false },
+    { "type": "text", "id": "t11", "x": 530, "y": 420, "width": 200, "height": 40, "text": "Previous behavior\n(Only OK, User stuck)", "fontSize": 14, "fontFamily": 1, "strokeColor": "#64748b", "textAlign": "center", "version": 1, "versionNonce": 23, "isDeleted": false }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff"
+  }
+}
