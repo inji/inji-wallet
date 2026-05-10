@@ -37,6 +37,7 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
         isVisible={props.isVisible && !controller.isScanning}
         onBackdropPress={props.onDismiss}
         statusBarTranslucent={true}
+        {...testIDProps('moreOptionsOverlay')}
         overlayStyle={[
           Theme.KebabPopUpStyles.kebabPopUp,
           {paddingBottom: insets.bottom},
@@ -49,7 +50,10 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
             {t('title')}
           </Text>
           <Icon
-            {...testIDProps('close')}
+            {...testIDProps('closeMoreOptions')}
+            accessible={true}
+            accessibilityLabel={'Close More Options'}
+            accessibilityRole="button"
             name="close"
             onPress={props.onDismiss}
             color={Theme.Colors.Details}
@@ -60,7 +64,12 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
         <FlatList
           data={getKebabMenuOptions(props)}
           renderItem={({item}) => (
-            <ListItem topDivider onPress={item.onPress}>
+            <ListItem
+              topDivider
+              onPress={item.onPress}
+              {...testIDProps(`kebabMenu-${item.testID}`)}
+              accessibilityLabel={item.label}
+              accessibilityRole="button">
               <Row crossAlign="center" style={{flex: 1}}>
                 <View style={{width: 25, alignItems: 'center'}}>
                   {item.icon}
