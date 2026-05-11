@@ -126,6 +126,23 @@ export const SettingScreen: React.FC<
             title={controller.alertMsg}
           />
 
+          <EditableListItem
+            testID="profileName"
+            title={t('name', {ns: 'DeviceInfoList'})}
+            content={controller.name || ''}
+            items={[
+              {
+                label: t('name', {ns: 'DeviceInfoList'}),
+                value: controller.name || '',
+                testID: 'nameInput',
+              },
+            ]}
+            onCancel={() => {}}
+            onEdit={items => controller.UPDATE_NAME(items[0].value)}
+            Icon="person"
+            titleColor={Theme.Colors.settingsLabel}
+          />
+
           <LanguageSetting />
 
           <ListItem topDivider disabled={!controller.canUseBiometrics}>
