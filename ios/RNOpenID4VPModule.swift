@@ -249,18 +249,40 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   
   private func parseVerifiers(_ verifiers: [[String: Any]]) throws -> [Verifier] {
     return try verifiers.map { verifierDict in
-      guard let clientId = verifierDict["client_id"] as? String,
-            let responseUris = verifierDict["response_uris"] as? [String] else {
-        throw NSError(domain: "OpenID4VP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Verifier data"])
+        
+        guard
+            let clientId = verifierDict["client_id"] as? String,
+            let responseUris = verifierDict["response_uris"] as? [String]
+        else {
+            throw NSError(
+                domain: "OpenID4VP",
+                code: -1,
+                userInfo: [
+                    NSLocalizedDescriptionKey: "Invalid Verifier data"
+                ]
+            )
       }
       
-      let jwksUri: String? = verifierDict["jwks_uri"] as? String
-      
-      if let allowUnsignedRequest = verifierDict["allow_unsigned_request"] as? Bool {
-        return Verifier(clientId: clientId, responseUris: responseUris, jwksUri: jwksUri, allowUnsignedRequest: allowUnsignedRequest)
-      }
-      
-      return Verifier(clientId: clientId, responseUris: responseUris, jwksUri: jwksUri)
+        let jwksUri = verifierDict["jwks_uri"] as? String
+        
+        let specVersion: SpecVersion = {
+            switch verifierDict["spec_version"] as? String {
+            case "draft23":
+                return .draft23
+            default:
+                return .v1
+            }
+        }()
+        
+        let allowUnsignedRequest = verifierDict["allow_unsigned_request"] as? Bool ?? false
+        
+        return Verifier(
+            clientId: clientId,
+            responseUris: responseUris,
+            jwksUri: jwksUri,
+            allowUnsignedRequest: allowUnsignedRequest,
+            specVersion: specVersion
+        )
     }
   }
 
