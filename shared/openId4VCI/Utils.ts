@@ -8,7 +8,6 @@ import {
   BOTTOM_SECTION_FIELDS_WITH_DETAILED_ADDRESS_FIELDS,
   DETAIL_VIEW_ADD_ON_FIELDS,
   DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
-  getCredentialTypeFromWellKnown,
 } from '../../components/VC/common/VCUtils';
 import {displayType} from '../../machines/Issuers/IssuersMachine';
 import {
@@ -25,7 +24,6 @@ import {
 } from '../constants';
 import {getJWT} from '../cryptoutil/cryptoUtil';
 import {verifyCredential} from '../vcjs/verifyCredential';
-import {getVerifiableCredential} from '../../machines/VerifiableCredential/VCItemMachine/VCItemSelectors';
 import {getErrorEventData, sendErrorEvent} from '../telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../telemetry/TelemetryConstants';
 import {KeyTypes} from '../cryptoutil/KeyTypes';
@@ -163,7 +161,7 @@ export const getCredentialIssuersWellKnownConfig = async (
           Object.keys(matchingWellknownDetails.claims).forEach(namespace => {
             Object.keys(matchingWellknownDetails.claims[namespace]).forEach(
               claim => {
-                fields.concat(`${namespace}~${claim}`);
+                fields = fields.concat(`${namespace}~${claim}`);
               },
             );
           });

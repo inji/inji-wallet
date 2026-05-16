@@ -6,12 +6,14 @@ import {
   ACTIVATION_NEEDED,
   Issuers_Key_Ref,
   getDisplayObjectForCurrentLanguage,
+  getCredentialIssuersWellKnownConfig,
   removeBottomSectionFields,
   getMatchingCredentialIssuerMetadata,
   selectCredentialRequestKey,
   updateCredentialInformation,
 } from './Utils';
 import {VCFormat} from '../VCFormat';
+import {CACHED_API} from '../api';
 
 // Mock VCProcessor
 jest.mock('../../components/VC/common/VCProcessor', () => ({
@@ -19,6 +21,12 @@ jest.mock('../../components/VC/common/VCProcessor', () => ({
     processForRendering: jest.fn().mockResolvedValue({
       processedData: 'mocked-processed-credential',
     }),
+  },
+}));
+
+jest.mock('../api', () => ({
+  CACHED_API: {
+    fetchIssuerWellknownConfig: jest.fn(),
   },
 }));
 
@@ -227,6 +235,40 @@ describe('openId4VCI Utils', () => {
 
       expect(result).toBeDefined();
       expect(result.format).toBe('jwt_vc');
+    });
+  });
+
+  describe('getCredentialIssuersWellKnownConfig', () => {
+    it('should include mdoc fallback fields when issuer order is missing', async () => {
+      (CACHED_API.fetchIssuerWellknownConfig as jest.Mock).mockResolvedValue({
+        credential_configurations_supported: {
+          SampleMdocCredential: {
+            format: VCFormat.mso_mdoc,
+            claims: {
+              'org.iso.18013.5.1': {
+                family_name: {display: [{locale: 'en', name: 'Family Name'}]},
+                given_name: {display: [{locale: 'en', name: 'Given Name'}]},
+              },
+            },
+          },
+        },
+      });
+
+      const result = await getCredentialIssuersWellKnownConfig(
+        'issuer-cache-key',
+        ['default-field'],
+        'SampleMdocCredential',
+        VCFormat.mso_mdoc,
+        'https://issuer.example',
+      );
+
+      expect(result.fields).toEqual(
+        expect.arrayContaining([
+          'org.iso.18013.5.1~family_name',
+          'org.iso.18013.5.1~given_name',
+        ]),
+      );
+      expect(result.fields).toHaveLength(2);
     });
   });
 
