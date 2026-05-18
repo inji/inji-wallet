@@ -1,7 +1,7 @@
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 require File.join(File.dirname(`node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
 require File.join(File.dirname(`node --print "require.resolve('@react-native-community/cli-platform-ios/package.json')"`), "native_modules")
-
+xcode_env_path = File.join(__dir__, 'ios/.xcode.env')
 require 'json'
 podfile_properties = JSON.parse(File.read(File.join(__dir__, 'Podfile.properties.json'))) rescue {}
 
@@ -13,18 +13,6 @@ install! 'cocoapods',
   :deterministic_uuids => false
 
 prepare_react_native_project!
-
-# If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
-# because `react-native-flipper` depends on (FlipperKit,...), which will be excluded. To fix this,
-# you can also exclude `react-native-flipper` in `react-native.config.js`
-#
-# ```js
-# module.exports = {
-#   dependencies: {
-#     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
-#   }
-# }
-# ```
 
 target 'Inji' do
   use_expo_modules!
@@ -46,6 +34,7 @@ target 'Inji' do
   )
 
   post_install do |installer|
+    # Xcode 26: Disable explicit modules for RNArgon2 compatibility
     installer.pods_project.targets.each do |target|
       if ['RNArgon2'].include?(target.name)
         target.build_configurations.each do |config|
@@ -54,48 +43,39 @@ target 'Inji' do
           config.build_settings['CLANG_ENABLE_MODULES'] = 'YES'
         end
       end
-    end
-    installer.pods_project.targets.each do |target|
+
       if target.name == 'RNZipArchive'
         target.source_build_phase.files.each do |file|
           if file.settings && file.settings['COMPILER_FLAGS']
-              file.settings['COMPILER_FLAGS'] = ''
+            file.settings['COMPILER_FLAGS'] = ''
           end
         end
       end
 
-    bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
-    def strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
-      framework_path = File.join(Dir.pwd, framework_relative_path)
-      command = "#{bitcode_strip_path} #{framework_path} -r -o #{framework_path}"
-      puts "Stripping bitcode: #{command}"
-      system(command)
+      # Workaround `Cycle inside FBReactNativeSpec` error
+      if target.name&.eql?('FBReactNativeSpec')
+        target.build_phases.each do |build_phase|
+          if build_phase.respond_to?(:name) && build_phase.name.eql?('[CP-User] Generate Specs')
+            target.build_phases.move(build_phase, 0)
+          end
+        end
+      end
+
+      target.build_configurations.each do |config|
+        config.build_settings['ENABLE_BITCODE'] = 'NO'
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+        config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
+      end
     end
 
-    framework_paths = [
-      "Pods/LogRocket/LogRocket.xcframework/ios-arm64/LogRocket.framework/LogRocket",
-      "Pods/hermes-engine/destroot/Library/Frameworks/macosx/hermes.framework/hermes",
-      "Pods/hermes-engine/destroot/Library/Frameworks/macosx/hermes.framework/Versions/Current/hermes",
-      "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework/ios-arm64/hermes.framework/hermes",
-      "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework/ios-arm64_x86_64-maccatalyst/hermes.framework/hermes"
-    ]
-
-    framework_paths.each do |framework_relative_path|
-      strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
-    end
-  end
-  
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      # Set `mac_catalyst_enabled` to `true` in order to apply patches
-      # necessary for Mac Catalyst builds
       :mac_catalyst_enabled => false
     )
 
-
-    # This is necessary for Xcode 14, because it signs resource bundles by default
-    # when building for devices.
+    # Sign resource bundles with NO code signing
     installer.target_installation_results.pod_target_installation_results
       .each do |pod_name, target_installation_result|
       target_installation_result.resource_bundle_targets.each do |resource_bundle_target|
@@ -104,93 +84,48 @@ target 'Inji' do
         end
       end
     end
+
+    # Inject ENABLE_AUTH into Info.plist
     plist_path = File.join(__dir__, 'Inji/Info.plist')
-
-  # Check if Info.plist exists
-  if File.exist?(plist_path)
-    require 'json'
-
-    # Read the Info.plist file
-    plist = JSON.parse(`plutil -convert json -o - "#{plist_path}"`)
-
-    # Add ENABLE_AUTH key
-    plist['ENABLE_AUTH'] = ENV['ENABLE_AUTH'] || 'true'
-
-    # Write back to Info.plist
-    File.open(plist_path, 'w') do |file|
-      file.write(JSON.pretty_generate(plist))
-    end
-
-    # Convert back to XML format
-    system("plutil -convert xml1 #{plist_path}")
-  else
-    Pod::UI.warn "Info.plist not found at #{plist_path}"
-  end
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['ENABLE_BITCODE'] = 'NO'
-    end
-  end
-
-  #strip bitcode from frameworks
-  bitcode_strip = `xcrun --find bitcode_strip`.strip
-  Dir.glob("Pods/**/*.framework/*") do |framework_binary|
-    next if File.directory?(framework_binary)
-    puts "Stripping bitcode from: #{framework_binary}"
-    system("#{bitcode_strip} -r \"#{framework_binary}\" -o \"#{framework_binary}\"")
-  end
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
+    if File.exist?(plist_path)
+      require 'json'
+      plist = JSON.parse(`plutil -convert json -o - "#{plist_path}"`)
+      plist['ENABLE_AUTH'] = ENV['ENABLE_AUTH'] || 'true'
+      File.open(plist_path, 'w') do |file|
+        file.write(JSON.pretty_generate(plist))
       end
+      system("plutil -convert xml1 #{plist_path}")
+    else
+      Pod::UI.warn "Info.plist not found at #{plist_path}"
     end
 
-    # Workaround `Cycle inside FBReactNativeSpec` error for react-native 0.64
-    # Reference: https://github.com/software-mansion/react-native-screens/issues/842#issuecomment-812543933
-    installer.pods_project.targets.each do |target|
-      if (target.name&.eql?('FBReactNativeSpec'))
-        target.build_phases.each do |build_phase|
-          if (build_phase.respond_to?(:name) && build_phase.name.eql?('[CP-User] Generate Specs'))
-            target.build_phases.move(build_phase, 0)
-          end
-        end
-      end
-      target.build_configurations.each do |config|
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
-        config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] =  "arm64"
-      end
-    end
-    # get team-id from project's first target
+    # Apply development team from project to all pods
     dev_team = ""
     project = installer.aggregate_targets[0].user_project
     project.targets.each do |target|
-        target.build_configurations.each do |config|
-            if dev_team.empty? and !config.build_settings['DEVELOPMENT_TEAM'].nil?
-                dev_team = config.build_settings['DEVELOPMENT_TEAM']
-                break
-            end
+      target.build_configurations.each do |config|
+        if dev_team.empty? and !config.build_settings['DEVELOPMENT_TEAM'].nil?
+          dev_team = config.build_settings['DEVELOPMENT_TEAM']
+          break
         end
+      end
     end
-
-    # Apply team-id
     installer.pods_project.targets.each do |target|
-        target.build_configurations.each do |config|
-            config.build_settings["DEVELOPMENT_TEAM"] = dev_team
-        end
+      target.build_configurations.each do |config|
+        config.build_settings["DEVELOPMENT_TEAM"] = dev_team
+      end
     end
 
-  # https://github.com/CocoaPods/CocoaPods/issues/8122#issuecomment-428677119
-  # Workaround for removing the multiple Assets added to the project due to react native auto-linkage
+    # Remove duplicate Assets.car from Copy Pods Resources phase
     project_path = './Inji.xcodeproj'
     project = Xcodeproj::Project.open(project_path)
     project.targets.each do |target|
-      puts target
-        if target.name == "Inji"
-          phase = target.shell_script_build_phases.find { |bp| bp.name == '[CP] Copy Pods Resources' }
-          if !phase.nil?
-            phase.output_paths.delete('${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Assets.car')
-          end
+      if target.name == "Inji"
+        phase = target.shell_script_build_phases.find { |bp| bp.name == '[CP] Copy Pods Resources' }
+        if !phase.nil?
+          phase.output_paths.delete('${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Assets.car')
         end
+      end
     end
     project.save(project_path)
   end
