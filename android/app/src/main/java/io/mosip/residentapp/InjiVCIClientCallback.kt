@@ -3,15 +3,9 @@ package io.mosip.residentapp
 import android.util.Log
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.google.gson.Gson
-import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest
-import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPTokenV2
-import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResultV2
-import io.mosip.openID4VP.constants.FormatType
-import io.mosip.residentapp.utils.JsonConverter
 import io.mosip.vciclient.token.TokenResponse
 import kotlinx.coroutines.CompletableDeferred
 
@@ -22,82 +16,8 @@ object VCIClientCallbackBridge {
     private var deferredAuthCode: CompletableDeferred<String>? = null
     private var deferredTxCode: CompletableDeferred<String>? = null
     private var deferredAuthCodeResult: CompletableDeferred<Map<String, Any>>? = null
-    private var deferredPresentationRequest:
-            CompletableDeferred<Map<String, Map<FormatType, List<Any>>>>? =
-            null
-    private var deferredSignedVPToken: CompletableDeferred<List<VPTokenSigningResultV2>>? =
-            null
     private var deferredIssuerTrustResponse: CompletableDeferred<Boolean>? = null
     private var deferredTokenResponse: CompletableDeferred<TokenResponse>? = null
-
-    fun createPresentationRequestDeferred():
-            CompletableDeferred<Map<String, Map<FormatType, List<Any>>>> {
-        deferredPresentationRequest = CompletableDeferred()
-        return deferredPresentationRequest!!
-    }
-
-    @JvmStatic
-    fun abortPresentationFlow(exception: Throwable) {
-        deferredPresentationRequest?.completeExceptionally(exception)
-        deferredSignedVPToken?.completeExceptionally(exception)
-
-        deferredPresentationRequest = null
-        deferredSignedVPToken = null
-    }
-
-    fun emitPresentationRequest(
-            context: ReactApplicationContext,
-            presentationRequest: AuthorizationRequest
-    ) {
-        val presentationRequestJson: String? = JsonConverter.toJson(presentationRequest)
-        val params: WritableMap? =
-                Arguments.createMap().apply {
-                    putString("presentationRequest", presentationRequestJson)
-                }
-        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                .emit("onPresentationRequest", params)
-    }
-
-    suspend fun awaitSelectedCredentialsForPresentationRequest():
-            Map<String, Map<FormatType, List<Any>>> {
-        return deferredPresentationRequest?.await()
-                ?: throw IllegalStateException("No selected credentials callback was set")
-    }
-
-    fun createSignedVPTokenDeferred(): CompletableDeferred<List<VPTokenSigningResultV2>> {
-        deferredSignedVPToken = CompletableDeferred()
-        return deferredSignedVPToken!!
-    }
-
-    fun emitSignedVPTokenRequest(
-            context: ReactApplicationContext,
-            payload: List<UnsignedVPTokenV2>
-    ) {
-      val unsignedVPTokens: WritableArray? = Arguments.createArray().apply {
-        payload.forEach { v ->
-          pushMap(
-            Arguments.createMap().apply {
-              putString("dataToSign", v.dataToSign)
-              putString("signatureAlgorithm", v.signatureAlgorithm)
-              putString("holderKeyReference", v.holderKeyReference)
-              putString("format", v.format.value)
-            }
-          )
-        }
-      }
-      val params =
-        Arguments.createMap().apply {
-          putArray("vpTokenSigningRequest", unsignedVPTokens)
-        }
-        Log.d(TAG, "Emitting signed VP token request to JS")
-        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                .emit("onRequestSignedVPToken", params)
-    }
-
-    suspend fun awaitSignedVPToken(): List<VPTokenSigningResultV2> {
-        return deferredSignedVPToken?.await()
-                ?: throw IllegalStateException("No signed VP token callback was set")
-    }
 
     fun createAuthCodeResultDeferred(): CompletableDeferred<Map<String, Any>> {
         deferredAuthCodeResult = CompletableDeferred()
@@ -199,20 +119,6 @@ object VCIClientCallbackBridge {
     fun completeProof(jwt: String) {
         deferredProof?.complete(jwt)
         deferredProof = null
-    }
-
-    @JvmStatic
-    fun completePresentationRequest(selectedVCs: Map<String, Map<FormatType, List<Object>>>) {
-        deferredPresentationRequest?.complete(selectedVCs)
-        Log.d(TAG, "Completed presentation request")
-        deferredPresentationRequest = null
-    }
-
-    @JvmStatic
-    fun completeSignDataForVP(vpTokenSigningResults: List<VPTokenSigningResultV2>) {
-        deferredSignedVPToken?.complete(vpTokenSigningResults)
-        Log.d(TAG, "Completed signed VP token")
-        deferredSignedVPToken = null
     }
 
     @JvmStatic

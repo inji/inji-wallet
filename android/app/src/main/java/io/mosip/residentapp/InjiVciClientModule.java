@@ -18,14 +18,11 @@ import com.google.gson.Gson;
 import java.util.List;
 import java.util.Map;
 
-import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResultV2;
 import io.mosip.residentapp.utils.OpenId4VPUtils;
 import io.mosip.vciclient.VCIClient;
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata;
 import io.mosip.vciclient.token.TokenResponse;
 import io.mosip.vciclient.exception.VCIClientException;
-import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
-
 public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
     private static final String TAG = "InjiVciClientModule";
@@ -60,18 +57,6 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendAuthCodeFromJS(String authCode) {
         VCIClientCallbackBridge.completeAuthCode(authCode);
-    }
-
-    @ReactMethod
-    public void sendSelectedCredentialsForVPSharingFromJS(ReadableMap selectedVCs) {
-        VCIClientCallbackBridge.completePresentationRequest(OpenId4VPUtils.parseSelectedVCs(selectedVCs));
-    }
-
-    @ReactMethod
-    public void sendVPTokenSigningResultFromJS(ReadableArray vpTokenSigningResults) {
-        List<VPTokenSigningResultV2> formattedVPTokenSigningResults = OpenId4VPUtils
-                .parseVPTokenSigningResultV2(vpTokenSigningResults);
-        VCIClientCallbackBridge.completeSignDataForVP(formattedVPTokenSigningResults);
     }
 
     @ReactMethod
@@ -154,18 +139,6 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
     }
 
-    @ReactMethod
-    public void abortPresentationFlowFromJS(String code, String message) {
-        Log.d(TAG, "abortPresentationFlowFromJS called with code=" + code);
-
-        OpenID4VPExceptions exception = OpenId4VPUtils.convertToOpenID4VPException(
-                code,
-                message,
-                getName());
-
-        VCIClientCallbackBridge.abortPresentationFlow(exception);
-    }
-
     private void rejectVCIException(Promise promise, Exception e) {
 
         if (e instanceof VCIClientException) {
@@ -202,3 +175,4 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
         }
     }
 }
+              

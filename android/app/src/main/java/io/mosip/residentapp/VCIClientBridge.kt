@@ -1,16 +1,12 @@
 package io.mosip.residentapp
 
 import com.facebook.react.bridge.ReactApplicationContext
-import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest
-import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPTokenV2
 import io.mosip.vciclient.VCIClient
 import io.mosip.vciclient.authorizationCodeFlow.AuthorizationMethod
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata
 import com.google.gson.JsonObject
 import io.mosip.vciclient.constants.OpenWebPageCallback
 import io.mosip.vciclient.constants.ProofsCallback
-import io.mosip.vciclient.constants.SelectCredentialsForPresentationCallback
-import io.mosip.vciclient.constants.SignVerifiablePresentationCallback
 import io.mosip.vciclient.credential.response.CredentialResponse
 import io.mosip.vciclient.exception.DownloadFailedException
 import io.mosip.vciclient.proof.CredentialRequestProofs
@@ -73,29 +69,8 @@ object VCIClientBridge {
 
     private fun authorizationMethods(signatureSuite: String?): List<AuthorizationMethod> =
             listOf(
-                    AuthorizationMethod.PresentationDuringIssuance(
-                            selectCredentialsForPresentation =
-                                    selectCredentialsForPresentationCallback(),
-                            signVerifiablePresentation = signVerifiablePresentationCallback(),
-                            ldpVpSignatureSuite = signatureSuite
-                    ),
-                    // Uncomment when you want redirect-to-web to be enabled in V2 flow
                     AuthorizationMethod.RedirectToWeb(openWebPage = openWebPageCallback())
             )
-
-    private fun selectCredentialsForPresentationCallback(): SelectCredentialsForPresentationCallback =
-            { authorizationRequest: AuthorizationRequest ->
-                VCIClientCallbackBridge.createPresentationRequestDeferred()
-                VCIClientCallbackBridge.emitPresentationRequest(reactContext, authorizationRequest)
-                VCIClientCallbackBridge.awaitSelectedCredentialsForPresentationRequest()
-            }
-
-    private fun signVerifiablePresentationCallback(): SignVerifiablePresentationCallback =
-            { payload: List<UnsignedVPTokenV2> ->
-                VCIClientCallbackBridge.createSignedVPTokenDeferred()
-                VCIClientCallbackBridge.emitSignedVPTokenRequest(reactContext, payload)
-                VCIClientCallbackBridge.awaitSignedVPToken()
-            }
 
     private fun openWebPageCallback(): OpenWebPageCallback =
     openWeb@{ endpoint: String ->
@@ -189,7 +164,7 @@ object VCIClientBridge {
                 ?: throw DownloadFailedException("No credential returned from issuer")
 
         val json = JsonObject().apply {
-            add("credential", firstItem.credential)
+            add("credential", firstItem)
             credentialIssuer?.let { addProperty("credentialIssuer", it) }
             credentialConfigurationId?.let { addProperty("credentialConfigurationId", it) }
         }
