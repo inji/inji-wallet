@@ -4,14 +4,16 @@
 @interface RCT_EXTERN_MODULE(InjiOpenID4VP, NSObject)
 
 RCT_EXTERN_METHOD(initSdk:(NSString *)appId
-                  walletMetadata:(id)walletMetadata
+                  walletConfig:(id)walletConfig
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(sendJsonLdCanonicalizeResultFromJS:(NSString *)result)
+RCT_EXTERN_METHOD(notifyCanonicalizationFailureFromJS:(NSString *)code
+                  message:(NSString *)message
+                  )
 
 RCT_EXTERN_METHOD(authenticateVerifier:(NSString *)urlEncodedAuthorizationRequest
-                  trustedVerifierJSON:(id)trustedVerifierJSON
                   shouldValidateClient:(BOOL)shouldValidateClient
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)

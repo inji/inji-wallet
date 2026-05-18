@@ -16,6 +16,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   private var pendingIssuerTrustDecision: ((Bool) -> Void)?
   private var pendingSelectedCredentialsContinuation: CheckedContinuation<AnyObject, Error>?
   private var pendingSignVPContinuation: CheckedContinuation<NSArray, Error>?
+  private var pendingJsonLdCanonicalizeContinuation: ((String) -> Void)?
+  // private var pendingJsonLdCanonicalizeContinuation: ((Data) -> Void)?
 
   static func moduleName() -> String {
     return "InjiVciClient"
@@ -38,6 +40,9 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         return result
       }),
       .presentationDuringIssuance(
+        jsonLdCanonicalizer: { data in
+          try await self.invokeJsonLdCanonicalize(data)
+        },
         selectCredentialsForPresentation: { vpRequest in
           try await self.getSelectedCredentialsContinuationHook(vpRequest: vpRequest)
         },
@@ -457,20 +462,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     pendingIssuerTrustDecision?(trusted)
     pendingIssuerTrustDecision = nil
   }
-
-  // MARK: - JSON Parsing
-
-  private func parseClientMetadata(from jsonString: String) throws -> VciClientMetadata {
-    guard let data = jsonString.data(using: .utf8) else {
-      throw NSError(domain: "Invalid JSON string for clientMetadata", code: 0)
-    }
-    return try JSONDecoder().decode(VciClientMetadata.self, from: data)
-  }
-
-  @objc static func requiresMainQueueSetup() -> Bool {
-    return true
-  }
-
+  
   @objc(abortPresentationFlowFromJS:message:)
   func abortPresentationFlowFromJS(_ code: String, message: String) {
     let error = OpenId4VPUtils.convertToOpenID4VPException(
@@ -487,5 +479,44 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     pendingTxCodeContinuation = nil
     pendingTokenResponseContinuation = nil
     pendingIssuerTrustDecision = nil
+  }
+  
+  @objc(sendJsonLdCanonicalizeResultFromJS:)
+  func sendJsonLdCanonicalizeResultFromJS(_ result: String) {
+    // let decodedData = (try? decodeBase64URL(result)) ?? Data()
+    // pendingJsonLdCanonicalizeContinuation?(decodedData)
+    pendingJsonLdCanonicalizeContinuation?(result)
+    pendingJsonLdCanonicalizeContinuation = nil
+  }
+
+  // MARK: - JSON Parsing
+
+  private func parseClientMetadata(from jsonString: String) throws -> VciClientMetadata {
+    guard let data = jsonString.data(using: .utf8) else {
+      throw NSError(domain: "Invalid JSON string for clientMetadata", code: 0)
+    }
+    return try JSONDecoder().decode(VciClientMetadata.self, from: data)
+  }
+
+  @objc static func requiresMainQueueSetup() -> Bool {
+    return true
+  }
+  
+  private func invokeJsonLdCanonicalize(_ data: String) async throws -> String {
+    // private func invokeJsonLdCanonicalize(_ data: [String: Any]) async throws -> Data {
+    print("data = \(data)")
+    
+    if let bridge = RCTBridge.current() {
+      bridge.eventDispatcher().sendAppEvent(
+        withName: "onJsonLdCanonicalize",
+        body: [
+          "data": data,
+        ]
+      )
+    }
+    
+    return try await withCheckedThrowingContinuation { continuation in
+      self.pendingJsonLdCanonicalizeContinuation = { result in continuation.resume(returning: result) }
+    }
   }
 }

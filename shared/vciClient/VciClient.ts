@@ -5,6 +5,8 @@ import {
   VerifiableCredential,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import { signatureSuite } from '../../machines/openID4VP/openID4VPServices';
+import jsonld from "jsonld";
+import {jsonLdCanonicalize} from "../openID4VP/OpenID4VPHelper";
 
 const emitter = new NativeEventEmitter(NativeModules.InjiVciClient);
 
@@ -29,6 +31,21 @@ class VciClient {
     }
     return VciClient.instance;
   }
+
+  private addJsonLdCanonicalizerCallback = () => {
+    emitter.addListener('onJsonLdCanonicalize', ({data}: { data: string }) => {
+      console.log('Data to be canonicalized received from native: ', JSON.stringify(data, null, 2));
+      jsonLdCanonicalize(data)
+        .then(result => {
+          console.log('Canonicalization result sent to native: ', result);
+          this.InjiVciClient.sendJsonLdCanonicalizeResultFromJS(result);
+        })
+        .catch(error => {
+          //TODO: abort the canonicalizer and notify native about the failure so that it can handle the error gracefully
+          console.error('Error during JSON-LD canonicalization: ', error);
+        });
+    });
+  };
 
   async sendProof(jwt: string) {
     this.InjiVciClient.sendProofFromJS(jwt);
@@ -139,6 +156,8 @@ class VciClient {
       },
     );
 
+    this.addJsonLdCanonicalizerCallback()
+
     let response = '';
     try {
       const clientMetadata = {
@@ -233,6 +252,8 @@ class VciClient {
         requestTokenResponse(tokenRequest);
       },
     );
+
+    this.addJsonLdCanonicalizerCallback()
 
     let response = '';
     try {

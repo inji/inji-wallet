@@ -50,6 +50,15 @@ export async function getWalletMetadata() {
   return walletMetadata;
 }
 
+export async function getWalletConfig() {
+  const config = await getAllConfigurations();
+  if (!config.walletConfig) {
+    return null;
+  }
+  const walletMetadata = JSON.parse(config.walletMetadata);
+  return walletMetadata;
+}
+
 export const jsonLdCanonicalize = async (data: string) => {
   console.log('Canonicalizing data: ', data);
   console.log('Canonicalizing data: ', typeof data);

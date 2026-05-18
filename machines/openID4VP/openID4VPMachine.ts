@@ -65,38 +65,7 @@ export const openID4VPMachine = model.createMachine(
       checkFaceAuthConsent: {
         entry: ['setIsShowLoadingScreen', 'getFaceAuthConsent'],
         on: {
-          STORE_RESPONSE: {target: 'checkIfClientValidationIsRequired'},
-        },
-      },
-      checkIfClientValidationIsRequired: {
-        invoke: {
-          src: 'shouldValidateClient',
-          onDone: [
-            {
-              cond: 'isClientValidationRequred',
-              actions: 'updateShowFaceAuthConsent',
-              target: 'getTrustedVerifiersList',
-            },
-            {
-              actions: 'updateShowFaceAuthConsent',
-              target: 'getKeyPairFromKeystore',
-            },
-          ],
-        },
-      },
-      getTrustedVerifiersList: {
-        invoke: {
-          src: 'fetchTrustedVerifiers',
-          onDone: {
-            actions: 'setTrustedVerifiers',
-            target: 'getKeyPairFromKeystore',
-          },
-          onError: {
-            actions: [
-              'setTrustedVerifiersApiCallError',
-              'resetIsShowLoadingScreen',
-            ],
-          },
+          STORE_RESPONSE: {target: 'getKeyPairFromKeystore'},
         },
       },
       getKeyPairFromKeystore: {

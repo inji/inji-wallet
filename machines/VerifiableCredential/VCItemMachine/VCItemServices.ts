@@ -197,33 +197,33 @@ export const VCItemServices = model => {
 
     verifyCredential: async (context: any) => {
       try {
-    
+
         if (!context.verifiableCredential) {
           throw new Error('Missing verifiable credential in context');
         }
-    
+
         const credential = getVerifiableCredential(context.verifiableCredential);
         const format = context.selectedCredentialType?.format ?? context.format;
-    
 
-        
+
+
         const verificationResult = await withTimeout(
           verifyCredentialData(credential, format),
           VERIFICATION_TIMEOUT_IN_MS
         );
-    
+
         if (!verificationResult.isVerified) {
           throw new Error(verificationResult.verificationErrorCode);
         }
-    
+
          return verificationResult;
-    
+
       } catch (error) {
         console.error('Credential verification failed:', error);
         throw error;
       }
     }
-    
+
   };
 };
 

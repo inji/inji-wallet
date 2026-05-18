@@ -6,7 +6,8 @@ import React
 class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
   private var openID4VP: OpenID4VP?
-  private var pendingJsonLdCanonicalizeContinuation: ((String) -> Void)?
+  private var pendingJsonLdCanonicalizeContinuation: CheckedContinuation<String, Error>?
+  // private var pendingJsonLdCanonicalizeContinuation: ((Data) -> Void)?
   private var pendingJsonLdExpandContinuation: (([String: Any]) -> Void)?
   private var jsonLdCanonicalizeCallback: RCTResponseSenderBlock?
 
@@ -15,13 +16,16 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   }
   
   @objc
-  func `initSdk`(_ appId: String, walletMetadata: AnyObject?, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+  func `initSdk`(_ appId: String, walletConfig: AnyObject?, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     do {
-      let walletMetadataObject: WalletMetadata = try getWalletMetadataFromDict(walletMetadata, reject: reject)
-      
+      guard let walletConfigDict = walletConfig as? [String: Any] else {
+        reject("OPENID4VP", "Invalid wallet config format", nil)
+        return
+      }
+      let walletConfig = try decode(WalletConfig.self, from: walletConfigDict)
       openID4VP = OpenID4VP(
         traceabilityId: appId,
-        walletMetadata: walletMetadataObject,
+        walletConfig: walletConfig,
         jsonLdCanonicalizer: { data in
           try await self.invokeJsonLdCanonicalize(data)
         }
@@ -45,8 +49,8 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
       )
     }
     
-    return try await withCheckedThrowingContinuation { continuation in
-      self.pendingJsonLdCanonicalizeContinuation = { result in continuation.resume(returning: result) }
+      return try await withCheckedThrowingContinuation { (continuation : CheckedContinuation<String, Error>) in
+      self.pendingJsonLdCanonicalizeContinuation = continuation
     }
   }
   
@@ -71,7 +75,18 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   
   @objc(sendJsonLdCanonicalizeResultFromJS:)
   func sendJsonLdCanonicalizeResultFromJS(_ result: String) {
-    pendingJsonLdCanonicalizeContinuation?(result)
+    // let decodedData = (try? decodeBase64URL(result)) ?? Data()
+    // pendingJsonLdCanonicalizeContinuation?(decodedData)
+    pendingJsonLdCanonicalizeContinuation?.resume(returning: result)
+    pendingJsonLdCanonicalizeContinuation = nil
+  }
+  
+  @objc
+  func notifyCanonicalizationFailureFromJS(_ code: String, message: String) {
+    let error = OpenId4VPUtils.convertToOpenID4VPException(
+      errorCode: code, error: message, moduleName: Self.moduleName())
+
+    pendingJsonLdCanonicalizeContinuation?.resume(throwing: error)
     pendingJsonLdCanonicalizeContinuation = nil
   }
   
@@ -90,22 +105,13 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
   @objc
   func authenticateVerifier(_ urlEncodedAuthorizationRequest: String,
-                            trustedVerifierJSON: AnyObject,
                             shouldValidateClient: Bool,
                             resolver resolve: @escaping RCTPromiseResolveBlock,
                             rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
       do {
-        guard let verifierMeta = trustedVerifierJSON as? [[String:Any]] else {
-          reject("OPENID4VP", "Invalid verifier meta format", nil)
-          return
-        }
-
-        let trustedVerifiersList: [Verifier] = try parseVerifiers(verifierMeta)
-
         let authenticationResponse: AuthorizationRequest = try await openID4VP!.authenticateVerifier(
           urlEncodedAuthorizationRequest: urlEncodedAuthorizationRequest,
-          trustedVerifiers: trustedVerifiersList,
           shouldValidateClient: shouldValidateClient
         )
 
@@ -261,8 +267,8 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
                     NSLocalizedDescriptionKey: "Invalid Verifier data"
                 ]
             )
-      }
-      
+        }
+        
         let jwksUri = verifierDict["jwks_uri"] as? String
         
         let specVersion: SpecVersion = {
@@ -284,7 +290,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
             specVersion: specVersion
         )
     }
-  }
+}
 
   @objc
   static func requiresMainQueueSetup() -> Bool {
@@ -327,54 +333,6 @@ extension Dictionary {
   func mapKeys<T: Hashable>(_ transform: (Key) -> T) -> [T: Value] {
     Dictionary<T, Value>(uniqueKeysWithValues: map { (transform($0.key), $0.value) })
   }
-}
-
-func getWalletMetadataFromDict(_ walletMetadata: Any,
-                               reject: RCTPromiseRejectBlock) throws -> WalletMetadata {
-  guard let metadata = walletMetadata as? [String: Any] else {
-    reject("OPENID4VP", "Invalid wallet metadata format", nil)
-    throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Wallet Metadata"])
-  }
-  
-  var vpFormatsSupported: [VPFormatType: VPFormatSupported] = [:]
-  if let vpFormatsSupportedDict = metadata["vp_formats_supported"] as? [String: Any] {
-    for (format, formatDict) in vpFormatsSupportedDict {
-      guard let formatType = VPFormatType.fromValue(format) else {
-        throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unsupported VP format: \(format)"])
-      }
-      
-      guard let formatDictMap = formatDict as? [String: Any] else {
-        throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid format dictionary for format: \(format)"])
-      }
-      
-      let vpFormatSupported: VPFormatSupported
-      switch formatType {
-        case .ldp_vc, .ldp_vp:
-          let proofTypes: [ProofType] = try mapStringsToRawEnum((formatDictMap["proof_type_values"] as? [String]) ?? [])
-          let cryptoSuites: [String]? = formatDictMap["cryptosuite_values"] as? [String]
-          vpFormatSupported = LdpVcFormatSupported(proofTypeValues: proofTypes, cryptoSuiteValues: cryptoSuites)
-        case .mso_mdoc:
-          let issuerAlgs: [Int]? = formatDictMap["issuerauth_alg_values"] as? [Int]
-          let deviceAlgs: [Int]? = formatDictMap["deviceauth_alg_values"] as? [Int]
-          vpFormatSupported = MsoMdocVcFormatSupported(issuerAuthAlgValues: issuerAlgs, deviceAuthAlgValues: deviceAlgs)
-        case .dc_sd_jwt, .vc_sd_jwt:
-          let sdjwtAlgValues: [String]? = formatDictMap["sd-jwt_alg_values"] as? [String]
-          let kbJwtAlgValues: [String]? = formatDictMap["kb-jwt_alg_values"] as? [String]
-          vpFormatSupported = SdJwtVcFormatSupported(sdJwtAlgValues: sdjwtAlgValues, kbJwtAlgValues: kbJwtAlgValues)
-      }
-      vpFormatsSupported[formatType] = vpFormatSupported
-    }
-  }
-  
-  let walletMetadataObject = try WalletMetadata(
-    vpFormatsSupported: vpFormatsSupported,
-    clientIdPrefixesSupported: mapStringsToEnum(metadata["client_id_prefixes_supported"] as? [String] ?? [], using: ClientIdPrefix.fromValue),
-    requestObjectSigningAlgValuesSupported: mapStringsToEnum(metadata["request_object_signing_alg_values_supported"] as? [String] ?? [], using: RequestSigningAlgorithm.fromValue),
-    authorizationEncryptionAlgValuesSupported: mapStringsToEnum(metadata["authorization_encryption_alg_values_supported"] as? [String] ?? [], using: KeyManagementAlgorithm.fromValue),
-    authorizationEncryptionEncValuesSupported: mapStringsToEnum(metadata["authorization_encryption_enc_values_supported"] as? [String] ?? [], using: ContentEncryptionAlgorithm.fromValue),
-    responseTypesSupported: mapStringsToEnum(metadata["response_types_supported"] as? [String] ?? [], using: ResponseType.fromValue)
-  )
-  return walletMetadataObject
 }
 
 func mapStringsToEnum<T: RawRepresentable>(
