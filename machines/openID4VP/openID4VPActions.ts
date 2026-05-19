@@ -1,23 +1,16 @@
 import {assign} from 'xstate';
 import {send, sendParent} from 'xstate/lib/actions';
-import {
-  OVP_ERROR_CODE,
-  OVP_ERROR_MESSAGES,
-  SHOW_FACE_AUTH_CONSENT_SHARE_FLOW,
-} from '../../shared/constants';
+import {SHOW_FACE_AUTH_CONSENT_SHARE_FLOW} from '../../shared/constants';
 import {VC} from '../VerifiableCredential/VCMetaMachine/vc';
 import {StoreEvents} from '../store';
-import {JSONPath} from 'jsonpath-plus';
 
 import {parseJSON, VCShareFlowType} from '../../shared/Utils';
 import {ActivityLogEvents} from '../activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
-import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
-import {VCFormat} from '../../shared/VCFormat';
 import {
-  getIssuerAuthenticationAlorithmForMdocVC,
-  getMdocAuthenticationAlorithm,
-} from '../../components/VC/common/VCUtils';
+  MatchingVcsResult,
+  MatchingVCsResultForPresentationExchangeRequest,
+} from '../../shared/openID4VP/openid4vp.types';
 
 // TODO - get this presentation definition list which are alias for scope param
 // from the verifier end point after the endpoint is created and exposed.
@@ -41,44 +34,28 @@ export const openID4VPActions = (model: any) => {
       flowType: (_, event) => event.flowType,
     }),
 
-    // getVcsMatchingAuthRequest: model.assign({
-    //   vcsMatchingAuthRequest: (context, event) => {
-    //     result = getVcsMatchingAuthRequest(context, event);
-    //     return result.matchingVCs;
-    //   },
-    //   requestedClaims: () => result.requestedClaims,
-    //
-    //   purpose: context => {
-    //     return result.purpose ?? '';
-    //   },
-    //
-    //   hasNoMatchingVCs: () => {
-    //     return (
-    //       !result.matchingVCs ||
-    //       Object.keys(result.matchingVCs).length === 0 ||
-    //       Object.values(result.matchingVCs).every(
-    //         value => Array.isArray(value) && value.length === 0,
-    //       )
-    //     );
-    //   },
-    // }),
-
     setMatchingVCs: model.assign({
-      vcsMatchingAuthRequest: (_, event) => {
+      matchingVCsResult: (_: any, event: {data: MatchingVcsResult}) =>
+        event.data,
+      // TODO: The below assignment needs to be removed - matchingVCsResult is the source now
+      vcsMatchingAuthRequest: (
+        _: any,
+        event: {data: MatchingVCsResultForPresentationExchangeRequest},
+      ) => {
         return event.data.matchingVCs;
       },
-      requestedClaims: (_, event) => event.data.requestedClaims,
-      purpose: (_, event) => event.data.purpose,
-      hasNoMatchingVCs: (_, event) => {
-        const matchingVCs = event.data.matchingVCs;
-        return (
-          !matchingVCs ||
-          Object.keys(matchingVCs).length === 0 ||
-          Object.values(matchingVCs).every(
-            value => Array.isArray(value) && value.length === 0,
-          )
-        );
-      },
+      requestedClaims: (
+        _: any,
+        event: {data: MatchingVCsResultForPresentationExchangeRequest},
+      ) => event.data.requestedClaims,
+      purpose: (
+        _: any,
+        event: {data: MatchingVCsResultForPresentationExchangeRequest},
+      ) => event.data.purpose,
+      hasNoMatchingVCs: (
+        _: any,
+        event: {data: MatchingVCsResultForPresentationExchangeRequest},
+      ) => event.data.success,
     }),
 
     setAuthenticationResponseForPresentationAuthFlow: model.assign({

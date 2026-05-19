@@ -1,6 +1,6 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useSelector} from '@xstate/react';
-import {useCallback, useContext, useRef, useState} from 'react';
+import {useCallback, useContext, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ActorRefFrom} from 'xstate';
 import {Theme} from '../../components/ui/styleUtils';
@@ -11,9 +11,9 @@ import {
   selectIsSendingVPError,
 } from '../../machines/bleShare/scan/scanSelectors';
 import {
-  selectIsAuthorization,
   selectAreAllVCsChecked,
   selectCredentials,
+  selectIsAuthorization,
   selectIsError,
   selectIsFaceVerificationConsent,
   selectIsGetVCsSatisfyingAuthRequest,
@@ -24,6 +24,7 @@ import {
   selectIsSharingVP,
   selectIsShowLoadingScreen,
   selectIsVerifyingIdentity,
+  selectMatchingVcsResult,
   selectOpenID4VPRetryCount,
   selectPurpose,
   selectRequestedClaimsByVerifier,
@@ -50,6 +51,8 @@ import {ActivityLogEvents} from '../../machines/activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
 import {isIOS} from '../../shared/constants';
 import {getFaceAttribute} from '../../components/VC/common/VCUtils';
+import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {MatchingVCsResultForDcql} from '../../shared/openID4VP/openid4vp.types';
 
 type MyVcsTabNavigation = NavigationProp<RootRouteProps>;
 
@@ -68,13 +71,12 @@ export function useSendVPScreen(props) {
     props?.route?.name === 'IssuersScreen'
       ? props.route.params.ovpService
       : scanService.getSnapshot().context.OpenId4VPRef;
-  // input descriptor id to VCs mapping
+  // input descriptor id / credential query Id to VCs mapping
+  // Manage selected VCs here
   const [
-    inputDescriptorIdToSelectedVcKeys,
-    setInputDescriptorIdToSelectedVcKeys,
-  ] = useState<Record<string, [string]>>({});
-
-  const hasLoggedErrorRef = useRef(false);
+    credentialRequestIdToSelectedVcKeys,
+    setCredentialRequestIdToSelectedVcKeys,
+  ] = useState<Record<string, Set<string>>>({});
 
   const shareableVcs = useSelector(vcMetaService, selectShareableVcs);
 
@@ -98,6 +100,11 @@ export function useSendVPScreen(props) {
     selectVCsMatchingAuthRequest,
   );
 
+  const matchingVcsResult = useSelector(
+    openID4VPService,
+    selectMatchingVcsResult,
+  );
+
   const checkIfAnyVCHasImage = vcs => {
     return Object.values(vcs)
       .flatMap(vc => vc)
@@ -115,14 +122,14 @@ export function useSendVPScreen(props) {
   };
 
   const getSelectedVCs = (): Record<string, any[]> => {
-    let selectedVcsData: Record<string, any[]> = {}; // input_descriptor_id to VC[]
-    Object.entries(inputDescriptorIdToSelectedVcKeys).forEach(
-      ([inputDescriptorId, vcKeys]) => {
+    const selectedVcsData: Record<string, VC[]> = {}; // input_descriptor_id or credential query ID to VC[]
+    Object.entries(credentialRequestIdToSelectedVcKeys).forEach(
+      ([credentialRequestId, vcKeys]) => {
         vcKeys.forEach((vcKey: string) => {
           const vcData = myVcs[vcKey];
-          selectedVcsData[inputDescriptorId] =
-            selectedVcsData[inputDescriptorId] || [];
-          selectedVcsData[inputDescriptorId].push(vcData);
+          selectedVcsData[credentialRequestId] =
+            selectedVcsData[credentialRequestId] || [];
+          selectedVcsData[credentialRequestId].push(vcData);
         });
       },
     );
@@ -155,7 +162,7 @@ export function useSendVPScreen(props) {
   );
   const noCredentialsMatchingVPRequest =
     isSelectingVCs &&
-    (Object.keys(vcsMatchingAuthRequest).length === 0 ||
+    (!matchingVcsResult.success ||
       Object.values(vcsMatchingAuthRequest).every(
         value => Array.isArray(value) && value.length === 0,
       ));
@@ -190,7 +197,7 @@ export function useSendVPScreen(props) {
   );
 
   let overlayDetails: Omit<VPShareOverlayProps, 'isVisible'> | null = null;
-  let vpVerifierName = useSelector(
+  const vpVerifierName = useSelector(
     openID4VPService,
     selectVerifierNameInVPSharing,
   );
@@ -200,7 +207,7 @@ export function useSendVPScreen(props) {
       primaryButtonText: t('consentDialog.confirmButton'),
       primaryButtonEvent: CONFIRM,
       secondaryButtonTestID: 'cancel',
-      secondaryButtonText: t('consentDialog.cancelButton'),
+      secondaryButtonText: t('common:decline'),
       secondaryButtonEvent: CANCEL,
       title: t('consentDialog.title'),
       titleTestID: 'consentTitle',
@@ -258,9 +265,10 @@ export function useSendVPScreen(props) {
     generateAndStoreLogMessage,
     scanScreenError: useSelector(scanService, selectIsSendingVPError),
     vcsMatchingAuthRequest,
+    matchingVcsResult,
     userSelectedVCs: useSelector(openID4VPService, selectSelectedVCs),
     areAllVCsChecked,
-    inputDescriptorIdToSelectedVcKeys,
+    credentialRequestIdToSelectedVcKeys,
     isVerifyingIdentity: useSelector(
       openID4VPService,
       selectIsVerifyingIdentity,
@@ -278,6 +286,10 @@ export function useSendVPScreen(props) {
       openID4VPService,
       selectVerifiableCredentialsData,
     ),
+    isDcqlFlow:
+      typeof matchingVcsResult === 'object' &&
+      (matchingVcsResult as MatchingVCsResultForDcql).credentialSetOptions !==
+        undefined,
     FACE_VERIFICATION_CONSENT: (isDoNotAskAgainChecked: boolean) =>
       openID4VPService.send(
         OpenID4VPEvents.FACE_VERIFICATION_CONSENT(isDoNotAskAgainChecked),
@@ -297,62 +309,134 @@ export function useSendVPScreen(props) {
         changeTabBarVisible('flex');
       }, 0);
     },
-    SELECT_VC_ITEM:
-      (vcKey: string, inputDescriptorId: string) =>
+    DESELECT_VC_ITEM:
+      (vcKey: string, credentialRequestId: string) =>
       (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
-        let descriptorMappingToVCs = {...inputDescriptorIdToSelectedVcKeys};
+        const isVCAlreadySelected =
+          credentialRequestIdToSelectedVcKeys[credentialRequestId]?.has(vcKey);
+        if (isVCAlreadySelected) {
+          const credentialRequestIdToSelectedVcKeysClone = {
+            ...credentialRequestIdToSelectedVcKeys,
+          };
+          credentialRequestIdToSelectedVcKeysClone[credentialRequestId].delete(
+            vcKey,
+          );
+          setCredentialRequestIdToSelectedVcKeys(
+            credentialRequestIdToSelectedVcKeysClone,
+          );
+        }
+      },
 
-        const isVCSelected =
-          Object.keys(inputDescriptorIdToSelectedVcKeys)?.includes(
-            inputDescriptorId,
-          ) &&
-          inputDescriptorIdToSelectedVcKeys[inputDescriptorId]?.includes(vcKey)
-            ? false
-            : true;
-        if (isVCSelected) {
-          if (descriptorMappingToVCs[inputDescriptorId]) {
-            if (!descriptorMappingToVCs[inputDescriptorId].includes(vcKey)) {
-              descriptorMappingToVCs[inputDescriptorId].push(vcKey);
+    DESELECT_VC_ITEMS:
+      (vcKey: string[], credentialRequestId: string) =>
+      (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
+        console.log(
+          'Deselecting VC items for vcKeys:',
+          vcKey,
+          'and credentialRequestId:',
+          credentialRequestId,
+        );
+        if (credentialRequestIdToSelectedVcKeys[credentialRequestId]) {
+          const credentialRequestIdToSelectedVcKeysClone = {
+            ...credentialRequestIdToSelectedVcKeys,
+          };
+          vcKey.forEach(key => {
+            credentialRequestIdToSelectedVcKeysClone[
+              credentialRequestId
+            ].delete(key);
+          });
+          if (
+            credentialRequestIdToSelectedVcKeysClone[credentialRequestId]
+              .size === 0
+          ) {
+            delete credentialRequestIdToSelectedVcKeysClone[
+              credentialRequestId
+            ];
+          }
+          setCredentialRequestIdToSelectedVcKeys(
+            credentialRequestIdToSelectedVcKeysClone,
+          );
+        }
+      },
+
+    SELECT_VC_ITEM:
+      (vcKey: string, credentialRequestId: string) =>
+      (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
+        console.log(
+          'Toggling selection for vcKey:',
+          vcKey,
+          'and credentialRequestId:',
+          credentialRequestId,
+        );
+        const credentialRequestIdToSelectedVcKeysClone = {
+          ...credentialRequestIdToSelectedVcKeys,
+        };
+
+        const isVCAlreadySelected =
+          !credentialRequestIdToSelectedVcKeys[credentialRequestId]?.has(vcKey);
+        if (isVCAlreadySelected) {
+          if (credentialRequestIdToSelectedVcKeysClone[credentialRequestId]) {
+            if (
+              !credentialRequestIdToSelectedVcKeysClone[
+                credentialRequestId
+              ].has(vcKey)
+            ) {
+              credentialRequestIdToSelectedVcKeysClone[credentialRequestId].add(
+                vcKey,
+              );
             }
           } else {
-            descriptorMappingToVCs[inputDescriptorId] = [vcKey];
+            credentialRequestIdToSelectedVcKeysClone[credentialRequestId] =
+              new Set<string>();
+            credentialRequestIdToSelectedVcKeysClone[credentialRequestId].add(
+              vcKey,
+            );
           }
         } else {
-          // remove vc key from the input descriptor mapping
-          if (descriptorMappingToVCs[inputDescriptorId]) {
-            descriptorMappingToVCs[inputDescriptorId] = descriptorMappingToVCs[
-              inputDescriptorId
-            ].filter(key => key !== vcKey); // remove the vcKey from the array
-            if (descriptorMappingToVCs[inputDescriptorId].length === 0) {
+          // remove vc key from the mapping
+          if (credentialRequestIdToSelectedVcKeysClone[credentialRequestId]) {
+            credentialRequestIdToSelectedVcKeysClone[
+              credentialRequestId
+            ].delete(vcKey);
+            if (
+              credentialRequestIdToSelectedVcKeysClone[credentialRequestId]
+                .size === 0
+            ) {
               // if the array is empty, remove the input descriptor id
-              delete descriptorMappingToVCs[inputDescriptorId];
+              delete credentialRequestIdToSelectedVcKeysClone[
+                credentialRequestId
+              ];
             }
           }
         }
-        setInputDescriptorIdToSelectedVcKeys(descriptorMappingToVCs);
-        const {serviceRefs, wellknownResponse, ...vcData} =
-          vcRef.getSnapshot().context;
+        setCredentialRequestIdToSelectedVcKeys(
+          credentialRequestIdToSelectedVcKeysClone,
+        );
+
+        // const {serviceRefs, wellknownResponse, ...vcData} = vcRef.getSnapshot().context;
       },
 
     UNCHECK_ALL: () => {
-      setInputDescriptorIdToSelectedVcKeys({});
+      setCredentialRequestIdToSelectedVcKeys({});
     },
 
     CHECK_ALL: () => {
-      const updatedInputDescriptorToCredentialsMapping: Record<string, any[]> =
-        {};
-      Object.entries(vcsMatchingAuthRequest).map(([inputDescriptorId, vcs]) => {
-        updatedInputDescriptorToCredentialsMapping[inputDescriptorId] = [];
-        vcs.map(vcData => {
-          const vcKey = VCMetadata.fromVcMetadataString(
-            vcData.vcMetadata,
-          ).getVcKey();
-          updatedInputDescriptorToCredentialsMapping[inputDescriptorId].push(
-            vcKey,
-          );
-        });
-      });
-      setInputDescriptorIdToSelectedVcKeys({
+      const updatedInputDescriptorToCredentialsMapping: Record<
+        string,
+        Set<string>
+      > = {};
+      Object.entries(credentialRequestIdToSelectedVcKeys).map(
+        ([requestId, vcs]) => {
+          updatedInputDescriptorToCredentialsMapping[requestId] = [];
+          vcs.forEach((vcData: {vcMetadata: string | object}) => {
+            const vcKey: string = VCMetadata.fromVcMetadataString(
+              vcData.vcMetadata,
+            ).getVcKey();
+            updatedInputDescriptorToCredentialsMapping[requestId].add(vcKey);
+          });
+        },
+      );
+      setCredentialRequestIdToSelectedVcKeys({
         ...updatedInputDescriptorToCredentialsMapping,
       });
     },

@@ -224,6 +224,7 @@ export const openID4VPMachine = model.createMachine(
             target: 'checkIfAnyMatchingVCs',
           },
           onError: [
+            // TODO: Handle error
             // No matching VCs - send error to parent in case of auth flow, show error screen in case of simple share flow
             // Dispatch error to Verifier for simple share flow
           ],

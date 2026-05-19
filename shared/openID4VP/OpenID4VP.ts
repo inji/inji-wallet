@@ -6,6 +6,7 @@ import {
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {
   getWalletConfig,
+  getWalletMetadata,
   isClientValidationRequired,
   jsonLdCanonicalize,
 } from './OpenID4VPHelper';
@@ -17,10 +18,17 @@ import {
   getIssuerAuthenticationAlorithmForMdocVC,
   getMdocAuthenticationAlorithm,
 } from '../../components/VC/common/VCUtils';
-import {isAndroid, OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../constants';
+import {isAndroid, isIOS, OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../constants';
 import {CACHED_API} from '../api';
 import {defaultWalletConfig} from './WalletConfig';
-import {MatchingVCsResult} from './openid4vp.types';
+import {
+  MatchingVcsResult,
+  MatchingVCsResultForDcql,
+  MatchingVCsResultForPresentationExchangeRequest,
+  MatchResult,
+  VcWithMatchedClaims,
+} from './openid4vp.types';
+import {walletMetadata} from './walletMetadata';
 
 export const OpenID4VP_Proof_Sign_Algo = 'EdDSA';
 const emitter = new NativeEventEmitter(NativeModules.InjiOpenID4VP);
@@ -30,16 +38,14 @@ class OpenID4VP {
   private InjiOpenID4VP = NativeModules.InjiOpenID4VP;
 
   private constructor(walletConfig: Record<string, any>) {
-    if (isAndroid()) {
-      this.InjiOpenID4VP.initSdk(__AppId.getValue(), walletConfig);
-    } else {
+    if (isIOS()) {
       this.addJsonLdCanonicalizerCallback();
-      this.InjiOpenID4VP.initSdk(__AppId.getValue(), walletConfig);
     }
+    this.InjiOpenID4VP.initSdk(__AppId.getValue(), walletConfig);
   }
 
   private addJsonLdCanonicalizerCallback = () => {
-    emitter.addListener('onJsonLdCanonicalize', ({data}: {data: string}) => {
+    emitter.addListener('onJsonLdCanonicalize', ({data}: { data: string }) => {
       console.log('Data to be canonicalized received from native: ', data);
       jsonLdCanonicalize(data)
         .then(result => {
@@ -47,7 +53,6 @@ class OpenID4VP {
           this.InjiOpenID4VP.sendJsonLdCanonicalizeResultFromJS(result);
         })
         .catch(error => {
-          //TODO: abort the canonicalizer and notify native about the failure so that it can handle the error gracefully
           console.error('Error during JSON-LD canonicalization: ', error);
           this.InjiOpenID4VP.notifyCanonicalizationFailureFromJS(
             'server_error',
@@ -58,7 +63,7 @@ class OpenID4VP {
   };
 
   private addJsonLdExpanderCallback = () => {
-    emitter.addListener('onJsonLdExpand', ({data}: {data: any}) => {
+    emitter.addListener('onJsonLdExpand', ({data}: { data: any }) => {
       jsonLdExpand(data)
         .then(result => {
           console.log('Expansion result sent to native: ', result);
@@ -108,7 +113,7 @@ class OpenID4VP {
   static async getMatchingCredentials(
     vpRequest: object,
     availableWalletCredentials: VC[],
-  ): Promise<MatchingVCsResult> {
+  ): Promise<MatchingVcsResult> {
     /**
      * success: boolean,
      * matchingVcs: {} // credential query id or input descriptor id mapped to array of matching vcs for that query
@@ -121,21 +126,26 @@ class OpenID4VP {
         vpRequest,
         availableWalletCredentials,
       );
-      const success =
-        Object.keys(result.matchingVCs).length === 0 ||
-        Object.values(result.matchingVCs).every(
-          value => Array.isArray(value) && value.length === 0,
-        );
+      console.log(
+        'Presentation Exchange flow - result from getVcsMatchingAuthRequest: ',
+        JSON.stringify(result, null, 2),
+      );
       return {
         matchingVCs: result.matchingVCs,
         requestedClaims: result.requestedClaims,
         purpose: result.purpose,
-        success: success,
-        credentialSetOptions: undefined,
-      };
+        success: result.success,
+      } as MatchingVCsResultForPresentationExchangeRequest;
     } else {
       const openID4VP = await OpenID4VP.getInstance();
       openID4VP.addJsonLdExpanderCallback();
+
+      // TODO: Optimize this idToCredentialMap creation and updatedAvailableWalletCredentials mapping by doing it in a single loop instead of two separate loops
+
+      const idToCredentialMap: Record<string, VC> = {};
+      availableWalletCredentials.forEach(vc => {
+        idToCredentialMap[vc.vcMetadata.id] = vc;
+      });
 
       const updatedAvailableWalletCredentials: {
         format: string;
@@ -166,6 +176,12 @@ class OpenID4VP {
        *    "mvrc": {
        *      "allowMultipleCredentials": false,
        *      "failureReason": "no_matching_credentials_with_requested_credential_formats_found"
+       *    },
+       *    "id2" : {
+       *      "matchingCredentials" : [
+       *        "credentialId" : "cred1",
+       *        "matchingClaims" : [] // type ClaimsQuery
+       *      ]
        *    }
        *  },
        *  "success": false
@@ -177,15 +193,41 @@ class OpenID4VP {
         'result from getMatchingCredentials API call: ',
         JSON.stringify(result, null, 2),
       );
+      //TODO: In case of success being false - simply populate the matchingVCs as empty to avoid parsing over unused data
+      const updatedMatchingVCs: Record<string, MatchResult> = {};
+      Object.entries(result.queryMatches).forEach(
+        ([queryId, queryMatch]: [string, any]) => {
+          if (queryMatch && Array.isArray(queryMatch.matchingCredentials)) {
+            updatedMatchingVCs[queryId] = {
+              matchingVcs: queryMatch.matchingCredentials.map(
+                (matchedCredential: any) =>
+                  ({
+                    vc: idToCredentialMap[matchedCredential.credentialId],
+                    matchedClaims: matchedCredential.matchingClaims,
+                  } as VcWithMatchedClaims),
+              ),
+              allowMultipleCredentials:
+                queryMatch.allowMultipleCredentials === true,
+            };
+          } else {
+            // Optionally handle failure reason here
+          }
+        },
+      );
 
-      return {
-        // matchingVCs: result.queryMatches,
-        matchingVCs: {mvrc: availableWalletCredentials},
+      const resultantResult = {
+        matchingVCs: updatedMatchingVCs,
         success: result.success,
         requestedClaims: '',
         purpose: '',
         credentialSetOptions: result.credentialSets,
-      };
+      } as MatchingVCsResultForDcql;
+
+      console.log(
+        'DCQL flow - final result from getMatchingCredentials to be returned: ',
+        JSON.stringify(resultantResult, null, 2),
+      );
+      return resultantResult;
     }
   }
 
@@ -288,7 +330,7 @@ class OpenID4VP {
                 VCMetadata.fromVcMetadataString(
                   credential.vcMetadata,
                 ).getVcKey()
-              ],
+                ],
             ),
           };
         });
@@ -339,7 +381,7 @@ class OpenID4VP {
           credentialFormat,
           selectedDisclosuresByVc[
             VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey()
-          ],
+            ],
         );
         if (!selectedVcsData[inputDescriptorId]) {
           selectedVcsData[inputDescriptorId] = {};
@@ -414,17 +456,23 @@ function decodeDidJwk(didJwk: string) {
 function getVcsMatchingAuthRequest(
   vpRequest: object,
   availableWalletCredentials: VC[],
-) {
+): MatchingVCsResultForPresentationExchangeRequest {
   const vcs = availableWalletCredentials;
-  const matchingVCs: Record<string, any[]> = {};
+  const matchingVCs: Record<string, VC[]> = {};
   const requestedClaimsByVerifier = new Set<string>();
-  const presentationDefinition = vpRequest['presentation_definition'];
-  if (presentationDefinition) {
-    const inputDescriptors = presentationDefinition['input_descriptors'];
-    let hasFormatOrConstraints = false;
 
-    vcs.forEach(vc => {
-      inputDescriptors.forEach(inputDescriptor => {
+  const presentationDefinition = vpRequest['presentation_definition'];
+
+  const inputDescriptors = presentationDefinition['input_descriptors'];
+  let hasFormatOrConstraints = false;
+
+  vcs.forEach(vc => {
+    inputDescriptors.forEach(
+      (inputDescriptor: {
+        format: any;
+        constraints: { fields: undefined };
+        id: string | number;
+      }) => {
         const format = inputDescriptor.format ?? presentationDefinition.format;
         hasFormatOrConstraints =
           hasFormatOrConstraints ||
@@ -434,23 +482,27 @@ function getVcsMatchingAuthRequest(
         const areMatchingFormatAndProofType =
           areVCFormatAndProofTypeMatchingRequest(format, vc);
         if (areMatchingFormatAndProofType == false) {
-          inputDescriptors.forEach(inputDescriptor => {
-            if (inputDescriptor.constraints?.fields) {
-              inputDescriptor.constraints.fields.forEach(field => {
-                if (field.path) {
-                  field.path.forEach(path => {
-                    try {
-                      const pathArray = JSONPath.toPathArray(path);
-                      const claimName = pathArray[pathArray.length - 1];
-                      requestedClaimsByVerifier.add(claimName);
-                    } catch (error) {
-                      console.error('Error parsing path:', path, error);
+          inputDescriptors.forEach(
+            (inputDescriptor: { constraints: { fields: { path: any[] }[] } }) => {
+              if (inputDescriptor.constraints?.fields) {
+                inputDescriptor.constraints.fields.forEach(
+                  (field: { path: any[] }) => {
+                    if (field.path) {
+                      field.path.forEach(path => {
+                        try {
+                          const pathArray = JSONPath.toPathArray(path);
+                          const claimName = pathArray[pathArray.length - 1];
+                          requestedClaimsByVerifier.add(claimName);
+                        } catch (error) {
+                          console.error('Error parsing path:', path, error);
+                        }
+                      });
                     }
-                  });
-                }
-              });
-            }
-          });
+                  },
+                );
+              }
+            },
+          );
           return;
         }
         const isMatchingConstraints = isVCMatchingRequestConstraints(
@@ -474,42 +526,36 @@ function getVcsMatchingAuthRequest(
           }
           matchingVCs[inputDescriptor.id].push(vc);
         }
-      });
-    });
+      },
+    );
+  });
 
-    if (!hasFormatOrConstraints && inputDescriptors.length > 0) {
-      matchingVCs[inputDescriptors[0].id] = vcs;
-    }
-
-    if (Object.keys(matchingVCs).length === 0) {
-      // Error is only sent when there are no VCs matching the request
-      void OpenID4VP.sendErrorToVerifier(
-        OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
-        OVP_ERROR_CODE.NO_MATCHING_VCS,
-      );
-    }
-
-    return {
-      matchingVCs,
-      requestedClaims: Array.from(requestedClaimsByVerifier).join(','),
-      purpose: presentationDefinition.purpose ?? '',
-    };
-  } else {
-    // DCQL query
-    OpenID4VP.getMatchingCredentials(context.authenticationResponse, vcs)
-      .then((result: any) => {
-        console.log('result from getMatchingCredentials API call: ', result);
-      })
-      .catch(error => {
-        console.error('Error fetching matching credentials for DCQL:', error);
-      });
-
-    return {
-      matchingVCs: {mvrc: vcs},
-      requestedClaims: '',
-      purpose: '',
-    };
+  if (!hasFormatOrConstraints && inputDescriptors.length > 0) {
+    matchingVCs[inputDescriptors[0].id] = vcs;
   }
+
+  if (Object.keys(matchingVCs).length === 0) {
+    // Error is only sent when there are no VCs matching the request
+    // TODO: Handle this in OpenId4VPMachine
+    void OpenID4VP.sendErrorToVerifier(
+      OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
+      OVP_ERROR_CODE.NO_MATCHING_VCS,
+    );
+  }
+
+  const success = !(Object.keys(matchingVCs).length === 0);
+
+  // TODO: Handle the case of ||
+  //     Object.values(matchingVCs).every(
+  //       value => Array.isArray(value) && value.length === 0,
+  //     )
+
+  return {
+    success,
+    matchingVCs,
+    requestedClaims: Array.from(requestedClaimsByVerifier).join(','),
+    purpose: presentationDefinition.purpose ?? '',
+  };
 }
 
 function areVCFormatAndProofTypeMatchingRequest(

@@ -19,7 +19,7 @@ jest.mock('./SendVPScreenController', () => {
     purpose: '',
     isAuthorizationFlow: false,
     areAllVCsChecked: false,
-    inputDescriptorIdToSelectedVcKeys: {},
+    credentialRequestIdToSelectedVcKeys: {},
     getSelectedVCs: jest.fn(() => ({})),
     checkIfAnyVCHasImage: jest.fn(() => false),
     checkIfAllVCsHasImage: jest.fn(() => false),
@@ -362,7 +362,7 @@ describe('SendVPScreen', () => {
         desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
         desc2: [{vcMetadata: JSON.stringify({isPinned: true})}],
       },
-      inputDescriptorIdToSelectedVcKeys: {
+      credentialRequestIdToSelectedVcKeys: {
         desc1: ['key1'],
         desc2: ['key2'],
       },

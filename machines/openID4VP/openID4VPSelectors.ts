@@ -14,6 +14,10 @@ export function selectIsGetVCsSatisfyingAuthRequest(state: State) {
   return state.matches('getVCsSatisfyingAuthRequest');
 }
 
+export function selectMatchingVcsResult(state: State) {
+  return state.context.matchingVCsResult;
+}
+
 export function selectVCsMatchingAuthRequest(state: State) {
   return state.context.vcsMatchingAuthRequest;
 }

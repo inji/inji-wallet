@@ -1053,8 +1053,8 @@
   },
   "SendVPScreen": {
     "authorizationPurpose": "Select the requested card(s) to get verified and receive your new card from the trusted issuer.",
-    "consentShare": "I consent and share",
-    "requester": "Verification Entity",
+    "consentAndShare": "Consent and Share",
+    "requester": "Requested Cards",
     "cardsSelected": "cards selected",
     "cardSelected": "card selected",
     "unCheck": "Uncheck",
@@ -1259,16 +1259,22 @@
   "common": {
     "card": "card",
     "cards": "cards",
-    "cancel": "Cancel",
+    
     "goHome": "Home",
+    
     "accept": "Accept",
     "save": "Save",
     "ok": "OK",
+    
+    "cancel": "Cancel",
     "dismiss": "Dismiss",
-    "editLabel": "Edit {{label}}",
-    "tryAgain": "Try again",
     "goBack": "Go Back",
     "ignore": "Ignore",
+    "decline": "Decline",
+    
+    "tryAgain": "Try again",
+
+    "editLabel": "Edit {{label}}",
     "camera": {
       "errors": {
         "missingPermission": "This app uses the camera to scan the QR code of another device."

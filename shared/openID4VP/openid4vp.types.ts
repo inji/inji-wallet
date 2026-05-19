@@ -1,4 +1,4 @@
-import {VC} from "../../machines/VerifiableCredential/VCMetaMachine/vc";
+import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 
 export interface UnsignedVPToken {
   format: 'ldp_vc' | 'mso_mdoc' | 'vc_sd_jwt' | 'dc_sd_jwt';
@@ -11,10 +11,42 @@ export interface VPTokenSigningResult {
   signedData: string;
 }
 
-export interface MatchingVCsResult {
+export type MatchingVcsResult =
+  | MatchingVCsResultForDcql
+  | MatchingVCsResultForPresentationExchangeRequest;
+
+export interface MatchingVCsResultForPresentationExchangeRequest {
   matchingVCs: Record<string, VC[]>;
   success: boolean;
   purpose: string;
   requestedClaims: string;
-  credentialSetOptions: Record<string, any> | undefined;
+}
+
+export interface MatchingVCsResultForDcql {
+  matchingVCs: Record<string, MatchResult>;
+  success: boolean;
+  purpose: string;
+  requestedClaims: string;
+  credentialSetOptions: CredentialSetOption[];
+}
+
+export interface CredentialSetOption {
+  options: Array<Array<string>>;
+  required: boolean;
+}
+
+export interface MatchResult {
+  matchingVcs: VcWithMatchedClaims[];
+  allowMultipleCredentials: boolean;
+}
+
+export interface VcWithMatchedClaims {
+  vc: VC;
+  matchedClaims: Claim[] | undefined;
+}
+
+export interface Claim {
+  id: string | undefined;
+  path: Array<any>;
+  values: Array<any> | undefined;
 }

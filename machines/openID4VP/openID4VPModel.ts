@@ -3,6 +3,7 @@ import {AppServices} from '../../shared/GlobalContext';
 import {VC} from '../VerifiableCredential/VCMetaMachine/vc';
 import {KeyTypes} from '../../shared/cryptoutil/KeyTypes';
 import {VPActivityLogType} from '../../components/VPShareActivityLogEvent';
+import {MatchingVcsResult} from '../../shared/openID4VP/openid4vp.types';
 
 const openID4VPEvents = {
   AUTHENTICATE: (
@@ -68,6 +69,7 @@ export const openID4VPModel = createModel(
     presentationRequest: {} as object,
     authenticationResponse: {},
     vcsMatchingAuthRequest: {} as Record<string, VC[]>,
+    matchingVCsResult: {} as MatchingVcsResult,
     checkedAll: false as boolean,
     selectedVCs: {} as Record<string, VC[]>,
     selectedDisclosuresByVc: {} as Record<string, string[]>,
