@@ -1,5 +1,3 @@
-xcode_select '/Applications/Xcode_26.0.app'
-
 default_platform(:ios)
 APP_STORE_CONNECT_TEAM_ID = ENV["APP_STORE_CONNECT_TEAM_ID"]
 APPLE_ISSUER_ID = ENV["APPLE_ISSUER_ID"]
