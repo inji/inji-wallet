@@ -16,9 +16,9 @@ interface MatchingVcListProps {
 }
 
 export const MatchingVcList: React.FC<MatchingVcListProps> = ({
-  controller,
-  onDisclosureChange,
-}) => {
+                                                                controller,
+                                                                onDisclosureChange,
+                                                              }) => {
   const {t} = useTranslation('SendVPScreen');
 
   const getVcKey = (vcData: VC) => {
@@ -28,9 +28,9 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
   const noOfCardsSelected = controller.areAllVCsChecked
     ? Object.values(controller.vcsMatchingAuthRequest).length
     : Object.values(controller.credentialRequestIdToSelectedVcKeys).reduce(
-        (vcCount, arr) => vcCount + arr.length,
-        0,
-      );
+      (vcCount, arr) => vcCount + arr.size,
+      0,
+    );
 
   const cardsSelectedText =
     noOfCardsSelected === 1
@@ -108,11 +108,11 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
                 selected={
                   controller.areAllVCsChecked ||
                   (Object.keys(
-                    controller.credentialRequestIdToSelectedVcKeys,
-                  ).includes(inputDescriptorId) &&
+                      controller.credentialRequestIdToSelectedVcKeys,
+                    ).includes(inputDescriptorId) &&
                     controller.credentialRequestIdToSelectedVcKeys[
                       inputDescriptorId
-                    ].includes(getVcKey(vcData)))
+                      ].has(getVcKey(vcData)))
                 }
                 selectionType={"multiple"}
                 flow={VCItemContainerFlowType.VP_SHARE}

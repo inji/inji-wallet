@@ -11,8 +11,9 @@ import {KebabPopUp} from '../../KebabPopUp';
 import {Credential} from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {Column, Row, Text} from '../../ui';
 import {Theme} from '../../ui/styleUtils';
-import {CheckBox, Icon} from 'react-native-elements';
+import {Icon} from 'react-native-elements';
 import {SvgImage} from '../../ui/svg';
+import {Checkbox} from '../../ui/checkbox/Checkbox';
 import {VcItemContainerProfileImage} from '../../VcItemContainerProfileImage';
 import {
   isVCLoaded,
@@ -119,17 +120,10 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
           style={{justifyContent: 'space-between', marginBottom: -10}}>
           <Row crossAlign="center">
             {node.__self && (
-              <CheckBox
+              <Checkbox
                 size={22}
+                selectionType={"multiple"}
                 checked={isChecked}
-                checkedIcon={SvgImage.selectedCheckBox()}
-                uncheckedIcon={
-                  <Icon
-                    name="check-box-outline-blank"
-                    color={Theme.Colors.uncheckedIcon}
-                    size={22}
-                  />
-                }
                 onPress={() => handleFieldToggle(fullPath)}
               />
             )}
@@ -199,36 +193,13 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   };
 
   const wellknownDisplayProperty = new Display(wellknown);
-  const vcSelectableButton =
-    selectable &&
-    (flow === VCItemContainerFlowType.VP_SHARE ? (
-      <CheckBox
-        checked={selected}
-        checkedIcon={SvgImage.selectedCheckBox()}
-        uncheckedIcon={
-          <Icon
-            name="check-box-outline-blank"
-            color={Theme.Colors.uncheckedIcon}
-            size={22}
-          />
-        }
-        onPress={() => onPress()}
-      />
-    ) : (
-      <CheckBox
-        checked={selected}
-        checkedIcon={
-          <Icon name="check-circle" type="material" color={Theme.Colors.Icon} />
-        }
-        uncheckedIcon={
-          <Icon
-            name="radio-button-unchecked"
-            color={Theme.Colors.uncheckedIcon}
-          />
-        }
-        onPress={() => onPress()}
-      />
-    ));
+  const vcSelectableButton = selectable && (
+    <Checkbox
+      selectionType={selectionType}
+      checked={selected}
+      onPress={() => onPress()}
+    />
+  );
   const issuerLogo = verifiableCredentialData.issuerLogo;
   const faceImage = verifiableCredentialData.face;
   const {start} = useCopilot();
