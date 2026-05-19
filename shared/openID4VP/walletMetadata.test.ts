@@ -15,10 +15,16 @@ describe('shared/openID4VP/walletMetadata', () => {
 
   it('should support ldp_vc format', () => {
     expect(walletMetadata.vp_formats_supported.ldp_vc).toBeDefined();
+    expect(
+      walletMetadata.vp_formats_supported.ldp_vc.alg_values_supported,
+    ).toContain('Ed25519Signature2018');
   });
 
   it('should support mso_mdoc format', () => {
     expect(walletMetadata.vp_formats_supported.mso_mdoc).toBeDefined();
+    expect(
+      walletMetadata.vp_formats_supported.mso_mdoc.alg_values_supported,
+    ).toContain('ES256');
   });
 
   it('should support vc+sd-jwt format', () => {

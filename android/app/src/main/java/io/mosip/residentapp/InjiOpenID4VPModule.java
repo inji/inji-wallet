@@ -66,6 +66,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     private static final String MODULE_NAME = "InjiOpenID4VP";
 
     private OpenID4VP openID4VP;
+    private WalletConfig walletConfig;
     private Gson gson;
     private Gson gsonCamelCase;
 
@@ -85,6 +86,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         Log.d(TAG, "Initializing InjiOpenID4VPModule with " + appId);
 
         WalletConfig walletConfig = parseWalletConfig(walletConfigMap);
+        this.walletConfig = walletConfig;
 
         openID4VP = new OpenID4VP(appId, walletConfig);
         gson = new GsonBuilder()
@@ -98,15 +100,12 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void authenticateVerifier(String urlEncodedAuthorizationRequest,
-            ReadableArray trustedVerifiers,
             Boolean shouldValidateClient,
             Promise promise) {
         try {
-            List<Verifier> verifierList = parseVerifiers(trustedVerifiers);
-
             AuthorizationRequest authRequest = openID4VP.authenticateVerifier(
                     urlEncodedAuthorizationRequest,
-                    verifierList,
+                    walletConfig.getTrustedVerifiers(),
                     shouldValidateClient);
 
             String authRequestJson = gson.toJson(authRequest);
