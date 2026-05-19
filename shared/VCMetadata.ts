@@ -38,6 +38,7 @@ export class VCMetadata {
   credentialType: string = '';
   issuerHost: string = '';
   lastKnownStatusTimestamp?: string = '';
+  vcKey = '';
 
   constructor({
     idType = '',
@@ -123,9 +124,13 @@ export class VCMetadata {
   // Used for mmkv storage purposes and as a key for components and vc maps
   // Update VC_ITEM_STORE_KEY_REGEX in case of changes in vckey
   getVcKey(): string {
-    return this.timestamp !== ''
-      ? `${VC_KEY_PREFIX}_${this.timestamp}_${this.id}`
-      : `${VC_KEY_PREFIX}_${this.id}`;
+    if (this.vcKey === '') {
+      this.vcKey = this.timestamp !== ''
+        ? `${VC_KEY_PREFIX}_${this.timestamp}_${this.id}`
+        : `${VC_KEY_PREFIX}_${this.id}`;
+    }
+
+    return this.vcKey;
   }
 
   equals(other: VCMetadata): boolean {

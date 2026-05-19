@@ -21,6 +21,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
   vcMetadata,
   selectable,
   selected,
+  selectionType = "single",
   onPress,
   isDownloading,
   isPinned,
@@ -125,6 +126,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
       wellknown={wellknown}
       selectable={selectable}
       selected={selected}
+      selectionType={selectionType}
       service={service}
       isPinned={isPinned}
       onPress={() => onPress(service)}
@@ -182,6 +184,7 @@ export interface VCItemProps {
   margin?: string;
   selectable?: boolean;
   selected?: boolean;
+  selectionType?: 'single' | 'multiple';
   onPress: (vcRef?: ActorRefFrom<typeof VCItemMachine>) => void;
   onShow?: (vcRef?: ActorRefFrom<typeof VCItemMachine>) => void;
   isDownloading?: boolean;

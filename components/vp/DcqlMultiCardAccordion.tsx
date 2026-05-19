@@ -1,85 +1,94 @@
 import React, {useState} from 'react';
 import {Pressable, View} from 'react-native';
 import {CheckBox, Icon} from 'react-native-elements';
-import {Column, Row, Text} from '../ui';
+import {Row, Text} from '../ui';
 import {Theme} from '../ui/styleUtils';
 import {VcItemContainer} from '../VC/VcItemContainer';
 import {VCItemContainerFlowType} from '../../shared/Utils';
-import {VcWithMatchedClaims} from '../../shared/openID4VP/openid4vp.types';
-import {VCMetadata} from '../../shared/VCMetadata';
+import {MatchResult} from "../../shared/openID4VP/openid4vp.types";
+import {VC} from "../../machines/VerifiableCredential/VCMetaMachine/vc";
+import {VCMetadata} from "../../shared/VCMetadata";
 
 interface DcqlMultiCardAccordionProps {
-  vcDataList: VcWithMatchedClaims[];
   credentialQueryIds: string[];
-  isSelected: boolean;
+  matchingVCsResult: Record<string, MatchResult>;
+  handleVcSelected: (vcKey: string, credentialQueryId: string) => void;
+  isOptionSelected: boolean;
+  isVcSelected: (credentialQueryId: string, vcKey: string) => boolean;
   onSelectAll: () => void;
   controller: any;
   onDisclosureChange: (vcKey: string, disclosures: string[]) => void;
 }
 
 export const DcqlMultiCardAccordion: React.FC<DcqlMultiCardAccordionProps> = ({
-  vcDataList,
-  credentialQueryIds,
-  isSelected,
-  onSelectAll,
-  controller,
-  onDisclosureChange,
-}) => {
+                                                                                matchingVCsResult,
+                                                                                credentialQueryIds,
+                                                                                isOptionSelected,
+                                                                                isVcSelected,
+                                                                                onSelectAll,
+                                                                                handleVcSelected,
+                                                                                onDisclosureChange,
+                                                                              }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const getVcKey = (vcData: any): string =>
-    VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey();
+  const getVcKey = (vcData: VC): string => VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey();
 
   return (
     <View style={Theme.DcqlStyles.accordionContainer}>
-      <Row style={Theme.DcqlStyles.accordionHeader}>
-        <CheckBox
-          checked={isSelected}
-          checkedIcon={
-            <Icon
-              name="check-circle"
-              type="material"
-              color={Theme.Colors.Icon}
-            />
-          }
-          uncheckedIcon={
-            <Icon
-              name="radio-button-unchecked"
-              color={Theme.Colors.uncheckedIcon}
-            />
-          }
-          onPress={onSelectAll}
-          containerStyle={Theme.DcqlStyles.accordionCheckboxContainer}
-        />
-        <Row style={Theme.DcqlStyles.accordionTitleRow}>
-          <Text style={Theme.DcqlStyles.accordionTitle}>Multiple Cards</Text>
-          <View style={Theme.DcqlStyles.bothRequiredBadge}>
-            <Text style={Theme.DcqlStyles.bothRequiredText}>BOTH REQUIRED</Text>
-          </View>
-        </Row>
-        <Pressable
-          onPress={() => setIsExpanded(prev => !prev)}
-          style={Theme.DcqlStyles.accordionExpandButton}>
+      <Pressable
+        onPress={() => setIsExpanded(prev => !prev)}
+        style={Theme.DcqlStyles.accordionExpandButton}>
+        <Row style={Theme.DcqlStyles.accordionHeader}>
+          <Row style={Theme.DcqlStyles.accordionTitleRow}>
+            <Text style={Theme.DcqlStyles.accordionTitle}>Multiple Cards</Text>
+            <View style={Theme.DcqlStyles.bothRequiredBadge}>
+              <Text style={Theme.DcqlStyles.bothRequiredText}>ALL REQUIRED</Text>
+            </View>
+          </Row>
+          <CheckBox
+            checked={isOptionSelected}
+            checkedIcon={
+              <Icon
+                name="check-circle"
+                type="material"
+                color={Theme.Colors.Icon}
+              />
+            }
+            uncheckedIcon={
+              <Icon
+                name="radio-button-unchecked"
+                color={Theme.Colors.uncheckedIcon}
+              />
+            }
+            onPress={onSelectAll}
+            containerStyle={Theme.DcqlStyles.accordionCheckboxContainer}
+          />
           <Icon
             name={isExpanded ? 'expand-less' : 'expand-more'}
             color={Theme.Colors.Icon}
           />
-        </Pressable>
-      </Row>
+        </Row>
+      </Pressable>
 
-      {isExpanded &&
-        vcDataList.map((vcWithClaims, idx) => {
-          const credentialQueryId = credentialQueryIds[idx];
-          const vcData = vcWithClaims.vc;
+      {isExpanded && (
+        // TODO: Implement the Option handling for multiple VCs matching one credential query
+        credentialQueryIds.map((credentialQueryId) => {
+          const matchResult = matchingVCsResult[credentialQueryId];
+          if (!matchResult || matchResult.matchingVcs.length === 0)
+            return null;
+          const vcData = matchResult.matchingVcs[0].vc;
           const vcKey = getVcKey(vcData);
+
           return (
             <VcItemContainer
               key={`${vcKey}-${credentialQueryId}`}
               vcMetadata={vcData.vcMetadata}
               margin="0 2 8 2"
-              onPress={controller.SELECT_VC_ITEM(vcKey, credentialQueryId)}
+              onPress={() => {
+                return handleVcSelected(vcKey, credentialQueryId);
+              }}
               selectable
-              selected={isSelected}
+              selected={isVcSelected(credentialQueryId, vcKey)}
               flow={VCItemContainerFlowType.VP_SHARE}
               isPinned={vcData.vcMetadata.isPinned}
               onDisclosuresChange={disclosures => {
@@ -87,7 +96,8 @@ export const DcqlMultiCardAccordion: React.FC<DcqlMultiCardAccordionProps> = ({
               }}
             />
           );
-        })}
+        })
+      )}
     </View>
   );
 };

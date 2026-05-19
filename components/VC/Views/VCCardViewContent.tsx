@@ -39,6 +39,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   wellknown,
   selectable,
   selected,
+  selectionType = "single",
   service,
   onPress,
   flow,
@@ -411,6 +412,7 @@ export interface VCItemContentProps {
   generatedOn: string;
   selectable: boolean;
   selected: boolean;
+  selectionType?: "single" | "multiple"
   isPinned?: boolean;
   service: any;
   onPress: () => void;

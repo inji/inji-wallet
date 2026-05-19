@@ -114,6 +114,7 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
                       inputDescriptorId
                     ].includes(getVcKey(vcData)))
                 }
+                selectionType={"multiple"}
                 flow={VCItemContainerFlowType.VP_SHARE}
                 isPinned={vcData.vcMetadata.isPinned}
                 onDisclosuresChange={disclosures => {

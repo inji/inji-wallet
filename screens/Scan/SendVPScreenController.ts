@@ -289,7 +289,7 @@ export function useSendVPScreen(props) {
     isDcqlFlow:
       typeof matchingVcsResult === 'object' &&
       (matchingVcsResult as MatchingVCsResultForDcql).credentialSetOptions !==
-        undefined,
+      undefined,
     FACE_VERIFICATION_CONSENT: (isDoNotAskAgainChecked: boolean) =>
       openID4VPService.send(
         OpenID4VPEvents.FACE_VERIFICATION_CONSENT(isDoNotAskAgainChecked),
@@ -311,110 +311,150 @@ export function useSendVPScreen(props) {
     },
     DESELECT_VC_ITEM:
       (vcKey: string, credentialRequestId: string) =>
-      (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
-        const isVCAlreadySelected =
-          credentialRequestIdToSelectedVcKeys[credentialRequestId]?.has(vcKey);
-        if (isVCAlreadySelected) {
-          const credentialRequestIdToSelectedVcKeysClone = {
-            ...credentialRequestIdToSelectedVcKeys,
-          };
-          credentialRequestIdToSelectedVcKeysClone[credentialRequestId].delete(
-            vcKey,
-          );
-          setCredentialRequestIdToSelectedVcKeys(
-            credentialRequestIdToSelectedVcKeysClone,
-          );
-        }
-      },
-
+        (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
+          const isVCAlreadySelected =
+            credentialRequestIdToSelectedVcKeys[credentialRequestId]?.has(vcKey);
+          if (isVCAlreadySelected) {
+            const credentialRequestIdToSelectedVcKeysClone = {
+              ...credentialRequestIdToSelectedVcKeys,
+            };
+            credentialRequestIdToSelectedVcKeysClone[credentialRequestId].delete(
+              vcKey,
+            );
+            setCredentialRequestIdToSelectedVcKeys(
+              credentialRequestIdToSelectedVcKeysClone,
+            );
+          }
+        },
+// Toggle action is not used to explicitly avoid checking if the data is selected or not already
     DESELECT_VC_ITEMS:
       (vcKey: string[], credentialRequestId: string) =>
-      (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
-        console.log(
-          'Deselecting VC items for vcKeys:',
-          vcKey,
-          'and credentialRequestId:',
-          credentialRequestId,
-        );
-        if (credentialRequestIdToSelectedVcKeys[credentialRequestId]) {
+        (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
+          console.log(
+            'Deselecting VC items for vcKeys:',
+            vcKey,
+            'and credentialRequestId:',
+            credentialRequestId,
+          );
+          if (credentialRequestIdToSelectedVcKeys[credentialRequestId]) {
+            const credentialRequestIdToSelectedVcKeysClone = {
+              ...credentialRequestIdToSelectedVcKeys,
+            };
+            vcKey.forEach(key => {
+              credentialRequestIdToSelectedVcKeysClone[
+                credentialRequestId
+                ].delete(key);
+            });
+            if (
+              credentialRequestIdToSelectedVcKeysClone[credentialRequestId]
+                .size === 0
+            ) {
+              delete credentialRequestIdToSelectedVcKeysClone[
+                credentialRequestId
+                ];
+            }
+            setCredentialRequestIdToSelectedVcKeys(
+              credentialRequestIdToSelectedVcKeysClone,
+            );
+          }
+        },
+
+    //TODO: Should this be renamed to Toggle instead??
+    SELECT_VC_ITEM:
+      (vcKey: string, credentialRequestId: string) =>
+        (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
+          console.log(
+            'Toggling selection for vcKey:',
+            vcKey,
+            'and credentialRequestId:',
+            credentialRequestId,
+          );
+          console.log("Before update credentialRequestIdToSelectedVcKeys:", credentialRequestIdToSelectedVcKeys);
           const credentialRequestIdToSelectedVcKeysClone = {
             ...credentialRequestIdToSelectedVcKeys,
           };
-          vcKey.forEach(key => {
-            credentialRequestIdToSelectedVcKeysClone[
-              credentialRequestId
-            ].delete(key);
-          });
-          if (
-            credentialRequestIdToSelectedVcKeysClone[credentialRequestId]
-              .size === 0
-          ) {
-            delete credentialRequestIdToSelectedVcKeysClone[
-              credentialRequestId
-            ];
-          }
-          setCredentialRequestIdToSelectedVcKeys(
-            credentialRequestIdToSelectedVcKeysClone,
-          );
-        }
-      },
 
-    SELECT_VC_ITEM:
-      (vcKey: string, credentialRequestId: string) =>
-      (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
-        console.log(
-          'Toggling selection for vcKey:',
-          vcKey,
-          'and credentialRequestId:',
-          credentialRequestId,
-        );
-        const credentialRequestIdToSelectedVcKeysClone = {
-          ...credentialRequestIdToSelectedVcKeys,
-        };
-
-        const isVCAlreadySelected =
-          !credentialRequestIdToSelectedVcKeys[credentialRequestId]?.has(vcKey);
-        if (isVCAlreadySelected) {
-          if (credentialRequestIdToSelectedVcKeysClone[credentialRequestId]) {
-            if (
-              !credentialRequestIdToSelectedVcKeysClone[
-                credentialRequestId
-              ].has(vcKey)
-            ) {
+          const isVCAlreadySelected =
+            !credentialRequestIdToSelectedVcKeys[credentialRequestId]?.has(vcKey);
+          if (isVCAlreadySelected) {
+            if (credentialRequestIdToSelectedVcKeysClone[credentialRequestId]) {
+              if (
+                !credentialRequestIdToSelectedVcKeysClone[
+                  credentialRequestId
+                  ].has(vcKey)
+              ) {
+                credentialRequestIdToSelectedVcKeysClone[credentialRequestId].add(
+                  vcKey,
+                );
+              }
+            } else {
+              credentialRequestIdToSelectedVcKeysClone[credentialRequestId] =
+                new Set<string>();
               credentialRequestIdToSelectedVcKeysClone[credentialRequestId].add(
                 vcKey,
               );
             }
           } else {
-            credentialRequestIdToSelectedVcKeysClone[credentialRequestId] =
-              new Set<string>();
-            credentialRequestIdToSelectedVcKeysClone[credentialRequestId].add(
-              vcKey,
-            );
-          }
-        } else {
-          // remove vc key from the mapping
-          if (credentialRequestIdToSelectedVcKeysClone[credentialRequestId]) {
-            credentialRequestIdToSelectedVcKeysClone[
-              credentialRequestId
-            ].delete(vcKey);
-            if (
-              credentialRequestIdToSelectedVcKeysClone[credentialRequestId]
-                .size === 0
-            ) {
-              // if the array is empty, remove the input descriptor id
-              delete credentialRequestIdToSelectedVcKeysClone[
+            // remove vc key from the mapping
+            if (credentialRequestIdToSelectedVcKeysClone[credentialRequestId]) {
+              credentialRequestIdToSelectedVcKeysClone[
                 credentialRequestId
-              ];
+                ].delete(vcKey);
+              if (
+                credentialRequestIdToSelectedVcKeysClone[credentialRequestId]
+                  .size === 0
+              ) {
+                // if the array is empty, remove the input descriptor id
+                delete credentialRequestIdToSelectedVcKeysClone[
+                  credentialRequestId
+                  ];
+              }
             }
           }
-        }
-        setCredentialRequestIdToSelectedVcKeys(
-          credentialRequestIdToSelectedVcKeysClone,
-        );
+          setCredentialRequestIdToSelectedVcKeys(
+            credentialRequestIdToSelectedVcKeysClone,
+          );
 
-        // const {serviceRefs, wellknownResponse, ...vcData} = vcRef.getSnapshot().context;
-      },
+          console.log("Updated credentialRequestIdToSelectedVcKeys:", credentialRequestIdToSelectedVcKeysClone);
+
+          // const {serviceRefs, wellknownResponse, ...vcData} = vcRef.getSnapshot().context;
+        },
+
+    TOGGLE_VC_ITEMS:
+      (selectedCredentialRequestIdToVCKeys: Record<string, Set<string>>) =>
+        (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
+          console.log(
+            'Toggling selection for vcKey:',
+            selectedCredentialRequestIdToVCKeys
+          );
+          const credentialRequestIdToSelectedVcKeysClone = {
+            ...credentialRequestIdToSelectedVcKeys,
+          };
+
+          Object.entries(selectedCredentialRequestIdToVCKeys).forEach(
+            ([credentialRequestId, vcKeys]) => {
+              vcKeys.forEach(vcKey => {
+                const isVCAlreadySelected = credentialRequestIdToSelectedVcKeys[credentialRequestId]?.has(
+                    vcKey,
+                  );
+                if (isVCAlreadySelected) {
+                  // remove vc key from the mapping
+                  credentialRequestIdToSelectedVcKeysClone[credentialRequestId].delete(vcKey)
+                } else {
+                  // add vc key to the mapping
+                  (credentialRequestIdToSelectedVcKeysClone[credentialRequestId] ??= new Set<string>()).add(vcKey);
+                }
+              });
+            });
+
+          setCredentialRequestIdToSelectedVcKeys(
+            credentialRequestIdToSelectedVcKeysClone,
+          );
+
+          console.log("Updated credentialRequestIdToSelectedVcKeys:", credentialRequestIdToSelectedVcKeysClone);
+
+          // const {serviceRefs, wellknownResponse, ...vcData} = vcRef.getSnapshot().context;
+        },
 
     UNCHECK_ALL: () => {
       setCredentialRequestIdToSelectedVcKeys({});
@@ -428,7 +468,7 @@ export function useSendVPScreen(props) {
       Object.entries(credentialRequestIdToSelectedVcKeys).map(
         ([requestId, vcs]) => {
           updatedInputDescriptorToCredentialsMapping[requestId] = [];
-          vcs.forEach((vcData: {vcMetadata: string | object}) => {
+          vcs.forEach((vcData: { vcMetadata: string | object }) => {
             const vcKey: string = VCMetadata.fromVcMetadataString(
               vcData.vcMetadata,
             ).getVcKey();
