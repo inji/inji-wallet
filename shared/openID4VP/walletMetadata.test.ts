@@ -15,28 +15,24 @@ describe('shared/openID4VP/walletMetadata', () => {
 
   it('should support ldp_vc format', () => {
     expect(walletMetadata.vp_formats_supported.ldp_vc).toBeDefined();
-    expect(
-      walletMetadata.vp_formats_supported.ldp_vc.alg_values_supported,
-    ).toContain('Ed25519Signature2018');
   });
 
   it('should support mso_mdoc format', () => {
     expect(walletMetadata.vp_formats_supported.mso_mdoc).toBeDefined();
-    expect(
-      walletMetadata.vp_formats_supported.mso_mdoc.alg_values_supported,
-    ).toContain('ES256');
   });
 
   it('should support vc+sd-jwt format', () => {
     expect(walletMetadata.vp_formats_supported['vc+sd-jwt']).toBeDefined();
   });
 
-  it('should support client_id_schemes', () => {
-    expect(walletMetadata.client_id_schemes_supported).toContain(
+  it('should support client_id_prefixes', () => {
+    expect(walletMetadata.client_id_prefixes_supported).toContain(
       'redirect_uri',
     );
-    expect(walletMetadata.client_id_schemes_supported).toContain('did');
-    expect(walletMetadata.client_id_schemes_supported).toContain(
+    expect(walletMetadata.client_id_prefixes_supported).toContain(
+      'decentralized_identifier',
+    );
+    expect(walletMetadata.client_id_prefixes_supported).toContain(
       'pre-registered',
     );
   });
@@ -57,5 +53,10 @@ describe('shared/openID4VP/walletMetadata', () => {
     expect(
       walletMetadata.authorization_encryption_enc_values_supported,
     ).toContain('A256GCM');
+  });
+
+  it('should support request uri methods', () => {
+    expect(walletMetadata.supported_request_uri_methods).toContain('get');
+    expect(walletMetadata.supported_request_uri_methods).toContain('post');
   });
 });

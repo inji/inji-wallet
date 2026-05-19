@@ -1,7 +1,14 @@
 import {NativeEventEmitter, NativeModules} from 'react-native';
 import {__AppId} from '../GlobalVariables';
-import {SelectedCredentialsForVPSharing, VC,} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {getWalletConfig, getWalletMetadata, isClientValidationRequired, jsonLdCanonicalize,} from './OpenID4VPHelper';
+import {
+  SelectedCredentialsForVPSharing,
+  VC,
+} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {
+  getWalletConfig,
+  isClientValidationRequired,
+  jsonLdCanonicalize,
+} from './OpenID4VPHelper';
 import {jsonLdExpand, parseJSON} from '../Utils';
 import {VCFormat} from '../VCFormat';
 import {VCMetadata} from '../VCMetadata';
@@ -11,10 +18,9 @@ import {
   getMdocAuthenticationAlorithm,
 } from '../../components/VC/common/VCUtils';
 import {isAndroid, OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../constants';
-import {CACHED_API} from "../api";
-import {defaultWalletConfig} from "./WalletConfig";
-import {MatchingVCsResult} from "./openid4vp.types";
-import {walletMetadata} from "./walletMetadata";
+import {CACHED_API} from '../api';
+import {defaultWalletConfig} from './WalletConfig';
+import {MatchingVCsResult} from './openid4vp.types';
 
 export const OpenID4VP_Proof_Sign_Algo = 'EdDSA';
 const emitter = new NativeEventEmitter(NativeModules.InjiOpenID4VP);
@@ -24,8 +30,8 @@ class OpenID4VP {
   private InjiOpenID4VP = NativeModules.InjiOpenID4VP;
 
   private constructor(walletConfig: Record<string, any>) {
-    if(isAndroid()){
-      this.InjiOpenID4VP.initSdk(__AppId.getValue(), walletMetadata);
+    if (isAndroid()) {
+      this.InjiOpenID4VP.initSdk(__AppId.getValue(), walletConfig);
     } else {
       this.addJsonLdCanonicalizerCallback();
       this.InjiOpenID4VP.initSdk(__AppId.getValue(), walletConfig);
@@ -43,13 +49,16 @@ class OpenID4VP {
         .catch(error => {
           //TODO: abort the canonicalizer and notify native about the failure so that it can handle the error gracefully
           console.error('Error during JSON-LD canonicalization: ', error);
-          this.InjiOpenID4VP.notifyCanonicalizationFailureFromJS("server_error", "An error occurred during JSON-LD canonicalization");
+          this.InjiOpenID4VP.notifyCanonicalizationFailureFromJS(
+            'server_error',
+            'An error occurred during JSON-LD canonicalization',
+          );
         });
     });
   };
 
   private addJsonLdExpanderCallback = () => {
-    emitter.addListener('onJsonLdExpand', ({data}: { data: any }) => {
+    emitter.addListener('onJsonLdExpand', ({data}: {data: any}) => {
       jsonLdExpand(data)
         .then(result => {
           console.log('Expansion result sent to native: ', result);
@@ -64,29 +73,27 @@ class OpenID4VP {
 
   private static async getInstance(): Promise<OpenID4VP> {
     if (!OpenID4VP.instance) {
-      if(isAndroid()){
-        const walletMetadataConfig =
-          (await getWalletMetadata()) || walletMetadata;
-        OpenID4VP.instance = new OpenID4VP(walletMetadataConfig);
-      } else {
-        const walletConfig: Record<string, any> = (await getWalletConfig()) || defaultWalletConfig;
-        try {
-          const trustedVerifiersResponse = await CACHED_API.fetchTrustedVerifiersList();
-          walletConfig["trusted_verifiers"] = trustedVerifiersResponse.data.response.verifiers;
-        } catch (e) {
-          console.warn("Error fetching wallet metadata, falling back to default config: ", e);
-          walletConfig["trusted_verifiers"] = [];
-        }
-        OpenID4VP.instance = new OpenID4VP(walletConfig);
+      const walletConfig: Record<string, any> =
+        (await getWalletConfig()) || defaultWalletConfig;
+      try {
+        const trustedVerifiersResponse =
+          await CACHED_API.fetchTrustedVerifiersList();
+        walletConfig['trusted_verifiers'] =
+          trustedVerifiersResponse.data.response.verifiers;
+      } catch (e) {
+        console.warn(
+          'Error fetching wallet config, falling back to default: ',
+          e,
+        );
+        walletConfig['trusted_verifiers'] = [];
       }
+      OpenID4VP.instance = new OpenID4VP(walletConfig);
     }
 
     return OpenID4VP.instance;
   }
 
-  static async authenticateVerifier(
-    urlEncodedAuthorizationRequest: string,
-  ) {
+  static async authenticateVerifier(urlEncodedAuthorizationRequest: string) {
     const shouldValidateClient = await isClientValidationRequired();
     const openID4VP = await OpenID4VP.getInstance();
 
@@ -101,7 +108,7 @@ class OpenID4VP {
   static async getMatchingCredentials(
     vpRequest: object,
     availableWalletCredentials: VC[],
-  ) : Promise<MatchingVCsResult> {
+  ): Promise<MatchingVCsResult> {
     /**
      * success: boolean,
      * matchingVcs: {} // credential query id or input descriptor id mapped to array of matching vcs for that query
@@ -110,17 +117,21 @@ class OpenID4VP {
      */
     const presentationDefinition = vpRequest['presentation_definition'];
     if (presentationDefinition) {
-      const result = getVcsMatchingAuthRequest(vpRequest, availableWalletCredentials);
-      const success =  (Object.keys(result.matchingVCs).length === 0 ||
+      const result = getVcsMatchingAuthRequest(
+        vpRequest,
+        availableWalletCredentials,
+      );
+      const success =
+        Object.keys(result.matchingVCs).length === 0 ||
         Object.values(result.matchingVCs).every(
           value => Array.isArray(value) && value.length === 0,
-        ))
+        );
       return {
         matchingVCs: result.matchingVCs,
         requestedClaims: result.requestedClaims,
         purpose: result.purpose,
         success: success,
-        credentialSetOptions: undefined
+        credentialSetOptions: undefined,
       };
     } else {
       const openID4VP = await OpenID4VP.getInstance();
@@ -173,7 +184,7 @@ class OpenID4VP {
         success: result.success,
         requestedClaims: '',
         purpose: '',
-        credentialSetOptions: result.credentialSets
+        credentialSetOptions: result.credentialSets,
       };
     }
   }
@@ -277,7 +288,7 @@ class OpenID4VP {
                 VCMetadata.fromVcMetadataString(
                   credential.vcMetadata,
                 ).getVcKey()
-                ],
+              ],
             ),
           };
         });
@@ -328,7 +339,7 @@ class OpenID4VP {
           credentialFormat,
           selectedDisclosuresByVc[
             VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey()
-            ],
+          ],
         );
         if (!selectedVcsData[inputDescriptorId]) {
           selectedVcsData[inputDescriptorId] = {};

@@ -669,4 +669,6 @@ fileignoreconfig:
   checksum: 45b35c6fe899aa7c7f1c76dfea43e76acd939c1752bfa94b9539d2a56c721647
 - filename: components/Passcode.test.tsx
   checksum: def7f8defeedf75a71425be27f4dcb77511435a39fc367f313c0213f273fadb5
+- filename: android/app/src/main/java/io/mosip/residentapp/InjiOpenID4VPModule.java
+  checksum: 49c0ea56569846614dbb934b9da4b61257ecb04869af0e89e4b7275ba10b5873
   version: "1.0"

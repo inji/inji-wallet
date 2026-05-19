@@ -40,7 +40,8 @@ import io.mosip.openID4VP.authorizationRequest.MsoMdocVcFormatSupported;
 import io.mosip.openID4VP.authorizationRequest.SdJwtVcFormatSupported;
 import io.mosip.openID4VP.authorizationRequest.VPFormatSupported;
 import io.mosip.openID4VP.authorizationRequest.Verifier;
-import io.mosip.openID4VP.authorizationRequest.WalletMetadata;
+import io.mosip.openID4VP.authorizationRequest.WalletConfig;
+import io.mosip.openID4VP.authorizationRequest.WalletMetadataDefaultsKt;
 import io.mosip.openID4VP.verifier.VerifierResponse;
 import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
@@ -52,6 +53,7 @@ import io.mosip.openID4VP.constants.FormatType;
 import io.mosip.openID4VP.constants.KeyManagementAlgorithm;
 import io.mosip.openID4VP.constants.ProofType;
 import io.mosip.openID4VP.constants.RequestSigningAlgorithm;
+import io.mosip.openID4VP.constants.RequestUriMethod;
 import io.mosip.openID4VP.constants.ResponseType;
 import io.mosip.openID4VP.constants.VPFormatType;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
@@ -79,12 +81,12 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
     @SuppressLint("LogNotTimber")
     @ReactMethod
-    public void initSdk(String appId, ReadableMap walletMetadata) {
+    public void initSdk(String appId, ReadableMap walletConfigMap) {
         Log.d(TAG, "Initializing InjiOpenID4VPModule with " + appId);
 
-        WalletMetadata metadata = parseWalletMetadata(walletMetadata);
+        WalletConfig walletConfig = parseWalletConfig(walletConfigMap);
 
-        openID4VP = new OpenID4VP(appId, metadata);
+        openID4VP = new OpenID4VP(appId, walletConfig);
         gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .disableHtmlEscaping()
@@ -214,21 +216,72 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private WalletMetadata parseWalletMetadata(ReadableMap walletMetadata) {
-        Map<VPFormatType, VPFormatSupported> vpFormatsSupportedMap = parseVpFormatsSupported(walletMetadata);
+    private WalletConfig parseWalletConfig(ReadableMap walletConfigMap) {
+        Map<VPFormatType, VPFormatSupported> vpFormatsSupportedMap = parseVpFormatsSupported(walletConfigMap);
 
-        return new WalletMetadata(
-                vpFormatsSupportedMap,
-                convertReadableArrayToEnumList(walletMetadata, "client_id_prefixes_supported",
-                        ClientIdPrefix.Companion::fromValue),
-                convertReadableArrayToEnumList(walletMetadata, "request_object_signing_alg_values_supported",
-                        RequestSigningAlgorithm.Companion::fromValue),
-                convertReadableArrayToEnumList(walletMetadata, "authorization_encryption_alg_values_supported",
-                        KeyManagementAlgorithm.Companion::fromValue),
-                convertReadableArrayToEnumList(walletMetadata, "authorization_encryption_enc_values_supported",
-                        ContentEncryptionAlgorithm.Companion::fromValue),
-                convertReadableArrayToEnumList(walletMetadata, "response_types_supported",
-                        ResponseType.Companion::fromValue));
+        List<ClientIdPrefix> clientIdPrefixesSupported = convertReadableArrayToEnumList(
+                walletConfigMap, "client_id_prefixes_supported", ClientIdPrefix.Companion::fromValue);
+
+        List<RequestSigningAlgorithm> requestObjectSigningAlg = convertReadableArrayToEnumList(
+                walletConfigMap, "request_object_signing_alg_values_supported",
+                RequestSigningAlgorithm.Companion::fromValue);
+
+        List<KeyManagementAlgorithm> encryptionAlg = convertReadableArrayToEnumList(
+                walletConfigMap, "authorization_encryption_alg_values_supported",
+                KeyManagementAlgorithm.Companion::fromValue);
+
+        List<ContentEncryptionAlgorithm> encryptionEnc = convertReadableArrayToEnumList(
+                walletConfigMap, "authorization_encryption_enc_values_supported",
+                ContentEncryptionAlgorithm.Companion::fromValue);
+
+        List<ResponseType> responseTypes = convertReadableArrayToEnumList(
+                walletConfigMap, "response_types_supported", ResponseType.Companion::fromValue);
+
+        Boolean presentationDefinitionUriSupported = walletConfigMap.hasKey("presentation_definition_uri_supported")
+                ? walletConfigMap.getBoolean("presentation_definition_uri_supported")
+                : true;
+
+        List<RequestUriMethod> supportedRequestUriMethods = parseSupportedRequestUriMethods(walletConfigMap);
+
+        List<Verifier> trustedVerifiers = parseTrustedVerifiers(walletConfigMap);
+
+        return new WalletConfig(
+                vpFormatsSupportedMap.isEmpty() ? WalletMetadataDefaultsKt.getDefaultVpFormatsSupported() : vpFormatsSupportedMap,
+                clientIdPrefixesSupported != null ? clientIdPrefixesSupported : WalletMetadataDefaultsKt.getDefaultClientIdPrefixesSupported(),
+                requestObjectSigningAlg,
+                encryptionAlg,
+                encryptionEnc,
+                responseTypes != null ? responseTypes : WalletMetadataDefaultsKt.getDefaultResponseTypeSupported(),
+                presentationDefinitionUriSupported,
+                supportedRequestUriMethods,
+                trustedVerifiers
+        );
+    }
+
+    private List<RequestUriMethod> parseSupportedRequestUriMethods(ReadableMap walletConfigMap) {
+        if (!walletConfigMap.hasKey("supported_request_uri_methods")) {
+            return List.of(RequestUriMethod.GET, RequestUriMethod.POST);
+        }
+        ReadableArray methodsArray = walletConfigMap.getArray("supported_request_uri_methods");
+        List<RequestUriMethod> methods = new ArrayList<>();
+        for (int i = 0; i < Objects.requireNonNull(methodsArray).size(); i++) {
+            RequestUriMethod method = RequestUriMethod.Companion.fromValue(methodsArray.getString(i));
+            if (method != null) {
+                methods.add(method);
+            }
+        }
+        return methods;
+    }
+
+    private List<Verifier> parseTrustedVerifiers(ReadableMap walletConfigMap) {
+        if (!walletConfigMap.hasKey("trusted_verifiers")) {
+            return new ArrayList<>();
+        }
+        ReadableArray verifiersArray = walletConfigMap.getArray("trusted_verifiers");
+        if (verifiersArray == null) {
+            return new ArrayList<>();
+        }
+        return parseVerifiers(verifiersArray);
     }
 
     private Map<VPFormatType, VPFormatSupported> parseVpFormatsSupported(ReadableMap walletMetadata) {
