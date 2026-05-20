@@ -1,13 +1,13 @@
 import React from 'react';
-import {Column, Row, Text} from '../ui';
-import {Theme} from '../ui/styleUtils';
-import {VcItemContainer} from '../VC/VcItemContainer';
-import {VCItemContainerFlowType} from '../../shared/Utils';
-import {VCMetadata} from '../../shared/VCMetadata';
-import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {MatchingVCsResultForDcql} from '../../shared/openID4VP/openid4vp.types';
-import {DcqlCredentialSetSection} from './DcqlCredentialSetSection';
-import {useTranslation} from 'react-i18next';
+import { Column, Row, Text } from '../ui';
+import { Theme } from '../ui/styleUtils';
+import { VcItemContainer } from '../VC/VcItemContainer';
+import { VCItemContainerFlowType } from '../../shared/Utils';
+import { VCMetadata } from '../../shared/VCMetadata';
+import { VC } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import { MatchingVCsResultForDcql } from '../../shared/openID4VP/openid4vp.types';
+import { DcqlCredentialSetSection } from './DcqlCredentialSetSection';
+import { useTranslation } from 'react-i18next';
 import LinearGradient from 'react-native-linear-gradient';
 
 interface MatchingVcListProps {
@@ -16,10 +16,10 @@ interface MatchingVcListProps {
 }
 
 export const MatchingVcList: React.FC<MatchingVcListProps> = ({
-                                                                controller,
-                                                                onDisclosureChange,
-                                                              }) => {
-  const {t} = useTranslation('SendVPScreen');
+  controller,
+  onDisclosureChange,
+}) => {
+  const { t } = useTranslation('SendVPScreen');
 
   const getVcKey = (vcData: VC) => {
     return VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey();
@@ -108,11 +108,11 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
                 selected={
                   controller.areAllVCsChecked ||
                   (Object.keys(
-                      controller.credentialRequestIdToSelectedVcKeys,
-                    ).includes(inputDescriptorId) &&
+                    controller.credentialRequestIdToSelectedVcKeys,
+                  ).includes(inputDescriptorId) &&
                     controller.credentialRequestIdToSelectedVcKeys[
                       inputDescriptorId
-                      ].has(getVcKey(vcData)))
+                    ].has(getVcKey(vcData)))
                 }
                 selectionType={"multiple"}
                 flow={VCItemContainerFlowType.VP_SHARE}

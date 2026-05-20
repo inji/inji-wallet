@@ -29,6 +29,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
   isInitialLaunch = false,
   isTopCard = false,
   onDisclosuresChange,
+  sdClaimsPath,
   onMeasured,
 }) => {
   const controller = useVcItemController(vcMetadata);
@@ -136,6 +137,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
       KEBAB_POPUP={controller.KEBAB_POPUP}
       isInitialLaunch={isInitialLaunch}
       onDisclosuresChange={onDisclosuresChange}
+      sdClaimsPath={sdClaimsPath}
     />
   );
 
@@ -192,6 +194,7 @@ export interface VCItemProps {
   flow?: string;
   isInitialLaunch?: boolean;
   isTopCard?: boolean;
+  sdClaimsPath?: Array<any>;
   onDisclosuresChange?: (paths: string[]) => void;
   onMeasured?: (rect: {
     x: number;
