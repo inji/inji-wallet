@@ -22,8 +22,8 @@ import {
   sendImpressionEvent,
 } from '../../shared/telemetry/TelemetryUtils';
 import {VerifyIdentityOverlay} from '../VerifyIdentityOverlay';
-import {VPShareOverlay} from './VPShareOverlay';
-import {FaceVerificationAlertOverlay} from './FaceVerificationAlertOverlay';
+import {VPShareOverlay} from '../Scan/VPShareOverlay';
+import {FaceVerificationAlertOverlay} from '../Scan/FaceVerificationAlertOverlay';
 import {useSendVPScreen} from './SendVPScreenController';
 import {ErrorView} from '../../components/ui/Error';
 import {SvgImage} from '../../components/ui/svg';
@@ -33,10 +33,10 @@ import {ScanLayoutProps} from '../../routes/routeTypes';
 import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {GlobalContext} from '../../shared/GlobalContext';
 import {APP_EVENTS} from '../../machines/app';
-import {useScanScreen} from './ScanScreenController';
+import {useScanScreen} from '../Scan/ScanScreenController';
 import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
 import {TrustModalVerifier} from '../../components/TrustModalVerifier';
-import {MatchingVcList} from '../../components/vp/MatchingVcList';
+import {MatchingVcList} from '../../components/openid4vp/MatchingVcList';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');

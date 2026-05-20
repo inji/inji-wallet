@@ -33,7 +33,7 @@ import { QrScanner } from '../../components/QrScanner';
 import { AUTH_ROUTES } from '../../routes/routesConstants';
 import { TransactionCodeModal } from './TransactionCodeScreen';
 import { TrustModal } from '../../components/TrustModal';
-import { SendVPScreen } from '../Scan/SendVPScreen';
+import { SendVPScreen } from '../openid4vp/SendVPScreen';
 
 import { AuthorizationType } from '../../shared/constants';
 import { useTimer } from '../../shared/hooks/UseTimer';

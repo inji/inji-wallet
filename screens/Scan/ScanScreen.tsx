@@ -18,7 +18,7 @@ import {SvgImage} from '../../components/ui/svg';
 import {LocationPermissionRational} from './LocationPermissionRational';
 import {FaceVerificationAlertOverlay} from './FaceVerificationAlertOverlay';
 import {useSendVcScreen} from './SendVcScreenController';
-import {useSendVPScreen} from './SendVPScreenController';
+import {useSendVPScreen} from '../openid4vp/SendVPScreenController';
 import {ErrorView} from '../../components/ui/Error';
 import {VPShareOverlay} from './VPShareOverlay';
 import {VerifyIdentityOverlay} from '../VerifyIdentityOverlay';

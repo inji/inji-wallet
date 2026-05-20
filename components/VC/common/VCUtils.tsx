@@ -410,6 +410,7 @@ function getFullAddress(credential: CredentialSubject) {
     .join(', ');
 }
 export const formatKeyLabel = (key: string): string => {
+  console.log('formatting key: ', key);
   return key
     .replace(/\[\d+\]/g, '') // Remove [0], [1], etc.
     .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase → spaced

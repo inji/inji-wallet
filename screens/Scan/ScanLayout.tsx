@@ -16,8 +16,8 @@ import {View, I18nManager} from 'react-native';
 import {Text} from './../../components/ui';
 import {BannerStatusType} from '../../components/BannerNotification';
 import {isIOS, LIVENESS_CHECK} from '../../shared/constants';
-import {SendVPScreen} from './SendVPScreen';
-import { useSendVPScreen } from './SendVPScreenController';
+import {SendVPScreen} from '../openid4vp/SendVPScreen';
+import { useSendVPScreen } from '../openid4vp/SendVPScreenController';
 
 const ScanStack = createNativeStackNavigator();
 

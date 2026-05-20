@@ -46,7 +46,7 @@ import { BOTTOM_TAB_ROUTES } from '../../routes/routesConstants';
 import { GlobalContext } from '../../shared/GlobalContext';
 import { formatTextWithGivenLimit } from '../../shared/Utils';
 import { VCMetadata } from '../../shared/VCMetadata';
-import { VPShareOverlayProps } from './VPShareOverlay';
+import { VPShareOverlayProps } from '../Scan/VPShareOverlay';
 import { ActivityLogEvents } from '../../machines/activityLog';
 import { VPShareActivityLog } from '../../components/VPShareActivityLogEvent';
 import { isIOS } from '../../shared/constants';
