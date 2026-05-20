@@ -6,17 +6,17 @@ import {Theme} from '../styleUtils';
 
 interface AccordionProps {
   title: string;
-  badge: React.ReactNode;
+  badge?: React.ReactNode;
   /** Any interactive element rendered on the right side of the header (e.g. a checkbox, radio, toggle). */
-  headerAction: React.ReactNode;
+  headerAction?: React.ReactNode;
   defaultExpanded?: boolean;
   children: React.ReactNode;
 }
 
 export const Accordion: React.FC<AccordionProps> = ({
   title,
-  badge,
-  headerAction,
+  badge = null,
+  headerAction = null,
   defaultExpanded = false,
   children,
 }) => {

@@ -169,24 +169,6 @@ class OpenID4VP {
           vpRequest,
           updatedAvailableWalletCredentials,
         );
-      /**
-       * {
-       *  "credentialSets": [],
-       *  "queryMatches": {
-       *    "mvrc": {
-       *      "allowMultipleCredentials": false,
-       *      "failureReason": "no_matching_credentials_with_requested_credential_formats_found"
-       *    },
-       *    "id2" : {
-       *      "matchingCredentials" : [
-       *        "credentialId" : "cred1",
-       *        "matchingClaims" : [] // type ClaimsQuery
-       *      ]
-       *    }
-       *  },
-       *  "success": false
-       *  }
-       */
 
       const result = parseJSON(matchingCredentialsResult);
       console.log(

@@ -1,14 +1,15 @@
 import React from 'react';
-import { Column, Row, Text } from '../ui';
-import { Theme } from '../ui/styleUtils';
-import { VcItemContainer } from '../VC/VcItemContainer';
-import { VCItemContainerFlowType } from '../../shared/Utils';
-import { VCMetadata } from '../../shared/VCMetadata';
-import { VC } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import { MatchingVCsResultForDcql } from '../../shared/openID4VP/openid4vp.types';
-import { DcqlCredentialSetSection } from './DcqlCredentialSetSection';
-import { useTranslation } from 'react-i18next';
+import {Column, Row, Text} from '../ui';
+import {Theme} from '../ui/styleUtils';
+import {VcItemContainer} from '../VC/VcItemContainer';
+import {VCItemContainerFlowType} from '../../shared/Utils';
+import {VCMetadata} from '../../shared/VCMetadata';
+import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {MatchingVCsResultForDcql} from '../../shared/openID4VP/openid4vp.types';
+import {DcqlCredentialSetSection} from './DcqlCredentialSetSection';
+import {useTranslation} from 'react-i18next';
 import LinearGradient from 'react-native-linear-gradient';
+import {LoaderAnimation} from '../ui/LoaderAnimation';
 
 interface MatchingVcListProps {
   controller: any;
@@ -19,7 +20,7 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
   controller,
   onDisclosureChange,
 }) => {
-  const { t } = useTranslation('SendVPScreen');
+  const {t} = useTranslation('SendVPScreen');
 
   const getVcKey = (vcData: VC) => {
     return VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey();
@@ -28,9 +29,9 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
   const noOfCardsSelected = controller.areAllVCsChecked
     ? Object.values(controller.vcsMatchingAuthRequest).length
     : Object.values(controller.credentialRequestIdToSelectedVcKeys).reduce(
-      (vcCount, arr) => vcCount + arr.size,
-      0,
-    );
+        (vcCount, arr) => vcCount + arr.size,
+        0,
+      );
 
   const cardsSelectedText =
     noOfCardsSelected === 1
@@ -45,6 +46,10 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
 
   if (controller.isDcqlFlow) {
     const dcqlResult = controller.matchingVcsResult as MatchingVCsResultForDcql;
+    if (!controller.matchingVcsResult) {
+      return <LoaderAnimation testID={'calculatingMatchingVcsLoader'} />;
+    }
+
     return (
       <Column scroll backgroundColor={Theme.Colors.whiteBackgroundColor}>
         {dcqlResult.credentialSetOptions.map((credentialSet, index) => (
@@ -114,7 +119,7 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
                       inputDescriptorId
                     ].has(getVcKey(vcData)))
                 }
-                selectionType={"multiple"}
+                selectionType={'multiple'}
                 flow={VCItemContainerFlowType.VP_SHARE}
                 isPinned={vcData.vcMetadata.isPinned}
                 onDisclosuresChange={disclosures => {
