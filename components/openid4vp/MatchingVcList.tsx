@@ -50,17 +50,29 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
       return <LoaderAnimation testID={'calculatingMatchingVcsLoader'} />;
     }
 
+    const totalMandatoryCount = dcqlResult.credentialSetOptions.filter(
+      cs => cs.required,
+    ).length;
+    let mandatoryCount = 0;
+
     return (
       <Column scroll backgroundColor={Theme.Colors.whiteBackgroundColor}>
-        {dcqlResult.credentialSetOptions.map((credentialSet, index) => (
-          <DcqlCredentialSetSection
-            key={index}
-            credentialSet={credentialSet}
-            matchingVCsResult={dcqlResult.matchingVCs}
-            controller={controller}
-            onDisclosureChange={onDisclosureChange}
-          />
-        ))}
+        {dcqlResult.credentialSetOptions.map((credentialSet, index) => {
+          const mandatoryIndex =
+            credentialSet.required && totalMandatoryCount > 1
+              ? ++mandatoryCount
+              : undefined;
+          return (
+            <DcqlCredentialSetSection
+              key={index}
+              credentialSet={credentialSet}
+              mandatoryIndex={mandatoryIndex}
+              matchingVCsResult={dcqlResult.matchingVCs}
+              controller={controller}
+              onDisclosureChange={onDisclosureChange}
+            />
+          );
+        })}
       </Column>
     );
   }

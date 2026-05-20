@@ -2603,22 +2603,33 @@ export const PurpleTheme = {
       fontSize: 11,
       letterSpacing: 1,
       color: Colors.Gray40,
-      flex: 1,
+    },
+    sectionSatisfiedIcon: {
+      marginHorizontal: 4,
     },
     sectionChevronWrapper: {
       marginHorizontal: 4,
     },
+    sectionHeaderSpacer: {
+      flex: 1,
+    },
     /** Generic badge shell — borderColor and backgroundColor are injected via inline style props */
     badge: {
       alignSelf: 'center',
+      flexDirection: 'row',
+      alignItems: 'center',
       borderWidth: 1,
       borderRadius: 5,
       paddingHorizontal: 8,
       paddingVertical: 3,
+      gap: 3,
     },
     badgeText: {
       fontFamily: 'Montserrat_700Bold',
       fontSize: 10,
+    },
+    badgeInfoIcon: {
+      marginTop: 1,
     },
     bothRequiredBadge: {
       borderWidth: 1,
@@ -2632,6 +2643,45 @@ export const PurpleTheme = {
       fontFamily: 'Montserrat_600SemiBold',
       fontSize: 9,
       color: Colors.Primary,
+    },
+    verifierBanner: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: Colors.White,
+      marginHorizontal: 12,
+      marginTop: 12,
+      marginBottom: 4,
+      paddingHorizontal: 12,
+      paddingVertical: 10,
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: Colors.Grey5,
+    },
+    verifierBannerLogo: {
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+    },
+    verifierBannerInfoCol: {
+      flex: 1,
+      flexDirection: 'column',
+      paddingHorizontal: 8,
+    },
+    verifierBannerName: {
+      fontFamily: 'Montserrat_600SemiBold',
+      fontSize: 13,
+      color: Colors.Black,
+    },
+    verifierBannerTrustedBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 2,
+    },
+    verifierBannerTrustedText: {
+      fontFamily: 'Montserrat_600SemiBold',
+      fontSize: 10,
+      color: '#1976D2',
+      marginLeft: 3,
     },
   }),
   AccordionStyles: StyleSheet.create({
@@ -2660,6 +2710,12 @@ export const PurpleTheme = {
       alignItems: 'center',
       flexWrap: 'wrap',
     },
+    titleColumn: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignContent: 'flex-start',
+    },
     title: {
       fontFamily: 'Montserrat_700Bold',
       fontSize: 14,
@@ -2684,7 +2740,8 @@ export const PurpleTheme = {
     },
     badge: {
       borderWidth: 1,
-      borderColor: Colors.Grey,
+      borderColor: '#FDE68A',
+      backgroundColor: '#FFFBEB',
       borderRadius: 12,
       paddingHorizontal: 10,
       paddingVertical: 3,
@@ -2693,7 +2750,7 @@ export const PurpleTheme = {
     text: {
       fontFamily: 'Montserrat_700Bold',
       fontSize: 11,
-      color: Colors.GrayText,
+      color: '#F59E0B',
     },
   }),
 };
@@ -2712,3 +2769,12 @@ function generateBoxShadowStyle() {
     shadowColor: '#000',
   };
 }
+
+export const DcqlBadgeColors = {
+  requiredBorder: '#FECACA',
+  requiredText: '#DC2626',
+  requiredBg:  '#FEF2F2',
+  optionalBorder: '#AA913F',
+  optionalText: '#79732D',
+  optionalBg: '#FFFDDE',
+};

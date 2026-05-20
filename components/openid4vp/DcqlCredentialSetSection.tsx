@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Pressable, View} from 'react-native';
+import React from 'react';
+import {View} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {Column, Row, Text} from '../ui';
 import {Theme} from '../ui/styleUtils';
@@ -26,12 +26,12 @@ interface DcqlCredentialSetSectionProps {
   matchingVCsResult: Record<string, MatchResult>;
   controller: any;
   onDisclosureChange: (vcKey: string, disclosures: string[]) => void;
+  mandatoryIndex?: number;
 }
 
 export const DcqlCredentialSetSection: React.FC<
   DcqlCredentialSetSectionProps
-> = ({credentialSet, matchingVCsResult, controller, onDisclosureChange}) => {
-  const [isCollapsed, setIsCollapsed] = useState(!credentialSet.required);
+> = ({credentialSet, matchingVCsResult, controller, onDisclosureChange, mandatoryIndex}) => {
 
   const isRequired = credentialSet.required;
 
@@ -247,86 +247,95 @@ export const DcqlCredentialSetSection: React.FC<
       </Accordion>
     );
   };
-  return (
-    <View style={Theme.DcqlStyles.sectionContainer}>
-      <Pressable onPress={() => setIsCollapsed(prev => !prev)}>
-        <Row style={Theme.DcqlStyles.sectionHeader}>
-          <Text style={Theme.DcqlStyles.sectionTitle}>
-            {isRequired ? 'MANDATORY CARDS' : 'OPTIONAL CARDS'}
-          </Text>
-          <View style={Theme.DcqlStyles.sectionChevronWrapper}>
-            {/*  TODO: Move this expand icon to IconLibrary */}
-            <Icon
-              name={isCollapsed ? 'expand-more' : 'expand-less'}
-              color={Theme.Colors.Icon}
-              size={20}
-            />
-          </View>
-          <Badge
-            text={isRequired ? 'REQUIRED' : 'NOT REQUIRED'}
-            borderColor={
-              isRequired
-                ? DcqlBadgeColors.requiredBorder
-                : DcqlBadgeColors.optionalBorder
-            }
-            bgColor={
-              isRequired
-                ? DcqlBadgeColors.requiredBg
-                : DcqlBadgeColors.optionalBg
-            }
-          />
-        </Row>
-      </Pressable>
+  const isSectionSatisfied = credentialSet.options.some((option, optionIndex) =>
+    isOptionSelected(option, optionIndex),
+  );
 
-      {!isCollapsed && (
-        <Column>
-          {credentialSet.options.map((option, optionIndex) => (
-            <View key={optionIndex}>
-              {optionIndex > 0 && <Divider text={'OR'} />}
-              {isMultipleCombinedOption(option) ? (
-                // Case 1: the option has multiple credential queries - Combination of credential queries need to be selected together
-                <Accordion
-                  title="Multiple Cards"
-                  badge={
-                    <Badge
-                      text={'ALL REQUIRED'}
-                      bgColor={Colors.Secondary}
-                      borderColor={''}
-                    />
-                  }
-                  headerAction={
-                    <Checkbox
-                      selectionType="single"
-                      checked={isOptionSelected(option, optionIndex)}
-                      onPress={() => selectAllInOption(option, optionIndex)}
-                    />
-                  }>
-                  {option.map(credentialQueryId => {
-                    return renderCredentialsMatchingQueryId(
-                      credentialQueryId,
-                      (vcKey: string) =>
-                        handleVCSelection(
-                          vcKey,
-                          credentialQueryId,
-                          optionIndex,
-                        ),
-                      isVcSelected,
-                    );
-                  })}
-                </Accordion>
-              ) : (
-                // Case 2: the option has only one credential query - Only one credential query needs to be selected
-                renderCredentialsMatchingQueryId(
-                  option[0],
-                  (vcKey: string) =>
-                    handleOptionSelection(vcKey, option[0], optionIndex),
-                  isVcSelected,
-                )
-              )}
-            </View>
-          ))}
-        </Column>
-      )}
-    </View>
+  return (
+    <Accordion
+      containerStyle={Theme.DcqlStyles.sectionContainer}
+      title={
+        <>
+          <Text style={Theme.DcqlStyles.sectionTitle}>
+            {isRequired
+              ? `MANDATORY CARDS${mandatoryIndex !== undefined ? ` ${mandatoryIndex}` : ''}`
+              : 'OPTIONAL CARDS'}
+          </Text>
+          {isSectionSatisfied && (
+            <Icon
+              name="check-circle"
+              color={Theme.Colors.Icon}
+              size={16}
+              containerStyle={Theme.DcqlStyles.sectionSatisfiedIcon}
+            />
+          )}
+        </>
+      }
+      headerAction={
+        <Badge
+          addInfoIcon
+          text={isRequired ? 'REQUIRED' : 'NOT REQUIRED'}
+          borderColor={
+            isRequired
+              ? DcqlBadgeColors.requiredBorder
+              : DcqlBadgeColors.optionalBorder
+          }
+          bgColor={
+            isRequired
+              ? DcqlBadgeColors.requiredBg
+              : DcqlBadgeColors.optionalBg
+          }
+        />
+      }
+      defaultExpanded={credentialSet.required}>
+      <Column>
+        {credentialSet.options.map((option, optionIndex) => (
+          <View key={optionIndex}>
+            {optionIndex > 0 && <Divider text={'OR'} />}
+            {isMultipleCombinedOption(option) ? (
+              // Case 1: the option has multiple credential queries - Combination of credential queries need to be selected together
+              <Accordion
+                title="Multiple Cards"
+                badge={
+                  <Badge
+                    text={'ALL REQUIRED'}
+                    bgColor={'#F1F5F9'}
+                    borderColor={''}
+                  />
+                }
+                stackBadge
+                headerAction={
+                  <Checkbox
+                    selectionType="single"
+                    checked={isOptionSelected(option, optionIndex)}
+                    onPress={() => selectAllInOption(option, optionIndex)}
+                  />
+                }>
+                {option.map(credentialQueryId => {
+                  return renderCredentialsMatchingQueryId(
+                    credentialQueryId,
+                    (vcKey: string) =>
+                      handleVCSelection(
+                        vcKey,
+                        credentialQueryId,
+                        optionIndex,
+                      ),
+                    isVcSelected,
+                  );
+                })}
+              </Accordion>
+            ) : (
+              // Case 2: the option has only one credential query - Only one credential query needs to be selected
+              renderCredentialsMatchingQueryId(
+                option[0],
+                (vcKey: string) =>
+                  handleOptionSelection(vcKey, option[0], optionIndex),
+                isVcSelected,
+              )
+            )}
+          </View>
+        ))}
+      </Column>
+    </Accordion>
   );
 };
