@@ -164,3 +164,32 @@ export function hasAtLeastOneMatch<T>(
 
   return false;
 }
+
+export function subtractSets<T>(a: Set<T>, b: Set<T>): Set<T> {
+  const result = new Set(a);
+
+  for (const item of b) {
+    result.delete(item);
+  }
+
+  return result;
+}
+
+export function exactlyOne<T>(
+  items: T[],
+  predicate: (item: T) => boolean,
+): boolean {
+  let count = 0;
+
+  for (const item of items) {
+    if (predicate(item)) {
+      count++;
+
+      if (count > 1) {
+        return false;
+      }
+    }
+  }
+
+  return count === 1;
+}

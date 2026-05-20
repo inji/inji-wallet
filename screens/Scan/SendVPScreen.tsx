@@ -284,7 +284,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         styles={{marginTop: 12}}
         title={t('consentAndShare')}
         testID={'consent-share-button'}
-        disabled={Object.keys(controller.getSelectedVCs()).length === 0}
+        disabled={!controller.successfullySatisfiedCredentialRequest()}
         onPress={() =>
           controller.checkIfAnyVCHasImage(controller.getSelectedVCs())
             ? controller.VERIFY_AND_ACCEPT_REQUEST(selectedDisclosuresByVc)
