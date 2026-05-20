@@ -161,6 +161,8 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
           Object.entries(node.children).map(([childName, childNode]) => (
             <Column key={childName} margin="0 0 0 15">
               <DisclosureNode
+                selected={selected}
+                lockSelection={true}
                 name={childName}
                 node={childNode}
                 fullPath={`${fullPath}.${childName}`}
