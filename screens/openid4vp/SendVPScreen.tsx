@@ -197,19 +197,64 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     } else {
       props.navigation.setOptions({
         headerShown: true,
-        title: t('SendVPScreen:requester'),
-        headerTitleAlign: 'center',
-        headerTitle: props => (
-          <View style={Theme.Styles.sendVPHeaderContainer}>
-            <Text style={Theme.Styles.sendVPHeaderTitle}>{props.children}</Text>
+        header: () => (
+          <View
+            style={{
+              backgroundColor: Theme.Colors.whiteBackgroundColor,
+              paddingTop: insets.top,
+            }}>
+            <View
+              style={{
+                height: 56,
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingHorizontal: 12,
+              }}>
+              <Icon
+                name={I18nManager.isRTL ? 'arrow-forward' : 'arrow-back'}
+                color={Theme.Colors.blackIcon}
+                onPress={handleDismiss}
+              />
+              <View style={Theme.Styles.sendVPHeaderContainer}>
+                <Text style={Theme.Styles.sendVPHeaderTitle}>
+                  {t('requester')}
+                </Text>
+              </View>
+            </View>
+            {controller.vpVerifierName && (
+              <View style={Theme.DcqlStyles.verifierBanner}>
+                {controller.verifierLogoInTrustModal && (
+                  <AdaptiveImage
+                    testID="verifier-logo"
+                    uri={controller.verifierLogoInTrustModal}
+                    style={Theme.DcqlStyles.verifierBannerLogo}
+                  />
+                )}
+                <View style={Theme.DcqlStyles.verifierBannerInfoCol}>
+                  <Text style={Theme.DcqlStyles.verifierBannerName}>
+                    {controller.vpVerifierName}
+                  </Text>
+                  <View style={Theme.DcqlStyles.verifierBannerTrustedBadge}>
+                    <Icon
+                      name="verified-user"
+                      type="material"
+                      size={12}
+                      color="#1976D2"
+                    />
+                    <Text style={Theme.DcqlStyles.verifierBannerTrustedText}>
+                      Trusted
+                    </Text>
+                  </View>
+                </View>
+                <Icon
+                  name="info-outline"
+                  type="material"
+                  size={18}
+                  color={Theme.Colors.GrayIcon}
+                />
+              </View>
+            )}
           </View>
-        ),
-        headerLeft: () => (
-          <Icon
-            name={I18nManager.isRTL ? 'arrow-forward' : 'arrow-back'}
-            color={Theme.Colors.blackIcon}
-            onPress={handleDismiss}
-          />
         ),
       });
     }
@@ -217,6 +262,8 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     controller.showLoadingScreen,
     controller.vpVerifierName,
     controller.isOVPViaDeepLink,
+    controller.verifierLogoInTrustModal,
+    insets.top,
   ]);
 
   if (controller.showLoadingScreen) {
@@ -304,41 +351,6 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
       }
       {controller.matchingVcsResult?.success && (
         <>
-          {controller.vpVerifierName && (
-            <View style={{backgroundColor: Theme.Colors.whiteBackgroundColor}}>
-              <View style={Theme.DcqlStyles.verifierBanner}>
-                {controller.verifierLogoInTrustModal && (
-                  <AdaptiveImage
-                    testID="verifier-logo"
-                    uri={controller.verifierLogoInTrustModal}
-                    style={Theme.DcqlStyles.verifierBannerLogo}
-                  />
-                )}
-                <View style={Theme.DcqlStyles.verifierBannerInfoCol}>
-                  <Text style={Theme.DcqlStyles.verifierBannerName}>
-                    {controller.vpVerifierName}
-                  </Text>
-                  <View style={Theme.DcqlStyles.verifierBannerTrustedBadge}>
-                    <Icon
-                      name="verified-user"
-                      type="material"
-                      size={12}
-                      color="#1976D2"
-                    />
-                    <Text style={Theme.DcqlStyles.verifierBannerTrustedText}>
-                      Trusted
-                    </Text>
-                  </View>
-                </View>
-                <Icon
-                  name="info-outline"
-                  type="material"
-                  size={18}
-                  color={Theme.Colors.GrayIcon}
-                />
-              </View>
-            </View>
-          )}
           {controller.purpose !== '' && (
             <View style={{backgroundColor: Theme.Colors.whiteBackgroundColor}}>
               <Column
