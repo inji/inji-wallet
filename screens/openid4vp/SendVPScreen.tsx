@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import {useTranslation} from 'react-i18next';
 import {BackHandler, I18nManager, View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Button, Column, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
 import {
@@ -43,6 +44,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
   const controller = useSendVPScreen(props);
   const scanScreenController = useScanScreen();
+  const insets = useSafeAreaInsets();
 
   const [errorModal, resetErrorModal] = useOvpErrorModal({
     error: controller.error,
@@ -106,6 +108,8 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   useFocusEffect(
     React.useCallback(() => {
+      props.navigation.getParent()?.setOptions({tabBarStyle: {display: 'none'}});
+
       const onBackPress = () => true;
 
       const disableBackHandler = BackHandler.addEventListener(
@@ -113,8 +117,13 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         onBackPress,
       );
 
-      return () => disableBackHandler.remove();
-    }, []),
+      return () => {
+        props.navigation
+          .getParent()
+          ?.setOptions({tabBarStyle: {display: 'flex'}});
+        disableBackHandler.remove();
+      };
+    }, [props.navigation]),
   );
 
   useEffect(() => {
