@@ -49,7 +49,7 @@ export const Accordion: React.FC<AccordionProps> = ({
           </View>
           <Icon
             name={isExpanded ? 'expand-less' : 'expand-more'}
-            color={Theme.Colors.Icon}
+            color={Theme.Colors.GrayIcon}
           />
           {headerAction}
         </Row>

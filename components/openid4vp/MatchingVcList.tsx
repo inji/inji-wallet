@@ -62,6 +62,19 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
             credentialSet.required && totalMandatoryCount > 1
               ? ++mandatoryCount
               : undefined;
+          const isMatchingVcsEmpty = credentialSet.options.every(
+            (option : string[]) => {
+                return option.every((credentialQueryId: string) => {
+                    const matchResult = dcqlResult.matchingVCs[credentialQueryId];
+                    return !matchResult || matchResult.matchingVcs.length === 0;
+                })
+            }
+          );
+          
+          if (isMatchingVcsEmpty) {
+            return null;
+          }
+
           return (
             <DcqlCredentialSetSection
               key={index}

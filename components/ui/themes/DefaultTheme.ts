@@ -2690,6 +2690,7 @@ export const DefaultTheme = {
     header: {
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'space-between',
       paddingVertical: 10,
       paddingRight: 12,
     },
@@ -2698,6 +2699,7 @@ export const DefaultTheme = {
       flexDirection: 'row',
       alignItems: 'center',
       flexWrap: 'wrap',
+      gap: 3
     },
     titleColumn: {
       flex: 1,

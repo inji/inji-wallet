@@ -329,17 +329,18 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
                   </Text>
                 </Column>
 
-                <Row style={{marginTop: 12}} width="100%" align="flex-end">
-                  <Pressable onPress={toggleSelectAll}>
-                    <Text
-                      color={Theme.Colors.Icon}
-                      style={Theme.Styles.disclosureSelectButton}>
-                      {areAllSelected()
-                        ? t('SendVPScreen:unselectAll')
-                        : t('SendVPScreen:selectAll')}
-                    </Text>
-                  </Pressable>
-                </Row>
+              {!sdClaimsPath && <Row style={{ marginTop: 12 }} width="100%" align="flex-end">
+                <Pressable onPress={toggleSelectAll}>
+                  <Text
+                    color={Theme.Colors.Icon}
+                    style={Theme.Styles.disclosureSelectButton}>
+                    {areAllSelected()
+                      ? t('SendVPScreen:unselectAll')
+                      : t('SendVPScreen:selectAll')}
+                  </Text>
+                </Pressable>
+              </Row>
+              }
 
                 <View
                   style={{...Theme.Styles.horizontalSeparator, marginTop: 12}}

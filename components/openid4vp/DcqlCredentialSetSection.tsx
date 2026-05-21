@@ -18,7 +18,6 @@ import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {VCMetadata} from '../../shared/VCMetadata';
 import {Checkbox} from '../ui/checkbox/Checkbox';
 import {Accordion} from '../ui/accordion/Accordion';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {VCFormat} from '../../shared/VCFormat';
 
 interface DcqlCredentialSetSectionProps {
@@ -285,6 +284,10 @@ export const DcqlCredentialSetSection: React.FC<
               ? DcqlBadgeColors.requiredBg
               : DcqlBadgeColors.optionalBg
           }
+          textColor={isRequired
+            ? DcqlBadgeColors.requiredText
+            : DcqlBadgeColors.optionalText
+          }
         />
       }
       defaultExpanded={credentialSet.required}>
@@ -298,12 +301,12 @@ export const DcqlCredentialSetSection: React.FC<
                 title="Multiple Cards"
                 badge={
                   <Badge
+                    textColor='#000'
                     text={'ALL REQUIRED'}
                     bgColor={'#F1F5F9'}
-                    borderColor={''}
                   />
                 }
-                stackBadge
+                // stackBadge
                 headerAction={
                   <Checkbox
                     selectionType="single"
