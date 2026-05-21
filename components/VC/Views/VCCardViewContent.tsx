@@ -241,6 +241,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
           isInitialLaunch ? () => start(t('copilot:cardTitle')) : undefined
         }>
         <Row crossAlign="center" padding="3 0 0 3">
+          {flow === VCItemContainerFlowType.VP_SHARE && vcSelectableButton}
           <VcItemContainerProfileImage
             isPinned={isPinned}
             verifiableCredentialData={verifiableCredentialData}
@@ -299,7 +300,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
               </Pressable>
             </>
           )}
-          {vcSelectableButton}
+          {flow !== VCItemContainerFlowType.VP_SHARE && vcSelectableButton}
           {showDisclosedKeys() && (
               <Pressable onPress={toggleExpand}>
                 <Icon

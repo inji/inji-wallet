@@ -2580,6 +2580,7 @@ export const DefaultTheme = {
   DcqlStyles: StyleSheet.create({
     sectionContainer: {
       marginVertical: 4,
+      marginHorizontal: 12,
     },
     sectionHeader: {
       flexDirection: 'row',
@@ -2690,19 +2691,16 @@ export const DefaultTheme = {
     header: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-between',
       paddingVertical: 10,
-      paddingRight: 12,
+      paddingHorizontal: 12,
     },
     titleRow: {
-      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
       flexWrap: 'wrap',
       gap: 3
     },
     titleColumn: {
-      flex: 1,
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignContent: 'flex-start',
@@ -2713,8 +2711,7 @@ export const DefaultTheme = {
       color: Colors.Black,
     },
     expandButton: {
-      padding: 4,
-      marginLeft: 4,
+      flex: 1,
     },
   }),
   DividerStyles: StyleSheet.create({
@@ -2726,7 +2723,7 @@ export const DefaultTheme = {
     },
     line: {
       flex: 1,
-      height: 1,
+      height: 0.4,
       backgroundColor: Colors.Grey5,
     },
     badge: {

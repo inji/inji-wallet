@@ -2591,6 +2591,7 @@ export const PurpleTheme = {
   DcqlStyles: StyleSheet.create({
     sectionContainer: {
       marginVertical: 4,
+      marginHorizontal: 12,
     },
     sectionHeader: {
       flexDirection: 'row',
@@ -2702,16 +2703,14 @@ export const PurpleTheme = {
       flexDirection: 'row',
       alignItems: 'center',
       paddingVertical: 10,
-      paddingRight: 12,
+      paddingHorizontal: 12,
     },
     titleRow: {
-      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
       flexWrap: 'wrap',
     },
     titleColumn: {
-      flex: 1,
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignContent: 'flex-start',
@@ -2722,8 +2721,7 @@ export const PurpleTheme = {
       color: Colors.Black,
     },
     expandButton: {
-      padding: 4,
-      marginLeft: 4,
+      flex: 1,
     },
   }),
   DividerStyles: StyleSheet.create({
@@ -2735,7 +2733,7 @@ export const PurpleTheme = {
     },
     line: {
       flex: 1,
-      height: 1,
+      height: 0.4,
       backgroundColor: Colors.Grey5,
     },
     badge: {

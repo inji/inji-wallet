@@ -7,8 +7,10 @@ import { Theme } from '../styleUtils';
 interface AccordionProps {
   title: string | React.ReactNode;
   badge?: React.ReactNode;
-  /** Any interactive element rendered on the right side of the header (e.g. a checkbox, radio, toggle). */
+  /** Any interactive element rendered on the RIGHT side of the header (e.g. a badge). Rendered outside the toggle Pressable. */
   headerAction?: React.ReactNode;
+  /** Any interactive element rendered on the LEFT side of the header (e.g. a checkbox). Rendered outside the toggle Pressable. */
+  headerActionLeft?: React.ReactNode;
   defaultExpanded?: boolean;
   /** When true, badge renders below the title in a column layout instead of beside it. */
   stackBadge?: boolean;
@@ -21,6 +23,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   title,
   badge = null,
   headerAction = null,
+  headerActionLeft = null,
   defaultExpanded = false,
   stackBadge = false,
   containerStyle,
@@ -30,30 +33,34 @@ export const Accordion: React.FC<AccordionProps> = ({
 
   return (
     <View style={containerStyle ?? Theme.AccordionStyles.container}>
-      <Pressable
-        onPress={() => setIsExpanded(prev => !prev)}
-        style={Theme.AccordionStyles.expandButton}>
-        <Row style={Theme.AccordionStyles.header}>
-          <View
-            style={
-              stackBadge
-                ? Theme.AccordionStyles.titleColumn
-                : Theme.AccordionStyles.titleRow
-            }>
-            {typeof title === 'string' ? (
-              <Text style={Theme.AccordionStyles.title}>{title}</Text>
-            ) : (
-              title
-            )}
-            {badge}
-          </View>
-          <Icon
-            name={isExpanded ? 'expand-less' : 'expand-more'}
-            color={Theme.Colors.GrayIcon}
-          />
-          {headerAction}
-        </Row>
-      </Pressable>
+      <Row style={Theme.AccordionStyles.header}>
+        {headerActionLeft}
+        <Pressable
+          onPress={() => setIsExpanded(prev => !prev)}
+          style={Theme.AccordionStyles.expandButton}>
+          <Row crossAlign="center">
+            <View
+              style={[
+                stackBadge
+                  ? Theme.AccordionStyles.titleColumn
+                  : Theme.AccordionStyles.titleRow,
+                headerActionLeft ? {flex: 1} : undefined,
+              ]}>
+              {typeof title === 'string' ? (
+                <Text style={Theme.AccordionStyles.title}>{title}</Text>
+              ) : (
+                title
+              )}
+              {badge}
+            </View>
+            <Icon
+              name={isExpanded ? 'expand-less' : 'expand-more'}
+              color={Theme.Colors.GrayIcon}
+            />
+          </Row>
+        </Pressable>
+        {headerAction}
+      </Row>
 
       {isExpanded && children}
     </View>

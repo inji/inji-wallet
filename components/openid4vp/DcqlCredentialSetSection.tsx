@@ -306,8 +306,8 @@ export const DcqlCredentialSetSection: React.FC<
                     bgColor={'#F1F5F9'}
                   />
                 }
-                // stackBadge
-                headerAction={
+                stackBadge
+                headerActionLeft={
                   <Checkbox
                     selectionType="single"
                     checked={isOptionSelected(option, optionIndex)}
