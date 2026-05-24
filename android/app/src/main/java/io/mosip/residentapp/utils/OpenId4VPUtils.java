@@ -63,6 +63,24 @@ public class OpenId4VPUtils {
     return selectedVCsMap;
   }
 
+  public static Map<String, List<Credential>> parseSelectedVCsForPEX(ReadableMap selectedVCs) {
+    Map<String, Map<FormatType, List<Object>>> grouped = parseSelectedVCs(selectedVCs);
+    Map<String, List<Credential>> result = new HashMap<>();
+    for (Map.Entry<String, Map<FormatType, List<Object>>> descriptorEntry : grouped.entrySet()) {
+      List<Credential> credentials = new ArrayList<>();
+      for (Map.Entry<FormatType, List<Object>> formatEntry : descriptorEntry.getValue().entrySet()) {
+        FormatType formatType = formatEntry.getKey();
+        for (Object credentialData : formatEntry.getValue()) {
+          credentials.add(new Credential(formatType, credentialData, ""));
+        }
+      }
+      if (!credentials.isEmpty()) {
+        result.put(descriptorEntry.getKey(), credentials);
+      }
+    }
+    return result;
+  }
+
   public static List<VPTokenSigningResult> parseVPTokenSigningResults(
       ReadableArray vpTokenSigningResults) {
 

@@ -1,6 +1,5 @@
 package io.mosip.residentapp;
 
-import static io.mosip.residentapp.utils.OpenId4VPUtils.parseSelectedVCs;
 import static io.mosip.residentapp.utils.OpenId4VPUtils.parseVPTokenSigningResults;
 
 import android.annotation.SuppressLint;
@@ -119,9 +118,8 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     public void constructUnsignedVPToken(ReadableMap selectedVCs, String holderId, String signatureSuite,
             Promise promise) {
         try {
-            Map<String, Map<FormatType, List<Object>>> selectedVCsMap = parseSelectedVCs(selectedVCs);
-            List<UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedVCsMap, holderId,
-                    signatureSuite);
+            Map<String, List<Credential>> selectedCredentials = OpenId4VPUtils.parseSelectedVCsForPEX(selectedVCs);
+            List<UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedCredentials);
 
             JSONArray jsonArray = new JSONArray();
             for (UnsignedVPToken token : vpTokens) {
@@ -154,7 +152,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     public void constructUnsignedVPTokenDCQL(ReadableMap credentialsMap, Promise promise) {
         try {
             Map<String, List<Credential>> selectedCredentials = OpenId4VPUtils.parseSelectedVCsDCQL(credentialsMap);
-            List<UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPTokenDCQL(selectedCredentials);
+            List<UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedCredentials);
 
             JSONArray jsonArray = new JSONArray();
             for (UnsignedVPToken token : vpTokens) {
