@@ -47,7 +47,7 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
   if (controller.isDcqlFlow) {
     const dcqlResult = controller.matchingVcsResult as MatchingVCsResultForDcql;
     if (!controller.matchingVcsResult) {
-      return <LoaderAnimation testID={'calculatingMatchingVcsLoader'} />;
+      return <LoaderAnimation testID={'matching-vc-list-dcql-loader'} />;
     }
 
     const totalMandatoryCount = dcqlResult.credentialSetOptions.filter(
@@ -56,7 +56,7 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
     let mandatoryCount = 0;
 
     return (
-      <Column scroll backgroundColor={Theme.Colors.whiteBackgroundColor}>
+      <Column testID="matching-vc-list" scroll backgroundColor={Theme.Colors.whiteBackgroundColor}>
         {dcqlResult.credentialSetOptions.map((credentialSet, index) => {
           const mandatoryIndex =
             credentialSet.required && totalMandatoryCount > 1
@@ -78,6 +78,7 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
           return (
             <DcqlCredentialSetSection
               key={index}
+              testId={`matching-vc-list-dcql-section-${index}`}
               credentialSet={credentialSet}
               mandatoryIndex={mandatoryIndex}
               matchingVCsResult={dcqlResult.matchingVCs}
@@ -103,6 +104,7 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
         </Column>
       </LinearGradient>
       <Row
+        testID="matching-vc-list-header-row"
         padding="11 24 11 24"
         style={{
           backgroundColor: '#FAFAFA',
@@ -122,12 +124,13 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
           {areAllVcsChecked ? t('unCheck') : t('checkAll')}
         </Text>
       </Row>
-      <Column scroll backgroundColor={Theme.Colors.whiteBackgroundColor}>
+      <Column testID="matching-vc-list-vc-items" scroll backgroundColor={Theme.Colors.whiteBackgroundColor}>
         {Object.entries(controller.matchingVcsResult.matchingVCs).map(
           ([inputDescriptorId, vcs]: [string, any]) =>
             vcs.map((vcData: VC) => (
               <VcItemContainer
                 key={`${getVcKey(vcData)}-${inputDescriptorId}`}
+                testId={`matching-vc-list-vc-${getVcKey(vcData)}-${inputDescriptorId}`}
                 vcMetadata={vcData.vcMetadata}
                 margin="0 2 8 2"
                 onPress={controller.SELECT_VC_ITEM(

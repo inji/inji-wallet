@@ -6,6 +6,7 @@ import {ErrorMessageOverlay, MessageOverlay} from '../../MessageOverlay';
 import {Theme} from '../../ui/styleUtils';
 import {VCMetadata} from '../../../shared/VCMetadata';
 import {format} from 'date-fns';
+import testIDProps from '../../../shared/commonUtil';
 
 import {VCCardSkeleton} from '../common/VCCardSkeleton';
 import {VCCardViewContent} from './VCCardViewContent';
@@ -31,6 +32,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
   onDisclosuresChange,
   sdClaimsPath,
   onMeasured,
+  testId,
 }) => {
   const controller = useVcItemController(vcMetadata);
   const {t} = useTranslation();
@@ -161,6 +163,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
       <Pressable
         ref={cardRef}
         accessible={false}
+        {...(testId ? testIDProps(testId) : {})}
         onPress={() => onPress(service)}
         style={
           selected
@@ -196,6 +199,7 @@ export interface VCItemProps {
   isTopCard?: boolean;
   sdClaimsPath?: Array<any>;
   onDisclosuresChange?: (paths: string[]) => void;
+  testId?: string;
   onMeasured?: (rect: {
     x: number;
     y: number;

@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Text } from '../ui';
 import { Theme } from '../ui/styleUtils';
+import testIDProps from '../../shared/commonUtil';
 
 interface BadgeProps {
   text: string;
@@ -10,9 +11,10 @@ interface BadgeProps {
   borderColor?: string;
   bgColor: string;
   addInfoIcon?: boolean;
+  testId?: string;
 }
 
-export const Badge: React.FC<BadgeProps> = ({ text, textColor, borderColor, bgColor, addInfoIcon = false }) => {
+export const Badge: React.FC<BadgeProps> = ({ text, textColor, borderColor, bgColor, addInfoIcon = false, testId }) => {
   const badgeTextColor = textColor ?? borderColor ?? Theme.Colors.secondaryText;
 
   const badgeStyles = [Theme.DcqlStyles.badge, { backgroundColor: bgColor }];
@@ -23,6 +25,7 @@ export const Badge: React.FC<BadgeProps> = ({ text, textColor, borderColor, bgCo
   }
 
   return (<View
+    {...(testId ? testIDProps(`badge-${testId}`) : {})}
     style={badgeStyles}>
     <Text style={[Theme.DcqlStyles.badgeText, { color: badgeTextColor }]}>
       {text}

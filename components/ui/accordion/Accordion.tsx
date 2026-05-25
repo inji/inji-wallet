@@ -3,6 +3,7 @@ import { Pressable, StyleProp, View, ViewStyle } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Row, Text } from '../index';
 import { Theme } from '../styleUtils';
+import testIDProps from '../../../shared/commonUtil';
 
 interface AccordionProps {
   title: string | React.ReactNode;
@@ -17,6 +18,7 @@ interface AccordionProps {
   /** Override the outer container style. When omitted the default card style (border + shadow) is used. */
   containerStyle?: StyleProp<ViewStyle>;
   children: React.ReactNode;
+  testId?: string;
 }
 
 export const Accordion: React.FC<AccordionProps> = ({
@@ -28,23 +30,24 @@ export const Accordion: React.FC<AccordionProps> = ({
   stackBadge = false,
   containerStyle,
   children,
+  testId,
 }) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   return (
-    <View style={containerStyle ?? Theme.AccordionStyles.container}>
+    <View {...(testId ? testIDProps(`accordion-${testId}`) : {})} style={containerStyle ?? Theme.AccordionStyles.container}>
       <Row style={Theme.AccordionStyles.header}>
         {headerActionLeft}
         <Pressable
+          {...(testId ? testIDProps(`accordion-toggle-${testId}`) : {})}
           onPress={() => setIsExpanded(prev => !prev)}
           style={Theme.AccordionStyles.expandButton}>
-          <Row crossAlign="center">
+          <Row crossAlign="center" style={[headerActionLeft ? {justifyContent: 'space-between'} : undefined]}>
             <View
               style={[
                 stackBadge
                   ? Theme.AccordionStyles.titleColumn
-                  : Theme.AccordionStyles.titleRow,
-                headerActionLeft ? {flex: 1} : undefined,
+                  : Theme.AccordionStyles.titleRow
               ]}>
               {typeof title === 'string' ? (
                 <Text style={Theme.AccordionStyles.title}>{title}</Text>

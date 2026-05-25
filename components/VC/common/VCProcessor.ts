@@ -59,7 +59,7 @@ Input: full SD-JWT string (with disclosures appended)
 Output:
 - fullResolvedPayload: resolved JSON with all disclosed claims
 - disclosedKeys: Set of keys that were disclosed via disclosures (as full JSON paths)
-- publicKeys: Set of keys that were present in JWT payload directly (non-selectively-disclosable)
+- publicKeys: Set of keys that were present in JWT payload directly (non-selectively-disclosable) which are registered JWT claims
 */
 
 function hashDigest(alg: string, input: string): Uint8Array {

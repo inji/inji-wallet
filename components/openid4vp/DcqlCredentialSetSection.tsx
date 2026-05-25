@@ -19,6 +19,8 @@ import {VCMetadata} from '../../shared/VCMetadata';
 import {Checkbox} from '../ui/checkbox/Checkbox';
 import {Accordion} from '../ui/accordion/Accordion';
 import {VCFormat} from '../../shared/VCFormat';
+import {useTranslation} from 'react-i18next';
+import testIDProps from '../../shared/commonUtil';
 
 interface DcqlCredentialSetSectionProps {
   credentialSet: CredentialSetOption;
@@ -26,13 +28,15 @@ interface DcqlCredentialSetSectionProps {
   controller: any;
   onDisclosureChange: (vcKey: string, disclosures: string[]) => void;
   mandatoryIndex?: number;
+  testId: string;
 }
 
 export const DcqlCredentialSetSection: React.FC<
   DcqlCredentialSetSectionProps
-> = ({credentialSet, matchingVCsResult, controller, onDisclosureChange, mandatoryIndex}) => {
+> = ({credentialSet, matchingVCsResult, controller, onDisclosureChange, mandatoryIndex, testId}) => {
 
   const isRequired = credentialSet.required;
+  const {t} = useTranslation('SendVPScreen');
 
   const getVcKey = (vcData: VC): string =>
     VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey();
@@ -171,6 +175,7 @@ export const DcqlCredentialSetSection: React.FC<
 
   const renderCredentialsMatchingQueryId = (
     credentialQueryId: string,
+    optionIndex: number,
     handleVcSelection: (vcKey: string) => void,
     isVcSelected: (credentialQueryId: string, vcKey: string) => boolean,
   ) => {
@@ -204,6 +209,7 @@ export const DcqlCredentialSetSection: React.FC<
           selected={isVcSelected(credentialQueryId, vcKey)}
           flow={VCItemContainerFlowType.VP_SHARE}
           isPinned={vcData.vcMetadata.isPinned}
+          testId={`${testId}-option-${optionIndex}-query-${credentialQueryId}-vc-${vcKey}`}
           onDisclosuresChange={disclosures => {
             onDisclosureChange(vcKey, disclosures);
           }}
@@ -216,7 +222,9 @@ export const DcqlCredentialSetSection: React.FC<
     //.   Case 3: Multiple VCs match the credential query but verifier does not allow multiple credentials
     //          - render the matching VCs inside an accordion and allow user to select only one VC based on the verifier's preference
     return (
-      <Accordion title={'Multiple Cards Matching Query'} defaultExpanded>
+      <Accordion
+        testId={`${testId}-option-${optionIndex}-query-${credentialQueryId}-multi-vc`}
+        title={t('dcqlSection.multipleCardsMatchingQuery')} defaultExpanded>
         {matchResult.matchingVcs.map(
           (matchingCredentialData: VcWithMatchedClaims, index: number) => {
             const vcData = matchingCredentialData.vc;
@@ -236,6 +244,7 @@ export const DcqlCredentialSetSection: React.FC<
                 selected={isVcSelected(credentialQueryId, vcKey)}
                 flow={VCItemContainerFlowType.VP_SHARE}
                 isPinned={vcData.vcMetadata.isPinned}
+                testId={`${testId}-option-${optionIndex}-query-${credentialQueryId}-vc-${vcKey}`}
                 onDisclosuresChange={disclosures => {
                   onDisclosureChange(vcKey, disclosures);
                 }}
@@ -252,13 +261,14 @@ export const DcqlCredentialSetSection: React.FC<
 
   return (
     <Accordion
+      testId={testId}
       containerStyle={Theme.DcqlStyles.sectionContainer}
       title={
         <>
           <Text style={Theme.DcqlStyles.sectionTitle}>
             {isRequired
-              ? `MANDATORY CARDS${mandatoryIndex !== undefined ? ` ${mandatoryIndex}` : ''}`
-              : 'OPTIONAL CARDS'}
+              ? t('dcqlSection.mandatoryCards', {index: mandatoryIndex !== undefined ? ` ${mandatoryIndex}` : ''})
+              : t('dcqlSection.optionalCards')}
           </Text>
           {isSectionSatisfied && (
             <Icon
@@ -273,7 +283,8 @@ export const DcqlCredentialSetSection: React.FC<
       headerAction={
         <Badge
           addInfoIcon
-          text={isRequired ? 'REQUIRED' : 'NOT REQUIRED'}
+          testId={`${testId}-required-badge`}
+          text={isRequired ? t('dcqlSection.required') : t('dcqlSection.notRequired')}
           borderColor={
             isRequired
               ? DcqlBadgeColors.requiredBorder
@@ -293,22 +304,25 @@ export const DcqlCredentialSetSection: React.FC<
       defaultExpanded={credentialSet.required}>
       <Column>
         {credentialSet.options.map((option, optionIndex) => (
-          <View key={optionIndex}>
-            {optionIndex > 0 && <Divider text={'OR'} />}
+          <View key={optionIndex} {...testIDProps(`${testId}-option-${optionIndex}`)}>
+            {optionIndex > 0 && <Divider testId={`${testId}-option-${optionIndex}-divider`} text={'OR'} />}
             {isMultipleCombinedOption(option) ? (
               // Case 1: the option has multiple credential queries - Combination of credential queries need to be selected together
               <Accordion
-                title="Multiple Cards"
+                testId={`${testId}-option-${optionIndex}-combined`}
+                title={t('dcqlSection.multipleCards')}
                 badge={
                   <Badge
+                    testId={`${testId}-option-${optionIndex}-all-required-badge`}
                     textColor='#000'
-                    text={'ALL REQUIRED'}
+                    text={t('dcqlSection.allRequired')}
                     bgColor={'#F1F5F9'}
                   />
                 }
                 stackBadge
                 headerActionLeft={
                   <Checkbox
+                    testId={`${testId}-option-${optionIndex}-select-all`}
                     selectionType="single"
                     checked={isOptionSelected(option, optionIndex)}
                     onPress={() => selectAllInOption(option, optionIndex)}
@@ -317,6 +331,7 @@ export const DcqlCredentialSetSection: React.FC<
                 {option.map(credentialQueryId => {
                   return renderCredentialsMatchingQueryId(
                     credentialQueryId,
+                    optionIndex,
                     (vcKey: string) =>
                       handleVCSelection(
                         vcKey,
@@ -331,6 +346,7 @@ export const DcqlCredentialSetSection: React.FC<
               // Case 2: the option has only one credential query - Only one credential query needs to be selected
               renderCredentialsMatchingQueryId(
                 option[0],
+                optionIndex,
                 (vcKey: string) =>
                   handleOptionSelection(vcKey, option[0], optionIndex),
                 isVcSelected,

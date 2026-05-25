@@ -125,12 +125,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
           style={{justifyContent: 'space-between', marginBottom: -10}}>
           <Row crossAlign="center">
             {node.__self && (
-              <Checkbox
-                size={22}
-                selectionType={"multiple"}
-                checked={selected ?? isChecked}
-                onPress={() => handleFieldToggle(fullPath)}
-              />
+              <Checkbox checked={selected ?? isChecked} onPress={() => handleFieldToggle(fullPath)} selectionType={"multiple"} testId={fullPath}/>
             )}
             <Text
               weight="semibold"
@@ -203,12 +198,20 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
     });
   };
 
+  const handleVCSelection = () => {
+    if(sdClaimsPath) {
+      onDisclosuresChange?.(sdClaimsPath);
+    }
+    onPress()
+  }
+
   const wellknownDisplayProperty = new Display(wellknown);
   const vcSelectableButton = selectable && (
     <Checkbox
+      testId={"select-vc"}
       selectionType={selectionType}
       checked={selected}
-      onPress={() => onPress()}
+      onPress={handleVCSelection}
     />
   );
   const issuerLogo = verifiableCredentialData.issuerLogo;

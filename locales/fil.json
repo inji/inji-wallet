@@ -1121,6 +1121,15 @@
       "subTitle": {
         "fetchingVerifiers": "Kinukuha ang iyong listahan ng mga tumutugmang nabe-verify na kredensyal"
       }
+    },
+    "dcqlSection": {
+      "mandatoryCards": "MGA SAPILITANG KARD{{index}}",
+      "optionalCards": "MGA OPSYONAL NA KARD",
+      "required": "KINAKAILANGAN",
+      "notRequired": "HINDI KINAKAILANGAN",
+      "multipleCardsMatchingQuery": "Maraming Kard na Tumutugma sa Query",
+      "multipleCards": "Maraming Kard",
+      "allRequired": "LAHAT AY KINAKAILANGAN"
     }
   },
   "VerifyIdentityOverlay": {

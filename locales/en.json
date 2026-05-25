@@ -1143,6 +1143,15 @@
       "subTitle": {
         "fetchingVerifiers": "Fetching your list of matching verifiable credentials"
       }
+    },
+    "dcqlSection": {
+      "mandatoryCards": "MANDATORY CARDS{{index}}",
+      "optionalCards": "OPTIONAL CARDS",
+      "required": "REQUIRED",
+      "notRequired": "NOT REQUIRED",
+      "multipleCardsMatchingQuery": "Multiple Cards Matching Query",
+      "multipleCards": "Multiple Cards",
+      "allRequired": "ALL REQUIRED"
     }
   },
   "VerifyIdentityOverlay": {

@@ -2,8 +2,10 @@ import React from 'react';
 import {CheckBox, Icon} from 'react-native-elements';
 import {SvgImage} from '../svg';
 import {Theme} from '../styleUtils';
+import testIDProps from "../../../shared/commonUtil";
 
 interface CheckboxProps {
+  testId: string,
   selectionType?: 'single' | 'multiple';
   checked: boolean;
   onPress: () => void;
@@ -11,6 +13,7 @@ interface CheckboxProps {
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({
+  testId,
   selectionType = 'single',
   checked,
   onPress,
@@ -19,6 +22,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   if (selectionType === 'multiple') {
     return (
       <CheckBox
+        {...testIDProps(`checkbox-multiple-${testId}`)}
         checked={checked}
         checkedIcon={SvgImage.selectedCheckBox()}
         uncheckedIcon={
@@ -36,6 +40,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
   return (
     <CheckBox
+      {...testIDProps(`checkbox-single-${testId}`)}
       checked={checked}
       checkedIcon={
         <Icon name="check-circle" type="material" color={Theme.Colors.Icon} />

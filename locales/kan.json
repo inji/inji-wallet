@@ -1135,6 +1135,15 @@
       "subTitle": {
         "fetchingVerifiers": "ನಿಮ್ಮ ಹೊಂದಾಣಿಕೆಯ ಪರಿಶೀಲಿಸಬಹುದಾದ ರುಜುವಾತುಗಳ ಪಟ್ಟಿಯನ್ನು ಪಡೆಯಲಾಗುತ್ತಿದೆ"
       }
+    },
+    "dcqlSection": {
+      "mandatoryCards": "ಕಡ್ಡಾಯ ಕಾರ್ಡ್‌ಗಳು{{index}}",
+      "optionalCards": "ಐಚ್ಛಿಕ ಕಾರ್ಡ್‌ಗಳು",
+      "required": "ಅಗತ್ಯವಿದೆ",
+      "notRequired": "ಅಗತ್ಯವಿಲ್ಲ",
+      "multipleCardsMatchingQuery": "ಪ್ರಶ್ನೆಗೆ ಹೊಂದಿಕೊಳ್ಳುವ ಹಲವು ಕಾರ್ಡ್‌ಗಳು",
+      "multipleCards": "ಹಲವು ಕಾರ್ಡ್‌ಗಳು",
+      "allRequired": "ಎಲ್ಲವೂ ಅಗತ್ಯ"
     }
   },
   "VerifyIdentityOverlay": {

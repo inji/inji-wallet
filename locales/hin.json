@@ -1125,6 +1125,15 @@
       "subTitle": {
         "fetchingVerifiers": "मेल खाने वाले सत्यापन योग्य क्रेडेंशियल्स की आपकी सूची लाई जा रही है"
       }
+    },
+    "dcqlSection": {
+      "mandatoryCards": "अनिवार्य कार्ड{{index}}",
+      "optionalCards": "वैकल्पिक कार्ड",
+      "required": "आवश्यक",
+      "notRequired": "आवश्यक नहीं",
+      "multipleCardsMatchingQuery": "क्वेरी से मेल खाते कई कार्ड",
+      "multipleCards": "कई कार्ड",
+      "allRequired": "सभी आवश्यक"
     }
   },
   "VerifyIdentityOverlay": {

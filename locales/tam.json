@@ -1123,6 +1123,15 @@
       "subTitle": {
         "fetchingVerifiers": "பொருந்தக்கூடிய சரிபார்க்கக்கூடிய நற்சான்றிதழ்களின் பட்டியலைப் பெறுகிறது"
       }
+    },
+    "dcqlSection": {
+      "mandatoryCards": "கட்டாய அட்டைகள்{{index}}",
+      "optionalCards": "விருப்பமான அட்டைகள்",
+      "required": "தேவையானது",
+      "notRequired": "தேவையில்லை",
+      "multipleCardsMatchingQuery": "வினவலுக்கு பொருந்தும் பல அட்டைகள்",
+      "multipleCards": "பல அட்டைகள்",
+      "allRequired": "அனைத்தும் தேவையானவை"
     }
   },
   "VerifyIdentityOverlay": {
