@@ -43,7 +43,9 @@ export class VCProcessor {
       const payload: any = jwtDecode(rawJwt);
       const credentialSubject = payload.vc?.credentialSubject;
       if (credentialSubject == null) {
-        throw new Error('Invalid jwt_vc_json: missing payload.vc.credentialSubject');
+        throw new Error(
+          'Invalid jwt_vc_json: missing payload.vc.credentialSubject',
+        );
       }
       return {
         fullResolvedPayload: credentialSubject,
@@ -200,4 +202,89 @@ export function reconstructSdJwtFromCompact(sdJwtCompact: string): {
     publicKeys: Array.from(publicKeys),
     pathToDisclosures,
   };
+}
+
+export enum ClaimVisibility {
+  PRIVATE = 'PRIVATE',
+  PUBLIC = 'public',
+}
+
+export function flattenSdJwt({
+  disclosedKeys,
+  eligibleDisclosedKeys,
+  fullResolvedPayload,
+  reservedSdJwtClaims = [
+    'iss',
+    'sub',
+    'aud',
+    'exp',
+    'nbf',
+    'iat',
+    'jti',
+    'cnf',
+    'vct',
+  ],
+}: {
+  disclosedKeys: string[];
+  eligibleDisclosedKeys: string[];
+  fullResolvedPayload: object;
+  reservedSdJwtClaims?: string[];
+}) {
+  const flattened: Record<string, any> = {};
+
+  const disclosedSet = new Set(disclosedKeys);
+  const eligibleSet = new Set(eligibleDisclosedKeys);
+
+  function walk(value: unknown, currentPath = '') {
+    // Primitive leaf
+    if (value === null || typeof value !== 'object') {
+      const isDisclosed = disclosedSet.has(currentPath);
+      const isEligible = eligibleSet.has(currentPath);
+
+      // Skip disclosed/private claims
+      // that are not eligible
+      if (isDisclosed && !isEligible) {
+        return;
+      }
+
+      flattened[currentPath] = {
+        value,
+        visibility: isDisclosed
+          ? ClaimVisibility.PRIVATE
+          : ClaimVisibility.PUBLIC,
+      };
+
+      return;
+    }
+
+    // Array
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => {
+        const nextPath = currentPath
+          ? `${currentPath}[${index}]`
+          : `[${index}]`;
+
+        walk(item, nextPath);
+      });
+
+      return;
+    }
+
+    // Object
+    for (const [key, child] of Object.entries(value)) {
+      // Skip reserved SD-JWT claims
+      // ONLY for nested claims
+      if (currentPath === '' && reservedSdJwtClaims.includes(key)) {
+        continue;
+      }
+
+      const nextPath = currentPath ? `${currentPath}.${key}` : key;
+
+      walk(child, nextPath);
+    }
+  }
+
+  walk(fullResolvedPayload);
+
+  return flattened;
 }

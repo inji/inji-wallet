@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {
   ImageBackground,
   Pressable,
@@ -31,6 +31,7 @@ import {HistoryTab} from '../../../screens/Home/MyVcs/HistoryTab';
 import {useCopilot} from 'react-native-copilot';
 import {useTranslation} from 'react-i18next';
 import testIDProps from '../../../shared/commonUtil';
+import {ClaimVisibility, flattenSdJwt} from '../common/VCProcessor';
 
 export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   isPinned = false,
@@ -39,7 +40,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   wellknown,
   selectable,
   selected,
-  selectionType = "single",
+  selectionType = 'single',
   service,
   onPress,
   flow,
@@ -70,8 +71,6 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>(
     {},
   );
-
-  console.log("credential?.disclosedKeys: ", credential?.disclosedKeys);
 
   const areAllSelected = (): boolean => {
     return credential.disclosedKeys.every(key => selectedFields[key]);
@@ -105,8 +104,15 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
     setExpandedNodes: React.Dispatch<
       React.SetStateAction<Record<string, boolean>>
     >;
-  }> = ({name, node, fullPath, expandedNodes, setExpandedNodes, selected = undefined, lockSelection = false}) => {
-    console.log("Rendering DisclosureNode for path: ", fullPath, " with node: ", node, "name: ", name, "selected: ", selected, "lockSelection: ", lockSelection);
+  }> = ({
+    name,
+    node,
+    fullPath,
+    expandedNodes,
+    setExpandedNodes,
+    selected = undefined,
+    lockSelection = false,
+  }) => {
     const isExpanded = expandedNodes[fullPath] || false;
 
     const toggleExpand = () => {
@@ -116,7 +122,10 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
       }));
     };
 
-    const isChecked = selectedFields[fullPath] || false;
+    const isChecked =
+      node.visibility === ClaimVisibility.PUBLIC ||
+      selectedFields[fullPath] ||
+      false;
 
     return (
       <Column>
@@ -125,7 +134,13 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
           style={{justifyContent: 'space-between', marginBottom: -10}}>
           <Row crossAlign="center">
             {node.__self && (
-              <Checkbox checked={selected ?? isChecked} onPress={() => handleFieldToggle(fullPath)} selectionType={"multiple"} testId={fullPath}/>
+              <Checkbox
+                checked={selected ?? isChecked}
+                onPress={() => handleFieldToggle(fullPath)}
+                selectionType={'multiple'}
+                testId={fullPath}
+                disabled={node.visibility === ClaimVisibility.PUBLIC}
+              />
             )}
             <Text
               weight="semibold"
@@ -133,11 +148,11 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
                 Theme.Colors.plainText,
               )}
               style={{marginLeft: 8}}>
-                {(() => {
-                  const formattedLabel = formatKeyLabel(name);
-                  console.log("Formatting key label for: ", formattedLabel);
-                  return formattedLabel;
-                })()}
+              {(() => {
+                const formattedLabel = formatKeyLabel(name);
+                console.log('Formatting key label for: ', formattedLabel);
+                return formattedLabel;
+              })()}
             </Text>
           </Row>
 
@@ -157,7 +172,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
             <Column key={childName} margin="0 0 0 15">
               <DisclosureNode
                 selected={selected}
-                lockSelection={true}
+                lockSelection={lockSelection}
                 name={childName}
                 node={childNode}
                 fullPath={`${fullPath}.${childName}`}
@@ -199,16 +214,16 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   };
 
   const handleVCSelection = () => {
-    if(sdClaimsPath) {
+    if (sdClaimsPath) {
       onDisclosuresChange?.(sdClaimsPath);
     }
-    onPress()
-  }
+    onPress();
+  };
 
   const wellknownDisplayProperty = new Display(wellknown);
   const vcSelectableButton = selectable && (
     <Checkbox
-      testId={"select-vc"}
+      testId={'select-vc'}
       selectionType={selectionType}
       checked={selected}
       onPress={handleVCSelection}
@@ -220,10 +235,14 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   const {t} = useTranslation();
 
   function showDisclosedKeys() {
-    console.log("sdClaimsPath: ", sdClaimsPath);
-    console.log("Format check : ", verifiableCredentialData.format);
+    console.log('sdClaimsPath: ', sdClaimsPath);
+    console.log('Format check : ', verifiableCredentialData.format);
 
-    return flow === VCItemContainerFlowType.VP_SHARE && ( credential?.disclosedKeys?.length > 0  || (sdClaimsPath && sdClaimsPath.length > 0) );
+    return (
+      flow === VCItemContainerFlowType.VP_SHARE &&
+      (credential?.disclosedKeys?.length > 0 ||
+        (sdClaimsPath && sdClaimsPath.length > 0))
+    );
   }
 
   return (
@@ -305,90 +324,76 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
           )}
           {flow !== VCItemContainerFlowType.VP_SHARE && vcSelectableButton}
           {showDisclosedKeys() && (
-              <Pressable onPress={toggleExpand}>
-                <Icon
-                  name={isExpanded ? 'expand-less' : 'expand-more'}
-                  color={Theme.Colors.Icon}
-                />
-              </Pressable>
-            )}
+            <Pressable onPress={toggleExpand}>
+              <Icon
+                name={isExpanded ? 'expand-less' : 'expand-more'}
+                color={Theme.Colors.Icon}
+              />
+            </Pressable>
+          )}
         </Row>
         {/* Expanded section for SD-JWT disclosed keys */}
-        { isExpanded &&
-          showDisclosedKeys() && (
-            <Column padding="8 0">
-              <View style={{paddingHorizontal: 6, marginTop: 8}}>
-                <View
-                  style={{
-                    ...Theme.Styles.horizontalSeparator,
-                    marginBottom: 12,
-                  }}
-                />
-                <Column>
-                  <Text style={Theme.Styles.disclosureTitle}>
-                    {t('SendVPScreen:selectedFieldsTitle')}
-                  </Text>
-                  <Text style={Theme.Styles.disclosureSubtitle}>
-                    {t('SendVPScreen:selectedFieldsSubtitle')}
-                  </Text>
-                </Column>
+        {isExpanded && showDisclosedKeys() && (
+          <Column padding="8 0">
+            <View style={{paddingHorizontal: 6, marginTop: 8}}>
+              <View
+                style={{
+                  ...Theme.Styles.horizontalSeparator,
+                  marginBottom: 12,
+                }}
+              />
+              <Column>
+                <Text style={Theme.Styles.disclosureTitle}>
+                  {t('SendVPScreen:selectedFieldsTitle')}
+                </Text>
+                <Text style={Theme.Styles.disclosureSubtitle}>
+                  {t('SendVPScreen:selectedFieldsSubtitle')}
+                </Text>
+              </Column>
 
-              {!sdClaimsPath && <Row style={{ marginTop: 12 }} width="100%" align="flex-end">
-                <Pressable onPress={toggleSelectAll}>
-                  <Text
-                    color={Theme.Colors.Icon}
-                    style={Theme.Styles.disclosureSelectButton}>
-                    {areAllSelected()
-                      ? t('SendVPScreen:unselectAll')
-                      : t('SendVPScreen:selectAll')}
-                  </Text>
-                </Pressable>
-              </Row>
-              }
+              {!sdClaimsPath && (
+                <Row style={{marginTop: 12}} width="100%" align="flex-end">
+                  <Pressable onPress={toggleSelectAll}>
+                    <Text
+                      color={Theme.Colors.Icon}
+                      style={Theme.Styles.disclosureSelectButton}>
+                      {areAllSelected()
+                        ? t('SendVPScreen:unselectAll')
+                        : t('SendVPScreen:selectAll')}
+                    </Text>
+                  </Pressable>
+                </Row>
+              )}
 
-                <View
-                  style={{...Theme.Styles.horizontalSeparator, marginTop: 12}}
+              <View
+                style={{...Theme.Styles.horizontalSeparator, marginTop: 12}}
+              />
+            </View>
+            <Fragment>
+              {Object.entries(
+                buildDisclosureTree(
+                  flattenSdJwt({
+                    eligibleDisclosedKeys:
+                      sdClaimsPath ?? credential.disclosedKeys,
+                    disclosedKeys: credential.disclosedKeys,
+                    fullResolvedPayload: credential.fullResolvedPayload,
+                  }),
+                ),
+              ).map(([name, node]: [string, any]) => (
+                <DisclosureNode
+                  selected={sdClaimsPath ? selected : undefined}
+                  lockSelection={!!sdClaimsPath}
+                  key={name}
+                  name={name}
+                  node={node}
+                  fullPath={name}
+                  expandedNodes={expandedNodes}
+                  setExpandedNodes={setExpandedNodes}
                 />
-              </View>
-            {
-              sdClaimsPath ?
-                (
-                  <>
-                    {Object.entries(
-                      buildDisclosureTree(sdClaimsPath),
-                    ).map(([name, node]: [string, any]) => (
-                      <DisclosureNode
-                        selected={selected}
-                        lockSelection={true}
-                        key={name}
-                        name={name}
-                        node={node}
-                        fullPath={name}
-                        expandedNodes={expandedNodes}
-                        setExpandedNodes={setExpandedNodes}
-                      />
-                    ))}
-                  </>
-                ) :
-                (
-                  <>
-                    {Object.entries(
-                      buildDisclosureTree(credential.disclosedKeys),
-                    ).map(([name, node]: [string, any]) => (
-                      <DisclosureNode
-                        key={name}
-                        name={name}
-                        node={node}
-                        fullPath={name}
-                        expandedNodes={expandedNodes}
-                        setExpandedNodes={setExpandedNodes}
-                      />
-                    ))}
-                  </>
-                )
-            }
-            </Column>
-          )}
+              ))}
+            </Fragment>
+          </Column>
+        )}
 
         <WalletBinding service={service} vcMetadata={vcMetadata} />
 
@@ -404,21 +409,45 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   );
 };
 
-function buildDisclosureTree(paths: string[]) {
-  console.log("Building disclosure tree for paths: ", paths);
-  const root: any = {};
-  paths.forEach(path => {
+type DisclosureData = {
+  __self: boolean;
+  visibility: ClaimVisibility | null;
+  value: unknown;
+  children: Record<string, DisclosureData>;
+};
+
+function buildDisclosureTree(
+  flattened: Record<string, {visibility: ClaimVisibility; value: unknown}>,
+): Record<string, DisclosureData> {
+  const root: Record<string, DisclosureData> = {};
+
+  Object.entries(flattened).forEach(([path, metadata]) => {
     const parts = path.split('.');
-    let node = root;
+
+    let node: Record<string, DisclosureData> = root;
+
     parts.forEach((part, idx) => {
-      if (!node[part]) node[part] = {__self: false, children: {}};
+      // Create node if missing
+      if (!node[part]) {
+        node[part] = {
+          __self: false,
+          visibility: null,
+          value: undefined,
+          children: {},
+        };
+      }
+
+      // Leaf node
       if (idx === parts.length - 1) {
         node[part].__self = true;
+        node[part].visibility = metadata.visibility as ClaimVisibility;
+        node[part].value = metadata.value;
       }
+
       node = node[part].children;
     });
   });
-  console.log('Disclosure Tree: ', JSON.stringify(root, null, 2));
+
   return root;
 }
 
@@ -431,7 +460,7 @@ export interface VCItemContentProps {
   generatedOn: string;
   selectable: boolean;
   selected: boolean;
-  selectionType?: "single" | "multiple"
+  selectionType?: 'single' | 'multiple';
   isPinned?: boolean;
   service: any;
   onPress: () => void;
