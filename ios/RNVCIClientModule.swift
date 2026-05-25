@@ -291,7 +291,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   }
 
   private func getSelectedCredentialsContinuationHook(vpRequest: AuthorizationRequest) async throws
-    -> [String: [FormatType: [OpenID4VPAnyCodable]]]
+    -> [String: [Credential]]
   {
     let vpRequestJson = try OpenId4VPUtils.toJsonString(jsonObject: vpRequest)
     if let bridge = RCTBridge.current() {
@@ -308,12 +308,12 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
       self.pendingSelectedCredentialsContinuation = continuation
     }
 
-    guard let credentialsMap = selectedCredentials as? [String: [String: [Any]]] else {
+    guard let credentialsMap = selectedCredentials as? [String: [Any]] else {
       print("Invalid credentials map format")
       return [:]
     }
 
-    return OpenId4VPUtils.parseSelectedVCs(credentialsMap)
+    return try OpenId4VPUtils.parseSelectedVCs(credentialsMap)
   }
 
   private func getSignVerifiablePresentationContinuationHook(

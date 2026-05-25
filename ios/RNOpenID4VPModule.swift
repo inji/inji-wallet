@@ -152,38 +152,9 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
       }
     }
   }
-
-  @objc
-  func constructUnsignedVPToken(_ credentialsMap: AnyObject,
-                                holderId: String,
-                                signatureSuite: String,
-                                resolver resolve: @escaping RCTPromiseResolveBlock,
-                                rejecter reject: @escaping RCTPromiseRejectBlock) {
-    Task {
-      do {
-        guard let credentialsMap = credentialsMap as? [String: [String: [Any]]] else {
-          reject("OPENID4VP", "Invalid credentials map format", nil)
-          return
-        }
-
-        let formattedCredentialsMap: [String: [FormatType: [AnyCodable]]] = OpenId4VPUtils.parseSelectedVCs(credentialsMap)
-
-        let response : [UnsignedVPToken]? = try await openID4VP?.constructUnsignedVPToken(
-          verifiableCredentials: formattedCredentialsMap,
-          holderId: holderId,
-          signatureSuite: signatureSuite
-        )
-        
-        let parsedResponse = try OpenId4VPUtils.toJson(response)
-        resolve(parsedResponse)
-      } catch {
-        rejectWithOpenID4VPError(error, reject: reject)
-      }
-    }
-  }
   
   @objc
-  func constructUnsignedVPTokenDCQL(_ credentialsMap: AnyObject,
+  func constructUnsignedVPToken(_ credentialsMap: AnyObject,
                                 resolver resolve: @escaping RCTPromiseResolveBlock,
                                 rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {

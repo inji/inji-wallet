@@ -240,90 +240,38 @@ class OpenID4VP {
   }
 
   static async constructUnsignedVPToken(
-    vpRequest: any,
     selectedVCs: Record<string, VC[]>,
     selectedDisclosuresByVc: any,
-    holderId: string,
-    signatureAlgorithm: string,
   ) {
     const openID4VP = await OpenID4VP.getInstance();
-
-    const isPresentationExchangeFlow = vpRequest.hasOwnProperty(
-      'presentation_definition',
-    );
-    if (isPresentationExchangeFlow) {
-      const updatedSelectedVCs = openID4VP.processSelectedVCs(
-        selectedVCs,
-        selectedDisclosuresByVc,
-      );
-
-      let holder = holderId;
-      let signatureAlgorithmForCredential = signatureAlgorithm;
-
-      for (const [_, vcsArray] of Object.entries(updatedSelectedVCs)) {
-        if (vcsArray['ldp_vc']) {
-          // extract the holderId from the very first entry
-          const firstLdpVc = vcsArray['ldp_vc'][0];
-          holder = firstLdpVc['credentialSubject']['id'];
-          signatureAlgorithmForCredential = this.getSignatureSuite(holder);
-          if (signatureAlgorithmForCredential === 'Ed25519Signature2020') {
-            // convert holder from did:jwk to did:key format for Ed25519 keys
-            holder = 'did:web:KiruthikaJeyashankar.github.io:did#key-0';
-            console.log(
-              'Holder uses Ed25519 key, converted holder id to did:key format: ',
-              holder,
-            );
-          }
-          break;
-        }
-      }
-
-      console.log(
-        'The holder id for signing the VP token is determined to be: ',
-        holder,
-      );
-      console.log(
-        'The signature algorithm for signing the VP token is determined to be: ',
-        signatureAlgorithmForCredential,
-      );
-      const unSignedVpTokens =
-        await openID4VP.InjiOpenID4VP.constructUnsignedVPToken(
-          updatedSelectedVCs,
-          holder,
-          signatureAlgorithmForCredential,
-        );
-      return parseJSON(unSignedVpTokens);
-    } else {
-      // DCQL Query flow
-      const updatedSelectedVCs: Record<
-        string,
-        Array<SelectedCredentialsForVPSharing>
-      > = {};
-      Object.entries(selectedVCs).forEach(([credentialQueryId, vcsArray]) => {
-        updatedSelectedVCs[credentialQueryId] = vcsArray.map(credential => {
-          const credentialFormat = credential.vcMetadata.format;
-          return {
-            format: credentialFormat,
-            credentialId: credential.vcMetadata.id,
-            credential: openID4VP.extractCredential(
-              credential,
-              credentialFormat,
-              selectedDisclosuresByVc[
-                VCMetadata.fromVcMetadataString(
-                  credential.vcMetadata,
-                ).getVcKey()
-                ],
-            ),
-          };
-        });
+    const updatedSelectedVCs: Record<
+      string,
+      Array<SelectedCredentialsForVPSharing>
+    > = {};
+    Object.entries(selectedVCs).forEach(([credentialRequestId, vcsArray]) => {
+      updatedSelectedVCs[credentialRequestId] = vcsArray.map(credential => {
+        const credentialFormat = credential.vcMetadata.format;
+        return {
+          format: credentialFormat,
+          credentialId: credential.vcMetadata.id,
+          credential: openID4VP.extractCredential(
+            credential,
+            credentialFormat,
+            selectedDisclosuresByVc[
+              VCMetadata.fromVcMetadataString(
+                credential.vcMetadata,
+              ).getVcKey()
+              ],
+          ),
+        };
       });
+    });
 
-      const unSignedVpTokens =
-        await openID4VP.InjiOpenID4VP.constructUnsignedVPTokenDCQL(
-          updatedSelectedVCs,
-        );
-      return parseJSON(unSignedVpTokens);
-    }
+    const unSignedVpTokens =
+      await openID4VP.InjiOpenID4VP.constructUnsignedVPToken(
+        updatedSelectedVCs,
+      );
+    return parseJSON(unSignedVpTokens);
   }
 
   static async shareVerifiablePresentation(

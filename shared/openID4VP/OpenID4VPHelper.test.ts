@@ -63,7 +63,7 @@ import {
   getWalletMetadata,
   constructDetachedJWT,
   signDataForVpPreparation,
-  signDataForVpPreparationV2,
+  signDataForVpPreparation,
 } from './OpenID4VPHelper';
 
 describe('OpenID4VPHelper', () => {
@@ -138,7 +138,7 @@ describe('OpenID4VPHelper', () => {
         ldp_vc: {dataToSign: 'base64-data'},
       };
       const context = {privateKey: 'priv', keyType: 'Ed25519'};
-      const result = await signDataForVpPreparation(unSignedVpTokens, context);
+      const result = await signDataForVpPreparation(unSignedVpTokens);
       expect(result).toHaveProperty('ldp_vc');
       expect(result.ldp_vc).toHaveProperty('jws');
       expect(result.ldp_vc.signatureAlgorithm).toBe('Ed25519Signature2018');
@@ -152,7 +152,7 @@ describe('OpenID4VPHelper', () => {
         ldp_vc: {dataToSign: '{"key":"value"}'},
       };
       const context = {privateKey: 'priv', keyType: 'Ed25519'};
-      const result = await signDataForVpPreparation(unSignedVpTokens, context);
+      const result = await signDataForVpPreparation(unSignedVpTokens);
       expect(result).toHaveProperty('ldp_vc');
       isIOS.mockReturnValue(false);
     });
@@ -168,7 +168,7 @@ describe('OpenID4VPHelper', () => {
       };
       const context = {privateKey: 'priv', keyType: 'Ed25519'};
       await expect(
-        signDataForVpPreparation(unSignedVpTokens, context),
+        signDataForVpPreparation(unSignedVpTokens),
       ).rejects.toThrow('Canonicalized data to sign is undefined');
       isIOS.mockReturnValue(false);
     });
@@ -182,7 +182,7 @@ describe('OpenID4VPHelper', () => {
         },
       };
       const context = {privateKey: 'ed-priv', keyType: 'Ed25519'};
-      const result = await signDataForVpPreparation(unSignedVpTokens, context);
+      const result = await signDataForVpPreparation(unSignedVpTokens);
       expect(result).toHaveProperty('vc_sd_jwt');
       expect(result.vc_sd_jwt).toHaveProperty('uuid-1');
     });
@@ -198,7 +198,7 @@ describe('OpenID4VPHelper', () => {
       };
       const context = {privateKey: 'ed-priv', keyType: 'Ed25519'};
       await expect(
-        signDataForVpPreparation(unSignedVpTokens, context),
+        signDataForVpPreparation(unSignedVpTokens),
       ).rejects.toThrow('Failed to create signature for UUID');
     });
 
@@ -227,7 +227,7 @@ describe('OpenID4VPHelper', () => {
           ],
         },
       };
-      const result = await signDataForVpPreparation(unSignedVpTokens, context);
+      const result = await signDataForVpPreparation(unSignedVpTokens);
       expect(result).toHaveProperty('mso_mdoc');
     });
   });
@@ -243,7 +243,7 @@ describe('OpenID4VPHelper', () => {
         },
       ];
       const context = {privateKey: 'priv'};
-      const result = await signDataForVpPreparationV2(tokens, context);
+      const result = await signDataForVpPreparation(tokens);
       expect(result).toHaveLength(1);
       expect(result[0]).toHaveProperty('signedData');
     });
@@ -258,7 +258,7 @@ describe('OpenID4VPHelper', () => {
         },
       ];
       const context = {privateKey: 'priv'};
-      const result = await signDataForVpPreparationV2(tokens, context);
+      const result = await signDataForVpPreparation(tokens);
       expect(result).toHaveLength(1);
       expect(result[0].signedData).toBeDefined();
     });
@@ -273,7 +273,7 @@ describe('OpenID4VPHelper', () => {
         },
       ];
       const context = {privateKey: 'priv'};
-      await expect(signDataForVpPreparationV2(tokens, context)).rejects.toThrow(
+      await expect(signDataForVpPreparation(tokens)).rejects.toThrow(
         'Unsupported algorithm',
       );
     });
@@ -288,7 +288,7 @@ describe('OpenID4VPHelper', () => {
         },
       ];
       const context = {privateKey: 'priv'};
-      await expect(signDataForVpPreparationV2(tokens, context)).rejects.toThrow(
+      await expect(signDataForVpPreparation(tokens)).rejects.toThrow(
         'Unsupported VP Token format',
       );
     });

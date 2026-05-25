@@ -7,7 +7,7 @@ import {OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../../shared/constants';
 import {getVerifierKey, VCShareFlowType} from '../../shared/Utils';
 import {
   isClientValidationRequired,
-  signDataForVpPreparationV2,
+  signDataForVpPreparation,
 } from '../../shared/openID4VP/OpenID4VPHelper';
 import {NativeModules} from 'react-native';
 import VciClient from '../../shared/vciClient/VciClient';
@@ -104,24 +104,16 @@ export const openID4VPServices = () => {
     },
 
     signVP: (context: any) => async () => {
-      return await signDataForVpPreparationV2(context.unsignedVPToken, context);
+      return await signDataForVpPreparation(context.unsignedVPToken);
     },
 
     sendVP: (context: any) => async () => {
-      const jwk = await getJWK(context.publicKey, context.keyType);
-      const holderId = 'did:jwk:' + base64url(JSON.stringify(jwk)) + '#0';
-
       const unSignedVpTokens = await OpenID4VP.constructUnsignedVPToken(
-        context.authenticationResponse,
         context.selectedVCs,
         context.selectedDisclosuresByVc,
-        holderId,
-        signatureSuite,
       );
-      const vpTokenSigningResults = await signDataForVpPreparationV2(
-        unSignedVpTokens,
-        context,
-      );
+      const vpTokenSigningResults = await signDataForVpPreparation(unSignedVpTokens);
+
       const verifierResponse = await OpenID4VP.shareVerifiablePresentation(
         vpTokenSigningResults,
       );
