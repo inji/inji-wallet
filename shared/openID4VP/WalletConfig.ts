@@ -26,6 +26,6 @@ export const defaultWalletConfig = {
   authorization_encryption_alg_values_supported: ['ECDH-ES'],
   authorization_encryption_enc_values_supported: ['A256GCM'],
   presentation_definition_uri_supported: true,
-  supported_request_uri_methods: ["get", "post"],
+  request_uri_methods_supported: ["get", "post"],
   trusted_verifiers: []
 };
