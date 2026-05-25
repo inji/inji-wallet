@@ -180,6 +180,40 @@ public class RNSecureKeystoreModule extends ReactContextBaseJavaModule {
         getCurrentActivity());
   }
 
+  @ReactMethod
+  public void signBytes(String signAlgorithm, String alias, String base64Data, Promise promise) {
+    String algorithm;
+    if ("RS256".equals(signAlgorithm)) {
+      algorithm = "SHA256withRSA";
+    } else if ("ES256".equals(signAlgorithm)) {
+      algorithm = "SHA256withECDSA";
+    } else {
+      promise.reject("", "Unsupported algorithm for signing");
+      return;
+    }
+
+    Function1<String, Unit> successLambda = signature -> {
+      promise.resolve(signature);
+      return Unit.INSTANCE;
+    };
+
+    Function2<Integer, String, Unit> failureLambda = (code, message) -> {
+      promise.reject(code.toString(), message);
+      return Unit.INSTANCE;
+    };
+
+    BinarySigner.INSTANCE.signBase64(
+        keystore,
+        cipherBox,
+        biometrics,
+        algorithm,
+        alias,
+        base64Data,
+        successLambda,
+        failureLambda,
+        getCurrentActivity());
+  }
+
   @ReactMethod(isBlockingSynchronousMethod = true)
   public void clearKeys() {
     keystore.removeAllKeys();

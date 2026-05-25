@@ -671,4 +671,6 @@ fileignoreconfig:
   checksum: def7f8defeedf75a71425be27f4dcb77511435a39fc367f313c0213f273fadb5
 - filename: android/app/src/main/java/io/mosip/residentapp/InjiOpenID4VPModule.java
   checksum: 49c0ea56569846614dbb934b9da4b61257ecb04869af0e89e4b7275ba10b5873
+- filename: android/app/src/main/java/io/mosip/residentapp/BinarySigner.kt
+  checksum: 424893dfda4088fc205f2bff842c398ab8e11accec85ca9e538d05571f6ba3e9
   version: "1.0"
