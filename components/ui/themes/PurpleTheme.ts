@@ -324,10 +324,6 @@ export const PurpleTheme = {
       margin: 8,
       backgroundColor: '#fff',
       shadowColor: '#000',
-      shadowOffset: {width: -1, height: 2},
-      shadowOpacity: 0.3,
-      shadowRadius: 4,
-      elevation: 7,
     },
     selectedBindedVc: {
       borderRadius: 15,
@@ -2709,6 +2705,7 @@ export const PurpleTheme = {
       flexDirection: 'row',
       alignItems: 'center',
       flexWrap: 'wrap',
+      rowGap: 4
     },
     titleColumn: {
       flexDirection: 'column',

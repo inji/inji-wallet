@@ -2682,11 +2682,7 @@ export const DefaultTheme = {
       marginHorizontal: 8,
       marginBottom: 8,
       backgroundColor: Colors.White,
-      shadowColor: '#000',
-      // shadowOffset: {width: -1, height: 2},
-      // shadowOpacity: 0.3,
-      // shadowRadius: 4,
-      // elevation: 7,
+      shadowColor: '#000'
     },
     header: {
       flexDirection: 'row',
@@ -2704,6 +2700,7 @@ export const DefaultTheme = {
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignContent: 'flex-start',
+      rowGap: 4
     },
     title: {
       fontFamily: 'Montserrat_700Bold',
