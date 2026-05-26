@@ -13,7 +13,7 @@ import {Column, Row, Text} from '../../ui';
 import {Theme} from '../../ui/styleUtils';
 import {Icon} from 'react-native-elements';
 import {SvgImage} from '../../ui/svg';
-import {Checkbox} from '../../ui/checkbox/Checkbox';
+import {Checkbox, CheckboxSelectionType} from '../../ui/checkbox/Checkbox';
 import {VcItemContainerProfileImage} from '../../VcItemContainerProfileImage';
 import {
   isVCLoaded,
@@ -40,6 +40,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   wellknown,
   selectable,
   selected,
+  disableSelection = false,
   selectionType = 'single',
   service,
   onPress,
@@ -224,8 +225,9 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   const vcSelectableButton = selectable && (
     <Checkbox
       testId={'select-vc'}
-      selectionType={selectionType}
-      checked={selected}
+      selectionType={selectionType ?? CheckboxSelectionType.SINGLE}
+      checked={selected ?? false}
+      disabled={disableSelection}
       onPress={handleVCSelection}
     />
   );
@@ -458,9 +460,10 @@ export interface VCItemContentProps {
   fields: [];
   wellknown: {};
   generatedOn: string;
-  selectable: boolean;
-  selected: boolean;
-  selectionType?: 'single' | 'multiple';
+  selectable?: boolean;
+  selected?: boolean;
+  disableSelection?: boolean;
+  selectionType?: CheckboxSelectionType;
   isPinned?: boolean;
   service: any;
   onPress: () => void;

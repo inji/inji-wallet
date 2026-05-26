@@ -17,12 +17,14 @@ import {VCItemMachine} from '../../../machines/VerifiableCredential/VCItemMachin
 import {useTranslation} from 'react-i18next';
 import {Copilot} from '../../ui/Copilot';
 import {VCProcessor} from '../common/VCProcessor';
+import {CheckboxSelectionType} from '../../ui/checkbox/Checkbox';
 
 export const VCCardView: React.FC<VCItemProps> = ({
   vcMetadata,
   selectable,
   selected,
-  selectionType = "single",
+  selectionType = CheckboxSelectionType.SINGLE,
+  disableSelection = false,
   onPress,
   isDownloading,
   isPinned,
@@ -128,6 +130,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
       verifiableCredentialData={verifiableCredentialData}
       wellknown={wellknown}
       selectable={selectable}
+      disableSelection={disableSelection}
       selected={selected}
       selectionType={selectionType}
       service={service}
@@ -189,7 +192,7 @@ export interface VCItemProps {
   margin?: string;
   selectable?: boolean;
   selected?: boolean;
-  selectionType?: 'single' | 'multiple';
+  selectionType?: CheckboxSelectionType;
   onPress: (vcRef?: ActorRefFrom<typeof VCItemMachine>) => void;
   onShow?: (vcRef?: ActorRefFrom<typeof VCItemMachine>) => void;
   isDownloading?: boolean;
@@ -200,6 +203,7 @@ export interface VCItemProps {
   sdClaimsPath?: Array<any>;
   onDisclosuresChange?: (paths: string[]) => void;
   testId?: string;
+  disableSelection?: boolean;
   onMeasured?: (rect: {
     x: number;
     y: number;

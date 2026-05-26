@@ -4,9 +4,14 @@ import {SvgImage} from '../svg';
 import {Theme} from '../styleUtils';
 import testIDProps from '../../../shared/commonUtil';
 
+export enum CheckboxSelectionType {
+  SINGLE = 'single',
+  MULTIPLE = 'multiple',
+}
+
 interface CheckboxProps {
   testId: string;
-  selectionType?: 'single' | 'multiple';
+  selectionType?: CheckboxSelectionType;
   checked: boolean;
   disabled?: boolean;
   onPress: () => void;
@@ -47,16 +52,15 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     <CheckBox
       {...testIDProps(`checkbox-single-${testId}`)}
       checked={checked}
-      checkedIcon={
-        <Icon name="check-circle" type="material" color={Theme.Colors.Icon} />
-      }
+      checkedIcon={SvgImage.selectedCheckBox(disabled ? '#667085' : undefined)}
       uncheckedIcon={
         <Icon
           name="radio-button-unchecked"
           color={Theme.Colors.uncheckedIcon}
         />
       }
-      onPress={onPress}
+      onPress={() => !disabled && onPress()}
+      disabled={disabled}
     />
   );
 };

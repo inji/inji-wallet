@@ -22,6 +22,31 @@ export const MatchingVcList: React.FC<MatchingVcListProps> = ({
 }) => {
   const {t} = useTranslation('SendVPScreen');
 
+  useEffect(() => {
+    if (!controller.isDcqlFlow || !controller.matchingVcsResult) return;
+    const dcqlResult = controller.matchingVcsResult as MatchingVCsResultForDcql;
+    const toSelect: Record<string, Set<string>> = {};
+    dcqlResult.credentialSetOptions.forEach(credentialSet => {
+      if (!credentialSet.required) return;
+      const satisfiableOption = credentialSet.options.find(option =>
+        option.every((qId: string) => {
+          const mr = dcqlResult.matchingVCs[qId];
+          return mr && mr.matchingVcs.length > 0;
+        }),
+      );
+      if (!satisfiableOption) return;
+      satisfiableOption.forEach((credentialQueryId: string) => {
+        const matchResult = dcqlResult.matchingVCs[credentialQueryId];
+        if (!matchResult || matchResult.matchingVcs.length === 0) return;
+        const vcKey = getVcKey(matchResult.matchingVcs[0].vc);
+        (toSelect[credentialQueryId] ??= new Set<string>()).add(vcKey);
+      });
+    });
+    if (Object.keys(toSelect).length > 0) {
+      controller.SELECT_VC_ITEMS(toSelect)();
+    }
+  }, []);
+
   const getVcKey = (vcData: VC) => {
     return VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey();
   };

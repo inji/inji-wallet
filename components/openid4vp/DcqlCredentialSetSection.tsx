@@ -16,7 +16,7 @@ import {Divider} from '../ui/divider/Divider';
 import {hasAtLeastOneMatch} from '../../shared/commonUtil';
 import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {VCMetadata} from '../../shared/VCMetadata';
-import {Checkbox} from '../ui/checkbox/Checkbox';
+import {Checkbox, CheckboxSelectionType} from '../ui/checkbox/Checkbox';
 import {Accordion} from '../ui/accordion/Accordion';
 import {VCFormat} from '../../shared/VCFormat';
 import {useTranslation} from 'react-i18next';
@@ -54,13 +54,33 @@ export const DcqlCredentialSetSection: React.FC<
   const isRequired = credentialSet.required;
   const {t} = useTranslation('SendVPScreen');
 
+  const satisfiableOptions = credentialSet.options.filter(option =>
+    option.every(queryId => {
+      const matchingResult = matchingVCsResult[queryId];
+      return (
+        matchingResult &&
+        matchingResult.matchingVcs &&
+        matchingResult.matchingVcs.length > 0
+      );
+    }),
+  );
+
+  const isSingleMatchEdgeCase = (credentialQueryId: string): boolean => {
+    return (
+      isRequired &&
+      satisfiableOptions.length === 1 &&
+      satisfiableOptions[0].length === 1 &&
+      (matchingVCsResult[credentialQueryId]?.matchingVcs?.length ?? 0) === 1
+    );
+  };
+
   const getVcKey = (vcData: VC): string =>
     VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey();
 
   function deselectOtherOptions(excludedOptionIndex: number) {
-    for (let i = 0; i < credentialSet.options.length; i++) {
+    for (let i = 0; i < satisfiableOptions.length; i++) {
       if (i === excludedOptionIndex) continue;
-      const option = credentialSet.options[i];
+      const option = satisfiableOptions[i];
       option.forEach(credentialQueryId => {
         controller.DESELECT_VC_ITEMS({
           [credentialQueryId]:
@@ -74,7 +94,12 @@ export const DcqlCredentialSetSection: React.FC<
     // An option is selected if for every credential query in that option, at least one of the matching VCs for that query is selected.
     return option.every(credentialQueryId => {
       const matchResult = matchingVCsResult[credentialQueryId];
-      if (!matchResult || matchResult.matchingVcs.length === 0) return false;
+      if (
+        !matchResult ||
+        !matchResult.matchingVcs ||
+        matchResult.matchingVcs.length === 0
+      )
+        return false;
 
       const matchingVcKeys: Set<string> = new Set<string>(
         matchResult.matchingVcs.map((vcWithClaims: VcWithMatchedClaims) =>
@@ -93,7 +118,12 @@ export const DcqlCredentialSetSection: React.FC<
     const selectedCredentialRequestIdToVCKeys: Record<string, Set<string>> = {};
     option.forEach(credentialQueryId => {
       const matchResult = matchingVCsResult[credentialQueryId];
-      if (!matchResult || matchResult.matchingVcs.length === 0) return;
+      if (
+        !matchResult ||
+        !matchResult.matchingVcs ||
+        matchResult.matchingVcs.length === 0
+      )
+        return;
 
       // Case - 1: There is only one VC matching the credential query - select that VC
       // Case - 2: There are multiple VCs matching the credential query - select the first VC
@@ -145,7 +175,7 @@ export const DcqlCredentialSetSection: React.FC<
     }
 
     const allowsMultipleSelection =
-      matchingVCsResult[credentialQueryId].allowMultipleCredentials;
+      matchingVCsResult[credentialQueryId]?.allowMultipleCredentials;
     if (allowsMultipleSelection) {
       controller.SELECT_VC_ITEM(vcKey, credentialQueryId)();
     } else {
@@ -193,23 +223,31 @@ export const DcqlCredentialSetSection: React.FC<
     matchingCredentialData: VcWithMatchedClaims,
     credentialQueryId: string,
     handleVcSelection: (vcKey: string) => void,
-    selectionType: 'single' | 'multiple',
+    selectionType: CheckboxSelectionType,
     isVcSelected: (credentialQueryId: string, vcKey: string) => boolean,
     optionIndex: number,
+    disableSelection = false,
   ) => {
     const vcData = matchingCredentialData.vc;
     const vcKey = getVcKey(vcData);
+    console.log(
+      'Passing disableSelection as ',
+      disableSelection,
+      'for the VC key ',
+      vcKey,
+    );
 
     return (
       <VcItemContainer
         sdClaimsPath={getSelectivelyDisclosableMatchedClaimPaths(
           matchingCredentialData,
         )}
-        key={`${vcKey}-${credentialQueryId}`}
+        key={`${vcKey}-option-${optionIndex}-query-${credentialQueryId}`}
         vcMetadata={vcData.vcMetadata}
         margin="0 2 8 2"
         onPress={() => handleVcSelection(vcKey)}
         selectable
+        disableSelection={disableSelection}
         selectionType={selectionType}
         selected={isVcSelected(credentialQueryId, vcKey)}
         flow={VCItemContainerFlowType.VP_SHARE}
@@ -228,17 +266,17 @@ export const DcqlCredentialSetSection: React.FC<
     isVcSelected: (credentialQueryId: string, vcKey: string) => boolean,
   ) => {
     const matchResult = matchingVCsResult[credentialQueryId];
-    if (!matchResult || matchResult.matchingVcs.length === 0) return null;
+    if (!matchResult || matchResult.matchingVcs?.length === 0) return null;
     const selectionType =
       matchResult.matchingVcs.length > 1
         ? matchResult.allowMultipleCredentials
-          ? 'multiple'
-          : 'single'
-        : 'single';
+          ? CheckboxSelectionType.MULTIPLE
+          : CheckboxSelectionType.SINGLE
+        : CheckboxSelectionType.SINGLE;
 
     //.   Case 1: Only one VC matches the credential query
     //          - directly render that VC as a selected item if the option is selected
-    if (matchResult.matchingVcs.length === 1) {
+    if (matchResult.matchingVcs?.length === 1) {
       const matchingCredentialData = matchResult.matchingVcs[0];
       return renderCardView(
         matchingCredentialData,
@@ -247,6 +285,7 @@ export const DcqlCredentialSetSection: React.FC<
         selectionType,
         isVcSelected,
         optionIndex,
+        isSingleMatchEdgeCase(credentialQueryId),
       );
     }
 
@@ -260,7 +299,7 @@ export const DcqlCredentialSetSection: React.FC<
         title={t('dcqlSection.multipleCardsMatchingQuery')}
         defaultExpanded>
         {matchResult.matchingVcs.map(
-          (matchingCredentialData: VcWithMatchedClaims, index: number) => {
+          (matchingCredentialData: VcWithMatchedClaims) => {
             return renderCardView(
               matchingCredentialData,
               credentialQueryId,
@@ -274,7 +313,7 @@ export const DcqlCredentialSetSection: React.FC<
       </Accordion>
     );
   };
-  const isSectionSatisfied = credentialSet.options.some((option, optionIndex) =>
+  const isSectionSatisfied = satisfiableOptions.some((option, optionIndex) =>
     isOptionSelected(option, optionIndex),
   );
 
@@ -328,7 +367,7 @@ export const DcqlCredentialSetSection: React.FC<
       }
       defaultExpanded={credentialSet.required}>
       <Column>
-        {credentialSet.options.map((option, optionIndex) => {
+        {satisfiableOptions.map((option, optionIndex) => {
           // If an option is not satisfiable - don't show the option
           const isOptionSatisfied = option.every(
             (credentialQueryId: string) => {
@@ -367,7 +406,7 @@ export const DcqlCredentialSetSection: React.FC<
                   headerActionLeft={
                     <Checkbox
                       testId={`${testId}-option-${optionIndex}-select-all`}
-                      selectionType="single"
+                      selectionType={CheckboxSelectionType.SINGLE}
                       checked={isOptionSelected(option, optionIndex)}
                       onPress={() => selectAllInOption(option, optionIndex)}
                     />
