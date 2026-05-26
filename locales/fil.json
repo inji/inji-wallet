@@ -1134,6 +1134,20 @@
       "multipleCardsMatchingQuery": "Maraming Kard na Tumutugma sa Query",
       "multipleCards": "Maraming Kard",
       "allRequired": "LAHAT AY KINAKAILANGAN"
+    },
+    "infoOverlay": {
+      "title": "Bakit Namin Kailangan ang mga Dokumento",
+      "body": "Maaaring humiling ang mga organisasyon ng iba't ibang uri ng kredensyal upang ma-verify ang iyong pagkakakilanlan at maibigay sa iyo ang mga serbisyo. Ang ilang kredensyal ay kinakailangan, habang ang iba ay opsyonal.",
+      "requiredCredentials": {
+        "title": "Mga Kinakailangang Kredensyal",
+        "description": "Mahalaga para sa organisasyon upang maibigay sa iyo ang kanilang mga serbisyo. Dapat mong ibahagi ito upang magpatuloy.",
+        "footnote": "Karaniwang inaatas ng mga regulasyon o mahalaga para sa seguridad ng account at pag-verify ng pagkakakilanlan."
+      },
+      "optionalCredentials": {
+        "title": "Mga Opsyonal na Kredensyal",
+        "description": "Opsyonal at maaaring mapahusay ang iyong karanasan o mag-unlock ng mga karagdagang feature, ngunit hindi sapilitan.",
+        "footnote": "Maaari kang pumili na ibahagi ang mga opsyonal na kredensyal ngayon o idagdag ang mga ito sa ibang pagkakataon kung kinakailangan para sa mga partikular na serbisyo."
+      }
     }
   },
   "VerifyIdentityOverlay": {

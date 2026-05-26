@@ -52,7 +52,12 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     <CheckBox
       {...testIDProps(`checkbox-single-${testId}`)}
       checked={checked}
-      checkedIcon={SvgImage.selectedCheckBox(disabled ? '#667085' : undefined)}
+      checkedIcon={
+        <Icon          
+          name="radio-button-checked"
+          color={disabled ? '#667085' : Theme.Colors.secondaryText}
+        />
+      }
       uncheckedIcon={
         <Icon
           name="radio-button-unchecked"

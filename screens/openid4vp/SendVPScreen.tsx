@@ -1,7 +1,7 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {Fragment, useContext, useEffect, useLayoutEffect, useState,} from 'react';
 import {useTranslation} from 'react-i18next';
-import {BackHandler, I18nManager, ScrollView, View} from 'react-native';
+import {BackHandler, I18nManager, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Button, Column, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
@@ -23,9 +23,10 @@ import {APP_EVENTS} from '../../machines/app';
 import {useScanScreen} from '../Scan/ScanScreenController';
 import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
 import {TrustModalVerifier} from '../../components/TrustModalVerifier';
-import {MatchingVcList} from '../../components/openid4vp/MatchingVcList';
+import {MatchingVcListContainer} from '../../components/openid4vp/MatchingVcListContainer';
 import {VcItemContainer} from '../../components/VC/VcItemContainer';
 import {VerifierInfo} from "./VerifierInfo";
+import {WhyWeNeedDocumentsOverlay} from './WhyWeNeedDocumentsOverlay';
 import {MatchingVCsResultForDcql, MatchingVCsResultForPresentationExchangeRequest} from "../../shared/openID4VP/openid4vp.types";
 import {VCMetadata} from '../../shared/VCMetadata';
 import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
@@ -56,11 +57,12 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const [selectedDisclosuresByVc, setSelectedDisclosuresByVc] = useState<
     Record<string, string[]>
   >({});
+  const [showInfoOverlay, setShowInfoOverlay] = useState(false);
 
   const handleDisclosureChange = (vcKey: string, disclosures: string[]) => {
     setSelectedDisclosuresByVc(prev => ({
       ...prev,
-      [vcKey]: disclosures,
+      [vcKey]: Array.from(new Set([...(prev[vcKey] || []), ...disclosures])),
     }));
   };
 
@@ -222,6 +224,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                 logoUri={controller.verifierLogoInTrustModal}
                 name={controller.vpVerifierName}
                 showInfo={true}
+                onInfoPress={controller.isDcqlFlow ? undefined : () => setShowInfoOverlay(true)}
               />
             )}
           </View>
@@ -295,10 +298,10 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         title={t('consentAndShare')}
         testID={'consent-share-button'}
         disabled={!controller.successfullySatisfiedCredentialRequest()}
-        onPress={() =>
-          controller.checkIfAnyVCHasImage(controller.getSelectedVCs())
-            ? controller.VERIFY_AND_ACCEPT_REQUEST(selectedDisclosuresByVc)
-            : controller.ACCEPT_REQUEST(selectedDisclosuresByVc)
+        onPress={() => {
+          console.log("selectedDisclosuresByVc ",selectedDisclosuresByVc)
+          controller.ACCEPT_REQUEST(selectedDisclosuresByVc)
+        }
         }
       />
     );
@@ -312,7 +315,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
       if (isDcql) {
         const dcqlResult = errorModal.matchingVcsResult as MatchingVCsResultForDcql;
         for (const matchResult of Object.values(dcqlResult.matchingVCs)) {
-          for (const {vc} of matchResult.matchingVcs) {
+          for (const {vc} of matchResult.matchingVcs ?? []) {
             const key = VCMetadata.fromVcMetadataString(vc.vcMetadata).getVcKey();
             uniqueVcsByKey.set(key, vc);
           }
@@ -348,23 +351,29 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
               {t('errors.noMatchingCredentials.reachOutText')}
             </Text>
           </View>
-          <Text style={Theme.DcqlStyles.credentialMissingSectionLabel}>
-            {t('errors.noMatchingCredentials.matchingCredentials')}
-          </Text>
-          <View style={Theme.DcqlStyles.credentialMissingCard}>
-              {Array.from(uniqueVcsByKey.entries()).map(([vcKey, vcData]) => (
-                <VcItemContainer
-                  key={vcKey}
-                  vcMetadata={vcData.vcMetadata}
-                  margin="0 2 8 2"
-                  selectable={false}
-                  selected={false}
-                  onPress={() => {}}
-                  flow={VCItemContainerFlowType.VP_SHARE}
-                  isPinned={vcData.vcMetadata.isPinned}
-                />
-              ))}
-          </View>
+          {
+            consolidatedMatchingVcs && (
+              <Fragment>
+                <Text style={Theme.DcqlStyles.credentialMissingSectionLabel}>
+                  {t('errors.noMatchingCredentials.matchingCredentials')}
+                </Text>
+                <View style={Theme.DcqlStyles.credentialMissingCard}>
+                  {Array.from(uniqueVcsByKey.entries()).map(([vcKey, vcData]) => (
+                    <VcItemContainer
+                      key={vcKey}
+                      vcMetadata={vcData.vcMetadata}
+                      margin="0 2 8 2"
+                      selectable={false}
+                      selected={false}
+                      onPress={() => {}}
+                      flow={VCItemContainerFlowType.VP_SHARE}
+                      isPinned={vcData.vcMetadata.isPinned}
+                    />
+                  ))}
+                </View>
+              </Fragment>
+            )
+          }
         </Column>
       )
     }
@@ -408,7 +417,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
             </View>
           )}
           <Column fill backgroundColor={Theme.Colors.lightGreyBackgroundColor}>
-            <MatchingVcList
+            <MatchingVcListContainer
               controller={controller}
               onDisclosureChange={handleDisclosureChange}
             />
@@ -501,6 +510,10 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           testID={'vpShareError'}
         />
       )}
+      <WhyWeNeedDocumentsOverlay
+        isVisible={showInfoOverlay}
+        onClose={() => setShowInfoOverlay(false)}
+      />
     </React.Fragment>
   );
 };

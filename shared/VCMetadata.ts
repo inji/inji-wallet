@@ -137,6 +137,10 @@ export function parseMetadatas(metadataStrings: object[]) {
   return metadataStrings.map(o => new VCMetadata(o));
 }
 
+export const getVcKey = (vcData: VC) => {
+  return VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey();
+};
+
 export const getVCMetadata = (context: object, keyType: string) => {
   const issuerHost =
     context.selectedIssuer.credential_issuer_host ??

@@ -1156,6 +1156,20 @@
       "multipleCardsMatchingQuery": "Multiple Cards Matching Query",
       "multipleCards": "Multiple Cards",
       "allRequired": "ALL REQUIRED"
+    },
+    "infoOverlay": {
+      "title": "Why We Need Documents",
+      "body": "Organizations may request different types of credentials to verify your identity and provide you with services. Some credentials are required, while others are optional.",
+      "requiredCredentials": {
+        "title": "Required Credentials",
+        "description": "Essential for the organization to provide you with their services. You must share these to proceed.",
+        "footnote": "Typically mandated by regulations or essential for account security and identity verification."
+      },
+      "optionalCredentials": {
+        "title": "Optional Credentials",
+        "description": "Optional and can enhance your experience or unlock additional features, but are not mandatory.",
+        "footnote": "You can choose to share optional credentials now or add them later if needed for specific services."
+      }
     }
   },
   "VerifyIdentityOverlay": {

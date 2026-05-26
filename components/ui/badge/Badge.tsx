@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { Text } from '../ui';
-import { Theme } from '../ui/styleUtils';
-import testIDProps from '../../shared/commonUtil';
+import { Text } from '../index';
+import { Theme } from '../styleUtils';
+import testIDProps from '../../../shared/commonUtil';
 
 interface BadgeProps {
   text: string;
