@@ -6,9 +6,9 @@ import {
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {
   getWalletConfig,
-  getWalletMetadata,
   isClientValidationRequired,
   jsonLdCanonicalize,
+  claimPathPointersToJsonPath,
 } from './OpenID4VPHelper';
 import {jsonLdExpand, parseJSON} from '../Utils';
 import {VCFormat} from '../VCFormat';
@@ -18,7 +18,7 @@ import {
   getIssuerAuthenticationAlorithmForMdocVC,
   getMdocAuthenticationAlorithm,
 } from '../../components/VC/common/VCUtils';
-import {isAndroid, isIOS, OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../constants';
+import {isIOS, OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../constants';
 import {CACHED_API} from '../api';
 import {defaultWalletConfig} from './WalletConfig';
 import {
@@ -28,7 +28,6 @@ import {
   MatchResult,
   VcWithMatchedClaims,
 } from './openid4vp.types';
-import {walletMetadata} from './walletMetadata';
 
 export const OpenID4VP_Proof_Sign_Algo = 'EdDSA';
 const emitter = new NativeEventEmitter(NativeModules.InjiOpenID4VP);
@@ -45,7 +44,7 @@ class OpenID4VP {
   }
 
   private addJsonLdCanonicalizerCallback = () => {
-    emitter.addListener('onJsonLdCanonicalize', ({data}: { data: string }) => {
+    emitter.addListener('onJsonLdCanonicalize', ({data}: {data: string}) => {
       console.log('Data to be canonicalized received from native: ', data);
       jsonLdCanonicalize(data)
         .then(result => {
@@ -63,7 +62,7 @@ class OpenID4VP {
   };
 
   private addJsonLdExpanderCallback = () => {
-    emitter.addListener('onJsonLdExpand', ({data}: { data: any }) => {
+    emitter.addListener('onJsonLdExpand', ({data}: {data: any}) => {
       jsonLdExpand(data)
         .then(result => {
           console.log('Expansion result sent to native: ', result);
@@ -122,12 +121,12 @@ class OpenID4VP {
      */
     const presentationDefinition = vpRequest['presentation_definition'];
     if (presentationDefinition) {
-      const result = getVcsMatchingAuthRequest(
+      const result = getVcsMatchingPresentationExchangeAuthRequest(
         vpRequest,
         availableWalletCredentials,
       );
       console.log(
-        'Presentation Exchange flow - result from getVcsMatchingAuthRequest: ',
+        'Presentation Exchange flow - result from getVcsMatchingPresentationExchangeAuthRequest: ',
         JSON.stringify(result, null, 2),
       );
       return {
@@ -175,7 +174,8 @@ class OpenID4VP {
         'result from getMatchingCredentials API call: ',
         JSON.stringify(result, null, 2),
       );
-      //TODO: In case of success being false - simply populate the matchingVCs as empty to avoid parsing over unused data
+      const requestedClaims : Set<string> = new Set<string>()
+
       const updatedMatchingVCs: Record<string, MatchResult> = {};
       Object.entries(result.queryMatches).forEach(
         ([queryId, queryMatch]: [string, any]) => {
@@ -192,7 +192,18 @@ class OpenID4VP {
                 queryMatch.allowMultipleCredentials === true,
             };
           } else {
-            // Optionally handle failure reason here
+            console.log('queryMatch in else part: ', JSON.stringify(queryMatch, null, 2));
+            if (queryMatch.failedClaims) {
+              (queryMatch.failedClaims as any[]).forEach(failedClaim => {
+                const jsonPaths = claimPathPointersToJsonPath(failedClaim.claim.path);
+                jsonPaths.forEach(path => requestedClaims.add(path))
+              })
+            } else if (
+              queryMatch.failureReason === CredentialsNotMatchingErrorCodes.CryptographicHolderBindingOrMetaFilterMismatch ||
+              queryMatch.failureReson === CredentialsNotMatchingErrorCodes.NoMatchingFormatsFound
+            ) {
+              requestedClaims.add("Credential Meta")
+            }
           }
         },
       );
@@ -200,7 +211,7 @@ class OpenID4VP {
       const resultantResult = {
         matchingVCs: updatedMatchingVCs,
         success: result.success,
-        requestedClaims: '',
+        requestedClaims: requestedClaims.size > 0 ? Array.from(requestedClaims).join(',') : '',
         purpose: '',
         credentialSetOptions: result.credentialSets,
       } as MatchingVCsResultForDcql;
@@ -258,10 +269,8 @@ class OpenID4VP {
             credential,
             credentialFormat,
             selectedDisclosuresByVc[
-              VCMetadata.fromVcMetadataString(
-                credential.vcMetadata,
-              ).getVcKey()
-              ],
+              VCMetadata.fromVcMetadataString(credential.vcMetadata).getVcKey()
+            ],
           ),
         };
       });
@@ -311,7 +320,7 @@ class OpenID4VP {
           credentialFormat,
           selectedDisclosuresByVc[
             VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey()
-            ],
+          ],
         );
         if (!selectedVcsData[inputDescriptorId]) {
           selectedVcsData[inputDescriptorId] = {};
@@ -383,7 +392,7 @@ function decodeDidJwk(didJwk: string) {
   return JSON.parse(json);
 }
 
-function getVcsMatchingAuthRequest(
+function getVcsMatchingPresentationExchangeAuthRequest(
   vpRequest: object,
   availableWalletCredentials: VC[],
 ): MatchingVCsResultForPresentationExchangeRequest {
@@ -400,7 +409,7 @@ function getVcsMatchingAuthRequest(
     inputDescriptors.forEach(
       (inputDescriptor: {
         format: any;
-        constraints: { fields: undefined };
+        constraints: {fields: undefined};
         id: string | number;
       }) => {
         const format = inputDescriptor.format ?? presentationDefinition.format;
@@ -413,10 +422,10 @@ function getVcsMatchingAuthRequest(
           areVCFormatAndProofTypeMatchingRequest(format, vc);
         if (areMatchingFormatAndProofType == false) {
           inputDescriptors.forEach(
-            (inputDescriptor: { constraints: { fields: { path: any[] }[] } }) => {
+            (inputDescriptor: {constraints: {fields: {path: any[]}[]}}) => {
               if (inputDescriptor.constraints?.fields) {
                 inputDescriptor.constraints.fields.forEach(
-                  (field: { path: any[] }) => {
+                  (field: {path: any[]}) => {
                     if (field.path) {
                       field.path.forEach(path => {
                         try {

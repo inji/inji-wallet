@@ -15,15 +15,19 @@ jest.mock('../cryptoutil/cryptoUtil', () => ({
 }));
 
 jest.mock('../Utils', () => ({
-  base64ToByteArray: jest.fn((s: string) => new Uint8Array([1, 2, 3])),
+  base64ToByteArray: jest.fn((_: string) => new Uint8Array([1, 2, 3])),
   canonicalize: jest.fn(() => Promise.resolve('canonicalized')),
 }));
 
-const mockGetAllConfigurations = jest.fn(() =>
-  Promise.resolve({
-    openid4vpClientValidation: 'false',
-    walletMetadata: null,
-  }),
+const mockGetAllConfigurations = jest.fn(
+  (): Promise<{
+    openid4vpClientValidation: string;
+    walletConfig?: string | null;
+  }> =>
+    Promise.resolve({
+      openid4vpClientValidation: 'false',
+      walletConfig: null,
+    }),
 );
 
 jest.mock('../api', () => mockGetAllConfigurations);
@@ -60,10 +64,9 @@ jest.mock('../../machines/openID4VP/openID4VPServices', () => ({
 
 import {
   isClientValidationRequired,
-  getWalletMetadata,
-  constructDetachedJWT,
+  getWalletConfig,
   signDataForVpPreparation,
-  signDataForVpPreparation,
+  claimPathPointersToJsonPath,
 } from './OpenID4VPHelper';
 
 describe('OpenID4VPHelper', () => {
@@ -71,7 +74,7 @@ describe('OpenID4VPHelper', () => {
     jest.clearAllMocks();
     mockGetAllConfigurations.mockResolvedValue({
       openid4vpClientValidation: 'false',
-      walletMetadata: null,
+      walletConfig: null,
     });
   });
 
@@ -92,43 +95,17 @@ describe('OpenID4VPHelper', () => {
 
   describe('getWalletMetadata', () => {
     it('returns null when no wallet metadata in config', async () => {
-      const result = await getWalletMetadata();
+      const result = await getWalletConfig();
       expect(result).toBeNull();
     });
 
     it('returns parsed wallet metadata when present', async () => {
       mockGetAllConfigurations.mockResolvedValue({
-        walletMetadata: '{"name":"test-wallet"}',
+        openid4vpClientValidation: 'true',
+        walletConfig: '{"name":"test-wallet"}',
       });
-      const result = await getWalletMetadata();
+      const result = await getWalletConfig();
       expect(result).toEqual({name: 'test-wallet'});
-    });
-  });
-
-  describe('constructDetachedJWT', () => {
-    it('constructs a detached JWT with .. separator', async () => {
-      const result = await constructDetachedJWT(
-        'privateKey',
-        'vpToken',
-        'Ed25519',
-      );
-      expect(typeof result).toBe('string');
-      expect(result).toContain('..');
-    });
-
-    it('calls createSignatureED with correct params', async () => {
-      await constructDetachedJWT('myKey', 'tokenBytes', 'Ed25519');
-      expect(mockCreateSignatureED).toHaveBeenCalledWith(
-        'myKey',
-        expect.any(Uint8Array),
-      );
-    });
-
-    it('encodes header as base64', async () => {
-      await constructDetachedJWT('key', 'token', 'Ed25519');
-      expect(mockEncodeB64).toHaveBeenCalledWith(
-        expect.stringContaining('"alg":"EdDSA"'),
-      );
     });
   });
 
@@ -137,7 +114,7 @@ describe('OpenID4VPHelper', () => {
       const unSignedVpTokens = {
         ldp_vc: {dataToSign: 'base64-data'},
       };
-      const context = {privateKey: 'priv', keyType: 'Ed25519'};
+
       const result = await signDataForVpPreparation(unSignedVpTokens);
       expect(result).toHaveProperty('ldp_vc');
       expect(result.ldp_vc).toHaveProperty('jws');
@@ -151,7 +128,7 @@ describe('OpenID4VPHelper', () => {
       const unSignedVpTokens = {
         ldp_vc: {dataToSign: '{"key":"value"}'},
       };
-      const context = {privateKey: 'priv', keyType: 'Ed25519'};
+
       const result = await signDataForVpPreparation(unSignedVpTokens);
       expect(result).toHaveProperty('ldp_vc');
       isIOS.mockReturnValue(false);
@@ -166,10 +143,10 @@ describe('OpenID4VPHelper', () => {
       const unSignedVpTokens = {
         ldp_vc: {dataToSign: '{"key":"value"}'},
       };
-      const context = {privateKey: 'priv', keyType: 'Ed25519'};
-      await expect(
-        signDataForVpPreparation(unSignedVpTokens),
-      ).rejects.toThrow('Canonicalized data to sign is undefined');
+
+      await expect(signDataForVpPreparation(unSignedVpTokens)).rejects.toThrow(
+        'Canonicalized data to sign is undefined',
+      );
       isIOS.mockReturnValue(false);
     });
 
@@ -181,7 +158,7 @@ describe('OpenID4VPHelper', () => {
           },
         },
       };
-      const context = {privateKey: 'ed-priv', keyType: 'Ed25519'};
+
       const result = await signDataForVpPreparation(unSignedVpTokens);
       expect(result).toHaveProperty('vc_sd_jwt');
       expect(result.vc_sd_jwt).toHaveProperty('uuid-1');
@@ -196,10 +173,10 @@ describe('OpenID4VPHelper', () => {
           },
         },
       };
-      const context = {privateKey: 'ed-priv', keyType: 'Ed25519'};
-      await expect(
-        signDataForVpPreparation(unSignedVpTokens),
-      ).rejects.toThrow('Failed to create signature for UUID');
+
+      await expect(signDataForVpPreparation(unSignedVpTokens)).rejects.toThrow(
+        'Failed to create signature for UUID',
+      );
     });
 
     it('should handle mso_mdoc format', async () => {
@@ -208,23 +185,6 @@ describe('OpenID4VPHelper', () => {
           docTypeToDeviceAuthenticationBytes: {
             'org.iso.18013.5.1.mDL': 'auth-bytes',
           },
-        },
-      };
-      const context = {
-        privateKey: 'priv',
-        keyType: 'ES256',
-        selectedVCs: {
-          'inp-1': [
-            {
-              format: 'mso_mdoc',
-              verifiableCredential: {
-                processedCredential: {
-                  docType: 'org.iso.18013.5.1.mDL',
-                  issuerSigned: {issuerAuth: [null, null, {alg: 'ES256'}]},
-                },
-              },
-            },
-          ],
         },
       };
       const result = await signDataForVpPreparation(unSignedVpTokens);
@@ -242,7 +202,7 @@ describe('OpenID4VPHelper', () => {
           dataToSign: 'data',
         },
       ];
-      const context = {privateKey: 'priv'};
+
       const result = await signDataForVpPreparation(tokens);
       expect(result).toHaveLength(1);
       expect(result[0]).toHaveProperty('signedData');
@@ -257,7 +217,7 @@ describe('OpenID4VPHelper', () => {
           dataToSign: 'mdoc-data',
         },
       ];
-      const context = {privateKey: 'priv'};
+
       const result = await signDataForVpPreparation(tokens);
       expect(result).toHaveLength(1);
       expect(result[0].signedData).toBeDefined();
@@ -272,7 +232,7 @@ describe('OpenID4VPHelper', () => {
           dataToSign: 'data',
         },
       ];
-      const context = {privateKey: 'priv'};
+
       await expect(signDataForVpPreparation(tokens)).rejects.toThrow(
         'Unsupported algorithm',
       );
@@ -287,10 +247,51 @@ describe('OpenID4VPHelper', () => {
           dataToSign: 'data',
         },
       ];
-      const context = {privateKey: 'priv'};
+
       await expect(signDataForVpPreparation(tokens)).rejects.toThrow(
         'Unsupported VP Token format',
       );
     });
+  });
+
+  describe('claimPathPointersToJsonPath', () => {
+    it.each([
+      {input: ['name'], expected: ['name']},
+      {input: ['a', 'b', 'c', 'd'], expected: ['a.b.c.d']},
+      {
+        input: ['credentialSubject', null, 'givenName'],
+        expected: ['credentialSubject[*].givenName'],
+      },
+      {input: ['items', null], expected: ['items[*]']},
+      {input: [null], expected: ['[*]']},
+      {input: [null, 'name'], expected: ['[*].name']},
+      {
+        input: ['credentialSubject', 0, 'givenName'],
+        expected: ['credentialSubject[0].givenName'],
+      },
+      {input: ['items', 0], expected: ['items[0]']},
+      {input: [0], expected: ['[0]']},
+      {input: [0, 'name'], expected: ['[0].name']},
+      {input: ['items', 99, 'value'], expected: ['items[99].value']},
+      {input: ['a', null, null, 'b'], expected: ['a[*][*].b']},
+      {input: ['a', 0, 1, 'b'], expected: ['a[0][1].b']},
+      {input: ['a', null, 0, 'b'], expected: ['a[*][0].b']},
+      {input: ['a', 0, null, 'b'], expected: ['a[0][*].b']},
+      {
+        input: ['root', 'child', null, 'item', 0, 'value'],
+        expected: ['root.child[*].item[0].value'],
+      },
+      {input: ['a', null, 'b', 1, 'c'], expected: ['a[*].b[1].c']},
+      {input: ['data', 0, null, 'label'], expected: ['data[0][*].label']},
+      {input: [], expected: ['']},
+      {input: [null, null], expected: ['[*][*]']},
+    ])(
+      'should convert claim path pointers to JSONPath correctly',
+      ({input, expected}) => {
+        expect(
+          claimPathPointersToJsonPath(input as Array<string | number | null>),
+        ).toEqual(expected);
+      },
+    );
   });
 });

@@ -239,6 +239,10 @@ export function flattenSdJwt({
     // Primitive leaf
     if (value === null || typeof value !== 'object') {
       const isDisclosed = disclosedSet.has(currentPath);
+      // TODO: For an array wildcard matches
+      /**
+       * If eligible has topKey[*].lowKey and currentPath is topKey[1].lowKey -> its accepted
+       */
       const isEligible = eligibleSet.has(currentPath);
 
       // Skip disclosed/private claims

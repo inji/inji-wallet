@@ -1,70 +1,31 @@
 import {
-  createSignature, createSignatureECK1, createSignatureECR1, createSignatureED, createSignatureRSA,
-  encodeB64,
+  createSignatureECK1,
+  createSignatureECR1,
+  createSignatureED,
+  createSignatureRSA,
   fetchKeyPair,
 } from '../cryptoutil/cryptoUtil';
-import {base64ToByteArray, canonicalize, canonicalize2} from '../Utils';
+import {base64ToByteArray, canonicalize2} from '../Utils';
 import getAllConfigurations from '../api';
-import {OpenID4VP_Proof_Sign_Algo} from './OpenID4VP';
-import {VCFormat} from '../VCFormat';
-import {isIOS, JWT_ALG_TO_KEY_TYPE} from '../constants';
-import {getMdocAuthenticationAlorithm} from '../../components/VC/common/VCUtils';
-import {KeyTypes, SignatureAlgorithms} from '../cryptoutil/KeyTypes';
-import {signatureSuite} from '../../machines/openID4VP/openID4VPServices';
-import {
-  UnsignedVPToken,
-  VPTokenSigningResult,
-} from './openid4vp.types';
-
-export async function constructDetachedJWT(
-  privateKey: any,
-  vpToken: string,
-  keyType: string,
-): Promise<string> {
-  const jwtHeader = {
-    alg: OpenID4VP_Proof_Sign_Algo,
-    crit: ['b64'],
-    b64: false,
-  };
-  const header64 = encodeB64(JSON.stringify(jwtHeader));
-  const headerBytes = new TextEncoder().encode(header64);
-  const vpTokenBytes = base64ToByteArray(vpToken); // base64 encoded canonicalized data
-  const payloadBytes = new Uint8Array([...headerBytes, 46, ...vpTokenBytes]);
-
-  const signature = await createSignatureED(privateKey, payloadBytes);
-
-  return header64 + '..' + signature;
-}
-
+import {JWT_ALG_TO_KEY_TYPE} from '../constants';
+import {SignatureAlgorithms} from '../cryptoutil/KeyTypes';
+import {UnsignedVPToken, VPTokenSigningResult} from './openid4vp.types';
 export async function isClientValidationRequired() {
   const config = await getAllConfigurations();
   return config.openid4vpClientValidation === 'true';
 }
 
-export async function getWalletMetadata() {
-  const config = await getAllConfigurations();
-  if (!config.walletMetadata) {
-    return null;
-  }
-  const walletMetadata = JSON.parse(config.walletMetadata);
-  return walletMetadata;
-}
-
 export async function getWalletConfig() {
   const config = await getAllConfigurations();
+
   if (!config.walletConfig) {
     return null;
   }
-  const walletMetadata = JSON.parse(config.walletMetadata);
-  return walletMetadata;
+  return JSON.parse(config.walletConfig);
 }
 
 export const jsonLdCanonicalize = async (data: string) => {
-  console.log('Canonicalizing data: ', data);
-  console.log('Canonicalizing data: ', typeof data);
   const parsedData = JSON.parse(data);
-  console.log('type of parsedData: ', typeof parsedData);
-  // const canonicalized = await canonicalize(parsedData);
   const canonicalized = await canonicalize2(parsedData);
   if (!canonicalized) {
     throw new Error('Canonicalized data to sign is undefined');
@@ -93,9 +54,9 @@ export const signDataForVpPreparation = async (
     } else {
       const key = await fetchKeyPair(keyType);
       keyTypeToKeys[keyType] = key;
-      return key
+      return key;
     }
-  }
+  };
 
   const result: Promise<VPTokenSigningResult>[] = unSignedVpTokens.map(
     async unsignedVPToken => {
@@ -103,15 +64,15 @@ export const signDataForVpPreparation = async (
       const formatType = unsignedVPToken.format;
       const payload: string = unsignedVPToken.dataToSign;
       const signatureAlgorithm: string = unsignedVPToken.signatureAlgorithm;
-      console.log("Signing VP Token with format: ", formatType);
-      console.log("Signature Algorithm: ", signatureAlgorithm);
+      console.log('Signing VP Token with format: ', formatType);
+      console.log('Signature Algorithm: ', signatureAlgorithm);
 
       const keyType =
         JWT_ALG_TO_KEY_TYPE[
           signatureAlgorithm as keyof typeof JWT_ALG_TO_KEY_TYPE
-          ];
+        ];
       const key = await getKeyInfo(keyType);
-      console.log("Key Info = ", JSON.stringify(key, null, 2))
+      console.log('Key Info = ', JSON.stringify(key, null, 2));
       signature = await signData(
         key.privateKey,
         payload, // Payload is in base64 url encoded form - decode it before signing
@@ -125,27 +86,19 @@ export const signDataForVpPreparation = async (
   return vpTokenSigningResults as Array<VPTokenSigningResult>;
 };
 
-
 async function signData(
   privateKey: string,
   base64EncodedPayload: string,
   keyType: string,
 ) {
   const payloadBytes = base64ToByteArray(base64EncodedPayload);
-  // const payloadBytes = base64UrlToUint8Array(base64EncodedPayload);
-  console.log("Signing data with key type: ", keyType);
-  console.log("payloadBytes: ", payloadBytes);
-  // const hexString = Array.from(payloadBytes)
-  //   .map(b => b.toString(16).padStart(2, '0'))
-  //   .join(' ');
-  // console.log("payloadBytes in hex: ", hexString);
 
   switch (keyType) {
-    case SignatureAlgorithms.RS256: // Life Insurance credential
+    case SignatureAlgorithms.RS256:
       return createSignatureRSA(privateKey, payloadBytes);
-    case SignatureAlgorithms.ES256: // Insurance credential
+    case SignatureAlgorithms.ES256:
       return createSignatureECR1(privateKey, payloadBytes);
-    case SignatureAlgorithms.ES256K: // Mock VC DM 1.1
+    case SignatureAlgorithms.ES256K:
       return createSignatureECK1(privateKey, payloadBytes);
     case SignatureAlgorithms.EdDSA: {
       return createSignatureED(privateKey, payloadBytes);
@@ -153,4 +106,47 @@ async function signData(
     default:
       break;
   }
+}
+
+/**
+ * @param path
+ * @param fullPayload
+ *
+ * Converts a Claim Path Pointer (array of strings/numbers/null) to one or more JSONPath strings
+ *
+ * Input -> output examples:
+ *
+ * ['credentialSubject', null, 'givenName'] + no payload -> ['credentialSubject[*].givenName']
+ *
+ * ['credentialSubject', 0, 'givenName'] -> ['credentialSubject[0].givenName']
+ *
+ * ['credentialSubject', 'degree', 'ug'] -> ['credentialSubject.degree.ug']
+ */
+export function claimPathPointersToJsonPath(
+  path: Array<string | number | null>,
+): string[] {
+  let currentPath = '';
+
+  for (const token of path) {
+    // Object property
+    if (typeof token === 'string') {
+      currentPath = currentPath ? `${currentPath}.${token}` : token;
+
+      continue;
+    }
+
+    // Exact array index
+    if (typeof token === 'number') {
+      currentPath = `${currentPath}[${token}]`;
+
+      continue;
+    }
+
+    // Wildcard array
+    if (token === null) {
+      currentPath = `${currentPath}[*]`;
+    }
+  }
+
+  return [currentPath];
 }
