@@ -21,6 +21,7 @@ import {Accordion} from '../ui/accordion/Accordion';
 import {VCFormat} from '../../shared/VCFormat';
 import {useTranslation} from 'react-i18next';
 import testIDProps from '../../shared/commonUtil';
+import {claimPathPointersToJsonPath} from '../../shared/openID4VP/OpenID4VPHelper';
 
 interface DcqlCredentialSetSectionProps {
   credentialSet: CredentialSetOption;
@@ -179,7 +180,7 @@ export const DcqlCredentialSetSection: React.FC<
     if (vcFormat == VCFormat.dc_sd_jwt || vcFormat == VCFormat.vc_sd_jwt) {
       return matchingCredentialDataResult.matchedClaims
         ?.map(claim => {
-          return claim.path.join('.');
+          return claimPathPointersToJsonPath(claim.path);
         })
         .flat();
     }
