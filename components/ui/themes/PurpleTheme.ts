@@ -2680,6 +2680,35 @@ export const PurpleTheme = {
       color: '#1976D2',
       marginLeft: 3,
     },
+    credentialMissingSectionLabel: {
+      fontFamily: 'Montserrat_700Bold',
+      fontSize: 11,
+      letterSpacing: 1,
+      color: Colors.Gray40,
+      marginHorizontal: 16,
+      marginTop: 16,
+      marginBottom: 6,
+    },
+    credentialMissingCard: {
+      backgroundColor: Colors.White,
+      marginHorizontal: 16,
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: Colors.Grey5,
+      overflow: 'hidden',
+    },
+    credentialMissingCardDivider: {
+      height: 1,
+      backgroundColor: Colors.Grey5,
+    },
+    credentialMissingCardBodyText: {
+      fontFamily: 'Montserrat_400Regular',
+      fontSize: 13,
+      lineHeight: 19,
+      color: Colors.mediumDarkGrey,
+      paddingHorizontal: 12,
+      paddingVertical: 10,
+    },
   }),
   AccordionStyles: StyleSheet.create({
     container: {

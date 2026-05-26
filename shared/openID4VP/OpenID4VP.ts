@@ -653,3 +653,20 @@ function getProcessedDataForMdoc(processedCredential: any) {
   }
   return processedData;
 }
+
+export enum CredentialsNotMatchingErrorCodes {
+  NoMatchingFormatsFound = 'no_matching_credentials_with_requested_credential_formats_found',
+
+  CryptographicHolderBindingOrMetaFilterMismatch =
+    'cryptographic_holderbinding_or_meta_filter_mismatch',
+
+  NoClaimsSetOptionSatisfied =
+    'no_claims_set_option_satisfied',
+
+  ClaimUnavailable = 'claim_unavailable',
+
+  ClaimValueMismatch = 'claim_value_not_matching',
+
+  RequiredClaimsNotSatisfied =
+    'required_claims_not_satisfied',
+}

@@ -1056,7 +1056,11 @@
     "errors": {
       "noMatchingCredentials": {
         "title": "Walang nakitang katugmang mga kredensyal!",
-        "message": "Ang verifier ay humiling ng mga kredensyal batay sa mga sumusunod na claim: [{{claims}}]. Paki-download ang kaukulang mga kredensyal at subukang muli ang proseso ng pagbabahagi."
+        "message": "Ang verifier ay humiling ng mga kredensyal batay sa mga sumusunod na claim: [{{claims}}]. Paki-download ang kaukulang mga kredensyal at subukang muli ang proseso ng pagbabahagi.",
+        "whatYouCanDo": "ANO ANG MAAARI MONG GAWIN",
+        "contactVerifier": "Makipag-ugnayan sa Verifier",
+        "reachOutText": "Makipag-ugnayan sa verifier na ito para sa karagdagang impormasyon kung aling mga kredensyal ang kailangan upang magpatuloy.",
+        "matchingCredentials": "MGA KATUGMANG KREDENSYAL"
       },
       "noMatchingCredentialsWithMissingClaims": {
         "title": "Walang tumutugmang kredensyal na nahanap!",

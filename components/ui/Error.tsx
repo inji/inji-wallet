@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { BackHandler, Dimensions, View } from 'react-native';
+import { BackHandler, Dimensions, ScrollView, View } from 'react-native';
 import { ButtonProps as RNEButtonProps } from 'react-native-elements';
 import { Button, Column, Row, Text } from '.';
 import { Header } from './Header';
@@ -37,6 +37,8 @@ export const ErrorView: React.FC<ErrorProps> = props => {
     textButtonEvent,
     primaryButtonTestID,
     textButtonTestID,
+    additionalContent,
+    textButtonType = 'clear',
   } = props;
 
   const [triggerExitFlow, setTriggerExitFlow] = useState(false);
@@ -62,10 +64,106 @@ export const ErrorView: React.FC<ErrorProps> = props => {
   }, [triggerExitFlow]);
 
   const errorContent = () => {
+    const compactHeader = !!additionalContent;
+
+    const headerSection = (
+      <View
+        style={[{alignItems: 'center', marginHorizontal: 1}, customStyles]}>
+        <Row
+          align="center"
+          style={[
+            Theme.ErrorStyles.image,
+            customImageStyles,
+            compactHeader ? {paddingBottom: 10, marginTop: -20} : undefined,
+          ]}>
+          {image}
+        </Row>
+        <Text style={Theme.ErrorStyles.title} testID={`${testID}Title`}>
+          {title}
+        </Text>
+      </View>
+    );
+
+    const buttonsSection = (
+      <Column crossAlign="center" margin={isIOS() ? '0 0 30 0' : '0 0 20 0'}>
+        <Row style={{marginHorizontal: 30, marginBottom: 15}}>
+          {primaryButtonText && (
+            <Button
+              fill
+              onPress={primaryButtonEvent}
+              title={t(primaryButtonText)}
+              type="gradient"
+              testID={primaryButtonTestID}
+            />
+          )}
+        </Row>
+        {textButtonType === 'gradient' ? (
+          <Row style={{marginHorizontal: 30}}>
+            {textButtonText && (
+              <Button
+                fill
+                onPress={textButtonEvent}
+                title={t(textButtonText)}
+                type="gradient"
+                testID={textButtonTestID}
+              />
+            )}
+          </Row>
+        ) : (
+          <Row>
+            {textButtonText && (
+              <Button
+                onPress={textButtonEvent}
+                title={t(textButtonText)}
+                type="clear"
+                testID={textButtonTestID}
+              />
+            )}
+          </Row>
+        )}
+      </Column>
+    );
+
+    if (alignActionsOnEnd) {
+      return (
+        <Fragment>
+          {headerSection}
+          {additionalContent ? (
+            <ScrollView
+              style={{flex: 1}}
+              contentContainerStyle={{flexGrow: 1}}
+              showsVerticalScrollIndicator={false}>
+              <View style={{alignItems: 'center'}}>
+                <Text
+                  style={[
+                    Theme.ErrorStyles.message,
+                    compactHeader ? {marginBottom: 10} : undefined,
+                  ]}
+                  testID={`${testID}Message`}>
+                  {message}
+                </Text>
+                {additionalMessage && (
+                  <Text
+                    style={Theme.ErrorStyles.additionalMessage}
+                    testID={`${testID}AdditionalMessage`}>
+                    {additionalMessage}
+                  </Text>
+                )}
+              </View>
+              {additionalContent}
+            </ScrollView>
+          ) : (
+            <View style={{flex: 1}} />
+          )}
+          {buttonsSection}
+        </Fragment>
+      );
+    }
+
     return (
       <Fragment>
         <View
-          style={[{ alignItems: 'center', marginHorizontal: 1 }, customStyles]}>
+          style={[{alignItems: 'center', marginHorizontal: 1}, customStyles]}>
           <View>
             <Row
               align="center"
@@ -86,55 +184,27 @@ export const ErrorView: React.FC<ErrorProps> = props => {
               </Text>
             )}
           </View>
-          {!alignActionsOnEnd && (
-            <Fragment>
-              {primaryButtonText && (
-                <Button
-                  onPress={primaryButtonEvent}
-                  title={t(primaryButtonText)}
-                  type={
-                    'gradient'
-                  }
-                  testID={primaryButtonTestID}
-                />
-              )}
-              {textButtonText && (
-                <Button
-                  onPress={textButtonEvent}
-                  width={Dimensions.get('screen').width * 0.54}
-                  title={t(textButtonText)}
-                  type="clear"
-                  testID={textButtonTestID}
-                />
-              )}
-            </Fragment>
-          )}
+          {additionalContent}
+          <Fragment>
+            {primaryButtonText && (
+              <Button
+                onPress={primaryButtonEvent}
+                title={t(primaryButtonText)}
+                type={'gradient'}
+                testID={primaryButtonTestID}
+              />
+            )}
+            {textButtonText && (
+              <Button
+                onPress={textButtonEvent}
+                width={Dimensions.get('screen').width * 0.54}
+                title={t(textButtonText)}
+                type="clear"
+                testID={textButtonTestID}
+              />
+            )}
+          </Fragment>
         </View>
-        {alignActionsOnEnd && (
-          <Column fill crossAlign="center" align="flex-end" margin={isIOS()?"0 0 30 0": "0 0 100 0"}>
-            <Row style={{ marginHorizontal: 30, marginBottom: 15 }}>
-              {primaryButtonText && (
-                <Button
-                  fill
-                  onPress={primaryButtonEvent}
-                  title={t(primaryButtonText)}
-                  type="gradient"
-                  testID={primaryButtonTestID}
-                />
-              )}
-            </Row>
-            <Row>
-              {textButtonText && (
-                <Button
-                  onPress={textButtonEvent}
-                  title={t(textButtonText)}
-                  type="clear"
-                  testID={textButtonTestID}
-                />
-              )}
-            </Row>
-          </Column>
-        )}
       </Fragment>
     );
   };
@@ -164,7 +234,7 @@ export const ErrorView: React.FC<ErrorProps> = props => {
       <Column
         fill
         safe
-        align={alignActionsOnEnd ? 'space-around' : 'space-evenly'}>
+        align={alignActionsOnEnd ? 'flex-start' : 'space-evenly'}>
         {errorContent()}
       </Column>
     </Modal>
@@ -210,5 +280,7 @@ export interface ErrorProps {
   textButtonEvent?: () => void;
   primaryButtonTestID?: string;
   textButtonTestID?: string;
+  textButtonType?: RNEButtonProps['type'] | 'gradient';
   exitAppWithTimer?: boolean;
+  additionalContent?: React.ReactNode;
 }

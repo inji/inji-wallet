@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import {MatchingVcsResult, MatchResult, VerifierInfo} from "../openID4VP/openid4vp.types";
 
 interface OvpErrorModal {
   show: boolean;
@@ -6,6 +7,8 @@ interface OvpErrorModal {
   message: string;
   additionalMessage: string;
   showRetryButton: boolean;
+  verifierInfo?: VerifierInfo
+  matchingVcsResult?: MatchingVcsResult
 }
 
 interface UseOvpErrorModalProps {
@@ -14,6 +17,8 @@ interface UseOvpErrorModalProps {
   requestedClaimsByVerifier: string;
   getAdditionalMessage: () => string;
   generateAndStoreLogMessage: (logType: string, errorInfo?: string) => void;
+  matchingVcsResult?: MatchingVcsResult;
+  verifierInfo?: VerifierInfo;
   t: (key: string, options?: any) => string;
 }
 export function useOvpErrorModal({
@@ -22,6 +27,8 @@ export function useOvpErrorModal({
   requestedClaimsByVerifier,
   getAdditionalMessage,
   generateAndStoreLogMessage,
+  matchingVcsResult,
+  verifierInfo,
   t,
 }: UseOvpErrorModalProps): [OvpErrorModal, () => void] {
   const [errorModal, setErrorModal] = useState<OvpErrorModal>({
@@ -30,6 +37,8 @@ export function useOvpErrorModal({
     message: '',
     additionalMessage: '',
     showRetryButton: false,
+    matchingVcsResult: undefined,
+    verifierInfo: undefined
   });
 
   useEffect(() => {
@@ -50,6 +59,8 @@ export function useOvpErrorModal({
             }),
         additionalMessage,
         showRetryButton: false,
+        matchingVcsResult,
+        verifierInfo
       });
       generateAndStoreLogMessage(
         'NO_CREDENTIAL_MATCHING_REQUEST',

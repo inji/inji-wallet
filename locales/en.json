@@ -1078,7 +1078,11 @@
     "errors": {
       "noMatchingCredentials": {
         "title": "No matching credentials found!",
-        "message": "The verifier has requested credentials based on the following claims: [{{claims}}]. Please download the corresponding credentials and retry the sharing process."
+        "message": "The verifier has requested credentials based on the following claims: [{{claims}}]. Please download the corresponding credentials and retry the sharing process.",
+        "whatYouCanDo": "WHAT YOU CAN DO",
+        "contactVerifier": "Contact Verifier",
+        "reachOutText": "Reach out to this verifier for more information on which credentials are required to proceed.",
+        "matchingCredentials": "MATCHING CREDENTIALS"
       },
       "noMatchingCredentialsWithMissingClaims": {
         "title": "No matching credentials found!",

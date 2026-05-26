@@ -7,6 +7,11 @@ export interface UnsignedVPToken {
   dataToSign: string;
 }
 
+export interface VerifierInfo {
+  name?: string;
+  logo?: string;
+}
+
 export interface VPTokenSigningResult {
   signedData: string;
 }
@@ -38,8 +43,10 @@ export interface CredentialSetOption {
 }
 
 export interface MatchResult {
-  matchingVcs: VcWithMatchedClaims[];
+  matchingVcs?: VcWithMatchedClaims[];
   allowMultipleCredentials: boolean;
+  failedClaims?: Claim[];
+  failureReason?: string;
 }
 
 export interface VcWithMatchedClaims {

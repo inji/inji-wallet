@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Column, Row, Text} from '../ui';
 import {Theme} from '../ui/styleUtils';
 import {VcItemContainer} from '../VC/VcItemContainer';
