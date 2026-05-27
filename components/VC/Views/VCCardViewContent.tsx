@@ -41,7 +41,8 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   selectable,
   selected,
   disableSelection = false,
-  selectionType = 'single',
+  minimalDisclosure,
+  selectionType = CheckboxSelectionType.SINGLE,
   service,
   onPress,
   flow,
@@ -138,7 +139,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
               <Checkbox
                 checked={selected ?? isChecked}
                 onPress={() => handleFieldToggle(fullPath)}
-                selectionType={'multiple'}
+                selectionType={CheckboxSelectionType.MULTIPLE}
                 testId={fullPath}
                 disabled={node.visibility === ClaimVisibility.PUBLIC}
               />
@@ -215,9 +216,6 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   };
 
   const handleVCSelection = () => {
-    if (sdClaimsPath) {
-      onDisclosuresChange?.(sdClaimsPath);
-    }
     onPress();
   };
 
@@ -243,7 +241,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
     return (
       flow === VCItemContainerFlowType.VP_SHARE &&
       (credential?.disclosedKeys?.length > 0 ||
-        (sdClaimsPath && sdClaimsPath.length > 0))
+        (sdClaimsPath && sdClaimsPath.size > 0))
     );
   }
 
@@ -375,8 +373,9 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
               {Object.entries(
                 buildDisclosureTree(
                   flattenSdJwt({
-                    eligibleDisclosedKeys:
-                      sdClaimsPath ?? credential.disclosedKeys,
+                    eligibleDisclosedKeys: minimalDisclosure
+                      ? Array.from(sdClaimsPath ?? [])
+                      : credential.disclosedKeys,
                     disclosedKeys: credential.disclosedKeys,
                     fullResolvedPayload: credential.fullResolvedPayload,
                   }),
@@ -475,6 +474,7 @@ export interface VCItemContentProps {
   isKebabPopUp: boolean;
   vcMetadata: VCMetadata;
   isInitialLaunch?: boolean;
-  sdClaimsPath?: Array<string>;
+  sdClaimsPath?: Set<string>;
+  minimalDisclosure?: boolean;
   onDisclosuresChange?: (disclosures: string[]) => void;
 }

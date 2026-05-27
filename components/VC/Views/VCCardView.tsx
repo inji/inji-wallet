@@ -31,6 +31,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
   flow,
   isInitialLaunch = false,
   isTopCard = false,
+  minimalDisclosure = false,
   onDisclosuresChange,
   sdClaimsPath,
   onMeasured,
@@ -143,6 +144,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
       isInitialLaunch={isInitialLaunch}
       onDisclosuresChange={onDisclosuresChange}
       sdClaimsPath={sdClaimsPath}
+      minimalDisclosure={minimalDisclosure}
     />
   );
 
@@ -200,7 +202,8 @@ export interface VCItemProps {
   flow?: string;
   isInitialLaunch?: boolean;
   isTopCard?: boolean;
-  sdClaimsPath?: Array<any>;
+  sdClaimsPath?: Set<string>;
+  minimalDisclosure?: boolean;
   onDisclosuresChange?: (paths: string[]) => void;
   testId?: string;
   disableSelection?: boolean;

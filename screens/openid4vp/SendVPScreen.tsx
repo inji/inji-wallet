@@ -1,7 +1,7 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {Fragment, useContext, useEffect, useLayoutEffect, useState,} from 'react';
 import {useTranslation} from 'react-i18next';
-import {BackHandler, I18nManager, View} from 'react-native';
+import {BackHandler, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Button, Column, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
@@ -15,7 +15,6 @@ import {useSendVPScreen} from './SendVPScreenController';
 import {ErrorView} from '../../components/ui/Error';
 import {SvgImage} from '../../components/ui/svg';
 import {Loader, LoaderSkeleton} from '../../components/ui/Loader';
-import {Icon} from 'react-native-elements';
 import {ScanLayoutProps} from '../../routes/routeTypes';
 import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {GlobalContext} from '../../shared/GlobalContext';
@@ -27,10 +26,15 @@ import {MatchingVcListContainer} from '../../components/openid4vp/MatchingVcList
 import {VcItemContainer} from '../../components/VC/VcItemContainer';
 import {VerifierInfo} from "./VerifierInfo";
 import {WhyWeNeedDocumentsOverlay} from './WhyWeNeedDocumentsOverlay';
-import {MatchingVCsResultForDcql, MatchingVCsResultForPresentationExchangeRequest} from "../../shared/openID4VP/openid4vp.types";
-import {VCMetadata} from '../../shared/VCMetadata';
+import {
+  MatchingVCsResultForDcql,
+  MatchingVCsResultForPresentationExchangeRequest
+} from "../../shared/openID4VP/openid4vp.types";
+import {getVcKey, VCMetadata} from '../../shared/VCMetadata';
 import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {VCItemContainerFlowType} from "../../shared/Utils";
+import {BackButton} from "../../components/ui/backButton/BackButton";
+import {claimPathPointersToJsonPath} from "../../shared/openID4VP/OpenID4VPHelper";
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
@@ -62,7 +66,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const handleDisclosureChange = (vcKey: string, disclosures: string[]) => {
     setSelectedDisclosuresByVc(prev => ({
       ...prev,
-      [vcKey]: Array.from(new Set([...(prev[vcKey] || []), ...disclosures])),
+      [vcKey]: disclosures,
     }));
   };
 
@@ -106,7 +110,9 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   useFocusEffect(
     React.useCallback(() => {
-      props.navigation.getParent()?.setOptions({tabBarStyle: {display: 'none'}});
+      props.navigation
+        .getParent()
+        ?.setOptions({tabBarStyle: {display: 'none'}});
 
       const onBackPress = () => true;
 
@@ -207,12 +213,9 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 paddingHorizontal: 12,
+                columnGap: 4
               }}>
-              <Icon
-                name={I18nManager.isRTL ? 'arrow-forward' : 'arrow-back'}
-                color={Theme.Colors.blackIcon}
-                onPress={handleDismiss}
-              />
+              <BackButton onPress={handleDismiss} type={"chevron"} customIconStyle={{color: Theme.Colors.blackIcon}}/>
               <View style={Theme.Styles.sendVPHeaderContainer}>
                 <Text style={Theme.Styles.sendVPHeaderTitle}>
                   {t('requester')}
@@ -223,8 +226,8 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
               <VerifierInfo
                 logoUri={controller.verifierLogoInTrustModal}
                 name={controller.vpVerifierName}
-                showInfo={true}
-                onInfoPress={controller.isDcqlFlow ? undefined : () => setShowInfoOverlay(true)}
+                showInfo={controller.isDcqlFlow}
+                onInfoPress={() => setShowInfoOverlay(true)}
               />
             )}
           </View>
@@ -241,7 +244,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   if (controller.showLoadingScreen) {
     if (controller.isAuthorizationFlow) {
-      return <LoaderSkeleton testID={'presentation-authorization'} />;
+      return <LoaderSkeleton testID={'presentation-authorization'}/>;
     }
 
     return (
@@ -299,8 +302,25 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         testID={'consent-share-button'}
         disabled={!controller.successfullySatisfiedCredentialRequest()}
         onPress={() => {
-          console.log("selectedDisclosuresByVc ",selectedDisclosuresByVc)
-          controller.ACCEPT_REQUEST(selectedDisclosuresByVc)
+          let selectedDisclosures: Record<string, string[]> = selectedDisclosuresByVc
+          if (controller.isDcqlFlow) {
+            const vcKeyToSelectedDisclosuresSet: Record<string, Set<string>> = {}
+            const matchingVcsResult = controller.matchingVcsResult as MatchingVCsResultForDcql
+            Object.entries(controller.credentialRequestIdToSelectedVcKeys).forEach(([credentialQueryId, selectedVcKeys]) => {
+              matchingVcsResult.matchingVCs[credentialQueryId].matchingVcs?.forEach(({vc, matchedClaims}) => {
+                const setOfMatchingClaims = new Set<string>()
+                const vcKey = getVcKey(vc);
+                if (selectedVcKeys.has(vcKey)) {
+                  matchedClaims?.forEach((claim) => {
+                    return setOfMatchingClaims.add(claimPathPointersToJsonPath(claim.path));
+                  })
+                }
+                vcKeyToSelectedDisclosuresSet[vcKey] = new Set([...(vcKeyToSelectedDisclosuresSet[vcKey] ?? new Set<string>()), ...setOfMatchingClaims]);
+              })
+            })
+            selectedDisclosures = Object.fromEntries(Object.entries(vcKeyToSelectedDisclosuresSet).map(([k, s]) => [k, [...s]]));
+          }
+          controller.ACCEPT_REQUEST(selectedDisclosures)
         }
         }
       />
@@ -309,7 +329,6 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   function getVerifierActionAndMatchingCredentials() {
     if (errorModal.matchingVcsResult) {
-      console.log("errorModal has got matchingVCs result")
       const uniqueVcsByKey = new Map<string, VC>();
       const isDcql = (errorModal.matchingVcsResult as MatchingVCsResultForDcql).credentialSetOptions !== undefined;
       if (isDcql) {
@@ -330,7 +349,6 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         }
       }
       const consolidatedMatchingVcs = Array.from(uniqueVcsByKey.values());
-      console.log("consolidatedMatchingVcs ",consolidatedMatchingVcs)
 
       return (
         <Column>
@@ -346,7 +364,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
               logoUri={controller.verifierLogoInTrustModal}
               showInfo={false}
             />
-            <View style={Theme.DcqlStyles.credentialMissingCardDivider} />
+            <View style={Theme.DcqlStyles.credentialMissingCardDivider}/>
             <Text style={Theme.DcqlStyles.credentialMissingCardBodyText}>
               {t('errors.noMatchingCredentials.reachOutText')}
             </Text>
@@ -503,7 +521,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           textButtonTestID={'home'}
           textButtonText={getTextButtonText()}
           textButtonEvent={handleTextButtonEvent}
-          textButtonType={getPrimaryButtonText() ? "clear" : "gradient"}
+          textButtonType={getPrimaryButtonText() ? 'clear' : 'gradient'}
           customImageStyles={{paddingBottom: 0, marginBottom: -6}}
           customStyles={additionalModalContent ? {} : {marginTop: '30%'}}
           exitAppWithTimer={controller.isOVPViaDeepLink}
