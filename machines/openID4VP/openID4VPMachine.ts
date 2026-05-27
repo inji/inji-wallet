@@ -65,28 +65,7 @@ export const openID4VPMachine = model.createMachine(
       checkFaceAuthConsent: {
         entry: ['setIsShowLoadingScreen', 'getFaceAuthConsent'],
         on: {
-          STORE_RESPONSE: {target: 'getKeyPairFromKeystore'},
-        },
-      },
-      getKeyPairFromKeystore: {
-        invoke: {
-          src: 'getKeyPair',
-          onDone: {
-            actions: ['loadKeyPair'],
-            target: 'checkKeyPair',
-          },
-          onError: [
-            {
-              actions: 'setError',
-            },
-          ],
-        },
-      },
-      checkKeyPair: {
-        description: 'checks whether key pair is generated',
-        invoke: {
-          src: 'getSelectedKey',
-          onDone: [
+          STORE_RESPONSE: [
             {
               cond: 'isAuthorizationFlow',
               actions: [
@@ -96,13 +75,7 @@ export const openID4VPMachine = model.createMachine(
               target: 'checkVerifierTrust',
             },
             {
-              cond: 'hasKeyPair',
               target: 'authenticateVerifier',
-            },
-          ],
-          onError: [
-            {
-              actions: 'setError',
             },
           ],
         },
@@ -130,6 +103,8 @@ export const openID4VPMachine = model.createMachine(
       },
       checkVerifierTrust: {
         invoke: {
+          // Has Verifier communications happened before and user has given the trust consent
+          // This is not related to Wallet's pre-registered Verifier
           src: 'isVerifierTrusted',
           onDone: [
             {
@@ -415,32 +390,14 @@ export const openID4VPMachine = model.createMachine(
         on: {
           FACE_VALID: [
             {
-              cond: 'hasKeyPair',
               actions: 'updateFaceCaptureBannerStatus',
               target: 'sendingVP',
-            },
-            {
-              target: 'checkKeyPair',
             },
           ],
           FACE_INVALID: [
             {
-              cond: 'isFaceVerificationRetryAttempt',
-              actions: send({
-                type: 'LOG_ACTIVITY',
-                logType: 'FACE_VERIFICATION_FAILED_AFTER_RETRY_ATTEMPT',
-              }),
-              target: 'invalidIdentity',
-            },
-            {
-              actions: [
-                send({
-                  type: 'LOG_ACTIVITY',
-                  logType: 'FACE_VERIFICATION_FAILED',
-                }),
-                'setIsFaceVerificationRetryAttempt',
-              ],
-              target: 'invalidIdentity',
+              actions: 'updateFaceCaptureBannerStatus',
+              target: 'sendingVP',
             },
           ],
           CANCEL: [

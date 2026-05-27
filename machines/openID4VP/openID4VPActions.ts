@@ -159,14 +159,6 @@ export const openID4VPActions = (model: any) => {
 
     resetIsShareWithSelfie: model.assign({isShareWithSelfie: () => false}),
 
-    loadKeyPair: assign({
-      publicKey: (_, event: any) => event.data?.publicKey as string,
-      privateKey: (context: any, event: any) =>
-        event.data?.privateKey
-          ? event.data.privateKey
-          : (context.privateKey as string),
-    }),
-
     incrementOpenID4VPRetryCount: model.assign({
       openID4VPRetryCount: context => context.openID4VPRetryCount + 1,
     }),

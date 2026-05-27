@@ -174,7 +174,7 @@ class OpenID4VP {
         'result from getMatchingCredentials API call: ',
         JSON.stringify(result, null, 2),
       );
-      const requestedClaims : Set<string> = new Set<string>()
+      const requestedClaims: Set<string> = new Set<string>();
 
       const updatedMatchingVCs: Record<string, MatchResult> = {};
       Object.entries(result.queryMatches).forEach(
@@ -192,17 +192,23 @@ class OpenID4VP {
                 queryMatch.allowMultipleCredentials === true,
             };
           } else {
-            console.log('queryMatch in else part: ', JSON.stringify(queryMatch, null, 2));
+            console.log(
+              'queryMatch in else part: ',
+              JSON.stringify(queryMatch, null, 2),
+            );
             if (queryMatch.failedClaims) {
               (queryMatch.failedClaims as any[]).forEach(failedClaim => {
-                const jsonPaths = claimPathPointersToJsonPath(failedClaim.claim.path);
-                jsonPaths.forEach(path => requestedClaims.add(path))
-              })
+                requestedClaims.add(
+                  claimPathPointersToJsonPath(failedClaim.claim.path),
+                );
+              });
             } else if (
-              queryMatch.failureReason === CredentialsNotMatchingErrorCodes.CryptographicHolderBindingOrMetaFilterMismatch ||
-              queryMatch.failureReson === CredentialsNotMatchingErrorCodes.NoMatchingFormatsFound
+              queryMatch.failureReason ===
+                CredentialsNotMatchingErrorCodes.CryptographicHolderBindingOrMetaFilterMismatch ||
+              queryMatch.failureReson ===
+                CredentialsNotMatchingErrorCodes.NoMatchingFormatsFound
             ) {
-              requestedClaims.add("Credential Meta")
+              requestedClaims.add('Credential Meta');
             }
           }
         },
@@ -211,7 +217,8 @@ class OpenID4VP {
       const resultantResult = {
         matchingVCs: updatedMatchingVCs,
         success: result.success,
-        requestedClaims: requestedClaims.size > 0 ? Array.from(requestedClaims).join(',') : '',
+        requestedClaims:
+          requestedClaims.size > 0 ? Array.from(requestedClaims).join(',') : '',
         purpose: '',
         credentialSetOptions: result.credentialSets,
       } as MatchingVCsResultForDcql;
@@ -657,16 +664,13 @@ function getProcessedDataForMdoc(processedCredential: any) {
 export enum CredentialsNotMatchingErrorCodes {
   NoMatchingFormatsFound = 'no_matching_credentials_with_requested_credential_formats_found',
 
-  CryptographicHolderBindingOrMetaFilterMismatch =
-    'cryptographic_holderbinding_or_meta_filter_mismatch',
+  CryptographicHolderBindingOrMetaFilterMismatch = 'cryptographic_holderbinding_or_meta_filter_mismatch',
 
-  NoClaimsSetOptionSatisfied =
-    'no_claims_set_option_satisfied',
+  NoClaimsSetOptionSatisfied = 'no_claims_set_option_satisfied',
 
   ClaimUnavailable = 'claim_unavailable',
 
   ClaimValueMismatch = 'claim_value_not_matching',
 
-  RequiredClaimsNotSatisfied =
-    'required_claims_not_satisfied',
+  RequiredClaimsNotSatisfied = 'required_claims_not_satisfied',
 }

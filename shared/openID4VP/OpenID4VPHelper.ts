@@ -124,7 +124,7 @@ async function signData(
  */
 export function claimPathPointersToJsonPath(
   path: Array<string | number | null>,
-): string[] {
+): string {
   let currentPath = '';
 
   for (const token of path) {

@@ -5,7 +5,11 @@ import {Column, Text} from '../../ui';
 import {Theme} from '../../ui/styleUtils';
 import {VcItemContainer} from '../../VC/VcItemContainer';
 import {VCItemContainerFlowType} from '../../../shared/Utils';
-import {CredentialSetOption, MatchResult, VcWithMatchedClaims,} from '../../../shared/openID4VP/openid4vp.types';
+import {
+  CredentialSetOption,
+  MatchResult,
+  VcWithMatchedClaims,
+} from '../../../shared/openID4VP/openid4vp.types';
 import {DcqlBadgeColors} from '../../ui/themes/DefaultTheme';
 import {Badge} from '../../ui/badge/Badge';
 import {Divider} from '../../ui/divider/Divider';
@@ -24,30 +28,28 @@ interface DcqlCredentialSetSectionProps {
   matchingVCsResult: Record<string, MatchResult>;
   satisfiableOptions: Array<Array<string>>;
   controller: any;
-  onDisclosureChange: (vcKey: string, disclosures: string[]) => void;
   mandatoryIndex?: number;
   testId: string;
   initialSelectedVcKeys: Record<number, Record<string, Set<string>>>;
 }
 
-export const CredentialSetSection: React.FC<
-  DcqlCredentialSetSectionProps
-> = ({
-       credentialSet,
-       matchingVCsResult,
-       satisfiableOptions,
-       controller,
-       onDisclosureChange,
-       mandatoryIndex,
-       testId,
-       initialSelectedVcKeys,
-     }) => {
+export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
+  credentialSet,
+  matchingVCsResult,
+  satisfiableOptions,
+  controller,
+  mandatoryIndex,
+  testId,
+  initialSelectedVcKeys,
+}) => {
   // Per-option selection tracking: { optionIndex -> { credentialQueryId -> Set<vcKey> } }
   // This is the source of truth for UI selection state. It ensures that when two options
   // share the same credential query ID (e.g. "gov"), selecting option 1's "gov" does not
   // visually mark option 2's "gov" as selected.
-  const [selectedQueryIdToCredentialsByOption, setSelectedQueryIdToCredentialsByOption] =
-    useState<Record<number, Record<string, Set<string>>>>({});
+  const [
+    selectedQueryIdToCredentialsByOption,
+    setSelectedQueryIdToCredentialsByOption,
+  ] = useState<Record<number, Record<string, Set<string>>>>({});
 
   useEffect(() => {
     setSelectedQueryIdToCredentialsByOption(initialSelectedVcKeys);
@@ -66,57 +68,75 @@ export const CredentialSetSection: React.FC<
   };
 
   const deselectItems = (queryIdToVcKeys: Record<string, Set<string>>) => {
-    Object.values(queryIdToVcKeys).forEach(vcKeys => {
-      Array.from(vcKeys).forEach(vcKey => {
-        // TODO: What if the same VC has been matched with different claims in other option ?
-        onDisclosureChange(vcKey, []);
-      })
-    })
-    controller.DESELECT_VC_ITEMS(queryIdToVcKeys)()
-  }
+    controller.DESELECT_VC_ITEMS(queryIdToVcKeys)();
+  };
 
   const selectItems = (queryIdToVcKeys: Record<string, Set<string>>) => {
-    Object.entries(queryIdToVcKeys).forEach(([queryId, vcKeys]) => {
-      Array.from(vcKeys).forEach(vcKey => {
-          matchingVCsResult[queryId]?.matchingVcs?.forEach(matchingCredentialData => {
-            const matchingVcKey = getVcKey(matchingCredentialData.vc);
-            if (matchingVcKey === vcKey) {
-              onDisclosureChange(vcKey, matchingCredentialData.matchedClaims?.map(claim => claimPathPointersToJsonPath(claim.path)).flat() ?? []);
-            }
-          })
-      })
-    })
-
-    controller.SELECT_VC_ITEMS(queryIdToVcKeys)()
-  }
+    controller.SELECT_VC_ITEMS(queryIdToVcKeys)();
+  };
 
   const getVcKey = (vcData: VC): string =>
     VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey();
 
   // An option is selected if for every credential query in that option, at least one of the matching VCs for that query is selected.
   const isOptionSelected = (option: string[], optionIndex: number): boolean => {
-    return option.every(credentialQueryId =>
-      (selectedQueryIdToCredentialsByOption[optionIndex]?.[credentialQueryId]?.size ?? 0) > 0,
+    return option.every(
+      credentialQueryId =>
+        (selectedQueryIdToCredentialsByOption[optionIndex]?.[credentialQueryId]
+          ?.size ?? 0) > 0,
     );
   };
 
-  const selectAllInOption = (option: string[], optionIndex: number) => {
+  const handleOptionToggle = (option: string[], optionIndex: number) => {
     if (isOptionSelected(option, optionIndex)) {
-      const {newSelectedQueryIdToCredentialsByOption, toBeDeselectedCredentialQueryIds} = deselectOption(optionIndex);
+      console.log(
+        'Option is already selected, deselecting option: ',
+        optionIndex,
+      );
+      const {
+        newSelectedQueryIdToCredentialsByOption,
+        toBeDeselectedCredentialQueryIds,
+      } = deselectOption(optionIndex);
 
-      setSelectedQueryIdToCredentialsByOption(newSelectedQueryIdToCredentialsByOption)
+      console.log(
+        'To be updated into setSelectedQueryIdToCredentialsByOption ',
+        newSelectedQueryIdToCredentialsByOption,
+      );
+      setSelectedQueryIdToCredentialsByOption(
+        newSelectedQueryIdToCredentialsByOption,
+      );
       deselectItems(toBeDeselectedCredentialQueryIds);
     } else {
+      console.log(
+        'Option is not already selected, selecting option: ',
+        optionIndex,
+      );
       deselectOtherOptions(optionIndex);
 
-      const newState: Record<string, Set<string>> = {}
-      option.forEach((credentialQueryId) => {
-        const firstVc = matchingVCsResult[credentialQueryId]?.matchingVcs?.[0];
-        if (!firstVc) return;
-        const vcKey = getVcKey(firstVc.vc);
-        newState[credentialQueryId] = new Set<string>([vcKey]);
-      })
-      setSelectedQueryIdToCredentialsByOption({[optionIndex]: newState})
+      const newState: Record<string, Set<string>> = {};
+      // When selecting an option - some credential query IDs within this option may or may not be selected by user already
+      // Case 1 -> the credential query within this option has been already selected -> keep the existing selection
+      // Case 2 -> the credential query has not been selected already - add to the Vcs to select
+      const currentOptionSelectedVcs =
+        selectedQueryIdToCredentialsByOption[optionIndex];
+      option.forEach(credentialQueryId => {
+        let tempVcKeysToSelect: Set<string> = new Set<string>();
+        if (currentOptionSelectedVcs?.[credentialQueryId]) {
+          tempVcKeysToSelect = currentOptionSelectedVcs[credentialQueryId];
+        } else {
+          const firstVc =
+            matchingVCsResult[credentialQueryId]?.matchingVcs?.[0];
+          if (!firstVc) return;
+          const vcKey = getVcKey(firstVc.vc);
+          tempVcKeysToSelect = new Set<string>([vcKey]);
+        }
+        newState[credentialQueryId] = tempVcKeysToSelect;
+      });
+      console.log(
+        'To be updated into setSelectedQueryIdToCredentialsByOption ',
+        newState,
+      );
+      setSelectedQueryIdToCredentialsByOption({[optionIndex]: newState});
       selectItems(newState);
     }
   };
@@ -133,38 +153,95 @@ export const CredentialSetSection: React.FC<
     return (
       selectedQueryIdToCredentialsByOption[optionIndex]?.[
         credentialQueryId
-        ]?.has(vcKey) ?? false
+      ]?.has(vcKey) ?? false
     );
   };
 
-  const deselectOption: (optionIndex: number) => {
-    newSelectedQueryIdToCredentialsByOption: Record<number, Record<string, Set<string>>>;
-    toBeDeselectedCredentialQueryIds: Record<string, Set<string>>
-  } = (optionIndex: number) => {
-    const newSelectedQueryIdToCredentialsByOption = selectedQueryIdToCredentialsByOption;
+  const deselectOption = (optionIndex: number) => {
+    const newSelectedQueryIdToCredentialsByOption =
+      selectedQueryIdToCredentialsByOption;
 
-    const toBeDeselectedCredentialQueryIds: Record<string, Set<string>> = {}
-    const option = satisfiableOptions[optionIndex];
-    option.forEach(credentialQueryId => {
-      const selectedVcKeys = newSelectedQueryIdToCredentialsByOption[optionIndex]?.[credentialQueryId];
-      if (selectedVcKeys) {
-        delete newSelectedQueryIdToCredentialsByOption[optionIndex];
+    const toBeDeselectedCredentialQueryIds: Record<string, Set<string>> = {};
 
-        toBeDeselectedCredentialQueryIds[credentialQueryId] = selectedVcKeys
+    const deselectionOptionEntry =
+      newSelectedQueryIdToCredentialsByOption[optionIndex];
+    delete newSelectedQueryIdToCredentialsByOption[optionIndex];
+
+    // Trigger controller level deselect only if the deselectionOptionEntry are not available in any of the other options
+
+    const activeVcKeysByQueryId: Record<string, Set<string>> = {};
+
+    for (const queryMap of Object.values(
+      newSelectedQueryIdToCredentialsByOption,
+    )) {
+      for (const [queryId, vcKeys] of Object.entries(queryMap)) {
+        activeVcKeysByQueryId[queryId] ||= new Set();
+        for (const vcKey of vcKeys) {
+          activeVcKeysByQueryId[queryId].add(vcKey);
+        }
       }
-    });
-    return {newSelectedQueryIdToCredentialsByOption, toBeDeselectedCredentialQueryIds};
-  }
+    }
+
+    for (const [targetQueryId, targetVcKeys] of Object.entries(
+      deselectionOptionEntry ?? {},
+    )) {
+      const deadVcKeysForThisQuery = new Set<string>();
+
+      // Case 1 - existing selected options does not even have this credential query ID -> add to toBeDeselectedCredentialQueryIds
+      if (!(targetQueryId in activeVcKeysByQueryId)) {
+        toBeDeselectedCredentialQueryIds[targetQueryId] = new Set(targetVcKeys);
+        continue;
+      }
+
+      // Case 2 - existing selection options has the query ID (matchingExistingQueryIds)
+      const matchingExistingVcKeys = activeVcKeysByQueryId[targetQueryId];
+
+      for (const vcKey of targetVcKeys) {
+        const isVcStillSelectedElsewhere = matchingExistingVcKeys.has(vcKey);
+
+        // Case 2.1 - deselectionOptionEntry are available in matchingExistingQueryIds -> don't add to toBeDeselectedCredentialQueryIds because the VC is still selected by other option
+        // Case 2.2 - deselectionOptionEntry are not available in matchingExistingQueryIds -> add to toBeDeselectedCredentialQueryIds because the VC is no longer selected by any option
+        if (!isVcStillSelectedElsewhere) {
+          deadVcKeysForThisQuery.add(vcKey);
+        }
+      }
+
+      if (deadVcKeysForThisQuery.size > 0) {
+        toBeDeselectedCredentialQueryIds[targetQueryId] =
+          deadVcKeysForThisQuery;
+      }
+    }
+
+    return {
+      newSelectedQueryIdToCredentialsByOption,
+      toBeDeselectedCredentialQueryIds,
+    };
+  };
 
   function deselectOtherOptions(excludedOptionIndex: number) {
-    for (let optionIndex = 0; optionIndex < satisfiableOptions.length; optionIndex++) {
+    let newState = {};
+    let toBeDeselectedItems = {};
+    for (
+      let optionIndex = 0;
+      optionIndex < satisfiableOptions.length;
+      optionIndex++
+    ) {
       if (optionIndex === excludedOptionIndex) continue;
 
-      const {newSelectedQueryIdToCredentialsByOption, toBeDeselectedCredentialQueryIds} = deselectOption(optionIndex);
+      const {
+        newSelectedQueryIdToCredentialsByOption,
+        toBeDeselectedCredentialQueryIds,
+      } = deselectOption(optionIndex);
 
-      setSelectedQueryIdToCredentialsByOption(newSelectedQueryIdToCredentialsByOption)
-      deselectItems(toBeDeselectedCredentialQueryIds);
+      toBeDeselectedItems = {
+        ...toBeDeselectedItems,
+        ...toBeDeselectedCredentialQueryIds,
+      };
+      newState = {...newState, ...newSelectedQueryIdToCredentialsByOption};
     }
+
+    deselectItems(toBeDeselectedItems);
+    return newState;
   }
 
   const handleVCSelection = (
@@ -173,72 +250,112 @@ export const CredentialSetSection: React.FC<
     currentOptionIndex: number,
   ) => {
     const removeVcKeyFromCurrentSelection = () => {
-      const newSelectedQueryIdToCredentialsByOption = {...prevSelectedQueryIdToCredentialsByOption};
-      prevSelectedQueryIdToCredentialsByOption[currentOptionIndex]?.[credentialQueryId]?.delete(vcKey);
-      if (prevSelectedQueryIdToCredentialsByOption[currentOptionIndex]?.[credentialQueryId]?.size === 0) {
-        delete prevSelectedQueryIdToCredentialsByOption[currentOptionIndex][credentialQueryId];
+      const newSelectedQueryIdToCredentialsByOption = {
+        ...prevSelectedQueryIdToCredentialsByOption,
+      };
+      prevSelectedQueryIdToCredentialsByOption[currentOptionIndex]?.[
+        credentialQueryId
+      ]?.delete(vcKey);
+      if (
+        prevSelectedQueryIdToCredentialsByOption[currentOptionIndex]?.[
+          credentialQueryId
+        ]?.size === 0
+      ) {
+        delete prevSelectedQueryIdToCredentialsByOption[currentOptionIndex][
+          credentialQueryId
+        ];
       }
-      if (prevSelectedQueryIdToCredentialsByOption[currentOptionIndex] && Object.keys(prevSelectedQueryIdToCredentialsByOption[currentOptionIndex]).length === 0) {
+      if (
+        prevSelectedQueryIdToCredentialsByOption[currentOptionIndex] &&
+        Object.keys(
+          prevSelectedQueryIdToCredentialsByOption[currentOptionIndex],
+        ).length === 0
+      ) {
         delete prevSelectedQueryIdToCredentialsByOption[currentOptionIndex];
       }
       return newSelectedQueryIdToCredentialsByOption;
-    }
+    };
 
     const appendVcKeyToCurrentSelection = () => {
       return {
         ...prevSelectedQueryIdToCredentialsByOption,
         [currentOptionIndex]: {
-          ...prevSelectedQueryIdToCredentialsByOption[currentOptionIndex], // Copies existing queries for this option, if any
+          ...prevSelectedQueryIdToCredentialsByOption[currentOptionIndex],
           [credentialQueryId]: new Set([
-            ...(prevSelectedQueryIdToCredentialsByOption[currentOptionIndex]?.[credentialQueryId] ?? []), // Copies existing VC keys, if any
-            vcKey, // Adds the new key
+            ...(prevSelectedQueryIdToCredentialsByOption[currentOptionIndex]?.[
+              credentialQueryId
+            ] ?? []),
+            vcKey,
           ]),
         },
-      }
-    }
+      };
+    };
 
-    const prevSelectedQueryIdToCredentialsByOption = selectedQueryIdToCredentialsByOption;
+    const prevSelectedQueryIdToCredentialsByOption =
+      selectedQueryIdToCredentialsByOption;
 
     if (isVcSelected(credentialQueryId, vcKey, currentOptionIndex)) {
-      const newSelectedQueryIdToCredentialsByOption = removeVcKeyFromCurrentSelection();
-      setSelectedQueryIdToCredentialsByOption(newSelectedQueryIdToCredentialsByOption);
-
-      const anyOtherOptionHoldsCurrentCredentialQueryIdAndVcKey = Object.entries(newSelectedQueryIdToCredentialsByOption).some(
-        ([optionIndex, selectedQueryIdToVcKeys]) =>
-          Number(optionIndex) !== currentOptionIndex &&
-          (selectedQueryIdToVcKeys[credentialQueryId]?.has(vcKey) ?? false),
+      const newSelectedQueryIdToCredentialsByOption =
+        removeVcKeyFromCurrentSelection();
+      setSelectedQueryIdToCredentialsByOption(
+        newSelectedQueryIdToCredentialsByOption,
       );
+
+      const anyOtherOptionHoldsCurrentCredentialQueryIdAndVcKey =
+        Object.entries(newSelectedQueryIdToCredentialsByOption).some(
+          ([optionIndex, selectedQueryIdToVcKeys]) =>
+            Number(optionIndex) !== currentOptionIndex &&
+            (selectedQueryIdToVcKeys[credentialQueryId]?.has(vcKey) ?? false),
+        );
 
       if (!anyOtherOptionHoldsCurrentCredentialQueryIdAndVcKey) {
         deselectItems({[credentialQueryId]: new Set<string>([vcKey])});
       }
     } else {
-      const allowsMultiple = matchingVCsResult[credentialQueryId]?.allowMultipleCredentials;
+      const allowsMultiple =
+        matchingVCsResult[credentialQueryId]?.allowMultipleCredentials;
+
+      console.debug('current option index ', currentOptionIndex);
+      const toBeUpdated = deselectOtherOptions(currentOptionIndex);
+      let newState: Record<number, Record<string, Set<string>>>;
+
+      console.debug(
+        'allow multiple related credential query = ',
+        allowsMultiple,
+      );
 
       if (allowsMultiple) {
         // If allowing multiple, just add this vc to the current selection without deselecting other VCs for this query
-        setSelectedQueryIdToCredentialsByOption(appendVcKeyToCurrentSelection());
-        deselectItems({[credentialQueryId]: new Set<string>([vcKey])});
+        newState = appendVcKeyToCurrentSelection();
       } else {
-        deselectOtherOptions(currentOptionIndex);
-
-        const newState = {[currentOptionIndex]: {[credentialQueryId]: new Set<string>(vcKey)}};
-        setSelectedQueryIdToCredentialsByOption(newState);
-        deselectItems({[credentialQueryId]: new Set<string>([vcKey])});
+        newState = {
+          [currentOptionIndex]: {
+            ...prevSelectedQueryIdToCredentialsByOption[currentOptionIndex],
+            [credentialQueryId]: new Set<string>([vcKey]),
+          },
+        };
       }
+
+      setSelectedQueryIdToCredentialsByOption({...toBeUpdated, ...newState});
+      console.debug('new state after selection: ', newState);
+      console.debug(
+        'to be updated state after deselecting other options: ',
+        toBeUpdated,
+      );
+
+      selectItems({[credentialQueryId]: new Set<string>([vcKey])});
     }
-  }
+  };
 
   function getSelectivelyDisclosableMatchedClaimPaths(
     matchingCredentialDataResult: VcWithMatchedClaims,
-  ): string[] | undefined {
+  ): Set<string> | undefined {
     const vcFormat = matchingCredentialDataResult.vc.vcMetadata.format;
     if (vcFormat == VCFormat.dc_sd_jwt || vcFormat == VCFormat.vc_sd_jwt) {
-      return matchingCredentialDataResult.matchedClaims
-        ?.map(claim => {
-          return claimPathPointersToJsonPath(claim.path);
-        })
+      const jsonPaths = matchingCredentialDataResult.matchedClaims
+        ?.map(claim => claimPathPointersToJsonPath(claim.path))
         .flat();
+      return new Set(jsonPaths);
     }
     return undefined;
   }
@@ -262,6 +379,7 @@ export const CredentialSetSection: React.FC<
         sdClaimsPath={getSelectivelyDisclosableMatchedClaimPaths(
           matchingCredentialData,
         )}
+        minimalDisclosure
         key={`${vcKey}-option-${optionIndex}-query-${credentialQueryId}`}
         vcMetadata={vcData.vcMetadata}
         margin="0 2 8 2"
@@ -273,9 +391,6 @@ export const CredentialSetSection: React.FC<
         flow={VCItemContainerFlowType.VP_SHARE}
         isPinned={vcData.vcMetadata.isPinned}
         testId={`${testId}-option-${optionIndex}-query-${credentialQueryId}-vc-${vcKey}`}
-        onDisclosuresChange={disclosures => {
-          onDisclosureChange(vcKey, disclosures);
-        }}
       />
     );
   };
@@ -287,7 +402,9 @@ export const CredentialSetSection: React.FC<
   ) => {
     const matchResult = matchingVCsResult[credentialQueryId];
     if (!matchResult || matchResult.matchingVcs?.length === 0) return null;
-    const canSelectMultiple = (matchResult.matchingVcs?.length ?? 0) > 1 && matchResult.allowMultipleCredentials;
+    const canSelectMultiple =
+      (matchResult.matchingVcs?.length ?? 0) > 1 &&
+      matchResult.allowMultipleCredentials;
 
     const selectionType = canSelectMultiple
       ? CheckboxSelectionType.MULTIPLE
@@ -345,9 +462,9 @@ export const CredentialSetSection: React.FC<
           <Text style={Theme.DcqlStyles.sectionTitle}>
             {isRequired
               ? t('dcqlSection.mandatoryCards', {
-                index:
-                  mandatoryIndex !== undefined ? ` ${mandatoryIndex}` : '',
-              })
+                  index:
+                    mandatoryIndex !== undefined ? ` ${mandatoryIndex}` : '',
+                })
               : t('dcqlSection.optionalCards')}
           </Text>
           {isSectionSatisfied && (
@@ -387,17 +504,6 @@ export const CredentialSetSection: React.FC<
       defaultExpanded={credentialSet.required}>
       <Column>
         {satisfiableOptions.map((option, optionIndex) => {
-          // If an option is not satisfiable - don't show the option
-          const isOptionSatisfied = option.every(
-            (credentialQueryId: string) => {
-              const matchResult = matchingVCsResult[credentialQueryId];
-              return matchResult && matchResult.matchingVcs?.length !== 0;
-            },
-          );
-          if (!isOptionSatisfied) {
-            return null;
-          }
-
           return (
             <View
               key={optionIndex}
@@ -427,7 +533,7 @@ export const CredentialSetSection: React.FC<
                       testId={`${testId}-option-${optionIndex}-select-all`}
                       selectionType={CheckboxSelectionType.SINGLE}
                       checked={isOptionSelected(option, optionIndex)}
-                      onPress={() => selectAllInOption(option, optionIndex)}
+                      onPress={() => handleOptionToggle(option, optionIndex)}
                     />
                   }>
                   {option.map(credentialQueryId => {
@@ -435,7 +541,11 @@ export const CredentialSetSection: React.FC<
                       credentialQueryId,
                       optionIndex,
                       (vcKey: string) =>
-                        handleVCSelection(vcKey, credentialQueryId, optionIndex),
+                        handleVCSelection(
+                          vcKey,
+                          credentialQueryId,
+                          optionIndex,
+                        ),
                       (credentialQueryId: string, vcKey: string) =>
                         isVcSelected(credentialQueryId, vcKey, optionIndex),
                     );

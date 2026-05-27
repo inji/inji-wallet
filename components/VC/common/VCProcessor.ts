@@ -209,6 +209,92 @@ export enum ClaimVisibility {
   PUBLIC = 'public',
 }
 
+/**
+ * Responsibility: Converts the payload to flattened structure ensuring only the eligible disclosed keys are flattened
+ *
+ * Examples
+ *
+ * Input:
+ * {
+ *   disclosedKeys: [
+ *     'name',
+ *     'emails[1]',
+ *     'secret', // disclosed but NOT eligible -> removed
+ *   ],
+ *
+ *   eligibleDisclosedKeys: [
+ *     'name',
+ *     'emails[1]',
+ *   ],
+ *
+ *   fullResolvedPayload: {
+ *     // reserved root claim -> skipped
+ *     iss: 'issuer',
+ *
+ *     id: 1,
+ *
+ *     // disclosed + eligible -> PRIVATE
+ *     name: 'John',
+ *
+ *     // arrays
+ *     emails: [
+ *       'a@test.com',
+ *       'b@test.com',
+ *     ],
+ *
+ *     // null primitive
+ *     nullable: null,
+ *
+ *     // nested reserved name -> NOT skipped
+ *     nested: {
+ *       iss: 'nested-issuer',
+ *     },
+ *
+ *     // disclosed but NOT eligible -> removed
+ *     secret: 'hidden',
+ *
+ *     // empty structures -> no output
+ *     emptyObject: {},
+ *     emptyArray: [],
+ *   },
+ * }
+ *
+ * Output:
+ * {
+ *   id: {
+ *     value: 1,
+ *     visibility: ClaimVisibility.PUBLIC,
+ *   },
+ *
+ *   name: {
+ *     value: 'John',
+ *     visibility: ClaimVisibility.PRIVATE,
+ *   },
+ *
+ *   'emails[0]': {
+ *     value: 'a@test.com',
+ *     visibility: ClaimVisibility.PUBLIC,
+ *   },
+ *
+ *   'emails[1]': {
+ *     value: 'b@test.com',
+ *     visibility: ClaimVisibility.PRIVATE,
+ *   },
+ *
+ *   nullable: {
+ *     value: null,
+ *     visibility: ClaimVisibility.PUBLIC,
+ *   },
+ *
+ *   'nested.iss': {
+ *     value: 'nested-issuer',
+ *     visibility: ClaimVisibility.PUBLIC,
+ *   },
+ *
+ *   // secret omitted entirely
+ *   // root iss skipped
+ * }
+ */
 export function flattenSdJwt({
   disclosedKeys,
   eligibleDisclosedKeys,

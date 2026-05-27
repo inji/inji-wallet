@@ -1,7 +1,4 @@
 import {CACHED_API} from '../../shared/api';
-import {fetchKeyPair} from '../../shared/cryptoutil/cryptoUtil';
-import {getJWK, hasKeyPair} from '../../shared/openId4VCI/Utils';
-import base64url from 'base64url';
 import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../../shared/constants';
 import {getVerifierKey, VCShareFlowType} from '../../shared/Utils';
@@ -68,16 +65,6 @@ export const openID4VPServices = () => {
       }
     },
 
-    getKeyPair: async (context: any) => {
-      if (!!(await hasKeyPair(context.keyType))) {
-        return await fetchKeyPair(context.keyType);
-      }
-    },
-
-    getSelectedKey: async (context: any) => {
-      return await fetchKeyPair(context.keyType);
-    },
-
     shareDeclineStatus: async () => {
       return await OpenID4VP.sendErrorToVerifier(
         OVP_ERROR_MESSAGES.DECLINED,
@@ -112,7 +99,9 @@ export const openID4VPServices = () => {
         context.selectedVCs,
         context.selectedDisclosuresByVc,
       );
-      const vpTokenSigningResults = await signDataForVpPreparation(unSignedVpTokens);
+      const vpTokenSigningResults = await signDataForVpPreparation(
+        unSignedVpTokens,
+      );
 
       const verifierResponse = await OpenID4VP.shareVerifiablePresentation(
         vpTokenSigningResults,

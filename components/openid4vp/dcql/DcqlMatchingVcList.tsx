@@ -8,25 +8,25 @@ import {
 } from '../../../shared/openID4VP/openid4vp.types';
 import {CredentialSetSection} from './CredentialSetSection';
 import {LoaderAnimation} from '../../ui/LoaderAnimation';
-import {claimPathPointersToJsonPath} from "../../../shared/openID4VP/OpenID4VPHelper";
 
 type DcqlMatchingVcListProps = {
   controller: any;
-  onDisclosureChange: (vcKey: string, disclosures: string[]) => void;
 };
 
 export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
   controller,
-  onDisclosureChange,
 }) => {
   const dcqlResult = controller.matchingVcsResult as MatchingVCsResultForDcql;
   const orderedCredentialSets = orderCredentialSetsByMandatoryRequirement(
-    dcqlResult.credentialSetOptions
+    dcqlResult.credentialSetOptions,
   );
-  const [initialSelectedVcKeysBySet, setInitialSelectedVcKeysBySet] =
-    useState<Record<number, Record<number, Record<string, Set<string>>>>>({});
-  const [credentialSetQueryToSatisfiableOptions, setCredentialSetQueryToSatisfiableOptions] =
-    useState<Record<number, Array<Array<string>>>>({});
+  const [initialSelectedVcKeysBySet, setInitialSelectedVcKeysBySet] = useState<
+    Record<number, Record<number, Record<string, Set<string>>>>
+  >({});
+  const [
+    credentialSetQueryToSatisfiableOptions,
+    setCredentialSetQueryToSatisfiableOptions,
+  ] = useState<Record<number, Array<Array<string>>>>({});
 
   useEffect(() => {
     if (!controller.matchingVcsResult) {
@@ -42,9 +42,9 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
     const satisfiableOptionsBySet: Record<number, Array<Array<string>>> = {};
 
     orderedCredentialSets.forEach((credentialSet, credentialSetIndex) => {
-      console.log("credentialSet options  ",credentialSet.options)
-      console.log("requried  ",credentialSet.required)
-      console.log("requried after ",credentialSet.required)
+      console.log('credentialSet options  ', credentialSet.options);
+      console.log('requried  ', credentialSet.required);
+      console.log('requried after ', credentialSet.required);
       const satisfiableOptions = credentialSet.options.filter(option =>
         option.every(queryId => {
           const matchingResult = dcqlResult.matchingVCs[queryId];
@@ -62,7 +62,7 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
 
       satisfiableOptionsBySet[credentialSetIndex] = satisfiableOptions;
 
-      if(!credentialSet.required) {
+      if (!credentialSet.required) {
         return;
       }
 
@@ -78,11 +78,6 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
 
         const vcKey = getVcKey(matchResult.matchingVcs[0].vc);
 
-        const preSelectedDisclosures = (matchResult.matchingVcs[0].matchedClaims?.map(claim => claim.path) ?? []).map((claimPointerPath) => claimPathPointersToJsonPath(claimPointerPath)).flat()
-        console.log("matchedClaims disclosure ",(matchResult.matchingVcs[0].matchedClaims?.map(claim => claim.path)))
-        console.log("preSelected disclosure ",preSelectedDisclosures)
-        onDisclosureChange(vcKey, preSelectedDisclosures);
-
         (toSelectGlobal[credentialQueryId] ??= new Set<string>()).add(vcKey);
         (queryIdToVcKey[credentialQueryId] ??= new Set<string>()).add(vcKey);
       });
@@ -92,21 +87,19 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
       }
     });
 
-
     setCredentialSetQueryToSatisfiableOptions(satisfiableOptionsBySet);
 
     if (Object.keys(toSelectGlobal).length > 0) {
       controller.SELECT_VC_ITEMS(toSelectGlobal)();
     }
 
-    console.log("initial selected keys ",initialSelectedKeys)
+    console.log('initial selected keys ', initialSelectedKeys);
     setInitialSelectedVcKeysBySet(initialSelectedKeys);
   }, [controller.matchingVcsResult]);
 
   if (!controller.matchingVcsResult) {
     return <LoaderAnimation testID={'matching-vc-list-dcql-loader'} />;
   }
-
 
   const getPreSelectedVcKeys = (
     setIndex: number,
@@ -119,7 +112,10 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
     cs => cs.required,
   ).length;
 
-  console.log("ordered credential sets ", JSON.stringify(orderedCredentialSets, null, 2))
+  console.log(
+    'ordered credential sets ',
+    JSON.stringify(orderedCredentialSets, null, 2),
+  );
 
   return (
     <Column
@@ -132,11 +128,11 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
             ? ++mandatoryCount
             : undefined;
 
-        const satisfiableOptions = credentialSetQueryToSatisfiableOptions[index];
+        const satisfiableOptions =
+          credentialSetQueryToSatisfiableOptions[index];
 
         // If a credential set query is not satisfiable - ignore that credential set query
-        if(!satisfiableOptions)
-          return null
+        if (!satisfiableOptions) return null;
 
         return (
           <CredentialSetSection
@@ -146,7 +142,6 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
             mandatoryIndex={mandatoryIndex}
             matchingVCsResult={dcqlResult.matchingVCs}
             controller={controller}
-            onDisclosureChange={onDisclosureChange}
             satisfiableOptions={satisfiableOptions}
             initialSelectedVcKeys={getPreSelectedVcKeys(index)}
           />
@@ -155,7 +150,6 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
     </Column>
   );
 };
-
 
 const orderCredentialSetsByMandatoryRequirement = (
   credentialSets: CredentialSetOption[],

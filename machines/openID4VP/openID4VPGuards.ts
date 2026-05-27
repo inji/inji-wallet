@@ -25,10 +25,6 @@ export const openID4VPGuards = () => {
     isFlowTypeSimpleShare: context =>
       context.flowType === VCShareFlowType.SIMPLE_SHARE,
 
-    hasKeyPair: (context: any) => {
-      return !!context.publicKey;
-    },
-
     isAnyVCHasImage: (context: any) => {
       const hasImage = Object.values(context.selectedVCs)
         .flatMap(vc => vc)
