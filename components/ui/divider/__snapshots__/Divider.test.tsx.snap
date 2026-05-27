@@ -2,7 +2,7 @@
 
 exports[`Divider matches snapshot for happy case 1`] = `
 <View
-  accessibilityLabel="divider-snap-divider"
+  accessibilityLabel="snap-divider"
   accessible={true}
   style={
     [

@@ -1,4 +1,4 @@
-export const walletMetadata = {
+export const defaultWalletConfig = {
   response_types_supported: ['vp_token'],
   vp_formats_supported: {
     mso_mdoc: {
@@ -25,5 +25,7 @@ export const walletMetadata = {
   request_object_signing_alg_values_supported: ['EdDSA'],
   authorization_encryption_alg_values_supported: ['ECDH-ES'],
   authorization_encryption_enc_values_supported: ['A256GCM'],
-  supported_request_uri_methods: ['get', 'post'],
+  presentation_definition_uri_supported: true,
+  request_uri_methods_supported: ['get', 'post'],
+  trusted_verifiers: [],
 };

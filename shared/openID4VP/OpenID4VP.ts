@@ -20,7 +20,7 @@ import {
 } from '../../components/VC/common/VCUtils';
 import {isIOS, OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../constants';
 import {CACHED_API} from '../api';
-import {defaultWalletConfig} from './WalletConfig';
+import {defaultWalletConfig} from './walletConfig/WalletConfig';
 import {
   MatchingVcsResult,
   MatchingVCsResultForDcql,
@@ -29,7 +29,6 @@ import {
   VcWithMatchedClaims,
 } from './openid4vp.types';
 
-export const OpenID4VP_Proof_Sign_Algo = 'EdDSA';
 const emitter = new NativeEventEmitter(NativeModules.InjiOpenID4VP);
 
 class OpenID4VP {

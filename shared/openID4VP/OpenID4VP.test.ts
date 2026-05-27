@@ -54,8 +54,8 @@ jest.mock('../VCMetadata', () => ({
   },
 }));
 
-jest.mock('./walletMetadata', () => ({
-  walletMetadata: {mock: true},
+jest.mock('./walletConfig/WalletConfig', () => ({
+  defaultWalletConfig: {mock: true},
 }));
 
 jest.mock('./OpenID4VPHelper', () => ({
@@ -67,13 +67,6 @@ describe('OpenID4VP', () => {
   beforeEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
-  });
-
-  describe('OpenID4VP_Proof_Sign_Algo', () => {
-    it('equals EdDSA', () => {
-      const {OpenID4VP_Proof_Sign_Algo} = require('./OpenID4VP');
-      expect(OpenID4VP_Proof_Sign_Algo).toBe('EdDSA');
-    });
   });
 
   describe('authenticateVerifier', () => {
