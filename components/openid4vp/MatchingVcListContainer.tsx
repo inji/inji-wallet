@@ -12,12 +12,7 @@ export const MatchingVcListContainer: React.FC<MatchingVcListProps> = ({
   onDisclosureChange,
 }) => {
   if (controller.isDcqlFlow) {
-    return (
-      <DcqlMatchingVcList
-        controller={controller}
-        onDisclosureChange={onDisclosureChange}
-      />
-    );
+    return <DcqlMatchingVcList controller={controller} />;
   }
 
   return (

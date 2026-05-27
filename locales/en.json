@@ -1286,19 +1286,20 @@
   "common": {
     "card": "card",
     "cards": "cards",
-    
+
     "goHome": "Home",
-    
+
     "accept": "Accept",
     "save": "Save",
     "ok": "OK",
-    
+
     "cancel": "Cancel",
     "dismiss": "Dismiss",
     "goBack": "Go Back",
+    "back": "Back",
     "ignore": "Ignore",
     "decline": "Decline",
-    
+
     "tryAgain": "Try again",
 
     "editLabel": "Edit {{label}}",

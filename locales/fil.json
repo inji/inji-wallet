@@ -1265,6 +1265,7 @@
     "editLabel": "Palitan ang {{label}}",
     "tryAgain": "Subukan muli",
     "goBack": "Bumalik ka",
+    "back": "Bumalik",
     "camera": {
       "errors": {
         "missingPermission": "Ginagamit ng app na ito ang camera upang i-scan ang QR code ng isa pang device."
