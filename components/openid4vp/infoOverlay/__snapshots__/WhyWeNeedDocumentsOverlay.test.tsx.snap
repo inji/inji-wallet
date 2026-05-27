@@ -1,0 +1,575 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WhyWeNeedDocumentsOverlay matches snapshot (happy path – visible overlay) 1`] = `
+<View
+  isVisible={true}
+  onBackdropPress={[MockFunction]}
+  overlayStyle={
+    {
+      "borderRadius": 16,
+      "maxHeight": "80%",
+      "overflow": "hidden",
+      "padding": 0,
+      "width": "90%",
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "paddingBottom": 12,
+        "paddingHorizontal": 20,
+        "paddingTop": 24,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#111827",
+            "flex": 1,
+            "fontSize": 20,
+            "fontWeight": "700",
+            "marginRight": 12,
+          },
+        ]
+      }
+    >
+      infoOverlay.title
+    </Text>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      hitSlop={
+        {
+          "bottom": 8,
+          "left": 8,
+          "right": 8,
+          "top": 8,
+        }
+      }
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        color="#000"
+        name="close"
+        size={20}
+        type="material"
+      />
+    </View>
+  </View>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "paddingBottom": 24,
+        "paddingHorizontal": 20,
+      }
+    }
+    showsVerticalScrollIndicator={false}
+  >
+    <View>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            null,
+            null,
+            {
+              "color": "#374151",
+              "fontSize": 14,
+              "lineHeight": 20,
+              "marginBottom": 16,
+            },
+          ]
+        }
+      >
+        infoOverlay.body
+      </Text>
+      <View
+        style={
+          {
+            "borderColor": "#E5E7EB",
+            "borderRadius": 12,
+            "borderWidth": 1,
+            "marginBottom": 12,
+            "overflow": "hidden",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "padding": 12,
+              "paddingBottom": 8,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 18,
+                  "flexShrink": 0,
+                  "height": 36,
+                  "justifyContent": "center",
+                  "marginRight": 10,
+                  "width": 36,
+                },
+                {
+                  "backgroundColor": "#FEF2F2",
+                },
+              ]
+            }
+          >
+            <View
+              color="#DC2626"
+              name="error-outline"
+              size={20}
+              type="material"
+            />
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+                "gap": 6,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#111827",
+                    "fontSize": 14,
+                    "fontWeight": "600",
+                  },
+                ]
+              }
+            >
+              infoOverlay.requiredCredentials.title
+            </Text>
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "alignSelf": "center",
+                    "borderRadius": 5,
+                    "borderWidth": 1,
+                    "flexDirection": "row",
+                    "gap": 3,
+                    "paddingHorizontal": 8,
+                    "paddingVertical": 3,
+                  },
+                  {
+                    "backgroundColor": "#FEF2F2",
+                  },
+                  {
+                    "borderColor": "#FECACA",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    [
+                      {
+                        "fontFamily": "Montserrat_700Bold",
+                        "fontSize": 10,
+                      },
+                      {
+                        "color": "#DC2626",
+                      },
+                    ],
+                  ]
+                }
+              >
+                dcqlSection.required
+              </Text>
+            </View>
+          </View>
+        </View>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              {
+                "color": "#6B7280",
+                "fontSize": 13,
+                "lineHeight": 18,
+                "paddingBottom": 10,
+                "paddingHorizontal": 12,
+                "paddingTop": 0,
+              },
+            ]
+          }
+        >
+          infoOverlay.requiredCredentials.description
+        </Text>
+        <View
+          style={
+            {
+              "backgroundColor": "#EFF6FF",
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_400Regular",
+                  "fontSize": 14,
+                },
+                null,
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                {
+                  "color": "#1D4ED8",
+                  "fontSize": 12,
+                  "lineHeight": 17,
+                },
+              ]
+            }
+          >
+            infoOverlay.requiredCredentials.footnote
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "borderColor": "#E5E7EB",
+            "borderRadius": 12,
+            "borderWidth": 1,
+            "marginBottom": 12,
+            "overflow": "hidden",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "padding": 12,
+              "paddingBottom": 8,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 18,
+                  "flexShrink": 0,
+                  "height": 36,
+                  "justifyContent": "center",
+                  "marginRight": 10,
+                  "width": 36,
+                },
+                {
+                  "backgroundColor": "#F3F4F6",
+                },
+              ]
+            }
+          >
+            <View
+              color="#6B7280"
+              name="check-circle-outline"
+              size={20}
+              type="material"
+            />
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+                "gap": 6,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#000000",
+                    "fontSize": 16,
+                    "lineHeight": 18,
+                  },
+                  {
+                    "fontFamily": "Montserrat_400Regular",
+                    "fontSize": 14,
+                  },
+                  null,
+                  {
+                    "textAlign": "left",
+                  },
+                  null,
+                  null,
+                  {
+                    "color": "#111827",
+                    "fontSize": 14,
+                    "fontWeight": "600",
+                  },
+                ]
+              }
+            >
+              infoOverlay.optionalCredentials.title
+            </Text>
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "alignSelf": "center",
+                    "borderRadius": 5,
+                    "borderWidth": 1,
+                    "flexDirection": "row",
+                    "gap": 3,
+                    "paddingHorizontal": 8,
+                    "paddingVertical": 3,
+                  },
+                  {
+                    "backgroundColor": "#FFFDDE",
+                  },
+                  {
+                    "borderColor": "#AA913F",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#000000",
+                      "fontSize": 16,
+                      "lineHeight": 18,
+                    },
+                    {
+                      "fontFamily": "Montserrat_400Regular",
+                      "fontSize": 14,
+                    },
+                    null,
+                    {
+                      "textAlign": "left",
+                    },
+                    null,
+                    null,
+                    [
+                      {
+                        "fontFamily": "Montserrat_700Bold",
+                        "fontSize": 10,
+                      },
+                      {
+                        "color": "#79732D",
+                      },
+                    ],
+                  ]
+                }
+              >
+                dcqlSection.notRequired
+              </Text>
+            </View>
+          </View>
+        </View>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              {
+                "color": "#6B7280",
+                "fontSize": 13,
+                "lineHeight": 18,
+                "paddingBottom": 10,
+                "paddingHorizontal": 12,
+                "paddingTop": 0,
+              },
+            ]
+          }
+        >
+          infoOverlay.optionalCredentials.description
+        </Text>
+        <View
+          style={
+            {
+              "paddingBottom": 10,
+              "paddingHorizontal": 12,
+              "paddingTop": 4,
+            }
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontFamily": "Montserrat_400Regular",
+                  "fontSize": 14,
+                },
+                null,
+                {
+                  "textAlign": "left",
+                },
+                null,
+                null,
+                {
+                  "color": "#6B7280",
+                  "fontSize": 12,
+                  "lineHeight": 17,
+                },
+              ]
+            }
+          >
+            infoOverlay.optionalCredentials.footnote
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;

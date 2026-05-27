@@ -1,13 +1,27 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {Fragment, useContext, useEffect, useLayoutEffect, useState,} from 'react';
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import {useTranslation} from 'react-i18next';
 import {BackHandler, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Button, Column, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
-import {isIOS, LIVENESS_CHECK, OVP_ERROR_CODE, OVP_ERROR_MESSAGES,} from '../../shared/constants';
+import {
+  isIOS,
+  LIVENESS_CHECK,
+  OVP_ERROR_CODE,
+  OVP_ERROR_MESSAGES,
+} from '../../shared/constants';
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
-import {getImpressionEventData, sendImpressionEvent,} from '../../shared/telemetry/TelemetryUtils';
+import {
+  getImpressionEventData,
+  sendImpressionEvent,
+} from '../../shared/telemetry/TelemetryUtils';
 import {VerifyIdentityOverlay} from '../VerifyIdentityOverlay';
 import {VPShareOverlay} from '../Scan/VPShareOverlay';
 import {FaceVerificationAlertOverlay} from '../Scan/FaceVerificationAlertOverlay';
@@ -24,17 +38,17 @@ import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
 import {TrustModalVerifier} from '../../components/TrustModalVerifier';
 import {MatchingVcListContainer} from '../../components/openid4vp/MatchingVcListContainer';
 import {VcItemContainer} from '../../components/VC/VcItemContainer';
-import {VerifierInfo} from "./VerifierInfo";
-import {WhyWeNeedDocumentsOverlay} from './WhyWeNeedDocumentsOverlay';
+import {VerifierInfo} from '../../components/openid4vp/verifier/VerifierInfo';
+import {WhyWeNeedDocumentsOverlay} from '../../components/openid4vp/infoOverlay/WhyWeNeedDocumentsOverlay';
 import {
   MatchingVCsResultForDcql,
-  MatchingVCsResultForPresentationExchangeRequest
-} from "../../shared/openID4VP/openid4vp.types";
+  MatchingVCsResultForPresentationExchangeRequest,
+} from '../../shared/openID4VP/openid4vp.types';
 import {getVcKey, VCMetadata} from '../../shared/VCMetadata';
 import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {VCItemContainerFlowType} from "../../shared/Utils";
-import {BackButton} from "../../components/ui/backButton/BackButton";
-import {claimPathPointersToJsonPath} from "../../shared/openID4VP/OpenID4VPHelper";
+import {VCItemContainerFlowType} from '../../shared/Utils';
+import {BackButton} from '../../components/ui/backButton/BackButton';
+import {claimPathPointersToJsonPath} from '../../shared/openID4VP/OpenID4VPHelper';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
@@ -213,9 +227,13 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 paddingHorizontal: 12,
-                columnGap: 4
+                columnGap: 4,
               }}>
-              <BackButton onPress={handleDismiss} type={"chevron"} customIconStyle={{color: Theme.Colors.blackIcon}}/>
+              <BackButton
+                onPress={handleDismiss}
+                type={'chevron'}
+                customIconStyle={{color: Theme.Colors.blackIcon}}
+              />
               <View style={Theme.Styles.sendVPHeaderContainer}>
                 <Text style={Theme.Styles.sendVPHeaderTitle}>
                   {t('requester')}
@@ -244,7 +262,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   if (controller.showLoadingScreen) {
     if (controller.isAuthorizationFlow) {
-      return <LoaderSkeleton testID={'presentation-authorization'}/>;
+      return <LoaderSkeleton testID={'presentation-authorization'} />;
     }
 
     return (
@@ -302,27 +320,46 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         testID={'consent-share-button'}
         disabled={!controller.successfullySatisfiedCredentialRequest()}
         onPress={() => {
-          let selectedDisclosures: Record<string, string[]> = selectedDisclosuresByVc
+          let selectedDisclosures: Record<string, string[]> =
+            selectedDisclosuresByVc;
           if (controller.isDcqlFlow) {
-            const vcKeyToSelectedDisclosuresSet: Record<string, Set<string>> = {}
-            const matchingVcsResult = controller.matchingVcsResult as MatchingVCsResultForDcql
-            Object.entries(controller.credentialRequestIdToSelectedVcKeys).forEach(([credentialQueryId, selectedVcKeys]) => {
-              matchingVcsResult.matchingVCs[credentialQueryId].matchingVcs?.forEach(({vc, matchedClaims}) => {
-                const setOfMatchingClaims = new Set<string>()
+            const vcKeyToSelectedDisclosuresSet: Record<
+              string,
+              Set<string>
+            > = {};
+            const matchingVcsResult =
+              controller.matchingVcsResult as MatchingVCsResultForDcql;
+            Object.entries(
+              controller.credentialRequestIdToSelectedVcKeys,
+            ).forEach(([credentialQueryId, selectedVcKeys]) => {
+              matchingVcsResult.matchingVCs[
+                credentialQueryId
+              ].matchingVcs?.forEach(({vc, matchedClaims}) => {
+                const setOfMatchingClaims = new Set<string>();
                 const vcKey = getVcKey(vc);
                 if (selectedVcKeys.has(vcKey)) {
-                  matchedClaims?.forEach((claim) => {
-                    return setOfMatchingClaims.add(claimPathPointersToJsonPath(claim.path));
-                  })
+                  matchedClaims?.forEach(claim => {
+                    return setOfMatchingClaims.add(
+                      claimPathPointersToJsonPath(claim.path),
+                    );
+                  });
                 }
-                vcKeyToSelectedDisclosuresSet[vcKey] = new Set([...(vcKeyToSelectedDisclosuresSet[vcKey] ?? new Set<string>()), ...setOfMatchingClaims]);
-              })
-            })
-            selectedDisclosures = Object.fromEntries(Object.entries(vcKeyToSelectedDisclosuresSet).map(([k, s]) => [k, [...s]]));
+                vcKeyToSelectedDisclosuresSet[vcKey] = new Set([
+                  ...(vcKeyToSelectedDisclosuresSet[vcKey] ??
+                    new Set<string>()),
+                  ...setOfMatchingClaims,
+                ]);
+              });
+            });
+            selectedDisclosures = Object.fromEntries(
+              Object.entries(vcKeyToSelectedDisclosuresSet).map(([k, s]) => [
+                k,
+                [...s],
+              ]),
+            );
           }
-          controller.ACCEPT_REQUEST(selectedDisclosures)
-        }
-        }
+          controller.ACCEPT_REQUEST(selectedDisclosures);
+        }}
       />
     );
   };
@@ -330,20 +367,28 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   function getVerifierActionAndMatchingCredentials() {
     if (errorModal.matchingVcsResult) {
       const uniqueVcsByKey = new Map<string, VC>();
-      const isDcql = (errorModal.matchingVcsResult as MatchingVCsResultForDcql).credentialSetOptions !== undefined;
+      const isDcql =
+        (errorModal.matchingVcsResult as MatchingVCsResultForDcql)
+          .credentialSetOptions !== undefined;
       if (isDcql) {
-        const dcqlResult = errorModal.matchingVcsResult as MatchingVCsResultForDcql;
+        const dcqlResult =
+          errorModal.matchingVcsResult as MatchingVCsResultForDcql;
         for (const matchResult of Object.values(dcqlResult.matchingVCs)) {
           for (const {vc} of matchResult.matchingVcs ?? []) {
-            const key = VCMetadata.fromVcMetadataString(vc.vcMetadata).getVcKey();
+            const key = VCMetadata.fromVcMetadataString(
+              vc.vcMetadata,
+            ).getVcKey();
             uniqueVcsByKey.set(key, vc);
           }
         }
       } else {
-        const peResult = errorModal.matchingVcsResult as MatchingVCsResultForPresentationExchangeRequest;
+        const peResult =
+          errorModal.matchingVcsResult as MatchingVCsResultForPresentationExchangeRequest;
         for (const vcs of Object.values(peResult.matchingVCs)) {
           for (const vc of vcs) {
-            const key = VCMetadata.fromVcMetadataString(vc.vcMetadata).getVcKey();
+            const key = VCMetadata.fromVcMetadataString(
+              vc.vcMetadata,
+            ).getVcKey();
             uniqueVcsByKey.set(key, vc);
           }
         }
@@ -364,39 +409,37 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
               logoUri={controller.verifierLogoInTrustModal}
               showInfo={false}
             />
-            <View style={Theme.DcqlStyles.credentialMissingCardDivider}/>
+            <View style={Theme.DcqlStyles.credentialMissingCardDivider} />
             <Text style={Theme.DcqlStyles.credentialMissingCardBodyText}>
               {t('errors.noMatchingCredentials.reachOutText')}
             </Text>
           </View>
-          {
-            consolidatedMatchingVcs && (
-              <Fragment>
-                <Text style={Theme.DcqlStyles.credentialMissingSectionLabel}>
-                  {t('errors.noMatchingCredentials.matchingCredentials')}
-                </Text>
-                <View style={Theme.DcqlStyles.credentialMissingCard}>
-                  {Array.from(uniqueVcsByKey.entries()).map(([vcKey, vcData]) => (
-                    <VcItemContainer
-                      key={vcKey}
-                      vcMetadata={vcData.vcMetadata}
-                      margin="0 2 8 2"
-                      selectable={false}
-                      selected={false}
-                      onPress={() => {}}
-                      flow={VCItemContainerFlowType.VP_SHARE}
-                      isPinned={vcData.vcMetadata.isPinned}
-                    />
-                  ))}
-                </View>
-              </Fragment>
-            )
-          }
+          {consolidatedMatchingVcs && (
+            <Fragment>
+              <Text style={Theme.DcqlStyles.credentialMissingSectionLabel}>
+                {t('errors.noMatchingCredentials.matchingCredentials')}
+              </Text>
+              <View style={Theme.DcqlStyles.credentialMissingCard}>
+                {Array.from(uniqueVcsByKey.entries()).map(([vcKey, vcData]) => (
+                  <VcItemContainer
+                    key={vcKey}
+                    vcMetadata={vcData.vcMetadata}
+                    margin="0 2 8 2"
+                    selectable={false}
+                    selected={false}
+                    onPress={() => {}}
+                    flow={VCItemContainerFlowType.VP_SHARE}
+                    isPinned={vcData.vcMetadata.isPinned}
+                  />
+                ))}
+              </View>
+            </Fragment>
+          )}
         </Column>
-      )
+      );
     }
 
-    return undefined
+    return undefined;
   }
 
   const additionalModalContent = getVerifierActionAndMatchingCredentials();

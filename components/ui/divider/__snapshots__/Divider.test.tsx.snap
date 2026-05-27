@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Divider matches snapshot for happy case 1`] = `
+<View
+  accessibilityLabel="divider-snap-divider"
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "row",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "marginVertical": 4,
+        "paddingHorizontal": 12,
+      },
+      null,
+      null,
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "backgroundColor": "#E0E0E0",
+        "flex": 1,
+        "height": 0.4,
+      }
+    }
+  />
+  <View
+    style={
+      {
+        "backgroundColor": "#FFFBEB",
+        "borderColor": "#FDE68A",
+        "borderRadius": 12,
+        "borderWidth": 1,
+        "marginHorizontal": 8,
+        "paddingHorizontal": 10,
+        "paddingVertical": 3,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#F59E0B",
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 11,
+          },
+        ]
+      }
+    >
+      OR
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "backgroundColor": "#E0E0E0",
+        "flex": 1,
+        "height": 0.4,
+      }
+    }
+  />
+</View>
+`;

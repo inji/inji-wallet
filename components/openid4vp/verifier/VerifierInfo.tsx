@@ -1,9 +1,9 @@
-import React from "react";
-import {TouchableOpacity, View} from "react-native";
-import {Icon} from "react-native-elements";
-import {AdaptiveImage} from "../../components/ui/AdaptiveImage";
-import {Text} from "../../components/ui";
-import {Theme} from "../../components/ui/styleUtils";
+import React from 'react';
+import {TouchableOpacity, View} from 'react-native';
+import {Icon} from 'react-native-elements';
+import {AdaptiveImage} from '../../ui/AdaptiveImage';
+import {Text} from '../../ui';
+import {Theme} from '../../ui/styleUtils';
 
 type VerifierInfoProps = {
   logoUri?: string | null;

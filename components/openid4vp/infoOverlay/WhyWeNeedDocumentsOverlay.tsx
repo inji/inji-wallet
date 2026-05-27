@@ -2,9 +2,9 @@ import React from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Icon, Overlay} from 'react-native-elements';
 import {useTranslation} from 'react-i18next';
-import {Text} from '../../components/ui';
-import {Badge} from '../../components/ui/badge/Badge';
-import {DcqlBadgeColors} from '../../components/ui/themes/DefaultTheme';
+import {Text} from '../../ui';
+import {Badge} from '../../ui/badge/Badge';
+import {DcqlBadgeColors} from '../../ui/themes/DefaultTheme';
 
 interface WhyWeNeedDocumentsOverlayProps {
   isVisible: boolean;

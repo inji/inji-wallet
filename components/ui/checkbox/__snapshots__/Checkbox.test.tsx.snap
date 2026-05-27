@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checkbox matches snapshot (happy path – single, checked) 1`] = `
+<View
+  accessibilityLabel="checkbox-single-snap"
+  accessible={true}
+  checked={true}
+  checkedIcon={
+    <Icon
+      color="#951F6F"
+      name="radio-button-checked"
+    />
+  }
+  disabled={false}
+  onPress={[Function]}
+  uncheckedIcon={
+    <Icon
+      color="#DBDBDB"
+      name="radio-button-unchecked"
+    />
+  }
+/>
+`;

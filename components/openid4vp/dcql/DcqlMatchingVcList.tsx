@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Column} from '../../ui';
 import {Theme} from '../../ui/styleUtils';
 import {getVcKey} from '../../../shared/VCMetadata';
@@ -16,10 +16,18 @@ type DcqlMatchingVcListProps = {
 export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
   controller,
 }) => {
-  const dcqlResult = controller.matchingVcsResult as MatchingVCsResultForDcql;
-  const orderedCredentialSets = orderCredentialSetsByMandatoryRequirement(
-    dcqlResult.credentialSetOptions,
+  const dcqlResult =
+    controller.matchingVcsResult as MatchingVCsResultForDcql | null;
+  const orderedCredentialSets = useMemo(
+    () =>
+      dcqlResult
+        ? orderCredentialSetsByMandatoryRequirement(
+            dcqlResult.credentialSetOptions,
+          )
+        : [],
+    [dcqlResult],
   );
+
   const [initialSelectedVcKeysBySet, setInitialSelectedVcKeysBySet] = useState<
     Record<number, Record<number, Record<string, Set<string>>>>
   >({});
@@ -29,11 +37,10 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
   ] = useState<Record<number, Array<Array<string>>>>({});
 
   useEffect(() => {
-    if (!controller.matchingVcsResult) {
+    if (!dcqlResult) {
       return;
     }
 
-    const dcqlResult = controller.matchingVcsResult as MatchingVCsResultForDcql;
     const toSelectGlobal: Record<string, Set<string>> = {};
     const initialSelectedKeys: Record<
       number,
@@ -42,9 +49,6 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
     const satisfiableOptionsBySet: Record<number, Array<Array<string>>> = {};
 
     orderedCredentialSets.forEach((credentialSet, credentialSetIndex) => {
-      console.log('credentialSet options  ', credentialSet.options);
-      console.log('requried  ', credentialSet.required);
-      console.log('requried after ', credentialSet.required);
       const satisfiableOptions = credentialSet.options.filter(option =>
         option.every(queryId => {
           const matchingResult = dcqlResult.matchingVCs[queryId];
@@ -93,11 +97,10 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
       controller.SELECT_VC_ITEMS(toSelectGlobal)();
     }
 
-    console.log('initial selected keys ', initialSelectedKeys);
     setInitialSelectedVcKeysBySet(initialSelectedKeys);
-  }, [controller.matchingVcsResult]);
+  }, [dcqlResult, orderedCredentialSets]);
 
-  if (!controller.matchingVcsResult) {
+  if (!dcqlResult) {
     return <LoaderAnimation testID={'matching-vc-list-dcql-loader'} />;
   }
 
@@ -111,11 +114,6 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
   const totalMandatoryCount = orderedCredentialSets.filter(
     cs => cs.required,
   ).length;
-
-  console.log(
-    'ordered credential sets ',
-    JSON.stringify(orderedCredentialSets, null, 2),
-  );
 
   return (
     <Column

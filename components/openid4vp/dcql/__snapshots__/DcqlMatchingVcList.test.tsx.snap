@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DcqlMatchingVcList matches snapshot for a happy-case request with required and optional sets 1`] = `
+<RCTScrollView
+  accessibilityLabel="matching-vc-list"
+  accessible={true}
+  contentContainerStyle={
+    [
+      {
+        "alignItems": undefined,
+        "flexDirection": "column",
+        "justifyContent": undefined,
+      },
+      null,
+      null,
+      null,
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]
+  }
+>
+  <View>
+    <View
+      testID="matching-vc-list-dcql-section-0"
+    />
+    <View
+      testID="matching-vc-list-dcql-section-1"
+    />
+  </View>
+</RCTScrollView>
+`;

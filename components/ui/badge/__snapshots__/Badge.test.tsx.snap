@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Badge matches snapshot for happy case (with testId, text, addInfoIcon) 1`] = `
+<View
+  accessibilityLabel="badge-happy"
+  accessible={true}
+  style={
+    [
+      {
+        "alignItems": "center",
+        "alignSelf": "center",
+        "borderRadius": 5,
+        "borderWidth": 1,
+        "flexDirection": "row",
+        "gap": 3,
+        "paddingHorizontal": 8,
+        "paddingVertical": 3,
+      },
+      {
+        "backgroundColor": "#fff",
+      },
+      {
+        "borderWidth": 0,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#000000",
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        {
+          "fontFamily": "Montserrat_400Regular",
+          "fontSize": 14,
+        },
+        null,
+        {
+          "textAlign": "left",
+        },
+        null,
+        null,
+        [
+          {
+            "fontFamily": "Montserrat_700Bold",
+            "fontSize": 10,
+          },
+          {
+            "color": "#951F6F",
+          },
+        ],
+      ]
+    }
+  >
+    REQUIRED
+  </Text>
+  <View
+    color="#951F6F"
+    containerStyle={
+      {
+        "marginTop": 1,
+      }
+    }
+    name="info-outline"
+    size={10}
+    type="material"
+  />
+</View>
+`;

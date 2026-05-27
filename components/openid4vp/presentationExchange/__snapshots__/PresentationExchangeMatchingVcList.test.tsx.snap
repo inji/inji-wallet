@@ -1,0 +1,204 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PresentationExchangeMatchingVcList matches snapshot (happy path – 2 VCs, none selected) 1`] = `
+[
+  <View
+    accessibilityLabel="matching-vc-list-header-row"
+    accessible={true}
+    style={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "row",
+          "justifyContent": undefined,
+        },
+        null,
+        {
+          "paddingBottom": 11,
+          "paddingEnd": 24,
+          "paddingStart": 24,
+          "paddingTop": 11,
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FAFAFA",
+          "justifyContent": "space-between",
+        },
+        null,
+        null,
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#000000",
+            "fontFamily": "Montserrat_500Medium",
+            "fontSize": 14,
+          },
+        ]
+      }
+    >
+      0 cardsSelected
+    </Text>
+    <Text
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          {
+            "color": "#951F6F",
+            "fontFamily": "Montserrat_600SemiBold",
+          },
+        ]
+      }
+    >
+      checkAll
+    </Text>
+  </View>,
+  <RCTScrollView
+    accessibilityLabel="matching-vc-list-vc-items"
+    accessible={true}
+    contentContainerStyle={
+      [
+        {
+          "alignItems": undefined,
+          "flexDirection": "column",
+          "justifyContent": undefined,
+        },
+        null,
+        null,
+        null,
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ]
+    }
+  >
+    <View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+        testID="vc-matching-vc-list-vc-VC_vc-1-desc-1"
+      >
+        <Text>
+          unselected
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+        testID="vc-matching-vc-list-vc-VC_vc-2-desc-1"
+      >
+        <Text>
+          unselected
+        </Text>
+      </View>
+    </View>
+  </RCTScrollView>,
+]
+`;

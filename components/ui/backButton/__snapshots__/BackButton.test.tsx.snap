@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Back button test should render the back button  1`] = `
+exports[`BackButton default (arrow) type matches snapshot (happy path) 1`] = `
 <View
   accessibilityLabel="goBack"
   accessibilityState={
