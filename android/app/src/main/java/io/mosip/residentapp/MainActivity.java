@@ -68,6 +68,9 @@ public class MainActivity extends ReactActivity {
       case "openid4vp":
         intentData.setOVPQrData(data.toString());
         break;
+      case "openid-credential-offer":
+        intentData.setCredentialOfferData(data.toString());
+        break;
       default:
         break;
     }

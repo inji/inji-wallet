@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, {useEffect, useRef, useState, useCallback} from 'react';
 import psl from 'psl';
 import {
   View,
@@ -8,20 +8,21 @@ import {
   Text,
   BackHandler,
 } from 'react-native';
-import { WebView } from 'react-native-webview';
-import { Ionicons } from '@expo/vector-icons';
+import {WebView} from 'react-native-webview';
+import {Ionicons} from '@expo/vector-icons';
 import VciClient from '../shared/vciClient/VciClient';
-import { Theme } from '../components/ui/styleUtils';
-import { useTranslation } from 'react-i18next';
-import { isAndroid } from '../shared/constants';
-import { VCIServerErrorCode } from '../shared/openId4VCI/Utils';
+import {Theme} from '../components/ui/styleUtils';
+import {useTranslation} from 'react-i18next';
+import {isAndroid} from '../shared/constants';
+import {VCIServerErrorCode} from '../shared/openId4VCI/Utils';
+import {BannerNotificationContainer} from '../components/BannerNotificationContainer';
 
-const AuthWebViewScreen: React.FC<any> = ({ route, navigation }) => {
-  const { authorizationURL, clientId, redirectUri, controller } = route.params;
+const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
+  const {authorizationURL, clientId, redirectUri, controller} = route.params;
   const webViewRef = useRef<WebView>(null);
   const [showWebView, setShowWebView] = useState(false);
   const [shouldRenderWebView, setShouldRenderWebView] = useState(false);
-  const { t } = useTranslation('authWebView');
+  const {t} = useTranslation('authWebView');
   const WEBVIEW_INIT_DELAY_MS = 300;
 
   const hostName = new URL(authorizationURL).hostname; // example.mosip.net
@@ -44,7 +45,7 @@ const AuthWebViewScreen: React.FC<any> = ({ route, navigation }) => {
       return;
     }
 
-    navigation.setOptions({ gestureEnabled: false });
+    navigation.setOptions({gestureEnabled: false});
 
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -94,20 +95,20 @@ const AuthWebViewScreen: React.FC<any> = ({ route, navigation }) => {
   }, []);
 
   const handleNavigationRequest = (request: any) => {
-    const { url } = request;
+    const {url} = request;
 
     if (url.startsWith(redirectUri)) {
       try {
         const uri = new URL(url);
 
-        const code = uri.searchParams.get("code");
-        const error = uri.searchParams.get("error");
-        const errorDescription = uri.searchParams.get("error_description");
+        const code = uri.searchParams.get('code');
+        const error = uri.searchParams.get('error');
+        const errorDescription = uri.searchParams.get('error_description');
 
         if (error) {
           controller.CANCEL({
             serverErrorCode: error,
-            serverErrorDescription: errorDescription
+            serverErrorDescription: errorDescription,
           });
 
           navigation.goBack();
@@ -117,7 +118,7 @@ const AuthWebViewScreen: React.FC<any> = ({ route, navigation }) => {
         if (!code) {
           controller.CANCEL({
             serverErrorCode: VCIServerErrorCode.INVALID_REQUEST,
-            serverErrorDescription: "Authorization server did not return code"
+            serverErrorDescription: 'Authorization server did not return code',
           });
 
           navigation.goBack();
@@ -127,11 +128,10 @@ const AuthWebViewScreen: React.FC<any> = ({ route, navigation }) => {
         VciClient.getInstance().sendAuthCode(code);
         navigation.goBack();
         return false;
-
       } catch (err: any) {
         controller.CANCEL({
-          serverErrorCode: "redirect_parse_error",
-          serverErrorDescription: err?.message
+          serverErrorCode: 'redirect_parse_error',
+          serverErrorDescription: err?.message,
         });
 
         navigation.goBack();
@@ -152,21 +152,33 @@ const AuthWebViewScreen: React.FC<any> = ({ route, navigation }) => {
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
       <Text style={Theme.AuthWebViewScreenStyle.headerText}>Authenticate</Text>
-      <View style={{ width: 24 }} />
+      <View style={{width: 24}} />
     </View>
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <Header />
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          elevation: 1000,
+        }}
+        pointerEvents="box-none">
+        <BannerNotificationContainer />
+      </View>
       {shouldRenderWebView && !showWebView && (
-        <WebView style={{ width: 0, height: 0 }} source={{ uri: 'about:blank' }} />
+        <WebView style={{width: 0, height: 0}} source={{uri: 'about:blank'}} />
       )}
       {showWebView && (
         <WebView
           ref={webViewRef}
           originWhitelist={['*']}
-          source={{ uri: authorizationURL }}
+          source={{uri: authorizationURL}}
           onShouldStartLoadWithRequest={handleNavigationRequest}
           startInLoadingState
           renderLoading={() => (

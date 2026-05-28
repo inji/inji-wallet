@@ -1,16 +1,16 @@
-import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { FlatList, Pressable, View } from 'react-native';
-import { Issuer } from '../../components/openId4VCI/Issuer';
-import { Header } from '../../components/ui/Header';
-import { Button, Column, Row, Text } from '../../components/ui';
-import { Theme } from '../../components/ui/styleUtils';
-import { RootRouteProps } from '../../routes';
-import { HomeRouteProps } from '../../routes/routeTypes';
-import { useIssuerScreenController } from './IssuerScreenController';
-import { Loader } from '../../components/ui/Loader';
+import React, {Fragment, useEffect, useLayoutEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {FlatList, Pressable, View} from 'react-native';
+import {Issuer} from '../../components/openId4VCI/Issuer';
+import {Header} from '../../components/ui/Header';
+import {Button, Column, Row, Text} from '../../components/ui';
+import {Theme} from '../../components/ui/styleUtils';
+import {RootRouteProps} from '../../routes';
+import {HomeRouteProps} from '../../routes/routeTypes';
+import {useIssuerScreenController} from './IssuerScreenController';
+import {Loader} from '../../components/ui/Loader';
 import ScanIcon from '../../assets/scanIcon.svg';
-import { isTranslationKeyFound, removeWhiteSpace } from '../../shared/commonUtil';
+import {isTranslationKeyFound, removeWhiteSpace} from '../../shared/commonUtil';
 import {
   ErrorMessage,
   getDisplayObjectForCurrentLanguage,
@@ -22,36 +22,35 @@ import {
   sendInteractEvent,
   sendStartEvent,
 } from '../../shared/telemetry/TelemetryUtils';
-import { TelemetryConstants } from '../../shared/telemetry/TelemetryConstants';
-import { MessageOverlay } from '../../components/MessageOverlay';
-import { SearchBar } from '../../components/ui/SearchBar';
-import { SvgImage } from '../../components/ui/svg';
-import { Icon } from 'react-native-elements';
-import { BannerNotificationContainer } from '../../components/BannerNotificationContainer';
-import { CredentialTypeSelectionScreen } from './CredentialTypeSelectionScreen';
-import { QrScanner } from '../../components/QrScanner';
-import { AUTH_ROUTES } from '../../routes/routesConstants';
-import { TransactionCodeModal } from './TransactionCodeScreen';
-import { TrustModal } from '../../components/TrustModal';
-import { SendVPScreen } from '../Scan/SendVPScreen';
+import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
+import {MessageOverlay} from '../../components/MessageOverlay';
+import {SearchBar} from '../../components/ui/SearchBar';
+import {SvgImage} from '../../components/ui/svg';
+import {Icon} from 'react-native-elements';
+import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
+import {CredentialTypeSelectionScreen} from './CredentialTypeSelectionScreen';
+import {QrScanner} from '../../components/QrScanner';
+import {AUTH_ROUTES} from '../../routes/routesConstants';
+import {TransactionCodeModal} from './TransactionCodeScreen';
+import {TrustModal} from '../../components/TrustModal';
+import {SendVPScreen} from '../Scan/SendVPScreen';
 
-import { AuthorizationType } from '../../shared/constants';
-import { useTimer } from '../../shared/hooks/UseTimer';
-import { issuerType } from '../../machines/Issuers/IssuersMachine';
+import {AuthorizationType} from '../../shared/constants';
+import {useTimer} from '../../shared/hooks/UseTimer';
+import {issuerType} from '../../machines/Issuers/IssuersMachine';
 import {
   ProcessingModal,
   ProgressIndicator,
 } from '../../components/ui/processingScreen/ProcessingModal';
-import { ErrorView } from '../../components/ui/Error';
-import { goBackErrors, goHomeErrors } from '../../shared/openId4VCI/Utils';
-import { VCIServerErrorCode } from '../../shared/openId4VCI/Utils';
-
+import {ErrorView} from '../../components/ui/Error';
+import {goBackErrors, goHomeErrors} from '../../shared/openId4VCI/Utils';
+import {VCIServerErrorCode} from '../../shared/openId4VCI/Utils';
 
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
   const controller = useIssuerScreenController(props);
-  const { i18n, t } = useTranslation('IssuersScreen');
+  const {i18n, t} = useTranslation('IssuersScreen');
   const issuers = controller.issuers;
   const [filteredSearchData, setFilteredSearchData] = useState(issuers);
   const [search, setSearch] = useState('');
@@ -59,7 +58,7 @@ export const IssuersScreen: React.FC<
   const [clearSearchIcon, setClearSearchIcon] = useState(false);
   const showFullScreenError = controller.isError;
   const [successDownloadRedirectTimer, initiateSuccessDownloadRedirectTimer] =
-    useTimer({ initialValue: 5 });
+    useTimer({initialValue: 5});
 
   const isVerificationFailed = controller.verificationErrorMessage !== '';
 
@@ -138,7 +137,7 @@ export const IssuersScreen: React.FC<
 
   const onPressHandler = (id: string, protocol: string) => {
     sendStartEvent(
-      getStartEventData(TelemetryConstants.FlowType.vcDownload, { id: id }),
+      getStartEventData(TelemetryConstants.FlowType.vcDownload, {id: id}),
     );
     sendInteractEvent(
       getInteractEventData(
@@ -160,9 +159,9 @@ export const IssuersScreen: React.FC<
     return (
       controller.errorMessageType === ErrorMessage.TECHNICAL_DIFFICULTIES ||
       controller.errorMessageType ===
-      ErrorMessage.CREDENTIAL_TYPE_DOWNLOAD_FAILURE ||
+        ErrorMessage.CREDENTIAL_TYPE_DOWNLOAD_FAILURE ||
       controller.errorMessageType ===
-      ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED ||
+        ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED ||
       controller.errorMessageType === ErrorMessage.NETWORK_REQUEST_FAILED
     );
   }
@@ -190,7 +189,7 @@ export const IssuersScreen: React.FC<
   const getImage = () => {
     if (controller.errorMessageType == ErrorMessage.NO_INTERNET)
       return SvgImage.NoInternetConnection();
-    return SvgImage.ErrorOccurred()
+    return SvgImage.ErrorOccurred();
   };
 
   const filterIssuers = (searchText: string) => {
@@ -221,67 +220,85 @@ export const IssuersScreen: React.FC<
     !isVerificationFailed
   ) {
     return (
-      <ProcessingModal
-        testID={controller.isDownloadSuccess ? 'download-success' : 'download'}
-        isVisible={
-          controller.authorizationType ===
-          AuthorizationType.OPENID4VP_PRESENTATION &&
-          (controller.isPresentationAuthorizationInProgress ||
-            controller.isDownloadSuccess ||
-            controller.isAuthorizationSuccess) &&
-          !controller.isError
-        }
-        title={
-          controller.isDownloadSuccess
-            ? t('downloadSuccess')
-            : t('loaders.processing')
-        }
-        subTitle={
-          controller.isDownloadSuccess
-            ? t('loaders.progressIndicators.redirectToHome', {
-              remainingTime: successDownloadRedirectTimer,
-            })
-            : t('loaders.subTitle.inProgress')
-        }
-        progressSteps={[
-          <ProgressIndicator
-            key={1}
-            label={
-              controller.isAuthorizationSuccess
-                ? t('loaders.progressIndicators.sharedCard')
-                : t('loaders.progressIndicators.sharingCard')
-            }
-            completed={controller.isAuthorizationSuccess}
-            testID={
-              controller.isAuthorizationSuccess ? 'shared-card' : 'sharing-card'
-            }
-          />,
-          <ProgressIndicator
-            key={2}
-            label={
-              controller.isDownloadSuccess
-                ? t('loaders.progressIndicators.downloadedCard')
-                : t('loaders.progressIndicators.downloadingCard')
-            }
-            completed={controller.isDownloadSuccess}
-            testID={
-              controller.isDownloadSuccess
-                ? 'downloaded-card'
-                : 'downloading-card'
-            }
-          />,
-        ]}
-        action={
-          <Button
-            testID={'go-home'}
-            title={t('goHome')}
-            type={'gradient'}
-            fill
-            onPress={props.navigation.goBack}
-            disabled={!controller.isDownloadSuccess}
-          />
-        }
-      />
+      <Fragment>
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1000,
+            elevation: 1000,
+          }}
+          pointerEvents="box-none">
+          <BannerNotificationContainer />
+        </View>
+        <ProcessingModal
+          testID={
+            controller.isDownloadSuccess ? 'download-success' : 'download'
+          }
+          isVisible={
+            controller.authorizationType ===
+              AuthorizationType.OPENID4VP_PRESENTATION &&
+            (controller.isPresentationAuthorizationInProgress ||
+              controller.isDownloadSuccess ||
+              controller.isAuthorizationSuccess) &&
+            !controller.isError
+          }
+          title={
+            controller.isDownloadSuccess
+              ? t('downloadSuccess')
+              : t('loaders.processing')
+          }
+          subTitle={
+            controller.isDownloadSuccess
+              ? t('loaders.progressIndicators.redirectToHome', {
+                  remainingTime: successDownloadRedirectTimer,
+                })
+              : t('loaders.subTitle.inProgress')
+          }
+          progressSteps={[
+            <ProgressIndicator
+              key={1}
+              label={
+                controller.isAuthorizationSuccess
+                  ? t('loaders.progressIndicators.sharedCard')
+                  : t('loaders.progressIndicators.sharingCard')
+              }
+              completed={controller.isAuthorizationSuccess}
+              testID={
+                controller.isAuthorizationSuccess
+                  ? 'shared-card'
+                  : 'sharing-card'
+              }
+            />,
+            <ProgressIndicator
+              key={2}
+              label={
+                controller.isDownloadSuccess
+                  ? t('loaders.progressIndicators.downloadedCard')
+                  : t('loaders.progressIndicators.downloadingCard')
+              }
+              completed={controller.isDownloadSuccess}
+              testID={
+                controller.isDownloadSuccess
+                  ? 'downloaded-card'
+                  : 'downloading-card'
+              }
+            />,
+          ]}
+          action={
+            <Button
+              testID={'go-home'}
+              title={t('goHome')}
+              type={'gradient'}
+              fill
+              onPress={props.navigation.goBack}
+              disabled={!controller.isDownloadSuccess}
+            />
+          }
+        />
+      </Fragment>
     );
   }
 
@@ -303,7 +320,7 @@ export const IssuersScreen: React.FC<
         primaryButtonText="goBack"
         primaryButtonEvent={controller.RESET_VERIFY_ERROR}
         primaryButtonTestID="goBack"
-        customStyles={{ marginTop: '30%' }}
+        customStyles={{marginTop: '30%'}}
       />
     );
   }
@@ -353,7 +370,10 @@ export const IssuersScreen: React.FC<
     return (
       <ErrorView
         testID={`${controller.errorMessageType}Error`}
-        customImageStyles={{ marginTop: controller.errorMessageType == ErrorMessage.NO_INTERNET ? 20 : 0 }}
+        customImageStyles={{
+          marginTop:
+            controller.errorMessageType == ErrorMessage.NO_INTERNET ? 20 : 0,
+        }}
         isVisible={controller.errorMessageType !== ''}
         title={t(`errors.${controller.errorMessageType}.title`)}
         message={t(`errors.${controller.errorMessageType}.message`)}
@@ -364,7 +384,13 @@ export const IssuersScreen: React.FC<
         alignActionsOnEnd
         primaryButtonTestID="tryAgain"
         primaryButtonText={
-          goBackErrors.has(controller.errorMessageType as VCIServerErrorCode) ? 'goBack' : goHomeErrors.has(controller.errorMessageType as VCIServerErrorCode) ? 'goHome' : 'tryAgain'
+          goBackErrors.has(controller.errorMessageType as VCIServerErrorCode)
+            ? 'goBack'
+            : goHomeErrors.has(
+                controller.errorMessageType as VCIServerErrorCode,
+              )
+            ? 'goHome'
+            : 'tryAgain'
         }
         primaryButtonEvent={controller.TRY_AGAIN}
         onDismiss={goBack}
@@ -375,6 +401,18 @@ export const IssuersScreen: React.FC<
   if (controller.loadingReason) {
     return (
       <Fragment>
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1000,
+            elevation: 1000,
+          }}
+          pointerEvents="box-none">
+          <BannerNotificationContainer />
+        </View>
         {controller.isPresentationAuthorization ? (
           <SendVPScreen
             navigation={props.navigation}
@@ -427,7 +465,7 @@ export const IssuersScreen: React.FC<
   return (
     <React.Fragment>
       <BannerNotificationContainer />
-      {(
+      {
         <Column style={Theme.IssuersScreenStyles.issuerListOuterContainer}>
           <Row
             style={
@@ -467,7 +505,7 @@ export const IssuersScreen: React.FC<
             {t('description')}
           </Text>
           {search === '' && (
-            <View style={{ height: 85 }}>
+            <View style={{height: 85}}>
               <Issuer
                 defaultLogo={ScanIcon}
                 displayDetails={{
@@ -485,7 +523,7 @@ export const IssuersScreen: React.FC<
             {controller.issuers.length > 0 && (
               <FlatList
                 data={filteredSearchData}
-                renderItem={({ item }) => (
+                renderItem={({item}) => (
                   <Issuer
                     testID={removeWhiteSpace(item.issuer_id)}
                     displayDetails={getDisplayObjectForCurrentLanguage(
@@ -502,7 +540,7 @@ export const IssuersScreen: React.FC<
             )}
           </Column>
         </Column>
-      )}
+      }
     </React.Fragment>
   );
 };

@@ -40,6 +40,7 @@ import {APP_EVENTS} from '../../machines/app';
 import {useScanScreen} from './ScanScreenController';
 import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
 import {TrustModalVerifier} from '../../components/TrustModalVerifier';
+import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
@@ -232,15 +233,38 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   ]);
 
   if (controller.showLoadingScreen) {
+    const bannerOverlay = (
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          elevation: 1000,
+        }}
+        pointerEvents="box-none">
+        <BannerNotificationContainer />
+      </View>
+    );
+
     if (controller.isAuthorizationFlow) {
-      return <LoaderSkeleton testID={'presentation-authorization'} />;
+      return (
+        <Fragment>
+          {bannerOverlay}
+          <LoaderSkeleton testID={'presentation-authorization'} />
+        </Fragment>
+      );
     }
 
     return (
-      <Loader
-        title={t('loaders.loading')}
-        subTitle={t(`loaders.subTitle.fetchingVerifiers`)}
-      />
+      <Fragment>
+        {bannerOverlay}
+        <Loader
+          title={t('loaders.loading')}
+          subTitle={t(`loaders.subTitle.fetchingVerifiers`)}
+        />
+      </Fragment>
     );
   }
 
@@ -358,6 +382,18 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   };
   return (
     <React.Fragment>
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          elevation: 1000,
+        }}
+        pointerEvents="box-none">
+        <BannerNotificationContainer />
+      </View>
       {
         <TrustModalVerifier
           isVisible={controller.showTrustConsentModal}

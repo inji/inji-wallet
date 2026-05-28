@@ -8,6 +8,7 @@ import {useContext} from 'react';
 import {GlobalContext} from '../shared/GlobalContext';
 import {VcMetaEvents} from '../machines/VerifiableCredential/VCMetaMachine/VCMetaMachine';
 import {
+  selectIsCredentialOfferDroppedBusy,
   selectIsDownloadingFailed,
   selectIsDownloadingSuccess,
   selectIsReverificationFailure,
@@ -27,10 +28,23 @@ export const UseBannerNotification = () => {
     isPasscodeUnlock: useSelector(settingsService, selectIsPasscodeUnlock),
 
     isBiometricUnlock: useSelector(settingsService, selectIsBiometricUnlock),
-    isDownloadingSuccess: useSelector(vcMetaService, selectIsDownloadingSuccess),
+    isDownloadingSuccess: useSelector(
+      vcMetaService,
+      selectIsDownloadingSuccess,
+    ),
     isDownloadingFailed: useSelector(vcMetaService, selectIsDownloadingFailed),
-    isReverificationSuccess: useSelector(vcMetaService,selectIsReverificationSuccess),
-    isReverificationFailed: useSelector(vcMetaService, selectIsReverificationFailure),
+    isCredentialOfferDroppedBusy: useSelector(
+      vcMetaService,
+      selectIsCredentialOfferDroppedBusy,
+    ),
+    isReverificationSuccess: useSelector(
+      vcMetaService,
+      selectIsReverificationSuccess,
+    ),
+    isReverificationFailed: useSelector(
+      vcMetaService,
+      selectIsReverificationFailure,
+    ),
     DISMISS: () => {
       settingsService.send(SettingsEvents.DISMISS());
     },
@@ -40,6 +54,9 @@ export const UseBannerNotification = () => {
       vcMetaService.send(VcMetaEvents.RESET_VERIFICATION_STATUS(null)),
     RESET_DOWNLOADING_FAILED: () => {
       vcMetaService.send(VcMetaEvents.RESET_DOWNLOADING_FAILED());
+    },
+    RESET_CREDENTIAL_OFFER_DROPPED_BUSY: () => {
+      vcMetaService.send(VcMetaEvents.RESET_CREDENTIAL_OFFER_DROPPED_BUSY());
     },
     RESET_DOWNLOADING_SUCCESS: () => {
       vcMetaService.send(VcMetaEvents.RESET_DOWNLOADING_SUCCESS());

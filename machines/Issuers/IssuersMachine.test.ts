@@ -97,6 +97,14 @@ describe('IssuersMachine', () => {
       expect(e.data).toBe('data');
     });
 
+    it('CREDENTIAL_OFFER_VIA_DEEP_LINK', () => {
+      const e = IssuerScreenTabEvents.CREDENTIAL_OFFER_VIA_DEEP_LINK(
+        'openid-credential-offer://?credential_offer=...',
+      );
+      expect(e.type).toBe('CREDENTIAL_OFFER_VIA_DEEP_LINK');
+      expect(e.data).toBe('openid-credential-offer://?credential_offer=...');
+    });
+
     it('AUTH_ENDPOINT_RECEIVED', () => {
       const e = IssuerScreenTabEvents.AUTH_ENDPOINT_RECEIVED('endpoint');
       expect(e.type).toBe('AUTH_ENDPOINT_RECEIVED');

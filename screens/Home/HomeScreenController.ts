@@ -12,6 +12,7 @@ import {
   selectViewingVc,
   selectIssuersMachine,
   selectIsMinimumStorageLimitReached,
+  selectIsIssuerMachineBusyForDeepLink,
 } from './HomeScreenMachine';
 import {selectVc} from '../../machines/VerifiableCredential/VCItemMachine/VCItemSelectors';
 
@@ -44,6 +45,10 @@ export function useHomeScreen(props: HomeRouteProps) {
     service,
     activeTab: useSelector(service, selectActiveTab),
     selectedVc: useSelector(service, selectSelectedVc),
+    isIssuerMachineBusyForDeepLink: useSelector(
+      service,
+      selectIsIssuerMachineBusyForDeepLink,
+    ),
     vc: useSelector(service, selectVc),
     tabRefs: useSelector(service, selectTabRefs),
     isViewingVc: useSelector(service, selectViewingVc),

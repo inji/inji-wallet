@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Icon} from 'react-native-elements';
 import {Column} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
@@ -18,16 +18,46 @@ import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/V
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {useTranslation} from 'react-i18next';
 import {Copilot} from '../../components/ui/Copilot';
+import {useSelector} from '@xstate/react';
+import {GlobalContext} from '../../shared/GlobalContext';
+import {APP_EVENTS, selectCredentialOfferUri} from '../../machines/app';
+import {
+  IssuerScreenTabEvents,
+  IssuersMachine,
+} from '../../machines/Issuers/IssuersMachine';
 
 export const HomeScreen: React.FC<HomeRouteProps> = props => {
   const controller = useHomeScreen(props);
   const {t} = useTranslation();
+  const {appService} = useContext(GlobalContext);
+  const credentialOfferUri = useSelector(appService, selectCredentialOfferUri);
 
   useEffect(() => {
-    if (controller.IssuersService) {
+    if (controller.IssuersService && credentialOfferUri === '') {
       navigateToIssuers();
     }
   }, [controller.IssuersService]);
+
+  // OpenID4VCI 1.0 — bridge a deep-linked credential offer URI into the
+  // HomeScreenMachine → IssuersMachine chain. We send GOTO_ISSUERS first
+  // (spawns IssuersMachine if not already running). Once the child is
+  // available, we forward the URI as CREDENTIAL_OFFER_VIA_DEEP_LINK and
+  // clear the appMachine flag so this only fires once per intent.
+  useEffect(() => {
+    if (credentialOfferUri === '') return;
+    if (!controller.IssuersService) {
+      controller.GOTO_ISSUERS();
+      return;
+    }
+    const isIssuerBusy = controller.isIssuerMachineBusyForDeepLink;
+    controller.IssuersService.send(
+      IssuerScreenTabEvents.CREDENTIAL_OFFER_VIA_DEEP_LINK(credentialOfferUri),
+    );
+    if (!isIssuerBusy) {
+      navigateToIssuers();
+    }
+    appService.send(APP_EVENTS.RESET_CREDENTIAL_OFFER_URI());
+  }, [credentialOfferUri, controller.IssuersService]);
 
   const navigateToIssuers = () => {
     props.navigation.navigate('IssuersScreen', {

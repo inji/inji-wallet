@@ -1,10 +1,10 @@
-import { EventFrom, send, sendParent } from 'xstate';
-import { IssuersModel } from './IssuersModel';
-import { IssuersActions } from './IssuersActions';
-import { IssuersService } from './IssuersService';
-import { IssuersGuards } from './IssuersGuards';
-import { CredentialTypes } from '../VerifiableCredential/VCMetaMachine/vc';
-import { OpenID4VPEvents, openID4VPMachine } from '../openID4VP/openID4VPMachine';
+import {EventFrom, send, sendParent} from 'xstate';
+import {IssuersModel} from './IssuersModel';
+import {IssuersActions} from './IssuersActions';
+import {IssuersService} from './IssuersService';
+import {IssuersGuards} from './IssuersGuards';
+import {CredentialTypes} from '../VerifiableCredential/VCMetaMachine/vc';
+import {OpenID4VPEvents, openID4VPMachine} from '../openID4VP/openID4VPMachine';
 import NetInfo from '@react-native-community/netinfo';
 const model = IssuersModel;
 
@@ -28,13 +28,31 @@ export const IssuersMachine = model.createMachine(
       NETWORK_STATUS_CHANGED: {
         actions: ['setIsInternetAvailable'],
       },
+      // OpenID4VCI 1.0 §4.1.1 — credential offer arriving via deep link.
+      // Accepted in all states except the active-download chain. While
+      // credentialDownloadFromOffer (or verifyingCredential / storing) is
+      // active the event is dropped and a banner toaster is shown (S20).
+      CREDENTIAL_OFFER_VIA_DEEP_LINK: [
+        {
+          cond: 'isInSafeStateForDeepLink',
+          actions: [
+            'setLoadingReasonAsPreparingRequest',
+            'setQrData',
+            'setIsCredentialOfferViaDeepLink',
+          ],
+          target: '.credentialDownloadFromOffer',
+        },
+        {
+          actions: ['logDeepLinkOfferDropped'],
+        },
+      ],
     },
     invoke: {
-      id: "networkListener",
-      src: () => (sendBack) => {
+      id: 'networkListener',
+      src: () => sendBack => {
         const networkListener = NetInfo.addEventListener(state => {
           sendBack({
-            type: "NETWORK_STATUS_CHANGED",
+            type: 'NETWORK_STATUS_CHANGED',
             isInternetAvailable: state.isConnected ?? true,
           });
         });
@@ -139,6 +157,7 @@ export const IssuersMachine = model.createMachine(
 
       credentialDownloadFromOffer: {
         entry: ['setCredentialOfferFlowType', 'resetSelectedIssuer'],
+        exit: ['resetIsCredentialOfferViaDeepLink'],
         invoke: {
           src: 'downloadCredentialFromOffer',
           onDone: {
@@ -201,7 +220,7 @@ export const IssuersMachine = model.createMachine(
             target: '.checkingIssuerTrust',
           },
           CANCEL: {
-            actions: ['resetLoadingReason','setError'],
+            actions: ['resetLoadingReason', 'setError'],
             target: '#issuersMachine.error',
           },
         },
@@ -253,13 +272,13 @@ export const IssuersMachine = model.createMachine(
                 invoke: {
                   src: 'sendSignedVP',
                   onDone: {
-                    target: 'success'
+                    target: 'success',
                   },
                   onError: {
                     actions: ['setError', 'resetLoadingReason'],
-                    target: '#issuersMachine.error'
-                  }
-                }
+                    target: '#issuersMachine.error',
+                  },
+                },
               },
               success: {
                 always: [
@@ -577,7 +596,7 @@ export const IssuersMachine = model.createMachine(
               'sendDownloadingFailedToVcMeta',
             ],
             target: '#issuersMachine.error',
-          }
+          },
         },
       },
       downloadIssuerWellknown: {
@@ -603,10 +622,7 @@ export const IssuersMachine = model.createMachine(
             target: 'selectingCredentialType',
           },
           onError: {
-            actions: [
-              'setError',
-              'resetLoadingReason',
-            ],
+            actions: ['setError', 'resetLoadingReason'],
             target: '#issuersMachine.error',
           },
         },
@@ -680,9 +696,14 @@ export const IssuersMachine = model.createMachine(
             actions: ['setCNonce', 'setWellknwonKeyTypes'],
             target: '.keyManagement',
           },
-          CANCEL: { // auth errors
+          CANCEL: {
+            // auth errors
             target: 'error',
-            actions: ['resetSelectedCredentialType', 'resetLoadingReason', 'setError'],
+            actions: [
+              'resetSelectedCredentialType',
+              'resetLoadingReason',
+              'setError',
+            ],
           },
         },
         initial: 'idle',
@@ -734,13 +755,13 @@ export const IssuersMachine = model.createMachine(
                 invoke: {
                   src: 'sendSignedVP',
                   onDone: {
-                    target: 'success'
+                    target: 'success',
                   },
                   onError: {
                     actions: ['setError', 'resetLoadingReason'],
-                    target: '#issuersMachine.error'
-                  }
-                }
+                    target: '#issuersMachine.error',
+                  },
+                },
               },
               success: {
                 always: [
@@ -967,11 +988,16 @@ export const IssuersMachine = model.createMachine(
         ],
         invoke: {
           src: 'isUserSignedAlready',
-          onDone: {
-            cond: 'isSignedIn',
-            actions: ['sendBackupEvent'],
-            target: 'done',
-          },
+          onDone: [
+            {
+              cond: 'isSignedIn',
+              actions: ['sendBackupEvent'],
+              target: 'done',
+            },
+            {
+              target: 'done',
+            },
+          ],
           onError: {
             actions: ['setStorageError', 'resetLoadingReason'],
             target: '#issuersMachine.error',
@@ -1016,7 +1042,7 @@ export interface displayType {
   language: string;
   logo: logoType;
   background_color: string;
-  background_image: { uri: string };
+  background_image: {uri: string};
   text_color: string;
   title: string;
   description: string;

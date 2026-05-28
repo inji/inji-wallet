@@ -8,21 +8,21 @@ export const IssuersEvents = {
   COMPLETED: () => ({}),
   TRY_AGAIN: () => ({}),
   RESET_ERROR: () => ({}),
-  SHOW_ERROR:(error: any) => ({error}),
+  SHOW_ERROR: (error: any) => ({error}),
   CHECK_KEY_PAIR: () => ({}),
-  CANCEL: ({
-    serverErrorCode,
-    serverErrorDescription,
-  } = {} as {
-    serverErrorCode?: string;
-    serverErrorDescription?: string;
-  }) => ({serverErrorCode, serverErrorDescription}),
+  CANCEL: (
+    {serverErrorCode, serverErrorDescription} = {} as {
+      serverErrorCode?: string;
+      serverErrorDescription?: string;
+    },
+  ) => ({serverErrorCode, serverErrorDescription}),
   STORE_RESPONSE: (response?: unknown) => ({response}),
   STORE_ERROR: (error: Error, requester?: string) => ({error, requester}),
   RESET_VERIFY_ERROR: () => ({}),
   SELECTED_CREDENTIAL_TYPE: (credType: CredentialTypes) => ({credType}),
   SCAN_CREDENTIAL_OFFER_QR_CODE: () => ({}),
   QR_CODE_SCANNED: (data: string) => ({data}),
+  CREDENTIAL_OFFER_VIA_DEEP_LINK: (data: string) => ({data}),
   AUTH_ENDPOINT_RECEIVED: (authEndpoint: string) => ({authEndpoint}),
   PROOF_REQUEST: (
     accessToken: string,
@@ -52,5 +52,7 @@ export const IssuersEvents = {
   STAY_IN_PROGRESS: () => ({}),
   SIGN_PRESENTATION: (unsignedVPToken: object) => ({unsignedVPToken}),
   SIGNED_DATA_FOR_VP: (signedVPToken: Record<any, any>) => ({signedVPToken}),
-  NETWORK_STATUS_CHANGED: (isInternetAvailable: boolean) => ({isInternetAvailable}),
+  NETWORK_STATUS_CHANGED: (isInternetAvailable: boolean) => ({
+    isInternetAvailable,
+  }),
 };

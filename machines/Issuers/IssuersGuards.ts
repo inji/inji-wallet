@@ -1,17 +1,21 @@
-import { isSignedInResult } from '../../shared/CloudBackupAndRestoreUtils'
-import { ErrorMessage, goBackErrors, goHomeErrors, OIDCErrors, retryableErrors } from '../../shared/openId4VCI/Utils'
-import { BiometricCancellationError } from '../../shared/error/BiometricCancellationError'
-import { VerificationErrorType } from '../../shared/vcjs/verifyCredential'
-import { AuthorizationType } from '../../shared/constants'
-import { VCIServerErrorCode } from '../../shared/openId4VCI/Utils'
+import {isSignedInResult} from '../../shared/CloudBackupAndRestoreUtils';
+import {
+  ErrorMessage,
+  goBackErrors,
+  goHomeErrors,
+  OIDCErrors,
+  retryableErrors,
+} from '../../shared/openId4VCI/Utils';
+import {BiometricCancellationError} from '../../shared/error/BiometricCancellationError';
+import {VerificationErrorType} from '../../shared/vcjs/verifyCredential';
+import {AuthorizationType} from '../../shared/constants';
+import {VCIServerErrorCode} from '../../shared/openId4VCI/Utils';
 
 export const IssuersGuards = () => {
-
   const shouldRetryOnError = (context: any) =>
-    retryableErrors.has(context.errorMessage)
+    retryableErrors.has(context.errorMessage);
 
   const guards = {
-
     isVerificationPendingBecauseOfNetworkIssue: (_context: any, event: any) =>
       (event.data as Error)?.message === VerificationErrorType.NETWORK_ERROR,
 
@@ -21,34 +25,28 @@ export const IssuersGuards = () => {
     isSignedIn: (_: any, event: any) =>
       (event.data as isSignedInResult)?.isSignedIn,
 
-    hasKeyPair: (context: any) =>
-      !!context.publicKey,
+    hasKeyPair: (context: any) => !!context.publicKey,
 
-    isKeyTypeNotFound: (context: any) =>
-      context.keyType === '',
+    isKeyTypeNotFound: (context: any) => context.keyType === '',
 
-    isInternetConnected: (_: any, event: any) =>
-      !!event.data?.isConnected,
+    isInternetConnected: (_: any, event: any) => !!event.data?.isConnected,
 
     canSelectIssuerAgain: (context: any) => {
-      const msg = context.errorMessage || ''
+      const msg = context.errorMessage || '';
       return (
         msg.includes(OIDCErrors.OIDC_CONFIG_ERROR_PREFIX) ||
         msg.includes(ErrorMessage.REQUEST_TIMEDOUT)
-      )
+      );
     },
 
-    shouldFetchIssuersAgain: (context: any) =>
-      context.issuers.length === 0,
+    shouldFetchIssuersAgain: (context: any) => context.issuers.length === 0,
 
     hasUserCancelledBiometric: (_: any, event: any) =>
       event.data instanceof BiometricCancellationError,
 
-    isCredentialOfferFlow: (context: any) =>
-      context.isCredentialOfferFlow,
+    isCredentialOfferFlow: (context: any) => context.isCredentialOfferFlow,
 
-    isIssuerIdInTrustedIssuers: (_: any, event: any) =>
-      Boolean(event.data),
+    isIssuerIdInTrustedIssuers: (_: any, event: any) => Boolean(event.data),
 
     isPresentationAuthorization: (context: any) =>
       context.authorizationType === AuthorizationType.OPENID4VP_PRESENTATION,
@@ -58,13 +56,28 @@ export const IssuersGuards = () => {
 
     shouldRetryOnError,
 
-    shouldGoBack: (context: any) =>
-      goBackErrors.has(context.errorMessage),
+    shouldGoBack: (context: any) => goBackErrors.has(context.errorMessage),
 
     shouldRetryOnErrorAndCredentialOfferFlow: (context: any) =>
-      context.isCredentialOfferFlow && shouldRetryOnError(context)
-  }
+      context.isCredentialOfferFlow && shouldRetryOnError(context),
 
-  return guards
-}
+    // Accept a credential-offer deep-link only when the machine is NOT
+    // mid-download. Blacklisting credentialDownloadFromOffer (and all its
+    // substates: consent, tx-code, token request, key management, etc.)
+    // plus verifyingCredential / storing is safer than whitelisting
+    // individual resting states — it prevents silent breakage when new
+    // states are added to the machine.
+    isInSafeStateForDeepLink: (_context: any, _event: any, meta: any) => {
+      const state = meta.state;
+      return (
+        !state.matches('credentialDownloadFromOffer') &&
+        !state.matches('downloadCredentials') &&
+        !state.matches('proccessingCredential') &&
+        !state.matches('verifyingCredential') &&
+        !state.matches('storing')
+      );
+    },
+  };
 
+  return guards;
+};

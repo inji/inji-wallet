@@ -88,6 +88,10 @@ export function selectIsDownloadingFailed(state: State) {
   return state.context.DownloadingCredentialsFailed;
 }
 
+export function selectIsCredentialOfferDroppedBusy(state: State) {
+  return state.context.CredentialOfferDroppedBusy;
+}
+
 export function selectIsDownloadingSuccess(state: State) {
   return state.context.DownloadingCredentialsSuccess;
 }

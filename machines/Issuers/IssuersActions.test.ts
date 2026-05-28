@@ -199,6 +199,9 @@ describe('IssuersActions', () => {
       'resetVerificationErrorMessage',
       'resetQrData',
       'sendDownloadingFailedToVcMeta',
+      'setIsCredentialOfferViaDeepLink',
+      'resetIsCredentialOfferViaDeepLink',
+      'logDeepLinkOfferDropped',
       'setOpenId4VPRef',
       'sendVPScanData',
       'sendVPConsentReject',
@@ -350,7 +353,9 @@ describe('IssuersActions', () => {
     it('setError for no internet', () => {
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const fn = actions.setError.assignment.errorMessage;
-      expect(fn({isInternetAvailable: false}, {data: {message: 'No Internet'}})).toBe('no_internet');
+      expect(
+        fn({isInternetAvailable: false}, {data: {message: 'No Internet'}}),
+      ).toBe('no_internet');
       consoleSpy.mockRestore();
     });
 
@@ -367,10 +372,7 @@ describe('IssuersActions', () => {
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const fn = actions.setError.assignment.errorMessage;
       expect(
-        fn(
-          {isInternetAvailable: true},
-          {data: {sourceErrorCode: 'VCI-008'}},
-        ),
+        fn({isInternetAvailable: true}, {data: {sourceErrorCode: 'VCI-008'}}),
       ).toBe('invalid_credential_offer');
       consoleSpy.mockRestore();
     });
@@ -383,18 +385,16 @@ describe('IssuersActions', () => {
           {isInternetAvailable: true},
           {data: {serverErrorCode: 'unsupported_grant_type'}},
         ),
-      ).toBe(
-        'unsupported_grant_type',
-      );
+      ).toBe('unsupported_grant_type');
       consoleSpy.mockRestore();
     });
 
     it('setError returns unknown error when no structured code is available', () => {
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const fn = actions.setError.assignment.errorMessage;
-      expect(fn({isInternetAvailable: true}, {data: {message: 'unknown'}})).toBe(
-        'unknown_error',
-      );
+      expect(
+        fn({isInternetAvailable: true}, {data: {message: 'unknown'}}),
+      ).toBe('unknown_error');
       consoleSpy.mockRestore();
     });
 
@@ -499,6 +499,20 @@ describe('IssuersActions', () => {
     it('resetCredentialOfferFlowType returns false', () => {
       const fn =
         actions.resetCredentialOfferFlowType.assignment.isCredentialOfferFlow;
+      expect(fn({}, {})).toBe(false);
+    });
+
+    it('setIsCredentialOfferViaDeepLink returns true', () => {
+      const fn =
+        actions.setIsCredentialOfferViaDeepLink.assignment
+          .isCredentialOfferViaDeepLink;
+      expect(fn({}, {})).toBe(true);
+    });
+
+    it('resetIsCredentialOfferViaDeepLink returns false', () => {
+      const fn =
+        actions.resetIsCredentialOfferViaDeepLink.assignment
+          .isCredentialOfferViaDeepLink;
       expect(fn({}, {})).toBe(false);
     });
 
@@ -844,6 +858,19 @@ describe('IssuersActions', () => {
 
     it('sendDownloadingFailedToVcMeta to callback returns vcMeta ref', () => {
       const action = actions.sendDownloadingFailedToVcMeta;
+      expect(action.opts.to({serviceRefs: {vcMeta: 'vc-meta-ref'}})).toBe(
+        'vc-meta-ref',
+      );
+    });
+
+    it('logDeepLinkOfferDropped event returns CREDENTIAL_OFFER_DROPPED_BUSY', () => {
+      const action = actions.logDeepLinkOfferDropped;
+      const result = action.event({});
+      expect(result.type).toBe('CREDENTIAL_OFFER_DROPPED_BUSY');
+    });
+
+    it('logDeepLinkOfferDropped to callback returns vcMeta ref', () => {
+      const action = actions.logDeepLinkOfferDropped;
       expect(action.opts.to({serviceRefs: {vcMeta: 'vc-meta-ref'}})).toBe(
         'vc-meta-ref',
       );

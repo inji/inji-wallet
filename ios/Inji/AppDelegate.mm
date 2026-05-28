@@ -11,6 +11,7 @@
 typedef NS_ENUM(NSInteger, URLScheme) {
     URLSchemeInji,
     URLSchemeOpenID4VP,
+    URLSchemeCredentialOffer,
     URLSchemeUnknown
 };
 
@@ -67,6 +68,9 @@ typedef NS_ENUM(NSInteger, URLScheme) {
         case URLSchemeOpenID4VP:
             [intentData setOvpQrData:url.absoluteString];
             break;
+        case URLSchemeCredentialOffer:
+            [intentData setCredentialOfferData:url.absoluteString];
+            break;
         case URLSchemeUnknown:
             break;
     }
@@ -77,6 +81,8 @@ typedef NS_ENUM(NSInteger, URLScheme) {
         return URLSchemeInji;
     } else if ([url.scheme isEqualToString:@"openid4vp"]) {
         return URLSchemeOpenID4VP;
+    } else if ([url.scheme isEqualToString:@"openid-credential-offer"]) {
+        return URLSchemeCredentialOffer;
     }
     return URLSchemeUnknown;
 }

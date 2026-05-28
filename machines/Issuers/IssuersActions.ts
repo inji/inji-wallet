@@ -1,39 +1,43 @@
 import {
   ErrorMessage,
   getDisplayObjectForCurrentLanguage,
-  Issuers_Key_Ref, selectCredentialRequestKey,
-  VCIServerErrorCode
+  Issuers_Key_Ref,
+  selectCredentialRequestKey,
+  VCIServerErrorCode,
 } from '../../shared/openId4VCI/Utils';
 import {
   EXPIRED_VC_ERROR_CODE,
-  MY_VCS_STORE_KEY, isIOS,
+  MY_VCS_STORE_KEY,
+  isIOS,
   AuthorizationType,
   OVP_ERROR_CODE,
-  OVP_ERROR_MESSAGES
+  OVP_ERROR_MESSAGES,
 } from '../../shared/constants';
-import { assign, send, spawn } from 'xstate';
-import { StoreEvents } from '../store';
-import { BackupEvents } from '../backupAndRestore/backup/backupMachine';
-import { getVCMetadata, VCMetadata } from '../../shared/VCMetadata';
-import { isHardwareKeystoreExists } from '../../shared/cryptoutil/cryptoUtil';
-import { ActivityLogEvents } from '../activityLog';
+import {assign, send, spawn} from 'xstate';
+import {StoreEvents} from '../store';
+import {BackupEvents} from '../backupAndRestore/backup/backupMachine';
+import {getVCMetadata, VCMetadata} from '../../shared/VCMetadata';
+import {isHardwareKeystoreExists} from '../../shared/cryptoutil/cryptoUtil';
+import {ActivityLogEvents} from '../activityLog';
 import {
   getEndEventData,
   getImpressionEventData,
   sendEndEvent,
   sendImpressionEvent,
 } from '../../shared/telemetry/TelemetryUtils';
-import { TelemetryConstants } from '../../shared/telemetry/TelemetryConstants';
-import { NativeModules } from 'react-native';
-import { VCActivityLog } from '../../components/ActivityLogEvent';
-import { isNetworkError, parseJSON, VCShareFlowType } from '../../shared/Utils';
-import { issuerType } from './IssuersMachine';
-import { RevocationStatus } from '../../shared/vcVerifier/VcVerifier';
-import { logState } from '../../shared/commonUtil';
-import { createOpenID4VPMachine } from '../openID4VP/openID4VPMachine';
-import VciClient, { VciClientErrorResponse } from '../../shared/vciClient/VciClient';
+import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
+import {NativeModules} from 'react-native';
+import {VCActivityLog} from '../../components/ActivityLogEvent';
+import {isNetworkError, parseJSON, VCShareFlowType} from '../../shared/Utils';
+import {issuerType} from './IssuersMachine';
+import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
+import {logState} from '../../shared/commonUtil';
+import {createOpenID4VPMachine} from '../openID4VP/openID4VPMachine';
+import VciClient, {
+  VciClientErrorResponse,
+} from '../../shared/vciClient/VciClient';
 
-const { RNSecureKeystoreModule } = NativeModules;
+const {RNSecureKeystoreModule} = NativeModules;
 
 const OPENID4VP_REF_ID = 'Presentation_During_Issuance_OpenID4VP_Service';
 export const IssuersActions = (model: any) => {
@@ -124,18 +128,14 @@ export const IssuersActions = (model: any) => {
         if (error.serverErrorCode)
           return error.serverErrorCode as VCIServerErrorCode;
         if (!context.isInternetAvailable) {
-          return ErrorMessage.NO_INTERNET
-        }
-        else if (error.sourceErrorCode === 'VCI-008') {
-          return VCIServerErrorCode.INVALID_CREDENTIAL_OFFER
-        }
-        else if(error.sourceErrorCode === 'VCI-007') {
-          return VCIServerErrorCode.TIMEOUT_ERROR
-        }
-        else if (error.code)
-          return VCIServerErrorCode.SERVER_ERROR
+          return ErrorMessage.NO_INTERNET;
+        } else if (error.sourceErrorCode === 'VCI-008') {
+          return VCIServerErrorCode.INVALID_CREDENTIAL_OFFER;
+        } else if (error.sourceErrorCode === 'VCI-007') {
+          return VCIServerErrorCode.TIMEOUT_ERROR;
+        } else if (error.code) return VCIServerErrorCode.SERVER_ERROR;
         else return VCIServerErrorCode.UNKNOWN_ERROR;
-      }
+      },
     }),
     resetError: model.assign({
       errorMessage: '',
@@ -296,18 +296,18 @@ export const IssuersActions = (model: any) => {
     }),
     setCredentialOfferCredentialType: model.assign({
       selectedCredentialType: (context: any, event: any) => {
-        let credentialTypes: Array<{ id: string;[key: string]: any }> = [];
+        let credentialTypes: Array<{id: string; [key: string]: any}> = [];
         const credentialConfigurationId = context.credentialConfigurationId;
         const issuerMetadata = context.selectedIssuerWellknownResponse;
         if (
           issuerMetadata.credential_configurations_supported[
-          credentialConfigurationId
+            credentialConfigurationId
           ]
         ) {
           credentialTypes.push({
             id: credentialConfigurationId,
             ...issuerMetadata.credential_configurations_supported[
-            credentialConfigurationId
+              credentialConfigurationId
             ],
           });
           return credentialTypes[0];
@@ -432,6 +432,23 @@ export const IssuersActions = (model: any) => {
       },
     }),
 
+    setIsCredentialOfferViaDeepLink: model.assign({
+      isCredentialOfferViaDeepLink: (_: any, _event: any) => true,
+    }),
+
+    resetIsCredentialOfferViaDeepLink: model.assign({
+      isCredentialOfferViaDeepLink: (_: any, _event: any) => false,
+    }),
+
+    logDeepLinkOfferDropped: send(
+      (_: any) => ({
+        type: 'CREDENTIAL_OFFER_DROPPED_BUSY',
+      }),
+      {
+        to: (context: any) => context.serviceRefs.vcMeta,
+      },
+    ),
+
     resetRequestConsentToTrustIssuer: model.assign({
       isConsentRequested: (_: any, event: any) => {
         return false;
@@ -486,7 +503,7 @@ export const IssuersActions = (model: any) => {
         getEndEventData(
           TelemetryConstants.FlowType.vcDownload,
           TelemetryConstants.EndEventStatus.success,
-          { 'VC Key': context.keyType },
+          {'VC Key': context.keyType},
         ),
       );
     },
@@ -496,7 +513,7 @@ export const IssuersActions = (model: any) => {
         getEndEventData(
           TelemetryConstants.FlowType.vcDownload,
           TelemetryConstants.EndEventStatus.failure,
-          { 'VC Key': context.keyType },
+          {'VC Key': context.keyType},
         ),
       );
     },

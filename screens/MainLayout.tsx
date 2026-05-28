@@ -20,8 +20,14 @@ import {Copilot} from '../components/ui/Copilot';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from '@xstate/react';
-import {selectAuthorizationRequest, selectIsLinkCode} from '../machines/app';
+import {
+  selectAuthorizationRequest,
+  selectCredentialOfferUri,
+  selectIsLinkCode,
+} from '../machines/app';
 import {BOTTOM_TAB_ROUTES} from '../routes/routesConstants';
+import {getHomeMachineService} from './Home/HomeScreenController';
+import {selectIsIssuerMachineBusyForDeepLink} from './Home/HomeScreenMachine';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
@@ -45,11 +51,24 @@ export const MainLayout: React.FC = () => {
     selectAuthorizationRequest,
   );
 
+  const credentialOfferUri = useSelector(appService, selectCredentialOfferUri);
+
   useEffect(() => {
     if (linkCode !== '' || authorizationRequest !== '') {
       navigation.navigate(BOTTOM_TAB_ROUTES.share);
     }
   }, [linkCode, authorizationRequest]);
+
+  useEffect(() => {
+    if (credentialOfferUri === '') return;
+    const homeService = getHomeMachineService();
+    const isIssuerBusy = homeService
+      ? selectIsIssuerMachineBusyForDeepLink(homeService.getSnapshot())
+      : false;
+    if (!isIssuerBusy) {
+      navigation.navigate(BOTTOM_TAB_ROUTES.home);
+    }
+  }, [credentialOfferUri]);
 
   return (
     <CopilotProvider

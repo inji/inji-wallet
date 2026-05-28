@@ -148,6 +148,18 @@ export const BannerNotificationContainer: React.FC<
           testId={'reverificationFailedPopup'}
         />
       )}
+      {bannerNotificationController.isCredentialOfferDroppedBusy && (
+        <BannerNotification
+          type={BannerStatusType.IN_PROGRESS}
+          message={t('MyVcsTab:credentialOfferBusy')}
+          onClosePress={
+            bannerNotificationController.RESET_CREDENTIAL_OFFER_DROPPED_BUSY
+          }
+          key={'credentialOfferBusyPopup'}
+          testId={'credentialOfferBusyPopup'}
+        />
+      )}
+
       {bannerNotificationController.isDownloadingSuccess && (
         <BannerNotification
           type={BannerStatusType.SUCCESS}
