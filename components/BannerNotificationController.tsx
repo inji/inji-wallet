@@ -6,6 +6,7 @@ import {
 } from '../machines/settings';
 import {useContext} from 'react';
 import {GlobalContext} from '../shared/GlobalContext';
+import {selectCredentialOfferUri} from '../machines/app';
 import {VcMetaEvents} from '../machines/VerifiableCredential/VCMetaMachine/VCMetaMachine';
 import {
   selectIsCredentialOfferDroppedBusy,
@@ -37,6 +38,8 @@ export const UseBannerNotification = () => {
       vcMetaService,
       selectIsCredentialOfferDroppedBusy,
     ),
+    isResolvingCredentialOffer:
+      useSelector(appService, selectCredentialOfferUri) !== '',
     isReverificationSuccess: useSelector(
       vcMetaService,
       selectIsReverificationSuccess,

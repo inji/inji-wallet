@@ -159,6 +159,15 @@ export const BannerNotificationContainer: React.FC<
           testId={'credentialOfferBusyPopup'}
         />
       )}
+      {bannerNotificationController.isResolvingCredentialOffer && (
+        <BannerNotification
+          type={BannerStatusType.IN_PROGRESS}
+          message={t('MyVcsTab:resolvingCredentialOffer')}
+          onClosePress={() => {}}
+          key={'resolvingCredentialOfferPopup'}
+          testId={'resolvingCredentialOfferPopup'}
+        />
+      )}
 
       {bannerNotificationController.isDownloadingSuccess && (
         <BannerNotification

@@ -613,6 +613,7 @@
     "downloadingVcSuccess": "Your Card has been downloaded successfully",
     "downloadingVcFailed": "Sorry! Due to technical error we are unable to download your card now. Please try again later.",
     "credentialOfferBusy": "Another credential offer is being processed. Please wait for it to complete.",
+    "resolvingCredentialOffer": "Resolving credential offer…",
     "activated": "Credentials are enabled for online authentication.",
     "noCardsTitle": "No Cards Found!",
     "noCardsDescription": "Sorry, we couldn’t find any results. Please try entering another search keyword.",
