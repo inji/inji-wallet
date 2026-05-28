@@ -49,7 +49,7 @@ jest.mock('./ScanLayoutController', () => ({
   }),
 }));
 
-jest.mock('./SendVPScreenController', () => ({
+jest.mock('../openid4vp/SendVPScreenController', () => ({
   useSendVPScreen: () => ({
     verifierLogoInTrustModal: null,
     verifierNameInTrustModal: null,
@@ -58,7 +58,7 @@ jest.mock('./SendVPScreenController', () => ({
 
 jest.mock('./SendVcScreen', () => ({SendVcScreen: () => null}));
 jest.mock('./ScanScreen', () => ({ScanScreen: () => null}));
-jest.mock('./SendVPScreen', () => ({SendVPScreen: () => null}));
+jest.mock('../openid4vp/SendVPScreen', () => ({SendVPScreen: () => null}));
 jest.mock('./SharingStatusModal', () => ({SharingStatusModal: () => null}));
 jest.mock('../../components/ui/Loader', () => ({Loader: () => null}));
 jest.mock('../VerifyIdentityOverlay', () => ({

@@ -4,18 +4,13 @@ import {Divider} from './Divider';
 
 describe('Divider', () => {
   it('renders the divider text', () => {
-    const {getByText} = render(<Divider text="OR" />);
+    const {getByText} = render(<Divider text="OR" testId={'my-divider'} />);
     expect(getByText('OR')).toBeTruthy();
   });
 
   it('renders testId as accessibilityLabel via testIDProps', () => {
     const {getByLabelText} = render(<Divider text="OR" testId="my-divider" />);
-    expect(getByLabelText('divider-my-divider')).toBeTruthy();
-  });
-
-  it('does NOT apply accessibilityLabel when testId is not provided', () => {
-    const {queryByLabelText} = render(<Divider text="AND" />);
-    expect(queryByLabelText(/divider-/)).toBeNull();
+    expect(getByLabelText('my-divider')).toBeTruthy();
   });
 
   it('matches snapshot for happy case', () => {

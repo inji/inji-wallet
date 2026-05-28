@@ -7,7 +7,7 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 jest.mock('@xstate/react', () => ({
-  useSelector: jest.fn(() => undefined),
+  useSelector: jest.fn((service, selector) => selector?.()),
 }));
 
 jest.mock('react-i18next', () => ({
@@ -61,6 +61,8 @@ jest.mock('../../machines/openID4VP/openID4VPSelectors', () => ({
   selectVerifierLogoInTrustModal: jest.fn(),
   selectVerifierNameInTrustModal: jest.fn(),
   selectVerifierNameInVPSharing: jest.fn(),
+  selectVPRequest: jest.fn(() => ({})),
+  selectMatchingVcsResult: jest.fn(() => ({success: false, matchingVCs: {}})),
 }));
 
 jest.mock('../../machines/openID4VP/openID4VPMachine', () => ({
@@ -273,5 +275,34 @@ describe('useSendVPScreen', () => {
   it('overlayDetails should be null by default', () => {
     const result = useSendVPScreen({});
     expect(result.overlayDetails).toBeNull();
+  });
+
+  it('isDcqlFlow is false when vpRequest has no dcql_query', () => {
+    const result = useSendVPScreen({});
+    expect(result.isDcqlFlow).toBe(false);
+  });
+
+  it('isDcqlFlow is true when vpRequest has dcql_query', () => {
+    const openID4VPSelectors = require('../../machines/openID4VP/openID4VPSelectors');
+    openID4VPSelectors.selectVPRequest.mockReturnValueOnce({dcql_query: {}});
+    const result = useSendVPScreen({});
+    expect(result.isDcqlFlow).toBe(true);
+  });
+
+  it('SELECT_VC_ITEMS returns a curried function', () => {
+    const result = useSendVPScreen({});
+    const fn = result.SELECT_VC_ITEMS({});
+    expect(typeof fn).toBe('function');
+  });
+
+  it('DESELECT_VC_ITEMS returns a curried function', () => {
+    const result = useSendVPScreen({});
+    const fn = result.DESELECT_VC_ITEMS({});
+    expect(typeof fn).toBe('function');
+  });
+
+  it('noCredentialsMatchingVPRequest is falsy when isSelectingVCs is false', () => {
+    const result = useSendVPScreen({});
+    expect(result.noCredentialsMatchingVPRequest).toBeFalsy();
   });
 });

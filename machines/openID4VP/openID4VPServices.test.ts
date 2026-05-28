@@ -6,14 +6,9 @@ jest.mock('../../shared/api', () => ({
     fetchTrustedVerifiersList: jest.fn().mockResolvedValue([{id: 'v1'}]),
   },
 }));
-jest.mock('../../shared/cryptoutil/cryptoUtil', () => ({
-  fetchKeyPair: jest
-    .fn()
-    .mockResolvedValue({publicKey: 'pk', privateKey: 'sk'}),
-}));
+
 jest.mock('../../shared/openId4VCI/Utils', () => ({
   getJWK: jest.fn().mockResolvedValue({kty: 'EC'}),
-  hasKeyPair: jest.fn().mockResolvedValue(true),
 }));
 jest.mock('base64url', () => ({
   __esModule: true,
@@ -42,7 +37,6 @@ jest.mock('../../shared/Utils', () => ({
 jest.mock('../../shared/openID4VP/OpenID4VPHelper', () => ({
   isClientValidationRequired: jest.fn().mockResolvedValue(true),
   signDataForVpPreparation: jest.fn().mockResolvedValue('signed'),
-  signDataForVpPreparationV2: jest.fn().mockResolvedValue('signed-v2'),
 }));
 jest.mock('../../shared/vciClient/VciClient', () => ({
   __esModule: true,
@@ -84,8 +78,6 @@ describe('openID4VPServices', () => {
       'getAuthenticationResponse',
       'isVerifierTrusted',
       'storeTrustedVerifier',
-      'getKeyPair',
-      'getSelectedKey',
       'shareDeclineStatus',
       'sendSelectedCredentialsForVP',
       'signVP',
@@ -104,11 +96,6 @@ describe('openID4VPServices', () => {
   it('shouldValidateClient returns boolean', async () => {
     const result = await services.shouldValidateClient();
     expect(result).toBe(true);
-  });
-
-  it('getKeyPair fetches key pair', async () => {
-    const result = await services.getKeyPair({keyType: 'ES256'});
-    expect(result).toEqual({publicKey: 'pk', privateKey: 'sk'});
   });
 
   it('shareDeclineStatus sends error', async () => {
@@ -173,12 +160,7 @@ describe('openID4VPServices', () => {
     expect(result).toBe(false);
   });
 
-  it('getSelectedKey fetches key pair for given type', async () => {
-    const result = await services.getSelectedKey({keyType: 'ES256'});
-    expect(result).toEqual({publicKey: 'pk', privateKey: 'sk'});
-  });
-
-  it('signVP calls signDataForVpPreparationV2', async () => {
+  it('signVP calls signDataForVpPreparation', async () => {
     const context = {
       unsignedVPToken: 'token',
       publicKey: 'pk',
@@ -186,7 +168,7 @@ describe('openID4VPServices', () => {
     };
     const fn = services.signVP(context);
     const result = await fn();
-    expect(result).toBe('signed-v2');
+    expect(result).toBe('signed');
   });
 
   it('sendVP constructs and shares VP', async () => {
@@ -218,13 +200,6 @@ describe('openID4VPServices', () => {
     };
     const fn = services.sendVP(context);
     await expect(fn()).rejects.toThrow('VERIFIER_RESPONSE_ERROR');
-  });
-
-  it('getKeyPair returns undefined when no key pair exists', async () => {
-    const {hasKeyPair} = require('../../shared/openId4VCI/Utils');
-    hasKeyPair.mockResolvedValueOnce(false);
-    const result = await services.getKeyPair({keyType: 'ES256'});
-    expect(result).toBeUndefined();
   });
 
   it('sendSelectedCredentialsForVP prepares and sends credentials', async () => {

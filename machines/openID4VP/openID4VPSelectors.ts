@@ -124,6 +124,10 @@ export function selectIsFaceVerifiedInVPSharing(state: State) {
   );
 }
 
+export function selectVPRequest(state: State) {
+  return state.context.authenticationResponse;
+}
+
 export function selectVerifierNameInVPSharing(state: State) {
   return (
     state.context.authenticationResponse['client_metadata']?.['client_name'] ??

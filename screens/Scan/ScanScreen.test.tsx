@@ -9,7 +9,7 @@ jest.mock('./SendVcScreenController', () => ({
   }),
 }));
 
-jest.mock('./SendVPScreenController', () => ({
+jest.mock('../openid4vp/SendVPScreenController', () => ({
   useSendVPScreen: () => ({
     isFaceVerificationConsent: false,
     isVerifyingIdentity: false,

@@ -46,16 +46,14 @@ export const jsonLdCanonicalize = async (data: string) => {
 export const signDataForVpPreparation = async (
   unSignedVpTokens: Array<UnsignedVPToken>,
 ): Promise<Array<VPTokenSigningResult>> => {
-  const keyTypeToKeys: Record<string, any> = {};
+  const keyTypeToKeysPromise: Record<string, Promise<any>> = {};
 
   const getKeyInfo = async (keyType: string) => {
-    if (keyTypeToKeys[keyType]) {
-      return keyTypeToKeys[keyType];
-    } else {
-      const key = await fetchKeyPair(keyType);
-      keyTypeToKeys[keyType] = key;
-      return key;
+    if (!keyTypeToKeysPromise[keyType]) {
+      keyTypeToKeysPromise[keyType] = fetchKeyPair(keyType);
     }
+
+    return keyTypeToKeysPromise[keyType];
   };
 
   const result: Promise<VPTokenSigningResult>[] = unSignedVpTokens.map(
@@ -116,11 +114,11 @@ async function signData(
  *
  * Input -> output examples:
  *
- * ['credentialSubject', null, 'givenName'] + no payload -> ['credentialSubject[*].givenName']
+ * ['credentialSubject', null, 'givenName'] -> 'credentialSubject[*].givenName'
  *
- * ['credentialSubject', 0, 'givenName'] -> ['credentialSubject[0].givenName']
+ * ['credentialSubject', 0, 'givenName'] -> 'credentialSubject[0].givenName'
  *
- * ['credentialSubject', 'degree', 'ug'] -> ['credentialSubject.degree.ug']
+ * ['credentialSubject', 'degree', 'ug'] -> 'credentialSubject.degree.ug'
  */
 export function claimPathPointersToJsonPath(
   path: Array<string | number | null>,
@@ -148,5 +146,5 @@ export function claimPathPointersToJsonPath(
     }
   }
 
-  return [currentPath];
+  return currentPath;
 }

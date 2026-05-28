@@ -1,6 +1,31 @@
 import React from 'react';
 import {render} from '@testing-library/react-native';
 
+jest.mock('react-native-safe-area-context', () => ({
+  useSafeAreaInsets: () => ({top: 0, bottom: 0, left: 0, right: 0}),
+  SafeAreaProvider: ({children}: any) => children,
+  SafeAreaConsumer: ({children}: any) => children({}),
+}));
+
+jest.mock('../../components/openid4vp/MatchingVcListContainer', () => ({
+  MatchingVcListContainer: () => null,
+}));
+jest.mock('../../components/openid4vp/verifier/VerifierInfo', () => ({
+  VerifierInfo: () => null,
+}));
+jest.mock(
+  '../../components/openid4vp/infoOverlay/WhyWeNeedDocumentsOverlay',
+  () => ({
+    WhyWeNeedDocumentsOverlay: () => null,
+  }),
+);
+jest.mock('../../components/ui/backButton/BackButton', () => ({
+  BackButton: () => null,
+}));
+jest.mock('../../shared/openID4VP/OpenID4VPHelper', () => ({
+  claimPathPointersToJsonPath: jest.fn((path: string[]) => path.join('.')),
+}));
+
 jest.mock('./SendVPScreenController', () => {
   const defaultValues = {
     vcsMatchingAuthRequest: {},
@@ -40,6 +65,9 @@ jest.mock('./SendVPScreenController', () => {
     DISMISS_POPUP: jest.fn(),
     DISMISS: jest.fn(),
     SELECT_VC_ITEM: jest.fn(() => jest.fn()),
+    SELECT_VC_ITEMS: jest.fn(() => jest.fn()),
+    DESELECT_VC_ITEMS: jest.fn(() => jest.fn()),
+    TOGGLE_VC_ITEMS: jest.fn(() => jest.fn()),
     vpVerifierName: '',
     showConfirmationPopup: false,
     openID4VPRetryCount: 0,
@@ -48,6 +76,9 @@ jest.mock('./SendVPScreenController', () => {
     CHECK_ALL: jest.fn(),
     UNCHECK_ALL: jest.fn(),
     isStartPermissionCheck: false,
+    matchingVcsResult: null,
+    isDcqlFlow: false,
+    successfullySatisfiedCredentialRequest: jest.fn(() => false),
   };
   let overrides = {};
   return {
@@ -61,7 +92,7 @@ jest.mock('./SendVPScreenController', () => {
   };
 });
 
-jest.mock('./ScanScreenController', () => ({
+jest.mock('../Scan/ScanScreenController', () => ({
   useScanScreen: () => ({
     isStartPermissionCheck: false,
     authorizationRequest: '',
@@ -122,8 +153,8 @@ jest.mock('../../components/ui/Loader', () => ({
 jest.mock('../VerifyIdentityOverlay', () => ({
   VerifyIdentityOverlay: () => null,
 }));
-jest.mock('./VPShareOverlay', () => ({VPShareOverlay: () => null}));
-jest.mock('./FaceVerificationAlertOverlay', () => ({
+jest.mock('../Scan/VPShareOverlay', () => ({VPShareOverlay: () => null}));
+jest.mock('../Scan/FaceVerificationAlertOverlay', () => ({
   FaceVerificationAlertOverlay: () => null,
 }));
 jest.mock('../../components/TrustModalVerifier', () => ({
@@ -216,6 +247,7 @@ describe('SendVPScreen', () => {
       },
       purpose: 'Identity verification',
       vpVerifierName: 'TestVerifier',
+      matchingVcsResult: {success: true, matchingVCs: {}},
     });
     const {toJSON} = render(<SendVPScreen {...navProps} />);
     expect(toJSON()).toMatchSnapshot();
@@ -228,6 +260,7 @@ describe('SendVPScreen', () => {
         desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
       },
       purpose: 'Authorization',
+      matchingVcsResult: {success: true, matchingVCs: {}},
     });
     const {toJSON} = render(<SendVPScreen {...navProps} />);
     expect(toJSON()).toMatchSnapshot();
@@ -247,6 +280,7 @@ describe('SendVPScreen', () => {
       vcsMatchingAuthRequest: {
         desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
       },
+      matchingVcsResult: {success: true, matchingVCs: {}},
       overlayDetails: {
         title: 'Success',
         titleTestID: 'successTitle',
@@ -267,6 +301,7 @@ describe('SendVPScreen', () => {
         desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
       },
       isFaceVerificationConsent: true,
+      matchingVcsResult: {success: true, matchingVCs: {}},
     });
     const {toJSON} = render(<SendVPScreen {...navProps} />);
     expect(toJSON()).toMatchSnapshot();
@@ -278,6 +313,7 @@ describe('SendVPScreen', () => {
         desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
       },
       areAllVCsChecked: true,
+      matchingVcsResult: {success: true, matchingVCs: {}},
     });
     const {toJSON} = render(<SendVPScreen {...navProps} />);
     expect(toJSON()).toMatchSnapshot();
@@ -289,6 +325,7 @@ describe('SendVPScreen', () => {
         desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
       },
       isCancelling: true,
+      matchingVcsResult: {success: true, matchingVCs: {}},
     });
     const {toJSON} = render(<SendVPScreen {...navProps} />);
     expect(toJSON()).toMatchSnapshot();
@@ -312,6 +349,7 @@ describe('SendVPScreen', () => {
       isVerifyingIdentity: true,
       credentials: [{id: 'vc1'}],
       verifiableCredentialsData: [{credential: 'data'}],
+      matchingVcsResult: {success: true, matchingVCs: {}},
     });
     const {toJSON} = render(<SendVPScreen {...navProps} />);
     expect(toJSON()).toMatchSnapshot();
@@ -337,6 +375,7 @@ describe('SendVPScreen', () => {
       checkIfAnyVCHasImage: jest.fn(() => true),
       checkIfAllVCsHasImage: jest.fn(() => false),
       getSelectedVCs: jest.fn(() => ({vc1: {}})),
+      matchingVcsResult: {success: true, matchingVCs: {}},
     });
     const {toJSON} = render(<SendVPScreen {...navProps} />);
     expect(toJSON()).toMatchSnapshot();
@@ -351,6 +390,7 @@ describe('SendVPScreen', () => {
       checkIfAnyVCHasImage: jest.fn(() => true),
       checkIfAllVCsHasImage: jest.fn(() => true),
       getSelectedVCs: jest.fn(() => ({vc1: {}})),
+      matchingVcsResult: {success: true, matchingVCs: {}},
     });
     const {toJSON} = render(<SendVPScreen {...navProps} />);
     expect(toJSON()).toMatchSnapshot();
@@ -367,6 +407,7 @@ describe('SendVPScreen', () => {
         desc2: ['key2'],
       },
       purpose: 'Multi-credential verification',
+      matchingVcsResult: {success: true, matchingVCs: {}},
     });
     const {toJSON} = render(<SendVPScreen {...navProps} />);
     expect(toJSON()).toMatchSnapshot();
@@ -380,6 +421,7 @@ describe('SendVPScreen', () => {
       },
       purpose: 'Authorization purpose',
       vpVerifierName: 'AuthVerifier',
+      matchingVcsResult: {success: true, matchingVCs: {}},
     });
     const {toJSON} = render(<SendVPScreen {...navProps} />);
     expect(toJSON()).toMatchSnapshot();
@@ -392,6 +434,7 @@ describe('SendVPScreen', () => {
       },
       showConfirmationPopup: true,
       isOVPViaDeepLink: true,
+      matchingVcsResult: {success: true, matchingVCs: {}},
       overlayDetails: {
         title: 'Confirm',
         titleTestID: 'confirmTitle',
@@ -417,6 +460,7 @@ describe('SendVPScreen', () => {
       isInvalidIdentity: true,
       credentials: [{id: 'vc1'}],
       verifiableCredentialsData: [{credential: 'data'}],
+      matchingVcsResult: {success: true, matchingVCs: {}},
     });
     const {toJSON} = render(<SendVPScreen {...navProps} />);
     expect(toJSON()).toMatchSnapshot();

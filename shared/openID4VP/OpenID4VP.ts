@@ -136,7 +136,9 @@ class OpenID4VP {
       } as MatchingVCsResultForPresentationExchangeRequest;
     } else {
       const openID4VP = await OpenID4VP.getInstance();
-      openID4VP.addJsonLdExpanderCallback();
+      if (isIOS()) {
+        openID4VP.addJsonLdExpanderCallback();
+      }
 
       // TODO: Optimize this idToCredentialMap creation and updatedAvailableWalletCredentials mapping by doing it in a single loop instead of two separate loops
 
