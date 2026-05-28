@@ -115,10 +115,9 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void constructUnsignedVPToken(ReadableMap selectedVCs, String holderId, String signatureSuite,
-            Promise promise) {
+    public void constructUnsignedVPToken(ReadableMap selectedVCs, Promise promise) {
         try {
-            Map<String, List<Credential>> selectedCredentials = OpenId4VPUtils.parseSelectedVCsForPEX(selectedVCs);
+            Map<String, List<Credential>> selectedCredentials = OpenId4VPUtils.parseSelectedVCsDCQL(selectedVCs);
             List<UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedCredentials);
 
             JSONArray jsonArray = new JSONArray();
