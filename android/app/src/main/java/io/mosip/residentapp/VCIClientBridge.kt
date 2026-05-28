@@ -148,26 +148,26 @@ object VCIClientBridge {
             }
 
     private fun onCheckIssuerTrustCallback(): suspend (String, List<Map<String, Any>>) -> Boolean =
-            { credentialIssuer, issuerDisplay ->
-                VCIClientCallbackBridge.createIssuerTrustResponseDeferred()
-                VCIClientCallbackBridge.emitRequestIssuerTrust(
-                        reactContext,
-                        credentialIssuer,
-                        issuerDisplay
-                )
-                VCIClientCallbackBridge.awaitIssuerTrustResponse()
-            }
+      { credentialIssuer, issuerDisplay ->
+        VCIClientCallbackBridge.createIssuerTrustResponseDeferred()
+        VCIClientCallbackBridge.emitRequestIssuerTrust(
+          reactContext,
+          credentialIssuer,
+          issuerDisplay
+        )
+        VCIClientCallbackBridge.awaitIssuerTrustResponse()
+      }
 
-        private fun CredentialResponse.toSingleCredentialResponseJson(): String {
+    private fun CredentialResponse.toSingleCredentialResponseJson(): String {
 
-        val firstItem = credentials?.firstOrNull()
-                ?: throw DownloadFailedException("No credential returned from issuer")
+      val firstItem = credentials?.firstOrNull()
+        ?: throw DownloadFailedException("No credential returned from issuer")
 
-        val json = JsonObject().apply {
-            add("credential", firstItem)
-            credentialIssuer?.let { addProperty("credentialIssuer", it) }
-            credentialConfigurationId?.let { addProperty("credentialConfigurationId", it) }
-        }
-        return json.toString()
+      val json = JsonObject().apply {
+        add("credential", firstItem.credential)
+        credentialIssuer?.let { addProperty("credentialIssuer", it) }
+        credentialConfigurationId?.let { addProperty("credentialConfigurationId", it) }
+      }
+      return json.toString()
     }
 }
