@@ -15,8 +15,6 @@
  * - handleVCSelection in single mode replaces; in allowMultiple mode appends
  * - Selecting a new option deselects all other previously selected options
  *
- * Tests that expose a known deviation between spec and implementation are
- * marked with it.skip and explained at the bottom of the file.
  */
 
 // ---------------------------------------------------------------------------
@@ -617,11 +615,8 @@ describe('CredentialSetSection', () => {
   /**
    * Spec: Pressing the "select all" checkbox of an already-selected multi-query
    * option must deselect it and call DESELECT_VC_ITEMS for its VCs.
-   *
-   * NOTE (it.skip): This test exposes a known mutation bug in deselectOption().
-   * See the deviations summary at the bottom of this file.
    */
-  it.skip('calls DESELECT_VC_ITEMS when a selected multi-query option is toggled off [KNOWN BUG: state mutation in deselectOption]', async () => {
+  it('calls DESELECT_VC_ITEMS when a selected multi-query option is toggled off', async () => {
     const controller = buildController();
     const props = buildDefaultProps({
       controller,
@@ -663,49 +658,82 @@ describe('CredentialSetSection', () => {
     });
   });
 
-  // ─── Snapshot ────────────────────────────────────────────────────────────
+  it('deselects other options when selecting a VC in an option', async () => {
+    const controller = buildController();
+    const vc_id1_key = vcKey('vc-id1');
+    const vc_id2_key = vcKey('vc-id2');
+    const vc_id3_key = vcKey('vc-id3');
+    const vc_id4_key = vcKey('vc-id4');
 
-  it('matches snapshot for a happy-case required section with two options', () => {
     const props = buildDefaultProps({
-      credentialSet: {options: [['national-id'], ['tax-id']], required: true},
-      matchingVCsResult: {
-        'national-id': buildMatchResult(['vc-national-1']),
-        'tax-id': buildMatchResult(['vc-tax-1']),
+      controller,
+      credentialSet: {
+        options: [['id1'], ['id2'], ['id3', 'id4']],
+        required: true,
       },
-      satisfiableOptions: [['national-id'], ['tax-id']],
-      initialSelectedVcKeys: {},
+      matchingVCsResult: {
+        id1: buildMatchResult(['vc-id1']), // single match, will auto-select
+        id2: buildMatchResult(['vc-id2']),
+        id3: buildMatchResult(['vc-id3']),
+        id4: buildMatchResult(['vc-id4', 'vc-id4-alt']), // multiple matches
+      },
+      satisfiableOptions: [['id1'], ['id2'], ['id3', 'id4']],
+      // Pre-select option 0 and option 2 (multi-query)
+      initialSelectedVcKeys: {
+        0: {id1: new Set([vc_id1_key])},
+        2: {id3: new Set([vc_id3_key]), id4: new Set([vc_id4_key])},
+      },
     });
 
-    const {toJSON} = render(<CredentialSetSection {...props} />);
-    expect(toJSON()).toMatchSnapshot();
+    const {getByTestId} = render(<CredentialSetSection {...props} />);
+
+    // Wait for option 0's initial selection
+    await waitFor(() =>
+      expect(
+        getByTestId(`vc-item-test-section-option-0-query-id1-vc-${vc_id1_key}`)
+          .props.accessibilityState?.selected,
+      ).toBe(true),
+    );
+
+    // User selects ID2 in option 1
+    fireEvent.press(
+      getByTestId(`vc-item-test-section-option-1-query-id2-vc-${vc_id2_key}`),
+    );
+
+    await waitFor(() => {
+      expect(controller.SELECT_VC_ITEMS).toHaveBeenCalledTimes(1);
+    });
+
+    // Verify SELECT was called for id2
+    const selectCall = controller.SELECT_VC_ITEMS.mock.calls[0][0];
+    expect(selectCall['id2'].has(vc_id2_key)).toBe(true);
+
+    // Verify DESELECT includes VCs from BOTH option 0 and option 2
+    expect(controller.DESELECT_VC_ITEMS).toHaveBeenCalledTimes(1);
+    const deselectCall = controller.DESELECT_VC_ITEMS.mock.calls[0][0];
+
+    // Option 0 must be deselected
+    expect(deselectCall['id1']).toBeDefined();
+    expect(deselectCall['id1'].has(vc_id1_key)).toBe(true);
+
+    // Option 2 must be deselected (both queries from multi-query option)
+    expect(deselectCall['id3']).toBeDefined();
+    expect(deselectCall['id3'].has(vc_id3_key)).toBe(true);
+    expect(deselectCall['id4']).toBeDefined();
+    expect(deselectCall['id4'].has(vc_id4_key)).toBe(true);
+
+    // Verify option 1's VC is now the only selected one
+    await waitFor(() => {
+      expect(
+        getByTestId(`vc-item-test-section-option-1-query-id2-vc-${vc_id2_key}`)
+          .props.accessibilityState?.selected,
+      ).toBe(true);
+    });
+
+    // Option 0's VC should be deselected
+    expect(
+      getByTestId(`vc-item-test-section-option-0-query-id1-vc-${vc_id1_key}`)
+        .props.accessibilityState?.selected,
+    ).toBe(false);
   });
 });
-
-// ---------------------------------------------------------------------------
-// Known deviations between spec and implementation
-// ---------------------------------------------------------------------------
-//
-// 1. STATE MUTATION IN deselectOption() [affects handleOptionToggle deselect]
-//
-//    File: CredentialSetSection.tsx, lines 161–163
-//
-//    Spec expectation:
-//      Deselecting an already-selected option should update the React state
-//      to reflect the change and re-render the component accordingly.
-//
-//    Current implementation:
-//      `const newSelectedQueryIdToCredentialsByOption =
-//          selectedQueryIdToCredentialsByOption;`
-//
-//      This is a direct reference assignment, NOT a copy. The subsequent
-//      `delete newSelectedQueryIdToCredentialsByOption[optionIndex]` call
-//      mutates the original state object. When
-//      `setSelectedQueryIdToCredentialsByOption(newSelectedQueryIdToCredentialsByOption)`
-//      is then called with the same object reference, React's shallow-equality
-//      check may bail out of the re-render, meaning the UI may not update to
-//      reflect the deselection.
-//
-//    Affected skipped test:
-//      "calls DESELECT_VC_ITEMS when a selected multi-query option is toggled off"
-//
-// ---------------------------------------------------------------------------

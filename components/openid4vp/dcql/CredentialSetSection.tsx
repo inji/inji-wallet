@@ -157,9 +157,26 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     );
   };
 
-  const deselectOption = (optionIndex: number) => {
-    const newSelectedQueryIdToCredentialsByOption =
-      selectedQueryIdToCredentialsByOption;
+  const mergeQueryIdToVcKeys = (
+    target: Record<string, Set<string>>,
+    source: Record<string, Set<string>>,
+  ) => {
+    for (const [queryId, vcKeys] of Object.entries(source)) {
+      target[queryId] ||= new Set<string>();
+      for (const vcKey of vcKeys) {
+        target[queryId].add(vcKey);
+      }
+    }
+    return target;
+  };
+
+  const deselectOption = (
+    optionIndex: number,
+    currentSelection = selectedQueryIdToCredentialsByOption,
+  ) => {
+    const newSelectedQueryIdToCredentialsByOption = {
+      ...currentSelection,
+    };
 
     const toBeDeselectedCredentialQueryIds: Record<string, Set<string>> = {};
 
@@ -219,8 +236,9 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
   };
 
   function deselectOtherOptions(excludedOptionIndex: number) {
-    let newState = {};
-    let toBeDeselectedItems = {};
+    let newState = {...selectedQueryIdToCredentialsByOption};
+    let toBeDeselectedItems: Record<string, Set<string>> = {};
+
     for (
       let optionIndex = 0;
       optionIndex < satisfiableOptions.length;
@@ -231,13 +249,13 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
       const {
         newSelectedQueryIdToCredentialsByOption,
         toBeDeselectedCredentialQueryIds,
-      } = deselectOption(optionIndex);
+      } = deselectOption(optionIndex, newState);
 
-      toBeDeselectedItems = {
-        ...toBeDeselectedItems,
-        ...toBeDeselectedCredentialQueryIds,
-      };
-      newState = {...newState, ...newSelectedQueryIdToCredentialsByOption};
+      newState = newSelectedQueryIdToCredentialsByOption;
+      toBeDeselectedItems = mergeQueryIdToVcKeys(
+        toBeDeselectedItems,
+        toBeDeselectedCredentialQueryIds,
+      );
     }
 
     deselectItems(toBeDeselectedItems);
@@ -352,9 +370,9 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
   ): Set<string> | undefined {
     const vcFormat = matchingCredentialDataResult.vc.vcMetadata.format;
     if (vcFormat == VCFormat.dc_sd_jwt || vcFormat == VCFormat.vc_sd_jwt) {
-      const jsonPaths = matchingCredentialDataResult.matchedClaims
-        ?.map(claim => claimPathPointersToJsonPath(claim.path))
-        .flat();
+      const jsonPaths = matchingCredentialDataResult.matchedClaims?.map(claim =>
+        claimPathPointersToJsonPath(claim.path),
+      );
       return new Set(jsonPaths);
     }
     return undefined;
