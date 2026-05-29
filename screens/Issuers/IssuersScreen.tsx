@@ -367,6 +367,21 @@ export const IssuersScreen: React.FC<
     );
   }
   if (showFullScreenError) {
+    // Deep-link offer errors are terminal: every exit goes home.
+    const isDeepLinkOfferError = controller.isCredentialOfferViaDeepLink;
+    const errorPrimaryButtonText = isDeepLinkOfferError
+      ? 'goHome'
+      : goBackErrors.has(controller.errorMessageType as VCIServerErrorCode)
+      ? 'goBack'
+      : goHomeErrors.has(controller.errorMessageType as VCIServerErrorCode)
+      ? 'goHome'
+      : 'tryAgain';
+    const errorPrimaryAction = isDeepLinkOfferError
+      ? controller.GO_HOME_FROM_OFFER_ERROR
+      : controller.TRY_AGAIN;
+    const errorGoBack = isDeepLinkOfferError
+      ? controller.GO_HOME_FROM_OFFER_ERROR
+      : goBack;
     return (
       <ErrorView
         testID={`${controller.errorMessageType}Error`}
@@ -377,23 +392,15 @@ export const IssuersScreen: React.FC<
         isVisible={controller.errorMessageType !== ''}
         title={t(`errors.${controller.errorMessageType}.title`)}
         message={t(`errors.${controller.errorMessageType}.message`)}
-        goBack={goBack}
+        goBack={errorGoBack}
         tryAgain={controller.TRY_AGAIN}
         image={getImage()}
         showClose
         alignActionsOnEnd
-        primaryButtonTestID="tryAgain"
-        primaryButtonText={
-          goBackErrors.has(controller.errorMessageType as VCIServerErrorCode)
-            ? 'goBack'
-            : goHomeErrors.has(
-                controller.errorMessageType as VCIServerErrorCode,
-              )
-            ? 'goHome'
-            : 'tryAgain'
-        }
-        primaryButtonEvent={controller.TRY_AGAIN}
-        onDismiss={goBack}
+        primaryButtonTestID={isDeepLinkOfferError ? 'goHome' : 'tryAgain'}
+        primaryButtonText={errorPrimaryButtonText}
+        primaryButtonEvent={errorPrimaryAction}
+        onDismiss={errorGoBack}
       />
     );
   }

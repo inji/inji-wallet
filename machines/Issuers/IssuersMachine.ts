@@ -83,7 +83,11 @@ export const IssuersMachine = model.createMachine(
       error: {
         description: 'reaches here when any error happens',
         entry: ['resetAuthorization'],
-        exit: ['resetError', 'resetCredentialOfferFlowType'],
+        exit: [
+          'resetError',
+          'resetCredentialOfferFlowType',
+          'resetIsCredentialOfferViaDeepLink',
+        ],
         on: {
           TRY_AGAIN: [
             {
@@ -121,6 +125,7 @@ export const IssuersMachine = model.createMachine(
 
       selectingIssuer: {
         description: 'waits for the user to select any issuer',
+        entry: ['resetIsCredentialOfferViaDeepLink'],
         on: {
           SCAN_CREDENTIAL_OFFER_QR_CODE: {
             target: 'waitingForQrScan',
@@ -157,7 +162,6 @@ export const IssuersMachine = model.createMachine(
 
       credentialDownloadFromOffer: {
         entry: ['setCredentialOfferFlowType', 'resetSelectedIssuer'],
-        exit: ['resetIsCredentialOfferViaDeepLink'],
         invoke: {
           src: 'downloadCredentialFromOffer',
           onDone: {

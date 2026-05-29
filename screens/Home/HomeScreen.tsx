@@ -7,7 +7,10 @@ import {MyVcsTab} from './MyVcsTab';
 import {ReceivedVcsTab} from './ReceivedVcsTab';
 import {ViewVcModal} from './ViewVcModal';
 import {useHomeScreen} from './HomeScreenController';
-import {TabRef} from './HomeScreenMachine';
+import {
+  selectIsIssuerMachineBusyForDeepLink,
+  TabRef,
+} from './HomeScreenMachine';
 import {ActorRefFrom} from 'xstate';
 import LinearGradient from 'react-native-linear-gradient';
 import {ErrorMessageOverlay} from '../../components/MessageOverlay';
@@ -49,7 +52,9 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
       controller.GOTO_ISSUERS();
       return;
     }
-    const isIssuerBusy = controller.isIssuerMachineBusyForDeepLink;
+    const isIssuerBusy = selectIsIssuerMachineBusyForDeepLink(
+      controller.service.getSnapshot(),
+    );
     controller.IssuersService.send(
       IssuerScreenTabEvents.CREDENTIAL_OFFER_VIA_DEEP_LINK(credentialOfferUri),
     );

@@ -90,6 +90,10 @@ export function selectIsError(state: State) {
   return state.matches('error');
 }
 
+export function selectIsCredentialOfferViaDeepLink(state: State) {
+  return state.context.isCredentialOfferViaDeepLink;
+}
+
 export function selectVerificationErrorMessage(state: State) {
   return state.context.verificationErrorMessage;
 }
