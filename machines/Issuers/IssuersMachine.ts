@@ -28,10 +28,6 @@ export const IssuersMachine = model.createMachine(
       NETWORK_STATUS_CHANGED: {
         actions: ['setIsInternetAvailable'],
       },
-      // OpenID4VCI 1.0 §4.1.1 — credential offer arriving via deep link.
-      // Accepted in all states except the active-download chain. While
-      // credentialDownloadFromOffer (or verifyingCredential / storing) is
-      // active the event is dropped and a banner toaster is shown (S20).
       CREDENTIAL_OFFER_VIA_DEEP_LINK: [
         {
           cond: 'isInSafeStateForDeepLink',
@@ -701,7 +697,6 @@ export const IssuersMachine = model.createMachine(
             target: '.keyManagement',
           },
           CANCEL: {
-            // auth errors
             target: 'error',
             actions: [
               'resetSelectedCredentialType',
@@ -1032,8 +1027,6 @@ export const IssuersMachine = model.createMachine(
     guards: IssuersGuards(),
   },
 );
-
-// --- Interfaces ---
 
 export interface logoType {
   url: string;

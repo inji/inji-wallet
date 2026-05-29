@@ -41,11 +41,6 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
     }
   }, [controller.IssuersService]);
 
-  // OpenID4VCI 1.0 — bridge a deep-linked credential offer URI into the
-  // HomeScreenMachine → IssuersMachine chain. We send GOTO_ISSUERS first
-  // (spawns IssuersMachine if not already running). Once the child is
-  // available, we forward the URI as CREDENTIAL_OFFER_VIA_DEEP_LINK and
-  // clear the appMachine flag so this only fires once per intent.
   useEffect(() => {
     if (credentialOfferUri === '') return;
     if (!controller.IssuersService) {
