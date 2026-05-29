@@ -133,9 +133,37 @@ exports[`IssuersScreen should render idle state 1`] = `
 </View>
 `;
 
-exports[`IssuersScreen should render loading state 1`] = `null`;
+exports[`IssuersScreen should render loading state 1`] = `
+<View
+  pointerEvents="box-none"
+  style={
+    {
+      "elevation": 1000,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+      "zIndex": 1000,
+    }
+  }
+/>
+`;
 
-exports[`IssuersScreen should render presentation authorization in progress 1`] = `null`;
+exports[`IssuersScreen should render presentation authorization in progress 1`] = `
+<View
+  pointerEvents="box-none"
+  style={
+    {
+      "elevation": 1000,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+      "zIndex": 1000,
+    }
+  }
+/>
+`;
 
 exports[`IssuersScreen should render transaction code requested state 1`] = `null`;
 

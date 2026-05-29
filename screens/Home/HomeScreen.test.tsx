@@ -1,6 +1,7 @@
 import React from 'react';
 import {render} from '@testing-library/react-native';
-import {HomeScreen, isIssuerMachineBusyForDeepLink} from './HomeScreen';
+import {HomeScreen} from './HomeScreen';
+import {selectIsIssuerMachineBusyForDeepLink} from './HomeScreenMachine';
 
 jest.mock('@xstate/react', () => ({
   useSelector: jest.fn(() => ''),
@@ -95,22 +96,30 @@ describe('HomeScreen', () => {
     'verifyingCredential',
     'storing',
   ])('treats %s as busy for deeplink handling', stateName => {
-    const service = {
-      getSnapshot: () => ({
-        matches: (value: string) => value === stateName,
-      }),
+    const state = {
+      children: {
+        issuersMachine: {
+          getSnapshot: () => ({
+            toStrings: () => [stateName],
+          }),
+        },
+      },
     };
 
-    expect(isIssuerMachineBusyForDeepLink(service as any)).toBe(true);
+    expect(selectIsIssuerMachineBusyForDeepLink(state as any)).toBe(true);
   });
 
   it('does not treat resting issuer state as busy for deeplink handling', () => {
-    const service = {
-      getSnapshot: () => ({
-        matches: () => false,
-      }),
+    const state = {
+      children: {
+        issuersMachine: {
+          getSnapshot: () => ({
+            toStrings: () => [],
+          }),
+        },
+      },
     };
 
-    expect(isIssuerMachineBusyForDeepLink(service as any)).toBe(false);
+    expect(selectIsIssuerMachineBusyForDeepLink(state as any)).toBe(false);
   });
 });
