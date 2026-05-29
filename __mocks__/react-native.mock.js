@@ -25,14 +25,21 @@ jest.mock('react-native', () => {
         hasBiometricsEnabled: jest.fn().mockReturnValue(true),
         getAvailableBiometricType: jest.fn().mockResolvedValue('FINGERPRINT'),
       },
+      InjiVciClient: {
+        addListener: jest.fn(),
+        removeListeners: jest.fn(),
+      },
+      WalletModule: {
+        handleDataEvents: jest.fn(),
+      },
     },
   });
 
   // Mock the Platform module
   Object.defineProperty(ReactNative, 'Platform', {
     value: {
-      OS: 'android', // or 'ios' based on your requirement
-      Version: 42, // Set a version number that you expect to use in your test
+      OS: 'android',
+      Version: 42,
       select: jest.fn(),
     },
   });
