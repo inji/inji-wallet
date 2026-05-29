@@ -3,7 +3,6 @@
 exports[`HomeScreen should match snapshot 1`] = `
 [
   "BannerNotificationContainer",
-  "DeeplinkBanner",
   <View
     style={
       [

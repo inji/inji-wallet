@@ -195,6 +195,12 @@ jest.mock('../../components/DeeplinkBanner', () => ({
   DeeplinkBanner: () => null,
 }));
 
+jest.mock('../../components/BannerNotificationController', () => ({
+  UseBannerNotification: jest.fn(() => ({
+    isResolvingCredentialOffer: false,
+  })),
+}));
+
 jest.mock('./CredentialTypeSelectionScreen', () => ({
   CredentialTypeSelectionScreen: () => null,
 }));
