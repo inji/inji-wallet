@@ -28,6 +28,11 @@ import {SearchBar} from '../../components/ui/SearchBar';
 import {SvgImage} from '../../components/ui/svg';
 import {Icon} from 'react-native-elements';
 import {DeeplinkBanner} from '../../components/DeeplinkBanner';
+import {
+  BannerNotification,
+  BannerStatusType,
+} from '../../components/BannerNotification';
+import {UseBannerNotification} from '../../components/BannerNotificationController';
 import {CredentialTypeSelectionScreen} from './CredentialTypeSelectionScreen';
 import {QrScanner} from '../../components/QrScanner';
 import {AUTH_ROUTES} from '../../routes/routesConstants';
@@ -50,6 +55,7 @@ export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
   const controller = useIssuerScreenController(props);
+  const bannerNotificationController = UseBannerNotification();
   const {i18n, t} = useTranslation('IssuersScreen');
   const issuers = controller.issuers;
   const [filteredSearchData, setFilteredSearchData] = useState(issuers);
@@ -437,6 +443,14 @@ export const IssuersScreen: React.FC<
   return (
     <React.Fragment>
       <DeeplinkBanner />
+      {bannerNotificationController.isResolvingCredentialOffer && (
+        <BannerNotification
+          type={BannerStatusType.IN_PROGRESS}
+          message={t('MyVcsTab:resolvingCredentialOffer')}
+          key={'resolvingCredentialOfferPopup'}
+          testId={'resolvingCredentialOfferPopup'}
+        />
+      )}
       {
         <Column style={Theme.IssuersScreenStyles.issuerListOuterContainer}>
           <Row

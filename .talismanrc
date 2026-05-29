@@ -45,7 +45,7 @@ fileignoreconfig:
 - filename: shared/fileStorage.ts
   checksum: 2ba2721d9722cd9420ae26762316230f7dab1a0be45820cbda4d0ecae0edf957
 - filename: screens/Issuers/IssuersScreen.tsx
-  checksum: 710c29923aff8135fdae959b334dcc22ee1e92c8139943d5e988a85fee9446f6
+  checksum: c866c4835fa9e2d803473dd2de73f1f470a5a997b074df339d5572606ae7ce6d
 - filename: screens/Home/MyVcs/GetIdInputModal.tsx
   checksum: 5c736ed79a372d0ffa7c02eb33d0dc06edbbb08d120978ff287f5f06cd6c7746
 - filename: shared/openId4VCI/Utils.ts
@@ -319,7 +319,7 @@ fileignoreconfig:
 - filename: machines/store.ts
   checksum: 3fd2db0c41f8bd5f30ef922b856549cb5423997b2123c5364e643e47e5efd3cf
 - filename: components/BannerNotificationContainer.tsx
-  checksum: 9e5b4a61b87e86666f0bee550d410df2b8576dfe5ec374de0ab139a468a234f7
+  checksum: 2f760613c90999c306d27a40b979324fb865f53384bec401994aa3946b83e891
 - filename: injitest/src/test/java/iosTestCases/PinVcTest.java
   checksum: 55098750062a199fdf1e33078acc50080dea12a885f934a7aa88411c06899cb7
 - filename: injitest/src/test/java/androidTestCases/VcBackupAndRestoreTest.java

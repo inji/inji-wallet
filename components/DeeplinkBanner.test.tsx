@@ -6,7 +6,6 @@ import {DeeplinkBanner} from './DeeplinkBanner';
 jest.mock('./BannerNotificationController', () => ({
   UseBannerNotification: jest.fn(() => ({
     isCredentialOfferDroppedBusy: false,
-    isResolvingCredentialOffer: false,
     RESET_CREDENTIAL_OFFER_DROPPED_BUSY: jest.fn(),
   })),
 }));
@@ -31,7 +30,6 @@ const {UseBannerNotification} = require('./BannerNotificationController');
 
 const defaultBannerState = {
   isCredentialOfferDroppedBusy: false,
-  isResolvingCredentialOffer: false,
   RESET_CREDENTIAL_OFFER_DROPPED_BUSY: jest.fn(),
 };
 
@@ -72,21 +70,6 @@ describe('DeeplinkBanner Component', () => {
     expect(BannerNotification).toHaveBeenCalledWith(
       expect.objectContaining({
         testId: 'credentialOfferBusyPopup',
-        type: 'inProgress',
-      }),
-      expect.anything(),
-    );
-  });
-
-  it('should render resolving credential offer banner', () => {
-    (UseBannerNotification as jest.Mock).mockReturnValueOnce({
-      ...defaultBannerState,
-      isResolvingCredentialOffer: true,
-    });
-    render(<DeeplinkBanner />);
-    expect(BannerNotification).toHaveBeenCalledWith(
-      expect.objectContaining({
-        testId: 'resolvingCredentialOfferPopup',
         type: 'inProgress',
       }),
       expect.anything(),

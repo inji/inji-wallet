@@ -11,6 +11,7 @@ jest.mock('./BannerNotificationController', () => ({
     isBiometricUnlock: false,
     isDownloadingFailed: false,
     isDownloadingSuccess: false,
+    isResolvingCredentialOffer: false,
     isReverificationSuccess: {status: false},
     isReverificationFailed: {status: false},
     RESET_WALLET_BINDING_SUCCESS: jest.fn(),
@@ -64,6 +65,7 @@ const defaultBannerState = {
   isBiometricUnlock: false,
   isDownloadingFailed: false,
   isDownloadingSuccess: false,
+  isResolvingCredentialOffer: false,
   isReverificationSuccess: {status: false},
   isReverificationFailed: {status: false},
   RESET_WALLET_BINDING_SUCCESS: jest.fn(),
@@ -218,6 +220,21 @@ describe('BannerNotificationContainer Component', () => {
     render(<BannerNotificationContainer />);
     expect(BannerNotification).toHaveBeenCalledWith(
       expect.objectContaining({testId: 'keyOrderingSuccess', type: 'success'}),
+      expect.anything(),
+    );
+  });
+
+  it('should render resolving credential offer banner', () => {
+    (UseBannerNotification as jest.Mock).mockReturnValueOnce({
+      ...defaultBannerState,
+      isResolvingCredentialOffer: true,
+    });
+    render(<BannerNotificationContainer />);
+    expect(BannerNotification).toHaveBeenCalledWith(
+      expect.objectContaining({
+        testId: 'resolvingCredentialOfferPopup',
+        type: 'inProgress',
+      }),
       expect.anything(),
     );
   });
