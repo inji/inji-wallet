@@ -1,6 +1,10 @@
 package io.mosip.residentapp;
 
 public class IntentData {
+    private static final String FLOW_QR_LOGIN = "qrLoginFlow";
+    private static final String FLOW_OVP = "ovpFlow";
+    private static final String FLOW_CREDENTIAL_OFFER = "credentialOfferFlow";
+
     private String qrData = "";
     private String ovpQrData = "";
     private String credentialOfferData = "";
@@ -42,9 +46,9 @@ public class IntentData {
     public String getDataByFlow(String flowType) {
         if (flowType == null) return "";
         return switch (flowType) {
-            case "qrLoginFlow" -> getQrData();
-            case "ovpFlow" -> getOVPQrData();
-            case "credentialOfferFlow" -> getCredentialOfferData();
+            case FLOW_QR_LOGIN -> getQrData();
+            case FLOW_OVP -> getOVPQrData();
+            case FLOW_CREDENTIAL_OFFER -> getCredentialOfferData();
             default -> "";
         };
     }
@@ -52,9 +56,9 @@ public class IntentData {
     public void resetDataByFlow(String flowType) {
         if (flowType == null) return;
         switch (flowType) {
-            case "qrLoginFlow" -> setQrData("");
-            case "ovpFlow" -> setOVPQrData("");
-            case "credentialOfferFlow" -> setCredentialOfferData("");
+            case FLOW_QR_LOGIN -> setQrData("");
+            case FLOW_OVP -> setOVPQrData("");
+            case FLOW_CREDENTIAL_OFFER -> setCredentialOfferData("");
         }
     }
 }

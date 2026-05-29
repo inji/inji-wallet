@@ -39,7 +39,7 @@ export const IssuersMachine = model.createMachine(
           target: '.credentialDownloadFromOffer',
         },
         {
-          actions: ['logDeepLinkOfferDropped'],
+          actions: ['notifyIgnoredDeepLinkOffer'],
         },
       ],
     },

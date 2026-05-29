@@ -79,19 +79,6 @@ exports[`AuthWebViewScreen should render AuthWebViewScreen 1`] = `
     />
   </View>
   <View
-    pointerEvents="box-none"
-    style={
-      {
-        "elevation": 1000,
-        "left": 0,
-        "position": "absolute",
-        "right": 0,
-        "top": 0,
-        "zIndex": 1000,
-      }
-    }
-  />
-  <View
     testID="webview"
   />
 </View>
@@ -175,19 +162,6 @@ exports[`AuthWebViewScreen should show WebView when continue alert button presse
       }
     />
   </View>
-  <View
-    pointerEvents="box-none"
-    style={
-      {
-        "elevation": 1000,
-        "left": 0,
-        "position": "absolute",
-        "right": 0,
-        "top": 0,
-        "zIndex": 1000,
-      }
-    }
-  />
   <View
     testID="webview"
   />

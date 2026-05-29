@@ -118,8 +118,8 @@ jest.mock('react-native-copilot', () => ({
   CopilotProvider: ({children}: any) => children,
   useCopilot: () => ({start: jest.fn()}),
 }));
-jest.mock('../../components/BannerNotificationContainer', () => ({
-  BannerNotificationContainer: () => null,
+jest.mock('../../components/DeeplinkBanner', () => ({
+  DeeplinkBanner: () => null,
 }));
 jest.mock('../../components/ui/Error', () => ({ErrorView: () => null}));
 jest.mock('../../components/ui/Loader', () => ({

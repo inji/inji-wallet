@@ -727,20 +727,6 @@ function resolveEd25519Alg(proofSigningAlgosSupported: string[]) {
     : ED25519_PROOF_SIGNING_ALGO;
 }
 
-// OpenID4VCI 1.0 §4.1.1 — Credential Offer Deep-Link.
-// The wallet treats the deep-link URI as opaque transport and hands it
-// straight to the VCI library (inji-vci-client). The library is the single
-// owner of:
-//   - by-value JSON size bound (OID4VCI S5),
-//   - by-reference URI HTTPS-only enforcement (S3),
-//   - private / loopback / link-local host rejection (S21),
-//   - redirect chain cap on credential_offer_uri (S22).
-// Tracker: at the time this comment was written, inji-vci-client validates
-// `credential_issuer` is HTTPS but does NOT yet enforce S3 / S5 / S21 / S22
-// on `credential_offer_uri`. Until the library implements them, those
-// network-layer guards are absent. File against inji-vci-client.
-export const CREDENTIAL_OFFER_DEEP_LINK_SCHEME = 'openid-credential-offer';
-
 export function formattedDate(time: number | string): React.ReactNode {
   const date = new Date(time);
   const day = date.getDate();

@@ -40,7 +40,7 @@ import {APP_EVENTS} from '../../machines/app';
 import {useScanScreen} from './ScanScreenController';
 import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
 import {TrustModalVerifier} from '../../components/TrustModalVerifier';
-import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
+import {DeeplinkBanner} from '../../components/DeeplinkBanner';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
@@ -233,20 +233,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   ]);
 
   if (controller.showLoadingScreen) {
-    const bannerOverlay = (
-      <View
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          elevation: 1000,
-        }}
-        pointerEvents="box-none">
-        <BannerNotificationContainer />
-      </View>
-    );
+    const bannerOverlay = <DeeplinkBanner absolute />;
 
     if (controller.isAuthorizationFlow) {
       return (
@@ -382,18 +369,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   };
   return (
     <React.Fragment>
-      <View
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          elevation: 1000,
-        }}
-        pointerEvents="box-none">
-        <BannerNotificationContainer />
-      </View>
+      <DeeplinkBanner absolute />
       {
         <TrustModalVerifier
           isVisible={controller.showTrustConsentModal}

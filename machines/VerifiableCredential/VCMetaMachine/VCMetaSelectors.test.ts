@@ -493,7 +493,7 @@ describe('VCMetaSelectors', () => {
     it('should return true when credential offer dropped due to busy', () => {
       const state: any = {
         context: {
-          CredentialOfferDroppedBusy: true,
+          isCredentialOfferDroppedDueToBusyState: true,
         },
       };
       const result = selectIsCredentialOfferDroppedBusy(state);
@@ -503,7 +503,7 @@ describe('VCMetaSelectors', () => {
     it('should return false when not busy', () => {
       const state: any = {
         context: {
-          CredentialOfferDroppedBusy: false,
+          isCredentialOfferDroppedDueToBusyState: false,
         },
       };
       const result = selectIsCredentialOfferDroppedBusy(state);

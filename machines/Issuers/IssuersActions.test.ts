@@ -201,7 +201,7 @@ describe('IssuersActions', () => {
       'sendDownloadingFailedToVcMeta',
       'setIsCredentialOfferViaDeepLink',
       'resetIsCredentialOfferViaDeepLink',
-      'logDeepLinkOfferDropped',
+      'notifyIgnoredDeepLinkOffer',
       'setOpenId4VPRef',
       'sendVPScanData',
       'sendVPConsentReject',
@@ -863,14 +863,14 @@ describe('IssuersActions', () => {
       );
     });
 
-    it('logDeepLinkOfferDropped event returns CREDENTIAL_OFFER_DROPPED_BUSY', () => {
-      const action = actions.logDeepLinkOfferDropped;
+    it('notifyIgnoredDeepLinkOffer event returns CREDENTIAL_OFFER_DROPPED_BUSY', () => {
+      const action = actions.notifyIgnoredDeepLinkOffer;
       const result = action.event({});
       expect(result.type).toBe('CREDENTIAL_OFFER_DROPPED_BUSY');
     });
 
-    it('logDeepLinkOfferDropped to callback returns vcMeta ref', () => {
-      const action = actions.logDeepLinkOfferDropped;
+    it('notifyIgnoredDeepLinkOffer to callback returns vcMeta ref', () => {
+      const action = actions.notifyIgnoredDeepLinkOffer;
       expect(action.opts.to({serviceRefs: {vcMeta: 'vc-meta-ref'}})).toBe(
         'vc-meta-ref',
       );

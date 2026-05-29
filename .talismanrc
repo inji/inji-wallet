@@ -669,4 +669,6 @@ fileignoreconfig:
   checksum: 45b35c6fe899aa7c7f1c76dfea43e76acd939c1752bfa94b9539d2a56c721647
 - filename: components/Passcode.test.tsx
   checksum: def7f8defeedf75a71425be27f4dcb77511435a39fc367f313c0213f273fadb5
+- filename: components/DeeplinkBanner.tsx
+  checksum: 5f94125bf4ffae22ff0bf5b819008b6c727ed87565479eab8739949714398d57
   version: "1.0"

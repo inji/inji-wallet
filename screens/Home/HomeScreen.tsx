@@ -17,6 +17,7 @@ import {ErrorMessageOverlay} from '../../components/MessageOverlay';
 import {Pressable} from 'react-native';
 import testIDProps from '../../shared/commonUtil';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
+import {DeeplinkBanner} from '../../components/DeeplinkBanner';
 import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {useTranslation} from 'react-i18next';
@@ -102,6 +103,7 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
   return (
     <React.Fragment>
       <BannerNotificationContainer />
+      <DeeplinkBanner />
       <Column fill backgroundColor={Theme.Colors.lightGreyBackgroundColor}>
         {controller.haveTabsLoaded && (
           <Column fill>

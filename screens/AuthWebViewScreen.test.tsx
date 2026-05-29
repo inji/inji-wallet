@@ -22,8 +22,8 @@ jest.mock('../shared/tuvali', () => ({
   EventTypes: {},
   VerificationStatus: {},
 }));
-jest.mock('../components/BannerNotificationContainer', () => ({
-  BannerNotificationContainer: () => null,
+jest.mock('../components/DeeplinkBanner', () => ({
+  DeeplinkBanner: () => null,
 }));
 jest.mock('../shared/vciClient/VciClient', () => ({
   __esModule: true,

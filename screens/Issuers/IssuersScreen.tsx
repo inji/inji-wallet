@@ -27,7 +27,7 @@ import {MessageOverlay} from '../../components/MessageOverlay';
 import {SearchBar} from '../../components/ui/SearchBar';
 import {SvgImage} from '../../components/ui/svg';
 import {Icon} from 'react-native-elements';
-import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
+import {DeeplinkBanner} from '../../components/DeeplinkBanner';
 import {CredentialTypeSelectionScreen} from './CredentialTypeSelectionScreen';
 import {QrScanner} from '../../components/QrScanner';
 import {AUTH_ROUTES} from '../../routes/routesConstants';
@@ -221,18 +221,7 @@ export const IssuersScreen: React.FC<
   ) {
     return (
       <Fragment>
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 1000,
-            elevation: 1000,
-          }}
-          pointerEvents="box-none">
-          <BannerNotificationContainer />
-        </View>
+        <DeeplinkBanner absolute />
         <ProcessingModal
           testID={
             controller.isDownloadSuccess ? 'download-success' : 'download'
@@ -407,18 +396,7 @@ export const IssuersScreen: React.FC<
   if (controller.loadingReason) {
     return (
       <Fragment>
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 1000,
-            elevation: 1000,
-          }}
-          pointerEvents="box-none">
-          <BannerNotificationContainer />
-        </View>
+        <DeeplinkBanner absolute />
         {controller.isPresentationAuthorization ? (
           <SendVPScreen
             navigation={props.navigation}
@@ -470,7 +448,7 @@ export const IssuersScreen: React.FC<
 
   return (
     <React.Fragment>
-      <BannerNotificationContainer />
+      <DeeplinkBanner />
       {
         <Column style={Theme.IssuersScreenStyles.issuerListOuterContainer}>
           <Row

@@ -15,7 +15,7 @@ import {Theme} from '../components/ui/styleUtils';
 import {useTranslation} from 'react-i18next';
 import {isAndroid} from '../shared/constants';
 import {VCIServerErrorCode} from '../shared/openId4VCI/Utils';
-import {BannerNotificationContainer} from '../components/BannerNotificationContainer';
+import {DeeplinkBanner} from '../components/DeeplinkBanner';
 
 const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   const {authorizationURL, clientId, redirectUri, controller} = route.params;
@@ -159,18 +159,7 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   return (
     <View style={{flex: 1}}>
       <Header />
-      <View
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          elevation: 1000,
-        }}
-        pointerEvents="box-none">
-        <BannerNotificationContainer />
-      </View>
+      <DeeplinkBanner absolute />
       {shouldRenderWebView && !showWebView && (
         <WebView style={{width: 0, height: 0}} source={{uri: 'about:blank'}} />
       )}

@@ -440,7 +440,7 @@ export const IssuersActions = (model: any) => {
       isCredentialOfferViaDeepLink: (_: any, _event: any) => false,
     }),
 
-    logDeepLinkOfferDropped: send(
+    notifyIgnoredDeepLinkOffer: send(
       (_: any) => ({
         type: 'CREDENTIAL_OFFER_DROPPED_BUSY',
       }),

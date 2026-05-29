@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeeplinkBanner Component should match snapshot with default props 1`] = `null`;

@@ -265,9 +265,6 @@ export const appMachine = model.createMachine(
                       actions: ['setCredentialOfferUri'],
                     },
                   },
-                  {
-                    src: 'resetCredentialOfferDeepLinkIntent',
-                  },
                 ],
               },
               inactive: {

@@ -305,14 +305,14 @@ describe('VCMetaActions', () => {
     it('setCredentialOfferDroppedBusy returns true', () => {
       const fn =
         actions.setCredentialOfferDroppedBusy.assignment
-          .CredentialOfferDroppedBusy;
+          .isCredentialOfferDroppedDueToBusyState;
       expect(fn()).toBe(true);
     });
 
     it('resetCredentialOfferDroppedBusy returns false', () => {
       const fn =
         actions.resetCredentialOfferDroppedBusy.assignment
-          .CredentialOfferDroppedBusy;
+          .isCredentialOfferDroppedDueToBusyState;
       expect(fn()).toBe(false);
     });
 

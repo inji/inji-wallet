@@ -35,6 +35,10 @@ public class MainActivity extends ReactActivity {
 
   private static final int REQUEST_CODE_REQUIRED_PERMISSIONS = 1;
 
+  private static final String SCHEME_INJI = "io.mosip.residentapp.inji";
+  private static final String SCHEME_OPENID4VP = "openid4vp";
+  private static final String SCHEME_CREDENTIAL_OFFER = "openid-credential-offer";
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     // Set the theme to AppTheme BEFORE onCreate to support
@@ -62,13 +66,13 @@ public class MainActivity extends ReactActivity {
     if (scheme == null) return;
 
     switch (scheme) {
-      case "io.mosip.residentapp.inji":
+      case SCHEME_INJI:
         intentData.setQrData(data.toString());
         break;
-      case "openid4vp":
+      case SCHEME_OPENID4VP:
         intentData.setOVPQrData(data.toString());
         break;
-      case "openid-credential-offer":
+      case SCHEME_CREDENTIAL_OFFER:
         intentData.setCredentialOfferData(data.toString());
         break;
       default:
