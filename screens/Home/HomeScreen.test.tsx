@@ -71,9 +71,6 @@ jest.mock('../../components/MessageOverlay', () => ({
 jest.mock('../../components/BannerNotificationContainer', () => ({
   BannerNotificationContainer: () => 'BannerNotificationContainer',
 }));
-jest.mock('../../components/DeeplinkBanner', () => ({
-  DeeplinkBanner: () => 'DeeplinkBanner',
-}));
 
 jest.mock('../../shared/commonUtil', () => jest.fn(() => ({})));
 
