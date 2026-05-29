@@ -367,7 +367,6 @@ export const IssuersScreen: React.FC<
     );
   }
   if (showFullScreenError) {
-    // Deep-link offer errors are terminal: every exit goes home.
     const isDeepLinkOfferError = controller.isCredentialOfferViaDeepLink;
     const errorPrimaryButtonText = isDeepLinkOfferError
       ? 'goHome'
