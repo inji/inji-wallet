@@ -31,7 +31,6 @@ export const DeeplinkBanner: React.FC<DeeplinkBannerProps> = ({
         <BannerNotification
           type={BannerStatusType.IN_PROGRESS}
           message={t('MyVcsTab:resolvingCredentialOffer')}
-          onClosePress={() => {}}
           key={'resolvingCredentialOfferPopup'}
           testId={'resolvingCredentialOfferPopup'}
         />

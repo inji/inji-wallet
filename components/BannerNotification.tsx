@@ -19,14 +19,16 @@ export const BannerNotification: React.FC<BannerNotificationProps> = props => {
             {props.message}
           </Text>
         </Column>
-        <Column>
-          <Pressable
-            style={Theme.BannerStyles.dismiss}
-            {...testIDProps('close')}
-            onPress={props.onClosePress}>
-            <Icon name="close" color={Theme.Colors.whiteText} size={19} />
-          </Pressable>
-        </Column>
+        {props.onClosePress && (
+          <Column>
+            <Pressable
+              style={Theme.BannerStyles.dismiss}
+              {...testIDProps('close')}
+              onPress={props.onClosePress}>
+              <Icon name="close" color={Theme.Colors.whiteText} size={19} />
+            </Pressable>
+          </Column>
+        )}
       </Row>
     </View>
   );
@@ -45,7 +47,7 @@ export type BannerStatus =
 
 export interface BannerNotificationProps {
   message: string;
-  onClosePress: () => void;
+  onClosePress?: () => void;
   testId: string;
   type: BannerStatusType;
 }
