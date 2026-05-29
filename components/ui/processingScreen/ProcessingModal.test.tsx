@@ -1,6 +1,9 @@
-import {View} from "react-native";
+import {View} from 'react-native';
 
 jest.mock('react-native-fast-image', () => 'FastImage');
+jest.mock('../../DeeplinkBanner', () => ({
+  DeeplinkBanner: () => null,
+}));
 jest.mock('../Modal', () => ({
   Modal: ({children}) => children,
 }));
@@ -15,7 +18,9 @@ jest.mock(
 );
 jest.mock('../Button', () => ({
   Button: ({title, testID}: {title: string; testID?: string}) => (
-    <View accessibilityRole="button" accessibilityLabel={title}>{title}</View>
+    <View accessibilityRole="button" accessibilityLabel={title}>
+      {title}
+    </View>
   ),
 }));
 
@@ -68,7 +73,7 @@ describe('ProcessingScreen', () => {
   });
 
   it('renders the action button', () => {
-    const { getByLabelText} = render(<ProcessingModal {...props} />);
+    const {getByLabelText} = render(<ProcessingModal {...props} />);
 
     expect(getByLabelText('Go to Home')).toBeTruthy();
   });

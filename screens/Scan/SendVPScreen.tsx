@@ -233,25 +233,20 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   ]);
 
   if (controller.showLoadingScreen) {
-    const bannerOverlay = <DeeplinkBanner absolute />;
-
     if (controller.isAuthorizationFlow) {
       return (
         <Fragment>
-          {bannerOverlay}
+          <DeeplinkBanner absolute />
           <LoaderSkeleton testID={'presentation-authorization'} />
         </Fragment>
       );
     }
 
     return (
-      <Fragment>
-        {bannerOverlay}
-        <Loader
-          title={t('loaders.loading')}
-          subTitle={t(`loaders.subTitle.fetchingVerifiers`)}
-        />
-      </Fragment>
+      <Loader
+        title={t('loaders.loading')}
+        subTitle={t(`loaders.subTitle.fetchingVerifiers`)}
+      />
     );
   }
 

@@ -3,6 +3,13 @@ import {render, fireEvent} from '@testing-library/react-native';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({t: (key: string) => key}),
+  initReactI18next: {
+    type: '3rdParty',
+    init: () => {},
+  },
+}));
+jest.mock('../DeeplinkBanner', () => ({
+  DeeplinkBanner: () => null,
 }));
 jest.mock('./styleUtils', () => ({
   Theme: {

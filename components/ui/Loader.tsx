@@ -8,6 +8,7 @@ import {Modal} from './Modal';
 import {BannerNotification} from '../../components/BannerNotification';
 import {BannerStatusType} from '../../components/BannerNotification';
 import testIDProps from '../../shared/commonUtil';
+import {DeeplinkBanner} from '../DeeplinkBanner';
 
 export const LoaderSkeleton: React.FC<{
   children?: React.ReactNode;
@@ -137,6 +138,7 @@ export const Loader: React.FC<LoaderProps> = ({
             </SafeAreaView>
           </Row>
           <View style={Theme.Styles.hrLineFill}></View>
+          <DeeplinkBanner />
           {showBanner && (
             <BannerNotification
               type={bannerType ? bannerType : BannerStatusType.SUCCESS}

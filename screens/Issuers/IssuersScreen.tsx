@@ -220,74 +220,67 @@ export const IssuersScreen: React.FC<
     !isVerificationFailed
   ) {
     return (
-      <Fragment>
-        <DeeplinkBanner absolute />
-        <ProcessingModal
-          testID={
-            controller.isDownloadSuccess ? 'download-success' : 'download'
-          }
-          isVisible={
-            controller.authorizationType ===
-              AuthorizationType.OPENID4VP_PRESENTATION &&
-            (controller.isPresentationAuthorizationInProgress ||
-              controller.isDownloadSuccess ||
-              controller.isAuthorizationSuccess) &&
-            !controller.isError
-          }
-          title={
-            controller.isDownloadSuccess
-              ? t('downloadSuccess')
-              : t('loaders.processing')
-          }
-          subTitle={
-            controller.isDownloadSuccess
-              ? t('loaders.progressIndicators.redirectToHome', {
-                  remainingTime: successDownloadRedirectTimer,
-                })
-              : t('loaders.subTitle.inProgress')
-          }
-          progressSteps={[
-            <ProgressIndicator
-              key={1}
-              label={
-                controller.isAuthorizationSuccess
-                  ? t('loaders.progressIndicators.sharedCard')
-                  : t('loaders.progressIndicators.sharingCard')
-              }
-              completed={controller.isAuthorizationSuccess}
-              testID={
-                controller.isAuthorizationSuccess
-                  ? 'shared-card'
-                  : 'sharing-card'
-              }
-            />,
-            <ProgressIndicator
-              key={2}
-              label={
-                controller.isDownloadSuccess
-                  ? t('loaders.progressIndicators.downloadedCard')
-                  : t('loaders.progressIndicators.downloadingCard')
-              }
-              completed={controller.isDownloadSuccess}
-              testID={
-                controller.isDownloadSuccess
-                  ? 'downloaded-card'
-                  : 'downloading-card'
-              }
-            />,
-          ]}
-          action={
-            <Button
-              testID={'go-home'}
-              title={t('goHome')}
-              type={'gradient'}
-              fill
-              onPress={props.navigation.goBack}
-              disabled={!controller.isDownloadSuccess}
-            />
-          }
-        />
-      </Fragment>
+      <ProcessingModal
+        testID={controller.isDownloadSuccess ? 'download-success' : 'download'}
+        isVisible={
+          controller.authorizationType ===
+            AuthorizationType.OPENID4VP_PRESENTATION &&
+          (controller.isPresentationAuthorizationInProgress ||
+            controller.isDownloadSuccess ||
+            controller.isAuthorizationSuccess) &&
+          !controller.isError
+        }
+        title={
+          controller.isDownloadSuccess
+            ? t('downloadSuccess')
+            : t('loaders.processing')
+        }
+        subTitle={
+          controller.isDownloadSuccess
+            ? t('loaders.progressIndicators.redirectToHome', {
+                remainingTime: successDownloadRedirectTimer,
+              })
+            : t('loaders.subTitle.inProgress')
+        }
+        progressSteps={[
+          <ProgressIndicator
+            key={1}
+            label={
+              controller.isAuthorizationSuccess
+                ? t('loaders.progressIndicators.sharedCard')
+                : t('loaders.progressIndicators.sharingCard')
+            }
+            completed={controller.isAuthorizationSuccess}
+            testID={
+              controller.isAuthorizationSuccess ? 'shared-card' : 'sharing-card'
+            }
+          />,
+          <ProgressIndicator
+            key={2}
+            label={
+              controller.isDownloadSuccess
+                ? t('loaders.progressIndicators.downloadedCard')
+                : t('loaders.progressIndicators.downloadingCard')
+            }
+            completed={controller.isDownloadSuccess}
+            testID={
+              controller.isDownloadSuccess
+                ? 'downloaded-card'
+                : 'downloading-card'
+            }
+          />,
+        ]}
+        action={
+          <Button
+            testID={'go-home'}
+            title={t('goHome')}
+            type={'gradient'}
+            fill
+            onPress={props.navigation.goBack}
+            disabled={!controller.isDownloadSuccess}
+          />
+        }
+      />
     );
   }
 
@@ -394,31 +387,26 @@ export const IssuersScreen: React.FC<
   }
 
   if (controller.loadingReason) {
-    return (
-      <Fragment>
-        <DeeplinkBanner absolute />
-        {controller.isPresentationAuthorization ? (
-          <SendVPScreen
-            navigation={props.navigation}
-            route={{
-              ...props.route,
-              params: {
-                ...props.route.params,
-                ovpService: controller.ovpMachine,
-              },
-            }}
-          />
-        ) : (
-          <Loader
-            title={
-              controller.loadingReason === 'preparingRequest'
-                ? t('loaders.preparingRequest')
-                : t('loaders.loading')
-            }
-            subTitle={t(`loaders.subTitle.${controller.loadingReason}`)}
-          />
-        )}
-      </Fragment>
+    return controller.isPresentationAuthorization ? (
+      <SendVPScreen
+        navigation={props.navigation}
+        route={{
+          ...props.route,
+          params: {
+            ...props.route.params,
+            ovpService: controller.ovpMachine,
+          },
+        }}
+      />
+    ) : (
+      <Loader
+        title={
+          controller.loadingReason === 'preparingRequest'
+            ? t('loaders.preparingRequest')
+            : t('loaders.loading')
+        }
+        subTitle={t(`loaders.subTitle.${controller.loadingReason}`)}
+      />
     );
   }
 
