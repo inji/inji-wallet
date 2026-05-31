@@ -1,6 +1,10 @@
 import {assign} from 'xstate';
 import {send, sendParent} from 'xstate/lib/actions';
-import {SHOW_FACE_AUTH_CONSENT_SHARE_FLOW} from '../../shared/constants';
+import {
+  OVP_ERROR_CODE,
+  OVP_ERROR_MESSAGES,
+  SHOW_FACE_AUTH_CONSENT_SHARE_FLOW,
+} from '../../shared/constants';
 import {VC} from '../VerifiableCredential/VCMetaMachine/vc';
 import {StoreEvents} from '../store';
 
@@ -11,12 +15,12 @@ import {
   MatchingVcsResult,
   MatchingVCsResultForPresentationExchangeRequest,
 } from '../../shared/openID4VP/openid4vp.types';
+import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 
 // TODO - get this presentation definition list which are alias for scope param
 // from the verifier end point after the endpoint is created and exposed.
 
 export const openID4VPActions = (model: any) => {
-  let result;
   return {
     setPresentationRequest: model.assign({
       presentationRequest: (_, event) => event.presentationRequest,
@@ -55,8 +59,15 @@ export const openID4VPActions = (model: any) => {
       hasNoMatchingVCs: (
         _: any,
         event: {data: MatchingVCsResultForPresentationExchangeRequest},
-      ) => event.data.success,
+      ) => event.data.success === false,
     }),
+
+    sendNoMatchingVcsErrorToVerifier: () => {
+      void OpenID4VP.sendErrorToVerifier(
+        OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
+        OVP_ERROR_CODE.NO_MATCHING_VCS,
+      );
+    },
 
     setAuthenticationResponseForPresentationAuthFlow: model.assign({
       authenticationResponse: (context, _) => context.presentationRequest,

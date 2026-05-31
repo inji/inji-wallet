@@ -324,6 +324,10 @@ export const PurpleTheme = {
       margin: 8,
       backgroundColor: '#fff',
       shadowColor: '#000',
+      shadowOffset: {width: -1, height: 2},
+      shadowOpacity: 0.3,
+      shadowRadius: 4,
+      elevation: 7,
     },
     selectedBindedVc: {
       borderRadius: 15,
@@ -2601,6 +2605,12 @@ export const PurpleTheme = {
       letterSpacing: 1,
       color: Colors.Gray40,
     },
+    sectionStepLabel: {
+      fontFamily: 'Montserrat_400Regular',
+      fontSize: 11,
+      color: Colors.Gray40,
+      marginTop: 2,
+    },
     sectionSatisfiedIcon: {
       marginHorizontal: 4,
     },
@@ -2734,7 +2744,7 @@ export const PurpleTheme = {
       flexDirection: 'row',
       alignItems: 'center',
       flexWrap: 'wrap',
-      rowGap: 4
+      rowGap: 4,
     },
     titleColumn: {
       flexDirection: 'column',
@@ -2797,7 +2807,7 @@ function generateBoxShadowStyle() {
 export const DcqlBadgeColors = {
   requiredBorder: '#FECACA',
   requiredText: '#DC2626',
-  requiredBg:  '#FEF2F2',
+  requiredBg: '#FEF2F2',
   optionalBorder: '#AA913F',
   optionalText: '#79732D',
   optionalBg: '#FFFDDE',

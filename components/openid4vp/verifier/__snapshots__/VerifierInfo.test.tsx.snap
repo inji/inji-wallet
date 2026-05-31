@@ -30,49 +30,14 @@ exports[`VerifierInfo matches snapshot (happy path with logo and name) 1`] = `
       }
     }
   >
-    <Text
-      style={
-        [
-          {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "fontFamily": "Montserrat_400Regular",
-            "fontSize": 14,
-          },
-          null,
-          {
-            "textAlign": "left",
-          },
-          null,
-          null,
-          {
-            "color": "#000000",
-            "fontFamily": "Montserrat_600SemiBold",
-            "fontSize": 13,
-          },
-        ]
-      }
-    >
-      Test Verifier
-    </Text>
     <View
       style={
         {
           "alignItems": "center",
           "flexDirection": "row",
-          "marginTop": 2,
         }
       }
     >
-      <View
-        color="#1976D2"
-        name="verified-user"
-        size={12}
-        type="material"
-      />
       <Text
         style={
           [
@@ -92,17 +57,93 @@ exports[`VerifierInfo matches snapshot (happy path with logo and name) 1`] = `
             null,
             null,
             {
+              "color": "#000000",
+              "fontFamily": "Montserrat_600SemiBold",
+              "fontSize": 13,
+            },
+          ]
+        }
+      >
+        Test Verifier
+      </Text>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "marginTop": 2,
+          }
+        }
+      >
+        <View
+          color="#1976D2"
+          name="verified-user"
+          size={12}
+          type="material"
+        />
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontSize": 16,
+                "lineHeight": 18,
+              },
+              {
+                "fontFamily": "Montserrat_400Regular",
+                "fontSize": 14,
+              },
+              null,
+              {
+                "textAlign": "left",
+              },
+              null,
+              null,
+              {
+                "color": "#1976D2",
+                "fontFamily": "Montserrat_600SemiBold",
+                "fontSize": 10,
+                "marginLeft": 3,
+              },
+            ]
+          }
+        >
+          verifierInfo.trusted
+        </Text>
+      </View>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "fontFamily": "Montserrat_400Regular",
+            "fontSize": 14,
+          },
+          null,
+          {
+            "textAlign": "left",
+          },
+          null,
+          null,
+          [
+            {
               "color": "#1976D2",
               "fontFamily": "Montserrat_600SemiBold",
               "fontSize": 10,
               "marginLeft": 3,
             },
-          ]
-        }
-      >
-        Trusted
-      </Text>
-    </View>
+            {
+              "color": "#951F6F",
+            },
+          ],
+        ]
+      }
+    />
   </View>
   <View
     accessibilityState={

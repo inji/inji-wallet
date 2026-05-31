@@ -1157,6 +1157,9 @@
       "multipleCards": "Multiple Cards",
       "allRequired": "ALL REQUIRED"
     },
+    "verifierInfo": {
+      "trusted": "Trusted"
+    },
     "infoOverlay": {
       "title": "Why We Need Documents",
       "body": "Organizations may request different types of credentials to verify your identity and provide you with services. Some credentials are required, while others are optional.",

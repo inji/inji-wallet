@@ -68,6 +68,9 @@ beforeAll(() => {
   RNSecureKeystoreModule.retrieveGenericKey = jest
     .fn()
     .mockResolvedValue(['mockPriv', 'mockPub']);
+  RNSecureKeystoreModule.signBytes = jest
+    .fn()
+    .mockResolvedValue('bW9ja0RlckJhc2U2NFNpZw==');
 });
 
 beforeEach(() => {
@@ -89,6 +92,9 @@ beforeEach(() => {
     .fn()
     .mockResolvedValue(['mockPriv', 'mockPub']);
   RNSecureKeystoreModule.sign = jest.fn().mockResolvedValue('mockSig');
+  RNSecureKeystoreModule.signBytes = jest
+    .fn()
+    .mockResolvedValue('bW9ja0RlckJhc2U2NFNpZw==');
 });
 
 jest.mock('../openId4VCI/Utils', () => ({
@@ -282,9 +288,15 @@ describe('cryptoUtil', () => {
 
   describe('createSignatureECR1', () => {
     it('calls sign and converts DER on Android', async () => {
-      RNSecureKeystoreModule.sign.mockResolvedValue('mockDerBase64Sig');
+      RNSecureKeystoreModule.signBytes.mockResolvedValue(
+        'bW9ja0RlckJhc2U2NFNpZw==',
+      );
       const result = await createSignatureECR1('privKey', 'payload');
-      expect(RNSecureKeystoreModule.sign).toHaveBeenCalled();
+      expect(RNSecureKeystoreModule.signBytes).toHaveBeenCalledWith(
+        'ES256',
+        'ES256',
+        expect.any(String),
+      );
       expect(typeof result).toBe('string');
     });
   });
@@ -314,7 +326,9 @@ describe('cryptoUtil', () => {
     });
 
     it('ES256 calls createSignatureECR1', async () => {
-      RNSecureKeystoreModule.sign.mockResolvedValue('mockDerSig');
+      RNSecureKeystoreModule.signBytes.mockResolvedValue(
+        'bW9ja0RlckJhc2U2NFNpZw==',
+      );
       const result = await createSignature('key', 'payload', 'ES256');
       expect(result).toBeDefined();
     });

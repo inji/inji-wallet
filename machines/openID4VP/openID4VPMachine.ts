@@ -68,10 +68,7 @@ export const openID4VPMachine = model.createMachine(
           STORE_RESPONSE: [
             {
               cond: 'isAuthorizationFlow',
-              actions: [
-                'setAuthenticationResponseForPresentationAuthFlow',
-                'resetIsShowLoadingScreen',
-              ],
+              actions: ['setAuthenticationResponseForPresentationAuthFlow'],
               target: 'checkVerifierTrust',
             },
             {
@@ -99,7 +96,6 @@ export const openID4VPMachine = model.createMachine(
             },
           ],
         },
-        exit: 'resetIsShowLoadingScreen',
       },
       checkVerifierTrust: {
         invoke: {
@@ -185,7 +181,6 @@ export const openID4VPMachine = model.createMachine(
         on: {
           DOWNLOADED_VCS: {
             actions: ['setAvailableWalletCredentials'],
-            // target: 'checkIfAnyMatchingVCs',
             target: 'matchVPRequestWithVCs',
           },
         },
@@ -195,7 +190,7 @@ export const openID4VPMachine = model.createMachine(
         invoke: {
           src: 'getMatchingCredentialsForVPRequest',
           onDone: {
-            actions: 'setMatchingVCs',
+            actions: ['setMatchingVCs', 'resetIsShowLoadingScreen'],
             target: 'checkIfAnyMatchingVCs',
           },
           onError: [
@@ -207,9 +202,10 @@ export const openID4VPMachine = model.createMachine(
       },
 
       checkIfAnyMatchingVCs: {
+        entry: [() => console.log('checking if any matching vcs')],
         always: [
           {
-            cond: 'hasNoMatchingVCsAndIsAuthorizationFlow',
+            cond: 'hasNoMatchingVCs',
             target: 'noMatchingVCs',
           },
           {
@@ -223,12 +219,21 @@ export const openID4VPMachine = model.createMachine(
       },
 
       noMatchingVCs: {
-        entry: [
-          model.assign({
-            error: () => OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
-          }),
+        always: [
+          {
+            cond: 'isAuthorizationFlow',
+            actions: [
+              model.assign({
+                error: () => OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
+              }),
+            ],
+            target: 'authFlowFailed',
+          },
+          {
+            actions: 'sendNoMatchingVcsErrorToVerifier',
+            target: 'showError',
+          },
         ],
-        always: [{target: 'authFlowFailed'}],
       },
 
       setSelectedVC: {

@@ -47,9 +47,11 @@ exports[`WhyWeNeedDocumentsOverlay matches snapshot (happy path – visible over
           {
             "color": "#111827",
             "flex": 1,
+            "fontFamily": "Montserrat_600SemiBold",
             "fontSize": 20,
-            "fontWeight": "700",
+            "fontWeight": "600",
             "marginRight": 12,
+            "padding": 2,
           },
         ]
       }
@@ -106,6 +108,11 @@ exports[`WhyWeNeedDocumentsOverlay matches snapshot (happy path – visible over
       />
     </View>
   </View>
+  <Text
+    testID="vc-item-why-we-need-docs-header-body-divider"
+  >
+    Divider
+  </Text>
   <RCTScrollView
     contentContainerStyle={
       {
@@ -139,6 +146,7 @@ exports[`WhyWeNeedDocumentsOverlay matches snapshot (happy path – visible over
               "fontSize": 14,
               "lineHeight": 20,
               "marginBottom": 16,
+              "marginTop": 10,
             },
           ]
         }
@@ -533,9 +541,9 @@ exports[`WhyWeNeedDocumentsOverlay matches snapshot (happy path – visible over
         <View
           style={
             {
-              "paddingBottom": 10,
+              "backgroundColor": "#F8F9FA",
               "paddingHorizontal": 12,
-              "paddingTop": 4,
+              "paddingVertical": 8,
             }
           }
         >

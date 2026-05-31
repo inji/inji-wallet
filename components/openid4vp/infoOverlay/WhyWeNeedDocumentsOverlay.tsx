@@ -1,10 +1,36 @@
 import React from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {Icon, Overlay} from 'react-native-elements';
 import {useTranslation} from 'react-i18next';
 import {Text} from '../../ui';
 import {Badge} from '../../ui/badge/Badge';
 import {DcqlBadgeColors} from '../../ui/themes/DefaultTheme';
+import {Divider} from '../../ui/divider/Divider';
+
+type CredentialCardBadgeStyle = {
+  textColor: string;
+  borderColor: string;
+  bgColor: string;
+  iconBgColor: string;
+  footerContainerStyle: ViewStyle;
+  footerTextStyle: TextStyle;
+};
+
+type CredentialCardProps = {
+  title: string;
+  badgeText: string;
+  badgeStyle: CredentialCardBadgeStyle;
+  titleIcon: React.ReactNode;
+  bodyText: string;
+  footerText: string;
+};
 
 interface WhyWeNeedDocumentsOverlayProps {
   isVisible: boolean;
@@ -15,6 +41,40 @@ export const WhyWeNeedDocumentsOverlay: React.FC<
   WhyWeNeedDocumentsOverlayProps
 > = ({isVisible, onClose}) => {
   const {t} = useTranslation('SendVPScreen');
+
+  const renderCredentialCard = ({
+    title,
+    badgeText,
+    badgeStyle,
+    titleIcon,
+    bodyText,
+    footerText,
+  }: CredentialCardProps) => (
+    <View style={styles.card}>
+      <View style={styles.cardHeader}>
+        <View
+          style={[
+            styles.iconContainer,
+            {backgroundColor: badgeStyle.iconBgColor},
+          ]}>
+          {titleIcon}
+        </View>
+        <View style={styles.cardTitleRow}>
+          <Text style={styles.cardTitle}>{title}</Text>
+          <Badge
+            text={badgeText}
+            textColor={badgeStyle.textColor}
+            borderColor={badgeStyle.borderColor}
+            bgColor={badgeStyle.bgColor}
+          />
+        </View>
+      </View>
+      <Text style={styles.cardDescription}>{bodyText}</Text>
+      <View style={badgeStyle.footerContainerStyle}>
+        <Text style={badgeStyle.footerTextStyle}>{footerText}</Text>
+      </View>
+    </View>
+  );
 
   return (
     <Overlay
@@ -30,6 +90,7 @@ export const WhyWeNeedDocumentsOverlay: React.FC<
           <Icon name="close" type="material" size={20} color="#000" />
         </TouchableOpacity>
       </View>
+      <Divider testId={'why-we-need-docs-header-body-divider'} />
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -38,70 +99,52 @@ export const WhyWeNeedDocumentsOverlay: React.FC<
         <Text style={styles.bodyText}>{t('infoOverlay.body')}</Text>
 
         {/* Required Credentials card */}
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <View style={[styles.iconContainer, styles.iconContainerRequired]}>
-              <Icon
-                name="error-outline"
-                type="material"
-                size={20}
-                color={DcqlBadgeColors.requiredText}
-              />
-            </View>
-            <View style={styles.cardTitleRow}>
-              <Text style={styles.cardTitle}>
-                {t('infoOverlay.requiredCredentials.title')}
-              </Text>
-              <Badge
-                text={t('dcqlSection.required')}
-                textColor={DcqlBadgeColors.requiredText}
-                borderColor={DcqlBadgeColors.requiredBorder}
-                bgColor={DcqlBadgeColors.requiredBg}
-              />
-            </View>
-          </View>
-          <Text style={styles.cardDescription}>
-            {t('infoOverlay.requiredCredentials.description')}
-          </Text>
-          <View style={styles.requiredFootnote}>
-            <Text style={styles.requiredFootnoteText}>
-              {t('infoOverlay.requiredCredentials.footnote')}
-            </Text>
-          </View>
-        </View>
+        {renderCredentialCard({
+          title: t('infoOverlay.requiredCredentials.title'),
+          badgeText: t('dcqlSection.required'),
+          badgeStyle: {
+            textColor: DcqlBadgeColors.requiredText,
+            borderColor: DcqlBadgeColors.requiredBorder,
+            bgColor: DcqlBadgeColors.requiredBg,
+            iconBgColor: DcqlBadgeColors.requiredBg,
+            footerContainerStyle: styles.requiredFootnote,
+            footerTextStyle: styles.requiredFootnoteText,
+          },
+          titleIcon: (
+            <Icon
+              name="error-outline"
+              type="material"
+              size={20}
+              color={DcqlBadgeColors.requiredText}
+            />
+          ),
+          bodyText: t('infoOverlay.requiredCredentials.description'),
+          footerText: t('infoOverlay.requiredCredentials.footnote'),
+        })}
 
         {/* Optional Credentials card */}
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <View style={[styles.iconContainer, styles.iconContainerOptional]}>
-              <Icon
-                name="check-circle-outline"
-                type="material"
-                size={20}
-                color="#6B7280"
-              />
-            </View>
-            <View style={styles.cardTitleRow}>
-              <Text style={styles.cardTitle}>
-                {t('infoOverlay.optionalCredentials.title')}
-              </Text>
-              <Badge
-                text={t('dcqlSection.notRequired')}
-                textColor={DcqlBadgeColors.optionalText}
-                borderColor={DcqlBadgeColors.optionalBorder}
-                bgColor={DcqlBadgeColors.optionalBg}
-              />
-            </View>
-          </View>
-          <Text style={styles.cardDescription}>
-            {t('infoOverlay.optionalCredentials.description')}
-          </Text>
-          <View style={styles.optionalFootnote}>
-            <Text style={styles.optionalFootnoteText}>
-              {t('infoOverlay.optionalCredentials.footnote')}
-            </Text>
-          </View>
-        </View>
+        {renderCredentialCard({
+          title: t('infoOverlay.optionalCredentials.title'),
+          badgeText: t('dcqlSection.notRequired'),
+          badgeStyle: {
+            textColor: DcqlBadgeColors.optionalText,
+            borderColor: DcqlBadgeColors.optionalBorder,
+            bgColor: DcqlBadgeColors.optionalBg,
+            iconBgColor: '#F3F4F6',
+            footerContainerStyle: styles.optionalFootnote,
+            footerTextStyle: styles.optionalFootnoteText,
+          },
+          titleIcon: (
+            <Icon
+              name="check-circle-outline"
+              type="material"
+              size={20}
+              color="#6B7280"
+            />
+          ),
+          bodyText: t('infoOverlay.optionalCredentials.description'),
+          footerText: t('infoOverlay.optionalCredentials.footnote'),
+        })}
       </ScrollView>
     </Overlay>
   );
@@ -124,8 +167,10 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   title: {
+    padding: 2,
     fontSize: 20,
-    fontWeight: '700',
+    fontFamily: 'Montserrat_600SemiBold',
+    fontWeight: '600',
     color: '#111827',
     flex: 1,
     marginRight: 12,
@@ -138,6 +183,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#374151',
     lineHeight: 20,
+    marginTop: 10,
     marginBottom: 16,
   },
   card: {
@@ -161,12 +207,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 10,
     flexShrink: 0,
-  },
-  iconContainerRequired: {
-    backgroundColor: DcqlBadgeColors.requiredBg,
-  },
-  iconContainerOptional: {
-    backgroundColor: '#F3F4F6',
   },
   cardTitleRow: {
     flex: 1,
@@ -200,8 +240,8 @@ const styles = StyleSheet.create({
   },
   optionalFootnote: {
     paddingHorizontal: 12,
-    paddingTop: 4,
-    paddingBottom: 10,
+    paddingVertical: 8,
+    backgroundColor: '#F8F9FA',
   },
   optionalFootnoteText: {
     fontSize: 12,

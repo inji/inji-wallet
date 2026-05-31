@@ -2,13 +2,18 @@ import React from 'react';
 import {View} from 'react-native';
 import {Row, Text} from '../index';
 import {Theme} from '../styleUtils';
+import {Divider as RNDivider} from 'react-native-elements';
 
 interface DividerProps {
-  text: string;
+  text?: string;
   testId: string;
 }
 
 export const Divider: React.FC<DividerProps> = ({text, testId}) => {
+  if (!text) {
+    return <RNDivider style={{marginVertical: 6}} />;
+  }
+
   return (
     <Row testID={testId} style={Theme.DividerStyles.container}>
       <View style={Theme.DividerStyles.line} />

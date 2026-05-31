@@ -244,7 +244,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
               <VerifierInfo
                 logoUri={controller.verifierLogoInTrustModal}
                 name={controller.vpVerifierName}
-                showInfo={controller.isDcqlFlow === true}
+                showInfo={controller.isDcqlFlow}
                 onInfoPress={() => setShowInfoOverlay(true)}
               />
             )}

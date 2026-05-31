@@ -1131,13 +1131,19 @@
       }
     },
     "dcqlSection": {
-      "mandatoryCards": "अनिवार्य कार्ड{{index}}",
+      "mandatoryCards": "अनिवार्य कार्ड",
       "optionalCards": "वैकल्पिक कार्ड",
       "required": "आवश्यक",
       "notRequired": "आवश्यक नहीं",
       "multipleCardsMatchingQuery": "क्वेरी से मेल खाते कई कार्ड",
       "multipleCards": "कई कार्ड",
-      "allRequired": "सभी आवश्यक"
+      "allRequired": "सभी आवश्यक",
+      "stepOf": "चरण {{current}} का {{total}}",
+      "previous": "पिछला",
+      "next": "अगला"
+    },
+    "verifierInfo": {
+      "trusted": "विश्वसनीय"
     },
     "infoOverlay": {
       "title": "हमें दस्तावेज़ों की आवश्यकता क्यों है",

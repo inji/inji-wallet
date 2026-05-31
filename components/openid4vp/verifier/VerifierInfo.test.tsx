@@ -64,7 +64,7 @@ describe('VerifierInfo', () => {
 
   it('shows "Trusted" badge when no subLabel is provided', () => {
     const {getByText} = render(<VerifierInfo name="Verifier" />);
-    expect(getByText('Trusted')).toBeTruthy();
+    expect(getByText('verifierInfo.trusted')).toBeTruthy();
   });
 
   it('matches snapshot (happy path with logo and name)', () => {

@@ -2594,6 +2594,12 @@ export const DefaultTheme = {
       letterSpacing: 1,
       color: Colors.Gray40,
     },
+    sectionStepLabel: {
+      fontFamily: 'Montserrat_400Regular',
+      fontSize: 11,
+      color: Colors.Gray40,
+      marginTop: 2,
+    },
     sectionSatisfiedIcon: {
       marginHorizontal: 4,
     },
@@ -2711,7 +2717,7 @@ export const DefaultTheme = {
       marginHorizontal: 8,
       marginBottom: 8,
       backgroundColor: Colors.White,
-      shadowColor: '#000'
+      shadowColor: '#000',
     },
     header: {
       flexDirection: 'row',
@@ -2723,13 +2729,13 @@ export const DefaultTheme = {
       flexDirection: 'row',
       alignItems: 'center',
       flexWrap: 'wrap',
-      gap: 3
+      gap: 3,
     },
     titleColumn: {
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignContent: 'flex-start',
-      rowGap: 4
+      rowGap: 4,
     },
     title: {
       fontFamily: 'Montserrat_700Bold',
@@ -2772,7 +2778,7 @@ export const DefaultTheme = {
 export const DcqlBadgeColors = {
   requiredBorder: '#FECACA',
   requiredText: '#DC2626',
-  requiredBg:  '#FEF2F2',
+  requiredBg: '#FEF2F2',
   optionalBorder: '#AA913F',
   optionalText: '#79732D',
   optionalBg: '#FFFDDE',

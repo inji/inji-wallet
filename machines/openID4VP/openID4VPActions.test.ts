@@ -89,7 +89,7 @@ describe('openID4VPActions', () => {
       'setAuthenticationResponse',
       'setUrlEncodedAuthorizationRequest',
       'setFlowType',
-      'getVcsMatchingAuthRequest',
+      'setMatchingVCs',
       'setAuthenticationResponseForPresentationAuthFlow',
       'setSelectedVCs',
       'setUnsignedVPToken',
@@ -106,7 +106,6 @@ describe('openID4VPActions', () => {
       'setError',
       'resetError',
       'resetIsShareWithSelfie',
-      'loadKeyPair',
       'incrementOpenID4VPRetryCount',
       'resetOpenID4VPRetryCount',
       'setAuthenticationError',
@@ -212,15 +211,6 @@ describe('openID4VPActions', () => {
     it('resetIsShareWithSelfie returns false', () => {
       const fn = actions.resetIsShareWithSelfie.assignment.isShareWithSelfie;
       expect(fn()).toBe(false);
-    });
-
-    it('loadKeyPair sets publicKey and privateKey from event', () => {
-      const asg = actions.loadKeyPair.assignment;
-      expect(asg.publicKey({}, {data: {publicKey: 'pub123'}})).toBe('pub123');
-      expect(
-        asg.privateKey({privateKey: 'old'}, {data: {privateKey: 'new'}}),
-      ).toBe('new');
-      expect(asg.privateKey({privateKey: 'old'}, {data: {}})).toBe('old');
     });
 
     it('incrementOpenID4VPRetryCount increments count', () => {

@@ -1127,13 +1127,19 @@
       }
     },
     "dcqlSection": {
-      "mandatoryCards": "MGA SAPILITANG KARD{{index}}",
+      "mandatoryCards": "MGA SAPILITANG KARD",
       "optionalCards": "MGA OPSYONAL NA KARD",
       "required": "KINAKAILANGAN",
       "notRequired": "HINDI KINAKAILANGAN",
       "multipleCardsMatchingQuery": "Maraming Kard na Tumutugma sa Query",
       "multipleCards": "Maraming Kard",
-      "allRequired": "LAHAT AY KINAKAILANGAN"
+      "allRequired": "LAHAT AY KINAKAILANGAN",
+      "stepOf": "Hakbang {{current}} ng {{total}}",
+      "previous": "Nakaraan",
+      "next": "Susunod"
+    },
+    "verifierInfo": {
+      "trusted": "Pinagkakatiwalaan"
     },
     "infoOverlay": {
       "title": "Bakit Namin Kailangan ang mga Dokumento",

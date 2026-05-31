@@ -136,7 +136,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
       selectionType={selectionType}
       service={service}
       isPinned={isPinned}
-      onPress={() => onPress(service)}
+      onPress={handleVcSelection}
       flow={flow}
       isKebabPopUp={controller.isKebabPopUp}
       DISMISS={controller.DISMISS}
@@ -157,6 +157,10 @@ export const VCCardView: React.FC<VCItemProps> = ({
     </Copilot>
   );
 
+  const handleVcSelection = () => {
+    if (!disableSelection) onPress(service);
+  };
+
   return (
     <>
       <MessageOverlay
@@ -169,7 +173,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
         ref={cardRef}
         accessible={false}
         {...(testId ? testIDProps(testId) : {})}
-        onPress={() => onPress(service)}
+        onPress={handleVcSelection}
         style={
           selected
             ? Theme.Styles.selectedBindedVc

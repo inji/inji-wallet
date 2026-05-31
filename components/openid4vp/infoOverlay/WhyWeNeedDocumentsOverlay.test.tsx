@@ -1,6 +1,14 @@
 import React from 'react';
 import {render, fireEvent} from '@testing-library/react-native';
 import {WhyWeNeedDocumentsOverlay} from './WhyWeNeedDocumentsOverlay';
+import {Text, TouchableOpacity} from 'react-native';
+
+jest.mock('../../ui/divider/Divider', () => ({
+  Divider: ({testId}: any) => {
+    const {Text} = require('react-native');
+    return <Text testID={`vc-item-${testId}`}>Divider</Text>;
+  },
+}));
 
 describe('WhyWeNeedDocumentsOverlay', () => {
   it('renders when isVisible is true', () => {

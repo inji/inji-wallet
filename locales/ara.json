@@ -1141,13 +1141,19 @@
       }
     },
     "dcqlSection": {
-      "mandatoryCards": "البطاقات الإلزامية{{index}}",
+      "mandatoryCards": "البطاقات الإلزامية",
       "optionalCards": "البطاقات الاختيارية",
       "required": "مطلوب",
       "notRequired": "غير مطلوب",
       "multipleCardsMatchingQuery": "بطاقات متعددة تطابق الاستعلام",
       "multipleCards": "بطاقات متعددة",
-      "allRequired": "الكل مطلوب"
+      "allRequired": "الكل مطلوب",
+      "stepOf": "الخطوة {{current}} من {{total}}",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "verifierInfo": {
+      "trusted": "موثوق"
     },
     "infoOverlay": {
       "title": "لماذا نحتاج إلى الوثائق",

@@ -28,7 +28,7 @@ beforeAll(() => {
 });
 
 import React from 'react';
-import {render, waitFor} from '@testing-library/react-native';
+import {render, waitFor, fireEvent} from '@testing-library/react-native';
 import {DcqlMatchingVcList} from './DcqlMatchingVcList';
 import {VCMetadata} from '../../../shared/VCMetadata';
 
@@ -40,6 +40,27 @@ jest.mock('../../ui/LoaderAnimation', () => ({
   LoaderAnimation: ({testID}: {testID: string}) => {
     const {View} = require('react-native');
     return <View testID={testID} />;
+  },
+}));
+
+jest.mock('../../ui/pagination/Pagination', () => ({
+  Pagination: ({data, renderItem}: any) => {
+    const React = require('react');
+    const {View, TouchableOpacity} = require('react-native');
+    const [page, setPage] = React.useState(0);
+    const total = data.length;
+    if (total === 0) return null;
+    return (
+      <View>
+        {renderItem({item: data[page], index: page, total})}
+        {page < total - 1 && (
+          <TouchableOpacity
+            testID="pagination-next"
+            onPress={() => setPage((p: number) => p + 1)}
+          />
+        )}
+      </View>
+    );
   },
 }));
 
@@ -112,6 +133,7 @@ describe('DcqlMatchingVcList', () => {
   /**
    * Spec: required credential sets must appear before optional ones so the
    * most important credentials are always at the top of the list.
+   * With pagination, only one section is shown per page; we navigate to verify order.
    */
   it('renders required credential sets before optional ones', async () => {
     const controller = buildController({
@@ -131,16 +153,22 @@ describe('DcqlMatchingVcList', () => {
       },
     });
 
-    render(<DcqlMatchingVcList controller={controller} />);
+    const {getByTestId} = render(
+      <DcqlMatchingVcList controller={controller} />,
+    );
+
+    // Page 0 must show the required section
+    await waitFor(() => {
+      expect(mockCredentialSetSectionCalls).toHaveLength(1);
+    });
+    expect(mockCredentialSetSectionCalls[0].credentialSet.required).toBe(true);
+
+    // Navigate to page 1 (optional section)
+    fireEvent.press(getByTestId('pagination-next'));
 
     await waitFor(() => {
       expect(mockCredentialSetSectionCalls).toHaveLength(2);
     });
-
-    // Assert on the required flag of the credential set at each render position,
-    // NOT on testId indices (testIds are assigned by render position so they
-    // always appear in ascending order and cannot detect ordering bugs).
-    expect(mockCredentialSetSectionCalls[0].credentialSet.required).toBe(true);
     expect(mockCredentialSetSectionCalls[1].credentialSet.required).toBe(false);
   });
 
@@ -213,8 +241,12 @@ describe('DcqlMatchingVcList', () => {
    * Spec: For each required credential set, the first satisfiable option
    * is automatically pre-selected so the user can immediately share without
    * manual interaction.
+   *
+   * NOTE: Pre-selection logic was moved from DcqlMatchingVcList to CredentialSetSection
+   * (via getPreselectedOptionState / useEffect). DcqlMatchingVcList no longer calls
+   * SELECT_VC_ITEMS directly on mount. Test coverage lives in CredentialSetSection.test.tsx.
    */
-  it('calls SELECT_VC_ITEMS with the first matching VC for each required set on mount', async () => {
+  it.skip('calls SELECT_VC_ITEMS with the first matching VC for each required set on mount', async () => {
     const selectVcItems = jest.fn(() => jest.fn());
     const controller = buildController({
       SELECT_VC_ITEMS: selectVcItems,
@@ -251,6 +283,9 @@ describe('DcqlMatchingVcList', () => {
   /**
    * Spec: Optional credential sets must NOT be pre-selected – the user
    * decides whether to share optional credentials.
+   * NOTE: Pre-selection logic is handled in CredentialSetSection; this test remains
+   * as a guard that optional sets don't get unexpected SELECT_VC_ITEMS calls from
+   * the list component itself.
    */
   it('does NOT call SELECT_VC_ITEMS for optional credential sets', async () => {
     const selectVcItems = jest.fn(() => jest.fn());
@@ -279,8 +314,9 @@ describe('DcqlMatchingVcList', () => {
   /**
    * Spec: Pre-selection for a required multi-query option should select the
    * first matching VC for EACH credential query in that option.
+   * NOTE: Logic moved to CredentialSetSection.
    */
-  it('pre-selects first VC for every query in a required multi-query option', async () => {
+  it.skip('pre-selects first VC for every query in a required multi-query option', async () => {
     const selectVcItems = jest.fn(() => jest.fn());
     const controller = buildController({
       SELECT_VC_ITEMS: selectVcItems,
@@ -309,14 +345,69 @@ describe('DcqlMatchingVcList', () => {
     expect(calledWith['age-proof']).toBeInstanceOf(Set);
   });
 
-  // ─── mandatoryIndex ──────────────────────────────────────────────────────
+  /**
+   * NOTE: Logic moved to CredentialSetSection.
+   */
+  it.skip('prefers a later required option when it reuses already selected VCs from an earlier required set', async () => {
+    const selectVcItems = jest.fn(() => jest.fn());
+    const previousSelectionKey = VCMetadata.fromVcMetadataString(
+      buildVc('vc-shared').vcMetadata,
+    ).getVcKey();
+    const companionKey = VCMetadata.fromVcMetadataString(
+      buildVc('vc-companion').vcMetadata,
+    ).getVcKey();
+
+    const controller = buildController({
+      SELECT_VC_ITEMS: selectVcItems,
+      matchingVcsResult: {
+        success: true,
+        purpose: '',
+        requestedClaims: '',
+        matchingVCs: {
+          'base-query': buildMatchResult(['vc-shared']),
+          'first-option-query-1': buildMatchResult(['vc-first-option']),
+          'first-option-query-2': buildMatchResult(['vc-companion']),
+          'preferred-option-query-1': buildMatchResult(['vc-shared']),
+          'preferred-option-query-2': buildMatchResult(['vc-companion']),
+        },
+        credentialSetOptions: [
+          {options: [['base-query']], required: true},
+          {
+            options: [
+              ['first-option-query-1', 'first-option-query-2'],
+              ['preferred-option-query-1', 'preferred-option-query-2'],
+            ],
+            required: true,
+          },
+        ],
+      },
+    });
+
+    render(<DcqlMatchingVcList controller={controller} />);
+
+    await waitFor(() => {
+      expect(selectVcItems).toHaveBeenCalledTimes(1);
+    });
+
+    const calledWith = selectVcItems.mock.calls[0][0];
+
+    expect(calledWith['base-query'].has(previousSelectionKey)).toBe(true);
+    expect(
+      calledWith['preferred-option-query-1'].has(previousSelectionKey),
+    ).toBe(true);
+    expect(calledWith['preferred-option-query-2'].has(companionKey)).toBe(true);
+    expect(calledWith['first-option-query-1']).toBeUndefined();
+    expect(calledWith['first-option-query-2']).toBeUndefined();
+  });
+
+  // ─── stepLabel / pagination ───────────────────────────────────────────────
 
   /**
-   * Spec: When there are multiple required credential sets, each section
-   * should show a numbered label (e.g. "MANDATORY CARDS 1", "MANDATORY CARDS 2")
-   * so the user can distinguish between them.
+   * Spec: When there are multiple credential sets (pages), each section should
+   * show a step indicator label (e.g. "Step 1 of 2") so the user knows their
+   * progress. This replaces the previous `mandatoryIndex` numbering.
    */
-  it('passes a mandatoryIndex to each required section when multiple required sets exist', async () => {
+  it('passes a stepLabel to each section when there are multiple pages', async () => {
     const controller = buildController({
       matchingVcsResult: {
         success: true,
@@ -339,20 +430,19 @@ describe('DcqlMatchingVcList', () => {
       expect(mockCredentialSetSectionCalls.length).toBeGreaterThan(0);
     });
 
-    const mandatoryIndexes = mockCredentialSetSectionCalls
-      .filter(p => p.credentialSet.required)
-      .map(p => p.mandatoryIndex);
-
-    expect(mandatoryIndexes).toHaveLength(2);
-    expect(mandatoryIndexes[0]).toBe(1);
-    expect(mandatoryIndexes[1]).toBe(2);
+    // stepLabel must be defined when there are multiple pages
+    expect(mockCredentialSetSectionCalls[0].stepLabel).toBeDefined();
+    // Value is the i18n key (t() returns key in tests): 'dcqlSection.stepOf'
+    expect(mockCredentialSetSectionCalls[0].stepLabel).toBe(
+      'dcqlSection.stepOf',
+    );
   });
 
   /**
-   * Spec: When there is only a single required credential set, no numbering
-   * is needed, so mandatoryIndex should be undefined.
+   * Spec: When there is only a single credential set, no step indicator is
+   * needed, so stepLabel should be undefined.
    */
-  it('does not pass mandatoryIndex when there is only one required set', async () => {
+  it('does not pass a stepLabel when there is only one section', async () => {
     const controller = buildController({
       matchingVcsResult: {
         success: true,
@@ -374,7 +464,7 @@ describe('DcqlMatchingVcList', () => {
     const requiredSection = mockCredentialSetSectionCalls.find(
       p => p.credentialSet.required,
     );
-    expect(requiredSection?.mandatoryIndex).toBeUndefined();
+    expect(requiredSection?.stepLabel).toBeUndefined();
   });
 
   // ─── Snapshot ────────────────────────────────────────────────────────────

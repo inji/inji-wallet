@@ -20,7 +20,7 @@ export const PresentationExchangeMatchingVcList: React.FC<
   const {t} = useTranslation('SendVPScreen');
 
   const noOfCardsSelected = controller.areAllVCsChecked
-    ? Object.values(controller.vcsMatchingAuthRequest).length
+    ? Object.values(controller.matchingVcsResult.matchingVCs).length
     : Object.values(controller.credentialRequestIdToSelectedVcKeys).reduce(
         (vcCount, arr) => vcCount + arr.size,
         0,
@@ -33,7 +33,8 @@ export const PresentationExchangeMatchingVcList: React.FC<
 
   const areAllVcsChecked =
     noOfCardsSelected ===
-    Object.values(controller.vcsMatchingAuthRequest).flatMap(vc => vc).length;
+    Object.values(controller.matchingVcsResult.matchingVCs).flatMap(vc => vc)
+      .length;
 
   return (
     <>
@@ -109,4 +110,3 @@ export const PresentationExchangeMatchingVcList: React.FC<
     </>
   );
 };
-

@@ -1141,13 +1141,19 @@
       }
     },
     "dcqlSection": {
-      "mandatoryCards": "ಕಡ್ಡಾಯ ಕಾರ್ಡ್‌ಗಳು{{index}}",
+      "mandatoryCards": "ಕಡ್ಡಾಯ ಕಾರ್ಡ್‌ಗಳು",
       "optionalCards": "ಐಚ್ಛಿಕ ಕಾರ್ಡ್‌ಗಳು",
       "required": "ಅಗತ್ಯವಿದೆ",
       "notRequired": "ಅಗತ್ಯವಿಲ್ಲ",
       "multipleCardsMatchingQuery": "ಪ್ರಶ್ನೆಗೆ ಹೊಂದಿಕೊಳ್ಳುವ ಹಲವು ಕಾರ್ಡ್‌ಗಳು",
       "multipleCards": "ಹಲವು ಕಾರ್ಡ್‌ಗಳು",
-      "allRequired": "ಎಲ್ಲವೂ ಅಗತ್ಯ"
+      "allRequired": "ಎಲ್ಲವೂ ಅಗತ್ಯ",
+      "stepOf": "ಹಂತ {{current}} / {{total}}",
+      "previous": "ಹಿಂದಿನ",
+      "next": "ಮುಂದಿನ"
+    },
+    "verifierInfo": {
+      "trusted": "ವಿಶ್ವಾಸಾರ್ಹ"
     },
     "infoOverlay": {
       "title": "ನಮಗೆ ದಾಖಲೆಗಳ ಅಗತ್ಯ ಏಕೆ",

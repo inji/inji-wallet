@@ -23,24 +23,32 @@ import {useTranslation} from 'react-i18next';
 import testIDProps from '../../../shared/commonUtil';
 import {claimPathPointersToJsonPath} from '../../../shared/openID4VP/OpenID4VPHelper';
 
+export type SectionSelectionState = Record<number, Record<string, Set<string>>>;
+
 interface DcqlCredentialSetSectionProps {
   credentialSet: CredentialSetOption;
   matchingVCsResult: Record<string, MatchResult>;
   satisfiableOptions: Array<Array<string>>;
-  controller: any;
-  mandatoryIndex?: number;
+  selectVcs: (queryIdToVcKeys: Record<string, Set<string>>) => void;
+  deselectVcs: (queryIdToVcKeys: Record<string, Set<string>>) => void;
+  selectedVcKeys: Set<string>;
   testId: string;
-  initialSelectedVcKeys: Record<number, Record<string, Set<string>>>;
+  stepLabel?: string;
+  initialSelectionState?: SectionSelectionState;
+  onSelectionChange: (newState: SectionSelectionState) => void;
 }
 
 export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
   credentialSet,
   matchingVCsResult,
   satisfiableOptions,
-  controller,
-  mandatoryIndex,
+  selectedVcKeys,
+  selectVcs,
+  deselectVcs,
   testId,
-  initialSelectedVcKeys,
+  stepLabel,
+  initialSelectionState,
+  onSelectionChange,
 }) => {
   // Per-option selection tracking: { optionIndex -> { credentialQueryId -> Set<vcKey> } }
   // This is the source of truth for UI selection state. It ensures that when two options
@@ -49,11 +57,130 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
   const [
     selectedQueryIdToCredentialsByOption,
     setSelectedQueryIdToCredentialsByOption,
-  ] = useState<Record<number, Record<string, Set<string>>>>({});
+  ] = useState<SectionSelectionState>(initialSelectionState ?? {});
+
+  const updateSelectionState = (newState: SectionSelectionState) => {
+    setSelectedQueryIdToCredentialsByOption(newState);
+    onSelectionChange(newState);
+  };
+
+  const getVcKey = (vcData: VC): string =>
+    VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey();
+
+  const getPreselectedOptionState = (currentlySelectedVcKeys: Set<string>) => {
+    let preferredOptionIndex = 0;
+    let preferredSelection: Record<string, Set<string>> = {};
+    let highestMatchedSelectedQueryCount = -1;
+
+    satisfiableOptions.forEach((option, optionIndex) => {
+      const selectionForOption: Record<string, Set<string>> = {};
+      let matchedSelectedQueryCount = 0;
+
+      option.forEach((credentialQueryId: string) => {
+        const matchResult = matchingVCsResult[credentialQueryId];
+
+        if (!matchResult?.matchingVcs?.length) {
+          return;
+        }
+
+        const matchingSelectedVcKeys = matchResult.matchingVcs
+          .map(matchingCredentialData => getVcKey(matchingCredentialData.vc))
+          .filter(vcKey => currentlySelectedVcKeys.has(vcKey));
+
+        const vcKeysToPreselect =
+          matchingSelectedVcKeys.length > 0
+            ? matchingSelectedVcKeys
+            : [getVcKey(matchResult.matchingVcs[0].vc)];
+
+        if (matchingSelectedVcKeys.length > 0) {
+          matchedSelectedQueryCount++;
+        }
+
+        selectionForOption[credentialQueryId] = new Set<string>(
+          vcKeysToPreselect,
+        );
+      });
+
+      if (matchedSelectedQueryCount > highestMatchedSelectedQueryCount) {
+        highestMatchedSelectedQueryCount = matchedSelectedQueryCount;
+        preferredOptionIndex = optionIndex;
+        preferredSelection = selectionForOption;
+      }
+    });
+
+    return {
+      preferredOptionIndex,
+      preferredSelection,
+    };
+  };
 
   useEffect(() => {
-    setSelectedQueryIdToCredentialsByOption(initialSelectedVcKeys);
-  }, []);
+    // Pre-select VC
+
+    // Case 1: Already selected VCs could satisfy the credential partially / fully
+    // selected : vc1 , currentMatching : [{q1: vc2, q2: vc3}] , preselect -> vc2, vc3 (no matching previous selected Vcs)
+    // selected : vc1 , currentMatching : [{q1: vc2, q2: vc3}, {q1: vc1, q2: vc3}] , preselect -> vc1, vc3 (matching previous selected Vc1)
+    // selected : vc1 , currentMatching : [{q1: vc1, q2: vc1}, {q1: vc2, q2: vc3}] , preselect -> vc1 (match previous selected vc1)
+
+    // Case 2: No already selected VCs (for required credential sets only)
+    // Select first satisfiable option's first matching VC for each credential query in that option
+
+    // Case 3: Optional credential sets with previously selected VCs that can satisfy this credential set
+    // Pre-select those VCs if they match the optional credential set
+
+    if (
+      satisfiableOptions.length === 0 ||
+      Object.keys(selectedQueryIdToCredentialsByOption).length > 0
+    ) {
+      return;
+    }
+
+    // For required sets, always try to pre-select
+    // For optional sets, only pre-select if there are matching previously selected VCs
+    const {preferredOptionIndex, preferredSelection} =
+      getPreselectedOptionState(selectedVcKeys);
+
+    // Only set pre-selection if:
+    // 1. For required sets: always set if preferredSelection is not empty
+    // 2. For optional sets: only set if there are actual matching previously selected VCs
+    if (Object.keys(preferredSelection).length > 0) {
+      // For optional sets, check if the selection is based on previously selected VCs
+      if (!credentialSet.required) {
+        // Check if at least one credential query in the preferred option has a matching previously selected VC
+        const option = satisfiableOptions[preferredOptionIndex];
+        const hasMatchingPreviouslySelectedVc = option.some(
+          credentialQueryId => {
+            const matchResult = matchingVCsResult[credentialQueryId];
+            if (!matchResult?.matchingVcs?.length) {
+              return false;
+            }
+            const matchingSelectedVcKeys = matchResult.matchingVcs
+              .map(matchingCredentialData =>
+                getVcKey(matchingCredentialData.vc),
+              )
+              .filter(vcKey => selectedVcKeys.has(vcKey));
+            return matchingSelectedVcKeys.length > 0;
+          },
+        );
+
+        // For optional sets, only pre-select if there's a matching previously selected VC
+        if (!hasMatchingPreviouslySelectedVc) {
+          return;
+        }
+      }
+
+      updateSelectionState({
+        [preferredOptionIndex]: preferredSelection,
+      });
+      selectVcs(preferredSelection);
+    }
+  }, [
+    credentialSet.required,
+    matchingVCsResult,
+    satisfiableOptions,
+    selectedQueryIdToCredentialsByOption,
+    selectedVcKeys,
+  ]);
 
   const isRequired = credentialSet.required;
   const {t} = useTranslation('SendVPScreen');
@@ -66,17 +193,6 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
       (matchingVCsResult[credentialQueryId]?.matchingVcs?.length ?? 0) === 1
     );
   };
-
-  const deselectItems = (queryIdToVcKeys: Record<string, Set<string>>) => {
-    controller.DESELECT_VC_ITEMS(queryIdToVcKeys)();
-  };
-
-  const selectItems = (queryIdToVcKeys: Record<string, Set<string>>) => {
-    controller.SELECT_VC_ITEMS(queryIdToVcKeys)();
-  };
-
-  const getVcKey = (vcData: VC): string =>
-    VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey();
 
   // An option is selected if for every credential query in that option, at least one of the matching VCs for that query is selected.
   const isOptionSelected = (option: string[], optionIndex: number): boolean => {
@@ -102,10 +218,8 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
         'To be updated into setSelectedQueryIdToCredentialsByOption ',
         newSelectedQueryIdToCredentialsByOption,
       );
-      setSelectedQueryIdToCredentialsByOption(
-        newSelectedQueryIdToCredentialsByOption,
-      );
-      deselectItems(toBeDeselectedCredentialQueryIds);
+      updateSelectionState(newSelectedQueryIdToCredentialsByOption);
+      deselectVcs(toBeDeselectedCredentialQueryIds);
     } else {
       console.log(
         'Option is not already selected, selecting option: ',
@@ -136,8 +250,8 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
         'To be updated into setSelectedQueryIdToCredentialsByOption ',
         newState,
       );
-      setSelectedQueryIdToCredentialsByOption({[optionIndex]: newState});
-      selectItems(newState);
+      updateSelectionState({[optionIndex]: newState});
+      selectVcs(newState);
     }
   };
 
@@ -258,7 +372,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
       );
     }
 
-    deselectItems(toBeDeselectedItems);
+    deselectVcs(toBeDeselectedItems);
     return newState;
   }
 
@@ -315,9 +429,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     if (isVcSelected(credentialQueryId, vcKey, currentOptionIndex)) {
       const newSelectedQueryIdToCredentialsByOption =
         removeVcKeyFromCurrentSelection();
-      setSelectedQueryIdToCredentialsByOption(
-        newSelectedQueryIdToCredentialsByOption,
-      );
+      updateSelectionState(newSelectedQueryIdToCredentialsByOption);
 
       const anyOtherOptionHoldsCurrentCredentialQueryIdAndVcKey =
         Object.entries(newSelectedQueryIdToCredentialsByOption).some(
@@ -327,7 +439,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
         );
 
       if (!anyOtherOptionHoldsCurrentCredentialQueryIdAndVcKey) {
-        deselectItems({[credentialQueryId]: new Set<string>([vcKey])});
+        deselectVcs({[credentialQueryId]: new Set<string>([vcKey])});
       }
     } else {
       const allowsMultiple =
@@ -354,14 +466,14 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
         };
       }
 
-      setSelectedQueryIdToCredentialsByOption({...toBeUpdated, ...newState});
+      updateSelectionState({...toBeUpdated, ...newState});
       console.debug('new state after selection: ', newState);
       console.debug(
         'to be updated state after deselecting other options: ',
         toBeUpdated,
       );
 
-      selectItems({[credentialQueryId]: new Set<string>([vcKey])});
+      selectVcs({[credentialQueryId]: new Set<string>([vcKey])});
     }
   };
 
@@ -449,6 +561,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     //          - render the matching VCs inside an accordion and allow user to select only one VC based on the verifier's preference
     return (
       <Accordion
+        key={`cards-${optionIndex}`}
         testId={`${testId}-option-${optionIndex}-query-${credentialQueryId}-multi-vc`}
         title={t('dcqlSection.multipleCardsMatchingQuery')}
         defaultExpanded>
@@ -472,30 +585,28 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
   );
 
   return (
-    <Accordion
-      testId={testId}
-      containerStyle={Theme.DcqlStyles.sectionContainer}
-      title={
-        <>
-          <Text style={Theme.DcqlStyles.sectionTitle}>
-            {isRequired
-              ? t('dcqlSection.mandatoryCards', {
-                  index:
-                    mandatoryIndex !== undefined ? ` ${mandatoryIndex}` : '',
-                })
-              : t('dcqlSection.optionalCards')}
-          </Text>
-          {isSectionSatisfied && (
-            <Icon
-              name="check-circle"
-              color={Theme.Colors.Icon}
-              size={16}
-              containerStyle={Theme.DcqlStyles.sectionSatisfiedIcon}
-            />
+    <View {...testIDProps(testId)} style={Theme.DcqlStyles.sectionContainer}>
+      <View style={Theme.DcqlStyles.sectionHeader}>
+        <View style={Theme.DcqlStyles.sectionHeaderSpacer}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={Theme.DcqlStyles.sectionTitle}>
+              {isRequired
+                ? t('dcqlSection.mandatoryCards')
+                : t('dcqlSection.optionalCards')}
+            </Text>
+            {isSectionSatisfied && (
+              <Icon
+                name="check-circle"
+                color={Theme.Colors.Icon}
+                size={16}
+                containerStyle={Theme.DcqlStyles.sectionSatisfiedIcon}
+              />
+            )}
+          </View>
+          {stepLabel && (
+            <Text style={Theme.DcqlStyles.sectionStepLabel}>{stepLabel}</Text>
           )}
-        </>
-      }
-      headerAction={
+        </View>
         <Badge
           addInfoIcon
           testId={`${testId}-required-badge`}
@@ -518,8 +629,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
               : DcqlBadgeColors.optionalText
           }
         />
-      }
-      defaultExpanded={credentialSet.required}>
+      </View>
       <Column>
         {satisfiableOptions.map((option, optionIndex) => {
           return (
@@ -535,6 +645,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
               {isMultipleCardsCombinedOption(option) ? (
                 // Case 1: the option has multiple credential queries - Combination of credential queries need to be selected together
                 <Accordion
+                  key={`multiple-cards-${optionIndex}`}
                   testId={`${testId}-option-${optionIndex}-combined`}
                   title={t('dcqlSection.multipleCards')}
                   badge={
@@ -584,6 +695,6 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
           );
         })}
       </Column>
-    </Accordion>
+    </View>
   );
 };

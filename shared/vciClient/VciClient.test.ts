@@ -14,27 +14,70 @@ const mockRequestCredentialFromTrustedIssuer = jest.fn();
 const mockAbortPresentationFlowFromJS = jest.fn();
 const mockAddListener = jest.fn(() => ({remove: jest.fn()}));
 
-// Mock NativeEventEmitter at file level (resolved via haste)
-jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter', () => ({
-  __esModule: true,
-  default: class MockNativeEventEmitter {
-    addListener = mockAddListener;
-  },
-}));
-
-jest.mock('../GlobalVariables', () => ({
-  __AppId: {getValue: jest.fn(() => 'test-app-id')},
-}));
-
-jest.mock('../../machines/openID4VP/openID4VPServices', () => ({
-  signatureSuite: 'JsonWebSignature2020',
-}));
+// Override the 'react-native' mock for this file so that NativeEventEmitter
+// uses mockAddListener, which lets tests configure its return value and capture
+// listener callbacks.  The NativeModules object starts empty; beforeAll adds
+// InjiVciClient before VciClient is required.
+//
+// NOTE: This jest.mock is intentionally NOT at the top level (hoisted) — it is
+// called inside beforeAll after jest.resetModules() so that VciClient.ts picks
+// up a fresh NativeEventEmitter backed by mockAddListener.
 
 describe('VciClient', () => {
   let VciClient: any;
 
   beforeAll(() => {
+    // Reset module registry so VciClient.ts gets a fresh require of
+    // react-native, ensuring its module-level `emitter` uses our mock.
+    jest.resetModules();
+
+    // Register the test-local mock AFTER resetModules.
+    // Use jest.requireActual as the base so all transitive deps (Platform,
+    // Dimensions, etc.) still work, then override only what the tests need.
+    jest.mock('react-native', () => {
+      const ReactNative = jest.requireActual('react-native');
+
+      Object.defineProperty(ReactNative, 'NativeModules', {
+        value: {},
+        configurable: true,
+        writable: true,
+      });
+
+      Object.defineProperty(ReactNative, 'Platform', {
+        value: {OS: 'android', Version: 42, select: jest.fn()},
+        configurable: true,
+        writable: true,
+      });
+
+      Object.defineProperty(ReactNative, 'Dimensions', {
+        value: {
+          get: jest.fn(() => ({width: 375, height: 812, scale: 1})),
+        },
+        configurable: true,
+        writable: true,
+      });
+
+      Object.defineProperty(ReactNative, 'NativeEventEmitter', {
+        value: class MockNativeEventEmitter {
+          addListener = mockAddListener;
+        },
+        configurable: true,
+        writable: true,
+      });
+
+      return ReactNative;
+    });
+
+    jest.mock('../GlobalVariables', () => ({
+      __AppId: {getValue: jest.fn(() => 'test-app-id')},
+    }));
+
+    jest.mock('../../machines/openID4VP/openID4VPServices', () => ({
+      signatureSuite: 'JsonWebSignature2020',
+    }));
+
     // Add InjiVciClient to already-mocked NativeModules before requiring VciClient
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const {NativeModules} = require('react-native');
     NativeModules.InjiVciClient = {
       init: mockInit,
@@ -54,11 +97,16 @@ describe('VciClient', () => {
       addListener: jest.fn(),
       removeListeners: jest.fn(),
     };
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     VciClient = require('./VciClient').default;
   });
 
   beforeEach(() => {
     jest.clearAllMocks();
+    // Restore default return value after clearAllMocks so every test has a
+    // valid subscription object unless it overrides with mockReturnValue/
+    // mockImplementation explicitly.
+    mockAddListener.mockReturnValue({remove: jest.fn()});
   });
 
   describe('singleton pattern', () => {
@@ -230,11 +278,13 @@ describe('VciClient', () => {
     });
 
     it('triggers event listeners correctly', async () => {
-      const listenerMap: Record<string, Function> = {};
-      mockAddListener.mockImplementation((eventName: string, cb: Function) => {
-        listenerMap[eventName] = cb;
-        return {remove: jest.fn()};
-      });
+      const listenerMap: Record<string, (...args: unknown[]) => void> = {};
+      mockAddListener.mockImplementation(
+        (eventName: string, cb: (...args: unknown[]) => void) => {
+          listenerMap[eventName] = cb;
+          return {remove: jest.fn()};
+        },
+      );
       mockRequestCredentialByOffer.mockResolvedValueOnce(
         JSON.stringify({
           credential: {},

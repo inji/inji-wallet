@@ -22,6 +22,7 @@ import {
   selectIsOVPViaDeeplink,
   selectIsSelectingVcs,
   selectIsSharingVP,
+  selectIsShowError,
   selectIsShowLoadingScreen,
   selectIsVerifyingIdentity,
   selectMatchingVcsResult,
@@ -168,6 +169,7 @@ export function useSendVPScreen(props) {
   );
   const isSelectingVCs = useSelector(openID4VPService, selectIsSelectingVcs);
   const error = useSelector(openID4VPService, selectIsError);
+  const showError = useSelector(openID4VPService, selectIsShowError);
   const isVPSharingConsent = useSelector(
     openID4VPService,
     selectIsGetVPSharingConsent,
@@ -187,7 +189,7 @@ export function useSendVPScreen(props) {
     selectOpenID4VPRetryCount,
   );
   const noCredentialsMatchingVPRequest =
-    isSelectingVCs &&
+    showError &&
     (!matchingVcsResult.success ||
       Object.values(vcsMatchingAuthRequest).every(
         value => Array.isArray(value) && value.length === 0,

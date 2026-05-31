@@ -106,6 +106,10 @@ export function selectIsSelectingVcs(state: State) {
   return state.matches('selectingVCs');
 }
 
+export function selectIsShowError(state: State) {
+  return state.matches('showError');
+}
+
 export function selectIsError(state: State) {
   return state.context.error;
 }

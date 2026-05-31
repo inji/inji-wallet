@@ -86,11 +86,6 @@ const buildMatchResult = (vcIds: string[], allowMultiple = false) => ({
   allowMultipleCredentials: allowMultiple,
 });
 
-const buildController = () => ({
-  SELECT_VC_ITEMS: jest.fn(() => jest.fn()),
-  DESELECT_VC_ITEMS: jest.fn(() => jest.fn()),
-});
-
 // Default props builder for a simple required set with one option & one query
 const buildDefaultProps = (overrides: Partial<any> = {}) => ({
   credentialSet: {options: [['national-id']], required: true},
@@ -98,9 +93,11 @@ const buildDefaultProps = (overrides: Partial<any> = {}) => ({
     'national-id': buildMatchResult(['vc-national-1']),
   },
   satisfiableOptions: [['national-id']],
-  controller: buildController(),
+  selectVcs: jest.fn(),
+  deselectVcs: jest.fn(),
+  onSelectionChange: jest.fn(),
+  selectedVcKeys: new Set<string>(),
   testId: 'test-section',
-  initialSelectedVcKeys: {},
   ...overrides,
 });
 
@@ -132,11 +129,11 @@ describe('CredentialSetSection', () => {
 
   // ─── Section accordion renders ───────────────────────────────────────────
 
-  it('renders the outer section accordion with the section testId', () => {
+  it('renders the outer section container with the section testId', () => {
     const props = buildDefaultProps();
     const {getByLabelText} = render(<CredentialSetSection {...props} />);
-    // Accordion testId pattern: `accordion-${testId}` via testIDProps
-    expect(getByLabelText('accordion-test-section')).toBeTruthy();
+    // The outer container is a plain View with testIDProps(testId) → accessibilityLabel="test-section"
+    expect(getByLabelText('test-section')).toBeTruthy();
   });
 
   // ─── Single-match edge case ─────────────────────────────────────────────
@@ -204,13 +201,9 @@ describe('CredentialSetSection', () => {
       satisfiableOptions: [['health-id']],
     });
 
-    const {getByLabelText, findByTestId} = render(
-      <CredentialSetSection {...props} />,
-    );
+    const {findByTestId} = render(<CredentialSetSection {...props} />);
 
-    // The optional accordion starts collapsed; expand it to render children
-    fireEvent.press(getByLabelText('accordion-toggle-test-section'));
-
+    // No outer accordion toggle — content renders directly
     const vcItem = await findByTestId(
       `vc-item-test-section-option-0-query-health-id-vc-${vcKey(
         'vc-health-1',
@@ -326,12 +319,12 @@ describe('CredentialSetSection', () => {
   // ─── handleVCSelection – selecting a VC ─────────────────────────────────
 
   /**
-   * Spec: Pressing a VC calls SELECT_VC_ITEMS with that VC's key.
+   * Spec: Pressing a VC calls selectVcs with that VC's key.
    */
-  it('calls SELECT_VC_ITEMS when a VC is selected', async () => {
-    const controller = buildController();
+  it('calls selectVcs when a VC is selected', async () => {
+    const selectVcs = jest.fn();
     const props = buildDefaultProps({
-      controller,
+      selectVcs,
       credentialSet: {options: [['national-id']], required: true},
       matchingVCsResult: {
         'national-id': buildMatchResult(['vc-national-1', 'vc-national-2']),
@@ -340,6 +333,11 @@ describe('CredentialSetSection', () => {
     });
 
     const {getByTestId} = render(<CredentialSetSection {...props} />);
+
+    // Wait for auto-preselection (required set selects vc-national-1) then reset
+    // the spy so only the user-initiated call is counted below.
+    await waitFor(() => expect(selectVcs).toHaveBeenCalled());
+    selectVcs.mockClear();
 
     fireEvent.press(
       getByTestId(
@@ -350,10 +348,10 @@ describe('CredentialSetSection', () => {
     );
 
     await waitFor(() => {
-      expect(controller.SELECT_VC_ITEMS).toHaveBeenCalledTimes(1);
+      expect(selectVcs).toHaveBeenCalledTimes(1);
     });
 
-    const calledWith = controller.SELECT_VC_ITEMS.mock.calls[0][0];
+    const calledWith = selectVcs.mock.calls[0][0];
     expect(calledWith['national-id']).toBeInstanceOf(Set);
     expect(calledWith['national-id'].has(vcKey('vc-national-2'))).toBe(true);
   });
@@ -361,24 +359,21 @@ describe('CredentialSetSection', () => {
   /**
    * Spec: In single-credential mode, when a second VC is selected for the
    * same query, the first VC should be replaced (not added alongside it).
+   * The required set auto-preselects the first VC, so pressing the second replaces it.
    */
   it('replaces the previously selected VC in single-credential mode', async () => {
-    const controller = buildController();
+    const selectVcs = jest.fn();
     const props = buildDefaultProps({
-      controller,
+      selectVcs,
       matchingVCsResult: {
         'national-id': buildMatchResult(['vc-national-1', 'vc-national-2']),
       },
       satisfiableOptions: [['national-id']],
-      // Pre-select vc-national-1 via initial state
-      initialSelectedVcKeys: {
-        0: {'national-id': new Set([vcKey('vc-national-1')])},
-      },
     });
 
     const {getByTestId} = render(<CredentialSetSection {...props} />);
 
-    // Wait for useEffect to apply initialSelectedVcKeys to state
+    // Wait for auto-preselection of vc-national-1 (required set → first VC)
     await waitFor(() =>
       expect(
         getByTestId(
@@ -388,6 +383,8 @@ describe('CredentialSetSection', () => {
         ).props.accessibilityState?.selected,
       ).toBe(true),
     );
+    // Clear spy so only the user-initiated call is counted below.
+    selectVcs.mockClear();
 
     // Select vc-national-2 (different from the pre-selected one)
     fireEvent.press(
@@ -399,10 +396,10 @@ describe('CredentialSetSection', () => {
     );
 
     await waitFor(() => {
-      expect(controller.SELECT_VC_ITEMS).toHaveBeenCalledTimes(1);
+      expect(selectVcs).toHaveBeenCalledTimes(1);
     });
 
-    const calledWith = controller.SELECT_VC_ITEMS.mock.calls[0][0];
+    const calledWith = selectVcs.mock.calls[0][0];
     expect(calledWith['national-id'].has(vcKey('vc-national-2'))).toBe(true);
     // vc-national-1 is no longer in the SELECT call (single-credential mode replaces)
     expect(calledWith['national-id'].has(vcKey('vc-national-1'))).toBe(false);
@@ -415,76 +412,66 @@ describe('CredentialSetSection', () => {
    * to the existing selection without removing the others (multi-select).
    */
   it('adds a VC to the existing selection when allowMultipleCredentials is true', async () => {
-    const controller = buildController();
+    const selectVcs = jest.fn();
     const props = buildDefaultProps({
-      controller,
+      selectVcs,
       credentialSet: {options: [['health-id']], required: false},
       matchingVCsResult: {
         'health-id': buildMatchResult(['vc-health-1', 'vc-health-2'], true),
       },
       satisfiableOptions: [['health-id']],
-      // Pre-select vc-health-1
-      initialSelectedVcKeys: {
-        0: {'health-id': new Set([vcKey('vc-health-1')])},
-      },
     });
 
-    const {getByLabelText, findByTestId} = render(
-      <CredentialSetSection {...props} />,
-    );
+    const {findByTestId} = render(<CredentialSetSection {...props} />);
 
-    // Expand the optional accordion so children are rendered
-    fireEvent.press(getByLabelText('accordion-toggle-test-section'));
-
-    // Wait for VcItemContainers to appear (inside expanded accordion)
-    const vc1Key = vcKey('vc-health-1');
-    const vc2Key = vcKey('vc-health-2');
+    // No outer accordion toggle — content renders directly
     const vc1 = await findByTestId(
-      `vc-item-test-section-option-0-query-health-id-vc-${vc1Key}`,
+      `vc-item-test-section-option-0-query-health-id-vc-${vcKey(
+        'vc-health-1',
+      )}`,
     );
     const vc2 = await findByTestId(
-      `vc-item-test-section-option-0-query-health-id-vc-${vc2Key}`,
+      `vc-item-test-section-option-0-query-health-id-vc-${vcKey(
+        'vc-health-2',
+      )}`,
     );
 
-    // Wait for useEffect to apply initialSelectedVcKeys (vc-health-1 should be selected)
-    await waitFor(() =>
-      expect(vc1.props.accessibilityState?.selected).toBe(true),
-    );
+    // Select vc-health-1 first
+    fireEvent.press(vc1);
+    await waitFor(() => expect(selectVcs).toHaveBeenCalledTimes(1));
 
+    // Select vc-health-2 (allowMultiple → appends to selection)
     fireEvent.press(vc2);
+    await waitFor(() => expect(selectVcs).toHaveBeenCalledTimes(2));
 
-    await waitFor(() => {
-      expect(controller.SELECT_VC_ITEMS).toHaveBeenCalledTimes(1);
-    });
+    // vc-health-1 should still be visually selected in the internal state
+    expect(vc1.props.accessibilityState?.selected).toBe(true);
 
-    const calledWith = controller.SELECT_VC_ITEMS.mock.calls[0][0];
-    // vc-health-2 is now in the selection
-    expect(calledWith['health-id'].has(vcKey('vc-health-2'))).toBe(true);
+    // Second selectVcs call targets vc-health-2 (per-VC call; parent accumulates)
+    const secondCall = selectVcs.mock.calls[1][0];
+    expect(secondCall['health-id'].has(vcKey('vc-health-2'))).toBe(true);
   });
 
   // ─── handleVCSelection – deselect a VC ───────────────────────────────────
 
   /**
    * Spec: Pressing a VC that is already selected deselects it by calling
-   * DESELECT_VC_ITEMS.
+   * deselectVcs. The required set auto-preselects the first VC, so pressing
+   * it again should deselect it.
    */
-  it('calls DESELECT_VC_ITEMS when an already-selected VC is pressed again', async () => {
-    const controller = buildController();
+  it('calls deselectVcs when an already-selected VC is pressed again', async () => {
+    const deselectVcs = jest.fn();
     const props = buildDefaultProps({
-      controller,
+      deselectVcs,
       matchingVCsResult: {
         'national-id': buildMatchResult(['vc-national-1', 'vc-national-2']),
       },
       satisfiableOptions: [['national-id']],
-      // Pre-select vc-national-1
-      initialSelectedVcKeys: {
-        0: {'national-id': new Set([vcKey('vc-national-1')])},
-      },
     });
 
     const {getByTestId} = render(<CredentialSetSection {...props} />);
 
-    // Wait for useEffect to apply initialSelectedVcKeys so vc-national-1 is selected
+    // Wait for auto-preselection: required set → vc-national-1 selected
     await waitFor(() =>
       expect(
         getByTestId(
@@ -505,10 +492,10 @@ describe('CredentialSetSection', () => {
     );
 
     await waitFor(() => {
-      expect(controller.DESELECT_VC_ITEMS).toHaveBeenCalledTimes(1);
+      expect(deselectVcs).toHaveBeenCalledTimes(1);
     });
 
-    const calledWith = controller.DESELECT_VC_ITEMS.mock.calls[0][0];
+    const calledWith = deselectVcs.mock.calls[0][0];
     expect(calledWith['national-id']).toBeInstanceOf(Set);
     expect(calledWith['national-id'].has(vcKey('vc-national-1'))).toBe(true);
   });
@@ -518,15 +505,16 @@ describe('CredentialSetSection', () => {
   /**
    * Spec: Pressing the "select all" checkbox for a multi-query option selects
    * the first matching VC for each query in that option and calls
-   * SELECT_VC_ITEMS with the aggregated keys.
+   * selectVcs with the aggregated keys. Uses an optional set so the option
+   * starts unselected and the first checkbox press triggers selection.
    */
-  it('calls SELECT_VC_ITEMS with first VC per query when a multi-query option is toggled on', async () => {
-    const controller = buildController();
+  it('calls selectVcs with first VC per query when a multi-query option is toggled on', async () => {
+    const selectVcs = jest.fn();
     const props = buildDefaultProps({
-      controller,
+      selectVcs,
       credentialSet: {
         options: [['driving-license', 'age-proof']],
-        required: true,
+        required: false,
       },
       matchingVCsResult: {
         'driving-license': buildMatchResult(['vc-dl']),
@@ -537,15 +525,16 @@ describe('CredentialSetSection', () => {
 
     const {getByLabelText} = render(<CredentialSetSection {...props} />);
 
+    // No outer accordion toggle — content renders directly
     fireEvent.press(
       getByLabelText('checkbox-single-test-section-option-0-select-all'),
     );
 
     await waitFor(() => {
-      expect(controller.SELECT_VC_ITEMS).toHaveBeenCalledTimes(1);
+      expect(selectVcs).toHaveBeenCalledTimes(1);
     });
 
-    const calledWith = controller.SELECT_VC_ITEMS.mock.calls[0][0];
+    const calledWith = selectVcs.mock.calls[0][0];
     expect(calledWith['driving-license'].has(vcKey('vc-dl'))).toBe(true);
     expect(calledWith['age-proof'].has(vcKey('vc-age'))).toBe(true);
   });
@@ -555,27 +544,26 @@ describe('CredentialSetSection', () => {
   /**
    * Spec: A credential set is satisfied by picking ONE option. When the user
    * selects a new option, any previously selected option must be deselected
-   * and DESELECT_VC_ITEMS must be called for the removed VCs.
+   * and deselectVcs must be called for the removed VCs.
+   * The required set auto-preselects option 0 (national-id).
    */
   it('deselects the previously selected option when a new option is chosen', async () => {
-    const controller = buildController();
+    const selectVcs = jest.fn();
+    const deselectVcs = jest.fn();
     const props = buildDefaultProps({
-      controller,
+      selectVcs,
+      deselectVcs,
       credentialSet: {options: [['national-id'], ['tax-id']], required: true},
       matchingVCsResult: {
         'national-id': buildMatchResult(['vc-national-1']),
         'tax-id': buildMatchResult(['vc-tax-1']),
       },
       satisfiableOptions: [['national-id'], ['tax-id']],
-      // Option 0 (national-id) is pre-selected
-      initialSelectedVcKeys: {
-        0: {'national-id': new Set([vcKey('vc-national-1')])},
-      },
     });
 
     const {getByTestId} = render(<CredentialSetSection {...props} />);
 
-    // Wait for useEffect to apply initialSelectedVcKeys
+    // Wait for auto-preselection: required set → option 0 (national-id) selected
     await waitFor(() =>
       expect(
         getByTestId(
@@ -585,6 +573,9 @@ describe('CredentialSetSection', () => {
         ).props.accessibilityState?.selected,
       ).toBe(true),
     );
+    // Clear spies so only the user-initiated call is counted below.
+    selectVcs.mockClear();
+    deselectVcs.mockClear();
 
     // Select option 1 (tax-id) – this should trigger deselect of option 0
     fireEvent.press(
@@ -594,18 +585,20 @@ describe('CredentialSetSection', () => {
     );
 
     await waitFor(() => {
-      expect(controller.SELECT_VC_ITEMS).toHaveBeenCalledTimes(1);
+      expect(selectVcs).toHaveBeenCalledTimes(1);
     });
 
-    // SELECT_VC_ITEMS called for the newly selected VC
-    const selectedWith = controller.SELECT_VC_ITEMS.mock.calls[0][0];
+    // selectVcs called for the newly selected VC
+    const selectedWith = selectVcs.mock.calls[0][0];
     expect(selectedWith['tax-id'].has(vcKey('vc-tax-1'))).toBe(true);
 
-    // DESELECT_VC_ITEMS called for the previously selected national-id VC
-    expect(controller.DESELECT_VC_ITEMS).toHaveBeenCalledTimes(1);
-    const deselectedWith = controller.DESELECT_VC_ITEMS.mock.calls[0][0];
-    expect(deselectedWith['national-id']).toBeDefined();
-    expect(deselectedWith['national-id'].has(vcKey('vc-national-1'))).toBe(
+    // deselectVcs called for the previously selected national-id VC
+    expect(deselectVcs).toHaveBeenCalled();
+    const deselectedWith = deselectVcs.mock.calls.find(
+      (call: any[]) => call[0]['national-id'],
+    )?.[0];
+    expect(deselectedWith?.['national-id']).toBeDefined();
+    expect(deselectedWith?.['national-id'].has(vcKey('vc-national-1'))).toBe(
       true,
     );
   });
@@ -614,12 +607,13 @@ describe('CredentialSetSection', () => {
 
   /**
    * Spec: Pressing the "select all" checkbox of an already-selected multi-query
-   * option must deselect it and call DESELECT_VC_ITEMS for its VCs.
+   * option must deselect it and call deselectVcs for its VCs.
+   * The required set auto-preselects option 0 (driving-license + age-proof).
    */
-  it('calls DESELECT_VC_ITEMS when a selected multi-query option is toggled off', async () => {
-    const controller = buildController();
+  it('calls deselectVcs when a selected multi-query option is toggled off', async () => {
+    const deselectVcs = jest.fn();
     const props = buildDefaultProps({
-      controller,
+      deselectVcs,
       credentialSet: {
         options: [['driving-license', 'age-proof']],
         required: true,
@@ -629,18 +623,11 @@ describe('CredentialSetSection', () => {
         'age-proof': buildMatchResult(['vc-age']),
       },
       satisfiableOptions: [['driving-license', 'age-proof']],
-      // Pre-select option 0
-      initialSelectedVcKeys: {
-        0: {
-          'driving-license': new Set([vcKey('vc-dl')]),
-          'age-proof': new Set([vcKey('vc-age')]),
-        },
-      },
     });
 
     const {getByLabelText} = render(<CredentialSetSection {...props} />);
 
-    // Wait for initial selection to be applied
+    // Wait for auto-preselection: required multi-query option → both dl + age selected
     await waitFor(() =>
       expect(
         getByLabelText('checkbox-single-test-section-option-0-select-all').props
@@ -654,46 +641,46 @@ describe('CredentialSetSection', () => {
     );
 
     await waitFor(() => {
-      expect(controller.DESELECT_VC_ITEMS).toHaveBeenCalledTimes(1);
+      expect(deselectVcs).toHaveBeenCalled();
     });
   });
 
+  /**
+   * Spec: Selecting a VC in one option must deselect all other currently-selected
+   * options. The required set auto-preselects option 0 (id1).
+   */
   it('deselects other options when selecting a VC in an option', async () => {
-    const controller = buildController();
+    const selectVcs = jest.fn();
+    const deselectVcs = jest.fn();
     const vc_id1_key = vcKey('vc-id1');
     const vc_id2_key = vcKey('vc-id2');
-    const vc_id3_key = vcKey('vc-id3');
-    const vc_id4_key = vcKey('vc-id4');
 
     const props = buildDefaultProps({
-      controller,
+      selectVcs,
+      deselectVcs,
       credentialSet: {
-        options: [['id1'], ['id2'], ['id3', 'id4']],
+        options: [['id1'], ['id2']],
         required: true,
       },
       matchingVCsResult: {
-        id1: buildMatchResult(['vc-id1']), // single match, will auto-select
+        id1: buildMatchResult(['vc-id1']),
         id2: buildMatchResult(['vc-id2']),
-        id3: buildMatchResult(['vc-id3']),
-        id4: buildMatchResult(['vc-id4', 'vc-id4-alt']), // multiple matches
       },
-      satisfiableOptions: [['id1'], ['id2'], ['id3', 'id4']],
-      // Pre-select option 0 and option 2 (multi-query)
-      initialSelectedVcKeys: {
-        0: {id1: new Set([vc_id1_key])},
-        2: {id3: new Set([vc_id3_key]), id4: new Set([vc_id4_key])},
-      },
+      satisfiableOptions: [['id1'], ['id2']],
     });
 
     const {getByTestId} = render(<CredentialSetSection {...props} />);
 
-    // Wait for option 0's initial selection
+    // Wait for auto-preselection: required set → option 0 (id1) selected
     await waitFor(() =>
       expect(
         getByTestId(`vc-item-test-section-option-0-query-id1-vc-${vc_id1_key}`)
           .props.accessibilityState?.selected,
       ).toBe(true),
     );
+    // Clear spies so only the user-initiated call is counted below.
+    selectVcs.mockClear();
+    deselectVcs.mockClear();
 
     // User selects ID2 in option 1
     fireEvent.press(
@@ -701,26 +688,20 @@ describe('CredentialSetSection', () => {
     );
 
     await waitFor(() => {
-      expect(controller.SELECT_VC_ITEMS).toHaveBeenCalledTimes(1);
+      expect(selectVcs).toHaveBeenCalledTimes(1);
     });
 
-    // Verify SELECT was called for id2
-    const selectCall = controller.SELECT_VC_ITEMS.mock.calls[0][0];
+    // Verify selectVcs was called for id2
+    const selectCall = selectVcs.mock.calls[0][0];
     expect(selectCall['id2'].has(vc_id2_key)).toBe(true);
 
-    // Verify DESELECT includes VCs from BOTH option 0 and option 2
-    expect(controller.DESELECT_VC_ITEMS).toHaveBeenCalledTimes(1);
-    const deselectCall = controller.DESELECT_VC_ITEMS.mock.calls[0][0];
-
-    // Option 0 must be deselected
-    expect(deselectCall['id1']).toBeDefined();
-    expect(deselectCall['id1'].has(vc_id1_key)).toBe(true);
-
-    // Option 2 must be deselected (both queries from multi-query option)
-    expect(deselectCall['id3']).toBeDefined();
-    expect(deselectCall['id3'].has(vc_id3_key)).toBe(true);
-    expect(deselectCall['id4']).toBeDefined();
-    expect(deselectCall['id4'].has(vc_id4_key)).toBe(true);
+    // Verify deselectVcs includes the previously selected option 0 (id1)
+    expect(deselectVcs).toHaveBeenCalled();
+    const deselectedWith = deselectVcs.mock.calls.find(
+      (call: any[]) => call[0]['id1'],
+    )?.[0];
+    expect(deselectedWith?.['id1']).toBeDefined();
+    expect(deselectedWith?.['id1'].has(vc_id1_key)).toBe(true);
 
     // Verify option 1's VC is now the only selected one
     await waitFor(() => {
@@ -734,6 +715,106 @@ describe('CredentialSetSection', () => {
     expect(
       getByTestId(`vc-item-test-section-option-0-query-id1-vc-${vc_id1_key}`)
         .props.accessibilityState?.selected,
+    ).toBe(false);
+  });
+});
+
+describe('CredentialSetSection preselection', () => {
+  it('prefers the satisfiable option that reuses already selected VCs and fills remaining queries with first matches', async () => {
+    const selectedSharedKey = vcKey('vc-shared');
+    const fallbackKey = vcKey('vc-companion');
+
+    const {getByLabelText, getByTestId} = render(
+      <CredentialSetSection
+        credentialSet={{
+          options: [
+            ['first-option-query-1', 'first-option-query-2'],
+            ['preferred-option-query-1', 'preferred-option-query-2'],
+          ],
+          required: true,
+        }}
+        matchingVCsResult={{
+          'first-option-query-1': buildMatchResult(['vc-first-option']),
+          'first-option-query-2': buildMatchResult(['vc-companion']),
+          'preferred-option-query-1': buildMatchResult(['vc-shared']),
+          'preferred-option-query-2': buildMatchResult(['vc-companion']),
+        }}
+        onSelectionChange={jest.fn()}
+        satisfiableOptions={[
+          ['first-option-query-1', 'first-option-query-2'],
+          ['preferred-option-query-1', 'preferred-option-query-2'],
+        ]}
+        selectedVcKeys={new Set([selectedSharedKey])}
+        selectVcs={jest.fn()}
+        deselectVcs={jest.fn()}
+        testId="test-section"
+      />,
+    );
+
+    await waitFor(() => {
+      expect(
+        getByLabelText('checkbox-single-test-section-option-1-select-all').props
+          .checked,
+      ).toBe(true);
+    });
+
+    fireEvent.press(
+      getByLabelText('accordion-toggle-test-section-option-1-combined'),
+    );
+
+    expect(
+      getByLabelText('checkbox-single-test-section-option-0-select-all').props
+        .checked,
+    ).toBe(false);
+
+    expect(
+      getByTestId(
+        `vc-item-test-section-option-1-query-preferred-option-query-1-vc-${selectedSharedKey}`,
+      ).props.accessibilityState?.selected,
+    ).toBe(true);
+
+    expect(
+      getByTestId(
+        `vc-item-test-section-option-1-query-preferred-option-query-2-vc-${fallbackKey}`,
+      ).props.accessibilityState?.selected,
+    ).toBe(true);
+  });
+
+  it('falls back to the first satisfiable option when no already selected VC matches', async () => {
+    const firstOptionKey = vcKey('vc-first-option');
+    const secondOptionKey = vcKey('vc-second-option');
+
+    const {getByLabelText, getByTestId} = render(
+      <CredentialSetSection
+        credentialSet={{
+          options: [['first-option-query'], ['second-option-query']],
+          required: true,
+        }}
+        matchingVCsResult={{
+          'first-option-query': buildMatchResult(['vc-first-option']),
+          'second-option-query': buildMatchResult(['vc-second-option']),
+        }}
+        satisfiableOptions={[['first-option-query'], ['second-option-query']]}
+        selectedVcKeys={new Set([vcKey('vc-unrelated')])}
+        selectVcs={jest.fn()}
+        deselectVcs={jest.fn()}
+        onSelectionChange={jest.fn()}
+        testId="fallback-section"
+      />,
+    );
+
+    await waitFor(() => {
+      expect(
+        getByTestId(
+          `vc-item-fallback-section-option-0-query-first-option-query-vc-${firstOptionKey}`,
+        ).props.accessibilityState?.selected,
+      ).toBe(true);
+    });
+
+    expect(
+      getByTestId(
+        `vc-item-fallback-section-option-1-query-second-option-query-vc-${secondOptionKey}`,
+      ).props.accessibilityState?.selected,
     ).toBe(false);
   });
 });

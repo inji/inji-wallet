@@ -133,16 +133,6 @@ describe('openID4VPGuards', () => {
     });
   });
 
-  describe('hasKeyPair', () => {
-    it('should return true when publicKey exists', () => {
-      expect(guards.hasKeyPair({publicKey: 'key123'})).toBe(true);
-    });
-
-    it('should return false when publicKey is empty', () => {
-      expect(guards.hasKeyPair({publicKey: ''})).toBe(false);
-    });
-  });
-
   describe('isAnyVCHasImage', () => {
     it('should return true when a VC has a face attribute', () => {
       (getFaceAttribute as jest.Mock).mockReturnValue('imageData');
@@ -187,35 +177,6 @@ describe('openID4VPGuards', () => {
     it('should return the event data value', () => {
       expect(guards.isClientValidationRequred({}, {data: true})).toBe(true);
       expect(guards.isClientValidationRequred({}, {data: false})).toBe(false);
-    });
-  });
-
-  describe('hasNoMatchingVCsAndIsAuthorizationFlow', () => {
-    it('should return true when no matching VCs and authorization flow', () => {
-      expect(
-        guards.hasNoMatchingVCsAndIsAuthorizationFlow({
-          hasNoMatchingVCs: true,
-          flowType: VCShareFlowType.OPENID4VP_AUTHORIZATION,
-        }),
-      ).toBe(true);
-    });
-
-    it('should return false when has matching VCs', () => {
-      expect(
-        guards.hasNoMatchingVCsAndIsAuthorizationFlow({
-          hasNoMatchingVCs: false,
-          flowType: VCShareFlowType.OPENID4VP_AUTHORIZATION,
-        }),
-      ).toBe(false);
-    });
-
-    it('should return false when not authorization flow', () => {
-      expect(
-        guards.hasNoMatchingVCsAndIsAuthorizationFlow({
-          hasNoMatchingVCs: true,
-          flowType: VCShareFlowType.SIMPLE_SHARE,
-        }),
-      ).toBe(false);
     });
   });
 });

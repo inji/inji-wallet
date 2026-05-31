@@ -1,10 +1,10 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import {
+  Image,
   ImageBackground,
+  ImageBackgroundProps,
   Pressable,
   View,
-  Image,
-  ImageBackgroundProps,
 } from 'react-native';
 import {VCMetadata} from '../../../shared/VCMetadata';
 import {KebabPopUp} from '../../KebabPopUp';
@@ -16,10 +16,10 @@ import {SvgImage} from '../../ui/svg';
 import {Checkbox, CheckboxSelectionType} from '../../ui/checkbox/Checkbox';
 import {VcItemContainerProfileImage} from '../../VcItemContainerProfileImage';
 import {
-  isVCLoaded,
-  getCredentialType,
   Display,
   formatKeyLabel,
+  getCredentialType,
+  isVCLoaded,
 } from '../common/VCUtils';
 import {VCItemFieldValue} from '../common/VCItemField';
 import {WalletBinding} from '../../../screens/Home/MyVcs/WalletBinding';
@@ -215,18 +215,15 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
     });
   };
 
-  const handleVCSelection = () => {
-    onPress();
-  };
-
   const wellknownDisplayProperty = new Display(wellknown);
+  console.log('disableSelection ', disableSelection);
   const vcSelectableButton = selectable && (
     <Checkbox
       testId={'select-vc'}
       selectionType={selectionType ?? CheckboxSelectionType.SINGLE}
       checked={selected ?? false}
       disabled={disableSelection}
-      onPress={handleVCSelection}
+      onPress={onPress}
     />
   );
   const issuerLogo = verifiableCredentialData.issuerLogo;

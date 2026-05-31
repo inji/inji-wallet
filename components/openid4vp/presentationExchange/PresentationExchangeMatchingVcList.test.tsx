@@ -25,7 +25,6 @@ const buildVc = (id: string) => ({
 
 const buildController = (overrides: Partial<any> = {}) => ({
   areAllVCsChecked: false,
-  vcsMatchingAuthRequest: {'desc-1': [buildVc('vc-1'), buildVc('vc-2')]},
   credentialRequestIdToSelectedVcKeys: {},
   matchingVcsResult: {
     matchingVCs: {'desc-1': [buildVc('vc-1'), buildVc('vc-2')]},

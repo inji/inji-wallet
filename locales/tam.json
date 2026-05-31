@@ -1129,13 +1129,19 @@
       }
     },
     "dcqlSection": {
-      "mandatoryCards": "கட்டாய அட்டைகள்{{index}}",
+      "mandatoryCards": "கட்டாய அட்டைகள்",
       "optionalCards": "விருப்பமான அட்டைகள்",
       "required": "தேவையானது",
       "notRequired": "தேவையில்லை",
       "multipleCardsMatchingQuery": "வினவலுக்கு பொருந்தும் பல அட்டைகள்",
       "multipleCards": "பல அட்டைகள்",
-      "allRequired": "அனைத்தும் தேவையானவை"
+      "allRequired": "அனைத்தும் தேவையானவை",
+      "stepOf": "படி {{current}} / {{total}}",
+      "previous": "முந்தையது",
+      "next": "அடுத்தது"
+    },
+    "verifierInfo": {
+      "trusted": "நம்பகமான"
     },
     "infoOverlay": {
       "title": "ஆவணங்கள் ஏன் தேவை",

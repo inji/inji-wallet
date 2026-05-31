@@ -44,14 +44,11 @@ class OpenID4VP {
 
   private addJsonLdCanonicalizerCallback = () => {
     emitter.addListener('onJsonLdCanonicalize', ({data}: {data: string}) => {
-      console.log('Data to be canonicalized received from native: ', data);
       jsonLdCanonicalize(data)
         .then(result => {
-          console.log('Canonicalization result sent to native: ', result);
           this.InjiOpenID4VP.sendJsonLdCanonicalizeResultFromJS(result);
         })
         .catch(error => {
-          console.error('Error during JSON-LD canonicalization: ', error);
           this.InjiOpenID4VP.notifyCanonicalizationFailureFromJS(
             'server_error',
             'An error occurred during JSON-LD canonicalization',
@@ -64,7 +61,6 @@ class OpenID4VP {
     emitter.addListener('onJsonLdExpand', ({data}: {data: any}) => {
       jsonLdExpand(data)
         .then(result => {
-          console.log('Expansion result sent to native: ', result);
           this.InjiOpenID4VP.sendJsonLdExpandResultFromJS(result);
         })
         .catch(error => {
@@ -124,10 +120,6 @@ class OpenID4VP {
         vpRequest,
         availableWalletCredentials,
       );
-      console.log(
-        'Presentation Exchange flow - result from getVcsMatchingPresentationExchangeAuthRequest: ',
-        JSON.stringify(result, null, 2),
-      );
       return {
         matchingVCs: result.matchingVCs,
         requestedClaims: result.requestedClaims,
@@ -160,10 +152,6 @@ class OpenID4VP {
         };
       });
 
-      console.log(
-        'Available wallet credentials sent to getMatchingCredentials API: ',
-        updatedAvailableWalletCredentials,
-      );
       const matchingCredentialsResult =
         await openID4VP.InjiOpenID4VP.getMatchingCredentials(
           vpRequest,
@@ -171,10 +159,6 @@ class OpenID4VP {
         );
 
       const result = parseJSON(matchingCredentialsResult);
-      console.log(
-        'result from getMatchingCredentials API call: ',
-        JSON.stringify(result, null, 2),
-      );
       const requestedClaims: Set<string> = new Set<string>();
 
       const updatedMatchingVCs: Record<string, MatchResult> = {};
@@ -193,20 +177,14 @@ class OpenID4VP {
                 queryMatch.allowMultipleCredentials === true,
             };
           } else {
-            console.log(
-              'queryMatch in else part: ',
-              JSON.stringify(queryMatch, null, 2),
-            );
             if (queryMatch.failedClaims) {
               (queryMatch.failedClaims as any[]).forEach(failedClaim => {
-                requestedClaims.add(
-                  claimPathPointersToJsonPath(failedClaim.claim.path),
-                );
+                requestedClaims.add(getClaimName(failedClaim.claim.path));
               });
             } else if (
               queryMatch.failureReason ===
                 CredentialsNotMatchingErrorCodes.CryptographicHolderBindingOrMetaFilterMismatch ||
-              queryMatch.failureReson ===
+              queryMatch.failureReason ===
                 CredentialsNotMatchingErrorCodes.NoMatchingFormatsFound
             ) {
               requestedClaims.add('Credential Meta');
@@ -224,10 +202,6 @@ class OpenID4VP {
         credentialSetOptions: result.credentialSets,
       } as MatchingVCsResultForDcql;
 
-      console.log(
-        'DCQL flow - final result from getMatchingCredentials to be returned: ',
-        JSON.stringify(resultantResult, null, 2),
-      );
       return resultantResult;
     }
   }
@@ -481,15 +455,6 @@ function getVcsMatchingPresentationExchangeAuthRequest(
     matchingVCs[inputDescriptors[0].id] = vcs;
   }
 
-  if (Object.keys(matchingVCs).length === 0) {
-    // Error is only sent when there are no VCs matching the request
-    // TODO: Handle this in OpenId4VPMachine
-    void OpenID4VP.sendErrorToVerifier(
-      OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
-      OVP_ERROR_CODE.NO_MATCHING_VCS,
-    );
-  }
-
   const success = !(Object.keys(matchingVCs).length === 0);
 
   // TODO: Handle the case of ||
@@ -674,4 +639,12 @@ export enum CredentialsNotMatchingErrorCodes {
   ClaimValueMismatch = 'claim_value_not_matching',
 
   RequiredClaimsNotSatisfied = 'required_claims_not_satisfied',
+}
+
+function getClaimName(claimPath: Array<string | number | null>): string {
+  return (
+    claimPath.findLast(
+      (segment): segment is string => typeof segment === 'string',
+    ) ?? ''
+  );
 }
