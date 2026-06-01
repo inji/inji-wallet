@@ -61,12 +61,15 @@ export const IssuersGuards = () => {
     shouldRetryOnErrorAndCredentialOfferFlow: (context: any) =>
       context.isCredentialOfferFlow && shouldRetryOnError(context),
 
-    // Accept a credential-offer deep-link only when the machine is NOT
-    // mid-download. Blacklisting credentialDownloadFromOffer (and all its
-    // substates: consent, tx-code, token request, key management, etc.)
-    // plus verifyingCredential / storing is safer than whitelisting
-    // individual resting states — it prevents silent breakage when new
-    // states are added to the machine.
+    /*
+      Accept a credential-offer deep-link only when the machine is not already
+      handling a credential flow.
+
+      This blocks credentialDownloadFromOffer and its substates, along with
+      downloadCredentials, proccessingCredential, verifyingCredential, and
+      storing. Keeping this as a blocklist avoids silently allowing new busy
+      substates when the machine evolves.
+     */
     isInSafeStateForDeepLink: (_context: any, _event: any, meta: any) => {
       const state = meta.state;
       return (

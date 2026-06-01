@@ -9,7 +9,7 @@ import {GlobalContext} from '../shared/GlobalContext';
 import {selectCredentialOfferUri} from '../machines/app';
 import {VcMetaEvents} from '../machines/VerifiableCredential/VCMetaMachine/VCMetaMachine';
 import {
-  selectIsCredentialOfferDroppedBusy,
+  selectIsCredentialOfferDroppedDueToBusyState,
   selectIsDownloadingFailed,
   selectIsDownloadingSuccess,
   selectIsReverificationFailure,
@@ -34,9 +34,9 @@ export const UseBannerNotification = () => {
       selectIsDownloadingSuccess,
     ),
     isDownloadingFailed: useSelector(vcMetaService, selectIsDownloadingFailed),
-    isCredentialOfferDroppedBusy: useSelector(
+    isCredentialOfferDroppedDueToBusyState: useSelector(
       vcMetaService,
-      selectIsCredentialOfferDroppedBusy,
+      selectIsCredentialOfferDroppedDueToBusyState,
     ),
     isResolvingCredentialOffer:
       useSelector(appService, selectCredentialOfferUri) !== '',
@@ -58,8 +58,10 @@ export const UseBannerNotification = () => {
     RESET_DOWNLOADING_FAILED: () => {
       vcMetaService.send(VcMetaEvents.RESET_DOWNLOADING_FAILED());
     },
-    RESET_CREDENTIAL_OFFER_DROPPED_BUSY: () => {
-      vcMetaService.send(VcMetaEvents.RESET_CREDENTIAL_OFFER_DROPPED_BUSY());
+    RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE: () => {
+      vcMetaService.send(
+        VcMetaEvents.RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE(),
+      );
     },
     RESET_DOWNLOADING_SUCCESS: () => {
       vcMetaService.send(VcMetaEvents.RESET_DOWNLOADING_SUCCESS());

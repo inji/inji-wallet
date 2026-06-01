@@ -38,8 +38,8 @@ jest.mock('react-native', () => {
   // Mock the Platform module
   Object.defineProperty(ReactNative, 'Platform', {
     value: {
-      OS: 'android',
-      Version: 42,
+      OS: 'android', // or 'ios' based on your requirement
+      Version: 42, // Set a version number that you expect to use in your test
       select: jest.fn(),
     },
   });

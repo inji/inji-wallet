@@ -31,11 +31,11 @@ export const vcMetaMachine =
         RESET_DOWNLOADING_FAILED: {
           actions: 'resetDownloadCreadentialsFailed',
         },
-        CREDENTIAL_OFFER_DROPPED_BUSY: {
-          actions: 'setCredentialOfferDroppedBusy',
+        CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE: {
+          actions: 'setCredentialOfferDroppedDueToBusyState',
         },
-        RESET_CREDENTIAL_OFFER_DROPPED_BUSY: {
-          actions: 'resetCredentialOfferDroppedBusy',
+        RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE: {
+          actions: 'resetCredentialOfferDroppedDueToBusyState',
         },
         REMOVE_VC_FROM_IN_PROGRESS_DOWNLOADS: {
           actions: 'removeVcFromInProgressDownlods',

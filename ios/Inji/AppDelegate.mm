@@ -6,6 +6,10 @@
 #import <ExpoModulesCore-Swift.h>
 #import "Inji-Swift.h"
 
+static NSString *const URLSchemeInjiValue = @"io.mosip.residentapp.inji";
+static NSString *const URLSchemeOpenID4VPValue = @"openid4vp";
+static NSString *const URLSchemeCredentialOfferValue = @"openid-credential-offer";
+
 @implementation AppDelegate
 
 typedef NS_ENUM(NSInteger, URLScheme) {
@@ -77,11 +81,11 @@ typedef NS_ENUM(NSInteger, URLScheme) {
 }
 
 - (URLScheme)schemeFromURL:(NSURL *)url {
-    if ([url.scheme isEqualToString:@"io.mosip.residentapp.inji"]) {
+    if ([url.scheme isEqualToString:URLSchemeInjiValue]) {
         return URLSchemeInji;
-    } else if ([url.scheme isEqualToString:@"openid4vp"]) {
+    } else if ([url.scheme isEqualToString:URLSchemeOpenID4VPValue]) {
         return URLSchemeOpenID4VP;
-    } else if ([url.scheme isEqualToString:@"openid-credential-offer"]) {
+    } else if ([url.scheme isEqualToString:URLSchemeCredentialOfferValue]) {
         return URLSchemeCredentialOffer;
     }
     return URLSchemeUnknown;

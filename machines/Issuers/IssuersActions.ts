@@ -442,7 +442,7 @@ export const IssuersActions = (model: any) => {
 
     notifyIgnoredDeepLinkOffer: send(
       (_: any) => ({
-        type: 'CREDENTIAL_OFFER_DROPPED_BUSY',
+        type: 'CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE',
       }),
       {
         to: (context: any) => context.serviceRefs.vcMeta,

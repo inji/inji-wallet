@@ -88,7 +88,7 @@ export function selectIsDownloadingFailed(state: State) {
   return state.context.DownloadingCredentialsFailed;
 }
 
-export function selectIsCredentialOfferDroppedBusy(state: State) {
+export function selectIsCredentialOfferDroppedDueToBusyState(state: State) {
   return state.context.isCredentialOfferDroppedDueToBusyState;
 }
 

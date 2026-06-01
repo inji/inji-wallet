@@ -25,7 +25,7 @@ export interface Typegen0 {
       | 'removeDownloadingFailedVcsFromMyVcs'
       | 'removeVcFromInProgressDownlods'
       | 'removeVcFromMyVcsMetadata'
-      | 'resetCredentialOfferDroppedBusy'
+      | 'resetCredentialOfferDroppedDueToBusyState'
       | 'resetDownloadCreadentialsFailed'
       | 'resetDownloadCredentialsSuccess'
       | 'resetDownloadFailedVcs'
@@ -38,7 +38,7 @@ export interface Typegen0 {
       | 'resetVerificationStatus'
       | 'resetWalletBindingSuccess'
       | 'sendBackupEvent'
-      | 'setCredentialOfferDroppedBusy'
+      | 'setCredentialOfferDroppedDueToBusyState'
       | 'setDownloadCreadentialsFailed'
       | 'setDownloadCredentialsSuccess'
       | 'setDownloadedVc'
@@ -77,7 +77,7 @@ export interface Typegen0 {
       | 'REMOVE_VC_FROM_IN_PROGRESS_DOWNLOADS'
       | 'VERIFY_VC_FAILED';
     removeVcFromMyVcsMetadata: 'REMOVE_VC_FROM_CONTEXT';
-    resetCredentialOfferDroppedBusy: 'RESET_CREDENTIAL_OFFER_DROPPED_BUSY';
+    resetCredentialOfferDroppedDueToBusyState: 'RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE';
     resetDownloadCreadentialsFailed: 'RESET_DOWNLOADING_FAILED';
     resetDownloadCredentialsSuccess: 'RESET_DOWNLOADING_SUCCESS';
     resetDownloadFailedVcs: 'STORE_RESPONSE';
@@ -90,7 +90,7 @@ export interface Typegen0 {
     resetVerificationStatus: 'RESET_VERIFICATION_STATUS';
     resetWalletBindingSuccess: 'RESET_WALLET_BINDING_SUCCESS';
     sendBackupEvent: 'done.invoke.vcMeta.ready.tamperedVCs.triggerAutoBackupForTamperedVcDeletion:invocation[0]';
-    setCredentialOfferDroppedBusy: 'CREDENTIAL_OFFER_DROPPED_BUSY';
+    setCredentialOfferDroppedDueToBusyState: 'CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE';
     setDownloadCreadentialsFailed: 'VC_DOWNLOADING_FAILED';
     setDownloadCredentialsSuccess: 'VC_DOWNLOADED';
     setDownloadedVc: 'VC_DOWNLOADED';

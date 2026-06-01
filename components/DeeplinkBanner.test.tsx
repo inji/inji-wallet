@@ -5,8 +5,8 @@ import {DeeplinkBanner} from './DeeplinkBanner';
 // Mock all controllers
 jest.mock('./BannerNotificationController', () => ({
   UseBannerNotification: jest.fn(() => ({
-    isCredentialOfferDroppedBusy: false,
-    RESET_CREDENTIAL_OFFER_DROPPED_BUSY: jest.fn(),
+    isCredentialOfferDroppedDueToBusyState: false,
+    RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE: jest.fn(),
   })),
 }));
 
@@ -29,8 +29,8 @@ const {BannerNotification} = require('./BannerNotification');
 const {UseBannerNotification} = require('./BannerNotificationController');
 
 const defaultBannerState = {
-  isCredentialOfferDroppedBusy: false,
-  RESET_CREDENTIAL_OFFER_DROPPED_BUSY: jest.fn(),
+  isCredentialOfferDroppedDueToBusyState: false,
+  RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE: jest.fn(),
 };
 
 describe('DeeplinkBanner Component', () => {
@@ -46,7 +46,7 @@ describe('DeeplinkBanner Component', () => {
   it('should match snapshot when busy in inline mode', () => {
     (UseBannerNotification as jest.Mock).mockReturnValueOnce({
       ...defaultBannerState,
-      isCredentialOfferDroppedBusy: true,
+      isCredentialOfferDroppedDueToBusyState: true,
     });
     const {toJSON} = render(<DeeplinkBanner />);
     expect(toJSON()).toMatchSnapshot();
@@ -55,7 +55,7 @@ describe('DeeplinkBanner Component', () => {
   it('should match snapshot when busy in absolute mode', () => {
     (UseBannerNotification as jest.Mock).mockReturnValueOnce({
       ...defaultBannerState,
-      isCredentialOfferDroppedBusy: true,
+      isCredentialOfferDroppedDueToBusyState: true,
     });
     const {toJSON} = render(<DeeplinkBanner absolute />);
     expect(toJSON()).toMatchSnapshot();
@@ -64,7 +64,7 @@ describe('DeeplinkBanner Component', () => {
   it('should render credential offer busy banner', () => {
     (UseBannerNotification as jest.Mock).mockReturnValueOnce({
       ...defaultBannerState,
-      isCredentialOfferDroppedBusy: true,
+      isCredentialOfferDroppedDueToBusyState: true,
     });
     render(<DeeplinkBanner />);
     expect(BannerNotification).toHaveBeenCalledWith(

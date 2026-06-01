@@ -59,6 +59,8 @@ public class IntentData {
             case FLOW_QR_LOGIN -> setQrData("");
             case FLOW_OVP -> setOVPQrData("");
             case FLOW_CREDENTIAL_OFFER -> setCredentialOfferData("");
+            default -> {
+            }
         }
     }
 }

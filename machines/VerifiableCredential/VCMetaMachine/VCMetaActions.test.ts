@@ -93,8 +93,8 @@ describe('VCMetaActions', () => {
       'resetDownloadCreadentialsFailed',
       'setDownloadCredentialsSuccess',
       'resetDownloadCredentialsSuccess',
-      'setCredentialOfferDroppedBusy',
-      'resetCredentialOfferDroppedBusy',
+      'setCredentialOfferDroppedDueToBusyState',
+      'resetCredentialOfferDroppedDueToBusyState',
     ];
     for (const name of expectedActions) {
       expect(actions).toHaveProperty(name);
@@ -302,16 +302,16 @@ describe('VCMetaActions', () => {
       expect(fn()).toBe(false);
     });
 
-    it('setCredentialOfferDroppedBusy returns true', () => {
+    it('setCredentialOfferDroppedDueToBusyState returns true', () => {
       const fn =
-        actions.setCredentialOfferDroppedBusy.assignment
+        actions.setCredentialOfferDroppedDueToBusyState.assignment
           .isCredentialOfferDroppedDueToBusyState;
       expect(fn()).toBe(true);
     });
 
-    it('resetCredentialOfferDroppedBusy returns false', () => {
+    it('resetCredentialOfferDroppedDueToBusyState returns false', () => {
       const fn =
-        actions.resetCredentialOfferDroppedBusy.assignment
+        actions.resetCredentialOfferDroppedDueToBusyState.assignment
           .isCredentialOfferDroppedDueToBusyState;
       expect(fn()).toBe(false);
     });

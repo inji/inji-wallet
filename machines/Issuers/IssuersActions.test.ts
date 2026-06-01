@@ -863,10 +863,10 @@ describe('IssuersActions', () => {
       );
     });
 
-    it('notifyIgnoredDeepLinkOffer event returns CREDENTIAL_OFFER_DROPPED_BUSY', () => {
+    it('notifyIgnoredDeepLinkOffer event returns CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE', () => {
       const action = actions.notifyIgnoredDeepLinkOffer;
       const result = action.event({});
-      expect(result.type).toBe('CREDENTIAL_OFFER_DROPPED_BUSY');
+      expect(result.type).toBe('CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE');
     });
 
     it('notifyIgnoredDeepLinkOffer to callback returns vcMeta ref', () => {

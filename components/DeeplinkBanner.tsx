@@ -16,12 +16,12 @@ export const DeeplinkBanner: React.FC<DeeplinkBannerProps> = ({
 
   const content = (
     <>
-      {bannerNotificationController.isCredentialOfferDroppedBusy && (
+      {bannerNotificationController.isCredentialOfferDroppedDueToBusyState && (
         <BannerNotification
           type={BannerStatusType.IN_PROGRESS}
           message={t('MyVcsTab:credentialOfferBusy')}
           onClosePress={
-            bannerNotificationController.RESET_CREDENTIAL_OFFER_DROPPED_BUSY
+            bannerNotificationController.RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE
           }
           key={'credentialOfferBusyPopup'}
           testId={'credentialOfferBusyPopup'}
