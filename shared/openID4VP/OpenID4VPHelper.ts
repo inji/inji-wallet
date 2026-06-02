@@ -148,3 +148,6 @@ export function claimPathPointersToJsonPath(
 
   return currentPath;
 }
+
+export const isDcqlFlow = (vpRequest: object) =>
+  vpRequest?.['dcql_query'] !== undefined;

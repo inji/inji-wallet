@@ -1,17 +1,19 @@
-import { useFocusEffect } from '@react-navigation/native';
-import React, { Fragment, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { BackHandler, Dimensions, ScrollView, View } from 'react-native';
-import { ButtonProps as RNEButtonProps } from 'react-native-elements';
-import { Button, Column, Row, Text } from '.';
-import { Header } from './Header';
-import { Theme } from './styleUtils';
+import {useFocusEffect} from '@react-navigation/native';
+import React, {Fragment, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {BackHandler, Dimensions, ScrollView, View} from 'react-native';
+import {ButtonProps as RNEButtonProps} from 'react-native-elements';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Button, Column, Row, Text} from '.';
+import {Header} from './Header';
+import {Theme} from './styleUtils';
 import testIDProps from '../../shared/commonUtil';
-import { Modal } from './Modal';
-import { isIOS } from '../../shared/constants';
+import {Modal} from './Modal';
+import {isIOS} from '../../shared/constants';
 
 export const ErrorView: React.FC<ErrorProps> = props => {
-  const { t } = useTranslation('common');
+  const {t} = useTranslation('common');
+  const insets = useSafeAreaInsets();
   const {
     testID,
     customStyles = {},
@@ -67,8 +69,7 @@ export const ErrorView: React.FC<ErrorProps> = props => {
     const compactHeader = !!additionalContent;
 
     const headerSection = (
-      <View
-        style={[{alignItems: 'center', marginHorizontal: 1}, customStyles]}>
+      <View style={[{alignItems: 'center', marginHorizontal: 1}, customStyles]}>
         <Row
           align="center"
           style={[
@@ -85,7 +86,9 @@ export const ErrorView: React.FC<ErrorProps> = props => {
     );
 
     const buttonsSection = (
-      <Column crossAlign="center" margin={isIOS() ? '0 0 30 0' : '0 0 20 0'}>
+      <Column
+        crossAlign="center"
+        style={{paddingBottom: Math.max(insets.bottom, isIOS() ? 30 : 20)}}>
         <Row style={{marginHorizontal: 30, marginBottom: 15}}>
           {primaryButtonText && (
             <Button
@@ -185,7 +188,7 @@ export const ErrorView: React.FC<ErrorProps> = props => {
             )}
           </View>
           {additionalContent}
-          <Fragment>
+          <View style={{paddingBottom: insets.bottom, alignItems: 'center'}}>
             {primaryButtonText && (
               <Button
                 onPress={primaryButtonEvent}
@@ -203,7 +206,7 @@ export const ErrorView: React.FC<ErrorProps> = props => {
                 testID={textButtonTestID}
               />
             )}
-          </Fragment>
+          </View>
         </View>
       </Fragment>
     );
@@ -247,7 +250,10 @@ export const ErrorView: React.FC<ErrorProps> = props => {
       {...testIDProps(testID)}>
       <Column fill safe>
         {goBack && <Header testID="errorHeader" goBack={goBack} />}
-        <Column fill safe align="space-evenly">
+        <Column
+          fill
+          safe
+          align={alignActionsOnEnd ? 'flex-start' : 'space-evenly'}>
           {errorContent()}
         </Column>
       </Column>

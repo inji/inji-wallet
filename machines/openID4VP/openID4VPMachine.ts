@@ -193,11 +193,10 @@ export const openID4VPMachine = model.createMachine(
             actions: ['setMatchingVCs', 'resetIsShowLoadingScreen'],
             target: 'checkIfAnyMatchingVCs',
           },
-          onError: [
-            // TODO: Handle error
-            // No matching VCs - send error to parent in case of auth flow, show error screen in case of simple share flow
-            // Dispatch error to Verifier for simple share flow
-          ],
+          onError: {
+            actions: ['setError'],
+            target: 'showError',
+          },
         },
       },
 
@@ -609,6 +608,10 @@ export const openID4VPMachine = model.createMachine(
       },
       showError: {
         id: 'showError',
+        entry: [
+          () => console.log('Error state about to reset loading reason :p'),
+          'resetIsShowLoadingScreen',
+        ],
         on: {
           RETRY: {
             actions: ['resetError', 'incrementOpenID4VPRetryCount'],

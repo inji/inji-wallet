@@ -82,6 +82,7 @@ export const openID4VPServices = () => {
     sendSelectedCredentialsForVP: (context: any) => async () => {
       const selectedCredentials: SelectedCredentialsForVPSharing =
         await OpenID4VP.prepareCredentialsForVPSharing(
+          context.authenticationResponse,
           context.selectedVCs,
           context.selectedDisclosuresByVc,
         );
@@ -96,6 +97,7 @@ export const openID4VPServices = () => {
 
     sendVP: (context: any) => async () => {
       const unSignedVpTokens = await OpenID4VP.constructUnsignedVPToken(
+        context.authenticationResponse,
         context.selectedVCs,
         context.selectedDisclosuresByVc,
       );

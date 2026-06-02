@@ -358,6 +358,10 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
               ]),
             );
           }
+          console.log(
+            'Selected disclosures before sending - ',
+            JSON.stringify(selectedDisclosures, null, 2),
+          );
           controller.ACCEPT_REQUEST(selectedDisclosures);
         }}
       />
@@ -367,29 +371,31 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   function getVerifierActionAndMatchingCredentials() {
     if (errorModal.matchingVcsResult) {
       const uniqueVcsByKey = new Map<string, VC>();
-      const isDcql =
-        (errorModal.matchingVcsResult as MatchingVCsResultForDcql)
-          .credentialSetOptions !== undefined;
-      if (isDcql) {
-        const dcqlResult =
-          errorModal.matchingVcsResult as MatchingVCsResultForDcql;
-        for (const matchResult of Object.values(dcqlResult.matchingVCs)) {
-          for (const {vc} of matchResult.matchingVcs ?? []) {
-            const key = VCMetadata.fromVcMetadataString(
-              vc.vcMetadata,
-            ).getVcKey();
-            uniqueVcsByKey.set(key, vc);
+      if (Object.keys(errorModal.matchingVcsResult).length > 0) {
+        const isDcql =
+          (errorModal.matchingVcsResult as MatchingVCsResultForDcql)
+            .credentialSetOptions !== undefined;
+        if (isDcql) {
+          const dcqlResult =
+            errorModal.matchingVcsResult as MatchingVCsResultForDcql;
+          for (const matchResult of Object.values(dcqlResult.matchingVCs)) {
+            for (const {vc} of matchResult.matchingVcs ?? []) {
+              const key = VCMetadata.fromVcMetadataString(
+                vc.vcMetadata,
+              ).getVcKey();
+              uniqueVcsByKey.set(key, vc);
+            }
           }
-        }
-      } else {
-        const peResult =
-          errorModal.matchingVcsResult as MatchingVCsResultForPresentationExchangeRequest;
-        for (const vcs of Object.values(peResult.matchingVCs)) {
-          for (const vc of vcs) {
-            const key = VCMetadata.fromVcMetadataString(
-              vc.vcMetadata,
-            ).getVcKey();
-            uniqueVcsByKey.set(key, vc);
+        } else {
+          const peResult =
+            errorModal.matchingVcsResult as MatchingVCsResultForPresentationExchangeRequest;
+          for (const vcs of Object.values(peResult.matchingVCs)) {
+            for (const vc of vcs) {
+              const key = VCMetadata.fromVcMetadataString(
+                vc.vcMetadata,
+              ).getVcKey();
+              uniqueVcsByKey.set(key, vc);
+            }
           }
         }
       }
@@ -414,7 +420,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
               {t('errors.noMatchingCredentials.reachOutText')}
             </Text>
           </View>
-          {consolidatedMatchingVcs && (
+          {consolidatedMatchingVcs.length > 0 && (
             <Fragment>
               <Text style={Theme.DcqlStyles.credentialMissingSectionLabel}>
                 {t('errors.noMatchingCredentials.matchingCredentials')}

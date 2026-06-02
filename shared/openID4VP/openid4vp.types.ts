@@ -21,9 +21,6 @@ export type MatchingVcsResult =
   | MatchingVCsResultForPresentationExchangeRequest;
 
 export interface MatchingVCsResultForPresentationExchangeRequest {
-  // TODO: Holding VC here is too much of space - check if any optimization is possible by just holding VC key
-  //  and fetching VC details from something like cached registry based on need
-  // Solution - VC metadata is enough - eventually -> its only required to render VC miniview
   matchingVCs: Record<string, VC[]>;
   success: boolean;
   purpose: string;

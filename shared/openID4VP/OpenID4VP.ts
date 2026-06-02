@@ -7,8 +7,8 @@ import {
 import {
   getWalletConfig,
   isClientValidationRequired,
+  isDcqlFlow,
   jsonLdCanonicalize,
-  claimPathPointersToJsonPath,
 } from './OpenID4VPHelper';
 import {jsonLdExpand, parseJSON} from '../Utils';
 import {VCFormat} from '../VCFormat';
@@ -18,9 +18,10 @@ import {
   getIssuerAuthenticationAlorithmForMdocVC,
   getMdocAuthenticationAlorithm,
 } from '../../components/VC/common/VCUtils';
-import {isIOS, OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../constants';
+import {isIOS} from '../constants';
 import {CACHED_API} from '../api';
 import {defaultWalletConfig} from './walletConfig/WalletConfig';
+import {getDisclosuresForPath} from '../claimsPathMatching';
 import {
   MatchingVcsResult,
   MatchingVCsResultForDcql,
@@ -132,8 +133,6 @@ class OpenID4VP {
         openID4VP.addJsonLdExpanderCallback();
       }
 
-      // TODO: Optimize this idToCredentialMap creation and updatedAvailableWalletCredentials mapping by doing it in a single loop instead of two separate loops
-
       const idToCredentialMap: Record<string, VC> = {};
       availableWalletCredentials.forEach(vc => {
         idToCredentialMap[vc.vcMetadata.id] = vc;
@@ -207,12 +206,17 @@ class OpenID4VP {
   }
 
   static async prepareCredentialsForVPSharing(
+    vpRequest: object,
     selectedVCs: Record<string, VC[]>,
     selectedDisclosuresByVc: any,
   ) {
     const openID4VP = await OpenID4VP.getInstance();
 
-    return openID4VP.processSelectedVCs(selectedVCs, selectedDisclosuresByVc);
+    return openID4VP.processSelectedVCs(
+      vpRequest,
+      selectedVCs,
+      selectedDisclosuresByVc,
+    );
   }
 
   static getSignatureSuite(key: string): string {
@@ -233,6 +237,7 @@ class OpenID4VP {
   }
 
   static async constructUnsignedVPToken(
+    vpRequest: object,
     selectedVCs: Record<string, VC[]>,
     selectedDisclosuresByVc: any,
   ) {
@@ -241,6 +246,7 @@ class OpenID4VP {
       string,
       Array<SelectedCredentialsForVPSharing>
     > = {};
+    const isDcqlRequestFlow = isDcqlFlow(vpRequest);
     Object.entries(selectedVCs).forEach(([credentialRequestId, vcsArray]) => {
       updatedSelectedVCs[credentialRequestId] = vcsArray.map(credential => {
         const credentialFormat = credential.vcMetadata.format;
@@ -253,6 +259,7 @@ class OpenID4VP {
             selectedDisclosuresByVc[
               VCMetadata.fromVcMetadataString(credential.vcMetadata).getVcKey()
             ],
+            isDcqlRequestFlow,
           ),
         };
       });
@@ -290,9 +297,11 @@ class OpenID4VP {
   }
 
   private processSelectedVCs(
+    vpRequest: object,
     selectedVCs: Record<string, VC[]>,
     selectedDisclosuresByVc: any,
   ) {
+    const isDcqlRequestFlow = isDcqlFlow(vpRequest);
     const selectedVcsData: SelectedCredentialsForVPSharing = {};
     Object.entries(selectedVCs).forEach(([inputDescriptorId, vcsArray]) => {
       vcsArray.forEach(vcData => {
@@ -303,6 +312,7 @@ class OpenID4VP {
           selectedDisclosuresByVc[
             VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey()
           ],
+          isDcqlRequestFlow,
         );
         if (!selectedVcsData[inputDescriptorId]) {
           selectedVcsData[inputDescriptorId] = {};
@@ -320,6 +330,7 @@ class OpenID4VP {
     vcData: VC,
     credentialFormat: string,
     selectedDisclosures: any,
+    isDcqlRequestFlow = true,
   ) {
     if (
       credentialFormat === VCFormat.mso_mdoc ||
@@ -327,15 +338,20 @@ class OpenID4VP {
     ) {
       return vcData.verifiableCredential.credential;
     }
-    if (
+    const isSelectivelyDisclosableCredential =
       credentialFormat === VCFormat.vc_sd_jwt ||
-      credentialFormat === VCFormat.dc_sd_jwt
-    ) {
+      credentialFormat === VCFormat.dc_sd_jwt;
+    if (isSelectivelyDisclosableCredential && isDcqlRequestFlow) {
       return this.processSdJwtVcForSharing(vcData, selectedDisclosures);
+    } else if (isSelectivelyDisclosableCredential) {
+      return this.processSdJwtVcForSharingWithSdClaimsOnly(
+        vcData,
+        selectedDisclosures,
+      );
     }
   }
 
-  private processSdJwtVcForSharing(
+  private processSdJwtVcForSharingWithSdClaimsOnly(
     vcData: VC,
     selectedDisclosures: string[],
   ): string {
@@ -363,6 +379,59 @@ class OpenID4VP {
         : jwt + '~';
 
     return finalSdJwt;
+  }
+
+  private processSdJwtVcForSharing(vcData: VC, claimsPath: string[]): string {
+    if (!vcData?.verifiableCredential?.credential) {
+      throw new Error('Invalid VC: missing credential');
+    }
+
+    const compact = vcData.verifiableCredential.credential;
+    const [jwt] = compact.split('~');
+
+    const pathToDisclosures: Record<string, string[]> =
+      vcData.verifiableCredential?.processedCredential.pathToDisclosures || {};
+
+    console.log('selectedDisclosures - ', JSON.stringify(claimsPath, null, 2));
+    console.log(
+      'Path to disclosures - ',
+      JSON.stringify(pathToDisclosures, null, 2),
+    );
+    console.log(
+      'Path to disclosedKeys - ',
+      JSON.stringify(
+        vcData.verifiableCredential?.processedCredential.disclosedKeys,
+        null,
+        2,
+      ),
+    );
+    console.log(
+      'Path to publicKeys - ',
+      JSON.stringify(
+        vcData.verifiableCredential?.processedCredential.publicKeys,
+        null,
+        2,
+      ),
+    );
+    console.log(
+      'Path to fullResolvedPayload - ',
+      JSON.stringify(
+        vcData.verifiableCredential?.processedCredential.fullResolvedPayload,
+        null,
+        2,
+      ),
+    );
+    const disclosureSet = new Set<string>();
+    claimsPath?.forEach(path => {
+      const disclosures = getDisclosuresForPath(pathToDisclosures, path);
+      if (disclosures) {
+        disclosures.forEach(d => disclosureSet.add(d));
+      }
+    });
+
+    return disclosureSet.size > 0
+      ? [jwt, ...disclosureSet].join('~') + '~'
+      : jwt + '~';
   }
 }
 
@@ -455,12 +524,11 @@ function getVcsMatchingPresentationExchangeAuthRequest(
     matchingVCs[inputDescriptors[0].id] = vcs;
   }
 
-  const success = !(Object.keys(matchingVCs).length === 0);
-
-  // TODO: Handle the case of ||
-  //     Object.values(matchingVCs).every(
-  //       value => Array.isArray(value) && value.length === 0,
-  //     )
+  const success =
+    !(Object.keys(matchingVCs).length === 0) &&
+    Object.values(matchingVCs).every(
+      value => Array.isArray(value) && value.length === 0,
+    );
 
   return {
     success,

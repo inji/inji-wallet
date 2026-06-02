@@ -143,7 +143,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
       KEBAB_POPUP={controller.KEBAB_POPUP}
       isInitialLaunch={isInitialLaunch}
       onDisclosuresChange={onDisclosuresChange}
-      sdClaimsPath={sdClaimsPath}
+      claimsPath={sdClaimsPath}
       minimalDisclosure={minimalDisclosure}
     />
   );

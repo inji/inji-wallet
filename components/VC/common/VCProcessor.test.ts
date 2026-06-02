@@ -51,7 +51,12 @@ jest.mock('jwt-decode', () => ({
   jwtDecode: jest.fn(),
 }));
 
-import {VCProcessor, reconstructSdJwtFromCompact} from './VCProcessor';
+import {
+  ClaimVisibility,
+  flattenSdJwt,
+  VCProcessor,
+  reconstructSdJwtFromCompact,
+} from './VCProcessor';
 import {getVerifiableCredential} from '../../../machines/VerifiableCredential/VCItemMachine/VCItemSelectors';
 import jwtDecode from 'jwt-decode';
 
@@ -571,5 +576,59 @@ describe('reconstructSdJwtFromCompact', () => {
 
     const result = reconstructSdJwtFromCompact('header.payload~');
     expect(result.fullResolvedPayload.items).toEqual([]);
+  });
+});
+
+describe('flattenSdJwt', () => {
+  it('includes full disclosed parent subtree when any child path is eligible', () => {
+    const flattened = flattenSdJwt({
+      disclosedKeys: ['address'],
+      eligiblePaths: new Set<string>(['address.city']),
+      fullResolvedPayload: {
+        address: {
+          city: 'Paris',
+          country: 'France',
+        },
+      },
+    });
+
+    expect(flattened['address.city']).toEqual({
+      value: 'Paris',
+      visibility: ClaimVisibility.PRIVATE,
+    });
+    expect(flattened['address.country']).toEqual({
+      value: 'France',
+      visibility: ClaimVisibility.PRIVATE,
+    });
+  });
+
+  it('matches wildcard eligible path with indexed current path', () => {
+    const flattened = flattenSdJwt({
+      disclosedKeys: ['degrees'],
+      eligiblePaths: new Set<string>(['degrees[*].type']),
+      fullResolvedPayload: {
+        degrees: [
+          {type: 'BSc', university: 'A'},
+          {type: 'MSc', university: 'B'},
+        ],
+      },
+    });
+
+    expect(flattened['degrees[0].type']).toEqual({
+      value: 'BSc',
+      visibility: ClaimVisibility.PRIVATE,
+    });
+    expect(flattened['degrees[1].type']).toEqual({
+      value: 'MSc',
+      visibility: ClaimVisibility.PRIVATE,
+    });
+    expect(flattened['degrees[0].university']).toEqual({
+      value: 'A',
+      visibility: ClaimVisibility.PRIVATE,
+    });
+    expect(flattened['degrees[1].university']).toEqual({
+      value: 'B',
+      visibility: ClaimVisibility.PRIVATE,
+    });
   });
 });

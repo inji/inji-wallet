@@ -6,6 +6,7 @@ import {parseJSON} from '../../../shared/Utils';
 import base64url from 'base64url';
 import jwtDecode from 'jwt-decode';
 import {sha256, sha384, sha512} from '@noble/hashes/sha2';
+import {hasMatchingClaimsPath} from '../../../shared/claimsPathMatching';
 
 const {RNPixelpassModule} = NativeModules;
 
@@ -297,7 +298,7 @@ export enum ClaimVisibility {
  */
 export function flattenSdJwt({
   disclosedKeys,
-  eligibleDisclosedKeys,
+  eligiblePaths,
   fullResolvedPayload,
   reservedSdJwtClaims = [
     'iss',
@@ -312,24 +313,36 @@ export function flattenSdJwt({
   ],
 }: {
   disclosedKeys: string[];
-  eligibleDisclosedKeys: string[];
+  eligiblePaths: Set<string>;
   fullResolvedPayload: object;
   reservedSdJwtClaims?: string[];
 }) {
   const flattened: Record<string, any> = {};
 
   const disclosedSet = new Set(disclosedKeys);
-  const eligibleSet = new Set(eligibleDisclosedKeys);
+  const eligibleSet = eligiblePaths;
+  const eligibleDisclosureRoots = new Set<string>();
+
+  // If disclosure happens at a parent path, any eligible descendant implies
+  // the entire disclosed parent payload is actually revealed.
+  disclosedSet.forEach(disclosedPath => {
+    if (hasMatchingClaimsPath(eligibleSet, disclosedPath)) {
+      eligibleDisclosureRoots.add(disclosedPath);
+    }
+  });
 
   function walk(value: unknown, currentPath = '') {
     // Primitive leaf
     if (value === null || typeof value !== 'object') {
-      const isDisclosed = disclosedSet.has(currentPath);
-      // TODO: For an array wildcard matches
       /**
-       * If eligible has topKey[*].lowKey and currentPath is topKey[1].lowKey -> its accepted
+       * disclosed set path -> currentPath path -> eligible set matches
+       * - address -> address / address.city -> address.city / address
+       * - degrees -> degrees / degrees[0] / degrees[0].type -> degrees[*]
        */
-      const isEligible = eligibleSet.has(currentPath);
+      const isDisclosed = hasMatchingClaimsPath(disclosedSet, currentPath);
+      const isEligible =
+        hasMatchingClaimsPath(eligibleSet, currentPath) ||
+        hasMatchingClaimsPath(eligibleDisclosureRoots, currentPath);
 
       // Skip disclosed/private claims
       // that are not eligible

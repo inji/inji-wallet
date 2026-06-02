@@ -56,6 +56,7 @@ import {getFaceAttribute} from '../../components/VC/common/VCUtils';
 import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {MatchingVCsResultForDcql} from '../../shared/openID4VP/openid4vp.types';
 import {exactlyOne} from '../../shared/commonUtil';
+import {isDcqlFlow} from '../../shared/openID4VP/OpenID4VPHelper';
 
 type MyVcsTabNavigation = NavigationProp<RootRouteProps>;
 
@@ -140,7 +141,7 @@ export function useSendVPScreen(props) {
   };
 
   const successfullySatisfiedCredentialRequest = (): boolean => {
-    if (isDcqlFlow) {
+    if (isDcqlRequestFlow) {
       // all required credential sets should have at least one VC selected
       return (
         matchingVcsResult as MatchingVCsResultForDcql
@@ -189,6 +190,7 @@ export function useSendVPScreen(props) {
     selectOpenID4VPRetryCount,
   );
   const noCredentialsMatchingVPRequest =
+    Object.keys(matchingVcsResult).length > 0 &&
     showError &&
     (!matchingVcsResult.success ||
       Object.values(vcsMatchingAuthRequest).every(
@@ -202,7 +204,7 @@ export function useSendVPScreen(props) {
 
   const vpRequest = useSelector(openID4VPService, selectVPRequest);
 
-  const isDcqlFlow = vpRequest?.['dcql_query'] !== undefined;
+  const isDcqlRequestFlow = isDcqlFlow(vpRequest);
 
   const getAdditionalMessage = useCallback(() => {
     return isOVPViaDeepLink && isIOS() ? t('errors.additionalMessage') : '';
@@ -318,7 +320,7 @@ export function useSendVPScreen(props) {
       openID4VPService,
       selectVerifiableCredentialsData,
     ),
-    isDcqlFlow,
+    isDcqlFlow: isDcqlRequestFlow,
     successfullySatisfiedCredentialRequest,
 
     FACE_VERIFICATION_CONSENT: (isDoNotAskAgainChecked: boolean) =>

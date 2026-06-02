@@ -3,6 +3,7 @@ package io.mosip.residentapp;
 import static io.mosip.residentapp.utils.OpenId4VPUtils.parseVPTokenSigningResults;
 
 import android.annotation.SuppressLint;
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -20,7 +21,8 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import android.util.Base64;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,9 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import io.mosip.openID4VP.OpenID4VP;
 import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest;
@@ -41,23 +40,24 @@ import io.mosip.openID4VP.authorizationRequest.VPFormatSupported;
 import io.mosip.openID4VP.authorizationRequest.Verifier;
 import io.mosip.openID4VP.authorizationRequest.WalletConfig;
 import io.mosip.openID4VP.authorizationRequest.WalletMetadataDefaultsKt;
-import io.mosip.openID4VP.verifier.VerifierResponse;
+import io.mosip.openID4VP.authorizationRequest.dcqlQuery.DCQLQuery;
 import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
-import io.mosip.openID4VP.wallet.Credential;
-import io.mosip.openID4VP.evaluator.dcql.MatchingCredentialsResult;
 import io.mosip.openID4VP.constants.ClientIdPrefix;
 import io.mosip.openID4VP.constants.ContentEncryptionAlgorithm;
-import io.mosip.openID4VP.constants.FormatType;
 import io.mosip.openID4VP.constants.KeyManagementAlgorithm;
 import io.mosip.openID4VP.constants.ProofType;
 import io.mosip.openID4VP.constants.RequestSigningAlgorithm;
 import io.mosip.openID4VP.constants.RequestUriMethod;
 import io.mosip.openID4VP.constants.ResponseType;
 import io.mosip.openID4VP.constants.VPFormatType;
+import io.mosip.openID4VP.evaluator.dcql.DCQLHelper;
+import io.mosip.openID4VP.evaluator.dcql.MatchingCredentialsResult;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
+import io.mosip.openID4VP.verifier.VerifierResponse;
+import io.mosip.openID4VP.wallet.Credential;
 import io.mosip.residentapp.utils.FormatConverter;
-import io.mosip.residentapp.utils.*;
+import io.mosip.residentapp.utils.OpenId4VPUtils;
 
 
 public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
@@ -65,7 +65,6 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     private static final String MODULE_NAME = "InjiOpenID4VP";
 
     private OpenID4VP openID4VP;
-    private WalletConfig walletConfig;
     private Gson gson;
     private Gson gsonCamelCase;
 
@@ -85,8 +84,6 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         Log.d(TAG, "Initializing InjiOpenID4VPModule with " + appId);
 
         WalletConfig walletConfig = parseWalletConfig(walletConfigMap);
-        this.walletConfig = walletConfig;
-
         openID4VP = new OpenID4VP(appId, walletConfig);
         gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -104,7 +101,6 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         try {
             AuthorizationRequest authRequest = openID4VP.authenticateVerifier(
                     urlEncodedAuthorizationRequest,
-                    walletConfig.getTrustedVerifiers(),
                     shouldValidateClient);
 
             String authRequestJson = gson.toJson(authRequest);
@@ -117,7 +113,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void constructUnsignedVPToken(ReadableMap selectedVCs, Promise promise) {
         try {
-            Map<String, List<Credential>> selectedCredentials = OpenId4VPUtils.parseSelectedVCsDCQL(selectedVCs);
+            Map<String, List<Credential>> selectedCredentials = OpenId4VPUtils.parseSelectedVCs(selectedVCs);
             List<UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedCredentials);
 
             JSONArray jsonArray = new JSONArray();
@@ -137,20 +133,24 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getMatchingCredentials(ReadableMap vpRequest, ReadableArray availableWalletCredentials,
-            Promise promise) {
-        try {
-            List<Credential> credentials = OpenId4VPUtils.parseCredentials(availableWalletCredentials);
-            MatchingCredentialsResult result = openID4VP.getMatchingCredentials(credentials);
-            promise.resolve(gsonCamelCase.toJson(result));
-        } catch (Exception e) {
-            rejectWithOpenID4VPExceptions(e, promise);
-        }
+                                       Promise promise) {
+      try {
+        List<Credential> credentials = OpenId4VPUtils.parseCredentials(availableWalletCredentials);
+        ReadableMap dcqlQueryMap = vpRequest.getMap("dcql_query");
+        DCQLQuery dcqlQuery = OpenId4VPUtils.parseDcqlQuery(dcqlQueryMap);
+
+        assert dcqlQuery != null;
+        MatchingCredentialsResult result = new DCQLHelper().getMatchingCredentials(credentials, dcqlQuery);
+        promise.resolve(gsonCamelCase.toJson(result));
+      } catch (Exception e) {
+        rejectWithOpenID4VPExceptions(e, promise);
+      }
     }
 
     @ReactMethod
     public void constructUnsignedVPTokenDCQL(ReadableMap credentialsMap, Promise promise) {
         try {
-            Map<String, List<Credential>> selectedCredentials = OpenId4VPUtils.parseSelectedVCsDCQL(credentialsMap);
+            Map<String, List<Credential>> selectedCredentials = OpenId4VPUtils.parseSelectedVCs(credentialsMap);
             List<UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedCredentials);
 
             JSONArray jsonArray = new JSONArray();

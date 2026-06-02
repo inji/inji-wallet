@@ -52,7 +52,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   isKebabPopUp,
   vcMetadata,
   isInitialLaunch,
-  sdClaimsPath,
+  claimsPath,
   onDisclosuresChange,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -144,17 +144,8 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
                 disabled={node.visibility === ClaimVisibility.PUBLIC}
               />
             )}
-            <Text
-              weight="semibold"
-              color={wellknownDisplayProperty.getTextColor(
-                Theme.Colors.plainText,
-              )}
-              style={{marginLeft: 8}}>
-              {(() => {
-                const formattedLabel = formatKeyLabel(name);
-                console.log('Formatting key label for: ', formattedLabel);
-                return formattedLabel;
-              })()}
+            <Text weight="semibold" color={'#f26989'} style={{marginLeft: 8}}>
+              {formatKeyLabel(name)}
             </Text>
           </Row>
 
@@ -232,13 +223,13 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   const {t} = useTranslation();
 
   function showDisclosedKeys() {
-    console.log('sdClaimsPath: ', sdClaimsPath);
+    console.log('sdClaimsPath: ', claimsPath);
     console.log('Format check : ', verifiableCredentialData.format);
 
     return (
       flow === VCItemContainerFlowType.VP_SHARE &&
       (credential?.disclosedKeys?.length > 0 ||
-        (sdClaimsPath && sdClaimsPath.size > 0))
+        (claimsPath && claimsPath.size > 0))
     );
   }
 
@@ -348,7 +339,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
                 </Text>
               </Column>
 
-              {!sdClaimsPath && (
+              {!claimsPath && (
                 <Row style={{marginTop: 12}} width="100%" align="flex-end">
                   <Pressable onPress={toggleSelectAll}>
                     <Text
@@ -367,28 +358,41 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
               />
             </View>
             <Fragment>
-              {Object.entries(
-                buildDisclosureTree(
-                  flattenSdJwt({
-                    eligibleDisclosedKeys: minimalDisclosure
-                      ? Array.from(sdClaimsPath ?? [])
-                      : credential.disclosedKeys,
-                    disclosedKeys: credential.disclosedKeys,
-                    fullResolvedPayload: credential.fullResolvedPayload,
-                  }),
-                ),
-              ).map(([name, node]: [string, any]) => (
-                <DisclosureNode
-                  selected={sdClaimsPath ? selected : undefined}
-                  lockSelection={!!sdClaimsPath}
-                  key={name}
-                  name={name}
-                  node={node}
-                  fullPath={name}
-                  expandedNodes={expandedNodes}
-                  setExpandedNodes={setExpandedNodes}
-                />
-              ))}
+              {claimsPath
+                ? Object.entries(
+                    buildDisclosureTree(
+                      flattenSdJwt({
+                        eligiblePaths: claimsPath,
+                        disclosedKeys: credential.disclosedKeys,
+                        fullResolvedPayload: credential.fullResolvedPayload,
+                      }),
+                    ),
+                  ).map(([name, node]: [string, any]) => (
+                    <DisclosureNode
+                      selected={claimsPath ? selected : undefined}
+                      lockSelection={!!claimsPath}
+                      key={name}
+                      name={name}
+                      node={node}
+                      fullPath={name}
+                      expandedNodes={expandedNodes}
+                      setExpandedNodes={setExpandedNodes}
+                    />
+                  ))
+                : Object.entries(
+                    buildDisclosureTreeForDisclosedClaims(
+                      credential.disclosedKeys,
+                    ),
+                  ).map(([name, node]) => (
+                    <DisclosureNode
+                      key={name}
+                      name={name}
+                      node={node}
+                      fullPath={name}
+                      expandedNodes={expandedNodes}
+                      setExpandedNodes={setExpandedNodes}
+                    />
+                  ))}
             </Fragment>
           </Column>
         )}
@@ -417,6 +421,7 @@ type DisclosureData = {
 function buildDisclosureTree(
   flattened: Record<string, {visibility: ClaimVisibility; value: unknown}>,
 ): Record<string, DisclosureData> {
+  console.log('Flattened - ', JSON.stringify(flattened, null, 2));
   const root: Record<string, DisclosureData> = {};
 
   Object.entries(flattened).forEach(([path, metadata]) => {
@@ -449,6 +454,22 @@ function buildDisclosureTree(
   return root;
 }
 
+function buildDisclosureTreeForDisclosedClaims(paths: string[]) {
+  const root: any = {};
+  paths.forEach(path => {
+    const parts = path.split('.');
+    let node = root;
+    parts.forEach((part, idx) => {
+      if (!node[part]) node[part] = {__self: false, children: {}};
+      if (idx === parts.length - 1) {
+        node[part].__self = true;
+      }
+      node = node[part].children;
+    });
+  });
+  return root;
+}
+
 export interface VCItemContentProps {
   context: any;
   credential: Credential;
@@ -471,7 +492,7 @@ export interface VCItemContentProps {
   isKebabPopUp: boolean;
   vcMetadata: VCMetadata;
   isInitialLaunch?: boolean;
-  sdClaimsPath?: Set<string>;
+  claimsPath?: Set<string>;
   minimalDisclosure?: boolean;
   onDisclosuresChange?: (disclosures: string[]) => void;
 }

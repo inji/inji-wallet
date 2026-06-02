@@ -13,76 +13,28 @@ import com.facebook.react.bridge.ReadableMapKeySetIterator;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+
+import io.mosip.openID4VP.authorizationRequest.dcqlQuery.DCQLQuery;
+import io.mosip.openID4VP.authorizationRequest.dcqlQuery.DCQLQuerySerializer;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
+import io.mosip.openID4VP.common.OpenID4VPErrorCodes;
 import io.mosip.openID4VP.wallet.Credential;
 
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
 import io.mosip.openID4VP.constants.FormatType;
+import kotlinx.serialization.json.Json;
 
 import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
 import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
 
 public class OpenId4VPUtils {
-  public static Map<String, Map<FormatType, List<Object>>> parseSelectedVCs(ReadableMap selectedVCs) {
-    if (selectedVCs == null) {
-      return Collections.emptyMap();
-    }
-    Map<String, Map<FormatType, List<Object>>> selectedVCsMap = new HashMap<>();
-    ReadableMapKeySetIterator iterator = selectedVCs.keySetIterator();
-    while (iterator.hasNextKey()) {
-      String inputDescriptorId = iterator.nextKey();
-      ReadableMap formatMap = selectedVCs.getMap(inputDescriptorId);
-      if (formatMap == null) {
-        continue;
-      }
-      Map<FormatType, List<Object>> formatTypeCredentialsMap = new EnumMap<>(FormatType.class);
-      ReadableMapKeySetIterator formatIterator = formatMap.keySetIterator();
-
-      while (formatIterator.hasNextKey()) {
-        String formatStr = formatIterator.nextKey();
-        ReadableArray vcsArray = formatMap.getArray(formatStr);
-        if (vcsArray == null) {
-          continue;
-        }
-        FormatType formatType = getFormatType(formatStr);
-        if (formatType != null) {
-          List<Object> vcsList = convertReadableArrayToListOfCredential(formatType, vcsArray);
-          formatTypeCredentialsMap.put(formatType, vcsList);
-        }
-      }
-
-      if (!formatTypeCredentialsMap.isEmpty()) {
-        selectedVCsMap.put(inputDescriptorId, formatTypeCredentialsMap);
-      }
-    }
-    return selectedVCsMap;
-  }
-
-  public static Map<String, List<Credential>> parseSelectedVCsForPEX(ReadableMap selectedVCs) {
-    Map<String, Map<FormatType, List<Object>>> grouped = parseSelectedVCs(selectedVCs);
-    Map<String, List<Credential>> result = new HashMap<>();
-    for (Map.Entry<String, Map<FormatType, List<Object>>> descriptorEntry : grouped.entrySet()) {
-      List<Credential> credentials = new ArrayList<>();
-      for (Map.Entry<FormatType, List<Object>> formatEntry : descriptorEntry.getValue().entrySet()) {
-        FormatType formatType = formatEntry.getKey();
-        for (Object credentialData : formatEntry.getValue()) {
-          credentials.add(new Credential(formatType, credentialData, ""));
-        }
-      }
-      if (!credentials.isEmpty()) {
-        result.put(descriptorEntry.getKey(), credentials);
-      }
-    }
-    return result;
-  }
-
   public static List<VPTokenSigningResult> parseVPTokenSigningResults(
-      ReadableArray vpTokenSigningResults) {
+    ReadableArray vpTokenSigningResults) {
 
     if (vpTokenSigningResults == null) {
       return Collections.emptyList();
@@ -95,8 +47,8 @@ public class OpenId4VPUtils {
       ReadableMap vpTokenSigningResultMap = vpTokenSigningResults.getMap(i);
 
       if (vpTokenSigningResultMap == null
-          || !vpTokenSigningResultMap.hasKey("signedData")
-          || vpTokenSigningResultMap.isNull("signedData")) {
+        || !vpTokenSigningResultMap.hasKey("signedData")
+        || vpTokenSigningResultMap.isNull("signedData")) {
         continue;
       }
 
@@ -104,51 +56,10 @@ public class OpenId4VPUtils {
       byte[] signedDataBytes = Base64.decode(signedData, Base64.URL_SAFE | Base64.NO_WRAP | Base64.NO_PADDING);
 
       formattedVpTokenSigningResults.add(
-          new VPTokenSigningResult(signedDataBytes));
+        new VPTokenSigningResult(signedDataBytes));
     }
 
     return formattedVpTokenSigningResults;
-  }
-
-  private static List<Object> convertReadableArrayToListOfCredential(FormatType formatType,
-      ReadableArray credentialList) {
-    switch (formatType) {
-      case LDP_VC: {
-        List<Object> ldpVcList = new ArrayList<>();
-        for (int i = 0; i < credentialList.size(); i++) {
-          ReadableMap credentialMap = credentialList.getMap(i);
-          ldpVcList.add(credentialMap.toHashMap());
-        }
-        return ldpVcList;
-      }
-      case MSO_MDOC: {
-        List<Object> mdocVcList = new ArrayList<>();
-        for (int i = 0; i < credentialList.size(); i++) {
-          String credential = credentialList.getString(i);
-          mdocVcList.add(credential);
-        }
-        return mdocVcList;
-
-      }
-      case VC_SD_JWT: {
-        List<Object> vcSdJwtList = new ArrayList<>();
-        for (int i = 0; i < credentialList.size(); i++) {
-          String credential = credentialList.getString(i);
-          vcSdJwtList.add(credential);
-        }
-        return vcSdJwtList;
-      }
-      case DC_SD_JWT: {
-        List<Object> dcSdJwtList = new ArrayList<>();
-        for (int i = 0; i < credentialList.size(); i++) {
-          String credential = credentialList.getString(i);
-          dcSdJwtList.add(credential);
-        }
-        return dcSdJwtList;
-      }
-      default:
-        return null;
-    }
   }
 
   private static FormatType getFormatType(String formatStr) {
@@ -162,6 +73,15 @@ public class OpenId4VPUtils {
       return DC_SD_JWT;
     }
     throw new UnsupportedOperationException("Credential format '" + formatStr + "' is not supported");
+  }
+
+  public static DCQLQuery parseDcqlQuery(ReadableMap dcqlQueryMap) {
+    if (dcqlQueryMap == null) {
+      return null;
+    }
+
+    String dcqlQueryJson = new Gson().toJson(dcqlQueryMap.toHashMap());
+    return Json.Default.decodeFromString(DCQLQuerySerializer.INSTANCE, dcqlQueryJson);
   }
 
   public static List<Credential> parseCredentials(ReadableArray credentialsArray) {
@@ -184,7 +104,7 @@ public class OpenId4VPUtils {
     return credentials;
   }
 
-  public static Map<String, List<Credential>> parseSelectedVCsDCQL(ReadableMap credentialsMap) {
+  public static Map<String, List<Credential>> parseSelectedVCs(ReadableMap credentialsMap) {
     if (credentialsMap == null) {
       return Collections.emptyMap();
     }
@@ -232,9 +152,9 @@ public class OpenId4VPUtils {
   }
 
   public static OpenID4VPExceptions convertToOpenID4VPException(
-      String errorCode,
-      String message,
-      String moduleName) {
+    String errorCode,
+    String message,
+    String moduleName) {
     switch (errorCode) {
       case ACCESS_DENIED:
         return new OpenID4VPExceptions.AccessDenied(message, moduleName);
@@ -243,7 +163,7 @@ public class OpenId4VPUtils {
         return new OpenID4VPExceptions.InvalidTransactionData(message, moduleName);
 
       default:
-        return new OpenID4VPExceptions.GenericFailure(message, moduleName);
+        return new OpenID4VPExceptions.GenericFailure(OpenID4VPErrorCodes.SERVER_ERROR, message, moduleName);
     }
   }
 }

@@ -13,6 +13,8 @@ import {
 } from '../../components/VC/common/VCUtils';
 import {CACHED_API} from '../api';
 import {isIOS} from '../constants';
+// Import OpenID4VP here to ensure jest.mocks are applied before module loading
+import OpenID4VPModule from './OpenID4VP';
 
 const mockInitSdk = jest.fn();
 const mockAuthenticateVerifier = jest.fn();
