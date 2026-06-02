@@ -39,7 +39,7 @@ import io.mosip.openID4VP.authorizationRequest.SdJwtVcFormatSupported;
 import io.mosip.openID4VP.authorizationRequest.VPFormatSupported;
 import io.mosip.openID4VP.authorizationRequest.Verifier;
 import io.mosip.openID4VP.authorizationRequest.WalletConfig;
-import io.mosip.openID4VP.authorizationRequest.WalletMetadataDefaultsKt;
+import io.mosip.openID4VP.authorizationRequest.WalletConfigDefaultsKt;
 import io.mosip.openID4VP.authorizationRequest.dcqlQuery.DCQLQuery;
 import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
@@ -242,12 +242,12 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         List<Verifier> trustedVerifiers = parseTrustedVerifiers(walletConfigMap);
 
         return new WalletConfig(
-                vpFormatsSupportedMap.isEmpty() ? WalletMetadataDefaultsKt.getDefaultVpFormatsSupported() : vpFormatsSupportedMap,
-                clientIdPrefixesSupported != null ? clientIdPrefixesSupported : WalletMetadataDefaultsKt.getDefaultClientIdPrefixesSupported(),
+                vpFormatsSupportedMap.isEmpty() ? WalletConfigDefaultsKt.getDefaultVpFormatsSupported() : vpFormatsSupportedMap,
+                clientIdPrefixesSupported != null ? clientIdPrefixesSupported : WalletConfigDefaultsKt.getDefaultClientIdPrefixesSupported(),
                 requestObjectSigningAlg,
                 encryptionAlg,
                 encryptionEnc,
-                responseTypes != null ? responseTypes : WalletMetadataDefaultsKt.getDefaultResponseTypeSupported(),
+                responseTypes != null ? responseTypes : WalletConfigDefaultsKt.getDefaultResponseTypeSupported(),
                 presentationDefinitionUriSupported,
                 supportedRequestUriMethods,
                 trustedVerifiers
