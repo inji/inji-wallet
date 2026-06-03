@@ -135,6 +135,8 @@ exports[`SendVcScreen should render empty state 1`] = `
         null,
         null,
         {
+          "alignItems": "center",
+          "justifyContent": "center",
           "marginBottom": 1,
           "marginTop": 1,
           "rowGap": 8,

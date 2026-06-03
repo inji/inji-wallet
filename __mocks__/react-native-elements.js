@@ -12,5 +12,6 @@ ListItem.Content = ({children}) => React.createElement('View', null, children);
 const CheckBox = props => React.createElement('View', props);
 const Input = props => React.createElement('View', props);
 const Overlay = props => React.createElement('View', props, props.children);
+const Divider = props => React.createElement('View', props);
 
-export {Button, ButtonProps, Icon, ListItem, Tooltip, CheckBox, Input, Overlay};
+export {Button, ButtonProps, Icon, ListItem, Tooltip, CheckBox, Input, Overlay, Divider};

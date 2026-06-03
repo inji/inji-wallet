@@ -517,9 +517,9 @@ function getVcsMatchingPresentationExchangeAuthRequest(
   }
 
   const success =
-    !(Object.keys(matchingVCs).length === 0) &&
+    Object.keys(matchingVCs).length > 0 &&
     Object.values(matchingVCs).every(
-      value => Array.isArray(value) && value.length === 0,
+      value => Array.isArray(value) && value.length > 0,
     );
 
   return {

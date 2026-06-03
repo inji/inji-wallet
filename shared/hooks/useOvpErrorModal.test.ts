@@ -67,7 +67,7 @@ describe('useOvpErrorModal', () => {
     const {modal} = callHook({
       error: '',
       noCredentialsMatchingVPRequest: true,
-      requestedClaimsByVerifier: 'name,email',
+      requestedClaimsByVerifier: new Set(['name', 'email']),
       getAdditionalMessage: mockGetAdditionalMessage,
       generateAndStoreLogMessage: mockGenerateAndStoreLogMessage,
       t: mockT,
@@ -84,7 +84,7 @@ describe('useOvpErrorModal', () => {
     const {modal} = callHook({
       error: '',
       noCredentialsMatchingVPRequest: true,
-      requestedClaimsByVerifier: '',
+      requestedClaimsByVerifier: new Set<string>(),
       getAdditionalMessage: mockGetAdditionalMessage,
       generateAndStoreLogMessage: mockGenerateAndStoreLogMessage,
       t: mockT,
@@ -129,7 +129,7 @@ describe('useOvpErrorModal', () => {
     const {modal} = callHook({
       error: 'credential mismatch detected',
       noCredentialsMatchingVPRequest: false,
-      requestedClaimsByVerifier: 'age',
+      requestedClaimsByVerifier: new Set<string>(['age']),
       getAdditionalMessage: mockGetAdditionalMessage,
       generateAndStoreLogMessage: mockGenerateAndStoreLogMessage,
       t: mockT,

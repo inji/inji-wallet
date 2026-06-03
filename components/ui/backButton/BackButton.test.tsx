@@ -24,20 +24,20 @@ describe('BackButton', () => {
   });
 
   describe('chevron type', () => {
-    it('renders the closeModal icon', () => {
+    it('renders the backButton', () => {
       const {getByLabelText} = render(
         <BackButton onPress={jest.fn()} type="chevron" />,
       );
       // testIDProps('closeModal') → { accessible: true, accessibilityLabel: 'closeModal' }
-      expect(getByLabelText('closeModal')).toBeTruthy();
+      expect(getByLabelText('goBack')).toBeTruthy();
     });
 
-    it('calls onPress when the chevron icon is pressed', () => {
+    it('calls onPress when the back button is pressed', () => {
       const onPress = jest.fn();
       const {getByLabelText} = render(
         <BackButton onPress={onPress} type="chevron" />,
       );
-      fireEvent.press(getByLabelText('closeModal'));
+      fireEvent.press(getByLabelText('goBack'));
       expect(onPress).toHaveBeenCalledTimes(1);
     });
 
