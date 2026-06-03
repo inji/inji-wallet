@@ -48,6 +48,7 @@ import {getVcKey, VCMetadata} from '../../shared/VCMetadata';
 import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {VCItemContainerFlowType} from '../../shared/Utils';
 import {BackButton} from '../../components/ui/backButton/BackButton';
+import {MissingClaimsView} from '../../components/openid4vp/MissingClaimsView';
 import {claimPathPointersToJsonPath} from '../../shared/openID4VP/OpenID4VPHelper';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
@@ -171,13 +172,17 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     }
 
     controller.generateAndStoreLogMessage('USER_DECLINED_CONSENT');
+    goBack();
+  };
+  
+  function goBack() {
     if (controller.isOVPViaDeepLink) {
       controller.GO_TO_HOME();
       BackHandler.exitApp();
     } else {
       controller.DISMISS();
     }
-  };
+  }
 
   const handleRejectButtonEvent = async () => {
     // Send error to verifier is initiated and its response is not listened to here.
@@ -414,8 +419,15 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
       }
       const consolidatedMatchingVcs = Array.from(uniqueVcsByKey.values());
 
+      const requestedClaims = Array.from(
+        errorModal.matchingVcsResult?.requestedClaims ?? [],
+      );
+
       return (
         <Column>
+          {requestedClaims.length > 0 && (
+            <MissingClaimsView claims={requestedClaims} />
+          )}
           <Text style={Theme.DcqlStyles.credentialMissingSectionLabel}>
             {t('errors.noMatchingCredentials.whatYouCanDo')}
           </Text>
@@ -582,6 +594,9 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
       {errorModal.show && !controller.isAuthorizationFlow && (
         <ErrorView
           isModal
+          goBack={errorModal.showBackButton ? goBack : undefined}
+          goBackButtonVisible={errorModal.showBackButton}
+          onDismiss={errorModal.showBackButton ? goBack : undefined}
           alignActionsOnEnd
           showClose={false}
           isVisible={errorModal.show}

@@ -110,15 +110,18 @@ jest.mock('../../shared/GlobalContext', () => {
   };
 });
 
+const defaultErrorModal = {
+  show: false,
+  title: '',
+  message: '',
+  additionalMessage: '',
+  showRetryButton: false,
+  matchingVcsResult: null,
+};
+let mockErrorModalOverrides: Record<string, any> = {};
 jest.mock('../../shared/hooks/useOvpErrorModal', () => ({
   useOvpErrorModal: () => [
-    {
-      show: false,
-      title: '',
-      message: '',
-      additionalMessage: '',
-      showRetryButton: false,
-    },
+    {...defaultErrorModal, ...mockErrorModalOverrides},
     jest.fn(),
   ],
 }));
@@ -144,8 +147,17 @@ jest.mock('../../components/ui/svg', () => ({
   SvgImage: {PermissionDenied: () => 'PermissionDenied'},
 }));
 
+jest.mock('../../components/openid4vp/MissingClaimsView', () => ({
+  MissingClaimsView: ({claims}: {claims: string[]}) => {
+    const {Text} = require('react-native');
+    return <Text testID="missingClaimsView">{claims.join(',')}</Text>;
+  },
+}));
+
 jest.mock('react-native-linear-gradient', () => 'LinearGradient');
-jest.mock('../../components/ui/Error', () => ({ErrorView: () => null}));
+jest.mock('../../components/ui/Error', () => ({
+  ErrorView: ({additionalContent}: any) => additionalContent || null,
+}));
 jest.mock('../../components/ui/Loader', () => ({
   Loader: () => null,
   LoaderSkeleton: () => null,
@@ -214,6 +226,7 @@ describe('SendVPScreen', () => {
 
   beforeEach(() => {
     mockController.__resetMockOverrides();
+    mockErrorModalOverrides = {};
     jest.clearAllMocks();
   });
 
@@ -464,5 +477,35 @@ describe('SendVPScreen', () => {
     });
     const {toJSON} = render(<SendVPScreen {...navProps} />);
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('should render MissingClaimsView when errorModal has matchingVcsResult with requestedClaims', () => {
+    mockErrorModalOverrides = {
+      show: true,
+      title: 'No matching credentials found!',
+      message: 'No credentials found.',
+      matchingVcsResult: {
+        requestedClaims: new Set(['claim_a', 'claim_b', 'claim_c', 'claim_d']),
+        matchingVCs: {},
+        success: false,
+      },
+    };
+    const {getByTestId} = render(<SendVPScreen {...navProps} />);
+    expect(getByTestId('missingClaimsView')).toBeTruthy();
+  });
+
+  it('should not render MissingClaimsView when matchingVcsResult has no requestedClaims', () => {
+    mockErrorModalOverrides = {
+      show: true,
+      title: 'No matching credentials found!',
+      message: 'No credentials found.',
+      matchingVcsResult: {
+        requestedClaims: new Set<string>(),
+        matchingVCs: {},
+        success: false,
+      },
+    };
+    const {queryByTestId} = render(<SendVPScreen {...navProps} />);
+    expect(queryByTestId('missingClaimsView')).toBeNull();
   });
 });

@@ -180,13 +180,6 @@ class OpenID4VP {
               (queryMatch.failedClaims as any[]).forEach(failedClaim => {
                 requestedClaims.add(getClaimName(failedClaim.claim.path));
               });
-            } else if (
-              queryMatch.failureReason ===
-                CredentialsNotMatchingErrorCodes.CryptographicHolderBindingOrMetaFilterMismatch ||
-              queryMatch.failureReason ===
-                CredentialsNotMatchingErrorCodes.NoMatchingFormatsFound
-            ) {
-              requestedClaims.add('Credential Meta');
             }
           }
         },
@@ -195,8 +188,7 @@ class OpenID4VP {
       const resultantResult = {
         matchingVCs: updatedMatchingVCs,
         success: result.success,
-        requestedClaims:
-          requestedClaims.size > 0 ? Array.from(requestedClaims).join(',') : '',
+        requestedClaims,
         purpose: '',
         credentialSetOptions: result.credentialSets,
       } as MatchingVCsResultForDcql;
@@ -533,7 +525,7 @@ function getVcsMatchingPresentationExchangeAuthRequest(
   return {
     success,
     matchingVCs,
-    requestedClaims: Array.from(requestedClaimsByVerifier).join(','),
+    requestedClaims: requestedClaimsByVerifier,
     purpose: presentationDefinition.purpose ?? '',
   };
 }

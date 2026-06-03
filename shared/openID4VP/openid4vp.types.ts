@@ -24,14 +24,14 @@ export interface MatchingVCsResultForPresentationExchangeRequest {
   matchingVCs: Record<string, VC[]>;
   success: boolean;
   purpose: string;
-  requestedClaims: string;
+  requestedClaims: Set<string>;
 }
 
 export interface MatchingVCsResultForDcql {
   matchingVCs: Record<string, MatchResult>;
   success: boolean;
   purpose: string;
-  requestedClaims: string;
+  requestedClaims: Set<string>;
   credentialSetOptions: CredentialSetOption[];
 }
 

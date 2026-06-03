@@ -28,6 +28,7 @@ export const Modal: React.FC<ModalProps> = ({
   headerRight,
   headerLeft,
   arrowLeft,
+  backButtonProps = {},
   onShow,
   children,
 }) => {
@@ -57,7 +58,7 @@ export const Modal: React.FC<ModalProps> = ({
                 />
               ) : null}
               {arrowLeft && onDismiss ? (
-                <BackButton onPress={onDismiss} />
+                  <BackButton {...backButtonProps} onPress={onDismiss} />
               ) : null}
               <Row
                 fill
@@ -123,4 +124,8 @@ export interface ModalProps {
   arrowLeft?: boolean;
   onShow?: () => void;
   children?: React.ReactNode;
+  backButtonProps?: {
+    type: 'arrow' | 'chevron';
+    showBackText: boolean;
+  };
 }
