@@ -6,6 +6,10 @@ import {
   ScrollView,
 } from 'react-native-gesture-handler';
 import {Text} from '../Text';
+import {useTranslation} from 'react-i18next';
+import {Icon} from 'react-native-elements';
+import {Theme} from '../styleUtils';
+import {Row} from '../Layout';
 
 export interface PaginationProps<T> {
   data: T[];
@@ -14,16 +18,10 @@ export interface PaginationProps<T> {
     index: number;
     total: number;
   }) => React.ReactNode;
-  previousLabel?: string;
-  nextLabel?: string;
 }
 
-export function Pagination<T>({
-  data,
-  renderItem,
-  previousLabel = '← Previous',
-  nextLabel = 'Next →',
-}: PaginationProps<T>) {
+export function Pagination<T>({data, renderItem}: PaginationProps<T>) {
+  const {t} = useTranslation('pagination');
   const [currentPage, setCurrentPage] = useState(0);
   const totalPages = data.length;
   const safePage = Math.min(currentPage, Math.max(0, totalPages - 1));
@@ -64,7 +62,15 @@ export function Pagination<T>({
                 testID="pagination-previous"
                 onPress={() => setCurrentPage(p => p - 1)}
                 style={styles.pageButton}>
-                <Text style={styles.pageButtonText}>{previousLabel}</Text>
+                <Row style={{columnGap: 4, alignItems: 'center'}}>
+                  <Icon
+                    name="arrow-left"
+                    type="feather"
+                    size={16}
+                    color={Theme.Colors.secondaryText}
+                  />
+                  <Text style={styles.pageButtonText}>{t('previous')}</Text>
+                </Row>
               </TouchableOpacity>
             ) : (
               <View style={styles.pageButton} />
@@ -84,7 +90,15 @@ export function Pagination<T>({
                 testID="pagination-next"
                 onPress={() => setCurrentPage(p => p + 1)}
                 style={styles.pageButton}>
-                <Text style={styles.pageButtonText}>{nextLabel}</Text>
+                <Row style={{columnGap: 4, alignItems: 'center'}}>
+                  <Text style={styles.pageButtonText}>{t('next')}</Text>
+                  <Icon
+                    name="arrow-right"
+                    type="feather"
+                    size={16}
+                    color={Theme.Colors.secondaryText}
+                  />
+                </Row>
               </TouchableOpacity>
             ) : (
               <View style={styles.pageButton} />
@@ -109,8 +123,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 14,
-    borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
     backgroundColor: '#FFFFFF',
   },
   pageButton: {

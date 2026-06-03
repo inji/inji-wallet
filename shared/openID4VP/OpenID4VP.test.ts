@@ -150,6 +150,7 @@ jest.mock('./OpenID4VPHelper', () => ({
   getWalletConfig: jest.fn(() => Promise.resolve(null)),
   isClientValidationRequired: jest.fn(() => Promise.resolve(false)),
   jsonLdCanonicalize: jest.fn(() => Promise.resolve('')),
+  isDcqlFlow: jest.fn(() => false),
   claimPathPointersToJsonPath: jest.fn((path: Array<string | number | null>) =>
     path.join('.'),
   ),
@@ -175,8 +176,6 @@ const mockedFetchTrustedVerifiersList = jest.mocked(
 );
 const mockedIsIOS = jest.mocked(isIOS);
 
-// Import OpenID4VP here to ensure jest.mocks are applied before module loading
-import OpenID4VPModule from './OpenID4VP';
 let OpenID4VP = OpenID4VPModule;
 
 const getOpenID4VPNativeModule = () => NativeModules.InjiOpenID4VP;
@@ -323,6 +322,7 @@ describe('OpenID4VP', () => {
       );
 
       const result = await OpenID4VP.prepareCredentialsForVPSharing(
+        {},
         selectedVCs,
         {},
       );
@@ -414,6 +414,7 @@ describe('OpenID4VP', () => {
       );
 
       const result = await OpenID4VP.prepareCredentialsForVPSharing(
+        {},
         selectedVCs,
         {},
       );
@@ -433,6 +434,7 @@ describe('OpenID4VP', () => {
       const disclosures = {'vc-key': ['name', 'email']};
 
       const result = await OpenID4VP.prepareCredentialsForVPSharing(
+        {},
         selectedVCs,
         disclosures,
       );
@@ -443,11 +445,118 @@ describe('OpenID4VP', () => {
     });
 
     it('should handle dc_sd_jwt format', async () => {
+      it('should sanitize wildcard disclosure paths before lookup', async () => {
+        const selectedVCs = buildSelectedVCs(
+          buildVc('cred-1', 'vc_sd_jwt', 'header.payload.sig~disc1~', {
+            pathToDisclosures: {
+              degrees: ['disc1'],
+            },
+          }),
+        );
+        const disclosures = {'vc-key': ['degrees[*]']};
+
+        const result = await OpenID4VP.prepareCredentialsForVPSharing(
+          {},
+          selectedVCs,
+          disclosures,
+        );
+
+        expect(result['inp-1']['vc_sd_jwt']).toEqual([
+          'header.payload.sig~disc1~',
+        ]);
+      });
+
+      it('should fallback to parent path when exact disclosure path is missing', async () => {
+        const selectedVCs = buildSelectedVCs(
+          buildVc('cred-1', 'vc_sd_jwt', 'header.payload.sig~disc1~', {
+            pathToDisclosures: {
+              address: ['disc1'],
+            },
+          }),
+        );
+        const disclosures = {'vc-key': ['address.city']};
+
+        const result = await OpenID4VP.prepareCredentialsForVPSharing(
+          {},
+          selectedVCs,
+          disclosures,
+        );
+
+        expect(result['inp-1']['vc_sd_jwt']).toEqual([
+          'header.payload.sig~disc1~',
+        ]);
+      });
+
+      it('should fallback to the nearest parent path for deeply nested selection', async () => {
+        const selectedVCs = buildSelectedVCs(
+          buildVc('cred-1', 'vc_sd_jwt', 'header.payload.sig~disc1~', {
+            pathToDisclosures: {
+              'address.city': ['disc1'],
+            },
+          }),
+        );
+        const disclosures = {'vc-key': ['address.city.name']};
+
+        const result = await OpenID4VP.prepareCredentialsForVPSharing(
+          {},
+          selectedVCs,
+          disclosures,
+        );
+
+        expect(result['inp-1']['vc_sd_jwt']).toEqual([
+          'header.payload.sig~disc1~',
+        ]);
+      });
+
+      it('should match all indexed paths for wildcard array selections', async () => {
+        const selectedVCs = buildSelectedVCs(
+          buildVc('cred-1', 'vc_sd_jwt', 'header.payload.sig~disc1~disc2~', {
+            pathToDisclosures: {
+              'degrees.0.type': ['disc1'],
+              'degrees.1.type': ['disc2'],
+            },
+          }),
+        );
+        const disclosures = {'vc-key': ['degrees[*].type']};
+
+        const result = await OpenID4VP.prepareCredentialsForVPSharing(
+          {},
+          selectedVCs,
+          disclosures,
+        );
+
+        expect(result['inp-1']['vc_sd_jwt']).toEqual([
+          'header.payload.sig~disc1~disc2~',
+        ]);
+      });
+
+      it('should fallback from wildcard leaf path to indexed parent path', async () => {
+        const selectedVCs = buildSelectedVCs(
+          buildVc('cred-1', 'vc_sd_jwt', 'header.payload.sig~disc1~', {
+            pathToDisclosures: {
+              'degrees.0': ['disc1'],
+            },
+          }),
+        );
+        const disclosures = {'vc-key': ['degrees[*].type']};
+
+        const result = await OpenID4VP.prepareCredentialsForVPSharing(
+          {},
+          selectedVCs,
+          disclosures,
+        );
+
+        expect(result['inp-1']['vc_sd_jwt']).toEqual([
+          'header.payload.sig~disc1~',
+        ]);
+      });
+
       const selectedVCs = buildSelectedVCs(
         buildVc('cred-1', 'dc_sd_jwt', 'jwt-part~', {pathToDisclosures: {}}),
       );
 
       const result = await OpenID4VP.prepareCredentialsForVPSharing(
+        {},
         selectedVCs,
         {'vc-key': []},
       );
@@ -461,7 +570,9 @@ describe('OpenID4VP', () => {
       );
 
       await expect(
-        OpenID4VP.prepareCredentialsForVPSharing(selectedVCs, {'vc-key': []}),
+        OpenID4VP.prepareCredentialsForVPSharing({}, selectedVCs, {
+          'vc-key': [],
+        }),
       ).rejects.toThrow('Invalid VC: missing credential');
     });
   });
@@ -842,7 +953,7 @@ describe('OpenID4VP', () => {
               ],
             },
             'query-3': {
-              failureReson:
+              failureReason:
                 'no_matching_credentials_with_requested_credential_formats_found',
             },
           },
@@ -896,7 +1007,7 @@ describe('OpenID4VP', () => {
           },
         },
         success: true,
-        requestedClaims: 'credentialSubject.birthDate,Credential Meta',
+        requestedClaims: 'birthDate,Credential Meta',
         purpose: '',
         credentialSetOptions: [{options: [['query-1']], required: true}],
       });
@@ -907,24 +1018,39 @@ describe('OpenID4VP', () => {
     });
 
     it('registers onJsonLdExpand on iOS and forwards the expanded payload to native', async () => {
-      // Set up iOS environment
-      mockedIsIOS.mockReturnValue(true);
+      // Use isolateModules to reload OpenID4VP so the module-level `emitter`
+      // is created with the test's NativeEventEmitter mock (emitter.addListener
+      // === mockAddListener). Configure the fresh isIOS and jsonLdExpand mocks
+      // INSIDE the isolated scope so they share the same jest.fn() instances
+      // that the fresh OpenID4VP module captures in its closures.
+      let FreshOpenID4VP: typeof OpenID4VP;
+      let freshNativeModule: MockInjiOpenID4VP;
+      let freshJsonLdExpand: jest.Mock;
 
-      // Verify isIOS is mocked correctly
-      expect(mockedIsIOS()).toBe(true);
+      jest.isolateModules(() => {
+        // Configure isIOS on the fresh constants module BEFORE OpenID4VP loads
+        // so that the constructor's isIOS() check sees true.
+        const freshConstants = require('../constants');
+        freshConstants.isIOS.mockReturnValue(true);
 
-      resetOpenID4VPInstance();
+        FreshOpenID4VP = require('./OpenID4VP').default;
+        freshNativeModule = require('react-native').NativeModules
+          .InjiOpenID4VP as MockInjiOpenID4VP;
 
-      const nativeModule = getOpenID4VPNativeModule();
-      nativeModule.getMatchingCredentials.mockResolvedValue(
+        // Capture the fresh jsonLdExpand so we can assert on it later.
+        freshJsonLdExpand = require('../Utils').jsonLdExpand;
+      });
+
+      freshNativeModule!.getMatchingCredentials.mockResolvedValue(
         JSON.stringify({success: true, queryMatches: {}, credentialSets: []}),
       );
-      mockedJsonLdExpand.mockResolvedValue([{expanded: true}]);
+      freshJsonLdExpand!.mockResolvedValue([{expanded: true}]);
 
       // Trigger getMatchingCredentials which should register the iOS callback
-      await OpenID4VP.getMatchingCredentials({dcql_query: {query: 'example'}}, [
-        buildVc('cred-1', 'ldp_vc', {id: 'cred-1'}),
-      ]);
+      await FreshOpenID4VP!.getMatchingCredentials(
+        {dcql_query: {query: 'example'}},
+        [buildVc('cred-1', 'ldp_vc', {id: 'cred-1'})],
+      );
 
       // Verify mockAddListener was called (should have entries for canonicalizer and expander)
       expect(mockAddListener.mock.calls.length).toBeGreaterThan(0);
@@ -943,15 +1069,12 @@ describe('OpenID4VP', () => {
       await flushPromises();
 
       // Verify the result is sent to native
-      expect(mockedJsonLdExpand).toHaveBeenCalledWith({
+      expect(freshJsonLdExpand!).toHaveBeenCalledWith({
         '@context': 'https://example.org',
       });
-      expect(nativeModule.sendJsonLdExpandResultFromJS).toHaveBeenCalledWith([
-        {expanded: true},
-      ]);
-
-      // Reset back to Android for other tests
-      mockedIsIOS.mockReturnValue(false);
+      expect(
+        freshNativeModule!.sendJsonLdExpandResultFromJS,
+      ).toHaveBeenCalledWith([{expanded: true}]);
     });
   });
 });

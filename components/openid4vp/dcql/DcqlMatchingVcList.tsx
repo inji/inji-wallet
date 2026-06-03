@@ -138,8 +138,6 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
             }
           />
         )}
-        previousLabel={'← ' + t('dcqlSection.previous')}
-        nextLabel={t('dcqlSection.next') + ' →'}
       />
     </Column>
   );

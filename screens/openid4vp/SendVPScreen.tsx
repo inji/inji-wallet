@@ -504,9 +504,22 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
             <Column
               style={[
                 Theme.SendVcScreenStyles.shareOptionButtonsContainer,
-                {position: 'relative'},
+                {
+                  position: 'relative',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingVertical: 12,
+                  marginBottom: 1,
+                  marginTop: 1,
+                  rowGap: 8,
+                },
               ]}
               backgroundColor={Theme.Colors.whiteBackgroundColor}>
+              {controller.isDcqlFlow && (
+                <Text weight="regular" color={Theme.Colors.instructionLabel}>
+                  {t('dcqlSection.instruction')}
+                </Text>
+              )}
               {shareActions()}
 
               <Button

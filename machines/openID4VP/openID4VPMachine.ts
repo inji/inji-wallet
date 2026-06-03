@@ -98,6 +98,7 @@ export const openID4VPMachine = model.createMachine(
         },
       },
       checkVerifierTrust: {
+        entry: ['resetIsShowLoadingScreen'],
         invoke: {
           // Has Verifier communications happened before and user has given the trust consent
           // This is not related to Wallet's pre-registered Verifier
@@ -177,7 +178,7 @@ export const openID4VPMachine = model.createMachine(
       },
 
       getVCsSatisfyingAuthRequest: {
-        entry: ['dismissTrustModal'],
+        entry: ['setIsShowLoadingScreen', 'dismissTrustModal'],
         on: {
           DOWNLOADED_VCS: {
             actions: ['setAvailableWalletCredentials'],
@@ -275,6 +276,7 @@ export const openID4VPMachine = model.createMachine(
         },
       },
       selectingVCs: {
+        entry: ['resetIsShowLoadingScreen'],
         // TODO: On entering this state, an event can be sent to parent stating VCs matching done and ready for selection
         on: {
           VERIFY_AND_ACCEPT_REQUEST: {
