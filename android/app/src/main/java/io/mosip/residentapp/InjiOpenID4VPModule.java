@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import io.mosip.openID4VP.OpenID4VP;
+import io.mosip.openID4VP.authorizationRequest.AuthorizationDcqlRequest;
 import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest;
 import io.mosip.openID4VP.authorizationRequest.LdpVcFormatSupported;
 import io.mosip.openID4VP.authorizationRequest.MsoMdocVcFormatSupported;
@@ -136,8 +137,16 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                                        Promise promise) {
       try {
         List<Credential> credentials = OpenId4VPUtils.parseCredentials(availableWalletCredentials);
-        ReadableMap dcqlQueryMap = vpRequest.getMap("dcql_query");
-        DCQLQuery dcqlQuery = OpenId4VPUtils.parseDcqlQuery(dcqlQueryMap);
+
+        // Use the already-parsed DCQLQuery from authenticateVerifier to avoid
+        // round-trip serialization issues (Gson serializes ClaimValue wrappers as objects)
+        DCQLQuery dcqlQuery;
+        if (openID4VP.getAuthorizationRequest() instanceof AuthorizationDcqlRequest) {
+            dcqlQuery = ((AuthorizationDcqlRequest) openID4VP.getAuthorizationRequest()).getDcqlQuery();
+        } else {
+            ReadableMap dcqlQueryMap = vpRequest.getMap("dcql_query");
+            dcqlQuery = OpenId4VPUtils.parseDcqlQuery(dcqlQueryMap);
+        }
 
         assert dcqlQuery != null;
         MatchingCredentialsResult result = new DCQLHelper().getMatchingCredentials(credentials, dcqlQuery);

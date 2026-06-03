@@ -266,10 +266,23 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     }
 
     return (
-      <Loader
-        title={t('loaders.loading')}
-        subTitle={t(`loaders.subTitle.fetchingVerifiers`)}
-      />
+      <React.Fragment>
+        <TrustModalVerifier
+          isVisible={controller.showTrustConsentModal}
+          logo={controller.verifierLogoInTrustModal}
+          name={
+            controller.verifierNameInTrustModal ??
+            t('ScanScreen:unknownVerifier')
+          }
+          onConfirm={controller.VERIFIER_TRUST_CONSENT_GIVEN}
+          onCancel={controller.CANCEL}
+          flowType={'verifier'}
+        />
+        <Loader
+          title={t('loaders.loading')}
+          subTitle={t(`loaders.subTitle.fetchingVerifiers`)}
+        />
+      </React.Fragment>
     );
   }
 
