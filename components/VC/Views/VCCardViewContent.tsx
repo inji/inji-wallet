@@ -207,7 +207,6 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   };
 
   const wellknownDisplayProperty = new Display(wellknown);
-  console.log('disableSelection ', disableSelection);
   const vcSelectableButton = selectable && (
     <Checkbox
       testId={'select-vc'}
@@ -223,9 +222,6 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
   const {t} = useTranslation();
 
   function showDisclosedKeys() {
-    console.log('sdClaimsPath: ', claimsPath);
-    console.log('Format check : ', verifiableCredentialData.format);
-
     return (
       flow === VCItemContainerFlowType.VP_SHARE &&
       (credential?.disclosedKeys?.length > 0 ||
@@ -421,7 +417,6 @@ type DisclosureData = {
 function buildDisclosureTree(
   flattened: Record<string, {visibility: ClaimVisibility; value: unknown}>,
 ): Record<string, DisclosureData> {
-  console.log('Flattened - ', JSON.stringify(flattened, null, 2));
   const root: Record<string, DisclosureData> = {};
 
   Object.entries(flattened).forEach(([path, metadata]) => {

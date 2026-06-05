@@ -202,7 +202,6 @@ export const openID4VPMachine = model.createMachine(
       },
 
       checkIfAnyMatchingVCs: {
-        entry: [() => console.log('checking if any matching vcs')],
         always: [
           {
             cond: 'hasNoMatchingVCs',
@@ -610,10 +609,7 @@ export const openID4VPMachine = model.createMachine(
       },
       showError: {
         id: 'showError',
-        entry: [
-          () => console.log('Error state about to reset loading reason :p'),
-          'resetIsShowLoadingScreen',
-        ],
+        entry: ['resetIsShowLoadingScreen'],
         on: {
           RETRY: {
             actions: ['resetError', 'incrementOpenID4VPRetryCount'],

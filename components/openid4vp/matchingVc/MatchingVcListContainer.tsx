@@ -1,6 +1,6 @@
 import React from 'react';
-import {DcqlMatchingVcList} from './dcql/DcqlMatchingVcList';
-import {PresentationExchangeMatchingVcList} from './presentationExchange/PresentationExchangeMatchingVcList';
+import {DcqlMatchingVcList} from '../dcql/matchingVc/DcqlMatchingVcList';
+import {PresentationExchangeMatchingVcList} from '../presentationExchange/PresentationExchangeMatchingVcList';
 
 interface MatchingVcListProps {
   controller: any;

@@ -384,35 +384,6 @@ class OpenID4VP {
     const pathToDisclosures: Record<string, string[]> =
       vcData.verifiableCredential?.processedCredential.pathToDisclosures || {};
 
-    console.log('selectedDisclosures - ', JSON.stringify(claimsPath, null, 2));
-    console.log(
-      'Path to disclosures - ',
-      JSON.stringify(pathToDisclosures, null, 2),
-    );
-    console.log(
-      'Path to disclosedKeys - ',
-      JSON.stringify(
-        vcData.verifiableCredential?.processedCredential.disclosedKeys,
-        null,
-        2,
-      ),
-    );
-    console.log(
-      'Path to publicKeys - ',
-      JSON.stringify(
-        vcData.verifiableCredential?.processedCredential.publicKeys,
-        null,
-        2,
-      ),
-    );
-    console.log(
-      'Path to fullResolvedPayload - ',
-      JSON.stringify(
-        vcData.verifiableCredential?.processedCredential.fullResolvedPayload,
-        null,
-        2,
-      ),
-    );
     const disclosureSet = new Set<string>();
     claimsPath?.forEach(path => {
       const disclosures = getDisclosuresForPath(pathToDisclosures, path);

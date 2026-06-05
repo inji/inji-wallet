@@ -36,7 +36,7 @@ import {APP_EVENTS} from '../../machines/app';
 import {useScanScreen} from '../Scan/ScanScreenController';
 import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
 import {TrustModalVerifier} from '../../components/TrustModalVerifier';
-import {MatchingVcListContainer} from '../../components/openid4vp/MatchingVcListContainer';
+import {MatchingVcListContainer} from '../../components/openid4vp/matchingVc/MatchingVcListContainer';
 import {VcItemContainer} from '../../components/VC/VcItemContainer';
 import {VerifierInfo} from '../../components/openid4vp/verifier/VerifierInfo';
 import {WhyWeNeedDocumentsOverlay} from '../../components/openid4vp/infoOverlay/WhyWeNeedDocumentsOverlay';
@@ -48,7 +48,7 @@ import {getVcKey, VCMetadata} from '../../shared/VCMetadata';
 import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {VCItemContainerFlowType} from '../../shared/Utils';
 import {BackButton} from '../../components/ui/backButton/BackButton';
-import {MissingClaimsView} from '../../components/openid4vp/MissingClaimsView';
+import {MissingClaimsView} from '../../components/openid4vp/missingClaimsView/MissingClaimsView';
 import {claimPathPointersToJsonPath} from '../../shared/openID4VP/OpenID4VPHelper';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
@@ -174,7 +174,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     controller.generateAndStoreLogMessage('USER_DECLINED_CONSENT');
     goBack();
   };
-  
+
   function goBack() {
     if (controller.isOVPViaDeepLink) {
       controller.GO_TO_HOME();
@@ -376,10 +376,6 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
               ]),
             );
           }
-          console.log(
-            'Selected disclosures before sending - ',
-            JSON.stringify(selectedDisclosures, null, 2),
-          );
           controller.ACCEPT_REQUEST(selectedDisclosures);
         }}
       />

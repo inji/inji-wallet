@@ -30,20 +30,20 @@ beforeAll(() => {
 import React from 'react';
 import {render, waitFor, fireEvent} from '@testing-library/react-native';
 import {DcqlMatchingVcList} from './DcqlMatchingVcList';
-import {VCMetadata} from '../../../shared/VCMetadata';
+import {VCMetadata} from '../../../../shared/VCMetadata';
 
 // ---------------------------------------------------------------------------
 // Mocks
 // ---------------------------------------------------------------------------
 
-jest.mock('../../ui/LoaderAnimation', () => ({
+jest.mock('../../../ui/LoaderAnimation', () => ({
   LoaderAnimation: ({testID}: {testID: string}) => {
     const {View} = require('react-native');
     return <View testID={testID} />;
   },
 }));
 
-jest.mock('../../ui/pagination/Pagination', () => ({
+jest.mock('../../../ui/pagination/Pagination', () => ({
   Pagination: ({data, renderItem}: any) => {
     const React = require('react');
     const {View, TouchableOpacity} = require('react-native');
@@ -67,7 +67,7 @@ jest.mock('../../ui/pagination/Pagination', () => ({
 // Capture the props each CredentialSetSection is rendered with so that we can
 // assert ordering, satisfiableOptions, mandatoryIndex, etc.
 const mockCredentialSetSectionCalls: any[] = [];
-jest.mock('./CredentialSetSection', () => ({
+jest.mock('../credentialSetSection/CredentialSetSection', () => ({
   CredentialSetSection: (props: any) => {
     mockCredentialSetSectionCalls.push(props);
     const {View} = require('react-native');

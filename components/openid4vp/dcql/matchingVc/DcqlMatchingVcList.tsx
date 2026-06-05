@@ -1,16 +1,16 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Column} from '../../ui';
-import {Theme} from '../../ui/styleUtils';
+import {Column} from '../../../ui';
+import {Theme} from '../../../ui/styleUtils';
 import {
   CredentialSetOption,
   MatchingVCsResultForDcql,
-} from '../../../shared/openID4VP/openid4vp.types';
+} from '../../../../shared/openID4VP/openid4vp.types';
 import {
   CredentialSetSection,
   SectionSelectionState,
-} from './CredentialSetSection';
-import {LoaderAnimation} from '../../ui/LoaderAnimation';
-import {Pagination} from '../../ui/pagination/Pagination';
+} from '../credentialSetSection/CredentialSetSection';
+import {LoaderAnimation} from '../../../ui/LoaderAnimation';
+import {Pagination} from '../../../ui/pagination/Pagination';
 import {useTranslation} from 'react-i18next';
 
 type DcqlMatchingVcListProps = {

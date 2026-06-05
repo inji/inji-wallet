@@ -35,13 +35,13 @@ beforeAll(() => {
 import React from 'react';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import {CredentialSetSection} from './CredentialSetSection';
-import {VCMetadata} from '../../../shared/VCMetadata';
+import {VCMetadata} from '../../../../shared/VCMetadata';
 
 // ---------------------------------------------------------------------------
 // Mocks
 // ---------------------------------------------------------------------------
 
-jest.mock('../../VC/VcItemContainer', () => ({
+jest.mock('../../../VC/VcItemContainer', () => ({
   VcItemContainer: ({testId, onPress, selected, disableSelection}: any) => {
     const {TouchableOpacity, Text} = require('react-native');
     return (
@@ -56,7 +56,7 @@ jest.mock('../../VC/VcItemContainer', () => ({
   },
 }));
 
-jest.mock('../../../shared/openID4VP/OpenID4VPHelper', () => ({
+jest.mock('../../../../shared/openID4VP/OpenID4VPHelper', () => ({
   claimPathPointersToJsonPath: jest.fn(() => []),
 }));
 

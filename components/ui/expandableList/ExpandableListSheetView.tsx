@@ -1,0 +1,251 @@
+import React, {ReactNode, useState} from 'react';
+import {
+  Modal,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Text} from '../index';
+import {Divider} from '../divider/Divider';
+import {Theme} from '../styleUtils';
+
+const DEFAULT_COLLAPSED_ITEM_COUNT = 3;
+const SHEET_MAX_HEIGHT = '85%' as const;
+
+type RenderItemParams<T> = {
+  item: T;
+  index: number;
+  isExpanded: boolean;
+  isLast: boolean;
+};
+
+type ExpandableListSheetViewProps<T> = {
+  items: T[];
+  testID: string;
+  introText: string;
+  title: string;
+  footerText: string;
+  closeText: string;
+  showMoreText: (hiddenCount: number) => string;
+  badge?: ReactNode;
+  collapsedItemCount?: number;
+  initialExpanded?: boolean;
+  renderItem: (params: RenderItemParams<T>) => ReactNode;
+  keyExtractor?: (item: T, index: number, isExpanded: boolean) => string;
+};
+
+function getExpandableIds(baseTestID: string) {
+  return {
+    introText: `${baseTestID}-intro-text`,
+    card: `${baseTestID}-card`,
+    showMoreButton: `${baseTestID}-show-more-button`,
+    modalOverlay: `${baseTestID}-modal-overlay`,
+    modalSheet: `${baseTestID}-modal-sheet`,
+    modalHandle: `${baseTestID}-modal-handle`,
+    modalTitle: `${baseTestID}-modal-title`,
+    modalDivider: `${baseTestID}-modal-divider`,
+    modalFooter: `${baseTestID}-modal-footer`,
+    modalCloseButton: `${baseTestID}-modal-close-button`,
+    modalCloseText: `${baseTestID}-modal-close-text`,
+  };
+}
+
+export function ExpandableListSheetView<T>({
+  items,
+  testID,
+  introText,
+  title,
+  footerText,
+  closeText,
+  showMoreText,
+  badge,
+  collapsedItemCount = DEFAULT_COLLAPSED_ITEM_COUNT,
+  initialExpanded = false,
+  renderItem,
+  keyExtractor,
+}: ExpandableListSheetViewProps<T>) {
+  const [expanded, setExpanded] = useState(initialExpanded);
+  const visibleItems = items.slice(0, collapsedItemCount);
+  const hiddenCount = items.length - collapsedItemCount;
+  const ids = getExpandableIds(testID);
+
+  const openModal = () => setExpanded(true);
+  const closeModal = () => setExpanded(false);
+
+  return (
+    <>
+      <Text testID={ids.introText} style={styles.introText}>
+        {introText}
+      </Text>
+
+      <View testID={ids.card} style={styles.card}>
+        {visibleItems.map((item, index) => (
+          <React.Fragment
+            key={
+              keyExtractor?.(item, index, false) ??
+              `${testID}-collapsed-item-${index}`
+            }>
+            {renderItem({
+              item,
+              index,
+              isExpanded: false,
+              isLast: index === visibleItems.length - 1,
+            })}
+          </React.Fragment>
+        ))}
+      </View>
+
+      {hiddenCount > 0 && (
+        <TouchableOpacity
+          testID={ids.showMoreButton}
+          style={styles.showMoreButton}
+          onPress={openModal}>
+          <Text style={styles.showMoreText}>{showMoreText(hiddenCount)}</Text>
+        </TouchableOpacity>
+      )}
+
+      {expanded && (
+        <Modal
+          testID={ids.modalOverlay}
+          transparent
+          visible={expanded}
+          animationType="slide"
+          onRequestClose={closeModal}>
+          <View style={styles.overlay}>
+            <TouchableOpacity
+              style={styles.backdrop}
+              activeOpacity={1}
+              onPress={closeModal}
+            />
+            <View testID={ids.modalSheet} style={styles.sheet}>
+              <View testID={ids.modalHandle} style={styles.handle} />
+              <View style={styles.modalHeader}>
+                <Text testID={ids.modalTitle} style={styles.modalTitle}>
+                  {title}
+                </Text>
+                {badge}
+              </View>
+              <Divider testId={ids.modalDivider} />
+              <ScrollView>
+                {items.map((item, index) => (
+                  <React.Fragment
+                    key={
+                      keyExtractor?.(item, index, true) ??
+                      `${testID}-expanded-item-${index}`
+                    }>
+                    {renderItem({
+                      item,
+                      index,
+                      isExpanded: true,
+                      isLast: index === items.length - 1,
+                    })}
+                  </React.Fragment>
+                ))}
+              </ScrollView>
+              <Text testID={ids.modalFooter} style={styles.modalFooter}>
+                {footerText}
+              </Text>
+              <TouchableOpacity
+                testID={ids.modalCloseButton}
+                style={styles.closeButton}
+                onPress={closeModal}>
+                <Text testID={ids.modalCloseText} style={styles.closeText}>
+                  {closeText}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      )}
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  introText: {
+    fontFamily: 'Montserrat_400Regular',
+    fontSize: 13,
+    lineHeight: 19,
+    color: Theme.Colors.errorGrayText,
+    marginHorizontal: 16,
+    marginBottom: 8,
+  },
+  card: {
+    backgroundColor: Theme.Colors.whiteBackgroundColor,
+    marginHorizontal: 16,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Theme.Colors.borderBottomColor,
+    overflow: 'hidden',
+  },
+  showMoreButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 16,
+    marginTop: 8,
+    marginBottom: 2,
+  },
+  showMoreText: {
+    fontFamily: 'Montserrat_600SemiBold',
+    fontSize: 13,
+    color: Theme.Colors.secondaryText,
+  },
+  backdrop: {
+    flex: 1,
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  sheet: {
+    backgroundColor: Theme.Colors.whiteBackgroundColor,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    maxHeight: SHEET_MAX_HEIGHT,
+  },
+  handle: {
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: Theme.Colors.borderBottomColor,
+    alignSelf: 'center',
+    marginTop: 10,
+    marginBottom: 8,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingBottom: 12,
+  },
+  modalTitle: {
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 18,
+    color: Theme.Colors.textValue,
+    flex: 1,
+  },
+  modalFooter: {
+    fontFamily: 'Montserrat_400Regular',
+    fontSize: 13,
+    color: Theme.Colors.errorGrayText,
+    textAlign: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  closeButton: {
+    marginHorizontal: 16,
+    marginBottom: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: Theme.Colors.borderBottomColor,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  closeText: {
+    fontFamily: 'Montserrat_600SemiBold',
+    fontSize: 15,
+    color: Theme.Colors.textValue,
+  },
+});

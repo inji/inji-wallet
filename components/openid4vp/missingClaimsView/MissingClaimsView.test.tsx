@@ -2,10 +2,9 @@ import React from 'react';
 import {render, fireEvent} from '@testing-library/react-native';
 import {MissingClaimsView} from './MissingClaimsView';
 
-// Note: the global jest-init.js mock replaces useState with a no-op setter.
-// Tests that need the expanded state use the initialExpanded prop directly.
-
 describe('MissingClaimsView', () => {
+  let setExpandedSpy: jest.Mock;
+
   const threeClaims = ['claim_one', 'claim_two', 'claim_three'];
   const manyClaims = [
     'claim_one',
@@ -15,9 +14,14 @@ describe('MissingClaimsView', () => {
     'claim_five',
   ];
 
+  beforeEach(() => {
+    [, setExpandedSpy] = React.useState(false) as [boolean, jest.Mock];
+    setExpandedSpy.mockClear();
+  });
+
   it('renders the claims intro text', () => {
     const {getByLabelText} = render(<MissingClaimsView claims={threeClaims} />);
-    expect(getByLabelText('missingClaimsIntroText')).toBeTruthy();
+    expect(getByLabelText('missing-claims-intro-text')).toBeTruthy();
   });
 
   it('renders only the first 3 claims in collapsed view', () => {
@@ -39,22 +43,36 @@ describe('MissingClaimsView', () => {
 
   it('does not render "show more" button when claims count is 3 or fewer', () => {
     const {queryByTestId} = render(<MissingClaimsView claims={threeClaims} />);
-    expect(queryByTestId('showMoreButton')).toBeNull();
+    expect(queryByTestId('missing-claims-show-more-button')).toBeNull();
   });
 
   it('renders "show more" button when claims exceed 3', () => {
     const {getByTestId} = render(<MissingClaimsView claims={manyClaims} />);
-    expect(getByTestId('showMoreButton')).toBeTruthy();
+    expect(getByTestId('missing-claims-show-more-button')).toBeTruthy();
+  });
+
+  it('requests expanded modal when show more is pressed', () => {
+    const {UNSAFE_getByProps} = render(
+      <MissingClaimsView claims={manyClaims} />,
+    );
+
+    UNSAFE_getByProps({
+      testID: 'missing-claims-show-more-button',
+    }).props.onPress();
+
+    expect(setExpandedSpy).toHaveBeenCalledWith(true);
   });
 
   it('expanded modal is not visible initially', () => {
-    const {queryByLabelText} = render(<MissingClaimsView claims={manyClaims} />);
-    expect(queryByLabelText('missingClaimsModalTitle')).toBeNull();
+    const {queryByLabelText} = render(
+      <MissingClaimsView claims={manyClaims} />,
+    );
+    expect(queryByLabelText('missing-claims-modal-title')).toBeNull();
   });
 
   it('renders "show more" button with correct hidden count', () => {
     const {getByTestId} = render(<MissingClaimsView claims={manyClaims} />);
-    const button = getByTestId('showMoreButton');
+    const button = getByTestId('missing-claims-show-more-button');
     // hiddenCount = 5 - 3 = 2
     expect(button).toBeTruthy();
   });
@@ -63,7 +81,7 @@ describe('MissingClaimsView', () => {
     const {getByLabelText} = render(
       <MissingClaimsView claims={manyClaims} initialExpanded />,
     );
-    expect(getByLabelText('missingClaimsModalTitle')).toBeTruthy();
+    expect(getByLabelText('missing-claims-modal-title')).toBeTruthy();
   });
 
   it('expanded view shows all claims numbered', () => {
@@ -81,7 +99,7 @@ describe('MissingClaimsView', () => {
     const {getByLabelText} = render(
       <MissingClaimsView claims={manyClaims} initialExpanded />,
     );
-    expect(getByLabelText('missingClaimsModalTitle')).toBeTruthy();
+    expect(getByLabelText('missing-claims-modal-title')).toBeTruthy();
   });
 
   it('expanded view displays the required count badge', () => {
@@ -95,19 +113,31 @@ describe('MissingClaimsView', () => {
     const {getByLabelText} = render(
       <MissingClaimsView claims={manyClaims} initialExpanded />,
     );
-    expect(getByLabelText('missingClaimsModalFooter')).toBeTruthy();
+    expect(getByLabelText('missing-claims-modal-footer')).toBeTruthy();
   });
 
   it('expanded view has a close button', () => {
     const {getByTestId} = render(
       <MissingClaimsView claims={manyClaims} initialExpanded />,
     );
-    expect(getByTestId('missingClaimsModalCloseButton')).toBeTruthy();
+    expect(getByTestId('missing-claims-modal-close-button')).toBeTruthy();
+  });
+
+  it('requests closing the expanded modal when close is pressed', () => {
+    const {UNSAFE_getByProps} = render(
+      <MissingClaimsView claims={manyClaims} initialExpanded />,
+    );
+
+    UNSAFE_getByProps({
+      testID: 'missing-claims-modal-close-button',
+    }).props.onPress();
+
+    expect(setExpandedSpy).toHaveBeenCalledWith(false);
   });
 
   it('show more button is not shown when exactly 3 claims are present', () => {
     const {queryByTestId} = render(<MissingClaimsView claims={threeClaims} />);
-    expect(queryByTestId('showMoreButton')).toBeNull();
+    expect(queryByTestId('missing-claims-show-more-button')).toBeNull();
   });
 
   it('renders red bullet for each visible claim', () => {
@@ -119,7 +149,7 @@ describe('MissingClaimsView', () => {
 
   it('renders correctly with an empty claims array', () => {
     const {queryByTestId, toJSON} = render(<MissingClaimsView claims={[]} />);
-    expect(queryByTestId('showMoreButton')).toBeNull();
+    expect(queryByTestId('missing-claims-show-more-button')).toBeNull();
     expect(toJSON()).not.toBeNull();
   });
 });

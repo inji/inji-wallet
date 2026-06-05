@@ -359,17 +359,7 @@ export function useSendVPScreen(props) {
     //TODO: Should this be renamed to Toggle instead??
     SELECT_VC_ITEM:
       (vcKey: string, credentialRequestId: string) =>
-      (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
-        console.log(
-          'Toggling selection for vcKey:',
-          vcKey,
-          'and credentialRequestId:',
-          credentialRequestId,
-        );
-        console.log(
-          'Before update credentialRequestIdToSelectedVcKeys:',
-          credentialRequestIdToSelectedVcKeys,
-        );
+      (_: ActorRefFrom<typeof VCItemMachine>) => {
         const credentialRequestIdToSelectedVcKeysClone = {
           ...credentialRequestIdToSelectedVcKeys,
         };
@@ -414,22 +404,11 @@ export function useSendVPScreen(props) {
         setCredentialRequestIdToSelectedVcKeys(
           credentialRequestIdToSelectedVcKeysClone,
         );
-
-        console.log(
-          'Updated credentialRequestIdToSelectedVcKeys:',
-          credentialRequestIdToSelectedVcKeysClone,
-        );
-
-        // const {serviceRefs, wellknownResponse, ...vcData} = vcRef.getSnapshot().context;
       },
 
     TOGGLE_VC_ITEMS:
       (selectedCredentialRequestIdToVCKeys: Record<string, Set<string>>) =>
-      (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
-        console.log(
-          'Toggling selection for vcKey:',
-          selectedCredentialRequestIdToVCKeys,
-        );
+      (_: ActorRefFrom<typeof VCItemMachine>) => {
         const credentialRequestIdToSelectedVcKeysClone = {
           ...credentialRequestIdToSelectedVcKeys,
         };
@@ -459,19 +438,11 @@ export function useSendVPScreen(props) {
         setCredentialRequestIdToSelectedVcKeys(
           credentialRequestIdToSelectedVcKeysClone,
         );
-
-        console.log(
-          'Updated credentialRequestIdToSelectedVcKeys:',
-          credentialRequestIdToSelectedVcKeysClone,
-        );
-
-        // const {serviceRefs, wellknownResponse, ...vcData} = vcRef.getSnapshot().context;
       },
 
     SELECT_VC_ITEMS:
       (selectedCredentialRequestIdToVCKeys: Record<string, Set<string>>) =>
-      (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
-        console.log('Selecting VC items:', selectedCredentialRequestIdToVCKeys);
+      (_: ActorRefFrom<typeof VCItemMachine>) => {
         const credentialRequestIdToSelectedVcKeysClone = {
           ...credentialRequestIdToSelectedVcKeys,
         };
@@ -495,22 +466,11 @@ export function useSendVPScreen(props) {
         setCredentialRequestIdToSelectedVcKeys(
           credentialRequestIdToSelectedVcKeysClone,
         );
-
-        console.log(
-          'Updated credentialRequestIdToSelectedVcKeys:',
-          credentialRequestIdToSelectedVcKeysClone,
-        );
-
-        // const {serviceRefs, wellknownResponse, ...vcData} = vcRef.getSnapshot().context;
       },
 
     DESELECT_VC_ITEMS:
       (selectedCredentialRequestIdToVCKeys: Record<string, Set<string>>) =>
-      (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
-        console.log(
-          'Deselecting VC items:',
-          selectedCredentialRequestIdToVCKeys,
-        );
+      (_: ActorRefFrom<typeof VCItemMachine>) => {
         const credentialRequestIdToSelectedVcKeysClone = {
           ...credentialRequestIdToSelectedVcKeys,
         };
@@ -534,13 +494,6 @@ export function useSendVPScreen(props) {
         setCredentialRequestIdToSelectedVcKeys(
           credentialRequestIdToSelectedVcKeysClone,
         );
-
-        console.log(
-          'Updated credentialRequestIdToSelectedVcKeys:',
-          credentialRequestIdToSelectedVcKeysClone,
-        );
-
-        // const {serviceRefs, wellknownResponse, ...vcData} = vcRef.getSnapshot().context;
       },
 
     UNCHECK_ALL: () => {

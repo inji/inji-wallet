@@ -59,18 +59,14 @@ export const signDataForVpPreparation = async (
   const result: Promise<VPTokenSigningResult>[] = unSignedVpTokens.map(
     async unsignedVPToken => {
       let signature: string | undefined = '';
-      const formatType = unsignedVPToken.format;
       const payload: string = unsignedVPToken.dataToSign;
       const signatureAlgorithm: string = unsignedVPToken.signatureAlgorithm;
-      console.log('Signing VP Token with format: ', formatType);
-      console.log('Signature Algorithm: ', signatureAlgorithm);
 
       const keyType =
         JWT_ALG_TO_KEY_TYPE[
           signatureAlgorithm as keyof typeof JWT_ALG_TO_KEY_TYPE
         ];
       const key = await getKeyInfo(keyType);
-      console.log('Key Info = ', JSON.stringify(key, null, 2));
       signature = await signData(
         key.privateKey,
         payload, // Payload is in base64 url encoded form - decode it before signing

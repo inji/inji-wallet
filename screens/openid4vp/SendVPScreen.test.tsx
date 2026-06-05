@@ -7,9 +7,12 @@ jest.mock('react-native-safe-area-context', () => ({
   SafeAreaConsumer: ({children}: any) => children({}),
 }));
 
-jest.mock('../../components/openid4vp/MatchingVcListContainer', () => ({
-  MatchingVcListContainer: () => null,
-}));
+jest.mock(
+  '../../components/openid4vp/matchingVc/MatchingVcListContainer',
+  () => ({
+    MatchingVcListContainer: () => null,
+  }),
+);
 jest.mock('../../components/openid4vp/verifier/VerifierInfo', () => ({
   VerifierInfo: () => null,
 }));
@@ -147,12 +150,15 @@ jest.mock('../../components/ui/svg', () => ({
   SvgImage: {PermissionDenied: () => 'PermissionDenied'},
 }));
 
-jest.mock('../../components/openid4vp/MissingClaimsView', () => ({
-  MissingClaimsView: ({claims}: {claims: string[]}) => {
-    const {Text} = require('react-native');
-    return <Text testID="missingClaimsView">{claims.join(',')}</Text>;
-  },
-}));
+jest.mock(
+  '../../components/openid4vp/missingClaimsView/MissingClaimsView',
+  () => ({
+    MissingClaimsView: ({claims}: {claims: string[]}) => {
+      const {Text} = require('react-native');
+      return <Text testID="missingClaimsView">{claims.join(',')}</Text>;
+    },
+  }),
+);
 
 jest.mock('react-native-linear-gradient', () => 'LinearGradient');
 jest.mock('../../components/ui/Error', () => ({

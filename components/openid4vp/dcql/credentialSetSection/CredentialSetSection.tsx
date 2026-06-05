@@ -1,27 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {Icon} from 'react-native-elements';
-import {Column, Text} from '../../ui';
-import {Theme} from '../../ui/styleUtils';
-import {VcItemContainer} from '../../VC/VcItemContainer';
-import {VCItemContainerFlowType} from '../../../shared/Utils';
+import {Column, Text} from '../../../ui';
+import {Theme} from '../../../ui/styleUtils';
+import {VcItemContainer} from '../../../VC/VcItemContainer';
+import {VCItemContainerFlowType} from '../../../../shared/Utils';
 import {
   CredentialSetOption,
   MatchResult,
   VcWithMatchedClaims,
-} from '../../../shared/openID4VP/openid4vp.types';
-import {DcqlBadgeColors} from '../../ui/themes/DefaultTheme';
-import {Badge} from '../../ui/badge/Badge';
-import {Divider} from '../../ui/divider/Divider';
+} from '../../../../shared/openID4VP/openid4vp.types';
+import {DcqlBadgeColors} from '../../../ui/themes/DefaultTheme';
+import {Badge} from '../../../ui/badge/Badge';
+import {Divider} from '../../../ui/divider/Divider';
 
-import {VC} from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {VCMetadata} from '../../../shared/VCMetadata';
-import {Checkbox, CheckboxSelectionType} from '../../ui/checkbox/Checkbox';
-import {Accordion} from '../../ui/accordion/Accordion';
-import {VCFormat} from '../../../shared/VCFormat';
+import {VC} from '../../../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {VCMetadata} from '../../../../shared/VCMetadata';
+import {Checkbox, CheckboxSelectionType} from '../../../ui/checkbox/Checkbox';
+import {Accordion} from '../../../ui/accordion/Accordion';
+import {VCFormat} from '../../../../shared/VCFormat';
 import {useTranslation} from 'react-i18next';
-import testIDProps from '../../../shared/commonUtil';
-import {claimPathPointersToJsonPath} from '../../../shared/openID4VP/OpenID4VPHelper';
+import testIDProps from '../../../../shared/commonUtil';
+import {claimPathPointersToJsonPath} from '../../../../shared/openID4VP/OpenID4VPHelper';
 
 export type SectionSelectionState = Record<number, Record<string, Set<string>>>;
 
@@ -205,26 +205,14 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
 
   const handleOptionToggle = (option: string[], optionIndex: number) => {
     if (isOptionSelected(option, optionIndex)) {
-      console.log(
-        'Option is already selected, deselecting option: ',
-        optionIndex,
-      );
       const {
         newSelectedQueryIdToCredentialsByOption,
         toBeDeselectedCredentialQueryIds,
       } = deselectOption(optionIndex);
 
-      console.log(
-        'To be updated into setSelectedQueryIdToCredentialsByOption ',
-        newSelectedQueryIdToCredentialsByOption,
-      );
       updateSelectionState(newSelectedQueryIdToCredentialsByOption);
       deselectVcs(toBeDeselectedCredentialQueryIds);
     } else {
-      console.log(
-        'Option is not already selected, selecting option: ',
-        optionIndex,
-      );
       deselectOtherOptions(optionIndex);
 
       const newState: Record<string, Set<string>> = {};
@@ -246,10 +234,6 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
         }
         newState[credentialQueryId] = tempVcKeysToSelect;
       });
-      console.log(
-        'To be updated into setSelectedQueryIdToCredentialsByOption ',
-        newState,
-      );
       updateSelectionState({[optionIndex]: newState});
       selectVcs(newState);
     }

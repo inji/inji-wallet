@@ -2,14 +2,14 @@ import React from 'react';
 import {render} from '@testing-library/react-native';
 import {MatchingVcListContainer} from './MatchingVcListContainer';
 
-jest.mock('./dcql/DcqlMatchingVcList', () => ({
+jest.mock('../dcql/matchingVc/DcqlMatchingVcList', () => ({
   DcqlMatchingVcList: () => {
     const {View} = require('react-native');
     return <View testID="dcql-matching-vc-list" />;
   },
 }));
 
-jest.mock('./presentationExchange/PresentationExchangeMatchingVcList', () => ({
+jest.mock('../presentationExchange/PresentationExchangeMatchingVcList', () => ({
   PresentationExchangeMatchingVcList: () => {
     const {View} = require('react-native');
     return <View testID="pe-matching-vc-list" />;
