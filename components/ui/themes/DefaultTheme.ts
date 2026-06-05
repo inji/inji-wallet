@@ -28,6 +28,7 @@ const Colors = {
   Gray40: '#666666',
   Gray44: '#707070',
   Gray50: '#999999',
+  darkGrey: '#9CA3AF',
   Gray9: '#171717',
   Gray89: '#E3E3E3',
   Gray97: '#F7F7F7',

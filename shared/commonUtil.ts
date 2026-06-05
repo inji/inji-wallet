@@ -144,37 +144,6 @@ export const isTranslationKeyFound = (
   return translation !== translationKey;
 };
 
-export function hasAtLeastOneMatch<T>(
-  a: ReadonlySet<T>,
-  b: ReadonlySet<T>
-): boolean {
-  if(a == undefined || b == undefined) {
-    return false;
-  }
-
-  if (a.size > b.size) {
-    [a, b] = [b, a];
-  }
-
-  for (const value of a) {
-    if (b.has(value)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-export function subtractSets<T>(a: Set<T>, b: Set<T>): Set<T> {
-  const result = new Set(a);
-
-  for (const item of b) {
-    result.delete(item);
-  }
-
-  return result;
-}
-
 export function exactlyOne<T>(
   items: T[],
   predicate: (item: T) => boolean,

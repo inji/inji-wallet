@@ -1,34 +1,30 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {forwardRef, useEffect, useImperativeHandle, useMemo, useState} from 'react';
 import {Column} from '../../../ui';
 import {Theme} from '../../../ui/styleUtils';
-import {
-  CredentialSetOption,
-  MatchingVCsResultForDcql,
-} from '../../../../shared/openID4VP/openid4vp.types';
-import {
-  CredentialSetSection,
-  SectionSelectionState,
-} from '../credentialSetSection/CredentialSetSection';
+import {CredentialSetOption, MatchingVCsResultForDcql,} from '../../../../shared/openID4VP/openid4vp.types';
+import {CredentialSetSection, SectionSelectionState,} from '../credentialSetSection/CredentialSetSection';
 import {LoaderAnimation} from '../../../ui/LoaderAnimation';
 import {Pagination} from '../../../ui/pagination/Pagination';
 import {useTranslation} from 'react-i18next';
 
 type DcqlMatchingVcListProps = {
-  controller: any;
+  matchingVcsResult: MatchingVCsResultForDcql | null;
 };
 
-export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
-  controller,
-}) => {
+
+// eslint-disable-next-line react/display-name
+export const DcqlMatchingVcList = forwardRef<
+  any,
+  DcqlMatchingVcListProps
+>(({matchingVcsResult}, ref) => {
   const {t} = useTranslation('SendVPScreen');
-  const dcqlResult =
-    controller.matchingVcsResult as MatchingVCsResultForDcql | null;
+  const dcqlResult = matchingVcsResult;
   const orderedCredentialSets = useMemo(
     () =>
       dcqlResult
         ? orderCredentialSetsByMandatoryRequirement(
-            dcqlResult.credentialSetOptions,
-          )
+          dcqlResult.credentialSetOptions,
+        )
         : [],
     [dcqlResult],
   );
@@ -40,6 +36,7 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
     credentialSetQueryToSatisfiableOptions,
     setCredentialSetQueryToSatisfiableOptions,
   ] = useState<Record<number, Array<Array<string>>>>({});
+
 
   useEffect(() => {
     if (!dcqlResult) {
@@ -70,8 +67,28 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
     setCredentialSetQueryToSatisfiableOptions(satisfiableOptionsBySet);
   }, [dcqlResult, orderedCredentialSets]);
 
+  function transformForParent(sectionSelectionState: Record<number, SectionSelectionState>) {
+    const queryIdToSelectedVcKeys: Record<string, Set<string>> = {};
+
+    Object.values(sectionSelectionState).forEach(sectionState => {
+      Object.values(sectionState).forEach(optionState => {
+        Object.entries(optionState).forEach(([queryId, vcKeys]) => {
+          queryIdToSelectedVcKeys[queryId] = queryIdToSelectedVcKeys[queryId]
+            ? new Set<string>([...queryIdToSelectedVcKeys[queryId], ...vcKeys])
+            : vcKeys;
+        })
+      })
+    })
+
+    return queryIdToSelectedVcKeys
+  }
+
+  useImperativeHandle(ref, () => ({
+    getSelectedVcs: () => transformForParent(sectionSelectionState)
+  }));
+
   if (!dcqlResult) {
-    return <LoaderAnimation testID={'matching-vc-list-dcql-loader'} />;
+    return <LoaderAnimation testID={'matching-vc-list-dcql-loader'}/>;
   }
 
   const deselectItems = (queryIdToVcKeys: Record<string, Set<string>>) => {
@@ -84,7 +101,6 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
 
       return updated;
     });
-    controller.DESELECT_VC_ITEMS(queryIdToVcKeys)();
   };
 
   const selectItems = (queryIdToVcKeys: Record<string, Set<string>>) => {
@@ -95,9 +111,9 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
           ...Object.values(queryIdToVcKeys).flatMap(vcKeys => [...vcKeys]),
         ]),
     );
-    controller.SELECT_VC_ITEMS(queryIdToVcKeys)();
   };
 
+  // TODO: Move this option satisfiable stuff to getMatching Vcs part
   // Build the ordered list of satisfiable sections for pagination
   const paginatedSections = orderedCredentialSets
     .map((credentialSet, index) => ({
@@ -141,7 +157,7 @@ export const DcqlMatchingVcList: React.FC<DcqlMatchingVcListProps> = ({
       />
     </Column>
   );
-};
+});
 
 const orderCredentialSetsByMandatoryRequirement = (
   credentialSets: CredentialSetOption[],

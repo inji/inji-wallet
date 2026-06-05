@@ -442,6 +442,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
         // If allowing multiple, just add this vc to the current selection without deselecting other VCs for this query
         newState = appendVcKeyToCurrentSelection();
       } else {
+        deselectVcs({[credentialQueryId]: prevSelectedQueryIdToCredentialsByOption[currentOptionIndex]?.[credentialQueryId]})
         newState = {
           [currentOptionIndex]: {
             ...prevSelectedQueryIdToCredentialsByOption[currentOptionIndex],

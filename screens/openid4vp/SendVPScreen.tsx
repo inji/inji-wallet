@@ -3,7 +3,7 @@ import React, {
   Fragment,
   useContext,
   useEffect,
-  useLayoutEffect,
+  useLayoutEffect, useRef,
   useState,
 } from 'react';
 import {useTranslation} from 'react-i18next';
@@ -53,6 +53,7 @@ import {claimPathPointersToJsonPath} from '../../shared/openID4VP/OpenID4VPHelpe
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
+  const childRef = useRef();
   const controller = useSendVPScreen(props);
   const scanScreenController = useScanScreen();
   const insets = useSafeAreaInsets();
@@ -330,6 +331,55 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   };
 
   const shareActions = () => {
+    function handleVPShare() {
+      let selectedDisclosures: Record<string, string[]> =
+        selectedDisclosuresByVc;
+      if (controller.isDcqlFlow) {
+        const selectedVcsInfo = childRef.current?.getSelectedVcs();
+        controller.DESELECT_VC_ITEMS(selectedVcsInfo)
+
+        console.debug("selected VCs data = ", selectedVcsInfo)
+        const vcKeyToSelectedDisclosuresSet: Record<
+          string,
+          Set<string>
+        > = {};
+        const matchingVcsResult =
+          controller.matchingVcsResult as MatchingVCsResultForDcql;
+        Object.entries(
+          controller.credentialRequestIdToSelectedVcKeys,
+        ).forEach(([credentialQueryId, selectedVcKeys]) => {
+          matchingVcsResult.matchingVCs[
+            credentialQueryId
+            ].matchingVcs?.forEach(({vc, matchedClaims}) => {
+            const setOfMatchingClaims = new Set<string>();
+            const vcKey = getVcKey(vc);
+            if (selectedVcKeys.has(vcKey)) {
+              matchedClaims?.forEach(claim => {
+                return setOfMatchingClaims.add(
+                  claimPathPointersToJsonPath(claim.path),
+                );
+              });
+            }
+            vcKeyToSelectedDisclosuresSet[vcKey] = new Set([
+              ...(vcKeyToSelectedDisclosuresSet[vcKey] ??
+                new Set<string>()),
+              ...setOfMatchingClaims,
+            ]);
+          });
+        });
+        selectedDisclosures = Object.fromEntries(
+          Object.entries(vcKeyToSelectedDisclosuresSet).map(([k, s]) => [
+            k,
+            [...s],
+          ]),
+        );
+      }
+      console.log("Selected disclosures ", selectedDisclosures)
+      console.log("Selected VCS ", controller.credentialRequestIdToSelectedVcKeys)
+      controller.ACCEPT_REQUEST(selectedDisclosures);
+    }
+
+
     return (
       <Button
         type="gradient"
@@ -337,47 +387,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         title={t('consentAndShare')}
         testID={'consent-share-button'}
         disabled={!controller.successfullySatisfiedCredentialRequest()}
-        onPress={() => {
-          let selectedDisclosures: Record<string, string[]> =
-            selectedDisclosuresByVc;
-          if (controller.isDcqlFlow) {
-            const vcKeyToSelectedDisclosuresSet: Record<
-              string,
-              Set<string>
-            > = {};
-            const matchingVcsResult =
-              controller.matchingVcsResult as MatchingVCsResultForDcql;
-            Object.entries(
-              controller.credentialRequestIdToSelectedVcKeys,
-            ).forEach(([credentialQueryId, selectedVcKeys]) => {
-              matchingVcsResult.matchingVCs[
-                credentialQueryId
-              ].matchingVcs?.forEach(({vc, matchedClaims}) => {
-                const setOfMatchingClaims = new Set<string>();
-                const vcKey = getVcKey(vc);
-                if (selectedVcKeys.has(vcKey)) {
-                  matchedClaims?.forEach(claim => {
-                    return setOfMatchingClaims.add(
-                      claimPathPointersToJsonPath(claim.path),
-                    );
-                  });
-                }
-                vcKeyToSelectedDisclosuresSet[vcKey] = new Set([
-                  ...(vcKeyToSelectedDisclosuresSet[vcKey] ??
-                    new Set<string>()),
-                  ...setOfMatchingClaims,
-                ]);
-              });
-            });
-            selectedDisclosures = Object.fromEntries(
-              Object.entries(vcKeyToSelectedDisclosuresSet).map(([k, s]) => [
-                k,
-                [...s],
-              ]),
-            );
-          }
-          controller.ACCEPT_REQUEST(selectedDisclosures);
-        }}
+        onPress={handleVPShare}
       />
     );
   };
@@ -506,6 +516,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           )}
           <Column fill backgroundColor={Theme.Colors.lightGreyBackgroundColor}>
             <MatchingVcListContainer
+              ref={childRef}
               controller={controller}
               onDisclosureChange={handleDisclosureChange}
             />
