@@ -11,6 +11,7 @@
  * Any deviation from expected spec behaviour is marked with a skipped test (it.skip)
  * and summarised at the bottom of this file.
  */
+import {MatchingVCsResultForDcql} from "../../../../shared/openID4VP/openid4vp.types";
 
 // ---------------------------------------------------------------------------
 // Restore real React hooks
@@ -37,9 +38,9 @@ import {VCMetadata} from '../../../../shared/VCMetadata';
 // ---------------------------------------------------------------------------
 
 jest.mock('../../../ui/LoaderAnimation', () => ({
-  LoaderAnimation: ({testID}: {testID: string}) => {
+  LoaderAnimation: ({testID}: { testID: string }) => {
     const {View} = require('react-native');
-    return <View testID={testID} />;
+    return <View testID={testID}/>;
   },
 }));
 
@@ -71,7 +72,7 @@ jest.mock('../credentialSetSection/CredentialSetSection', () => ({
   CredentialSetSection: (props: any) => {
     mockCredentialSetSectionCalls.push(props);
     const {View} = require('react-native');
-    return <View testID={props.testId} />;
+    return <View testID={props.testId}/>;
   },
 }));
 
@@ -98,13 +99,6 @@ const buildMatchResult = (vcIds: string[], allowMultiple = false) => ({
   allowMultipleCredentials: allowMultiple,
 });
 
-const buildController = (overrides: Partial<any> = {}) => ({
-  matchingVcsResult: null,
-  SELECT_VC_ITEMS: jest.fn(() => jest.fn()),
-  DESELECT_VC_ITEMS: jest.fn(() => jest.fn()),
-  ...overrides,
-});
-
 // ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
@@ -121,9 +115,8 @@ describe('DcqlMatchingVcList', () => {
    * still being computed (matchingVcsResult is null).
    */
   it('shows a loader while matchingVcsResult is null', () => {
-    const controller = buildController({matchingVcsResult: null});
     const {getByTestId} = render(
-      <DcqlMatchingVcList controller={controller} />,
+      <DcqlMatchingVcList matchingVcsResult={null}/>,
     );
     expect(getByTestId('matching-vc-list-dcql-loader')).toBeTruthy();
   });
@@ -136,25 +129,23 @@ describe('DcqlMatchingVcList', () => {
    * With pagination, only one section is shown per page; we navigate to verify order.
    */
   it('renders required credential sets before optional ones', async () => {
-    const controller = buildController({
-      matchingVcsResult: {
-        success: true,
-        purpose: '',
-        requestedClaims: '',
-        matchingVCs: {
-          'national-id': buildMatchResult(['vc-national-id']),
-          'health-id': buildMatchResult(['vc-health-id']),
-        },
-        credentialSetOptions: [
-          // Optional comes FIRST in the input array — ordering must flip it
-          {options: [['health-id']], required: false},
-          {options: [['national-id']], required: true},
-        ],
+    const matchingVcsResult = {
+      success: true,
+      purpose: '',
+      requestedClaims: '',
+      matchingVCs: {
+        'national-id': buildMatchResult(['vc-national-id']),
+        'health-id': buildMatchResult(['vc-health-id']),
       },
-    });
+      credentialSetOptions: [
+        // Optional comes FIRST in the input array — ordering must flip it
+        {options: [['health-id']], required: false},
+        {options: [['national-id']], required: true},
+      ],
+    } as unknown as MatchingVCsResultForDcql
 
     const {getByTestId} = render(
-      <DcqlMatchingVcList controller={controller} />,
+      <DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>,
     );
 
     // Page 0 must show the required section
@@ -179,24 +170,22 @@ describe('DcqlMatchingVcList', () => {
    * (i.e. at least one query has no matching VCs) must be silently skipped.
    */
   it('does not render a credential set when no option is satisfiable', async () => {
-    const controller = buildController({
-      matchingVcsResult: {
-        success: true,
-        purpose: '',
-        requestedClaims: '',
-        matchingVCs: {
-          'national-id': buildMatchResult(['vc-national-id']),
-          'health-id': {matchingVcs: [], allowMultipleCredentials: false},
-        },
-        credentialSetOptions: [
-          {options: [['national-id']], required: true},
-          // All options in this set are unsatisfiable
-          {options: [['health-id']], required: false},
-        ],
+    const matchingVcsResult = {
+      success: true,
+      purpose: '',
+      requestedClaims: '',
+      matchingVCs: {
+        'national-id': buildMatchResult(['vc-national-id']),
+        'health-id': {matchingVcs: [], allowMultipleCredentials: false},
       },
-    });
+      credentialSetOptions: [
+        {options: [['national-id']], required: true},
+        // All options in this set are unsatisfiable
+        {options: [['health-id']], required: false},
+      ],
+    } as unknown as MatchingVCsResultForDcql
 
-    render(<DcqlMatchingVcList controller={controller} />);
+    render(<DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>);
 
     await waitFor(() => {
       // Only the satisfiable credential set is rendered
@@ -211,73 +200,26 @@ describe('DcqlMatchingVcList', () => {
    * entire option is unsatisfiable.
    */
   it('treats a multi-query option as unsatisfiable when any query has no matching VCs', async () => {
-    const controller = buildController({
-      matchingVcsResult: {
-        success: true,
-        purpose: '',
-        requestedClaims: '',
-        matchingVCs: {
-          'driving-license': buildMatchResult(['vc-dl']),
-          // age-proof has no matches → the combined option is unsatisfiable
-          'age-proof': {matchingVcs: [], allowMultipleCredentials: false},
-        },
-        credentialSetOptions: [
-          {options: [['driving-license', 'age-proof']], required: true},
-        ],
+    const matchingVcsResult = {
+      success: true,
+      purpose: '',
+      requestedClaims: '',
+      matchingVCs: {
+        'driving-license': buildMatchResult(['vc-dl']),
+        // age-proof has no matches → the combined option is unsatisfiable
+        'age-proof': {matchingVcs: [], allowMultipleCredentials: false},
       },
-    });
+      credentialSetOptions: [
+        {options: [['driving-license', 'age-proof']], required: true},
+      ],
+    } as unknown as MatchingVCsResultForDcql
 
-    render(<DcqlMatchingVcList controller={controller} />);
+    render(<DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>);
 
     // Wait for useEffect to complete then assert nothing was rendered
     await waitFor(() => {
       expect(mockCredentialSetSectionCalls).toHaveLength(0);
     });
-  });
-
-  // ─── Pre-selection ───────────────────────────────────────────────────────
-
-  /**
-   * Spec: For each required credential set, the first satisfiable option
-   * is automatically pre-selected so the user can immediately share without
-   * manual interaction.
-   *
-   * NOTE: Pre-selection logic was moved from DcqlMatchingVcList to CredentialSetSection
-   * (via getPreselectedOptionState / useEffect). DcqlMatchingVcList no longer calls
-   * SELECT_VC_ITEMS directly on mount. Test coverage lives in CredentialSetSection.test.tsx.
-   */
-  it.skip('calls SELECT_VC_ITEMS with the first matching VC for each required set on mount', async () => {
-    const selectVcItems = jest.fn(() => jest.fn());
-    const controller = buildController({
-      SELECT_VC_ITEMS: selectVcItems,
-      matchingVcsResult: {
-        success: true,
-        purpose: '',
-        requestedClaims: '',
-        matchingVCs: {
-          'national-id': buildMatchResult([
-            'vc-national-id-1',
-            'vc-national-id-2',
-          ]),
-        },
-        credentialSetOptions: [{options: [['national-id']], required: true}],
-      },
-    });
-
-    render(<DcqlMatchingVcList controller={controller} />);
-
-    await waitFor(() => {
-      expect(selectVcItems).toHaveBeenCalledTimes(1);
-    });
-
-    const calledWith = selectVcItems.mock.calls[0][0];
-    // Only the first VC should be pre-selected
-    expect(calledWith['national-id']).toBeInstanceOf(Set);
-    expect(calledWith['national-id'].size).toBe(1);
-    const expectedKey = VCMetadata.fromVcMetadataString(
-      buildVc('vc-national-id-1').vcMetadata,
-    ).getVcKey();
-    expect(calledWith['national-id'].has(expectedKey)).toBe(true);
   });
 
   /**
@@ -289,20 +231,17 @@ describe('DcqlMatchingVcList', () => {
    */
   it('does NOT call SELECT_VC_ITEMS for optional credential sets', async () => {
     const selectVcItems = jest.fn(() => jest.fn());
-    const controller = buildController({
-      SELECT_VC_ITEMS: selectVcItems,
-      matchingVcsResult: {
-        success: true,
-        purpose: '',
-        requestedClaims: '',
-        matchingVCs: {
-          'health-id': buildMatchResult(['vc-health-id']),
-        },
-        credentialSetOptions: [{options: [['health-id']], required: false}],
+    const matchingVcsResult = {
+      success: true,
+      purpose: '',
+      requestedClaims: '',
+      matchingVCs: {
+        'health-id': buildMatchResult(['vc-health-id']),
       },
-    });
+      credentialSetOptions: [{options: [['health-id']], required: false}],
+    } as unknown as MatchingVCsResultForDcql
 
-    render(<DcqlMatchingVcList controller={controller} />);
+    render(<DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>);
 
     // Give effects time to run, then confirm no pre-selection occurred
     await waitFor(() => {
@@ -311,94 +250,6 @@ describe('DcqlMatchingVcList', () => {
     expect(selectVcItems).not.toHaveBeenCalled();
   });
 
-  /**
-   * Spec: Pre-selection for a required multi-query option should select the
-   * first matching VC for EACH credential query in that option.
-   * NOTE: Logic moved to CredentialSetSection.
-   */
-  it.skip('pre-selects first VC for every query in a required multi-query option', async () => {
-    const selectVcItems = jest.fn(() => jest.fn());
-    const controller = buildController({
-      SELECT_VC_ITEMS: selectVcItems,
-      matchingVcsResult: {
-        success: true,
-        purpose: '',
-        requestedClaims: '',
-        matchingVCs: {
-          'driving-license': buildMatchResult(['vc-dl']),
-          'age-proof': buildMatchResult(['vc-age']),
-        },
-        credentialSetOptions: [
-          {options: [['driving-license', 'age-proof']], required: true},
-        ],
-      },
-    });
-
-    render(<DcqlMatchingVcList controller={controller} />);
-
-    await waitFor(() => {
-      expect(selectVcItems).toHaveBeenCalledTimes(1);
-    });
-
-    const calledWith = selectVcItems.mock.calls[0][0];
-    expect(calledWith['driving-license']).toBeInstanceOf(Set);
-    expect(calledWith['age-proof']).toBeInstanceOf(Set);
-  });
-
-  /**
-   * NOTE: Logic moved to CredentialSetSection.
-   */
-  it.skip('prefers a later required option when it reuses already selected VCs from an earlier required set', async () => {
-    const selectVcItems = jest.fn(() => jest.fn());
-    const previousSelectionKey = VCMetadata.fromVcMetadataString(
-      buildVc('vc-shared').vcMetadata,
-    ).getVcKey();
-    const companionKey = VCMetadata.fromVcMetadataString(
-      buildVc('vc-companion').vcMetadata,
-    ).getVcKey();
-
-    const controller = buildController({
-      SELECT_VC_ITEMS: selectVcItems,
-      matchingVcsResult: {
-        success: true,
-        purpose: '',
-        requestedClaims: '',
-        matchingVCs: {
-          'base-query': buildMatchResult(['vc-shared']),
-          'first-option-query-1': buildMatchResult(['vc-first-option']),
-          'first-option-query-2': buildMatchResult(['vc-companion']),
-          'preferred-option-query-1': buildMatchResult(['vc-shared']),
-          'preferred-option-query-2': buildMatchResult(['vc-companion']),
-        },
-        credentialSetOptions: [
-          {options: [['base-query']], required: true},
-          {
-            options: [
-              ['first-option-query-1', 'first-option-query-2'],
-              ['preferred-option-query-1', 'preferred-option-query-2'],
-            ],
-            required: true,
-          },
-        ],
-      },
-    });
-
-    render(<DcqlMatchingVcList controller={controller} />);
-
-    await waitFor(() => {
-      expect(selectVcItems).toHaveBeenCalledTimes(1);
-    });
-
-    const calledWith = selectVcItems.mock.calls[0][0];
-
-    expect(calledWith['base-query'].has(previousSelectionKey)).toBe(true);
-    expect(
-      calledWith['preferred-option-query-1'].has(previousSelectionKey),
-    ).toBe(true);
-    expect(calledWith['preferred-option-query-2'].has(companionKey)).toBe(true);
-    expect(calledWith['first-option-query-1']).toBeUndefined();
-    expect(calledWith['first-option-query-2']).toBeUndefined();
-  });
 
   // ─── stepLabel / pagination ───────────────────────────────────────────────
 
@@ -408,23 +259,21 @@ describe('DcqlMatchingVcList', () => {
    * progress. This replaces the previous `mandatoryIndex` numbering.
    */
   it('passes a stepLabel to each section when there are multiple pages', async () => {
-    const controller = buildController({
-      matchingVcsResult: {
-        success: true,
-        purpose: '',
-        requestedClaims: '',
-        matchingVCs: {
-          'national-id': buildMatchResult(['vc-national-id']),
-          'tax-id': buildMatchResult(['vc-tax-id']),
-        },
-        credentialSetOptions: [
-          {options: [['national-id']], required: true},
-          {options: [['tax-id']], required: true},
-        ],
+    const matchingVcsResult = {
+      success: true,
+      purpose: '',
+      requestedClaims: '',
+      matchingVCs: {
+        'national-id': buildMatchResult(['vc-national-id']),
+        'tax-id': buildMatchResult(['vc-tax-id']),
       },
-    });
+      credentialSetOptions: [
+        {options: [['national-id']], required: true},
+        {options: [['tax-id']], required: true},
+      ],
+    } as unknown as MatchingVCsResultForDcql
 
-    render(<DcqlMatchingVcList controller={controller} />);
+    render(<DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>);
 
     await waitFor(() => {
       expect(mockCredentialSetSectionCalls.length).toBeGreaterThan(0);
@@ -443,19 +292,17 @@ describe('DcqlMatchingVcList', () => {
    * needed, so stepLabel should be undefined.
    */
   it('does not pass a stepLabel when there is only one section', async () => {
-    const controller = buildController({
-      matchingVcsResult: {
-        success: true,
-        purpose: '',
-        requestedClaims: '',
-        matchingVCs: {
-          'national-id': buildMatchResult(['vc-national-id']),
-        },
-        credentialSetOptions: [{options: [['national-id']], required: true}],
+    const matchingVcsResult = {
+      success: true,
+      purpose: '',
+      requestedClaims: '',
+      matchingVCs: {
+        'national-id': buildMatchResult(['vc-national-id']),
       },
-    });
+      credentialSetOptions: [{options: [['national-id']], required: true}],
+    } as unknown as MatchingVCsResultForDcql
 
-    render(<DcqlMatchingVcList controller={controller} />);
+    render(<DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>);
 
     await waitFor(() => {
       expect(mockCredentialSetSectionCalls.length).toBeGreaterThan(0);
@@ -470,23 +317,21 @@ describe('DcqlMatchingVcList', () => {
   // ─── Snapshot ────────────────────────────────────────────────────────────
 
   it('matches snapshot for a happy-case request with required and optional sets', async () => {
-    const controller = buildController({
-      matchingVcsResult: {
-        success: true,
-        purpose: '',
-        requestedClaims: '',
-        matchingVCs: {
-          'national-id': buildMatchResult(['vc-national-id']),
-          'health-id': buildMatchResult(['vc-health-id']),
-        },
-        credentialSetOptions: [
-          {options: [['national-id']], required: true},
-          {options: [['health-id']], required: false},
-        ],
+    const matchingVcsResult : MatchingVCsResultForDcql = {
+      success: true,
+      purpose: '',
+      requestedClaims: '',
+      matchingVCs: {
+        'national-id': buildMatchResult(['vc-national-id']),
+        'health-id': buildMatchResult(['vc-health-id']),
       },
-    });
+      credentialSetOptions: [
+        {options: [['national-id']], required: true},
+        {options: [['health-id']], required: false},
+      ],
+    } as unknown as MatchingVCsResultForDcql
 
-    const {toJSON} = render(<DcqlMatchingVcList controller={controller} />);
+    const {toJSON} = render(<DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>);
 
     await waitFor(() => {
       expect(mockCredentialSetSectionCalls.length).toBeGreaterThan(0);

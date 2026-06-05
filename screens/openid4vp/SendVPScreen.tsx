@@ -479,7 +479,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     return undefined;
   }
 
-  const additionalModalContent = getVerifierActionAndMatchingCredentials();
+  const additionalErrorContent = getVerifierActionAndMatchingCredentials();
 
   return (
     <React.Fragment>
@@ -608,7 +608,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           showClose={false}
           isVisible={errorModal.show}
           title={errorModal.title}
-          additionalContent={additionalModalContent}
+          additionalContent={additionalErrorContent}
           message={errorModal.message}
           additionalMessage={getAdditionalMessage()}
           image={SvgImage.PermissionDenied()}
@@ -620,7 +620,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           textButtonEvent={handleTextButtonEvent}
           textButtonType={getPrimaryButtonText() ? 'clear' : 'gradient'}
           customImageStyles={{paddingBottom: 0, marginBottom: -6}}
-          customStyles={additionalModalContent ? {} : {marginTop: '30%'}}
+          customStyles={additionalErrorContent ? {} : {marginTop: '30%'}}
           exitAppWithTimer={controller.isOVPViaDeepLink}
           testID={'vpShareError'}
         />
