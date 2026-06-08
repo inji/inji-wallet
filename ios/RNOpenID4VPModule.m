@@ -14,7 +14,6 @@ RCT_EXTERN_METHOD(notifyCanonicalizationFailureFromJS:(NSString *)code
                   )
 
 RCT_EXTERN_METHOD(authenticateVerifier:(NSString *)urlEncodedAuthorizationRequest
-                  shouldValidateClient:(BOOL)shouldValidateClient
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

@@ -49,8 +49,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         signVerifiablePresentation: { unsignedVPTokens in
           try await self.getSignVerifiablePresentationContinuationHook(
             unsignedVPTokens: unsignedVPTokens)
-        },
-        ldpVpSignatureSuite: signatureSuite
+        }
       ),
     ]
   }

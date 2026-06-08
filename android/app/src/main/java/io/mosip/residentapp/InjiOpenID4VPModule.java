@@ -97,12 +97,10 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void authenticateVerifier(String urlEncodedAuthorizationRequest,
-            Boolean shouldValidateClient,
             Promise promise) {
         try {
             AuthorizationRequest authRequest = openID4VP.authenticateVerifier(
-                    urlEncodedAuthorizationRequest,
-                    shouldValidateClient);
+                    urlEncodedAuthorizationRequest);
 
             String authRequestJson = gson.toJson(authRequest);
             promise.resolve(authRequestJson);
@@ -197,6 +195,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             errorMap.putString("errorCode", exception.getErrorCode());
             errorMap.putString("message", exception.getMessage());
             errorMap.putString("verifierResponse", gson.toJson(exception.getVerifierResponse()));
+            errorMap.putString("cause", gson.toJson(exception.getCause()));
 
             promise.reject(exception.getErrorCode(), exception.getMessage(), exception, errorMap);
         } else {
@@ -246,7 +245,9 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
                 ? walletConfigMap.getBoolean("presentation_definition_uri_supported")
                 : true;
 
-        List<RequestUriMethod> supportedRequestUriMethods = parseSupportedRequestUriMethods(walletConfigMap);
+      boolean validatePreRegiseredVerifier = walletConfigMap.hasKey("validate_pre_registered_verifier") ? walletConfigMap.getBoolean("validate_pre_registered_verifier") : true;
+
+      List<RequestUriMethod> supportedRequestUriMethods = parseSupportedRequestUriMethods(walletConfigMap);
 
         List<Verifier> trustedVerifiers = parseTrustedVerifiers(walletConfigMap);
 

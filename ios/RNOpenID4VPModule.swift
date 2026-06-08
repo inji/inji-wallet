@@ -105,14 +105,12 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
 
   @objc
   func authenticateVerifier(_ urlEncodedAuthorizationRequest: String,
-                            shouldValidateClient: Bool,
                             resolver resolve: @escaping RCTPromiseResolveBlock,
                             rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
       do {
         let authenticationResponse: AuthorizationRequest = try await openID4VP!.authenticateVerifier(
-          urlEncodedAuthorizationRequest: urlEncodedAuthorizationRequest,
-          shouldValidateClient: shouldValidateClient
+          urlEncodedAuthorizationRequest: urlEncodedAuthorizationRequest
         )
 
         let response = try OpenId4VPUtils.toJsonString(jsonObject: authenticationResponse)
@@ -273,7 +271,8 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
         let errorMap: [String: Any] = [
             "errorCode": openidError.errorCode,
             "message": openidError.message,
-            "verifierResponse": Inji.toJsonString(openidError.verifierResponse) ?? ""
+            "verifierResponse": Inji.toJsonString(openidError.verifierResponse) ?? "",
+            "cause": openidError.cause?.localizedDescription ?? ""
         ]
         let nsError = NSError(
             domain: "OPENID4VP",
