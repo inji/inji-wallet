@@ -99,6 +99,14 @@ const buildMatchResult = (vcIds: string[], allowMultiple = false) => ({
   allowMultipleCredentials: allowMultiple,
 });
 
+const buildListProps = (
+  matchingVcsResult: MatchingVCsResultForDcql | null,
+  overrides: Partial<React.ComponentProps<typeof DcqlMatchingVcList>> = {},
+) => ({
+  matchingVcsResult,
+  ...overrides,
+});
+
 // ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
@@ -116,7 +124,7 @@ describe('DcqlMatchingVcList', () => {
    */
   it('shows a loader while matchingVcsResult is null', () => {
     const {getByTestId} = render(
-      <DcqlMatchingVcList matchingVcsResult={null}/>,
+      <DcqlMatchingVcList {...buildListProps(null)} setDisableShareButton={jest.fn()}/>,
     );
     expect(getByTestId('matching-vc-list-dcql-loader')).toBeTruthy();
   });
@@ -145,7 +153,7 @@ describe('DcqlMatchingVcList', () => {
     } as unknown as MatchingVCsResultForDcql
 
     const {getByTestId} = render(
-      <DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>,
+      <DcqlMatchingVcList {...buildListProps(matchingVcsResult)} setDisableShareButton={jest.fn()}/>,
     );
 
     // Page 0 must show the required section
@@ -185,7 +193,7 @@ describe('DcqlMatchingVcList', () => {
       ],
     } as unknown as MatchingVCsResultForDcql
 
-    render(<DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>);
+    render(<DcqlMatchingVcList {...buildListProps(matchingVcsResult)} setDisableShareButton={jest.fn()}/>);
 
     await waitFor(() => {
       // Only the satisfiable credential set is rendered
@@ -214,7 +222,7 @@ describe('DcqlMatchingVcList', () => {
       ],
     } as unknown as MatchingVCsResultForDcql
 
-    render(<DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>);
+    render(<DcqlMatchingVcList {...buildListProps(matchingVcsResult)} setDisableShareButton={jest.fn()}/>);
 
     // Wait for useEffect to complete then assert nothing was rendered
     await waitFor(() => {
@@ -241,7 +249,7 @@ describe('DcqlMatchingVcList', () => {
       credentialSetOptions: [{options: [['health-id']], required: false}],
     } as unknown as MatchingVCsResultForDcql
 
-    render(<DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>);
+    render(<DcqlMatchingVcList {...buildListProps(matchingVcsResult)} setDisableShareButton={jest.fn()}/>);
 
     // Give effects time to run, then confirm no pre-selection occurred
     await waitFor(() => {
@@ -273,7 +281,7 @@ describe('DcqlMatchingVcList', () => {
       ],
     } as unknown as MatchingVCsResultForDcql
 
-    render(<DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>);
+    render(<DcqlMatchingVcList {...buildListProps(matchingVcsResult)} setDisableShareButton={jest.fn()}/>);
 
     await waitFor(() => {
       expect(mockCredentialSetSectionCalls.length).toBeGreaterThan(0);
@@ -302,7 +310,7 @@ describe('DcqlMatchingVcList', () => {
       credentialSetOptions: [{options: [['national-id']], required: true}],
     } as unknown as MatchingVCsResultForDcql
 
-    render(<DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>);
+    render(<DcqlMatchingVcList {...buildListProps(matchingVcsResult)} setDisableShareButton={jest.fn()}/>);
 
     await waitFor(() => {
       expect(mockCredentialSetSectionCalls.length).toBeGreaterThan(0);
@@ -317,7 +325,7 @@ describe('DcqlMatchingVcList', () => {
   // ─── Snapshot ────────────────────────────────────────────────────────────
 
   it('matches snapshot for a happy-case request with required and optional sets', async () => {
-    const matchingVcsResult : MatchingVCsResultForDcql = {
+    const matchingVcsResult: MatchingVCsResultForDcql = {
       success: true,
       purpose: '',
       requestedClaims: '',
@@ -331,7 +339,9 @@ describe('DcqlMatchingVcList', () => {
       ],
     } as unknown as MatchingVCsResultForDcql
 
-    const {toJSON} = render(<DcqlMatchingVcList matchingVcsResult={matchingVcsResult}/>);
+    const {toJSON} = render(
+      <DcqlMatchingVcList {...buildListProps(matchingVcsResult)} setDisableShareButton={jest.fn()}/>,
+    );
 
     await waitFor(() => {
       expect(mockCredentialSetSectionCalls.length).toBeGreaterThan(0);

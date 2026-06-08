@@ -1,27 +1,13 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {
-  Fragment,
-  useContext,
-  useEffect,
-  useLayoutEffect, useRef,
-  useState,
-} from 'react';
+import React, {Fragment, useContext, useEffect, useLayoutEffect, useRef, useState,} from 'react';
 import {useTranslation} from 'react-i18next';
 import {BackHandler, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Button, Column, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
-import {
-  isIOS,
-  LIVENESS_CHECK,
-  OVP_ERROR_CODE,
-  OVP_ERROR_MESSAGES,
-} from '../../shared/constants';
+import {isIOS, LIVENESS_CHECK, OVP_ERROR_CODE, OVP_ERROR_MESSAGES,} from '../../shared/constants';
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
-import {
-  getImpressionEventData,
-  sendImpressionEvent,
-} from '../../shared/telemetry/TelemetryUtils';
+import {getImpressionEventData, sendImpressionEvent,} from '../../shared/telemetry/TelemetryUtils';
 import {VerifyIdentityOverlay} from '../VerifyIdentityOverlay';
 import {VPShareOverlay} from '../Scan/VPShareOverlay';
 import {FaceVerificationAlertOverlay} from '../Scan/FaceVerificationAlertOverlay';
@@ -36,7 +22,10 @@ import {APP_EVENTS} from '../../machines/app';
 import {useScanScreen} from '../Scan/ScanScreenController';
 import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
 import {TrustModalVerifier} from '../../components/TrustModalVerifier';
-import {MatchingVcListContainer} from '../../components/openid4vp/matchingVc/MatchingVcListContainer';
+import {
+  MatchingVcListContainer,
+  MatchingVcListRef,
+} from '../../components/openid4vp/matchingVc/MatchingVcListContainer';
 import {VcItemContainer} from '../../components/VC/VcItemContainer';
 import {VerifierInfo} from '../../components/openid4vp/verifier/VerifierInfo';
 import {WhyWeNeedDocumentsOverlay} from '../../components/openid4vp/infoOverlay/WhyWeNeedDocumentsOverlay';
@@ -44,17 +33,17 @@ import {
   MatchingVCsResultForDcql,
   MatchingVCsResultForPresentationExchangeRequest,
 } from '../../shared/openID4VP/openid4vp.types';
-import {getVcKey, VCMetadata} from '../../shared/VCMetadata';
+import {VCMetadata} from '../../shared/VCMetadata';
 import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {VCItemContainerFlowType} from '../../shared/Utils';
 import {BackButton} from '../../components/ui/backButton/BackButton';
 import {MissingClaimsView} from '../../components/openid4vp/missingClaimsView/MissingClaimsView';
-import {claimPathPointersToJsonPath} from '../../shared/openID4VP/OpenID4VPHelper';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
-  const childRef = useRef();
+  const matchingVcListRef = useRef<MatchingVcListRef | null>(null);
   const controller = useSendVPScreen(props);
+  const [disableShareButton, setDisableShareButton] = useState<boolean>(true)
   const scanScreenController = useScanScreen();
   const insets = useSafeAreaInsets();
 
@@ -74,17 +63,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   const {appService} = useContext(GlobalContext);
   const [triggerExitFlow, setTriggerExitFlow] = useState(false);
-  const [selectedDisclosuresByVc, setSelectedDisclosuresByVc] = useState<
-    Record<string, string[]>
-  >({});
   const [showInfoOverlay, setShowInfoOverlay] = useState(false);
-
-  const handleDisclosureChange = (vcKey: string, disclosures: string[]) => {
-    setSelectedDisclosuresByVc(prev => ({
-      ...prev,
-      [vcKey]: disclosures,
-    }));
-  };
 
   useEffect(() => {
     if (errorModal.show && controller.isOVPViaDeepLink) {
@@ -268,7 +247,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   if (controller.showLoadingScreen) {
     if (controller.isAuthorizationFlow) {
-      return <LoaderSkeleton testID={'presentation-authorization'} />;
+      return <LoaderSkeleton testID={'presentation-authorization'}/>;
     }
 
     return (
@@ -332,53 +311,17 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   const shareActions = () => {
     function handleVPShare() {
-      let selectedDisclosures: Record<string, string[]> =
-        selectedDisclosuresByVc;
-      if (controller.isDcqlFlow) {
-        const selectedVcsInfo = childRef.current?.getSelectedVcs();
-        controller.DESELECT_VC_ITEMS(selectedVcsInfo)
+      const selectedDisclosuresFromRef = matchingVcListRef.current?.selectedDisclosures;
+      const selectedDisclosures: Record<string, string[]> = typeof selectedDisclosuresFromRef === 'function' ? selectedDisclosuresFromRef() : selectedDisclosuresFromRef ?? {};
+      const selectedVcs = matchingVcListRef.current?.getSelectedVcs?.() ?? {};
+      console.debug("selected VCs ", selectedVcs)
 
-        console.debug("selected VCs data = ", selectedVcsInfo)
-        const vcKeyToSelectedDisclosuresSet: Record<
-          string,
-          Set<string>
-        > = {};
-        const matchingVcsResult =
-          controller.matchingVcsResult as MatchingVCsResultForDcql;
-        Object.entries(
-          controller.credentialRequestIdToSelectedVcKeys,
-        ).forEach(([credentialQueryId, selectedVcKeys]) => {
-          matchingVcsResult.matchingVCs[
-            credentialQueryId
-            ].matchingVcs?.forEach(({vc, matchedClaims}) => {
-            const setOfMatchingClaims = new Set<string>();
-            const vcKey = getVcKey(vc);
-            if (selectedVcKeys.has(vcKey)) {
-              matchedClaims?.forEach(claim => {
-                return setOfMatchingClaims.add(
-                  claimPathPointersToJsonPath(claim.path),
-                );
-              });
-            }
-            vcKeyToSelectedDisclosuresSet[vcKey] = new Set([
-              ...(vcKeyToSelectedDisclosuresSet[vcKey] ??
-                new Set<string>()),
-              ...setOfMatchingClaims,
-            ]);
-          });
-        });
-        selectedDisclosures = Object.fromEntries(
-          Object.entries(vcKeyToSelectedDisclosuresSet).map(([k, s]) => [
-            k,
-            [...s],
-          ]),
-        );
+      if (controller.checkIfAnyVCHasImage(selectedVcs)) {
+        controller.VERIFY_AND_ACCEPT_REQUEST(selectedVcs, selectedDisclosures);
+      } else {
+        controller.ACCEPT_REQUEST(selectedVcs, selectedDisclosures);
       }
-      console.log("Selected disclosures ", selectedDisclosures)
-      console.log("Selected VCS ", controller.credentialRequestIdToSelectedVcKeys)
-      controller.ACCEPT_REQUEST(selectedDisclosures);
     }
-
 
     return (
       <Button
@@ -386,7 +329,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         styles={{marginTop: 12}}
         title={t('consentAndShare')}
         testID={'consent-share-button'}
-        disabled={!controller.successfullySatisfiedCredentialRequest()}
+        disabled={disableShareButton}
         onPress={handleVPShare}
       />
     );
@@ -432,7 +375,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
       return (
         <Column>
           {requestedClaims.length > 0 && (
-            <MissingClaimsView claims={requestedClaims} />
+            <MissingClaimsView claims={requestedClaims}/>
           )}
           <Text style={Theme.DcqlStyles.credentialMissingSectionLabel}>
             {t('errors.noMatchingCredentials.whatYouCanDo')}
@@ -446,7 +389,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
               logoUri={controller.verifierLogoInTrustModal}
               showInfo={false}
             />
-            <View style={Theme.DcqlStyles.credentialMissingCardDivider} />
+            <View style={Theme.DcqlStyles.credentialMissingCardDivider}/>
             <Text style={Theme.DcqlStyles.credentialMissingCardBodyText}>
               {t('errors.noMatchingCredentials.reachOutText')}
             </Text>
@@ -464,7 +407,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                     margin="0 2 8 2"
                     selectable={false}
                     selected={false}
-                    onPress={() => {}}
+                    onPress={() => undefined}
                     flow={VCItemContainerFlowType.VP_SHARE}
                     isPinned={vcData.vcMetadata.isPinned}
                   />
@@ -516,9 +459,9 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
           )}
           <Column fill backgroundColor={Theme.Colors.lightGreyBackgroundColor}>
             <MatchingVcListContainer
-              ref={childRef}
+              ref={matchingVcListRef}
+              setDisableShareButton={setDisableShareButton}
               controller={controller}
-              onDisclosureChange={handleDisclosureChange}
             />
             <Column
               style={[

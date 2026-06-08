@@ -52,10 +52,9 @@ jest.mock('react-native', () => {
 
   return {
     ...reactNative,
-    NativeEventEmitter: jest.fn(function () {
-      this.addListener = mockAddListener;
-      return this;
-    }),
+    NativeEventEmitter: jest.fn().mockImplementation(() => ({
+      addListener: mockAddListener,
+    })),
     NativeModules: {
       ...reactNative.NativeModules,
       InjiOpenID4VP: {

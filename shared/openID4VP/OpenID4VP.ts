@@ -1,18 +1,10 @@
 import {NativeEventEmitter, NativeModules} from 'react-native';
 import {__AppId} from '../GlobalVariables';
-import {
-  SelectedCredentialsForVPSharing,
-  VC,
-} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {
-  getWalletConfig,
-  isClientValidationRequired,
-  isDcqlFlow,
-  jsonLdCanonicalize,
-} from './OpenID4VPHelper';
+import {SelectedCredentialsForVPSharing, VC,} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {getWalletConfig, isClientValidationRequired, isDcqlFlow, jsonLdCanonicalize,} from './OpenID4VPHelper';
 import {jsonLdExpand, parseJSON} from '../Utils';
 import {VCFormat} from '../VCFormat';
-import {VCMetadata} from '../VCMetadata';
+import {getVcKey, VCMetadata} from '../VCMetadata';
 import {JSONPath} from 'jsonpath-plus';
 import {
   getIssuerAuthenticationAlorithmForMdocVC,
@@ -27,6 +19,7 @@ import {
   MatchingVCsResultForDcql,
   MatchingVCsResultForPresentationExchangeRequest,
   MatchResult,
+  VCInfo,
   VcWithMatchedClaims,
 } from './openid4vp.types';
 
@@ -44,7 +37,7 @@ class OpenID4VP {
   }
 
   private addJsonLdCanonicalizerCallback = () => {
-    emitter.addListener('onJsonLdCanonicalize', ({data}: {data: string}) => {
+    emitter.addListener('onJsonLdCanonicalize', ({data}: { data: string }) => {
       jsonLdCanonicalize(data)
         .then(result => {
           this.InjiOpenID4VP.sendJsonLdCanonicalizeResultFromJS(result);
@@ -59,7 +52,7 @@ class OpenID4VP {
   };
 
   private addJsonLdExpanderCallback = () => {
-    emitter.addListener('onJsonLdExpand', ({data}: {data: any}) => {
+    emitter.addListener('onJsonLdExpand', ({data}: { data: any }) => {
       jsonLdExpand(data)
         .then(result => {
           this.InjiOpenID4VP.sendJsonLdExpandResultFromJS(result);
@@ -73,8 +66,15 @@ class OpenID4VP {
 
   private static async getInstance(): Promise<OpenID4VP> {
     if (!OpenID4VP.instance) {
+      // TODO: Merge all config calls to one call
       const walletConfig: Record<string, any> =
         (await getWalletConfig()) || defaultWalletConfig;
+      try {
+        walletConfig["validate_pre_registered_verifier"] = await isClientValidationRequired()
+      } catch (e) {
+        console.warn("Error getting pre-registered client validation config so falling back to default of 'true'",e)
+        walletConfig["validate_pre_registered_verifier"] = true
+      }
       try {
         const trustedVerifiersResponse =
           await CACHED_API.fetchTrustedVerifiersList();
@@ -94,13 +94,11 @@ class OpenID4VP {
   }
 
   static async authenticateVerifier(urlEncodedAuthorizationRequest: string) {
-    const shouldValidateClient = await isClientValidationRequired();
     const openID4VP = await OpenID4VP.getInstance();
 
     const authenticationResponse =
       await openID4VP.InjiOpenID4VP.authenticateVerifier(
         urlEncodedAuthorizationRequest,
-        shouldValidateClient,
       );
     return JSON.parse(authenticationResponse);
   }
@@ -166,11 +164,13 @@ class OpenID4VP {
           if (queryMatch && Array.isArray(queryMatch.matchingCredentials)) {
             updatedMatchingVCs[queryId] = {
               matchingVcs: queryMatch.matchingCredentials.map(
-                (matchedCredential: any) =>
-                  ({
-                    vc: idToCredentialMap[matchedCredential.credentialId],
+                (matchedCredential: any) => {
+                  const credentialData = idToCredentialMap[matchedCredential.credentialId];
+                  return ({
+                    matchingVcInfo: new VCInfo(getVcKey(credentialData), credentialData.vcMetadata),
                     matchedClaims: matchedCredential.matchingClaims,
-                  } as VcWithMatchedClaims),
+                  } as VcWithMatchedClaims)
+                },
               ),
               allowMultipleCredentials:
                 queryMatch.allowMultipleCredentials === true,
@@ -250,7 +250,7 @@ class OpenID4VP {
             credentialFormat,
             selectedDisclosuresByVc[
               VCMetadata.fromVcMetadataString(credential.vcMetadata).getVcKey()
-            ],
+              ],
             isDcqlRequestFlow,
           ),
         };
@@ -303,7 +303,7 @@ class OpenID4VP {
           credentialFormat,
           selectedDisclosuresByVc[
             VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey()
-          ],
+            ],
           isDcqlRequestFlow,
         );
         if (!selectedVcsData[inputDescriptorId]) {
@@ -423,7 +423,7 @@ function getVcsMatchingPresentationExchangeAuthRequest(
     inputDescriptors.forEach(
       (inputDescriptor: {
         format: any;
-        constraints: {fields: undefined};
+        constraints: { fields: undefined };
         id: string | number;
       }) => {
         const format = inputDescriptor.format ?? presentationDefinition.format;
@@ -436,10 +436,10 @@ function getVcsMatchingPresentationExchangeAuthRequest(
           areVCFormatAndProofTypeMatchingRequest(format, vc);
         if (areMatchingFormatAndProofType == false) {
           inputDescriptors.forEach(
-            (inputDescriptor: {constraints: {fields: {path: any[]}[]}}) => {
+            (inputDescriptor: { constraints: { fields: { path: any[] }[] } }) => {
               if (inputDescriptor.constraints?.fields) {
                 inputDescriptor.constraints.fields.forEach(
-                  (field: {path: any[]}) => {
+                  (field: { path: any[] }) => {
                     if (field.path) {
                       field.path.forEach(path => {
                         try {

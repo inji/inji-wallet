@@ -2,21 +2,34 @@ import React, {forwardRef, useEffect, useImperativeHandle, useMemo, useState} fr
 import {Column} from '../../../ui';
 import {Theme} from '../../../ui/styleUtils';
 import {CredentialSetOption, MatchingVCsResultForDcql,} from '../../../../shared/openID4VP/openid4vp.types';
-import {CredentialSetSection, SectionSelectionState,} from '../credentialSetSection/CredentialSetSection';
+import {
+  CredentialSetSection,
+  SectionSelectionState,
+} from '../credentialSetSection/CredentialSetSection';
 import {LoaderAnimation} from '../../../ui/LoaderAnimation';
 import {Pagination} from '../../../ui/pagination/Pagination';
 import {useTranslation} from 'react-i18next';
+import {useDcqlMatchingVcController} from './DcqlMatchingVcController';
+import {MatchingVcListRef} from "../../matchingVc/MatchingVcListContainer";
 
 type DcqlMatchingVcListProps = {
   matchingVcsResult: MatchingVCsResultForDcql | null;
-};
+  setDisableShareButton: (disable: boolean) => void
 
+};
 
 // eslint-disable-next-line react/display-name
 export const DcqlMatchingVcList = forwardRef<
-  any,
+  MatchingVcListRef,
   DcqlMatchingVcListProps
->(({matchingVcsResult}, ref) => {
+>(
+  (
+    {
+      matchingVcsResult,
+      setDisableShareButton,
+    },
+    ref,
+  ) => {
   const {t} = useTranslation('SendVPScreen');
   const dcqlResult = matchingVcsResult;
   const orderedCredentialSets = useMemo(
@@ -28,14 +41,12 @@ export const DcqlMatchingVcList = forwardRef<
         : [],
     [dcqlResult],
   );
-  const [selectedVcKeys, setSelectedVcKeys] = useState<Set<string>>(new Set());
-  const [sectionSelectionState, setSectionSelectionState] = useState<
-    Record<number, SectionSelectionState>
-  >({});
   const [
     credentialSetQueryToSatisfiableOptions,
     setCredentialSetQueryToSatisfiableOptions,
   ] = useState<Record<number, Array<Array<string>>>>({});
+  const dcqlController = useDcqlMatchingVcController();
+  const {selectedVcKeys, sectionSelectionState} = dcqlController;
 
 
   useEffect(() => {
@@ -71,7 +82,9 @@ export const DcqlMatchingVcList = forwardRef<
     const queryIdToSelectedVcKeys: Record<string, Set<string>> = {};
 
     Object.values(sectionSelectionState).forEach(sectionState => {
-      Object.values(sectionState).forEach(optionState => {
+      const optionSelectionState = sectionState.selection;
+
+      Object.values(optionSelectionState).forEach(optionState => {
         Object.entries(optionState).forEach(([queryId, vcKeys]) => {
           queryIdToSelectedVcKeys[queryId] = queryIdToSelectedVcKeys[queryId]
             ? new Set<string>([...queryIdToSelectedVcKeys[queryId], ...vcKeys])
@@ -83,35 +96,62 @@ export const DcqlMatchingVcList = forwardRef<
     return queryIdToSelectedVcKeys
   }
 
+    useEffect(() => {
+     const isVpRequestSatisfied = isVPRequestSatisfiable(sectionSelectionState);
+     setDisableShareButton(!isVpRequestSatisfied);
+    }, [
+      sectionSelectionState,
+      orderedCredentialSets,
+      credentialSetQueryToSatisfiableOptions,
+      dcqlResult,
+    ]);
+
+  const isVPRequestSatisfiable = (
+    currentSectionSelectionState: Record<number, SectionSelectionState>,
+  ) => {
+    if (!dcqlResult) {
+      return false;
+    }
+
+    // A required section is satisfied only when exactly one option is fully selected.
+    return orderedCredentialSets.every((credentialSet, sectionIndex) => {
+      if (!credentialSet.required) {
+        return true;
+      }
+
+      const satisfiableOptions =
+        credentialSetQueryToSatisfiableOptions[sectionIndex] ?? [];
+      if (satisfiableOptions.length === 0) {
+        return false;
+      }
+
+      const sectionState = currentSectionSelectionState[sectionIndex];
+      if (!sectionState) {
+        return false;
+      }
+
+      const fullySelectedOptionsCount = satisfiableOptions.filter(
+        (option, optionIndex) =>
+          option.every(
+            credentialQueryId =>
+              (sectionState.selection[optionIndex]?.[credentialQueryId]?.size ??
+                0) > 0,
+          ),
+      ).length;
+
+      return fullySelectedOptionsCount === 1;
+    });
+  };
+
   useImperativeHandle(ref, () => ({
-    getSelectedVcs: () => transformForParent(sectionSelectionState)
+    getSelectedVcs: () => transformForParent(sectionSelectionState),
+    selectedDisclosures: () =>
+      dcqlController.getSelectedDisclosures(sectionSelectionState, dcqlResult),
   }));
 
   if (!dcqlResult) {
     return <LoaderAnimation testID={'matching-vc-list-dcql-loader'}/>;
   }
-
-  const deselectItems = (queryIdToVcKeys: Record<string, Set<string>>) => {
-    setSelectedVcKeys(prev => {
-      const updated = new Set(prev);
-
-      Object.values(queryIdToVcKeys).forEach(vcKeys => {
-        vcKeys.forEach(key => updated.delete(key));
-      });
-
-      return updated;
-    });
-  };
-
-  const selectItems = (queryIdToVcKeys: Record<string, Set<string>>) => {
-    setSelectedVcKeys(
-      prev =>
-        new Set([
-          ...(prev ?? []),
-          ...Object.values(queryIdToVcKeys).flatMap(vcKeys => [...vcKeys]),
-        ]),
-    );
-  };
 
   // TODO: Move this option satisfiable stuff to getMatching Vcs part
   // Build the ordered list of satisfiable sections for pagination
@@ -137,15 +177,16 @@ export const DcqlMatchingVcList = forwardRef<
             credentialSet={item.credentialSet}
             matchingVCsResult={dcqlResult.matchingVCs}
             satisfiableOptions={item.satisfiableOptions}
-            selectVcs={selectItems}
-            deselectVcs={deselectItems}
+            selectVcs={dcqlController.selectVcs}
+            deselectVcs={dcqlController.deselectVcs}
             selectedVcKeys={selectedVcKeys}
             initialSelectionState={sectionSelectionState[item.index]}
             onSelectionChange={newState =>
-              setSectionSelectionState(prev => ({
-                ...prev,
-                [item.index]: newState,
-              }))
+              dcqlController.onSectionSelectionChange(
+                item.index,
+                newState,
+                item.credentialSet.required,
+              )
             }
             stepLabel={
               total > 1
@@ -157,7 +198,8 @@ export const DcqlMatchingVcList = forwardRef<
       />
     </Column>
   );
-});
+  },
+);
 
 const orderCredentialSetsByMandatoryRequirement = (
   credentialSets: CredentialSetOption[],

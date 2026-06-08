@@ -16,6 +16,7 @@
  * - Selecting a new option deselects all other previously selected options
  *
  */
+import {VCInfo} from "../../../../shared/openID4VP/openid4vp.types";
 
 // ---------------------------------------------------------------------------
 // Restore real React hooks
@@ -75,6 +76,7 @@ const buildVc = (id: string) => ({
 
 const buildVcWithMatchedClaims = (id: string) => ({
   vc: buildVc(id),
+  matchingVcInfo: new VCInfo("VC_"+id, buildVcMetadata(id)),
   matchedClaims: [],
 });
 

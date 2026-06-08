@@ -7,6 +7,7 @@ import {Modal} from '../components/ui/Modal';
 import {useTranslation} from 'react-i18next';
 import {ErrorView} from '../components/ui/Error';
 import {SvgImage} from '../components/ui/svg';
+import {Credential} from "../machines/VerifiableCredential/VCMetaMachine/vc";
 
 export const VerifyIdentityOverlay: React.FC<
   VerifyIdentityOverlayProps
@@ -76,7 +77,7 @@ export const VerifyIdentityOverlay: React.FC<
 };
 
 export interface VerifyIdentityOverlayProps {
-  credential?: [VerifiableCredential | Credential];
+  credential?: Array<VerifiableCredential> | Array<Credential>;
   verifiableCredentialData: any;
   isVerifyingIdentity: boolean;
   onCancel: () => void;

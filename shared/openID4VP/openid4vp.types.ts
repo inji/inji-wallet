@@ -1,4 +1,5 @@
 import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {VCMetadata} from "../VCMetadata";
 
 export interface UnsignedVPToken {
   format: 'ldp_vc' | 'mso_mdoc' | 'vc_sd_jwt' | 'dc_sd_jwt';
@@ -48,9 +49,7 @@ export interface MatchResult {
 }
 
 export interface VcWithMatchedClaims {
-  // TODO: Holding VC here is too much of space - check if any optimization is possible by just holding VC key
-  //  and fetching VC details from something like cached registry based on need
-  vc: VC;
+  matchingVcInfo: VCInfo;
   matchedClaims: Claim[] | undefined;
 }
 
@@ -58,4 +57,14 @@ export interface Claim {
   id: string | undefined;
   path: Array<any>;
   values: Array<any> | undefined;
+}
+
+export class VCInfo {
+  vcKey: string
+  metadata: VCMetadata
+
+  constructor(vcKey: string, metadata: VCMetadata) {
+    this.vcKey = vcKey
+    this.metadata = metadata
+  }
 }

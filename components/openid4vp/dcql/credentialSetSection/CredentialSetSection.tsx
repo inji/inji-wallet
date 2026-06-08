@@ -5,17 +5,10 @@ import {Column, Text} from '../../../ui';
 import {Theme} from '../../../ui/styleUtils';
 import {VcItemContainer} from '../../../VC/VcItemContainer';
 import {VCItemContainerFlowType} from '../../../../shared/Utils';
-import {
-  CredentialSetOption,
-  MatchResult,
-  VcWithMatchedClaims,
-} from '../../../../shared/openID4VP/openid4vp.types';
+import {CredentialSetOption, MatchResult, VcWithMatchedClaims,} from '../../../../shared/openID4VP/openid4vp.types';
 import {DcqlBadgeColors} from '../../../ui/themes/DefaultTheme';
 import {Badge} from '../../../ui/badge/Badge';
 import {Divider} from '../../../ui/divider/Divider';
-
-import {VC} from '../../../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {VCMetadata} from '../../../../shared/VCMetadata';
 import {Checkbox, CheckboxSelectionType} from '../../../ui/checkbox/Checkbox';
 import {Accordion} from '../../../ui/accordion/Accordion';
 import {VCFormat} from '../../../../shared/VCFormat';
@@ -23,7 +16,13 @@ import {useTranslation} from 'react-i18next';
 import testIDProps from '../../../../shared/commonUtil';
 import {claimPathPointersToJsonPath} from '../../../../shared/openID4VP/OpenID4VPHelper';
 
-export type SectionSelectionState = Record<number, Record<string, Set<string>>>;
+// TODO: Review the names
+export type OptionSelectionState = Record<number, Record<string, Set<string>>>;
+
+export type SectionSelectionState = {
+  selection: OptionSelectionState;
+  required: boolean;
+};
 
 interface DcqlCredentialSetSectionProps {
   credentialSet: CredentialSetOption;
@@ -35,7 +34,7 @@ interface DcqlCredentialSetSectionProps {
   testId: string;
   stepLabel?: string;
   initialSelectionState?: SectionSelectionState;
-  onSelectionChange: (newState: SectionSelectionState) => void;
+  onSelectionChange: (newState: OptionSelectionState) => void;
 }
 
 export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
@@ -57,15 +56,12 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
   const [
     selectedQueryIdToCredentialsByOption,
     setSelectedQueryIdToCredentialsByOption,
-  ] = useState<SectionSelectionState>(initialSelectionState ?? {});
+  ] = useState<OptionSelectionState>(initialSelectionState?.selection ?? {});
 
-  const updateSelectionState = (newState: SectionSelectionState) => {
+  const updateSelectionState = (newState: OptionSelectionState) => {
     setSelectedQueryIdToCredentialsByOption(newState);
     onSelectionChange(newState);
   };
-
-  const getVcKey = (vcData: VC): string =>
-    VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey();
 
   const getPreselectedOptionState = (currentlySelectedVcKeys: Set<string>) => {
     let preferredOptionIndex = 0;
@@ -84,13 +80,13 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
         }
 
         const matchingSelectedVcKeys = matchResult.matchingVcs
-          .map(matchingCredentialData => getVcKey(matchingCredentialData.vc))
+          .map(matchingCredentialData => (matchingCredentialData.matchingVcInfo).vcKey)
           .filter(vcKey => currentlySelectedVcKeys.has(vcKey));
 
         const vcKeysToPreselect =
           matchingSelectedVcKeys.length > 0
             ? matchingSelectedVcKeys
-            : [getVcKey(matchResult.matchingVcs[0].vc)];
+            : [(matchResult.matchingVcs[0].matchingVcInfo).vcKey];
 
         if (matchingSelectedVcKeys.length > 0) {
           matchedSelectedQueryCount++;
@@ -156,7 +152,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
             }
             const matchingSelectedVcKeys = matchResult.matchingVcs
               .map(matchingCredentialData =>
-                getVcKey(matchingCredentialData.vc),
+                (matchingCredentialData.matchingVcInfo).vcKey,
               )
               .filter(vcKey => selectedVcKeys.has(vcKey));
             return matchingSelectedVcKeys.length > 0;
@@ -229,7 +225,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
           const firstVc =
             matchingVCsResult[credentialQueryId]?.matchingVcs?.[0];
           if (!firstVc) return;
-          const vcKey = getVcKey(firstVc.vc);
+          const vcKey = (firstVc.matchingVcInfo).vcKey;
           tempVcKeysToSelect = new Set<string>([vcKey]);
         }
         newState[credentialQueryId] = tempVcKeysToSelect;
@@ -465,7 +461,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
   function getSelectivelyDisclosableMatchedClaimPaths(
     matchingCredentialDataResult: VcWithMatchedClaims,
   ): Set<string> | undefined {
-    const vcFormat = matchingCredentialDataResult.vc.vcMetadata.format;
+    const vcFormat = matchingCredentialDataResult.matchingVcInfo.metadata.format;
     if (vcFormat == VCFormat.dc_sd_jwt || vcFormat == VCFormat.vc_sd_jwt) {
       const jsonPaths = matchingCredentialDataResult.matchedClaims?.map(claim =>
         claimPathPointersToJsonPath(claim.path),
@@ -486,8 +482,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     optionIndex: number,
     disableSelection = false,
   ) => {
-    const vcData = matchingCredentialData.vc;
-    const vcKey = getVcKey(vcData);
+    const {vcKey, metadata: vcMetadata} = matchingCredentialData.matchingVcInfo
 
     return (
       <VcItemContainer
@@ -496,7 +491,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
         )}
         minimalDisclosure
         key={`${vcKey}-option-${optionIndex}-query-${credentialQueryId}`}
-        vcMetadata={vcData.vcMetadata}
+        vcMetadata={vcMetadata}
         margin="0 2 8 2"
         onPress={() => handleVcSelection(vcKey)}
         selectable
@@ -504,7 +499,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
         selectionType={selectionType}
         selected={isVcSelected(credentialQueryId, vcKey)}
         flow={VCItemContainerFlowType.VP_SHARE}
-        isPinned={vcData.vcMetadata.isPinned}
+        isPinned={vcMetadata.isPinned}
         testId={`${testId}-option-${optionIndex}-query-${credentialQueryId}-vc-${vcKey}`}
       />
     );

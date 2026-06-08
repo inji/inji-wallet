@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {forwardRef, useEffect, useImperativeHandle} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {useTranslation} from 'react-i18next';
 import {Column, Row, Text} from '../../ui';
@@ -8,33 +8,45 @@ import {VCItemContainerFlowType} from '../../../shared/Utils';
 import {getVcKey} from '../../../shared/VCMetadata';
 import {VC} from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {CheckboxSelectionType} from '../../ui/checkbox/Checkbox';
+import {MatchingVCsResultForPresentationExchangeRequest} from "../../../shared/openID4VP/openid4vp.types";
+import {usePresentationExchangeMatchingVcController} from './PresentationExchangeMatchingVcController';
+import {MatchingVcListRef} from "../matchingVc/MatchingVcListContainer";
 
 type PresentationExchangeMatchingVcListProps = {
-  controller: any;
-  onDisclosureChange: (vcKey: string, disclosures: string[]) => void;
+  matchingVcsResult: MatchingVCsResultForPresentationExchangeRequest | null;
+  setDisableShareButton: (disable: boolean) => void
 };
 
-export const PresentationExchangeMatchingVcList: React.FC<
+export const PresentationExchangeMatchingVcList = forwardRef<
+  MatchingVcListRef,
   PresentationExchangeMatchingVcListProps
-> = ({controller, onDisclosureChange}) => {
+>(function PresentationExchangeMatchingVcList({matchingVcsResult, setDisableShareButton}, ref) {
   const {t} = useTranslation('SendVPScreen');
+  const controller = usePresentationExchangeMatchingVcController(
+    matchingVcsResult,
+  );
 
-  const noOfCardsSelected = controller.areAllVCsChecked
-    ? Object.values(controller.matchingVcsResult.matchingVCs).length
-    : Object.values(controller.credentialRequestIdToSelectedVcKeys).reduce(
-        (vcCount, arr) => vcCount + arr.size,
-        0,
-      );
+  useImperativeHandle(ref, () => ({
+    getSelectedVcs: () => (controller.selectedVcs),
+    selectedDisclosures: () => controller.selectedDisclosuresByVc,
+  }));
+
+  const noOfCardsSelected = controller.noOfCardsSelected;
+
+  useEffect(() => {
+    if (Object.keys(controller.selectedVcs).length > 0) {
+      setDisableShareButton(false)
+    } else {
+      setDisableShareButton(true)
+    }
+  }, [controller.selectedVcs]);
 
   const cardsSelectedText =
     noOfCardsSelected === 1
       ? noOfCardsSelected + ' ' + t('cardSelected')
       : noOfCardsSelected + ' ' + t('cardsSelected');
 
-  const areAllVcsChecked =
-    noOfCardsSelected ===
-    Object.values(controller.matchingVcsResult.matchingVCs).flatMap(vc => vc)
-      .length;
+  const areAllVcsChecked = controller.areAllVcsChecked;
 
   return (
     <>
@@ -63,9 +75,7 @@ export const PresentationExchangeMatchingVcList: React.FC<
             color: Theme.Colors.Icon,
             fontFamily: 'Montserrat_600SemiBold',
           }}
-          onPress={
-            areAllVcsChecked ? controller.UNCHECK_ALL : controller.CHECK_ALL
-          }>
+          onPress={areAllVcsChecked ? controller.UNCHECK_ALL : controller.CHECK_ALL}>
           {areAllVcsChecked ? t('unCheck') : t('checkAll')}
         </Text>
       </Row>
@@ -73,8 +83,8 @@ export const PresentationExchangeMatchingVcList: React.FC<
         testID="matching-vc-list-vc-items"
         scroll
         backgroundColor={Theme.Colors.whiteBackgroundColor}>
-        {Object.entries(controller.matchingVcsResult.matchingVCs).map(
-          ([inputDescriptorId, vcs]: [string, any]) =>
+        {Object.entries(matchingVcsResult?.matchingVCs ?? {}).map(
+          ([inputDescriptorId, vcs]: [string, VC[]]) =>
             vcs.map((vcData: VC) => (
               <VcItemContainer
                 key={`${getVcKey(vcData)}-${inputDescriptorId}`}
@@ -89,24 +99,22 @@ export const PresentationExchangeMatchingVcList: React.FC<
                 )}
                 selectable
                 selected={
-                  controller.areAllVCsChecked ||
-                  (Object.keys(
-                    controller.credentialRequestIdToSelectedVcKeys,
-                  ).includes(inputDescriptorId) &&
-                    controller.credentialRequestIdToSelectedVcKeys[
+                  controller.areAllVcsChecked ||
+                  (Object.keys(controller.selectedVcs).includes(inputDescriptorId) &&
+                    controller.selectedVcs[
                       inputDescriptorId
-                    ].has(getVcKey(vcData)))
+                      ].has(getVcKey(vcData)))
                 }
                 selectionType={CheckboxSelectionType.MULTIPLE}
                 flow={VCItemContainerFlowType.VP_SHARE}
                 isPinned={vcData.vcMetadata.isPinned}
-                onDisclosuresChange={disclosures => {
-                  onDisclosureChange(getVcKey(vcData), disclosures);
-                }}
+                onDisclosuresChange={disclosures =>
+                  controller.onDisclosureChange(getVcKey(vcData), disclosures)
+                }
               />
             )),
         )}
       </Column>
     </>
   );
-};
+});
