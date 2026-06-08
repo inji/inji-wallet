@@ -6,9 +6,8 @@ import {Theme} from '../../ui/styleUtils';
 import {VcItemContainer} from '../../VC/VcItemContainer';
 import {VCItemContainerFlowType} from '../../../shared/Utils';
 import {getVcKey} from '../../../shared/VCMetadata';
-import {VC} from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {CheckboxSelectionType} from '../../ui/checkbox/Checkbox';
-import {MatchingVCsResultForPresentationExchangeRequest} from "../../../shared/openID4VP/openid4vp.types";
+import {MatchingVCsResultForPresentationExchangeRequest, VCInfo} from "../../../shared/openID4VP/openid4vp.types";
 import {usePresentationExchangeMatchingVcController} from './PresentationExchangeMatchingVcController';
 import {MatchingVcListRef} from "../matchingVc/MatchingVcListContainer";
 
@@ -84,17 +83,15 @@ export const PresentationExchangeMatchingVcList = forwardRef<
         scroll
         backgroundColor={Theme.Colors.whiteBackgroundColor}>
         {Object.entries(matchingVcsResult?.matchingVCs ?? {}).map(
-          ([inputDescriptorId, vcs]: [string, VC[]]) =>
-            vcs.map((vcData: VC) => (
+          ([inputDescriptorId, vcInfos]: [string, VCInfo[]]) =>
+            vcInfos.map(({vcKey, metadata}: VCInfo) => (
               <VcItemContainer
-                key={`${getVcKey(vcData)}-${inputDescriptorId}`}
-                testId={`matching-vc-list-vc-${getVcKey(
-                  vcData,
-                )}-${inputDescriptorId}`}
-                vcMetadata={vcData.vcMetadata}
+                key={`${vcKey}-${inputDescriptorId}`}
+                testId={`matching-vc-list-vc-${vcKey}-${inputDescriptorId}`}
+                vcMetadata={metadata}
                 margin="0 2 8 2"
                 onPress={controller.SELECT_VC_ITEM(
-                  getVcKey(vcData),
+                  vcKey,
                   inputDescriptorId,
                 )}
                 selectable
@@ -103,13 +100,13 @@ export const PresentationExchangeMatchingVcList = forwardRef<
                   (Object.keys(controller.selectedVcs).includes(inputDescriptorId) &&
                     controller.selectedVcs[
                       inputDescriptorId
-                      ].has(getVcKey(vcData)))
+                      ].has(vcKey))
                 }
                 selectionType={CheckboxSelectionType.MULTIPLE}
                 flow={VCItemContainerFlowType.VP_SHARE}
-                isPinned={vcData.vcMetadata.isPinned}
+                isPinned={metadata.isPinned}
                 onDisclosuresChange={disclosures =>
-                  controller.onDisclosureChange(getVcKey(vcData), disclosures)
+                  controller.onDisclosureChange(vcKey, disclosures)
                 }
               />
             )),

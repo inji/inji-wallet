@@ -34,27 +34,27 @@ import testIDProps from '../../../shared/commonUtil';
 import {ClaimVisibility, flattenSdJwt} from '../common/VCProcessor';
 
 export const VCCardViewContent: React.FC<VCItemContentProps> = ({
-  isPinned = false,
-  credential,
-  verifiableCredentialData,
-  wellknown,
-  selectable,
-  selected,
-  disableSelection = false,
-  minimalDisclosure,
-  selectionType = CheckboxSelectionType.SINGLE,
-  service,
-  onPress,
-  flow,
-  walletBindingResponse,
-  KEBAB_POPUP,
-  DISMISS,
-  isKebabPopUp,
-  vcMetadata,
-  isInitialLaunch,
-  claimsPath,
-  onDisclosuresChange,
-}) => {
+                                                                  isPinned = false,
+                                                                  credential,
+                                                                  verifiableCredentialData,
+                                                                  wellknown,
+                                                                  selectable,
+                                                                  selected,
+                                                                  disableSelection = false,
+                                                                  minimalDisclosure,
+                                                                  selectionType = CheckboxSelectionType.SINGLE,
+                                                                  service,
+                                                                  onPress,
+                                                                  flow,
+                                                                  walletBindingResponse,
+                                                                  KEBAB_POPUP,
+                                                                  DISMISS,
+                                                                  isKebabPopUp,
+                                                                  vcMetadata,
+                                                                  isInitialLaunch,
+                                                                  claimsPath,
+                                                                  onDisclosuresChange,
+                                                                }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>(
     {},
@@ -107,14 +107,14 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
       React.SetStateAction<Record<string, boolean>>
     >;
   }> = ({
-    name,
-    node,
-    fullPath,
-    expandedNodes,
-    setExpandedNodes,
-    selected = undefined,
-    lockSelection = false,
-  }) => {
+          name,
+          node,
+          fullPath,
+          expandedNodes,
+          setExpandedNodes,
+          selected = undefined,
+          lockSelection = false,
+        }) => {
     const isExpanded = expandedNodes[fullPath] || false;
 
     const toggleExpand = () => {
@@ -144,7 +144,9 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
                 disabled={node.visibility === ClaimVisibility.PUBLIC}
               />
             )}
-            <Text weight="semibold" color={'#f26989'} style={{marginLeft: 8}}>
+            <Text weight="semibold"
+                  color={wellknownDisplayProperty.getTextColor(Theme.Colors.plainText)}
+                  style={{marginLeft: 8}}>
               {formatKeyLabel(name)}
             </Text>
           </Row>
@@ -356,44 +358,44 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
             <Fragment>
               {claimsPath
                 ? Object.entries(
-                    buildDisclosureTree(
-                      flattenSdJwt({
-                        eligiblePaths: claimsPath,
-                        disclosedKeys: credential.disclosedKeys,
-                        fullResolvedPayload: credential.fullResolvedPayload,
-                      }),
-                    ),
-                  ).map(([name, node]: [string, any]) => (
-                    <DisclosureNode
-                      selected={claimsPath ? selected : undefined}
-                      lockSelection={!!claimsPath}
-                      key={name}
-                      name={name}
-                      node={node}
-                      fullPath={name}
-                      expandedNodes={expandedNodes}
-                      setExpandedNodes={setExpandedNodes}
-                    />
-                  ))
+                  buildDisclosureTree(
+                    flattenSdJwt({
+                      eligiblePaths: claimsPath,
+                      disclosedKeys: credential.disclosedKeys,
+                      fullResolvedPayload: credential.fullResolvedPayload,
+                    }),
+                  ),
+                ).map(([name, node]: [string, any]) => (
+                  <DisclosureNode
+                    selected={claimsPath ? selected : undefined}
+                    lockSelection={!!claimsPath}
+                    key={name}
+                    name={name}
+                    node={node}
+                    fullPath={name}
+                    expandedNodes={expandedNodes}
+                    setExpandedNodes={setExpandedNodes}
+                  />
+                ))
                 : Object.entries(
-                    buildDisclosureTreeForDisclosedClaims(
-                      credential.disclosedKeys,
-                    ),
-                  ).map(([name, node]) => (
-                    <DisclosureNode
-                      key={name}
-                      name={name}
-                      node={node}
-                      fullPath={name}
-                      expandedNodes={expandedNodes}
-                      setExpandedNodes={setExpandedNodes}
-                    />
-                  ))}
+                  buildDisclosureTreeForDisclosedClaims(
+                    credential.disclosedKeys,
+                  ),
+                ).map(([name, node]) => (
+                  <DisclosureNode
+                    key={name}
+                    name={name}
+                    node={node}
+                    fullPath={name}
+                    expandedNodes={expandedNodes}
+                    setExpandedNodes={setExpandedNodes}
+                  />
+                ))}
             </Fragment>
           </Column>
         )}
 
-        <WalletBinding service={service} vcMetadata={vcMetadata} />
+        <WalletBinding service={service} vcMetadata={vcMetadata}/>
 
         <RemoveVcWarningOverlay
           testID="removeVcWarningOverlay"
@@ -401,7 +403,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
           vcMetadata={vcMetadata}
         />
 
-        <HistoryTab service={service} vcMetadata={vcMetadata} />
+        <HistoryTab service={service} vcMetadata={vcMetadata}/>
       </View>
     </ImageBackground>
   );
@@ -415,7 +417,7 @@ type DisclosureData = {
 };
 
 function buildDisclosureTree(
-  flattened: Record<string, {visibility: ClaimVisibility; value: unknown}>,
+  flattened: Record<string, { visibility: ClaimVisibility; value: unknown }>,
 ): Record<string, DisclosureData> {
   const root: Record<string, DisclosureData> = {};
 

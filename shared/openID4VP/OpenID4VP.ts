@@ -43,6 +43,7 @@ class OpenID4VP {
           this.InjiOpenID4VP.sendJsonLdCanonicalizeResultFromJS(result);
         })
         .catch(error => {
+          console.error("Error during canonicaliozation ", error)
           this.InjiOpenID4VP.notifyCanonicalizationFailureFromJS(
             'server_error',
             'An error occurred during JSON-LD canonicalization',
@@ -411,7 +412,7 @@ function getVcsMatchingPresentationExchangeAuthRequest(
   availableWalletCredentials: VC[],
 ): MatchingVCsResultForPresentationExchangeRequest {
   const vcs = availableWalletCredentials;
-  const matchingVCs: Record<string, VC[]> = {};
+  const matchingVCs: Record<string, VCInfo[]> = {};
   const requestedClaimsByVerifier = new Set<string>();
 
   const presentationDefinition = vpRequest['presentation_definition'];
@@ -477,14 +478,14 @@ function getVcsMatchingPresentationExchangeAuthRequest(
           if (!matchingVCs[inputDescriptor.id]) {
             matchingVCs[inputDescriptor.id] = [];
           }
-          matchingVCs[inputDescriptor.id].push(vc);
+          matchingVCs[inputDescriptor.id].push(new VCInfo(getVcKey(vc), vc.vcMetadata));
         }
       },
     );
   });
 
   if (!hasFormatOrConstraints && inputDescriptors.length > 0) {
-    matchingVCs[inputDescriptors[0].id] = vcs;
+    matchingVCs[inputDescriptors[0].id] = vcs.map(vc => new VCInfo(getVcKey(vc), vc.vcMetadata));
   }
 
   const success =
@@ -656,20 +657,6 @@ function getProcessedDataForMdoc(processedCredential: any) {
     processedData[ns] = asObject;
   }
   return processedData;
-}
-
-export enum CredentialsNotMatchingErrorCodes {
-  NoMatchingFormatsFound = 'no_matching_credentials_with_requested_credential_formats_found',
-
-  CryptographicHolderBindingOrMetaFilterMismatch = 'cryptographic_holderbinding_or_meta_filter_mismatch',
-
-  NoClaimsSetOptionSatisfied = 'no_claims_set_option_satisfied',
-
-  ClaimUnavailable = 'claim_unavailable',
-
-  ClaimValueMismatch = 'claim_value_not_matching',
-
-  RequiredClaimsNotSatisfied = 'required_claims_not_satisfied',
 }
 
 function getClaimName(claimPath: Array<string | number | null>): string {

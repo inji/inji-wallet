@@ -18,10 +18,6 @@ export function selectMatchingVcsResult(state: State) {
   return state.context.matchingVCsResult;
 }
 
-export function selectVCsMatchingAuthRequest(state: State) {
-  return state.context.vcsMatchingAuthRequest;
-}
-
 export function selectSelectedVCs(state: State) {
   return state.context.selectedVCs;
 }
@@ -58,9 +54,8 @@ export function selectIsShowLoadingScreen(state: State) {
 }
 
 export function selectCredentials(state: State) {
-  const processCredential = (vcData: any) =>
-    vcData?.verifiableCredential?.credential || vcData?.verifiableCredential;
-  let selectedCredentials: Credential[] = Object.values(
+  const processCredential = (vcData: any) => vcData?.verifiableCredential?.credential || vcData?.verifiableCredential;
+  const selectedCredentials: Credential[] = Object.values(
     state.context.selectedVCs,
   )
     .flatMap(innerMap => Object.values(innerMap)) // Extract arrays
@@ -150,7 +145,7 @@ export function selectshowTrustConsentModal(state: State) {
 export function selectVerifierNameInTrustModal(state: State) {
   return state.context.authenticationResponse['client_metadata']?.[
     'client_name'
-  ];
+    ];
 }
 
 export function selectVerifierLogoInTrustModal(state: State) {

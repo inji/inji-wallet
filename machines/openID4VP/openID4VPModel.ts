@@ -68,7 +68,6 @@ export const openID4VPModel = createModel(
     urlEncodedAuthorizationRequest: '' as string,
     presentationRequest: {} as object,
     authenticationResponse: {},
-    vcsMatchingAuthRequest: {} as Record<string, VC[]>,
     matchingVCsResult: {} as MatchingVcsResult,
     checkedAll: false as boolean,
     selectedVCs: {} as Record<string, VC[]>,
