@@ -31,17 +31,17 @@
       "SHARING_FAILED": "Nabigo ang pagbabahagi ng Credential Presentation dahil sa teknikal na error.",
       "RETRY_ATTEMPT_FAILED": "Nabigo ang pagbabahagi ng Kredensyal na Presentasyon dahil sa teknikal na error pagkatapos ng muling pagsubok.",
       "MAX_RETRY_ATTEMPT_FAILED": "Nabigo ang pagbabahagi ng Kredensyal na Presentasyon dahil sa teknikal na error pagkatapos ng maximum na muling pagsubok.",
-      "FACE_VERIFICATION_FAILED": "Nabigo ang pag-verify ng mukha sa panahon ng pagbabahagi ng Credential Presentation.",
-      "FACE_VERIFICATION_FAILED_AFTER_RETRY_ATTEMPT": "Nabigo ang pag-verify ng mukha habang sinusubukang muli ang pagbabahagi ng Credential Presentation.",
-      "NO_SELECTED_VC_HAS_IMAGE": "Nabigo ang pagbabahagi ng Pagtatanghal ng Kredensyal dahil walang larawan ng mukha ang mga napiling nabe-verify na kredensyal.",
-      "CREDENTIAL_MISMATCH_FROM_KEBAB": "Ang hindi pagkakatugma ng Pagtatanghal ng Mga Kredensyal ay naganap sa panahon ng pagbabahagi mula sa menu, batay sa mga hiniling na claim: {{info}}.",
-      "NO_CREDENTIAL_MATCHING_REQUEST": "Walang nakitang mga kredensyal na tumutugma sa kahilingan ng serbisyo sa pag-verify batay sa mga ibinigay na claim: {{info}}.",
+      "FACE_VERIFICATION_FAILED": "Nabigo ang pag-verify ng mukha habang nagbabahagi ng Card Presentation.",
+      "FACE_VERIFICATION_FAILED_AFTER_RETRY_ATTEMPT": "Nabigo ang pag-verify ng mukha sa muling pagsubok ng pagbabahagi ng Card Presentation.",
+      "NO_SELECTED_VC_HAS_IMAGE": "Nabigo ang pagbabahagi ng Card Presentation dahil walang face image ang mga napiling beripikableng card.",
+      "CREDENTIAL_MISMATCH_FROM_KEBAB": "Nagkaroon ng hindi tugmang Card Presentation habang nagbabahagi mula sa menu, batay sa hiniling na claims: {{info}}.",
+      "NO_CREDENTIAL_MATCHING_REQUEST": "Walang nakitang card na tumutugma sa kahilingan ng verifier batay sa ibinigay na claims: {{info}}.",
       "TECHNICAL_ERROR": "May nangyaring mali habang pinoproseso ang iyong kahilingan.",
-      "INVALID_REQUEST_URI_METHOD": "Hindi naibahagi ang kredensyal — Gumamit ang verifier ng pamamaraang hindi suportado.",
-      "INVALID_AUTH_REQUEST": "Nabigong maibahagi ang kredensyal — May kulang o maling impormasyon sa kahilingan.",
-      "REQUEST_COULD_NOT_BE_PROCESSED": "Hindi naibahagi ang kredensyal — Hindi naproseso ang kahilingan dahil sa teknikal na isyu.",
-      "INVALID_PRESENTATION_DEFINITION_URI": "Hindi naibahagi ang kredensyal — Mali ang format ng datos sa kahilingan ng verifier.",
-      "SEND_VP_ERROR": "Nabigong maibahagi ang kredensyal dahil sa teknikal na isyu.",
+      "INVALID_REQUEST_URI_METHOD": "Hindi naibahagi ang card — Gumamit ang verifier ng paraang hindi suportado.",
+      "INVALID_AUTH_REQUEST": "Nabigo ang pagbabahagi ng card — May kulang o maling impormasyon sa kahilingan.",
+      "REQUEST_COULD_NOT_BE_PROCESSED": "Hindi naibahagi ang card — Hindi naproseso ang kahilingan dahil sa teknikal na isyu.",
+      "INVALID_PRESENTATION_DEFINITION_URI": "Hindi naibahagi ang card — Mali ang format ng datos sa kahilingan ng verifier.",
+      "SEND_VP_ERROR": "Nabigo ang pagbabahagi ng card dahil sa teknikal na isyu.",
       "INVALID_TRANSACTION_DATA": "Hindi maiproseso ang kahilingan sa beripikasyon dahil sa hindi suportadong data"
     }
   },
@@ -1043,28 +1043,34 @@
     "selectAll": "Piliin lahat",
     "consentDialog": {
       "title": "Kinakailangan ang Pahintulot",
-      "message": "Hinihiling namin ang iyong pahintulot na ibahagi ang iyong mga nabe-verify na kredensyal sa {{verifierName}}. Ito ay magbibigay-daan sa amin na i-verify ang iyong pagkakakilanlan at matupad ang iyong mga kahilingan sa serbisyo. Piliin ang \"Oo, Magpatuloy\" upang pumayag o \"Tanggihan\" kung hindi mo gustong ibahagi ang iyong mga kredensyal sa {{verifierName}}.",
+      "message": "Kailangan namin ang iyong pahintulot para ibahagi ang iyong mga card kay {{verifierName}}. Makakatulong ito upang ma-verify ang iyong pagkakakilanlan at matugunan ang iyong mga kahilingan sa serbisyo. Piliin ang \"Oo, Magpatuloy\" para pumayag o \"Tanggihan\" kung ayaw mong ibahagi ang iyong mga card kay {{verifierName}}.",
       "confirmButton": "Oo, Magpatuloy",
       "cancelButton": "Tanggihan"
     },
     "confirmationDialog": {
       "title": "Sigurado ka ba?",
-      "message": "Ang pagtanggi sa pahintulot ay mapipigilan ka sa pagbabahagi ng iyong mga nabe-verify na kredensyal.",
+      "message": "Kapag tinanggihan mo ang pahintulot, hindi mo maibabahagi ang iyong mga card.",
       "confirmButton": "Oo, Magpatuloy",
       "cancelButton": "Bumalik ka"
     },
     "errors": {
       "noMatchingCredentials": {
-        "title": "Walang nakitang katugmang mga kredensyal!",
-        "message": "Ang verifier ay humiling ng mga kredensyal batay sa mga sumusunod na claim: [{{claims}}]. Paki-download ang kaukulang mga kredensyal at subukang muli ang proseso ng pagbabahagi.",
+        "title": "Walang tumutugmang card na nahanap!",
+        "message": "Humiling ang verifier ng mga card batay sa sumusunod na claims: [{{claims}}]. Paki-download ang katumbas na mga card at subukang muli ang proseso ng pagbabahagi.",
         "whatYouCanDo": "ANO ANG MAAARI MONG GAWIN",
         "contactVerifier": "Makipag-ugnayan sa Verifier",
-        "reachOutText": "Makipag-ugnayan sa verifier na ito para sa karagdagang impormasyon kung aling mga kredensyal ang kailangan upang magpatuloy.",
-        "matchingCredentials": "MGA KATUGMANG KREDENSYAL"
+        "reachOutText": "Makipag-ugnayan sa verifier na ito para sa karagdagang impormasyon kung aling mga card ang kailangan upang magpatuloy.",
+        "matchingCredentials": "MGA TUMUTUGMANG CARD",
+        "claimsIntro": "Humiling ang verifier ng mga card batay sa sumusunod na claims:",
+        "requestedClaimsTitle": "Nawawalang claims",
+        "requiredCount": "{{count}} kailangan",
+        "showMore": "Magpakita pa (+ {{count}})",
+        "claimsFooter": "Paki-download ang katumbas na mga card at subukang muli ang proseso ng pagbabahagi.",
+        "close": "Isara"
       },
       "noMatchingCredentialsWithMissingClaims": {
-        "title": "Walang tumutugmang kredensyal na nahanap!",
-        "message": "Wala kaming nahanap na kredensyal sa iyong wallet na tumutugma sa kahilingang ito. Maaaring kailanganin mong i-download ang tamang kredensyal o subukan muli mamaya."
+        "title": "Walang tumutugmang card na nahanap!",
+        "message": "Wala kaming nakitang mga card sa iyong wallet na tumutugma sa kahilingang ito. Maaaring kailanganin mong i-download ang tamang mga card o subukang muli mamaya."
       },
       "invalidVerifier": {
         "title": "Isang Error ang Naganap!",
@@ -1072,7 +1078,7 @@
       },
       "credentialsMismatch": {
         "title": "Isang Error ang Naganap!",
-        "message": "May nakitang hindi pagkakatugma ng kredensyal. Tiyaking napili mo ang tama na naglalaman ng mga sumusunod na claim: [{{claims}}] at subukang muli."
+        "message": "May nakitang hindi tugmang card. Tiyaking napili mo ang tamang card na may sumusunod na claims: [{{claims}}], at subukang muli."
       },
       "genericError": {
         "title": "Oops! Isang Error ang Naganap.",
@@ -1088,7 +1094,7 @@
       },
       "invalidPresentationDefinitionURI": {
         "title": "May mali sa kahilingan",
-        "message": "Ang impormasyong kailangan upang maibahagi ang iyong credentials ay nasa maling format. Pakiusap, sabihan ang tagapagsuri na ibigay ang tamang detalye."
+        "message": "Ang impormasyong kailangan para maibahagi ang iyong mga card ay wala sa tamang format. Pakisabihan ang verifier na ibigay ang tamang detalye."
       },
       "invalidPresentationDefinitionRef": {
         "title": "Problema sa Tugon",
@@ -1100,7 +1106,7 @@
       },
       "invalidQrCode": {
         "title": "Hindi maiproseso ang iyong kahilingan",
-        "message": "Di-wasto ang QR code dahil nawawala ang ilang kinakailangang impormasyon. Mangyaring hilingin sa verifier na magbigay ng wastong QR code upang ibahagi ang iyong mga kredensyal."
+        "message": "Hindi valid ang QR code dahil may kulang na kinakailangang impormasyon. Pakisabihan ang verifier na magbigay ng valid na QR code para maibahagi ang iyong mga card."
       },
       "sendVPError": {
         "title": "May Nangyaring Mali",
@@ -1127,7 +1133,7 @@
       }
     },
     "dcqlSection": {
-      "mandatoryCards": "MGA SAPILITANG KARD",
+      "mandatoryCards": "MGA SAPILITANG CARD",
       "optionalCards": "MGA OPSYONAL NA KARD",
       "required": "KINAKAILANGAN",
       "notRequired": "HINDI KINAKAILANGAN",
@@ -1136,23 +1142,24 @@
       "allRequired": "LAHAT AY KINAKAILANGAN",
       "stepOf": "Hakbang {{current}} ng {{total}}",
       "previous": "Nakaraan",
-      "next": "Susunod"
+      "next": "Susunod",
+      "instruction": "Pumili ng card sa bawat hakbang para magpatuloy"
     },
     "verifierInfo": {
       "trusted": "Pinagkakatiwalaan"
     },
     "infoOverlay": {
-      "title": "Bakit Namin Kailangan ang mga Dokumento",
-      "body": "Maaaring humiling ang mga organisasyon ng iba't ibang uri ng kredensyal upang ma-verify ang iyong pagkakakilanlan at maibigay sa iyo ang mga serbisyo. Ang ilang kredensyal ay kinakailangan, habang ang iba ay opsyonal.",
+      "title": "Bakit Kailangan Namin ng Mga Card",
+      "body": "Maaaring humiling ang mga organisasyon ng iba’t ibang uri ng card upang ma-verify ang iyong pagkakakilanlan at maibigay sa iyo ang kanilang mga serbisyo. May mga card na kailangan, at may mga card na opsyonal.",
       "requiredCredentials": {
-        "title": "Mga Kinakailangang Kredensyal",
+        "title": "Kinakailangang Mga Card",
         "description": "Mahalaga para sa organisasyon upang maibigay sa iyo ang kanilang mga serbisyo. Dapat mong ibahagi ito upang magpatuloy.",
         "footnote": "Karaniwang inaatas ng mga regulasyon o mahalaga para sa seguridad ng account at pag-verify ng pagkakakilanlan."
       },
       "optionalCredentials": {
-        "title": "Mga Opsyonal na Kredensyal",
+        "title": "Opsyonal na Mga Card",
         "description": "Opsyonal at maaaring mapahusay ang iyong karanasan o mag-unlock ng mga karagdagang feature, ngunit hindi sapilitan.",
-        "footnote": "Maaari kang pumili na ibahagi ang mga opsyonal na kredensyal ngayon o idagdag ang mga ito sa ibang pagkakataon kung kinakailangan para sa mga partikular na serbisyo."
+        "footnote": "Maaari mong piliing ibahagi ang mga opsyonal na card ngayon o idagdag ang mga ito sa ibang pagkakataon kung kailangan para sa partikular na serbisyo."
       }
     }
   },
@@ -1363,5 +1370,9 @@
     "description": "Tiyaking kilala mo o pinagkakatiwalaan ang issuer na ito. Kapag pinagkatiwalaan na:",
     "title": "Mabilis na Pagsusuri",
     "subTitle": "Bago magpatuloy, kumpirmahin na kilala mo ang issuer na ito"
+  },
+  "pagination": {
+    "next": "Susunod",
+    "previous": "Nakaraan"
   }
 }

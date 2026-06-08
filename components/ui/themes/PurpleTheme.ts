@@ -27,6 +27,7 @@ const Colors = {
   Gray44: '#707070',
   Gray50: '#999999',
   Gray9: '#171717',
+  darkGrey: '#9CA3AF',
   Gray89: '#E3E3E3',
   Gray97: '#F7F7F7',
   DimGray: '#737373',
@@ -80,6 +81,7 @@ export type ElevationLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export const PurpleTheme = {
   Colors: {
+    instructionLabel: Colors.darkGrey,
     ProfileIconColor: Colors.DarkGray,
     DetailedViewBackground: Colors.Gray97,
     TabItemText: Colors.Primary,
@@ -1683,6 +1685,8 @@ export const PurpleTheme = {
   }),
   SendVcScreenStyles: StyleSheet.create({
     shareOptionButtonsContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
       marginBottom: 1,
       marginTop: 1,
       rowGap: 8,

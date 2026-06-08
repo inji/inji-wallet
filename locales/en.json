@@ -31,17 +31,17 @@
       "SHARING_FAILED": "Credential Presentation sharing failed due to technical error.",
       "RETRY_ATTEMPT_FAILED": "Credential Presentation sharing failed due to technical error after a retry attempt.",
       "MAX_RETRY_ATTEMPT_FAILED": "Credential Presentation sharing failed due to technical error after maximum retry attempts.",
-      "FACE_VERIFICATION_FAILED": "Face verification failed during Credential Presentation sharing.",
-      "FACE_VERIFICATION_FAILED_AFTER_RETRY_ATTEMPT": "Face verification failed during a retry attempt of Credential Presentation sharing.",
-      "NO_SELECTED_VC_HAS_IMAGE": "Credential Presentation sharing failed as the selected verifiable credentials lack a face image.",
-      "CREDENTIAL_MISMATCH_FROM_KEBAB": "Credentials Presentation mismatch occurred during sharing from the menu, based on requested claims: {{info}}.",
-      "NO_CREDENTIAL_MATCHING_REQUEST": "No credentials were found that match the verification service's request based on the provided claims: {{info}}.",
+      "FACE_VERIFICATION_FAILED": "Face verification failed during Card Presentation sharing.",
+      "FACE_VERIFICATION_FAILED_AFTER_RETRY_ATTEMPT": "Face verification failed during a retry attempt of Card Presentation sharing.",
+      "NO_SELECTED_VC_HAS_IMAGE": "Card Presentation sharing failed as the selected verifiable cards lack a face image.",
+      "CREDENTIAL_MISMATCH_FROM_KEBAB": "Card Presentation mismatch occurred during sharing from the menu, based on requested claims: {{info}}.",
+      "NO_CREDENTIAL_MATCHING_REQUEST": "No cards were found that match the verification service's request based on the provided claims: {{info}}.",
       "TECHNICAL_ERROR": "Something went wrong while processing your request.",
-      "INVALID_REQUEST_URI_METHOD": "Credential not shared— The verifier used a method that isn’t supported.",
-      "INVALID_AUTH_REQUEST": "Credential sharing failed — The request had missing or incorrect information.",
-      "REQUEST_COULD_NOT_BE_PROCESSED": "Credential not shared — Request couldn’t be processed due to a technical issue.",
-      "INVALID_PRESENTATION_DEFINITION_URI": "Credential not shared — The verifier’s request had incorrect data format.",
-      "SEND_VP_ERROR": "Credential sharing failed due to a technical issue.",
+      "INVALID_REQUEST_URI_METHOD": "Card not shared— The verifier used a method that isn’t supported.",
+      "INVALID_AUTH_REQUEST": "Card sharing failed — The request had missing or incorrect information.",
+      "REQUEST_COULD_NOT_BE_PROCESSED": "Card not shared — Request couldn’t be processed due to a technical issue.",
+      "INVALID_PRESENTATION_DEFINITION_URI": "Card not shared — The verifier’s request had incorrect data format.",
+      "SEND_VP_ERROR": "Card sharing failed due to a technical issue.",
       "INVALID_TRANSACTION_DATA": "The verification request could not be processed due to unsupported data"
     }
   },
@@ -1065,28 +1065,34 @@
     "selectAll": "Select All",
     "consentDialog": {
       "title": "Consent Required",
-      "message": "We require your consent to share your verifiable credentials with {{verifierName}}. This will enable us to verify your identity and fulfil your service requests. Choose \"Yes, Proceed\" to consent or \"Decline\" if you do not wish to share your credentials with {{verifierName}}.",
+      "message": "We require your consent to share your cards with {{verifierName}}. This will enable us to verify your identity and fulfil your service requests. Choose \"Yes, Proceed\" to consent or \"Decline\" if you do not wish to share your cards with {{verifierName}}.",
       "confirmButton": "Yes, Proceed",
       "cancelButton": "Decline"
     },
     "confirmationDialog": {
       "title": "Are you sure?",
-      "message": "Declining the consent will prevent you from sharing your verifiable credentials.",
+      "message": "Declining the consent will prevent you from sharing your cards.",
       "confirmButton": "Yes, Proceed",
       "cancelButton": "Go Back"
     },
     "errors": {
       "noMatchingCredentials": {
-        "title": "No matching credentials found!",
-        "message": "The verifier has requested credentials based on the following claims: [{{claims}}]. Please download the corresponding credentials and retry the sharing process.",
+        "title": "No matching cards found!",
+        "message": "The verifier has requested cards based on the following claims: [{{claims}}]. Please download the corresponding cards and retry the sharing process.",
         "whatYouCanDo": "WHAT YOU CAN DO",
         "contactVerifier": "Contact Verifier",
-        "reachOutText": "Reach out to this verifier for more information on which credentials are required to proceed.",
-        "matchingCredentials": "MATCHING CREDENTIALS"
+        "reachOutText": "Reach out to this verifier for more information on which cards are required to proceed.",
+        "matchingCredentials": "MATCHING CARDS",
+        "claimsIntro": "The verifier has requested cards based on the following claims:",
+        "requestedClaimsTitle": "Missing claims",
+        "requiredCount": "{{count}} required",
+        "showMore": "Show more (+ {{count}})",
+        "claimsFooter": "Please download the corresponding cards and retry the sharing process.",
+        "close": "Close"
       },
       "noMatchingCredentialsWithMissingClaims": {
-        "title": "No matching credentials found!",
-        "message": "We Couldn't find any credentials in your wallet that match this request.You may need to download the right credentials or try again later"
+        "title": "No matching cards found!",
+        "message": "We Couldn't find any cards in your wallet that match this request.You may need to download the right cards or try again later"
       },
       "invalidVerifier": {
         "title": "An Error Occured!",
@@ -1094,7 +1100,7 @@
       },
       "credentialsMismatch": {
         "title": "An Error Occured!",
-        "message": "Credential mismatch detected. Ensure you have selected the right one containing the following claims: [{{claims}}] and try again."
+        "message": "Card mismatch detected. Ensure you have selected the right one containing the following claims: [{{claims}}] and try again."
       },
       "vpFormatsNotSupported": {
         "title": "Unsupported Request",
@@ -1106,7 +1112,7 @@
       },
       "invalidPresentationDefinitionURI": {
         "title": "Something went wrong with the request",
-        "message": "The information needed to share your credentials is not in the right format. Please ask the verifier to provide the correct details."
+        "message": "The information needed to share your cards is not in the right format. Please ask the verifier to provide the correct details."
       },
       "invalidPresentationDefinitionRef": {
         "title": "Problem with Response",
@@ -1122,7 +1128,7 @@
       },
       "invalidQrCode": {
         "title": "Request can’t be processed",
-        "message": "The QR code is invalid because some required information is missing. Please ask the verifier to provide a valid QR code to share your credentials."
+        "message": "The QR code is invalid because some required information is missing. Please ask the verifier to provide a valid QR code to share your cards."
       },
       "sendVPError": {
         "title": "Something Went Wrong",
@@ -1149,29 +1155,33 @@
       }
     },
     "dcqlSection": {
-      "mandatoryCards": "MANDATORY CARDS{{index}}",
+      "mandatoryCards": "MANDATORY CARDS",
       "optionalCards": "OPTIONAL CARDS",
       "required": "REQUIRED",
       "notRequired": "NOT REQUIRED",
       "multipleCardsMatchingQuery": "Multiple Cards Matching Query",
       "multipleCards": "Multiple Cards",
-      "allRequired": "ALL REQUIRED"
-    },
+      "allRequired": "ALL REQUIRED",
+      "stepOf": "Step {{current}} of {{total}}",
+      "previous": "Previous",
+      "next": "Next",
+      "instruction": "Select a card from each step to continue"
+  },
     "verifierInfo": {
       "trusted": "Trusted"
     },
     "infoOverlay": {
-      "title": "Why We Need Documents",
-      "body": "Organizations may request different types of credentials to verify your identity and provide you with services. Some credentials are required, while others are optional.",
+      "title": "Why We Need Cards",
+      "body": "Organizations may request different types of cards to verify your identity and provide you with services. Some cards are required, while others are optional.",
       "requiredCredentials": {
-        "title": "Required Credentials",
+        "title": "Required Cards",
         "description": "Essential for the organization to provide you with their services. You must share these to proceed.",
         "footnote": "Typically mandated by regulations or essential for account security and identity verification."
       },
       "optionalCredentials": {
-        "title": "Optional Credentials",
+        "title": "Optional Cards",
         "description": "Optional and can enhance your experience or unlock additional features, but are not mandatory.",
-        "footnote": "You can choose to share optional credentials now or add them later if needed for specific services."
+        "footnote": "You can choose to share optional cards now or add them later if needed for specific services."
       }
     }
   },
@@ -1323,6 +1333,10 @@
       "title": "Unlock App",
       "description": "Please use fingerprint to unlock the app"
     }
+  },
+  "pagination": {
+    "next": "Next",
+    "previous": "Previous"
   },
   "copilot": {
     "helpTitle": "Help/FAQs",

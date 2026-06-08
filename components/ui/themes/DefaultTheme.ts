@@ -79,6 +79,7 @@ export type ElevationLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export const DefaultTheme = {
   Colors: {
+    instructionLabel: Colors.darkGrey,
     ProfileIconColor: Colors.DarkGray,
     DetailedViewBackground: Colors.Gray97,
     TabItemText: Colors.Secondary,
@@ -1666,6 +1667,8 @@ export const DefaultTheme = {
   }),
   SendVcScreenStyles: StyleSheet.create({
     shareOptionButtonsContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
       marginBottom: 1,
       marginTop: 1,
       rowGap: 8,
