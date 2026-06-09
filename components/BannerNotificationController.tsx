@@ -6,8 +6,10 @@ import {
 } from '../machines/settings';
 import {useContext} from 'react';
 import {GlobalContext} from '../shared/GlobalContext';
+import {selectCredentialOfferUri} from '../machines/app';
 import {VcMetaEvents} from '../machines/VerifiableCredential/VCMetaMachine/VCMetaMachine';
 import {
+  selectIsCredentialOfferDroppedDueToBusyState,
   selectIsDownloadingFailed,
   selectIsDownloadingSuccess,
   selectIsReverificationFailure,
@@ -27,10 +29,25 @@ export const UseBannerNotification = () => {
     isPasscodeUnlock: useSelector(settingsService, selectIsPasscodeUnlock),
 
     isBiometricUnlock: useSelector(settingsService, selectIsBiometricUnlock),
-    isDownloadingSuccess: useSelector(vcMetaService, selectIsDownloadingSuccess),
+    isDownloadingSuccess: useSelector(
+      vcMetaService,
+      selectIsDownloadingSuccess,
+    ),
     isDownloadingFailed: useSelector(vcMetaService, selectIsDownloadingFailed),
-    isReverificationSuccess: useSelector(vcMetaService,selectIsReverificationSuccess),
-    isReverificationFailed: useSelector(vcMetaService, selectIsReverificationFailure),
+    isCredentialOfferDroppedDueToBusyState: useSelector(
+      vcMetaService,
+      selectIsCredentialOfferDroppedDueToBusyState,
+    ),
+    isResolvingCredentialOffer:
+      useSelector(appService, selectCredentialOfferUri) !== '',
+    isReverificationSuccess: useSelector(
+      vcMetaService,
+      selectIsReverificationSuccess,
+    ),
+    isReverificationFailed: useSelector(
+      vcMetaService,
+      selectIsReverificationFailure,
+    ),
     DISMISS: () => {
       settingsService.send(SettingsEvents.DISMISS());
     },
@@ -40,6 +57,11 @@ export const UseBannerNotification = () => {
       vcMetaService.send(VcMetaEvents.RESET_VERIFICATION_STATUS(null)),
     RESET_DOWNLOADING_FAILED: () => {
       vcMetaService.send(VcMetaEvents.RESET_DOWNLOADING_FAILED());
+    },
+    RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE: () => {
+      vcMetaService.send(
+        VcMetaEvents.RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE(),
+      );
     },
     RESET_DOWNLOADING_SUCCESS: () => {
       vcMetaService.send(VcMetaEvents.RESET_DOWNLOADING_SUCCESS());

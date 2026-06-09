@@ -7,7 +7,7 @@ import {
   ReceivedVcsTabMachine,
 } from './ReceivedVcsTabMachine';
 import {IssuersMachine} from '../../machines/Issuers/IssuersMachine';
-import Storage, { isMinimumStorageLimitReached } from '../../shared/storage';
+import Storage, {isMinimumStorageLimitReached} from '../../shared/storage';
 import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 
 const model = createModel(
@@ -241,4 +241,27 @@ export function selectTabsLoaded(state: State) {
 
 export function selectIsMinimumStorageLimitReached(state: State) {
   return state.matches('tabs.storageLimitReached');
+}
+
+export function selectIsIssuerMachineBusyForDeepLink(state: State) {
+  const issuersService = state.children.issuersMachine as
+    | ActorRefFrom<typeof IssuersMachine>
+    | undefined;
+
+  const issuerState = issuersService?.getSnapshot?.();
+
+  if (!issuerState) return false;
+
+  const activeStates = issuerState.toStrings();
+
+  return activeStates.some(activeState =>
+    [
+      'credentialDownloadFromOffer',
+      'downloadCredentials',
+      'proccessingCredential',
+      'processingCredential',
+      'verifyingCredential',
+      'storing',
+    ].some(busyState => activeState.includes(busyState)),
+  );
 }

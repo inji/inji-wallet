@@ -105,7 +105,7 @@ public class TestDataReader {
             case "Mock":
                 return "1231231231";
             case "idTypeForMobileDrivingLicense":
-                return "Mobile Driving License";
+                return "DrivingLicenseCredential";
             default:
                 return "Key not found";
         }

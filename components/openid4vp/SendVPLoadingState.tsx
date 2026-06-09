@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Loader, LoaderSkeleton} from '../ui/Loader';
+import {DeeplinkBanner} from '../DeeplinkBanner';
 
 type SendVPLoadingStateProps = {
   isAuthorizationFlow: boolean;
@@ -12,7 +13,12 @@ export const SendVPLoadingState: React.FC<SendVPLoadingStateProps> = ({
   const {t} = useTranslation('SendVPScreen');
 
   if (isAuthorizationFlow) {
-    return <LoaderSkeleton testID={'presentation-authorization'} />;
+    return (
+      <Fragment>
+        <DeeplinkBanner absolute />
+        <LoaderSkeleton testID={'presentation-authorization'} />
+      </Fragment>
+    );
   }
 
   return (
@@ -22,6 +28,3 @@ export const SendVPLoadingState: React.FC<SendVPLoadingStateProps> = ({
     />
   );
 };
-
-
-

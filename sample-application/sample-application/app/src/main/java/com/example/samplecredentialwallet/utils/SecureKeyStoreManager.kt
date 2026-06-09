@@ -15,6 +15,8 @@ class SecureKeystoreManager(private val context: Context) {
         private const val PREFS_NAME = "keystore_prefs"
         private const val KEY_KEYS_GENERATED = "keys_generated"
         private const val KEY_ORDER_PREFERENCE = "keyPreference"
+        private const val KEY_KEY_POLICY_VERSION = "key_policy_version"
+        private const val CURRENT_KEY_POLICY_VERSION = 2
 
 
         @Volatile
@@ -69,6 +71,18 @@ class SecureKeystoreManager(private val context: Context) {
      * Returns success/failure result
      */
     suspend fun initializeKeystore(): Result<String> = withContext(Dispatchers.IO) {
+        // Migrate older installs that may have auth-gated keys that break background signing.
+        if (needsKeyPolicyMigration()) {
+            Log.i(TAG, "Key policy migration required. Regenerating keys with background-signing policy")
+            try {
+                keystore.removeAllKeys()
+                prefs.edit().putBoolean(KEY_KEYS_GENERATED, false).apply()
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to clear old keys during migration; aborting initialization", e)
+                return@withContext Result.failure(e)
+            }
+        }
+
         if (areKeysGenerated()) {
             Log.i(TAG, "Keys already generated, skipping initialization")
             return@withContext Result.success("Keys already exist")
@@ -91,7 +105,10 @@ class SecureKeystoreManager(private val context: Context) {
 
         Log.i(TAG, "Hardware keystore supported: $isHardwareKeystoreSupported")
         Log.i(TAG, "Biometrics enabled on device: $deviceBiometricsEnabled")
-        val isBiometricsEnabledForKeys = isHardwareKeystoreSupported && deviceBiometricsEnabled
+
+        // VCI proof signing happens in background and must not depend on interactive auth tokens.
+        val isBiometricsEnabledForKeys = false
+        Log.i(TAG, "Auth-gated key usage for signing is disabled in sample app")
 
         if (isHardwareKeystoreSupported) {
             generateKeyPairRSA(isBiometricsEnabledForKeys)
@@ -178,7 +195,15 @@ class SecureKeystoreManager(private val context: Context) {
      * Mark keys as generated in SharedPreferences
      */
     private fun markKeysAsGenerated() {
-        prefs.edit().putBoolean(KEY_KEYS_GENERATED, true).apply()
+        prefs.edit()
+            .putBoolean(KEY_KEYS_GENERATED, true)
+            .putInt(KEY_KEY_POLICY_VERSION, CURRENT_KEY_POLICY_VERSION)
+            .apply()
+    }
+
+    private fun needsKeyPolicyMigration(): Boolean {
+        val version = prefs.getInt(KEY_KEY_POLICY_VERSION, 0)
+        return version < CURRENT_KEY_POLICY_VERSION
     }
 
     /**

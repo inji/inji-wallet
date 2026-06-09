@@ -60,5 +60,9 @@ describe('VCMetaModel', () => {
     it('should have DownloadingCredentialsSuccess as false', () => {
       expect(initialContext.DownloadingCredentialsSuccess).toBe(false);
     });
+
+    it('should have isCredentialOfferDroppedDueToBusyState as false', () => {
+      expect(initialContext.isCredentialOfferDroppedDueToBusyState).toBe(false);
+    });
   });
 });

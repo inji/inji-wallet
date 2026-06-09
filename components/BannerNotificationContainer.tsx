@@ -36,6 +36,14 @@ export const BannerNotificationContainer: React.FC<
   return (
     <>
       <BackupAndRestoreBannerNotification />
+      {bannerNotificationController.isResolvingCredentialOffer && (
+        <BannerNotification
+          type={BannerStatusType.IN_PROGRESS}
+          message={t('MyVcsTab:resolvingCredentialOffer')}
+          key={'resolvingCredentialOfferPopup'}
+          testId={'resolvingCredentialOfferPopup'}
+        />
+      )}
 
       {settingsScreenController.isKeyOrderSet === true && (
         <View style={Theme.BannerStyles.topBanner}>
@@ -148,6 +156,7 @@ export const BannerNotificationContainer: React.FC<
           testId={'reverificationFailedPopup'}
         />
       )}
+
       {bannerNotificationController.isDownloadingSuccess && (
         <BannerNotification
           type={BannerStatusType.SUCCESS}

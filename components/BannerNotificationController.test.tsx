@@ -1,6 +1,12 @@
 const mockSettingsSend = jest.fn();
 const mockVcMetaSend = jest.fn();
 
+jest.mock('../shared/tuvali', () => ({
+  wallet: {handleDataEvents: jest.fn()},
+  verifier: {handleDataEvents: jest.fn()},
+  EventTypes: {},
+  VerificationStatus: {},
+}));
 jest.mock('@xstate/react', () => ({
   useSelector: jest.fn(() => undefined),
 }));
@@ -33,6 +39,15 @@ jest.mock(
       })),
       RESET_REVERIFY_VC_FAILED: jest.fn(() => ({
         type: 'RESET_REVERIFY_VC_FAILED',
+      })),
+      REFRESH_RECEIVED_VCS: jest.fn(() => ({
+        type: 'REFRESH_RECEIVED_VCS',
+      })),
+      REFRESH_MY_VCS: jest.fn(() => ({
+        type: 'REFRESH_MY_VCS',
+      })),
+      STORE_RESTORE_LOG: jest.fn(() => ({
+        type: 'STORE_RESTORE_LOG',
       })),
     },
   }),

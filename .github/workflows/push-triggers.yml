@@ -67,10 +67,10 @@ jobs:
     with:
       SERVICE_LOCATION: '.'
       NODE_VERSION: '18.x'
-      SONAR_SOURCES: '.'
-      SONAR_TESTS: '.'
-      SONAR_TEST_INCLUSIONS: '**/*.spec.ts,**/*.test.ts'
-      SONAR_EXCLUSIONS: '**/node_modules/**,**/android/**,**/ios/**,**/build/**,**/dist/**,**/*.java'
+      SONAR_SOURCES: 'routes,screens,machines,lib/jsonld-signatures,components,shared'
+      SONAR_TESTS: 'routes,screens,machines,lib/jsonld-signatures,components,shared'
+      SONAR_TEST_INCLUSIONS: '**/*.spec.ts,**/*.spec.tsx,**/*.spec.js,**/*.spec.jsx,**/*.test.ts,**/*.test.tsx,**/*.test.js,**/*.test.jsx,**/__tests__/**'
+      SONAR_EXCLUSIONS: '**/node_modules/**,**/android/**,**/ios/**,**/build/**,**/dist/**,**/*.java,**/__mocks__/**,**/__snapshots__/**,**/*.snap,**/*.d.ts,**/*.typegen.ts,**/interfaces/**,**/test-config/**,**/jestGlobalMocks.ts,**/index.js'
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       ORG_KEY: ${{ secrets.ORG_KEY }}

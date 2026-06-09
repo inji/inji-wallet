@@ -81,6 +81,7 @@ import {
   selectIsKeyInvalidateError,
   selectIsLinkCode,
   selectAuthorizationRequest,
+  selectCredentialOfferUri,
   selectIsDeepLinkDetected,
 } from './app';
 
@@ -93,6 +94,7 @@ const mockState = (ctx: any = {}, matchVal?: string) => ({
     isKeyInvalidateError: false,
     linkCode: '',
     authorizationRequest: '',
+    credentialOfferUri: '',
     ...ctx,
   },
   matches: (v: string) => v === matchVal,
@@ -137,6 +139,14 @@ describe('app selectors', () => {
     expect(
       selectAuthorizationRequest(mockState({authorizationRequest: 'r'}) as any),
     ).toBe('r'));
+  it('selectCredentialOfferUri', () =>
+    expect(
+      selectCredentialOfferUri(
+        mockState({
+          credentialOfferUri: 'openid-credential-offer://?credential_offer=...',
+        }) as any,
+      ),
+    ).toBe('openid-credential-offer://?credential_offer=...'));
   it('selectIsDeepLinkDetected with linkCode', () =>
     expect(
       selectIsDeepLinkDetected(
@@ -155,6 +165,16 @@ describe('app selectors', () => {
         mockState({linkCode: '', authorizationRequest: ''}) as any,
       ),
     ).toBe(false));
+  it('selectIsDeepLinkDetected with credentialOfferUri', () =>
+    expect(
+      selectIsDeepLinkDetected(
+        mockState({
+          linkCode: '',
+          authorizationRequest: '',
+          credentialOfferUri: 'openid-credential-offer://',
+        }) as any,
+      ),
+    ).toBe(true));
 });
 
 describe('APP_EVENTS', () => {
@@ -236,6 +256,12 @@ describe('APP_EVENTS', () => {
   it('should create RESET_AUTHORIZATION_REQUEST event', () => {
     expect(APP_EVENTS.RESET_AUTHORIZATION_REQUEST()).toEqual({
       type: 'RESET_AUTHORIZATION_REQUEST',
+    });
+  });
+
+  it('should create RESET_CREDENTIAL_OFFER_URI event', () => {
+    expect(APP_EVENTS.RESET_CREDENTIAL_OFFER_URI()).toEqual({
+      type: 'RESET_CREDENTIAL_OFFER_URI',
     });
   });
 

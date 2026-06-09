@@ -1,5 +1,3 @@
-xcode_select '/Applications/Xcode_16.2.app'
-
 default_platform(:ios)
 APP_STORE_CONNECT_TEAM_ID = ENV["APP_STORE_CONNECT_TEAM_ID"]
 APPLE_ISSUER_ID = ENV["APPLE_ISSUER_ID"]
@@ -253,18 +251,6 @@ platform :ios do
     )
 
     delete_temp_keychain(keychain_name)
-
-    archive_path = gym(
-    skip_package_ipa: true,
-    destination: "generic/platform=iOS Simulator",
-    configuration: "Release",
-    build_path: "./build",
-    )
-
-    # find and copy App file to the folder
-    find_command = "find '../build/' -type d -name 'Products'"
-    app_path = sh(find_command, log: false).strip
-    sh("cp -R '#{app_path}' '#{output_directory}'")
 
     slack(
       message: "#{generate_app_name} #{version} (#{current_build_number}) is uploaded to testflight.",

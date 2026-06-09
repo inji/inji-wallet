@@ -17,6 +17,7 @@ import {
   selectVerificationErrorMessage,
   selectIsDownloadingFailed,
   selectIsDownloadingSuccess,
+  selectIsCredentialOfferDroppedDueToBusyState,
   selectIsReverificationSuccess,
   selectIsReverificationFailure,
 } from './VCMetaSelectors';
@@ -484,6 +485,28 @@ describe('VCMetaSelectors', () => {
         },
       };
       const result = selectIsDownloadingFailed(state);
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('selectIsCredentialOfferDroppedDueToBusyState', () => {
+    it('should return true when credential offer dropped due to busy', () => {
+      const state: any = {
+        context: {
+          isCredentialOfferDroppedDueToBusyState: true,
+        },
+      };
+      const result = selectIsCredentialOfferDroppedDueToBusyState(state);
+      expect(result).toBe(true);
+    });
+
+    it('should return false when not busy', () => {
+      const state: any = {
+        context: {
+          isCredentialOfferDroppedDueToBusyState: false,
+        },
+      };
+      const result = selectIsCredentialOfferDroppedDueToBusyState(state);
       expect(result).toBe(false);
     });
   });

@@ -153,9 +153,9 @@ describe('IssuersModel', () => {
       expect(initialContext.authorizationSuccess).toBe(false);
     });
 
-    it('should have all 40 required properties', () => {
+    it('should have all 41 required properties', () => {
       const properties = Object.keys(initialContext);
-      expect(properties).toHaveLength(40);
+      expect(properties).toHaveLength(41);
     });
   });
 

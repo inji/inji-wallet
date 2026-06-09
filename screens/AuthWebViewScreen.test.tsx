@@ -16,6 +16,15 @@ jest.mock('@expo/vector-icons', () => ({
     return <View testID="ionicon" />;
   },
 }));
+jest.mock('../shared/tuvali', () => ({
+  wallet: {handleDataEvents: jest.fn()},
+  verifier: {handleDataEvents: jest.fn()},
+  EventTypes: {},
+  VerificationStatus: {},
+}));
+jest.mock('../components/DeeplinkBanner', () => ({
+  DeeplinkBanner: () => null,
+}));
 jest.mock('../shared/vciClient/VciClient', () => ({
   __esModule: true,
   default: {getInstance: () => ({sendAuthCode: jest.fn()})},
@@ -23,6 +32,7 @@ jest.mock('../shared/vciClient/VciClient', () => ({
 jest.mock('../shared/constants', () => ({
   isAndroid: () => true,
   isIOS: () => false,
+  AuthorizationType: {IMPLICIT: 'IMPLICIT'},
 }));
 
 import AuthWebViewScreen from './AuthWebViewScreen';

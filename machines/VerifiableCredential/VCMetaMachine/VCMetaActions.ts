@@ -307,6 +307,12 @@ export const VCMetaActions = (model: any) => {
     resetDownloadCreadentialsFailed: model.assign({
       DownloadingCredentialsFailed: () => false,
     }),
+    setCredentialOfferDroppedDueToBusyState: model.assign({
+      isCredentialOfferDroppedDueToBusyState: () => true,
+    }),
+    resetCredentialOfferDroppedDueToBusyState: model.assign({
+      isCredentialOfferDroppedDueToBusyState: () => false,
+    }),
     setDownloadCredentialsSuccess: model.assign({
       DownloadingCredentialsSuccess: () => true,
     }),

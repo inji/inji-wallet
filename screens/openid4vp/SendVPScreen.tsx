@@ -1,13 +1,27 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {useContext, useEffect, useLayoutEffect, useRef, useState,} from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import {useTranslation} from 'react-i18next';
 import {BackHandler, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Column, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
-import {isIOS, LIVENESS_CHECK, OVP_ERROR_CODE, OVP_ERROR_MESSAGES,} from '../../shared/constants';
+import {
+  isIOS,
+  LIVENESS_CHECK,
+  OVP_ERROR_CODE,
+  OVP_ERROR_MESSAGES,
+} from '../../shared/constants';
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
-import {getImpressionEventData, sendImpressionEvent,} from '../../shared/telemetry/TelemetryUtils';
+import {
+  getImpressionEventData,
+  sendImpressionEvent,
+} from '../../shared/telemetry/TelemetryUtils';
 import {useSendVPScreen} from './SendVPScreenController';
 import {ScanLayoutProps} from '../../routes/routeTypes';
 import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
@@ -24,12 +38,13 @@ import {SendVPLoadingState} from '../../components/openid4vp/SendVPLoadingState'
 import {SendVPActions} from '../../components/openid4vp/SendVPActions';
 import {SendVPOverlays} from '../../components/openid4vp/overlay/SendVPOverlays';
 import {SendVPError} from '../../components/openid4vp/SendVPError';
+import {DeeplinkBanner} from '../../components/DeeplinkBanner';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
   const matchingVcListRef = useRef<MatchingVcListRef | null>(null);
   const controller = useSendVPScreen(props);
-  const [disableShareButton, setDisableShareButton] = useState<boolean>(true)
+  const [disableShareButton, setDisableShareButton] = useState<boolean>(true);
   const scanScreenController = useScanScreen();
   const insets = useSafeAreaInsets();
 
@@ -204,7 +219,8 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   };
 
   const handleVPShare = () => {
-    const selectedDisclosuresFromRef = matchingVcListRef.current?.selectedDisclosures;
+    const selectedDisclosuresFromRef =
+      matchingVcListRef.current?.selectedDisclosures;
     const selectedDisclosures: Record<string, string[]> =
       typeof selectedDisclosuresFromRef === 'function'
         ? selectedDisclosuresFromRef()
@@ -220,6 +236,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
 
   return (
     <React.Fragment>
+      <DeeplinkBanner absolute />
       {
         <TrustModalVerifier
           isVisible={controller.showTrustConsentModal}
@@ -257,25 +274,27 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
               setDisableShareButton={setDisableShareButton}
               controller={controller}
             />
-          <SendVPActions
-            isDcqlFlow={controller.isDcqlFlow}
-            isCancelling={controller.isCancelling}
-            isAuthorizationFlow={controller.isAuthorizationFlow}
-            disableShareButton={disableShareButton}
-            onShare={handleVPShare}
-            onReject={handleRejectButtonEvent}
-            consentAndShareLabel={t('consentAndShare')}
-            dcqlInstructionLabel={t('dcqlSection.instruction')}
-            cancelLabel={t('common:cancel')}
-            declineLabel={t('common:decline')}
-          />
+            <SendVPActions
+              isDcqlFlow={controller.isDcqlFlow}
+              isCancelling={controller.isCancelling}
+              isAuthorizationFlow={controller.isAuthorizationFlow}
+              disableShareButton={disableShareButton}
+              onShare={handleVPShare}
+              onReject={handleRejectButtonEvent}
+              consentAndShareLabel={t('consentAndShare')}
+              dcqlInstructionLabel={t('dcqlSection.instruction')}
+              cancelLabel={t('common:cancel')}
+              declineLabel={t('common:decline')}
+            />
           </Column>
         </>
       )}
       <SendVPError
         isAuthorizationFlow={controller.isAuthorizationFlow}
         error={controller.error}
-        noCredentialsMatchingVPRequest={controller.noCredentialsMatchingVPRequest}
+        noCredentialsMatchingVPRequest={
+          controller.noCredentialsMatchingVPRequest
+        }
         requestedClaimsByVerifier={controller.requestedClaimsByVerifier}
         getAdditionalMessage={controller.getAdditionalMessage}
         generateAndStoreLogMessage={controller.generateAndStoreLogMessage}

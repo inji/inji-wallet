@@ -61,6 +61,34 @@ describe('CredentialType', () => {
     expect(getByText('National ID')).toBeTruthy();
   });
 
+  it('should render with display name from credential_metadata', () => {
+    const item = {
+      format: 'ldp_vc',
+      proof_types_supported: {jwt: {}},
+      credential_metadata: {
+        display: [
+          {name: 'MOSIP Credential', locale: 'en', logo: {url: 'logo.png'}},
+        ],
+      },
+    };
+    const {getByText} = render(
+      React.createElement(CredentialType, {
+        item: item as any,
+        displayDetails: {} as any,
+        onPress: jest.fn(),
+        testID: 'test-v1',
+      }),
+    );
+    expect(getByText('MOSIP Credential')).toBeTruthy();
+    expect(item).toEqual(
+      expect.objectContaining({
+        format: 'ldp_vc',
+        proof_types_supported: {jwt: {}},
+        credential_metadata: expect.any(Object),
+      }),
+    );
+  });
+
   it('should fallback to getCredentialType when no display', () => {
     const item = {};
     const {getByText} = render(

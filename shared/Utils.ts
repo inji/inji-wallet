@@ -79,6 +79,7 @@ export const formatTextWithGivenLimit = (value: string, limit = 15) => {
 export enum DEEPLINK_FLOWS {
   QR_LOGIN = 'qrLoginFlow',
   OVP = 'ovpFlow',
+  CREDENTIAL_OFFER = 'credentialOfferFlow',
 }
 
 export function base64ToByteArray(base64String: string) {

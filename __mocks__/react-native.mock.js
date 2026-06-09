@@ -36,6 +36,13 @@ jest.mock('react-native', () => {
         shareVerifiablePresentation: jest.fn(),
         sendErrorToVerifier: jest.fn(),
       },
+      InjiVciClient: {
+        addListener: jest.fn(),
+        removeListeners: jest.fn(),
+      },
+      WalletModule: {
+        handleDataEvents: jest.fn(),
+      },
     },
   });
 

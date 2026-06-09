@@ -612,6 +612,8 @@
     "downloadingYourCard": "Downloading your card, this can take upto 5 minutes",
     "downloadingVcSuccess": "Your Card has been downloaded successfully",
     "downloadingVcFailed": "Sorry! Due to technical error we are unable to download your card now. Please try again later.",
+    "credentialOfferBusy": "A card download is already in progress. Please wait until it completes before starting another request.",
+    "resolvingCredentialOffer": "Please wait while we verify and process your request.",
     "activated": "Credentials are enabled for online authentication.",
     "noCardsTitle": "No Cards Found!",
     "noCardsDescription": "Sorry, we couldn’t find any results. Please try entering another search keyword.",

@@ -163,6 +163,13 @@ jest.mock('react-native-linear-gradient', () => 'LinearGradient');
 jest.mock('../../components/ui/Error', () => ({
   ErrorView: ({additionalContent}: any) => additionalContent || null,
 }));
+jest.mock('react-native-copilot', () => ({
+  CopilotProvider: ({children}: any) => children,
+  useCopilot: () => ({start: jest.fn()}),
+}));
+jest.mock('../../components/DeeplinkBanner', () => ({
+  DeeplinkBanner: () => null,
+}));
 jest.mock('../../components/ui/Loader', () => ({
   Loader: () => null,
   LoaderSkeleton: () => null,

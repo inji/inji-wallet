@@ -191,6 +191,10 @@ jest.mock('../../components/ui/svg', () => ({
   },
 }));
 
+jest.mock('../../components/DeeplinkBanner', () => ({
+  DeeplinkBanner: () => null,
+}));
+
 jest.mock('../../components/BannerNotificationContainer', () => ({
   BannerNotificationContainer: () => null,
 }));

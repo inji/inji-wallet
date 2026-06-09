@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.example.samplecredentialwallet.navigation.AppNavHost
+import com.example.samplecredentialwallet.ovp.utils.OpenID4VPManager
 import com.example.samplecredentialwallet.utils.SecureKeystoreManager
 import com.example.samplecredentialwallet.utils.AuthCodeHolder
 import kotlinx.coroutines.launch
@@ -25,6 +26,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        OpenID4VPManager.init("sample-credential-wallet")
 
         // Initialize keystore manager
         keystoreManager = SecureKeystoreManager.getInstance(this)
@@ -89,16 +92,30 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        Log.d(TAG, "onNewIntent received: data=${intent.data}")
         setIntent(intent)
         handleDeeplink(intent)
     }
 
     private fun handleDeeplink(intent: Intent?) {
         intent?.data?.let { uri: Uri ->
+            Log.d(TAG, "handleDeeplink called with uri=$uri")
             if (uri.toString().startsWith("io.mosip.residentapp.inji://oauthredirect")) {
                 val code = uri.getQueryParameter("code")
-                Log.d(TAG, "⚡ handleDeeplink triggered with code=$code")
+                val error = uri.getQueryParameter("error")
+                val queryParams = mutableMapOf<String, String>()
+                uri.queryParameterNames.forEach { name ->
+                    queryParams[name] = uri.getQueryParameter(name) ?: ""
+                }
+
+                Log.d(
+                    TAG,
+                    "OAuth redirect received. codePresent=${code != null}, error=$error, params=${queryParams.keys}"
+                )
+
+                // Complete both holders because different flows wait on different deferred types.
                 AuthCodeHolder.complete(code)
+                AuthCodeHolder.completeV2(queryParams)
             }
         }
     }

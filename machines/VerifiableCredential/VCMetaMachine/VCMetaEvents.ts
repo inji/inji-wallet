@@ -18,14 +18,22 @@ export const VcMetaEvents = {
   REFRESH_MY_VCS_TWO: (vc: VC) => ({vc}),
   REFRESH_RECEIVED_VCS: () => ({}),
   WALLET_BINDING_SUCCESS: (vcKey: string, vc: VC) => ({vcKey, vc}),
-  REVERIFY_VC_SUCCESS: (vcKey: string, statusValue: string, vcType: string) => ({
+  REVERIFY_VC_SUCCESS: (
+    vcKey: string,
+    statusValue: string,
+    vcType: string,
+  ) => ({
     vcKey,
     statusValue,
     vcType,
   }),
   RESET_REVERIFY_VC_SUCCESS: () => ({}),
   RESET_HIGHLIGHT: () => ({}),
-  REVERIFY_VC_FAILED: (vcKey: string, statusValue: string, vcType: string) => ({vcKey,statusValue,vcType}),
+  REVERIFY_VC_FAILED: (vcKey: string, statusValue: string, vcType: string) => ({
+    vcKey,
+    statusValue,
+    vcType,
+  }),
   RESET_REVERIFY_VC_FAILED: () => ({}),
   RESET_WALLET_BINDING_SUCCESS: () => ({}),
   ADD_VC_TO_IN_PROGRESS_DOWNLOADS: (requestId: string) => ({requestId}),
@@ -53,5 +61,7 @@ export const VcMetaEvents = {
   }),
   VC_DOWNLOADING_FAILED: () => ({}),
   RESET_DOWNLOADING_FAILED: () => ({}),
+  CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE: () => ({}),
+  RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE: () => ({}),
   RESET_DOWNLOADING_SUCCESS: () => ({}),
 };

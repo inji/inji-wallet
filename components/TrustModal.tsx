@@ -4,6 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import {Button} from './ui';
 import {Theme} from './ui/styleUtils';
+import {DeeplinkBanner} from './DeeplinkBanner';
 
 type ConsentStatus = 'idle' | 'loading' | 'success';
 
@@ -69,6 +70,7 @@ export const TrustModal = memo(
     return (
       <Modal onRequestClose={onCancel} visible={isVisible} animationType="fade">
         <SafeAreaView style={Theme.TrustIssuerScreenStyle.container}>
+          <DeeplinkBanner />
           <ScrollView
             bounces={false}
             showsVerticalScrollIndicator={false}

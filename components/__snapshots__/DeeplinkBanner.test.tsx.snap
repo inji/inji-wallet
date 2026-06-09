@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeeplinkBanner Component should match snapshot when busy in absolute mode 1`] = `
+<View
+  pointerEvents="box-none"
+  style={
+    {
+      "elevation": 1000,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+      "zIndex": 1000,
+    }
+  }
+>
+  <View
+    testID="mock-banner"
+  />
+</View>
+`;
+
+exports[`DeeplinkBanner Component should match snapshot when busy in inline mode 1`] = `
+<View
+  testID="mock-banner"
+/>
+`;
+
+exports[`DeeplinkBanner Component should match snapshot with default props 1`] = `null`;

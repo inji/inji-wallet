@@ -27,6 +27,10 @@ jest.mock('react-i18next', () => ({
   },
 }));
 
+jest.mock('./DeeplinkBanner', () => ({
+  DeeplinkBanner: () => null,
+}));
+
 // --------------------
 // UI mock
 // --------------------

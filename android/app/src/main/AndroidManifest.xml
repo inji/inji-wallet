@@ -81,6 +81,20 @@
                         android:host="authorize" />
             </intent-filter>
 
+            <!--
+              OpenID4VCI 1.0 §4.1.1 - Credential Offer endpoint.
+              No android:host so both authority forms match:
+                openid-credential-offer://?credential_offer=...
+                openid-credential-offer://credential_offer?credential_offer=...
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="openid-credential-offer" />
+            </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

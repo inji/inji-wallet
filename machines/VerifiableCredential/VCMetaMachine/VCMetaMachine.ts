@@ -31,6 +31,12 @@ export const vcMetaMachine =
         RESET_DOWNLOADING_FAILED: {
           actions: 'resetDownloadCreadentialsFailed',
         },
+        CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE: {
+          actions: 'setCredentialOfferDroppedDueToBusyState',
+        },
+        RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE: {
+          actions: 'resetCredentialOfferDroppedDueToBusyState',
+        },
         REMOVE_VC_FROM_IN_PROGRESS_DOWNLOADS: {
           actions: 'removeVcFromInProgressDownlods',
         },
@@ -130,7 +136,12 @@ export const vcMetaMachine =
               actions: 'removeVcFromMyVcsMetadata',
             },
             VC_METADATA_UPDATED: {
-              actions: ['updateMyVcsMetadata', 'updateReceivedVcsMetadata', 'setUpdatedVcMetadatas', 'setUpdatedReceivedVcMetadatas',],
+              actions: [
+                'updateMyVcsMetadata',
+                'updateReceivedVcsMetadata',
+                'setUpdatedVcMetadatas',
+                'setUpdatedReceivedVcMetadatas',
+              ],
             },
             VC_DOWNLOADED: {
               actions: ['setDownloadCredentialsSuccess', 'setDownloadedVc'],

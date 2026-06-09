@@ -30,7 +30,7 @@ public class SunbirdLoginPage extends BasePage {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField[@value=\"Full Name\"]")
 	private WebElement enterFullNameTextBox;
 
-	@AndroidFindBy(uiAutomator = "UiSelector().className(\"android.widget.Spinner\")")
+	@AndroidFindBy(xpath = "//android.widget.DatePicker[@resource-id=\"_form_dob\"]")
 	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeOther[`name == \"eSignet\"`]/XCUIElementTypeOther[10]")
 	private WebElement enterDateOfBirthTextBox;
 
