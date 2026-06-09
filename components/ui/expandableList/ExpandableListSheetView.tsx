@@ -1,4 +1,4 @@
-import React, {ReactNode, useState} from 'react';
+import React, {ReactNode, useCallback, useMemo, useState} from 'react';
 import {
   Modal,
   ScrollView,
@@ -33,9 +33,27 @@ type ExpandableListSheetViewProps<T> = {
   badge?: ReactNode;
   collapsedItemCount?: number;
   initialExpanded?: boolean;
+  priorityItemPredicate?: (item: T) => boolean;
   renderItem: (params: RenderItemParams<T>) => ReactNode;
-  keyExtractor?: (item: T, index: number, isExpanded: boolean) => string;
+  keyExtractor: (item: T, index: number, isExpanded: boolean) => string;
 };
+
+function movePriorityItemToFront<T>(
+  items: T[],
+  priorityItemPredicate?: (item: T) => boolean,
+) {
+  if (!priorityItemPredicate) {
+    return items;
+  }
+
+  const priorityIndex = items.findIndex(priorityItemPredicate);
+
+  if (priorityIndex <= 0) {
+    return items;
+  }
+
+  return [items[priorityIndex], ...items.slice(0, priorityIndex), ...items.slice(priorityIndex + 1)];
+}
 
 function getExpandableIds(baseTestID: string) {
   return {
@@ -66,16 +84,28 @@ export function ExpandableListSheetView<T>({
                                              visibleItemsStyle,
                                              collapsedItemCount = DEFAULT_COLLAPSED_ITEM_COUNT,
                                              initialExpanded = false,
+                                             priorityItemPredicate,
                                              renderItem,
                                              keyExtractor,
                                            }: ExpandableListSheetViewProps<T>) {
   const [expanded, setExpanded] = useState(initialExpanded);
-  const visibleItems = items.slice(0, collapsedItemCount);
-  const hiddenCount = items.length - collapsedItemCount;
-  const ids = getExpandableIds(testID);
+  const orderedItems = useMemo(
+    () => movePriorityItemToFront(items, priorityItemPredicate),
+    [items, priorityItemPredicate],
+  );
+  const visibleItems = useMemo(
+    () => orderedItems.slice(0, collapsedItemCount),
+    [orderedItems, collapsedItemCount],
+  );
+  const hiddenCount = useMemo(
+    () => orderedItems.length - collapsedItemCount,
+    [orderedItems.length, collapsedItemCount],
+  );
+  const ids = useMemo(() => getExpandableIds(testID), [testID]);
+  const showMoreLabel = useMemo(() => showMoreText(hiddenCount), [showMoreText, hiddenCount]);
 
-  const openModal = () => setExpanded(true);
-  const closeModal = () => setExpanded(false);
+  const openModal = useCallback(() => setExpanded(true), []);
+  const closeModal = useCallback(() => setExpanded(false), []);
 
   return (
     <>
@@ -108,7 +138,7 @@ export function ExpandableListSheetView<T>({
             alignShowMoreTextAtRight && styles.showMoreButtonRight,
           ]}
           onPress={openModal}>
-          <Text style={styles.showMoreText}>{showMoreText(hiddenCount)}</Text>
+          <Text style={styles.showMoreText}>{showMoreLabel}</Text>
         </TouchableOpacity>
       )}
 
@@ -135,7 +165,7 @@ export function ExpandableListSheetView<T>({
               </View>
               <Divider testId={ids.modalDivider}/>
               <ScrollView>
-                {items.map((item, index) => (
+                {orderedItems.map((item, index) => (
                   <React.Fragment
                     key={
                       keyExtractor?.(item, index, true) ??
@@ -145,7 +175,7 @@ export function ExpandableListSheetView<T>({
                       item,
                       index,
                       isExpanded: true,
-                      isLast: index === items.length - 1,
+                      isLast: index === orderedItems.length - 1,
                     })}
                   </React.Fragment>
                 ))}

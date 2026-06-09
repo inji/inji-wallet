@@ -11,8 +11,8 @@ import {Icon, Overlay} from 'react-native-elements';
 import {useTranslation} from 'react-i18next';
 import {Text} from '../../ui';
 import {Badge} from '../../ui/badge/Badge';
-import {DcqlBadgeColors} from '../../ui/themes/DefaultTheme';
 import {Divider} from '../../ui/divider/Divider';
+import {Theme} from "../../ui/styleUtils";
 
 type CredentialCardBadgeStyle = {
   textColor: string;
@@ -103,10 +103,10 @@ export const WhyWeNeedDocumentsOverlay: React.FC<
           title: t('infoOverlay.requiredCredentials.title'),
           badgeText: t('dcqlSection.required'),
           badgeStyle: {
-            textColor: DcqlBadgeColors.requiredText,
-            borderColor: DcqlBadgeColors.requiredBorder,
-            bgColor: DcqlBadgeColors.requiredBg,
-            iconBgColor: DcqlBadgeColors.requiredBg,
+            textColor: Theme.Colors.BadgeColors.requiredText,
+            borderColor: Theme.Colors.BadgeColors.requiredBorder,
+            bgColor: Theme.Colors.BadgeColors.requiredBg,
+            iconBgColor: Theme.Colors.BadgeColors.requiredBg,
             footerContainerStyle: styles.requiredFootnote,
             footerTextStyle: styles.requiredFootnoteText,
           },
@@ -115,7 +115,7 @@ export const WhyWeNeedDocumentsOverlay: React.FC<
               name="error-outline"
               type="material"
               size={20}
-              color={DcqlBadgeColors.requiredText}
+              color={Theme.Colors.BadgeColors.requiredText}
             />
           ),
           bodyText: t('infoOverlay.requiredCredentials.description'),
@@ -127,9 +127,9 @@ export const WhyWeNeedDocumentsOverlay: React.FC<
           title: t('infoOverlay.optionalCredentials.title'),
           badgeText: t('dcqlSection.notRequired'),
           badgeStyle: {
-            textColor: DcqlBadgeColors.optionalText,
-            borderColor: DcqlBadgeColors.optionalBorder,
-            bgColor: DcqlBadgeColors.optionalBg,
+            textColor: Theme.Colors.BadgeColors.optionalText,
+            borderColor: Theme.Colors.BadgeColors.optionalBorder,
+            bgColor: Theme.Colors.BadgeColors.optionalBg,
             iconBgColor: '#F3F4F6',
             footerContainerStyle: styles.optionalFootnote,
             footerTextStyle: styles.optionalFootnoteText,

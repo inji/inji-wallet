@@ -63,6 +63,18 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     onSelectionChange(newState);
   };
 
+  const getPriorityVcKey = (optionIndex: number, credentialQueryId: string) => {
+    const vcKeys = selectedQueryIdToCredentialsByOption[optionIndex]?.[
+      credentialQueryId
+    ];
+
+    if (!vcKeys || vcKeys.size === 0) {
+      return undefined;
+    }
+
+    return vcKeys.values().next().value as string | undefined;
+  };
+
   const getPreselectedOptionState = (currentlySelectedVcKeys: Set<string>) => {
     let preferredOptionIndex = 0;
     let preferredSelection: Record<string, Set<string>> = {};
@@ -389,16 +401,17 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     };
 
     const appendVcKeyToCurrentSelection = () => {
+      const existingVcKeys = Array.from(
+        prevSelectedQueryIdToCredentialsByOption[currentOptionIndex]?.[
+          credentialQueryId
+        ] ?? [],
+      );
+
       return {
         ...prevSelectedQueryIdToCredentialsByOption,
         [currentOptionIndex]: {
           ...prevSelectedQueryIdToCredentialsByOption[currentOptionIndex],
-          [credentialQueryId]: new Set([
-            ...(prevSelectedQueryIdToCredentialsByOption[currentOptionIndex]?.[
-              credentialQueryId
-              ] ?? []),
-            vcKey,
-          ]),
+          [credentialQueryId]: new Set([vcKey, ...existingVcKeys]),
         },
       };
     };
@@ -509,7 +522,6 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     const selectionType = canSelectMultiple
       ? CheckboxSelectionType.MULTIPLE
       : CheckboxSelectionType.SINGLE;
-
     //.   Case 1: Only one VC matches the credential query
     //          - directly render that VC as a selected item if the option is selected
     if (matchResult.matchingVcs?.length === 1) {
@@ -548,10 +560,16 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
           closeText={"Close"}
           alignShowMoreTextAtRight
           showMoreText={() => "Show all cards"}
+          priorityItemPredicate={item =>
+            getPriorityVcKey(optionIndex, credentialQueryId) === item.matchingVcInfo.vcKey
+          }
+          keyExtractor={(item, _index, isExpanded) =>
+            `${item.matchingVcInfo.vcKey}-${isExpanded ? 'expanded' : 'collapsed'}`
+          }
           visibleItemsStyle={{}}
           collapsedItemCount={1}
           renderItem={
-            ({item, index, isExpanded, isLast}) => {
+            ({item}) => {
               return renderCardView(
                 item,
                 credentialQueryId,

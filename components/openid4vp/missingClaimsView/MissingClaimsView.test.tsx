@@ -106,7 +106,7 @@ describe('MissingClaimsView', () => {
     const {getByLabelText} = render(
       <MissingClaimsView claims={manyClaims} initialExpanded />,
     );
-    expect(getByLabelText('badge-missingClaimsModalBadge')).toBeTruthy();
+    expect(getByLabelText('badge-missing-claims-modal-badge')).toBeTruthy();
   });
 
   it('expanded view displays footer text', () => {

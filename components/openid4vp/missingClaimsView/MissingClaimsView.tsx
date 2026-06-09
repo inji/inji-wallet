@@ -4,7 +4,6 @@ import {ExpandableListSheetView} from '../../ui/expandableList/ExpandableListShe
 import {Text} from '../../ui';
 import {Badge} from '../../ui/badge/Badge';
 import {Theme} from '../../ui/styleUtils';
-import {DcqlBadgeColors} from '../../ui/themes/DefaultTheme';
 import React from 'react';
 
 type MissingClaimsViewProps = {
@@ -32,13 +31,13 @@ export function MissingClaimsView({
       }
       badge={
         <Badge
-          testId="missingClaimsModalBadge"
+          testId="missing-claims-modal-badge"
           text={t('errors.noMatchingCredentials.requiredCount', {
             count: claims.length,
           })}
-          textColor={DcqlBadgeColors.requiredText}
-          borderColor={DcqlBadgeColors.requiredBorder}
-          bgColor={DcqlBadgeColors.requiredBg}
+          textColor={Theme.Colors.BadgeColors.requiredText}
+          borderColor={Theme.Colors.BadgeColors.requiredBorder}
+          bgColor={Theme.Colors.BadgeColors.requiredBg}
         />
       }
       keyExtractor={(_claim, index, isExpanded) =>

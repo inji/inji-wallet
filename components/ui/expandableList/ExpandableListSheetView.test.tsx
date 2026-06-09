@@ -142,11 +142,21 @@ describe('ExpandableListSheetView', () => {
   });
 
   it('passes correct renderItem params for collapsed and expanded lists', () => {
-    const renderItemSpy = jest.fn(({index, isExpanded}: any) => (
-      <View
-        testID={`${isExpanded ? 'expanded' : 'collapsed'}-spy-row-${index}`}
-      />
-    ));
+    const renderItemSpy = jest.fn(
+      ({
+        index,
+        isExpanded,
+      }: {
+        item: string;
+        index: number;
+        isExpanded: boolean;
+        isLast: boolean;
+      }) => (
+        <View
+          testID={`${isExpanded ? 'expanded' : 'collapsed'}-spy-row-${index}`}
+        />
+      ),
+    );
 
     renderComponent({initialExpanded: true, renderItem: renderItemSpy});
 
@@ -188,5 +198,64 @@ describe('ExpandableListSheetView', () => {
     expect(keyExtractor).toHaveBeenCalledWith('item-3', 2, false);
     expect(keyExtractor).toHaveBeenCalledWith('item-1', 0, true);
     expect(keyExtractor).toHaveBeenCalledWith('item-5', 4, true);
+  });
+
+  it('moves the prioritized item to the first position in collapsed and expanded lists', () => {
+    const renderItemSpy = jest.fn(
+      ({
+        item,
+        index,
+        isExpanded,
+      }: {
+        item: string;
+        index: number;
+        isExpanded: boolean;
+        isLast: boolean;
+      }) => (
+      <View
+        testID={`${isExpanded ? 'expanded' : 'collapsed'}-priority-row-${index}`}
+        accessibilityLabel={`${isExpanded ? 'expanded' : 'collapsed'}-priority-${item}`}
+      />
+      ),
+    );
+
+    renderComponent({
+      initialExpanded: true,
+      priorityItemPredicate: item => item === 'item-4',
+      renderItem: renderItemSpy,
+    });
+
+    expect(renderItemSpy).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        item: 'item-4',
+        index: 0,
+        isExpanded: false,
+      }),
+    );
+    expect(renderItemSpy).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        item: 'item-1',
+        index: 1,
+        isExpanded: false,
+      }),
+    );
+    expect(renderItemSpy).toHaveBeenNthCalledWith(
+      4,
+      expect.objectContaining({
+        item: 'item-4',
+        index: 0,
+        isExpanded: true,
+      }),
+    );
+    expect(renderItemSpy).toHaveBeenNthCalledWith(
+      5,
+      expect.objectContaining({
+        item: 'item-1',
+        index: 1,
+        isExpanded: true,
+      }),
+    );
   });
 });

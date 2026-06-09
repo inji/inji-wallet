@@ -247,8 +247,8 @@ describe('CredentialSetSection', () => {
   /**
    * Spec: When one option contains multiple credential queries (i.e. the user
    * must present multiple credentials together to satisfy the option), they
-   * must be grouped inside a section labelled "Multiple Cards" with an
-   * "ALL REQUIRED" badge and a single checkbox to select/deselect all.
+   * must be grouped inside a section labelled "Multiple Cards" with
+   * - a single checkbox to select/deselect all.
    */
   it('renders a combined section for a multi-query option', () => {
     const props = buildDefaultProps({
@@ -413,6 +413,65 @@ describe('CredentialSetSection', () => {
     expect(calledWith['national-id'].has(vcKey('vc-national-1'))).toBe(false);
   });
 
+  it('moves the newly selected VC to the first visible card after closing the expanded list', async () => {
+    const props = buildDefaultProps({
+      matchingVCsResult: {
+        'national-id': buildMatchResult(['vc-national-1', 'vc-national-2']),
+      },
+      satisfiableOptions: [['national-id']],
+    });
+
+    const {getByTestId, queryByTestId} = render(<CredentialSetSection {...props} />);
+
+    await waitFor(() =>
+      expect(
+        getByTestId(
+          `vc-item-test-section-option-0-query-national-id-vc-${vcKey(
+            'vc-national-1',
+          )}`,
+        ).props.accessibilityState?.selected,
+      ).toBe(true),
+    );
+
+    fireEvent.press(
+      getByTestId(
+        'test-section-option-0-query-national-id-multi-vc-show-more-button',
+      ),
+    );
+
+    fireEvent.press(
+      getByTestId(
+        `vc-item-test-section-option-0-query-national-id-vc-${vcKey(
+          'vc-national-2',
+        )}`,
+      ),
+    );
+
+    fireEvent.press(
+      getByTestId(
+        'test-section-option-0-query-national-id-multi-vc-modal-close-button',
+      ),
+    );
+
+    await waitFor(() => {
+      expect(
+        getByTestId(
+          `vc-item-test-section-option-0-query-national-id-vc-${vcKey(
+            'vc-national-2',
+          )}`,
+        ).props.accessibilityState?.selected,
+      ).toBe(true);
+    });
+
+    expect(
+      queryByTestId(
+        `vc-item-test-section-option-0-query-national-id-vc-${vcKey(
+          'vc-national-1',
+        )}`,
+      ),
+    ).toBeNull();
+  });
+
   // ─── handleVCSelection – allowMultiple mode ──────────────────────────────
 
   /**
@@ -464,7 +523,11 @@ describe('CredentialSetSection', () => {
     await waitFor(() => expect(selectVcs).toHaveBeenCalledTimes(2));
 
     // vc-health-1 should still be visually selected in the internal state
-    expect(vc1.props.accessibilityState?.selected).toBe(true);
+    expect(
+      getAllByTestId(
+        `vc-item-test-section-option-0-query-health-id-vc-${vcKey('vc-health-1')}`,
+      ).some(item => item.props.accessibilityState?.selected),
+    ).toBe(true);
 
     // Second selectVcs call targets vc-health-2 (per-VC call; parent accumulates)
     const secondCall = selectVcs.mock.calls[1][0];
@@ -800,7 +863,7 @@ describe('CredentialSetSection preselection', () => {
     const firstOptionKey = vcKey('vc-first-option');
     const secondOptionKey = vcKey('vc-second-option');
 
-    const {getByLabelText, getByTestId} = render(
+    const {getByTestId} = render(
       <CredentialSetSection
         credentialSet={{
           options: [['first-option-query'], ['second-option-query']],
