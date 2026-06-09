@@ -54,5 +54,9 @@ RCT_EXTERN_METHOD(sendIssuerTrustResponseFromJS:(BOOL)isTrusted)
 // Sends token response JSON back to native side (in response to onRequestTokenResponse)
 RCT_EXTERN_METHOD(sendTokenResponseFromJS:(NSString *)tokenResponseJson)
 
+RCT_EXTERN_METHOD(sendJsonLdCanonicalizeResultFromJS:(NSString *)result)
+RCT_EXTERN_METHOD(notifyCanonicalizationFailureFromJS:(NSString *)code
+                  message:(NSString *)message
+                  )
 
 @end

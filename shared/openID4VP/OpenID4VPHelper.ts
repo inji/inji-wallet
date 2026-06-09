@@ -5,23 +5,25 @@ import {
   createSignatureRSA,
   fetchKeyPair,
 } from '../cryptoutil/cryptoUtil';
-import {base64ToByteArray, canonicalize2} from '../Utils';
+import {base64ToByteArray, canonicalize2, parseJSON} from '../Utils';
 import getAllConfigurations from '../api';
 import {JWT_ALG_TO_KEY_TYPE} from '../constants';
 import {SignatureAlgorithms} from '../cryptoutil/KeyTypes';
 import {UnsignedVPToken, VPTokenSigningResult} from './openid4vp.types';
-export async function isClientValidationRequired() {
-  const config = await getAllConfigurations();
-  return config.openid4vpClientValidation === 'true';
-}
+import {defaultWalletConfig} from "./walletConfig/WalletConfig";
 
 export async function getWalletConfig() {
   const config = await getAllConfigurations();
-
-  if (!config.walletConfig) {
-    return null;
+  let walletConfig = config.walletConfig;
+  if (!walletConfig) {
+    console.warn("There is no wallet configuration available in the config. Using default wallet configuration.");
+    walletConfig = defaultWalletConfig;
+  } else {
+    walletConfig = parseJSON(walletConfig)
   }
-  return JSON.parse(config.walletConfig);
+
+  walletConfig["validate_pre_registered_verifier"] = config.openid4vpClientValidation === 'true'
+  return walletConfig;
 }
 
 export const jsonLdCanonicalize = async (data: string) => {

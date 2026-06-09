@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Text} from '../index';
+import {Text} from '../Text';
 import {Divider} from '../divider/Divider';
 import {Theme} from '../styleUtils';
 
@@ -28,6 +28,8 @@ type ExpandableListSheetViewProps<T> = {
   footerText: string;
   closeText: string;
   showMoreText: (hiddenCount: number) => string;
+  alignShowMoreTextAtRight?: boolean;
+  visibleItemsStyle?: object;
   badge?: ReactNode;
   collapsedItemCount?: number;
   initialExpanded?: boolean;
@@ -52,19 +54,21 @@ function getExpandableIds(baseTestID: string) {
 }
 
 export function ExpandableListSheetView<T>({
-  items,
-  testID,
-  introText,
-  title,
-  footerText,
-  closeText,
-  showMoreText,
-  badge,
-  collapsedItemCount = DEFAULT_COLLAPSED_ITEM_COUNT,
-  initialExpanded = false,
-  renderItem,
-  keyExtractor,
-}: ExpandableListSheetViewProps<T>) {
+                                             items,
+                                             testID,
+                                             introText,
+                                             title,
+                                             footerText,
+                                             closeText,
+                                             showMoreText,
+                                             alignShowMoreTextAtRight = false,
+                                             badge,
+                                             visibleItemsStyle,
+                                             collapsedItemCount = DEFAULT_COLLAPSED_ITEM_COUNT,
+                                             initialExpanded = false,
+                                             renderItem,
+                                             keyExtractor,
+                                           }: ExpandableListSheetViewProps<T>) {
   const [expanded, setExpanded] = useState(initialExpanded);
   const visibleItems = items.slice(0, collapsedItemCount);
   const hiddenCount = items.length - collapsedItemCount;
@@ -79,7 +83,7 @@ export function ExpandableListSheetView<T>({
         {introText}
       </Text>
 
-      <View testID={ids.card} style={styles.card}>
+      <View testID={ids.card} style={visibleItemsStyle ? visibleItemsStyle : styles.container}>
         {visibleItems.map((item, index) => (
           <React.Fragment
             key={
@@ -99,7 +103,10 @@ export function ExpandableListSheetView<T>({
       {hiddenCount > 0 && (
         <TouchableOpacity
           testID={ids.showMoreButton}
-          style={styles.showMoreButton}
+          style={[
+            styles.showMoreButton,
+            alignShowMoreTextAtRight && styles.showMoreButtonRight,
+          ]}
           onPress={openModal}>
           <Text style={styles.showMoreText}>{showMoreText(hiddenCount)}</Text>
         </TouchableOpacity>
@@ -119,14 +126,14 @@ export function ExpandableListSheetView<T>({
               onPress={closeModal}
             />
             <View testID={ids.modalSheet} style={styles.sheet}>
-              <View testID={ids.modalHandle} style={styles.handle} />
+              <View testID={ids.modalHandle} style={styles.handle}/>
               <View style={styles.modalHeader}>
                 <Text testID={ids.modalTitle} style={styles.modalTitle}>
                   {title}
                 </Text>
                 {badge}
               </View>
-              <Divider testId={ids.modalDivider} />
+              <Divider testId={ids.modalDivider}/>
               <ScrollView>
                 {items.map((item, index) => (
                   <React.Fragment
@@ -171,7 +178,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginBottom: 8,
   },
-  card: {
+  container: {
     backgroundColor: Theme.Colors.whiteBackgroundColor,
     marginHorizontal: 16,
     borderRadius: 10,
@@ -185,6 +192,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 8,
     marginBottom: 2,
+  },
+  showMoreButtonRight: {
+    alignSelf: 'flex-end',
+    paddingRight: 4
   },
   showMoreText: {
     fontFamily: 'Montserrat_600SemiBold',

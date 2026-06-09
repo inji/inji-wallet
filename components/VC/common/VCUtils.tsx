@@ -829,13 +829,13 @@ export class Display {
   }
 }
 
-export function getIssuerAuthenticationAlorithmForMdocVC(
+export function getIssuerAuthenticationAlgorithmForMdocVC(
   proofType: any,
 ): string {
   return PROOF_TYPE_ALGORITHM_MAP[proofType] || '';
 }
 
-export function getMdocAuthenticationAlorithm(issuerAuth: any): string {
+export function getMdocAuthenticationAlgorithm(issuerAuth: any): string {
   const deviceKey = issuerAuth?.deviceKeyInfo?.deviceKey;
 
   if (!deviceKey) return '';

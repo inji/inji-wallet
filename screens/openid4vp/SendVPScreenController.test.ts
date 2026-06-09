@@ -7,7 +7,7 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 jest.mock('@xstate/react', () => ({
-  useSelector: jest.fn((service, selector) => selector?.()),
+  useSelector: jest.fn((_, selector) => selector?.()),
 }));
 
 jest.mock('react-i18next', () => ({
@@ -56,7 +56,6 @@ jest.mock('../../machines/openID4VP/openID4VPSelectors', () => ({
   selectSelectedVCs: jest.fn(),
   selectShowConfirmationPopup: jest.fn(),
   selectshowTrustConsentModal: jest.fn(),
-  selectVCsMatchingAuthRequest: jest.fn(() => ({})),
   selectVerifiableCredentialsData: jest.fn(),
   selectVerifierLogoInTrustModal: jest.fn(),
   selectVerifierNameInTrustModal: jest.fn(),
@@ -244,13 +243,13 @@ describe('useSendVPScreen', () => {
 
   it('ACCEPT_REQUEST sends event with selected VCs', () => {
     const result = useSendVPScreen({});
-    result.ACCEPT_REQUEST({});
+    result.ACCEPT_REQUEST({},{});
     expect(mockOpenID4VPSend).toHaveBeenCalled();
   });
 
   it('VERIFY_AND_ACCEPT_REQUEST sends event', () => {
     const result = useSendVPScreen({});
-    result.VERIFY_AND_ACCEPT_REQUEST({});
+    result.VERIFY_AND_ACCEPT_REQUEST({},{});
     expect(mockOpenID4VPSend).toHaveBeenCalled();
   });
 
@@ -264,12 +263,6 @@ describe('useSendVPScreen', () => {
     const result = useSendVPScreen({});
     result.RESET_RETRY_COUNT();
     expect(mockOpenID4VPSend).toHaveBeenCalled();
-  });
-
-  it('SELECT_VC_ITEM returns a curried function', () => {
-    const result = useSendVPScreen({});
-    const selectFn = result.SELECT_VC_ITEM('vc-key', 'desc-1');
-    expect(typeof selectFn).toBe('function');
   });
 
   it('overlayDetails should be null by default', () => {
@@ -287,18 +280,6 @@ describe('useSendVPScreen', () => {
     openID4VPSelectors.selectVPRequest.mockReturnValueOnce({dcql_query: {}});
     const result = useSendVPScreen({});
     expect(result.isDcqlFlow).toBe(true);
-  });
-
-  it('SELECT_VC_ITEMS returns a curried function', () => {
-    const result = useSendVPScreen({});
-    const fn = result.SELECT_VC_ITEMS({});
-    expect(typeof fn).toBe('function');
-  });
-
-  it('DESELECT_VC_ITEMS returns a curried function', () => {
-    const result = useSendVPScreen({});
-    const fn = result.DESELECT_VC_ITEMS({});
-    expect(typeof fn).toBe('function');
   });
 
   it('noCredentialsMatchingVPRequest is falsy when isSelectingVCs is false', () => {

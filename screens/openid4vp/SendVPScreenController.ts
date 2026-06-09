@@ -28,7 +28,7 @@ import {
   selectSelectedVCs,
   selectShowConfirmationPopup,
   selectshowTrustConsentModal,
-  selectVCsMatchingAuthRequest, selectVerifiableCredentialsData,
+  selectVerifiableCredentialsData,
   selectVerifierLogoInTrustModal,
   selectVerifierNameInTrustModal,
   selectVerifierNameInVPSharing,
@@ -84,10 +84,6 @@ export function useSendVPScreen(props) {
   const areAllVCsChecked = useSelector(
     openID4VPService,
     selectAreAllVCsChecked,
-  );
-  const vcsMatchingAuthRequest = useSelector(
-    openID4VPService,
-    selectVCsMatchingAuthRequest,
   );
 
   const matchingVcsResult = useSelector(
@@ -155,12 +151,8 @@ export function useSendVPScreen(props) {
     selectOpenID4VPRetryCount,
   );
   const noCredentialsMatchingVPRequest =
-    Object.keys(matchingVcsResult).length > 0 &&
-    showError &&
-    (!matchingVcsResult.success ||
-      Object.values(vcsMatchingAuthRequest).every(
-        value => Array.isArray(value) && value.length === 0,
-      ));
+    (!matchingVcsResult.success) && Object.keys(matchingVcsResult).length > 0 &&
+    showError;
 
   const isOVPViaDeepLink = useSelector(
     openID4VPService,
@@ -262,7 +254,6 @@ export function useSendVPScreen(props) {
     overlayDetails,
     generateAndStoreLogMessage,
     scanScreenError: useSelector(scanService, selectIsSendingVPError),
-    vcsMatchingAuthRequest,
     matchingVcsResult,
     userSelectedVCs: useSelector(openID4VPService, selectSelectedVCs),
     areAllVCsChecked,

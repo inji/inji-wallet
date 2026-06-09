@@ -4,13 +4,12 @@ import React
 
 @objc(InjiOpenID4VP)
 class RNOpenId4VpModule: NSObject, RCTBridgeModule {
-
+  
   private var openID4VP: OpenID4VP?
   private var pendingJsonLdCanonicalizeContinuation: CheckedContinuation<String, Error>?
-  // private var pendingJsonLdCanonicalizeContinuation: ((Data) -> Void)?
   private var pendingJsonLdExpandContinuation: (([String: Any]) -> Void)?
   private var jsonLdCanonicalizeCallback: RCTResponseSenderBlock?
-
+  
   static func moduleName() -> String {
     return "InjiOpenID4VP"
   }
@@ -38,8 +37,6 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   }
   
   private func invokeJsonLdCanonicalize(_ data: String) async throws -> String {
-    print("data = \(data)")
-    
     if let bridge = RCTBridge.current() {
       bridge.eventDispatcher().sendAppEvent(
         withName: "onJsonLdCanonicalize",
@@ -49,7 +46,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
       )
     }
     
-      return try await withCheckedThrowingContinuation { (continuation : CheckedContinuation<String, Error>) in
+    return try await withCheckedThrowingContinuation { (continuation : CheckedContinuation<String, Error>) in
       self.pendingJsonLdCanonicalizeContinuation = continuation
     }
   }
@@ -75,8 +72,6 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   
   @objc(sendJsonLdCanonicalizeResultFromJS:)
   func sendJsonLdCanonicalizeResultFromJS(_ result: String) {
-    // let decodedData = (try? decodeBase64URL(result)) ?? Data()
-    // pendingJsonLdCanonicalizeContinuation?(decodedData)
     pendingJsonLdCanonicalizeContinuation?.resume(returning: result)
     pendingJsonLdCanonicalizeContinuation = nil
   }
@@ -85,7 +80,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   func notifyCanonicalizationFailureFromJS(_ code: String, message: String) {
     let error = OpenId4VPUtils.convertToOpenID4VPException(
       errorCode: code, error: message, moduleName: Self.moduleName())
-
+    
     pendingJsonLdCanonicalizeContinuation?.resume(throwing: error)
     pendingJsonLdCanonicalizeContinuation = nil
   }
@@ -102,7 +97,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
     pendingJsonLdExpandContinuation?(resultDict[0])
     pendingJsonLdExpandContinuation = nil
   }
-
+  
   @objc
   func authenticateVerifier(_ urlEncodedAuthorizationRequest: String,
                             resolver resolve: @escaping RCTPromiseResolveBlock,
@@ -112,12 +107,12 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
         let authenticationResponse: AuthorizationRequest = try await openID4VP!.authenticateVerifier(
           urlEncodedAuthorizationRequest: urlEncodedAuthorizationRequest
         )
-
+        
         let response = try OpenId4VPUtils.toJsonString(jsonObject: authenticationResponse)
         resolve(response)
       } catch {
         rejectWithOpenID4VPError(error, reject: reject)
-
+        
       }
     }
   }
@@ -125,12 +120,12 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   @objc
   func getMatchingCredentials(_ vpRequest: AnyObject,
                               availableWalletCredentials: AnyObject,
-                                resolver resolve: @escaping RCTPromiseResolveBlock,
+                              resolver resolve: @escaping RCTPromiseResolveBlock,
                               rejecter reject: @escaping RCTPromiseRejectBlock) {
     Task {
       do {
         guard let vpRequest = vpRequest as? [String: Any],
-          let dcqlQuery = vpRequest["dcql_query"] as? [String: Any] else {
+              let dcqlQuery = vpRequest["dcql_query"] as? [String: Any] else {
           reject("OPENID4VP", "Invalid VP request format or missing DCQL query", nil)
           return
         }
@@ -161,9 +156,9 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           reject("OPENID4VP", "Invalid credentials map format", nil)
           return
         }
-
+        
         let formattedCredentialsMap: [String: [Credential]] = try OpenId4VPUtils.parseSelectedVCs(rawCredentialsMap)
-
+        
         let response = try await openID4VP?.constructUnsignedVPToken(
           selectedCredentials: formattedCredentialsMap
         )
@@ -175,7 +170,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
       }
     }
   }
-
+  
   @objc
   func shareVerifiablePresentation(_ vpTokenSigningResults: NSArray,
                                    resolver resolve: @escaping RCTPromiseResolveBlock,
@@ -191,13 +186,13 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
               userInfo: [NSLocalizedDescriptionKey: "Invalid VP token structure from JS"]
             )
           }
-
+          
           formattedVPTokenSigningResults = try OpenId4VPUtils.parseVPTokenSigningResult(signedVPTokens)
         } catch {
           reject("OPENID4VP", error.localizedDescription, nil)
           return
         }
-
+        
         let verifierResponse = try await openID4VP?.sendVPResponseToVerifier(vpTokenSigningResults: formattedVPTokenSigningResults)
         try resolveToJsonData(verifierResponse, resolver: resolve, rejecter: reject)
       } catch {
@@ -205,7 +200,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
       }
     }
   }
-
+  
   @objc
   func sendErrorToVerifier(_ error: String, _ errorCode: String,
                            resolver resolve: @escaping RCTPromiseResolveBlock,
@@ -224,69 +219,69 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   
   private func parseVerifiers(_ verifiers: [[String: Any]]) throws -> [Verifier] {
     return try verifiers.map { verifierDict in
-        
-        guard
-            let clientId = verifierDict["client_id"] as? String,
-            let responseUris = verifierDict["response_uris"] as? [String]
-        else {
-            throw NSError(
-                domain: "OpenID4VP",
-                code: -1,
-                userInfo: [
-                    NSLocalizedDescriptionKey: "Invalid Verifier data"
-                ]
-            )
-        }
-        
-        let jwksUri = verifierDict["jwks_uri"] as? String
-        
-        let specVersion: SpecVersion = {
-            switch verifierDict["spec_version"] as? String {
-            case "draft23":
-                return .draft23
-            default:
-                return .v1
-            }
-        }()
-        
-        let allowUnsignedRequest = verifierDict["allow_unsigned_request"] as? Bool ?? false
-        
-        return Verifier(
-            clientId: clientId,
-            responseUris: responseUris,
-            jwksUri: jwksUri,
-            allowUnsignedRequest: allowUnsignedRequest,
-            specVersion: specVersion
+      
+      guard
+        let clientId = verifierDict["client_id"] as? String,
+        let responseUris = verifierDict["response_uris"] as? [String]
+      else {
+        throw NSError(
+          domain: "OpenID4VP",
+          code: -1,
+          userInfo: [
+            NSLocalizedDescriptionKey: "Invalid Verifier data"
+          ]
         )
+      }
+      
+      let jwksUri = verifierDict["jwks_uri"] as? String
+      
+      let specVersion: SpecVersion = {
+        switch verifierDict["spec_version"] as? String {
+        case "draft23":
+          return .draft23
+        default:
+          return .v1
+        }
+      }()
+      
+      let allowUnsignedRequest = verifierDict["allow_unsigned_request"] as? Bool ?? false
+      
+      return Verifier(
+        clientId: clientId,
+        responseUris: responseUris,
+        jwksUri: jwksUri,
+        allowUnsignedRequest: allowUnsignedRequest,
+        specVersion: specVersion
+      )
     }
-}
-
+  }
+  
   @objc
   static func requiresMainQueueSetup() -> Bool {
     return true
   }
-
+  
   func rejectWithOpenID4VPError(_ error: Error, reject: RCTPromiseRejectBlock) {
     if let openidError = error as? OpenID4VPException {
-        let errorMap: [String: Any] = [
-            "errorCode": openidError.errorCode,
-            "message": openidError.message,
-            "verifierResponse": Inji.toJsonString(openidError.verifierResponse) ?? "",
-            "cause": openidError.cause?.localizedDescription ?? ""
-        ]
-        let nsError = NSError(
-            domain: "OPENID4VP",
-            code: 0,
-            userInfo: errorMap
-        )
-        reject(openidError.errorCode, openidError.message, nsError)
+      let errorMap: [String: Any] = [
+        "errorCode": openidError.errorCode,
+        "message": openidError.message,
+        "verifierResponse": Inji.toJsonString(openidError.verifierResponse) ?? "",
+        "cause": openidError.cause?.localizedDescription ?? ""
+      ]
+      let nsError = NSError(
+        domain: "OPENID4VP",
+        code: 0,
+        userInfo: errorMap
+      )
+      reject(openidError.errorCode, openidError.message, nsError)
     } else {
-        let nsError = NSError(domain: error.localizedDescription, code: 0)
-        reject("ERR_UNKNOWN", nsError.localizedDescription, nsError)
+      let nsError = NSError(domain: error.localizedDescription, code: 0)
+      reject("ERR_UNKNOWN", nsError.localizedDescription, nsError)
     }
   }
-
-
+  
+  
 }
 
 struct EncodableWrapper: Encodable {

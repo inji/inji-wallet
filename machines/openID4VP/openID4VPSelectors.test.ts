@@ -1,6 +1,5 @@
 import {
   selectIsGetVCsSatisfyingAuthRequest,
-  selectVCsMatchingAuthRequest,
   selectSelectedVCs,
   selectAreAllVCsChecked,
   selectIsGetVPSharingConsent,
@@ -37,19 +36,6 @@ describe('openID4VPSelectors', () => {
 
       expect(selectIsGetVCsSatisfyingAuthRequest(state)).toBe(true);
       expect(state.matches).toHaveBeenCalledWith('getVCsSatisfyingAuthRequest');
-    });
-  });
-
-  describe('selectVCsMatchingAuthRequest', () => {
-    it('should return vcsMatchingAuthRequest from context', () => {
-      const mockVCs = [{id: 'vc1'}, {id: 'vc2'}];
-      const state = {
-        context: {
-          vcsMatchingAuthRequest: mockVCs,
-        },
-      } as any;
-
-      expect(selectVCsMatchingAuthRequest(state)).toEqual(mockVCs);
     });
   });
 

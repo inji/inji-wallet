@@ -16,8 +16,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   private var pendingIssuerTrustDecision: ((Bool) -> Void)?
   private var pendingSelectedCredentialsContinuation: CheckedContinuation<AnyObject, Error>?
   private var pendingSignVPContinuation: CheckedContinuation<NSArray, Error>?
-  private var pendingJsonLdCanonicalizeContinuation: ((String) -> Void)?
-  // private var pendingJsonLdCanonicalizeContinuation: ((Data) -> Void)?
+  private var pendingJsonLdCanonicalizeContinuation: CheckedContinuation<String, Error>?
 
   static func moduleName() -> String {
     return "InjiVciClient"
@@ -482,9 +481,17 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   
   @objc(sendJsonLdCanonicalizeResultFromJS:)
   func sendJsonLdCanonicalizeResultFromJS(_ result: String) {
-    // let decodedData = (try? decodeBase64URL(result)) ?? Data()
-    // pendingJsonLdCanonicalizeContinuation?(decodedData)
-    pendingJsonLdCanonicalizeContinuation?(result)
+    pendingJsonLdCanonicalizeContinuation?.resume(returning: result)
+    pendingJsonLdCanonicalizeContinuation = nil
+  }
+  
+  @objc
+  func notifyCanonicalizationFailureFromJS(_ code: String, message: String) {
+    let error = OpenId4VPUtils.convertToOpenID4VPException(
+      errorCode: code, error: message, moduleName: Self.moduleName()
+    )
+
+    pendingJsonLdCanonicalizeContinuation?.resume(throwing: error)
     pendingJsonLdCanonicalizeContinuation = nil
   }
 
@@ -502,7 +509,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   }
   
   private func invokeJsonLdCanonicalize(_ data: String) async throws -> String {
-    // private func invokeJsonLdCanonicalize(_ data: [String: Any]) async throws -> Data {
+    
     print("data = \(data)")
     
     if let bridge = RCTBridge.current() {
@@ -514,8 +521,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
       )
     }
     
-    return try await withCheckedThrowingContinuation { continuation in
-      self.pendingJsonLdCanonicalizeContinuation = { result in continuation.resume(returning: result) }
+    return try await withCheckedThrowingContinuation { (continuation : CheckedContinuation<String, Error>) in
+      self.pendingJsonLdCanonicalizeContinuation = continuation
     }
   }
 }

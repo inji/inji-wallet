@@ -39,7 +39,10 @@ class VciClient {
           this.InjiVciClient.sendJsonLdCanonicalizeResultFromJS(result);
         })
         .catch(error => {
-          //TODO: abort the canonicalizer and notify native about the failure so that it can handle the error gracefully
+          this.InjiVciClient.notifyCanonicalizationFailureFromJS(
+            'server_error',
+            'An error occurred during JSON-LD canonicalization',
+          );
           console.error('Error during JSON-LD canonicalization: ', error);
         });
     });
@@ -227,7 +230,6 @@ class VciClient {
     const presentationRequestListener = emitter.addListener(
       'onPresentationRequest',
       ({presentationRequest}) => {
-        //TODO: Handle presentation request
         handlePresentationRequest(JSON.parse(presentationRequest));
       },
     );

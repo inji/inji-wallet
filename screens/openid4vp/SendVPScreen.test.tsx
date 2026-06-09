@@ -17,7 +17,7 @@ jest.mock('../../components/openid4vp/verifier/VerifierInfo', () => ({
   VerifierInfo: () => null,
 }));
 jest.mock(
-  '../../components/openid4vp/infoOverlay/WhyWeNeedDocumentsOverlay',
+  '../../components/openid4vp/overlay/WhyWeNeedDocumentsOverlay',
   () => ({
     WhyWeNeedDocumentsOverlay: () => null,
   }),
@@ -31,7 +31,6 @@ jest.mock('../../shared/openID4VP/OpenID4VPHelper', () => ({
 
 jest.mock('./SendVPScreenController', () => {
   const defaultValues = {
-    vcsMatchingAuthRequest: {},
     error: null,
     noCredentialsMatchingVPRequest: false,
     requestedClaimsByVerifier: [],
@@ -261,9 +260,6 @@ describe('SendVPScreen', () => {
 
   it('should render with matching VCs and purpose', () => {
     mockController.__setMockOverrides({
-      vcsMatchingAuthRequest: {
-        desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
-      },
       purpose: 'Identity verification',
       vpVerifierName: 'TestVerifier',
       matchingVcsResult: {success: true, matchingVCs: {}},
@@ -275,9 +271,6 @@ describe('SendVPScreen', () => {
   it('should render authorization flow with consent share button', () => {
     mockController.__setMockOverrides({
       isAuthorizationFlow: true,
-      vcsMatchingAuthRequest: {
-        desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
-      },
       purpose: 'Authorization',
       matchingVcsResult: {success: true, matchingVCs: {}},
     });
@@ -296,9 +289,6 @@ describe('SendVPScreen', () => {
 
   it('should render with overlay details', () => {
     mockController.__setMockOverrides({
-      vcsMatchingAuthRequest: {
-        desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
-      },
       matchingVcsResult: {success: true, matchingVCs: {}},
       overlayDetails: {
         title: 'Success',
@@ -316,9 +306,6 @@ describe('SendVPScreen', () => {
 
   it('should render with face verification consent', () => {
     mockController.__setMockOverrides({
-      vcsMatchingAuthRequest: {
-        desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
-      },
       isFaceVerificationConsent: true,
       matchingVcsResult: {success: true, matchingVCs: {}},
     });
@@ -328,9 +315,6 @@ describe('SendVPScreen', () => {
 
   it('should render with all VCs checked', () => {
     mockController.__setMockOverrides({
-      vcsMatchingAuthRequest: {
-        desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
-      },
       areAllVCsChecked: true,
       matchingVcsResult: {success: true, matchingVCs: {}},
     });
@@ -340,9 +324,6 @@ describe('SendVPScreen', () => {
 
   it('should render with cancelling state', () => {
     mockController.__setMockOverrides({
-      vcsMatchingAuthRequest: {
-        desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
-      },
       isCancelling: true,
       matchingVcsResult: {success: true, matchingVCs: {}},
     });
@@ -362,9 +343,6 @@ describe('SendVPScreen', () => {
 
   it('should render with verifying identity state', () => {
     mockController.__setMockOverrides({
-      vcsMatchingAuthRequest: {
-        desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
-      },
       isVerifyingIdentity: true,
       credentials: [{id: 'vc1'}],
       verifiableCredentialsData: [{credential: 'data'}],
@@ -388,9 +366,6 @@ describe('SendVPScreen', () => {
   it('should render non-authorization flow share actions with images', () => {
     mockController.__setMockOverrides({
       isAuthorizationFlow: false,
-      vcsMatchingAuthRequest: {
-        desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
-      },
       checkIfAnyVCHasImage: jest.fn(() => true),
       checkIfAllVCsHasImage: jest.fn(() => false),
       getSelectedVCs: jest.fn(() => ({vc1: {}})),
@@ -403,9 +378,6 @@ describe('SendVPScreen', () => {
   it('should render non-authorization flow with all VCs having images', () => {
     mockController.__setMockOverrides({
       isAuthorizationFlow: false,
-      vcsMatchingAuthRequest: {
-        desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
-      },
       checkIfAnyVCHasImage: jest.fn(() => true),
       checkIfAllVCsHasImage: jest.fn(() => true),
       getSelectedVCs: jest.fn(() => ({vc1: {}})),
@@ -417,10 +389,6 @@ describe('SendVPScreen', () => {
 
   it('should render with multiple input descriptors and cards selected', () => {
     mockController.__setMockOverrides({
-      vcsMatchingAuthRequest: {
-        desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
-        desc2: [{vcMetadata: JSON.stringify({isPinned: true})}],
-      },
       credentialRequestIdToSelectedVcKeys: {
         desc1: ['key1'],
         desc2: ['key2'],
@@ -435,9 +403,6 @@ describe('SendVPScreen', () => {
   it('should render authorization flow purpose text', () => {
     mockController.__setMockOverrides({
       isAuthorizationFlow: true,
-      vcsMatchingAuthRequest: {
-        desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
-      },
       purpose: 'Authorization purpose',
       vpVerifierName: 'AuthVerifier',
       matchingVcsResult: {success: true, matchingVCs: {}},
@@ -448,9 +413,6 @@ describe('SendVPScreen', () => {
 
   it('should render with confirmation popup overlay', () => {
     mockController.__setMockOverrides({
-      vcsMatchingAuthRequest: {
-        desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
-      },
       showConfirmationPopup: true,
       isOVPViaDeepLink: true,
       matchingVcsResult: {success: true, matchingVCs: {}},
@@ -473,9 +435,6 @@ describe('SendVPScreen', () => {
 
   it('should render with invalid identity state', () => {
     mockController.__setMockOverrides({
-      vcsMatchingAuthRequest: {
-        desc1: [{vcMetadata: JSON.stringify({isPinned: false})}],
-      },
       isInvalidIdentity: true,
       credentials: [{id: 'vc1'}],
       verifiableCredentialsData: [{credential: 'data'}],

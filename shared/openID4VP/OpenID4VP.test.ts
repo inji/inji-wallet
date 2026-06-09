@@ -1,21 +1,17 @@
 import type {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {NativeModules, Platform} from 'react-native';
-import {
-  claimPathPointersToJsonPath,
-  getWalletConfig,
-  isDcqlFlow,
-  isClientValidationRequired,
-  jsonLdCanonicalize,
-} from './OpenID4VPHelper';
-import {jsonLdExpand} from '../Utils';
-import {
-  getIssuerAuthenticationAlorithmForMdocVC,
-  getMdocAuthenticationAlorithm,
-} from '../../components/VC/common/VCUtils';
-import {CACHED_API} from '../api';
 import {isIOS} from '../constants';
 // Import OpenID4VP here to ensure jest.mocks are applied before module loading
 import OpenID4VPModule from './OpenID4VP';
+import {MatchingVCsResultForDcql, VCInfo} from "./openid4vp.types";
+import {claimPathPointersToJsonPath, getWalletConfig, isDcqlFlow, jsonLdCanonicalize} from "./OpenID4VPHelper";
+import {jsonLdExpand} from "../Utils";
+import {
+  getIssuerAuthenticationAlgorithmForMdocVC,
+  getMdocAuthenticationAlgorithm
+} from "../../components/VC/common/VCUtils";
+import {CACHED_API} from "../api";
+import {beforeEach} from "@jest/globals";
 
 const mockInitSdk = jest.fn();
 const mockAuthenticateVerifier = jest.fn();
@@ -65,10 +61,10 @@ jest.mock('react-native', () => {
         sendErrorToVerifier: mockSendErrorToVerifier,
         getMatchingCredentials: mockGetMatchingCredentials,
         sendJsonLdCanonicalizeResultFromJS:
-          mockSendJsonLdCanonicalizeResultFromJS,
+        mockSendJsonLdCanonicalizeResultFromJS,
         sendJsonLdExpandResultFromJS: mockSendJsonLdExpandResultFromJS,
         notifyCanonicalizationFailureFromJS:
-          mockNotifyCanonicalizationFailureFromJS,
+        mockNotifyCanonicalizationFailureFromJS,
       },
     },
     Platform: platformMock,
@@ -80,8 +76,8 @@ jest.mock('react-native', () => {
 });
 
 jest.mock('../../components/VC/common/VCUtils', () => ({
-  getIssuerAuthenticationAlorithmForMdocVC: jest.fn(),
-  getMdocAuthenticationAlorithm: jest.fn(),
+  getIssuerAuthenticationAlgorithmForMdocVC: jest.fn(),
+  getMdocAuthenticationAlgorithm: jest.fn(),
 }));
 
 jest.mock('../GlobalVariables', () => ({
@@ -126,6 +122,7 @@ jest.mock('../VCMetadata', () => ({
       getVcKey: () => 'vc-key',
     })),
   },
+  getVcKey: jest.fn(() => 'vc-key'),
 }));
 
 jest.mock('../api', () => ({
@@ -157,9 +154,6 @@ jest.mock('./OpenID4VPHelper', () => ({
 }));
 
 const mockedGetWalletConfig = jest.mocked(getWalletConfig);
-const mockedIsClientValidationRequired = jest.mocked(
-  isClientValidationRequired,
-);
 const mockedJsonLdCanonicalize = jest.mocked(jsonLdCanonicalize);
 const mockedJsonLdExpand = jest.mocked(jsonLdExpand);
 const mockedClaimPathPointersToJsonPath = jest.mocked(
@@ -167,22 +161,22 @@ const mockedClaimPathPointersToJsonPath = jest.mocked(
 );
 const mockedIsDcqlFlow = jest.mocked(isDcqlFlow);
 const mockedGetIssuerAuthenticationAlorithmForMdocVC = jest.mocked(
-  getIssuerAuthenticationAlorithmForMdocVC,
+  getIssuerAuthenticationAlgorithmForMdocVC,
 );
 const mockedGetMdocAuthenticationAlorithm = jest.mocked(
-  getMdocAuthenticationAlorithm,
+  getMdocAuthenticationAlgorithm,
 );
 const mockedFetchTrustedVerifiersList = jest.mocked(
   CACHED_API.fetchTrustedVerifiersList,
 );
 const mockedIsIOS = jest.mocked(isIOS);
 
-let OpenID4VP = OpenID4VPModule;
+const OpenID4VP = OpenID4VPModule;
 
 const getOpenID4VPNativeModule = () => NativeModules.InjiOpenID4VP;
 
 const resetOpenID4VPInstance = () => {
-  (OpenID4VP as unknown as {instance?: unknown}).instance = undefined;
+  (OpenID4VP as unknown as { instance?: unknown }).instance = undefined;
 };
 
 const setPlatformOS = (os: 'android' | 'ios') => {
@@ -213,7 +207,7 @@ const buildPresentationDefinitionVc = (
   format: string,
   credential: unknown,
   verifiableCredentialExtras?: Record<string, unknown>,
-): VC & {format: string} =>
+): VC & { format: string } =>
   ({
     format,
     vcMetadata: {id: `cred-${format}`, format},
@@ -222,7 +216,7 @@ const buildPresentationDefinitionVc = (
       ...(verifiableCredentialExtras ?? {}),
     },
     lastVerifiedOn: 0,
-  } as VC & {format: string});
+  } as VC & { format: string });
 
 describe('OpenID4VP', () => {
   beforeEach(() => {
@@ -239,7 +233,6 @@ describe('OpenID4VP', () => {
     mockNotifyCanonicalizationFailureFromJS.mockClear();
     // Don't clear  mockAddListener to preserve its implementation
     mockedGetWalletConfig.mockClear();
-    mockedIsClientValidationRequired.mockClear();
     mockedJsonLdCanonicalize.mockClear();
     mockedJsonLdExpand.mockClear();
     mockedClaimPathPointersToJsonPath.mockClear();
@@ -266,7 +259,7 @@ describe('OpenID4VP', () => {
       mockNotifyCanonicalizationFailureFromJS;
 
     mockedGetWalletConfig.mockResolvedValue(null);
-    mockedIsClientValidationRequired.mockResolvedValue(false);
+    mockedGetWalletConfig.mockResolvedValue({mock: true, "validate_pre_registered_verifier": false} as never);
     mockedJsonLdCanonicalize.mockResolvedValue('');
     mockedJsonLdExpand.mockResolvedValue([]);
     mockedClaimPathPointersToJsonPath.mockImplementation(
@@ -295,25 +288,12 @@ describe('OpenID4VP', () => {
       expect(nativeModule.initSdk).toHaveBeenCalledWith('test-app-id', {
         mock: true,
         trusted_verifiers: [],
+        "validate_pre_registered_verifier": false,
       });
       expect(nativeModule.authenticateVerifier).toHaveBeenCalledWith(
         'encoded-request',
-        false,
       );
       expect(result).toEqual({status: 'success'});
-    });
-
-    it('should pass shouldValidateClient from config', async () => {
-      mockedIsClientValidationRequired.mockResolvedValue(true);
-      const nativeModule = getOpenID4VPNativeModule();
-      nativeModule.authenticateVerifier.mockResolvedValue('{}');
-
-      await OpenID4VP.authenticateVerifier('req');
-
-      expect(nativeModule.authenticateVerifier).toHaveBeenCalledWith(
-        'req',
-        true,
-      );
     });
   });
 
@@ -400,15 +380,15 @@ describe('OpenID4VP', () => {
 
   describe('singleton pattern', () => {
     it('should use wallet config from getWalletConfig', async () => {
-      mockedGetWalletConfig.mockResolvedValue({custom: 'metadata'} as never);
       const nativeModule = getOpenID4VPNativeModule();
       nativeModule.authenticateVerifier.mockResolvedValue('{}');
 
       await OpenID4VP.authenticateVerifier('req');
 
       expect(nativeModule.initSdk).toHaveBeenCalledWith('test-app-id', {
-        custom: 'metadata',
+        mock: true,
         trusted_verifiers: [],
+        validate_pre_registered_verifier: false,
       });
     });
   });
@@ -980,6 +960,7 @@ describe('OpenID4VP', () => {
       expect(nativeModule.initSdk).toHaveBeenCalledWith('test-app-id', {
         mock: true,
         trusted_verifiers: [],
+        "validate_pre_registered_verifier": false,
       });
       expect(nativeModule.getMatchingCredentials).toHaveBeenCalledWith(
         {dcql_query: {query: 'example'}},
@@ -1004,7 +985,7 @@ describe('OpenID4VP', () => {
           'query-1': {
             matchingVcs: [
               {
-                vc: vc1,
+                "matchingVcInfo": new VCInfo("vc-key", {id: `cred-1`, format: "ldp_vc"},),
                 matchedClaims: [
                   {
                     id: 'name',
@@ -1028,42 +1009,103 @@ describe('OpenID4VP', () => {
       );
     });
 
-    it('registers onJsonLdExpand on iOS and forwards the expanded payload to native', async () => {
-      mockedIsIOS.mockReturnValue(true);
+    it('filters unsatisfiable DCQL credential set options before returning them', async () => {
+      const nativeModule = getOpenID4VPNativeModule() as MockInjiOpenID4VP;
+      const vc1 = buildVc('cred-1', 'ldp_vc', {
+        id: 'cred-1',
+        credentialSubject: {name: 'John'},
+      });
+      const vc2 = buildVc('cred-2', 'vc_sd_jwt', 'header.payload.sig~');
 
-      const nativeModule = getOpenID4VPNativeModule();
-      nativeModule.getMatchingCredentials.mockResolvedValue(
+      nativeModule.getMatchingCredentials.mockResolvedValueOnce(
+        JSON.stringify({
+          success: true,
+          queryMatches: {
+            'query-1': {
+              matchingCredentials: [
+                {
+                  credentialId: 'cred-1',
+                  matchingClaims: [],
+                },
+              ],
+              allowMultipleCredentials: true,
+            },
+            'query-2': {
+              matchingCredentials: [],
+              allowMultipleCredentials: false,
+            },
+          },
+          credentialSets: [
+            {
+              options: [['query-1'], ['query-2']],
+              required: true,
+            },
+            {
+              options: [['query-2']],
+              required: false,
+            },
+          ],
+        }),
+      );
+
+      const result = await OpenID4VP.getMatchingCredentials(
+        {dcql_query: {query: 'example'}},
+        [vc1, vc2],
+      ) as MatchingVCsResultForDcql;
+
+      expect(result.credentialSetOptions).toEqual([
+        {
+          options: [['query-1']],
+          required: true,
+        },
+      ]);
+    });
+
+    it('registers onJsonLdExpand on iOS and forwards the expanded payload to native', async () => {
+      setPlatformOS('ios');
+
+      let FreshOpenID4VP: typeof OpenID4VP;
+      let freshNativeModule: MockInjiOpenID4VP;
+      let freshJsonLdExpand: jest.Mock;
+
+      jest.isolateModules(() => {
+        const freshConstants = require('../constants');
+        freshConstants.isIOS.mockReturnValue(true);
+
+        FreshOpenID4VP = require('./OpenID4VP').default;
+        freshNativeModule = require('react-native').NativeModules
+          .InjiOpenID4VP as MockInjiOpenID4VP;
+        freshJsonLdExpand = require('../Utils').jsonLdExpand;
+      });
+
+      freshNativeModule!.getMatchingCredentials.mockResolvedValue(
         JSON.stringify({success: true, queryMatches: {}, credentialSets: []}),
       );
-      mockedJsonLdExpand.mockResolvedValue([{expanded: true}]);
+      freshJsonLdExpand!.mockResolvedValue([{expanded: true}]);
 
-      await OpenID4VP.getMatchingCredentials({dcql_query: {query: 'example'}}, [
-        buildVc('cred-1', 'ldp_vc', {id: 'cred-1'}),
-      ]);
+      await FreshOpenID4VP!.getMatchingCredentials(
+        {dcql_query: {query: 'example'}},
+        [buildVc('cred-1', 'ldp_vc', {id: 'cred-1'})],
+      );
 
-      // Verify mockAddListener was called for canonicalizer and expander
-      expect(mockAddListener.mock.calls.length).toBeGreaterThan(0);
-
-      // Verify the onJsonLdExpand listener was registered on iOS
       expect(mockAddListener).toHaveBeenCalledWith(
         'onJsonLdExpand',
         expect.any(Function),
       );
+      expect(mockEmitterListeners.onJsonLdExpand).toBeDefined();
 
       // Simulate the native JSON-LD expand event
       const expandListener = mockEmitterListeners.onJsonLdExpand;
-      expect(expandListener).toBeDefined();
-
       expandListener({data: {'@context': 'https://example.org'}});
       await flushPromises();
 
       // Verify the result is sent to native
-      expect(mockedJsonLdExpand).toHaveBeenCalledWith({
+      expect(freshJsonLdExpand!).toHaveBeenCalledWith({
         '@context': 'https://example.org',
       });
-      expect(nativeModule.sendJsonLdExpandResultFromJS).toHaveBeenCalledWith([
-        {expanded: true},
-      ]);
+      expect(freshNativeModule!.sendJsonLdExpandResultFromJS).toHaveBeenCalledWith(
+        [{expanded: true}],
+      );
     });
   });
 });

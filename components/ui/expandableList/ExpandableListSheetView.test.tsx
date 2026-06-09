@@ -91,6 +91,18 @@ describe('ExpandableListSheetView', () => {
     expect(getByText('show 2 more')).toBeTruthy();
   });
 
+  it('aligns show more button to the right when alignShowMoreTextAtRight is true', () => {
+    const {getByTestId} = renderComponent({alignShowMoreTextAtRight: true});
+
+    const showMoreButtonStyle = getByTestId(
+      'expandable-list-show-more-button',
+    ).props.style;
+
+    expect(showMoreButtonStyle).toEqual(
+      expect.objectContaining({alignSelf: 'flex-end'}),
+    );
+  });
+
   it('requests modal open when show more is pressed', () => {
     const {getByTestId} = renderComponent();
 

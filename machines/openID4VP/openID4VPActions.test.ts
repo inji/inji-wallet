@@ -1,3 +1,5 @@
+import {openID4VPActions} from './openID4VPActions';
+
 jest.mock('xstate', () => ({
   assign: jest.fn(arg => ({type: 'xstate.assign', assignment: arg})),
 }));
@@ -16,6 +18,7 @@ jest.mock('../../shared/constants', () => ({
     NO_MATCHING_VCS: 'No matching VCs',
   },
   SHOW_FACE_AUTH_CONSENT_SHARE_FLOW: 'faceAuthConsent',
+  isIOS: jest.fn(() => true),
 }));
 jest.mock('../store', () => ({
   StoreEvents: {
@@ -27,8 +30,8 @@ jest.mock('../store', () => ({
 const mockJSONPath = jest.fn(() => []);
 const mockToPathArray = jest.fn(p => p.split('.'));
 jest.mock('jsonpath-plus', () => ({
-  JSONPath: Object.assign((...args: any[]) => mockJSONPath(...args), {
-    toPathArray: (...args: any[]) => mockToPathArray(...args),
+  JSONPath: Object.assign((...args: any[]) => mockJSONPath({...args}), {
+    toPathArray: (...args: any[]) => mockToPathArray({...args}),
   }),
 }));
 
@@ -65,12 +68,10 @@ jest.mock('../../shared/VCFormat', () => ({
 const mockGetIssuerAuth = jest.fn().mockReturnValue('ES256');
 const mockGetMdocAuth = jest.fn().mockReturnValue('ES256');
 jest.mock('../../components/VC/common/VCUtils', () => ({
-  getIssuerAuthenticationAlorithmForMdocVC: (...args: any[]) =>
+  getIssuerAuthenticationAlgorithmForMdocVC: (...args: any[]) =>
     mockGetIssuerAuth(...args),
-  getMdocAuthenticationAlorithm: (...args: any[]) => mockGetMdocAuth(...args),
+  getMdocAuthenticationAlgorithm: (...args: any[]) => mockGetMdocAuth(...args),
 }));
-
-import {openID4VPActions} from './openID4VPActions';
 
 describe('openID4VPActions', () => {
   const mockModel = {

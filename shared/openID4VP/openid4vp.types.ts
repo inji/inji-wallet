@@ -22,7 +22,7 @@ export type MatchingVcsResult =
   | MatchingVCsResultForPresentationExchangeRequest;
 
 export interface MatchingVCsResultForPresentationExchangeRequest {
-  matchingVCs: Record<string, VC[]>;
+  matchingVCs: Record<string, VCInfo[]>;
   success: boolean;
   purpose: string;
   requestedClaims: Set<string>;

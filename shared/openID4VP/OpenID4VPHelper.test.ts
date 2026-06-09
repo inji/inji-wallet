@@ -19,6 +19,7 @@ jest.mock('../cryptoutil/cryptoUtil', () => ({
 jest.mock('../Utils', () => ({
   base64ToByteArray: jest.fn((_: string) => new Uint8Array([1, 2, 3])),
   canonicalize2: jest.fn(() => Promise.resolve('canonicalized')),
+  parseJSON: jest.fn((json: string) => JSON.parse(json)),
 }));
 
 const mockGetAllConfigurations = jest.fn(
@@ -35,11 +36,11 @@ const mockGetAllConfigurations = jest.fn(
 jest.mock('../api', () => mockGetAllConfigurations);
 
 import {
-  isClientValidationRequired,
   getWalletConfig,
   signDataForVpPreparation,
   claimPathPointersToJsonPath,
 } from './OpenID4VPHelper';
+import {defaultWalletConfig} from "./walletConfig/WalletConfig";
 
 describe('OpenID4VPHelper', () => {
   beforeEach(() => {
@@ -50,25 +51,10 @@ describe('OpenID4VPHelper', () => {
     });
   });
 
-  describe('isClientValidationRequired', () => {
-    it('returns false when config says false', async () => {
-      const result = await isClientValidationRequired();
-      expect(result).toBe(false);
-    });
-
-    it('returns true when config says true', async () => {
-      mockGetAllConfigurations.mockResolvedValue({
-        openid4vpClientValidation: 'true',
-      });
-      const result = await isClientValidationRequired();
-      expect(result).toBe(true);
-    });
-  });
-
   describe('getWalletConfig', () => {
     it('returns null when no wallet metadata in config', async () => {
       const result = await getWalletConfig();
-      expect(result).toBeNull();
+      expect(result).toBe(defaultWalletConfig);
     });
 
     it('returns parsed wallet metadata when present', async () => {
@@ -77,7 +63,7 @@ describe('OpenID4VPHelper', () => {
         walletConfig: '{"name":"test-wallet"}',
       });
       const result = await getWalletConfig();
-      expect(result).toEqual({name: 'test-wallet'});
+      expect(result).toEqual({name: 'test-wallet', "validate_pre_registered_verifier": true});
     });
   });
 

@@ -71,6 +71,8 @@ module.exports = {
   ],
   collectCoverage: true,
   coverageProvider: 'v8',
+  // lcov is required by sonar-project.properties (sonar.javascript.lcov.reportPaths)
+  coverageReporters: ['lcov', 'text', 'text-summary'],
   collectCoverageFrom: [
     'routes/**/*.{ts,tsx,js,jsx}',
     'screens/**/*.{ts,tsx,js,jsx}',

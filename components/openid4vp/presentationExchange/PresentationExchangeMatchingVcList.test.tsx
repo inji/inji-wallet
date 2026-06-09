@@ -5,11 +5,11 @@ import {
   PresentationExchangeMatchingVcList,
 } from './PresentationExchangeMatchingVcList';
 import {VCMetadata} from '../../../shared/VCMetadata';
-import {MatchingVCsResultForPresentationExchangeRequest} from '../../../shared/openID4VP/openid4vp.types';
+import {MatchingVCsResultForPresentationExchangeRequest, VCInfo} from '../../../shared/openID4VP/openid4vp.types';
 import {MatchingVcListRef} from "../matchingVc/MatchingVcListContainer";
 
 jest.mock('../../VC/VcItemContainer', () => ({
-  VcItemContainer: ({testId, selected, onPress}: {testId: string; selected: boolean; onPress: () => void}) => {
+  VcItemContainer: ({testId, selected, onPress}: { testId: string; selected: boolean; onPress: () => void }) => {
     return (
       <TouchableOpacity testID={`vc-${testId}`} onPress={onPress}>
         <Text>{selected ? 'selected' : 'unselected'}</Text>
@@ -21,19 +21,17 @@ jest.mock('../../VC/VcItemContainer', () => ({
 const buildVcMetadata = (id: string) =>
   new VCMetadata({id, timestamp: '', issuer: 'issuer'});
 
-const buildVc = (id: string) => ({
-  vcMetadata: buildVcMetadata(id),
-  verifiableCredential: {},
-  lastVerifiedOn: 0,
-});
+const buildVcInfo = (id: string) => new VCInfo(
+  "VC_" + id, buildVcMetadata(id),
+);
 
 const buildMatchingVcsResult = (
   overrides: Partial<MatchingVCsResultForPresentationExchangeRequest> = {},
-) : MatchingVCsResultForPresentationExchangeRequest => ({
+): MatchingVCsResultForPresentationExchangeRequest => ({
   success: true,
   purpose: '',
   requestedClaims: new Set<string>(),
-  matchingVCs: {'desc-1': [buildVc('vc-1'), buildVc('vc-2')]},
+  matchingVCs: {'desc-1': [buildVcInfo('vc-1'), buildVcInfo('vc-2')]},
   ...overrides,
 }) as MatchingVCsResultForPresentationExchangeRequest;
 

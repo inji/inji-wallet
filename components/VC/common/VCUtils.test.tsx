@@ -12,8 +12,8 @@ import {
   getCredentialType,
   getCredentialTypeFromWellKnown,
   Display,
-  getIssuerAuthenticationAlorithmForMdocVC,
-  getMdocAuthenticationAlorithm,
+  getIssuerAuthenticationAlgorithmForMdocVC,
+  getMdocAuthenticationAlgorithm,
   getFaceAttribute,
   fieldItemIterator,
   CARD_VIEW_DEFAULT_FIELDS,
@@ -1137,26 +1137,26 @@ describe('Display class', () => {
 
 describe('getIssuerAuthenticationAlorithmForMdocVC', () => {
   it('should return ES256 for proof type -7', () => {
-    expect(getIssuerAuthenticationAlorithmForMdocVC(-7)).toBe('ES256');
+    expect(getIssuerAuthenticationAlgorithmForMdocVC(-7)).toBe('ES256');
   });
 
   it('should return empty string for unknown proof type', () => {
-    expect(getIssuerAuthenticationAlorithmForMdocVC(99)).toBe('');
+    expect(getIssuerAuthenticationAlgorithmForMdocVC(99)).toBe('');
   });
 
   it('should return empty string for undefined', () => {
-    expect(getIssuerAuthenticationAlorithmForMdocVC(undefined)).toBe('');
+    expect(getIssuerAuthenticationAlgorithmForMdocVC(undefined)).toBe('');
   });
 });
 
-describe('getMdocAuthenticationAlorithm', () => {
+describe('getMdocAuthenticationAlgorithm', () => {
   it('should return ES256 for EC2 key with P256 curve', () => {
     const issuerAuth = {
       deviceKeyInfo: {
         deviceKey: {'1': 2, '-1': 1},
       },
     };
-    expect(getMdocAuthenticationAlorithm(issuerAuth)).toBe('ES256');
+    expect(getMdocAuthenticationAlgorithm(issuerAuth)).toBe('ES256');
   });
 
   it('should return empty string for non-EC2 key', () => {
@@ -1165,7 +1165,7 @@ describe('getMdocAuthenticationAlorithm', () => {
         deviceKey: {'1': 3, '-1': 1},
       },
     };
-    expect(getMdocAuthenticationAlorithm(issuerAuth)).toBe('');
+    expect(getMdocAuthenticationAlgorithm(issuerAuth)).toBe('');
   });
 
   it('should return empty string for wrong curve', () => {
@@ -1174,13 +1174,13 @@ describe('getMdocAuthenticationAlorithm', () => {
         deviceKey: {'1': 2, '-1': 2},
       },
     };
-    expect(getMdocAuthenticationAlorithm(issuerAuth)).toBe('');
+    expect(getMdocAuthenticationAlgorithm(issuerAuth)).toBe('');
   });
 
   it('should return empty string when no deviceKey', () => {
-    expect(getMdocAuthenticationAlorithm({})).toBe('');
-    expect(getMdocAuthenticationAlorithm({deviceKeyInfo: {}})).toBe('');
-    expect(getMdocAuthenticationAlorithm(null)).toBe('');
+    expect(getMdocAuthenticationAlgorithm({})).toBe('');
+    expect(getMdocAuthenticationAlgorithm({deviceKeyInfo: {}})).toBe('');
+    expect(getMdocAuthenticationAlgorithm(null)).toBe('');
   });
 });
 

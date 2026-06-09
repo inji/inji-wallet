@@ -1,20 +1,20 @@
 import {NativeEventEmitter, NativeModules} from 'react-native';
 import {__AppId} from '../GlobalVariables';
 import {SelectedCredentialsForVPSharing, VC,} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {getWalletConfig, isClientValidationRequired, isDcqlFlow, jsonLdCanonicalize,} from './OpenID4VPHelper';
+import {getWalletConfig, isDcqlFlow, jsonLdCanonicalize,} from './OpenID4VPHelper';
 import {jsonLdExpand, parseJSON} from '../Utils';
 import {VCFormat} from '../VCFormat';
 import {getVcKey, VCMetadata} from '../VCMetadata';
 import {JSONPath} from 'jsonpath-plus';
 import {
-  getIssuerAuthenticationAlorithmForMdocVC,
-  getMdocAuthenticationAlorithm,
+  getIssuerAuthenticationAlgorithmForMdocVC,
+  getMdocAuthenticationAlgorithm,
 } from '../../components/VC/common/VCUtils';
 import {isIOS} from '../constants';
 import {CACHED_API} from '../api';
-import {defaultWalletConfig} from './walletConfig/WalletConfig';
 import {getDisclosuresForPath} from '../claimsPathMatching';
 import {
+  CredentialSetOption,
   MatchingVcsResult,
   MatchingVCsResultForDcql,
   MatchingVCsResultForPresentationExchangeRequest,
@@ -59,23 +59,18 @@ class OpenID4VP {
           this.InjiOpenID4VP.sendJsonLdExpandResultFromJS(result);
         })
         .catch(error => {
-          //TODO: abort the canonicalizer and notify native about the failure so that it can handle the error gracefully
           console.error('Error during JSON-LD expansion: ', error);
+          this.InjiOpenID4VP.notifyJsonLdExpansionFailureFromJS(
+            'server_error',
+            'An error occurred during JSON-LD canonicalization',
+          );
         });
     });
   };
 
   private static async getInstance(): Promise<OpenID4VP> {
     if (!OpenID4VP.instance) {
-      // TODO: Merge all config calls to one call
-      const walletConfig: Record<string, any> =
-        (await getWalletConfig()) || defaultWalletConfig;
-      try {
-        walletConfig["validate_pre_registered_verifier"] = await isClientValidationRequired()
-      } catch (e) {
-        console.warn("Error getting pre-registered client validation config so falling back to default of 'true'",e)
-        walletConfig["validate_pre_registered_verifier"] = true
-      }
+      const walletConfig: Record<string, any> = await getWalletConfig()
       try {
         const trustedVerifiersResponse =
           await CACHED_API.fetchTrustedVerifiersList();
@@ -108,12 +103,6 @@ class OpenID4VP {
     vpRequest: object,
     availableWalletCredentials: VC[],
   ): Promise<MatchingVcsResult> {
-    /**
-     * success: boolean,
-     * matchingVcs: {} // credential query id or input descriptor id mapped to array of matching vcs for that query
-     * requestedClaims: string, // comma separated list of all the claims that the verifier is requesting based on the constraints in the presentation definition
-     * purpose: string // Top level purpose
-     */
     const presentationDefinition = vpRequest['presentation_definition'];
     if (presentationDefinition) {
       const result = getVcsMatchingPresentationExchangeAuthRequest(
@@ -158,43 +147,46 @@ class OpenID4VP {
 
       const result = parseJSON(matchingCredentialsResult);
       const requestedClaims: Set<string> = new Set<string>();
+      const filteredCredentialSetOptions = result.success ? filterSatisfiableCredentialSetOptions(
+        result.queryMatches ?? {},
+        result.credentialSets ?? [],
+      ) : result.credentialSets;
 
       const updatedMatchingVCs: Record<string, MatchResult> = {};
-      Object.entries(result.queryMatches).forEach(
+      Object.entries(result.queryMatches ?? {}).forEach(
         ([queryId, queryMatch]: [string, any]) => {
           if (queryMatch && Array.isArray(queryMatch.matchingCredentials)) {
             updatedMatchingVCs[queryId] = {
               matchingVcs: queryMatch.matchingCredentials.map(
                 (matchedCredential: any) => {
                   const credentialData = idToCredentialMap[matchedCredential.credentialId];
-                  return ({
-                    matchingVcInfo: new VCInfo(getVcKey(credentialData), credentialData.vcMetadata),
+                  return {
+                    matchingVcInfo: new VCInfo(
+                      getVcKey(credentialData),
+                      credentialData.vcMetadata,
+                    ),
                     matchedClaims: matchedCredential.matchingClaims,
-                  } as VcWithMatchedClaims)
+                  } as VcWithMatchedClaims;
                 },
               ),
               allowMultipleCredentials:
                 queryMatch.allowMultipleCredentials === true,
             };
-          } else {
-            if (queryMatch.failedClaims) {
-              (queryMatch.failedClaims as any[]).forEach(failedClaim => {
-                requestedClaims.add(getClaimName(failedClaim.claim.path));
-              });
-            }
+          } else if (queryMatch.failedClaims) {
+            (queryMatch.failedClaims as any[]).forEach(failedClaim => {
+              requestedClaims.add(getClaimName(failedClaim.claim.path));
+            });
           }
         },
       );
 
-      const resultantResult = {
+      return {
         matchingVCs: updatedMatchingVCs,
         success: result.success,
         requestedClaims,
         purpose: '',
-        credentialSetOptions: result.credentialSets,
+        credentialSetOptions: filteredCredentialSetOptions,
       } as MatchingVCsResultForDcql;
-
-      return resultantResult;
     }
   }
 
@@ -524,8 +516,8 @@ function areVCFormatAndProofTypeMatchingRequest(
         vc.verifiableCredential.processedCredential.issuerSigned?.issuerAuth ??
         vc.verifiableCredential.processedCredential.issuerAuth;
       const issuerAuthenticationAlgorithm =
-        getIssuerAuthenticationAlorithmForMdocVC(issuerAuth[0]['1']);
-      const mdocAuthenticationAlgorithm = getMdocAuthenticationAlorithm(
+        getIssuerAuthenticationAlgorithmForMdocVC(issuerAuth[0]['1']);
+      const mdocAuthenticationAlgorithm = getMdocAuthenticationAlgorithm(
         issuerAuth[2],
       );
 
@@ -666,3 +658,25 @@ function getClaimName(claimPath: Array<string | number | null>): string {
     ) ?? ''
   );
 }
+
+function filterSatisfiableCredentialSetOptions(
+  queryMatches: Record<string, any>,
+  credentialSetOptions: CredentialSetOption[],
+): CredentialSetOption[] {
+  return credentialSetOptions
+    .map(credentialSet => ({
+      ...credentialSet,
+      options: credentialSet.options.filter(option =>
+        option.every(queryId => {
+          const matchingResult = queryMatches[queryId];
+          return (
+            matchingResult &&
+            Array.isArray(matchingResult.matchingCredentials) &&
+            matchingResult.matchingCredentials.length > 0
+          );
+        }),
+      ),
+    }))
+    .filter(credentialSet => credentialSet.options.length > 0);
+}
+

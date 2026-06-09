@@ -3,7 +3,6 @@ import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../../shared/constants';
 import {getVerifierKey, VCShareFlowType} from '../../shared/Utils';
 import {
-  isClientValidationRequired,
   signDataForVpPreparation,
 } from '../../shared/openID4VP/OpenID4VPHelper';
 import {NativeModules} from 'react-native';
@@ -16,10 +15,6 @@ export const openID4VPServices = () => {
   return {
     fetchTrustedVerifiers: async () => {
       return await CACHED_API.fetchTrustedVerifiersList();
-    },
-
-    shouldValidateClient: async () => {
-      return await isClientValidationRequired();
     },
 
     getAuthenticationResponse: (context: any) => async () => {

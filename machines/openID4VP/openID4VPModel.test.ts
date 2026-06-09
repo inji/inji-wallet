@@ -33,7 +33,6 @@ describe('openID4VPModel', () => {
       const initialContext = openID4VPModel.initialContext;
 
       expect(initialContext.authenticationResponse).toEqual({});
-      expect(initialContext.vcsMatchingAuthRequest).toEqual({});
       expect(initialContext.selectedVCs).toEqual({});
       expect(initialContext.selectedDisclosuresByVc).toEqual({});
       expect(initialContext.miniViewSelectedVC).toEqual({});

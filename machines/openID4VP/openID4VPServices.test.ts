@@ -74,7 +74,6 @@ describe('openID4VPServices', () => {
   it('should return all expected service definitions', () => {
     const expectedServices = [
       'fetchTrustedVerifiers',
-      'shouldValidateClient',
       'getAuthenticationResponse',
       'isVerifierTrusted',
       'storeTrustedVerifier',
@@ -91,11 +90,6 @@ describe('openID4VPServices', () => {
   it('fetchTrustedVerifiers returns verifiers', async () => {
     const result = await services.fetchTrustedVerifiers();
     expect(result).toEqual([{id: 'v1'}]);
-  });
-
-  it('shouldValidateClient returns boolean', async () => {
-    const result = await services.shouldValidateClient();
-    expect(result).toBe(true);
   });
 
   it('shareDeclineStatus sends error', async () => {
