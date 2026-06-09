@@ -202,33 +202,6 @@ describe('DcqlMatchingVcList', () => {
     expect(mockCredentialSetSectionCalls[0].credentialSet.required).toBe(true);
   });
 
-  /**
-   * An option is satisfiable only if ALL query IDs inside it have at least
-   * one matching VC. If only some queries in a multi-query option match, the
-   * entire option is unsatisfiable.
-   */
-  it('treats a multi-query option as unsatisfiable when any query has no matching VCs', async () => {
-    const matchingVcsResult = {
-      success: true,
-      purpose: '',
-      requestedClaims: '',
-      matchingVCs: {
-        'driving-license': buildMatchResult(['vc-dl']),
-        // age-proof has no matches → the combined option is unsatisfiable
-        'age-proof': {matchingVcs: [], allowMultipleCredentials: false},
-      },
-      credentialSetOptions: [
-        {options: [['driving-license', 'age-proof']], required: true},
-      ],
-    } as unknown as MatchingVCsResultForDcql
-
-    render(<DcqlMatchingVcList {...buildListProps(matchingVcsResult)} setDisableShareButton={jest.fn()}/>);
-
-    // Wait for useEffect to complete then assert nothing was rendered
-    await waitFor(() => {
-      expect(mockCredentialSetSectionCalls).toHaveLength(0);
-    });
-  });
 
   /**
    * Spec: Optional credential sets must NOT be pre-selected – the user

@@ -9,7 +9,6 @@
  *   and selection is disabled (non-interactive)
  * - Multiple satisfiable options are separated by an "OR" divider
  * - A multi-query option (combination of credential queries) renders a grouped
- *   accordion with an "ALL REQUIRED" badge and a single checkbox to select all
  * - Selecting an option auto-fills the first matching VC for each query
  * - Deselecting an already-selected option removes it from the selection
  * - handleVCSelection in single mode replaces; in allowMultiple mode appends
@@ -243,15 +242,15 @@ describe('CredentialSetSection', () => {
     expect(queryByText('OR')).toBeNull();
   });
 
-  // ─── Multi-query option (combined accordion) ─────────────────────────────
+  // ─── Multi-query option (combined section) ───────────────────────────────
 
   /**
    * Spec: When one option contains multiple credential queries (i.e. the user
    * must present multiple credentials together to satisfy the option), they
-   * must be grouped inside an accordion labelled "Multiple Cards" with an
+   * must be grouped inside a section labelled "Multiple Cards" with an
    * "ALL REQUIRED" badge and a single checkbox to select/deselect all.
    */
-  it('renders a combined accordion for a multi-query option', () => {
+  it('renders a combined section for a multi-query option', () => {
     const props = buildDefaultProps({
       credentialSet: {
         options: [['driving-license', 'age-proof']],
@@ -266,10 +265,7 @@ describe('CredentialSetSection', () => {
 
     const {getByLabelText} = render(<CredentialSetSection {...props} />);
 
-    // Accordion testId for combined option: `accordion-${testId}-option-0-combined`
-    expect(
-      getByLabelText('accordion-test-section-option-0-combined'),
-    ).toBeTruthy();
+    expect(getByLabelText('test-section-option-0-combined')).toBeTruthy();
   });
 
   it('renders a "select all" checkbox for a multi-query option', () => {
@@ -293,13 +289,14 @@ describe('CredentialSetSection', () => {
     ).toBeTruthy();
   });
 
-  // ─── Multi-VC accordion (multiple VCs per single query) ──────────────────
+  // ─── Multi-VC expandable list (multiple VCs per single query) ────────────
 
   /**
    * Spec: When multiple VCs match a single credential query, they must be
-   * wrapped in an accordion so the user can expand and pick one (or more).
+   * wrapped in an expandable list so the user can tap "Show all cards" and
+   * pick one (or more).
    */
-  it('renders an inner accordion when multiple VCs match a single credential query', () => {
+  it('renders an inner expandable list when multiple VCs match a single credential query', () => {
     const props = buildDefaultProps({
       credentialSet: {options: [['national-id']], required: true},
       matchingVCsResult: {
@@ -308,13 +305,10 @@ describe('CredentialSetSection', () => {
       satisfiableOptions: [['national-id']],
     });
 
-    const {getByLabelText} = render(<CredentialSetSection {...props} />);
+    const {getByTestId} = render(<CredentialSetSection {...props} />);
 
-    // Inner accordion: `accordion-${testId}-option-0-query-national-id-multi-vc`
     expect(
-      getByLabelText(
-        'accordion-test-section-option-0-query-national-id-multi-vc',
-      ),
+      getByTestId('test-section-option-0-query-national-id-multi-vc-show-more-button'),
     ).toBeTruthy();
   });
 
@@ -340,6 +334,12 @@ describe('CredentialSetSection', () => {
     // the spy so only the user-initiated call is counted below.
     await waitFor(() => expect(selectVcs).toHaveBeenCalled());
     selectVcs.mockClear();
+
+    fireEvent.press(
+      getByTestId(
+        'test-section-option-0-query-national-id-multi-vc-show-more-button',
+      ),
+    );
 
     fireEvent.press(
       getByTestId(
@@ -388,6 +388,12 @@ describe('CredentialSetSection', () => {
     // Clear spy so only the user-initiated call is counted below.
     selectVcs.mockClear();
 
+    fireEvent.press(
+      getByTestId(
+        'test-section-option-0-query-national-id-multi-vc-show-more-button',
+      ),
+    );
+
     // Select vc-national-2 (different from the pre-selected one)
     fireEvent.press(
       getByTestId(
@@ -424,14 +430,25 @@ describe('CredentialSetSection', () => {
       satisfiableOptions: [['health-id']],
     });
 
-    const {findByTestId} = render(<CredentialSetSection {...props} />);
+    const {findByTestId, getAllByTestId, getByTestId} = render(<CredentialSetSection {...props} />);
+
+    fireEvent.press(
+      getByTestId(
+        'test-section-option-0-query-health-id-multi-vc-show-more-button',
+      ),
+    );
 
     // No outer accordion toggle — content renders directly
-    const vc1 = await findByTestId(
-      `vc-item-test-section-option-0-query-health-id-vc-${vcKey(
-        'vc-health-1',
-      )}`,
-    );
+    await waitFor(() => {
+      expect(
+        getAllByTestId(
+          `vc-item-test-section-option-0-query-health-id-vc-${vcKey('vc-health-1')}`,
+        ).length,
+      ).toBeGreaterThan(1);
+    });
+    const vc1 = getAllByTestId(
+      `vc-item-test-section-option-0-query-health-id-vc-${vcKey('vc-health-1')}`,
+    )[1];
     const vc2 = await findByTestId(
       `vc-item-test-section-option-0-query-health-id-vc-${vcKey(
         'vc-health-2',
@@ -760,9 +777,6 @@ describe('CredentialSetSection preselection', () => {
       ).toBe(true);
     });
 
-    fireEvent.press(
-      getByLabelText('accordion-toggle-test-section-option-1-combined'),
-    );
 
     expect(
       getByLabelText('checkbox-single-test-section-option-0-select-all').props

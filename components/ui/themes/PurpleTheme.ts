@@ -81,6 +81,18 @@ export type ElevationLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export const PurpleTheme = {
   Colors: {
+    BadgeColors : {
+      requiredBorder: '#FECACA',
+      requiredText: '#DC2626',
+      requiredBg: '#FEF2F2',
+      optionalBorder: '#AA913F',
+      optionalText: '#79732D',
+      optionalBg: '#FFFDDE',
+    },
+    infoBackground: "#FCF0F7",
+    infoBorder: "#F3DDEA",
+    infoText: "#64748B",
+    dottedBorderColor: "#D6DBE3",
     instructionLabel: Colors.darkGrey,
     ProfileIconColor: Colors.DarkGray,
     DetailedViewBackground: Colors.Gray97,
@@ -1007,6 +1019,11 @@ export const PurpleTheme = {
     semibold: {
       fontFamily: 'Montserrat_600SemiBold',
       fontSize: 15,
+    },
+    sectionHeader: {
+      fontFamily: 'Montserrat_700Bold',
+      fontSize: 15,
+      color: Colors.Black,
     },
     bold: {
       fontFamily: 'Montserrat_700Bold',
@@ -2807,12 +2824,3 @@ function generateBoxShadowStyle() {
     shadowColor: '#000',
   };
 }
-
-export const DcqlBadgeColors = {
-  requiredBorder: '#FECACA',
-  requiredText: '#DC2626',
-  requiredBg: '#FEF2F2',
-  optionalBorder: '#AA913F',
-  optionalText: '#79732D',
-  optionalBg: '#FFFDDE',
-};
