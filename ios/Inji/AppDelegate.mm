@@ -11,8 +11,13 @@
 typedef NS_ENUM(NSInteger, URLScheme) {
     URLSchemeInji,
     URLSchemeOpenID4VP,
+    URLSchemeCredentialOffer,
     URLSchemeUnknown
 };
+
+static NSString *const URLSchemeInjiValue = @"io.mosip.residentapp.inji";
+static NSString *const URLSchemeOpenID4VPValue = @"openid4vp";
+static NSString *const URLSchemeCredentialOfferValue = @"openid-credential-offer";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -67,16 +72,21 @@ typedef NS_ENUM(NSInteger, URLScheme) {
         case URLSchemeOpenID4VP:
             [intentData setOvpQrData:url.absoluteString];
             break;
+        case URLSchemeCredentialOffer:
+            [intentData setCredentialOfferData:url.absoluteString];
+            break;
         case URLSchemeUnknown:
             break;
     }
 }
 
 - (URLScheme)schemeFromURL:(NSURL *)url {
-    if ([url.scheme isEqualToString:@"io.mosip.residentapp.inji"]) {
+    if ([url.scheme isEqualToString:URLSchemeInjiValue]) {
         return URLSchemeInji;
-    } else if ([url.scheme isEqualToString:@"openid4vp"]) {
+    } else if ([url.scheme isEqualToString:URLSchemeOpenID4VPValue]) {
         return URLSchemeOpenID4VP;
+    } else if ([url.scheme isEqualToString:URLSchemeCredentialOfferValue]) {
+        return URLSchemeCredentialOffer;
     }
     return URLSchemeUnknown;
 }

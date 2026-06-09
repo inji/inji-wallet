@@ -132,6 +132,15 @@ describe('IssuersEvents', () => {
     });
   });
 
+  describe('CREDENTIAL_OFFER_VIA_DEEP_LINK', () => {
+    it('should create event with credential offer URI', () => {
+      const uri = 'openid-credential-offer://?credential_offer=test';
+      expect(IssuersEvents.CREDENTIAL_OFFER_VIA_DEEP_LINK(uri)).toEqual({
+        data: uri,
+      });
+    });
+  });
+
   describe('AUTH_ENDPOINT_RECEIVED', () => {
     it('should create event with auth endpoint', () => {
       const result = IssuersEvents.AUTH_ENDPOINT_RECEIVED(

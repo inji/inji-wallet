@@ -265,6 +265,10 @@ describe('DEEPLINK_FLOWS enum', () => {
   it('should have OVP defined', () => {
     expect(DEEPLINK_FLOWS.OVP).toBe('ovpFlow');
   });
+
+  it('should have CREDENTIAL_OFFER defined', () => {
+    expect(DEEPLINK_FLOWS.CREDENTIAL_OFFER).toBe('credentialOfferFlow');
+  });
 });
 
 describe('base64ToByteArray', () => {

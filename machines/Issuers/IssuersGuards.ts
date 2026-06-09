@@ -38,6 +38,16 @@ export const IssuersGuards = () => {
       );
     },
     isAutoWalletBindingEnabled: (context: any, event: any) =>
-      context?.selectedIssuer.issuer_id === "GlobalIDPass",
+      context?.selectedIssuer.issuer_id === 'GlobalIDPass',
+    isInSafeStateForDeepLink: (_context: any, _event: any, meta: any) => {
+      const state = meta.state;
+      return (
+        !state.matches('credentialDownloadFromOffer') &&
+        !state.matches('downloadCredentials') &&
+        !state.matches('proccessingCredential') &&
+        !state.matches('verifyingCredential') &&
+        !state.matches('storing')
+      );
+    },
   };
 };

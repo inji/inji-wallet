@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Icon} from 'react-native-elements';
 import {Column} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
@@ -7,7 +7,10 @@ import {MyVcsTab} from './MyVcsTab';
 import {ReceivedVcsTab} from './ReceivedVcsTab';
 import {ViewVcModal} from './ViewVcModal';
 import {useHomeScreen} from './HomeScreenController';
-import {TabRef} from './HomeScreenMachine';
+import {
+  selectIsIssuerMachineBusyForDeepLink,
+  TabRef,
+} from './HomeScreenMachine';
 import {ActorRefFrom} from 'xstate';
 import LinearGradient from 'react-native-linear-gradient';
 import {ErrorMessageOverlay} from '../../components/MessageOverlay';
@@ -18,16 +21,40 @@ import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/V
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {useTranslation} from 'react-i18next';
 import {Copilot} from '../../components/ui/Copilot';
+import {useSelector} from '@xstate/react';
+import {GlobalContext} from '../../shared/GlobalContext';
+import {APP_EVENTS, selectCredentialOfferUri} from '../../machines/app';
+import {IssuerScreenTabEvents} from '../../machines/Issuers/IssuersMachine';
 
 export const HomeScreen: React.FC<HomeRouteProps> = props => {
   const controller = useHomeScreen(props);
   const {t} = useTranslation();
+  const {appService} = useContext(GlobalContext);
+  const credentialOfferUri = useSelector(appService, selectCredentialOfferUri);
 
   useEffect(() => {
-    if (controller.IssuersService) {
+    if (controller.IssuersService && credentialOfferUri === '') {
       navigateToIssuers();
     }
   }, [controller.IssuersService]);
+
+  useEffect(() => {
+    if (credentialOfferUri === '') return;
+    if (!controller.IssuersService) {
+      controller.GOTO_ISSUERS();
+      return;
+    }
+    const isIssuerBusy = selectIsIssuerMachineBusyForDeepLink(
+      controller.service.getSnapshot(),
+    );
+    controller.IssuersService.send(
+      IssuerScreenTabEvents.CREDENTIAL_OFFER_VIA_DEEP_LINK(credentialOfferUri),
+    );
+    if (!isIssuerBusy) {
+      navigateToIssuers();
+    }
+    appService.send(APP_EVENTS.RESET_CREDENTIAL_OFFER_URI());
+  }, [credentialOfferUri, controller.IssuersService]);
 
   const navigateToIssuers = () => {
     props.navigation.navigate('IssuersScreen', {

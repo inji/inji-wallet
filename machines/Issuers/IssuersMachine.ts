@@ -24,6 +24,13 @@ export const IssuersMachine = model.createMachine(
       context: model.initialContext,
       events: {} as EventFrom<typeof model>,
     },
+    on: {
+      CREDENTIAL_OFFER_VIA_DEEP_LINK: {
+        cond: 'isInSafeStateForDeepLink',
+        actions: ['setLoadingReasonAsPreparingRequest', 'setQrData'],
+        target: '.credentialDownloadFromOffer',
+      },
+    },
     states: {
       displayIssuers: {
         description: 'displays the issuers downloaded from the server',
@@ -859,7 +866,7 @@ export const IssuersMachine = model.createMachine(
           src: 'verifyCredential',
           onDone: [
             {
-              cond: 'isAutoWalletBindingEnabled', 
+              cond: 'isAutoWalletBindingEnabled',
               actions: [
                 'sendSuccessEndEvent',
                 'setVerificationResult',
@@ -982,9 +989,8 @@ export const IssuersMachine = model.createMachine(
 
       handleVCAutoWalletBindingFailure: {
         always: {
-          target:'#issuersMachine.error',
-        }
-
+          target: '#issuersMachine.error',
+        },
       },
 
       storing: {

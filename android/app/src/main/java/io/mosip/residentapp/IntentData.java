@@ -1,8 +1,13 @@
 package io.mosip.residentapp;
 
 public class IntentData {
+    private static final String FLOW_QR_LOGIN = "qrLoginFlow";
+    private static final String FLOW_OVP = "ovpFlow";
+    private static final String FLOW_CREDENTIAL_OFFER = "credentialOfferFlow";
+
     private String qrData = "";
     private String ovpQrData = "";
+    private String credentialOfferData = "";
 
     private static IntentData intentData;
     public static IntentData getInstance() {
@@ -26,11 +31,24 @@ public class IntentData {
         this.ovpQrData = ovpQrData;
     }
 
+    // Read-once-and-clear: returning the URI also wipes the native bucket
+    // so a re-entry of app.ready.focus.active cannot replay the same intent.
+    public synchronized String getCredentialOfferData() {
+        String data = this.credentialOfferData;
+        this.credentialOfferData = "";
+        return data;
+    }
+
+    public synchronized void setCredentialOfferData(String credentialOfferData) {
+        this.credentialOfferData = credentialOfferData;
+    }
+
     public String getDataByFlow(String flowType) {
         if (flowType == null) return "";
         return switch (flowType) {
-            case "qrLoginFlow" -> getQrData();
-            case "ovpFlow" -> getOVPQrData();
+            case FLOW_QR_LOGIN -> getQrData();
+            case FLOW_OVP -> getOVPQrData();
+            case FLOW_CREDENTIAL_OFFER -> getCredentialOfferData();
             default -> "";
         };
     }
@@ -38,8 +56,9 @@ public class IntentData {
     public void resetDataByFlow(String flowType) {
         if (flowType == null) return;
         switch (flowType) {
-            case "qrLoginFlow" -> setQrData("");
-            case "ovpFlow" -> setOVPQrData("");
+            case FLOW_QR_LOGIN -> setQrData("");
+            case FLOW_OVP -> setOVPQrData("");
+            case FLOW_CREDENTIAL_OFFER -> setCredentialOfferData("");
         }
     }
 }

@@ -8,7 +8,7 @@ export const IssuersEvents = {
   COMPLETED: () => ({}),
   TRY_AGAIN: () => ({}),
   RESET_ERROR: () => ({}),
-  SHOW_ERROR:(error: any) => ({error}),
+  SHOW_ERROR: (error: any) => ({error}),
   CHECK_KEY_PAIR: () => ({}),
   CANCEL: () => ({}),
   STORE_RESPONSE: (response?: unknown) => ({response}),
@@ -17,6 +17,7 @@ export const IssuersEvents = {
   SELECTED_CREDENTIAL_TYPE: (credType: CredentialTypes) => ({credType}),
   SCAN_CREDENTIAL_OFFER_QR_CODE: () => ({}),
   QR_CODE_SCANNED: (data: string) => ({data}),
+  CREDENTIAL_OFFER_VIA_DEEP_LINK: (data: string) => ({data}),
   AUTH_ENDPOINT_RECEIVED: (authEndpoint: string) => ({authEndpoint}),
   PROOF_REQUEST: (
     accessToken: string,
