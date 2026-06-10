@@ -310,10 +310,15 @@ describe('OpenID4VP', () => {
       );
 
       expect(result).toEqual({
-        'inp-1': {
-          ldp_vc: [{id: 'cred-1'}],
-        },
-      });
+        'inp-1': [{
+          "credential": {
+            "id": "cred-1",
+          },
+          "credentialId": "cred-1",
+          "format": "ldp_vc",
+        }]
+      })
+      ;
     });
   });
 
@@ -405,7 +410,13 @@ describe('OpenID4VP', () => {
         {},
       );
 
-      expect(result['inp-1']['mso_mdoc']).toEqual(['mdoc-data']);
+      expect(result['inp-1']).toEqual(
+        [{
+          "credential": "mdoc-data",
+          "credentialId": "cred-1",
+          "format": "mso_mdoc",
+        }]
+      );
     });
 
     it('should handle vc_sd_jwt format with disclosures', async () => {
@@ -425,9 +436,13 @@ describe('OpenID4VP', () => {
         disclosures,
       );
 
-      expect(result['inp-1']['vc_sd_jwt']).toEqual([
-        'header.payload.sig~disc1~disc2~',
-      ]);
+      expect(result['inp-1']).toEqual(
+        [{
+          "credential": 'header.payload.sig~disc1~disc2~',
+          "credentialId": "cred-1",
+          "format": "vc_sd_jwt",
+        }]
+      );
     });
 
     it('should handle dc_sd_jwt format', async () => {
@@ -441,7 +456,13 @@ describe('OpenID4VP', () => {
         {'vc-key': []},
       );
 
-      expect(result['inp-1']['dc_sd_jwt']).toEqual(['jwt-part~']);
+      expect(result['inp-1']).toEqual(
+        [{
+          "credential": 'jwt-part~',
+          "credentialId": "cred-1",
+          "format": 'dc_sd_jwt',
+        }]
+      );
     });
 
     it('should sanitize wildcard disclosure paths before lookup', async () => {
@@ -461,9 +482,13 @@ describe('OpenID4VP', () => {
         disclosures,
       );
 
-      expect(result['inp-1']['vc_sd_jwt']).toEqual([
-        'header.payload.sig~disc1~',
-      ]);
+      expect(result['inp-1']).toEqual(
+        [{
+          "credential": 'header.payload.sig~disc1~',
+          "credentialId": "cred-1",
+          "format": 'vc_sd_jwt',
+        }]
+      );
     });
 
     it('should fallback to parent path when exact disclosure path is missing', async () => {
@@ -483,9 +508,11 @@ describe('OpenID4VP', () => {
         disclosures,
       );
 
-      expect(result['inp-1']['vc_sd_jwt']).toEqual([
-        'header.payload.sig~disc1~',
-      ]);
+      expect(result['inp-1']).toEqual([{
+        "credential": 'header.payload.sig~disc1~',
+        "credentialId": "cred-1",
+        "format": 'vc_sd_jwt',
+      }]);
     });
 
     it('should fallback to the nearest parent path for deeply nested selection', async () => {
@@ -505,9 +532,11 @@ describe('OpenID4VP', () => {
         disclosures,
       );
 
-      expect(result['inp-1']['vc_sd_jwt']).toEqual([
-        'header.payload.sig~disc1~',
-      ]);
+      expect(result['inp-1']).toEqual([{
+        "credential": 'header.payload.sig~disc1~',
+        "credentialId": "cred-1",
+        "format": 'vc_sd_jwt',
+      }]);
     });
 
     it('should match all indexed paths for wildcard array selections', async () => {
@@ -528,9 +557,11 @@ describe('OpenID4VP', () => {
         disclosures,
       );
 
-      expect(result['inp-1']['vc_sd_jwt']).toEqual([
-        'header.payload.sig~disc1~disc2~',
-      ]);
+      expect(result['inp-1']).toEqual([{
+        "credential": 'header.payload.sig~disc1~disc2~',
+        "credentialId": "cred-1",
+        "format": 'vc_sd_jwt',
+      }]);
     });
 
     it('should fallback from wildcard leaf path to indexed parent path', async () => {
@@ -550,9 +581,11 @@ describe('OpenID4VP', () => {
         disclosures,
       );
 
-      expect(result['inp-1']['vc_sd_jwt']).toEqual([
-        'header.payload.sig~disc1~',
-      ]);
+      expect(result['inp-1']).toEqual([{
+        "credential": 'header.payload.sig~disc1~',
+        "credentialId": "cred-1",
+        "format": 'vc_sd_jwt',
+      }]);
     });
 
     it('should throw for sd_jwt with missing credential', async () => {

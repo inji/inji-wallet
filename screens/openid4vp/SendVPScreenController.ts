@@ -91,25 +91,15 @@ export function useSendVPScreen(props) {
     selectMatchingVcsResult,
   );
 
-  const checkIfAnyVCHasImage = vcs => {
+  const checkIfAnyVCHasImage = (vcs: Record<string, VC[]>) => {
     return Object.values(vcs)
       .flatMap(vc => vc)
       .some(vc => {
-        return getFaceAttribute(vc.verifiableCredential, vc.format) != null;
+        return getFaceAttribute(vc.verifiableCredential, vc.vcMetadata.format) != null;
       });
   };
-
-  const checkIfAllVCsHasImage = vcs => {
-    return Object.values(vcs)
-      .flatMap(vc => vc)
-      .every(
-        vc => getFaceAttribute(vc.verifiableCredential, vc.format) != null,
-      );
-  };
-
-  const getSelectedVCs = (credentialRequestIdToSelectedVcKeys: Record<string, Set<string>>): Record<string, any[]> => {
+  const getSelectedVCs = (credentialRequestIdToSelectedVcKeys: Record<string, Set<string>>): Record<string, VC[]> => {
     const selectedVcsData: Record<string, VC[]> = {}; // input_descriptor_id or credential query ID to VC[]
-    console.log("credentialRequestIdToSelectedVcKeys ", (credentialRequestIdToSelectedVcKeys))
     const availableCredentials = myVcs
     Object.entries(credentialRequestIdToSelectedVcKeys).forEach(
       ([credentialRequestId, vcKeys]) => {
@@ -121,7 +111,6 @@ export function useSendVPScreen(props) {
         });
       },
     );
-    console.log("selectedVcsData in getSelectedVCs ", selectedVcsData)
     return selectedVcsData;
   };
 
@@ -246,7 +235,6 @@ export function useSendVPScreen(props) {
     showConfirmationPopup,
     isSelectingVCs,
     checkIfAnyVCHasImage,
-    checkIfAllVCsHasImage,
     error,
     noCredentialsMatchingVPRequest,
     requestedClaimsByVerifier,
@@ -296,21 +284,31 @@ export function useSendVPScreen(props) {
       }, 0);
     },
 
-    ACCEPT_REQUEST: (credentialRequestIdToSelectedVcKeys, selectedDisclosuresByVc) => {
-      console.log("credentialRequestIdToSelectedVcKeys in ACCEPT_REQUEST", credentialRequestIdToSelectedVcKeys)
-      openID4VPService.send(
-        OpenID4VPEvents.ACCEPT_REQUEST(
-          getSelectedVCs(credentialRequestIdToSelectedVcKeys),
-          selectedDisclosuresByVc,
-        ),
-      );
+    ACCEPT_REQUEST: (credentialRequestIdToSelectedVcKeys: Record<string, Set<string>>, selectedDisclosuresByVc: Record<string, string[]>) => {
+      const selectedVCs = getSelectedVCs(credentialRequestIdToSelectedVcKeys);
+      const hasImage = checkIfAnyVCHasImage(selectedVCs);
+      if(hasImage) {
+        openID4VPService.send(
+          OpenID4VPEvents.VERIFY_AND_ACCEPT_REQUEST(
+            selectedVCs,
+            selectedDisclosuresByVc,
+          ),
+        );
+      } else {
+        openID4VPService.send(
+          OpenID4VPEvents.ACCEPT_REQUEST(
+            selectedVCs,
+            selectedDisclosuresByVc,
+          ),
+        );
+      }
     },
 
     VERIFIER_TRUST_CONSENT_GIVEN: () => {
       openID4VPService.send(OpenID4VPEvents.VERIFIER_TRUST_CONSENT_GIVEN());
     },
 
-    VERIFY_AND_ACCEPT_REQUEST: (credentialRequestIdToSelectedVcKeys, selectedDisclosuresByVc) => {
+    VERIFY_AND_ACCEPT_REQUEST: (credentialRequestIdToSelectedVcKeys: Record<string, Set<string>>, selectedDisclosuresByVc: Record<string, string[]>) => {
       openID4VPService.send(
         OpenID4VPEvents.VERIFY_AND_ACCEPT_REQUEST(
           getSelectedVCs(credentialRequestIdToSelectedVcKeys),

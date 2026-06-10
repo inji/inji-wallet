@@ -225,18 +225,14 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
       typeof selectedDisclosuresFromRef === 'function'
         ? selectedDisclosuresFromRef()
         : selectedDisclosuresFromRef ?? {};
-    const selectedVcs = matchingVcListRef.current?.getSelectedVcs?.() ?? {};
+    const selectedVcs: Record<string, Set<string>> = matchingVcListRef.current?.getSelectedVcs?.() ?? {};
 
-    if (controller.checkIfAnyVCHasImage(selectedVcs)) {
-      controller.VERIFY_AND_ACCEPT_REQUEST(selectedVcs, selectedDisclosures);
-    } else {
-      controller.ACCEPT_REQUEST(selectedVcs, selectedDisclosures);
-    }
+    controller.ACCEPT_REQUEST(selectedVcs, selectedDisclosures);
   };
 
   return (
     <React.Fragment>
-      <DeeplinkBanner absolute />
+      <DeeplinkBanner absolute/>
       {
         <TrustModalVerifier
           isVisible={controller.showTrustConsentModal}

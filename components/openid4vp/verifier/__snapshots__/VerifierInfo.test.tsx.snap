@@ -4,6 +4,7 @@ exports[`VerifierInfo matches snapshot (happy path with logo and name) 1`] = `
 <View
   style={
     {
+      "alignContent": "center",
       "alignItems": "center",
       "backgroundColor": "#FFFFFF",
       "borderColor": "#E0E0E0",
@@ -23,17 +24,23 @@ exports[`VerifierInfo matches snapshot (happy path with logo and name) 1`] = `
   />
   <View
     style={
-      {
-        "flex": 1,
-        "flexDirection": "column",
-        "paddingHorizontal": 8,
-      }
+      [
+        {
+          "flex": 1,
+          "flexDirection": "column",
+          "paddingHorizontal": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
     }
   >
     <View
       style={
         {
           "alignItems": "center",
+          "columnGap": 6,
           "flexDirection": "row",
         }
       }
@@ -112,38 +119,6 @@ exports[`VerifierInfo matches snapshot (happy path with logo and name) 1`] = `
         </Text>
       </View>
     </View>
-    <Text
-      style={
-        [
-          {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "fontFamily": "Montserrat_400Regular",
-            "fontSize": 14,
-          },
-          null,
-          {
-            "textAlign": "left",
-          },
-          null,
-          null,
-          [
-            {
-              "color": "#1976D2",
-              "fontFamily": "Montserrat_600SemiBold",
-              "fontSize": 10,
-              "marginLeft": 3,
-            },
-            {
-              "color": "#951F6F",
-            },
-          ],
-        ]
-      }
-    />
   </View>
   <View
     accessibilityState={
@@ -175,6 +150,8 @@ exports[`VerifierInfo matches snapshot (happy path with logo and name) 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       {
+        "alignItems": "center",
+        "justifyContent": "center",
         "opacity": 1,
       }
     }

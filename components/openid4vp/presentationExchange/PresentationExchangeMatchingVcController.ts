@@ -1,7 +1,5 @@
-import {useCallback, useEffect, useMemo, useState} from 'react';
-import {VC} from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {useCallback, useMemo, useState} from 'react';
 import {MatchingVCsResultForPresentationExchangeRequest, VCInfo} from '../../../shared/openID4VP/openid4vp.types';
-import {getVcKey} from '../../../shared/VCMetadata';
 
 export type PresentationExchangeSelectedVcs = Record<string, Set<string>>;
 export type PresentationExchangeSelectedDisclosures = Record<string, string[]>;

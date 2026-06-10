@@ -109,42 +109,11 @@ export function base64UrlToUint8Array(base64Url: string) {
   return Uint8Array.from(Buffer.from(base64, 'base64'));
 }
 
-export async function canonicalize(unsignedVp: any) {
-  try {
-    const jsonldProof = {...unsignedVp['proof']};
-    jsonldProof['@context'] = unsignedVp['@context'];
-    const jsonldObjectClone = {...unsignedVp};
-    if ('proof' in jsonldObjectClone) {
-      delete jsonldObjectClone.proof;
-    }
-    const expandedJsonldObject = await jsonld.expand(jsonldObjectClone);
-    const normalizedJsonldObject = await jsonld.canonize(expandedJsonldObject, {
-      algorithm: 'URDNA2015',
-    });
-
-    const expandedJsonldProof = await jsonld.expand(jsonldProof);
-    const normalizedJsonldProof = await jsonld.canonize(expandedJsonldProof, {
-      algorithm: 'URDNA2015',
-    });
-
-    const canonicalizationResult = Buffer.alloc(64);
-    Buffer.concat([
-      //noble sha256 deprecated need to use alternative library
-      sha256(utf8ToBytes(normalizedJsonldProof)),
-      sha256(utf8ToBytes(normalizedJsonldObject)),
-    ]).copy(canonicalizationResult, 0);
-    return base64url(canonicalizationResult);
-  } catch (err) {
-    console.error('Canonization failed:', err);
-    throw err;
-  }
-}
-
 export async function jsonLdExpand(data: any) {
   return await jsonld.expand(data);
 }
 
-export async function canonicalize2(unsignedVp: any) {
+export async function canonicalize(unsignedVp: any) {
   try {
     const jsonldProof = {...unsignedVp['proof']};
     jsonldProof['@context'] = unsignedVp['@context'];

@@ -17,23 +17,26 @@ type VerifierInfoProps = {
 };
 
 export function VerifierInfo({
-  logoUri,
-  name,
-  showInfo = true,
-  onInfoPress,
-  subLabel,
-  subLabelColor,
-  flat = false,
-}: VerifierInfoProps) {
+                               logoUri,
+                               name,
+                               showInfo = true,
+                               onInfoPress,
+                               subLabel,
+                               subLabelColor,
+                               flat = false,
+                             }: VerifierInfoProps) {
   const {t} = useTranslation('SendVPScreen');
   const containerStyle = flat
     ? {
-        flexDirection: 'row' as const,
-        alignItems: 'center' as const,
-        paddingHorizontal: 12,
-        paddingVertical: 10,
-      }
-    : Theme.DcqlStyles.verifierBanner;
+      flexDirection: 'row' as const,
+      alignItems: 'center' as const,
+      paddingHorizontal: 12,
+      paddingVertical: 10,
+    }
+    : {
+      ...Theme.DcqlStyles.verifierBanner,
+      alignItems: 'center' as const,
+    };
 
   return (
     <View style={containerStyle}>
@@ -44,8 +47,9 @@ export function VerifierInfo({
           style={Theme.DcqlStyles.verifierBannerLogo}
         />
       ) : null}
-      <View style={Theme.DcqlStyles.verifierBannerInfoCol}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View
+        style={[Theme.DcqlStyles.verifierBannerInfoCol, {justifyContent: 'center'}]}>
+        <View style={{flexDirection: 'row', alignItems: 'center', columnGap: 6}}>
           <Text style={Theme.DcqlStyles.verifierBannerName}>{name}</Text>
           <View style={Theme.DcqlStyles.verifierBannerTrustedBadge}>
             <Icon
@@ -62,16 +66,21 @@ export function VerifierInfo({
           </View>
         </View>
 
-        <Text
-          style={[
-            Theme.DcqlStyles.verifierBannerTrustedText,
-            {color: subLabelColor ?? Theme.Colors.Icon},
-          ]}>
-          {subLabel}
-        </Text>
+        {subLabel ? (
+          <Text
+            style={[
+              Theme.DcqlStyles.verifierBannerTrustedText,
+              {color: subLabelColor ?? Theme.Colors.Icon},
+            ]}>
+            {subLabel}
+          </Text>
+        ) : null}
       </View>
       {showInfo ? (
-        <TouchableOpacity onPress={onInfoPress} disabled={!onInfoPress}>
+        <TouchableOpacity
+          onPress={onInfoPress}
+          disabled={!onInfoPress}
+          style={{justifyContent: 'center', alignItems: 'center'}}>
           <Icon
             name="info-outline"
             type="material"

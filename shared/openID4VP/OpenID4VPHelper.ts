@@ -5,7 +5,7 @@ import {
   createSignatureRSA,
   fetchKeyPair,
 } from '../cryptoutil/cryptoUtil';
-import {base64ToByteArray, canonicalize2, parseJSON} from '../Utils';
+import {base64ToByteArray, canonicalize, parseJSON} from '../Utils';
 import getAllConfigurations from '../api';
 import {JWT_ALG_TO_KEY_TYPE} from '../constants';
 import {SignatureAlgorithms} from '../cryptoutil/KeyTypes';
@@ -28,7 +28,7 @@ export async function getWalletConfig() {
 
 export const jsonLdCanonicalize = async (data: string) => {
   const parsedData = JSON.parse(data);
-  const canonicalized = await canonicalize2(parsedData);
+  const canonicalized = await canonicalize(parsedData);
   if (!canonicalized) {
     throw new Error('Canonicalized data to sign is undefined');
   }

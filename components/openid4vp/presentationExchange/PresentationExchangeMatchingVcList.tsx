@@ -5,7 +5,6 @@ import {Column, Row, Text} from '../../ui';
 import {Theme} from '../../ui/styleUtils';
 import {VcItemContainer} from '../../VC/VcItemContainer';
 import {VCItemContainerFlowType} from '../../../shared/Utils';
-import {getVcKey} from '../../../shared/VCMetadata';
 import {CheckboxSelectionType} from '../../ui/checkbox/Checkbox';
 import {MatchingVCsResultForPresentationExchangeRequest, VCInfo} from "../../../shared/openID4VP/openid4vp.types";
 import {usePresentationExchangeMatchingVcController} from './PresentationExchangeMatchingVcController';

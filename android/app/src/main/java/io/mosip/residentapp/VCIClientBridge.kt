@@ -5,8 +5,12 @@ import io.mosip.vciclient.VCIClient
 import io.mosip.vciclient.authorizationCodeFlow.AuthorizationMethod
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata
 import com.google.gson.JsonObject
+import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest
+import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken
 import io.mosip.vciclient.constants.OpenWebPageCallback
 import io.mosip.vciclient.constants.ProofsCallback
+import io.mosip.vciclient.constants.SelectCredentialsForPresentationCallback
+import io.mosip.vciclient.constants.SignVerifiablePresentationCallback
 import io.mosip.vciclient.credential.response.CredentialResponse
 import io.mosip.vciclient.exception.DownloadFailedException
 import io.mosip.vciclient.proof.CredentialRequestProofs
@@ -39,7 +43,7 @@ object VCIClientBridge {
                 credentialOffer = offer,
                 clientMetadata = clientMetaData,
                 getTxCode = getTxCodeCallback(),
-                authorizations = authorizationMethods(signatureSuite),
+                authorizations = authorizationMethods(),
                 getTokenResponse = getTokenResponseCallback(),
                 getProofs = getProofsCallback(),
                 onCheckIssuerTrust = onCheckIssuerTrustCallback()
@@ -62,15 +66,34 @@ object VCIClientBridge {
                 credentialConfigurationId = credentialConfigurationId,
                 clientMetadata = clientMetaData,
                 getTokenResponse = getTokenResponseCallback(),
-                authorizations = authorizationMethods(signatureSuite),
+                authorizations = authorizationMethods(),
                 getProofs = getProofsCallback(),
         ).toSingleCredentialResponseJson()
     }
 
-    private fun authorizationMethods(signatureSuite: String?): List<AuthorizationMethod> =
-            listOf(
-                    AuthorizationMethod.RedirectToWeb(openWebPage = openWebPageCallback())
-            )
+    private fun authorizationMethods(): List<AuthorizationMethod> =
+      listOf(
+        AuthorizationMethod.RedirectToWeb(openWebPage = openWebPageCallback()),
+        AuthorizationMethod.PresentationDuringIssuance(
+          selectCredentialsForPresentation =
+            selectCredentialsForPresentationCallback(),
+          signVerifiablePresentation = signVerifiablePresentationCallback()
+        )
+      )
+
+  private fun selectCredentialsForPresentationCallback(): SelectCredentialsForPresentationCallback =
+    { authorizationRequest: AuthorizationRequest ->
+      VCIClientCallbackBridge.createPresentationRequestDeferred()
+      VCIClientCallbackBridge.emitPresentationRequest(reactContext, authorizationRequest)
+      VCIClientCallbackBridge.awaitSelectedCredentialsForPresentationRequest()
+    }
+
+  private fun signVerifiablePresentationCallback(): SignVerifiablePresentationCallback =
+    { payload: List<UnsignedVPToken> ->
+      VCIClientCallbackBridge.createSignedVPTokenDeferred()
+      VCIClientCallbackBridge.emitSignedVPTokenRequest(reactContext, payload)
+      VCIClientCallbackBridge.awaitSignedVPToken()
+    }
 
     private fun openWebPageCallback(): OpenWebPageCallback =
     openWeb@{ endpoint: String ->

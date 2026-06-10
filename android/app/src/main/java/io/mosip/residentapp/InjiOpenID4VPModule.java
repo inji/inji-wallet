@@ -146,33 +146,14 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             dcqlQuery = OpenId4VPUtils.parseDcqlQuery(dcqlQueryMap);
         }
 
-        assert dcqlQuery != null;
+        if (dcqlQuery == null) {
+          throw new IllegalStateException("dcqlQuery must not be null");
+        }
         MatchingCredentialsResult result = new DCQLHelper().getMatchingCredentials(credentials, dcqlQuery);
         promise.resolve(gsonCamelCase.toJson(result));
       } catch (Exception e) {
         rejectWithOpenID4VPExceptions(e, promise);
       }
-    }
-
-    @ReactMethod
-    public void constructUnsignedVPTokenDCQL(ReadableMap credentialsMap, Promise promise) {
-        try {
-            Map<String, List<Credential>> selectedCredentials = OpenId4VPUtils.parseSelectedVCs(credentialsMap);
-            List<UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedCredentials);
-
-            JSONArray jsonArray = new JSONArray();
-            for (UnsignedVPToken token : vpTokens) {
-                JSONObject obj = new JSONObject();
-                obj.put("format", token.getFormat().getValue());
-                obj.put("holderKeyReference", token.getHolderKeyReference());
-                obj.put("signatureAlgorithm", token.getSignatureAlgorithm());
-                obj.put("dataToSign", Base64.encodeToString(token.getDataToSign(), Base64.URL_SAFE | Base64.NO_WRAP | Base64.NO_PADDING));
-                jsonArray.put(obj);
-            }
-            promise.resolve(jsonArray.toString());
-        } catch (Exception e) {
-            rejectWithOpenID4VPExceptions(e, promise);
-        }
     }
 
     @ReactMethod

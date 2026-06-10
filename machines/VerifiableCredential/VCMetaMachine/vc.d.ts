@@ -16,7 +16,7 @@ export interface VC {
 
 export type SelectedCredentialsForVPSharing = Record<
   string,
-  Record<string, Array<any>>
+  Record<string, Array<SelectedCredentialForVPSharing>>
 >;
 
 export interface SelectedCredentialForVPSharing {

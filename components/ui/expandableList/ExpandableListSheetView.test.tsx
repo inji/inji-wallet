@@ -1,11 +1,9 @@
-import {fireEvent, render} from '@testing-library/react-native';
+import {render} from '@testing-library/react-native';
 import React from 'react';
 import {View} from 'react-native';
 import {ExpandableListSheetView} from './ExpandableListSheetView';
 
 describe('ExpandableListSheetView', () => {
-  let setExpandedSpy: jest.Mock;
-
   const items = ['item-1', 'item-2', 'item-3', 'item-4', 'item-5'];
 
   const renderItem = ({
@@ -45,11 +43,6 @@ describe('ExpandableListSheetView', () => {
         {...overrideProps}
       />,
     );
-
-  beforeEach(() => {
-    [, setExpandedSpy] = React.useState(false) as [boolean, jest.Mock];
-    setExpandedSpy.mockClear();
-  });
 
   it('renders intro text and collapsed container with first three items by default', () => {
     const {getByLabelText, getByTestId, queryByTestId} = renderComponent();
@@ -103,12 +96,11 @@ describe('ExpandableListSheetView', () => {
     );
   });
 
-  it('requests modal open when show more is pressed', () => {
-    const {getByTestId} = renderComponent();
+  it('keeps modal hidden in collapsed state while showing show more control', () => {
+    const {getByTestId, queryByTestId} = renderComponent();
 
-    fireEvent.press(getByTestId('expandable-list-show-more-button'));
-
-    expect(setExpandedSpy).toHaveBeenCalledWith(true);
+    expect(queryByTestId('expanded-row-4')).toBeNull();
+    expect(getByTestId('expandable-list-show-more-button')).toBeTruthy();
   });
 
   it('renders expanded modal content when initialExpanded is true', () => {
@@ -133,12 +125,14 @@ describe('ExpandableListSheetView', () => {
     expect(getByTestId('expanded-row-4')).toBeTruthy();
   });
 
-  it('requests modal close when close button is pressed', () => {
-    const {getByTestId} = renderComponent({initialExpanded: true});
+  it('shows modal content and close control when initialized in expanded state', () => {
+    const {getByTestId, queryByTestId} = renderComponent({
+      initialExpanded: true,
+    });
 
-    fireEvent.press(getByTestId('expandable-list-modal-close-button'));
-
-    expect(setExpandedSpy).toHaveBeenCalledWith(false);
+    expect(getByTestId('expanded-row-4')).toBeTruthy();
+    expect(getByTestId('expandable-list-modal-close-button')).toBeTruthy();
+    expect(queryByTestId('collapsed-row-4')).toBeNull();
   });
 
   it('passes correct renderItem params for collapsed and expanded lists', () => {

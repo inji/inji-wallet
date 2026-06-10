@@ -1,6 +1,6 @@
 import {NativeEventEmitter, NativeModules} from 'react-native';
 import {__AppId} from '../GlobalVariables';
-import {SelectedCredentialsForVPSharing, VC,} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {SelectedCredentialForVPSharing, VC,} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {getWalletConfig, isDcqlFlow, jsonLdCanonicalize,} from './OpenID4VPHelper';
 import {jsonLdExpand, parseJSON} from '../Utils';
 import {VCFormat} from '../VCFormat';
@@ -173,6 +173,7 @@ class OpenID4VP {
                 queryMatch.allowMultipleCredentials === true,
             };
           } else if (queryMatch.failedClaims) {
+            console.warn("Failed claims - ", JSON.stringify(queryMatch.failedClaims, null, 2));
             (queryMatch.failedClaims as any[]).forEach(failedClaim => {
               requestedClaims.add(getClaimName(failedClaim.claim.path));
             });
@@ -195,13 +196,7 @@ class OpenID4VP {
     selectedVCs: Record<string, VC[]>,
     selectedDisclosuresByVc: any,
   ) {
-    const openID4VP = await OpenID4VP.getInstance();
-
-    return openID4VP.processSelectedVCs(
-      vpRequest,
-      selectedVCs,
-      selectedDisclosuresByVc,
-    );
+    return this.processSelectedVCs(vpRequest, selectedVCs, selectedDisclosuresByVc);
   }
 
   static getSignatureSuite(key: string): string {
@@ -227,32 +222,9 @@ class OpenID4VP {
     selectedDisclosuresByVc: any,
   ) {
     const openID4VP = await OpenID4VP.getInstance();
-    const updatedSelectedVCs: Record<
-      string,
-      Array<SelectedCredentialsForVPSharing>
-    > = {};
-    const isDcqlRequestFlow = isDcqlFlow(vpRequest);
-    Object.entries(selectedVCs).forEach(([credentialRequestId, vcsArray]) => {
-      updatedSelectedVCs[credentialRequestId] = vcsArray.map(credential => {
-        const credentialFormat = credential.vcMetadata.format;
-        return {
-          format: credentialFormat,
-          credentialId: credential.vcMetadata.id,
-          credential: openID4VP.extractCredential(
-            credential,
-            credentialFormat,
-            selectedDisclosuresByVc[
-              VCMetadata.fromVcMetadataString(credential.vcMetadata).getVcKey()
-              ],
-            isDcqlRequestFlow,
-          ),
-        };
-      });
-    });
-
     const unSignedVpTokens =
       await openID4VP.InjiOpenID4VP.constructUnsignedVPToken(
-        updatedSelectedVCs,
+        this.processSelectedVCs(vpRequest, selectedVCs, selectedDisclosuresByVc),
       );
     return parseJSON(unSignedVpTokens);
   }
@@ -281,37 +253,33 @@ class OpenID4VP {
     openID4VP.InjiOpenID4VP.sendJsonLdCanonicalizeResultFromJS(data);
   }
 
-  private processSelectedVCs(
-    vpRequest: object,
-    selectedVCs: Record<string, VC[]>,
-    selectedDisclosuresByVc: any,
-  ) {
+  private static processSelectedVCs(vpRequest: object, selectedVCs: Record<string, VC[]>, selectedDisclosuresByVc: Record<string, Array<string>>) {
+    const updatedSelectedVCs: Record<
+      string,
+      Array<SelectedCredentialForVPSharing>
+    > = {};
     const isDcqlRequestFlow = isDcqlFlow(vpRequest);
-    const selectedVcsData: SelectedCredentialsForVPSharing = {};
-    Object.entries(selectedVCs).forEach(([inputDescriptorId, vcsArray]) => {
-      vcsArray.forEach(vcData => {
-        const credentialFormat = vcData.vcMetadata.format;
-        const credential = this.extractCredential(
-          vcData,
-          credentialFormat,
-          selectedDisclosuresByVc[
-            VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey()
-            ],
-          isDcqlRequestFlow,
-        );
-        if (!selectedVcsData[inputDescriptorId]) {
-          selectedVcsData[inputDescriptorId] = {};
-        }
-        if (!selectedVcsData[inputDescriptorId][credentialFormat]) {
-          selectedVcsData[inputDescriptorId][credentialFormat] = [];
-        }
-        selectedVcsData[inputDescriptorId][credentialFormat].push(credential);
+    Object.entries(selectedVCs).forEach(([credentialRequestId, vcsArray]) => {
+      updatedSelectedVCs[credentialRequestId] = vcsArray.map(credential => {
+        const credentialFormat = credential.vcMetadata.format;
+        return {
+          format: credentialFormat,
+          credentialId: credential.vcMetadata.id,
+          credential: this.extractCredential(
+            credential,
+            credentialFormat,
+            selectedDisclosuresByVc[
+              VCMetadata.fromVcMetadataString(credential.vcMetadata).getVcKey()
+              ],
+            isDcqlRequestFlow,
+          ),
+        };
       });
     });
-    return selectedVcsData;
+    return updatedSelectedVCs;
   }
 
-  private extractCredential(
+  private static extractCredential(
     vcData: VC,
     credentialFormat: string,
     selectedDisclosures: any,
@@ -336,7 +304,7 @@ class OpenID4VP {
     }
   }
 
-  private processSdJwtVcForSharingWithSdClaimsOnly(
+  private static processSdJwtVcForSharingWithSdClaimsOnly(
     vcData: VC,
     selectedDisclosures: string[],
   ): string {
@@ -358,15 +326,12 @@ class OpenID4VP {
       }
     });
 
-    const finalSdJwt =
-      disclosureSet.size > 0
-        ? [jwt, ...disclosureSet].join('~') + '~'
-        : jwt + '~';
-
-    return finalSdJwt;
+    return disclosureSet.size > 0
+      ? [jwt, ...disclosureSet].join('~') + '~'
+      : jwt + '~';
   }
 
-  private processSdJwtVcForSharing(vcData: VC, claimsPath: string[]): string {
+  private static processSdJwtVcForSharing(vcData: VC, claimsPath: string[]): string {
     if (!vcData?.verifiableCredential?.credential) {
       throw new Error('Invalid VC: missing credential');
     }

@@ -31,10 +31,6 @@ RCT_EXTERN_METHOD(constructUnsignedVPToken:(id)credentialsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(constructUnsignedVPTokenDCQL:(id)credentialsMap
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
-
 RCT_EXTERN_METHOD(shareVerifiablePresentation:(id)vpResponseMetadata
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
