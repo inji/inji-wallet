@@ -1,12 +1,3 @@
-jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter', () => ({
-  __esModule: true,
-  default: class MockNativeEventEmitter {
-    addListener = jest.fn(() => ({remove: jest.fn()}));
-    removeAllListeners = jest.fn();
-    removeSubscription = jest.fn();
-  },
-}));
-
 import {EventTypes, VerificationStatus} from './types/events';
 
 describe('tuvali types', () => {
@@ -25,10 +16,6 @@ describe('tuvali types', () => {
 });
 
 describe('tuvali module', () => {
-  // The module-level code runs on require. Since NativeEventEmitter is mocked,
-  // setupModule executes without errors. But WalletModule/VerifierModule may
-  // not be in NativeModules mock, so wallet could be a Proxy.
-
   it('exports EventTypes and VerificationStatus', () => {
     const tuvali = require('./index');
     expect(tuvali.EventTypes).toBeDefined();
@@ -51,7 +38,23 @@ describe('tuvali module', () => {
     });
   });
 
-  it('handleDataEvents returns listener result', () => {
+  it('handleDataEvents subscribes to DATA_EVENT with the provided callback', () => {
+    jest.isolateModules(() => {
+      const {NativeModules, NativeEventEmitter} = require('react-native');
+      const addListenerSpy = jest.spyOn(
+        NativeEventEmitter.prototype,
+        'addListener',
+      );
+      NativeModules.WalletModule = {startTransfer: jest.fn()};
+      const tuvali = require('./index');
+      const cb = jest.fn();
+      tuvali.wallet.handleDataEvents(cb);
+      expect(addListenerSpy).toHaveBeenCalledWith('DATA_EVENT', cb);
+      addListenerSpy.mockRestore();
+    });
+  });
+
+  it('handleDataEvents returns a subscription with a remove function', () => {
     jest.isolateModules(() => {
       const {NativeModules} = require('react-native');
       NativeModules.WalletModule = {startTransfer: jest.fn()};
@@ -59,6 +62,19 @@ describe('tuvali module', () => {
       const cb = jest.fn();
       const sub = tuvali.wallet.handleDataEvents(cb);
       expect(sub).toBeDefined();
+      expect(sub.remove).toBeDefined();
+      expect(typeof sub.remove).toBe('function');
+    });
+  });
+
+  it('subscription returned by handleDataEvents can be removed', () => {
+    jest.isolateModules(() => {
+      const {NativeModules} = require('react-native');
+      NativeModules.WalletModule = {startTransfer: jest.fn()};
+      const tuvali = require('./index');
+      const cb = jest.fn();
+      const sub = tuvali.wallet.handleDataEvents(cb);
+      expect(() => sub.remove()).not.toThrow();
     });
   });
 });

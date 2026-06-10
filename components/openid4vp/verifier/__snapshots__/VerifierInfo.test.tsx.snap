@@ -4,7 +4,6 @@ exports[`VerifierInfo matches snapshot (happy path with logo and name) 1`] = `
 <View
   style={
     {
-      "alignContent": "center",
       "alignItems": "center",
       "backgroundColor": "#FFFFFF",
       "borderColor": "#E0E0E0",

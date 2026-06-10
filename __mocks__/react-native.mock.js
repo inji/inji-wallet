@@ -2,7 +2,11 @@ jest.mock('react-native', () => {
   const ReactNative = jest.requireActual('react-native');
 
   class MockNativeEventEmitter {
-    addListener = jest.fn();
+    addListener(eventType, listener) {
+      return {remove: jest.fn()};
+    }
+    removeAllListeners() {}
+    removeSubscription() {}
   }
 
   // Define NativeModules using Object.defineProperty

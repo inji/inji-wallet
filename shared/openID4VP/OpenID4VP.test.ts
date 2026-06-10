@@ -3,15 +3,20 @@ import {NativeModules, Platform} from 'react-native';
 import {isIOS} from '../constants';
 // Import OpenID4VP here to ensure jest.mocks are applied before module loading
 import OpenID4VPModule from './OpenID4VP';
-import {MatchingVCsResultForDcql, VCInfo} from "./openid4vp.types";
-import {claimPathPointersToJsonPath, getWalletConfig, isDcqlFlow, jsonLdCanonicalize} from "./OpenID4VPHelper";
-import {jsonLdExpand} from "../Utils";
+import {MatchingVCsResultForDcql, VCInfo} from './openid4vp.types';
+import {
+  claimPathPointersToJsonPath,
+  getWalletConfig,
+  isDcqlFlow,
+  jsonLdCanonicalize,
+} from './OpenID4VPHelper';
+import {jsonLdExpand} from '../Utils';
 import {
   getIssuerAuthenticationAlgorithmForMdocVC,
-  getMdocAuthenticationAlgorithm
-} from "../../components/VC/common/VCUtils";
-import {CACHED_API} from "../api";
-import {beforeEach} from "@jest/globals";
+  getMdocAuthenticationAlgorithm,
+} from '../../components/VC/common/VCUtils';
+import {CACHED_API} from '../api';
+import {beforeEach} from '@jest/globals';
 
 const mockInitSdk = jest.fn();
 const mockAuthenticateVerifier = jest.fn();
@@ -61,10 +66,10 @@ jest.mock('react-native', () => {
         sendErrorToVerifier: mockSendErrorToVerifier,
         getMatchingCredentials: mockGetMatchingCredentials,
         sendJsonLdCanonicalizeResultFromJS:
-        mockSendJsonLdCanonicalizeResultFromJS,
+          mockSendJsonLdCanonicalizeResultFromJS,
         sendJsonLdExpandResultFromJS: mockSendJsonLdExpandResultFromJS,
         notifyCanonicalizationFailureFromJS:
-        mockNotifyCanonicalizationFailureFromJS,
+          mockNotifyCanonicalizationFailureFromJS,
       },
     },
     Platform: platformMock,
@@ -176,14 +181,15 @@ const OpenID4VP = OpenID4VPModule;
 const getOpenID4VPNativeModule = () => NativeModules.InjiOpenID4VP;
 
 const resetOpenID4VPInstance = () => {
-  (OpenID4VP as unknown as { instance?: unknown }).instance = undefined;
+  (OpenID4VP as unknown as {instance?: unknown}).instance = undefined;
 };
 
 const setPlatformOS = (os: 'android' | 'ios') => {
   (Platform as any).OS = os;
 };
 
-const flushPromises = () => new Promise(resolve => setImmediate(resolve));
+const flushPromises = () =>
+  new Promise<void>(resolve => setTimeout(resolve, 0));
 
 const buildVc = (
   id: string,
@@ -207,7 +213,7 @@ const buildPresentationDefinitionVc = (
   format: string,
   credential: unknown,
   verifiableCredentialExtras?: Record<string, unknown>,
-): VC & { format: string } =>
+): VC & {format: string} =>
   ({
     format,
     vcMetadata: {id: `cred-${format}`, format},
@@ -216,7 +222,7 @@ const buildPresentationDefinitionVc = (
       ...(verifiableCredentialExtras ?? {}),
     },
     lastVerifiedOn: 0,
-  } as VC & { format: string });
+  } as VC & {format: string});
 
 describe('OpenID4VP', () => {
   beforeEach(() => {
@@ -259,7 +265,10 @@ describe('OpenID4VP', () => {
       mockNotifyCanonicalizationFailureFromJS;
 
     mockedGetWalletConfig.mockResolvedValue(null);
-    mockedGetWalletConfig.mockResolvedValue({mock: true, "validate_pre_registered_verifier": false} as never);
+    mockedGetWalletConfig.mockResolvedValue({
+      mock: true,
+      validate_pre_registered_verifier: false,
+    } as never);
     mockedJsonLdCanonicalize.mockResolvedValue('');
     mockedJsonLdExpand.mockResolvedValue([]);
     mockedClaimPathPointersToJsonPath.mockImplementation(
@@ -288,7 +297,7 @@ describe('OpenID4VP', () => {
       expect(nativeModule.initSdk).toHaveBeenCalledWith('test-app-id', {
         mock: true,
         trusted_verifiers: [],
-        "validate_pre_registered_verifier": false,
+        validate_pre_registered_verifier: false,
       });
       expect(nativeModule.authenticateVerifier).toHaveBeenCalledWith(
         'encoded-request',
@@ -310,15 +319,16 @@ describe('OpenID4VP', () => {
       );
 
       expect(result).toEqual({
-        'inp-1': [{
-          "credential": {
-            "id": "cred-1",
+        'inp-1': [
+          {
+            credential: {
+              id: 'cred-1',
+            },
+            credentialId: 'cred-1',
+            format: 'ldp_vc',
           },
-          "credentialId": "cred-1",
-          "format": "ldp_vc",
-        }]
-      })
-      ;
+        ],
+      });
     });
   });
 
@@ -410,13 +420,13 @@ describe('OpenID4VP', () => {
         {},
       );
 
-      expect(result['inp-1']).toEqual(
-        [{
-          "credential": "mdoc-data",
-          "credentialId": "cred-1",
-          "format": "mso_mdoc",
-        }]
-      );
+      expect(result['inp-1']).toEqual([
+        {
+          credential: 'mdoc-data',
+          credentialId: 'cred-1',
+          format: 'mso_mdoc',
+        },
+      ]);
     });
 
     it('should handle vc_sd_jwt format with disclosures', async () => {
@@ -436,13 +446,13 @@ describe('OpenID4VP', () => {
         disclosures,
       );
 
-      expect(result['inp-1']).toEqual(
-        [{
-          "credential": 'header.payload.sig~disc1~disc2~',
-          "credentialId": "cred-1",
-          "format": "vc_sd_jwt",
-        }]
-      );
+      expect(result['inp-1']).toEqual([
+        {
+          credential: 'header.payload.sig~disc1~disc2~',
+          credentialId: 'cred-1',
+          format: 'vc_sd_jwt',
+        },
+      ]);
     });
 
     it('should handle dc_sd_jwt format', async () => {
@@ -456,13 +466,13 @@ describe('OpenID4VP', () => {
         {'vc-key': []},
       );
 
-      expect(result['inp-1']).toEqual(
-        [{
-          "credential": 'jwt-part~',
-          "credentialId": "cred-1",
-          "format": 'dc_sd_jwt',
-        }]
-      );
+      expect(result['inp-1']).toEqual([
+        {
+          credential: 'jwt-part~',
+          credentialId: 'cred-1',
+          format: 'dc_sd_jwt',
+        },
+      ]);
     });
 
     it('should sanitize wildcard disclosure paths before lookup', async () => {
@@ -482,13 +492,13 @@ describe('OpenID4VP', () => {
         disclosures,
       );
 
-      expect(result['inp-1']).toEqual(
-        [{
-          "credential": 'header.payload.sig~disc1~',
-          "credentialId": "cred-1",
-          "format": 'vc_sd_jwt',
-        }]
-      );
+      expect(result['inp-1']).toEqual([
+        {
+          credential: 'header.payload.sig~disc1~',
+          credentialId: 'cred-1',
+          format: 'vc_sd_jwt',
+        },
+      ]);
     });
 
     it('should fallback to parent path when exact disclosure path is missing', async () => {
@@ -508,11 +518,13 @@ describe('OpenID4VP', () => {
         disclosures,
       );
 
-      expect(result['inp-1']).toEqual([{
-        "credential": 'header.payload.sig~disc1~',
-        "credentialId": "cred-1",
-        "format": 'vc_sd_jwt',
-      }]);
+      expect(result['inp-1']).toEqual([
+        {
+          credential: 'header.payload.sig~disc1~',
+          credentialId: 'cred-1',
+          format: 'vc_sd_jwt',
+        },
+      ]);
     });
 
     it('should fallback to the nearest parent path for deeply nested selection', async () => {
@@ -532,11 +544,13 @@ describe('OpenID4VP', () => {
         disclosures,
       );
 
-      expect(result['inp-1']).toEqual([{
-        "credential": 'header.payload.sig~disc1~',
-        "credentialId": "cred-1",
-        "format": 'vc_sd_jwt',
-      }]);
+      expect(result['inp-1']).toEqual([
+        {
+          credential: 'header.payload.sig~disc1~',
+          credentialId: 'cred-1',
+          format: 'vc_sd_jwt',
+        },
+      ]);
     });
 
     it('should match all indexed paths for wildcard array selections', async () => {
@@ -557,11 +571,13 @@ describe('OpenID4VP', () => {
         disclosures,
       );
 
-      expect(result['inp-1']).toEqual([{
-        "credential": 'header.payload.sig~disc1~disc2~',
-        "credentialId": "cred-1",
-        "format": 'vc_sd_jwt',
-      }]);
+      expect(result['inp-1']).toEqual([
+        {
+          credential: 'header.payload.sig~disc1~disc2~',
+          credentialId: 'cred-1',
+          format: 'vc_sd_jwt',
+        },
+      ]);
     });
 
     it('should fallback from wildcard leaf path to indexed parent path', async () => {
@@ -581,11 +597,13 @@ describe('OpenID4VP', () => {
         disclosures,
       );
 
-      expect(result['inp-1']).toEqual([{
-        "credential": 'header.payload.sig~disc1~',
-        "credentialId": "cred-1",
-        "format": 'vc_sd_jwt',
-      }]);
+      expect(result['inp-1']).toEqual([
+        {
+          credential: 'header.payload.sig~disc1~',
+          credentialId: 'cred-1',
+          format: 'vc_sd_jwt',
+        },
+      ]);
     });
 
     it('should throw for sd_jwt with missing credential', async () => {
@@ -993,7 +1011,7 @@ describe('OpenID4VP', () => {
       expect(nativeModule.initSdk).toHaveBeenCalledWith('test-app-id', {
         mock: true,
         trusted_verifiers: [],
-        "validate_pre_registered_verifier": false,
+        validate_pre_registered_verifier: false,
       });
       expect(nativeModule.getMatchingCredentials).toHaveBeenCalledWith(
         {dcql_query: {query: 'example'}},
@@ -1018,7 +1036,10 @@ describe('OpenID4VP', () => {
           'query-1': {
             matchingVcs: [
               {
-                "matchingVcInfo": new VCInfo("vc-key", {id: `cred-1`, format: "ldp_vc"},),
+                matchingVcInfo: new VCInfo('vc-key', {
+                  id: `cred-1`,
+                  format: 'ldp_vc',
+                }),
                 matchedClaims: [
                   {
                     id: 'name',
@@ -1081,10 +1102,10 @@ describe('OpenID4VP', () => {
         }),
       );
 
-      const result = await OpenID4VP.getMatchingCredentials(
+      const result = (await OpenID4VP.getMatchingCredentials(
         {dcql_query: {query: 'example'}},
         [vc1, vc2],
-      ) as MatchingVCsResultForDcql;
+      )) as MatchingVCsResultForDcql;
 
       expect(result.credentialSetOptions).toEqual([
         {
@@ -1100,13 +1121,22 @@ describe('OpenID4VP', () => {
       let FreshOpenID4VP: typeof OpenID4VP;
       let freshNativeModule: MockInjiOpenID4VP;
       let freshJsonLdExpand: jest.Mock;
+      let addListenerSpy: jest.SpyInstance | null = null;
 
       jest.isolateModules(() => {
         const freshConstants = require('../constants');
         freshConstants.isIOS.mockReturnValue(true);
 
+        const freshReactNative = require('react-native');
+        if (freshReactNative.NativeEventEmitter?.prototype?.addListener) {
+          addListenerSpy = jest.spyOn(
+            freshReactNative.NativeEventEmitter.prototype,
+            'addListener',
+          );
+        }
+
         FreshOpenID4VP = require('./OpenID4VP').default;
-        freshNativeModule = require('react-native').NativeModules
+        freshNativeModule = freshReactNative.NativeModules
           .InjiOpenID4VP as MockInjiOpenID4VP;
         freshJsonLdExpand = require('../Utils').jsonLdExpand;
       });
@@ -1121,24 +1151,40 @@ describe('OpenID4VP', () => {
         [buildVc('cred-1', 'ldp_vc', {id: 'cred-1'})],
       );
 
-      expect(mockAddListener).toHaveBeenCalledWith(
-        'onJsonLdExpand',
-        expect.any(Function),
-      );
-      expect(mockEmitterListeners.onJsonLdExpand).toBeDefined();
+      if (addListenerSpy) {
+        expect(addListenerSpy).toHaveBeenCalledWith(
+          'onJsonLdExpand',
+          expect.any(Function),
+        );
+      } else {
+        expect(mockAddListener).toHaveBeenCalledWith(
+          'onJsonLdExpand',
+          expect.any(Function),
+        );
+      }
 
       // Simulate the native JSON-LD expand event
-      const expandListener = mockEmitterListeners.onJsonLdExpand;
-      expandListener({data: {'@context': 'https://example.org'}});
+      const expandListener = addListenerSpy
+        ? (addListenerSpy.mock.calls.find(
+            call => call[0] === 'onJsonLdExpand',
+          )?.[1] as ((args: {data: unknown}) => void) | undefined)
+        : (mockEmitterListeners.onJsonLdExpand as
+            | ((args: {data: unknown}) => void)
+            | undefined);
+
+      expect(expandListener).toBeDefined();
+      expandListener!({data: {'@context': 'https://example.org'}});
       await flushPromises();
 
       // Verify the result is sent to native
       expect(freshJsonLdExpand!).toHaveBeenCalledWith({
         '@context': 'https://example.org',
       });
-      expect(freshNativeModule!.sendJsonLdExpandResultFromJS).toHaveBeenCalledWith(
-        [{expanded: true}],
-      );
+      expect(
+        freshNativeModule!.sendJsonLdExpandResultFromJS,
+      ).toHaveBeenCalledWith([{expanded: true}]);
+
+      addListenerSpy?.mockRestore();
     });
   });
 });
