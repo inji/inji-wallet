@@ -18,7 +18,11 @@ import {VCMetadata} from '../../shared/VCMetadata';
 import {VCItemContainerFlowType} from '../../shared/Utils';
 import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
 import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
-import {isIOS, OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../../shared/constants';
+import {
+  isIOS,
+  OVP_ERROR_CODE,
+  OVP_ERROR_MESSAGES,
+} from '../../shared/constants';
 
 type SendVPErrorProps = {
   isAuthorizationFlow: boolean;
@@ -59,7 +63,7 @@ export const SendVPError: React.FC<SendVPErrorProps> = ({
 }) => {
   const {t} = useTranslation('SendVPScreen');
   const [errorModal, resetErrorModal] = useOvpErrorModal({
-    error,
+    error: error ?? '',
     noCredentialsMatchingVPRequest,
     requestedClaimsByVerifier,
     getAdditionalMessage,
@@ -86,20 +90,14 @@ export const SendVPError: React.FC<SendVPErrorProps> = ({
 
       return () => clearTimeout(timeout);
     }
-  }, [
-    errorModal.show,
-    isOVPViaDeepLink,
-    onDeepLinkErrorExit,
-    resetErrorModal,
-  ]);
+  }, [errorModal.show, isOVPViaDeepLink, onDeepLinkErrorExit, resetErrorModal]);
 
   if (!errorModal.show || isAuthorizationFlow) {
     return null;
   }
 
   const additionalMessage =
-    isOVPViaDeepLink &&
-    !(errorModal.showRetryButton && openID4VPRetryCount < 3)
+    isOVPViaDeepLink && !(errorModal.showRetryButton && openID4VPRetryCount < 3)
       ? errorModal.additionalMessage
       : undefined;
 
@@ -121,8 +119,7 @@ export const SendVPError: React.FC<SendVPErrorProps> = ({
     if (Object.keys(errorModal.matchingVcsResult).length > 0) {
       const isDcql =
         (errorModal.matchingVcsResult as MatchingVCsResultForDcql)
-          .credentialSetOptions !==
-        undefined;
+          .credentialSetOptions !== undefined;
       if (isDcql) {
         const dcqlResult =
           errorModal.matchingVcsResult as MatchingVCsResultForDcql;
@@ -150,7 +147,9 @@ export const SendVPError: React.FC<SendVPErrorProps> = ({
 
     return (
       <Column>
-        {requestedClaims.length > 0 && <MissingClaimsView claims={requestedClaims} />}
+        {requestedClaims.length > 0 && (
+          <MissingClaimsView claims={requestedClaims} />
+        )}
         <Text style={Theme.DcqlStyles.credentialMissingSectionLabel}>
           {t('errors.noMatchingCredentials.whatYouCanDo')}
         </Text>
@@ -174,18 +173,20 @@ export const SendVPError: React.FC<SendVPErrorProps> = ({
               {t('errors.noMatchingCredentials.matchingCredentials')}
             </Text>
             <View style={Theme.DcqlStyles.credentialMissingCard}>
-              {Array.from(uniqueVcsByKey.entries()).map(([vcKey, vcMetadata]) => (
-                <VcItemContainer
-                  key={vcKey}
-                  vcMetadata={vcMetadata}
-                  margin="0 2 8 2"
-                  selectable={false}
-                  selected={false}
-                  onPress={() => undefined}
-                  flow={VCItemContainerFlowType.VP_SHARE}
-                  isPinned={vcMetadata.isPinned}
-                />
-              ))}
+              {Array.from(uniqueVcsByKey.entries()).map(
+                ([vcKey, vcMetadata]) => (
+                  <VcItemContainer
+                    key={vcKey}
+                    vcMetadata={vcMetadata}
+                    margin="0 2 8 2"
+                    selectable={false}
+                    selected={false}
+                    onPress={() => undefined}
+                    flow={VCItemContainerFlowType.VP_SHARE}
+                    isPinned={vcMetadata.isPinned}
+                  />
+                ),
+              )}
             </View>
           </React.Fragment>
         )}
@@ -223,7 +224,3 @@ export const SendVPError: React.FC<SendVPErrorProps> = ({
     />
   );
 };
-
-
-
-

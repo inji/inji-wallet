@@ -3,14 +3,13 @@ import OpenID4VP
 import React
 
 class OpenId4VPUtils: NSObject {
-  static func toJsonString(jsonObject: AuthorizationRequest) throws -> String {
+  static func toJsonString(jsonObject: AuthorizationRequest?) throws -> String {
     let encoder = JSONEncoder()
     encoder.keyEncodingStrategy = .convertToSnakeCase
     let jsonData = try encoder.encode(jsonObject)
     guard let jsonString = String(data: jsonData, encoding: .utf8) else {
       throw NSError(domain: "OPENID4VP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to encode JSON"])
     }
-    //TODO: append draft version into json string
     return jsonString
   }
   
@@ -149,4 +148,35 @@ struct ParseError: Error {
     let message: String
 }
     
+extension Data {
+    init?(base64UrlEncoded: String) {
+        let base64 = base64UrlEncoded.base64URLToBase64()
+        guard let decoded = Data(base64Encoded: base64) else {
+            return nil
+        }
+        
+        self = decoded
+    }
     
+    func toBase64UrlEncoded() -> String {
+        return self.base64EncodedString()
+            .replacingOccurrences(of: "+", with: "-")
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "=", with: "")
+    }
+}
+
+extension String {
+    func base64URLToBase64() -> String {
+        var base64 = self
+            .replacingOccurrences(of: "-", with: "+")
+            .replacingOccurrences(of: "_", with: "/")
+
+        let paddingLength = 4 - (base64.count % 4)
+        if paddingLength < 4 {
+            base64 += String(repeating: "=", count: paddingLength)
+        }
+
+        return base64
+    }
+}

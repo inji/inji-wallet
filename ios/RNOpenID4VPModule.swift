@@ -29,9 +29,10 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           try await self.invokeJsonLdCanonicalize(data)
         }
       )
+      print("Initialized instance :party")
       resolve(true)
     } catch {
-      os_log("Error occurred \(error)")
+      os_log("Error occurred while initialization of OVP instance \(error)")
       reject("OPENID4VP", error.localizedDescription, error)
     }
   }
@@ -354,3 +355,12 @@ fileprivate func toJsonData<T>(_ input: T) throws -> Data where T: Encodable {
   return try encoder.encode(input)
 }
 
+func decode<T: Decodable>(
+    _ type: T.Type,
+    from dictionary: [String: Any]
+) throws -> T {
+
+    let data = try JSONSerialization.data(withJSONObject: dictionary)
+
+    return try JSONDecoder().decode(T.self, from: data)
+}

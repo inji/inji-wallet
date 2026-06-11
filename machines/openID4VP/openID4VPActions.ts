@@ -12,11 +12,14 @@ import {parseJSON, VCShareFlowType} from '../../shared/Utils';
 import {ActivityLogEvents} from '../activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
 import {
-  MatchingVcsResult, MatchingVCsResultForDcql,
-  MatchingVCsResultForPresentationExchangeRequest, VCInfo, VcWithMatchedClaims,
+  MatchingVcsResult,
+  MatchingVCsResultForDcql,
+  MatchingVCsResultForPresentationExchangeRequest,
+  VCInfo,
+  VcWithMatchedClaims,
 } from '../../shared/openID4VP/openid4vp.types';
 import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
-import {isDcqlFlow} from "../../shared/openID4VP/OpenID4VPHelper";
+import {isDcqlFlow} from '../../shared/openID4VP/OpenID4VPHelper';
 
 // TODO - get this presentation definition list which are alias for scope param
 // from the verifier end point after the endpoint is created and exposed.
@@ -86,29 +89,36 @@ export const openID4VPActions = (model: any) => {
     compareAndStoreSelectedVC: model.assign({
       selectedVCs: context => {
         const matchingVcs = {};
-        const matchingVcsResult = context.matchingVCsResult
-        if(isDcqlFlow(context.authenticationResponse)) {
-          Object.entries((matchingVcsResult as MatchingVCsResultForDcql).matchingVCs).map(([credetialQueryId, mathingResult]) => {
-            (mathingResult.matchingVcs as VcWithMatchedClaims[]).map(({matchingVcInfo})=>{
-              if (
-                matchingVcInfo.metadata.requestId ===
-                context.miniViewSelectedVC.vcMetadata.requestId
-              ) {
-                matchingVcs[credetialQueryId] = [context.miniViewSelectedVC];
-              }
-            })
-          })
-        } else {
-          Object.entries((matchingVcsResult as MatchingVCsResultForPresentationExchangeRequest).matchingVCs).map(
-            ([inputDescriptorId, vcs]) =>
-              (vcs as VCInfo[]).map(vcData => {
+        const matchingVcsResult = context.matchingVCsResult;
+        if (isDcqlFlow(context.authenticationResponse)) {
+          Object.entries(
+            (matchingVcsResult as MatchingVCsResultForDcql).matchingVCs,
+          ).map(([credetialQueryId, mathingResult]) => {
+            (mathingResult.matchingVcs as VcWithMatchedClaims[]).map(
+              ({matchingVcInfo}) => {
                 if (
-                  vcData.metadata.requestId ===
+                  matchingVcInfo.metadata.requestId ===
                   context.miniViewSelectedVC.vcMetadata.requestId
                 ) {
-                  matchingVcs[inputDescriptorId] = [context.miniViewSelectedVC];
+                  matchingVcs[credetialQueryId] = [context.miniViewSelectedVC];
                 }
-              }),
+              },
+            );
+          });
+        } else {
+          Object.entries(
+            (
+              matchingVcsResult as MatchingVCsResultForPresentationExchangeRequest
+            ).matchingVCs,
+          ).map(([inputDescriptorId, vcs]) =>
+            (vcs as VCInfo[]).map(vcData => {
+              if (
+                vcData.metadata.requestId ===
+                context.miniViewSelectedVC.vcMetadata.requestId
+              ) {
+                matchingVcs[inputDescriptorId] = [context.miniViewSelectedVC];
+              }
+            }),
           );
         }
         return matchingVcs;
@@ -192,7 +202,7 @@ export const openID4VPActions = (model: any) => {
           'Error occurred during the authenticateVerifier call :',
           event.data.userInfo,
         );
-        return event.data.code;
+        return event.data.code ?? 'unknown_error';
       },
     }),
 

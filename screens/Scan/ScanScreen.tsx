@@ -33,7 +33,7 @@ export const ScanScreen: React.FC = () => {
   const sendVcScreenController = useSendVcScreen();
   const sendVPScreenController = useSendVPScreen();
   const [errorModal] = useOvpErrorModal({
-    error: sendVPScreenController.error,
+    error: sendVPScreenController.error ?? '',
     noCredentialsMatchingVPRequest:
       sendVPScreenController.noCredentialsMatchingVPRequest,
     requestedClaimsByVerifier: sendVPScreenController.requestedClaimsByVerifier,

@@ -34,27 +34,27 @@ import java.util.function.Function;
 import io.mosip.openID4VP.OpenID4VP;
 import io.mosip.openID4VP.authorizationRequest.AuthorizationDcqlRequest;
 import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest;
-import io.mosip.openID4VP.authorizationRequest.LdpVcFormatSupported;
-import io.mosip.openID4VP.authorizationRequest.MsoMdocVcFormatSupported;
-import io.mosip.openID4VP.authorizationRequest.SdJwtVcFormatSupported;
+import io.mosip.openID4VP.authorizationRequest.LdpVpFormatSupported;
+import io.mosip.openID4VP.authorizationRequest.MsoMdocVpFormatSupported;
+import io.mosip.openID4VP.authorizationRequest.SdJwtVpFormatSupported;
 import io.mosip.openID4VP.authorizationRequest.VPFormatSupported;
 import io.mosip.openID4VP.authorizationRequest.Verifier;
 import io.mosip.openID4VP.authorizationRequest.WalletConfig;
 import io.mosip.openID4VP.authorizationRequest.WalletConfigDefaultsKt;
-import io.mosip.openID4VP.authorizationRequest.dcqlQuery.DCQLQuery;
 import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
 import io.mosip.openID4VP.constants.ClientIdPrefix;
-import io.mosip.openID4VP.constants.ContentEncryptionAlgorithm;
-import io.mosip.openID4VP.constants.KeyManagementAlgorithm;
+import io.mosip.openID4VP.constants.EncryptionAlgorithm;
+import io.mosip.openID4VP.constants.EncryptionMethod;
 import io.mosip.openID4VP.constants.ProofType;
-import io.mosip.openID4VP.constants.RequestSigningAlgorithm;
 import io.mosip.openID4VP.constants.RequestUriMethod;
 import io.mosip.openID4VP.constants.ResponseType;
+import io.mosip.openID4VP.constants.SignatureAlgorithm;
 import io.mosip.openID4VP.constants.VPFormatType;
-import io.mosip.openID4VP.evaluator.dcql.DCQLHelper;
-import io.mosip.openID4VP.evaluator.dcql.MatchingCredentialsResult;
+import io.mosip.openID4VP.dcql.evaluator.MatchingCredentialsResult;
+import io.mosip.openID4VP.dcql.query.DCQLQuery;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
+import io.mosip.openID4VP.helper.DCQLHelper;
 import io.mosip.openID4VP.verifier.VerifierResponse;
 import io.mosip.openID4VP.wallet.Credential;
 import io.mosip.residentapp.utils.FormatConverter;
@@ -207,17 +207,17 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         List<ClientIdPrefix> clientIdPrefixesSupported = convertReadableArrayToEnumList(
                 walletConfigMap, "client_id_prefixes_supported", ClientIdPrefix.Companion::fromValue);
 
-        List<RequestSigningAlgorithm> requestObjectSigningAlg = convertReadableArrayToEnumList(
+        List<SignatureAlgorithm> requestObjectSigningAlg = convertReadableArrayToEnumList(
                 walletConfigMap, "request_object_signing_alg_values_supported",
-                RequestSigningAlgorithm.Companion::fromValue);
+          SignatureAlgorithm.Companion::fromValue);
 
-        List<KeyManagementAlgorithm> encryptionAlg = convertReadableArrayToEnumList(
+        List<EncryptionAlgorithm> encryptionAlg = convertReadableArrayToEnumList(
                 walletConfigMap, "authorization_encryption_alg_values_supported",
-                KeyManagementAlgorithm.Companion::fromValue);
+                EncryptionAlgorithm.Companion::fromValue);
 
-        List<ContentEncryptionAlgorithm> encryptionEnc = convertReadableArrayToEnumList(
+        List<EncryptionMethod> encryptionEnc = convertReadableArrayToEnumList(
                 walletConfigMap, "authorization_encryption_enc_values_supported",
-                ContentEncryptionAlgorithm.Companion::fromValue);
+                EncryptionMethod.Companion::fromValue);
 
         List<ResponseType> responseTypes = convertReadableArrayToEnumList(
                 walletConfigMap, "response_types_supported", ResponseType.Companion::fromValue);
@@ -232,24 +232,25 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
         List<Verifier> trustedVerifiers = parseTrustedVerifiers(walletConfigMap);
 
-        return new WalletConfig(
-                vpFormatsSupportedMap.isEmpty() ? WalletConfigDefaultsKt.getDefaultVpFormatsSupported() : vpFormatsSupportedMap,
-                clientIdPrefixesSupported != null ? clientIdPrefixesSupported : WalletConfigDefaultsKt.getDefaultClientIdPrefixesSupported(),
-                requestObjectSigningAlg,
-                encryptionAlg,
-                encryptionEnc,
-                responseTypes != null ? responseTypes : WalletConfigDefaultsKt.getDefaultResponseTypeSupported(),
-                presentationDefinitionUriSupported,
-                supportedRequestUriMethods,
-                trustedVerifiers
-        );
+      return new WalletConfig(
+        vpFormatsSupportedMap.isEmpty() ? WalletConfigDefaultsKt.getDefaultVpFormatsSupported() : vpFormatsSupportedMap,
+        clientIdPrefixesSupported != null ? clientIdPrefixesSupported : WalletConfigDefaultsKt.getDefaultClientIdPrefixesSupported(),
+        requestObjectSigningAlg,
+        encryptionAlg,
+        encryptionEnc,
+        responseTypes != null ? responseTypes : WalletConfigDefaultsKt.getDefaultResponseTypeSupported(),
+        presentationDefinitionUriSupported,
+        supportedRequestUriMethods,
+        trustedVerifiers,
+        validatePreRegiseredVerifier
+      );
     }
 
     private List<RequestUriMethod> parseSupportedRequestUriMethods(ReadableMap walletConfigMap) {
-        if (!walletConfigMap.hasKey("supported_request_uri_methods")) {
+        if (!walletConfigMap.hasKey("request_uri_methods_supported")) {
             return List.of(RequestUriMethod.GET, RequestUriMethod.POST);
         }
-        ReadableArray methodsArray = walletConfigMap.getArray("supported_request_uri_methods");
+        ReadableArray methodsArray = walletConfigMap.getArray("request_uri_methods_supported");
         List<RequestUriMethod> methods = new ArrayList<>();
         for (int i = 0; i < Objects.requireNonNull(methodsArray).size(); i++) {
             RequestUriMethod method = RequestUriMethod.Companion.fromValue(methodsArray.getString(i));
@@ -312,18 +313,18 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
         switch (formatType) {
             case LDP_VC:
             case LDP_VP:
-                vpFormatsSupportedMap.put(formatType, new LdpVcFormatSupported(
+                vpFormatsSupportedMap.put(formatType, new LdpVpFormatSupported(
                         convertReadableArrayToEnumList(formatMap, "proof_type_values", ProofType.Companion::fromValue),
                         convertReadableArrayToStringList(formatMap, "cryptosuite_values")));
                 break;
             case MSO_MDOC:
-                vpFormatsSupportedMap.put(formatType, new MsoMdocVcFormatSupported(
+                vpFormatsSupportedMap.put(formatType, new MsoMdocVpFormatSupported(
                         convertReadableArrayToIntegerList(formatMap, "issuerauth_alg_values"),
                         convertReadableArrayToIntegerList(formatMap, "deviceauth_alg_values")));
                 break;
             case VC_SD_JWT:
             case DC_SD_JWT:
-                vpFormatsSupportedMap.put(formatType, new SdJwtVcFormatSupported(
+                vpFormatsSupportedMap.put(formatType, new SdJwtVpFormatSupported(
                         convertReadableArrayToStringList(formatMap, "sd-jwt_alg_values"),
                         convertReadableArrayToStringList(formatMap, "kb-jwt_alg_values")));
                 break;

@@ -19,10 +19,10 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 
-import io.mosip.openID4VP.authorizationRequest.dcqlQuery.DCQLQuery;
-import io.mosip.openID4VP.authorizationRequest.dcqlQuery.DCQLQuerySerializer;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
 import io.mosip.openID4VP.common.OpenID4VPErrorCodes;
+import io.mosip.openID4VP.dcql.query.DCQLQuery;
+import io.mosip.openID4VP.dcql.query.DCQLQuerySerializer;
 import io.mosip.openID4VP.wallet.Credential;
 
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
