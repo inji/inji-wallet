@@ -2715,7 +2715,7 @@ export const PurpleTheme = {
       fontFamily: 'Montserrat_700Bold',
       fontSize: 11,
       letterSpacing: 1,
-      color: Colors.Gray40,
+      color: Colors.Gray50,
       marginHorizontal: 16,
       marginTop: 16,
       marginBottom: 6,

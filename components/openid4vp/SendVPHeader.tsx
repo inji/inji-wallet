@@ -11,8 +11,6 @@ type SendVPHeaderProps = {
   onDismiss: () => void;
   verifierName?: string;
   verifierLogo?: string;
-  isDcqlFlow: boolean;
-  onInfoPress: () => void;
 };
 
 export const SendVPHeader: React.FC<SendVPHeaderProps> = ({
@@ -21,8 +19,6 @@ export const SendVPHeader: React.FC<SendVPHeaderProps> = ({
   onDismiss,
   verifierName,
   verifierLogo,
-  isDcqlFlow,
-  onInfoPress,
 }) => {
   return (
     <View
@@ -51,8 +47,6 @@ export const SendVPHeader: React.FC<SendVPHeaderProps> = ({
         <VerifierInfo
           logoUri={verifierLogo}
           name={verifierName}
-          showInfo={isDcqlFlow}
-          onInfoPress={onInfoPress}
         />
       )}
     </View>

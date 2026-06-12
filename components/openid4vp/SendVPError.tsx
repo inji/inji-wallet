@@ -160,7 +160,6 @@ export const SendVPError: React.FC<SendVPErrorProps> = ({
             subLabelColor={Theme.Colors.Icon}
             name={verifierNameInTrustModal}
             logoUri={verifierLogoInTrustModal}
-            showInfo={false}
           />
           <View style={Theme.DcqlStyles.credentialMissingCardDivider} />
           <Text style={Theme.DcqlStyles.credentialMissingCardBodyText}>

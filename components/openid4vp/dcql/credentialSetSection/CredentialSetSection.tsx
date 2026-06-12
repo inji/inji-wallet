@@ -58,6 +58,8 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     setSelectedQueryIdToCredentialsByOption,
   ] = useState<OptionSelectionState>(initialSelectionState?.selection ?? {});
 
+  // Input: next per-option selection map.
+  // Output: updates local state and propagates the same selection map to parent via callback.
   const updateSelectionState = (newState: OptionSelectionState) => {
     setSelectedQueryIdToCredentialsByOption(newState);
     onSelectionChange(newState);
@@ -193,6 +195,8 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
   const isRequired = credentialSet.required;
   const {t} = useTranslation('SendVPScreen');
 
+  // Input: credential query id.
+  // Output: true only when this is a required single-option/single-query case with exactly one matching VC.
   const isSingleMatchEdgeCase = (credentialQueryId: string): boolean => {
     return (
       isRequired &&
@@ -202,6 +206,8 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     );
   };
 
+  // Input: one option (array of query ids) and its index.
+  // Output: true when every query id in that option currently has at least one selected VC.
   // An option is selected if for every credential query in that option, at least one of the matching VCs for that query is selected.
   const isOptionSelected = (option: string[], optionIndex: number): boolean => {
     return option.every(
@@ -211,6 +217,9 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     );
   };
 
+  // Input: option query ids + option index that user toggled.
+  // Output: updates selection state by either fully deselecting that option or selecting it
+  // (while clearing other options) and syncs selected/deselected VCs with the parent controller.
   const handleOptionToggle = (option: string[], optionIndex: number) => {
     if (isOptionSelected(option, optionIndex)) {
       const {
@@ -251,6 +260,8 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     return option.length > 1;
   };
 
+  // Input: credential query id, VC key, and option index.
+  // Output: true when that exact VC key is selected for that query within that option.
   const isVcSelected = (
     credentialQueryId: string,
     vcKey: string,
@@ -263,6 +274,8 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     );
   };
 
+  // Input: target and source maps of queryId -> VC key set.
+  // Output: target map containing the union of both maps (mutates and returns target).
   const mergeQueryIdToVcKeys = (
     target: Record<string, Set<string>>,
     source: Record<string, Set<string>>,
@@ -276,6 +289,9 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     return target;
   };
 
+  // Input: option index to remove, and an optional current selection snapshot.
+  // Output: (1) next selection state without that option and
+  // (2) minimal queryId->vcKeys that became fully unselected across all remaining options.
   const deselectOption = (
     optionIndex: number,
     currentSelection = selectedQueryIdToCredentialsByOption,
@@ -341,6 +357,8 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     };
   };
 
+  // Input: option index that must remain active.
+  // Output: state with all other options removed, and emits consolidated deselection events for orphaned VCs.
   function deselectOtherOptions(excludedOptionIndex: number) {
     let newState = {...selectedQueryIdToCredentialsByOption};
     let toBeDeselectedItems: Record<string, Set<string>> = {};
@@ -368,6 +386,9 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     return newState;
   }
 
+  // Input: VC key + query id + option index of the interacted card.
+  // Output: toggles that VC selection (single/multi rules respected), updates option state,
+  // and emits matching select/deselect updates to the parent controller.
   const handleVCSelection = (
     vcKey: string,
     credentialQueryId: string,
@@ -400,17 +421,19 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
       return newSelectedQueryIdToCredentialsByOption;
     };
 
-    const appendVcKeyToCurrentSelection = () => {
+    // Appends a VC key to the current option's selection for a given query ID.
+    // baseState: The cleaned state (without deselected options) to build upon.
+    const appendVcKeyToCurrentSelection = (baseState: Record<number, Record<string, Set<string>>>) => {
       const existingVcKeys = Array.from(
-        prevSelectedQueryIdToCredentialsByOption[currentOptionIndex]?.[
+        baseState[currentOptionIndex]?.[
           credentialQueryId
         ] ?? [],
       );
 
       return {
-        ...prevSelectedQueryIdToCredentialsByOption,
+        ...baseState,
         [currentOptionIndex]: {
-          ...prevSelectedQueryIdToCredentialsByOption[currentOptionIndex],
+          ...baseState[currentOptionIndex] ?? {},
           [credentialQueryId]: new Set([vcKey, ...existingVcKeys]),
         },
       };
@@ -443,7 +466,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
 
       if (allowsMultiple) {
         // If allowing multiple, just add this vc to the current selection without deselecting other VCs for this query
-        newState = appendVcKeyToCurrentSelection();
+        newState = appendVcKeyToCurrentSelection(toBeUpdated);
       } else {
         deselectVcs({[credentialQueryId]: prevSelectedQueryIdToCredentialsByOption[currentOptionIndex]?.[credentialQueryId]})
         newState = {
@@ -460,6 +483,8 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     }
   };
 
+  // Input: one matched VC result containing metadata + matched claim pointers.
+  // Output: Set of JSONPath strings for selectively disclosable VC formats, otherwise undefined.
   function getSelectivelyDisclosableMatchedClaimPaths(
     matchingCredentialDataResult: VcWithMatchedClaims,
   ): Set<string> | undefined {

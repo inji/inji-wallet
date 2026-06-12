@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {AdaptiveImage} from '../../ui/AdaptiveImage';
 import {Text} from '../../ui';
@@ -9,8 +9,6 @@ import {useTranslation} from 'react-i18next';
 type VerifierInfoProps = {
   logoUri?: string | null;
   name?: string | null;
-  showInfo?: boolean;
-  onInfoPress?: () => void;
   subLabel?: string;
   subLabelColor?: string;
   flat?: boolean;
@@ -19,8 +17,6 @@ type VerifierInfoProps = {
 export function VerifierInfo({
                                logoUri,
                                name,
-                               showInfo = true,
-                               onInfoPress,
                                subLabel,
                                subLabelColor,
                                flat = false,
@@ -51,21 +47,15 @@ export function VerifierInfo({
         style={[Theme.DcqlStyles.verifierBannerInfoCol, {justifyContent: 'center'}]}>
         <View style={{flexDirection: 'row', alignItems: 'center', columnGap: 6}}>
           <Text style={Theme.DcqlStyles.verifierBannerName}>{name}</Text>
-          <View style={Theme.DcqlStyles.verifierBannerTrustedBadge}>
+          {subLabel && (<View style={Theme.DcqlStyles.verifierBannerTrustedBadge}>
             <Icon
               name="verified-user"
               type="material"
               size={12}
               color="#1976D2"
             />
-            {!subLabel && (
-              <Text style={Theme.DcqlStyles.verifierBannerTrustedText}>
-                {t('verifierInfo.trusted')}
-              </Text>
-            )}
-          </View>
+          </View>)}
         </View>
-
         {subLabel ? (
           <Text
             style={[
@@ -76,19 +66,20 @@ export function VerifierInfo({
           </Text>
         ) : null}
       </View>
-      {showInfo ? (
-        <TouchableOpacity
-          onPress={onInfoPress}
-          disabled={!onInfoPress}
-          style={{justifyContent: 'center', alignItems: 'center'}}>
-          <Icon
-            name="info-outline"
-            type="material"
-            size={18}
-            color={Theme.Colors.GrayIcon}
-          />
-        </TouchableOpacity>
-      ) : null}
+      {!subLabel && <View style={Theme.DcqlStyles.verifierBannerTrustedBadge}>
+        <Icon
+          name="verified-user"
+          type="material"
+          size={12}
+          color="#1976D2"
+        />
+        {!subLabel && (
+          <Text style={Theme.DcqlStyles.verifierBannerTrustedText}>
+            {t('verifierInfo.trusted')}
+          </Text>
+        )}
+      </View>}
+
     </View>
   );
 }

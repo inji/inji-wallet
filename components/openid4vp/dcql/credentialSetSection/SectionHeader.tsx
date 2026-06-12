@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useTranslation} from "react-i18next";
 import {Icon} from 'react-native-elements';
 import {View} from "react-native";
 import {Theme} from "../../../ui/styleUtils";
 import {Badge} from "../../../ui/badge/Badge";
 import {Text} from '../../../ui';
+import {WhyWeNeedDocumentsOverlay} from "../../overlay/WhyWeNeedDocumentsOverlay";
 
 export default function SectionHeader(props: {
   required: boolean,
@@ -13,6 +14,11 @@ export default function SectionHeader(props: {
   testId: string,
 }) {
   const {t} = useTranslation('SendVPScreen');
+  const [showDocumentsInfo, setShowDocumentsInfo] = useState<boolean>(false)
+
+  function handleShowDocumentsInfo() {
+    setShowDocumentsInfo((prevState) => !prevState)
+  }
 
   return <View style={Theme.DcqlStyles.sectionHeader}>
     <View style={Theme.DcqlStyles.sectionHeaderSpacer}>
@@ -35,8 +41,13 @@ export default function SectionHeader(props: {
         <Text style={Theme.DcqlStyles.sectionStepLabel}>{props.stepLabel}</Text>
       )}
     </View>
+    <WhyWeNeedDocumentsOverlay
+      isVisible={showDocumentsInfo}
+      onClose={handleShowDocumentsInfo}
+    />
     <Badge
       addInfoIcon
+      onPress={handleShowDocumentsInfo}
       testId={`${props.testId}-required-badge`}
       text={
         props.required

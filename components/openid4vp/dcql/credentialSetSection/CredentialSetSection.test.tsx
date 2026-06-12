@@ -859,41 +859,250 @@ describe('CredentialSetSection preselection', () => {
     ).toBe(true);
   });
 
-  it('falls back to the first satisfiable option when no already selected VC matches', async () => {
-    const firstOptionKey = vcKey('vc-first-option');
-    const secondOptionKey = vcKey('vc-second-option');
+   it('falls back to the first satisfiable option when no already selected VC matches', async () => {
+     const firstOptionKey = vcKey('vc-first-option');
+     const secondOptionKey = vcKey('vc-second-option');
 
-    const {getByTestId} = render(
-      <CredentialSetSection
-        credentialSet={{
-          options: [['first-option-query'], ['second-option-query']],
-          required: true,
-        }}
-        matchingVCsResult={{
-          'first-option-query': buildMatchResult(['vc-first-option']),
-          'second-option-query': buildMatchResult(['vc-second-option']),
-        }}
-        satisfiableOptions={[['first-option-query'], ['second-option-query']]}
-        selectedVcKeys={new Set([vcKey('vc-unrelated')])}
-        selectVcs={jest.fn()}
-        deselectVcs={jest.fn()}
-        onSelectionChange={jest.fn()}
-        testId="fallback-section"
-      />,
+     const {getByTestId} = render(
+       <CredentialSetSection
+         credentialSet={{
+           options: [['first-option-query'], ['second-option-query']],
+           required: true,
+         }}
+         matchingVCsResult={{
+           'first-option-query': buildMatchResult(['vc-first-option']),
+           'second-option-query': buildMatchResult(['vc-second-option']),
+         }}
+         satisfiableOptions={[['first-option-query'], ['second-option-query']]}
+         selectedVcKeys={new Set([vcKey('vc-unrelated')])}
+         selectVcs={jest.fn()}
+         deselectVcs={jest.fn()}
+         onSelectionChange={jest.fn()}
+         testId="fallback-section"
+       />,
+     );
+
+     await waitFor(() => {
+       expect(
+         getByTestId(
+           `vc-item-fallback-section-option-0-query-first-option-query-vc-${firstOptionKey}`,
+         ).props.accessibilityState?.selected,
+       ).toBe(true);
+     });
+
+     expect(
+       getByTestId(
+         `vc-item-fallback-section-option-1-query-second-option-query-vc-${secondOptionKey}`,
+       ).props.accessibilityState?.selected,
+     ).toBe(false);
+   });
+});
+
+describe('CredentialSetSection – Multiple allowMultiple options with same query', () => {
+  it('deselects VC from previous option when switching to same VC in different option (both allowMultiple=true)', async () => {
+    const selectVcs = jest.fn();
+    const deselectVcs = jest.fn();
+    const vc1_key = vcKey('vc-1');
+
+    const props = buildDefaultProps({
+      selectVcs,
+      deselectVcs,
+      credentialSet: {
+        options: [['credential-query'], ['credential-query']],
+        required: true,
+      },
+      matchingVCsResult: {
+        'credential-query': buildMatchResult(['vc-1', 'vc-2'], true), // allowMultiple=true
+      },
+      satisfiableOptions: [['credential-query'], ['credential-query']],
+    });
+
+    const {getByTestId} = render(<CredentialSetSection {...props} />);
+
+    // Wait for auto-preselection: required set → option 0's vc-1 selected
+    await waitFor(() =>
+      expect(
+        getByTestId(
+          `vc-item-test-section-option-0-query-credential-query-vc-${vc1_key}`,
+        ).props.accessibilityState?.selected,
+      ).toBe(true),
+    );
+
+    // Verify initial selectVcs call happened for option 0
+    await waitFor(() => expect(selectVcs).toHaveBeenCalled());
+    selectVcs.mockClear();
+    deselectVcs.mockClear();
+
+    // User switches to Option 1's vc-1 (same VC key, different option)
+    fireEvent.press(
+      getByTestId(
+        `vc-item-test-section-option-1-query-credential-query-vc-${vc1_key}`,
+      ),
+    );
+
+    // Wait for selection callback
+    await waitFor(() => {
+      expect(selectVcs).toHaveBeenCalledTimes(1);
+    });
+
+    // Verify that deselectVcs was called to remove option 0's vc-1
+    expect(deselectVcs).toHaveBeenCalled();
+    const deselectedCall = deselectVcs.mock.calls.find(
+      (call: any[]) => call[0]['credential-query'],
+    )?.[0];
+    expect(deselectedCall?.['credential-query']).toBeDefined();
+    expect(
+      deselectedCall?.['credential-query'].has(vc1_key),
+    ).toBe(true);
+
+    // Verify that option 0's VC is now deselected visually
+    expect(
+      getByTestId(
+        `vc-item-test-section-option-0-query-credential-query-vc-${vc1_key}`,
+      ).props.accessibilityState?.selected,
+    ).toBe(false);
+
+    // Verify that option 1's VC is now selected
+    expect(
+      getByTestId(
+        `vc-item-test-section-option-1-query-credential-query-vc-${vc1_key}`,
+      ).props.accessibilityState?.selected,
+    ).toBe(true);
+  });
+
+  it('deselects only orphaned VCs when switching between allowMultiple options', async () => {
+    const selectVcs = jest.fn();
+    const deselectVcs = jest.fn();
+    const vc1_key = vcKey('vc-1');
+    const vc2_key = vcKey('vc-2');
+
+    const props = buildDefaultProps({
+      selectVcs,
+      deselectVcs,
+      credentialSet: {
+        options: [
+          ['credential-query'],
+          ['credential-query'],
+          ['credential-query'],
+        ],
+        required: false,
+      },
+      matchingVCsResult: {
+        'credential-query': buildMatchResult(['vc-1', 'vc-2'], true), // all options share this, allowMultiple=true
+      },
+      satisfiableOptions: [
+        ['credential-query'],
+        ['credential-query'],
+        ['credential-query'],
+      ],
+    });
+
+    const {getByTestId, getAllByTestId} = render(<CredentialSetSection {...props} />);
+
+    // Manually select option 0's vc-1
+    fireEvent.press(
+      getByTestId(
+        `vc-item-test-section-option-0-query-credential-query-vc-${vc1_key}`,
+      ),
+    );
+
+    await waitFor(() => expect(selectVcs).toHaveBeenCalled());
+    selectVcs.mockClear();
+    deselectVcs.mockClear();
+
+    // Switch to option 1's vc-2 (different VC, different option)
+    fireEvent.press(getByTestId("test-section-option-1-query-credential-query-multi-vc-show-more-button"))
+    fireEvent.press(
+      getByTestId(
+        `vc-item-test-section-option-1-query-credential-query-vc-${vc2_key}`,
+      ),
     );
 
     await waitFor(() => {
-      expect(
-        getByTestId(
-          `vc-item-fallback-section-option-0-query-first-option-query-vc-${firstOptionKey}`,
-        ).props.accessibilityState?.selected,
-      ).toBe(true);
+      expect(selectVcs).toHaveBeenCalledTimes(1);
     });
 
+    // Verify that deselectVcs was called for option 0's orphaned vc-1
+    expect(deselectVcs).toHaveBeenCalled();
+    const deselectedCall = deselectVcs.mock.calls.find(
+      (call: any[]) => call[0]?.['credential-query'],
+    )?.[0];
+    expect(deselectedCall?.['credential-query'].has(vc1_key)).toBe(true);
+
+    // Option 0 should be deselected
     expect(
       getByTestId(
-        `vc-item-fallback-section-option-1-query-second-option-query-vc-${secondOptionKey}`,
+        `vc-item-test-section-option-0-query-credential-query-vc-${vc1_key}`,
       ).props.accessibilityState?.selected,
+    ).toBe(false);
+
+    // Option 1 should be selected
+    expect(
+      getAllByTestId(
+        `vc-item-test-section-option-1-query-credential-query-vc-${vc2_key}`,
+      )[1].props.accessibilityState?.selected,
+    ).toBe(true);
+  });
+
+  /**
+   * Edge case: Multiple VCs in same option, allowMultiple=true
+   * When user selects vc1 in option 0, then switches to option 1,
+   * only vc1 should be deselected globally (not vc2).
+   */
+  it('deselects only the selected VCs when switching options', async () => {
+    const selectVcs = jest.fn();
+    const deselectVcs = jest.fn();
+    const vc1_key = vcKey('vc-1');
+    const vc2_key = vcKey('vc-2');
+
+    const props = buildDefaultProps({
+      selectVcs,
+      deselectVcs,
+      credentialSet: {
+        options: [['credential-query'], ['credential-query']],
+        required: false,
+      },
+      matchingVCsResult: {
+        'credential-query': buildMatchResult(['vc-1', 'vc-2'], true),
+      },
+      satisfiableOptions: [['credential-query'], ['credential-query']],
+    });
+
+    const {getByTestId, getAllByTestId} = render(
+      <CredentialSetSection {...props} />,
+    );
+
+    // User selects option 0's vc-1
+    // Note: getAllByTestId when expandable list exists
+    const allVc1s = getAllByTestId(
+      `vc-item-test-section-option-0-query-credential-query-vc-${vc1_key}`,
+    );
+    fireEvent.press(allVc1s[0]); // First instance visible
+
+    await waitFor(() => expect(selectVcs).toHaveBeenCalled());
+    selectVcs.mockClear();
+    deselectVcs.mockClear();
+
+    // User switches to option 1's vc-2 (not vc-1)
+    fireEvent.press(getByTestId("test-section-option-1-query-credential-query-multi-vc-show-more-button"))
+    const allVc2s = getAllByTestId(
+      `vc-item-test-section-option-1-query-credential-query-vc-${vc2_key}`,
+    );
+    fireEvent.press(allVc2s[0]);
+
+    await waitFor(() => {
+      expect(selectVcs).toHaveBeenCalledTimes(1);
+    });
+
+    // Verify only vc-1 is deselected, vc-2 was never in option 0 anyway
+    expect(deselectVcs).toHaveBeenCalled();
+    const deselectedCall = deselectVcs.mock.calls.find(
+      (call: any[]) => call[0]?.['credential-query'],
+    )?.[0];
+    expect(deselectedCall?.['credential-query'].has(vc1_key)).toBe(true);
+    expect(
+      deselectedCall?.['credential-query'].has(vc2_key) ?? false,
     ).toBe(false);
   });
 });
+

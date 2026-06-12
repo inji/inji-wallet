@@ -2693,6 +2693,7 @@ export const DefaultTheme = {
       flexDirection: 'row',
       alignItems: 'center',
       marginTop: 2,
+      paddingRight: 6
     },
     verifierBannerTrustedText: {
       fontFamily: 'Montserrat_600SemiBold',
@@ -2704,7 +2705,7 @@ export const DefaultTheme = {
       fontFamily: 'Montserrat_700Bold',
       fontSize: 11,
       letterSpacing: 1,
-      color: Colors.Gray40,
+      color: Colors.Gray50,
       marginHorizontal: 16,
       marginTop: 16,
       marginBottom: 6,

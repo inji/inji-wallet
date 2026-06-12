@@ -1079,7 +1079,7 @@
     },
     "errors": {
       "noMatchingCredentials": {
-        "title": "No matching cards found!",
+        "title": "No matching cards found",
         "message": "The verifier has requested cards based on the following claims: [{{claims}}]. Please download the corresponding cards and retry the sharing process.",
         "whatYouCanDo": "WHAT YOU CAN DO",
         "contactVerifier": "Contact Verifier",
@@ -1093,7 +1093,7 @@
         "close": "Close"
       },
       "noMatchingCredentialsWithMissingClaims": {
-        "title": "No matching cards found!",
+        "title": "No matching cards found",
         "message": "We Couldn't find any cards in your wallet that match this request.You may need to download the right cards or try again later"
       },
       "invalidVerifier": {

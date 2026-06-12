@@ -2,7 +2,6 @@ import React from 'react';
 import {VerifyIdentityOverlay} from '../../../screens/VerifyIdentityOverlay';
 import {VPShareOverlay, VPShareOverlayProps} from '../../../screens/Scan/VPShareOverlay';
 import {FaceVerificationAlertOverlay} from '../../../screens/Scan/FaceVerificationAlertOverlay';
-import {WhyWeNeedDocumentsOverlay} from './WhyWeNeedDocumentsOverlay';
 import {Credential} from "../../../machines/VerifiableCredential/VCMetaMachine/vc";
 
 type SendVPOverlaysController = {
@@ -26,8 +25,6 @@ type SendVPOverlaysProps = {
   isLivenessEnabled: boolean;
   showShareOverlays: boolean;
   primaryButtonEvent: () => void;
-  showInfoOverlay: boolean;
-  onCloseInfoOverlay: () => void;
 };
 
 export const SendVPOverlays: React.FC<SendVPOverlaysProps> = ({
@@ -35,8 +32,6 @@ export const SendVPOverlays: React.FC<SendVPOverlaysProps> = ({
   isLivenessEnabled,
   showShareOverlays,
   primaryButtonEvent,
-  showInfoOverlay,
-  onCloseInfoOverlay,
 }) => {
   return (
     <>
@@ -79,11 +74,6 @@ export const SendVPOverlays: React.FC<SendVPOverlaysProps> = ({
           />
         </>
       )}
-
-      <WhyWeNeedDocumentsOverlay
-        isVisible={showInfoOverlay}
-        onClose={onCloseInfoOverlay}
-      />
     </>
   );
 };

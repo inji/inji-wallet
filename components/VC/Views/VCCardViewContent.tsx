@@ -329,10 +329,14 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
                 }}
               />
               <Column>
-                <Text style={Theme.Styles.disclosureTitle}>
+                <Text style={[Theme.Styles.disclosureTitle, {color: wellknownDisplayProperty.getTextColor(
+                    Theme.Colors.Details,
+                  )}]}>
                   {t('SendVPScreen:selectedFieldsTitle')}
                 </Text>
-                <Text style={Theme.Styles.disclosureSubtitle}>
+                <Text style={[Theme.Styles.disclosureSubtitle, {color: wellknownDisplayProperty.getTextColor(
+                    Theme.Colors.Details,
+                  )}]}>
                   {t('SendVPScreen:selectedFieldsSubtitle')}
                 </Text>
               </Column>

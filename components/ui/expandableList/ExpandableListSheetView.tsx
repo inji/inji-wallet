@@ -9,6 +9,7 @@ import {
 import {Text} from '../Text';
 import {Divider} from '../divider/Divider';
 import {Theme} from '../styleUtils';
+import {Button} from "../Button";
 
 const DEFAULT_COLLAPSED_ITEM_COUNT = 3;
 const SHEET_MAX_HEIGHT = '85%' as const;
@@ -67,7 +68,6 @@ function getExpandableIds(baseTestID: string) {
     modalDivider: `${baseTestID}-modal-divider`,
     modalFooter: `${baseTestID}-modal-footer`,
     modalCloseButton: `${baseTestID}-modal-close-button`,
-    modalCloseText: `${baseTestID}-modal-close-text`,
   };
 }
 
@@ -183,14 +183,7 @@ export function ExpandableListSheetView<T>({
               <Text testID={ids.modalFooter} style={styles.modalFooter}>
                 {footerText}
               </Text>
-              <TouchableOpacity
-                testID={ids.modalCloseButton}
-                style={styles.closeButton}
-                onPress={closeModal}>
-                <Text testID={ids.modalCloseText} style={styles.closeText}>
-                  {closeText}
-                </Text>
-              </TouchableOpacity>
+              <Button type="clear" title={closeText} testID={ids.modalCloseButton} onPress={closeModal} styles={{marginBottom: 20, marginTop: -15}}/>
             </View>
           </View>
         </Modal>
@@ -274,19 +267,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-  },
-  closeButton: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: Theme.Colors.borderBottomColor,
-    paddingVertical: 14,
-    alignItems: 'center',
-  },
-  closeText: {
-    fontFamily: 'Montserrat_600SemiBold',
-    fontSize: 15,
-    color: Theme.Colors.textValue,
   },
 });

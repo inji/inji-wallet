@@ -49,7 +49,6 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const insets = useSafeAreaInsets();
 
   const {appService} = useContext(GlobalContext);
-  const [showInfoOverlay, setShowInfoOverlay] = useState(false);
 
   useEffect(() => {
     sendImpressionEvent(
@@ -150,8 +149,6 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
             onDismiss={handleDismiss}
             verifierName={controller.vpVerifierName}
             verifierLogo={controller.verifierLogoInTrustModal}
-            isDcqlFlow={controller.isDcqlFlow}
-            onInfoPress={() => setShowInfoOverlay(true)}
           />
         ),
       });
@@ -313,8 +310,6 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         isLivenessEnabled={LIVENESS_CHECK}
         showShareOverlays={Boolean(controller.matchingVcsResult?.success)}
         primaryButtonEvent={getPrimaryButtonEvent() ?? (() => undefined)}
-        showInfoOverlay={showInfoOverlay}
-        onCloseInfoOverlay={() => setShowInfoOverlay(false)}
       />
     </React.Fragment>
   );
