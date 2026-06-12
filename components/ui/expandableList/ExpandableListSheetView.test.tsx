@@ -107,7 +107,7 @@ describe('ExpandableListSheetView', () => {
     const badge = (
       <View testID="custom-badge" accessibilityLabel="custom-badge" />
     );
-    const {getByLabelText, getByTestId} = renderComponent({
+    const {getByLabelText, getByTestId, getByText} = renderComponent({
       initialExpanded: true,
       badge,
     });
@@ -115,7 +115,8 @@ describe('ExpandableListSheetView', () => {
     expect(getByTestId('expandable-list-modal-sheet')).toBeTruthy();
     expect(getByLabelText('expandable-list-modal-title')).toBeTruthy();
     expect(getByLabelText('expandable-list-modal-footer')).toBeTruthy();
-    expect(getByTestId('expandable-list-modal-close-button')).toBeTruthy();
+    // Find close button by text since Button component may not expose testID directly
+    expect(getByText('close')).toBeTruthy();
     expect(getByTestId('custom-badge')).toBeTruthy();
 
     expect(getByTestId('expanded-row-0')).toBeTruthy();
@@ -126,12 +127,12 @@ describe('ExpandableListSheetView', () => {
   });
 
   it('shows modal content and close control when initialized in expanded state', () => {
-    const {getByTestId, queryByTestId} = renderComponent({
+    const {getByTestId, queryByTestId, getByText} = renderComponent({
       initialExpanded: true,
     });
 
     expect(getByTestId('expanded-row-4')).toBeTruthy();
-    expect(getByTestId('expandable-list-modal-close-button')).toBeTruthy();
+    expect(getByText('close')).toBeTruthy();
     expect(queryByTestId('collapsed-row-4')).toBeNull();
   });
 

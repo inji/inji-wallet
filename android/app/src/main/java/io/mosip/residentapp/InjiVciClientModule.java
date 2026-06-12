@@ -1,5 +1,7 @@
 package io.mosip.residentapp;
 
+import static io.mosip.residentapp.utils.OpenId4VPUtils.parseWalletConfig;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import com.google.gson.Gson;
 import java.util.List;
 import java.util.Map;
 
+import io.mosip.openID4VP.authorizationRequest.WalletConfig;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
 import io.mosip.residentapp.utils.OpenId4VPUtils;
 import io.mosip.vciclient.VCIClient;
@@ -109,17 +112,18 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
   public void requestCredentialByOffer(
     String credentialOffer,
     String clientMetadataJson,
-    String signatureSuite,
+    ReadableMap openid4vpWalletConfig,
     Promise promise) {
     new Thread(() -> {
       try {
+        WalletConfig parsedOpenid4vpWalletConfig = parseWalletConfig(openid4vpWalletConfig);
         ClientMetadata clientMetadata = GSON.fromJson(clientMetadataJson, ClientMetadata.class);
 
         String response = VCIClientBridge.requestCredentialByOfferSync(
           vciClient,
           credentialOffer,
           clientMetadata,
-          signatureSuite);
+          parsedOpenid4vpWalletConfig);
 
         reactContext
           .runOnUiQueueThread(() -> promise.resolve(response));
@@ -131,9 +135,10 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void requestCredentialFromTrustedIssuer(String credentialIssuer, String credentialConfigurationId,
-                                                 String clientMetadataJson, String signatureSuite, Promise promise) {
+                                                 String clientMetadataJson, ReadableMap openid4vpWalletConfig, Promise promise) {
     new Thread(() -> {
       try {
+        WalletConfig parsedOpenid4vpWalletConfig = parseWalletConfig(openid4vpWalletConfig);
         ClientMetadata clientMetadata = GSON.fromJson(
           clientMetadataJson, ClientMetadata.class);
 
@@ -142,7 +147,7 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
           credentialIssuer,
           credentialConfigurationId,
           clientMetadata,
-          signatureSuite);
+          parsedOpenid4vpWalletConfig);
 
         reactContext.runOnUiQueueThread(() -> {
           promise.resolve(response);

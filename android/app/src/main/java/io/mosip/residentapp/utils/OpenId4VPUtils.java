@@ -16,11 +16,28 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
 
 import com.google.gson.Gson;
 
+import io.mosip.openID4VP.authorizationRequest.LdpVpFormatSupported;
+import io.mosip.openID4VP.authorizationRequest.MsoMdocVpFormatSupported;
+import io.mosip.openID4VP.authorizationRequest.SdJwtVpFormatSupported;
+import io.mosip.openID4VP.authorizationRequest.VPFormatSupported;
+import io.mosip.openID4VP.authorizationRequest.Verifier;
+import io.mosip.openID4VP.authorizationRequest.WalletConfig;
+import io.mosip.openID4VP.authorizationRequest.WalletConfigDefaultsKt;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
 import io.mosip.openID4VP.common.OpenID4VPErrorCodes;
+import io.mosip.openID4VP.constants.ClientIdPrefix;
+import io.mosip.openID4VP.constants.EncryptionAlgorithm;
+import io.mosip.openID4VP.constants.EncryptionMethod;
+import io.mosip.openID4VP.constants.ProofType;
+import io.mosip.openID4VP.constants.RequestUriMethod;
+import io.mosip.openID4VP.constants.ResponseType;
+import io.mosip.openID4VP.constants.SignatureAlgorithm;
+import io.mosip.openID4VP.constants.VPFormatType;
 import io.mosip.openID4VP.dcql.query.DCQLQuery;
 import io.mosip.openID4VP.dcql.query.DCQLQuerySerializer;
 import io.mosip.openID4VP.wallet.Credential;
@@ -33,6 +50,183 @@ import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
 import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
 
 public class OpenId4VPUtils {
+  public static WalletConfig parseWalletConfig(ReadableMap walletConfigMap) {
+    Map<VPFormatType, VPFormatSupported> vpFormatsSupportedMap = parseVpFormatsSupported(walletConfigMap);
+
+    List<ClientIdPrefix> clientIdPrefixesSupported = convertReadableArrayToEnumList(
+      walletConfigMap, "client_id_prefixes_supported", ClientIdPrefix.Companion::fromValue);
+
+    List<SignatureAlgorithm> requestObjectSigningAlg = convertReadableArrayToEnumList(
+      walletConfigMap, "request_object_signing_alg_values_supported",
+      SignatureAlgorithm.Companion::fromValue);
+
+    List<EncryptionAlgorithm> encryptionAlg = convertReadableArrayToEnumList(
+      walletConfigMap, "authorization_encryption_alg_values_supported",
+      EncryptionAlgorithm.Companion::fromValue);
+
+    List<EncryptionMethod> encryptionEnc = convertReadableArrayToEnumList(
+      walletConfigMap, "authorization_encryption_enc_values_supported",
+      EncryptionMethod.Companion::fromValue);
+
+    List<ResponseType> responseTypes = convertReadableArrayToEnumList(
+      walletConfigMap, "response_types_supported", ResponseType.Companion::fromValue);
+
+    Boolean presentationDefinitionUriSupported = walletConfigMap.hasKey("presentation_definition_uri_supported")
+      ? walletConfigMap.getBoolean("presentation_definition_uri_supported")
+      : true;
+
+    boolean validatePreRegiseredVerifier = walletConfigMap.hasKey("validate_pre_registered_verifier") ? walletConfigMap.getBoolean("validate_pre_registered_verifier") : true;
+
+    List<RequestUriMethod> supportedRequestUriMethods = parseSupportedRequestUriMethods(walletConfigMap);
+
+    List<Verifier> trustedVerifiers = parseTrustedVerifiers(walletConfigMap);
+
+    return new WalletConfig(
+      vpFormatsSupportedMap.isEmpty() ? WalletConfigDefaultsKt.getDefaultVpFormatsSupported() : vpFormatsSupportedMap,
+      clientIdPrefixesSupported != null ? clientIdPrefixesSupported : WalletConfigDefaultsKt.getDefaultClientIdPrefixesSupported(),
+      requestObjectSigningAlg,
+      encryptionAlg,
+      encryptionEnc,
+      responseTypes != null ? responseTypes : WalletConfigDefaultsKt.getDefaultResponseTypeSupported(),
+      presentationDefinitionUriSupported,
+      supportedRequestUriMethods,
+      trustedVerifiers,
+      validatePreRegiseredVerifier
+    );
+  }
+
+
+  private static List<RequestUriMethod> parseSupportedRequestUriMethods(ReadableMap walletConfigMap) {
+    if (!walletConfigMap.hasKey("request_uri_methods_supported")) {
+      return List.of(RequestUriMethod.GET, RequestUriMethod.POST);
+    }
+    ReadableArray methodsArray = walletConfigMap.getArray("request_uri_methods_supported");
+    List<RequestUriMethod> methods = new ArrayList<>();
+    for (int i = 0; i < Objects.requireNonNull(methodsArray).size(); i++) {
+      RequestUriMethod method = RequestUriMethod.Companion.fromValue(methodsArray.getString(i));
+      if (method != null) {
+        methods.add(method);
+      }
+    }
+    return methods;
+  }
+
+  private static List<Verifier> parseTrustedVerifiers(ReadableMap walletConfigMap) {
+    if (!walletConfigMap.hasKey("trusted_verifiers")) {
+      return new ArrayList<>();
+    }
+    ReadableArray verifiersArray = walletConfigMap.getArray("trusted_verifiers");
+    if (verifiersArray == null) {
+      return new ArrayList<>();
+    }
+    return parseVerifiers(verifiersArray);
+  }
+
+  private static Map<VPFormatType, VPFormatSupported> parseVpFormatsSupported(ReadableMap walletMetadata) {
+    Map<VPFormatType, VPFormatSupported> vpFormatsSupportedMap = new HashMap<>();
+    if (walletMetadata.hasKey("vp_formats_supported")) {
+      ReadableMap vpFormatsMap = walletMetadata.getMap("vp_formats_supported");
+      if (vpFormatsMap != null) {
+        addVpFormatSupported(vpFormatsMap, "ldp_vc", vpFormatsSupportedMap);
+        addVpFormatSupported(vpFormatsMap, "mso_mdoc", vpFormatsSupportedMap);
+        addVpFormatSupported(vpFormatsMap, "vc+sd-jwt", vpFormatsSupportedMap);
+        addVpFormatSupported(vpFormatsMap, "dc+sd-jwt", vpFormatsSupportedMap);
+      }
+    }
+    return vpFormatsSupportedMap;
+  }
+
+  private static <T> List<T> convertReadableArrayToEnumList(ReadableMap readableMap, String key,
+                                                            Function<String, T> converter) {
+    if (!readableMap.hasKey(key))
+      return null;
+    ReadableArray readableArray = readableMap.getArray(key);
+    List<T> list = new ArrayList<>();
+    for (int i = 0; i < Objects.requireNonNull(readableArray).size(); i++) {
+      list.add(converter.apply(readableArray.getString(i)));
+    }
+    return list;
+  }
+
+  private static void addVpFormatSupported(ReadableMap vpFormatsMap, String key,
+                                           Map<VPFormatType, VPFormatSupported> vpFormatsSupportedMap) {
+    if (!vpFormatsMap.hasKey(key)) {
+      return;
+    }
+
+    ReadableMap formatMap = vpFormatsMap.getMap(key);
+    VPFormatType formatType = VPFormatType.Companion.fromValue(key);
+    if (formatMap == null || formatType == null) {
+      return;
+    }
+
+    switch (formatType) {
+      case LDP_VC:
+      case LDP_VP:
+        vpFormatsSupportedMap.put(formatType, new LdpVpFormatSupported(
+          convertReadableArrayToEnumList(formatMap, "proof_type_values", ProofType.Companion::fromValue),
+          convertReadableArrayToStringList(formatMap, "cryptosuite_values")));
+        break;
+      case MSO_MDOC:
+        vpFormatsSupportedMap.put(formatType, new MsoMdocVpFormatSupported(
+          convertReadableArrayToIntegerList(formatMap, "issuerauth_alg_values"),
+          convertReadableArrayToIntegerList(formatMap, "deviceauth_alg_values")));
+        break;
+      case VC_SD_JWT:
+      case DC_SD_JWT:
+        vpFormatsSupportedMap.put(formatType, new SdJwtVpFormatSupported(
+          convertReadableArrayToStringList(formatMap, "sd-jwt_alg_values"),
+          convertReadableArrayToStringList(formatMap, "kb-jwt_alg_values")));
+        break;
+    }
+  }
+
+  private static List<String> convertReadableArrayToStringList(ReadableMap readableMap, String key) {
+    if (!readableMap.hasKey(key) || readableMap.isNull(key)) {
+      return null;
+    }
+    return FormatConverter.convertReadableArrayToList(readableMap.getArray(key));
+  }
+
+  private static List<Integer> convertReadableArrayToIntegerList(ReadableMap readableMap, String key) {
+    if (!readableMap.hasKey(key) || readableMap.isNull(key)) {
+      return null;
+    }
+    ReadableArray readableArray = readableMap.getArray(key);
+    List<Integer> list = new ArrayList<>();
+    for (int i = 0; i < Objects.requireNonNull(readableArray).size(); i++) {
+      list.add(readableArray.getInt(i));
+    }
+    return list;
+  }
+
+  private static List<Verifier> parseVerifiers(ReadableArray verifiersArray) {
+    List<Verifier> verifiers = new ArrayList();
+
+    for (int i = 0; i < verifiersArray.size(); i++) {
+      ReadableMap verifierMap = verifiersArray.getMap(i);
+      String clientId = verifierMap.getString("client_id");
+      ReadableArray responseUris = verifierMap.getArray("response_uris");
+      List<String> responseUriList = FormatConverter.convertReadableArrayToList(responseUris);
+      String jwksUri = null;
+      if (verifierMap.hasKey("jwks_uri") && !verifierMap.isNull("jwks_uri")) {
+        try {
+          jwksUri = verifierMap.getString("jwks_uri");
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+      if (verifierMap.hasKey("allow_unsigned_request")) {
+        boolean allowUnsignedRequest = verifierMap.getBoolean("allow_unsigned_request");
+        verifiers.add(new Verifier(clientId, responseUriList, jwksUri, allowUnsignedRequest));
+        continue;
+      }
+
+      verifiers.add(new Verifier(clientId, responseUriList, jwksUri));
+    }
+
+    return verifiers;
+  }
   public static List<VPTokenSigningResult> parseVPTokenSigningResults(
     ReadableArray vpTokenSigningResults) {
 

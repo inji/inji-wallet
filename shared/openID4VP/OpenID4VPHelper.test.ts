@@ -25,11 +25,11 @@ jest.mock('../Utils', () => ({
 const mockGetAllConfigurations = jest.fn(
   (): Promise<{
     openid4vpClientValidation: string;
-    walletConfig?: string | null;
+    openid4vpWalletConfig?: string | null;
   }> =>
     Promise.resolve({
       openid4vpClientValidation: 'false',
-      walletConfig: null,
+      openid4vpWalletConfig: null,
     }),
 );
 
@@ -46,7 +46,7 @@ describe('OpenID4VPHelper', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockGetAllConfigurations.mockResolvedValue({
-      openid4vpClientValidation: 'false',
+      openid4vpClientValidation: 'true',
       walletConfig: null,
     });
   });
@@ -54,16 +54,16 @@ describe('OpenID4VPHelper', () => {
   describe('getWalletConfig', () => {
     it('returns null when no wallet metadata in config', async () => {
       const result = await getWalletConfig();
-      expect(result).toBe(defaultWalletConfig);
+      expect(result).toEqual(defaultWalletConfig);
     });
 
     it('returns parsed wallet metadata when present', async () => {
       mockGetAllConfigurations.mockResolvedValue({
         openid4vpClientValidation: 'true',
-        walletConfig: '{"name":"test-wallet"}',
+        openid4vpWalletConfig: '{"name":"test-wallet"}',
       });
       const result = await getWalletConfig();
-      expect(result).toEqual({name: 'test-wallet', "validate_pre_registered_verifier": true});
+      expect(result).toEqual({name: 'test-wallet', "validate_pre_registered_verifier": true, "trusted_verifiers": []});
     });
   });
 

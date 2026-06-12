@@ -6,6 +6,7 @@ import io.mosip.vciclient.authorizationCodeFlow.AuthorizationMethod
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata
 import com.google.gson.JsonObject
 import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest
+import io.mosip.openID4VP.authorizationRequest.WalletConfig
 import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken
 import io.mosip.vciclient.constants.OpenWebPageCallback
 import io.mosip.vciclient.constants.ProofsCallback
@@ -37,13 +38,13 @@ object VCIClientBridge {
             client: VCIClient,
             offer: String,
             clientMetaData: ClientMetadata,
-            signatureSuite: String?
+            openid4vpWalletConfig: WalletConfig
     ): String = runBlocking {
        val response = client.fetchCredentialsUsingCredentialOffer(
                 credentialOffer = offer,
                 clientMetadata = clientMetaData,
                 getTxCode = getTxCodeCallback(),
-                authorizations = authorizationMethods(),
+                authorizations = authorizationMethods(openid4vpWalletConfig),
                 getTokenResponse = getTokenResponseCallback(),
                 getProofs = getProofsCallback(),
                 onCheckIssuerTrust = onCheckIssuerTrustCallback()
@@ -59,25 +60,26 @@ object VCIClientBridge {
             credentialIssuer: String,
             credentialConfigurationId: String,
             clientMetaData: ClientMetadata,
-            signatureSuite: String?
+            openid4vpWalletConfig: WalletConfig
     ): String = runBlocking {
         client.fetchCredentialsFromTrustedIssuer(
                 credentialIssuer = credentialIssuer,
                 credentialConfigurationId = credentialConfigurationId,
                 clientMetadata = clientMetaData,
                 getTokenResponse = getTokenResponseCallback(),
-                authorizations = authorizationMethods(),
+                authorizations = authorizationMethods(openid4vpWalletConfig),
                 getProofs = getProofsCallback(),
         ).toSingleCredentialResponseJson()
     }
 
-    private fun authorizationMethods(): List<AuthorizationMethod> =
+    private fun authorizationMethods(openid4vpWalletConfig: WalletConfig): List<AuthorizationMethod> =
       listOf(
         AuthorizationMethod.RedirectToWeb(openWebPage = openWebPageCallback()),
         AuthorizationMethod.PresentationDuringIssuance(
           selectCredentialsForPresentation =
             selectCredentialsForPresentationCallback(),
-          signVerifiablePresentation = signVerifiablePresentationCallback()
+          signVerifiablePresentation = signVerifiablePresentationCallback(),
+          openid4vpWalletConfig = openid4vpWalletConfig
         )
       )
 

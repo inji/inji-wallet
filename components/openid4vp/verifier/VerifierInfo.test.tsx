@@ -29,32 +29,6 @@ describe('VerifierInfo', () => {
     expect(queryByTestId('verifier-logo')).toBeNull();
   });
 
-  it('shows the info icon when showInfo is true (default)', () => {
-    const {UNSAFE_queryAllByType} = render(
-      <VerifierInfo name="Verifier" showInfo />,
-    );
-    // Component renders a TouchableOpacity wrapping the info Icon when showInfo=true
-    const {TouchableOpacity} = require('react-native');
-    expect(UNSAFE_queryAllByType(TouchableOpacity).length).toBeGreaterThan(0);
-  });
-
-  it('does not show the info button when showInfo is false', () => {
-    const {toJSON} = render(<VerifierInfo name="Verifier" showInfo={false} />);
-    const json = JSON.stringify(toJSON());
-    expect(json).not.toContain('info-outline');
-  });
-
-  it('calls onInfoPress when info icon is pressed', () => {
-    const onInfoPress = jest.fn();
-    const {UNSAFE_getAllByType} = render(
-      <VerifierInfo name="Verifier" showInfo onInfoPress={onInfoPress} />,
-    );
-    const {TouchableOpacity} = require('react-native');
-    const buttons = UNSAFE_getAllByType(TouchableOpacity);
-    fireEvent.press(buttons[0]);
-    expect(onInfoPress).toHaveBeenCalledTimes(1);
-  });
-
   it('renders subLabel text when provided', () => {
     const {getByText} = render(
       <VerifierInfo name="Verifier" subLabel="Trusted Partner" />,

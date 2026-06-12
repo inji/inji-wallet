@@ -29,9 +29,14 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
 
   // MARK: - Public API
 
-  fileprivate func getSupportedAuthorizationMethods(signatureSuite: String?)
+  fileprivate func getSupportedAuthorizationMethods(openId4VpWalletConfig: AnyObject) throws
     -> [AuthorizationMethod]
   {
+    guard let openId4VpWalletConfigDict = openId4VpWalletConfig as? [String: Any] else {
+      throw NSError(domain: "Invalid wallet config format", code: 0)
+    }
+    let parsedOpenId4VpWalletConfigDict = try decode(WalletConfig.self, from: openId4VpWalletConfigDict)
+    
     return [
       .redirectToWeb(openWebPage: { authUrl in
         let result: [String: String] = try await self.getAuthCodeContinuationHook(authUrl: authUrl)
@@ -42,6 +47,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         jsonLdCanonicalizer: { data in
           try await self.invokeJsonLdCanonicalize(data)
         },
+        openid4vpWalletConfig: parsedOpenId4VpWalletConfigDict,
         selectCredentialsForPresentation: { vpRequest in
           try await self.getSelectedCredentialsContinuationHook(vpRequest: vpRequest)
         },
@@ -57,7 +63,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   func requestCredentialByOffer(
     _ credentialOffer: String,
     clientMetadata: String,
-    signatureSuite: String,
+    openId4VpWalletConfig: AnyObject,
     resolver resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
   ) {
@@ -80,7 +86,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
               length: length
             )
           },
-          authorizationMethods: getSupportedAuthorizationMethods(signatureSuite: signatureSuite),
+          authorizationMethods: try getSupportedAuthorizationMethods(openId4VpWalletConfig: openId4VpWalletConfig),
           getTokenResponse: { tokenRequest in
             try await self.getTokenResponseHook(tokenRequest: tokenRequest)
           },
@@ -111,7 +117,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     _ credentialIssuer: String,
     credentialConfigurationId: String,
     clientMetadata: String,
-    signatureSuite: String,
+    openId4VpWalletConfig: AnyObject,
     resolver resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: @escaping RCTPromiseRejectBlock
   ) {
@@ -131,7 +137,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
           getTokenResponse: { tokenRequest in
             try await self.getTokenResponseHook(tokenRequest: tokenRequest)
           },
-          authorizationMethods: getSupportedAuthorizationMethods(signatureSuite: signatureSuite),
+          authorizationMethods: try getSupportedAuthorizationMethods(openId4VpWalletConfig: openId4VpWalletConfig),
           getProofs: { credentialIssuer, cNonce, algos in
             try await self.getProofsContinuationHook(
               credentialIssuer: credentialIssuer,

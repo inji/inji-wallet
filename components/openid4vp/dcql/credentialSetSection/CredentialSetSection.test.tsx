@@ -421,7 +421,7 @@ describe('CredentialSetSection', () => {
       satisfiableOptions: [['national-id']],
     });
 
-    const {getByTestId, queryByTestId} = render(<CredentialSetSection {...props} />);
+    const {getByTestId, queryByTestId, getByText} = render(<CredentialSetSection {...props} />);
 
     await waitFor(() =>
       expect(
@@ -447,11 +447,8 @@ describe('CredentialSetSection', () => {
       ),
     );
 
-    fireEvent.press(
-      getByTestId(
-        'test-section-option-0-query-national-id-multi-vc-modal-close-button',
-      ),
-    );
+    // Find and press close button by text since Button component wraps testID
+    fireEvent.press(getByText('Close'));
 
     await waitFor(() => {
       expect(

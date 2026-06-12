@@ -267,6 +267,7 @@ describe('OpenID4VP', () => {
     mockedGetWalletConfig.mockResolvedValue(null);
     mockedGetWalletConfig.mockResolvedValue({
       mock: true,
+      trusted_verifiers: [],
       validate_pre_registered_verifier: false,
     } as never);
     mockedJsonLdCanonicalize.mockResolvedValue('');

@@ -33,7 +33,8 @@ class OpenID4VP {
     if (isIOS()) {
       this.addJsonLdCanonicalizerCallback();
     }
-    this.InjiOpenID4VP.initSdk(__AppId.getValue(), walletConfig);
+
+    this.InjiOpenID4VP.initSdk(__AppId.getValue(), walletConfig)
   }
 
   private addJsonLdCanonicalizerCallback = () => {
@@ -71,18 +72,6 @@ class OpenID4VP {
   private static async getInstance(): Promise<OpenID4VP> {
     if (!OpenID4VP.instance) {
       const walletConfig: Record<string, any> = await getWalletConfig()
-      try {
-        const trustedVerifiersResponse =
-          await CACHED_API.fetchTrustedVerifiersList();
-        walletConfig['trusted_verifiers'] =
-          trustedVerifiersResponse.data.response.verifiers;
-      } catch (e) {
-        console.warn(
-          'Error fetching wallet config, falling back to default: ',
-          e,
-        );
-        walletConfig['trusted_verifiers'] = [];
-      }
       OpenID4VP.instance = new OpenID4VP(walletConfig);
     }
 

@@ -117,10 +117,10 @@ describe('MissingClaimsView', () => {
   });
 
   it('expanded view has a close button', () => {
-    const {getByTestId} = render(
+    const {getByText} = render(
       <MissingClaimsView claims={manyClaims} initialExpanded />,
     );
-    expect(getByTestId('missing-claims-modal-close-button')).toBeTruthy();
+    expect(getByText('errors.noMatchingCredentials.close')).toBeTruthy();
   });
 
   it('requests closing the expanded modal when close is pressed', () => {

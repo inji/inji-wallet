@@ -5,8 +5,8 @@ import {
   createSignatureRSA,
   fetchKeyPair,
 } from '../cryptoutil/cryptoUtil';
-import {base64ToByteArray, canonicalize, parseJSON} from '../Utils';
-import getAllConfigurations from '../api';
+import {base64ToByteArray, canonicalize} from '../Utils';
+import getAllConfigurations, {CACHED_API} from '../api';
 import {JWT_ALG_TO_KEY_TYPE} from '../constants';
 import {SignatureAlgorithms} from '../cryptoutil/KeyTypes';
 import {UnsignedVPToken, VPTokenSigningResult} from './openid4vp.types';
@@ -14,15 +14,29 @@ import {defaultWalletConfig} from "./walletConfig/WalletConfig";
 
 export async function getWalletConfig() {
   const config = await getAllConfigurations();
-  let walletConfig = config.walletConfig;
+  let walletConfig = config.openid4vpWalletConfig;
   if (!walletConfig) {
     console.warn("There is no wallet configuration available in the config. Using default wallet configuration.");
-    walletConfig = defaultWalletConfig;
+    walletConfig = {...defaultWalletConfig};
   } else {
-    walletConfig = parseJSON(walletConfig)
+    walletConfig = JSON.parse(walletConfig)
   }
 
   walletConfig["validate_pre_registered_verifier"] = config.openid4vpClientValidation === 'true'
+
+  try {
+    const trustedVerifiersResponse =
+      await CACHED_API.fetchTrustedVerifiersList();
+    walletConfig['trusted_verifiers'] =
+      trustedVerifiersResponse.data.response.verifiers;
+  } catch (e) {
+    console.warn(
+      'Error fetching trusted verifiers, falling back to default: ',
+      e,
+    );
+    walletConfig['trusted_verifiers'] = [];
+  }
+
   return walletConfig;
 }
 
