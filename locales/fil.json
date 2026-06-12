@@ -467,6 +467,8 @@
     "downloadingVcSuccess": "Matagumpay na na-download ang iyong Card",
     "downloadingVcFailed": "Paumanhin! Dahil sa teknikal na error hindi namin ma-download ang iyong card ngayon. Subukang muli mamaya.",
     "activated": "Ang mga kredensyal ay pinagana para sa online na pagpapatotoo.",
+    "credentialOfferBusy": "Kasalukuyang isinasagawa ang pag-download ng card. Mangyaring maghintay hanggang makumpleto ito bago magsimula ng isa pang kahilingan.",
+    "resolvingCredentialOffer": "Mangyaring maghintay habang bineberipika at pinoproseso namin ang iyong kahilingan.",
     "noCardsTitle": "Walang Nahanap na Mga Card!",
     "noCardsDescription": "Paumanhin, wala kaming mahanap na anumang resulta. Pakisubukang maglagay ng ibang keyword sa paghahanap.",
     "errors": {

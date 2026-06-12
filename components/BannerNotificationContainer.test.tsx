@@ -11,11 +11,14 @@ jest.mock('./BannerNotificationController', () => ({
     isBiometricUnlock: false,
     isDownloadingFailed: false,
     isDownloadingSuccess: false,
+    isResolvingCredentialOffer: false,
+    isCredentialOfferDroppedDueToBusyState: false,
     isReverificationSuccess: {status: false},
     isReverificationFailed: {status: false},
     RESET_WALLET_BINDING_SUCCESS: jest.fn(),
     RESET_VERIFICATION_STATUS: jest.fn(),
     RESET_DOWNLOADING_FAILED: jest.fn(),
+    RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE: jest.fn(),
     RESET_DOWNLOADING_SUCCESS: jest.fn(),
     RESET_REVIRIFICATION_SUCCESS: jest.fn(),
     RESET_REVERIFICATION_FAILURE: jest.fn(),
@@ -68,5 +71,32 @@ describe('BannerNotificationContainer Component', () => {
       <BannerNotificationContainer showVerificationStatusBanner={false} />,
     );
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('renders the resolving credential offer banner', () => {
+    const {UseBannerNotification} = require('./BannerNotificationController');
+    UseBannerNotification.mockReturnValueOnce({
+      isBindingSuccess: false,
+      verificationStatus: null,
+      isPasscodeUnlock: false,
+      isBiometricUnlock: false,
+      isDownloadingFailed: false,
+      isDownloadingSuccess: false,
+      isResolvingCredentialOffer: true,
+      isCredentialOfferDroppedDueToBusyState: false,
+      isReverificationSuccess: {status: false},
+      isReverificationFailed: {status: false},
+    });
+
+    render(<BannerNotificationContainer />);
+
+    const {BannerNotification} = require('./BannerNotification');
+    expect(BannerNotification).toHaveBeenCalledWith(
+      expect.objectContaining({
+        testId: 'resolvingCredentialOfferPopup',
+        type: 'inProgress',
+      }),
+      expect.anything(),
+    );
   });
 });

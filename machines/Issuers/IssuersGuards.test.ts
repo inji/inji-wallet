@@ -14,6 +14,12 @@ describe('IssuersGuards', () => {
     'downloadCredentials',
     'proccessingCredential',
     'verifyingCredential',
+    'requestingBindingOTP',
+    'addKeyPair',
+    'generateKeyPairForBinding',
+    'addingWalletBindingId',
+    'updatingContextVariables',
+    'handleVCAutoWalletBindingFailure',
     'storing',
   ])('rejects credential offer deep links while in %s', busyState => {
     const matches = jest.fn((state: string) => state === busyState);

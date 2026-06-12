@@ -150,6 +150,12 @@ describe('IssuersEvents', () => {
     });
   });
 
+  describe('AUTH_ENDPOINT_OPENED', () => {
+    it('should create an empty event', () => {
+      expect(IssuersEvents.AUTH_ENDPOINT_OPENED()).toEqual({});
+    });
+  });
+
   describe('PROOF_REQUEST', () => {
     it('should create event with all parameters', () => {
       const accessToken = 'token-123';

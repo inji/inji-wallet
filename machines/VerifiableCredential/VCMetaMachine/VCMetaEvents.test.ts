@@ -238,6 +238,17 @@ describe('VcMetaEvents', () => {
     });
   });
 
+  describe('credential offer busy events', () => {
+    it('creates the set and reset events', () => {
+      expect(VcMetaEvents.CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE()).toEqual(
+        {},
+      );
+      expect(
+        VcMetaEvents.RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE(),
+      ).toEqual({});
+    });
+  });
+
   describe('RESET_DOWNLOADING_SUCCESS', () => {
     it('should create empty event', () => {
       const result = VcMetaEvents.RESET_DOWNLOADING_SUCCESS();
@@ -274,6 +285,12 @@ describe('VcMetaEvents', () => {
       expect(VcMetaEvents.RESET_VERIFICATION_STATUS).toBeDefined();
       expect(VcMetaEvents.VC_DOWNLOADING_FAILED).toBeDefined();
       expect(VcMetaEvents.RESET_DOWNLOADING_FAILED).toBeDefined();
+      expect(
+        VcMetaEvents.CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE,
+      ).toBeDefined();
+      expect(
+        VcMetaEvents.RESET_CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE,
+      ).toBeDefined();
       expect(VcMetaEvents.RESET_DOWNLOADING_SUCCESS).toBeDefined();
     });
 

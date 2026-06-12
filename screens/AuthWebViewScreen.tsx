@@ -14,6 +14,7 @@ import VciClient from '../shared/vciClient/VciClient';
 import {Theme} from '../components/ui/styleUtils';
 import {useTranslation} from 'react-i18next';
 import {isAndroid} from '../shared/constants';
+import {DeeplinkBanner} from '../components/DeeplinkBanner';
 
 const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   const {authorizationURL, clientId, redirectUri, controller} = route.params;
@@ -136,6 +137,7 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
   return (
     <View style={{flex: 1}}>
       <Header />
+      <DeeplinkBanner absolute />
       {shouldRenderWebView && !showWebView && (
         <WebView style={{width: 0, height: 0}} source={{uri: 'about:blank'}} />
       )}

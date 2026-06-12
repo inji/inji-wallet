@@ -9,6 +9,7 @@ import {Theme} from '../styleUtils';
 import testIDProps from '../../../shared/commonUtil';
 
 import injiLogoGif from '../../../assets/gif/logo.gif';
+import {DeeplinkBanner} from '../../DeeplinkBanner';
 
 export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
   label,
@@ -60,6 +61,7 @@ export const ProcessingModal: React.FC<ProcessingScreenProps> = ({
   return (
     <Modal isVisible={isVisible} showHeader={false} modalStyle={styles.modalBg}>
       <SafeAreaView style={styles.container}>
+        <DeeplinkBanner />
         <View style={styles.cardWrapper}>
           <View style={styles.card}>
             <FastImage

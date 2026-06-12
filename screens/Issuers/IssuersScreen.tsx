@@ -27,6 +27,7 @@ import {MessageOverlay} from '../../components/MessageOverlay';
 import {SearchBar} from '../../components/ui/SearchBar';
 import {SvgImage} from '../../components/ui/svg';
 import {Icon} from 'react-native-elements';
+import {DeeplinkBanner} from '../../components/DeeplinkBanner';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {CredentialTypeSelectionScreen} from './CredentialTypeSelectionScreen';
 import {QrScanner} from '../../components/QrScanner';
@@ -130,6 +131,7 @@ export const IssuersScreen: React.FC<
           'io.mosip.residentapp.inji://oauthredirect',
         controller: controller,
       });
+      controller.AUTH_ENDPOINT_OPENED();
     }
   }, [controller.isAuthEndpointToOpen]);
 
@@ -349,26 +351,39 @@ export const IssuersScreen: React.FC<
     );
   }
   if (showFullScreenError) {
+    const isDeepLinkOfferError = controller.isCredentialOfferViaDeepLink;
+    const errorExit = isDeepLinkOfferError
+      ? controller.GO_HOME_FROM_OFFER_ERROR
+      : goBack;
+
     return (
       <ErrorView
         testID={`${controller.errorMessageType}Error`}
         isVisible={controller.errorMessageType !== ''}
         title={t(`errors.${controller.errorMessageType}.title`)}
         message={t(`errors.${controller.errorMessageType}.message`)}
-        goBack={goBack}
+        goBack={errorExit}
         tryAgain={controller.TRY_AGAIN}
         image={getImage()}
         showClose
-        primaryButtonTestID="tryAgain"
+        alignActionsOnEnd={isDeepLinkOfferError}
+        primaryButtonTestID={isDeepLinkOfferError ? 'goHome' : 'tryAgain'}
         primaryButtonText={
-          controller.errorMessageType != ErrorMessage.TECHNICAL_DIFFICULTIES &&
-          controller.errorMessageType !=
-            ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED
+          isDeepLinkOfferError
+            ? 'goHome'
+            : controller.errorMessageType !=
+                ErrorMessage.TECHNICAL_DIFFICULTIES &&
+              controller.errorMessageType !=
+                ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED
             ? 'tryAgain'
             : undefined
         }
-        primaryButtonEvent={controller.TRY_AGAIN}
-        onDismiss={goBack}
+        primaryButtonEvent={
+          isDeepLinkOfferError
+            ? controller.GO_HOME_FROM_OFFER_ERROR
+            : controller.TRY_AGAIN
+        }
+        onDismiss={errorExit}
       />
     );
   }
@@ -427,6 +442,7 @@ export const IssuersScreen: React.FC<
 
   return (
     <React.Fragment>
+      <DeeplinkBanner />
       <BannerNotificationContainer />
       {controller.issuers.length > 0 && (
         <Column style={Theme.IssuersScreenStyles.issuerListOuterContainer}>

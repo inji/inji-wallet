@@ -25,6 +25,7 @@ import {
   selectIsPresentationAuthorizationInProgress,
   selectAuthorizationType,
   selectIsAuthorizationSuccess,
+  selectIsCredentialOfferViaDeepLink,
   selectSelectedCredentialType,
   selectTrustedIssuerConsentStatus,
 } from '../../machines/Issuers/IssuersSelectors';
@@ -88,12 +89,22 @@ export function useIssuerScreenController({route, navigation}) {
       selectVerificationErrorMessage,
     ),
     isError: useSelector(service, selectIsError),
+    isCredentialOfferViaDeepLink: useSelector(
+      service,
+      selectIsCredentialOfferViaDeepLink,
+    ),
 
+    AUTH_ENDPOINT_OPENED: () =>
+      service.send(IssuerScreenTabEvents.AUTH_ENDPOINT_OPENED()),
     CANCEL: () => service.send(IssuerScreenTabEvents.CANCEL()),
     SELECTED_ISSUER: id =>
       service.send(IssuerScreenTabEvents.SELECTED_ISSUER(id)),
     TRY_AGAIN: () => service.send(IssuerScreenTabEvents.TRY_AGAIN()),
     RESET_ERROR: () => service.send(IssuerScreenTabEvents.RESET_ERROR()),
+    GO_HOME_FROM_OFFER_ERROR: () => {
+      service.send(IssuerScreenTabEvents.RESET_ERROR());
+      navigation.navigate(BOTTOM_TAB_ROUTES.home, {screen: 'HomeScreen'});
+    },
     DOWNLOAD_ID: () => {
       service.send(IssuerScreenTabEvents.DOWNLOAD_ID());
       navigation.navigate(BOTTOM_TAB_ROUTES.home, {screen: 'HomeScreen'});

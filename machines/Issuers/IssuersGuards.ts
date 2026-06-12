@@ -46,6 +46,12 @@ export const IssuersGuards = () => {
         !state.matches('downloadCredentials') &&
         !state.matches('proccessingCredential') &&
         !state.matches('verifyingCredential') &&
+        !state.matches('requestingBindingOTP') &&
+        !state.matches('addKeyPair') &&
+        !state.matches('generateKeyPairForBinding') &&
+        !state.matches('addingWalletBindingId') &&
+        !state.matches('updatingContextVariables') &&
+        !state.matches('handleVCAutoWalletBindingFailure') &&
         !state.matches('storing')
       );
     },

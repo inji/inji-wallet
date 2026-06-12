@@ -114,9 +114,13 @@ describe('VCMetaModel', () => {
       expect(initialContext).toHaveProperty('DownloadingCredentialsSuccess');
     });
 
-    it('should have exactly 16 properties in initial context', () => {
+    it('should have exactly 17 properties in initial context', () => {
       const propertyCount = Object.keys(initialContext).length;
-      expect(propertyCount).toBe(16);
+      expect(propertyCount).toBe(17);
+    });
+
+    it('should not show the credential offer busy banner initially', () => {
+      expect(initialContext.isCredentialOfferDroppedDueToBusyState).toBe(false);
     });
   });
 

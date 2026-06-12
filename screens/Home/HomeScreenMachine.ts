@@ -261,6 +261,12 @@ export function selectIsIssuerMachineBusyForDeepLink(state: State) {
       'proccessingCredential',
       'processingCredential',
       'verifyingCredential',
+      'requestingBindingOTP',
+      'addKeyPair',
+      'generateKeyPairForBinding',
+      'addingWalletBindingId',
+      'updatingContextVariables',
+      'handleVCAutoWalletBindingFailure',
       'storing',
     ].some(busyState => activeState.includes(busyState)),
   );

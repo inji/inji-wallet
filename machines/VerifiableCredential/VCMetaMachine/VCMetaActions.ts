@@ -23,52 +23,53 @@ export const VCMetaActions = (model: any) => {
     }),
 
     setVerificationStatus: model.assign({
-      verificationStatus: (_, event) =>{
-        return event.verificationStatus as vcVerificationBannerDetails}
+      verificationStatus: (_, event) => {
+        return event.verificationStatus as vcVerificationBannerDetails;
+      },
     }),
     setReverificationSuccess: model.assign({
-      reverificationSuccess: (context,event) => ({
+      reverificationSuccess: (context, event) => ({
         status: true,
         statusValue: event.statusValue,
         vcKey: event.vcKey,
-        vcType: event.vcType
-      })
+        vcType: event.vcType,
+      }),
     }),
     resetReverificationSuccess: model.assign({
       reverificationSuccess: () => ({
         status: false,
         statusValue: '',
-        vcKey:'',
-        vcType:''
-      })
+        vcKey: '',
+        vcType: '',
+      }),
     }),
 
     resetHighlightVcKey: model.assign({
-      reverificationSuccess: (context:any) => ({
-       ...context.reverificationSuccess,
-        vcKey:''
+      reverificationSuccess: (context: any) => ({
+        ...context.reverificationSuccess,
+        vcKey: '',
       }),
-      reverificationFailed: (context:any) => ({
+      reverificationFailed: (context: any) => ({
         ...context.reverificationFailed,
-         vcKey:''
-       }),
+        vcKey: '',
+      }),
     }),
     setReverificationFailed: model.assign({
-      reverificationFailed: (context,event) => ({
+      reverificationFailed: (context, event) => ({
         status: true,
         statusValue: event.statusValue,
         vcKey: event.vcKey,
-        vcType: event.vcType
-      })
+        vcType: event.vcType,
+      }),
     }),
 
     resetReverificationFailed: model.assign({
-      reverificationFailed: (context,event) => ({
+      reverificationFailed: (context, event) => ({
         status: false,
         statusValue: event.statusValue,
         vcKey: '',
-        vcType:''
-      })
+        vcType: '',
+      }),
     }),
 
     sendBackupEvent: send(BackupEvents.DATA_BACKUP(true), {
@@ -289,6 +290,12 @@ export const VCMetaActions = (model: any) => {
 
     resetDownloadCreadentialsFailed: model.assign({
       DownloadingCredentialsFailed: () => false,
+    }),
+    setCredentialOfferDroppedDueToBusyState: model.assign({
+      isCredentialOfferDroppedDueToBusyState: () => true,
+    }),
+    resetCredentialOfferDroppedDueToBusyState: model.assign({
+      isCredentialOfferDroppedDueToBusyState: () => false,
     }),
     setDownloadCredentialsSuccess: model.assign({
       DownloadingCredentialsSuccess: () => true,

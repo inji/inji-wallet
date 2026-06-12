@@ -19,6 +19,7 @@ export const IssuersEvents = {
   QR_CODE_SCANNED: (data: string) => ({data}),
   CREDENTIAL_OFFER_VIA_DEEP_LINK: (data: string) => ({data}),
   AUTH_ENDPOINT_RECEIVED: (authEndpoint: string) => ({authEndpoint}),
+  AUTH_ENDPOINT_OPENED: () => ({}),
   PROOF_REQUEST: (
     accessToken: string,
     cNonce: string | undefined,

@@ -25,11 +25,24 @@ export const IssuersMachine = model.createMachine(
       events: {} as EventFrom<typeof model>,
     },
     on: {
-      CREDENTIAL_OFFER_VIA_DEEP_LINK: {
-        cond: 'isInSafeStateForDeepLink',
-        actions: ['setLoadingReasonAsPreparingRequest', 'setQrData'],
-        target: '.credentialDownloadFromOffer',
+      AUTH_ENDPOINT_OPENED: {
+        actions: 'resetAuthWebView',
       },
+      CREDENTIAL_OFFER_VIA_DEEP_LINK: [
+        {
+          cond: 'isInSafeStateForDeepLink',
+          actions: [
+            'resetAuthWebView',
+            'setLoadingReasonAsPreparingRequest',
+            'setQrData',
+            'setIsCredentialOfferViaDeepLink',
+          ],
+          target: '.credentialDownloadFromOffer',
+        },
+        {
+          actions: ['notifyIgnoredDeepLinkOffer'],
+        },
+      ],
     },
     states: {
       displayIssuers: {
@@ -53,7 +66,12 @@ export const IssuersMachine = model.createMachine(
 
       error: {
         description: 'reaches here when any error happens',
-        entry: ['resetAuthorization'],
+        entry: ['resetAuthorization', 'resetAuthWebView'],
+        exit: [
+          'resetError',
+          'resetCredentialOfferFlowType',
+          'resetIsCredentialOfferViaDeepLink',
+        ],
         on: {
           TRY_AGAIN: [
             {
@@ -85,6 +103,7 @@ export const IssuersMachine = model.createMachine(
 
       selectingIssuer: {
         description: 'waits for the user to select any issuer',
+        entry: ['resetIsCredentialOfferViaDeepLink'],
         on: {
           SCAN_CREDENTIAL_OFFER_QR_CODE: {
             target: 'waitingForQrScan',
@@ -94,9 +113,7 @@ export const IssuersMachine = model.createMachine(
           },
           SELECTED_ISSUER: {
             actions: [
-              model.assign({
-                authEndpointToOpen: () => false,
-              }),
+              'resetAuthWebView',
               'setSelectedIssuerId',
               'setLoadingReasonAsSettingUp',
               'setSelectedIssuers',
@@ -120,17 +137,15 @@ export const IssuersMachine = model.createMachine(
       },
 
       credentialDownloadFromOffer: {
-        entry: ['setCredentialOfferFlowType', 'resetSelectedIssuer'],
+        entry: [
+          'resetAuthWebView',
+          'setCredentialOfferFlowType',
+          'resetSelectedIssuer',
+        ],
         invoke: {
           src: 'downloadCredentialFromOffer',
           onDone: {
-            actions: [
-              'setCredential',
-              'setCredentialConfigurationId',
-              model.assign({
-                authEndpointToOpen: false,
-              }),
-            ],
+            actions: ['setCredential', 'setCredentialConfigurationId'],
             target: 'cachingCredentialOfferIssuerWellknown',
           },
           onError: [
@@ -569,9 +584,7 @@ export const IssuersMachine = model.createMachine(
 
       selectingCredentialType: {
         description: 'waits for the user to select a credential type',
-        entry: model.assign({
-          authEndpointToOpen: () => false,
-        }),
+        entry: 'resetAuthWebView',
         on: {
           CANCEL: {
             target: 'displayIssuers',
@@ -588,13 +601,7 @@ export const IssuersMachine = model.createMachine(
         invoke: {
           src: 'downloadCredential',
           onDone: {
-            actions: [
-              'setVerifiableCredential',
-              'setCredentialWrapper',
-              model.assign({
-                authEndpointToOpen: false,
-              }),
-            ],
+            actions: ['setVerifiableCredential', 'setCredentialWrapper'],
             target: 'verifyingCredential',
           },
           onError: [
@@ -1005,10 +1012,19 @@ export const IssuersMachine = model.createMachine(
         ],
         invoke: {
           src: 'isUserSignedAlready',
-          onDone: {
-            cond: 'isSignedIn',
-            actions: ['sendBackupEvent'],
-            target: 'done',
+          onDone: [
+            {
+              cond: 'isSignedIn',
+              actions: ['sendBackupEvent'],
+              target: 'done',
+            },
+            {
+              target: 'done',
+            },
+          ],
+          onError: {
+            actions: ['setError', 'resetLoadingReason'],
+            target: '#issuersMachine.error',
           },
         },
       },

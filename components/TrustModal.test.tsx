@@ -34,6 +34,10 @@ jest.mock('./ui', () => ({
   Button: jest.fn(() => null),
 }));
 
+jest.mock('./DeeplinkBanner', () => ({
+  DeeplinkBanner: () => null,
+}));
+
 // --------------------
 // React Native mock
 // --------------------

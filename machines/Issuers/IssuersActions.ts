@@ -39,9 +39,9 @@ import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
 import {logState} from '../../shared/commonUtil';
 import {createOpenID4VPMachine} from '../openID4VP/openID4VPMachine';
 import VciClient from '../../shared/vciClient/VciClient';
-import { getBindingCertificateConstant } from '../../shared/keystore/SecureKeystore';
-import { WalletBindingResponse } from '../VerifiableCredential/VCMetaMachine/vc';
-import { error } from 'xstate/lib/actions';
+import {getBindingCertificateConstant} from '../../shared/keystore/SecureKeystore';
+import {WalletBindingResponse} from '../VerifiableCredential/VCMetaMachine/vc';
+import {error} from 'xstate/lib/actions';
 
 const {RNSecureKeystoreModule} = NativeModules;
 
@@ -88,6 +88,10 @@ export const IssuersActions = (model: any) => {
     resetAuthorization: model.assign({
       authorizationType: AuthorizationType.IMPLICIT,
       authorizationSuccess: false,
+    }),
+    resetAuthWebView: model.assign({
+      authEndpointToOpen: false,
+      authEndpoint: '',
     }),
     setSelectedCredentialType: model.assign({
       selectedCredentialType: (_: any, event: any) => event.credType,
@@ -427,6 +431,22 @@ export const IssuersActions = (model: any) => {
       },
     }),
 
+    setIsCredentialOfferViaDeepLink: model.assign({
+      isCredentialOfferViaDeepLink: () => true,
+    }),
+    resetIsCredentialOfferViaDeepLink: model.assign({
+      isCredentialOfferViaDeepLink: () => false,
+    }),
+
+    notifyIgnoredDeepLinkOffer: send(
+      () => ({
+        type: 'CREDENTIAL_OFFER_DROPPED_DUE_TO_BUSY_STATE',
+      }),
+      {
+        to: (context: any) => context.serviceRefs.vcMeta,
+      },
+    ),
+
     resetRequestConsentToTrustIssuer: model.assign({
       isConsentRequested: (_: any, event: any) => {
         return false;
@@ -641,8 +661,9 @@ export const IssuersActions = (model: any) => {
       },
     ),
 
-    setAutoWalletBindingFailure: assign({
-      error: () => "Auto wallet binding failed",
+    setAutoWalletBindingFailure: model.assign({
+      errorMessage: () => ErrorMessage.GENERIC,
+      loadingReason: () => '',
     }),
 
     resetAutoWalletBindingFailure: model.assign({
