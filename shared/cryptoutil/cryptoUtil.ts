@@ -199,8 +199,10 @@ export async function createSignature(privateKey, payload, keyType: string) {
   switch (keyType) {
     case KeyTypes.RS256:
       return createSignatureRSA(privateKey, payload);
-    case KeyTypes.ES256:
-      return createSignatureECR1(privateKey, payload);
+    case KeyTypes.ES256: {
+      const payloadBytes = new TextEncoder().encode(payload);
+      return createSignatureECR1(privateKey, payloadBytes);
+    }
     case KeyTypes.ES256K:
       return createSignatureECK1(privateKey, payload);
     case KeyTypes.ED25519: {
@@ -222,7 +224,6 @@ export async function createSignatureRSA(privateKey: string, payload: string) {
   if (!isHardwareKeystoreExists) {
     throw Error;
   } else {
-    // If android signing input is required to b64?
     if (isAndroid())
       signature64 = await RNSecureKeystoreModule.sign(
         KeyTypes.RS256,
@@ -269,7 +270,7 @@ export async function createSignatureED(privateKey, payloadBytes) {
   return replaceCharactersInB64(Buffer.from(sign).toString('base64'));
 }
 
-export async function createSignatureECR1(privateKey, payload) {
+export async function createSignatureECR1(privateKey: string, payload: Uint8Array) {
   if (!isHardwareKeystoreExists) {
     throw Error;
   } else {

@@ -5,7 +5,7 @@ import {
   createSignatureRSA,
   fetchKeyPair,
 } from '../cryptoutil/cryptoUtil';
-import {base64ToByteArray, canonicalize} from '../Utils';
+import {base64ToByteArray, canonicalize, parseJSON} from '../Utils';
 import getAllConfigurations, {CACHED_API} from '../api';
 import {JWT_ALG_TO_KEY_TYPE} from '../constants';
 import {SignatureAlgorithms} from '../cryptoutil/KeyTypes';
@@ -19,7 +19,7 @@ export async function getWalletConfig() {
     console.warn("There is no wallet configuration available in the config. Using default wallet configuration.");
     walletConfig = {...defaultWalletConfig};
   } else {
-    walletConfig = JSON.parse(walletConfig)
+    walletConfig = parseJSON(walletConfig)
   }
 
   walletConfig["validate_pre_registered_verifier"] = config.openid4vpClientValidation === 'true'
@@ -105,7 +105,7 @@ async function signData(
 
   switch (keyType) {
     case SignatureAlgorithms.RS256:
-      return createSignatureRSA(privateKey, payloadBytes);
+      return createSignatureRSA(privateKey, base64EncodedPayload);
     case SignatureAlgorithms.ES256:
       return createSignatureECR1(privateKey, payloadBytes);
     case SignatureAlgorithms.ES256K:

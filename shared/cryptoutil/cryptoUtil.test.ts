@@ -291,7 +291,8 @@ describe('cryptoUtil', () => {
       RNSecureKeystoreModule.signBytes.mockResolvedValue(
         'bW9ja0RlckJhc2U2NFNpZw==',
       );
-      const result = await createSignatureECR1('privKey', 'payload');
+      const payload = new TextEncoder().encode('payload');
+      const result = await createSignatureECR1('privKey', payload);
       expect(RNSecureKeystoreModule.signBytes).toHaveBeenCalledWith(
         'ES256',
         'ES256',
