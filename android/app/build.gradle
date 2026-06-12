@@ -283,7 +283,7 @@ dependencies {
     implementation("io.mosip:pixelpass-aar:0.7.0")
     implementation("io.mosip:secure-keystore:0.3.0")
     implementation("io.mosip:tuvali:0.5.2")
-    implementation("io.inji:inji-vci-client-aar:0.8.0-SNAPSHOT"){
+    implementation("io.inji:inji-vci-client-aar:1.0.0-SNAPSHOT"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
