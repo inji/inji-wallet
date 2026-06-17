@@ -13,6 +13,13 @@ class OpenId4VPUtils: NSObject {
     return jsonString
   }
   
+  static func parseWalletConfig(_ walletConfig: AnyObject?) throws -> WalletConfig {
+    guard let openId4VpWalletConfigDict = walletConfig as? [String: Any] else {
+      throw NSError(domain: "Invalid wallet config format", code: 0)
+    }
+    return try decode(WalletConfig.self, from: openId4VpWalletConfigDict)
+  }
+  
   static func toJson(_ data: [UnsignedVPToken]?) throws -> [[String: Any]] {
     let encodableUnsignedVPToken : [[String: String]] = data?.map {
       [

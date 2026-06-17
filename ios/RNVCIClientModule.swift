@@ -32,10 +32,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   fileprivate func getSupportedAuthorizationMethods(openId4VpWalletConfig: AnyObject) throws
     -> [AuthorizationMethod]
   {
-    guard let openId4VpWalletConfigDict = openId4VpWalletConfig as? [String: Any] else {
-      throw NSError(domain: "Invalid wallet config format", code: 0)
-    }
-    let parsedOpenId4VpWalletConfigDict = try decode(WalletConfig.self, from: openId4VpWalletConfigDict)
+    let parsedOpenId4VpWalletConfig = try OpenId4VPUtils.parseWalletConfig(openId4VpWalletConfig)
     
     return [
       .redirectToWeb(openWebPage: { authUrl in
@@ -47,7 +44,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         jsonLdCanonicalizer: { data in
           try await self.invokeJsonLdCanonicalize(data)
         },
-        openid4vpWalletConfig: parsedOpenId4VpWalletConfigDict,
+        openid4vpWalletConfig: parsedOpenId4VpWalletConfig,
         selectCredentialsForPresentation: { vpRequest in
           try await self.getSelectedCredentialsContinuationHook(vpRequest: vpRequest)
         },

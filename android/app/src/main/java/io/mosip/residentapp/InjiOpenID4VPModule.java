@@ -68,9 +68,7 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
         try {
           WalletConfig walletConfig = parseWalletConfig(walletConfigMap);
-          Log.d(TAG, "Walletconfig parsed = "+walletConfig);
           openID4VP = new OpenID4VP(appId, walletConfig);
-          Log.d(TAG, "instantiated the ovp instance "+openID4VP);
         } catch (Exception exception) {
           Log.e(TAG,"Error occurred during initialization of the OpenID4VP - " + exception);
         }

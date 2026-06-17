@@ -33,7 +33,15 @@ const mockGetAllConfigurations = jest.fn(
     }),
 );
 
-jest.mock('../api', () => mockGetAllConfigurations);
+const mockFetchTrustedVerifiersList = jest.fn();
+
+jest.mock('../api', () => ({
+  __esModule: true,
+  default: mockGetAllConfigurations,
+  CACHED_API: {
+    fetchTrustedVerifiersList: mockFetchTrustedVerifiersList,
+  },
+}));
 
 import {
   getWalletConfig,
@@ -48,6 +56,11 @@ describe('OpenID4VPHelper', () => {
     mockGetAllConfigurations.mockResolvedValue({
       openid4vpClientValidation: 'true',
       walletConfig: null,
+    });
+    mockFetchTrustedVerifiersList.mockResolvedValue({
+      response: {
+        verifiers: [],
+      },
     });
   });
 
@@ -65,6 +78,39 @@ describe('OpenID4VPHelper', () => {
       const result = await getWalletConfig();
       expect(result).toEqual({name: 'test-wallet', "validate_pre_registered_verifier": true, "trusted_verifiers": []});
     });
+
+    it('returns wallet config with populated wallet config, trusted verifiers and validate pre-registered verifier as per the config', async () => {
+      const mockVerifiers = [
+        {
+          client_id: 'mock-client',
+          redirect_uris: ['https://example.com/redirect'],
+          response_uris: ['https://example.com/verifier/vp-response'],
+          jwks_uri: 'https://example.com/.well-known/jwks.json',
+          allow_unsigned_request: true,
+          spec_version: 'v1',
+        },
+      ];
+
+      mockGetAllConfigurations.mockResolvedValue({
+        openid4vpClientValidation: 'true',
+        openid4vpWalletConfig: '{"name":"test-wallet"}',
+      });
+
+      mockFetchTrustedVerifiersList.mockResolvedValue({
+        response: {
+          verifiers: mockVerifiers,
+        },
+      });
+
+      const result = await getWalletConfig();
+
+      expect(result).toEqual({
+        name: 'test-wallet',
+        validate_pre_registered_verifier: true,
+        trusted_verifiers: mockVerifiers,
+      });
+      expect(mockFetchTrustedVerifiersList).toHaveBeenCalled();
+    })
   });
 
   describe('signDataForVpPreparation', () => {

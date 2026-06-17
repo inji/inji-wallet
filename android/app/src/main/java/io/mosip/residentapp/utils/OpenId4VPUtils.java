@@ -37,6 +37,7 @@ import io.mosip.openID4VP.constants.ProofType;
 import io.mosip.openID4VP.constants.RequestUriMethod;
 import io.mosip.openID4VP.constants.ResponseType;
 import io.mosip.openID4VP.constants.SignatureAlgorithm;
+import io.mosip.openID4VP.constants.SpecVersion;
 import io.mosip.openID4VP.constants.VPFormatType;
 import io.mosip.openID4VP.dcql.query.DCQLQuery;
 import io.mosip.openID4VP.dcql.query.DCQLQuerySerializer;
@@ -201,32 +202,46 @@ public class OpenId4VPUtils {
   }
 
   private static List<Verifier> parseVerifiers(ReadableArray verifiersArray) {
-    List<Verifier> verifiers = new ArrayList();
+    List<Verifier> verifiers = new ArrayList<>();
 
     for (int i = 0; i < verifiersArray.size(); i++) {
       ReadableMap verifierMap = verifiersArray.getMap(i);
-      String clientId = verifierMap.getString("client_id");
-      ReadableArray responseUris = verifierMap.getArray("response_uris");
-      List<String> responseUriList = FormatConverter.convertReadableArrayToList(responseUris);
-      String jwksUri = null;
-      if (verifierMap.hasKey("jwks_uri") && !verifierMap.isNull("jwks_uri")) {
-        try {
-          jwksUri = verifierMap.getString("jwks_uri");
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-      if (verifierMap.hasKey("allow_unsigned_request")) {
-        boolean allowUnsignedRequest = verifierMap.getBoolean("allow_unsigned_request");
-        verifiers.add(new Verifier(clientId, responseUriList, jwksUri, allowUnsignedRequest));
-        continue;
+
+      String clientId = getStringOrDefault(verifierMap, "client_id", null);
+
+      List<String> responseUris = Collections.emptyList();
+      if (verifierMap.hasKey("response_uris") && !verifierMap.isNull("response_uris")) {
+        responseUris = FormatConverter.convertReadableArrayToList(verifierMap.getArray("response_uris"));
       }
 
-      verifiers.add(new Verifier(clientId, responseUriList, jwksUri));
+      String jwksUri = getStringOrDefault(verifierMap, "jwks_uri", null);
+      boolean allowUnsignedRequest = getBooleanOrDefault(verifierMap, "allow_unsigned_request", false);
+      String specVersion = getStringOrDefault(verifierMap, "spec_version", "v1");
+
+      verifiers.add(new Verifier(
+        clientId,
+        responseUris,
+        jwksUri,
+        allowUnsignedRequest,
+        parseSpecVersion(specVersion)
+      ));
     }
 
     return verifiers;
   }
+
+  private static String getStringOrDefault(ReadableMap map, String key, String defaultValue) {
+    return map.hasKey(key) && !map.isNull(key) ? map.getString(key) : defaultValue;
+  }
+
+  private static boolean getBooleanOrDefault(ReadableMap map, String key, boolean defaultValue) {
+    return map.hasKey(key) && !map.isNull(key) ? map.getBoolean(key) : defaultValue;
+  }
+
+  private static SpecVersion parseSpecVersion(String specVersion) {
+    return "draft23".equals(specVersion) ? SpecVersion.DRAFT_23 : SpecVersion.V1;
+  }
+
   public static List<VPTokenSigningResult> parseVPTokenSigningResults(
     ReadableArray vpTokenSigningResults) {
 

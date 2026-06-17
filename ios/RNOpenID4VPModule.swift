@@ -17,14 +17,10 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
   @objc
   func `initSdk`(_ appId: String, walletConfig: AnyObject?, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     do {
-      guard let walletConfigDict = walletConfig as? [String: Any] else {
-        reject("OPENID4VP", "Invalid wallet config format", nil)
-        return
-      }
-      let walletConfig = try decode(WalletConfig.self, from: walletConfigDict)
+      let parsedWalletConfig = try OpenId4VPUtils.parseWalletConfig(walletConfig)
       openID4VP = OpenID4VP(
         traceabilityId: appId,
-        walletConfig: walletConfig,
+        walletConfig: parsedWalletConfig,
         jsonLdCanonicalizer: { data in
           try await self.invokeJsonLdCanonicalize(data)
         }

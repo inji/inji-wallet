@@ -28,7 +28,7 @@ export async function getWalletConfig() {
     const trustedVerifiersResponse =
       await CACHED_API.fetchTrustedVerifiersList();
     walletConfig['trusted_verifiers'] =
-      trustedVerifiersResponse.data.response.verifiers;
+      trustedVerifiersResponse.response.verifiers;
   } catch (e) {
     console.warn(
       'Error fetching trusted verifiers, falling back to default: ',
