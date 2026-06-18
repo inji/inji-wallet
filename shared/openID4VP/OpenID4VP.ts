@@ -1,7 +1,14 @@
 import {NativeEventEmitter, NativeModules} from 'react-native';
 import {__AppId} from '../GlobalVariables';
-import {SelectedCredentialForVPSharing, VC,} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {getWalletConfig, isDcqlFlow, jsonLdCanonicalize,} from './OpenID4VPHelper';
+import {
+  SelectedCredentialForVPSharing,
+  VC,
+} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {
+  getWalletConfig,
+  isDcqlFlow,
+  jsonLdCanonicalize,
+} from './OpenID4VPHelper';
 import {jsonLdExpand, parseJSON} from '../Utils';
 import {VCFormat} from '../VCFormat';
 import {getVcKey, VCMetadata} from '../VCMetadata';
@@ -32,46 +39,48 @@ class OpenID4VP {
   private constructor(walletConfig: Record<string, any>) {
     if (isIOS()) {
       this.addJsonLdCanonicalizerCallback();
+      this.addJsonLdExpanderCallback();
     }
 
-    this.InjiOpenID4VP.initSdk(__AppId.getValue(), walletConfig)
+    this.InjiOpenID4VP.initSdk(__AppId.getValue(), walletConfig);
   }
 
   private addJsonLdCanonicalizerCallback = () => {
-    emitter.addListener('onJsonLdCanonicalize', ({data}: { data: string }) => {
-      jsonLdCanonicalize(data)
-        .then(result => {
+    emitter.addListener(
+      'onJsonLdCanonicalize',
+      async ({data}: {data: string}) => {
+        try {
+          const result = await jsonLdCanonicalize(data);
           this.InjiOpenID4VP.sendJsonLdCanonicalizeResultFromJS(result);
-        })
-        .catch(error => {
-          console.error("Error during canonicaliozation ", error)
+        } catch (error) {
+          console.error('Error during canonicalization ', error);
           this.InjiOpenID4VP.notifyCanonicalizationFailureFromJS(
             'server_error',
             'An error occurred during JSON-LD canonicalization',
           );
-        });
-    });
+        }
+      },
+    );
   };
 
   private addJsonLdExpanderCallback = () => {
-    emitter.addListener('onJsonLdExpand', ({data}: { data: any }) => {
-      jsonLdExpand(data)
-        .then(result => {
-          this.InjiOpenID4VP.sendJsonLdExpandResultFromJS(result);
-        })
-        .catch(error => {
-          console.error('Error during JSON-LD expansion: ', error);
-          this.InjiOpenID4VP.notifyJsonLdExpansionFailureFromJS(
-            'server_error',
-            'An error occurred during JSON-LD canonicalization',
-          );
-        });
+    emitter.addListener('onJsonLdExpand', async ({data}: {data: any}) => {
+      try {
+        const result = await jsonLdExpand(data);
+        this.InjiOpenID4VP.sendJsonLdExpandResultFromJS(result);
+      } catch (error) {
+        console.error('Error during JSON-LD expansion: ', error);
+        this.InjiOpenID4VP.notifyJsonLdExpansionFailureFromJS(
+          'server_error',
+          'An error occurred during JSON-LD expansion',
+        );
+      }
     });
   };
 
   private static async getInstance(): Promise<OpenID4VP> {
     if (!OpenID4VP.instance) {
-      const walletConfig: Record<string, any> = await getWalletConfig()
+      const walletConfig: Record<string, any> = await getWalletConfig();
       OpenID4VP.instance = new OpenID4VP(walletConfig);
     }
 
@@ -106,10 +115,6 @@ class OpenID4VP {
       } as MatchingVCsResultForPresentationExchangeRequest;
     } else {
       const openID4VP = await OpenID4VP.getInstance();
-      if (isIOS()) {
-        openID4VP.addJsonLdExpanderCallback();
-      }
-
       const idToCredentialMap: Record<string, VC> = {};
       availableWalletCredentials.forEach(vc => {
         idToCredentialMap[vc.vcMetadata.id] = vc;
@@ -136,10 +141,12 @@ class OpenID4VP {
 
       const result = parseJSON(matchingCredentialsResult);
       const requestedClaims: Set<string> = new Set<string>();
-      const filteredCredentialSetOptions = result.success ? filterSatisfiableCredentialSetOptions(
-        result.queryMatches ?? {},
-        result.credentialSets ?? [],
-      ) : result.credentialSets;
+      const filteredCredentialSetOptions = result.success
+        ? filterSatisfiableCredentialSetOptions(
+            result.queryMatches ?? {},
+            result.credentialSets ?? [],
+          )
+        : result.credentialSets;
 
       const updatedMatchingVCs: Record<string, MatchResult> = {};
       Object.entries(result.queryMatches ?? {}).forEach(
@@ -148,7 +155,8 @@ class OpenID4VP {
             updatedMatchingVCs[queryId] = {
               matchingVcs: queryMatch.matchingCredentials.map(
                 (matchedCredential: any) => {
-                  const credentialData = idToCredentialMap[matchedCredential.credentialId];
+                  const credentialData =
+                    idToCredentialMap[matchedCredential.credentialId];
                   return {
                     matchingVcInfo: new VCInfo(
                       getVcKey(credentialData),
@@ -162,7 +170,10 @@ class OpenID4VP {
                 queryMatch.allowMultipleCredentials === true,
             };
           } else if (queryMatch.failedClaims) {
-            console.warn("Failed claims - ", JSON.stringify(queryMatch.failedClaims, null, 2));
+            console.warn(
+              'Failed claims - ',
+              JSON.stringify(queryMatch.failedClaims, null, 2),
+            );
             (queryMatch.failedClaims as any[]).forEach(failedClaim => {
               requestedClaims.add(getClaimName(failedClaim.claim.path));
             });
@@ -185,7 +196,11 @@ class OpenID4VP {
     selectedVCs: Record<string, VC[]>,
     selectedDisclosuresByVc: any,
   ) {
-    return this.processSelectedVCs(vpRequest, selectedVCs, selectedDisclosuresByVc);
+    return this.processSelectedVCs(
+      vpRequest,
+      selectedVCs,
+      selectedDisclosuresByVc,
+    );
   }
 
   static getSignatureSuite(key: string): string {
@@ -213,7 +228,11 @@ class OpenID4VP {
     const openID4VP = await OpenID4VP.getInstance();
     const unSignedVpTokens =
       await openID4VP.InjiOpenID4VP.constructUnsignedVPToken(
-        this.processSelectedVCs(vpRequest, selectedVCs, selectedDisclosuresByVc),
+        this.processSelectedVCs(
+          vpRequest,
+          selectedVCs,
+          selectedDisclosuresByVc,
+        ),
       );
     return parseJSON(unSignedVpTokens);
   }
@@ -242,7 +261,11 @@ class OpenID4VP {
     openID4VP.InjiOpenID4VP.sendJsonLdCanonicalizeResultFromJS(data);
   }
 
-  private static processSelectedVCs(vpRequest: object, selectedVCs: Record<string, VC[]>, selectedDisclosuresByVc: Record<string, Array<string>>) {
+  private static processSelectedVCs(
+    vpRequest: object,
+    selectedVCs: Record<string, VC[]>,
+    selectedDisclosuresByVc: Record<string, Array<string>>,
+  ) {
     const updatedSelectedVCs: Record<
       string,
       Array<SelectedCredentialForVPSharing>
@@ -259,7 +282,7 @@ class OpenID4VP {
             credentialFormat,
             selectedDisclosuresByVc[
               VCMetadata.fromVcMetadataString(credential.vcMetadata).getVcKey()
-              ],
+            ],
             isDcqlRequestFlow,
           ),
         };
@@ -320,7 +343,10 @@ class OpenID4VP {
       : jwt + '~';
   }
 
-  private static processSdJwtVcForSharing(vcData: VC, claimsPath: string[]): string {
+  private static processSdJwtVcForSharing(
+    vcData: VC,
+    claimsPath: string[],
+  ): string {
     if (!vcData?.verifiableCredential?.credential) {
       throw new Error('Invalid VC: missing credential');
     }
@@ -370,7 +396,7 @@ function getVcsMatchingPresentationExchangeAuthRequest(
     inputDescriptors.forEach(
       (inputDescriptor: {
         format: any;
-        constraints: { fields: undefined };
+        constraints: {fields: undefined};
         id: string | number;
       }) => {
         const format = inputDescriptor.format ?? presentationDefinition.format;
@@ -383,10 +409,10 @@ function getVcsMatchingPresentationExchangeAuthRequest(
           areVCFormatAndProofTypeMatchingRequest(format, vc);
         if (areMatchingFormatAndProofType == false) {
           inputDescriptors.forEach(
-            (inputDescriptor: { constraints: { fields: { path: any[] }[] } }) => {
+            (inputDescriptor: {constraints: {fields: {path: any[]}[]}}) => {
               if (inputDescriptor.constraints?.fields) {
                 inputDescriptor.constraints.fields.forEach(
-                  (field: { path: any[] }) => {
+                  (field: {path: any[]}) => {
                     if (field.path) {
                       field.path.forEach(path => {
                         try {
@@ -424,14 +450,18 @@ function getVcsMatchingPresentationExchangeAuthRequest(
           if (!matchingVCs[inputDescriptor.id]) {
             matchingVCs[inputDescriptor.id] = [];
           }
-          matchingVCs[inputDescriptor.id].push(new VCInfo(getVcKey(vc), vc.vcMetadata));
+          matchingVCs[inputDescriptor.id].push(
+            new VCInfo(getVcKey(vc), vc.vcMetadata),
+          );
         }
       },
     );
   });
 
   if (!hasFormatOrConstraints && inputDescriptors.length > 0) {
-    matchingVCs[inputDescriptors[0].id] = vcs.map(vc => new VCInfo(getVcKey(vc), vc.vcMetadata));
+    matchingVCs[inputDescriptors[0].id] = vcs.map(
+      vc => new VCInfo(getVcKey(vc), vc.vcMetadata),
+    );
   }
 
   const success =
@@ -633,4 +663,3 @@ function filterSatisfiableCredentialSetOptions(
     }))
     .filter(credentialSet => credentialSet.options.length > 0);
 }
-
