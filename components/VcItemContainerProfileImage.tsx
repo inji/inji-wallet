@@ -1,16 +1,29 @@
 import {ImageBackground} from 'react-native';
 import {Theme} from './ui/styleUtils';
-import React from 'react';
+import React, {useMemo} from 'react';
 import {ProfileIcon} from './ProfileIcon';
 import {SvgImage} from './ui/svg';
 
-export const VcItemContainerProfileImage = ({verifiableCredentialData, isPinned}: VcItemContainerProfileImageProps) => {
-  const imageUri = verifiableCredentialData.face;
+function extractLogoFromWellKnown(wellknown: any): string | null {
+  return wellknown?.display?.[0]?.logo?.url ?? null;
+}
 
-  return imageUri ? (
+export const VcItemContainerProfileImage = ({
+  verifiableCredentialData,
+  wellknown,
+  isPinned,
+}: VcItemContainerProfileImageProps) => {
+  const {face: faceUri} = verifiableCredentialData;
+
+  const resolvedUri = useMemo<string | null>(() => {
+    if (faceUri) return faceUri;
+    return extractLogoFromWellKnown(wellknown) ?? null;
+  }, [faceUri, wellknown]);
+
+  return resolvedUri ? (
     <ImageBackground
       imageStyle={Theme.Styles.faceImage}
-      source={{uri: imageUri}}
+      source={{uri: resolvedUri}}
       style={Theme.Styles.closeCardImage}>
       {isPinned && SvgImage.pinIcon()}
     </ImageBackground>
@@ -25,7 +38,12 @@ export const VcItemContainerProfileImage = ({verifiableCredentialData, isPinned}
   );
 };
 
+interface VerifiableCredentialData {
+  face?: string;
+}
+
 interface VcItemContainerProfileImageProps {
-    verifiableCredentialData: any;
-    isPinned?: boolean;
+  verifiableCredentialData: VerifiableCredentialData;
+  wellknown?: any;
+  isPinned?: boolean;
 }

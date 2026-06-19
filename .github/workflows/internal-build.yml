@@ -47,6 +47,7 @@ on:
           - collab
           - synergy
           - mec
+          - ph4h
       internal-testers:
         description: 'Internal Testers Group'
         required: true

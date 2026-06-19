@@ -30,6 +30,7 @@ on:
           - collab
           - synergy
           - mec
+          - ph4h
       theme:
         description: 'Application Theme'
         required: true

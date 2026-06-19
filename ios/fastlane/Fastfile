@@ -53,6 +53,8 @@ def map_flavour_tosuffix()
     return "mobile.synergy"
   when "mec"
     return "mec"
+  when "ph4h"
+    return "ph4h"
   end
   return flavor
 end

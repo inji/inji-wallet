@@ -254,6 +254,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
           <VcItemContainerProfileImage
             isPinned={isPinned}
             verifiableCredentialData={verifiableCredentialData}
+            wellknown={wellknown}
           />
           <Column fill align={'space-around'} margin="0 10 0 10">
             <VCItemFieldValue
