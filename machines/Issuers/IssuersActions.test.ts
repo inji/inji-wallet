@@ -19,6 +19,8 @@ jest.mock('../../shared/openId4VCI/Utils', () => ({
   VCIServerErrorCode: {
     SERVER_ERROR: 'server_error',
     INVALID_CREDENTIAL_OFFER: 'invalid_credential_offer',
+    TIMEOUT_ERROR: 'timeout_error',
+    UNSUPPORTED_GRANT_TYPE: 'unsupported_grant_type',
     UNKNOWN_ERROR: 'unknown_error',
   },
   OIDCErrors: {
@@ -386,6 +388,18 @@ describe('IssuersActions', () => {
           {data: {issuerErrorCode: 'unsupported_grant_type'}},
         ),
       ).toBe('unsupported_grant_type');
+      consoleSpy.mockRestore();
+    });
+
+    it('setError falls back to server error for an unmapped issuer error code', () => {
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+      const fn = actions.setError.assignment.errorMessage;
+      expect(
+        fn(
+          {isInternetAvailable: true},
+          {data: {issuerErrorCode: 'some_unmapped_issuer_error'}},
+        ),
+      ).toBe('server_error');
       consoleSpy.mockRestore();
     });
 

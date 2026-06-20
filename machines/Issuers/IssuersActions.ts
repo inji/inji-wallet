@@ -125,8 +125,14 @@ export const IssuersActions = (model: any) => {
       errorMessage: (context: any, event: any) => {
         const error = (event.data ?? event) as VciClientErrorResponse;
         console.error(`Error occurred while ${event} -> `, error);
-        if (error.issuerErrorCode)
-          return error.issuerErrorCode as VCIServerErrorCode;
+        if (error.issuerErrorCode) {
+          const isMappedIssuerError = Object.values(
+            VCIServerErrorCode,
+          ).includes(error.issuerErrorCode as VCIServerErrorCode);
+          return isMappedIssuerError
+            ? (error.issuerErrorCode as VCIServerErrorCode)
+            : VCIServerErrorCode.SERVER_ERROR;
+        }
         if (!context.isInternetAvailable) {
           return ErrorMessage.NO_INTERNET;
         } else if (error.code === 'VCI-008') {
