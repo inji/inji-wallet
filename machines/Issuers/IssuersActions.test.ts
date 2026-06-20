@@ -371,9 +371,9 @@ describe('IssuersActions', () => {
     it('setError returns invalid credential offer for VCI-008 source error', () => {
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const fn = actions.setError.assignment.errorMessage;
-      expect(
-        fn({isInternetAvailable: true}, {data: {sourceErrorCode: 'VCI-008'}}),
-      ).toBe('invalid_credential_offer');
+      expect(fn({isInternetAvailable: true}, {data: {code: 'VCI-008'}})).toBe(
+        'invalid_credential_offer',
+      );
       consoleSpy.mockRestore();
     });
 
@@ -383,7 +383,7 @@ describe('IssuersActions', () => {
       expect(
         fn(
           {isInternetAvailable: true},
-          {data: {serverErrorCode: 'unsupported_grant_type'}},
+          {data: {issuerErrorCode: 'unsupported_grant_type'}},
         ),
       ).toBe('unsupported_grant_type');
       consoleSpy.mockRestore();

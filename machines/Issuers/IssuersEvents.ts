@@ -11,11 +11,11 @@ export const IssuersEvents = {
   SHOW_ERROR: (error: any) => ({error}),
   CHECK_KEY_PAIR: () => ({}),
   CANCEL: (
-    {serverErrorCode, serverErrorDescription} = {} as {
-      serverErrorCode?: string;
-      serverErrorDescription?: string;
+    {issuerErrorCode, issuerErrorDescription} = {} as {
+      issuerErrorCode?: string;
+      issuerErrorDescription?: string;
     },
-  ) => ({serverErrorCode, serverErrorDescription}),
+  ) => ({issuerErrorCode, issuerErrorDescription}),
   STORE_RESPONSE: (response?: unknown) => ({response}),
   STORE_ERROR: (error: Error, requester?: string) => ({error, requester}),
   RESET_VERIFY_ERROR: () => ({}),

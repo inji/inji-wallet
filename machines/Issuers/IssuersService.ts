@@ -451,8 +451,8 @@ async function sendTokenRequest(
     }
     //have to throw error in vci error response format
     const errorResponse: VciClientErrorResponse = {
-      serverErrorCode: parsedError.error ?? 'UNKNOWN_ERROR',
-      serverErrorMessage: parsedError.error_description,
+      issuerErrorCode: parsedError.error ?? 'UNKNOWN_ERROR',
+      issuerErrorMessage: parsedError.error_description,
     };
     throw errorResponse;
   }

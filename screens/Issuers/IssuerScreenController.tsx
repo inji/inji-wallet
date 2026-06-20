@@ -95,9 +95,9 @@ export function useIssuerScreenController({route, navigation}) {
       selectIsCredentialOfferViaDeepLink,
     ),
 
-    CANCEL: ({serverErrorCode = '', serverErrorDescription = ''} = {}) =>
+    CANCEL: ({issuerErrorCode = '', issuerErrorDescription = ''} = {}) =>
       service.send(
-        IssuerScreenTabEvents.CANCEL({serverErrorCode, serverErrorDescription}),
+        IssuerScreenTabEvents.CANCEL({issuerErrorCode, issuerErrorDescription}),
       ),
     SELECTED_ISSUER: id =>
       service.send(IssuerScreenTabEvents.SELECTED_ISSUER(id)),

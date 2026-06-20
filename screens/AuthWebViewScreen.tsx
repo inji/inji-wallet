@@ -107,8 +107,8 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
 
         if (error) {
           controller.CANCEL({
-            serverErrorCode: error,
-            serverErrorDescription: errorDescription,
+            issuerErrorCode: error,
+            issuerErrorDescription: errorDescription,
           });
 
           navigation.goBack();
@@ -117,8 +117,8 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
 
         if (!code) {
           controller.CANCEL({
-            serverErrorCode: VCIServerErrorCode.INVALID_REQUEST,
-            serverErrorDescription: 'Authorization server did not return code',
+            issuerErrorCode: VCIServerErrorCode.INVALID_REQUEST,
+            issuerErrorDescription: 'Authorization server did not return code',
           });
 
           navigation.goBack();
@@ -130,8 +130,8 @@ const AuthWebViewScreen: React.FC<any> = ({route, navigation}) => {
         return false;
       } catch (err: any) {
         controller.CANCEL({
-          serverErrorCode: 'redirect_parse_error',
-          serverErrorDescription: err?.message,
+          issuerErrorCode: 'redirect_parse_error',
+          issuerErrorDescription: err?.message,
         });
 
         navigation.goBack();

@@ -188,16 +188,12 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         "code": vciError.code
       ]
 
-      if let sourceErrorCode = vciError.sourceErrorCode {
-        userInfo["sourceErrorCode"] = sourceErrorCode
+      if let issuerErrorCode = vciError.issuerErrorCode {
+        userInfo["issuerErrorCode"] = issuerErrorCode
       }
 
-      if let serverErrorCode = vciError.serverErrorCode {
-        userInfo["serverErrorCode"] = serverErrorCode
-      }
-
-      if let serverErrorDescription = vciError.serverErrorDescription {
-        userInfo["serverErrorDescription"] = serverErrorDescription
+      if let issuerErrorDescription = vciError.issuerErrorDescription {
+        userInfo["issuerErrorDescription"] = issuerErrorDescription
       }
 
       let nsError = NSError(
@@ -400,7 +396,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     _ response: CredentialResponse
   ) throws -> String {
     guard let firstItem = response.credentials?.first else {
-      throw VCIClientException(code: "DOWNLOAD_FAILED", message: "No credential returned from issuer", serverErrorCode: nil, serverErrorDescription: nil)
+      throw VCIClientException(code: "DOWNLOAD_FAILED", message: "No credential returned from issuer", issuerErrorCode: nil, issuerErrorDescription: nil)
     }
 
     var dict: [String: Any] = [

@@ -4,16 +4,18 @@ import {
   SelectedCredentialsForVPSharing,
   VerifiableCredential,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {getWalletConfig, jsonLdCanonicalize} from '../openID4VP/OpenID4VPHelper';
+import {
+  getWalletConfig,
+  jsonLdCanonicalize,
+} from '../openID4VP/OpenID4VPHelper';
 
 const emitter = new NativeEventEmitter(NativeModules.InjiVciClient);
 
 export type VciClientErrorResponse = {
   code?: string;
   message?: string;
-  serverErrorCode?: string;
-  serverErrorMessage?: string;
-  sourceErrorCode?: string;
+  issuerErrorCode?: string;
+  issuerErrorMessage?: string;
 };
 class VciClient {
   private static instance: VciClient;
@@ -165,20 +167,19 @@ class VciClient {
         clientId: 'wallet',
         redirectUri: 'io.mosip.residentapp.inji://oauthredirect',
       };
-      const openId4VpWalletConfig = await getWalletConfig()
+      const openId4VpWalletConfig = await getWalletConfig();
       response = await this.InjiVciClient.requestCredentialByOffer(
         credentialOffer,
         JSON.stringify(clientMetadata),
-        openId4VpWalletConfig
+        openId4VpWalletConfig,
       );
     } catch (error) {
       console.error('Error requesting credential by offer:', error);
       const errorResponse: VciClientErrorResponse = {
         code: error?.code ?? 'UNKNOWN_ERROR',
         message: error?.message ?? 'An unknown error occurred',
-        serverErrorCode: error?.userInfo?.serverErrorCode,
-        serverErrorMessage: error?.userInfo?.serverErrorDescription,
-        sourceErrorCode: error?.userInfo?.sourceErrorCode,
+        issuerErrorCode: error?.userInfo?.issuerErrorCode,
+        issuerErrorMessage: error?.userInfo?.issuerErrorDescription,
       };
       throw errorResponse;
     } finally {
@@ -258,21 +259,20 @@ class VciClient {
 
     let response = '';
     try {
-      const openId4VpWalletConfig = await getWalletConfig()
+      const openId4VpWalletConfig = await getWalletConfig();
       response = await this.InjiVciClient.requestCredentialFromTrustedIssuer(
         credentialIssuerUri,
         credentialConfigurationId,
         JSON.stringify(clientMetadata),
-        openId4VpWalletConfig
+        openId4VpWalletConfig,
       );
     } catch (error) {
       console.error('Error requesting credential from trusted issuer:', error);
       const errorResponse: VciClientErrorResponse = {
         code: error?.code ?? 'UNKNOWN_ERROR',
         message: error?.message ?? 'An unknown error occurred',
-        serverErrorCode: error?.userInfo?.serverErrorCode,
-        serverErrorMessage: error?.userInfo?.serverErrorDescription,
-        sourceErrorCode: error?.userInfo?.sourceErrorCode,
+        issuerErrorCode: error?.userInfo?.issuerErrorCode,
+        issuerErrorMessage: error?.userInfo?.issuerErrorDescription,
       };
       throw errorResponse;
     } finally {

@@ -460,8 +460,8 @@ describe('IssuersService', () => {
       authorizationType: 'other',
     };
     await expect(services.sendTokenRequest(context)).rejects.toMatchObject({
-      serverErrorCode: 'invalid_request',
-      serverErrorMessage: 'Bad Request',
+      issuerErrorCode: 'invalid_request',
+      issuerErrorMessage: 'Bad Request',
     });
   });
 

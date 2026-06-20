@@ -179,16 +179,12 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
 
       WritableMap userInfo = Arguments.createMap();
 
-      if (ex.getSourceErrorCode() != null) {
-        userInfo.putString("sourceErrorCode", ex.getSourceErrorCode());
+      if (ex.getIssuerErrorCode() != null) {
+        userInfo.putString("issuerErrorCode", ex.getIssuerErrorCode());
       }
 
-      if (ex.getServerErrorCode() != null) {
-        userInfo.putString("serverErrorCode", ex.getServerErrorCode());
-      }
-
-      if (ex.getServerErrorDescription() != null) {
-        userInfo.putString("serverErrorDescription", ex.getServerErrorDescription());
+      if (ex.getIssuerErrorDescription() != null) {
+        userInfo.putString("issuerErrorDescription", ex.getIssuerErrorDescription());
       }
 
       promise.reject(
