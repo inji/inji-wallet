@@ -12,6 +12,7 @@ export const SplashScreen: React.FC<RootRouteProps> = props => {
       ? require('../assets/images/png/purpleSplashScreen.png')
       : require('../assets/images/png/SplashScreen.png');
   const controller = useAppLayout();
+
   useEffect(() => {
     setTimeout(() => {
       if (controller.isLanguagesetup) {
@@ -21,6 +22,7 @@ export const SplashScreen: React.FC<RootRouteProps> = props => {
       }
     }, 3000);
   }, [controller.isAuthorized || controller.isLanguagesetup]);
+
   return (
     <Column
       crossAlign="center"
@@ -31,8 +33,11 @@ export const SplashScreen: React.FC<RootRouteProps> = props => {
         width: Dimensions.get('screen').width,
       }}>
       <Image
-        resizeMode="stretch"
-        style={{width: 400, height: 450}}
+        resizeMode="contain"
+        style={{
+          width: Dimensions.get('screen').width,
+          height: Dimensions.get('screen').height,
+        }}
         source={imageResource}
       />
     </Column>
