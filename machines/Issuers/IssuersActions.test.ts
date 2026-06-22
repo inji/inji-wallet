@@ -306,10 +306,11 @@ describe('IssuersActions', () => {
       expect(actions.resetLoadingReason.assignment.loadingReason).toBeNull();
     });
 
-    it('resetAuthorization resets auth type and success', () => {
+    it('resetAuthorization resets auth type, success and auth endpoint flag', () => {
       const asg = actions.resetAuthorization.assignment;
       expect(asg.authorizationType).toBe('implicit');
       expect(asg.authorizationSuccess).toBe(false);
+      expect(asg.authEndpointToOpen).toBe(false);
     });
 
     it('setSelectedCredentialType picks credType and wellknown key types', () => {

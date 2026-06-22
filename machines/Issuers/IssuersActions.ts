@@ -82,6 +82,7 @@ export const IssuersActions = (model: any) => {
     resetAuthorization: model.assign({
       authorizationType: AuthorizationType.IMPLICIT,
       authorizationSuccess: false,
+      authEndpointToOpen: false,
     }),
     setSelectedCredentialType: model.assign({
       selectedCredentialType: (_: any, event: any) => event.credType,
