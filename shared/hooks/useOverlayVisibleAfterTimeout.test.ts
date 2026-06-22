@@ -1,21 +1,19 @@
 describe('useOverlayVisibleAfterTimeout', () => {
   let mockSetVisible: jest.Mock;
-  let mockSetSavingTimeout: jest.Mock;
   let effectCallback: Function;
+  let timeoutRef: {current: ReturnType<typeof setTimeout> | null};
 
   beforeEach(() => {
     jest.useFakeTimers();
     jest.resetModules();
     mockSetVisible = jest.fn();
-    mockSetSavingTimeout = jest.fn();
     effectCallback = null as any;
+    timeoutRef = {current: null};
 
-    let callCount = 0;
     jest.spyOn(require('react'), 'useState').mockImplementation((init: any) => {
-      callCount++;
-      if (callCount % 2 === 1) return [init, mockSetVisible];
-      return [init, mockSetSavingTimeout];
+      return [init, mockSetVisible];
     });
+    jest.spyOn(require('react'), 'useRef').mockReturnValue(timeoutRef);
     jest
       .spyOn(require('react'), 'useEffect')
       .mockImplementation((cb: Function) => {
@@ -49,7 +47,7 @@ describe('useOverlayVisibleAfterTimeout', () => {
     } = require('./useOverlayVisibleAfterTimeout');
     useOverlayVisibleAfterTimeout(true, 500);
     effectCallback();
-    expect(mockSetSavingTimeout).toHaveBeenCalled();
+    expect(timeoutRef.current).not.toBeNull();
     jest.advanceTimersByTime(500);
     expect(mockSetVisible).toHaveBeenCalledWith(true);
   });

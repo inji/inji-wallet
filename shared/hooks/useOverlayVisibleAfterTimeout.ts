@@ -1,23 +1,33 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 export const useOverlayVisibleAfterTimeout = (
   visibleStart = false,
   ms = 1000
 ) => {
   const [visible, setVisible] = useState(false);
-  const [savingTimeout, setSavingTimeout] = useState(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+
     if (visibleStart) {
-      const timeoutID = setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         setVisible(true);
       }, ms);
-      setSavingTimeout(timeoutID);
     } else {
-      clearTimeout(savingTimeout);
       setVisible(false);
     }
-  }, [visibleStart]);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+  }, [visibleStart, ms]);
 
   return visible;
 };

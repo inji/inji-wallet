@@ -10,8 +10,8 @@ import {ActorRefFrom} from 'xstate';
 import {VCMetadata} from '../../../shared/VCMetadata';
 import {TelemetryConstants} from '../../../shared/telemetry/TelemetryConstants';
 import {VCItemMachine} from '../../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
-import {useOverlayVisibleAfterTimeout} from "../../../shared/hooks/useOverlayVisibleAfterTimeout";
-import {isAndroid} from "../../../shared/constants";
+import {useOverlayVisibleAfterTimeout} from '../../../shared/hooks/useOverlayVisibleAfterTimeout';
+import {isAndroid} from '../../../shared/constants';
 
 export const WalletVerified: React.FC = () => {
   return (
@@ -28,8 +28,14 @@ export const WalletBinding: React.FC<WalletBindingProps> = props => {
   const controller = useKebabPopUp(props);
   const {t} = useTranslation('WalletBinding');
   const delay = isAndroid() ? 0 : 200;
-  const walletBindingInProgress = useOverlayVisibleAfterTimeout(controller.walletBindingInProgress, delay);
-  const isWalletBindingError = useOverlayVisibleAfterTimeout(!!controller.walletBindingError, delay);
+  const isWalletBindingInProgress = useOverlayVisibleAfterTimeout(
+    controller.walletBindingInProgress,
+    delay,
+  );
+  const isWalletBindingError = useOverlayVisibleAfterTimeout(
+    !!controller.walletBindingError,
+    delay,
+  );
 
   return (
     <>
@@ -53,7 +59,7 @@ export const WalletBinding: React.FC<WalletBindingProps> = props => {
         />
       )}
 
-       <MessageOverlay
+      <MessageOverlay
         key="walletBindingError"
         testID="walletBindingError"
         isVisible={isWalletBindingError}
@@ -62,8 +68,8 @@ export const WalletBinding: React.FC<WalletBindingProps> = props => {
         onButtonPress={controller.CANCEL}
       />
       <MessageOverlay
-        key={"walletBindingProgress"}
-        isVisible={walletBindingInProgress}
+        key={'walletBindingProgress'}
+        isVisible={isWalletBindingInProgress}
         title={t('inProgress')}
         progress
       />
