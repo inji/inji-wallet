@@ -235,7 +235,7 @@ android {
             applicationId "io.mosip.inji.ph4h"
             versionName defaultConfig.versionName
             dimension "inji"
-            resValue "string", "app_name", "ph4h Wallet"
+            resValue "string", "app_name", "PH4H Wallet"
         }
     }
 

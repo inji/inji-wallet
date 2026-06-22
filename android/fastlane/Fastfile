@@ -27,7 +27,7 @@ def generate_app_bundle_id()
   when "mec"
     return "io.mosip.inji.mec"
   when "ph4h"
-    return "io.mosip.ph4h"
+    return "io.mosip.inji.ph4h"
   end
 end
 
@@ -45,7 +45,7 @@ def generate_app_name()
   when "mec"
     return "Inji Wallet Mec"
   when "ph4h"
-    return "ph4h wallet"
+    return "PH4H Wallet"
   end
 end
 
