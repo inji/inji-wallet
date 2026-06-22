@@ -1,19 +1,19 @@
-import { useFocusEffect } from '@react-navigation/native';
-import React, { Fragment, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { BackHandler, Dimensions, ScrollView, View } from 'react-native';
-import { ButtonProps as RNEButtonProps } from 'react-native-elements';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Button, Column, Row, Text } from '.';
-import { Header } from './Header';
-import { Theme } from './styleUtils';
+import {useFocusEffect} from '@react-navigation/native';
+import React, {Fragment, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {BackHandler, Dimensions, ScrollView, View} from 'react-native';
+import {ButtonProps as RNEButtonProps} from 'react-native-elements';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Button, Column, Row, Text} from '.';
+import {Header} from './Header';
+import {Theme} from './styleUtils';
 import testIDProps from '../../shared/commonUtil';
-import { Modal } from './Modal';
-import { isIOS } from '../../shared/constants';
-import { BackButton } from './backButton/BackButton';
+import {Modal} from './Modal';
+import {isIOS} from '../../shared/constants';
+import {BackButton} from './backButton/BackButton';
 
 export const ErrorView: React.FC<ErrorProps> = props => {
-  const { t } = useTranslation('common');
+  const {t} = useTranslation('common');
   const insets = useSafeAreaInsets();
   const {
     testID,
@@ -70,13 +70,13 @@ export const ErrorView: React.FC<ErrorProps> = props => {
     const compactHeader = !!additionalContent;
 
     const headerSection = (
-      <View style={[{ alignItems: 'center', marginHorizontal: 1 }, customStyles]}>
+      <View style={[{alignItems: 'center', marginHorizontal: 1}, customStyles]}>
         <Row
           align="center"
           style={[
             Theme.ErrorStyles.image,
             customImageStyles,
-            compactHeader ? { paddingBottom: 10, marginTop: -20 } : undefined,
+            compactHeader ? {paddingBottom: 10, marginTop: -20} : undefined,
           ]}>
           {image}
         </Row>
@@ -89,8 +89,8 @@ export const ErrorView: React.FC<ErrorProps> = props => {
     const buttonsSection = (
       <Column
         crossAlign="center"
-        style={{ paddingBottom: Math.max(insets.bottom, isIOS() ? 30 : 20) }}>
-        <Row style={{ marginHorizontal: 30, marginBottom: 15 }}>
+        style={{paddingBottom: Math.max(insets.bottom, isIOS() ? 30 : 20)}}>
+        <Row style={{marginHorizontal: 30, marginBottom: 15}}>
           {primaryButtonText && (
             <Button
               fill
@@ -102,7 +102,7 @@ export const ErrorView: React.FC<ErrorProps> = props => {
           )}
         </Row>
         {textButtonType === 'gradient' ? (
-          <Row style={{ marginHorizontal: 30 }}>
+          <Row style={{marginHorizontal: 30}}>
             {textButtonText && (
               <Button
                 fill
@@ -133,31 +133,26 @@ export const ErrorView: React.FC<ErrorProps> = props => {
         <Fragment>
           <ScrollView>
             {headerSection}
-            {additionalContent ? (
-              <View
-                style={{ flex: 1 }}>
-                <View style={{ alignItems: 'center' }}>
+            <View style={{flex: 1}}>
+              <View style={{alignItems: 'center'}}>
+                <Text
+                  style={[
+                    Theme.ErrorStyles.message,
+                    compactHeader ? {marginBottom: 10} : undefined,
+                  ]}
+                  testID={`${testID}Message`}>
+                  {message}
+                </Text>
+                {additionalMessage && (
                   <Text
-                    style={[
-                      Theme.ErrorStyles.message,
-                      compactHeader ? { marginBottom: 10 } : undefined,
-                    ]}
-                    testID={`${testID}Message`}>
-                    {message}
+                    style={Theme.ErrorStyles.additionalMessage}
+                    testID={`${testID}AdditionalMessage`}>
+                    {additionalMessage}
                   </Text>
-                  {additionalMessage && (
-                    <Text
-                      style={Theme.ErrorStyles.additionalMessage}
-                      testID={`${testID}AdditionalMessage`}>
-                      {additionalMessage}
-                    </Text>
-                  )}
-                </View>
-                {additionalContent}
+                )}
               </View>
-            ) : (
-              <View style={{ flex: 1 }} />
-            )}
+              {additionalContent}
+            </View>
           </ScrollView>
           {buttonsSection}
         </Fragment>
@@ -167,7 +162,7 @@ export const ErrorView: React.FC<ErrorProps> = props => {
     return (
       <Fragment>
         <View
-          style={[{ alignItems: 'center', marginHorizontal: 1 }, customStyles]}>
+          style={[{alignItems: 'center', marginHorizontal: 1}, customStyles]}>
           <View>
             <Row
               align="center"
@@ -189,7 +184,7 @@ export const ErrorView: React.FC<ErrorProps> = props => {
             )}
           </View>
           {additionalContent}
-          <View style={{ paddingBottom: insets.bottom, alignItems: 'center' }}>
+          <View style={{paddingBottom: insets.bottom, alignItems: 'center'}}>
             {primaryButtonText && (
               <Button
                 onPress={primaryButtonEvent}
