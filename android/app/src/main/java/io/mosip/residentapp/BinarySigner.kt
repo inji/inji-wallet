@@ -30,7 +30,7 @@ object BinarySigner {
                 val action: (CryptoObject) -> Unit = { cryptoObject ->
                     val signature = cryptoObject.signature!!
                     signature.update(payload)
-                    onSuccess(Base64.encodeToString(signature.sign(), Base64.URL_SAFE))
+                    onSuccess(Base64.encodeToString(signature.sign(), Base64.NO_WRAP))
                 }
                 biometrics.authenticateAndPerform(createCryptoObject, action, onFailure, context)
             }
