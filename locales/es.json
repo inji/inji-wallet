@@ -469,6 +469,8 @@
   "downloadingVcSuccess": "Su tarjeta se ha descargado correctamente",
   "downloadingVcFailed": "Lo sentimos. Debido a un error técnico, no podemos descargar su tarjeta en este momento. Inténtelo nuevamente más tarde.",
   "activated": "Las credenciales están habilitadas para autenticación en línea.",
+  "credentialOfferBusy": "Ya hay una descarga de credencial en curso. Espere a que finalice antes de iniciar otra solicitud.",
+  "resolvingCredentialOffer": "Por favor, espere mientras verificamos y procesamos su solicitud.",
   "noCardsTitle": "¡No se encontraron tarjetas!",
   "noCardsDescription": "Lo sentimos, no encontramos resultados. Intente introducir otra palabra clave de búsqueda.",
   "errors": {
