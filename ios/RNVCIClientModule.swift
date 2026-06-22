@@ -508,9 +508,6 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   }
   
   private func invokeJsonLdCanonicalize(_ data: String) async throws -> String {
-    
-    print("data = \(data)")
-    
     if let bridge = RCTBridge.current() {
       bridge.eventDispatcher().sendAppEvent(
         withName: "onJsonLdCanonicalize",

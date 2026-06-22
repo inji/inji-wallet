@@ -25,7 +25,6 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
           try await self.invokeJsonLdCanonicalize(data)
         }
       )
-      print("Initialized instance :party")
       resolve(true)
     } catch {
       os_log("Error occurred while initialization of OVP instance \(error)")
@@ -48,9 +47,7 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
     }
   }
   
-  private func invokeJsonLdExpand(_ data: [String: Any]) async throws -> [String: Any] {
-    print("data = \(data)")
-    
+  private func invokeJsonLdExpand(_ data: [String: Any]) async throws -> [String: Any] {    
     if let bridge = RCTBridge.current() {
       bridge.eventDispatcher().sendAppEvent(
         withName: "onJsonLdExpand",
