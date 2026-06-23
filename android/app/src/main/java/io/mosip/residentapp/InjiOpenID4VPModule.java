@@ -1,5 +1,6 @@
 package io.mosip.residentapp;
 
+import static io.mosip.residentapp.utils.OpenId4VPUtils.parseUnsignedVPTokens;
 import static io.mosip.residentapp.utils.OpenId4VPUtils.parseVPTokenSigningResults;
 import static io.mosip.residentapp.utils.OpenId4VPUtils.parseWalletConfig;
 
@@ -23,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -97,26 +99,17 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void constructUnsignedVPToken(ReadableMap selectedVCs, Promise promise) {
-        try {
-            Map<String, List<Credential>> selectedCredentials = OpenId4VPUtils.parseSelectedVCs(selectedVCs);
-            List<UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedCredentials);
+      try {
+        Map<String, List<Credential>> selectedCredentials = OpenId4VPUtils.parseSelectedVCs(selectedVCs);
+        List<UnsignedVPToken> vpTokens = openID4VP.constructUnsignedVPToken(selectedCredentials);
 
-            JSONArray jsonArray = new JSONArray();
-            for (UnsignedVPToken token : vpTokens) {
-                JSONObject obj = new JSONObject();
-                obj.put("format", token.getFormat().getValue());
-                obj.put("holderKeyReference", token.getHolderKeyReference());
-                obj.put("signatureAlgorithm", token.getSignatureAlgorithm());
-                obj.put("dataToSign", Base64.encodeToString(token.getDataToSign(), Base64.URL_SAFE | Base64.NO_WRAP | Base64.NO_PADDING));
-                jsonArray.put(obj);
-            }
-            promise.resolve(jsonArray.toString());
-        } catch (Exception e) {
-            rejectWithOpenID4VPExceptions(e, promise);
-        }
+        promise.resolve(parseUnsignedVPTokens(vpTokens));
+      } catch (Exception e) {
+        rejectWithOpenID4VPExceptions(e, promise);
+      }
     }
 
-    @ReactMethod
+  @ReactMethod
     public void getMatchingCredentials(ReadableMap vpRequest, ReadableArray availableWalletCredentials,
                                        Promise promise) {
       try {

@@ -28,13 +28,13 @@ import io.mosip.openID4VP.authorizationRequest.VPFormatSupported;
 import io.mosip.openID4VP.authorizationRequest.Verifier;
 import io.mosip.openID4VP.authorizationRequest.WalletConfig;
 import io.mosip.openID4VP.authorizationRequest.WalletConfigDefaultsKt;
+import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
 import io.mosip.openID4VP.common.OpenID4VPErrorCodes;
 import io.mosip.openID4VP.constants.ClientIdPrefix;
 import io.mosip.openID4VP.constants.EncryptionAlgorithm;
 import io.mosip.openID4VP.constants.EncryptionMethod;
 import io.mosip.openID4VP.constants.ProofType;
-import io.mosip.openID4VP.constants.RequestUriMethod;
 import io.mosip.openID4VP.constants.ResponseType;
 import io.mosip.openID4VP.constants.SignatureAlgorithm;
 import io.mosip.openID4VP.constants.SpecVersion;
@@ -49,6 +49,12 @@ import kotlinx.serialization.json.Json;
 
 import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.ACCESS_DENIED;
 import static io.mosip.openID4VP.common.OpenID4VPErrorCodes.INVALID_TRANSACTION_DATA;
+
+import androidx.annotation.NonNull;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class OpenId4VPUtils {
   public static WalletConfig parseWalletConfig(ReadableMap walletConfigMap) {
@@ -72,13 +78,11 @@ public class OpenId4VPUtils {
     List<ResponseType> responseTypes = convertReadableArrayToEnumList(
       walletConfigMap, "response_types_supported", ResponseType.Companion::fromValue);
 
-    Boolean presentationDefinitionUriSupported = walletConfigMap.hasKey("presentation_definition_uri_supported")
-      ? walletConfigMap.getBoolean("presentation_definition_uri_supported")
-      : true;
+    boolean presentationDefinitionUriSupported = !walletConfigMap.hasKey("presentation_definition_uri_supported")
+      || walletConfigMap.getBoolean("presentation_definition_uri_supported");
 
-    boolean validatePreRegiseredVerifier = walletConfigMap.hasKey("validate_pre_registered_verifier") ? walletConfigMap.getBoolean("validate_pre_registered_verifier") : true;
+    boolean validateTrustedVerifier = !walletConfigMap.hasKey("validate_trusted_verifier") || walletConfigMap.getBoolean("validate_trusted_verifier");
 
-    List<RequestUriMethod> supportedRequestUriMethods = parseSupportedRequestUriMethods(walletConfigMap);
 
     List<Verifier> trustedVerifiers = parseTrustedVerifiers(walletConfigMap);
 
@@ -90,26 +94,9 @@ public class OpenId4VPUtils {
       encryptionEnc,
       responseTypes != null ? responseTypes : WalletConfigDefaultsKt.getDefaultResponseTypeSupported(),
       presentationDefinitionUriSupported,
-      supportedRequestUriMethods,
       trustedVerifiers,
-      validatePreRegiseredVerifier
+      validateTrustedVerifier
     );
-  }
-
-
-  private static List<RequestUriMethod> parseSupportedRequestUriMethods(ReadableMap walletConfigMap) {
-    if (!walletConfigMap.hasKey("request_uri_methods_supported")) {
-      return List.of(RequestUriMethod.GET, RequestUriMethod.POST);
-    }
-    ReadableArray methodsArray = walletConfigMap.getArray("request_uri_methods_supported");
-    List<RequestUriMethod> methods = new ArrayList<>();
-    for (int i = 0; i < Objects.requireNonNull(methodsArray).size(); i++) {
-      RequestUriMethod method = RequestUriMethod.Companion.fromValue(methodsArray.getString(i));
-      if (method != null) {
-        methods.add(method);
-      }
-    }
-    return methods;
   }
 
   private static List<Verifier> parseTrustedVerifiers(ReadableMap walletConfigMap) {
@@ -262,10 +249,12 @@ public class OpenId4VPUtils {
       }
 
       String signedData = vpTokenSigningResultMap.getString("signedData");
+      String id = vpTokenSigningResultMap.getString("id");
       byte[] signedDataBytes = Base64.decode(signedData, Base64.URL_SAFE | Base64.NO_WRAP | Base64.NO_PADDING);
 
+      assert id != null;
       formattedVpTokenSigningResults.add(
-        new VPTokenSigningResult(signedDataBytes));
+        new VPTokenSigningResult(id,signedDataBytes));
     }
 
     return formattedVpTokenSigningResults;
@@ -358,6 +347,21 @@ public class OpenId4VPUtils {
       default:
         return null;
     }
+  }
+
+  @NonNull
+  public static String parseUnsignedVPTokens(List<UnsignedVPToken> vpTokens) throws JSONException {
+    JSONArray jsonArray = new JSONArray();
+    for (UnsignedVPToken token : vpTokens) {
+      JSONObject obj = new JSONObject();
+      obj.put("id", token.getId());
+      obj.put("format", token.getFormat().getValue());
+      obj.put("holderKeyReference", token.getHolderKeyReference());
+      obj.put("signatureAlgorithm", token.getSignatureAlgorithm());
+      obj.put("dataToSign", Base64.encodeToString(token.getDataToSign(), Base64.URL_SAFE | Base64.NO_WRAP | Base64.NO_PADDING));
+      jsonArray.put(obj);
+    }
+    return jsonArray.toString();
   }
 
   public static OpenID4VPExceptions convertToOpenID4VPException(

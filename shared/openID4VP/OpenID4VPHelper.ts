@@ -88,7 +88,7 @@ export const signDataForVpPreparation = async (
         payload, // Payload is in base64 url encoded form - decode it before signing
         signatureAlgorithm,
       );
-      return {signedData: signature} as VPTokenSigningResult;
+      return {signedData: signature, id: unsignedVPToken.id} as VPTokenSigningResult;
     },
   );
 
@@ -161,5 +161,5 @@ export function claimPathPointersToJsonPath(
   return currentPath;
 }
 
-export const isDcqlFlow = (vpRequest: object) =>
-  vpRequest?.['dcql_query'] !== undefined;
+export const isDcqlFlow = (vpRequest: Record<string, unknown>) =>
+  (vpRequest as Record<string, unknown>)['dcql_query'] !== undefined;

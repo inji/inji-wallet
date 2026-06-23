@@ -188,23 +188,6 @@ class OpenID4VP {
     return this.processSelectedVCs(vpRequest, selectedVCs, selectedDisclosuresByVc);
   }
 
-  static getSignatureSuite(key: string): string {
-    // The key is in did:jwk format, we need to extract the "crv" & "kty" parameter from the JWK to determine the signature algorithm
-    try {
-      const jwk = decodeDidJwk(key);
-      if (jwk.kty === 'OKP' && jwk.crv === 'Ed25519') {
-        return 'Ed25519Signature2020';
-      } else if (jwk.kty === 'RSA') {
-        return 'RsaSignature2018';
-      } else {
-        return 'JsonWebSignature2020';
-      }
-    } catch (error) {
-      console.error('Error parsing JWK from key: ', error);
-      return 'JsonWebSignature2020'; // default to JsonWebSignature2020 if we can't determine the algorithm
-    }
-  }
-
   static async constructUnsignedVPToken(
     vpRequest: object,
     selectedVCs: Record<string, VC[]>,

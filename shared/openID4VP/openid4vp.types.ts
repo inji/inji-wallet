@@ -1,7 +1,7 @@
-import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {VCMetadata} from "../VCMetadata";
 
 export interface UnsignedVPToken {
+  id: string;
   format: 'ldp_vc' | 'mso_mdoc' | 'vc_sd_jwt' | 'dc_sd_jwt';
   holderKeyReference: string;
   signatureAlgorithm: string;
@@ -14,6 +14,7 @@ export interface VerifierInfo {
 }
 
 export interface VPTokenSigningResult {
+  id: string;
   signedData: string;
 }
 

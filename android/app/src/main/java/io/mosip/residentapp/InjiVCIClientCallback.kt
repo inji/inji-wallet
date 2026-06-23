@@ -78,6 +78,7 @@ object VCIClientCallbackBridge {
         payload.forEach { v ->
           pushMap(
             Arguments.createMap().apply {
+              putString("id", v.id)
               putString("dataToSign",
                 Base64.encodeToString(
                   v.dataToSign,
