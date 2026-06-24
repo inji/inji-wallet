@@ -145,7 +145,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
               />
             )}
             <Text weight="semibold"
-                  color={wellknownDisplayProperty.getTextColor(Theme.Colors.plainText)}
+                  color={wellknownDisplayProperty.getTextColor(Theme.Colors.Details)}
                   style={{marginLeft: 8}}>
               {formatKeyLabel(name)}
             </Text>

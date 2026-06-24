@@ -229,7 +229,7 @@ export const openID4VPActions = (model: any) => {
 
     setSendVPShareError: model.assign({
       error: (_, event) => {
-        console.error('Error during send VP:', event.data.message, event.data.code);
+        console.error('Error during send VP:', event.data.message, event.data.code, event.data.cause);
         return 'send vp-' + event.data.message + '-' + event.data.code;
       },
     }),

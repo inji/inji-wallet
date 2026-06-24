@@ -150,12 +150,14 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     private void rejectWithOpenID4VPExceptions(Exception e, Promise promise) {
+        Log.e("OpenID4VPBridge", "Exception occurred. Details: "+ e.getMessage() +" | Cause: "+e.getCause());
+
         if (e instanceof OpenID4VPExceptions exception) {
             WritableMap errorMap = Arguments.createMap();
             errorMap.putString("errorCode", exception.getErrorCode());
             errorMap.putString("message", exception.getMessage());
             errorMap.putString("verifierResponse", gson.toJson(exception.getVerifierResponse()));
-            errorMap.putString("cause", gson.toJson(exception.getCause()));
+            errorMap.putString("cause", exception.getCause() != null ? exception.getCause().getMessage() : "Source is the cause");
 
             promise.reject(exception.getErrorCode(), exception.getMessage(), exception, errorMap);
         } else {

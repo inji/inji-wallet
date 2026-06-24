@@ -23,6 +23,7 @@ class OpenId4VPUtils: NSObject {
   static func toJson(_ data: [UnsignedVPToken]?) throws -> [[String: Any]] {
     let encodableUnsignedVPToken : [[String: String]] = data?.map {
       [
+        "id": $0.id,
         "dataToSign": $0.dataToSign.toBase64UrlEncoded(),
         "format": $0.format.rawValue,
         "holderKeyReference": $0.holderKeyReference,
@@ -125,8 +126,11 @@ class OpenId4VPUtils: NSObject {
       guard let signedData = vpTokenSigningResult["signedData"] as? String else {  
         throw ParseError(message: "Invalid VP token signing result: missing or invalid 'signedData'")  
       }
+      guard let id = vpTokenSigningResult["id"] as? String else {
+        throw ParseError(message: "Invalid VP token signing result: missing or invalid 'id'")
+      }
       let decodedSignedData = try decodeBase64ToData(signedData)
-      return VPTokenSigningResult(signedData: decodedSignedData)
+      return VPTokenSigningResult(id: id, signedData: decodedSignedData)
     }
       
     return vpTokenSigningResultsData

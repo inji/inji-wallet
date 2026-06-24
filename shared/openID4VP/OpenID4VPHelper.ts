@@ -72,6 +72,7 @@ export const signDataForVpPreparation = async (
     return keyTypeToKeysPromise[keyType];
   };
 
+
   const result: Promise<VPTokenSigningResult>[] = unSignedVpTokens.map(
     async unsignedVPToken => {
       let signature: string | undefined = '';
