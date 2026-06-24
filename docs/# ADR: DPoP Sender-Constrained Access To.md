@@ -13,39 +13,41 @@
 
 The wallet currently exchanges authorization grants for Bearer access tokens and presents them to the credential endpoint as `Authorization: Bearer <token>`. Bearer tokens are not bound to any client identity — anyone who intercepts or exfiltrates a token can replay it against any resource server.
 
-RFC 9449 (DPoP — Demonstrating Proof of Possession) adds sender-constraint to OAuth 2.0 access tokens by cryptographically binding each token to a client-controlled key pair. The wallet must prove possession of the private key on every request that uses the token. A stolen token is therefore useless without the corresponding private key.
+RFC 9449 (DPoP — Demonstrating Proof of Possession) adds sender-constraint to OAuth 2.0 access tokens by cryptographically binding each token to a client-controlled key pair. The client must prove possession of the private key on every request that uses the token. A stolen token is therefore useless without the corresponding private key.
 
 OID4VCI 1.0 draft-13 mandates DPoP support as the mechanism for sender-constrained access tokens at both the authorization server (token endpoint) and the credential issuer (credential endpoint).
 
 ### Current gaps
 
-- `sendTokenRequest` (JS) sends a plain `fetch()` with no `DPoP` header.
+- The token request is performed by the wallet (the `getTokenResponse` / `TokenResponseCallback`), which sends a plain POST with no `DPoP` header.
 - The credential endpoint is called by the native `VCIClient` library with `Authorization: Bearer`.
-- No DPoP key management, proof construction, or nonce handling exists anywhere.
+- No DPoP key management, proof construction, signing, or nonce handling exists anywhere.
 
 ---
 
 ## Decision Drivers
 
 - **Security:** Prevent access token replay after exfiltration (BREACH, Heartbleed, XSS-class attacks as cited in RFC 9449 §2).
-- **Interoperability:** Be compatible with AS and RS that enforce `dpop_bound_access_tokens: true`. Support all key types the wallet already has.
+- **Interoperability:** Be compatible with AS and RS that enforce `dpop_bound_access_tokens: true`. Support the algorithms the AS advertises.
 - **Spec compliance:** OID4VCI 1.0 d13 requires DPoP for sender-constrained token flows.
-- **Minimal disruption:** The token request is already JS-owned. The credential request is native — extend the bridge without forking VCIClient internals.
-- **Separation of concerns:** The library knows HTTP context (htm, htu, nonce from RS). The wallet knows keys and signing. Each does what it knows.
+- **Single owner for DPoP:** DPoP is a protocol concern — proof structure, nonce handling, retries, key binding, and signing are tightly coupled. Splitting them across the wallet/library boundary (the original "wallet signs via closure" design) creates two state machines that must stay in lockstep. Keeping the **entire** DPoP mechanism inside the library removes that coupling.
+- **Minimal wallet surface:** The wallet should not have to learn DPoP. It owns the token HTTP request only because that request is wallet-side today; everything DPoP about it should arrive pre-built.
 
 ---
 
 ## Plan
 
-### Split responsibility: library constructs proofs, wallet signs ✓
+### Library owns DPoP end-to-end; wallet only carries the prepared proof ✓
 
-**Token endpoint (JS-owned):** Wallet constructs the full DPoP proof and adds the `DPoP` header in `sendTokenRequest`. AS nonce is managed entirely in JS.
+This supersedes the earlier "library constructs, wallet signs via `signDPoP` closure" proposal. Feedback on that design: we do **not** want a signing closure handed to the wallet, and we do not want the wallet to construct or sign DPoP proofs at all. The library prepares **and** signs every DPoP proof.
 
-**Credential endpoint (library-owned):** The VCIClient library constructs DPoP proofs internally — it already knows `htm`, `htu`, `accessToken`, and any RS-provided nonce from 401 responses. The library fires an `onRequestDPoPSign` callback with the `signingInput` (the `header.payload` bytes to sign) and which `alg` it chose. The wallet signs using the matching DPoP key alias and returns the raw signature. The library assembles the final JWT and injects the headers.
+**DPoP keys (library-owned, ephemeral per flow):** The `VCIClient` library generates a fresh DPoP key pair **in memory at the start of each issuance flow**, uses it for every proof in that flow, and discards it when the flow ends. Nothing is persisted to a keystore. The wallet never holds, passes, or signs with DPoP keys. The same in-memory key signs all three bindings within a flow — `dpop_jkt` in the auth URL, the token-endpoint proof, and the credential-endpoint proof — because the AS and issuer verify those against each other (a per-request key would break the flow).
 
-**Key negotiation:** The wallet passes all available DPoP public keys (one per supported alg) inside `clientMetadata.dpop.keys`. The library intersects this with `dpop_signing_alg_values_supported` from AS metadata and picks the best match. The wallet never needs to read AS metadata for DPoP key selection.
+**Credential endpoint (library-owned HTTP):** The library already owns this request. It builds, signs, sends, and handles the RS nonce retry entirely internally. The wallet is not involved at any point — no callback, no closure.
 
-**Chosen.** Clean separation: library owns protocol (proof structure, RS nonce, retry), wallet owns keys (generation, storage, signing). No new native method parameters — all DPoP config travels inside the existing `clientMetadata` JSON string.
+**Token endpoint (wallet-owned HTTP):** The library builds and signs the token-endpoint DPoP proof and hands the finished proof string to the wallet as a **new field on `TokenRequest`** (`dpopProof`). The wallet attaches it as the `DPoP` header on the POST it already makes. On an AS `use_dpop_nonce` challenge, the wallet calls a small library method, passing the AS-supplied nonce, to obtain a fresh signed proof and retries. The wallet never reads AS metadata, never picks an alg, never touches a key.
+
+**Chosen.** One owner for the whole DPoP mechanism. The wallet's only DPoP responsibility is to copy a string into a header and, on a nonce challenge, ask the library for a new string.
 
 ---
 
@@ -53,31 +55,31 @@ OID4VCI 1.0 draft-13 mandates DPoP support as the mechanism for sender-constrain
 
 ### Key design
 
-| Concern                                    | Decision                                                                                                                                                                                                                                                                                                 |
-| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| DPoP key algorithms                        | One persistent key pair per supported alg: `DPoP_ES256`, `DPoP_RS256`, `DPoP_EdDSA`, `DPoP_ES256K`                                                                                                                                                                                                       |
-| DPoP key storage                           | `RNSecureKeystoreModule` generic key storage, one alias per alg                                                                                                                                                                                                                                          |
-| DPoP key generation                        | Per-alg: generated once on first use, loaded from alias on subsequent flows                                                                                                                                                                                                                              |
-| DPoP key rotation                          | **Open question** — RFC 9449 is silent on rotation frequency. Policy TBD (wallet reset / periodic / never)                                                                                                                                                                                               |
-| DPoP key vs credential proof key           | Always separate — using the same key for both enables JWT-swapping attacks (read: RFC 9449 §11.5)                                                                                                                                                                                                        |
-| Alg selection — credential endpoint        | Library picks from `clientMetadata.dpop.keys` intersected with AS `dpop_signing_alg_values_supported`                                                                                                                                                                                                    |
-| Alg selection — token endpoint + dpop_jkt  | Library selects alg (from AS discovery) and passes it to wallet via `dpopAlg` in `onRequestTokenResponse`. Library computes `dpop_jkt` and includes it in the auth URL fired via `onRequestAuthCode`. Wallet does not read AS metadata.                                                                  |
-| DPoP config transport                      | Embedded in existing `clientMetadata` JSON as `dpop.keys` — no new native method parameters                                                                                                                                                                                                              |
-| clientMetadata ownership                   | Built in `IssuersService` for both flows; `VciClient.ts` no longer hardcodes it                                                                                                                                                                                                                          |
-| AS nonce                                   | Wallet JS owns: read from token endpoint response, stored as `dpopASNonce` in XState context                                                                                                                                                                                                             |
-| RS nonce                                   | Library owns: extracted from 401 response internally, passed as `signingInput` context to wallet on retry — wallet never stores it                                                                                                                                                                       |
-| Auth code binding                          | Library computes `dpop_jkt` from selected DPoP key and includes it in auth URL fired via `onRequestAuthCode` (read: RFC 9449 §10)                                                                                                                                                                        |
-| Pre-auth code flow                         | No `dpop_jkt` — just `DPoP` header on token request                                                                                                                                                                                                                                                      |
-| DPoP attempt — token endpoint              | Always attempt DPoP on the token request (OID4VCI recommends DPoP). `dpop_signing_alg_values_supported` present → use for alg selection. Absent → use wallet's preference order (ES256 first). Check `token_type` in response to confirm whether AS issued a DPoP-bound or Bearer token.                 |
-| Graceful degradation — credential endpoint | Library checks `token_type` from token response. `token_type: "DPoP"` → use DPoP with `ath`. `token_type: "Bearer"` → use Bearer, ignore `clientMetadata.dpop` entirely.                                                                                                                                 |
-| RS Bearer-only 401 fallback                | If credential endpoint returns 401 with `WWW-Authenticate: Bearer` only (no DPoP challenge) → spec §7.2 permits retrying with Bearer as best-effort. Not guaranteed — RS could still reject. If `WWW-Authenticate: DPoP` is present (with or without Bearer) → never downgrade, handle DPoP errors only. |
+| Concern                                    | Decision                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DPoP key ownership                         | **Library.** Generated, held, and used for signing entirely inside `VCIClient`. The wallet never sees the private key and never signs.                                                                                                                                                                                                                            |
+| DPoP key lifetime                          | **Ephemeral, in memory, one key pair per issuance flow.** Generated at flow start, reused for every proof in the flow, discarded at flow end. Nothing is written to a keystore — no persistence at rest.                                                                                                                                                          |
+| DPoP key reuse within a flow               | The **same** in-memory key signs `dpop_jkt` (auth URL), the token-endpoint proof, and the credential-endpoint proof. A per-request key would break the AS/issuer cross-checks (`dpop_jkt` ↔ token proof ↔ `cnf.jkt`).                                                                                                                                             |
+| DPoP key rotation                          | Not applicable — a fresh key per flow is inherent rotation. No rotation policy needed.                                                                                                                                                                                                                                                                            |
+| DPoP key vs credential proof key           | Always separate — using the same key for both enables JWT-swapping attacks (read: RFC 9449 §11.5). The credential proof key remains wallet-owned and is delivered via the existing `getProofs` callback, unchanged.                                                                                                                                               |
+| Alg selection (both endpoints + dpop_jkt)  | Library selects the alg by intersecting its supported algs with the AS `dpop_signing_alg_values_supported` (discovered internally), then generates the ephemeral key for that alg. Falls back to its preference order (ES256 first) when the AS omits the list. Prefer EC/EdDSA — generating an RSA key pair per flow is expensive; treat RS256 as a last resort. |
+| Proof construction & signing               | **Library, for every proof** — token endpoint and credential endpoint. Wallet performs no construction and no signing.                                                                                                                                                                                                                                            |
+| Transport of token-endpoint proof          | New `dpopProof: String?` field on the existing `TokenRequest` passed to the `getTokenResponse` callback. No new top-level method parameters; no `clientMetadata` changes.                                                                                                                                                                                         |
+| AS nonce retry (token endpoint)            | Wallet reads `DPoP-Nonce` from the AS `400 use_dpop_nonce` response and calls a new library method `generateTokenDPoPProof(dpopNonce:)` to get a fresh signed proof, then retries the POST. Wallet relays only the nonce — the library reuses the active flow's endpoint, alg, and ephemeral key.                                                                 |
+| RS nonce (credential endpoint)             | Library owns it fully: extracts `DPoP-Nonce` from the 401, rebuilds and re-signs internally, retries. The wallet never sees the RS nonce.                                                                                                                                                                                                                         |
+| Auth code binding (`dpop_jkt`)             | Library computes `dpop_jkt` from its own DPoP key and includes it in the authorization URL it builds (read: RFC 9449 §10). Wallet only opens the URL.                                                                                                                                                                                                             |
+| Pre-auth code flow                         | No `dpop_jkt` — just the `DPoP` header on the token request, supplied as `tokenRequest.dpopProof`.                                                                                                                                                                                                                                                                |
+| DPoP attempt — token endpoint              | Library always attempts DPoP (OID4VCI recommends it). The wallet's POST simply carries whatever `dpopProof` the library supplied. The AS `token_type` in the response is the actual outcome signal (DPoP vs Bearer).                                                                                                                                              |
+| Graceful degradation — credential endpoint | Library checks `token_type` from the token response. `token_type: "DPoP"` → use DPoP with `ath`. `token_type: "Bearer"` → use Bearer, skip DPoP entirely. Decided and acted on internally.                                                                                                                                                                        |
+| RS Bearer-only 401 fallback                | If the credential endpoint returns 401 with `WWW-Authenticate: Bearer` only (no DPoP challenge) → §7.2 permits a best-effort Bearer retry. If `WWW-Authenticate: DPoP` is present → never downgrade; handle DPoP errors only. All internal to the library.                                                                                                        |
 
 ### Open questions
 
-| #    | Question                                                                                                                                                                                                                                                                               | Impact                    |
-| ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
-| OQ-1 | **DPoP key rotation frequency** — RFC 9449 is silent. Options: wallet reset, time-based (e.g. 90 days), never.                                                                                                                                                                         | Key management complexity |
-| OQ-2 | **AS rejects DPoP header despite OID4VCI recommendation** — wallet sends DPoP, AS returns error (not `use_dpop_nonce`). Should wallet retry as Bearer or hard-fail? Policy call: retrying as Bearer degrades security; hard-failing is safer but breaks interop with non-compliant AS. | Degradation policy        |
+| #    | Question                                                                                                                                                                                                                                                                                                                                           | Impact             |
+| ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| OQ-1 | **AS rejects the DPoP header despite the OID4VCI recommendation** — library sends DPoP, AS returns an error that is not `use_dpop_nonce`. Should the library retry as Bearer or hard-fail? Retrying degrades security; hard-failing breaks non-compliant AS.                                                                                       | Degradation policy |
+| OQ-2 | **In-memory crypto in the library.** `VCIClient` has not previously held keys or signed anything (all signing is delegated to the wallet via `getProofs`). Owning ephemeral DPoP keys requires new in-memory keygen + signing code in both the Swift and Kotlin libraries — but **no** secure persistent storage, since keys never outlive a flow. |
+| OQ-3 | **Deferred / resumable issuance.** An in-memory key cannot survive an app restart or a long-deferred credential poll. If deferred issuance (or resuming an interrupted flow) is ever required, that flow would need either a persisted key or a fresh authorization. Out of scope while flows are synchronous.                                     |
 
 ---
 
@@ -103,163 +105,116 @@ Payload:
 }
 ```
 
-`ath` is absent on the token endpoint request. Mandatory on the credential endpoint request.
+`ath` is absent on the token endpoint request. Mandatory on the credential endpoint request. The library builds and signs both forms.
 
 ---
 
 ## Library API Changes
 
-### `ClientMetadata` struct extension
+All DPoP construction and signing moves into the library. The wallet-facing surface is two small additions; nothing about `ClientMetadata` or the existing callbacks changes.
 
-The VCIClient library's `ClientMetadata` gains an optional `dpop` field. No existing fields change; no new method parameters are added anywhere.
+### `ClientMetadata` — unchanged
 
-```swift
-// VCIClient library — ClientMetadata
-struct DPoPKeyEntry: Codable {
-  let alg: String           // "ES256" | "RS256" | "EdDSA" | "ES256K"
-  let publicKeyJWK: AnyCodable
-}
-
-struct DPoPConfig: Codable {
-  let keys: [DPoPKeyEntry]  // all DPoP public keys the wallet holds
-}
-
-struct ClientMetadata: Codable {
-  let clientId: String
-  let redirectUri: String
-  let dpop: DPoPConfig?     // nil → library uses Bearer only
-}
-```
-
-Equivalent TypeScript type used by `IssuersService` when building `clientMetadata`:
-
-```typescript
-type ClientMetadata = {
-  clientId: string;
-  redirectUri: string;
-  dpop?: {
-    keys: Array<{alg: string; publicKeyJWK: object}>;
-  };
-};
-```
-
-### `fetchCredentialsUsingCredentialOffer` / `fetchCredentialsFromTrustedIssuer` — new `signDPoP` closure
-
-The library gains one new optional closure parameter. All existing parameters are unchanged.
+DPoP keys are no longer passed by the wallet, so `ClientMetadata` keeps its current shape:
 
 ```swift
-// Added to both fetch methods — nil when dpop is absent from ClientMetadata
-signDPoP: ((_ signingInput: String, _ alg: String) async throws -> String)?
-```
-
-The library calls this closure each time it needs a DPoP proof signed. It constructs the JWT header and payload internally, serialises to `base64url(header).base64url(payload)`, and passes that as `signingInput`. The wallet returns `base64url(signature)`. The library appends the signature to form the complete JWT.
-
-### `onRequestDPoPSign` event / `sendDPoPSignatureFromJS` receiver
-
-Mirrors the existing `onRequestProof` / `sendProofFromJS` pattern exactly.
-
-```
-Native → JS event: onRequestDPoPSign
-  { "signingInput": "eyJ...", "alg": "ES256" }
-
-JS → Native receiver: sendDPoPSignatureFromJS
-  "MEYCIQDnp3..."   ← base64url(ES256 signature over signingInput bytes)
-```
-
-### `clientMetadata` on the wire
-
-```json
-{
-  "clientId": "wallet",
-  "redirectUri": "io.mosip.residentapp.inji://oauthredirect",
-  "dpop": {
-    "keys": [
-      {
-        "alg": "ES256",
-        "publicKeyJWK": {"kty": "EC", "crv": "P-256", "x": "...", "y": "..."}
-      },
-      {"alg": "RS256", "publicKeyJWK": {"kty": "RSA", "n": "...", "e": "AQAB"}},
-      {
-        "alg": "EdDSA",
-        "publicKeyJWK": {"kty": "OKP", "crv": "Ed25519", "x": "..."}
-      },
-      {
-        "alg": "ES256K",
-        "publicKeyJWK": {
-          "kty": "EC",
-          "crv": "secp256k1",
-          "x": "...",
-          "y": "..."
-        }
-      }
-    ]
-  }
+public struct ClientMetadata: Codable {
+    public let clientId: String
+    public let redirectUri: String
 }
 ```
 
-If no DPoP keys exist or AS does not support DPoP, `dpop` field is omitted and library falls back to Bearer.
+### `TokenRequest` — new `dpopProof` field
+
+The library builds and signs the token-endpoint proof and attaches it to the `TokenRequest` it already passes to the `getTokenResponse` callback. This is the "new param in the token request callback."
+
+```swift
+public struct TokenRequest {
+    public let grantType: GrantType
+    public let tokenEndpoint: String
+    public let authCode: String?
+    public let preAuthCode: String?
+    public let txCode: String?
+    public let clientId: String?
+    public let redirectUri: String?
+    public let codeVerifier: String?
+    public let dpopProof: String?   // NEW — signed dpop+jwt for the token POST; nil ⇒ Bearer
+}
+```
+
+The wallet's `getTokenResponse` implementation copies `tokenRequest.dpopProof` into the `DPoP` request header (when non-nil) and otherwise behaves exactly as today.
+
+### `VCIClient.generateTokenDPoPProof(dpopNonce:)` — new method for the AS nonce retry
+
+When the AS answers the first token POST with `400 use_dpop_nonce` + a `DPoP-Nonce` header, the wallet asks the library for a fresh proof bound to that nonce, then retries. The library rebuilds and re-signs internally with its own key.
+
+```swift
+// New public method on VCIClient — used only on a use_dpop_nonce challenge
+public func generateTokenDPoPProof(
+    dpopNonce: String
+) async throws -> String
+```
+
+The wallet passes only the nonce. The library already holds the flow's `tokenEndpoint` (the `htu`), selected alg, and ephemeral key from when it built the first proof, so they are not passed back in. **Precondition:** valid only during an active flow — if the ephemeral key is gone (flow ended / app restarted), the call throws rather than mint a new key, since a new key would break the `dpop_jkt` ↔ token-proof ↔ `cnf.jkt` chain.
+
+This is a wallet→library call (the wallet already holds the `VCIClient` instance). It is **not** a closure handed to the wallet, and it never exposes signing material.
+
+### Credential endpoint — no wallet-facing change
+
+The credential request is library-owned HTTP. The library constructs, signs, sends, handles the `use_dpop_nonce` 401, and retries entirely internally. There is **no** `signDPoP` closure and **no** `onRequestDPoPSign` / `sendDPoPSignatureFromJS` bridge event — these are removed from the design.
 
 ---
 
 ## Flow Diagrams
 
-### Flow 1 — DPoP Key Setup (wallet side, before calling library)
+### Flow 1 — DPoP Key Setup (library internal, ephemeral)
 
-Wallet ensures all DPoP key pairs exist in storage and assembles `clientMetadata` with all public keys. Library does all discovery and alg selection internally.
+At the start of each flow the library generates a fresh in-memory DPoP key pair for the selected alg. No persistence, no keystore. The wallet does nothing here.
 
 ```mermaid
 flowchart TD
-    A([Start issuance flow]) --> G[For each alg in ES256 RS256 EdDSA ES256K\nload DPoP key from storage\ngenerate and store if absent]
-    G --> H[Build clientMetadata.dpop.keys\nwith all public key JWKs]
-    H --> K([Call library with clientMetadata\nlibrary owns all discovery and alg selection])
+    A([Library begins a flow that needs DPoP]) --> B[Discover dpop_signing_alg_values_supported from AS]
+    B --> C[Select alg: intersect supported algs with AS list\nfall back to ES256-first preference if AS omits it]
+    C --> D[Generate a fresh ephemeral key pair for the selected alg\nin memory — prefer EC/EdDSA, RS256 last resort]
+    D --> E([Key held in memory for this flow only\nlibrary signs all proofs internally, discards at flow end])
 ```
 
 ---
 
 ### Flow 2 — Pre-Authorized Code Flow with DPoP
 
-Wallet calls the library with `clientMetadata` (which includes all DPoP keys). Library owns all discovery and drives the flow. Wallet responds to events.
+The wallet calls the library and only relays HTTP for the token endpoint. The library owns every DPoP concern.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant W as Wallet JS
+    participant W as Wallet
     participant L as VCIClient Library
     participant AS as Authorization Server
     participant CI as Credential Issuer
 
-    W->>W: Ensure all DPoP key pairs in storage
-    W->>W: Build clientMetadata with dpop.keys list
-    W->>L: requestCredentialByOffer(credentialOffer, clientMetadata, callbacks)
+    W->>L: fetchCredentialsUsingCredentialOffer(credentialOffer, clientMetadata, callbacks)
 
-    note over L: Library fetches issuer well-known and AS well-known internally
-    note over L: Library discovers dpop_signing_alg_values_supported and selects alg
+    note over L: Library fetches issuer + AS well-known internally
+    note over L: Library selects DPoP alg and ensures its DPoP key pair (Flow 1)
+    note over L: Library builds + signs token proof-A (htm=POST, htu=tokenEndpoint, no ath, no nonce)
 
-    L->>W: onRequestTokenResponse tokenRequest includes dpopAlg and tokenEndpoint
-    note over W: Token endpoint — wallet owns this HTTP request
-    W->>W: Build DPoP proof-A htm=POST htu=tokenEndpoint alg=dpopAlg no ath no nonce
-    W->>AS: POST /token DPoP=proof-A grant_type=pre-authorized_code pre-authorized_code=X
-    AS-->>W: 400 error=use_dpop_nonce DPoP-Nonce=nonce-as-1
-    note over W: Store nonce-as-1 as dpopASNonce in XState context
-    W->>W: Build DPoP proof-B with nonce=nonce-as-1
-    W->>AS: POST /token DPoP=proof-B grant_type=pre-authorized_code pre-authorized_code=X
-    AS-->>W: 200 access_token=T token_type=DPoP DPoP-Nonce=nonce-as-2
-    note over W: Validate token_type equals DPoP. Store nonce-as-2 as dpopASNonce.
-    W->>L: sendTokenResponseFromJS tokenResponse
+    L->>W: getTokenResponse(tokenRequest) — tokenRequest.dpopProof = proof-A
+    note over W: Token endpoint — wallet owns this HTTP request only
+    W->>AS: POST /token  DPoP=proof-A  grant_type=pre-authorized_code  pre-authorized_code=X
+    AS-->>W: 400 error=use_dpop_nonce  DPoP-Nonce=nonce-as-1
+    W->>L: generateTokenDPoPProof(dpopNonce=nonce-as-1)
+    L-->>W: proof-B (signed, includes nonce=nonce-as-1)
+    W->>AS: POST /token  DPoP=proof-B  grant_type=pre-authorized_code  pre-authorized_code=X
+    AS-->>W: 200 access_token=T  token_type=DPoP
+    W-->>L: return TokenResponse (access_token=T, token_type=DPoP)
 
-    note over L,CI: Credential endpoint — library owns this request
-    L->>L: Build proof header+payload htm=POST htu=credential_endpoint ath=SHA256(T) jti iat exp
-    L->>W: onRequestDPoPSign signingInput=header.payload alg=ES256
-    W->>W: RNSecureKeystoreModule.sign alias=DPoP_ES256 input=signingInput
-    W->>L: sendDPoPSignatureFromJS signature=sig
-    L->>CI: POST /credential Authorization=DPoP T DPoP=header.payload.sig
-    CI-->>L: 401 WWW-Authenticate=DPoP error=use_dpop_nonce DPoP-Nonce=nonce-rs-1
-    note over L: Library handles RS nonce internally. Wallet never sees this.
-    L->>L: Rebuild proof with nonce=nonce-rs-1
-    L->>W: onRequestDPoPSign signingInput=new-header.payload alg=ES256
-    W->>W: RNSecureKeystoreModule.sign alias=DPoP_ES256 input=signingInput
-    W->>L: sendDPoPSignatureFromJS signature=sig2
-    L->>CI: POST /credential Authorization=DPoP T DPoP=new-header.payload.sig2
+    note over L,CI: Credential endpoint — library owns the request AND the DPoP proof end-to-end
+    note over L: token_type==DPoP → build + sign proof (ath=SHA256(T), jti, iat, exp)
+    L->>CI: POST /credential  Authorization=DPoP T  DPoP=proof
+    CI-->>L: 401 WWW-Authenticate=DPoP  error=use_dpop_nonce  DPoP-Nonce=nonce-rs-1
+    note over L: Library stores RS nonce, rebuilds + re-signs internally. Wallet never sees this.
+    L->>CI: POST /credential  Authorization=DPoP T  DPoP=proof'(nonce=nonce-rs-1)
     CI-->>L: 200 credential issued
     L-->>W: credential response
 ```
@@ -268,110 +223,93 @@ sequenceDiagram
 
 ### Flow 3 — Authorization Code Flow with DPoP
 
-Wallet calls the library with `clientMetadata`. Library owns discovery and builds the auth URL including `dpop_jkt` (it knows the alg from AS metadata). Wallet only navigates and responds to events.
+The library computes `dpop_jkt` from its own key and bakes it into the authorization URL. The wallet only opens the browser and relays the token POST.
 
 ```mermaid
 sequenceDiagram
     autonumber
     participant U as User Browser
-    participant W as Wallet JS
+    participant W as Wallet
     participant L as VCIClient Library
     participant AS as Authorization Server
     participant CI as Credential Issuer
 
-    W->>W: Ensure all DPoP key pairs in storage
-    W->>W: Build clientMetadata with dpop.keys list
-    W->>L: requestCredentialByOffer(credentialOffer, clientMetadata, callbacks)
+    W->>L: fetchCredentialsUsingCredentialOffer(credentialOffer, clientMetadata, callbacks)
 
-    note over L: Library fetches issuer well-known and AS well-known internally
-    note over L: Library selects DPoP alg from clientMetadata.dpop.keys vs dpop_signing_alg_values_supported
-    note over L: Library computes dpop_jkt = JWK thumbprint of selected DPoP key
+    note over L: Library fetches well-knowns, selects DPoP alg, ensures DPoP key (Flow 1)
+    note over L: Library computes dpop_jkt = JWK thumbprint of its DPoP key
 
-    L->>W: onRequestAuthCode authorizationUrl includes dpop_jkt and code_challenge
+    L->>W: authorize(authorizationUrl) — URL includes dpop_jkt and code_challenge
     W->>U: Open browser to authorizationUrl
     note over U,AS: User authenticates. AS records dpop_jkt against the auth code.
     AS-->>W: 302 redirect with code=auth-code
-    W->>L: sendAuthCodeFromJS authCode
-    note over L: auth-code is bound to the DPoP key via dpop_jkt
+    W-->>L: return auth-code
+    note over L: auth-code is bound to the library's DPoP key via dpop_jkt
+    note over L: Library builds + signs token proof-A (no nonce)
 
-    L->>W: onRequestTokenResponse tokenRequest includes dpopAlg and tokenEndpoint
-    note over W: Token endpoint — wallet owns this HTTP request
-    W->>W: Build DPoP proof-A htm=POST htu=tokenEndpoint alg=dpopAlg no ath no nonce
-    W->>AS: POST /token DPoP=proof-A grant_type=authorization_code code=auth-code code_verifier=cv
-    AS-->>W: 400 error=use_dpop_nonce DPoP-Nonce=nonce-as-1
-    note over W: Store nonce-as-1 as dpopASNonce
-    W->>W: Build DPoP proof-B with nonce=nonce-as-1
-    W->>AS: POST /token DPoP=proof-B grant_type=authorization_code code=auth-code code_verifier=cv
-    note over AS: AS verifies DPoP public key in proof-B matches dpop_jkt bound to auth-code
-    AS-->>W: 200 access_token=T token_type=DPoP DPoP-Nonce=nonce-as-2
-    note over W: Validate token_type equals DPoP. Store nonce-as-2 as dpopASNonce.
-    W->>L: sendTokenResponseFromJS tokenResponse
+    L->>W: getTokenResponse(tokenRequest) — tokenRequest.dpopProof = proof-A
+    W->>AS: POST /token  DPoP=proof-A  grant_type=authorization_code  code=auth-code  code_verifier=cv
+    AS-->>W: 400 error=use_dpop_nonce  DPoP-Nonce=nonce-as-1
+    W->>L: generateTokenDPoPProof(dpopNonce=nonce-as-1)
+    L-->>W: proof-B (signed, includes nonce=nonce-as-1)
+    W->>AS: POST /token  DPoP=proof-B  grant_type=authorization_code  code=auth-code  code_verifier=cv
+    note over AS: AS verifies the DPoP public key in proof-B matches dpop_jkt bound to auth-code
+    AS-->>W: 200 access_token=T  token_type=DPoP
+    W-->>L: return TokenResponse (access_token=T, token_type=DPoP)
 
-    note over L,CI: Credential endpoint — library owns this request
-    L->>L: Build proof header+payload htm=POST htu=credential_endpoint ath=SHA256(T) jti iat exp
-    L->>W: onRequestDPoPSign signingInput=header.payload alg=ES256
-    W->>W: RNSecureKeystoreModule.sign alias=DPoP_ES256 input=signingInput
-    W->>L: sendDPoPSignatureFromJS signature=sig
-    L->>CI: POST /credential Authorization=DPoP T DPoP=header.payload.sig
-    CI-->>L: 401 WWW-Authenticate=DPoP error=use_dpop_nonce DPoP-Nonce=nonce-rs-1
-    note over L: Library handles RS nonce internally
-    L->>L: Rebuild proof with nonce=nonce-rs-1
-    L->>W: onRequestDPoPSign signingInput=new-header.payload alg=ES256
-    W->>W: RNSecureKeystoreModule.sign alias=DPoP_ES256 input=signingInput
-    W->>L: sendDPoPSignatureFromJS signature=sig2
-    L->>CI: POST /credential Authorization=DPoP T DPoP=new-header.payload.sig2
-    note over CI: CI verifies cnf.jkt in access token T matches DPoP public key in proof
-    CI-->>L: 200 credential issued
+    note over L,CI: Credential endpoint — library owns request AND DPoP proof end-to-end
+    note over L: build + sign proof (ath=SHA256(T)) — handle RS use_dpop_nonce 401 internally
+    L->>CI: POST /credential  Authorization=DPoP T  DPoP=proof
+    CI-->>L: 200 credential issued (cnf.jkt in T matches the DPoP key)
     L-->>W: credential response
 ```
 
 ---
 
-### Flow 4 — Token Endpoint DPoP Proof Construction (Wallet JS)
+### Flow 4 — Token Endpoint DPoP Proof Construction (Library)
 
-The wallet constructs the full proof for the token endpoint because it owns that HTTP request.
+The library constructs **and signs** the token-endpoint proof. The wallet receives a finished string on `TokenRequest`.
 
 ```mermaid
 flowchart TD
-    A([constructDPoPProof called]) --> B[Generate UUID v4 as jti]
-    B --> C[Normalize URL\nstrip query string and fragment as htu]
-    C --> D{dpopASNonce\nin XState context?}
-    D -- Yes --> E[Include nonce claim]
+    A([Library about to fire getTokenResponse]) --> B[Generate UUID v4 as jti]
+    B --> C[Normalize tokenEndpoint\nstrip query string and fragment as htu]
+    C --> D{AS nonce known?\nfirst attempt: no}
     D -- No --> F[Omit nonce claim]
-    E --> G[Build JWT payload\njti htm htu iat exp=iat+60 nonce if present\nno ath at token endpoint]
+    D -- Yes --> E[Include nonce claim\nused by generateTokenDPoPProof on retry]
+    E --> G[Build payload\njti htm=POST htu iat exp=iat+60 nonce?\nno ath at token endpoint]
     F --> G
-    G --> H[Build JWT header\ntyp=dpop+jwt alg=selectedAlg\njwk=selected DPoP public key JWK\nno kid no x5c]
-    H --> I[Sign with RNSecureKeystoreModule\nusing DPoP_selectedAlg alias]
-    I --> J([Return signed dpop+jwt\nadded as DPoP header on token request])
+    G --> H[Build header\ntyp=dpop+jwt alg=selectedAlg jwk=DPoP public JWK]
+    H --> I[Sign internally with the library DPoP private key]
+    I --> J([Set tokenRequest.dpopProof = signed dpop+jwt\nwallet copies it into the DPoP header])
 ```
 
-### Flow 5 — Credential Endpoint DPoP Proof Construction (Library)
+---
 
-The library constructs the proof. The wallet only provides the signature.
+### Flow 5 — Credential Endpoint DPoP (Library, fully internal)
+
+The library constructs, signs, sends, and retries. The wallet is not involved.
 
 ```mermaid
 flowchart TD
     A([Library about to call credential endpoint]) --> B{token_type in\ntoken response == DPoP?}
     B -- No --> BN([Use Authorization=Bearer\nno DPoP proof])
-    B -- Yes --> C[Select alg from clientMetadata.dpop.keys\nvs dpop_signing_alg_values_supported]
+    B -- Yes --> C[Use selected alg + library DPoP key]
     C --> D[Generate UUID v4 as jti]
-    D --> E[Compute ath = base64url of SHA-256 of access_token]
+    D --> E[Compute ath = base64url SHA-256 of access_token]
     E --> F{RS nonce available\nfrom prior 401?}
     F -- Yes --> G[Include nonce claim]
     F -- No --> H[Omit nonce claim]
-    G --> I[Build JWT header+payload\ntyp=dpop+jwt alg htm=POST htu iat exp jti ath\njwk=matching public key from dpop.keys\nnonce if present]
+    G --> I[Build header+payload\ntyp=dpop+jwt alg htm=POST htu iat exp jti ath nonce?\njwk=DPoP public JWK]
     H --> I
-    I --> J[fire onRequestDPoPSign\nsigningInput=base64url-header.base64url-payload\nalg=selectedAlg]
-    J --> K[Wallet signs with DPoP_selectedAlg alias]
-    K --> L[Wallet returns base64url signature]
-    L --> M[Library assembles header.payload.signature]
-    M --> N([Set DPoP header and Authorization=DPoP header\nmake credential HTTP request])
+    I --> J[Sign internally with library DPoP private key]
+    J --> N([Set DPoP + Authorization=DPoP headers\nmake credential HTTP request])
     N --> O{401 response?}
     O -- No --> P([Done])
     O -- Yes --> Q{WWW-Authenticate\ncontains DPoP challenge?}
-    Q -- Yes --> R[Handle DPoP errors\nnonce=extract DPoP-Nonce and retry\nother=propagate error]
+    Q -- Yes --> R[nonce error → store DPoP-Nonce, rebuild+resign, retry\nother → propagate error]
     R --> D
-    Q -- No --> S[WWW-Authenticate=Bearer only\nbest-effort Bearer retry per RFC9449 sect7.2\nnot guaranteed to succeed]
+    Q -- No --> S[WWW-Authenticate=Bearer only\nbest-effort Bearer retry per RFC9449 §7.2\nnot guaranteed]
     S --> T([Retry with Authorization=Bearer\nno DPoP proof])
 ```
 
@@ -383,35 +321,36 @@ flowchart TD
 stateDiagram-v2
     direction LR
 
-    state "Token Request - Wallet JS" as TR {
-        [*] --> SendProofA : build proof-A no nonce
+    state "Token Request — wallet relays, library signs" as TR {
+        [*] --> SendProofA : library supplies proof-A (no nonce) on tokenRequest.dpopProof
         SendProofA --> TokenOK : 200 OK
         SendProofA --> NonceRequired : 400 use_dpop_nonce
-        NonceRequired --> StoreASNonce : read DPoP-Nonce from error response
-        StoreASNonce --> SendProofB : build proof-B with AS nonce
+        NonceRequired --> AskLibrary : wallet reads DPoP-Nonce, calls generateTokenDPoPProof(nonce)
+        AskLibrary --> SendProofB : library returns signed proof-B with nonce
         SendProofB --> TokenOK : 200 OK
-        TokenOK --> CheckSuccessNonce : read DPoP-Nonce from 200 response
-        CheckSuccessNonce --> [*] : store as dpopASNonce for next token request
+        TokenOK --> [*] : wallet returns TokenResponse to library
     }
 
-    state "Credential Request - Library internal" as CR {
-        [*] --> AskWalletSign : fire onRequestDPoPSign no RS nonce yet
-        AskWalletSign --> CredOK : 200 OK
-        AskWalletSign --> RSNonceRequired : 401 use_dpop_nonce
+    state "Credential Request — library internal" as CR {
+        [*] --> Sign : library builds + signs proof (no RS nonce yet)
+        Sign --> CredOK : 200 OK
+        Sign --> RSNonceRequired : 401 use_dpop_nonce
         RSNonceRequired --> StoreRSNonce : library stores DPoP-Nonce internally
-        StoreRSNonce --> AskWalletSignRetry : fire onRequestDPoPSign with RS nonce in proof
-        AskWalletSignRetry --> CredOK : 200 OK
+        StoreRSNonce --> SignRetry : library rebuilds + re-signs with RS nonce
+        SignRetry --> CredOK : 200 OK
         CredOK --> [*] : credential issued
     }
 
     [*] --> TR
-    TR --> CR : access token sent to library
+    TR --> CR : access token returned to library
     CR --> [*] : credential issued
 ```
 
 ---
 
-### Flow 7 — XState Machine State Changes
+### Flow 7 — XState Machine State Changes (wallet side)
+
+DPoP keys and signing leave the wallet entirely. No `ensuringDPoPKeys` state, no `signingDPoP` state. The only change is inside the existing token-request state.
 
 ```mermaid
 stateDiagram-v2
@@ -422,59 +361,47 @@ stateDiagram-v2
     state "EXISTING STATES" as existing {
         idle --> checkingIssuerTrust
         checkingIssuerTrust --> credentialOfferConsent
-        credentialOfferConsent --> ensuringDPoPKeys
+        credentialOfferConsent --> authOrToken
     }
 
-    state "NEW ensuringDPoPKeys" as ensuringDPoPKeys {
-        [*] --> loadAllKeys : load DPoP_ES256 DPoP_RS256 DPoP_EdDSA DPoP_ES256K from storage
-        loadAllKeys --> generateMissing : generate and store any absent keys
-        generateMissing --> [*] : dpopKeys map in context with all public JWKs
-    }
-
-    ensuringDPoPKeys --> authRedirect : auth code flow\nlibrary includes dpop_jkt in auth URL
-    ensuringDPoPKeys --> tokenRequest : pre-auth flow
+    authOrToken --> authRedirect : auth code flow\nlibrary already put dpop_jkt in the auth URL
+    authOrToken --> tokenRequest : pre-auth flow
 
     authRedirect --> waitingForAuthCode
     waitingForAuthCode --> tokenRequest : auth code received
 
     state "MODIFIED tokenRequest" as tokenRequest {
-        [*] --> sendWithDPoP : sendTokenRequest with DPoP header\nusing pre-selected alg + dpopASNonce
-        sendWithDPoP --> tokenOK : 200 DPoP token
+        [*] --> sendWithDPoP : POST /token with DPoP = tokenRequest.dpopProof
+        sendWithDPoP --> tokenOK : 200 token
         sendWithDPoP --> nonceError : 400 use_dpop_nonce
     }
 
     state "NEW retryTokenWithNonce" as retryNonce {
-        [*] --> storeNonce : store dpopASNonce from 400 response
-        storeNonce --> retry : sendTokenRequest again with nonce in proof
-        retry --> [*] : 200 DPoP token
+        [*] --> askLibrary : read DPoP-Nonce, call generateTokenDPoPProof(nonce)
+        askLibrary --> retry : POST /token again with the returned proof
+        retry --> [*] : 200 token
     }
 
     tokenRequest --> retryNonce : use_dpop_nonce error
-    tokenRequest --> sendTokenResponse : success
-    retryNonce --> sendTokenResponse : success
+    tokenRequest --> returnTokenResponse : success
+    retryNonce --> returnTokenResponse : success
 
-    sendTokenResponse --> idle : token and clientMetadata delivered to library
+    returnTokenResponse --> idle : TokenResponse returned to library
 
-    idle --> constructProof : onRequestProof event
-    constructProof --> idle : openid4vci-proof+jwt sent
-
-    state "NEW signingDPoP" as signingDPoP {
-        [*] --> sign : RNSecureKeystoreModule.sign\nalias=DPoP_alg from event\ninput=signingInput from event
-        sign --> [*] : sendDPoPSignatureFromJS
-    }
-
-    idle --> signingDPoP : onRequestDPoPSign event from library
-    signingDPoP --> idle
+    idle --> constructProof : getProofs callback (credential proof key — unchanged)
+    constructProof --> idle : openid4vci-proof+jwt returned
 ```
 
 ---
 
 ## Key Separation
 
+DPoP keys are owned by the library; the credential proof key stays wallet-owned. They are never the same key.
+
 ```mermaid
 graph LR
-    DPoP["DPoP Keys\nDPoP_ES256 DPoP_RS256\nDPoP_EdDSA DPoP_ES256K"] --> T["Token endpoint DPoP proof\nCredential endpoint DPoP proof"]
-    Proof["Credential Proof Key\nOpenId4VCI_KeyPair"] --> P["openid4vci-proof+jwt\nin credential request body"]
+    DPoP["DPoP Key (library-owned, ephemeral, in-memory per flow)"] --> T["Token endpoint DPoP proof\nCredential endpoint DPoP proof\nboth built + signed in the library"]
+    Proof["Credential Proof Key (wallet-owned)"] --> P["openid4vci-proof+jwt\nvia getProofs callback (unchanged)"]
 ```
 
 ---
@@ -484,23 +411,24 @@ graph LR
 ### Positive
 
 - Access tokens are sender-constrained — a stolen token is useless without the DPoP private key.
-- All four wallet key types (ES256, RS256, EdDSA, ES256K) are available for DPoP — interoperable with any AS regardless of which alg it supports.
-- Library handles RS nonce and retry loop — wallet has no RS nonce state to manage.
-- No new native method parameters — DPoP config travels inside the existing `clientMetadata` JSON.
-- `token_type` in the token response drives the credential endpoint decision — wallet and library don't need to coordinate on a DPoP/Bearer flag separately.
-- `dpop_jkt` binding prevents auth code injection (read: RFC 9449 §11.9).
-- Nonce support prevents proof pre-generation (read: RFC 9449 §11.2).
+- **Ephemeral keys have nothing to steal at rest and no rotation policy.** The private key lives only in memory for one flow, so the "long-lived key exfiltrated from the keystore" threat class does not apply, and rotation is inherent.
+- **Better privacy / unlinkability.** A fresh `jkt` per flow prevents an AS or issuer from correlating separate issuance flows by a stable key thumbprint.
+- **One owner for DPoP.** Proof structure, alg selection, key binding, signing, nonce handling, and retries all live in the library. There is no cross-boundary state to keep in sync and no signing closure handed to the wallet.
+- **Wallet surface is tiny.** The wallet copies `tokenRequest.dpopProof` into a header and, on a nonce challenge, calls one library method. It never reads AS metadata, picks an alg, holds a DPoP key, or signs.
+- `ClientMetadata` is unchanged; the credential proof callback (`getProofs`) is unchanged.
+- `token_type` in the token response drives the credential-endpoint decision internally — no separate DPoP/Bearer flag to coordinate.
+- `dpop_jkt` binding prevents auth code injection (read: RFC 9449 §11.9); nonce support prevents proof pre-generation (read: RFC 9449 §11.2).
 
 ### Trade-offs
 
-- **`ensuringDPoPKeys` generates up to four key pairs on first run.** Subsequent flows load from storage — cost is one-time.
-- **dpop_jkt alg coordination is implicit.** Wallet and library independently apply the same preference order to the same key list and AS metadata — they must agree. Any divergence in preference order between wallet and library would cause a mismatch.
-- **VCIClient library requires changes.** `ClientMetadata.dpop`, `signDPoP` closure, and internal RS nonce handling must be added upstream.
-- **`dpop_signing_alg_values_supported` is optional in RFC 9449.** When absent, wallet uses its own preference order (ES256 first) and still attempts DPoP. AS ignores an unrecognised DPoP header and returns a Bearer token if it doesn't support DPoP — `token_type` in the response is the actual outcome signal.
-- **Bearer fallback on credential endpoint 401 is best-effort.** RFC 9449 §7.2 uses "would most presumably accept" — a DPoP-aware RS that only sent a Bearer challenge would still reject the downgraded request.
+- **The library gains in-memory keygen + signing responsibility it did not have before (OQ-2).** `VCIClient` previously delegated all signing to the wallet via `getProofs`. DPoP now requires in-memory key generation and signing in both the Swift and Kotlin libraries — but no secure persistent storage, since keys never outlive a flow.
+- **Ephemeral keys cannot survive an app restart or a long-deferred poll (OQ-3).** Today's flows are synchronous, so this is a non-issue; deferred or resumable issuance would need a persisted key or a fresh authorization.
+- **One extra wallet→library round trip on a nonce challenge.** The AS `use_dpop_nonce` path costs a `generateTokenDPoPProof` call before the retry POST. This is the price of keeping the token HTTP request wallet-side while the proof stays library-built.
+- **`dpop_signing_alg_values_supported` is optional in RFC 9449.** When absent, the library uses its own preference order (ES256 first) and still attempts DPoP. The AS returns a Bearer token if it does not support DPoP — `token_type` in the response is the actual outcome signal.
+- **Bearer fallback on a credential-endpoint 401 is best-effort.** RFC 9449 §7.2 uses "would most presumably accept" — a DPoP-aware RS that only sent a Bearer challenge could still reject the downgraded request.
 
 ### Non-goals
 
 - DPoP for VP presentation flows (OpenID4VP) — out of scope.
 - DPoP for the wallet binding (WLA) endpoint — separate flow.
-- Refresh token DPoP binding — wallet does not use refresh tokens in OID4VCI flows today.
+- Refresh token DPoP binding — the wallet does not use refresh tokens in OID4VCI flows today.
