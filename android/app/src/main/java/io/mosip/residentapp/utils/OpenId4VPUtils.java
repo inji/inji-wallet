@@ -78,10 +78,11 @@ public class OpenId4VPUtils {
     List<ResponseType> responseTypes = convertReadableArrayToEnumList(
       walletConfigMap, "response_types_supported", ResponseType.Companion::fromValue);
 
-    boolean presentationDefinitionUriSupported = !walletConfigMap.hasKey("presentation_definition_uri_supported")
-      || walletConfigMap.getBoolean("presentation_definition_uri_supported");
+    boolean presentationDefinitionUriSupported =
+      getBooleanOrDefault(walletConfigMap, "presentation_definition_uri_supported", true);
 
-    boolean validateTrustedVerifier = !walletConfigMap.hasKey("validate_trusted_verifier") || walletConfigMap.getBoolean("validate_trusted_verifier");
+    boolean validateTrustedVerifier =
+      getBooleanOrDefault(walletConfigMap, "validate_trusted_verifier", true);
 
 
     List<Verifier> trustedVerifiers = parseTrustedVerifiers(walletConfigMap);
@@ -244,7 +245,10 @@ public class OpenId4VPUtils {
 
       if (vpTokenSigningResultMap == null
         || !vpTokenSigningResultMap.hasKey("signedData")
-        || vpTokenSigningResultMap.isNull("signedData")) {
+        || vpTokenSigningResultMap.isNull("signedData")
+        || !vpTokenSigningResultMap.hasKey("id")
+        || vpTokenSigningResultMap.isNull("id")
+      ) {
         continue;
       }
 
@@ -252,7 +256,6 @@ public class OpenId4VPUtils {
       String id = vpTokenSigningResultMap.getString("id");
       byte[] signedDataBytes = Base64.decode(signedData, Base64.URL_SAFE | Base64.NO_WRAP | Base64.NO_PADDING);
 
-      assert id != null;
       formattedVpTokenSigningResults.add(
         new VPTokenSigningResult(id,signedDataBytes));
     }
