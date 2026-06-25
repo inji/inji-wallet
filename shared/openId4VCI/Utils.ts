@@ -75,8 +75,7 @@ export const updateCredentialInformation = async (
     if (
       context.selectedCredentialType.format === VCFormat.mso_mdoc ||
       context.selectedCredentialType.format === VCFormat.vc_sd_jwt ||
-      context.selectedCredentialType.format === VCFormat.dc_sd_jwt ||
-      context.selectedCredentialType.format === VCFormat.jwt_vc_json
+      context.selectedCredentialType.format === VCFormat.dc_sd_jwt
     ) {
       processedCredential = await VCProcessor.processForRendering(
         credential,
@@ -199,16 +198,6 @@ export const getCredentialIssuersWellKnownConfig = async (
             fields = sdJwtFields;
             wellknownFieldsFlag = true;
           }
-        } else if (format === VCFormat.jwt_vc_json) {
-          const jwtVcJsonFields = Object.keys(
-            matchingWellknownDetails.credential_definition?.credentialSubject ||
-              {},
-          );
-
-          if (jwtVcJsonFields.length > 0) {
-            fields = jwtVcJsonFields;
-            wellknownFieldsFlag = true;
-          }
         } else {
           console.error(`Unsupported credential format - ${format} found`);
           throw new UnsupportedVcFormat(format);
@@ -271,7 +260,7 @@ export function serializeClaimPath(
   }
   if (segs.length === 0) return null;
   if (format === VCFormat.mso_mdoc) return segs.join('~');
-  if (format === VCFormat.ldp_vc || format === VCFormat.jwt_vc_json) {
+  if (format === VCFormat.ldp_vc) {
     const stripped = segs[0] === 'credentialSubject' ? segs.slice(1) : segs;
     return stripped.length ? stripped.join('.') : null;
   }

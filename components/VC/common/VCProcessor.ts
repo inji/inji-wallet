@@ -39,19 +39,6 @@ export class VCProcessor {
         pathToDisclosures,
       };
     }
-    if (vcFormat === VCFormat.jwt_vc_json) {
-      const rawJwt = vcData.credential.toString();
-      const payload: any = jwtDecode(rawJwt);
-      const credentialSubject = payload.vc?.credentialSubject;
-      if (credentialSubject == null) {
-        throw new Error(
-          'Invalid jwt_vc_json: missing payload.vc.credentialSubject',
-        );
-      }
-      return {
-        fullResolvedPayload: credentialSubject,
-      };
-    }
     return getVerifiableCredential(vcData);
   }
 }

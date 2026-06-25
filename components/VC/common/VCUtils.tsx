@@ -223,20 +223,6 @@ export const getFieldValue = (
           return null;
         }
         return getLocalizedField(value?.toString());
-      } else if (format === VCFormat.jwt_vc_json) {
-        const fieldParts = field.split('.');
-        let value: any = verifiableCredential?.fullResolvedPayload;
-
-        for (const part of fieldParts) {
-          if (!value) break;
-          value = value[part];
-        }
-
-        if (Array.isArray(value) && typeof value[0] !== 'object') {
-          return value.join(', ');
-        }
-
-        return getLocalizedField(value);
       }
     }
   }
@@ -318,27 +304,6 @@ export const getFieldName = (
           language: obj.locale,
           value: obj.name,
         }));
-        return getLocalizedField(newFieldObj);
-      }
-
-      return formatKeyLabel(pathParts[pathParts.length - 1]);
-    } else if (format === VCFormat.jwt_vc_json) {
-      const pathParts = field.split('.');
-      const credentialSubject =
-        wellknown.credential_definition?.credentialSubject;
-
-      let currentObj = credentialSubject;
-      for (const part of pathParts) {
-        if (!currentObj || typeof currentObj !== 'object') break;
-        currentObj = currentObj[part];
-      }
-
-      if (currentObj?.display && Array.isArray(currentObj.display)) {
-        const newFieldObj = currentObj.display.map((obj: any) => ({
-          language: obj.locale,
-          value: obj.name,
-        }));
-
         return getLocalizedField(newFieldObj);
       }
 
@@ -885,8 +850,6 @@ export function getFaceAttribute(verifiableCredential, format) {
   } else if (format === VCFormat.vc_sd_jwt || format === VCFormat.dc_sd_jwt) {
     credentialSubject =
       verifiableCredential?.processedCredential?.fullResolvedPayload ?? {};
-  } else if (format === VCFormat.jwt_vc_json) {
-    credentialSubject = verifiableCredential?.fullResolvedPayload ?? {};
   }
   const faceField = getFaceField(credentialSubject);
 

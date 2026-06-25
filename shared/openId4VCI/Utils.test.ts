@@ -256,14 +256,6 @@ describe('openId4VCI Utils', () => {
       expect(Array.isArray(result)).toBe(true);
     });
 
-    it('should remove bottom section fields for JWT-VC-JSON format', () => {
-      const fields = ['name', 'age', 'photo', 'signature', 'address'];
-      const result = removeBottomSectionFields(fields, VCFormat.jwt_vc_json);
-
-      expect(result).toBeDefined();
-      expect(Array.isArray(result)).toBe(true);
-    });
-
     it('should remove address field for LDP format', () => {
       const fields = ['name', 'age', 'address', 'photo'];
       const result = removeBottomSectionFields(fields, VCFormat.ldp_vc);
@@ -287,7 +279,7 @@ describe('openId4VCI Utils', () => {
             order: ['name', 'age'],
           },
           AnotherCredential: {
-            format: 'jwt_vc',
+            format: 'ldp_vc',
           },
         },
       };
@@ -318,7 +310,7 @@ describe('openId4VCI Utils', () => {
       const wellknown = {
         credential_configurations_supported: {
           Credential1: {format: 'ldp_vc'},
-          Credential2: {format: 'jwt_vc'},
+          Credential2: {format: 'ldp_vc'},
           Credential3: {format: 'mso_mdoc'},
         },
       };
@@ -329,7 +321,7 @@ describe('openId4VCI Utils', () => {
       );
 
       expect(result).toBeDefined();
-      expect(result.format).toBe('jwt_vc');
+      expect(result.format).toBe('ldp_vc');
     });
   });
 
@@ -452,28 +444,6 @@ describe('openId4VCI Utils', () => {
 
       expect(result).toBeDefined();
       expect(result.format).toBe(VCFormat.dc_sd_jwt);
-    });
-
-    it('should update credential information for JWT-VC-JSON format', async () => {
-      const mockContext = {
-        selectedCredentialType: {
-          id: 'JWTVCCredential',
-          format: VCFormat.jwt_vc_json,
-        },
-        selectedIssuer: {
-          display: [{language: 'en', logo: 'jwt-logo.png'}],
-        },
-        vcMetadata: {id: 'jwt-vc-id'},
-      };
-
-      const mockCredential = {credential: 'jwt-vc-credential-data'} as any;
-      const result = await updateCredentialInformation(
-        mockContext,
-        mockCredential,
-      );
-
-      expect(result.format).toBe(VCFormat.jwt_vc_json);
-      expect(result.vcMetadata.format).toBe(VCFormat.jwt_vc_json);
     });
 
     it('should handle credential without logo in display', async () => {

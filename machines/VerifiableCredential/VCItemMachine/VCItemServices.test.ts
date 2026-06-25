@@ -522,12 +522,12 @@ describe('VCItemServices', () => {
       });
       const result = await services.verifyCredential({
         verifiableCredential: {credential: 'cred'},
-        format: 'jwt_vc',
+        format: 'ldp_vc',
       });
       expect(result.isVerified).toBe(true);
       expect(verifyCredentialData).toHaveBeenCalledWith(
         expect.anything(),
-        'jwt_vc',
+        'ldp_vc',
       );
     });
   });
