@@ -178,6 +178,23 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
     }
   }
 
+  @objc
+  func generateTokenDPoPProof(
+    _ dpopNonce: String,
+    resolver resolve: @escaping RCTPromiseResolveBlock,
+    rejecter reject: @escaping RCTPromiseRejectBlock
+  ) {
+    do {
+      guard let vciClient = vciClient else {
+        reject(nil, "VCIClient not initialized", nil)
+        return
+      }
+      resolve(try vciClient.generateTokenDPoPProof(dpopNonce: dpopNonce))
+    } catch {
+      rejectVCIError(error, reject: reject)
+    }
+  }
+
   private func rejectVCIError(
     _ error: Error,
     reject: RCTPromiseRejectBlock
@@ -351,6 +368,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         "clientId": tokenRequest.clientId ?? NSNull(),
         "redirectUri": tokenRequest.redirectUri ?? NSNull(),
         "codeVerifier": tokenRequest.codeVerifier ?? NSNull(),
+        "dpopProof": tokenRequest.dpopProof ?? NSNull(),
       ]
 
       bridge.eventDispatcher().sendAppEvent(

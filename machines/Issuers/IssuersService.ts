@@ -12,9 +12,8 @@ import {
   updateCredentialInformation,
   verifyCredentialData,
 } from '../../shared/openId4VCI/Utils';
-import VciClient, {
-  VciClientErrorResponse,
-} from '../../shared/vciClient/VciClient';
+import VciClient from '../../shared/vciClient/VciClient';
+import {sendTokenRequest} from '../../shared/openId4VCI/sendTokenRequest';
 import {displayType, issuerType} from './IssuersMachine';
 import {setItem} from '../store';
 import {
@@ -394,68 +393,3 @@ export const IssuersService = () => {
     },
   };
 };
-async function sendTokenRequest(
-  tokenRequestObject: any,
-  proxyTokenEndpoint: any = null,
-) {
-  if (proxyTokenEndpoint) {
-    tokenRequestObject.tokenEndpoint = proxyTokenEndpoint;
-  }
-  if (!tokenRequestObject?.tokenEndpoint) {
-    console.error('tokenEndpoint is not provided in tokenRequestObject');
-    throw new Error('tokenEndpoint is required');
-  }
-
-  const formBody = new URLSearchParams();
-
-  formBody.append('grant_type', tokenRequestObject.grantType);
-
-  if (tokenRequestObject.authCode) {
-    formBody.append('code', tokenRequestObject.authCode);
-  }
-  if (tokenRequestObject.preAuthCode) {
-    formBody.append('pre-authorized_code', tokenRequestObject.preAuthCode);
-  }
-  if (tokenRequestObject.txCode) {
-    formBody.append('tx_code', tokenRequestObject.txCode);
-  }
-  if (tokenRequestObject.clientId) {
-    formBody.append('client_id', tokenRequestObject.clientId);
-  }
-  if (tokenRequestObject.redirectUri) {
-    formBody.append('redirect_uri', tokenRequestObject.redirectUri);
-  }
-  if (tokenRequestObject.codeVerifier) {
-    formBody.append('code_verifier', tokenRequestObject.codeVerifier);
-  }
-  const response = await fetch(tokenRequestObject.tokenEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: formBody.toString(),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error(
-      'Token request failed with status:',
-      response.status,
-      errorText,
-    );
-    let parsedError: any;
-    try {
-      parsedError = JSON.parse(errorText);
-    } catch {
-      parsedError = {};
-    }
-    //have to throw error in vci error response format
-    const errorResponse: VciClientErrorResponse = {
-      issuerErrorCode: parsedError.error ?? 'UNKNOWN_ERROR',
-      issuerErrorMessage: parsedError.error_description,
-    };
-    throw errorResponse;
-  }
-  const tokenResponse = await response.json();
-  return tokenResponse;
-}

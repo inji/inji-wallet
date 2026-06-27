@@ -80,6 +80,10 @@ class VciClient {
     this.InjiVciClient.sendTokenResponseFromJS(json);
   }
 
+  async generateTokenDPoPProof(dpopNonce: string): Promise<string> {
+    return await this.InjiVciClient.generateTokenDPoPProof(dpopNonce);
+  }
+
   async getIssuerMetadata(issuerUri: string): Promise<object> {
     const response = await this.InjiVciClient.getIssuerMetadata(issuerUri);
     return JSON.parse(response);
