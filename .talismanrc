@@ -638,7 +638,7 @@ fileignoreconfig:
 - filename: machines/Issuers/IssuersGuards.ts
   checksum: c306648f21ba2e717c286f45901741a018c0e04d6b21bc5b54ddc32346dc3130
 - filename: ios/Inji/Info.plist
-  checksum: 170ba8939993cbb1df97140a88ddc1e4c710d3a31f1be8ccd25621a4cf4bf059
+  checksum: 0efe36d93c367f449d6bd1dec8f3ce1bac341f00df4de266f1afdf7e6fcbaa42
 - filename: components/DeeplinkBanner.tsx
   checksum: 43322f48a27d3a3f8d8c38f39c3c88ddaa1940835f186acf60fb863fda70fd67
 - filename: machines/Issuers/IssuersActions.ts

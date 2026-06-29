@@ -92,6 +92,8 @@
 		<string>Feather.ttf</string>
 		<string>AntDesign.ttf</string>
 	</array>
+	<key>UIDesignRequiresCompatibility</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -118,7 +120,5 @@
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIDesignRequiresCompatibility</key>
-	<true/>
 </dict>
 </plist>

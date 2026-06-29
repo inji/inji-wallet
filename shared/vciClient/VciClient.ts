@@ -4,7 +4,10 @@ import {
   SelectedCredentialsForVPSharing,
   VerifiableCredential,
 } from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {getWalletConfig, jsonLdCanonicalize} from '../openID4VP/OpenID4VPHelper';
+import {
+  getWalletConfig,
+  jsonLdCanonicalize,
+} from '../openID4VP/OpenID4VPHelper';
 
 const emitter = new NativeEventEmitter(NativeModules.InjiVciClient);
 
@@ -76,6 +79,10 @@ class VciClient {
 
   async sendTokenResponse(json: string) {
     this.InjiVciClient.sendTokenResponseFromJS(json);
+  }
+
+  async generateTokenDPoPProof(dpopNonce: string): Promise<string> {
+    return await this.InjiVciClient.generateTokenDPoPProof(dpopNonce);
   }
 
   async getIssuerMetadata(issuerUri: string): Promise<object> {
@@ -165,11 +172,11 @@ class VciClient {
         clientId: 'wallet',
         redirectUri: 'io.mosip.residentapp.inji://oauthredirect',
       };
-      const openId4VpWalletConfig = await getWalletConfig()
+      const openId4VpWalletConfig = await getWalletConfig();
       response = await this.InjiVciClient.requestCredentialByOffer(
         credentialOffer,
         JSON.stringify(clientMetadata),
-        openId4VpWalletConfig
+        openId4VpWalletConfig,
       );
     } catch (error) {
       console.error('Error requesting credential by offer:', error);
@@ -258,12 +265,12 @@ class VciClient {
 
     let response = '';
     try {
-      const openId4VpWalletConfig = await getWalletConfig()
+      const openId4VpWalletConfig = await getWalletConfig();
       response = await this.InjiVciClient.requestCredentialFromTrustedIssuer(
         credentialIssuerUri,
         credentialConfigurationId,
         JSON.stringify(clientMetadata),
-        openId4VpWalletConfig
+        openId4VpWalletConfig,
       );
     } catch (error) {
       console.error('Error requesting credential from trusted issuer:', error);

@@ -152,7 +152,8 @@ object VCIClientBridge {
                                 "txCode" to tokenRequest.txCode,
                                 "clientId" to tokenRequest.clientId,
                                 "redirectUri" to tokenRequest.redirectUri,
-                                "codeVerifier" to tokenRequest.codeVerifier
+                                "codeVerifier" to tokenRequest.codeVerifier,
+                                "dpopProof" to tokenRequest.dpopProof
                         )
 
                 VCIClientCallbackBridge.createTokenResponseDeferred()

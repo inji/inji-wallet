@@ -94,6 +94,15 @@ public class InjiVciClientModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void generateTokenDPoPProof(String dpopNonce, Promise promise) {
+    try {
+      promise.resolve(vciClient.generateTokenDPoPProof(dpopNonce));
+    } catch (Exception e) {
+      promise.reject("GENERATE_TOKEN_DPOP_PROOF_FAILED", e.getMessage(), e);
+    }
+  }
+
+  @ReactMethod
   public void getIssuerMetadata(String credentialIssuer, Promise promise) {
     new Thread(() -> {
       try {
