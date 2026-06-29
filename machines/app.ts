@@ -231,13 +231,14 @@ export const appMachine = model.createMachine(
             invoke: {
               src: 'checkFocusState',
             },
-            on: {
-              ACTIVE: '.active',
-              INACTIVE: '.inactive',
-            },
             initial: 'checking',
             states: {
-              checking: {},
+              checking: {
+                on: {
+                  ACTIVE: 'active',
+                  INACTIVE: 'inactive',
+                },
+              },
               active: {
                 entry: ['forwardToServices'],
                 invoke: [
@@ -266,9 +267,15 @@ export const appMachine = model.createMachine(
                     },
                   },
                 ],
+                on: {
+                  INACTIVE: 'inactive',
+                },
               },
               inactive: {
                 entry: ['forwardToServices'],
+                on: {
+                  ACTIVE: 'active',
+                },
               },
             },
           },
@@ -315,8 +322,11 @@ export const appMachine = model.createMachine(
         authorizationRequest: '',
       }),
       setCredentialOfferUri: assign({
-        credentialOfferUri: (_, event) =>
-          typeof event.data === 'string' ? event.data.trim() : '',
+        credentialOfferUri: (context, event) => {
+          const incoming =
+            typeof event.data === 'string' ? event.data.trim() : '';
+          return incoming !== '' ? incoming : context.credentialOfferUri;
+        },
       }),
       resetCredentialOfferUri: assign({
         credentialOfferUri: '',
@@ -527,7 +537,6 @@ export const appMachine = model.createMachine(
           'change',
           changeHandler,
         );
-        AppState.addEventListener('change', changeHandler);
 
         let blurEventSubscription, focusEventSubscription;
 
