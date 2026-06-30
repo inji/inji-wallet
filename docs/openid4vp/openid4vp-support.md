@@ -28,7 +28,7 @@ requesting and presenting Verifiable Credentials. The implementation leverages t
 
     - client_id
     - request_uri
-    - request_uri_method (Optional | Default value : get)
+    - request_uri_method (Optional | Default value : GET)
 
   - Sequence Diagram - Obtain Authorization Request by Reference
 
