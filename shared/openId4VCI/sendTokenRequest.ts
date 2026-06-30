@@ -1,8 +1,9 @@
 import VciClient, {VciClientErrorResponse} from '../vciClient/VciClient';
-
-const USE_DPOP_NONCE_ERROR = 'use_dpop_nonce';
-const DPOP_HEADER = 'DPoP';
-const DPOP_NONCE_HEADER = 'DPoP-Nonce';
+import {
+  DPOP_HEADER,
+  DPOP_NONCE_HEADER,
+  USE_DPOP_NONCE_ERROR,
+} from '../constants';
 
 function buildTokenFormBody(tokenRequestObject: any): URLSearchParams {
   const formBody = new URLSearchParams();
