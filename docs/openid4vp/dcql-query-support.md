@@ -142,8 +142,6 @@ The library determines which credential set options are satisfiable and returns:
 
 ---
 
----
-
 ## How Wallet Consumes Library for DCQL Processing
 
 Refer to [openid4vp-support.md](./openid4vp-support.md) for the general flow. The DCQL-specific wallet processing happens in these key areas:
@@ -283,12 +281,12 @@ Refer to [openid4vp-support.md](./openid4vp-support.md) for general format handl
 
 **DCQL-Specific Differences:**
 
-#### ldp_vc (Linked Data Proof)
+### ldp_vc (Linked Data Proof)
 - JSON-LD contexts expanded during matching (iOS requires callback)
 - Claims matched via expanded JSON-LD structure
 
-#### vc_sd_jwt & dc_sd_jwt (Selective Disclosure JWTs)
-- **DCQL:** Uses `getDisclosuresForPath()` for comprehensive disclosure handling due to DCQL having different in claim path matching
+### vc_sd_jwt & dc_sd_jwt (Selective Disclosure JWTs)
+- **DCQL:** Uses `getDisclosuresForPath()` for comprehensive disclosure handling due to DCQL's different claim path matching
 - **PE:** Direct path mapping only
 - Different because DCQL may need related/nested disclosures for claim matching
 
