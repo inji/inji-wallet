@@ -776,7 +776,7 @@ describe('openID4VPSelectors', () => {
       };
 
       const result = selectVerifierNameInTrustModal(mockState as any);
-      expect(result).toBeUndefined();
+      expect(result).toBe("verifierInfo.unknownVerifier");
     });
 
     it('should return undefined when flowType is not OPENID4VP_AUTHORIZATION and client_metadata is missing', () => {
@@ -790,7 +790,7 @@ describe('openID4VPSelectors', () => {
       };
 
       const result = selectVerifierNameInTrustModal(mockState as any);
-      expect(result).toBeUndefined();
+      expect(result).toBe("verifierInfo.unknownVerifier");
     });
 
     it('should handle empty authenticationResponse', () => {
@@ -802,7 +802,7 @@ describe('openID4VPSelectors', () => {
       };
 
       const result = selectVerifierNameInTrustModal(mockState as any);
-      expect(result).toBeUndefined();
+      expect(result).toBe("verifierInfo.unknownVerifier");
     });
   });
 });

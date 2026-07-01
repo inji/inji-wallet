@@ -265,9 +265,10 @@ describe('useOvpErrorModal', () => {
       t: mockT,
     });
     expect(modal.show).toBe(true);
-    expect(mockT).toHaveBeenCalledWith('errors.invalidQrCode.title');
+    expect(mockT).toHaveBeenCalledWith('errors.unknownVerifier.title');
+    expect(mockT).toHaveBeenCalledWith('errors.unknownVerifier.message');
     expect(mockGenerateAndStoreLogMessage).toHaveBeenCalledWith(
-      'REQUEST_COULD_NOT_BE_PROCESSED',
+      'VERIFIER_AUTHENTICATION_FAILED',
     );
   });
 

@@ -206,13 +206,6 @@ export const openID4VPActions = (model: any) => {
       },
     }),
 
-    setTrustedVerifiersApiCallError: model.assign({
-      error: (_, event) => {
-        console.error('Error while fetching trusted verifiers:', event.data);
-        return 'api error - ' + event.data.message;
-      },
-    }),
-
     showTrustConsentModal: assign({
       showTrustConsentModal: () => true,
     }),
@@ -223,13 +216,24 @@ export const openID4VPActions = (model: any) => {
 
     setSignVPError: model.assign({
       error: (_, event) => {
+        console.error(
+          'Error during send VP:',
+          event.data.message,
+          event.data.code,
+          event.data.cause,
+        );
         return 'sign vp-' + event.data.message + '-' + event.data.code;
       },
     }),
 
     setSendVPShareError: model.assign({
       error: (_, event) => {
-        console.error('Error during send VP:', event.data.message, event.data.code, event.data.cause);
+        console.error(
+          'Error during send VP:',
+          event.data.message,
+          event.data.code,
+          event.data.cause,
+        );
         return 'send vp-' + event.data.message + '-' + event.data.code;
       },
     }),

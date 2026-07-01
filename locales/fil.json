@@ -876,7 +876,6 @@
     "enableBluetoothButtonText": "Payagan ang mga pahintulot ng bluetooth",
     "scanningGuide": "Panatilihin ang telepono at i-scan ang QR code upang ibahagi ang iyong card.",
     "invalidQR": "Mangyaring mag-scan ng wastong QR",
-    "unknownVerifier": "Hindi kilalang verifier",
     "errors": {
       "locationDisabled": {
         "message": "Para magpatuloy, hayaang i-on ng iyong device ang lokasyon",
@@ -1079,6 +1078,10 @@
         "title": "Isang Error ang Naganap!",
         "message": "Hindi nakikilala ang verifier. Mangyaring kumuha ng wastong QR code mula sa verifier."
       },
+      "unknownVerifier": {
+        "title": "Hindi pinagkakatiwalaang verifier.",
+        "message": "Ang verifier na ito ay wala sa listahan ng pinagkakatiwalaang verifier ng iyong wallet. Hindi naibahagi ang iyong impormasyon."
+      },
       "credentialsMismatch": {
         "title": "Isang Error ang Naganap!",
         "message": "May nakitang hindi tugmang card. Tiyaking napili mo ang tamang card na may sumusunod na claims: [{{claims}}], at subukang muli."
@@ -1116,8 +1119,8 @@
         "message": "Nagkaroon ng teknikal na problema habang ibinabahagi ang iyong card. Pindutin ang \"Subukang Muli\" para subukang muli o bumalik sa \"Home\"."
       },
       "verifierResponseError": {
-        "title": "Hindi maproseso ng tagapagsuri ang kredensyal",
-        "message": "May naging isyu habang pinoproseso ng tagapagsuri ang iyong kredensyal."
+        "title": "Hindi makumpleto ang pag-verify.",
+        "message": "Nakatagpo ang verifier ng error habang pinoproseso ang iyong presentasyon. Pakisubukan muli mamaya."
       },
       "noImage": {
         "title": "Isang Error ang Naganap!",
@@ -1149,7 +1152,8 @@
       "instruction": "Pumili ng card sa bawat hakbang para magpatuloy"
     },
     "verifierInfo": {
-      "trusted": "Pinagkakatiwalaan"
+      "trusted": "Pinagkakatiwalaan",
+      "unknownVerifier": "Hindi kilalang verifier"
     },
     "infoOverlay": {
       "title": "Bakit Kailangan Namin ng Mga Card",

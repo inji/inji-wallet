@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {MatchingVcsResult, MatchResult, VerifierInfo} from "../openID4VP/openid4vp.types";
+import {MatchingVcsResult, VerifierInfo,} from '../openID4VP/openid4vp.types';
 
 interface OvpErrorModal {
   show: boolean;
@@ -7,8 +7,8 @@ interface OvpErrorModal {
   message: string;
   additionalMessage: string;
   showRetryButton: boolean;
-  verifierInfo?: VerifierInfo
-  matchingVcsResult?: MatchingVcsResult
+  verifierInfo?: VerifierInfo;
+  matchingVcsResult?: MatchingVcsResult;
   showBackButton?: boolean;
 }
 
@@ -44,8 +44,7 @@ export function useOvpErrorModal({
   });
 
   useEffect(() => {
-    const isClaimsEmpty =
-      requestedClaimsByVerifier.size === 0;
+    const isClaimsEmpty = requestedClaimsByVerifier.size === 0;
     const additionalMessage = getAdditionalMessage();
 
     if (noCredentialsMatchingVPRequest) {
@@ -67,6 +66,15 @@ export function useOvpErrorModal({
         'NO_CREDENTIAL_MATCHING_REQUEST',
         Array.from(requestedClaimsByVerifier).join(','),
       );
+    } else if (error.includes('invalid_client')) {
+      setErrorModal({
+        show: true,
+        title: t('errors.unknownVerifier.title'),
+        message: t('errors.unknownVerifier.message'),
+        additionalMessage,
+        showRetryButton: false,
+      });
+      generateAndStoreLogMessage('VERIFIER_AUTHENTICATION_FAILED');
     } else if (
       error.includes('Verifier authentication was unsuccessful') ||
       error.startsWith('api error')
@@ -184,15 +192,15 @@ export function useOvpErrorModal({
         showRetryButton: false,
       });
       generateAndStoreLogMessage('TRUSTED_VERIFIER_LIST_UPDATE_ERROR');
-    } else if(error.includes("invalid_transaction_data")){
-        setErrorModal({
-            show: true,
-            title: t('errors.invalidTransactionData.title'),
-            message: t('errors.invalidTransactionData.message'),
-            additionalMessage,
-            showRetryButton: false,
-        });
-        generateAndStoreLogMessage('INVALID_TRANSACTION_DATA');
+    } else if (error.includes('invalid_transaction_data')) {
+      setErrorModal({
+        show: true,
+        title: t('errors.invalidTransactionData.title'),
+        message: t('errors.invalidTransactionData.message'),
+        additionalMessage,
+        showRetryButton: false,
+      });
+      generateAndStoreLogMessage('INVALID_TRANSACTION_DATA');
     } else if (error !== '') {
       setErrorModal({
         show: true,

@@ -894,7 +894,6 @@
     "enableBluetoothButtonText": "Allow bluetooth permissions",
     "scanningGuide": "Hold the phone steady and scan the QR code to share your card.",
     "invalidQR": "Please scan a valid QR",
-    "unknownVerifier": "Unknown verifier",
     "errors": {
       "locationDisabled": {
         "message": "To continue, let your device turn on location",
@@ -1101,6 +1100,10 @@
         "title": "An Error Occured!",
         "message": "The verifier is not recognized. Please obtain a valid QR code from the verifier."
       },
+      "unknownVerifier": {
+        "title": "Untrusted verifier.",
+        "message": "This verifier isn't in your wallet's trusted list. Your information has not been shared."
+      },
       "credentialsMismatch": {
         "title": "An Error Occured!",
         "message": "Card mismatch detected. Ensure you have selected the right one containing the following claims: [{{claims}}] and try again."
@@ -1138,8 +1141,8 @@
         "message": "There was a technical issue while sharing your card. Tap \"Retry\" to try again or go back to \"Home\"."
       },
       "verifierResponseError": {
-        "title": "Verifier could not process the credential",
-        "message": "There was an issue while the verifier was processing your credential."
+        "title": "Verification couldn't be completed.",
+        "message": "The verifier encountered an error while processing your presentation. Please try again later."
       },
       "noImage": {
         "title": "An Error Occured!",
@@ -1171,7 +1174,8 @@
       "instruction": "Select a card from each step to continue"
   },
     "verifierInfo": {
-      "trusted": "Trusted"
+      "trusted": "Trusted",
+      "unknownVerifier": "Unknown Verifier"
     },
     "infoOverlay": {
       "title": "Why We Need Cards",

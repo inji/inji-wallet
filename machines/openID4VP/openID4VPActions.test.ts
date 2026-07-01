@@ -110,7 +110,6 @@ describe('openID4VPActions', () => {
       'incrementOpenID4VPRetryCount',
       'resetOpenID4VPRetryCount',
       'setAuthenticationError',
-      'setTrustedVerifiersApiCallError',
       'showTrustConsentModal',
       'dismissTrustModal',
       'setSignVPError',
@@ -232,14 +231,6 @@ describe('openID4VPActions', () => {
       expect(fn({}, {data: {code: 'AUTH_ERR', userInfo: 'info'}})).toBe(
         'AUTH_ERR',
       );
-      consoleSpy.mockRestore();
-    });
-
-    it('setTrustedVerifiersApiCallError sets error message', () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-      const fn = actions.setTrustedVerifiersApiCallError.assignment.error;
-      const result = fn({}, {data: {message: 'server error'}});
-      expect(result).toContain('server error');
       consoleSpy.mockRestore();
     });
 

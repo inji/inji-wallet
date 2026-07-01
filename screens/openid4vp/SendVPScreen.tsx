@@ -167,10 +167,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         <TrustModalVerifier
           isVisible={controller.showTrustConsentModal}
           logo={controller.verifierLogoInTrustModal}
-          name={
-            controller.verifierNameInTrustModal ??
-            t('ScanScreen:unknownVerifier')
-          }
+          name={controller.verifierNameInTrustModal}
           onConfirm={controller.VERIFIER_TRUST_CONSENT_GIVEN}
           onCancel={controller.CANCEL}
           flowType={'verifier'}
@@ -222,22 +219,22 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
       typeof selectedDisclosuresFromRef === 'function'
         ? selectedDisclosuresFromRef()
         : selectedDisclosuresFromRef ?? {};
-    const selectedVcs: Record<string, Set<string>> = matchingVcListRef.current?.getSelectedVcs?.() ?? {};
+    const selectedVcs: Record<
+      string,
+      Set<string>
+    > = matchingVcListRef.current?.getSelectedVcs?.() ?? {};
 
     controller.ACCEPT_REQUEST(selectedVcs, selectedDisclosures);
   };
 
   return (
     <React.Fragment>
-      <DeeplinkBanner absolute/>
+      <DeeplinkBanner absolute />
       {
         <TrustModalVerifier
           isVisible={controller.showTrustConsentModal}
           logo={controller.verifierLogoInTrustModal}
-          name={
-            controller.verifierNameInTrustModal ??
-            t('ScanScreen:unknownVerifier')
-          }
+          name={controller.verifierNameInTrustModal}
           onConfirm={controller.VERIFIER_TRUST_CONSENT_GIVEN}
           onCancel={controller.CANCEL}
           flowType={'verifier'}
@@ -292,10 +289,6 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         getAdditionalMessage={controller.getAdditionalMessage}
         generateAndStoreLogMessage={controller.generateAndStoreLogMessage}
         matchingVcsResult={controller.matchingVcsResult}
-        verifierInfo={{
-          name: controller.vpVerifierName,
-          logo: controller.verifierLogoInTrustModal,
-        }}
         verifierNameInTrustModal={controller.verifierNameInTrustModal}
         verifierLogoInTrustModal={controller.verifierLogoInTrustModal}
         isOVPViaDeepLink={controller.isOVPViaDeepLink}

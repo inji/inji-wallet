@@ -45,10 +45,9 @@ import {VPShareOverlayProps} from '../Scan/VPShareOverlay';
 import {ActivityLogEvents} from '../../machines/activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
 import {isIOS} from '../../shared/constants';
-import {getFaceAttribute, getMosipLogo} from '../../components/VC/common/VCUtils';
-import {Credential, VC, VerifiableCredentialData} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {getFaceAttribute,} from '../../components/VC/common/VCUtils';
+import {VC,} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {isDcqlFlow} from '../../shared/openID4VP/OpenID4VPHelper';
-import {VCMetadata} from "../../shared/VCMetadata";
 
 type MyVcsTabNavigation = NavigationProp<RootRouteProps>;
 
@@ -95,12 +94,17 @@ export function useSendVPScreen(props) {
     return Object.values(vcs)
       .flatMap(vc => vc)
       .some(vc => {
-        return getFaceAttribute(vc.verifiableCredential, vc.vcMetadata.format) != null;
+        return (
+          getFaceAttribute(vc.verifiableCredential, vc.vcMetadata.format) !=
+          null
+        );
       });
   };
-  const getSelectedVCs = (credentialRequestIdToSelectedVcKeys: Record<string, Set<string>>): Record<string, VC[]> => {
+  const getSelectedVCs = (
+    credentialRequestIdToSelectedVcKeys: Record<string, Set<string>>,
+  ): Record<string, VC[]> => {
     const selectedVcsData: Record<string, VC[]> = {}; // input_descriptor_id or credential query ID to VC[]
-    const availableCredentials = myVcs
+    const availableCredentials = myVcs;
     Object.entries(credentialRequestIdToSelectedVcKeys).forEach(
       ([credentialRequestId, vcKeys]) => {
         vcKeys.forEach((vcKey: string) => {
@@ -140,7 +144,8 @@ export function useSendVPScreen(props) {
     selectOpenID4VPRetryCount,
   );
   const noCredentialsMatchingVPRequest =
-    (!matchingVcsResult.success) && Object.keys(matchingVcsResult).length > 0 &&
+    !matchingVcsResult.success &&
+    Object.keys(matchingVcsResult).length > 0 &&
     showError;
 
   const isOVPViaDeepLink = useSelector(
@@ -218,12 +223,12 @@ export function useSendVPScreen(props) {
     isAuthorizationFlow: useSelector(openID4VPService, selectIsAuthorization),
     isSendingVP: useSelector(openID4VPService, selectIsSharingVP),
     showLoadingScreen: useSelector(openID4VPService, selectIsShowLoadingScreen),
-    vpVerifierName,
     flowType: useSelector(openID4VPService, selectFlowType),
     showTrustConsentModal: useSelector(
       openID4VPService,
       selectshowTrustConsentModal,
     ),
+    vpVerifierName,
     verifierNameInTrustModal: useSelector(
       openID4VPService,
       selectVerifierNameInTrustModal,
@@ -284,10 +289,13 @@ export function useSendVPScreen(props) {
       }, 0);
     },
 
-    ACCEPT_REQUEST: (credentialRequestIdToSelectedVcKeys: Record<string, Set<string>>, selectedDisclosuresByVc: Record<string, string[]>) => {
+    ACCEPT_REQUEST: (
+      credentialRequestIdToSelectedVcKeys: Record<string, Set<string>>,
+      selectedDisclosuresByVc: Record<string, string[]>,
+    ) => {
       const selectedVCs = getSelectedVCs(credentialRequestIdToSelectedVcKeys);
       const hasImage = checkIfAnyVCHasImage(selectedVCs);
-      if(hasImage) {
+      if (hasImage) {
         openID4VPService.send(
           OpenID4VPEvents.VERIFY_AND_ACCEPT_REQUEST(
             selectedVCs,
@@ -296,10 +304,7 @@ export function useSendVPScreen(props) {
         );
       } else {
         openID4VPService.send(
-          OpenID4VPEvents.ACCEPT_REQUEST(
-            selectedVCs,
-            selectedDisclosuresByVc,
-          ),
+          OpenID4VPEvents.ACCEPT_REQUEST(selectedVCs, selectedDisclosuresByVc),
         );
       }
     },
@@ -308,7 +313,10 @@ export function useSendVPScreen(props) {
       openID4VPService.send(OpenID4VPEvents.VERIFIER_TRUST_CONSENT_GIVEN());
     },
 
-    VERIFY_AND_ACCEPT_REQUEST: (credentialRequestIdToSelectedVcKeys: Record<string, Set<string>>, selectedDisclosuresByVc: Record<string, string[]>) => {
+    VERIFY_AND_ACCEPT_REQUEST: (
+      credentialRequestIdToSelectedVcKeys: Record<string, Set<string>>,
+      selectedDisclosuresByVc: Record<string, string[]>,
+    ) => {
       openID4VPService.send(
         OpenID4VPEvents.VERIFY_AND_ACCEPT_REQUEST(
           getSelectedVCs(credentialRequestIdToSelectedVcKeys),

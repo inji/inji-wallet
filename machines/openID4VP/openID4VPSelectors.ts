@@ -7,6 +7,7 @@ import {
   VerifiableCredentialData,
 } from '../VerifiableCredential/VCMetaMachine/vc';
 import {VCShareFlowType} from '../../shared/Utils';
+import i18n from '../../i18n';
 
 type State = StateFrom<typeof openID4VPMachine>;
 
@@ -54,7 +55,8 @@ export function selectIsShowLoadingScreen(state: State) {
 }
 
 export function selectCredentials(state: State) {
-  const processCredential = (vcData: any) => vcData?.verifiableCredential?.credential || vcData?.verifiableCredential;
+  const processCredential = (vcData: any) =>
+    vcData?.verifiableCredential?.credential || vcData?.verifiableCredential;
   const selectedCredentials: Credential[] = Object.values(
     state.context.selectedVCs,
   )
@@ -143,9 +145,10 @@ export function selectshowTrustConsentModal(state: State) {
 }
 
 export function selectVerifierNameInTrustModal(state: State) {
-  return state.context.authenticationResponse['client_metadata']?.[
-    'client_name'
-    ];
+  return (
+    state.context.authenticationResponse['client_metadata']?.['client_name'] ??
+    i18n.t('SendVPScreen:verifierInfo:unknownVerifier')
+  );
 }
 
 export function selectVerifierLogoInTrustModal(state: State) {

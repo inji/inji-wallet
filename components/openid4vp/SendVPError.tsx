@@ -12,7 +12,6 @@ import {
   MatchingVcsResult,
   MatchingVCsResultForDcql,
   MatchingVCsResultForPresentationExchangeRequest,
-  VerifierInfo as OvpVerifierInfo,
 } from '../../shared/openID4VP/openid4vp.types';
 import {VCMetadata} from '../../shared/VCMetadata';
 import {VCItemContainerFlowType} from '../../shared/Utils';
@@ -32,7 +31,6 @@ type SendVPErrorProps = {
   getAdditionalMessage: () => string;
   generateAndStoreLogMessage: (logType: string, errorInfo?: string) => void;
   matchingVcsResult?: MatchingVcsResult;
-  verifierInfo?: OvpVerifierInfo;
   verifierNameInTrustModal?: string;
   verifierLogoInTrustModal?: string;
   isOVPViaDeepLink: boolean;
@@ -51,7 +49,6 @@ export const SendVPError: React.FC<SendVPErrorProps> = ({
   getAdditionalMessage,
   generateAndStoreLogMessage,
   matchingVcsResult,
-  verifierInfo,
   verifierNameInTrustModal,
   verifierLogoInTrustModal,
   isOVPViaDeepLink,
@@ -69,7 +66,10 @@ export const SendVPError: React.FC<SendVPErrorProps> = ({
     getAdditionalMessage,
     generateAndStoreLogMessage,
     matchingVcsResult,
-    verifierInfo,
+    verifierInfo: {
+      name: verifierNameInTrustModal,
+      logo: verifierLogoInTrustModal,
+    },
     t,
   });
 
