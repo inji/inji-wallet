@@ -124,7 +124,7 @@ async function signData(
       return createSignatureED(privateKey, payloadBytes);
     }
     default:
-      break;
+      throw new Error(`Unsupported signature algorithm: ${keyType}`);
   }
 }
 
