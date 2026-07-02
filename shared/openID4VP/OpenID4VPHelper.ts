@@ -10,19 +10,23 @@ import getAllConfigurations, {CACHED_API} from '../api';
 import {JWT_ALG_TO_KEY_TYPE} from '../constants';
 import {SignatureAlgorithms} from '../cryptoutil/KeyTypes';
 import {UnsignedVPToken, VPTokenSigningResult} from './openid4vp.types';
-import {defaultWalletConfig} from "./walletConfig/WalletConfig";
+import {defaultWalletConfig} from './walletConfig/WalletConfig';
+import forge from 'node-forge';
 
 export async function getWalletConfig() {
   const config = await getAllConfigurations();
   let walletConfig = config.openid4vpWalletConfig;
   if (!walletConfig) {
-    console.warn("There is no wallet configuration available in the config. Using default wallet configuration.");
+    console.warn(
+      'There is no wallet configuration available in the config. Using default wallet configuration.',
+    );
     walletConfig = {...defaultWalletConfig};
   } else {
-    walletConfig = parseJSON(walletConfig)
+    walletConfig = parseJSON(walletConfig);
   }
 
-  walletConfig["validate_pre_registered_verifier"] = config.openid4vpClientValidation === 'true'
+  walletConfig['validate_pre_registered_verifier'] =
+    config.openid4vpClientValidation === 'true';
 
   try {
     const trustedVerifiersResponse =
@@ -72,7 +76,6 @@ export const signDataForVpPreparation = async (
     return keyTypeToKeysPromise[keyType];
   };
 
-
   const result: Promise<VPTokenSigningResult>[] = unSignedVpTokens.map(
     async unsignedVPToken => {
       let signature: string | undefined = '';
@@ -89,7 +92,10 @@ export const signDataForVpPreparation = async (
         payload, // Payload is in base64 url encoded form - decode it before signing
         signatureAlgorithm,
       );
-      return {signedData: signature, id: unsignedVPToken.id} as VPTokenSigningResult;
+      return {
+        signedData: signature,
+        id: unsignedVPToken.id,
+      } as VPTokenSigningResult;
     },
   );
 
@@ -102,11 +108,14 @@ async function signData(
   base64EncodedPayload: string,
   keyType: string,
 ) {
-  const payloadBytes = base64ToByteArray(base64EncodedPayload);
+  const payloadBytes: Uint8Array = base64ToByteArray(base64EncodedPayload);
 
   switch (keyType) {
     case SignatureAlgorithms.RS256:
-      return createSignatureRSA(privateKey, base64EncodedPayload);
+      return createSignatureRSA(
+        privateKey,
+        forge.util.binary.raw.encode(payloadBytes),
+      );
     case SignatureAlgorithms.ES256:
       return createSignatureECR1(privateKey, payloadBytes);
     case SignatureAlgorithms.ES256K:

@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {MatchingVcsResult, VerifierInfo,} from '../openID4VP/openid4vp.types';
+import {MatchingVcsResult, VerifierInfo} from '../openID4VP/openid4vp.types';
 
 interface OvpErrorModal {
   show: boolean;
@@ -152,15 +152,6 @@ export function useOvpErrorModal({
         show: true,
         title: t('errors.invalidPresentationDefinitionRef.title'),
         message: t('errors.invalidPresentationDefinitionRef.message'),
-        additionalMessage,
-        showRetryButton: false,
-      });
-      generateAndStoreLogMessage('REQUEST_COULD_NOT_BE_PROCESSED');
-    } else if (error.includes('invalid_client')) {
-      setErrorModal({
-        show: true,
-        title: t('errors.invalidQrCode.title'),
-        message: t('errors.invalidQrCode.message'),
         additionalMessage,
         showRetryButton: false,
       });

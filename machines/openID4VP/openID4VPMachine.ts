@@ -620,6 +620,7 @@ export const openID4VPMachine = model.createMachine(
           },
           RESET_ERROR: {
             actions: 'resetError',
+            target: 'waitingForData',
           },
         },
       },
