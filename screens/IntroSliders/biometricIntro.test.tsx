@@ -13,16 +13,6 @@ jest.mock('../../shared/constants', () => ({
   isAndroid: () => true,
 }));
 
-jest.mock('../../shared/hooks/useBiometricType', () => ({
-  useBiometricType: () => ({
-    biometricType: 'FINGERPRINT',
-    isBiometricsLoading: false,
-    biometricLabel: 'Biometrics',
-    translationSuffix: 'Biometrics',
-    biometricCategory: 'fingerprint',
-  }),
-}));
-
 import {StaticAuthScreen} from './biometricIntro';
 
 describe('StaticAuthScreen', () => {

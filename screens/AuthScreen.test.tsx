@@ -26,16 +26,6 @@ jest.mock('../components/ui/svg', () => ({
   },
 }));
 
-jest.mock('../shared/hooks/useBiometricType', () => ({
-  useBiometricType: () => ({
-    biometricType: 'FINGERPRINT',
-    isBiometricsLoading: false,
-    biometricLabel: 'Biometrics',
-    translationSuffix: 'Biometrics',
-    biometricCategory: 'fingerprint',
-  }),
-}));
-
 jest.mock('../shared/telemetry/TelemetryUtils', () => ({
   getStartEventData: jest.fn(),
   getInteractEventData: jest.fn(),
