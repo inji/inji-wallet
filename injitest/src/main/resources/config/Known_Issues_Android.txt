@@ -1,2 +1,0 @@
-#Add the Known Issue Testcase with its bug id here
-#Ex:bugId------testcaseName
