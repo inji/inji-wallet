@@ -54,7 +54,7 @@
 		C3F6A9DD2E661896006C9904 /* RNInjiVcRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3F6A9DC2E66188D006C9904 /* RNInjiVcRenderer.swift */; };
 		C3F6A9DF2E661903006C9904 /* RNInjiVcRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3F6A9DE2E6618F6006C9904 /* RNInjiVcRenderer.m */; };
 		E641C9E62FEAE9C9002D18A7 /* VCIClient in Frameworks */ = {isa = PBXBuildFile; productRef = E641C9E52FEAE9C9002D18A7 /* VCIClient */; };
-		E660F6FB2FF23611007D2934 /* OpenID4VP in Frameworks */ = {isa = PBXBuildFile; productRef = E660F6FA2FF23611007D2934 /* OpenID4VP */; };
+		E6728B4F2FF7E2C40068A964 /* OpenID4VP in Frameworks */ = {isa = PBXBuildFile; productRef = E6728B4E2FF7E2C40068A964 /* OpenID4VP */; };
 		E6D946DA2EFAA2FE004DA688 /* CredentialsVerifierConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946C62EFAA2FE004DA688 /* CredentialsVerifierConstant.swift */; };
 		E6D946DB2EFAA2FE004DA688 /* NetworkManagerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946D42EFAA2FE004DA688 /* NetworkManagerClient.swift */; };
 		E6D946DC2EFAA2FE004DA688 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946CF2EFAA2FE004DA688 /* Data.swift */; };
@@ -185,12 +185,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6728B4F2FF7E2C40068A964 /* OpenID4VP in Frameworks */,
 				E641C9E62FEAE9C9002D18A7 /* VCIClient in Frameworks */,
 				9CCC57772E9D7C7000669DB7 /* ios-tuvali-library in Frameworks */,
 				C339223B2E79A536004A01EC /* InjiVcRenderer in Frameworks */,
 				9CAE74EE2E2E38F800C2532C /* pixelpass in Frameworks */,
 				9CCCA19E2CF87A8400D5A461 /* securekeystore in Frameworks */,
-				E660F6FB2FF23611007D2934 /* OpenID4VP in Frameworks */,
 				61450CD968A57153077CB5A9 /* libPods-Inji.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -603,7 +603,7 @@
 				C339223A2E79A536004A01EC /* InjiVcRenderer */,
 				9CCC57762E9D7C7000669DB7 /* ios-tuvali-library */,
 				E641C9E52FEAE9C9002D18A7 /* VCIClient */,
-				E660F6FA2FF23611007D2934 /* OpenID4VP */,
+				E6728B4E2FF7E2C40068A964 /* OpenID4VP */,
 			);
 			productName = Inji;
 			productReference = 13B07F961A680F5B00A75B9A /* Inji.app */;
@@ -638,7 +638,7 @@
 				C33922392E79A536004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */,
 				9CCC57752E9D7C7000669DB7 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */,
 				E641C9E42FEAE9C9002D18A7 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */,
-				E660F6F92FF23611007D2934 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */,
+				E6728B4D2FF7E2C40068A964 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */,
 			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
@@ -1056,10 +1056,7 @@
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1123,10 +1120,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1164,23 +1158,23 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/pixelpass-ios-swift/";
 			requirement = {
-				kind = exactVersion;
-				version = 0.6.3;
+				branch = "release-1.0.x";
+				kind = branch;
 			};
 		};
 		9CCC57752E9D7C7000669DB7 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/tuvali-ios-swift/";
 			requirement = {
-				kind = exactVersion;
-				version = 0.5.0;
+				branch = "release-1.0.x";
+				kind = branch;
 			};
 		};
 		9CCCA19C2CF87A8400D5A461 /* XCRemoteSwiftPackageReference "secure-keystore-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/secure-keystore-ios-swift";
 			requirement = {
-				branch = develop;
+				branch = "release-1.0.x";
 				kind = branch;
 			};
 		};
@@ -1188,23 +1182,23 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/inji-vc-renderer-ios-swift.git";
 			requirement = {
-				kind = exactVersion;
-				version = 0.1.0;
+				branch = "release-1.0.x";
+				kind = branch;
 			};
 		};
 		E641C9E42FEAE9C9002D18A7 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/inji/inji-vci-client-ios-swift";
 			requirement = {
-				branch = develop;
+				branch = "release-1.0.x";
 				kind = branch;
 			};
 		};
-		E660F6F92FF23611007D2934 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */ = {
+		E6728B4D2FF7E2C40068A964 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/inji/inji-openid4vp-ios-swift";
 			requirement = {
-				branch = develop;
+				branch = "release-1.0.x";
 				kind = branch;
 			};
 		};
@@ -1236,9 +1230,9 @@
 			package = E641C9E42FEAE9C9002D18A7 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */;
 			productName = VCIClient;
 		};
-		E660F6FA2FF23611007D2934 /* OpenID4VP */ = {
+		E6728B4E2FF7E2C40068A964 /* OpenID4VP */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E660F6F92FF23611007D2934 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */;
+			package = E6728B4D2FF7E2C40068A964 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */;
 			productName = OpenID4VP;
 		};
 /* End XCSwiftPackageProductDependency section */
