@@ -345,7 +345,7 @@ preBuild.dependsOn copyFaceSdkModel
 
 task CaptureLibraryVersion {
     def libDef = project.configurations.getByName('implementation').allDependencies.matching {
-        it.group.equals("io.mosip") && it.name.equals("tuvali")
+        it.group.equals("io.inji") && it.name.equals("tuvali")
     }
     if (libDef.size() > 0) {
         android.buildTypes.each {
