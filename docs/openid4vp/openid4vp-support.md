@@ -1,6 +1,6 @@
 # OpenID4VP - Online Sharing
 
-The Inji Wallet supports OpenID4VP specification V1.0 and draft 23. 
+The Inji Wallet supports OpenID4VP specification V1.0 and draft 23.
 
 This document provides a comprehensive overview of the process of sending a Verifiable Presentation to Verifiers who request them online. It adheres to the OpenID4VP [V1.0 specification](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html) and [draft 23 specification](https://openid.net/specs/openid-4-verifiable-presentations-1_0-23.html) which outlines the standards for
 requesting and presenting Verifiable Credentials. The implementation leverages the Inji OpenID4VP library to streamline the handling of OpenID4VP-related operations.
@@ -152,16 +152,16 @@ sequenceDiagram
 
 ## Summary: Wallet's Role in OpenID4VP Support
 
-| Task                                           | Who        | Where                                          |
-|------------------------------------------------|------------|------------------------------------------------|
-| **Authenticate Verifier**                      | Library    | `authenticateVerifier()`                       |
-| **Parse Authorization Request**                | Library    | Request parsing based on client ID prefix      |
-| **Match credentials against VP request**       | **Wallet** | Presentation Exchange matching logic           |
-| **Display UI for credential selection**        | **Wallet** | `MatchingVcListContainer` / selection screens  |
-| **Handle user consent**                        | **Wallet** | Consent confirmation & credential selection   |
-| **Construct unsigned VP token**                | Library    | `constructUnsignedVPToken()`                   |
-| **Sign VP token data**                         | **Wallet** | `signDataForVpPreparation()` (format-specific) |
-| **Submit VP response to Verifier**             | Library    | `shareVerifiablePresentation()`                |
+| Task                                     | Who        | Where                                          |
+|------------------------------------------|------------|------------------------------------------------|
+| **Authenticate Verifier**                | Library    | `authenticateVerifier()`                       |
+| **Parse Authorization Request**          | Library    | Request parsing based on client ID prefix      |
+| **Match credentials against VP request** | **Wallet** | Presentation Exchange matching logic           |
+| **Display UI for credential selection**  | **Wallet** | `MatchingVcListContainer` / selection screens  |
+| **Handle user consent**                  | **Wallet** | Consent confirmation & credential selection    |
+| **Construct unsigned VP token**          | Library    | `constructUnsignedVPToken()`                   |
+| **Sign VP token data**                   | **Wallet** | `signDataForVpPreparation()` (format-specific) |
+| **Submit VP response to Verifier**       | Library    | `shareVerifiablePresentation()`                |
 
 **Key Insight:** The library handles the OpenID4VP protocol orchestration (Verifier authentication, request parsing, VP token construction, and response submission). The Wallet handles credential matching for Presentation Exchange flows, user interaction, and cryptographic signing operations.
 
@@ -175,3 +175,101 @@ Holder binding support - The holder binding is a feature that allows the Verifie
 - for vc+sd-jwt and dc+sd-jwt format
   - Via [cnf](https://www.ietf.org/archive/id/draft-ietf-oauth-sd-jwt-vc-10.html#section-3.2.2.2-3.4.2.1) claim and supported for `kid` only
   - Supported algorithms - **_ES256_**, **_Ed25519_**.
+
+## Wallet Configuration for the OpenID4VP Flow
+
+The wallet retrieves its OpenID4VP configuration from the backend service (**Mimoto**). This includes the list of trusted verifiers, client validation settings, and wallet capabilities.
+
+### 1. Pre-registered Verifiers
+
+The wallet obtains the list of pre-registered (trusted) verifiers from the Mimoto backend.
+
+- **Backend Service:** Mimoto
+- **API:** `/v1/mimoto/verifiers`
+
+The response contains the list of trusted verifiers. This list is included in the `walletConfig` passed to the Inji OpenID4VP library, which uses it to perform **client validation** during the OpenID4VP flow.
+
+#### Sample Response
+
+```json
+{
+  "response": {
+    "verifiers": [
+      {
+        "client_id": "verifier.com",
+        "redirect_uris": [
+          "https://verifier.com/"
+        ],
+        "response_uris": [
+          "https://verifier.com/v1/verify/vp-submission/direct-post"
+        ],
+        "jwks_uri": "https://verifier.com/.well-known/jwks.json",
+        "allow_unsigned_request": true,
+        "spec_version": "draft23"
+      },
+      {
+        "client_id": "mock-client",
+        "redirect_uris": [
+          "https://example.com/redirect"
+        ],
+        "response_uris": [
+          "https://mock-client.com/verifier/vp-response"
+        ],
+        "jwks_uri": "https://mock-client.com/.well-known/jwks.json",
+        "allow_unsigned_request": true,
+        "spec_version": "v1"
+      }
+    ]
+  }
+}
+```
+
+
+### 2. Pre-registered Client Validation
+
+Whether the wallet validates a verifier against the trusted verifier list is controlled by the `openid4vpClientValidation` property returned by the Mimoto backend.
+
+- **Backend Service:** Mimoto
+- **API:** `/v1/mimoto/allProperties`
+- **Property:** `openid4vpClientValidation`
+
+#### Behavior
+
+- If `openid4vpClientValidation` is set to `true`, the wallet validates the verifier against the pre-registered verifier list.
+- If `openid4vpClientValidation` is set to `false`, this validation is skipped.
+- If the property is not present in the API response, the default value is `true`.
+
+
+### 3. OpenID4VP Wallet Configuration
+
+The wallet retrieves its OpenID4VP configuration from the Mimoto backend.
+
+- **Backend Service:** Mimoto
+- **API:** `/v1/mimoto/allProperties`
+- **Property:** `openid4vpWalletConfig`
+
+This property defines the wallet capabilities supported by the OpenID4VP library. If the property is not available, the [default configuration](../../shared/openID4VP/walletConfig/WalletConfig.ts) is used.
+
+#### Configuration Parameters
+
+The configuration includes:
+
+- `response_types_supported` – Supported response types.
+- `vp_formats_supported` – Supported Verifiable Presentation formats and their cryptographic algorithms.
+- `client_id_prefixes_supported` – Supported client identifier prefixes.
+- `request_object_signing_alg_values_supported` – Supported request object signing algorithms.
+- `authorization_encryption_alg_values_supported` – Supported key management algorithms for encrypted authorization requests.
+- `authorization_encryption_enc_values_supported` – Supported content encryption algorithms.
+- `presentation_definition_uri_supported` – Indicates whether `presentation_definition_uri` is supported.
+- `request_uri_methods_supported` – Supported HTTP methods for fetching request objects.
+
+#### Sample Response
+
+```json
+{
+  "response": {
+    "openid4vpClientValidation": "false",
+    "openid4vpWalletConfig": "{\"response_types_supported\":[\"vp_token\"],\"vp_formats_supported\":{\"mso_mdoc\":{\"issuerauth_alg_values\":[-7],\"deviceauth_alg_values\":[-7]},\"ldp_vc\":{\"proof_type_values\":[\"Ed25519Signature2020\",\"JsonWebSignature2020\"]},\"dc+sd-jwt\":{\"sd-jwt_alg_values\":[\"EdDSA\",\"ES256\"],\"kb-jwt_alg_values\":[\"ES256\",\"EdDSA\"]},\"vc+sd-jwt\":{\"sd-jwt_alg_values\":[\"EdDSA\",\"ES256\"],\"kb-jwt_alg_values\":[\"ES256\",\"EdDSA\"]}},\"client_id_prefixes_supported\":[\"redirect_uri\",\"decentralized_identifier\",\"pre-registered\"],\"request_object_signing_alg_values_supported\":[\"EdDSA\"],\"authorization_encryption_alg_values_supported\":[\"ECDH-ES\"],\"authorization_encryption_enc_values_supported\":[\"A256GCM\"],\"presentation_definition_uri_supported\":true,\"request_uri_methods_supported\":[\"get\",\"post\"]}"
+  }
+}
+```
