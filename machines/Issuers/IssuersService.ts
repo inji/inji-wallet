@@ -356,8 +356,10 @@ export const IssuersService = () => {
         selectedCredentialType,
       } = context;
       if (isCredentialOfferFlow) {
+        
         const configurations = await getAllConfigurations();
-        if (configurations.disableCredentialOfferVcVerification) {
+        
+        if (configurations.disableCredentialOfferVcVerification=='true') {
           return {
             isVerified: true,
             verificationMessage: '',

@@ -36,11 +36,135 @@ const ProofPurpose = {
 
 const vcVerifier = NativeModules.VCVerifierModule;
 
+// ---- HCERT QR verification (new) ----------------------------------------
+
+const HCERT_DECODE_URL = 'https://hcert-validator.racsel.org/decode/hcert';
+const HCERT_VERIFY_SIGNATURE_URL =
+  'https://hcert-validator.racsel.org/verify/signature';
+
+function decodeBase64QrCode(qrData: string): string {
+  try {
+    // React Native has a global atob/Buffer depending on setup; use Buffer for reliability
+    const decoded = Buffer.from(qrData, 'base64').toString('utf-8');
+    return decoded;
+  } catch (error) {
+    console.log('[HCERT] Failed to base64-decode qr_data, using raw value. Error:', error);
+    return qrData;
+  }
+}
+
+async function decodeHcertQrCode(qrData: string) {
+
+  const decodedQrData = decodeBase64QrCode(qrData);
+  const response = await fetch(HCERT_DECODE_URL, {
+    method: 'POST',
+    headers: {
+      Accept: '*/*',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({qr_data: decodedQrData, include_raw: true}),
+  });
+  if (!response.ok) {
+    throw new Error(
+      `HCERT decode request failed with status ${response.status}`,
+    );
+  }
+
+  const decodeJson = await response.json();
+  return decodeJson;
+}
+
+async function verifyHcertSignature(coseRaw: Record<string, any>) {
+
+  const response = await fetch(HCERT_VERIFY_SIGNATURE_URL, {
+    method: 'POST',
+    headers: {
+      Accept: '*/*',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      cose_raw: coseRaw,
+      use_gdhcn: true,
+      gdhcn_env: 'dev',
+      participant: '-',
+      domain: 'PH4H',
+      usage: 'DSC',
+      verify_did_proof: false,
+      allow_remote_contexts: true,
+      allow_unverified_trustlist: true,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `HCERT signature verification request failed with status ${response.status}`,
+    );
+  }
+
+  const signatureJson = await response.json();
+  console.log(
+    '[HCERT] Verify-signature response body:',
+    JSON.stringify(signatureJson),
+  );
+  return signatureJson;
+}
+
+/**
+ * Decodes the HCERT QR code and verifies its signature.
+ * Returns null when verification succeeds -> caller should continue the normal flow.
+ * Returns a VerificationResult (failure) when it should short-circuit verifyCredential.
+ */
+async function verifyHcertQrCode(
+  qrData: string,
+): Promise<VerificationResult | null> {
+  try {
+    const decodeResult = await decodeHcertQrCode(qrData);
+    const coseRaw = decodeResult?.cose?._raw;
+
+    if (!coseRaw) {
+      return {
+        isVerified: false,
+        verificationMessage: 'HCERT decode did not return COSE payload',
+        verificationErrorCode: VerificationErrorType.GENERIC_TECHNICAL_ERROR,
+      };
+    }
+    const signatureResult = await verifyHcertSignature(coseRaw);
+
+    if (!signatureResult?.valid) {
+      return {
+        isVerified: false,
+        verificationMessage: signatureResult?.message ?? 'Signature not valid',
+        verificationErrorCode: VerificationErrorType.HCERT_SIGNATURE_INVALID,
+      };
+    }
+
+    // Signature valid -> let the existing flow continue
+    return null;
+  } catch (error) {
+    return {
+      isVerified: false,
+      verificationMessage: error.message,
+      verificationErrorCode: VerificationErrorType.GENERIC_TECHNICAL_ERROR,
+    };
+  }
+}
+
+// ---------------------------------------------------------------------------
+
 export async function verifyCredential(
   verifiableCredential: Credential,
   credentialFormat: string,
 ): Promise<VerificationResult> {
   try {
+    const vcQrCode = (verifiableCredential?.credentialSubject as any)?.qrCode;
+
+    if (vcQrCode) {
+      const hcertFailure = await verifyHcertQrCode(vcQrCode);
+      if (hcertFailure) {
+        return hcertFailure;
+      }
+    }
+
     if (isAndroid()) {
       return await verifyCredentialForAndroid(
         verifiableCredential,
@@ -303,6 +427,7 @@ export const VerificationErrorType = {
   NETWORK_ERROR: 'ERR_NETWORK',
   EXPIRATION_ERROR: 'ERR_VC_EXPIRED',
   RANGE_ERROR: 'ERR_RANGE',
+  HCERT_SIGNATURE_INVALID: 'ERR_HCERT_SIGNATURE_INVALID',
 };
 
 export const VerificationErrorMessage = {

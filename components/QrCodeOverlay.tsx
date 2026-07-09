@@ -23,29 +23,46 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
   const { RNSecureKeystoreModule } = NativeModules;
 
   async function getQRData(): Promise<string> {
-    let qrData: string;
-    try {
-      const keyData = await RNSecureKeystoreModule.getData(props.meta.id);
-      if (keyData[1] && keyData.length > 0) {
-        qrData = keyData[1];
-      } else {
-        throw new Error('No key data found');
-      }
-    } catch {
-      const {isClaim169QrPresent, claim169QrData} = getClaim169Qr();
+   
+   let qrData: string;
+  try {
+    const keyData = await RNSecureKeystoreModule.getData(props.meta.id);
+    if (keyData[1] && keyData.length > 0) {
+      qrData = keyData[1];
+    } else {
+      throw new Error('No key data found');
+    }
+  } catch {
+
+    // 1. Check for qrCode field in VC response
+  const vcQrCode = (props.verifiableCredential?.credential?.credentialSubject as any)?.qrCode;
+
+  if (typeof vcQrCode === 'string' && vcQrCode.trim().length > 0) {
+   qrData = Buffer.from(vcQrCode, 'base64').toString('utf-8');
+  // Store for future use
+  await RNSecureKeystoreModule.storeData(props.meta.id, qrData);
+  return qrData;// <-- exits immediately, PixelPass is never touched
+    }
+    else {
+      // 2. Check claim169 QR
+      const { isClaim169QrPresent, claim169QrData } = getClaim169Qr();
+
       if (isClaim169QrPresent) {
         qrData = claim169QrData;
       } else {
-        const {credential} = props.verifiableCredential;
+        // 3. Fallback to PixelPass generation
+        const { credential } = props.verifiableCredential;
         qrData = await RNPixelpassModule.generateQRData(
           JSON.stringify(credential),
           '',
         );
       }
-      await RNSecureKeystoreModule.storeData(props.meta.id, qrData);
     }
-    return qrData;
+
+    await RNSecureKeystoreModule.storeData(props.meta.id, qrData);
   }
+  return qrData;
+}
 
   function getClaim169Qr(): {
     isClaim169QrPresent: boolean;

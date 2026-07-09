@@ -246,7 +246,7 @@ const ID = ['id'];
 
 const IMAGE_KEYS = ['face', 'photo', 'picture', 'portrait', 'image'];
 
-const EXCLUDED_FIELDS_FOR_RENDERING = [...ID, ...IMAGE_KEYS, 'cnf'];
+const EXCLUDED_FIELDS_FOR_RENDERING = [...ID, ...IMAGE_KEYS, 'cnf','qrCode'];
 
 const shouldExcludeField = (field: string): boolean => {
   const normalized = field.includes('~')
