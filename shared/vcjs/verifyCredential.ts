@@ -41,6 +41,8 @@ const vcVerifier = NativeModules.VCVerifierModule;
 const HCERT_DECODE_URL = 'https://hcert-validator.racsel.org/decode/hcert';
 const HCERT_VERIFY_SIGNATURE_URL =
   'https://hcert-validator.racsel.org/verify/signature';
+const HCERT_VERIFICATION_FAILED_MESSAGE =
+  'The credential could not be verified and cannot be downloaded to your wallet. Please contact the issuer for assistance.';
 
 function decodeBase64QrCode(qrData: string): string {
   try {
@@ -48,13 +50,15 @@ function decodeBase64QrCode(qrData: string): string {
     const decoded = Buffer.from(qrData, 'base64').toString('utf-8');
     return decoded;
   } catch (error) {
-    console.log('[HCERT] Failed to base64-decode qr_data, using raw value. Error:', error);
+    console.log(
+      '[HCERT] Failed to base64-decode qr_data, using raw value. Error:',
+      error,
+    );
     return qrData;
   }
 }
 
 async function decodeHcertQrCode(qrData: string) {
-
   const decodedQrData = decodeBase64QrCode(qrData);
   const response = await fetch(HCERT_DECODE_URL, {
     method: 'POST',
@@ -75,7 +79,6 @@ async function decodeHcertQrCode(qrData: string) {
 }
 
 async function verifyHcertSignature(coseRaw: Record<string, any>) {
-
   const response = await fetch(HCERT_VERIFY_SIGNATURE_URL, {
     method: 'POST',
     headers: {
@@ -122,31 +125,34 @@ async function verifyHcertQrCode(
     const coseRaw = decodeResult?.cose?._raw;
 
     if (!coseRaw) {
-      return {
-        isVerified: false,
-        verificationMessage: 'HCERT decode did not return COSE payload',
-        verificationErrorCode: VerificationErrorType.GENERIC_TECHNICAL_ERROR,
-      };
+      return createHcertVerificationFailedResult(
+        'HCERT decode did not return COSE payload',
+      );
     }
     const signatureResult = await verifyHcertSignature(coseRaw);
 
     if (!signatureResult?.valid) {
-      return {
-        isVerified: false,
-        verificationMessage: signatureResult?.message ?? 'Signature not valid',
-        verificationErrorCode: VerificationErrorType.HCERT_SIGNATURE_INVALID,
-      };
+      return createHcertVerificationFailedResult(
+        signatureResult?.message ?? 'Signature not valid',
+      );
     }
 
     // Signature valid -> let the existing flow continue
     return null;
   } catch (error) {
-    return {
-      isVerified: false,
-      verificationMessage: error.message,
-      verificationErrorCode: VerificationErrorType.GENERIC_TECHNICAL_ERROR,
-    };
+    return createHcertVerificationFailedResult(error);
   }
+}
+
+function createHcertVerificationFailedResult(
+  error: unknown,
+): VerificationResult {
+  console.error('[HCERT] QR credential verification failed:', error);
+  return {
+    isVerified: false,
+    verificationMessage: HCERT_VERIFICATION_FAILED_MESSAGE,
+    verificationErrorCode: VerificationErrorType.HCERT_VERIFICATION_FAILED,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -427,7 +433,7 @@ export const VerificationErrorType = {
   NETWORK_ERROR: 'ERR_NETWORK',
   EXPIRATION_ERROR: 'ERR_VC_EXPIRED',
   RANGE_ERROR: 'ERR_RANGE',
-  HCERT_SIGNATURE_INVALID: 'ERR_HCERT_SIGNATURE_INVALID',
+  HCERT_VERIFICATION_FAILED: 'ERR_HCERT_VERIFICATION_FAILED',
 };
 
 export const VerificationErrorMessage = {
