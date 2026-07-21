@@ -29,7 +29,7 @@ export class __TuvaliVersion {
   }
 }
 export class __InjiVersion {
-  private static value = getVersion();
+  private static value = "1.0.0-alpha.2";
 
   public static getValue(): string {
     return __InjiVersion.value;
