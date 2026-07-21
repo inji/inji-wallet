@@ -87,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/inji-vc-renderer-ios-swift.git",
       "state" : {
-        "revision" : "68b6c14aaf1e572f84307e0f932d93a66134055d",
-        "version" : "0.1.0"
+        "branch" : "release-1.0.x",
+        "revision" : "7c82f1bf0d99eccfbef09c613f1747a5a3207c4a"
       }
     },
     {
@@ -123,8 +123,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/pixelpass-ios-swift/",
       "state" : {
-        "revision" : "78faea2ff48626ef9a6d198123bcf7b299acefd1",
-        "version" : "0.6.3"
+        "branch" : "release-1.0.x",
+        "revision" : "3f26293cccc6f28a6cca053e6fd269e257dbda23"
       }
     },
     {
@@ -142,7 +142,7 @@
       "location" : "https://github.com/mosip/secure-keystore-ios-swift",
       "state" : {
         "branch" : "develop",
-        "revision" : "9e5dc2075eb96d00e9c2ef8f846c6451725f6e6b"
+        "revision" : "2d1fea9966b88d275619e30f8450b31762c46780"
       }
     },
     {
@@ -186,8 +186,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mosip/tuvali-ios-swift/",
       "state" : {
-        "revision" : "2d49e123f70dfc2179983a753d370cc2212385db",
-        "version" : "0.5.0"
+        "branch" : "release-1.0.x",
+        "revision" : "775e8358d4a1a84cbb841d164c2a0ba4cb6a3433"
       }
     },
     {

@@ -269,25 +269,27 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("io.mosip:injivcrenderer-aar:0.1.0")
-    implementation("io.inji:inji-openid4vp-aar:1.0.0-SNAPSHOT"){
+    implementation("com.facebook.react:react-android")
+    implementation 'com.facebook.soloader:soloader:0.10.1+'
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation("io.inji:injivcrenderer-aar:1.0.0-alpha.1-SNAPSHOT")
+    implementation("io.inji:inji-openid4vp-aar:1.0.0-alpha.1-SNAPSHOT"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
-        exclude group: 'io.mosip', module: 'vcverifier-jar'
+        exclude group: 'io.inji', module: 'vcverifier-jar'
         exclude group: 'com.google.crypto.tink', module: 'tink'
         exclude group: 'com.augustcellars.cose', module:'cose-java'
     }
-    implementation("com.facebook.react:react-android")
-    implementation 'com.facebook.soloader:soloader:0.10.1+'
-    implementation("io.mosip:pixelpass-aar:0.7.0")
-    implementation("io.mosip:secure-keystore:0.3.0")
-    implementation("io.mosip:tuvali:0.5.2")
-    implementation("io.inji:inji-vci-client-aar:1.0.0-SNAPSHOT"){
+    implementation("io.inji:pixelpass-aar:1.0.0-alpha.1-SNAPSHOT")
+    implementation("io.inji:secure-keystore:1.0.0-alpha.1-SNAPSHOT")
+    implementation("io.inji:tuvali:1.0.0-alpha.1-SNAPSHOT")
+    implementation("io.inji:inji-vci-client-aar:1.0.0-alpha.1-SNAPSHOT"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
-        exclude group: 'io.mosip', module: 'vcverifier-jar'
+        exclude group: 'io.inji', module: 'vcverifier-jar'
         exclude group: 'com.google.crypto.tink', module: 'tink'
         exclude group: 'com.augustcellars.cose', module:'cose-java'
         exclude group: 'io.inji', module: 'inji-openid4vp-aar'
@@ -344,7 +346,7 @@ preBuild.dependsOn copyFaceSdkModel
 
 task CaptureLibraryVersion {
     def libDef = project.configurations.getByName('implementation').allDependencies.matching {
-        it.group.equals("io.mosip") && it.name.equals("tuvali")
+        it.group.equals("io.inji") && it.name.equals("tuvali")
     }
     if (libDef.size() > 0) {
         android.buildTypes.each {
