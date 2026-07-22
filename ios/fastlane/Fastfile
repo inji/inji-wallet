@@ -100,7 +100,7 @@ platform :ios do
     keychain_name = TEMP_KEYCHAIN_USER
     keychain_password = TEMP_KEYCHAIN_PASSWORD
     ensure_temp_keychain(keychain_name, keychain_password)
-  
+
     api_key = app_store_connect_api_key(
       key_id: "#{APPLE_KEY_ID}",
       issuer_id: "#{APPLE_ISSUER_ID}",
@@ -109,7 +109,7 @@ platform :ios do
       in_house: false,
       is_key_content_base64: true
     )
-  
+
     match(
       type: 'appstore',
       app_identifier: "#{generate_app_bundle_id}",
@@ -146,10 +146,10 @@ platform :ios do
         provisioningProfiles: profile_mapping
       }
     )
-  
+
     delete_temp_keychain(keychain_name)
   end
-  
+
   lane :beta do
     keychain_name = TEMP_KEYCHAIN_USER
     keychain_password = TEMP_KEYCHAIN_PASSWORD

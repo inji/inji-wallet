@@ -32,15 +32,6 @@ jest.mock('../components/ui/svg', () => ({
       React.createElement('View', {testID: 'adaptiveBiometric'}),
   },
 }));
-jest.mock('../shared/hooks/useBiometricType', () => ({
-  useBiometricType: () => ({
-    biometricType: 'FINGERPRINT',
-    isBiometricsLoading: false,
-    biometricLabel: 'Biometrics',
-    translationSuffix: 'Biometrics',
-    biometricCategory: 'fingerprint',
-  }),
-}));
 jest.mock('./BiometricScreenController', () => ({
   useBiometricScreen: jest.fn(() => ({
     error: '',
@@ -78,7 +69,7 @@ describe('BiometricScreen', () => {
     const {getByText} = render(
       React.createElement(BiometricScreen, defaultProps),
     );
-    expect(getByText('unlockBiometrics')).toBeTruthy();
+    expect(getByText('unlock')).toBeTruthy();
   });
 
   it('should show passcode component when re-enabling', () => {

@@ -18,7 +18,6 @@ import {SvgImage} from '../../components/ui/svg';
 import {DataBackupAndRestore} from './DataBackupAndRestore';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {SettingsKeyManagementScreen} from './SettingsKeyManagement';
-import {useBiometricType} from '../../shared/hooks/useBiometricType';
 
 const LanguageSetting: React.FC = () => {
   const {t} = useTranslation('SettingScreen');
@@ -55,8 +54,6 @@ export const SettingScreen: React.FC<
 > = props => {
   const {t} = useTranslation('SettingScreen');
   const controller = useSettingsScreen(props);
-  const {biometricType, isBiometricsLoading, translationSuffix} =
-    useBiometricType();
 
   const updateRegistry = items => {
     controller.UPDATE_CREDENTIAL_REGISTRY(items[0].value, items[1].value);
@@ -132,16 +129,13 @@ export const SettingScreen: React.FC<
           <LanguageSetting />
 
           <ListItem topDivider disabled={!controller.canUseBiometrics}>
-            {!isBiometricsLoading &&
-              SvgImage.adaptiveBiometricIcon(biometricType, 24)}
+            {SvgImage.adaptiveBiometricIcon(24)}
             <ListItem.Content>
               <ListItem.Title
                 {...testIDProps('bioUnlock')}
                 style={{paddingTop: 3}}>
                 <Text weight="semibold" color={Theme.Colors.settingsLabel}>
-                  {t(`bioUnlock${translationSuffix}` as any, {
-                    defaultValue: t('bioUnlock'),
-                  })}
+                  {t('bioUnlock')}
                 </Text>
               </ListItem.Title>
             </ListItem.Content>
