@@ -28,5 +28,5 @@ export const defaultWalletConfig = {
   presentation_definition_uri_supported: true,
   request_uri_methods_supported: ['get', 'post'],
   trusted_verifiers: [],
-  validate_pre_registered_verifier: true,
+  validate_trusted_verifier: true,
 };

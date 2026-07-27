@@ -268,7 +268,7 @@ describe('OpenID4VP', () => {
     mockedGetWalletConfig.mockResolvedValue({
       mock: true,
       trusted_verifiers: [],
-      validate_pre_registered_verifier: false,
+      validate_trusted_verifier: false,
     } as never);
     mockedJsonLdCanonicalize.mockResolvedValue('');
     mockedJsonLdExpand.mockResolvedValue([]);
@@ -298,7 +298,7 @@ describe('OpenID4VP', () => {
       expect(nativeModule.initSdk).toHaveBeenCalledWith('test-app-id', {
         mock: true,
         trusted_verifiers: [],
-        validate_pre_registered_verifier: false,
+        validate_trusted_verifier: false,
       });
       expect(nativeModule.authenticateVerifier).toHaveBeenCalledWith(
         'encoded-request',
@@ -404,7 +404,7 @@ describe('OpenID4VP', () => {
       expect(nativeModule.initSdk).toHaveBeenCalledWith('test-app-id', {
         mock: true,
         trusted_verifiers: [],
-        validate_pre_registered_verifier: false,
+        validate_trusted_verifier: false,
       });
     });
   });
@@ -1012,7 +1012,7 @@ describe('OpenID4VP', () => {
       expect(nativeModule.initSdk).toHaveBeenCalledWith('test-app-id', {
         mock: true,
         trusted_verifiers: [],
-        validate_pre_registered_verifier: false,
+        validate_trusted_verifier: false,
       });
       expect(nativeModule.getMatchingCredentials).toHaveBeenCalledWith(
         {dcql_query: {query: 'example'}},
