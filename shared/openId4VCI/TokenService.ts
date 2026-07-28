@@ -58,9 +58,13 @@ function parseError(errorText: string): any {
 
 function toVciClientError(errorText: string): VciClientErrorResponse {
   const parsedError = parseError(errorText);
+  const issuerErrorCode = parsedError.error ?? 'UNKNOWN_ERROR';
+  const issuerErrorMessage = parsedError.error_description;
   return {
-    issuerErrorCode: parsedError.error ?? 'UNKNOWN_ERROR',
-    issuerErrorMessage: parsedError.error_description,
+    code: issuerErrorCode,
+    message: issuerErrorMessage,
+    issuerErrorCode,
+    issuerErrorMessage,
   };
 }
 

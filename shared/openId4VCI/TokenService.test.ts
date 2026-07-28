@@ -9,7 +9,7 @@ jest.mock('../vciClient/VciClient', () => ({
   },
 }));
 
-import {sendTokenRequest} from './sendTokenRequest';
+import {sendTokenRequest} from './TokenService';
 
 type FakeResponseOptions = {
   ok: boolean;
@@ -132,6 +132,25 @@ describe('sendTokenRequest', () => {
     ).rejects.toMatchObject({issuerErrorCode: 'UNKNOWN_ERROR'});
   });
 
+  it('surfaces proof generation failures during a use_dpop_nonce retry', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce(
+      fakeResponse({
+        ok: false,
+        status: 400,
+        body: '{"error":"use_dpop_nonce"}',
+        nonce: 'server-nonce',
+      }),
+    );
+    mockGenerateTokenDPoPProof.mockRejectedValueOnce(
+      new Error('bridge failed'),
+    );
+
+    await expect(
+      sendTokenRequest({...baseRequest, dpopProof: 'proof-a'}),
+    ).rejects.toThrow('bridge failed');
+    expect((global.fetch as jest.Mock).mock.calls).toHaveLength(1);
+  });
+
   it('does not retry for non use_dpop_nonce errors', async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce(
       fakeResponse({
@@ -144,6 +163,8 @@ describe('sendTokenRequest', () => {
     await expect(
       sendTokenRequest({...baseRequest, dpopProof: 'proof-a'}),
     ).rejects.toMatchObject({
+      code: 'invalid_grant',
+      message: 'bad code',
       issuerErrorCode: 'invalid_grant',
       issuerErrorMessage: 'bad code',
     });

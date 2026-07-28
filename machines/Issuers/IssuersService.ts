@@ -13,7 +13,7 @@ import {
   verifyCredentialData,
 } from '../../shared/openId4VCI/Utils';
 import VciClient from '../../shared/vciClient/VciClient';
-import {sendTokenRequest} from '../../shared/openId4VCI/sendTokenRequest';
+import {sendTokenRequest} from '../../shared/openId4VCI/TokenService';
 import {displayType, issuerType} from './IssuersMachine';
 import {setItem} from '../store';
 import {
