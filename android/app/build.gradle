@@ -285,7 +285,7 @@ dependencies {
     implementation("io.inji:pixelpass-aar:1.0.0-alpha.1-SNAPSHOT")
     implementation("io.inji:secure-keystore:1.0.0-alpha.1-SNAPSHOT")
     implementation("io.inji:tuvali:1.0.0-alpha.1-SNAPSHOT")
-    implementation("io.inji:inji-vci-client-aar:1.0.0-alpha.1-SNAPSHOT"){
+    implementation("io.inji:inji-vci-client-aar:1.0.0-alpha.2-SNAPSHOT"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
