@@ -197,7 +197,7 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
     }, []),
   );
 
-  let failedVCsList = [];
+  const failedVCsList = [];
   controller.downloadFailedVcs.forEach(vc => {
     failedVCsList.push(`\n${vc.idType}:${vc.displayId}`);
   });

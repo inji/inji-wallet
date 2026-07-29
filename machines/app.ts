@@ -20,7 +20,6 @@ import {
   changeEsignetUrl,
   ESIGNET_BASE_URL,
   isAndroid,
-  updateCacheTTL,
   MIMOTO_BASE_URL,
   SETTINGS_STORE_KEY,
 } from '../shared/constants';
@@ -523,7 +522,7 @@ export const appMachine = model.createMachine(
         const blurHandler = () => callback({type: 'INACTIVE'});
         const focusHandler = () => callback({type: 'ACTIVE'});
 
-        let changeEventSubscription = AppState.addEventListener(
+        const changeEventSubscription = AppState.addEventListener(
           'change',
           changeHandler,
         );

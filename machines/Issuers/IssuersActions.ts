@@ -303,7 +303,7 @@ export const IssuersActions = (model: any) => {
     }),
     setCredentialOfferCredentialType: model.assign({
       selectedCredentialType: (context: any, event: any) => {
-        let credentialTypes: Array<{id: string; [key: string]: any}> = [];
+        const credentialTypes: Array<{id: string; [key: string]: any}> = [];
         const credentialConfigurationId = context.credentialConfigurationId;
         const issuerMetadata = context.selectedIssuerWellknownResponse;
         if (
@@ -598,6 +598,7 @@ export const IssuersActions = (model: any) => {
     sendPresentationAuthorizationError: (_, event) => {
       console.error(
         'PRESENTATION_AUTHORIZATION_ERROR for issuance authorization',
+        event.error,
       );
       VciClient.getInstance().abortPresentationFlow({
         code: 'PRESENTATION_AUTHORIZATION_ERROR',

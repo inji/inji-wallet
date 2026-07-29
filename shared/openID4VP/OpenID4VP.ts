@@ -18,7 +18,6 @@ import {
   getMdocAuthenticationAlgorithm,
 } from '../../components/VC/common/VCUtils';
 import {isIOS} from '../constants';
-import {CACHED_API} from '../api';
 import {getDisclosuresForPath} from '../claimsPathMatching';
 import {
   CredentialSetOption,
