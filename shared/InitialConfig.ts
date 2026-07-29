@@ -19,6 +19,7 @@ export const INITIAL_CONFIG = {
     faceSdkModelUrl: '',
     openId4VCIDownloadVCTimeout: '30000',
     cacheTTLInMilliSeconds: '3600000',
-    disableCredentialOfferVcVerification: false
+    disableCredentialOfferVcVerification: false,
+    openid4vpClientValidation: 'true',
   },
 };

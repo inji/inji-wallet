@@ -48,7 +48,7 @@ import {
   signDataForVpPreparation,
   claimPathPointersToJsonPath,
 } from './OpenID4VPHelper';
-import {defaultWalletConfig} from "./walletConfig/WalletConfig";
+import {defaultWalletConfig} from './walletConfig/WalletConfig';
 
 describe('OpenID4VPHelper', () => {
   beforeEach(() => {
@@ -76,7 +76,11 @@ describe('OpenID4VPHelper', () => {
         openid4vpWalletConfig: '{"name":"test-wallet"}',
       });
       const result = await getWalletConfig();
-      expect(result).toEqual({name: 'test-wallet', "validate_pre_registered_verifier": true, "trusted_verifiers": []});
+      expect(result).toEqual({
+        name: 'test-wallet',
+        validate_trusted_verifier: true,
+        trusted_verifiers: [],
+      });
     });
 
     it('returns wallet config with populated wallet config, trusted verifiers and validate pre-registered verifier as per the config', async () => {
@@ -106,11 +110,11 @@ describe('OpenID4VPHelper', () => {
 
       expect(result).toEqual({
         name: 'test-wallet',
-        validate_pre_registered_verifier: true,
+        validate_trusted_verifier: true,
         trusted_verifiers: mockVerifiers,
       });
       expect(mockFetchTrustedVerifiersList).toHaveBeenCalled();
-    })
+    });
   });
 
   describe('signDataForVpPreparation', () => {

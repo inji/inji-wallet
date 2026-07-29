@@ -25,7 +25,7 @@ export async function getWalletConfig() {
     walletConfig = parseJSON(walletConfig);
   }
 
-  walletConfig['validate_pre_registered_verifier'] =
+  walletConfig['validate_trusted_verifier'] =
     config.openid4vpClientValidation === 'true';
 
   try {
