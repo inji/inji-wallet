@@ -295,7 +295,7 @@ dependencies {
         exclude group: 'io.inji', module: 'inji-openid4vp-aar'
     }
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("io.inji:vcverifier-aar:1.8.1") {
+    implementation("io.inji:vcverifier-aar:2.0.0-SNAPSHOT") {
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
     }
 
