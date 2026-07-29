@@ -20,6 +20,7 @@ import {
 } from '../../shared/openID4VP/openid4vp.types';
 import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {isDcqlFlow} from '../../shared/openID4VP/OpenID4VPHelper';
+import {openURL} from '../../shared/browserUtils';
 
 // TODO - get this presentation definition list which are alias for scope param
 // from the verifier end point after the endpoint is created and exposed.
@@ -301,5 +302,9 @@ export const openID4VPActions = (model: any) => {
     setAvailableWalletCredentials: model.assign({
       availableWalletCredentials: (_, event) => event.vcs,
     }),
+
+    redirectToVerifier: (_, event) => {
+      void openURL(event.data.redirect_uri);
+    },
   };
 };
