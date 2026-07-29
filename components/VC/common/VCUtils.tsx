@@ -64,11 +64,12 @@ function iterateMsoMdocFor(
   element: 'elementIdentifier' | 'elementValue',
   fieldName: string,
 ) {
-  const foundItem = credential['issuerSigned']['nameSpaces'][namespace]?.find(
-    element => {
-      return element.elementIdentifier === fieldName;
-    },
-  );
+  const issuerSigned = credential['issuerSigned']
+    ? credential['issuerSigned']
+    : credential;
+  const foundItem = issuerSigned['nameSpaces'][namespace]?.find(element => {
+    return element.elementIdentifier === fieldName;
+  });
   return foundItem?.[element];
 }
 
