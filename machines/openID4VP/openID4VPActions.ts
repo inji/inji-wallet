@@ -303,8 +303,20 @@ export const openID4VPActions = (model: any) => {
       availableWalletCredentials: (_, event) => event.vcs,
     }),
 
-    redirectToVerifier: (_, event) => {
-      void openURL(event.data.redirect_uri);
+    redirectToVerifier: async (_, event) => {
+      const redirectUri = event?.data?.redirect_uri;
+
+      if (!redirectUri || typeof redirectUri !== 'string') {
+        return;
+      }
+
+      try {
+        new URL(redirectUri);
+        await openURL(redirectUri);
+      } catch (error) {
+        console.warn('Error during redirection:', error);
+        return;
+      }
     },
   };
 };

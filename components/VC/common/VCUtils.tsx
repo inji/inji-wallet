@@ -67,7 +67,7 @@ function iterateMsoMdocFor(
   const issuerSigned = credential['issuerSigned']
     ? credential['issuerSigned']
     : credential;
-  const foundItem = issuerSigned['nameSpaces'][namespace]?.find(element => {
+  const foundItem = issuerSigned['nameSpaces']?.[namespace]?.find(element => {
     return element.elementIdentifier === fieldName;
   });
   return foundItem?.[element];
