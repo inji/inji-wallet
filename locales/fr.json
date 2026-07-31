@@ -1,0 +1,1084 @@
+{
+  "ActivityLogText": {
+    "VC_SHARED": "{{idType}} a été partagé avec succès.",
+    "VC_RECEIVED": "{{idType}} reçu.",
+    "VC_RECEIVED_NOT_SAVED": "Impossible d'enregistrer {{idType}}.",
+    "VC_DELETED": "{{idType}} a été supprimé avec succès.",
+    "VC_DOWNLOADED": "{{idType}} a été téléchargé.",
+    "VC_SHARED_WITH_VERIFICATION_CONSENT": "{{idType}} a été partagé avec le consentement pour la vérification de présence.",
+    "VC_RECEIVED_WITH_PRESENCE_VERIFIED": "{{idType}} reçu et la vérification de présence a réussi.",
+    "VC_RECEIVED_BUT_PRESENCE_VERIFICATION_FAILED": "{{idType}} reçu mais la vérification de présence a échoué.",
+    "PRESENCE_VERIFIED_AND_VC_SHARED": "La vérification faciale a réussi et {{idType}} a été partagé.",
+    "PRESENCE_VERIFICATION_FAILED": "La vérification faciale a échoué lors du partage de {{idType}}.",
+    "QRLOGIN_SUCCESFULL": "Connexion QR avec {{idType}} réussie.",
+    "WALLET_BINDING_SUCCESSFULL": "L'activation de {{idType}} a réussi.",
+    "WALLET_BINDING_FAILURE": "L'activation de {{idType}} a échoué.",
+    "VC_REMOVED": "{{idType}} a été retiré du portefeuille.",
+    "TAMPERED_VC_REMOVED": "{{idType}} a été retiré du portefeuille en raison d'une altération.",
+    "VC_STATUS_CHANGED": {
+      "VALID": "Vérification du statut terminée. Le statut de {{idType}} est Valide.",
+      "REVOKED": "Vérification du statut terminée. Le statut de {{idType}} est Révoqué.",
+      "EXPIRED": "Vérification du statut terminée. Le statut de {{idType}} est Expiré.",
+      "PENDING": "Vérification du statut terminée. Le statut de {{idType}} est En attente de vérification."
+    },
+    "vpSharing": {
+      "SHARED_SUCCESSFULLY": "La présentation des justificatifs a été partagée avec succès.",
+      "SHARED_WITH_FACE_VERIFIACTION": "La vérification faciale a réussi et la présentation des justificatifs a été partagée avec succès.",
+      "VERIFIER_AUTHENTICATION_FAILED": "Échec de l'authentification du service de vérification lors du partage.",
+      "USER_DECLINED_CONSENT": "L'utilisateur a refusé de partager ses justificatifs.",
+      "SHARED_AFTER_RETRY": "La présentation des justificatifs a été partagée avec succès après une nouvelle tentative.",
+      "SHARED_WITH_FACE_VERIFICATION_AFTER_RETRY": "La vérification faciale a réussi et la présentation des justificatifs a été partagée après une nouvelle tentative.",
+      "SHARING_FAILED": "Le partage des justificatifs a échoué en raison d'une erreur technique.",
+      "RETRY_ATTEMPT_FAILED": "Le partage a échoué après une nouvelle tentative.",
+      "MAX_RETRY_ATTEMPT_FAILED": "Le partage a échoué après le nombre maximal de tentatives.",
+      "FACE_VERIFICATION_FAILED": "La vérification faciale a échoué pendant le partage.",
+      "FACE_VERIFICATION_FAILED_AFTER_RETRY_ATTEMPT": "La vérification faciale a échoué lors d'une nouvelle tentative.",
+      "NO_SELECTED_VC_HAS_IMAGE": "Le partage a échoué car les justificatifs sélectionnés ne contiennent pas de photo.",
+      "CREDENTIAL_MISMATCH_FROM_KEBAB": "Les justificatifs ne correspondent pas aux informations demandées : {{info}}.",
+      "NO_CREDENTIAL_MATCHING_REQUEST": "Aucun justificatif ne correspond à la demande du service de vérification : {{info}}.",
+      "TECHNICAL_ERROR": "Une erreur s'est produite lors du traitement de votre demande.",
+      "INVALID_REQUEST_URI_METHOD": "Justificatif non partagé — Le vérificateur a utilisé une méthode non prise en charge.",
+      "INVALID_AUTH_REQUEST": "Le partage a échoué — La demande contient des informations manquantes ou incorrectes.",
+      "REQUEST_COULD_NOT_BE_PROCESSED": "Le justificatif n'a pas pu être partagé en raison d'un problème technique.",
+      "INVALID_PRESENTATION_DEFINITION_URI": "Le justificatif n'a pas été partagé — Le format des données de la demande est incorrect.",
+      "SEND_VP_ERROR": "Le partage des justificatifs a échoué en raison d'un problème technique.",
+      "INVALID_TRANSACTION_DATA": "La demande de vérification contient des données non prises en charge."
+    }
+  },
+
+  "DeviceInfoList": {
+    "requestedBy": "Demandé par",
+    "sentBy": "Envoyé par",
+    "deviceRefNumber": "Numéro de référence de l'appareil",
+    "name": "Nom",
+    "Verifier": "Vérificateur",
+    "Wallet": "Portefeuille"
+  },
+
+  "FaceScanner": {
+    "livenessCaptureGuide": "Tenez le téléphone immobile et gardez votre visage au centre.",
+    "faceProcessingInfo": "Veuillez patienter pendant le traitement des données.",
+    "faceOutGuide": "Gardez votre visage à l'intérieur de l'ovale !",
+    "faceInGuide": "Capture en cours !",
+    "imageCaptureGuide": "Gardez votre téléphone immobile, placez votre visage au centre puis appuyez sur Capturer.",
+    "capture": "Capturer",
+    "cancel": "Annuler",
+    "flipCamera": "Changer de caméra"
+  },
+
+  "OIDcAuth": {
+    "title": "Authentification OIDC",
+    "text": "À remplacer par l'interface du fournisseur OIDC",
+    "verify": "Vérifier"
+  },
+
+  "PasscodeVerify": {
+    "passcodeMismatchError": "Le code d'accès ne correspond pas."
+  },
+
+  "QrScanner": {
+    "cameraAccessDisabled": "Accès à la caméra désactivé !",
+    "cameraPermissionGuideLabel": "Accédez aux paramètres de votre téléphone et activez manuellement l'accès à la caméra.",
+    "flipCamera": "Changer de caméra"
+  },
+  "VcDetails": {
+    "generatedOn": "Généré le",
+    "status": "Statut",
+    "lastChecked": "Dernière vérification",
+    "valid": "Valide",
+    "revoked": "Révoqué",
+    "pending": "En attente",
+    "expired": "Expiré",
+    "photo": "Photo",
+    "fullName": "Nom complet",
+    "gender": "Sexe",
+    "dateOfBirth": "Date de naissance",
+    "phoneNumber": "Numéro de téléphone",
+    "email": "Adresse e-mail",
+    "address": "Adresse",
+    "reasonForSharing": "Raison du partage",
+    "idType": "Type d'identifiant",
+    "id": "Identifiant",
+    "qrCodeHeader": "Code QR",
+    "nationalCard": "Carte nationale d'identité",
+    "identityCard": "Carte d'identité",
+    "insuranceCard": "Carte d'assurance",
+    "beneficiaryCard": "Carte de bénéficiaire",
+    "socialRegistryCard": "Carte du registre social",
+    "uin": "UIN",
+    "vid": "VID",
+    "enableVerification": "Activer",
+    "profileAuthenticated": "Les justificatifs sont activés pour l'authentification en ligne.",
+    "credentialActivated": "Activé",
+    "offlineAuthDisabledHeader": "Activation en attente pour la connexion en ligne",
+    "offlineAuthDisabledMessage": "Veuillez cliquer sur le bouton ci-dessous pour activer ce justificatif afin de l'utiliser pour la connexion en ligne.",
+    "verificationEnabledSuccess": "Activé pour la connexion en ligne",
+    "goback": "RETOUR",
+    "BindingWarning": "Si vous avez déjà activé ce justificatif sur un autre portefeuille, cette activation sera remplacée. Voulez-vous continuer ?",
+    "yes_confirm": "Oui, je confirme",
+    "no": "Non",
+    "Alert": "Alerte",
+    "ok": "OK",
+    "credentialRegistry": "Registre des justificatifs",
+    "errors": {
+      "savingFailed": {
+        "title": "Échec de l'enregistrement de la carte",
+        "message": "Une erreur est survenue lors de l'enregistrement de la carte."
+      }
+    },
+    "shareQRCode": "Partager le code QR",
+    "disclosureNote": "Votre carte contient des informations que l'émetteur a marquées comme pouvant être partagées individuellement. Elles peuvent être partagées séparément lors de la présentation des justificatifs.",
+    "disclosureNoteTitle": "Veuillez noter",
+    "disclosedFieldsDescription": "Votre carte contient les informations partageables suivantes.",
+    "disclosedFieldsTitle": "Informations que vous choisissez de partager",
+    "disclosureInfoNote": "Les champs accompagnés de cette icône peuvent être partagés individuellement."
+  },
+
+  "HomeScreenKebabPopUp": {
+    "title": "Plus d'options",
+    "unPinCard": "Désépingler",
+    "pinCard": "Épingler",
+    "share": "Partager",
+    "reverify": "Vérifier le statut de la carte",
+    "new": "NOUVEAU",
+    "shareWithSelfie": "Partager avec selfie",
+    "offlineAuthDisabledMessage": "Cliquez ici pour activer ce justificatif afin de l'utiliser pour l'authentification en ligne.",
+    "viewActivityLog": "Voir l'historique des activités",
+    "removeFromWallet": "Retirer du portefeuille"
+  },
+
+  "WalletBinding": {
+    "offlineAuthenticationDisabled": "Activer pour la connexion en ligne",
+    "inProgress": "En cours",
+    "credentialActivated": "Activé",
+    "profileAuthenticated": "Connexion par code QR"
+  },
+
+  "BindingVcWarningOverlay": {
+    "alert": "Alerte",
+    "BindingWarning": "Vous avez déjà activé la connexion en ligne pour ce justificatif sur un autre appareil. Si vous l'activez ici, il ne pourra plus être utilisé sur cet autre appareil. Voulez-vous continuer ?",
+    "yesConfirm": "Oui, je confirme",
+    "no": "Non"
+  },
+
+  "RemoveVcWarningOverlay": {
+    "alert": "Retirer du portefeuille ?",
+    "removeWarning": "Vous êtes sur le point de retirer cette carte du portefeuille. Cette action est irréversible.\nCependant, vous pourrez la télécharger à nouveau.",
+    "confirm": "Oui, je confirme",
+    "cancel": "Annuler"
+  },
+
+  "AuthScreen": {
+    "header": "Choisissez une méthode de déverrouillage",
+    "Description": "Pour déverrouiller l'application en toute sécurité, configurez l'authentification biométrique (empreinte digitale ou reconnaissance faciale) ou utilisez un code d'accès à 6 chiffres.",
+    "PasswordTypeDescription": "Choisissez « Utiliser la biométrie » ou « Je le ferai plus tard » pour utiliser un code à 6 chiffres.",
+    "useBiometrics": "Utiliser la biométrie",
+    "usePasscode": "Je le ferai plus tard",
+    "errors": {
+      "unavailable": "La biométrie n'est pas prise en charge sur cet appareil.",
+      "unenrolled": "Veuillez enregistrer vos données biométriques dans les paramètres de votre appareil.",
+      "failed": "Échec de l'authentification biométrique.",
+      "generic": "Une erreur s'est produite lors de l'authentification biométrique."
+    }
+  },
+
+  "BiometricScreen": {
+    "unlock": "Déverrouiller avec la biométrie"
+  },
+
+  "HistoryScreen": {
+    "noHistory": "Aucun historique disponible",
+    "downloaded": "téléchargé",
+    "shared": "partagé",
+    "received": "reçu",
+    "deleted": "supprimé",
+    "historyHeaderLabel": "Historique"
+  },
+
+  "SettingScreen": {
+    "header": "Paramètres",
+    "injiAsVerifierApp": "Inji comme application de vérification",
+    "receiveCard": "Recevoir une carte",
+    "basicSettings": "Paramètres de base",
+    "bioUnlock": "Déverrouillage biométrique",
+    "language": "Langue",
+    "aboutInji": "À propos d'Inji",
+    "credentialRegistry": "Registre des justificatifs",
+    "esignethosturl": "Hôte Esignet",
+    "errorMessage": "URL invalide. Veuillez saisir une URL valide.",
+    "injiTourGuide": "Guide Inji",
+    "logout": "Se déconnecter",
+    "resetInjiProps": "Réinitialisation des paramètres Inji..."
+  },
+
+  "BannerNotification": {
+    "alternatePasscodeSuccess": "Succès ! Vous pouvez maintenant utiliser un code d'accès pour déverrouiller Inji.",
+    "alternateBiometricSuccess": "Succès ! Vous pouvez maintenant utiliser la biométrie pour déverrouiller Inji.",
+    "activated": "Les justificatifs sont activés pour l'authentification en ligne.",
+    "keyPreferenceSuccess": "Vos préférences de clés ont été enregistrées avec succès !",
+    "keyPreferenceError": "Erreur lors de l'enregistrement de vos préférences de clés.",
+    "reverifiedSuccessfully": {
+      "VALID": "Vérification réussie. Le statut de votre {{vcType}} est Valide.",
+      "REVOKED": "Vérification réussie. Le statut de votre {{vcType}} est Révoqué.",
+      "PENDING": "Vérification réussie. Le statut de votre {{vcType}} est En attente.",
+      "EXPIRED": "Vérification réussie. Le statut de votre {{vcType}} est Expiré."
+    },
+    "reverificationFailed": {
+      "PENDING": "Impossible de vérifier votre {{vcType}}. Veuillez réessayer plus tard."
+    }
+  },
+  "HelpScreen": {
+  "header": "Aide",
+  "here": "ici",
+  "questions": {
+    "inji": {
+      "one": "Qu'est-ce qu'une pièce d'identité ?",
+      "two": "Quels sont les différents types de pièces d'identité ?",
+      "three": "Où puis-je trouver ces identifiants ?",
+      "four": "Qu'est-ce qu'un justificatif numérique ?",
+      "five": "Que peut-on faire avec des justificatifs numériques ?",
+      "six": "Qu'est-ce qu'un justificatif vérifiable ?",
+      "seven": "Comment ajouter une carte ?",
+      "eight": "Puis-je ajouter plusieurs cartes ?",
+      "nine": "Pourquoi ma carte indique-t-elle que l'activation est en attente ?",
+      "ten": "Que signifie « Activé pour la connexion en ligne » ?",
+      "eleven": "Comment activer une carte pour la connexion en ligne ?",
+      "twelve": "Comment partager une carte ?",
+      "thirteen": "Comment supprimer une carte du portefeuille ?",
+      "fourteen": "Comment consulter les journaux d'activité ?",
+      "fifteen": "Que se passe-t-il lorsque les données biométriques Android Keystore changent ?",
+      "sixteen": "Qu'est-ce que le partage ?",
+      "seventeen": "Qu'est-ce que « Partager avec selfie » ?"
+    },
+    "backup": {
+      "one": "Qu'est-ce que la sauvegarde des données ?",
+      "two": "Pourquoi devrais-je effectuer une sauvegarde ?",
+      "three": "Comment sauvegarder sur votre compte Google ?",
+      "four": "Comment sauvegarder sur iCloud ?",
+      "five": "Dois-je toujours utiliser la même adresse e-mail ?",
+      "six": "Comment restaurer une sauvegarde ?",
+      "seven": "Pourquoi est-ce que j'obtiens l'erreur « Aucun fichier de sauvegarde trouvé » ?",
+      "eight": "Que se passe-t-il lorsque j'efface les données de l'application INJI ?"
+    },
+    "KeyManagement": {
+      "one": "Quels types de clés puis-je choisir ?",
+      "two": "Comment savoir quel type de clé est le meilleur pour moi ?",
+      "three": "Comment le choix du type de clé affecte-t-il ma sécurité ?",
+      "four": "Puis-je modifier mon type de clé plus tard ?",
+      "five": "Quel est l'impact de la priorité des clés et comment la définir ?",
+      "six": "Que se passe-t-il si je ne choisis pas de type de clé ?"
+    }
+  },
+  "answers": {
+    "inji": {
+      "one": "Une pièce d'identité est tout document permettant de prouver l'identité d'une personne. Dans le contexte de MOSIP, les identifiants sont des références numériques alphanumériques utilisées pour représenter une identité dans le système.",
+      "two": "Dans le contexte de MOSIP, les différents identifiants sont le UIN, le VID et l'AID.",
+      "three-a": "Lors de l'inscription, un identifiant de demande (AID) est attribué au résident avec un reçu comme preuve d'enregistrement.",
+      "three-b": "Après traitement, un numéro d'identification unique (UIN) est attribué et une notification est envoyée au résident.",
+      "three-c": "Le VID (Virtual ID) est un identifiant temporaire utilisé pour l'authentification. Il est connu uniquement de l'utilisateur.",
+      "four": "Un justificatif numérique est la version numérique de votre carte d'identité physique.",
+      "five": "Vous pouvez accéder à différents services gouvernementaux et privés grâce à vos justificatifs numériques.",
+      "six": "Un justificatif vérifiable est une information numériquement signée qui représente une déclaration faite par un émetteur concernant une personne.",
+      "seven": "Les identifiants peuvent être téléchargés dans INJI Wallet sous forme de justificatifs vérifiables.",
+      "eight": "Oui, vous pouvez ajouter plusieurs cartes en appuyant sur le bouton '+' de la page d'accueil.",
+      "nine": "Une fois téléchargée, votre carte n'est pas encore liée à votre identité. C'est pourquoi l'activation est en attente.",
+      "ten-a": "Une fois la carte liée au portefeuille, elle est activée pour la connexion en ligne et peut être utilisée pour la connexion par QR Code.",
+      "ten-b": "Les questions et réponses restent lisibles même lorsque la langue de l'application change.",
+      "eleven": "Après avoir ajouté une carte, appuyez sur « Activation en attente » puis sur « Activer ».",
+      "twelve": "Appuyez sur « Partager » puis scannez le QR Code du demandeur.",
+      "thirteen-a": "Ouvrez le menu (...) de la carte et choisissez « Supprimer du portefeuille ».",
+      "thirteen-b": "La même carte pourra être téléchargée de nouveau ultérieurement.",
+      "fourteen": "Depuis l'écran d'accueil, ouvrez « Historique » pour consulter vos activités.",
+      "fifteen": "Lorsque les données biométriques Android changent, les anciennes clés deviennent invalides. Les justificatifs concernés sont supprimés afin de garantir la sécurité.",
+      "sixteen": "Le partage consiste à transférer de manière sécurisée un justificatif vérifiable depuis INJI Wallet vers un service tiers.",
+      "seventeen": "Le partage avec selfie ajoute une vérification faciale afin de confirmer que le titulaire est bien le propriétaire du justificatif."
+    },
+    "backup": {
+      "one": "La sauvegarde crée une copie de vos justificatifs vérifiables dans Google Drive ou iCloud.",
+      "two": "Une sauvegarde protège vos données contre la perte, la suppression ou une panne d'appareil.",
+      "three": "Activez un compte Google, assurez-vous d'avoir une connexion Internet stable, puis lancez la sauvegarde depuis les paramètres.",
+      "four": "Assurez-vous d'être connecté à iCloud avec suffisamment d'espace disponible, puis lancez la sauvegarde depuis les paramètres.",
+      "five": "Il est recommandé d'utiliser la même adresse e-mail afin de retrouver facilement vos sauvegardes.",
+      "six": "Accédez aux paramètres, choisissez Restaurer puis sélectionnez le fichier de sauvegarde.",
+      "seven": "Cette erreur signifie généralement qu'aucune sauvegarde n'a été trouvée pour cette adresse e-mail ou cet emplacement.",
+      "eight": "Effacer les données de l'application supprimera toutes les cartes téléchargées. Pensez à effectuer une sauvegarde auparavant."
+    },
+    "KeyManagement": {
+      "one": "Vous pouvez choisir parmi Ed25519, ECC K1, ECC R1 et RSA.",
+      "two": "Ed25519 et ECC sont rapides et sécurisés. RSA offre une large compatibilité.",
+      "three": "Chaque type de clé offre un niveau de sécurité et des performances différents.",
+      "four": "Oui, mais cela peut influencer la compatibilité avec certains systèmes.",
+      "five": "L'ordre des clés détermine leur priorité. Vous pouvez les réorganiser par glisser-déposer.",
+      "six": "Si vous ne choisissez pas de type de clé, l'application sélectionnera automatiquement celui qui est compatible."
+    }
+  }
+},"AddVcModal": {
+  "requestingCredential": "Demande du justificatif...",
+  "errors": {
+    "input": {
+      "empty": "Veuillez saisir un identifiant valide",
+      "invalidFormat": "Veuillez saisir un(e) {{idType}} valide"
+    },
+    "backend": {
+      "invalidOtp": "Le code OTP est invalide",
+      "expiredOtp": "Le code OTP a expiré",
+      "invalidUin": "Veuillez saisir un UIN valide",
+      "invalidVid": "Veuillez saisir un VID valide",
+      "missingUin": "Le UIN saisi est désactivé ou bloqué. Veuillez saisir un UIN valide pour continuer.",
+      "missingVid": "VID introuvable dans la base de données",
+      "noMessageAvailable": "Veuillez réessayer plus tard",
+      "whileGeneratingOtpErrorIsOccured": "Une erreur est survenue lors de la génération du code OTP",
+      "networkRequestFailed": "Échec de la requête réseau",
+      "deactivatedVid": "Le VID saisi est désactivé ou expiré. Veuillez saisir un VID valide pour continuer."
+    }
+  }
+},
+
+"GetVcModal": {
+  "retrievingId": "Récupération de l'identifiant",
+  "errors": {
+    "input": {
+      "empty": "Veuillez saisir un identifiant valide",
+      "invalidFormat": "Veuillez saisir un AID valide"
+    },
+    "backend": {
+      "invalidOtp": "Code OTP invalide",
+      "expiredOtp": "Le code OTP a expiré",
+      "applicationProcessing": "L'AID n'est pas encore prêt",
+      "noMessageAvailable": "Veuillez réessayer plus tard",
+      "networkRequestFailed": "Échec de la requête réseau",
+      "invalidAid": "Veuillez saisir un AID valide",
+      "timeout": "Délai dépassé"
+    }
+  }
+},
+
+"DownloadingVcModal": {
+  "header": "Téléchargement de votre carte",
+  "bodyText": "Cela peut prendre quelques instants. Nous vous informerons lorsque votre carte sera téléchargée et disponible.",
+  "backButton": "Retour à l'accueil"
+},
+
+"GetIdInputModal": {
+  "header": "Obtenir votre UIN/VID",
+  "applicationIdLabel": "Veuillez saisir votre identifiant de demande",
+  "enterApplicationId": "Saisir l'identifiant de demande",
+  "requestingOTP": "Demande du code OTP...",
+  "toolTipTitle": "Qu'est-ce que l'AID ?",
+  "toolTipDescription": "L'identifiant de demande (AID) est un identifiant unique attribué à un résident lors d'un événement lié au cycle de vie de son identité, comme l'émission, la mise à jour ou la récupération d'une identité perdue.",
+  "getUIN": "Obtenir le UIN/VID"
+},
+
+"IdInputModal": {
+  "header": "Télécharger votre identité",
+  "guideLabel": "Sélectionnez le type d'identifiant et saisissez le UIN ou le VID fourni par MOSIP. Vous devrez ensuite saisir un code OTP.",
+  "generateVc": "Générer la carte",
+  "downloadID": "Télécharger la carte",
+  "enterId": "Saisir {{idType}}",
+  "noUIN/VID": "Vous n'avez pas de UIN/VID ?",
+  "getItHere": "Obtenez-le maintenant avec votre AID.",
+  "requestingOTP": "Demande du code OTP...",
+  "toolTipTitle": "Qu'est-ce que {{idType}} ?",
+  "toolTipUINDescription": "Le numéro d'identification unique (UIN) est un numéro unique attribué à un résident. Il est permanent et ne peut pas être révoqué.",
+  "toolTipVIDDescription": "Le VID (Virtual ID) est un identifiant alternatif utilisé pour les transactions d'authentification. Il protège la confidentialité et peut être révoqué ou configuré pour un usage unique."
+},
+
+"OtpVerificationModal": {
+  "title": "Vérification OTP",
+  "otpSentMessage": "Nous avons envoyé un code OTP à 6 chiffres sur votre numéro de téléphone enregistré : {{phone}} et votre adresse e-mail : {{email}}",
+  "resendTheCode": "Vous pourrez renvoyer le code dans",
+  "resendOtp": "Renvoyer le code OTP",
+  "confirmationDialog": {
+    "title": "Voulez-vous annuler le téléchargement ?",
+    "message": "Si vous annulez, votre carte ne sera pas téléchargée et vous devrez recommencer le processus.",
+    "wait": "Non, je vais attendre",
+    "cancel": "Oui, annuler"
+  }
+},"MyVcsTab": {
+  "searchByName": "Rechercher",
+  "bringYourDigitalID": "Apportez votre identité numérique",
+  "generateVcDescription": "Appuyez sur « Télécharger une carte » ci-dessous pour télécharger votre carte",
+  "generateVcFABDescription": "Appuyez sur le bouton « + » ci-dessous pour télécharger votre carte",
+  "downloadCard": "Télécharger la carte",
+  "downloadingYourCard": "Téléchargement de votre carte, cela peut prendre jusqu'à 5 minutes",
+  "downloadingVcSuccess": "Votre carte a été téléchargée avec succès",
+  "downloadingVcFailed": "Désolé ! En raison d'une erreur technique, nous ne pouvons pas télécharger votre carte pour le moment. Veuillez réessayer plus tard.",
+  "activated": "Les justificatifs sont activés pour l'authentification en ligne.",
+  "noCardsTitle": "Aucune carte trouvée !",
+  "noCardsDescription": "Désolé, aucun résultat trouvé. Veuillez essayer un autre mot-clé.",
+  "errors": {
+    "savingFailed": {
+      "title": "Échec de l'enregistrement de la carte",
+      "message": "Une erreur s'est produite lors de l'enregistrement de la carte."
+    },
+    "storageLimitReached": {
+      "title": "Données de l'application insuffisantes",
+      "message": "Vous ne pouvez pas ajouter ni recevoir de cartes car l'espace de stockage de l'application est plein. Libérez de l'espace pour continuer."
+    },
+    "vcIsTampered": {
+      "title": "Cartes supprimées pour raisons de sécurité",
+      "message": "Des cartes altérées ont été détectées et supprimées. Veuillez les télécharger à nouveau."
+    },
+    "keystoreNotExists": {
+      "title": "Certaines fonctionnalités de sécurité seront indisponibles",
+      "message": "Votre appareil actuel ne prend pas en charge toutes les fonctionnalités de sécurité.",
+      "riskOkayText": "OK"
+    },
+    "noInternetConnection": {
+      "title": "Aucune connexion Internet",
+      "message": "Veuillez vérifier votre connexion et réessayer."
+    },
+    "downloadLimitExpires": {
+      "title": "Erreur de téléchargement",
+      "message": "Une erreur s'est produite lors du téléchargement des cartes suivantes. Veuillez réessayer."
+    },
+    "verificationFailed": {
+      "title": "Une erreur est survenue !",
+      "goBackButton": "Retour",
+      "ERR_GENERIC": "En raison d'une erreur technique, nous n'avons pas pu télécharger la carte.",
+      "ERR_NETWORK": "Connexion Internet instable. Veuillez vérifier votre connexion et réessayer.",
+      "ERR_MISSING_ISSUANCEDATE": "La date d'émission est invalide ou située dans le futur.",
+      "ERR_INVALID_ISSUANCEDATE": "La date d'émission est invalide ou située dans le futur.",
+      "ERR_ISSUANCE_DATE_IS_FUTURE_DATE": "La date d'émission est invalide ou située dans le futur.",
+      "ERR_INVALID_EXPIRATIONDATE": "La date d'expiration est invalide.",
+      "ERR_INVALID_VALIDFROM": "La date de début de validité est invalide ou située dans le futur.",
+      "ERR_VALID_FROM_IS_FUTURE_DATE": "La date de début de validité est invalide ou située dans le futur.",
+      "ERR_INVALID_VALIDUNTIL": "La date de fin de validité est invalide."
+    }
+  }
+},
+
+"OnboardingOverlay": {
+  "stepOneTitle": "Bienvenue !",
+  "stepOneText": "Gardez vos justificatifs numériques avec vous à tout moment. Inji vous aide à les gérer et à les utiliser efficacement. Pour commencer, ajoutez des cartes à votre portefeuille.",
+  "stepTwoTitle": "Partage sécurisé",
+  "stepTwoText": "Partagez vos cartes en toute sécurité et profitez facilement de nombreux services.",
+  "stepThreeTitle": "Portefeuille numérique fiable",
+  "stepThreeText": "Conservez toutes vos cartes importantes dans un portefeuille numérique sécurisé.",
+  "stepFourTitle": "Accès rapide",
+  "stepFourText": "Authentifiez-vous facilement grâce à vos justificatifs numériques enregistrés.",
+  "stepFiveTitle": "Sauvegarde et restauration",
+  "stepFiveText": "Protégez vos données grâce à la sauvegarde et à la restauration. Sauvegardez régulièrement vos justificatifs et restaurez-les facilement si nécessaire.",
+  "getStarted": "Commencer",
+  "goBack": "Retour",
+  "back": "Précédent",
+  "skip": "Ignorer",
+  "next": "Suivant"
+},
+
+"ReceivedVcsTab": {
+  "receivedCards": "Cartes reçues",
+  "header": "Cartes reçues",
+  "noReceivedVcsTitle": "Aucune carte disponible",
+  "noReceivedVcsText": "Appuyez sur « Demander » ci-dessous pour recevoir une carte."
+},
+
+"VcVerificationBanner": {
+  "inProgress": "Nous vérifions votre carte. Cela peut prendre quelques instants. Une fois vérifiée, vous pourrez l'activer.",
+  "success": "{{vcDetails}} a été vérifiée avec succès et est maintenant disponible pour activation.",
+  "error": "Nous ne pouvons pas vérifier {{vcDetails}} pour le moment. Veuillez réessayer plus tard.",
+  "revoked": "{{vcDetails}} a été révoquée par l'émetteur et n'est plus valide.",
+  "expired": "{{vcDetails}} a expiré et n'est plus valide."
+},
+
+"ViewVcModal": {
+  "title": "Détails de l'identité",
+  "inProgress": "En cours",
+  "statusInfoTitle": "Informations sur le statut",
+  "statusToolTipContent": {
+    "valid": {
+      "title": "Valide",
+      "description": "La carte est active et peut être utilisée ou partagée."
+    },
+    "pending": {
+      "title": "En attente",
+      "description": "Le statut de la carte ne peut pas être vérifié pour le moment."
+    },
+    "expired": {
+      "title": "Expirée",
+      "description": "La période de validité de la carte est terminée."
+    },
+    "revoked": {
+      "title": "Révoquée",
+      "description": "La carte a été révoquée par son émetteur et ne peut plus être utilisée."
+    }
+  }
+},"MainLayout": {
+  "home": "Accueil",
+  "share": "Partager",
+  "history": "Historique",
+  "request": "Demander",
+  "settings": "Paramètres"
+},
+
+"PasscodeScreen": {
+  "header": "Définir un code d'accès",
+  "enterNewPassword": "Saisissez un nouveau code d'accès",
+  "reEnterPassword": "Saisissez à nouveau le code d'accès",
+  "enterAlternateNewPassword": "Votre code d'accès protège votre application. Choisissez un code à 6 chiffres unique et facile à mémoriser.",
+  "reEnterAlternatePassword": "Confirmez votre code d'accès en le saisissant une seconde fois.",
+  "confirmPasscode": "Confirmer le code d'accès",
+  "enterPasscode": "Saisissez votre code d'accès"
+},
+
+"QrLogin": {
+  "title": "Connexion par QR Code",
+  "alignQr": "Alignez le QR code dans le cadre pour le scanner",
+  "confirmation": "Confirmation",
+  "checkDomain": "Vérifiez également la présence d'un cadenas dans la barre d'adresse.",
+  "domainHead": "https://",
+  "selectId": "Sélectionnez une identité",
+  "noBindedVc": "Aucune carte activée n'est disponible pour la vérification.",
+  "back": "Retour",
+  "confirm": "Confirmer",
+  "verify": "Vérifier",
+  "faceAuth": "Vérification faciale",
+  "consent": "Consentement",
+  "loading": "Chargement...",
+  "domainWarning": "Veuillez confirmer le domaine du site Web dont vous scannez le QR code.",
+  "access": " demande l'accès à ",
+  "status": "Statut",
+  "successMessage": "Vous êtes connecté avec succès à ",
+  "ok": "OK",
+  "allow": "Autoriser",
+  "cancel": "Annuler",
+  "essentialClaims": "Informations obligatoires",
+  "voluntaryClaims": "Informations facultatives",
+  "required": "Obligatoire",
+  "errors": {
+    "invalidQR": "Le QR code est invalide. Veuillez réessayer."
+  }
+},
+
+"ReceiveVcScreen": {
+  "header": "Détails de la carte",
+  "save": "Enregistrer la carte",
+  "verifyAndSave": "Vérifier et enregistrer",
+  "reject": "Refuser",
+  "discard": "Ignorer",
+  "goToReceivedVCTab": "Voir les cartes reçues",
+  "saving": "Enregistrement de la carte...",
+  "errors": {
+    "savingFailed": {
+      "title": "Échec de l'enregistrement de la carte",
+      "message": "En raison d'une erreur technique, la carte n'a pas pu être enregistrée. Veuillez demander à l'expéditeur de la renvoyer."
+    }
+  }
+},
+
+"Permissions": {
+  "enablePermission": "Activer l'autorisation"
+},
+
+"RequestScreen": {
+  "receiveCard": "Recevoir une carte",
+  "bluetoothDenied": "Veuillez activer le Bluetooth pour demander une carte.",
+  "bluetoothStateIos": "Le Bluetooth est désactivé. Activez-le depuis le Centre de contrôle.",
+  "bluetoothStateAndroid": "Le Bluetooth est désactivé. Activez-le depuis les paramètres rapides.",
+  "showQrCode": "Affichez ce QR code pour demander une carte au résident.",
+  "incomingVc": "Carte entrante",
+  "request": "Demander",
+  "errors": {
+    "nearbyDevicesPermissionDenied": {
+      "message": "L'autorisation d'accès aux appareils à proximité est requise pour demander une carte.",
+      "button": "Autoriser"
+    },
+    "storageLimitReached": {
+      "title": "Espace insuffisant",
+      "message": "Vous ne pouvez pas ajouter ni recevoir de cartes car le stockage de l'application est plein."
+    }
+  },
+
+  "status": {
+    "sharing": {
+      "title": "Partage en cours",
+      "timeoutHint": "Le partage prend plus de temps que prévu. Vérifiez la connexion."
+    },
+    "accepted": {
+      "title": "Succès !",
+      "message": "La carte a été reçue avec succès depuis le portefeuille."
+    },
+    "rejected": {
+      "title": "Information",
+      "message": "Vous avez refusé la carte envoyée par le portefeuille."
+    },
+    "disconnected": {
+      "title": "Connexion Bluetooth perdue",
+      "message": "Veuillez vérifier votre connexion Bluetooth et réessayer."
+    },
+    "waitingConnection": "En attente de connexion...",
+    "exchangingDeviceInfo": {
+      "message": "Échange des informations de l'appareil...",
+      "timeoutHint": "L'échange des informations prend plus de temps que prévu..."
+    },
+    "connected": {
+      "message": "Connecté à l'appareil. En attente de la carte...",
+      "timeoutHint": "Aucune donnée reçue. Vérifiez que l'autre appareil est toujours connecté."
+    },
+    "offline": {
+      "message": "Connectez-vous à Internet pour activer le mode de partage en ligne."
+    }
+  },
+
+  "online": "En ligne",
+  "offline": "Hors ligne",
+  "gotoSettings": "Accéder aux paramètres"
+},"ScanScreen": {
+  "shareWithSelfie": "Partager avec selfie",
+  "shareWithSelfieQrLogin": "Connexion par QR Code",
+  "shareWithSelfieMessage": "Pour partager vos justificatifs vérifiables, nous vérifierons votre identité de manière sécurisée grâce à la reconnaissance faciale. En continuant, vous autorisez Inji à utiliser votre caméra à cette fin. Vos données faciales seront utilisées uniquement pour la vérification et ne seront pas partagées avec des tiers.",
+  "shareWithSelfieMessageQrLogin": "Pour accéder au portail, vous devrez partager vos justificatifs vérifiables et confirmer votre identité grâce à une vérification faciale. En continuant, vous autorisez Inji à utiliser votre caméra à cette fin.\n\nVos données faciales seront utilisées uniquement pour la vérification et ne seront pas partagées. Après une vérification réussie, vous pourrez choisir les informations à partager.",
+  "ConfirmButton": "J'ai compris",
+  "doNotAskMessage": "Ne plus me demander",
+  "noShareableVcs": "Aucune carte disponible pour le partage.",
+  "sharingVc": "Partage de la carte",
+  "bluetoothStateIos": "Le Bluetooth est désactivé. Veuillez l'activer depuis le Centre de contrôle.",
+  "bluetoothStateAndroid": "Le Bluetooth est désactivé. Veuillez l'activer depuis les paramètres rapides.",
+  "enableBluetoothMessage": "Veuillez autoriser le Bluetooth pour permettre le partage local.",
+  "enableBluetoothButtonText": "Autoriser le Bluetooth",
+  "scanningGuide": "Maintenez le téléphone immobile et scannez le QR Code pour partager votre carte.",
+  "invalidQR": "Veuillez scanner un QR Code valide.",
+  "unknownVerifier": "Vérificateur inconnu",
+
+  "errors": {
+    "locationDisabled": {
+      "message": "Activez la localisation de votre appareil pour continuer.",
+      "button": "Activer les services de localisation"
+    },
+    "locationDenied": {
+      "message": "L'autorisation d'accéder à la localisation est requise pour partager une carte.",
+      "button": "Autoriser la localisation"
+    },
+    "nearbyDevicesPermissionDenied": {
+      "message": "L'autorisation d'accès aux appareils à proximité est requise pour partager une carte.",
+      "button": "Autoriser"
+    },
+    "storageLimitReached": {
+      "title": "Stockage insuffisant",
+      "message": "Vous ne pouvez pas partager de cartes car le stockage de l'application est plein. Libérez de l'espace pour continuer."
+    }
+  },
+
+  "status": {
+    "inProgress": {
+      "title": "En cours",
+      "hint": "Veuillez patienter pendant l'établissement de la connexion."
+    },
+    "establishingConnection": "Établissement de la connexion",
+    "connectionInProgress": "Connexion en cours",
+    "connectingTimeout": "La connexion prend plus de temps que prévu. Vérifiez que l'autre appareil est prêt à se connecter.",
+    "stayOnTheScreen": "Restez sur cet écran",
+    "retry": "Réessayer",
+    "exchangingDeviceInfo": "Échange des informations de l'appareil...",
+    "exchangingDeviceInfoTimeout": "L'échange des informations prend plus de temps que prévu. Vous devrez peut-être vous reconnecter.",
+    "invalid": "QR Code invalide",
+    "offline": "Veuillez vous connecter à Internet pour utiliser le partage en ligne via QR Code.",
+    "sent": "Carte envoyée...",
+    "sentHint": "En attente que le destinataire accepte ou refuse votre carte.",
+
+    "sharing": {
+      "title": "Partage en cours...",
+      "hint": "Veuillez patienter pendant le partage de la carte sélectionnée...",
+      "timeoutHint": "Le partage est retardé. Il peut y avoir un problème de connexion."
+    },
+
+    "accepted": {
+      "title": "Carte partagée avec succès !",
+      "message": "Votre carte a été partagée avec succès.",
+      "additionalMessage": "Vous pouvez maintenant retourner vers le vérificateur.",
+      "home": "Accueil",
+      "history": "Historique"
+    },
+
+    "rejected": {
+      "title": "Une erreur est survenue !",
+      "message": "En raison d'un problème technique, la carte n'a pas pu être partagée. Veuillez réessayer."
+    },
+
+    "disconnected": {
+      "title": "Connexion Bluetooth perdue !",
+      "message": "Veuillez vérifier votre connexion Bluetooth et réessayer."
+    },
+
+    "bleError": {
+      "retry": "Réessayer",
+      "home": "Accueil",
+
+      "TVW_CON_001": {
+        "title": "Échec de la connexion",
+        "message": "QR Code invalide. Veuillez scanner un QR Code valide fourni par le vérificateur."
+      },
+
+      "TVW_CON_002": {
+        "title": "Échec de la connexion",
+        "message": "Le portefeuille n'a pas pu établir une connexion optimale avec le vérificateur. Veuillez réessayer."
+      },
+
+      "TVW_CON_003": {
+        "title": "Échec de la découverte du service",
+        "message": "Impossible de découvrir une connexion Bluetooth après plusieurs tentatives. Vérifiez que les appareils sont visibles puis réessayez."
+      },
+
+      "TVW_REP_001": {
+        "title": "Une erreur est survenue",
+        "message": "Une erreur technique s'est produite lors du transfert de la carte. Veuillez réessayer."
+      },
+
+      "TVV_CON_001": {
+        "title": "Échec de la connexion",
+        "message": "Le portefeuille n'a pas pu établir une connexion avec le vérificateur. Veuillez réessayer."
+      },
+
+      "TVV_TRA_001": {
+        "title": "Une erreur est survenue",
+        "message": "Une erreur s'est produite lors du transfert de la carte. Veuillez réessayer."
+      },
+
+      "TVV_TRA_002": {
+        "title": "Une erreur est survenue",
+        "message": "Une erreur s'est produite lors du transfert de la carte. Veuillez réessayer."
+      },
+
+      "TUV_UNK_001": {
+        "title": "Une erreur est survenue",
+        "message": "Une erreur technique a empêché le partage de la carte. Veuillez réessayer."
+      },
+
+      "TVW_UNK_001": {
+        "title": "Une erreur est survenue",
+        "message": "Une erreur technique a empêché le partage de la carte. Veuillez réessayer."
+      },
+
+      "TVW_UNK_002": {
+        "title": "Une erreur est survenue",
+        "message": "Une erreur technique a empêché le partage de la carte. Veuillez réessayer."
+      },
+
+      "TVW_UNK_003": {
+        "title": "Une erreur est survenue",
+        "message": "Une erreur technique a empêché le partage de la carte. Veuillez réessayer."
+      },
+
+      "TVV_UNK_001": {
+        "title": "Une erreur est survenue",
+        "message": "Une erreur s'est produite lors du transfert de la carte. Veuillez réessayer."
+      },
+
+      "TVV_UNK_002": {
+        "title": "Une erreur est survenue",
+        "message": "Une erreur s'est produite lors du transfert de la carte. Veuillez réessayer."
+      },
+
+      "TVV_UNK_003": {
+        "title": "Une erreur est survenue",
+        "message": "Une erreur s'est produite lors du transfert de la carte. Veuillez réessayer."
+      }
+    }
+  },
+
+  "postFaceCapture": {
+    "captureSuccessMessage": "Vérification faciale réussie ! Le partage du justificatif est en cours.",
+    "captureFailureTitle": "Échec de la vérification faciale",
+    "captureFailureMessage": "Assurez-vous que votre visage est clairement visible puis réessayez."
+  },
+
+  "rational": {
+    "title": "Activez votre localisation",
+    "message": "Cette application a besoin de votre localisation pour rechercher les appareils à proximité.",
+    "accept": "OK",
+    "cancel": "Annuler"
+  }
+},"SelectVcOverlay": {
+  "header": "Partager une carte",
+  "chooseVc": "Choisissez la carte que vous souhaitez partager",
+  "share": "Partager",
+  "verifyAndShare": "Vérifier l'identité et partager"
+},
+
+"SendVcScreen": {
+  "reasonForSharing": "Motif du partage (facultatif)",
+  "introTitle": "Demandeur",
+  "requestMessage": "demande votre identité numérique dans le but de",
+  "acceptRequest": "Partager",
+  "acceptRequestAndVerify": "Partager avec selfie",
+  "reject": "Refuser",
+  "consentToPhotoVerification": "J'accepte que ma photo soit prise pour l'authentification",
+  "pleaseSelectAnId": "Sélectionnez une ou plusieurs cartes demandées.",
+  "status": {
+    "sharing": {
+      "title": "Partage",
+      "hint": "Veuillez attendre que l'appareil destinataire accepte ou refuse le partage.",
+      "timeoutHint": "Le partage prend plus de temps que prévu. Il peut y avoir un problème de connexion."
+    },
+    "accepted": {
+      "title": "Succès !",
+      "message": "Votre carte a été partagée avec succès avec {{receiver}}."
+    },
+    "rejected": {
+      "title": "Attention",
+      "message": "Votre carte a été refusée par {{receiver}}."
+    }
+  }
+},
+
+"SendVPScreen": {
+  "authorizationPurpose": "Sélectionnez la ou les cartes demandées pour vérifier votre identité et recevoir votre nouvelle carte auprès de l'émetteur de confiance.",
+  "consentShare": "J'accepte et je partage",
+  "requester": "Entité de vérification",
+  "cardsSelected": "cartes sélectionnées",
+  "cardSelected": "carte sélectionnée",
+  "unCheck": "Désélectionner",
+  "checkAll": "Tout sélectionner",
+  "selectedFieldsTitle": "Informations que vous choisissez de partager",
+  "selectedFieldsSubtitle": "Votre carte contient les informations partageables suivantes.",
+  "unselectAll": "Tout désélectionner",
+  "selectAll": "Tout sélectionner",
+
+  "consentDialog": {
+    "title": "Consentement requis",
+    "message": "Nous avons besoin de votre consentement pour partager vos justificatifs vérifiables avec {{verifierName}}. Cela nous permettra de vérifier votre identité et de fournir le service demandé. Choisissez « Oui, continuer » pour accepter ou « Refuser » si vous ne souhaitez pas partager vos justificatifs.",
+    "confirmButton": "Oui, continuer",
+    "cancelButton": "Refuser"
+  },
+
+  "confirmationDialog": {
+    "title": "Êtes-vous sûr ?",
+    "message": "Si vous refusez votre consentement, vous ne pourrez pas partager vos justificatifs vérifiables.",
+    "confirmButton": "Oui, continuer",
+    "cancelButton": "Retour"
+  },
+
+  "errors": {
+    "noMatchingCredentials": {
+      "title": "Aucun justificatif correspondant trouvé !",
+      "message": "Le vérificateur a demandé des justificatifs contenant les informations suivantes : [{{claims}}]. Veuillez télécharger les justificatifs correspondants puis réessayer."
+    },
+
+    "noMatchingCredentialsWithMissingClaims": {
+      "title": "Aucun justificatif correspondant trouvé !",
+      "message": "Aucun justificatif présent dans votre portefeuille ne correspond à cette demande. Téléchargez les justificatifs appropriés ou réessayez plus tard."
+    },
+
+    "invalidVerifier": {
+      "title": "Une erreur est survenue !",
+      "message": "Le vérificateur n'est pas reconnu. Veuillez utiliser un QR Code valide."
+    },
+
+    "credentialsMismatch": {
+      "title": "Une erreur est survenue !",
+      "message": "Les justificatifs sélectionnés ne correspondent pas à la demande. Sélectionnez ceux contenant les informations suivantes : [{{claims}}]."
+    },
+
+    "vpFormatsNotSupported": {
+      "title": "Demande non prise en charge",
+      "message": "Cette demande n'est pas prise en charge. Veuillez demander au vérificateur d'utiliser une autre méthode."
+    },
+
+    "invalidRequestURI": {
+      "title": "Demande non autorisée",
+      "message": "Le vérificateur utilise une méthode non prise en charge."
+    },
+
+    "invalidPresentationDefinitionURI": {
+      "title": "Problème avec la demande",
+      "message": "Les informations nécessaires au partage de vos justificatifs sont dans un format invalide."
+    },
+
+    "invalidPresentationDefinitionRef": {
+      "title": "Réponse invalide",
+      "message": "La réponse du vérificateur est invalide. Veuillez réessayer avec une demande valide."
+    },
+
+    "genericError": {
+      "title": "Oups ! Une erreur est survenue.",
+      "message": "Un problème technique est survenu lors du traitement de votre demande. Veuillez réessayer."
+    },
+
+    "invalidTransactionData": {
+      "title": "Demande de vérification non prise en charge",
+      "message": "Cette demande contient des données non prises en charge par votre portefeuille."
+    },
+
+    "invalidQrCode": {
+      "title": "Impossible de traiter la demande",
+      "message": "Le QR Code est invalide car certaines informations obligatoires sont manquantes."
+    },
+
+    "sendVPError": {
+      "title": "Une erreur est survenue",
+      "message": "Un problème technique est survenu lors du partage de votre carte. Appuyez sur « Réessayer » ou revenez à l'accueil."
+    },
+
+    "verifierResponseError": {
+      "title": "Le vérificateur n'a pas pu traiter le justificatif",
+      "message": "Une erreur est survenue lors du traitement de votre justificatif par le vérificateur."
+    },
+
+    "noImage": {
+      "title": "Une erreur est survenue !",
+      "message": "La vérification faciale nécessite une photo dans le justificatif sélectionné."
+    },
+
+    "duplicateMdocCredential": {
+      "title": "Une erreur est survenue !",
+      "message": "Vous ne pouvez partager qu'un seul permis de conduire mobile ou document à la fois."
+    },
+
+    "additionalMessage": "Veuillez revenir à l'application du vérificateur."
+  },
+
+  "loaders": {
+    "loading": "Chargement...",
+    "subTitle": {
+      "fetchingVerifiers": "Recherche des justificatifs correspondants..."
+    }
+  }
+},
+
+  "SetupLanguage": {
+    "header": "Choisir la langue",
+    "description": "Sélectionnez votre langue préférée",
+    "save": "Enregistrer la préférence"
+  },
+
+  "SetupKey": {
+    "header": "Gestion des clés",
+    "description": "Choisissez vos clés préférées pour générer les clés du titulaire. Pour en savoir plus, consultez la section Aide.",
+    "save": "Enregistrer la préférence",
+    "skip": "Je le ferai plus tard"
+  },
+
+  "common": {
+    "card": "Carte",
+    "cards": "Cartes",
+    "cancel": "Annuler",
+    "accept": "Accepter",
+    "save": "Enregistrer",
+    "ok": "OK",
+    "dismiss": "Ignorer",
+    "editLabel": "Modifier {{label}}",
+    "tryAgain": "Réessayer",
+    "goBack": "Retour",
+    "ignore": "Ignorer",
+
+    "camera": {
+      "errors": {
+        "missingPermission": "Cette application utilise la caméra pour scanner le QR code d'un autre appareil."
+      },
+      "allowAccess": "Autoriser l'accès à la caméra"
+    },
+
+    "errors": {
+      "genericError": "Nous sommes désolés ! En raison d'une erreur technique, nous ne pouvons pas traiter votre demande pour le moment. Veuillez réessayer plus tard."
+    },
+
+    "clipboard": {
+      "copy": "Copier",
+      "copied": "Copié"
+    },
+
+    "biometricPopup": {
+      "title": "Déverrouiller l'application",
+      "description": "Veuillez utiliser votre empreinte digitale pour déverrouiller l'application."
+    }
+  },
+
+  "copilot": {
+    "helpTitle": "Aide / FAQ",
+    "helpMessage": "Trouvez des réponses aux questions fréquentes et accédez à des ressources utiles dans notre section FAQ.",
+
+    "downloadTitle": "Télécharger une carte",
+    "downloadMessage": "Téléchargez facilement et stockez votre carte en toute sécurité dans l'application.",
+
+    "shareTitle": "Partager une carte",
+    "shareMessage": "Partagez votre carte facilement en mode hors ligne via Bluetooth.",
+
+    "historyTitle": "Historique",
+    "historyMessage": "Consultez votre historique d'activités afin de suivre vos interactions.",
+
+    "settingsTitle": "Paramètres",
+    "settingsMessage": "Personnalisez votre expérience avec les paramètres de l'application.",
+
+    "cardTitle": "Carte",
+    "cardMessage": "Votre carte affiche vos informations d'identité vérifiées. Touchez-la pour voir les détails ou cliquez sur « … » pour plus d'options.",
+
+    "next": "Suivant",
+    "previous": "Précédent",
+    "skip": "Ignorer",
+    "done": "Terminé",
+
+    "keyManagementTitle": "Gestion des clés",
+    "keyManagementDesc": "Choisissez la méthode de génération de clés qui correspond à vos préférences afin de contrôler la sécurité de vos informations d'identification.\nFaites glisser et réorganisez les clés, celle placée en haut ayant la priorité la plus élevée."
+  },
+
+  "authWebView": {
+    "title": "« {{wallet}} » souhaite utiliser « {{domain}} » pour vous connecter",
+    "message": "Cela permettra à l'application et au site web de partager des informations vous concernant.",
+    "cancel": "Annuler",
+    "continue": "Continuer"
+  },
+
+  "cancelDownloadModal": {
+    "heading": "Voulez-vous annuler le téléchargement ?",
+    "subHeading": "Une fois annulé, votre carte ne sera pas téléchargée et vous devrez recommencer le processus.",
+    "cancel": "Non, je vais attendre",
+    "confirm": "Oui, annuler"
+  },
+
+  "transactionCodeScreen": {
+    "description": "Nous avons envoyé le code de transaction à votre adresse e-mail enregistrée.",
+    "placeholder": "Saisissez le code de transaction",
+    "verify": "Vérifier",
+    "emptyCodeError": "Le code ne peut pas être vide.",
+    "invalidCharacters": "Seules les lettres et les chiffres sont autorisés.",
+    "TransactionCode": "Code de transaction"
+  },
+
+  "trustScreen": {
+    "Description": "Assurez-vous de reconnaître ou de faire confiance à cet émetteur. Une fois que vous lui faites confiance :",
+
+    "pdiDescription": "Pour poursuivre le téléchargement de la carte demandée, vous devrez présenter une autre information d'identification dans le cadre du processus de vérification.",
+
+    "verifierDescription": "Assurez-vous de reconnaître ou de faire confiance à ce vérificateur. Une fois la confiance accordée :",
+
+    "infoPoints": [
+      "La carte sera enregistrée en toute sécurité dans votre portefeuille.",
+      "Cet émetteur sera ajouté à votre liste de confiance.",
+      "Vous n'aurez plus besoin de confirmer votre confiance lors des prochains téléchargements depuis cet émetteur."
+    ],
+
+    "verifierInfoPoints": [
+      "La carte sera partagée en toute sécurité avec le vérificateur.",
+      "Le vérificateur sera ajouté à votre liste de confiance.",
+      "Vous n'aurez plus besoin de confirmer votre confiance lors des prochains partages avec ce vérificateur."
+    ],
+
+    "confirm": "Oui, je fais confiance à cet émetteur",
+    "verifierConfirm": "Oui, je fais confiance à ce vérificateur",
+    "cancel": "Non, revenir en arrière"
+  },
+
+  "issuerTrustScreen": {
+    "successfullyTrusted": "Émetteur approuvé avec succès",
+
+    "successfullyTrustedSubtitle": "Vous pouvez désormais recevoir des cartes en toute sécurité de cet émetteur.\nRedirection dans {{seconds}} secondes…",
+
+    "confirm": "Oui, je fais confiance à cet émetteur",
+
+    "cancel": "Non, revenir en arrière",
+
+    "inProgress": "En cours…",
+
+    "infoPoints": [
+      "La carte sera enregistrée en toute sécurité dans votre portefeuille.",
+      "Cet émetteur sera ajouté à votre liste de confiance.",
+      "Vous n'aurez plus besoin de confirmer votre confiance lors des prochains téléchargements depuis cet émetteur."
+    ],
+
+    "description": "Assurez-vous de reconnaître ou de faire confiance à cet émetteur. Une fois votre confiance accordée :",
+
+    "title": "Vérification rapide",
+
+    "subTitle": "Avant de continuer, confirmez que vous reconnaissez cet émetteur."
+  }
+}
