@@ -79,7 +79,7 @@
       "location" : "https://github.com/inji/inji-openid4vp-ios-swift",
       "state" : {
         "branch" : "develop",
-        "revision" : "6949e58fb9b42d52808c72c141164c7425d3f5ea"
+        "revision" : "fa49180a5805d1bfa823e9be92bb2b372dbbacc0"
       }
     },
     {
@@ -177,7 +177,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/abhip2565/SwiftCBOR",
       "state" : {
-        "revision" : "04ccff117f6549121d5721ec84fdf0162122b90e",
+        "revision" : "cc4e195a0ea2dce88f2fd6c6d73b2504e3c884fd",
         "version" : "0.5.0"
       }
     },
