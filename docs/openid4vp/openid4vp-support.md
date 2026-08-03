@@ -49,8 +49,10 @@ The implementation of this feature involves the following steps:
 
 1. The Verifier displays the Authorization Request to the End-User as a QR Code with parameters like `client_id`, `request_uri` and optionally `request_uri_method`
 2. The Wallet scans the QR Code and extracts the parameters and validates the parameters in the request.
-  - In case the client ID prefix is `pre-registered`, the Wallet also checks whether the `client_id` and `request_uri` are available in its trusted verifiers list for privacy considerations.
-  - For other client ID prefixes, the usual validation is done based on the `client_id` value.
+
+- In case the client ID prefix is identified to be `pre-registered`, the Wallet also checks whether the `client_id` and `request_uri` are available in its trusted verifiers list for privacy considerations.
+- For other client ID prefixes, the usual validation is done based on the `client_id` value.
+
 3. The Wallet then sends a request to the Verifier's `request_uri` value that is provided in the QR Code.
 4. The Verifier processes the request and returns the Authorization request object as jwt.
 5. Once the Wallet receives the Authorization Request Object, it extracts the object and first validates the request by performing the following checks
@@ -80,12 +82,12 @@ The implementation of this feature involves the following steps:
 
 The Inji Wallet integrates the Inji OpenID4VP library to manage all OpenID4VP-related functionalities. The library handles the core operations including validating incoming authorization requests, constructing Verifiable Presentations, and transmitting responses to verifiers. The Wallet's role focuses on two key responsibilities:
 
-* Owns user consent and credential selection
-* Performs secure cryptographic signing
+- Owns user consent and credential selection
+- Performs secure cryptographic signing
 
 ### Inji OpenID4VP Libraries
 
-- Android: `inji-openid4vp-android` - https://github.com/inji/inji-openid4vp
+- Android: `inji-openid4vp` - https://github.com/inji/inji-openid4vp
 - iOS (Swift): `inji-openid4vp-ios-swift` - https://github.com/inji/inji-openid4vp-ios-swift
 
 ## Functionalities
@@ -102,7 +104,8 @@ The Inji Wallet integrates the Inji OpenID4VP library to manage all OpenID4VP-re
 ##### Match Credentials against VP Request
 
 - Wallet matches the available credentials against the VP Request. In this flow, the VP Request may contain one of the following:
-1. DCQL query - The Inji OpenID4VP library is used for this path. The `getMatchingCredentials` method is exposed by the library to handle this. (For detailed information, refer to [dcql-query-support.md](./dcql-query-support.md) on how credentials are matched.)
+
+1. DCQL query - The Inji OpenID4VP library is used for this path. The `getMatchingCredentials` method is exposed by the library to handle this. (For detailed information, refer to [dcql-support.md](./dcql-support.md) on how credentials are matched.)
 2. Presentation definition - The Wallet itself performs the credential matching logic.
 
 ##### User Review and Consent
@@ -153,7 +156,7 @@ sequenceDiagram
 ## Summary: Wallet's Role in OpenID4VP Support
 
 | Task                                     | Who        | Where                                          |
-|------------------------------------------|------------|------------------------------------------------|
+| ---------------------------------------- | ---------- | ---------------------------------------------- |
 | **Authenticate Verifier**                | Library    | `authenticateVerifier()`                       |
 | **Parse Authorization Request**          | Library    | Request parsing based on client ID prefix      |
 | **Match credentials against VP request** | **Wallet** | Presentation Exchange matching logic           |
@@ -173,7 +176,7 @@ Holder binding support - The holder binding is a feature that allows the Verifie
 - for ldp_vc format
   - Supported for VCs signed with signature suite **_Ed25519Signature2020_**.
 - for vc+sd-jwt and dc+sd-jwt format
-  - Via [cnf](https://www.ietf.org/archive/id/draft-ietf-oauth-sd-jwt-vc-10.html#section-3.2.2.2-3.4.2.1) claim and supported for `kid` only
+  - Via [cnf](https://www.ietf.org/archive/id/draft-ietf-oauth-sd-jwt-vc-10.html#section-3.2.2.2-3.4.1) claim and supported for `kid` only
   - Supported algorithms - **_ES256_**, **_Ed25519_**.
 
 ## Wallet Configuration for the OpenID4VP Flow
@@ -197,9 +200,7 @@ The response contains the list of trusted verifiers. This list is included in th
     "verifiers": [
       {
         "client_id": "verifier.com",
-        "redirect_uris": [
-          "https://verifier.com/"
-        ],
+        "redirect_uris": ["https://verifier.com/"],
         "response_uris": [
           "https://verifier.com/v1/verify/vp-submission/direct-post"
         ],
@@ -209,12 +210,8 @@ The response contains the list of trusted verifiers. This list is included in th
       },
       {
         "client_id": "mock-client",
-        "redirect_uris": [
-          "https://example.com/redirect"
-        ],
-        "response_uris": [
-          "https://mock-client.com/verifier/vp-response"
-        ],
+        "redirect_uris": ["https://example.com/redirect"],
+        "response_uris": ["https://mock-client.com/verifier/vp-response"],
         "jwks_uri": "https://mock-client.com/.well-known/jwks.json",
         "allow_unsigned_request": true,
         "spec_version": "v1"
@@ -223,7 +220,6 @@ The response contains the list of trusted verifiers. This list is included in th
   }
 }
 ```
-
 
 ### 2. Pre-registered Client Validation
 
@@ -238,7 +234,6 @@ Whether the wallet validates a verifier against the trusted verifier list is con
 - If `openid4vpClientValidation` is set to `true`, the wallet validates the verifier against the pre-registered verifier list.
 - If `openid4vpClientValidation` is set to `false`, this validation is skipped.
 - If the property is not present in the API response, the default value is `true`.
-
 
 ### 3. OpenID4VP Wallet Configuration
 
@@ -261,15 +256,14 @@ The configuration includes:
 - `authorization_encryption_alg_values_supported` – Supported key management algorithms for encrypted authorization requests.
 - `authorization_encryption_enc_values_supported` – Supported content encryption algorithms.
 - `presentation_definition_uri_supported` – Indicates whether `presentation_definition_uri` is supported.
-- `request_uri_methods_supported` – Supported HTTP methods for fetching request objects.
 
 #### Sample Response
 
 ```json
 {
   "response": {
-    "openid4vpClientValidation": "false",
-    "openid4vpWalletConfig": "{\"response_types_supported\":[\"vp_token\"],\"vp_formats_supported\":{\"mso_mdoc\":{\"issuerauth_alg_values\":[-7],\"deviceauth_alg_values\":[-7]},\"ldp_vc\":{\"proof_type_values\":[\"Ed25519Signature2020\",\"JsonWebSignature2020\"]},\"dc+sd-jwt\":{\"sd-jwt_alg_values\":[\"EdDSA\",\"ES256\"],\"kb-jwt_alg_values\":[\"ES256\",\"EdDSA\"]},\"vc+sd-jwt\":{\"sd-jwt_alg_values\":[\"EdDSA\",\"ES256\"],\"kb-jwt_alg_values\":[\"ES256\",\"EdDSA\"]}},\"client_id_prefixes_supported\":[\"redirect_uri\",\"decentralized_identifier\",\"pre-registered\"],\"request_object_signing_alg_values_supported\":[\"EdDSA\"],\"authorization_encryption_alg_values_supported\":[\"ECDH-ES\"],\"authorization_encryption_enc_values_supported\":[\"A256GCM\"],\"presentation_definition_uri_supported\":true,\"request_uri_methods_supported\":[\"get\",\"post\"]}"
+    "openid4vpClientValidation": "true",
+    "openid4vpWalletConfig": "{\"response_types_supported\":[\"vp_token\"],\"vp_formats_supported\":{\"mso_mdoc\":{\"issuerauth_alg_values\":[-7],\"deviceauth_alg_values\":[-7]},\"ldp_vc\":{\"proof_type_values\":[\"Ed25519Signature2020\",\"JsonWebSignature2020\"]},\"dc+sd-jwt\":{\"sd-jwt_alg_values\":[\"EdDSA\",\"ES256\"],\"kb-jwt_alg_values\":[\"ES256\",\"EdDSA\"]},\"vc+sd-jwt\":{\"sd-jwt_alg_values\":[\"EdDSA\",\"ES256\"],\"kb-jwt_alg_values\":[\"ES256\",\"EdDSA\"]}},\"client_id_prefixes_supported\":[\"redirect_uri\",\"decentralized_identifier\",\"pre-registered\"],\"request_object_signing_alg_values_supported\":[\"EdDSA\"],\"authorization_encryption_alg_values_supported\":[\"ECDH-ES\"],\"authorization_encryption_enc_values_supported\":[\"A256GCM\"],\"presentation_definition_uri_supported\":true}"
   }
 }
 ```

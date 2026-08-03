@@ -1,4 +1,4 @@
-# OpenID4VP - DCQL Query Support
+# OpenID4VP - DCQL Support
 
 This document provides comprehensive documentation on Inji Wallet's support for **Digital Credentials Query Language (DCQL)** as part of the OpenID4VP specification.
 
@@ -113,7 +113,7 @@ A DCQL request can define multiple credential set combinations:
 
 ## How the Library Processes DCQL Queries
 
-The core processing is handled by the native Inji OpenID4VP libraries (`inji-openid4vp-android` and `inji-openid4vp-ios-swift`). The processing flow is as follows:
+The core processing is handled by the native Inji OpenID4VP libraries (`inji-openid4vp` and `inji-openid4vp-ios-swift`). The processing flow is as follows:
 
 ### 1. DCQL Query Validation in the VP Request
 
@@ -135,9 +135,10 @@ The library evaluates available credentials against the DCQL criteria using the 
 The library determines which credential set options are satisfiable and returns:
 
 * **`success`**: Indicates whether the request can be successfully satisfied.
-* **`queryMatches`**: Identifies the credentials that match each query.
+* **`queryMatches`**: A mapping of query IDs to their matching results. Each entry includes:
+  - **`matchingCredentials`**: Array of credentials matching the query.
+  - **`allowMultipleCredentials`**: Boolean indicating whether multiple credentials can be used to satisfy this specific query.
 * **`credentialSets`**: Lists the credential set options that can be fulfilled.
-* **`allowMultipleCredentials`**: Indicates whether multiple credentials can be used to satisfy the query.
 
 
 ---
