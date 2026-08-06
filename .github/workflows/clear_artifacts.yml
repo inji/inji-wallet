@@ -4,7 +4,7 @@ on:
 
 jobs:
   delete-artifacts:
-    uses: mosip/kattu/.github/workflows/clear-artifacts.yml@master
+    uses: mosip/kattu/.github/workflows/clear-artifacts.yml@gpgupdate-masterj21
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACTION_PAT }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_INJI_TEAM }}

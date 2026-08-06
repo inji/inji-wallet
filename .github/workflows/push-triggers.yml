@@ -19,7 +19,7 @@ on:
 
 jobs:
   build-android:
-    uses: mosip/kattu/.github/workflows/android-build.yml@master
+    uses: mosip/kattu/.github/workflows/android-build.yml@gpgupdate-masterj21
     with:
       NODE_VERSION: "18.x"
       JAVA_VERSION: "17"
@@ -32,7 +32,7 @@ jobs:
       UPLOAD_TO_ACTIONS: 'false'
 
   build-ios:
-    uses: mosip/kattu/.github/workflows/ios-build.yml@master
+    uses: mosip/kattu/.github/workflows/ios-build.yml@gpgupdate-masterj21
     with:
       NODE_VERSION: "18.x"
       SERVICE_LOCATION: '.'

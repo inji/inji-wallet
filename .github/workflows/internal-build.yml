@@ -93,7 +93,7 @@ jobs:
   build-android:
     if: ${{ inputs.buildFor == 'Both[Android and IOS]' || inputs.buildFor == 'Android'}}
     needs: set-client-id
-    uses: mosip/kattu/.github/workflows/android-publish.yml@master
+    uses: mosip/kattu/.github/workflows/android-publish.yml@gpgupdate-masterj21
     with:
       RELEASE: ${{ inputs.release }}
       NODE_VERSION: '18.x'
@@ -121,7 +121,7 @@ jobs:
 
   build-android-beta:
     if: ${{ inputs.release == 'beta' && (inputs.buildFor == 'Both[Android and IOS]' || inputs.buildFor == 'Android') }}
-    uses: mosip/kattu/.github/workflows/android-publish.yml@master
+    uses: mosip/kattu/.github/workflows/android-publish.yml@gpgupdate-masterj21
     with:
       RELEASE: ${{ inputs.release }}
       NODE_VERSION: '18.x'
@@ -149,7 +149,7 @@ jobs:
 
   build-ios:
     if: ${{ inputs.buildFor == 'Both[Android and IOS]' || inputs.buildFor == 'IOS'}}
-    uses: mosip/kattu/.github/workflows/ios-publish.yml@master
+    uses: mosip/kattu/.github/workflows/ios-publish.yml@gpgupdate-masterj21
     with:
       NODE_VERSION: '18.x'
       MIMOTO_HOST: ${{ inputs.mimotoBackendServiceUrl }}
@@ -157,7 +157,7 @@ jobs:
       APPLICATION_THEME: ${{ inputs.theme }}
       TESTFLIGHT_BETA_APP_DESCRIPTION: ${{ inputs.buildName }}
       ALLOW_ENV_EDIT: ${{ inputs.allow_env_edit }}
-      LIVENESS_DETECTION: ${{ inputs.liveness_detection }}
+      LIVENESS_DETECTION: 'false'
       ENABLE_AUTH: 'true'
       TESTFLIGHT_INTERNAL_TESTERS_GROUP: ${{ inputs.internal-testers }}
       APP_FLAVOR: ${{ inputs.injiFlavor }}

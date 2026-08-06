@@ -46,7 +46,7 @@ on:
 
 jobs:
   build-android:
-    uses: mosip/kattu/.github/workflows/android-build.yml@master
+    uses: mosip/kattu/.github/workflows/android-build.yml@gpgupdate-masterj21
     with:
         NODE_VERSION: '18.x'
         JAVA_VERSION: '17'

@@ -25,7 +25,7 @@ on:
 
 jobs:
   tag-branch:
-    uses: mosip/kattu/.github/workflows/tag.yml@master
+    uses: mosip/kattu/.github/workflows/tag.yml@gpgupdate-masterj21
     with:
       TAG: ${{ inputs.TAG }}
       BODY: ${{ inputs.BODY }}
@@ -33,3 +33,4 @@ jobs:
       DRAFT: ${{ inputs.DRAFT }}
     secrets:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_INJI_TEAM }}
+      TOKEN: ${{ secrets.ACTION_PAT }}

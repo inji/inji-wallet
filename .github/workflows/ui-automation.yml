@@ -41,10 +41,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3.1.0          
+      - uses: actions/checkout@v3.1.0
       - uses: actions/setup-node@v3
         with:
-          node-version: '18.x'        
+          node-version: '18.x'
       - name: Cache npm dependencies
         uses: actions/cache@v4
         with:
@@ -52,7 +52,7 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
-    
+
       - name: Install npm dependencies
         run: |
           npm ci
@@ -78,18 +78,20 @@ jobs:
           CREDENTIAL_REGISTRY_EDIT: 'false'
           RELEASE_KEYSTORE_ALIAS: 'androidreleasekey'
           RELEASE_KEYSTORE_PASSWORD: "${{ secrets.INJI_ANDROID_RELEASE_STOREPASS }}"
-          
+
       - name: Upload Artifact to Actions
         uses: actions/upload-artifact@v3.1.1
         with:
           name: residentapp
           path: android/app/build/outputs/apk/residentapp/release/Inji_universal.apk
           retention-days: 10
+
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '21'
+
       - name: Run UI Automation Tests on BrowserStack
         run: |
           chmod +x injitest/automation_trigger.sh
@@ -99,7 +101,7 @@ jobs:
           TEST_TYPE: ${{ github.event.inputs.testType }}
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-          
+
       - name: Save test reports
         uses: actions/upload-artifact@v3
         if: success() || failure()
@@ -112,8 +114,8 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }} 
-          S3_BUCKET: ${{ secrets.S3_BUCKET }}  
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
         run: |
           S3_OBJECT_KEY=$(echo $GITHUB_REPOSITORY | cut -d '/' -f 2)
           aws s3 cp injitest/target/surefire-reports s3://$S3_BUCKET/$S3_OBJECT_KEY/android-ui/ --recursive
@@ -128,7 +130,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-        
+
       - name: Cache npm dependencies
         uses: actions/cache@v4
         with:
@@ -136,7 +138,7 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
-    
+
       - name: Install npm dependencies
         run: |
           npm ci
@@ -145,7 +147,7 @@ jobs:
         run: |
           cd ios
           pod install && pod install
-          fastlane ios_ui_automation_build 
+          fastlane ios_ui_automation_build
         env:
           MIMOTO_HOST: ${{ github.event.inputs.backendServiceUrlMimoto }}
           ESIGNET_HOST: ${{ github.event.inputs.backendServiceUrlEsignet }}
@@ -166,7 +168,7 @@ jobs:
           name: residentapp
           path: ios/Inji.ipa
           retention-days: 10
-  
+
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
@@ -182,7 +184,7 @@ jobs:
           TEST_TYPE: ${{ github.event.inputs.testType }}
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-          
+
       - name: Save test reports
         uses: actions/upload-artifact@v3
         if: success() || failure()
@@ -195,8 +197,8 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }} 
-          S3_BUCKET: ${{ secrets.S3_BUCKET }}  
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
         run: |
           S3_OBJECT_KEY=$(echo $GITHUB_REPOSITORY | cut -d '/' -f 2)
-          aws s3 cp injitest/target/surefire-reports s3://$S3_BUCKET/$S3_OBJECT_KEY/ios-ui/ --recursive          
+          aws s3 cp injitest/target/surefire-reports s3://$S3_BUCKET/$S3_OBJECT_KEY/ios-ui/ --recursive
