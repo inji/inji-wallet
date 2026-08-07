@@ -114,7 +114,72 @@ Each request receives a newly signed proof with a unique `jti`.
 
 The `htu` value is normalized without query or fragment components. Only the public key is included in the proof header.
 
-## Authorization Code Flow
+## Flow diagrams
+
+### Flow 1 - DPoP key setup
+
+At the start of each issuance flow, the library selects an algorithm and generates a fresh in-memory DPoP key pair. The wallet does not generate, persist, or sign with this key.
+
+```mermaid
+flowchart TD
+  A([Library begins an issuance flow]) --> B[Discover dpop_signing_alg_values_supported from Authorization Server]
+  B --> C[Select the first mutually supported algorithm]
+  C --> D{Metadata absent or empty?}
+  D -- Yes --> E[Default to ES256]
+  D -- No --> F{Mutually supported algorithm found?}
+  F -- No --> G([Fail algorithm selection])
+  F -- Yes --> H[Generate a fresh key pair in memory]
+  E --> H
+  H --> I([Reuse key for this flow and discard it at flow completion])
+```
+
+### Flow 2 - Pre-Authorized Code Flow with DPoP
+
+The Pre-Authorized Code Flow does not have an authorization request, so it does not use `dpop_jkt`. The library owns every DPoP concern while the wallet owns the token HTTP request.
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant W as Inji Wallet
+  participant L as VCI Client Library
+  participant AS as Authorization Server
+  participant CI as Credential Issuer
+
+  W->>L: Start issuance using credential offer
+  L->>CI: Fetch Credential Issuer metadata
+  CI-->>L: Metadata and optional nonce_endpoint
+  L->>AS: Discover Authorization Server metadata
+  AS-->>L: Metadata and supported DPoP algorithms
+  L->>L: Select algorithm and generate ephemeral key
+  L->>L: Build and sign proof-A for token endpoint
+  L-->>W: TokenRequest with dpopProof=proof-A
+  W->>AS: POST /token with DPoP=proof-A and pre-authorized code
+  alt Authorization Server requires a nonce
+    AS-->>W: 400 use_dpop_nonce and DPoP-Nonce
+    W->>L: generateTokenDPoPProof(dpopNonce)
+    L-->>W: proof-B signed by the same flow key
+    W->>AS: Retry /token with DPoP=proof-B
+  end
+  AS-->>W: Access token and token_type
+  W-->>L: TokenResponse
+  opt Nonce Endpoint is available
+    L->>CI: POST nonce request
+    CI-->>L: c_nonce and optional DPoP-Nonce
+    L->>L: Keep c_nonce and issuerNonce separate
+  end
+  L->>L: Build credential request based on token_type
+  L->>CI: POST /credential with DPoP proof or Bearer token
+  alt Credential Issuer requires a DPoP nonce
+    CI-->>L: 401 DPoP use_dpop_nonce and DPoP-Nonce
+    L->>L: Store issuerNonce and rebuild proof
+    L->>CI: Retry /credential with fresh DPoP proof
+  end
+  CI-->>L: Credential and optional next DPoP-Nonce
+  L-->>W: Credential response
+  L->>L: Clear DPoP session and issuerNonce
+```
+
+### Flow 3 - Authorization Code Flow with DPoP
 
 For Authorization Code Flow, the library calculates the JWK thumbprint of the active DPoP public key and adds it as `dpop_jkt` to the authorization request. The redirect-based request includes it in the authorization URL; the POST-based interactive authorization request includes it in the request body.
 
@@ -128,60 +193,183 @@ sequenceDiagram
   participant CI as Credential Issuer
 
   W->>L: Start Authorization Code issuance flow
+  L->>CI: Fetch Credential Issuer metadata
+  CI-->>L: Metadata and optional nonce_endpoint
   L->>AS: Discover Authorization Server metadata
   AS-->>L: Metadata and supported DPoP algorithms
-  L->>L: Generate ephemeral key and calculate dpop_jkt
-  L-->>W: Authorization request containing dpop_jkt and PKCE values
+  L->>L: Select algorithm and generate ephemeral key
+  L->>L: Calculate dpop_jkt from DPoP public key
+  L-->>W: Authorization request with dpop_jkt and PKCE values
   W->>U: Open authorization request
   U->>AS: Authenticate and authorize
   AS-->>W: Return authorization code
-  W->>L: Return authorization code
-  L-->>W: TokenRequest containing dpopProof
-  W->>AS: POST token request with DPoP header
+  W-->>L: Return authorization code
+  L->>L: Build and sign proof-A for token endpoint
+  L-->>W: TokenRequest with dpopProof=proof-A
+  W->>AS: POST /token with DPoP=proof-A and authorization code
   alt Authorization Server requires a nonce
     AS-->>W: 400 use_dpop_nonce and DPoP-Nonce
-    W->>L: generateTokenDPoPProof(DPoP-Nonce)
-    L-->>W: Fresh proof signed by the same flow key
-    W->>AS: Retry token request with fresh DPoP header
+    W->>L: generateTokenDPoPProof(dpopNonce)
+    L-->>W: proof-B signed by the same flow key
+    W->>AS: Retry /token with DPoP=proof-B
   end
+  AS->>AS: Verify proof key matches authorization request dpop_jkt
   AS-->>W: Access token and token_type
-  W-->>L: Token response
-  L->>CI: Credential request using DPoP or Bearer based on token_type
-  CI-->>L: Credential response
-  L-->>W: Issued credential
-  L->>L: Clear DPoP session
+  W-->>L: TokenResponse
+  opt Nonce Endpoint is available
+    L->>CI: POST nonce request
+    CI-->>L: c_nonce and optional DPoP-Nonce
+    L->>L: Keep c_nonce and issuerNonce separate
+  end
+  L->>L: Build credential request based on token_type
+  L->>CI: POST /credential with DPoP proof or Bearer token
+  CI-->>L: Credential and optional next DPoP-Nonce
+  L-->>W: Credential response
+  L->>L: Clear DPoP session and issuerNonce
 ```
 
-## Pre-Authorized Code Flow
+### Flow 4 - Token endpoint DPoP proof construction
 
-The Pre-Authorized Code Flow does not have an authorization request, so it does not use `dpop_jkt`. The library still creates an ephemeral key and supplies a signed DPoP proof with the token request.
+The library constructs and signs the token-endpoint proof. The wallet receives a finished proof through `TokenRequest.dpopProof`.
 
 ```mermaid
-sequenceDiagram
-  autonumber
-  participant W as Inji Wallet
-  participant L as VCI Client Library
-  participant AS as Authorization Server
-  participant CI as Credential Issuer
+flowchart TD
+  A([Library prepares TokenRequest]) --> B[Generate a new UUID as jti]
+  B --> C[Normalize token endpoint as htu and remove query and fragment]
+  C --> D{Authorization Server nonce supplied?}
+  D -- No --> E[Omit nonce claim]
+  D -- Yes --> F[Include nonce claim]
+  E --> G[Build payload with jti, htm=POST, htu, iat and exp]
+  F --> G
+  G --> H[Do not include ath at token endpoint]
+  H --> I[Build header with typ=dpop+jwt, selected alg and public JWK]
+  I --> J[Sign with the active library-owned DPoP key]
+  J --> K([Set TokenRequest.dpopProof and copy it into DPoP header])
+```
 
-  W->>L: Start Pre-Authorized Code issuance flow
-  L->>AS: Discover Authorization Server metadata
-  AS-->>L: Metadata and supported DPoP algorithms
-  L->>L: Generate ephemeral DPoP key
-  L-->>W: TokenRequest containing dpopProof
-  W->>AS: POST token request with DPoP header
-  alt Authorization Server requires a nonce
-    AS-->>W: 400 use_dpop_nonce and DPoP-Nonce
-    W->>L: generateTokenDPoPProof(DPoP-Nonce)
-    L-->>W: Fresh proof signed by the same flow key
-    W->>AS: Retry token request with fresh DPoP header
-  end
-  AS-->>W: Access token and token_type
-  W-->>L: Token response
-  L->>CI: Credential request using DPoP or Bearer based on token_type
-  CI-->>L: Credential response
-  L-->>W: Issued credential
-  L->>L: Clear DPoP session
+### Flow 5 - Credential endpoint DPoP processing
+
+The library constructs, signs, sends, and retries the credential request. The wallet is not involved in credential-endpoint DPoP processing.
+
+```mermaid
+flowchart TD
+  A([Library prepares credential request]) --> B{token_type equals DPoP?}
+  B -- No --> C([Use Authorization=Bearer without DPoP proof])
+  B -- Yes --> D{Active DPoP session exists?}
+  D -- No --> E([Fail credential request])
+  D -- Yes --> F[Generate a new UUID as jti]
+  F --> G[Compute ath from access token]
+  G --> H{issuerNonce available from Nonce Endpoint or prior response?}
+  H -- Yes --> I[Include nonce claim]
+  H -- No --> J[Omit nonce claim]
+  I --> K[Build header and payload with htm, htu, iat, exp, jti and ath]
+  J --> K
+  K --> L[Sign with the active library-owned DPoP key]
+  L --> M[Send DPoP header and Authorization=DPoP access token]
+  M --> N{Response}
+  N -- 2xx --> O{DPoP-Nonce response header present?}
+  O -- Yes --> P[Store rotated issuerNonce]
+  O -- No --> Q([Return credential response])
+  P --> Q
+  N -- 401 --> R{WWW-Authenticate challenge}
+  R -- DPoP use_dpop_nonce with nonce --> S[Store issuerNonce and rebuild proof]
+  S --> F
+  R -- Bearer only --> T[Log downgrade and retry once with Bearer]
+  T --> Q
+  R -- Other or mixed challenge --> U([Propagate error without Bearer downgrade])
+  N -- Other error --> U
+```
+
+### Flow 6 - Nonce lifecycle
+
+This flow shows the complete implemented nonce lifecycle, including Authorization Server challenges, Nonce Endpoint seeding, Credential Issuer challenges, successful-response rotation, and cleanup.
+
+```mermaid
+stateDiagram-v2
+  direction LR
+
+  state "Token request - wallet transports, library signs" as TR {
+    [*] --> SendProofA : TokenRequest.dpopProof without nonce
+    SendProofA --> TokenOK : 200 token response
+    SendProofA --> ASNonceRequired : 400 use_dpop_nonce
+    ASNonceRequired --> AskLibrary : wallet reads DPoP-Nonce
+    AskLibrary --> SendProofB : generateTokenDPoPProof returns signed proof
+    SendProofB --> TokenOK : retry once
+    TokenOK --> [*] : return TokenResponse to library
+  }
+
+  state "Credential request - library internal" as CR {
+    [*] --> FetchNonce : call Nonce Endpoint when available
+    FetchNonce --> SeedIssuerNonce : response has DPoP-Nonce
+    FetchNonce --> BuildProof : no DPoP-Nonce
+    SeedIssuerNonce --> BuildProof : store issuerNonce and keep c_nonce separate
+    BuildProof --> CredOK : 2xx credential response
+    BuildProof --> RSNonceRequired : 401 DPoP use_dpop_nonce
+    RSNonceRequired --> StoreIssuerNonce : store DPoP-Nonce
+    StoreIssuerNonce --> RetryProof : rebuild and sign with issuerNonce
+    RetryProof --> CredOK : retry once
+    CredOK --> RotateIssuerNonce : 2xx includes next DPoP-Nonce
+    CredOK --> Complete : no next DPoP-Nonce
+    RotateIssuerNonce --> Complete : store rotated issuerNonce
+    Complete --> [*] : return credential response
+  }
+
+  [*] --> TR
+  TR --> CR : access token returned to library
+  CR --> Cleanup : flow completes or fails
+  Cleanup --> [*] : clear DPoP key and issuerNonce
+```
+
+### Flow 7 - Wallet XState changes
+
+DPoP keys and signing stay outside the wallet state machine. There is no key-generation or DPoP-signing state in the wallet; only the existing token-request path changes.
+
+```mermaid
+stateDiagram-v2
+  direction TB
+
+  [*] --> idle
+
+  state "Existing issuance states" as existing {
+    idle --> checkingIssuerTrust
+    checkingIssuerTrust --> credentialOfferConsent
+    credentialOfferConsent --> authOrToken
+  }
+
+  authOrToken --> authRedirect : authorization code flow with library-supplied dpop_jkt
+  authOrToken --> tokenRequest : pre-authorized code flow
+  authRedirect --> waitingForAuthCode
+  waitingForAuthCode --> tokenRequest : authorization code received
+
+  state "Modified tokenRequest" as tokenRequest {
+    [*] --> sendWithDPoP : POST token request with TokenRequest.dpopProof
+    sendWithDPoP --> tokenOK : 200 token response
+    sendWithDPoP --> nonceError : 400 use_dpop_nonce
+  }
+
+  state "retryTokenWithNonce" as retryNonce {
+    [*] --> askLibrary : read DPoP-Nonce and call generateTokenDPoPProof
+    askLibrary --> retry : POST token request with returned proof
+    retry --> [*] : 200 token response
+  }
+
+  tokenRequest --> retryNonce : nonce challenge
+  tokenRequest --> returnTokenResponse : success
+  retryNonce --> returnTokenResponse : success
+  returnTokenResponse --> idle : TokenResponse returned to library
+
+  idle --> constructProof : getProofs callback for credential proof key
+  constructProof --> idle : openid4vci proof returned
+```
+
+## Key separation
+
+The library-owned DPoP key and wallet-owned credential proof key are always separate.
+
+```mermaid
+graph LR
+  DPoP["DPoP key<br/>Library-owned, ephemeral and in-memory"] --> T["Token endpoint DPoP proof<br/>Credential endpoint DPoP proof"]
+  Proof["Credential proof key<br/>Wallet-owned"] --> P["OpenID4VCI credential proof<br/>Returned through getProofs callback"]
 ```
 
 ## Optional mimoto token transport
