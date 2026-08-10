@@ -22,7 +22,7 @@ on:
       injiFlavor:
         description: 'Select Inji flavor'
         required: true
-        default: 'inji'
+        default: 'residentapp'
         type: choice
         options:
           - residentapp
@@ -33,7 +33,7 @@ on:
       internal-testers:
         description: 'Internal Testers Group'
         required: true
-        default: 'QA'
+        default: 'Dev-testing'
         type: choice
         options:
           - Dev-testing
