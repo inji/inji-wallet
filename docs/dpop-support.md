@@ -165,18 +165,18 @@ sequenceDiagram
   opt Nonce Endpoint is available
     L->>CI: POST nonce request
     CI-->>L: c_nonce and optional DPoP-Nonce
-    L->>L: Keep c_nonce and issuerNonce separate
+    L->>L: Keep c_nonce and issuerDPoPNonce separate
   end
   L->>L: Build credential request based on token_type
   L->>CI: POST /credential with DPoP proof or Bearer token
   alt Credential Issuer requires a DPoP nonce
     CI-->>L: 401 DPoP use_dpop_nonce and DPoP-Nonce
-    L->>L: Store issuerNonce and rebuild proof
+    L->>L: Store issuerDPoPNonce and rebuild proof
     L->>CI: Retry /credential with fresh DPoP proof
   end
   CI-->>L: Credential and optional next DPoP-Nonce
   L-->>W: Credential response
-  L->>L: Clear DPoP session and issuerNonce
+  L->>L: Clear DPoP session and issuerDPoPNonce
 ```
 
 ### Flow 3 - Authorization Code Flow with DPoP
@@ -219,13 +219,13 @@ sequenceDiagram
   opt Nonce Endpoint is available
     L->>CI: POST nonce request
     CI-->>L: c_nonce and optional DPoP-Nonce
-    L->>L: Keep c_nonce and issuerNonce separate
+    L->>L: Keep c_nonce and issuerDPoPNonce separate
   end
   L->>L: Build credential request based on token_type
   L->>CI: POST /credential with DPoP proof or Bearer token
   CI-->>L: Credential and optional next DPoP-Nonce
   L-->>W: Credential response
-  L->>L: Clear DPoP session and issuerNonce
+  L->>L: Clear DPoP session and issuerDPoPNonce
 ```
 
 ### Flow 4 - Token endpoint DPoP proof construction
@@ -236,7 +236,7 @@ The library constructs and signs the token-endpoint proof. The wallet receives a
 flowchart TD
   A([Library prepares TokenRequest]) --> B[Generate a new UUID as jti]
   B --> C[Normalize token endpoint as htu and remove query and fragment]
-  C --> D{Authorization Server nonce supplied?}
+  C --> D{Authorization Server DPoP-Nonce supplied?}
   D -- No --> E[Omit nonce claim]
   D -- Yes --> F[Include nonce claim]
   E --> G[Build payload with jti, htm=POST, htu, iat and exp]
@@ -244,7 +244,7 @@ flowchart TD
   G --> H[Do not include ath at token endpoint]
   H --> I[Build header with typ=dpop+jwt, selected alg and public JWK]
   I --> J[Sign with the active library-owned DPoP key]
-  J --> K([Set TokenRequest.dpopProof and copy it into DPoP header])
+  J --> K([Set TokenRequest.dpopProof])
 ```
 
 ### Flow 5 - Credential endpoint DPoP processing
@@ -259,7 +259,7 @@ flowchart TD
   D -- No --> E([Fail credential request])
   D -- Yes --> F[Generate a new UUID as jti]
   F --> G[Compute ath from access token]
-  G --> H{issuerNonce available from Nonce Endpoint or prior response?}
+  G --> H{issuerDPoPNonce available from Nonce Endpoint or prior response?}
   H -- Yes --> I[Include nonce claim]
   H -- No --> J[Omit nonce claim]
   I --> K[Build header and payload with htm, htu, iat, exp, jti and ath]
@@ -268,11 +268,11 @@ flowchart TD
   L --> M[Send DPoP header and Authorization=DPoP access token]
   M --> N{Response}
   N -- 2xx --> O{DPoP-Nonce response header present?}
-  O -- Yes --> P[Store rotated issuerNonce]
+  O -- Yes --> P[Store rotated issuerDPoPNonce]
   O -- No --> Q([Return credential response])
   P --> Q
   N -- 401 --> R{WWW-Authenticate challenge}
-  R -- DPoP use_dpop_nonce with nonce --> S[Store issuerNonce and rebuild proof]
+  R -- DPoP use_dpop_nonce with nonce --> S[Store issuerDPoPNonce and rebuild proof]
   S --> F
   R -- Bearer only --> T[Log downgrade and retry once with Bearer]
   T --> Q
@@ -300,24 +300,24 @@ stateDiagram-v2
 
   state "Credential request - library internal" as CR {
     [*] --> FetchNonce : call Nonce Endpoint when available
-    FetchNonce --> SeedIssuerNonce : response has DPoP-Nonce
+    FetchNonce --> SeedIssuerDPoPNonce : response has DPoP-Nonce
     FetchNonce --> BuildProof : no DPoP-Nonce
-    SeedIssuerNonce --> BuildProof : store issuerNonce and keep c_nonce separate
+    SeedIssuerDPoPNonce --> BuildProof : store issuerDPoPNonce and keep c_nonce separate
     BuildProof --> CredOK : 2xx credential response
     BuildProof --> RSNonceRequired : 401 DPoP use_dpop_nonce
-    RSNonceRequired --> StoreIssuerNonce : store DPoP-Nonce
-    StoreIssuerNonce --> RetryProof : rebuild and sign with issuerNonce
+    RSNonceRequired --> StoreIssuerDPoPNonce : store DPoP-Nonce
+    StoreIssuerDPoPNonce --> RetryProof : rebuild and sign with issuerDPoPNonce
     RetryProof --> CredOK : retry once
-    CredOK --> RotateIssuerNonce : 2xx includes next DPoP-Nonce
+    CredOK --> RotateIssuerDPoPNonce : 2xx includes next DPoP-Nonce
     CredOK --> Complete : no next DPoP-Nonce
-    RotateIssuerNonce --> Complete : store rotated issuerNonce
+    RotateIssuerDPoPNonce --> Complete : store rotated issuerDPoPNonce
     Complete --> [*] : return credential response
   }
 
   [*] --> TR
   TR --> CR : access token returned to library
   CR --> Cleanup : flow completes or fails
-  Cleanup --> [*] : clear DPoP key and issuerNonce
+  Cleanup --> [*] : clear DPoP key and issuerDPoPNonce
 ```
 
 ### Flow 7 - Wallet XState changes
@@ -368,8 +368,8 @@ The library-owned DPoP key and wallet-owned credential proof key are always sepa
 
 ```mermaid
 graph LR
-  DPoP["DPoP key<br/>Library-owned, ephemeral and in-memory"] --> T["Token endpoint DPoP proof<br/>Credential endpoint DPoP proof"]
-  Proof["Credential proof key<br/>Wallet-owned"] --> P["OpenID4VCI credential proof<br/>Returned through getProofs callback"]
+  DPoP["DPoP key - library-owned, ephemeral, in-memory"] --> T["Token endpoint and credential endpoint DPoP proofs"]
+  Proof["Credential proof key - wallet-owned"] --> P["OpenID4VCI credential proof, returned through getProofs callback"]
 ```
 
 ## Optional mimoto token transport
@@ -419,10 +419,12 @@ When `token_type` is `DPoP`, the library requires the flow's DPoP session to sti
 
 ### Credential Issuer nonce
 
-The library owns the Credential Issuer nonce as `issuerNonce`:
+The library owns the Credential Issuer DPoP nonce as `issuerDPoPNonce`. This is distinct from
+`c_nonce`, which is the OpenID4VCI credential issuer nonce used in the credential proof, and from
+`asDPoPNonce`, the Authorization Server DPoP nonce used at the token endpoint.
 
 1. If the OpenID4VCI Nonce Endpoint returns a `DPoP-Nonce` response header, the library stores it while separately returning the body `c_nonce`.
-2. The first credential-endpoint proof includes the stored `issuerNonce`, when present.
+2. The first credential-endpoint proof includes the stored `issuerDPoPNonce`, when present.
 3. On `401` with `WWW-Authenticate: DPoP`, `error="use_dpop_nonce"`, and `DPoP-Nonce`, the library rebuilds the proof and retries once.
 4. A successful credential response can provide the next `DPoP-Nonce`; the library stores it for a subsequent credential request in the same flow.
 5. The nonce is cleared with the DPoP session at the end of the flow.
