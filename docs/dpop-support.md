@@ -426,8 +426,13 @@ The library owns the Credential Issuer DPoP nonce as `issuerDPoPNonce`. This is 
 1. If the OpenID4VCI Nonce Endpoint returns a `DPoP-Nonce` response header, the library stores it while separately returning the body `c_nonce`.
 2. The first credential-endpoint proof includes the stored `issuerDPoPNonce`, when present.
 3. On `401` with `WWW-Authenticate: DPoP`, `error="use_dpop_nonce"`, and `DPoP-Nonce`, the library rebuilds the proof and retries once.
-4. A successful credential response can provide the next `DPoP-Nonce`; the library stores it for a subsequent credential request in the same flow.
+4. A successful credential response can provide the next `DPoP-Nonce`. The library stores it, but with single-credential issuance there is no subsequent credential request in the flow to consume it, so it is cleared with the session in step 5.
 5. The nonce is cleared with the DPoP session at the end of the flow.
+
+The library currently issues a single credential per flow, so the DPoP session and
+`issuerDPoPNonce` are cleared once that credential response is returned. Supporting
+consecutive credential requests within one flow would require deferring cleanup until
+the final request.
 
 Authorization Server and Credential Issuer DPoP nonces are not interchangeable.
 
