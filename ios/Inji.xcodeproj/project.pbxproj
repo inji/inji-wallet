@@ -1158,48 +1158,48 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/pixelpass-ios-swift/";
 			requirement = {
-				branch = "release-1.0.x";
-				kind = branch;
+				kind = exactVersion;
+				version = "1.0.0-alpha.1";
 			};
 		};
 		9CCC57752E9D7C7000669DB7 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/tuvali-ios-swift/";
 			requirement = {
-				branch = "release-1.0.x";
-				kind = branch;
+				kind = exactVersion;
+				version = "1.0.0-alpha.1";
 			};
 		};
 		9CCCA19C2CF87A8400D5A461 /* XCRemoteSwiftPackageReference "secure-keystore-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/secure-keystore-ios-swift";
 			requirement = {
-				branch = "release-1.0.x";
-				kind = branch;
+				kind = exactVersion;
+				version = "1.0.0-alpha.1";
 			};
 		};
 		C33922392E79A536004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/inji-vc-renderer-ios-swift.git";
 			requirement = {
-				branch = "release-1.0.x";
-				kind = branch;
+				kind = exactVersion;
+				version = "1.0.0-alpha.1";
 			};
 		};
 		E641C9E42FEAE9C9002D18A7 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/inji/inji-vci-client-ios-swift";
 			requirement = {
-				branch = "release-1.0.x";
-				kind = branch;
+				kind = exactVersion;
+				version = "1.0.0-alpha.1";
 			};
 		};
 		E6728B4D2FF7E2C40068A964 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/inji/inji-openid4vp-ios-swift";
 			requirement = {
-				branch = "release-1.0.x";
-				kind = branch;
+				kind = exactVersion;
+				version = "1.0.0-alpha.1";
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

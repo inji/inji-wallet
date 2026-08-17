@@ -273,20 +273,18 @@ dependencies {
     implementation 'com.facebook.soloader:soloader:0.10.1+'
     implementation("com.google.code.gson:gson:2.10.1")
 
-    implementation("io.inji:injivcrenderer-aar:1.0.0-alpha.1-SNAPSHOT")
-    implementation("io.inji:inji-openid4vp-aar:1.0.0-alpha.1-SNAPSHOT"){
-        changing = true
+    implementation("io.inji:injivcrenderer-aar:1.0.0-alpha.1")
+    implementation("io.inji:inji-openid4vp-aar:1.0.0-alpha.1"){
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
         exclude group: 'io.inji', module: 'vcverifier-jar'
         exclude group: 'com.google.crypto.tink', module: 'tink'
         exclude group: 'com.augustcellars.cose', module:'cose-java'
     }
-    implementation("io.inji:pixelpass-aar:1.0.0-alpha.1-SNAPSHOT")
-    implementation("io.inji:secure-keystore:1.0.0-alpha.1-SNAPSHOT")
-    implementation("io.inji:tuvali:1.0.0-alpha.1-SNAPSHOT")
-    implementation("io.inji:inji-vci-client-aar:1.0.0-alpha.1-SNAPSHOT"){
-        changing = true
+    implementation("io.inji:pixelpass-aar:1.0.0-alpha.1")
+    implementation("io.inji:secure-keystore:1.0.0-alpha.1")
+    implementation("io.inji:tuvali:1.0.0-alpha.1")
+    implementation("io.inji:inji-vci-client-aar:1.0.0-alpha.1"){
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
         exclude group: 'io.inji', module: 'vcverifier-jar'
