@@ -437,7 +437,7 @@ export const DefaultTheme = {
       resizeMode: 'contain',
       aspectRatio: 1,
       height: 35,
-      marginRight: 10
+      marginRight: 10,
     },
     vcDetailsLogo: {
       height: 65,
@@ -765,9 +765,10 @@ export const DefaultTheme = {
       minHeight: Dimensions.get('screen').height * COPILOT_HEIGHT,
     },
     copilotButton: {
-      width: 104,
+      minWidth: 104,
       height: 40,
       marginLeft: 10,
+      paddingHorizontal: 12,
     },
     copilotButtonsContainer: {
       marginTop: 25,
