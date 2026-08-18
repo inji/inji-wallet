@@ -158,3 +158,7 @@ export function selectVerifierLogoInTrustModal(state: State) {
 export function selectIsAuthorization(state: State) {
   return state.context.flowType === VCShareFlowType.OPENID4VP_AUTHORIZATION;
 }
+
+export function selectPendingRedirectUri(state: State) {
+  return state.context.pendingRedirectUri;
+}

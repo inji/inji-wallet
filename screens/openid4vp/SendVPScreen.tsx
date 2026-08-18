@@ -39,6 +39,7 @@ import {SendVPActions} from '../../components/openid4vp/SendVPActions';
 import {SendVPOverlays} from '../../components/openid4vp/overlay/SendVPOverlays';
 import {SendVPError} from '../../components/openid4vp/SendVPError';
 import {DeeplinkBanner} from '../../components/DeeplinkBanner';
+import {BrowserSelectionModal} from '../../components/openid4vp/BrowserSelectionModal';
 
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
@@ -230,6 +231,10 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   return (
     <React.Fragment>
       <DeeplinkBanner absolute />
+      <BrowserSelectionModal
+        redirectUri={controller.pendingRedirectUri}
+        onRedirectHandled={controller.REDIRECT_HANDLED}
+      />
       {
         <TrustModalVerifier
           isVisible={controller.showTrustConsentModal}

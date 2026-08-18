@@ -20,6 +20,7 @@ import {
 import {isIOS} from '../constants';
 import {getDisclosuresForPath} from '../claimsPathMatching';
 import {
+  AvailableBrowser,
   CredentialSetOption,
   MatchingVcsResult,
   MatchingVCsResultForDcql,
@@ -235,6 +236,31 @@ class OpenID4VP {
     const openID4VP = await OpenID4VP.getInstance();
 
     return openID4VP.InjiOpenID4VP.sendErrorToVerifier(errorMessage, errorCode);
+  }
+
+  static async getAvailableBrowsers(): Promise<AvailableBrowser[]> {
+    try {
+      const openID4VP = await OpenID4VP.getInstance();
+      return (await openID4VP.InjiOpenID4VP.getAvailableBrowsers()) ?? [];
+    } catch (error) {
+      console.warn(
+        'Unable to list the browsers available on the device:',
+        error,
+      );
+      return [];
+    }
+  }
+
+  static async redirectToVerifier(
+    redirectUri: string,
+    browserId?: string,
+  ): Promise<boolean> {
+    const openID4VP = await OpenID4VP.getInstance();
+
+    return await openID4VP.InjiOpenID4VP.redirectToVerifier(
+      redirectUri,
+      browserId ?? '',
+    );
   }
 
   static async sendCanonicalizedData(data: string) {

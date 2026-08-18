@@ -40,6 +40,14 @@ RCT_EXTERN_METHOD(sendErrorToVerifier:(NSString *)error
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getAvailableBrowsers:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(redirectToVerifier:(NSString *)redirectUri
+                  :(NSString *)browserId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(requiresMainQueueSetup:(BOOL))
 
 @end

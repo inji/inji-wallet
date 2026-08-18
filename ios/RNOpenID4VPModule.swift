@@ -211,6 +211,36 @@ class RNOpenId4VpModule: NSObject, RCTBridgeModule {
     }
   }
   
+  @objc
+  func getAvailableBrowsers(_ resolve: @escaping RCTPromiseResolveBlock,
+                            rejecter reject: @escaping RCTPromiseRejectBlock) {
+    Task {
+      let browsers = await BrowserRedirectHandler().getAvailableBrowsers()
+      resolve(browsers.map { browser in
+        [
+          "id": browser.id,
+          "displayName": browser.displayName,
+          "isDefault": browser.isDefault
+        ]
+      })
+    }
+  }
+
+  @objc
+  func redirectToVerifier(_ redirectUri: String, _ browserId: String?,
+                          resolver resolve: @escaping RCTPromiseResolveBlock,
+                          rejecter reject: @escaping RCTPromiseRejectBlock) {
+    Task {
+      let redirectHandler = BrowserRedirectHandler()
+      var selectedBrowser: BrowserApp?
+      if let browserId, !browserId.isEmpty {
+        selectedBrowser = await redirectHandler.getAvailableBrowsers()
+          .first { $0.id == browserId }
+      }
+      resolve(await redirectHandler.redirect(redirectUri: redirectUri, using: selectedBrowser))
+    }
+  }
+
   private func parseVerifiers(_ verifiers: [[String: Any]]) throws -> [Verifier] {
     return try verifiers.map { verifierDict in
       

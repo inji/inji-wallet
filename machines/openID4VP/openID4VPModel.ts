@@ -42,6 +42,7 @@ const openID4VPEvents = {
   FACE_INVALID: () => ({}),
   DISMISS: () => ({}),
   DISMISS_POPUP: () => ({}),
+  REDIRECT_HANDLED: () => ({}),
   RETRY_VERIFICATION: () => ({}),
   STORE_RESPONSE: (response: any) => ({response}),
   GO_BACK: () => ({}),
@@ -92,6 +93,7 @@ export const openID4VPModel = createModel(
     unsignedVPToken: {} as object,
     hasNoMatchingVCs: false as boolean,
     availableWalletCredentials: [] as VC[],
+    pendingRedirectUri: '' as string,
   },
   {events: openID4VPEvents},
 );

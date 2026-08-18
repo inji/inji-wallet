@@ -134,6 +134,25 @@ describe('openID4VPActions', () => {
   });
 
   describe('assignment callbacks', () => {
+    it('setPendingRedirectUri stores the redirect_uri returned by the Verifier', () => {
+      const fn = actions.setPendingRedirectUri.assignment.pendingRedirectUri;
+      expect(
+        fn({}, {data: {redirect_uri: 'https://verifier.example.com/cb'}}),
+      ).toBe('https://verifier.example.com/cb');
+    });
+
+    it('setPendingRedirectUri stores an empty value when there is no redirect_uri', () => {
+      const fn = actions.setPendingRedirectUri.assignment.pendingRedirectUri;
+      expect(fn({}, {data: {}})).toBe('');
+      expect(fn({}, {})).toBe('');
+      expect(fn({}, {data: {redirect_uri: 42}})).toBe('');
+    });
+
+    it('resetPendingRedirectUri clears the stored redirect_uri', () => {
+      const fn = actions.resetPendingRedirectUri.assignment.pendingRedirectUri;
+      expect(fn()).toBe('');
+    });
+
     it('setPresentationRequest sets presentationRequest from event', () => {
       const fn = actions.setPresentationRequest.assignment.presentationRequest;
       expect(fn({}, {presentationRequest: 'req-data'})).toBe('req-data');

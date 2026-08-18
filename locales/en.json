@@ -1008,6 +1008,12 @@
           "title": "An Error Occured!",
           "message": "Something went wrong while transferring the card. Please try again."
         }
+      },
+      "browserSelection": {
+        "title": "Open with",
+        "message": "The Verifier asked to continue in a browser. Choose a browser to open.",
+        "skip": "Skip",
+        "defaultBrowser": "Default"
       }
     },
     "postFaceCapture": {
@@ -1172,7 +1178,7 @@
       "previous": "Previous",
       "next": "Next",
       "instruction": "Select a card from each step to continue"
-  },
+    },
     "verifierInfo": {
       "trusted": "Trusted",
       "unknownVerifier": "Unknown Verifier"
@@ -1306,22 +1312,17 @@
   "common": {
     "card": "card",
     "cards": "cards",
-
     "goHome": "Home",
-
     "accept": "Accept",
     "save": "Save",
     "ok": "OK",
-
     "cancel": "Cancel",
     "dismiss": "Dismiss",
     "goBack": "Go Back",
     "back": "Back",
     "ignore": "Ignore",
     "decline": "Decline",
-
     "tryAgain": "Try again",
-
     "editLabel": "Edit {{label}}",
     "camera": {
       "errors": {

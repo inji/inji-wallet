@@ -193,6 +193,7 @@ export interface Typegen0 {
       | 'error.platform.OpenID4VP.getTrustedVerifiersList:invocation[0]'
       | 'xstate.stop';
     resetOpenID4VPRetryCount: 'RESET_RETRY_COUNT';
+    resetPendingRedirectUri: 'REDIRECT_HANDLED';
     setAuthenticationError: 'error.platform.OpenID4VP.authenticateVerifier:invocation[0]';
     setAuthenticationResponse: 'done.invoke.OpenID4VP.authenticateVerifier:invocation[0]';
     setAuthenticationResponseForPresentationAuthFlow: 'done.invoke.OpenID4VP.checkKeyPair:invocation[0]';
@@ -206,6 +207,7 @@ export interface Typegen0 {
     setIsShareWithSelfie: 'AUTHENTICATE';
     setIsShowLoadingScreen: 'AUTHENTICATE' | 'AUTHENTICATE_VIA_PRESENTATION';
     setMiniViewShareSelectedVC: 'AUTHENTICATE';
+    setPendingRedirectUri: 'done.invoke.OpenID4VP.sendingVP.sendVP:invocation[0]';
     setPresentationRequest: 'AUTHENTICATE_VIA_PRESENTATION';
     setSelectedVCs: 'ACCEPT_REQUEST' | 'VERIFY_AND_ACCEPT_REQUEST';
     setSendVPShareError: 'error.platform.OpenID4VP.sendingVP.sendVP:invocation[0]';

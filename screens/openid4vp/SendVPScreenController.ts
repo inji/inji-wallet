@@ -5,7 +5,10 @@ import {useTranslation} from 'react-i18next';
 import {Theme} from '../../components/ui/styleUtils';
 import {selectIsCancelling} from '../../machines/bleShare/commonSelectors';
 import {ScanEvents} from '../../machines/bleShare/scan/scanMachine';
-import {selectFlowType, selectIsSendingVPError,} from '../../machines/bleShare/scan/scanSelectors';
+import {
+  selectFlowType,
+  selectIsSendingVPError,
+} from '../../machines/bleShare/scan/scanSelectors';
 import {
   selectAreAllVCsChecked,
   selectCredentials,
@@ -17,6 +20,7 @@ import {
   selectIsInvalidIdentity,
   selectIsOVPViaDeeplink,
   selectIsSelectingVcs,
+  selectPendingRedirectUri,
   selectIsSharingVP,
   selectIsShowError,
   selectIsShowLoadingScreen,
@@ -45,8 +49,8 @@ import {VPShareOverlayProps} from '../Scan/VPShareOverlay';
 import {ActivityLogEvents} from '../../machines/activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
 import {isIOS} from '../../shared/constants';
-import {getFaceAttribute,} from '../../components/VC/common/VCUtils';
-import {VC,} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {getFaceAttribute} from '../../components/VC/common/VCUtils';
+import {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {isDcqlFlow} from '../../shared/openID4VP/OpenID4VPHelper';
 
 type MyVcsTabNavigation = NavigationProp<RootRouteProps>;
@@ -121,6 +125,10 @@ export function useSendVPScreen(props) {
   const showConfirmationPopup = useSelector(
     openID4VPService,
     selectShowConfirmationPopup,
+  );
+  const pendingRedirectUri = useSelector(
+    openID4VPService,
+    selectPendingRedirectUri,
   );
   const isSelectingVCs = useSelector(openID4VPService, selectIsSelectingVcs);
   const error = useSelector(openID4VPService, selectIsError);
@@ -328,5 +336,8 @@ export function useSendVPScreen(props) {
     openID4VPRetryCount,
     RESET_RETRY_COUNT: () =>
       openID4VPService.send(OpenID4VPEvents.RESET_RETRY_COUNT()),
+    pendingRedirectUri,
+    REDIRECT_HANDLED: () =>
+      openID4VPService.send(OpenID4VPEvents.REDIRECT_HANDLED()),
   };
 }

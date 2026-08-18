@@ -20,7 +20,6 @@ import {
 } from '../../shared/openID4VP/openid4vp.types';
 import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {isDcqlFlow} from '../../shared/openID4VP/OpenID4VPHelper';
-import {openURL} from '../../shared/browserUtils';
 
 // TODO - get this presentation definition list which are alias for scope param
 // from the verifier end point after the endpoint is created and exposed.
@@ -303,20 +302,15 @@ export const openID4VPActions = (model: any) => {
       availableWalletCredentials: (_, event) => event.vcs,
     }),
 
-    redirectToVerifier: async (_, event) => {
-      const redirectUri = event?.data?.redirect_uri;
+    setPendingRedirectUri: model.assign({
+      pendingRedirectUri: (_, event: any) => {
+        const redirectUri = event?.data?.redirect_uri;
+        return typeof redirectUri === 'string' ? redirectUri : '';
+      },
+    }),
 
-      if (!redirectUri || typeof redirectUri !== 'string') {
-        return;
-      }
-
-      try {
-        new URL(redirectUri);
-        await openURL(redirectUri);
-      } catch (error) {
-        console.warn('Error during redirection:', error);
-        return;
-      }
-    },
+    resetPendingRedirectUri: model.assign({
+      pendingRedirectUri: () => '',
+    }),
   };
 };

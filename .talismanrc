@@ -653,4 +653,10 @@ fileignoreconfig:
 - filename: screens/Issuers/__snapshots__/TransactionCodeScreen.test.tsx.snap
   allowed_patterns:
   - keyboardShouldPersistTaps
+- filename: components/openid4vp/BrowserSelectionModal.tsx
+  allowed_patterns:
+  - key={browser.id}
+- filename: ios/Inji/Info.plist
+  allowed_patterns:
+  - LSApplicationQueriesSchemes
 version: "1.0"

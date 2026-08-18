@@ -18,6 +18,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -36,6 +37,8 @@ import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest;
 import io.mosip.openID4VP.authorizationRequest.WalletConfig;
 import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
+import io.mosip.openID4VP.browser.BrowserApp;
+import io.mosip.openID4VP.browser.BrowserRedirectHandler;
 import io.mosip.openID4VP.dcql.evaluator.MatchingCredentialsResult;
 import io.mosip.openID4VP.dcql.query.DCQLQuery;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
@@ -145,6 +148,44 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
             promise.resolve(verifierResponseJson);
         } catch (Exception e) {
             rejectWithOpenID4VPExceptions(e, promise);
+        }
+    }
+
+    @ReactMethod
+    public void getAvailableBrowsers(Promise promise) {
+        try {
+            WritableArray browsers = Arguments.createArray();
+            for (BrowserApp browser : new BrowserRedirectHandler(getReactApplicationContext()).getAvailableBrowsers()) {
+                WritableMap browserMap = Arguments.createMap();
+                browserMap.putString("id", browser.getPackageName());
+                browserMap.putString("displayName", browser.getDisplayName());
+                browserMap.putBoolean("isDefault", browser.isDefault());
+                browsers.pushMap(browserMap);
+            }
+            promise.resolve(browsers);
+        } catch (Exception e) {
+            Log.e(TAG, "Unable to list the browsers installed on the device - " + e.getMessage());
+            promise.resolve(Arguments.createArray());
+        }
+    }
+
+    @ReactMethod
+    public void redirectToVerifier(String redirectUri, @Nullable String browserId, Promise promise) {
+        try {
+            BrowserRedirectHandler redirectHandler = new BrowserRedirectHandler(getReactApplicationContext());
+            BrowserApp selectedBrowser = null;
+            if (browserId != null && !browserId.isEmpty()) {
+                for (BrowserApp browser : redirectHandler.getAvailableBrowsers()) {
+                    if (browser.getPackageName().equals(browserId)) {
+                        selectedBrowser = browser;
+                        break;
+                    }
+                }
+            }
+            promise.resolve(redirectHandler.redirect(redirectUri, selectedBrowser));
+        } catch (Exception e) {
+            Log.e(TAG, "Unable to redirect to the redirect_uri returned by the Verifier - " + e.getMessage());
+            promise.resolve(false);
         }
     }
 

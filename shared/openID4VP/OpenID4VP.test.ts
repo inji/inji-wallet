@@ -23,6 +23,8 @@ const mockAuthenticateVerifier = jest.fn();
 const mockConstructUnsignedVPToken = jest.fn();
 const mockShareVerifiablePresentation = jest.fn();
 const mockSendErrorToVerifier = jest.fn();
+const mockGetAvailableBrowsers = jest.fn();
+const mockRedirectToVerifier = jest.fn();
 const mockGetMatchingCredentials = jest.fn();
 const mockSendJsonLdCanonicalizeResultFromJS = jest.fn();
 const mockSendJsonLdExpandResultFromJS = jest.fn();
@@ -38,6 +40,8 @@ const mockAddListener = jest.fn(
 
 type MockInjiOpenID4VP = {
   getMatchingCredentials: jest.Mock;
+  getAvailableBrowsers: jest.Mock;
+  redirectToVerifier: jest.Mock;
   sendJsonLdCanonicalizeResultFromJS: jest.Mock;
   sendJsonLdExpandResultFromJS: jest.Mock;
   notifyCanonicalizationFailureFromJS: jest.Mock;
@@ -64,6 +68,8 @@ jest.mock('react-native', () => {
         constructUnsignedVPToken: mockConstructUnsignedVPToken,
         shareVerifiablePresentation: mockShareVerifiablePresentation,
         sendErrorToVerifier: mockSendErrorToVerifier,
+        getAvailableBrowsers: mockGetAvailableBrowsers,
+        redirectToVerifier: mockRedirectToVerifier,
         getMatchingCredentials: mockGetMatchingCredentials,
         sendJsonLdCanonicalizeResultFromJS:
           mockSendJsonLdCanonicalizeResultFromJS,
@@ -237,6 +243,8 @@ describe('OpenID4VP', () => {
     mockSendJsonLdCanonicalizeResultFromJS.mockClear();
     mockSendJsonLdExpandResultFromJS.mockClear();
     mockNotifyCanonicalizationFailureFromJS.mockClear();
+    mockGetAvailableBrowsers.mockReset();
+    mockRedirectToVerifier.mockReset();
     // Don't clear  mockAddListener to preserve its implementation
     mockedGetWalletConfig.mockClear();
     mockedJsonLdCanonicalize.mockClear();
@@ -263,6 +271,8 @@ describe('OpenID4VP', () => {
       mockSendJsonLdExpandResultFromJS;
     nativeModule.notifyCanonicalizationFailureFromJS =
       mockNotifyCanonicalizationFailureFromJS;
+    nativeModule.getAvailableBrowsers = mockGetAvailableBrowsers;
+    nativeModule.redirectToVerifier = mockRedirectToVerifier;
 
     mockedGetWalletConfig.mockResolvedValue(null);
     mockedGetWalletConfig.mockResolvedValue({
@@ -390,6 +400,62 @@ describe('OpenID4VP', () => {
       expect(nativeModule.sendErrorToVerifier).toHaveBeenCalledWith(
         'error msg',
         'ERR_001',
+      );
+    });
+  });
+
+  describe('getAvailableBrowsers', () => {
+    it('should return the browsers reported by the native module', async () => {
+      const nativeModule = getOpenID4VPNativeModule();
+      const browsers = [
+        {id: 'com.android.chrome', displayName: 'Chrome', isDefault: true},
+      ];
+      nativeModule.getAvailableBrowsers.mockResolvedValue(browsers);
+
+      expect(await OpenID4VP.getAvailableBrowsers()).toEqual(browsers);
+    });
+
+    it('should return an empty list when the native module fails', async () => {
+      const nativeModule = getOpenID4VPNativeModule();
+      nativeModule.getAvailableBrowsers.mockRejectedValue(new Error('boom'));
+
+      expect(await OpenID4VP.getAvailableBrowsers()).toEqual([]);
+    });
+
+    it('should return an empty list when the native module returns nothing', async () => {
+      const nativeModule = getOpenID4VPNativeModule();
+      nativeModule.getAvailableBrowsers.mockResolvedValue(undefined);
+
+      expect(await OpenID4VP.getAvailableBrowsers()).toEqual([]);
+    });
+  });
+
+  describe('redirectToVerifier', () => {
+    it('should redirect using the browser chosen by the end user', async () => {
+      const nativeModule = getOpenID4VPNativeModule();
+      nativeModule.redirectToVerifier.mockResolvedValue(true);
+
+      const redirected = await OpenID4VP.redirectToVerifier(
+        'https://verifier.example.com/cb',
+        'com.android.chrome',
+      );
+
+      expect(nativeModule.redirectToVerifier).toHaveBeenCalledWith(
+        'https://verifier.example.com/cb',
+        'com.android.chrome',
+      );
+      expect(redirected).toBe(true);
+    });
+
+    it('should let the platform resolve a handler when no browser is chosen', async () => {
+      const nativeModule = getOpenID4VPNativeModule();
+      nativeModule.redirectToVerifier.mockResolvedValue(true);
+
+      await OpenID4VP.redirectToVerifier('https://verifier.example.com/cb');
+
+      expect(nativeModule.redirectToVerifier).toHaveBeenCalledWith(
+        'https://verifier.example.com/cb',
+        '',
       );
     });
   });

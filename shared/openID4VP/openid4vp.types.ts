@@ -1,4 +1,4 @@
-import {VCMetadata} from "../VCMetadata";
+import {VCMetadata} from '../VCMetadata';
 
 export interface UnsignedVPToken {
   id: string;
@@ -16,6 +16,12 @@ export interface VerifierInfo {
 export interface VPTokenSigningResult {
   id: string;
   signedData: string;
+}
+
+export interface AvailableBrowser {
+  id: string;
+  displayName: string;
+  isDefault: boolean;
 }
 
 export type MatchingVcsResult =
@@ -61,11 +67,11 @@ export interface Claim {
 }
 
 export class VCInfo {
-  vcKey: string
-  metadata: VCMetadata
+  vcKey: string;
+  metadata: VCMetadata;
 
   constructor(vcKey: string, metadata: VCMetadata) {
-    this.vcKey = vcKey
-    this.metadata = metadata
+    this.vcKey = vcKey;
+    this.metadata = metadata;
   }
 }
