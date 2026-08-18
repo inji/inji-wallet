@@ -659,4 +659,7 @@ fileignoreconfig:
 - filename: ios/Inji/Info.plist
   allowed_patterns:
   - LSApplicationQueriesSchemes
+- filename: ios/BrowserRedirect.swift
+  allowed_patterns:
+  - ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
 version: "1.0"

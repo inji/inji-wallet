@@ -14,6 +14,7 @@
 		1E6875EB2CA554FD0086D870 /* RNOpenID4VPModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E6875EA2CA554FD0086D870 /* RNOpenID4VPModule.m */; };
 		1E6875ED2CA5550F0086D870 /* RNOpenID4VPModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6875EC2CA5550F0086D870 /* RNOpenID4VPModule.swift */; };
 		1EED69F92DA913D30042EAFC /* IntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EED69F82DA913D30042EAFC /* IntentData.swift */; };
+		BE5246430000000000000001 /* BrowserRedirect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5246430000000000000002 /* BrowserRedirect.swift */; };
 		1EED69FD2DA914D00042EAFC /* RNDeepLinkIntentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EED69FC2DA914D00042EAFC /* RNDeepLinkIntentModule.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		61450CD968A57153077CB5A9 /* libPods-Inji.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 433CCC1AA8055E18ADC2C596 /* libPods-Inji.a */; };
@@ -106,6 +107,7 @@
 		1E6875EA2CA554FD0086D870 /* RNOpenID4VPModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNOpenID4VPModule.m; sourceTree = "<group>"; };
 		1E6875EC2CA5550F0086D870 /* RNOpenID4VPModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNOpenID4VPModule.swift; sourceTree = "<group>"; };
 		1EED69F82DA913D30042EAFC /* IntentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentData.swift; sourceTree = "<group>"; };
+		BE5246430000000000000002 /* BrowserRedirect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserRedirect.swift; sourceTree = "<group>"; };
 		1EED69FA2DA914130042EAFC /* RNDeepLinkIntentModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNDeepLinkIntentModule.swift; sourceTree = "<group>"; };
 		1EED69FC2DA914D00042EAFC /* RNDeepLinkIntentModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDeepLinkIntentModule.m; sourceTree = "<group>"; };
 		433CCC1AA8055E18ADC2C596 /* libPods-Inji.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Inji.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -232,6 +234,7 @@
 				1E6875EC2CA5550F0086D870 /* RNOpenID4VPModule.swift */,
 				1D23B9CD47CFD7F3C87D202F /* PrivacyInfo.xcprivacy */,
 				1EED69F82DA913D30042EAFC /* IntentData.swift */,
+				BE5246430000000000000002 /* BrowserRedirect.swift */,
 				1EED69FA2DA914130042EAFC /* RNDeepLinkIntentModule.swift */,
 				1EED69FC2DA914D00042EAFC /* RNDeepLinkIntentModule.m */,
 			);
@@ -885,6 +888,7 @@
 				9C48504B2C3E59B5002ECBD5 /* RNWalletModule.swift in Sources */,
 				E6D946EE2EFAA332004DA688 /* VciBridge.swift in Sources */,
 				1EED69F92DA913D30042EAFC /* IntentData.swift in Sources */,
+				BE5246430000000000000001 /* BrowserRedirect.swift in Sources */,
 				9C48504D2C3E59B5002ECBD5 /* RNWalletModule.m in Sources */,
 				9C3BD83C2EA8D63A00101656 /* CredentialsVerifierFactory.swift in Sources */,
 				9C3BD83D2EA8D63A00101656 /* VerifiableCredential.swift in Sources */,

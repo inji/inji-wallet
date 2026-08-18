@@ -16,14 +16,19 @@ export const BrowserSelectionModal: React.FC<
   const {redirectUri, onRedirectHandled} = props;
 
   const redirectTo = async (browserId?: string) => {
+    let redirected = false;
     try {
-      await OpenID4VP.redirectToVerifier(redirectUri, browserId);
+      redirected = await OpenID4VP.redirectToVerifier(redirectUri, browserId);
     } catch (error) {
       console.warn('Error during redirection:', error);
-    } finally {
-      setBrowsers([]);
-      onRedirectHandled();
     }
+
+    if (!redirected && browsers.length > 1) {
+      return;
+    }
+
+    setBrowsers([]);
+    onRedirectHandled();
   };
 
   useEffect(() => {

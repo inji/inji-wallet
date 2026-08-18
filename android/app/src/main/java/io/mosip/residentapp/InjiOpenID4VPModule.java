@@ -5,6 +5,11 @@ import static io.mosip.residentapp.utils.OpenId4VPUtils.parseVPTokenSigningResul
 import static io.mosip.residentapp.utils.OpenId4VPUtils.parseWalletConfig;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 
@@ -28,8 +33,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import io.mosip.openID4VP.OpenID4VP;
 import io.mosip.openID4VP.authorizationRequest.AuthorizationDcqlRequest;
@@ -37,8 +52,6 @@ import io.mosip.openID4VP.authorizationRequest.AuthorizationRequest;
 import io.mosip.openID4VP.authorizationRequest.WalletConfig;
 import io.mosip.openID4VP.authorizationResponse.unsignedVPToken.UnsignedVPToken;
 import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSigningResult;
-import io.mosip.openID4VP.browser.BrowserApp;
-import io.mosip.openID4VP.browser.BrowserRedirectHandler;
 import io.mosip.openID4VP.dcql.evaluator.MatchingCredentialsResult;
 import io.mosip.openID4VP.dcql.query.DCQLQuery;
 import io.mosip.openID4VP.exceptions.OpenID4VPExceptions;
@@ -51,6 +64,8 @@ import io.mosip.residentapp.utils.OpenId4VPUtils;
 public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     private static final String TAG = "InjiOpenID4VPModule";
     private static final String MODULE_NAME = "InjiOpenID4VP";
+    private static final Set<String> BROWSER_SCHEMES = new HashSet<>(Arrays.asList("http", "https"));
+    private static final int MAX_PORT = 65535;
 
     private OpenID4VP openID4VP;
     private Gson gson;
@@ -155,11 +170,11 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     public void getAvailableBrowsers(Promise promise) {
         try {
             WritableArray browsers = Arguments.createArray();
-            for (BrowserApp browser : new BrowserRedirectHandler(getReactApplicationContext()).getAvailableBrowsers()) {
+            for (InstalledBrowser browser : availableBrowsers()) {
                 WritableMap browserMap = Arguments.createMap();
-                browserMap.putString("id", browser.getPackageName());
-                browserMap.putString("displayName", browser.getDisplayName());
-                browserMap.putBoolean("isDefault", browser.isDefault());
+                browserMap.putString("id", browser.packageName);
+                browserMap.putString("displayName", browser.displayName);
+                browserMap.putBoolean("isDefault", browser.isDefault);
                 browsers.pushMap(browserMap);
             }
             promise.resolve(browsers);
@@ -172,20 +187,189 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void redirectToVerifier(String redirectUri, @Nullable String browserId, Promise promise) {
         try {
-            BrowserRedirectHandler redirectHandler = new BrowserRedirectHandler(getReactApplicationContext());
-            BrowserApp selectedBrowser = null;
-            if (browserId != null && !browserId.isEmpty()) {
-                for (BrowserApp browser : redirectHandler.getAvailableBrowsers()) {
-                    if (browser.getPackageName().equals(browserId)) {
+            String sanitizedRedirectUri = sanitizeRedirectUri(redirectUri);
+            if (sanitizedRedirectUri == null) {
+                Log.e(TAG, "Verifier returned a redirect_uri that is not an absolute navigable URI. Redirection is skipped.");
+                promise.resolve(false);
+                return;
+            }
+
+            boolean browserNavigable = isBrowserNavigableRedirectUri(sanitizedRedirectUri);
+            InstalledBrowser selectedBrowser = null;
+            if (browserNavigable && browserId != null && !browserId.isEmpty()) {
+                for (InstalledBrowser browser : availableBrowsers()) {
+                    if (browser.packageName.equals(browserId)) {
                         selectedBrowser = browser;
                         break;
                     }
                 }
             }
-            promise.resolve(redirectHandler.redirect(redirectUri, selectedBrowser));
+
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sanitizedRedirectUri));
+            if (browserNavigable) {
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            }
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (selectedBrowser != null) {
+                intent.setClassName(selectedBrowser.packageName, selectedBrowser.activityName);
+            }
+
+            getReactApplicationContext().startActivity(intent);
+            promise.resolve(true);
         } catch (Exception e) {
             Log.e(TAG, "Unable to redirect to the redirect_uri returned by the Verifier - " + e.getMessage());
             promise.resolve(false);
+        }
+    }
+
+    private static final class InstalledBrowser {
+        final String packageName;
+        final String activityName;
+        final String displayName;
+        final boolean isDefault;
+
+        InstalledBrowser(String packageName, String activityName, String displayName, boolean isDefault) {
+            this.packageName = packageName;
+            this.activityName = activityName;
+            this.displayName = displayName;
+            this.isDefault = isDefault;
+        }
+    }
+
+    private List<InstalledBrowser> availableBrowsers() {
+        PackageManager packageManager = getReactApplicationContext().getPackageManager();
+        if (packageManager == null) {
+            return Collections.emptyList();
+        }
+
+        Intent probeIntent = new Intent()
+                .setAction(Intent.ACTION_VIEW)
+                .addCategory(Intent.CATEGORY_BROWSABLE)
+                .setData(Uri.fromParts("http", "", null));
+
+        String defaultBrowserPackage = null;
+        try {
+            ResolveInfo defaultBrowser = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                    ? packageManager.resolveActivity(probeIntent, PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY))
+                    : packageManager.resolveActivity(probeIntent, PackageManager.MATCH_DEFAULT_ONLY);
+            if (defaultBrowser != null && defaultBrowser.activityInfo != null) {
+                defaultBrowserPackage = defaultBrowser.activityInfo.packageName;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Unable to resolve the default browser - " + e.getMessage());
+        }
+
+        List<ResolveInfo> resolveInfos;
+        try {
+            resolveInfos = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                    ? packageManager.queryIntentActivities(probeIntent, PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL))
+                    : packageManager.queryIntentActivities(probeIntent, PackageManager.MATCH_ALL);
+        } catch (Exception e) {
+            Log.e(TAG, "Unable to query the browsers installed on the device - " + e.getMessage());
+            return Collections.emptyList();
+        }
+
+        Map<String, InstalledBrowser> browsersByPackage = new LinkedHashMap<>();
+        for (ResolveInfo resolveInfo : resolveInfos) {
+            if (resolveInfo.activityInfo == null) {
+                continue;
+            }
+            String packageName = resolveInfo.activityInfo.packageName;
+            if (browsersByPackage.containsKey(packageName)) {
+                continue;
+            }
+
+            String displayName = packageName;
+            try {
+                CharSequence label = resolveInfo.loadLabel(packageManager);
+                if (label != null && label.toString().trim().length() > 0) {
+                    displayName = label.toString();
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Unable to read the label of " + packageName + " - " + e.getMessage());
+            }
+
+            browsersByPackage.put(packageName, new InstalledBrowser(
+                    packageName,
+                    resolveInfo.activityInfo.name,
+                    displayName,
+                    packageName.equals(defaultBrowserPackage)));
+        }
+
+        List<InstalledBrowser> browsers = new ArrayList<>(browsersByPackage.values());
+        Collections.sort(browsers, new Comparator<InstalledBrowser>() {
+            @Override
+            public int compare(InstalledBrowser first, InstalledBrowser second) {
+                if (first.isDefault != second.isDefault) {
+                    return first.isDefault ? -1 : 1;
+                }
+                return first.displayName.toLowerCase(Locale.ROOT)
+                        .compareTo(second.displayName.toLowerCase(Locale.ROOT));
+            }
+        });
+        return browsers;
+    }
+
+    @Nullable
+    private static String sanitizeRedirectUri(@Nullable String redirectUri) {
+        if (redirectUri == null) {
+            return null;
+        }
+        String value = redirectUri.trim();
+        if (value.isEmpty()) {
+            return null;
+        }
+
+        URI uri;
+        try {
+            uri = new URI(value);
+        } catch (URISyntaxException e) {
+            return null;
+        }
+
+        String scheme = uri.getScheme() == null ? null : uri.getScheme().toLowerCase(Locale.ROOT);
+        if (!uri.isAbsolute() || scheme == null || scheme.isEmpty()) {
+            return null;
+        }
+        if (BROWSER_SCHEMES.contains(scheme) && !hasNavigableHost(uri)) {
+            return null;
+        }
+        return value;
+    }
+
+    private static boolean hasNavigableHost(URI uri) {
+        String host = uri.getHost();
+        if (host != null && !host.trim().isEmpty()) {
+            return uri.getPort() <= MAX_PORT;
+        }
+
+        String authority = uri.getAuthority();
+        if (authority == null) {
+            return false;
+        }
+        int userInfoSeparator = authority.indexOf('@');
+        String hostAndPort = userInfoSeparator >= 0 ? authority.substring(userInfoSeparator + 1) : authority;
+        int portSeparator = hostAndPort.lastIndexOf(':');
+        if (portSeparator < 0) {
+            return !hostAndPort.trim().isEmpty();
+        }
+
+        String hostPart = hostAndPort.substring(0, portSeparator);
+        int port;
+        try {
+            port = Integer.parseInt(hostAndPort.substring(portSeparator + 1));
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return !hostPart.trim().isEmpty() && port >= 0 && port <= MAX_PORT;
+    }
+
+    private static boolean isBrowserNavigableRedirectUri(String sanitizedRedirectUri) {
+        try {
+            String scheme = new URI(sanitizedRedirectUri).getScheme();
+            return scheme != null && BROWSER_SCHEMES.contains(scheme.toLowerCase(Locale.ROOT));
+        } catch (URISyntaxException e) {
+            return false;
         }
     }
 
