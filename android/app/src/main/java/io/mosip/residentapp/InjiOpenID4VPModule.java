@@ -338,18 +338,24 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
     }
 
     private static boolean hasNavigableHost(URI uri) {
-        String host = uri.getHost();
-        if (host != null && !host.trim().isEmpty()) {
-            return uri.getPort() <= MAX_PORT;
-        }
-
-        String authority = uri.getAuthority();
+        String authority = uri.getRawAuthority();
         if (authority == null) {
             return false;
         }
-        int userInfoSeparator = authority.indexOf('@');
+        int userInfoSeparator = authority.lastIndexOf('@');
         String hostAndPort = userInfoSeparator >= 0 ? authority.substring(userInfoSeparator + 1) : authority;
-        int portSeparator = hostAndPort.lastIndexOf(':');
+
+        int portSeparator;
+        if (hostAndPort.startsWith("[")) {
+            int closingBracket = hostAndPort.indexOf(']');
+            if (closingBracket < 0) {
+                return false;
+            }
+            portSeparator = hostAndPort.indexOf(':', closingBracket + 1);
+        } else {
+            portSeparator = hostAndPort.lastIndexOf(':');
+        }
+
         if (portSeparator < 0) {
             return !hostAndPort.trim().isEmpty();
         }
