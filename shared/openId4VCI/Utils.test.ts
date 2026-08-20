@@ -723,6 +723,22 @@ describe('openId4VCI Utils', () => {
         ),
       ).rejects.toThrow('Unsupported algorithm');
     });
+
+    it('should throw when JWK construction fails', async () => {
+      const jose = require('node-jose');
+      jose.JWK.asKey.mockRejectedValueOnce(new Error('malformed pem'));
+      await expect(
+        constructProofJWT(
+          'malformed-public-key',
+          'rsa-private-key',
+          'https://issuer.example.com',
+          'client-123',
+          'RS256',
+          ['RS256'],
+          'test-nonce',
+        ),
+      ).rejects.toThrow('Failed to construct JWK for keyType: RS256');
+    });
   });
 
   describe('getCredentialIssuersWellKnownConfig', () => {
