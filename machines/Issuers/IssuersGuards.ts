@@ -44,8 +44,6 @@ export const IssuersGuards = () => {
     hasUserCancelledBiometric: (_: any, event: any) =>
       event.data instanceof BiometricCancellationError,
 
-    isCredentialOfferFlow: (context: any) => context.isCredentialOfferFlow,
-
     isIssuerIdInTrustedIssuers: (_: any, event: any) => Boolean(event.data),
 
     isPresentationAuthorization: (context: any) =>

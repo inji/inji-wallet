@@ -1,7 +1,7 @@
 import NetInfo from '@react-native-community/netinfo';
 import {NativeModules} from 'react-native';
 import Cloud from '../../shared/CloudBackupAndRestoreUtils';
-import getAllConfigurations, {CACHED_API} from '../../shared/api';
+import {CACHED_API} from '../../shared/api';
 import {
   fetchKeyPair,
   generateKeyPair,
@@ -358,21 +358,7 @@ export const IssuersService = () => {
     },
 
     verifyCredential: async (context: any): Promise<VerificationResult> => {
-      const {
-        isCredentialOfferFlow,
-        verifiableCredential,
-        selectedCredentialType,
-      } = context;
-      if (isCredentialOfferFlow) {
-        const configurations = await getAllConfigurations();
-        if (configurations.disableCredentialOfferVcVerification) {
-          return {
-            isVerified: true,
-            verificationMessage: '',
-            verificationErrorCode: '',
-          };
-        }
-      }
+      const {verifiableCredential, selectedCredentialType} = context;
       const verificationResult = await verifyCredentialData(
         verifiableCredential?.credential,
         selectedCredentialType.format,

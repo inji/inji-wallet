@@ -13,7 +13,6 @@ jest.mock('../../shared/CloudBackupAndRestoreUtils', () => ({
 jest.mock('../../shared/api', () => ({
   __esModule: true,
   default: jest.fn().mockResolvedValue({
-    disableCredentialOfferVcVerification: false,
     vcDownloadMaxRetry: 5,
     vcDownloadPoolInterval: 3000,
   }),
@@ -355,27 +354,11 @@ describe('IssuersService', () => {
 
   it('verifyCredential returns verified result', async () => {
     const context = {
-      isCredentialOfferFlow: false,
       verifiableCredential: {credential: 'cred-data'},
       selectedCredentialType: {format: 'ldp_vc'},
     };
     const result = await services.verifyCredential(context);
     expect(result.isVerified).toBe(true);
-  });
-
-  it('verifyCredential skips verification when disabled in offer flow config', async () => {
-    const getAllConfigurations = require('../../shared/api').default;
-    getAllConfigurations.mockResolvedValueOnce({
-      disableCredentialOfferVcVerification: true,
-    });
-    const context = {
-      isCredentialOfferFlow: true,
-      verifiableCredential: {credential: 'cred-data'},
-      selectedCredentialType: {format: 'ldp_vc'},
-    };
-    const result = await services.verifyCredential(context);
-    expect(result.isVerified).toBe(true);
-    expect(result.verificationMessage).toBe('');
   });
 
   it('verifyCredential throws when verification fails', async () => {
@@ -386,7 +369,6 @@ describe('IssuersService', () => {
       verificationMessage: 'fail',
     });
     const context = {
-      isCredentialOfferFlow: false,
       verifiableCredential: {credential: 'bad-cred'},
       selectedCredentialType: {format: 'ldp_vc'},
     };
