@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {FlatList, Linking, Pressable, SafeAreaView, View} from 'react-native';
+import {FlatList, Linking, Pressable, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {Modal} from './ui/Modal';
 import {Column, Text} from './ui';
 import {Theme} from './ui/styleUtils';

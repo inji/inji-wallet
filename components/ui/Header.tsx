@@ -9,7 +9,11 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 export const Header: React.FC<HeaderProps> = ({goBack, title, testID}) => {
   const insets = useSafeAreaInsets();
   return (
-    <Column safe align="center" testID={testID}>
+    <Column
+      safe
+      safeEdges={['left', 'right']}
+      align="center"
+      testID={testID}>
       <Row elevation={2}>
         <View
           style={{

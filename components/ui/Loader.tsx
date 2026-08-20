@@ -1,6 +1,7 @@
 import React, {Fragment, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
-import {BackHandler, SafeAreaView, View} from 'react-native';
+import {BackHandler, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button, Centered, Column, Row, Text} from '../../components/ui';
 import {Theme} from './styleUtils';
 import {LoaderAnimation} from './LoaderAnimation';
@@ -115,7 +116,9 @@ export const Loader: React.FC<LoaderProps> = ({
       ) : (
         <Fragment>
           <Row>
-            <SafeAreaView style={Theme.ModalStyles.header}>
+            <SafeAreaView
+              style={Theme.ModalStyles.header}
+              edges={['top']}>
               <Row
                 fill
                 align={'flex-start'}

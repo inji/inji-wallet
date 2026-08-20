@@ -4,6 +4,7 @@ import {Header} from './Header';
 
 jest.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({top: 44, bottom: 34, left: 0, right: 0}),
+  SafeAreaView: 'RCTSafeAreaView',
 }));
 
 describe('Header', () => {

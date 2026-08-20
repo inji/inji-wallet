@@ -16,7 +16,7 @@ import {
 } from './machines/app';
 import {DualMessageOverlay} from './components/DualMessageOverlay';
 import {useApp} from './screens/AppController';
-import {Alert, AppState} from 'react-native';
+import {Alert, AppState, Platform} from 'react-native';
 import {
   configureTelemetry,
   getErrorEventData,
@@ -31,6 +31,7 @@ import {CopilotProvider} from 'react-native-copilot';
 import {CopilotTooltip} from './components/CopilotTooltip';
 import {Theme} from './components/ui/styleUtils';
 import {selectAppSetupComplete} from './machines/auth';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 
 const {RNSecureKeystoreModule} = NativeModules;
 // kludge: this is a bad practice but has been done temporarily to surface
@@ -59,7 +60,8 @@ const AppLayoutWrapper: React.FC = () => {
   const authService = appService.children.get('auth');
   const isAppSetupComplete = useSelector(authService, selectAppSetupComplete);
 
-  const [isDeepLinkOverlayVisible, setDeepLinkOverlayVisible] = useState(isDeepLinkFlow);
+  const [isDeepLinkOverlayVisible, setDeepLinkOverlayVisible] =
+    useState(isDeepLinkFlow);
 
   useEffect(() => {
     if (AppState.currentState === 'active') {
@@ -164,16 +166,22 @@ const AppInitialization: React.FC = () => {
 
 export default function App() {
   return (
-    <GlobalContextProvider>
-      <CopilotProvider
-        stopOnOutsideClick
-        androidStatusBarVisible
-        tooltipComponent={CopilotTooltip}
-        tooltipStyle={Theme.Styles.copilotStyle}
-        stepNumberComponent={() => null}
-        animated>
-        <AppInitialization />
-      </CopilotProvider>
-    </GlobalContextProvider>
+    <SafeAreaProvider>
+      <GlobalContextProvider>
+        <CopilotProvider
+          stopOnOutsideClick
+          androidStatusBarVisible={
+            Platform.OS === 'android' && Platform.Version < 35
+          }
+          tooltipComponent={CopilotTooltip}
+          tooltipStyle={Theme.Styles.copilotStyle}
+          stepNumberComponent={() => null}
+          animated>
+          <SafeAreaView style={{flex: 1}} edges={['bottom']}>
+            <AppInitialization />
+          </SafeAreaView>
+        </CopilotProvider>
+      </GlobalContextProvider>
+    </SafeAreaProvider>
   );
 }

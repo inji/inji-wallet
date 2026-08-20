@@ -37,7 +37,15 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
       Help
     </Text>
   </View>,
-  <RCTSafeAreaView
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "additive",
+        "left": "additive",
+        "right": "additive",
+        "top": "additive",
+      }
+    }
     style={
       {
         "flex": 1,
@@ -1636,7 +1644,7 @@ exports[`HelpScreen Component should match snapshot when disabled 1`] = `
         </View>
       </RCTScrollView>
     </View>
-  </RCTSafeAreaView>,
+  </RNCSafeAreaView>,
 ]
 `;
 
@@ -1677,7 +1685,15 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
       Help
     </Text>
   </View>,
-  <RCTSafeAreaView
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "additive",
+        "left": "additive",
+        "right": "additive",
+        "top": "additive",
+      }
+    }
     style={
       {
         "flex": 1,
@@ -3276,7 +3292,7 @@ exports[`HelpScreen Component should match snapshot with BackUp source 1`] = `
         </View>
       </RCTScrollView>
     </View>
-  </RCTSafeAreaView>,
+  </RNCSafeAreaView>,
 ]
 `;
 
@@ -3317,7 +3333,15 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
       Help
     </Text>
   </View>,
-  <RCTSafeAreaView
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "additive",
+        "left": "additive",
+        "right": "additive",
+        "top": "additive",
+      }
+    }
     style={
       {
         "flex": 1,
@@ -4916,7 +4940,7 @@ exports[`HelpScreen Component should match snapshot with Inji source 1`] = `
         </View>
       </RCTScrollView>
     </View>
-  </RCTSafeAreaView>,
+  </RNCSafeAreaView>,
 ]
 `;
 
@@ -4957,7 +4981,15 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
       Help
     </Text>
   </View>,
-  <RCTSafeAreaView
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "additive",
+        "left": "additive",
+        "right": "additive",
+        "top": "additive",
+      }
+    }
     style={
       {
         "flex": 1,
@@ -6556,6 +6588,6 @@ exports[`HelpScreen Component should match snapshot with keyManagement source 1`
         </View>
       </RCTScrollView>
     </View>
-  </RCTSafeAreaView>,
+  </RNCSafeAreaView>,
 ]
 `;

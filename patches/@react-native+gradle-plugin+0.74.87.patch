@@ -1,0 +1,35 @@
+diff --git a/node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/build.gradle.kts b/node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/build.gradle.kts
+index 5c9ddc1..00f1da7 100644
+--- a/node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/build.gradle.kts
++++ b/node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/build.gradle.kts
+@@ -6,8 +6,6 @@
+  */
+ 
+-import org.gradle.api.internal.classpath.ModuleRegistry
+ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+-import org.gradle.configurationcache.extensions.serviceOf
+ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+ 
+ plugins {
+@@ -49,13 +48,6 @@ dependencies {
+ 
+   testImplementation(libs.junit)
+ 
+-  testRuntimeOnly(
+-      files(
+-          serviceOf<ModuleRegistry>()
+-              .getModule("gradle-tooling-api-builders")
+-              .classpath
+-              .asFiles
+-              .first()))
+ }
+ 
+ // We intentionally don't build for Java 17 as users will see a cryptic bytecode version
+@@ -67,6 +59,6 @@ tasks.withType<KotlinCompile>().configureEach {
+     apiVersion = "1.6"
+     // See comment above on JDK 11 support
+     jvmTarget = "11"
+-    allWarningsAsErrors = true
++    allWarningsAsErrors = false
+   }
+ }

@@ -4,6 +4,12 @@ exports[`Header should render with title 1`] = `
 <RCTSafeAreaView
   accessibilityLabel="header"
   accessible={true}
+  edges={
+    [
+      "left",
+      "right",
+    ]
+  }
   style={
     [
       {
@@ -199,6 +205,12 @@ exports[`Header should render without title 1`] = `
 <RCTSafeAreaView
   accessibilityLabel="header"
   accessible={true}
+  edges={
+    [
+      "left",
+      "right",
+    ]
+  }
   style={
     [
       {
