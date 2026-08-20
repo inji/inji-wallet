@@ -31,7 +31,7 @@ fileignoreconfig:
 - filename: shared/fileStorage.ts
   checksum: 2ba2721d9722cd9420ae26762316230f7dab1a0be45820cbda4d0ecae0edf957
 - filename: shared/openId4VCI/Utils.ts
-  checksum: 40b9af91348c8c80e4da7920374110d56f3782aa8f1317e211bdea02efb0d943
+  checksum: 5a93d5de806ce5bda0aab2b9f6db8e81c7ebb62e28e28e2dc66be0a27ad9c336
 - filename: shared/cryptoutil/cryptoUtil.ts
   checksum: 281f061ae6eb722c75c2caf2bdfb5b1bf72f292b471318d972c898c5a972c65f
 - filename: shared/telemetry/TelemetryConstants.js
@@ -438,7 +438,7 @@ fileignoreconfig:
 - filename: shared/vcRenderer/VcRenderer.test.ts
   checksum: 9376788e007405923782381bd54488200c4d4953d1ced592be4243ed48d77252
 - filename: shared/openId4VCI/Utils.test.ts
-  checksum: 57e785f666935eda151d90972a75b80203f905311e8da2764ad1f24e3471d01c
+  checksum: 30761c5e92c6fdb32930683388d3669ebfad3c0a7f227b61c414ff90c00b79b1
 - filename: screens/Home/ReceivedVcsTab.test.tsx
   checksum: 14a5afee28e55a5a1fdb3ea0b79512b84c4dca48f92e57037c221fc9f5ba60c3
 - filename: screens/AuthScreenController.test.ts

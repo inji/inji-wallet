@@ -713,19 +713,12 @@ describe('openId4VCI Utils', () => {
 
     it('should throw for unsupported key type', async () => {
       await expect(
-        constructProofJWT(
-          'key',
-          'key',
-          'issuer',
-          'client',
-          'UNKNOWN',
-          [],
-        ),
+        constructProofJWT('key', 'key', 'issuer', 'client', 'UNKNOWN', []),
       ).rejects.toThrow('Unsupported algorithm');
     });
 
     it('should throw when JWK construction fails', async () => {
-      const jose = require('node-jose');
+      const jose = jest.requireMock('node-jose');
       jose.JWK.asKey.mockRejectedValueOnce(new Error('malformed pem'));
       await expect(
         constructProofJWT(
