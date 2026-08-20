@@ -312,7 +312,6 @@ export const IssuersService = () => {
         null,
         context.keyType,
         context.wellknownKeyTypes,
-        true,
         context.cNonce,
       );
       await VciClient.getInstance().sendProof(proofJWT);
@@ -327,7 +326,6 @@ export const IssuersService = () => {
         context.selectedIssuer.client_id,
         context.keyType,
         context.wellknownKeyTypes,
-        false,
         context.cNonce,
       );
       await VciClient.getInstance().sendProof(proofJWT);

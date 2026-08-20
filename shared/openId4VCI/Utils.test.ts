@@ -680,7 +680,6 @@ describe('openId4VCI Utils', () => {
         'client-123',
         'RS256',
         ['RS256'],
-        false,
         'test-nonce',
       );
       expect(typeof result).toBe('string');
@@ -694,7 +693,6 @@ describe('openId4VCI Utils', () => {
         'client-123',
         'Ed25519',
         ['EdDSA'],
-        true,
         'test-nonce',
       );
       expect(typeof result).toBe('string');
@@ -708,7 +706,6 @@ describe('openId4VCI Utils', () => {
         null,
         'RS256',
         ['RS256'],
-        false,
         'test-nonce',
       );
       expect(typeof result).toBe('string');
@@ -723,7 +720,6 @@ describe('openId4VCI Utils', () => {
           'client',
           'UNKNOWN',
           [],
-          false,
         ),
       ).rejects.toThrow('Unsupported algorithm');
     });
