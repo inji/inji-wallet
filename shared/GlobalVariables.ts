@@ -1,4 +1,3 @@
-import {getVersion} from 'react-native-device-info';
 import ShortUniqueId from 'short-unique-id';
 import {APP_ID_LENGTH, isIOS} from './constants';
 import {NativeModules} from 'react-native';

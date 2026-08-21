@@ -93,9 +93,7 @@ describe('SvgImage', () => {
     expect(SvgImage.statusRevokedIcon(32, 32)).toBeTruthy();
     expect(SvgImage.doneIcon('#000', 20, 20, 'testDone')).toBeTruthy();
     expect(SvgImage.circleArrowRight('#000', 20, 20, 'testArrow')).toBeTruthy();
-    expect(SvgImage.adaptiveBiometricIcon('FACE', 24)).toBeTruthy();
-    expect(SvgImage.adaptiveBiometricIcon('FINGERPRINT', 24)).toBeTruthy();
-    expect(SvgImage.adaptiveBiometricIcon('NONE', 24)).toBeTruthy();
+    expect(SvgImage.adaptiveBiometricIcon(24)).toBeTruthy();
   });
 
   it('IssuerIcon renders with display details', () => {

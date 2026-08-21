@@ -157,12 +157,6 @@ class RNSecureKeystoreModule: NSObject,RCTBridgeModule {
     }
 
     @objc
-    func getAvailableBiometricType(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
-        let biometricType = secureKeystore.getAvailableBiometricType()
-        resolve(biometricType)
-    }
-
-    @objc
     func updatePopup(_ title: String, desc: String) {
         secureKeystore.updatePopup(title: title, desc: desc)
     }

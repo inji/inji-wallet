@@ -18,7 +18,7 @@ This document provides comprehensive documentation on Inji Wallet's support for 
 ### Key Differences from Presentation Exchange (PE)
 
 | Aspect                  | DCQL                                         | Presentation Exchange              |
-|-------------------------|----------------------------------------------|------------------------------------|
+| ----------------------- | -------------------------------------------- | ---------------------------------- |
 | **Request Property**    | `dcql_query`                                 | `presentation_definition`          |
 | **Query Language**      | Declarative queries with claims path, meta   | Input descriptors with constraints |
 | **Claim Matching**      | Path-based with exact value matching         | Schema-based constraint matching   |
@@ -40,21 +40,21 @@ When a verifier sends a DCQL request, the wallet receives it as part of the Auth
         "id": "query-1",
         "credentials": [
           {
+            "id": "university-id",
             "format": "ldp_vc",
             "meta": {
-              "type_values":[
+              "type_values": [
                 [
                   "https://www.w3.org/2018/credentials#VerifiableCredential",
                   "https://example.org/examples#UniversityDegreeCredential"
                 ]
               ]
-
             },
             "claims": [
               {
                 "id": "claim-1",
                 "path": ["credentialSubject", "givenName"],
-                "values": ["John"]   // Optional: specific value required
+                "values": ["John"] // Optional: specific value required
               },
               {
                 "id": "claim-2",
@@ -80,11 +80,14 @@ When a verifier sends a DCQL request, the wallet receives it as part of the Auth
 
 DCQL uses **claim path pointers** (arrays) to specify where a claim is located. The wallet converts these to JSONPath expressions for matching:
 
-```typescript
-// Examples of claim paths handled by the library
-['credentialSubject', 'givenName']           // Simple property: "credentialSubject.givenName"
-['credentialSubject', null, 'givenName']     // Array wildcard: "credentialSubject[*].givenName" - Any entry of credentialSubject with property givenName
-['credentialSubject', 0, 'givenName']        // Array index: "credentialSubject[0].givenName"
+Examples of claim paths handled by the library
+
+```text
+['credentialSubject', 'givenName'] -> // Simple property: "credentialSubject.givenName"
+
+['credentialSubject', null, 'givenName'] -> // Array wildcard: "credentialSubject[*].givenName" - Any entry of credentialSubject with property givenName
+
+['credentialSubject', 0, 'givenName']; -> // Array index: "credentialSubject[0].givenName"
 ```
 
 ### Credential Sets with Options
@@ -96,14 +99,14 @@ A DCQL request can define multiple credential set combinations:
   "credential_sets": [
     {
       "options": [
-        ["query-1"],              // Option 1: Credential from query-1 alone
-        ["query-2", "query-3"]    // Option 2: Credentials from both query-2 AND query-3
+        ["query-1"], // Option 1: Credential from query-1 alone
+        ["query-2", "query-3"] // Option 2: Credentials from both query-2 AND query-3
       ],
-      "required": true            // User MUST fulfill at least one option
+      "required": true // User MUST fulfill at least one option
     },
     {
       "options": [["query-4"]],
-      "required": false           // Optional: nice-to-have credentials
+      "required": false // Optional: nice-to-have credentials
     }
   ]
 }
@@ -117,8 +120,8 @@ The core processing is handled by the native Inji OpenID4VP libraries (`inji-ope
 
 ### 1. DCQL Query Validation in the VP Request
 
-* The library receives the VP request from the wallet.
-* It parses the DCQL query and validates its basic structure to ensure it complies with the DCQL specification.
+- The library receives the VP request from the wallet.
+- It parses the DCQL query and validates its basic structure to ensure it complies with the DCQL specification.
 
 ### 2. Credential Matching Algorithm
 
@@ -134,12 +137,11 @@ The library evaluates available credentials against the DCQL criteria using the 
 
 The library determines which credential set options are satisfiable and returns:
 
-* **`success`**: Indicates whether the request can be successfully satisfied.
-* **`queryMatches`**: A mapping of query IDs to their matching results. Each entry includes:
+- **`success`**: Indicates whether the request can be successfully satisfied.
+- **`queryMatches`**: A mapping of query IDs to their matching results. Each entry includes:
   - **`matchingCredentials`**: Array of credentials matching the query.
   - **`allowMultipleCredentials`**: Boolean indicating whether multiple credentials can be used to satisfy this specific query.
-* **`credentialSets`**: Lists the credential set options that can be fulfilled.
-
+- **`credentialSets`**: Lists the credential set options that can be fulfilled.
 
 ---
 
@@ -148,43 +150,51 @@ The library determines which credential set options are satisfiable and returns:
 Refer to [openid4vp-support.md](./openid4vp-support.md) for the general flow. The DCQL-specific wallet processing happens in these key areas:
 
 ### Flow Detection
+
 **File:** `shared/openID4VP/OpenID4VPHelper.ts`
 
 The wallet checks the authorization request structure to determine which flow to use:
+
 - **DCQL flow:** If `dcql_query` property exists in the request
 - **Presentation Exchange flow:** If `presentation_definition` property exists
 
 This simple check routes the request to the appropriate handling logic.
 
 ### Credential Matching (DCQL-Specific)
+
 **File:** `shared/openID4VP/OpenID4VP.ts` - `getMatchingCredentials()`
 
 **What happens:** Once the wallet receives an authorization request with a DCQL query, it delegates the matching work to the native library.
 
 **The wallet's role:**
+
 1. Checks if this is a DCQL flow (by looking for `dcql_query` property)
 2. Collects all available credentials from the device
 3. Calls the native library's matching function: `getMatchingCredentials(dcqlQuery, credentials)`
 4. Receives structured results back
 
 **What the library returns:**
+
 - `queryMatches`: For each query ID, which credentials satisfy it
 - `credentialSets`: Which credential set options are satisfiable
-- `success`: Boolean indicating if any matches were found
+- `success`: Boolean indicating whether the wallet's available credentials satisfy the DCQL query.
 
 The library does all the heavy lifting: Claims path evaluation, claim matching, and credential query satisfaction logic.
 
 ### Refining Matching Results: Removing Unsatisfiable Credential Options (Wallet Layer)
+
 **File:** `shared/openID4VP/OpenID4VP.ts` - `filterSatisfiableCredentialSetOptions()`
 
 **What happens:** After the library returns matching results, the wallet performs an additional filtering step BEFORE showing the UI.
 
 **Why this is important:**
+
 - The library returns which credential sets CAN theoretically be satisfied
 - But some options may not be practical for this specific situation
 - The wallet filters to show only combinations that actually work
 
 **Example:**
+
 - Library says: "You can satisfy this request using (query-1 AND query-2) OR (query-3)"
 - But if query-2 has no matching credentials, remove that option
 - Result: User only sees "(query-3)" which they can actually fulfill
@@ -193,13 +203,16 @@ The library does all the heavy lifting: Claims path evaluation, claim matching, 
 **Net result:** Users see only valid credential combinations they can actually select and share.
 
 ### Credential Selection UI (DCQL-Specific)
+
 **File:** `components/openid4vp/matchingVc/MatchingVcListContainer.tsx`
 
 **What happens:** The wallet renders different UI components based on which flow is detected:
+
 - **For DCQL:** Shows `DcqlMatchingVcList` component
 - **For Presentation Exchange:** Shows `PresentationExchangeMatchingVcList` component
 
 **Why this matters:**
+
 - DCQL UI presents credential set options (pick one of these combinations)
 - PE UI presents input descriptors (fill these requirements)
 - Different data structures require different presentation logic
@@ -213,11 +226,13 @@ The UI components transform the matching results into a user-friendly selection 
 Refer to [openid4vp-support.md](./openid4vp-support.md) for the general SDK initialization and request authentication flow (Steps 0-1). The DCQL-specific processing begins after step 1 with credential matching.
 
 ### iOS JSON-LD Expansion for DCQL Matching
+
 **File:** `shared/openID4VP/OpenID4VP.ts`
 
 **What happens:** On iOS, when processing DCQL queries with linked data VCs (ldp_vc), the native library may need to expand JSON-LD contexts to properly locate and match claims.
 
 **How it works:**
+
 1. Native library needs JSON-LD context expansion
 2. Calls back to wallet's TypeScript layer via event emitter
 3. Wallet expands the context
@@ -227,7 +242,6 @@ Refer to [openid4vp-support.md](./openid4vp-support.md) for the general SDK init
 **Why this matters:** DCQL matching may need semantic context to properly understand where claims are located in the credential structure. This callback mechanism allows the library to request this support from the wallet on-demand.
 
 This is unique to iOS and required for ldp_vc credentials with complex nested structures.
-
 
 ---
 
@@ -250,12 +264,13 @@ This is unique to iOS and required for ldp_vc credentials with complex nested st
 The wallet works with these key DCQL result types:
 
 | Type                       | Purpose                                                                                     |
-|----------------------------|---------------------------------------------------------------------------------------------|
+| -------------------------- | ------------------------------------------------------------------------------------------- |
 | `MatchingVCsResultForDcql` | Overall result containing matching credentials and credential set options                   |
 | `MatchResult`              | Result for a single query: which credentials match, can multiple be used, any failed claims |
 | `CredentialSetOption`      | Credential set requirement: valid queryId combinations and whether it's required            |
 
 These types structure the library's response so the wallet can:
+
 - Display which credentials match each query
 - Show valid credential set combinations to the user
 - Track which claims couldn't be satisfied (for error messages)
@@ -267,7 +282,7 @@ These types structure the library's response so the wallet can:
 These classes handle DCQL processing in the native library:
 
 | Class                       | Purpose                                                                 |
-|-----------------------------|-------------------------------------------------------------------------|
+| --------------------------- | ----------------------------------------------------------------------- |
 | `DCQLQuery`                 | Represents parsed DCQL query structure                                  |
 | `DCQLHelper`                | Evaluates credentials against DCQL queries → `getMatchingCredentials()` |
 | `MatchingCredentialsResult` | Result with `queryMatches`, `credentialSets`, `success`                 |
@@ -283,10 +298,12 @@ Refer to [openid4vp-support.md](./openid4vp-support.md) for general format handl
 **DCQL-Specific Differences:**
 
 ### ldp_vc (Linked Data Proof)
+
 - JSON-LD contexts expanded during matching (iOS requires callback)
 - Claims matched via expanded JSON-LD structure
 
-### vc_sd_jwt & dc_sd_jwt (Selective Disclosure JWTs)
+### vc+sd-jwt & dc+sd-jwt (Selective Disclosure JWTs)
+
 - **DCQL:** Uses `getDisclosuresForPath()` for comprehensive disclosure handling due to DCQL's different claim path matching
 - **PE:** Direct path mapping only
 - Different because DCQL may need related/nested disclosures for claim matching
@@ -296,7 +313,7 @@ Refer to [openid4vp-support.md](./openid4vp-support.md) for general format handl
 ## DCQL-Specific Implementation Notes
 
 | Gotcha                                 | Impact                                 | Solution                                                       |
-|----------------------------------------|----------------------------------------|----------------------------------------------------------------|
+| -------------------------------------- | -------------------------------------- | -------------------------------------------------------------- |
 | **Credential Set Filtering Before UI** | User sees options they cannot fulfill  | Always filter impossible combinations before rendering UI      |
 | **Flow-Based SD-JWT Handling**         | Different disclosures for DCQL vs PE   | Intentional - DCQL needs broader disclosure for matching       |
 | **Android Request Caching**            | Serialization issues with claim values | Reuse cached parsed objects from authenticateVerifier call     |
@@ -312,6 +329,7 @@ The wallet includes DCQL-specific tests in:
 - `screens/openid4vp/SendVPScreenController.test.ts` - Tests for DCQL vs PE flow detection
 
 **Key test scenarios covered:**
+
 - Credential matching against DCQL queries
 - Filtering of credential set options (removes impossible combinations)
 - Flow detection (DCQL vs Presentation Exchange)
@@ -324,7 +342,7 @@ The wallet includes DCQL-specific tests in:
 ## Summary: Wallet's Role in DCQL Processing
 
 | Task                                       | Who        | Where                                     |
-|--------------------------------------------|------------|-------------------------------------------|
+| ------------------------------------------ | ---------- | ----------------------------------------- |
 | **Parse DCQL query**                       | Library    | `inji-openid4vp`                          |
 | **Evaluate credentials against DCQL**      | Library    | `DCQLHelper.getMatchingCredentials()`     |
 | **Filter credential set options**          | **Wallet** | `filterSatisfiableCredentialSetOptions()` |

@@ -119,13 +119,14 @@ The Inji Wallet integrates the Inji OpenID4VP library to manage all OpenID4VP-re
 - Library receives the list of verifiable credentials(VC's) from the Wallet which are selected by the end user based on the claims requested.
 - Constructs the unsigned verifiable presentation token data and sends it to the Wallet for generating the signature.
 - Wallet signs on the unsigned verifiable presentation token data and sends the signature along with other details to the library.
-- Library receives the signature, creates VP response data, and sends a POST request with the generated `vp_token` and `presentation_submission` to the Verifier `response_uri` endpoint.
+- The library receives the signature, generates the VP response, and submits it to the Verifier's `response_uri` endpoint via an HTTP POST request. The VP response is sent in either encrypted or unencrypted form, depending on the `response_mode`.
+
 
 ```mermaid
 sequenceDiagram
-  participant VP as 🌐 Verifier
   participant W as 📱 Wallet
   participant Lib as 🔐📄 Inji OpenID4VP<br/> Library
+  participant VP as 🌐 Verifier
 
   Note over VP: Generate QR Code with<br/>Authorization Request
   W ->> VP: Scan QR Code and get<br/>Authorization Request
@@ -150,7 +151,11 @@ sequenceDiagram
   W->>Lib: Send signed data<br/>(shareVerifiablePresentation api)
 
 
-  Lib->>VP: HTTP POST Request with:<br/>1. VP Token<br/>2. Presentation Submission<br/>3. State
+  alt response_mode=direct_post
+    Lib->>VP: POST response_uri with form-encoded response
+  else response_mode=direct_post.jwt
+    Lib->>VP: POST response_uri with response=<encrypted JWT>
+  end
 ```
 
 ## Summary: Wallet's Role in OpenID4VP Support

@@ -92,15 +92,6 @@ jest.mock('../../components/ui/svg', () => ({
     logOutIcon: () => 'LogOutIcon',
   },
 }));
-jest.mock('../../shared/hooks/useBiometricType', () => ({
-  useBiometricType: () => ({
-    biometricType: 'FINGERPRINT',
-    isBiometricsLoading: false,
-    biometricLabel: 'Biometrics',
-    translationSuffix: 'Biometrics',
-    biometricCategory: 'fingerprint',
-  }),
-}));
 jest.mock('./DataBackupAndRestore', () => ({DataBackupAndRestore: () => null}));
 jest.mock('../../components/BannerNotificationContainer', () => ({
   BannerNotificationContainer: () => null,

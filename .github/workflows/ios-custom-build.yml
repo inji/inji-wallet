@@ -22,7 +22,7 @@ on:
       injiFlavor:
         description: 'Select Inji flavor'
         required: true
-        default: 'Inji'
+        default: 'residentapp'
         type: choice
         options:
           - residentapp
@@ -30,6 +30,17 @@ on:
           - collab
           - synergy
           - mec
+      internal-testers:
+        description: 'Internal Testers Group'
+        required: true
+        default: 'Dev-testing'
+        type: choice
+        options:
+          - Dev-testing
+          - MEC
+          - QA
+          - MOSIP-Collab
+          - MOSIP-Dev-testing
       theme:
         description: 'Application Theme'
         required: true
@@ -44,12 +55,12 @@ on:
         default: 'true'
         type: choice
         options:
-          - false
-          - true
+          - 'false'
+          - 'true'
 
 jobs:
   build-ios:
-    uses: mosip/kattu/.github/workflows/ios-publish.yml@master
+    uses: mosip/kattu/.github/workflows/ios-publish.yml@v0.0.1
     with:
       NODE_VERSION: '18.x'
       MIMOTO_HOST: ${{ inputs.mimotoBackendServiceUrl }}
@@ -59,7 +70,7 @@ jobs:
       ALLOW_ENV_EDIT: ${{ inputs.allow_env_edit }}
       LIVENESS_DETECTION: 'false'
       ENABLE_AUTH: 'false'
-      TESTFLIGHT_INTERNAL_TESTERS_GROUP: 'Dev-testing'
+      TESTFLIGHT_INTERNAL_TESTERS_GROUP: ${{ inputs.internal-testers }}
       APP_FLAVOR: ${{ inputs.injiFlavor }}
       SERVICE_LOCATION: '.'
       IOS_SERVICE_LOCATION: 'ios'

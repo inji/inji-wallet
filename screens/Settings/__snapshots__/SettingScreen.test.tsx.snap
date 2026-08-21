@@ -426,7 +426,7 @@ exports[`SettingScreen should render settings screen 1`] = `
                   ]
                 }
               >
-                bioUnlockBiometrics
+                bioUnlock
               </Text>
             </View>
           </View>

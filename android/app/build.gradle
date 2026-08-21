@@ -282,9 +282,9 @@ dependencies {
         exclude group: 'com.google.crypto.tink', module: 'tink'
         exclude group: 'com.augustcellars.cose', module:'cose-java'
     }
-    implementation("io.inji:pixelpass-aar:1.0.0-alpha.1-SNAPSHOT")
-    implementation("io.inji:secure-keystore:1.0.0-alpha.1-SNAPSHOT")
-    implementation("io.inji:tuvali:1.0.0-alpha.1-SNAPSHOT")
+    implementation("io.inji:pixelpass-aar:1.0.0-alpha.1")
+    implementation("io.inji:secure-keystore:1.0.0-alpha.1")
+    implementation("io.inji:tuvali:1.0.0-alpha.1")
     implementation("io.inji:inji-vci-client-aar:1.0.0-alpha.2-SNAPSHOT"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
@@ -294,7 +294,6 @@ dependencies {
         exclude group: 'com.augustcellars.cose', module:'cose-java'
         exclude group: 'io.inji', module: 'inji-openid4vp-aar'
     }
-    implementation("com.google.code.gson:gson:2.10.1")
     implementation("io.inji:vcverifier-aar:2.0.0-SNAPSHOT") {
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
     }
