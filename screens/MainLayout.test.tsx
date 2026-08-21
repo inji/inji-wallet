@@ -72,6 +72,7 @@ jest.mock('../shared/commonUtil', () => jest.fn(() => ({})));
 jest.mock('../shared/constants', () => ({
   isIOS: () => false,
   isAndroid: () => true,
+  isAndroidVersionBelow: () => true,
   AuthorizationType: {IMPLICIT: 'IMPLICIT'},
 }));
 

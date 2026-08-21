@@ -16,7 +16,7 @@ import {
 } from './machines/app';
 import {DualMessageOverlay} from './components/DualMessageOverlay';
 import {useApp} from './screens/AppController';
-import {Alert, AppState, Platform} from 'react-native';
+import {Alert, AppState} from 'react-native';
 import {
   configureTelemetry,
   getErrorEventData,
@@ -32,6 +32,7 @@ import {CopilotTooltip} from './components/CopilotTooltip';
 import {Theme} from './components/ui/styleUtils';
 import {selectAppSetupComplete} from './machines/auth';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {isAndroidVersionBelow} from './shared/constants';
 
 const {RNSecureKeystoreModule} = NativeModules;
 // kludge: this is a bad practice but has been done temporarily to surface
@@ -170,9 +171,7 @@ export default function App() {
       <GlobalContextProvider>
         <CopilotProvider
           stopOnOutsideClick
-          androidStatusBarVisible={
-            Platform.OS === 'android' && Platform.Version < 35
-          }
+          androidStatusBarVisible={isAndroidVersionBelow(35)}
           tooltipComponent={CopilotTooltip}
           tooltipStyle={Theme.Styles.copilotStyle}
           stepNumberComponent={() => null}

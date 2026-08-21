@@ -12,9 +12,9 @@ import {GlobalContext} from '../shared/GlobalContext';
 import {ScanEvents} from '../machines/bleShare/scan/scanMachine';
 import testIDProps from '../shared/commonUtil';
 import {SvgImage} from '../components/ui/svg';
-import {isIOS} from '../shared/constants';
+import {isAndroidVersionBelow, isIOS} from '../shared/constants';
 import {CopilotProvider} from 'react-native-copilot';
-import {Platform, View} from 'react-native';
+import {View} from 'react-native';
 import {CopilotTooltip} from '../components/CopilotTooltip';
 import {Copilot} from '../components/ui/Copilot';
 import LinearGradient from 'react-native-linear-gradient';
@@ -72,9 +72,7 @@ export const MainLayout: React.FC = () => {
 
   return (
     <CopilotProvider
-      androidStatusBarVisible={
-        Platform.OS === 'android' && Platform.Version < 35
-      }
+      androidStatusBarVisible={isAndroidVersionBelow(35)}
       stopOnOutsideClick
       tooltipComponent={CopilotTooltip}
       tooltipStyle={Theme.Styles.copilotStyle}

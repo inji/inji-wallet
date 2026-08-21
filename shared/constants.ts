@@ -112,6 +112,10 @@ export const ENOENT = 'No such file or directory';
 
 export const androidVersion = Number(Platform.Version);
 
+export function isAndroidVersionBelow(version: number): boolean {
+  return isAndroid() && Number(Platform.Version) < version;
+}
+
 // Configuration for argon2i hashing algorithm
 export const argon2iConfig: Argon2iConfig = {
   iterations: 5,
