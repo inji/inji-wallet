@@ -680,7 +680,6 @@ describe('openId4VCI Utils', () => {
         'client-123',
         'RS256',
         ['RS256'],
-        false,
         'test-nonce',
       );
       expect(typeof result).toBe('string');
@@ -694,7 +693,6 @@ describe('openId4VCI Utils', () => {
         'client-123',
         'Ed25519',
         ['EdDSA'],
-        true,
         'test-nonce',
       );
       expect(typeof result).toBe('string');
@@ -708,7 +706,6 @@ describe('openId4VCI Utils', () => {
         null,
         'RS256',
         ['RS256'],
-        false,
         'test-nonce',
       );
       expect(typeof result).toBe('string');
@@ -716,16 +713,24 @@ describe('openId4VCI Utils', () => {
 
     it('should throw for unsupported key type', async () => {
       await expect(
-        constructProofJWT(
-          'key',
-          'key',
-          'issuer',
-          'client',
-          'UNKNOWN',
-          [],
-          false,
-        ),
+        constructProofJWT('key', 'key', 'issuer', 'client', 'UNKNOWN', []),
       ).rejects.toThrow('Unsupported algorithm');
+    });
+
+    it('should throw when JWK construction fails', async () => {
+      const jose = jest.requireMock('node-jose');
+      jose.JWK.asKey.mockRejectedValueOnce(new Error('malformed pem'));
+      await expect(
+        constructProofJWT(
+          'malformed-public-key',
+          'rsa-private-key',
+          'https://issuer.example.com',
+          'client-123',
+          'RS256',
+          ['RS256'],
+          'test-nonce',
+        ),
+      ).rejects.toThrow('Failed to construct JWK for keyType: RS256');
     });
   });
 

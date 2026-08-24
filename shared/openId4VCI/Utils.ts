@@ -539,7 +539,6 @@ export async function constructProofJWT(
   client_id: string | null,
   keyType: string,
   proofSigningAlgosSupported: string[] = [],
-  isCredentialOfferFlow: boolean,
   cNonce?: string,
 ): Promise<string> {
   const jwk = await getJWK(publicKey, keyType);
@@ -553,12 +552,14 @@ export async function constructProofJWT(
     throw new Error(`Unsupported algorithm for keyType: ${keyType}`);
   }
 
+  if (!jwk) {
+    throw new Error(`Failed to construct JWK for keyType: ${keyType}`);
+  }
+
   const jwtHeader: Record<string, any> = {
     alg,
     typ: 'openid4vci-proof+jwt',
-    ...(isCredentialOfferFlow
-      ? {kid: `did:jwk:${base64url(JSON.stringify(jwk))}#0`}
-      : {jwk}),
+    kid: `did:jwk:${base64url(JSON.stringify(jwk))}#0`,
   };
   const jwtPayload = {
     ...(client_id ? {iss: client_id} : {}),
