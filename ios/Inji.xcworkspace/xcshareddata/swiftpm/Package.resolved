@@ -1,0 +1,204 @@
+{
+  "originHash" : "e1f2d509954e8ca6c7f187d3fb6cb3d3d011988b00306f7948dcc9ebf4826839",
+  "pins" : [
+    {
+      "identity" : "aexml",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tadija/AEXML.git",
+      "state" : {
+        "revision" : "db806756c989760b35108146381535aec231092b",
+        "version" : "4.7.0"
+      }
+    },
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
+      "state" : {
+        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
+        "version" : "5.10.2"
+      }
+    },
+    {
+      "identity" : "base45-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ehn-dcc-development/base45-swift",
+      "state" : {
+        "revision" : "c1db97d793d02a1c3d56d50a738c8fd8c34372f8",
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "base58swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/keefertaylor/Base58Swift.git",
+      "state" : {
+        "revision" : "ce8ba8aa893f7e209e9c99c35ee61d6f1235881d",
+        "version" : "2.1.7"
+      }
+    },
+    {
+      "identity" : "bigint",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/attaswift/BigInt.git",
+      "state" : {
+        "revision" : "018a5925f60f9e0523edd261de394a0898fe95b7",
+        "version" : "3.1.0"
+      }
+    },
+    {
+      "identity" : "crcswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ivanesik/CrcSwift.git",
+      "state" : {
+        "revision" : "bb2fff7fb79815fad0528da71c9168d570bfc76c",
+        "version" : "0.0.3"
+      }
+    },
+    {
+      "identity" : "cryptoswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krzyzanowskim/CryptoSwift.git",
+      "state" : {
+        "revision" : "132f5b209cd0251067f29cdb59c97d9f8a63252a",
+        "version" : "1.8.5"
+      }
+    },
+    {
+      "identity" : "gzipswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/1024jp/GzipSwift",
+      "state" : {
+        "revision" : "7a7f17761c76a932662ab77028a4329f67d645a4",
+        "version" : "5.2.0"
+      }
+    },
+    {
+      "identity" : "inji-openid4vp-ios-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/inji/inji-openid4vp-ios-swift",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "ba7c2dd51042bc3b72824f50b7c52334e0a20be0"
+      }
+    },
+    {
+      "identity" : "inji-vc-renderer-ios-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mosip/inji-vc-renderer-ios-swift.git",
+      "state" : {
+        "revision" : "335f132abfe78630a6c827adc443d3d8b6982431",
+        "version" : "1.0.0-alpha.1"
+      }
+    },
+    {
+      "identity" : "inji-vci-client-ios-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/inji/inji-vci-client-ios-swift",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "0c36acbb954634c3354e4634da407b2d9539d15d"
+      }
+    },
+    {
+      "identity" : "jose-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/beatt83/jose-swift.git",
+      "state" : {
+        "revision" : "57fe5a03c83feaf73a84b23c02e641f86482e313",
+        "version" : "4.0.2"
+      }
+    },
+    {
+      "identity" : "multiformatskit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ATProtoKit/MultiformatsKit.git",
+      "state" : {
+        "revision" : "cfb8003e2d6bd8c3520a1b38cdbef8e757876e6d",
+        "version" : "0.3.1"
+      }
+    },
+    {
+      "identity" : "pixelpass-ios-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mosip/pixelpass-ios-swift/",
+      "state" : {
+        "revision" : "0f6223ef65012260d93ec4a2273ca9f14be2a2a5",
+        "version" : "1.0.0-alpha.1"
+      }
+    },
+    {
+      "identity" : "secp256k1.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/GigaBitcoin/secp256k1.swift.git",
+      "state" : {
+        "revision" : "4c77c7384768acf1093d66ccaacf298d322b10b7",
+        "version" : "0.15.0"
+      }
+    },
+    {
+      "identity" : "secure-keystore-ios-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mosip/secure-keystore-ios-swift",
+      "state" : {
+        "revision" : "19defe6f77dcc1ed5daa65ddf38be8370027f8d5",
+        "version" : "1.0.0-alpha.1"
+      }
+    },
+    {
+      "identity" : "siphash",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/attaswift/SipHash",
+      "state" : {
+        "revision" : "e325083424688055363bbfcb7f1a440d7d7a1bae",
+        "version" : "1.2.2"
+      }
+    },
+    {
+      "identity" : "swift-asn1",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-asn1.git",
+      "state" : {
+        "revision" : "a9a5efd40eaf558a2bcd48d64b1d1646be686008",
+        "version" : "1.7.1"
+      }
+    },
+    {
+      "identity" : "swift-crypto",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-crypto.git",
+      "state" : {
+        "revision" : "95ba0316a9b733e92bb6b071255ff46263bbe7dc",
+        "version" : "3.15.1"
+      }
+    },
+    {
+      "identity" : "swiftcbor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/abhip2565/SwiftCBOR",
+      "state" : {
+        "revision" : "04ccff117f6549121d5721ec84fdf0162122b90e",
+        "version" : "0.5.0"
+      }
+    },
+    {
+      "identity" : "tuvali-ios-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mosip/tuvali-ios-swift/",
+      "state" : {
+        "revision" : "6d9d9e8b74086f03bbec76671c684c2830cbb0e3",
+        "version" : "1.0.0-alpha.1"
+      }
+    },
+    {
+      "identity" : "zipfoundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/weichsel/ZIPFoundation.git",
+      "state" : {
+        "revision" : "22787ffb59de99e5dc1fbfe80b19c97a904ad48d",
+        "version" : "0.9.20"
+      }
+    }
+  ],
+  "version" : 3
+}

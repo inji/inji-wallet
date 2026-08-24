@@ -1174,8 +1174,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/secure-keystore-ios-swift";
 			requirement = {
-				branch = develop;
-				kind = branch;
+				kind = exactVersion;
+				version = "1.0.0-alpha.1";
 			};
 		};
 		C33922392E79A536004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */ = {
