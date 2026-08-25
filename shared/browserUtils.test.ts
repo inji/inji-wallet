@@ -15,9 +15,11 @@ describe('browserUtils', () => {
     jest.clearAllMocks();
     (isIOS as jest.Mock).mockReturnValue(false);
 
+    NativeModules.InjiOpenID4VP.openRedirectUriInBrowser = jest
+      .fn()
+      .mockResolvedValue(true);
     openRedirectUriInBrowser = NativeModules.InjiOpenID4VP
       .openRedirectUriInBrowser as jest.Mock;
-    openRedirectUriInBrowser.mockResolvedValue(true);
 
     openURLSpy = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
   });
@@ -46,6 +48,14 @@ describe('browserUtils', () => {
       await openURLInSelectedBrowser(redirectUri);
 
       expect(openRedirectUriInBrowser).toHaveBeenCalledWith(redirectUri);
+      expect(openURLSpy).toHaveBeenCalledWith(redirectUri);
+    });
+
+    it('falls back to the default browser when the native module has no chooser method', async () => {
+      delete (NativeModules.InjiOpenID4VP as any).openRedirectUriInBrowser;
+
+      await openURLInSelectedBrowser(redirectUri);
+
       expect(openURLSpy).toHaveBeenCalledWith(redirectUri);
     });
 

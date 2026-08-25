@@ -12,7 +12,7 @@ export async function openURLInSelectedBrowser(url: string): Promise<void> {
   }
 
   const openedInChosenBrowser =
-    await NativeModules.InjiOpenID4VP?.openRedirectUriInBrowser(url);
+    await NativeModules.InjiOpenID4VP?.openRedirectUriInBrowser?.(url);
 
   if (!openedInChosenBrowser) {
     await openURL(url);
