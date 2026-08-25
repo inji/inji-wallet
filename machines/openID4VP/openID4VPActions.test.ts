@@ -49,6 +49,10 @@ jest.mock('../activityLog', () => ({
     LOG_ACTIVITY: jest.fn(log => ({type: 'LOG_ACTIVITY', log})),
   },
 }));
+const mockOpenURL = jest.fn(() => Promise.resolve());
+jest.mock('../../shared/browserUtils', () => ({
+  openURLInSelectedBrowser: (...args: any[]) => mockOpenURL(...(args as [])),
+}));
 jest.mock('../../components/VPShareActivityLogEvent', () => ({
   VPShareActivityLog: {getLogFromObject: jest.fn(obj => obj)},
 }));
@@ -122,6 +126,7 @@ describe('openID4VPActions', () => {
       'resetIsFaceVerificationRetryAttempt',
       'setIsShowLoadingScreen',
       'resetIsShowLoadingScreen',
+      'redirectToVerifier',
     ];
     for (const name of expectedActions) {
       expect(actions).toHaveProperty(name);
@@ -326,6 +331,76 @@ describe('openID4VPActions', () => {
         actions.setAuthenticationResponseForPresentationAuthFlow.assignment
           .authenticationResponse;
       expect(fn({presentationRequest: 'pres-req'}, {})).toBe('pres-req');
+    });
+  });
+
+  describe('redirectToVerifier', () => {
+    const verifierResponse = (redirectUri?: string) => ({
+      data: {
+        status_code: 200,
+        ...(redirectUri ? {redirect_uri: redirectUri} : {}),
+      },
+    });
+
+    it('opens the redirect_uri via the browser chooser', async () => {
+      await actions.redirectToVerifier(
+        {},
+        verifierResponse('https://verifier.example.org/cb'),
+      );
+
+      expect(mockOpenURL).toHaveBeenCalledWith(
+        'https://verifier.example.org/cb',
+      );
+    });
+
+    it('preserves the response_code fragment the verifier expects back', async () => {
+      const redirectUri =
+        'https://verifier.example.org/cb#response_code=sample-response-code';
+
+      await actions.redirectToVerifier({}, verifierResponse(redirectUri));
+
+      expect(mockOpenURL).toHaveBeenCalledWith(redirectUri);
+    });
+
+    it('does not redirect when the verifier returned no redirect_uri', async () => {
+      await actions.redirectToVerifier({}, verifierResponse());
+
+      expect(mockOpenURL).not.toHaveBeenCalled();
+    });
+
+    it('does not redirect when the verifier response is missing', async () => {
+      await actions.redirectToVerifier({}, {});
+
+      expect(mockOpenURL).not.toHaveBeenCalled();
+    });
+
+    it('does not redirect when redirect_uri is not a string', async () => {
+      await actions.redirectToVerifier({}, {data: {redirect_uri: 42}});
+
+      expect(mockOpenURL).not.toHaveBeenCalled();
+    });
+
+    it('swallows a malformed redirect_uri instead of breaking the share flow', async () => {
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+
+      await actions.redirectToVerifier({}, verifierResponse('not a url'));
+
+      expect(mockOpenURL).not.toHaveBeenCalled();
+      consoleSpy.mockRestore();
+    });
+
+    it('swallows a failure to open the browser instead of breaking the share flow', async () => {
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+      mockOpenURL.mockRejectedValueOnce(new Error('no activity found'));
+
+      await expect(
+        actions.redirectToVerifier(
+          {},
+          verifierResponse('https://verifier.example.org/cb'),
+        ),
+      ).resolves.toBeUndefined();
+
+      consoleSpy.mockRestore();
     });
   });
 });

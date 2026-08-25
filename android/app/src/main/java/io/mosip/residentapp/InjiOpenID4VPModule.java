@@ -5,6 +5,9 @@ import static io.mosip.residentapp.utils.OpenId4VPUtils.parseVPTokenSigningResul
 import static io.mosip.residentapp.utils.OpenId4VPUtils.parseWalletConfig;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
 
@@ -179,6 +182,24 @@ public class InjiOpenID4VPModule extends ReactContextBaseJavaModule {
 
         } catch (Exception exception) {
             rejectWithOpenID4VPExceptions(exception, promise);
+        }
+    }
+
+    @ReactMethod
+    public void openRedirectUriInBrowser(String redirectUri, Promise promise) {
+        try {
+            Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(redirectUri));
+            Intent chooser = Intent.createChooser(viewIntent, null);
+            chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            getReactApplicationContext().startActivity(chooser);
+            promise.resolve(true);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "No application available to open the redirect_uri - " + e.getMessage());
+            promise.resolve(false);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to open the redirect_uri - " + e.getMessage());
+            promise.resolve(false);
         }
     }
 }

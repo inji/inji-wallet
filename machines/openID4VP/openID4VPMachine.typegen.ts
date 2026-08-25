@@ -193,6 +193,7 @@ export interface Typegen0 {
       | 'error.platform.OpenID4VP.getTrustedVerifiersList:invocation[0]'
       | 'xstate.stop';
     resetOpenID4VPRetryCount: 'RESET_RETRY_COUNT';
+    redirectToVerifier: 'done.invoke.OpenID4VP.sendingVP.sendVP:invocation[0]';
     setAuthenticationError: 'error.platform.OpenID4VP.authenticateVerifier:invocation[0]';
     setAuthenticationResponse: 'done.invoke.OpenID4VP.authenticateVerifier:invocation[0]';
     setAuthenticationResponseForPresentationAuthFlow: 'done.invoke.OpenID4VP.checkKeyPair:invocation[0]';

@@ -38,6 +38,7 @@ jest.mock('react-native', () => {
         constructUnsignedVPToken: jest.fn(),
         shareVerifiablePresentation: jest.fn(),
         sendErrorToVerifier: jest.fn(),
+        openRedirectUriInBrowser: jest.fn(),
       },
       InjiVciClient: {
         addListener: jest.fn(),

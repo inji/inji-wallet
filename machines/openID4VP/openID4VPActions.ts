@@ -20,7 +20,7 @@ import {
 } from '../../shared/openID4VP/openid4vp.types';
 import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {isDcqlFlow} from '../../shared/openID4VP/OpenID4VPHelper';
-import {openURL} from '../../shared/browserUtils';
+import {openURLInSelectedBrowser} from '../../shared/browserUtils';
 
 // TODO - get this presentation definition list which are alias for scope param
 // from the verifier end point after the endpoint is created and exposed.
@@ -312,7 +312,7 @@ export const openID4VPActions = (model: any) => {
 
       try {
         new URL(redirectUri);
-        await openURL(redirectUri);
+        await openURLInSelectedBrowser(redirectUri);
       } catch (error) {
         console.warn('Error during redirection:', error);
         return;
