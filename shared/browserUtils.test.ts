@@ -8,6 +8,7 @@ const redirectUri =
   'https://verifier.example.org/cb#response_code=sample-response-code';
 
 describe('browserUtils', () => {
+  const injiOpenID4VP = NativeModules.InjiOpenID4VP;
   let openRedirectUriInBrowser: jest.Mock;
   let openURLSpy: jest.SpyInstance;
   let shareSpy: jest.SpyInstance;
@@ -16,11 +17,10 @@ describe('browserUtils', () => {
     jest.clearAllMocks();
     (isIOS as jest.Mock).mockReturnValue(false);
 
-    NativeModules.InjiOpenID4VP.openRedirectUriInBrowser = jest
-      .fn()
-      .mockResolvedValue(true);
-    openRedirectUriInBrowser = NativeModules.InjiOpenID4VP
-      .openRedirectUriInBrowser as jest.Mock;
+    (NativeModules as any).InjiOpenID4VP = injiOpenID4VP;
+    injiOpenID4VP.openRedirectUriInBrowser = jest.fn().mockResolvedValue(true);
+    openRedirectUriInBrowser =
+      injiOpenID4VP.openRedirectUriInBrowser as jest.Mock;
 
     openURLSpy = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
     shareSpy = jest
@@ -29,8 +29,8 @@ describe('browserUtils', () => {
   });
 
   afterEach(() => {
-    openURLSpy.mockRestore();
-    shareSpy.mockRestore();
+    (NativeModules as any).InjiOpenID4VP = injiOpenID4VP;
+    jest.restoreAllMocks();
   });
 
   describe('openURL', () => {
@@ -66,14 +66,11 @@ describe('browserUtils', () => {
     });
 
     it('falls back to the default browser when the native module is unavailable', async () => {
-      const module = NativeModules.InjiOpenID4VP;
       (NativeModules as any).InjiOpenID4VP = undefined;
 
       await openURLInSelectedBrowser(redirectUri);
 
       expect(openURLSpy).toHaveBeenCalledWith(redirectUri);
-
-      (NativeModules as any).InjiOpenID4VP = module;
     });
   });
 
@@ -93,12 +90,11 @@ describe('browserUtils', () => {
 
     it('falls back to the default browser when the share sheet cannot be shown', async () => {
       shareSpy.mockRejectedValue(new Error('could not present'));
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+      jest.spyOn(console, 'warn').mockImplementation();
 
       await openURLInSelectedBrowser(redirectUri);
 
       expect(openURLSpy).toHaveBeenCalledWith(redirectUri);
-      consoleSpy.mockRestore();
     });
   });
 });
