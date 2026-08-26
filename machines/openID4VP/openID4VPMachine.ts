@@ -548,7 +548,6 @@ export const openID4VPMachine = model.createMachine(
                       logType: 'SHARED_WITH_FACE_VERIFIACTION',
                     }),
                     sendParent('SUCCESS'),
-                    'redirectToVerifier',
                   ],
                   target: '#success',
                 },
@@ -559,7 +558,6 @@ export const openID4VPMachine = model.createMachine(
                       logType: 'SHARED_SUCCESSFULLY',
                     }),
                     sendParent('SUCCESS'),
-                    'redirectToVerifier',
                   ],
                   target: '#success',
                 },
@@ -629,6 +627,9 @@ export const openID4VPMachine = model.createMachine(
       },
       success: {
         id: 'success',
+        invoke: {
+          src: 'redirectToVerifier',
+        },
       },
       authFlowFailed: {
         entry: [

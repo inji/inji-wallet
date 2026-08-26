@@ -1,4 +1,4 @@
-import {Linking, NativeModules, Share} from 'react-native';
+import {Linking, NativeModules} from 'react-native';
 import {openURL, openURLInSelectedBrowser} from './browserUtils';
 import {isIOS} from './constants';
 
@@ -11,7 +11,6 @@ describe('browserUtils', () => {
   const injiOpenID4VP = NativeModules.InjiOpenID4VP;
   let openRedirectUriInBrowser: jest.Mock;
   let openURLSpy: jest.SpyInstance;
-  let shareSpy: jest.SpyInstance;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -23,9 +22,6 @@ describe('browserUtils', () => {
       injiOpenID4VP.openRedirectUriInBrowser as jest.Mock;
 
     openURLSpy = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
-    shareSpy = jest
-      .spyOn(Share, 'share')
-      .mockResolvedValue({action: Share.sharedAction} as any);
   });
 
   afterEach(() => {
@@ -77,24 +73,11 @@ describe('browserUtils', () => {
   describe('openURLInSelectedBrowser on ios', () => {
     beforeEach(() => (isIOS as jest.Mock).mockReturnValue(true));
 
-    it('offers the share sheet, which lists the installed browsers', async () => {
-      await openURLInSelectedBrowser(redirectUri);
-
-      expect(shareSpy).toHaveBeenCalledWith({
-        url: redirectUri,
-        message: redirectUri,
-      });
-      expect(openRedirectUriInBrowser).not.toHaveBeenCalled();
-      expect(openURLSpy).not.toHaveBeenCalled();
-    });
-
-    it('falls back to the default browser when the share sheet cannot be shown', async () => {
-      shareSpy.mockRejectedValue(new Error('could not present'));
-      jest.spyOn(console, 'warn').mockImplementation();
-
+    it('opens the default browser, since ios cannot offer a browser chooser', async () => {
       await openURLInSelectedBrowser(redirectUri);
 
       expect(openURLSpy).toHaveBeenCalledWith(redirectUri);
+      expect(openRedirectUriInBrowser).not.toHaveBeenCalled();
     });
   });
 });

@@ -93,6 +93,7 @@ export interface Typegen0 {
     getSelectedKey: 'done.invoke.OpenID4VP.checkKeyPair:invocation[0]';
     isVerifierTrusted: 'done.invoke.OpenID4VP.checkVerifierTrust:invocation[0]';
     sendSelectedCredentialsForVP: 'done.invoke.OpenID4VP.sendingVP.constructVP.constructing:invocation[0]';
+    redirectToVerifier: 'done.invoke.OpenID4VP.success:invocation[0]';
     sendVP: 'done.invoke.OpenID4VP.sendingVP.sendVP:invocation[0]';
     shareDeclineStatus: 'done.invoke.OpenID4VP.shareVPDeclineStatusToVerifier:invocation[0]';
     shouldValidateClient: 'done.invoke.OpenID4VP.checkIfClientValidationIsRequired:invocation[0]';
@@ -159,6 +160,7 @@ export interface Typegen0 {
       | 'getKeyPair'
       | 'getSelectedKey'
       | 'isVerifierTrusted'
+      | 'redirectToVerifier'
       | 'sendSelectedCredentialsForVP'
       | 'sendVP'
       | 'shareDeclineStatus'
@@ -193,7 +195,6 @@ export interface Typegen0 {
       | 'error.platform.OpenID4VP.getTrustedVerifiersList:invocation[0]'
       | 'xstate.stop';
     resetOpenID4VPRetryCount: 'RESET_RETRY_COUNT';
-    redirectToVerifier: 'done.invoke.OpenID4VP.sendingVP.sendVP:invocation[0]';
     setAuthenticationError: 'error.platform.OpenID4VP.authenticateVerifier:invocation[0]';
     setAuthenticationResponse: 'done.invoke.OpenID4VP.authenticateVerifier:invocation[0]';
     setAuthenticationResponseForPresentationAuthFlow: 'done.invoke.OpenID4VP.checkKeyPair:invocation[0]';
@@ -274,6 +275,7 @@ export interface Typegen0 {
     isVerifierTrusted:
       | 'done.invoke.OpenID4VP.authenticateVerifier:invocation[0]'
       | 'done.invoke.OpenID4VP.checkKeyPair:invocation[0]';
+    redirectToVerifier: 'done.invoke.OpenID4VP.sendingVP.sendVP:invocation[0]';
     sendSelectedCredentialsForVP: '' | 'SIGN_VP';
     sendVP: '';
     shareDeclineStatus: 'CONFIRM';
