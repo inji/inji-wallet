@@ -100,6 +100,8 @@ class VciClient {
       credentialIssuer: string,
       cNonce: string | null,
       proofSigningAlgosSupported: string[] | null,
+      cryptographicBindingMethodsSupported: string[] | null,
+      proofTypesSupported: string[] | null,
     ) => void,
     navigateToAuthView: (authorizationEndpoint: string) => void,
     requestTokenResponse: (tokenRequest: object) => void,
@@ -112,11 +114,19 @@ class VciClient {
   ): Promise<any> {
     const proofListener = emitter.addListener(
       'onRequestProof',
-      ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
+      ({
+        credentialIssuer,
+        cNonce,
+        proofSigningAlgorithmsSupported,
+        cryptographicBindingMethodsSupported,
+        proofTypesSupported,
+      }) => {
         getProofJwt(
           credentialIssuer,
           cNonce,
           JSON.parse(proofSigningAlgorithmsSupported),
+          JSON.parse(cryptographicBindingMethodsSupported ?? '[]'),
+          JSON.parse(proofTypesSupported ?? '[]'),
         );
       },
     );
@@ -214,6 +224,8 @@ class VciClient {
       credentialIssuer: string,
       cNonce: string | null,
       proofSigningAlgosSupported: string[] | null,
+      cryptographicBindingMethodsSupported: string[] | null,
+      proofTypesSupported: string[] | null,
     ) => void,
     navigateToAuthView: (authorizationEndpoint: string) => void,
     requestTokenResponse: (tokenRequest: object) => void,
@@ -222,11 +234,19 @@ class VciClient {
   ): Promise<any> {
     const proofListener = emitter.addListener(
       'onRequestProof',
-      ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
+      ({
+        credentialIssuer,
+        cNonce,
+        proofSigningAlgorithmsSupported,
+        cryptographicBindingMethodsSupported,
+        proofTypesSupported,
+      }) => {
         getProofJwt(
           credentialIssuer,
           cNonce,
           JSON.parse(proofSigningAlgorithmsSupported),
+          JSON.parse(cryptographicBindingMethodsSupported ?? '[]'),
+          JSON.parse(proofTypesSupported ?? '[]'),
         );
       },
     );

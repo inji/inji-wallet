@@ -317,8 +317,16 @@ describe('VciClient', () => {
         credentialIssuer: 'iss',
         cNonce: 'nonce',
         proofSigningAlgorithmsSupported: '["ES256"]',
+        cryptographicBindingMethodsSupported: '["jwk"]',
+        proofTypesSupported: '["jwt"]',
       });
-      expect(getProofJwt).toHaveBeenCalledWith('iss', 'nonce', ['ES256']);
+      expect(getProofJwt).toHaveBeenCalledWith(
+        'iss',
+        'nonce',
+        ['ES256'],
+        ['jwk'],
+        ['jwt'],
+      );
 
       expect(listenerMap['onRequestAuthCode']).toBeDefined();
       listenerMap['onRequestAuthCode']({

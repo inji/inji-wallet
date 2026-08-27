@@ -1,5 +1,6 @@
 package io.mosip.residentapp
 
+import io.mosip.vciclient.proof.CredentialRequestProofMetadata
 import android.util.Base64
 import android.util.Log
 import com.facebook.react.bridge.Arguments
@@ -140,18 +141,23 @@ object VCIClientCallbackBridge {
         return deferredIssuerTrustResponse!!
     }
 
-    fun emitRequestProof(
-            context: ReactApplicationContext,
-            credentialIssuer: String,
-            cNonce: String?,
-            proofSigningAlgorithmsSupported: List<String>,
-    ) {
+    fun emitRequestProof(context: ReactApplicationContext, credentialRequestProofMetadata: CredentialRequestProofMetadata) {
         val params =
                 Arguments.createMap().apply {
-                    putString("credentialIssuer", credentialIssuer)
-                    if (cNonce != null) putString("cNonce", cNonce)
-                    val json = gson.toJson(proofSigningAlgorithmsSupported)
-                    putString("proofSigningAlgorithmsSupported", json)
+                    putString("credentialIssuer", credentialRequestProofMetadata.credentialIssuer)
+                    credentialRequestProofMetadata.nonce?.let { putString("cNonce", it) }
+                    putString(
+                            "proofSigningAlgorithmsSupported",
+                            gson.toJson(credentialRequestProofMetadata.proofSigningAlgorithmsSupported)
+                    )
+                    putString(
+                            "cryptographicBindingMethodsSupported",
+                            gson.toJson(credentialRequestProofMetadata.cryptographicBindingMethodsSupported)
+                    )
+                    putString(
+                            "proofTypesSupported",
+                            gson.toJson(credentialRequestProofMetadata.proofTypesSupported)
+                    )
                 }
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("onRequestProof", params)
