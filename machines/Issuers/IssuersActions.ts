@@ -349,7 +349,7 @@ export const IssuersActions = (model: any) => {
         return event.data;
       },
     }),
-    setWellknwonKeyTypes: model.assign({
+    setProofMetadata: model.assign({
       jwtProofSigningAlgorithms: (_: any, event: any) => {
         return event.proofSigningAlgosSupported;
       },

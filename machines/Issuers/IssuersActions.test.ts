@@ -179,7 +179,7 @@ describe('IssuersActions', () => {
       'setRequestTxCode',
       'resetRequestTxCode',
       'setCredentialOfferIssuerWellknownResponse',
-      'setWellknwonKeyTypes',
+      'setProofMetadata',
       'setSelectedCredentialIssuer',
       'setTokenRequestObject',
       'setTokenResponseObject',
@@ -592,9 +592,8 @@ describe('IssuersActions', () => {
       expect(fn({}, {data: {message: 'verify err'}})).toBe('verify err');
     });
 
-    it('setWellknwonKeyTypes sets from event', () => {
-      const fn =
-        actions.setWellknwonKeyTypes.assignment.jwtProofSigningAlgorithms;
+    it('setProofMetadata sets from event', () => {
+      const fn = actions.setProofMetadata.assignment.jwtProofSigningAlgorithms;
       expect(fn({}, {proofSigningAlgosSupported: ['ES256']})).toEqual([
         'ES256',
       ]);
