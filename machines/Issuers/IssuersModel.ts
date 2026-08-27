@@ -40,7 +40,7 @@ export const IssuersModel = createModel(
     privateKey: '',
     vcMetadata: {} as VCMetadata,
     keyType: 'RS256' as string,
-    wellknownKeyTypes: [] as string[],
+    jwtProofSigningAlgorithms: [] as string[],
     cryptographicBindingMethods: [] as string[],
     proofTypesSupported: [] as string[],
     bindingMethod: DEFAULT_BINDING_METHOD as BindingMethod,

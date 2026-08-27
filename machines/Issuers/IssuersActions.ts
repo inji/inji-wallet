@@ -86,7 +86,7 @@ export const IssuersActions = (model: any) => {
     }),
     setSelectedCredentialType: model.assign({
       selectedCredentialType: (_: any, event: any) => event.credType,
-      wellknownKeyTypes: (_: any, event: any) =>
+      jwtProofSigningAlgorithms: (_: any, event: any) =>
         getJwtProofSigningAlgorithms(event.credType),
       proofTypesSupported: (_: any, event: any) =>
         Object.keys(event.credType.proof_types_supported ?? {}),
@@ -350,7 +350,7 @@ export const IssuersActions = (model: any) => {
       },
     }),
     setWellknwonKeyTypes: model.assign({
-      wellknownKeyTypes: (_: any, event: any) => {
+      jwtProofSigningAlgorithms: (_: any, event: any) => {
         return event.proofSigningAlgosSupported;
       },
       cryptographicBindingMethods: (_: any, event: any) =>

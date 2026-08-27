@@ -77,8 +77,8 @@ describe('IssuersModel', () => {
       expect(initialContext.keyType).toBe('RS256');
     });
 
-    it('should have wellknownKeyTypes as empty array', () => {
-      expect(initialContext.wellknownKeyTypes).toEqual([]);
+    it('should have jwtProofSigningAlgorithms as empty array', () => {
+      expect(initialContext.jwtProofSigningAlgorithms).toEqual([]);
     });
 
     it('should have authEndpointToOpen as false', () => {
@@ -205,7 +205,7 @@ describe('IssuersModel', () => {
       const arrays = [
         context.issuers,
         context.supportedCredentialTypes,
-        context.wellknownKeyTypes,
+        context.jwtProofSigningAlgorithms,
       ];
 
       arrays.forEach(arr => {

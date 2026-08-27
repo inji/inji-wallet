@@ -298,7 +298,7 @@ describe('IssuersService', () => {
       privateKey: 'sk',
       credentialOfferCredentialIssuer: 'issuer',
       keyType: 'ES256',
-      wellknownKeyTypes: ['ES256'],
+      jwtProofSigningAlgorithms: ['ES256'],
       cNonce: 'nonce1',
     };
     const result = await services.constructProof(context);
@@ -314,7 +314,7 @@ describe('IssuersService', () => {
       privateKey: 'sk',
       selectedIssuer: {credential_issuer_host: 'host', client_id: 'client'},
       keyType: 'ES256',
-      wellknownKeyTypes: ['ES256'],
+      jwtProofSigningAlgorithms: ['ES256'],
       cNonce: 'nonce2',
     };
     const result = await services.constructAndSendProofForTrustedIssuers(
@@ -326,7 +326,7 @@ describe('IssuersService', () => {
   it('getKeyOrderList selects the key type and binding method', async () => {
     mockGetData.mockResolvedValueOnce([null, '["ES256"]']);
     const result = await services.getKeyOrderList({
-      wellknownKeyTypes: ['ES256'],
+      jwtProofSigningAlgorithms: ['ES256'],
       cryptographicBindingMethods: ['jwk'],
       proofTypesSupported: ['jwt'],
     });
@@ -342,7 +342,7 @@ describe('IssuersService', () => {
     mockGetData.mockResolvedValueOnce([null, '["ES256"]']);
 
     await services.getKeyOrderList({
-      wellknownKeyTypes: ['ES256'],
+      jwtProofSigningAlgorithms: ['ES256'],
       cryptographicBindingMethods: ['jwk'],
       proofTypesSupported: ['jwt'],
     });

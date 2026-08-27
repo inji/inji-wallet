@@ -324,7 +324,7 @@ export const IssuersService = () => {
         context.credentialOfferCredentialIssuer,
         null,
         context.keyType,
-        context.wellknownKeyTypes,
+        context.jwtProofSigningAlgorithms,
         context.cNonce,
         context.bindingMethod,
       );
@@ -339,7 +339,7 @@ export const IssuersService = () => {
         context.selectedIssuer.credential_issuer_host,
         context.selectedIssuer.client_id,
         context.keyType,
-        context.wellknownKeyTypes,
+        context.jwtProofSigningAlgorithms,
         context.cNonce,
         context.bindingMethod,
       );
@@ -358,7 +358,7 @@ export const IssuersService = () => {
       return {
         keyOrder,
         keyType: selectCredentialRequestKey(
-          context.wellknownKeyTypes,
+          context.jwtProofSigningAlgorithms,
           keyOrder,
         ),
         bindingMethod: selectBindingMethod(context.cryptographicBindingMethods),

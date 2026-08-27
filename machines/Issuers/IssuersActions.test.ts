@@ -330,13 +330,16 @@ describe('IssuersActions', () => {
         },
       };
       expect(asg.selectedCredentialType({}, event)).toEqual(event.credType);
-      expect(asg.wellknownKeyTypes({}, event)).toEqual(['ES256']);
+      expect(asg.jwtProofSigningAlgorithms({}, event)).toEqual(['ES256']);
     });
 
     it('setSelectedCredentialType returns empty for no jwt', () => {
       const asg = actions.setSelectedCredentialType.assignment;
       expect(
-        asg.wellknownKeyTypes({}, {credType: {proof_types_supported: {}}}),
+        asg.jwtProofSigningAlgorithms(
+          {},
+          {credType: {proof_types_supported: {}}},
+        ),
       ).toEqual([]);
     });
 
@@ -590,7 +593,8 @@ describe('IssuersActions', () => {
     });
 
     it('setWellknwonKeyTypes sets from event', () => {
-      const fn = actions.setWellknwonKeyTypes.assignment.wellknownKeyTypes;
+      const fn =
+        actions.setWellknwonKeyTypes.assignment.jwtProofSigningAlgorithms;
       expect(fn({}, {proofSigningAlgosSupported: ['ES256']})).toEqual([
         'ES256',
       ]);
