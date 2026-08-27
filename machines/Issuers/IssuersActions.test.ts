@@ -15,6 +15,12 @@ jest.mock('../../shared/openId4VCI/Utils', () => ({
     WALLET_GENERIC_ERROR: 'wallet_generic_error',
   },
   getDisplayObjectForCurrentLanguage: jest.fn(arr => arr?.[0]),
+  getJwtProofSigningAlgorithms: jest.fn(
+    credType =>
+      credType?.proof_types_supported?.jwt
+        ?.proof_signing_alg_values_supported ?? [],
+  ),
+  selectBindingMethod: jest.fn(() => 'did:jwk'),
   Issuers_Key_Ref: 'issuers_key_ref',
   VCIServerErrorCode: {
     SERVER_ERROR: 'server_error',
@@ -711,10 +717,13 @@ describe('IssuersActions', () => {
       ).toBe(true);
     });
 
-    it('setSelectedKey calls selectCredentialRequestKey', () => {
+    it('setSelectedKey reads the key type and binding chosen by getKeyOrderList', () => {
       const fn = actions.setSelectedKey.assignment.keyType;
-      const result = fn({wellknownKeyTypes: ['ES256']}, {data: 'someData'});
-      expect(result).toBe('ES256');
+      const event = {data: {keyType: 'ES256', bindingMethod: 'jwk'}};
+      expect(fn({}, event)).toBe('ES256');
+      expect(actions.setSelectedKey.assignment.bindingMethod({}, event)).toBe(
+        'jwk',
+      );
     });
 
     it('setCredentialOfferIssuerWellknownResponse sets selectedIssuer and wellknown', () => {

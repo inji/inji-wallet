@@ -7,7 +7,10 @@ import {
   generateKeyPair,
 } from '../../shared/cryptoutil/cryptoUtil';
 import {
+  assertJwtProofTypeSupported,
   constructProofJWT,
+  selectBindingMethod,
+  selectCredentialRequestKey,
   hasKeyPair,
   updateCredentialInformation,
   verifyCredentialData,
@@ -94,12 +97,17 @@ export const IssuersService = () => {
         credentialIssuer: string,
         cNonce: string | null,
         proofSigningAlgosSupported: string[] | null,
+        cryptographicBindingMethodsSupported: string[] | null,
+        proofTypesSupported: string[] | null,
       ) => {
         sendBack({
           type: 'PROOF_REQUEST',
           credentialIssuer: credentialIssuer,
           cNonce: cNonce,
           proofSigningAlgosSupported: proofSigningAlgosSupported,
+          cryptographicBindingMethodsSupported:
+            cryptographicBindingMethodsSupported,
+          proofTypesSupported: proofTypesSupported,
         });
       };
       const getTokenResponse = (tokenRequest: object) => {
@@ -193,12 +201,17 @@ export const IssuersService = () => {
         credentialIssuer: string,
         cNonce: string | null,
         proofSigningAlgosSupported: string[] | null,
+        cryptographicBindingMethodsSupported: string[] | null,
+        proofTypesSupported: string[] | null,
       ) => {
         sendBack({
           type: 'PROOF_REQUEST',
           cNonce: cNonce,
           issuer: credentialIssuer,
           proofSigningAlgosSupported: proofSigningAlgosSupported,
+          cryptographicBindingMethodsSupported:
+            cryptographicBindingMethodsSupported,
+          proofTypesSupported: proofTypesSupported,
         });
       };
 
@@ -313,6 +326,7 @@ export const IssuersService = () => {
         context.keyType,
         context.wellknownKeyTypes,
         context.cNonce,
+        context.bindingMethod,
       );
       await VciClient.getInstance().sendProof(proofJWT);
       return proofJWT;
@@ -327,17 +341,28 @@ export const IssuersService = () => {
         context.keyType,
         context.wellknownKeyTypes,
         context.cNonce,
+        context.bindingMethod,
       );
       await VciClient.getInstance().sendProof(proofJWT);
       return proofJWT;
     },
 
-    getKeyOrderList: async () => {
+    getKeyOrderList: async (context: any) => {
       const {RNSecureKeystoreModule} = NativeModules;
       const keyOrder = JSON.parse(
         (await RNSecureKeystoreModule.getData('keyPreference'))[1],
       );
-      return keyOrder;
+
+      assertJwtProofTypeSupported(context.proofTypesSupported);
+
+      return {
+        keyOrder,
+        keyType: selectCredentialRequestKey(
+          context.wellknownKeyTypes,
+          keyOrder,
+        ),
+        bindingMethod: selectBindingMethod(context.cryptographicBindingMethods),
+      };
     },
 
     generateKeyPair: async (context: any) => {
