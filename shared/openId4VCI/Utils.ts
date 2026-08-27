@@ -34,7 +34,6 @@ import {didKeyVerificationMethod} from '../cryptoutil/didKey';
 import {
   BindingMethod,
   DEFAULT_BINDING_METHOD,
-  GENERIC_DID_BINDING_METHOD,
   WALLET_BINDING_PREFERENCE,
 } from './BindingMethods';
 import {VCFormat} from '../VCFormat';
@@ -709,13 +708,10 @@ export function selectBindingMethod(
   }
 
   const advertised = new Set(cryptographicBindingMethodsSupported);
-  const supportsGenericDid = advertised.has(GENERIC_DID_BINDING_METHOD);
 
   return (
-    WALLET_BINDING_PREFERENCE.find(
-      bindingMethod =>
-        advertised.has(bindingMethod) ||
-        (supportsGenericDid && bindingMethod.startsWith('did:')),
+    WALLET_BINDING_PREFERENCE.find(bindingMethod =>
+      advertised.has(bindingMethod),
     ) ?? DEFAULT_BINDING_METHOD
   );
 }

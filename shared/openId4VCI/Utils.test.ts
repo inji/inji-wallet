@@ -692,10 +692,6 @@ describe('openId4VCI Utils', () => {
       );
     });
 
-    it('treats a generic did as any supported did method', () => {
-      expect(selectBindingMethod(['did'])).toBe(BindingMethod.DID_JWK);
-    });
-
     it('falls back to did:jwk when the issuer advertises nothing', () => {
       expect(selectBindingMethod([])).toBe(BindingMethod.DID_JWK);
       expect(selectBindingMethod(undefined as any)).toBe(BindingMethod.DID_JWK);
