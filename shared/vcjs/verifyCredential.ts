@@ -1,9 +1,9 @@
-import jsonld from '@digitalcredentials/jsonld';
 import vcjs from '@digitalcredentials/vc';
 import {RsaSignature2018} from '../../lib/jsonld-signatures/suites/rsa2018/RsaSignature2018';
 import {Ed25519Signature2018} from '../../lib/jsonld-signatures/suites/ed255192018/Ed25519Signature2018';
 import {AssertionProofPurpose} from '../../lib/jsonld-signatures/purposes/AssertionProofPurpose';
 import {PublicKeyProofPurpose} from '../../lib/jsonld-signatures/purposes/PublicKeyProofPurpose';
+import {DocumentLoader} from './DocumentLoader';
 import {
   Credential,
   VerifiableCredential,
@@ -20,7 +20,6 @@ import VCVerifier, {
   RevocationStatusType,
   VerificationSummaryResult,
 } from '../vcVerifier/VcVerifier';
-
 // FIXME: Ed25519Signature2018 not fully supported yet.
 // Ed25519Signature2018 proof type check is not tested with its real credential
 const ProofType = {
@@ -102,9 +101,8 @@ async function verifyCredentialForIos(
       purpose,
       suite,
       credential: verifiableCredential,
-      documentLoader: jsonld.documentLoaders.xhr(),
+      documentLoader: DocumentLoader.didWebDocumentLoader,
     };
-
     const result = await vcjs.verifyCredential(vcjsOptions);
     verificationResponse = handleResponse(result, verifiableCredential);
   }

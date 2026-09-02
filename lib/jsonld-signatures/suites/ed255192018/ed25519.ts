@@ -3,22 +3,14 @@
  */
 import {Buffer} from 'buffer';
 
-import forge, {pki, asn1, util, random, md} from 'node-forge';
+import forge, {pki, asn1, random} from 'node-forge';
 
 type PrivateKey = forge.pki.PrivateKey;
 type PublicKey = forge.pki.PublicKey;
 
-const {
-  publicKeyToAsn1,
-  publicKeyFromAsn1,
-  privateKeyToAsn1,
-  privateKeyFromAsn1,
-  ed25519,
-} = pki;
+const {publicKeyToAsn1, privateKeyToAsn1, privateKeyFromAsn1, ed25519} = pki;
 const {toDer, fromDer: forgeFromDer} = asn1;
-const {createBuffer} = util;
 const {getBytesSync: getRandomBytes} = random;
-const {sha256} = md;
 
 // used to export node's public keys to buffers
 const publicKeyEncoding = {format: 'der', type: 'spki'};
@@ -63,17 +55,19 @@ const api = {
     return api.generateKeyPairFromSeed(seed);
   },
   async sign(privateKeyBytes, data) {
-    const privateKey: PrivateKey = forgePrivateKey(
-      _privateKeyDerEncode({privateKeyBytes}),
-    );
-    const signature: string = forgeSign(data, privateKey);
+    const privateKey = Uint8Array.from(privateKeyBytes);
+    const message = Buffer.from(data, 'utf8');
 
-    return signature;
+    const signature = ed25519.sign({
+      privateKey,
+      message,
+    });
+
+    return Buffer.from(signature).toString('binary');
   },
   async verify(publicKeyBytes: Uint8Array, data: string, signature: string) {
-    const publicKey = await createForgePublicKeyFromPublicKeyBuffer(
-      _publicKeyDerEncode({publicKeyBytes}),
-    );
+    const publicKey = createForgePublicKeyFromPublicKeyBuffer(publicKeyBytes);
+
     return forgeVerifyEd25519(data, publicKey, signature);
   },
 };
@@ -98,38 +92,30 @@ function createForgePublicKeyFromPrivateKeyBuffer(
   return publicKey;
 }
 
+/**
+ * Validates that the public key is a raw 32-byte Uint8Array/Buffer.
+ */
 function createForgePublicKeyFromPublicKeyBuffer(
-  publicKeyBuffer: Buffer,
-): string {
-  const publicKeyObject = publicKeyFromAsn1(fromDer(publicKeyBuffer));
-  const publicKeyDer = toDer(publicKeyToAsn1(publicKeyObject)).getBytes();
+  publicKeyBuffer: Uint8Array,
+): Uint8Array {
+  if (publicKeyBuffer.length !== 32) {
+    throw new Error(
+      `Invalid Ed25519 public key length: expected 32 bytes, got ${publicKeyBuffer.length}`,
+    );
+  }
 
-  return publicKeyDer;
-}
-
-function forgeSign(data: string, privateKeyObject: PrivateKey): string {
-  const privateKeyBytes = toDer(privateKeyToAsn1(privateKeyObject)).getBytes();
-
-  const privateKey = createBuffer(privateKeyBytes);
-
-  const signature = ed25519.sign({
-    privateKey,
-    md: sha256.create(),
-    message: data,
-  });
-
-  return signature.toString('binary');
+  return publicKeyBuffer;
 }
 
 function forgeVerifyEd25519(
   data: string,
-  publicKey: string,
+  publicKey: Uint8Array,
   signature: string,
 ): boolean {
   return ed25519.verify({
-    publicKey: publicKey,
-    signature: createBuffer(signature),
-    message: createBuffer(data),
+    publicKey,
+    signature: Buffer.from(signature, 'binary'),
+    message: Buffer.from(data, 'utf8'),
   });
 }
 
