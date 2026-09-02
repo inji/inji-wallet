@@ -54,7 +54,7 @@
 		C3F6A9DD2E661896006C9904 /* RNInjiVcRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3F6A9DC2E66188D006C9904 /* RNInjiVcRenderer.swift */; };
 		C3F6A9DF2E661903006C9904 /* RNInjiVcRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3F6A9DE2E6618F6006C9904 /* RNInjiVcRenderer.m */; };
 		E641C9E62FEAE9C9002D18A7 /* VCIClient in Frameworks */ = {isa = PBXBuildFile; productRef = E641C9E52FEAE9C9002D18A7 /* VCIClient */; };
-		E6728B4F2FF7E2C40068A964 /* OpenID4VP in Frameworks */ = {isa = PBXBuildFile; productRef = E6728B4E2FF7E2C40068A964 /* OpenID4VP */; };
+		E6728B4F2FF7E2C40068A964 /* OpenID4VP in Frameworks */ = {isa = PBXBuildFile; productRef = E660F6FA2FF23611007D2934 /* OpenID4VP */; };
 		E6D946DA2EFAA2FE004DA688 /* CredentialsVerifierConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946C62EFAA2FE004DA688 /* CredentialsVerifierConstant.swift */; };
 		E6D946DB2EFAA2FE004DA688 /* NetworkManagerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946D42EFAA2FE004DA688 /* NetworkManagerClient.swift */; };
 		E6D946DC2EFAA2FE004DA688 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D946CF2EFAA2FE004DA688 /* Data.swift */; };
@@ -603,7 +603,7 @@
 				C339223A2E79A536004A01EC /* InjiVcRenderer */,
 				9CCC57762E9D7C7000669DB7 /* ios-tuvali-library */,
 				E641C9E52FEAE9C9002D18A7 /* VCIClient */,
-				E6728B4E2FF7E2C40068A964 /* OpenID4VP */,
+				E660F6FA2FF23611007D2934 /* OpenID4VP */,
 			);
 			productName = Inji;
 			productReference = 13B07F961A680F5B00A75B9A /* Inji.app */;
@@ -638,7 +638,7 @@
 				C33922392E79A536004A01EC /* XCRemoteSwiftPackageReference "inji-vc-renderer-ios-swift" */,
 				9CCC57752E9D7C7000669DB7 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */,
 				E641C9E42FEAE9C9002D18A7 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */,
-				E6728B4D2FF7E2C40068A964 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */,
+				E660F6F92FF23611007D2934 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */,
 			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
