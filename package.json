@@ -61,7 +61,7 @@
     "i18next": "^21.9.0",
     "iso-639-3": "^3.0.1",
     "jsonld": "^8.3.3",
-    "jsonpath-plus": "^10.0.0",
+    "jsonpath-plus": "^10.4.0",
     "jwt-decode": "^3.1.2",
     "node-forge": "^1.3.1",
     "node-jose": "^2.2.0",
@@ -109,7 +109,6 @@
     "react-test-renderer": "^18.2.0",
     "short-unique-id": "^4.4.4",
     "simple-pem2jwk": "^0.2.4",
-    "telemetry-sdk": "git://github.com/mosip/sunbird-telemetry-sdk.git#f762be5732ee552c0c70bdd540aa4e2701554c71",
     "uuid": "^11.0.3",
     "xstate": "^4.35.0"
   },
@@ -167,9 +166,16 @@
     "react": "18.2.0",
     "react-native": "0.74.5",
     "node-forge": "^1.3.1",
-    "@react-native/assets-registry": "^0.76.1"
+    "@react-native/assets-registry": "^0.76.1",
+    "tar": "^7.5.21",
+    "shell-quote": "^1.9.0",
+    "fast-xml-parser": "^4.5.7",
+    "form-data": "^4.0.6",
+    "@expo/cli": {
+      "form-data": "^3.0.5"
+    }
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   }
 }

@@ -14,32 +14,47 @@ import {isHardwareKeystoreExists} from '../cryptoutil/cryptoUtil';
 import * as RNLocalize from 'react-native-localize';
 import {TelemetryConstants} from './TelemetryConstants';
 
+// NOTE: The telemetry-sdk backend integration is currently disabled. The SDK
+// dependency was removed to drop its vulnerable transitive build tooling
+// (karma/grunt-karma/socket.io/xmlhttprequest-ssl/minimist/lodash) as part of
+// the Dependabot critical remediation (issue #2580). These functions are kept
+// as no-op stubs that log only the call name — never the event payload, which
+// can carry session/app metadata — so call sites keep working and the SDK can
+// be re-wired later without touching every caller.
+
 export function sendStartEvent(data) {
-  //telemetry.start({}, '', '', data, {});
+  // telemetry.start({}, '', '', data, {});
+  console.log('[Telemetry] sendStartEvent');
 }
 
 export function sendEndEvent(data) {
-  //telemetry.end(data, {});
+  // telemetry.end(data, {});
+  console.log('[Telemetry] sendEndEvent');
 }
 
 export function sendImpressionEvent(data) {
-  //telemetry.impression(data, {});
+  // telemetry.impression(data, {});
+  console.log('[Telemetry] sendImpressionEvent');
 }
 
 export function sendInteractEvent(data) {
-  //telemetry.interact(data, {});
+  // telemetry.interact(data, {});
+  console.log('[Telemetry] sendInteractEvent');
 }
 
 export function sendAppInfoEvent(data) {
-  //telemetry.appinfo(data);
+  // telemetry.appinfo(data);
+  console.log('[Telemetry] sendAppInfoEvent');
 }
 
 export function sendErrorEvent(data) {
-  //telemetry.error(data, {});
+  // telemetry.error(data, {});
+  console.log('[Telemetry] sendErrorEvent');
 }
 
 export function initializeTelemetry(config) {
-  //telemetry.initialize(config);
+  // telemetry.initialize(config);
+  console.log('[Telemetry] initializeTelemetry');
 }
 
 export function getTelemetryConfigData() {

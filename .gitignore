@@ -135,4 +135,4 @@ injitest/target/
 .jest/cache
 
 ## runtime bundles / assets
-android/app/src/main/assets/faceModel.tflite
+android/app/src/main/assets/faceModel.tflitedocs/dependabot-critical-remediation.md
