@@ -7,8 +7,12 @@ import {Column, Text} from '../components/ui';
 import {Theme} from '../components/ui/styleUtils';
 import {PasscodeRouteProps} from '../routes';
 import {usePasscodeScreen} from './PasscodeScreenController';
-import {hashData} from '../shared/commonUtil';
-import {argon2iConfig, isIOS} from '../shared/constants';
+import {encodePinHash, hashData} from '../shared/commonUtil';
+import {
+  CURRENT_PIN_KDF_VERSION,
+  PIN_KDF_PROFILES,
+  isIOS,
+} from '../shared/constants';
 import {
   getEndEventData,
   getEventType,
@@ -63,8 +67,21 @@ export const PasscodeScreen: React.FC<PasscodeRouteProps> = props => {
   }, []);
 
   const setPasscode = async (passcode: string) => {
-    const data = await hashData(passcode, controller.storedSalt, argon2iConfig);
-    controller.setPasscode(data);
+    try {
+      const rawHash = await hashData(
+        passcode,
+        controller.storedSalt,
+        PIN_KDF_PROFILES[CURRENT_PIN_KDF_VERSION],
+      );
+      controller.setPasscode(encodePinHash(CURRENT_PIN_KDF_VERSION, rawHash));
+    } catch (error) {
+      controller.setError(
+        t('passcodeSetupError', {
+          defaultValue: 'Could not save passcode. Please try again.',
+        }),
+      );
+      console.error('Failed to hash passcode during setup', error);
+    }
   };
 
   const handlePasscodeMismatch = (error: string) => {
@@ -166,6 +183,7 @@ export const PasscodeScreen: React.FC<PasscodeRouteProps> = props => {
           controller.LOGIN();
         }}
         onError={handlePasscodeMismatch}
+        onUpgrade={controller.UPGRADE_PASSCODE_HASH}
         passcode={controller.storedPasscode}
         salt={controller.storedSalt}
       />
