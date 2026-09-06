@@ -545,7 +545,6 @@ describe('IssuersService', () => {
         selectedIssuer: {
           credential_issuer_host: 'https://host.com',
           client_id: 'c1',
-          redirect_uri: 'redir',
         },
         selectedCredentialType: {id: 'mDL'},
       };
@@ -583,7 +582,6 @@ describe('IssuersService', () => {
         selectedIssuer: {
           credential_issuer_host: 'https://host.com',
           client_id: 'c1',
-          redirect_uri: 'redir',
         },
         selectedCredentialType: {id: 'mDL'},
       };

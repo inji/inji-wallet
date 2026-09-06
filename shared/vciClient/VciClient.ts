@@ -8,6 +8,7 @@ import {
   getWalletConfig,
   jsonLdCanonicalize,
 } from '../openID4VP/OpenID4VPHelper';
+import {WALLET_REDIRECT_URI} from '../constants';
 
 const emitter = new NativeEventEmitter(NativeModules.InjiVciClient);
 
@@ -179,7 +180,7 @@ class VciClient {
     try {
       const clientMetadata = {
         clientId: 'wallet',
-        redirectUri: 'io.mosip.residentapp.inji://oauthredirect',
+        redirectUri: WALLET_REDIRECT_URI,
       };
       const openId4VpWalletConfig = await getWalletConfig();
       response = await this.InjiVciClient.requestCredentialByOffer(
