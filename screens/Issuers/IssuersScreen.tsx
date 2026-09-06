@@ -28,6 +28,7 @@ import {SearchBar} from '../../components/ui/SearchBar';
 import {SvgImage} from '../../components/ui/svg';
 import {Icon} from 'react-native-elements';
 import {DeeplinkBanner} from '../../components/DeeplinkBanner';
+import {WALLET_REDIRECT_URI} from '../../shared/constants';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {CredentialTypeSelectionScreen} from './CredentialTypeSelectionScreen';
 import {QrScanner} from '../../components/QrScanner';
@@ -128,9 +129,7 @@ export const IssuersScreen: React.FC<
       (props.navigation as any).navigate(AUTH_ROUTES.AuthView, {
         authorizationURL: controller.authEndpoint,
         clientId: controller.selectedIssuer.client_id ?? 'wallet',
-        redirectUri:
-          controller.selectedIssuer.redirect_uri ??
-          'io.mosip.residentapp.inji://oauthredirect',
+        redirectUri: WALLET_REDIRECT_URI,
         controller: controller,
       });
     }

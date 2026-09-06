@@ -1050,7 +1050,6 @@ export interface issuerType {
   credential_issuer: string;
   protocol: string;
   client_id: string;
-  redirect_uri: string;
   token_endpoint: string;
   credential_endpoint: string;
   credential_configurations_supported: object;

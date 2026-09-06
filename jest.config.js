@@ -95,5 +95,6 @@ module.exports = {
     '^\\.\\/locales\\/en\\.json$': '<rootDir>/__mocks__/en.mock.json',
     '^react-native-biometrics-changed$':
       '<rootDir>/__mocks__/react-native-biometrics-changed.js',
+    '^jsonld-rdfc$': 'jsonld',
   },
 };

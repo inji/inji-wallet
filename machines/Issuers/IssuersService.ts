@@ -22,6 +22,7 @@ import {setItem} from '../store';
 import {
   API_CACHED_STORAGE_KEYS,
   AuthorizationType,
+  WALLET_REDIRECT_URI,
 } from '../../shared/constants';
 import {createCacheObject} from '../../shared/Utils';
 import {VerificationResult} from '../../shared/vcjs/verifyCredential';
@@ -136,7 +137,7 @@ export const IssuersService = () => {
           context.selectedCredentialType.id,
           {
             clientId: context.selectedIssuer.client_id,
-            redirectUri: context.selectedIssuer.redirect_uri,
+            redirectUri: WALLET_REDIRECT_URI,
           },
           getProofJwt,
           navigateToAuthView,

@@ -36,6 +36,10 @@ allprojects { repositories {
             cacheChangingModulesFor 0, 'seconds'
             force "com.facebook.soloader:soloader:0.9.0+"
             force "com.apicatalog:titanium-json-ld:1.3.1"
+            // titanium-rdfc 2.0.0 (used for VC 2.0 canonicalisation) calls
+            // ToRdfApi.provide(RdfQuadConsumer), which only exists from titanium-json-ld 1.7.0.
+            // The jre8 variant stays Java 8 bytecode, so it remains Android-safe.
+            force "com.apicatalog:titanium-json-ld-jre8:1.7.0"
 
         }
     }
