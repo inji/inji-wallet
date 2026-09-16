@@ -6,32 +6,6 @@
 	</listeners>
 	<test verbose="2" preserve-order="true" name="android">
 		<classes>
-<!--			<class name="inji.testcases.androidTestCases.UnlockWithPasscodeTest">-->
-<!--				<methods>-->
-<!--					<include name="logoutAndLoginWithPasscode" />-->
-<!--					<include name="loginWithInvalidPasscode" />-->
-<!--				</methods>-->
-<!--			</class>-->
-<!--			<class name="inji.testcases.androidTestCases.ActivateVcTest">-->
-<!--				<methods>-->
-<!--					<include name="downloadAndActiveVcUsingUinViaEsignet" />-->
-<!--				</methods>-->
-<!--			</class>-->
-<!--			<class name="inji.testcases.androidTestCases.ChangeLanguageTest">-->
-<!--				<methods>-->
-<!--					<include name="changeLanguageToArabic" />-->
-<!--				</methods>-->
-<!--			</class>-->
-<!--			<class name="inji.testcases.androidTestCases.PinVcTest">-->
-<!--				<methods>-->
-<!--					<include name="downloadVcViaEsignetAndPinUnpin" />-->
-<!--				</methods>-->
-<!--			</class>-->
-<!--			<class name="inji.testcases.androidTestCases.AboutInjiTest">-->
-<!--				<methods>-->
-<!--					<include name="verifyAppId"/>-->
-<!--				</methods>-->
-<!--			</class>-->
       <class name="inji.testcases.androidTestCases.sanityFlows.SunbirdFlowSanityTest">
         <methods>
           <include name="downloadSunbirdVCAndDeleteSmoke" />

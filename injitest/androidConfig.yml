@@ -3,8 +3,8 @@
 # =============================
 # Add your BrowserStack userName and accessKey here or set BROWSERSTACK_USERNAME and
 # BROWSERSTACK_ACCESS_KEY as env variables
-userName: nitinhegde_hL46lx
-accessKey: hPky9PzLoX7Vt5ys5p3J
+userName:
+accessKey:
 
 # ======================
 # BrowserStack Reporting
@@ -29,7 +29,7 @@ buildIdentifier: '#${BUILD_NUMBER}' # Supports strings along with either/both ${
 # OR
 # app: 'bs://<app-id>' # App URL returned when uploading the app to BrowserStack manually
 # Visit https://www.browserstack.com/docs/app-automate/appium/set-up-tests/specify-app for more options
-app: bs://9fd9c74d0aa01d5db3e3e0ab7cb8b17caf622ed7 # BrowserStack Sample App
+app: # BrowserStack Sample App
 
 # =======================================
 # Platforms (Browsers / Devices to test)
