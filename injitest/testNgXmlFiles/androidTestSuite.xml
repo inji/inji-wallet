@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Android Test Suite" parallel="methods" thread-count="1">
+    <listeners>
+         <listener class-name="inji.utils.KnownIssueInvocationListener" />
+         <listener class-name="inji.utils.KnownIssueMethodInterceptor" />
+         <listener class-name="inji.utils.ThreadCountListener" />
+         <listener class-name="inji.utils.BrowserStackStatusListener" />
+    </listeners>
+    <!-- Android Tests -->
+    <test verbose="2" preserve-order="true" name="android">
+        <classes>
+          <class name="inji.testcases.androidTestCases.sanityFlows.MosipFlowSanityTest">
+            <methods>
+              <include name="downloadMosipIdVCAndActivateVCAndDeleteSmoke" />
+            </methods>
+          </class>
+          <class name="inji.testcases.androidTestCases.sanityFlows.FarmerFlowSanityTest">
+            <methods>
+              <include name="downloadFarmerVCAndDeleteSmoke" />
+            </methods>
+          </class>
+          <class name="inji.testcases.androidTestCases.sanityFlows.LandFlowSanityTest">
+            <methods>
+              <include name="downloadLandVCAndDeleteSmoke" />
+            </methods>
+          </class>
+          <class name="inji.testcases.androidTestCases.sanityFlows.ShareAndReceiveCardSanityTest">
+            <methods>
+              <include name="shareVcAndReceiveVc" />
+            </methods>
+          </class>
+          <class name="inji.testcases.androidTestCases.sanityFlows.NoNetworkFlowSanityTest">
+            <methods>
+              <include name="downloadMosipIdVCWithoutInternet" />
+            </methods>
+          </class>
+          <class name="inji.testcases.androidTestCases.sanityFlows.MdlFlowSanityTest">
+            <methods>
+              <include name="downloadMdlVCAndActivateVCAndDeleteSmoke"/>
+            </methods>
+          </class>
+          <class name="inji.testcases.androidTestCases.sanityFlows.HelpPageAndAboutPageSanityTest">
+            <methods>
+              <include name="verifyHelpPageAndAboutPage"/>
+            </methods>
+          </class>
+          <class name="inji.testcases.androidTestCases.sanityFlows.MockFlowSanityTest">
+            <methods>
+              <include name="downloadMockVCAndDeleteSmoke" />
+            </methods>
+          </class>
+          <class name="inji.testcases.androidTestCases.sanityFlows.SunbirdFlowSanityTest">
+            <methods>
+              <include name="downloadSunbirdVCAndDeleteSmoke" />
+            </methods>
+          </class>
+        </classes>
+    </test>
+</suite>

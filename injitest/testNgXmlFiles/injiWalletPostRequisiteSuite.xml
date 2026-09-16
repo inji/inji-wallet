@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+	<suite name="Inji Wallet Post-Requisite API Test">
+
+	<test name="DeletePolicySunBirdR">
+		<parameter name="ymlFile"
+			value="injiWallet/SunBirdR/DeletePolicySunBirdR/DeletePolicySunBirdR.yml" />
+		<parameter name="pathParams" value="insuranceid" />
+		<parameter name="prerequisite" value="Yes" />
+		<classes>
+			<class name="inji.api.testscripts.DeleteWithParam" />
+		</classes>
+	</test>
+	
+</suite>
