@@ -278,7 +278,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     implementation("io.inji:injivcrenderer-aar:1.0.0-alpha.1-SNAPSHOT")
-    implementation("io.inji:inji-openid4vp-aar:1.0.0-beta-SNAPSHOT"){
+    implementation("io.inji:inji-openid4vp-aar:1.0.0-alpha.2-SNAPSHOT"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
@@ -289,7 +289,7 @@ dependencies {
     implementation("io.inji:pixelpass-aar:1.0.0-alpha.1-SNAPSHOT")
     implementation("io.inji:secure-keystore:1.0.0-alpha.1-SNAPSHOT")
     implementation("io.inji:tuvali:1.0.0-alpha.1-SNAPSHOT")
-    implementation("io.inji:inji-vci-client-aar:1.0.0-beta-SNAPSHOT"){
+    implementation("io.inji:inji-vci-client-aar:1.0.0-alpha.2-SNAPSHOT"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
