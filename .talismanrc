@@ -187,9 +187,9 @@ fileignoreconfig:
 - filename: __mocks__/react-native-keychain.mock.js
   checksum: cc2798f843b776e70d957a4f7cdf47e199a29d9f6547fb9f59753108e8f252fa
 - filename: machines/auth.ts
-  checksum: 46195ee93f9b7ac6794a06eeef5dee5ea242047a557af8bf95df04e1343d7b9e
+  checksum: 093028d0ddcc992b2be86d7e3e9c463779ccb038b03bc38944524c6824b6982a
 - filename: machines/auth.typegen.ts
-  checksum: f93996f750549f6de91c2a35c5817cfa85ad7b255ef36dea85224a0a154db188
+  checksum: fdfe81e775d9c2e50aec39e0018a16ac90f56c583bd8d6c31dc6f6664d919ac1
 - filename: shared/commonUtil.generated.test.ts
   checksum: 4ca5983bb133f8f02bfd52fd0cc49ce37b24b164f3ca78a03ad97bb353ed00a4
 - filename: __mocks__/en.mock.json
@@ -542,7 +542,7 @@ fileignoreconfig:
 - filename: shared/vcjs/verifyCredential.test.ts
   checksum: 8fc85e2fa18bbbd78479e94bb763e3438c5c5b2d658ea8017013e34f64d221d0
 - filename: screens/PasscodeScreen.test.tsx
-  checksum: d1c160afafad97a7c2f63c57dae99f4b541794d867029aed0148194f30d4575c
+  checksum: c9bb2108cb1d929bf2cbc1d872f7b410581db13ade05b8c06aab8725c26f9e9d
 - filename: machines/Issuers/IssuersGuards.test.ts
   checksum: 4a6042bbc9b5bb185561d36d91577f82daae98aaf9370644b5a7dd830a720fe1
 - filename: screens/PasscodeScreenController.test.ts
@@ -584,7 +584,7 @@ fileignoreconfig:
 - filename: components/VC/common/VCUtils.test.tsx
   checksum: 8497b309c4baf43ec1dd97cea0ab293ba5be9fcaf04e462dc561ab3fd23b86e0
 - filename: machines/auth.test.ts
-  checksum: bfdb750e84438326deff93d1e4165134b9e5205f9d38eb28866ea359bbd45235
+  checksum: bbae76371694db0eebd5bba9f03ab1d10ba11a501b9a0f0e5aaf23b1018fdfda
 - filename: machines/biometrics.test.ts
   checksum: 323804af0ef321041e88c6d9d63db2bab3b4b5afc130ca5375158b4f7c1c1a6e
 - filename: screens/Home/MyVcs/__snapshots__/IdInputModal.test.tsx.snap

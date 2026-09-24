@@ -23,6 +23,7 @@ const model = createModel(
   {
     events: {
       SETUP_PASSCODE: (passcode: string) => ({passcode}),
+      UPGRADE_PASSCODE_HASH: (passcode: string) => ({passcode}),
       SETUP_BIOMETRICS: (biometrics: string) => ({biometrics}),
       CHANGE_METHOD: (isToggleFromSettings: boolean) => ({
         isToggleFromSettings,
@@ -147,6 +148,12 @@ export const authMachine = model.createMachine(
       unauthorized: {
         on: {
           LOGIN: 'authorized',
+          // Transparent KDF migration: a legacy v1 hash is re-hashed to the
+          // current profile during unlock (before LOGIN), so the upgrade is
+          // only accepted here, not from arbitrary states.
+          UPGRADE_PASSCODE_HASH: {
+            actions: ['setPasscode', 'storeContext'],
+          },
         },
       },
       authorized: {

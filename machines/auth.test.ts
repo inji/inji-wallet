@@ -141,6 +141,64 @@ describe('AuthEvents', () => {
       passcode: '9999',
     });
   });
+  it('should create UPGRADE_PASSCODE_HASH event with new versioned hash', () => {
+    expect(AuthEvents.UPGRADE_PASSCODE_HASH('v2$newhash')).toEqual({
+      type: 'UPGRADE_PASSCODE_HASH',
+      passcode: 'v2$newhash',
+    });
+  });
+  it('UPGRADE_PASSCODE_HASH updates the stored hash and persists in unauthorized', () => {
+    // setPasscode is left as the real assign so we can assert the context
+    // update; storeContext is stubbed (it is a send to the store service).
+    const machine = authMachine.withConfig({
+      actions: {
+        requestStoredContext: jest.fn(),
+        storeContext: jest.fn(),
+        setContext: jest.fn(),
+        setBiometrics: jest.fn(),
+        setLanguage: jest.fn(),
+        setAppSetupComplete: jest.fn(),
+        setPasscodeSalt: jest.fn(),
+        setOnboardingDone: jest.fn(),
+        setInitialDownloadDone: jest.fn(),
+        setTourGuide: jest.fn(),
+        setIsToggleFromSettings: jest.fn(),
+      } as any,
+    });
+    const next = machine.transition(
+      'unauthorized',
+      AuthEvents.UPGRADE_PASSCODE_HASH('v2$newhash'),
+    );
+    expect(next.context.passcode).toBe('v2$newhash');
+    expect(next.actions.map((a: any) => a.type)).toContain('storeContext');
+    expect(next.value).toBe('unauthorized');
+  });
+  it('UPGRADE_PASSCODE_HASH is ignored once authorized (cannot overwrite hash)', () => {
+    const machine = authMachine.withConfig({
+      services: {
+        initializeFaceSdkModel: () => jest.fn(),
+      } as any,
+      actions: {
+        requestStoredContext: jest.fn(),
+        storeContext: jest.fn(),
+        setContext: jest.fn(),
+        setBiometrics: jest.fn(),
+        setLanguage: jest.fn(),
+        setAppSetupComplete: jest.fn(),
+        setPasscodeSalt: jest.fn(),
+        setOnboardingDone: jest.fn(),
+        setInitialDownloadDone: jest.fn(),
+        setTourGuide: jest.fn(),
+        setIsToggleFromSettings: jest.fn(),
+      } as any,
+    });
+    const next = machine.transition(
+      'authorized',
+      AuthEvents.UPGRADE_PASSCODE_HASH('v2$attacker'),
+    );
+    expect(next.context.passcode).not.toBe('v2$attacker');
+    expect(next.changed).toBe(false);
+  });
   it('should create SETUP_BIOMETRICS event', () => {
     expect(AuthEvents.SETUP_BIOMETRICS('bio')).toEqual({
       type: 'SETUP_BIOMETRICS',
@@ -256,18 +314,18 @@ describe('authMachine definition', () => {
     const machine = authMachine.withConfig({
       services: {} as any,
       actions: {
-        requestStoredContext: () => {},
-        storeContext: () => {},
-        setContext: () => {},
-        setPasscode: () => {},
-        setBiometrics: () => {},
-        setLanguage: () => {},
-        setAppSetupComplete: () => {},
-        setPasscodeSalt: () => {},
-        setOnboardingDone: () => {},
-        setInitialDownloadDone: () => {},
-        setTourGuide: () => {},
-        setIsToggleFromSettings: () => {},
+        requestStoredContext: jest.fn(),
+        storeContext: jest.fn(),
+        setContext: jest.fn(),
+        setPasscode: jest.fn(),
+        setBiometrics: jest.fn(),
+        setLanguage: jest.fn(),
+        setAppSetupComplete: jest.fn(),
+        setPasscodeSalt: jest.fn(),
+        setOnboardingDone: jest.fn(),
+        setInitialDownloadDone: jest.fn(),
+        setTourGuide: jest.fn(),
+        setIsToggleFromSettings: jest.fn(),
       } as any,
     });
     const next = machine.transition('languagesetup', {type: 'SELECT'});
@@ -278,21 +336,21 @@ describe('authMachine definition', () => {
     const machine = authMachine.withConfig({
       services: {
         generatePasscodeSalt: () => Promise.resolve('salt'),
-        initializeFaceSdkModel: () => () => {},
+        initializeFaceSdkModel: () => jest.fn(),
       } as any,
       actions: {
-        requestStoredContext: () => {},
-        storeContext: () => {},
-        setContext: () => {},
-        setPasscode: () => {},
-        setBiometrics: () => {},
-        setLanguage: () => {},
-        setAppSetupComplete: () => {},
-        setPasscodeSalt: () => {},
-        setOnboardingDone: () => {},
-        setInitialDownloadDone: () => {},
-        setTourGuide: () => {},
-        setIsToggleFromSettings: () => {},
+        requestStoredContext: jest.fn(),
+        storeContext: jest.fn(),
+        setContext: jest.fn(),
+        setPasscode: jest.fn(),
+        setBiometrics: jest.fn(),
+        setLanguage: jest.fn(),
+        setAppSetupComplete: jest.fn(),
+        setPasscodeSalt: jest.fn(),
+        setOnboardingDone: jest.fn(),
+        setInitialDownloadDone: jest.fn(),
+        setTourGuide: jest.fn(),
+        setIsToggleFromSettings: jest.fn(),
       } as any,
     });
     const next = machine.transition('introSlider', {type: 'NEXT'});
@@ -303,21 +361,21 @@ describe('authMachine definition', () => {
     const machine = authMachine.withConfig({
       services: {
         generatePasscodeSalt: () => Promise.resolve('salt'),
-        initializeFaceSdkModel: () => () => {},
+        initializeFaceSdkModel: () => jest.fn(),
       } as any,
       actions: {
-        requestStoredContext: () => {},
-        storeContext: () => {},
-        setContext: () => {},
-        setPasscode: () => {},
-        setBiometrics: () => {},
-        setLanguage: () => {},
-        setAppSetupComplete: () => {},
-        setPasscodeSalt: () => {},
-        setOnboardingDone: () => {},
-        setInitialDownloadDone: () => {},
-        setTourGuide: () => {},
-        setIsToggleFromSettings: () => {},
+        requestStoredContext: jest.fn(),
+        storeContext: jest.fn(),
+        setContext: jest.fn(),
+        setPasscode: jest.fn(),
+        setBiometrics: jest.fn(),
+        setLanguage: jest.fn(),
+        setAppSetupComplete: jest.fn(),
+        setPasscodeSalt: jest.fn(),
+        setOnboardingDone: jest.fn(),
+        setInitialDownloadDone: jest.fn(),
+        setTourGuide: jest.fn(),
+        setIsToggleFromSettings: jest.fn(),
       } as any,
     });
     const next = machine.transition('settingUp', {
@@ -331,21 +389,21 @@ describe('authMachine definition', () => {
     const machine = authMachine.withConfig({
       services: {
         generatePasscodeSalt: () => Promise.resolve('salt'),
-        initializeFaceSdkModel: () => () => {},
+        initializeFaceSdkModel: () => jest.fn(),
       } as any,
       actions: {
-        requestStoredContext: () => {},
-        storeContext: () => {},
-        setContext: () => {},
-        setPasscode: () => {},
-        setBiometrics: () => {},
-        setLanguage: () => {},
-        setAppSetupComplete: () => {},
-        setPasscodeSalt: () => {},
-        setOnboardingDone: () => {},
-        setInitialDownloadDone: () => {},
-        setTourGuide: () => {},
-        setIsToggleFromSettings: () => {},
+        requestStoredContext: jest.fn(),
+        storeContext: jest.fn(),
+        setContext: jest.fn(),
+        setPasscode: jest.fn(),
+        setBiometrics: jest.fn(),
+        setLanguage: jest.fn(),
+        setAppSetupComplete: jest.fn(),
+        setPasscodeSalt: jest.fn(),
+        setOnboardingDone: jest.fn(),
+        setInitialDownloadDone: jest.fn(),
+        setTourGuide: jest.fn(),
+        setIsToggleFromSettings: jest.fn(),
       } as any,
     });
     const next = machine.transition('settingUp', {
@@ -359,21 +417,21 @@ describe('authMachine definition', () => {
     const machine = authMachine.withConfig({
       services: {
         generatePasscodeSalt: () => Promise.resolve('salt'),
-        initializeFaceSdkModel: () => () => {},
+        initializeFaceSdkModel: () => jest.fn(),
       } as any,
       actions: {
-        requestStoredContext: () => {},
-        storeContext: () => {},
-        setContext: () => {},
-        setPasscode: () => {},
-        setBiometrics: () => {},
-        setLanguage: () => {},
-        setAppSetupComplete: () => {},
-        setPasscodeSalt: () => {},
-        setOnboardingDone: () => {},
-        setInitialDownloadDone: () => {},
-        setTourGuide: () => {},
-        setIsToggleFromSettings: () => {},
+        requestStoredContext: jest.fn(),
+        storeContext: jest.fn(),
+        setContext: jest.fn(),
+        setPasscode: jest.fn(),
+        setBiometrics: jest.fn(),
+        setLanguage: jest.fn(),
+        setAppSetupComplete: jest.fn(),
+        setPasscodeSalt: jest.fn(),
+        setOnboardingDone: jest.fn(),
+        setInitialDownloadDone: jest.fn(),
+        setTourGuide: jest.fn(),
+        setIsToggleFromSettings: jest.fn(),
       } as any,
     });
     const next = machine.transition('unauthorized', {type: 'LOGIN'});
@@ -384,21 +442,21 @@ describe('authMachine definition', () => {
     const machine = authMachine.withConfig({
       services: {
         generatePasscodeSalt: () => Promise.resolve('salt'),
-        initializeFaceSdkModel: () => () => {},
+        initializeFaceSdkModel: () => jest.fn(),
       } as any,
       actions: {
-        requestStoredContext: () => {},
-        storeContext: () => {},
-        setContext: () => {},
-        setPasscode: () => {},
-        setBiometrics: () => {},
-        setLanguage: () => {},
-        setAppSetupComplete: () => {},
-        setPasscodeSalt: () => {},
-        setOnboardingDone: () => {},
-        setInitialDownloadDone: () => {},
-        setTourGuide: () => {},
-        setIsToggleFromSettings: () => {},
+        requestStoredContext: jest.fn(),
+        storeContext: jest.fn(),
+        setContext: jest.fn(),
+        setPasscode: jest.fn(),
+        setBiometrics: jest.fn(),
+        setLanguage: jest.fn(),
+        setAppSetupComplete: jest.fn(),
+        setPasscodeSalt: jest.fn(),
+        setOnboardingDone: jest.fn(),
+        setInitialDownloadDone: jest.fn(),
+        setTourGuide: jest.fn(),
+        setIsToggleFromSettings: jest.fn(),
       } as any,
     });
     const next = machine.transition('authorized', {type: 'LOGOUT'});
@@ -409,21 +467,21 @@ describe('authMachine definition', () => {
     const machine = authMachine.withConfig({
       services: {
         generatePasscodeSalt: () => Promise.resolve('salt'),
-        initializeFaceSdkModel: () => () => {},
+        initializeFaceSdkModel: () => jest.fn(),
       } as any,
       actions: {
-        requestStoredContext: () => {},
-        storeContext: () => {},
-        setContext: () => {},
-        setPasscode: () => {},
-        setBiometrics: () => {},
-        setLanguage: () => {},
-        setAppSetupComplete: () => {},
-        setPasscodeSalt: () => {},
-        setOnboardingDone: () => {},
-        setInitialDownloadDone: () => {},
-        setTourGuide: () => {},
-        setIsToggleFromSettings: () => {},
+        requestStoredContext: jest.fn(),
+        storeContext: jest.fn(),
+        setContext: jest.fn(),
+        setPasscode: jest.fn(),
+        setBiometrics: jest.fn(),
+        setLanguage: jest.fn(),
+        setAppSetupComplete: jest.fn(),
+        setPasscodeSalt: jest.fn(),
+        setOnboardingDone: jest.fn(),
+        setInitialDownloadDone: jest.fn(),
+        setTourGuide: jest.fn(),
+        setIsToggleFromSettings: jest.fn(),
       } as any,
     });
     const next = machine.transition('authorized', {
@@ -437,18 +495,18 @@ describe('authMachine definition', () => {
     const machine = authMachine.withConfig({
       services: {} as any,
       actions: {
-        requestStoredContext: () => {},
-        storeContext: () => {},
-        setContext: () => {},
-        setPasscode: () => {},
-        setBiometrics: () => {},
-        setLanguage: () => {},
-        setAppSetupComplete: () => {},
-        setPasscodeSalt: () => {},
-        setOnboardingDone: () => {},
-        setInitialDownloadDone: () => {},
-        setTourGuide: () => {},
-        setIsToggleFromSettings: () => {},
+        requestStoredContext: jest.fn(),
+        storeContext: jest.fn(),
+        setContext: jest.fn(),
+        setPasscode: jest.fn(),
+        setBiometrics: jest.fn(),
+        setLanguage: jest.fn(),
+        setAppSetupComplete: jest.fn(),
+        setPasscodeSalt: jest.fn(),
+        setOnboardingDone: jest.fn(),
+        setInitialDownloadDone: jest.fn(),
+        setTourGuide: jest.fn(),
+        setIsToggleFromSettings: jest.fn(),
       } as any,
       guards: {
         hasData: () => false,
@@ -467,18 +525,18 @@ describe('authMachine definition', () => {
     const machine = authMachine.withConfig({
       services: {} as any,
       actions: {
-        requestStoredContext: () => {},
-        storeContext: () => {},
-        setContext: () => {},
-        setPasscode: () => {},
-        setBiometrics: () => {},
-        setLanguage: () => {},
-        setAppSetupComplete: () => {},
-        setPasscodeSalt: () => {},
-        setOnboardingDone: () => {},
-        setInitialDownloadDone: () => {},
-        setTourGuide: () => {},
-        setIsToggleFromSettings: () => {},
+        requestStoredContext: jest.fn(),
+        storeContext: jest.fn(),
+        setContext: jest.fn(),
+        setPasscode: jest.fn(),
+        setBiometrics: jest.fn(),
+        setLanguage: jest.fn(),
+        setAppSetupComplete: jest.fn(),
+        setPasscodeSalt: jest.fn(),
+        setOnboardingDone: jest.fn(),
+        setInitialDownloadDone: jest.fn(),
+        setTourGuide: jest.fn(),
+        setIsToggleFromSettings: jest.fn(),
       } as any,
       guards: {
         hasData: () => false,
@@ -497,18 +555,18 @@ describe('authMachine definition', () => {
     const machine = authMachine.withConfig({
       services: {} as any,
       actions: {
-        requestStoredContext: () => {},
-        storeContext: () => {},
-        setContext: () => {},
-        setPasscode: () => {},
-        setBiometrics: () => {},
-        setLanguage: () => {},
-        setAppSetupComplete: () => {},
-        setPasscodeSalt: () => {},
-        setOnboardingDone: () => {},
-        setInitialDownloadDone: () => {},
-        setTourGuide: () => {},
-        setIsToggleFromSettings: () => {},
+        requestStoredContext: jest.fn(),
+        storeContext: jest.fn(),
+        setContext: jest.fn(),
+        setPasscode: jest.fn(),
+        setBiometrics: jest.fn(),
+        setLanguage: jest.fn(),
+        setAppSetupComplete: jest.fn(),
+        setPasscodeSalt: jest.fn(),
+        setOnboardingDone: jest.fn(),
+        setInitialDownloadDone: jest.fn(),
+        setTourGuide: jest.fn(),
+        setIsToggleFromSettings: jest.fn(),
       } as any,
       guards: {
         hasData: () => false,
