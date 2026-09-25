@@ -41,7 +41,10 @@ jest.mock('./kebabMenuUtils', () => ({
 // Mock react-native-elements
 jest.mock('react-native-elements', () => ({
   Icon: jest.fn(() => null),
-  ListItem: ({children}: {children: React.ReactNode}) => <>{children}</>,
+  ListItem: ({children, ...props}: any) => {
+    const {View} = require('react-native');
+    return <View {...props}>{children}</View>;
+  },
   Overlay: ({children}: {children: React.ReactNode}) => <>{children}</>,
 }));
 
