@@ -30,7 +30,6 @@ COPY ["Biometric Devices", "$work_dir/Biometric Devices"]
 COPY ["resource", "$work_dir/resource"]
 COPY testNgXmlFiles $work_dir/testNgXmlFiles
 COPY androidConfig.yml $work_dir/
-COPY iosConfig.yml $work_dir/
 COPY entrypoint.sh $work_dir
 
 # install packages and create user
