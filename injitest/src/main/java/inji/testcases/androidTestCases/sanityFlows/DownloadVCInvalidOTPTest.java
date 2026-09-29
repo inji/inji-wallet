@@ -75,7 +75,9 @@ public class DownloadVCInvalidOTPTest extends AndroidBaseTest {
     );
 
 // Wait until resend timer completes
-    otpVerification.verifyResendButtonIsEnabled();
+    assertTrue(otpVerification.verifyResendButtonIsEnabled(),
+      "Verify if Resend Code button is enabled");
+
 
 // Resend OTP
     otpVerification.clickOnResendButton();
