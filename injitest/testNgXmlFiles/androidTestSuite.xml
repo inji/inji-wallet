@@ -37,7 +37,7 @@
           </class>
           <class name="inji.testcases.androidTestCases.sanityFlows.MdlFlowSanityTest">
             <methods>
-              <include name="downloadMdlVCAndActivateVCAndDeleteSmoke"/>
+              <include name="downloadMdlVCAndDeleteSmoke"/>
             </methods>
           </class>
           <class name="inji.testcases.androidTestCases.sanityFlows.HelpPageAndAboutPageSanityTest">
@@ -53,6 +53,11 @@
           <class name="inji.testcases.androidTestCases.sanityFlows.SunbirdFlowSanityTest">
             <methods>
               <include name="downloadSunbirdVCAndDeleteSmoke" />
+            </methods>
+          </class>
+          <class name="inji.testcases.androidTestCases.sanityFlows.DownloadVCInvalidOTPTest">
+            <methods>
+              <include name="downloadVcInvalidOtpWaitThenValidOtp" />
             </methods>
           </class>
         </classes>

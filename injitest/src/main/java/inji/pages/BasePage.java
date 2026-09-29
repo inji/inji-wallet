@@ -234,6 +234,23 @@ public class BasePage {
 		logStep(stepDesc, element);
 		return enabled;
 	}
+	
+	protected boolean isElementEnabled(WebElement element, int waitTime, String stepDesc) {
+		try {
+		  getWait(waitTime).until(driver -> element.isDisplayed() && element.isEnabled());
+		  logStep(stepDesc, element);
+		  return true;
+		} catch (TimeoutException | NoSuchElementException | StaleElementReferenceException e) {
+		  ExtentReportManager.getTest()
+		    .log(
+		      Status.WARNING,
+		      "Element did not become enabled within "
+		        + waitTime
+		        + "s: "
+		        + describeElement(element));
+		  return false;
+		}
+  }
 
 	protected String getText(WebElement element, String stepDesc) {
 		if (isElementVisible(element)) {
@@ -363,7 +380,7 @@ public class BasePage {
       throw new RuntimeException("Element did not become invisible within timeout", e);
 		}
 	}
-
+	
 	protected void waitUntilElementIsVisible(WebElement element, int waitTimeInSeconds) {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTimeInSeconds));
