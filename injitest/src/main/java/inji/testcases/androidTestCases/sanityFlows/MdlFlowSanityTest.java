@@ -14,7 +14,7 @@ import static org.testng.Assert.assertTrue;
 public class MdlFlowSanityTest extends AndroidBaseTest {
   @Test
   @NeedsMockUIN
-  public void downloadMdlVCAndActivateVCAndDeleteSmoke(){
+  public void downloadMdlVCAndDeleteSmoke(){
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
     WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -38,7 +38,7 @@ public class MdlFlowSanityTest extends AndroidBaseTest {
       "Verify if issuer description  esignet displayed");
 
     MockCertifyLoginPage mockCertifyLoginPage = executeStep("Download VC via eSignet",
-      () -> addNewCardPage.clickOnDownloadViaMockCertify());
+      addNewCardPage::clickOnDownloadViaMockCertify);
 
     addNewCardPage.clickOnContinueButton();
     OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());

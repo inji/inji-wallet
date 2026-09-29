@@ -16,7 +16,7 @@ public class OtpVerificationPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "otpVerificationDescription")
     private WebElement otpVerificationDescription;
 
-    @AndroidFindBy(accessibility = "otpVerificationError")
+    @AndroidFindBy(xpath = "//android.widget.TextView[@resource-id=\"error-banner-message\"]")
     @iOSXCUITFindBy(accessibility = "otpVerificationError")
     private WebElement invalidOtpMessage;
 
@@ -48,12 +48,12 @@ public class OtpVerificationPage extends BasePage {
     @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeStaticText[`label == \"VID not available in database\"`]")
     private WebElement vidNotAvailableMessage;
 
-    @AndroidFindBy(xpath = "//*[@resource-id=\"resendCodeView\"]")
+    @AndroidFindBy(xpath = "//android.widget.Button[@resource-id=\"resend_otp\"]")
     //Not using accessibility id as parent component has correct element property
     @iOSXCUITFindBy(accessibility = "resendCode")
     private WebElement resendCodeButton;
 
-    @AndroidFindBy(accessibility = "resendCode")
+    @AndroidFindBy(xpath = "//android.widget.Button[@resource-id=\"resend_otp\"]")
     private WebElement resendCode;
 
     @AndroidFindBy(accessibility = "wait")
@@ -159,6 +159,10 @@ public class OtpVerificationPage extends BasePage {
         return isElementVisible(otpVerificationDescription, "Verify OTP verification description is displayed");
     }
 
+    public boolean verifyResendButtonIsEnabled(){
+        return isElementEnabled(resendCode,200,"Waiting for the resend button to be enabled");
+    }
+
     public void clickOnGetOtpButton() {
         click(getOtpButton, "Click on get OTP");
     }
@@ -173,11 +177,11 @@ public class OtpVerificationPage extends BasePage {
     public boolean isInvalidOTPErrorMessageDisplayed() {
         return isElementVisible(invalidOtpErrorMessageForeSignet, "Getting the invalid OTP message for ESignet Login");
     }
-    
+
     public String getInvalidOtpMessageForEsignetFarmer() {
         return getText(invalidOtpErrorMessageForeSignet, "Getting the invalid OTP message for ESignet Login Farmer");
     }
-    
+
     public String getInvalidIndividualErrorMessageForEsignet() {
         return getText(invalidIndividualMessageForeSignet, "Getting the invalid individual ID for ESignet Login");
     }

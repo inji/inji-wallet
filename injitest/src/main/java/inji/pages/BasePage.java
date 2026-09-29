@@ -235,6 +235,23 @@ public class BasePage {
 		return enabled;
 	}
 
+  protected boolean isElementEnabled(WebElement element, int waitTime, String stepDesc) {
+    try {
+      getWait(waitTime).until(driver -> element.isDisplayed() && element.isEnabled());
+      logStep(stepDesc, element);
+      return true;
+    } catch (TimeoutException | NoSuchElementException | StaleElementReferenceException e) {
+      ExtentReportManager.getTest()
+        .log(
+          Status.WARNING,
+          "Element did not become enabled within "
+            + waitTime
+            + "s: "
+            + describeElement(element));
+      return false;
+    }
+  }
+
 	protected String getText(WebElement element, String stepDesc) {
 		if (isElementVisible(element)) {
 			String text = element.getText();
