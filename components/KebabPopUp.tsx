@@ -43,7 +43,6 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
         ]}>
         <FlatList
           {...testIDProps('moreOptionsPopup')}
-          accessible={true}
           data={getKebabMenuOptions(props)}
           ListHeaderComponent={
             <Row
@@ -63,7 +62,11 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
             </Row>
           }
           renderItem={({item}) => (
-            <ListItem topDivider onPress={item.onPress}>
+            <ListItem
+              {...testIDProps(item.testID)}
+              accessibilityRole="button"
+              topDivider
+              onPress={item.onPress}>
               <Row crossAlign="center" style={{flex: 1}}>
                 <View style={{width: 25, alignItems: 'center'}}>
                   {item.icon}
@@ -75,7 +78,6 @@ export const KebabPopUp: React.FC<KebabPopUpProps> = props => {
                       ? Theme.Colors.warningText
                       : undefined
                   }
-                  testID={item.testID}
                   margin="0 0 0 10">
                   {item.label}
                 </Text>
