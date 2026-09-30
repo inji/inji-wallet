@@ -237,7 +237,7 @@ public class BasePage {
 
   protected boolean isElementEnabled(WebElement element, int waitTime, String stepDesc) {
     try {
-      getWait(waitTime).until(driver -> element.isDisplayed() && element.isEnabled());
+      getWait(waitTime).until(d -> element.isDisplayed() && element.isEnabled());
       logStep(stepDesc, element);
       return true;
     } catch (TimeoutException | NoSuchElementException | StaleElementReferenceException e) {

@@ -159,8 +159,9 @@ public class OtpVerificationPage extends BasePage {
         return isElementVisible(otpVerificationDescription, "Verify OTP verification description is displayed");
     }
 
+    private static final int RESEND_TIMER_WAIT_SECONDS = 200;
     public boolean verifyResendButtonIsEnabled(){
-        return isElementEnabled(resendCode,200,"Waiting for the resend button to be enabled");
+        return isElementEnabled(resendCode,RESEND_TIMER_WAIT_SECONDS,"Waiting for the resend button to be enabled");
     }
 
     public void clickOnGetOtpButton() {

@@ -15,7 +15,7 @@ import static org.testng.Assert.*;
 public class DownloadVCInvalidOTPTest extends AndroidBaseTest {
   @Test
   @NeedsMockUIN
-  public void downloadVcInvalidOtpWaitThenValidOtp() throws InterruptedException {
+  public void downloadVcInvalidOtpWaitThenValidOtp() {
 // Initial app/setup flow
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
