@@ -55,7 +55,7 @@
               <include name="downloadSunbirdVCAndDeleteSmoke" />
             </methods>
           </class>
-          <class name="inji.testcases.androidTestCases.sanityFlows.DownloadVCInvalidOTPTest">
+          <class name="inji.testcases.androidTestCases.sanityFlows.DownloadVCInvalidThenValidOtpTest">
             <methods>
               <include name="downloadVcInvalidOtpWaitThenValidOtp" />
             </methods>

@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
 
-public class DownloadVCInvalidOTPTest extends AndroidBaseTest {
+public class DownloadVCInvalidThenValidOtpTest extends AndroidBaseTest {
   @Test
   @NeedsMockUIN
   public void downloadVcInvalidOtpWaitThenValidOtp() {
