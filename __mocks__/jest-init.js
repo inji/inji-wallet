@@ -25,8 +25,6 @@ jest.mock('react-native-rsa-native', () =>
   require('react-native-rsa-native.mock'),
 );
 
-jest.mock('telemetry-sdk', () => require('./telemetry-sdk.mock'));
-
 jest.mock('react-native-localize', () => mockRNLocalize);
 
 jest.mock('expo-localization', () => mockLocalization);
