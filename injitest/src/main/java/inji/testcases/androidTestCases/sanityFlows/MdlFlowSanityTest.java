@@ -1,6 +1,6 @@
 package inji.testcases.androidTestCases.sanityFlows;
 
-import inji.annotations.NeedsMockUIN;
+import inji.annotations.NeedsMdlUIN;
 import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
@@ -13,7 +13,7 @@ import static org.testng.Assert.assertTrue;
 
 public class MdlFlowSanityTest extends AndroidBaseTest {
   @Test
-  @NeedsMockUIN
+  @NeedsMdlUIN
   public void downloadMdlVCAndDeleteSmoke(){
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
@@ -41,7 +41,7 @@ public class MdlFlowSanityTest extends AndroidBaseTest {
       addNewCardPage::clickOnDownloadViaMockCertify);
 
     addNewCardPage.clickOnContinueButton();
-    OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
+    OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMdlUIN());
     mockCertifyLoginPage.clickOnGetOtpButton();
 
     otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.ANDROID);
@@ -63,7 +63,7 @@ public class MdlFlowSanityTest extends AndroidBaseTest {
     pleaseConfirmPopupPage.clickOnConfirmButton();
 
     HistoryPage historyPage = homePage.clickOnHistoryButton();
-    assertTrue(historyPage.verifyHistory(PlatformType.ANDROID),"Verification of ");
+    assertTrue(historyPage.verifyHistory(PlatformType.ANDROID),"Verification of download history");
     assertTrue(historyPage.verifyMockMdlDeleteHistory(PlatformType.ANDROID));
   }
 }

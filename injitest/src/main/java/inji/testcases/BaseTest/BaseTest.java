@@ -12,6 +12,8 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.function.Supplier;
 
+import inji.annotations.*;
+import inji.utils.testdatamanager.*;
 import org.json.JSONObject;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
@@ -26,13 +28,6 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.browserstack.local.Local;
 
-import inji.annotations.NeedsLandUIN;
-import inji.annotations.NeedsMockUIN;
-import inji.annotations.NeedsSunbirdPolicy;
-import inji.annotations.NeedsSvgWithFaceUIN;
-import inji.annotations.NeedsSvgWithOutFaceUIN;
-import inji.annotations.NeedsUIN;
-import inji.annotations.NeedsVID;
 import inji.constants.PlatformType;
 import inji.driver.DriverManager;
 import inji.models.Policy;
@@ -41,13 +36,6 @@ import inji.models.Vid;
 import inji.utils.BrowserStackLocalManager;
 import inji.utils.ExtentReportManager;
 import inji.utils.InjiWalletConfigManager;
-import inji.utils.testdatamanager.LandRegistryUINManager;
-import inji.utils.testdatamanager.MockUINManager;
-import inji.utils.testdatamanager.PolicyManager;
-import inji.utils.testdatamanager.SvgWithFaceUINManager;
-import inji.utils.testdatamanager.SvgWithOutFaceUINManager;
-import inji.utils.testdatamanager.UINManager;
-import inji.utils.testdatamanager.VIDManager;
 import io.appium.java_client.AppiumDriver;
 import io.mosip.testrig.apirig.testrunner.BaseTestCase;
 import io.mosip.testrig.apirig.utils.NotificationListener;
@@ -64,6 +52,7 @@ public abstract class BaseTest {
 	private static final ThreadLocal<Uin> threadLandUin = new ThreadLocal<>();
 	private static final ThreadLocal<Uin> threadSvgWithFaceUin = new ThreadLocal<>();
 	private static final ThreadLocal<Uin> threadSvgWithOutFaceUin = new ThreadLocal<>();
+  private static final ThreadLocal<Uin> threadMdlUin = new ThreadLocal<>();
 	private static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
 
 	protected abstract PlatformType getPlatformType();
@@ -146,8 +135,13 @@ public abstract class BaseTest {
 			Uin svgWithOutFaceUinDetails = SvgWithOutFaceUINManager.acquireUIN();
 			threadSvgWithOutFaceUin.set(svgWithOutFaceUinDetails);
 		}
+    if (method.isAnnotationPresent(NeedsMdlUIN.class)) {
+      Uin mdlUinDetails = MdlUINManager.acquireUIN();
+      threadMdlUin.set(mdlUinDetails);
+    }
 
-		String reason = result.getMethod().getDescription();
+
+    String reason = result.getMethod().getDescription();
 		if (reason == null || !reason.startsWith("KNOWN_ISSUE::")) {
 			if (getPlatformType() == PlatformType.ANDROID) {
 				DriverManager.getAndroidDriver();
@@ -246,6 +240,14 @@ public abstract class BaseTest {
 				threadSvgWithOutFaceUin.remove();
 			}
 		}
+
+    if (method.isAnnotationPresent(NeedsMdlUIN.class)) {
+      Uin mdlUin = threadMdlUin.get();
+      if (mdlUin != null) {
+        MdlUINManager.releaseUIN(mdlUin);
+        threadMdlUin.remove();
+      }
+    }
 
 		try {
 			String reason = result.getMethod().getDescription();
@@ -437,6 +439,14 @@ public abstract class BaseTest {
 	public String getsvgWithOutFacedUIN() {
 		return getsvgWithOutFaceUinDetails() != null ? getsvgWithOutFaceUinDetails().getUin() : null;
 	}
+
+  public Uin getMdlUINDetails(){
+    return threadMdlUin.get();
+  }
+
+  public String getMdlUIN(){
+    return getMdlUINDetails() !=null ? getMdlUINDetails().getUin() : null;
+  }
 
 	public String getOtp(String email, String phone) {
 		String channelConfig = InjiWalletConfigManager.getproperty("mockNotificationChannel");
