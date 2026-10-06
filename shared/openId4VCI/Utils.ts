@@ -30,6 +30,12 @@ import {getVerifiableCredential} from '../../machines/VerifiableCredential/VCIte
 import {getErrorEventData, sendErrorEvent} from '../telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../telemetry/TelemetryConstants';
 import {KeyTypes} from '../cryptoutil/KeyTypes';
+import {didKeyVerificationMethod} from '../cryptoutil/didKey';
+import {
+  BindingMethod,
+  DEFAULT_BINDING_METHOD,
+  WALLET_BINDING_PREFERENCE,
+} from './BindingMethods';
 import {VCFormat} from '../VCFormat';
 import {UnsupportedVcFormat} from '../error/UnsupportedVCFormat';
 import {VCMetadata} from '../VCMetadata';
@@ -532,6 +538,30 @@ export const ErrorLogMessages: Record<VCIServerErrorCode, string> = {
     'Unknown error occurred during credential issuance flow.',
 };
 
+/**
+ * Builds the proof JWT header for the selected binding method. OpenID4VCI requires exactly one
+ * of `jwk` or `kid`, so the `jwk` binding must not also carry a `kid`.
+ */
+export function buildProofHeader(
+  jwk: any,
+  alg: string,
+  bindingMethod: BindingMethod,
+  keyType: string,
+): Record<string, any> {
+  const header: Record<string, any> = {alg, typ: 'openid4vci-proof+jwt'};
+
+  switch (bindingMethod) {
+    case BindingMethod.JWK:
+      return {...header, jwk};
+    case BindingMethod.DID_JWK:
+      return {...header, kid: `did:jwk:${base64url(JSON.stringify(jwk))}#0`};
+    case BindingMethod.DID_KEY:
+      return {...header, kid: didKeyVerificationMethod(jwk, keyType)};
+    default:
+      throw new Error(`Unsupported binding method: ${bindingMethod}`);
+  }
+}
+
 export async function constructProofJWT(
   publicKey: any,
   privateKey: any,
@@ -539,8 +569,8 @@ export async function constructProofJWT(
   client_id: string | null,
   keyType: string,
   proofSigningAlgosSupported: string[] = [],
-  isCredentialOfferFlow: boolean,
   cNonce?: string,
+  bindingMethod: BindingMethod = DEFAULT_BINDING_METHOD,
 ): Promise<string> {
   const jwk = await getJWK(publicKey, keyType);
   const nonce = cNonce;
@@ -553,13 +583,11 @@ export async function constructProofJWT(
     throw new Error(`Unsupported algorithm for keyType: ${keyType}`);
   }
 
-  const jwtHeader: Record<string, any> = {
-    alg,
-    typ: 'openid4vci-proof+jwt',
-    ...(isCredentialOfferFlow
-      ? {kid: `did:jwk:${base64url(JSON.stringify(jwk))}#0`}
-      : {jwk}),
-  };
+  if (!jwk) {
+    throw new Error(`Failed to construct JWK for keyType: ${keyType}`);
+  }
+
+  const jwtHeader = buildProofHeader(jwk, alg, bindingMethod, keyType);
   const jwtPayload = {
     ...(client_id ? {iss: client_id} : {}),
     nonce,
@@ -653,6 +681,39 @@ export async function hasKeyPair(keyType: any): Promise<boolean> {
     console.error('key not found');
     return false;
   }
+}
+
+export function getJwtProofSigningAlgorithms(credentialType: any): string[] {
+  const proofTypesSupported = credentialType?.proof_types_supported;
+
+  return (proofTypesSupported?.jwt?.proof_signing_alg_values_supported ??
+    []) as string[];
+}
+
+export function assertJwtProofTypeSupported(
+  proofTypesSupported: string[] = [],
+) {
+  if (proofTypesSupported?.length && !proofTypesSupported.includes('jwt')) {
+    throw new Error(
+      `Wallet can only produce jwt proofs - issuer supports [${proofTypesSupported}]`,
+    );
+  }
+}
+
+export function selectBindingMethod(
+  cryptographicBindingMethodsSupported: string[] = [],
+): BindingMethod {
+  if (!cryptographicBindingMethodsSupported?.length) {
+    return DEFAULT_BINDING_METHOD;
+  }
+
+  const advertised = new Set(cryptographicBindingMethodsSupported);
+
+  return (
+    WALLET_BINDING_PREFERENCE.find(bindingMethod =>
+      advertised.has(bindingMethod),
+    ) ?? DEFAULT_BINDING_METHOD
+  );
 }
 
 export function selectCredentialRequestKey(

@@ -112,6 +112,10 @@ export const ENOENT = 'No such file or directory';
 
 export const androidVersion = Number(Platform.Version);
 
+export function isAndroidVersionBelow(version: number): boolean {
+  return isAndroid() && Number(Platform.Version) < version;
+}
+
 // Configuration for argon2i hashing algorithm
 export const argon2iConfig: Argon2iConfig = {
   iterations: 5,
@@ -208,3 +212,9 @@ export enum AuthorizationType {
   OPENID4VP_PRESENTATION,
   IMPLICIT,
 }
+
+export const DPOP_HEADER = 'DPoP';
+export const DPOP_NONCE_HEADER = 'DPoP-Nonce';
+export const USE_DPOP_NONCE_ERROR = 'use_dpop_nonce';
+
+export const WALLET_REDIRECT_URI = 'io.mosip.residentapp.inji://oauthredirect';

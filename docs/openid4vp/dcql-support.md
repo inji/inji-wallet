@@ -85,7 +85,7 @@ Examples of claim paths handled by the library
 ```text
 ['credentialSubject', 'givenName'] -> // Simple property: "credentialSubject.givenName"
 
-['credentialSubject', null, 'givenName'] -> // Array wildcard: "credentialSubject[*].givenName" - Any entry of credentialSubject with property givenName  
+['credentialSubject', null, 'givenName'] -> // Array wildcard: "credentialSubject[*].givenName" - Any entry of credentialSubject with property givenName
 
 ['credentialSubject', 0, 'givenName']; -> // Array index: "credentialSubject[0].givenName"
 ```

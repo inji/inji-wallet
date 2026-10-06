@@ -1,5 +1,6 @@
 import React from 'react';
-import {SafeAreaView, View} from 'react-native';
+import {View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import {Text} from '../Text';
 import {Modal} from '../Modal';

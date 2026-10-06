@@ -259,11 +259,13 @@ export const ErrorView: React.FC<ErrorProps> = props => {
         backgroundColor: Theme.Colors.whiteBackgroundColor,
       }}
       {...testIDProps(testID)}>
-      <Column fill safe>
+      <Column
+        fill
+        safe
+        safeEdges={goBack ? ['left', 'right'] : ['top', 'left', 'right']}>
         {goBack && <Header testID="errorHeader" goBack={goBack} />}
         <Column
           fill
-          safe
           align={alignActionsOnEnd ? 'flex-start' : 'space-evenly'}>
           {errorContent()}
         </Column>

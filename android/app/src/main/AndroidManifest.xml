@@ -40,8 +40,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme"
+        android:enableOnBackInvokedCallback="false"
         android:usesCleartextTraffic="false"
         tools:replace="usesCleartextTraffic">
+        <property
+            android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY"
+            android:value="true" />
         <meta-data
             android:name="expo.modules.updates.ENABLED"
             android:value="true" />
@@ -67,18 +71,30 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
 
+            <!--
+              Keep each deep link in its own intent-filter. Android merges all
+              <data> attributes within a single filter, so combining them would
+              also match unintended cross-combinations such as
+              io.mosip.residentapp.inji://authorize and openid4vp://wla-auth.
+            -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="wla-auth"
-                    android:scheme="io.mosip.residentapp.inji" />
+                    android:scheme="io.mosip.residentapp.inji"
+                    android:host="wla-auth" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                        android:scheme="openid4vp"
-                        android:host="authorize" />
+                    android:scheme="openid4vp"
+                    android:host="authorize" />
             </intent-filter>
 
             <!--

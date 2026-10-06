@@ -2,7 +2,7 @@ import {
   ErrorMessage,
   getDisplayObjectForCurrentLanguage,
   Issuers_Key_Ref,
-  selectCredentialRequestKey,
+  getJwtProofSigningAlgorithms,
   VCIServerErrorCode,
 } from '../../shared/openId4VCI/Utils';
 import {
@@ -86,15 +86,13 @@ export const IssuersActions = (model: any) => {
     }),
     setSelectedCredentialType: model.assign({
       selectedCredentialType: (_: any, event: any) => event.credType,
-      wellknownKeyTypes: (_: any, event: any) => {
-        const proofTypesSupported = event.credType.proof_types_supported;
-        if (proofTypesSupported?.jwt) {
-          return proofTypesSupported.jwt
-            .proof_signing_alg_values_supported as string[];
-        } else {
-          return [] as string[];
-        }
-      },
+      jwtProofSigningAlgorithms: (_: any, event: any) =>
+        getJwtProofSigningAlgorithms(event.credType),
+      proofTypesSupported: (_: any, event: any) =>
+        Object.keys(event.credType.proof_types_supported ?? {}),
+      cryptographicBindingMethods: (_: any, event: any) =>
+        (event.credType.cryptographic_binding_methods_supported ??
+          []) as string[],
     }),
     setSupportedCredentialTypes: model.assign({
       supportedCredentialTypes: (_: any, event: any) => event.data,
@@ -245,13 +243,8 @@ export const IssuersActions = (model: any) => {
     ),
 
     setSelectedKey: model.assign({
-      keyType: (context: any, event: any) => {
-        const keyType = selectCredentialRequestKey(
-          context.wellknownKeyTypes,
-          event.data,
-        );
-        return keyType;
-      },
+      keyType: (_: any, event: any) => event.data.keyType,
+      bindingMethod: (_: any, event: any) => event.data.bindingMethod,
     }),
 
     setSelectedIssuers: model.assign({
@@ -303,7 +296,7 @@ export const IssuersActions = (model: any) => {
     }),
     setCredentialOfferCredentialType: model.assign({
       selectedCredentialType: (context: any, event: any) => {
-        let credentialTypes: Array<{id: string; [key: string]: any}> = [];
+        const credentialTypes: Array<{id: string; [key: string]: any}> = [];
         const credentialConfigurationId = context.credentialConfigurationId;
         const issuerMetadata = context.selectedIssuerWellknownResponse;
         if (
@@ -356,10 +349,14 @@ export const IssuersActions = (model: any) => {
         return event.data;
       },
     }),
-    setWellknwonKeyTypes: model.assign({
-      wellknownKeyTypes: (_: any, event: any) => {
+    setProofMetadata: model.assign({
+      jwtProofSigningAlgorithms: (_: any, event: any) => {
         return event.proofSigningAlgosSupported;
       },
+      cryptographicBindingMethods: (_: any, event: any) =>
+        event.cryptographicBindingMethodsSupported ?? [],
+      proofTypesSupported: (_: any, event: any) =>
+        event.proofTypesSupported ?? [],
     }),
     setSelectedCredentialIssuer: model.assign({
       credentialOfferCredentialIssuer: (_: any, event: any) => {
@@ -598,6 +595,7 @@ export const IssuersActions = (model: any) => {
     sendPresentationAuthorizationError: (_, event) => {
       console.error(
         'PRESENTATION_AUTHORIZATION_ERROR for issuance authorization',
+        event.error,
       );
       VciClient.getInstance().abortPresentationFlow({
         code: 'PRESENTATION_AUTHORIZATION_ERROR',

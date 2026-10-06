@@ -299,6 +299,39 @@ describe('shared/vcjs/verifyCredential', () => {
       expect(result.isVerified).toBe(true);
     });
 
+    it('should use DocumentLoader.didWebDocumentLoader with vcjs', async () => {
+      const {isIOS, isAndroid} = require('../constants');
+      isAndroid.mockReturnValue(false);
+      isIOS.mockReturnValue(true);
+
+      const vcjs = require('@digitalcredentials/vc');
+      vcjs.verifyCredential.mockResolvedValueOnce({
+        verified: true,
+      });
+
+      const documentLoader = require('./DocumentLoader');
+
+      const {verifyCredential} = require('./verifyCredential');
+
+      await verifyCredential(
+        {
+          proof: {
+            type: 'RsaSignature2018',
+            proofPurpose: 'assertionMethod',
+            verificationMethod: 'key1',
+            created: '2024-01-01',
+          },
+        },
+        'ldp_vc',
+      );
+
+      expect(vcjs.verifyCredential).toHaveBeenCalledWith(
+        expect.objectContaining({
+          documentLoader: documentLoader.DocumentLoader.didWebDocumentLoader,
+        }),
+      );
+    });
+
     it('handles failed vcjs verification on iOS with InvalidUrl', async () => {
       const {isIOS, isAndroid} = require('../constants');
       isAndroid.mockReturnValue(false);

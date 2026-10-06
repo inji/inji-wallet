@@ -1,25 +1,28 @@
 import NetInfo from '@react-native-community/netinfo';
 import {NativeModules} from 'react-native';
 import Cloud from '../../shared/CloudBackupAndRestoreUtils';
-import getAllConfigurations, {CACHED_API} from '../../shared/api';
+import {CACHED_API} from '../../shared/api';
 import {
   fetchKeyPair,
   generateKeyPair,
 } from '../../shared/cryptoutil/cryptoUtil';
 import {
+  assertJwtProofTypeSupported,
   constructProofJWT,
+  selectBindingMethod,
+  selectCredentialRequestKey,
   hasKeyPair,
   updateCredentialInformation,
   verifyCredentialData,
 } from '../../shared/openId4VCI/Utils';
-import VciClient, {
-  VciClientErrorResponse,
-} from '../../shared/vciClient/VciClient';
+import VciClient from '../../shared/vciClient/VciClient';
+import {sendTokenRequest} from '../../shared/openId4VCI/TokenService';
 import {displayType, issuerType} from './IssuersMachine';
 import {setItem} from '../store';
 import {
   API_CACHED_STORAGE_KEYS,
   AuthorizationType,
+  WALLET_REDIRECT_URI,
 } from '../../shared/constants';
 import {createCacheObject} from '../../shared/Utils';
 import {VerificationResult} from '../../shared/vcjs/verifyCredential';
@@ -95,12 +98,17 @@ export const IssuersService = () => {
         credentialIssuer: string,
         cNonce: string | null,
         proofSigningAlgosSupported: string[] | null,
+        cryptographicBindingMethodsSupported: string[] | null,
+        proofTypesSupported: string[] | null,
       ) => {
         sendBack({
           type: 'PROOF_REQUEST',
           credentialIssuer: credentialIssuer,
           cNonce: cNonce,
           proofSigningAlgosSupported: proofSigningAlgosSupported,
+          cryptographicBindingMethodsSupported:
+            cryptographicBindingMethodsSupported,
+          proofTypesSupported: proofTypesSupported,
         });
       };
       const getTokenResponse = (tokenRequest: object) => {
@@ -129,7 +137,7 @@ export const IssuersService = () => {
           context.selectedCredentialType.id,
           {
             clientId: context.selectedIssuer.client_id,
-            redirectUri: context.selectedIssuer.redirect_uri,
+            redirectUri: WALLET_REDIRECT_URI,
           },
           getProofJwt,
           navigateToAuthView,
@@ -194,12 +202,17 @@ export const IssuersService = () => {
         credentialIssuer: string,
         cNonce: string | null,
         proofSigningAlgosSupported: string[] | null,
+        cryptographicBindingMethodsSupported: string[] | null,
+        proofTypesSupported: string[] | null,
       ) => {
         sendBack({
           type: 'PROOF_REQUEST',
           cNonce: cNonce,
           issuer: credentialIssuer,
           proofSigningAlgosSupported: proofSigningAlgosSupported,
+          cryptographicBindingMethodsSupported:
+            cryptographicBindingMethodsSupported,
+          proofTypesSupported: proofTypesSupported,
         });
       };
 
@@ -312,9 +325,9 @@ export const IssuersService = () => {
         context.credentialOfferCredentialIssuer,
         null,
         context.keyType,
-        context.wellknownKeyTypes,
-        true,
+        context.jwtProofSigningAlgorithms,
         context.cNonce,
+        context.bindingMethod,
       );
       await VciClient.getInstance().sendProof(proofJWT);
       return proofJWT;
@@ -327,20 +340,30 @@ export const IssuersService = () => {
         context.selectedIssuer.credential_issuer_host,
         context.selectedIssuer.client_id,
         context.keyType,
-        context.wellknownKeyTypes,
-        false,
+        context.jwtProofSigningAlgorithms,
         context.cNonce,
+        context.bindingMethod,
       );
       await VciClient.getInstance().sendProof(proofJWT);
       return proofJWT;
     },
 
-    getKeyOrderList: async () => {
+    getKeyOrderList: async (context: any) => {
       const {RNSecureKeystoreModule} = NativeModules;
       const keyOrder = JSON.parse(
         (await RNSecureKeystoreModule.getData('keyPreference'))[1],
       );
-      return keyOrder;
+
+      assertJwtProofTypeSupported(context.proofTypesSupported);
+
+      return {
+        keyOrder,
+        keyType: selectCredentialRequestKey(
+          context.jwtProofSigningAlgorithms,
+          keyOrder,
+        ),
+        bindingMethod: selectBindingMethod(context.cryptographicBindingMethods),
+      };
     },
 
     generateKeyPair: async (context: any) => {
@@ -361,21 +384,7 @@ export const IssuersService = () => {
     },
 
     verifyCredential: async (context: any): Promise<VerificationResult> => {
-      const {
-        isCredentialOfferFlow,
-        verifiableCredential,
-        selectedCredentialType,
-      } = context;
-      if (isCredentialOfferFlow) {
-        const configurations = await getAllConfigurations();
-        if (configurations.disableCredentialOfferVcVerification) {
-          return {
-            isVerified: true,
-            verificationMessage: '',
-            verificationErrorCode: '',
-          };
-        }
-      }
+      const {verifiableCredential, selectedCredentialType} = context;
       const verificationResult = await verifyCredentialData(
         verifiableCredential?.credential,
         selectedCredentialType.format,
@@ -394,68 +403,3 @@ export const IssuersService = () => {
     },
   };
 };
-async function sendTokenRequest(
-  tokenRequestObject: any,
-  proxyTokenEndpoint: any = null,
-) {
-  if (proxyTokenEndpoint) {
-    tokenRequestObject.tokenEndpoint = proxyTokenEndpoint;
-  }
-  if (!tokenRequestObject?.tokenEndpoint) {
-    console.error('tokenEndpoint is not provided in tokenRequestObject');
-    throw new Error('tokenEndpoint is required');
-  }
-
-  const formBody = new URLSearchParams();
-
-  formBody.append('grant_type', tokenRequestObject.grantType);
-
-  if (tokenRequestObject.authCode) {
-    formBody.append('code', tokenRequestObject.authCode);
-  }
-  if (tokenRequestObject.preAuthCode) {
-    formBody.append('pre-authorized_code', tokenRequestObject.preAuthCode);
-  }
-  if (tokenRequestObject.txCode) {
-    formBody.append('tx_code', tokenRequestObject.txCode);
-  }
-  if (tokenRequestObject.clientId) {
-    formBody.append('client_id', tokenRequestObject.clientId);
-  }
-  if (tokenRequestObject.redirectUri) {
-    formBody.append('redirect_uri', tokenRequestObject.redirectUri);
-  }
-  if (tokenRequestObject.codeVerifier) {
-    formBody.append('code_verifier', tokenRequestObject.codeVerifier);
-  }
-  const response = await fetch(tokenRequestObject.tokenEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: formBody.toString(),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error(
-      'Token request failed with status:',
-      response.status,
-      errorText,
-    );
-    let parsedError: any;
-    try {
-      parsedError = JSON.parse(errorText);
-    } catch {
-      parsedError = {};
-    }
-    //have to throw error in vci error response format
-    const errorResponse: VciClientErrorResponse = {
-      issuerErrorCode: parsedError.error ?? 'UNKNOWN_ERROR',
-      issuerErrorMessage: parsedError.error_description,
-    };
-    throw errorResponse;
-  }
-  const tokenResponse = await response.json();
-  return tokenResponse;
-}

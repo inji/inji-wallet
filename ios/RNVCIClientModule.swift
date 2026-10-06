@@ -87,12 +87,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
           getTokenResponse: { tokenRequest in
             try await self.getTokenResponseHook(tokenRequest: tokenRequest)
           },
-          getProofs: { credentialIssuer, cNonce, algos in
-            try await self.getProofsContinuationHook(
-              credentialIssuer: credentialIssuer,
-              cNonce: cNonce,
-              proofSigningAlgorithmsSupported: algos
-            )
+          getProofs: { credentialRequestProofMetadata in
+            try await self.getProofsContinuationHook(credentialRequestProofMetadata: credentialRequestProofMetadata)
           },
           onCheckIssuerTrust: { credentialIssuer, issuerDisplay in
             try await self.getIssuerTrustDecisionHook(
@@ -135,12 +131,8 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
             try await self.getTokenResponseHook(tokenRequest: tokenRequest)
           },
           authorizationMethods: try getSupportedAuthorizationMethods(openId4VpWalletConfig: openId4VpWalletConfig),
-          getProofs: { credentialIssuer, cNonce, algos in
-            try await self.getProofsContinuationHook(
-              credentialIssuer: credentialIssuer,
-              cNonce: cNonce,
-              proofSigningAlgorithmsSupported: algos
-            )
+          getProofs: { credentialRequestProofMetadata in
+            try await self.getProofsContinuationHook(credentialRequestProofMetadata: credentialRequestProofMetadata)
           },
           downloadTimeoutInMillis: 200000)
 
@@ -175,6 +167,23 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
       } catch {
         rejectVCIError(error, reject: reject)
       }
+    }
+  }
+
+  @objc
+  func generateTokenDPoPProof(
+    _ dpopNonce: String,
+    resolver resolve: @escaping RCTPromiseResolveBlock,
+    rejecter reject: @escaping RCTPromiseRejectBlock
+  ) {
+    do {
+      guard let vciClient = vciClient else {
+        reject(nil, "VCIClient not initialized", nil)
+        return
+      }
+      resolve(try vciClient.generateTokenDPoPProof(dpopNonce: dpopNonce))
+    } catch {
+      rejectVCIError(error, reject: reject)
     }
   }
 
@@ -250,34 +259,37 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
   }
 
   private func getProofsContinuationHook(
-    credentialIssuer: String,
-    cNonce: String?,
-    proofSigningAlgorithmsSupported: [String]
+    credentialRequestProofMetadata: CredentialRequestProofMetadata
   ) async throws -> CredentialRequestProofs {
-    let proof = try await getProofContinuationHook(
-      credentialIssuer: credentialIssuer,
-      cNonce: cNonce,
-      proofSigningAlgorithmsSupported: proofSigningAlgorithmsSupported
-    )
+    let proof = try await getProofContinuationHook(credentialRequestProofMetadata: credentialRequestProofMetadata)
 
     return CredentialRequestProofs(proofs: [proof])
   }
 
+  private func jsonString(_ values: [String]) -> String {
+    guard let data = try? JSONSerialization.data(withJSONObject: values, options: []),
+      let json = String(data: data, encoding: .utf8)
+    else {
+      return "[]"
+    }
+
+    return json
+  }
+
   private func getProofContinuationHook(
-    credentialIssuer: String,
-    cNonce: String?,
-    proofSigningAlgorithmsSupported: [String]
+    credentialRequestProofMetadata: CredentialRequestProofMetadata
   ) async throws -> String {
-    let jsonData = try JSONSerialization.data(
-      withJSONObject: proofSigningAlgorithmsSupported, options: [])
-    let jsonString = String(data: jsonData, encoding: .utf8) ?? "[]"
     if let bridge = RCTBridge.current() {
       bridge.eventDispatcher().sendAppEvent(
         withName: "onRequestProof",
         body: [
-          "credentialIssuer": credentialIssuer,
-          "cNonce": cNonce,
-          "proofSigningAlgorithmsSupported": jsonString,
+          "credentialIssuer": credentialRequestProofMetadata.credentialIssuer,
+          "cNonce": credentialRequestProofMetadata.nonce,
+          "proofSigningAlgorithmsSupported": jsonString(
+            credentialRequestProofMetadata.proofSigningAlgorithmsSupported),
+          "cryptographicBindingMethodsSupported": jsonString(
+            credentialRequestProofMetadata.cryptographicBindingMethodsSupported),
+          "proofTypesSupported": jsonString(credentialRequestProofMetadata.proofTypesSupported),
         ]
       )
     }
@@ -351,6 +363,7 @@ class RNVCIClientModule: NSObject, RCTBridgeModule {
         "clientId": tokenRequest.clientId ?? NSNull(),
         "redirectUri": tokenRequest.redirectUri ?? NSNull(),
         "codeVerifier": tokenRequest.codeVerifier ?? NSNull(),
+        "dpopProof": tokenRequest.dpopProof ?? NSNull(),
       ]
 
       bridge.eventDispatcher().sendAppEvent(

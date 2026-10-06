@@ -8,6 +8,7 @@ import {
   getWalletConfig,
   jsonLdCanonicalize,
 } from '../openID4VP/OpenID4VPHelper';
+import {WALLET_REDIRECT_URI} from '../constants';
 
 const emitter = new NativeEventEmitter(NativeModules.InjiVciClient);
 
@@ -80,6 +81,10 @@ class VciClient {
     this.InjiVciClient.sendTokenResponseFromJS(json);
   }
 
+  async generateTokenDPoPProof(dpopNonce: string): Promise<string> {
+    return await this.InjiVciClient.generateTokenDPoPProof(dpopNonce);
+  }
+
   async getIssuerMetadata(issuerUri: string): Promise<object> {
     const response = await this.InjiVciClient.getIssuerMetadata(issuerUri);
     return JSON.parse(response);
@@ -96,6 +101,8 @@ class VciClient {
       credentialIssuer: string,
       cNonce: string | null,
       proofSigningAlgosSupported: string[] | null,
+      cryptographicBindingMethodsSupported: string[] | null,
+      proofTypesSupported: string[] | null,
     ) => void,
     navigateToAuthView: (authorizationEndpoint: string) => void,
     requestTokenResponse: (tokenRequest: object) => void,
@@ -108,11 +115,19 @@ class VciClient {
   ): Promise<any> {
     const proofListener = emitter.addListener(
       'onRequestProof',
-      ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
+      ({
+        credentialIssuer,
+        cNonce,
+        proofSigningAlgorithmsSupported,
+        cryptographicBindingMethodsSupported,
+        proofTypesSupported,
+      }) => {
         getProofJwt(
           credentialIssuer,
           cNonce,
           JSON.parse(proofSigningAlgorithmsSupported),
+          JSON.parse(cryptographicBindingMethodsSupported ?? '[]'),
+          JSON.parse(proofTypesSupported ?? '[]'),
         );
       },
     );
@@ -165,7 +180,7 @@ class VciClient {
     try {
       const clientMetadata = {
         clientId: 'wallet',
-        redirectUri: 'io.mosip.residentapp.inji://oauthredirect',
+        redirectUri: WALLET_REDIRECT_URI,
       };
       const openId4VpWalletConfig = await getWalletConfig();
       response = await this.InjiVciClient.requestCredentialByOffer(
@@ -210,6 +225,8 @@ class VciClient {
       credentialIssuer: string,
       cNonce: string | null,
       proofSigningAlgosSupported: string[] | null,
+      cryptographicBindingMethodsSupported: string[] | null,
+      proofTypesSupported: string[] | null,
     ) => void,
     navigateToAuthView: (authorizationEndpoint: string) => void,
     requestTokenResponse: (tokenRequest: object) => void,
@@ -218,11 +235,19 @@ class VciClient {
   ): Promise<any> {
     const proofListener = emitter.addListener(
       'onRequestProof',
-      ({credentialIssuer, cNonce, proofSigningAlgorithmsSupported}) => {
+      ({
+        credentialIssuer,
+        cNonce,
+        proofSigningAlgorithmsSupported,
+        cryptographicBindingMethodsSupported,
+        proofTypesSupported,
+      }) => {
         getProofJwt(
           credentialIssuer,
           cNonce,
           JSON.parse(proofSigningAlgorithmsSupported),
+          JSON.parse(cryptographicBindingMethodsSupported ?? '[]'),
+          JSON.parse(proofTypesSupported ?? '[]'),
         );
       },
     );

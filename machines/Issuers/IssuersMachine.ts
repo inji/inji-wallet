@@ -197,7 +197,7 @@ export const IssuersMachine = model.createMachine(
           PROOF_REQUEST: {
             actions: [
               'setCNonce',
-              'setWellknwonKeyTypes',
+              'setProofMetadata',
               'setSelectedCredentialIssuer',
             ],
             target: '.keyManagement',
@@ -693,7 +693,7 @@ export const IssuersMachine = model.createMachine(
             target: '.tokenRequest',
           },
           PROOF_REQUEST: {
-            actions: ['setCNonce', 'setWellknwonKeyTypes'],
+            actions: ['setCNonce', 'setProofMetadata'],
             target: '.keyManagement',
           },
           CANCEL: {
@@ -1050,7 +1050,6 @@ export interface issuerType {
   credential_issuer: string;
   protocol: string;
   client_id: string;
-  redirect_uri: string;
   token_endpoint: string;
   credential_endpoint: string;
   credential_configurations_supported: object;

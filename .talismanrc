@@ -9,7 +9,7 @@ fileignoreconfig:
 - filename: package.json
   checksum: 5b4fcb5ddc7cc96cc2d1733b544d56ea66e88cdab995a1052fbf9ac0e9c2dc21
 - filename: lib/jsonld-signatures/suites/ed255192018/ed25519.ts
-  checksum: 493b6e31144116cb612c24d98b97d8adcad5609c0a52c865a6847ced0a0ddc3a
+  checksum: c6027a62b944af457032008395c17ef08865c43124a3b99e7ef64d85eb79cc0a
 - filename: i18n.ts
   checksum: e80d40f33692c195d034774d024cafdf63d010ac6d4a35f94b2a5d81b78c234b
 - filename: components/Passcode.tsx
@@ -31,7 +31,7 @@ fileignoreconfig:
 - filename: shared/fileStorage.ts
   checksum: 2ba2721d9722cd9420ae26762316230f7dab1a0be45820cbda4d0ecae0edf957
 - filename: shared/openId4VCI/Utils.ts
-  checksum: 40b9af91348c8c80e4da7920374110d56f3782aa8f1317e211bdea02efb0d943
+  checksum: 5a93d5de806ce5bda0aab2b9f6db8e81c7ebb62e28e28e2dc66be0a27ad9c336
 - filename: shared/cryptoutil/cryptoUtil.ts
   checksum: 281f061ae6eb722c75c2caf2bdfb5b1bf72f292b471318d972c898c5a972c65f
 - filename: shared/telemetry/TelemetryConstants.js
@@ -284,7 +284,7 @@ fileignoreconfig:
 - filename: android/app/src/main/java/io/mosip/residentapp/InjiVciClientModule.java
   checksum: 17f55840bab193bc353034445ba4fce53e1ce466e95f616c15a1351f8d2f23bc
 - filename: ios/Inji.xcworkspace/xcshareddata/swiftpm/Package.resolved
-  checksum: aa607dc5ca1df7c61739ab87768923f83e5acd81d5517ddcfd82f84d22e804ef
+  checksum: 46e3e717078413ebfb8ff69203447c0b06669898b1e630c553d7268b612e6461
 - filename: injitest/src/main/resources/Vids.json
   checksum: 8bcffed7a6dd565ae695e1b29de0655e10bd5c5420af2718defd593a687b8817
 - filename: injitest/src/main/java/inji/utils/UpdateNetworkSettings.java
@@ -436,7 +436,7 @@ fileignoreconfig:
 - filename: shared/vcRenderer/VcRenderer.test.ts
   checksum: 9376788e007405923782381bd54488200c4d4953d1ced592be4243ed48d77252
 - filename: shared/openId4VCI/Utils.test.ts
-  checksum: 57e785f666935eda151d90972a75b80203f905311e8da2764ad1f24e3471d01c
+  checksum: 30761c5e92c6fdb32930683388d3669ebfad3c0a7f227b61c414ff90c00b79b1
 - filename: screens/Home/ReceivedVcsTab.test.tsx
   checksum: 14a5afee28e55a5a1fdb3ea0b79512b84c4dca48f92e57037c221fc9f5ba60c3
 - filename: screens/AuthScreenController.test.ts

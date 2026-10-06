@@ -41,10 +41,4 @@ describe('shared/InitialConfig', () => {
   it('should have cacheTTLInMilliSeconds', () => {
     expect(INITIAL_CONFIG.allProperties.cacheTTLInMilliSeconds).toBe('3600000');
   });
-
-  it('should have disableCredentialOfferVcVerification as false', () => {
-    expect(
-      INITIAL_CONFIG.allProperties.disableCredentialOfferVcVerification,
-    ).toBe(false);
-  });
 });

@@ -10,6 +10,10 @@ import {VCMetadata} from '../../shared/VCMetadata';
 import {IssuersEvents} from './IssuersEvents';
 import {issuerType} from './IssuersMachine';
 import {ActorRefFrom} from 'xstate';
+import {
+  BindingMethod,
+  DEFAULT_BINDING_METHOD,
+} from '../../shared/openId4VCI/BindingMethods';
 import {openID4VPMachine} from '../openID4VP/openID4VPMachine';
 import {AuthorizationType} from '../../shared/constants';
 
@@ -36,7 +40,10 @@ export const IssuersModel = createModel(
     privateKey: '',
     vcMetadata: {} as VCMetadata,
     keyType: 'RS256' as string,
-    wellknownKeyTypes: [] as string[],
+    jwtProofSigningAlgorithms: [] as string[],
+    cryptographicBindingMethods: [] as string[],
+    proofTypesSupported: [] as string[],
+    bindingMethod: DEFAULT_BINDING_METHOD as BindingMethod,
     authEndpointToOpen: false as boolean,
     isTransactionCodeRequested: false as boolean,
     authEndpoint: '' as string,

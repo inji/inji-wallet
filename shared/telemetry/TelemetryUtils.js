@@ -1,4 +1,3 @@
-import telemetry from 'telemetry-sdk';
 import {Platform} from 'react-native';
 import {MIMOTO_BASE_URL} from '../constants';
 import i18next from 'i18next';

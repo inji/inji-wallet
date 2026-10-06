@@ -336,7 +336,7 @@ export interface Typegen0 {
       | 'setVCMetadata'
       | 'setVerifiableCredential'
       | 'setVerificationResult'
-      | 'setWellknwonKeyTypes'
+      | 'setProofMetadata'
       | 'storeKeyPair'
       | 'storeVcMetaContext'
       | 'storeVcsContext'
@@ -616,7 +616,7 @@ export interface Typegen0 {
       | 'done.invoke.issuersMachine.downloadCredentials:invocation[0]'
       | 'done.invoke.issuersMachine.proccessingCredential:invocation[0]';
     setVerificationResult: 'done.invoke.issuersMachine.verifyingCredential:invocation[0]';
-    setWellknwonKeyTypes: 'PROOF_REQUEST';
+    setProofMetadata: 'PROOF_REQUEST';
     storeKeyPair:
       | 'done.invoke.issuersMachine.credentialDownloadFromOffer.keyManagement.generateKeyPair:invocation[0]'
       | 'done.invoke.issuersMachine.downloadCredentials.keyManagement.generateKeyPair:invocation[0]';

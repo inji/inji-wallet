@@ -8,6 +8,8 @@ import {utf8ToBytes} from '@noble/hashes/utils';
 import {Buffer} from 'buffer';
 import base64url from 'base64url';
 import jsonld from 'jsonld';
+// upstream jsonld; the bare specifier is aliased to the @digitalcredentials fork
+import jsonldRdfc from 'jsonld-rdfc';
 
 export const getVCsOrderedByPinStatus = (vcMetadatas: VCMetadata[]) => {
   const [pinned, unpinned] = groupBy(
@@ -121,12 +123,19 @@ export async function canonicalize(unsignedVp: any) {
     if ('proof' in jsonldObjectClone) {
       delete jsonldObjectClone.proof;
     }
-    const normalizedJsonldObject = await jsonld.canonize(jsonldObjectClone, {
-      algorithm: 'URDNA2015',
-    });
+    // the fork ignores the type-scoped "@container": "@graph" on
+    // verifiableCredential, canonicalizing to a different dataset than verifiers use
+    const normalizedJsonldObject = await jsonldRdfc.canonize(
+      jsonldObjectClone,
+      {
+        algorithm: 'URDNA2015',
+        safe: false,
+      },
+    );
 
-    const normalizedJsonldProof = await jsonld.canonize(jsonldProof, {
+    const normalizedJsonldProof = await jsonldRdfc.canonize(jsonldProof, {
       algorithm: 'URDNA2015',
+      safe: false,
     });
 
     const canonicalizationResult = Buffer.alloc(64);
