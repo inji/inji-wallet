@@ -1522,3 +1522,395 @@ describe('fieldItemIterator', () => {
     expect(result.length).toBe(2);
   });
 });
+
+describe('getFieldValue regression tests for MSO MDOC format', () => {
+  let mockDisplay: MockDisplay;
+  let mockProps: any;
+  let mockWellknown: any;
+
+  beforeEach(() => {
+    mockDisplay = new MockDisplay();
+    mockProps = {
+      verifiableCredentialData: {
+        vcMetadata: {
+          isVerified: true,
+        },
+      },
+      vc: {
+        credentialRegistry: 'Test Registry',
+      },
+    };
+    mockWellknown = {
+      credential_definition: {
+        credentialSubject: {},
+      },
+    };
+    jest.clearAllMocks();
+  });
+
+  describe('issuerSigned-wrapped credentials', () => {
+    it('should extract field values from issuerSigned-wrapped credentials', () => {
+      const verifiableCredential = {
+        issuerSigned: {
+          nameSpaces: {
+            'org.iso.18013.5.1': [
+              {
+                elementIdentifier: 'full_name',
+                elementValue: 'John Doe',
+              },
+              {
+                elementIdentifier: 'birth_date',
+                elementValue: '1990-01-15',
+              },
+            ],
+          },
+        },
+      } as any;
+
+      const result1 = getFieldValue(
+        verifiableCredential,
+        'org.iso.18013.5.1~full_name',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      const result2 = getFieldValue(
+        verifiableCredential,
+        'org.iso.18013.5.1~birth_date',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      expect(result1).toBe('John Doe');
+      expect(result2).toBe('1990-01-15');
+      expect(result1).not.toBe(result2);
+    });
+
+    it('should handle multiple namespaces in issuerSigned-wrapped credentials', () => {
+      const verifiableCredential = {
+        issuerSigned: {
+          nameSpaces: {
+            'org.iso.18013.5.1': [
+              {
+                elementIdentifier: 'family_name',
+                elementValue: 'Smith',
+              },
+            ],
+            'org.iso.23220.3.1': [
+              {
+                elementIdentifier: 'resident_since',
+                elementValue: '2020-05-10',
+              },
+            ],
+          },
+        },
+      } as any;
+
+      const result1 = getFieldValue(
+        verifiableCredential,
+        'org.iso.18013.5.1~family_name',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      const result2 = getFieldValue(
+        verifiableCredential,
+        'org.iso.23220.3.1~resident_since',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      expect(result1).toBe('Smith');
+      expect(result2).toBe('2020-05-10');
+    });
+  });
+
+  describe('flattened credentials (without issuerSigned wrapper)', () => {
+    it('should extract field values from flattened credentials', () => {
+      const verifiableCredential = {
+        nameSpaces: {
+          'org.iso.18013.5.1': [
+            {
+              elementIdentifier: 'given_name',
+              elementValue: 'Jane',
+            },
+            {
+              elementIdentifier: 'surname',
+              elementValue: 'Doe',
+            },
+          ],
+        },
+      } as any;
+
+      const result1 = getFieldValue(
+        verifiableCredential,
+        'org.iso.18013.5.1~given_name',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      const result2 = getFieldValue(
+        verifiableCredential,
+        'org.iso.18013.5.1~surname',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      expect(result1).toBe('Jane');
+      expect(result2).toBe('Doe');
+      expect(result1).not.toBe(result2);
+    });
+
+    it('should handle multiple namespaces in flattened credentials', () => {
+      const verifiableCredential = {
+        nameSpaces: {
+          'org.iso.18013.5.1': [
+            {
+              elementIdentifier: 'height',
+              elementValue: '180',
+            },
+          ],
+          'org.iso.23220.3.1': [
+            {
+              elementIdentifier: 'permanent_resident',
+              elementValue: true,
+            },
+          ],
+        },
+      } as any;
+
+      const result1 = getFieldValue(
+        verifiableCredential,
+        'org.iso.18013.5.1~height',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      const result2 = getFieldValue(
+        verifiableCredential,
+        'org.iso.23220.3.1~permanent_resident',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      expect(result1).toBe('180');
+      expect(result2).toBe(true);
+    });
+  });
+
+  describe('safe handling of missing namespace', () => {
+    it('should gracefully handle missing namespace in issuerSigned-wrapped credential', () => {
+      const verifiableCredential = {
+        issuerSigned: {
+          nameSpaces: {
+            'org.iso.18013.5.1': [
+              {
+                elementIdentifier: 'name',
+                elementValue: 'John',
+              },
+            ],
+          },
+        },
+      } as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'org.missing.namespace~name',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      expect(result).toBeUndefined();
+    });
+
+    it('should gracefully handle missing namespace in flattened credential', () => {
+      const verifiableCredential = {
+        nameSpaces: {
+          'org.iso.18013.5.1': [
+            {
+              elementIdentifier: 'age',
+              elementValue: 30,
+            },
+          ],
+        },
+      } as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'org.nonexistent.namespace~age',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      expect(result).toBeUndefined();
+    });
+
+    it('should gracefully handle missing field in namespace', () => {
+      const verifiableCredential = {
+        issuerSigned: {
+          nameSpaces: {
+            'org.iso.18013.5.1': [
+              {
+                elementIdentifier: 'given_name',
+                elementValue: 'Jane',
+              },
+            ],
+          },
+        },
+      } as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'org.iso.18013.5.1~non_existent_field',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      expect(result).toBeUndefined();
+    });
+
+    it('should gracefully handle missing nameSpaces in issuerSigned-wrapped credential', () => {
+      const verifiableCredential = {
+        issuerSigned: {},
+      } as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'org.iso.18013.5.1~field',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      expect(result).toBeUndefined();
+    });
+
+    it('should gracefully handle missing nameSpaces in flattened credential', () => {
+      const verifiableCredential = {} as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'org.iso.18013.5.1~field',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('field value matching and consistency', () => {
+    it('should return matching field values for same field across credential formats', () => {
+      const issuedSignedCred = {
+        issuerSigned: {
+          nameSpaces: {
+            'org.iso.18013.5.1': [
+              {
+                elementIdentifier: 'document_number',
+                elementValue: 'DL12345678',
+              },
+            ],
+          },
+        },
+      } as any;
+
+      const flattenedCred = {
+        nameSpaces: {
+          'org.iso.18013.5.1': [
+            {
+              elementIdentifier: 'document_number',
+              elementValue: 'DL12345678',
+            },
+          ],
+        },
+      } as any;
+
+      const result1 = getFieldValue(
+        issuedSignedCred,
+        'org.iso.18013.5.1~document_number',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      const result2 = getFieldValue(
+        flattenedCred,
+        'org.iso.18013.5.1~document_number',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      expect(result1).toBe(result2);
+      expect(result1).toBe('DL12345678');
+    });
+
+    it('should correctly distinguish between different field values', () => {
+      const verifiableCredential = {
+        issuerSigned: {
+          nameSpaces: {
+            'org.iso.18013.5.1': [
+              {
+                elementIdentifier: 'family_name',
+                elementValue: 'Smith',
+              },
+              {
+                elementIdentifier: 'given_name',
+                elementValue: 'John',
+              },
+            ],
+          },
+        },
+      } as any;
+
+      const result1 = getFieldValue(
+        verifiableCredential,
+        'org.iso.18013.5.1~family_name',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      const result2 = getFieldValue(
+        verifiableCredential,
+        'org.iso.18013.5.1~given_name',
+        mockWellknown,
+        mockProps,
+        mockDisplay as any,
+        VCFormat.mso_mdoc,
+      );
+
+      expect(result1).not.toBe(result2);
+      expect(result1).toBe('Smith');
+      expect(result2).toBe('John');
+    });
+  });
+});

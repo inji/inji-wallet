@@ -1,6 +1,7 @@
 import React, {useRef} from 'react';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import {SafeAreaView, ScrollView, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {Icon, Overlay} from 'react-native-elements';
 import {Button, Column, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
@@ -55,7 +56,7 @@ export const OnboardingOverlay: React.FC<OnboardingProps> = props => {
   const renderPagination = (activeIndex: number) => {
     return (
       <View style={Theme.OnboardingOverlayStyles.paginationContainer}>
-        <SafeAreaView>
+        <SafeAreaView edges={['bottom']}>
           <View style={Theme.OnboardingOverlayStyles.paginationDots}>
             {slides.length > 1 &&
               slides.map((_, i) => (

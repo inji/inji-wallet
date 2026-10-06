@@ -114,20 +114,6 @@ describe('IssuersGuards', () => {
     });
   });
 
-  describe('isCredentialOfferFlow', () => {
-    it('should return true when isCredentialOfferFlow is true', () => {
-      expect(guards.isCredentialOfferFlow({isCredentialOfferFlow: true})).toBe(
-        true,
-      );
-    });
-
-    it('should return false when isCredentialOfferFlow is false', () => {
-      expect(guards.isCredentialOfferFlow({isCredentialOfferFlow: false})).toBe(
-        false,
-      );
-    });
-  });
-
   describe('isIssuerIdInTrustedIssuers', () => {
     it('should return true when event data is true', () => {
       expect(guards.isIssuerIdInTrustedIssuers({}, {data: true})).toBe(true);

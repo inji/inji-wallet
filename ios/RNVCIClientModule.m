@@ -26,6 +26,11 @@ RCT_EXTERN_METHOD(getIssuerMetadata:(NSString *)credentialIssuer
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+// Generates a fresh token-endpoint DPoP proof bound to the supplied nonce (use_dpop_nonce retry)
+RCT_EXTERN_METHOD(generateTokenDPoPProof:(NSString *)dpopNonce
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 // Sends proof JWT back to native side (in response to onRequestProof)
 RCT_EXTERN_METHOD(sendProofFromJS:(NSString *)jwtProof)
 

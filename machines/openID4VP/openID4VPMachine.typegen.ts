@@ -92,6 +92,7 @@ export interface Typegen0 {
     getKeyPair: 'done.invoke.OpenID4VP.getKeyPairFromKeystore:invocation[0]';
     getSelectedKey: 'done.invoke.OpenID4VP.checkKeyPair:invocation[0]';
     isVerifierTrusted: 'done.invoke.OpenID4VP.checkVerifierTrust:invocation[0]';
+    redirectToVerifier: 'done.invoke.success:invocation[0]';
     sendSelectedCredentialsForVP: 'done.invoke.OpenID4VP.sendingVP.constructVP.constructing:invocation[0]';
     sendVP: 'done.invoke.OpenID4VP.sendingVP.sendVP:invocation[0]';
     shareDeclineStatus: 'done.invoke.OpenID4VP.shareVPDeclineStatusToVerifier:invocation[0]';
@@ -159,6 +160,7 @@ export interface Typegen0 {
       | 'getKeyPair'
       | 'getSelectedKey'
       | 'isVerifierTrusted'
+      | 'redirectToVerifier'
       | 'sendSelectedCredentialsForVP'
       | 'sendVP'
       | 'shareDeclineStatus'
@@ -273,6 +275,7 @@ export interface Typegen0 {
     isVerifierTrusted:
       | 'done.invoke.OpenID4VP.authenticateVerifier:invocation[0]'
       | 'done.invoke.OpenID4VP.checkKeyPair:invocation[0]';
+    redirectToVerifier: 'done.invoke.OpenID4VP.sendingVP.sendVP:invocation[0]';
     sendSelectedCredentialsForVP: '' | 'SIGN_VP';
     sendVP: '';
     shareDeclineStatus: 'CONFIRM';

@@ -8,6 +8,10 @@ import {
   getDisplayObjectForCurrentLanguage,
   removeBottomSectionFields,
   getMatchingCredentialIssuerMetadata,
+  assertJwtProofTypeSupported,
+  buildProofHeader,
+  getJwtProofSigningAlgorithms,
+  selectBindingMethod,
   selectCredentialRequestKey,
   updateCredentialInformation,
   getVcVerificationDetails,
@@ -23,6 +27,7 @@ import {
   getDetailedViewFields,
 } from './Utils';
 import {VCFormat} from '../VCFormat';
+import {BindingMethod} from './BindingMethods';
 
 // Mock VCProcessor
 jest.mock('../../components/VC/common/VCProcessor', () => ({
@@ -671,6 +676,122 @@ describe('openId4VCI Utils', () => {
     });
   });
 
+  describe('selectBindingMethod', () => {
+    it.each([
+      [['jwk'], BindingMethod.JWK],
+      [['did:jwk'], BindingMethod.DID_JWK],
+      [['did:key'], BindingMethod.DID_KEY],
+    ])('picks %s advertised by the issuer', (advertised, expected) => {
+      expect(selectBindingMethod(advertised)).toBe(expected);
+    });
+
+    it('prefers the wallet order over the issuer order', () => {
+      expect(selectBindingMethod(['did:key', 'jwk'])).toBe(BindingMethod.JWK);
+      expect(selectBindingMethod(['did:key', 'did:jwk'])).toBe(
+        BindingMethod.DID_JWK,
+      );
+    });
+
+    it('falls back to did:jwk when the issuer advertises nothing', () => {
+      expect(selectBindingMethod([])).toBe(BindingMethod.DID_JWK);
+      expect(selectBindingMethod(undefined as any)).toBe(BindingMethod.DID_JWK);
+    });
+
+    it('falls back to did:jwk when no advertised method is supported', () => {
+      expect(selectBindingMethod(['cose_key', 'x5c'])).toBe(
+        BindingMethod.DID_JWK,
+      );
+    });
+  });
+
+  describe('getJwtProofSigningAlgorithms', () => {
+    it('reads the jwt proof signing algorithms', () => {
+      expect(
+        getJwtProofSigningAlgorithms({
+          proof_types_supported: {
+            jwt: {proof_signing_alg_values_supported: ['ES256', 'RS256']},
+          },
+        }),
+      ).toEqual(['ES256', 'RS256']);
+    });
+
+    it('returns an empty list when proof types are absent', () => {
+      expect(getJwtProofSigningAlgorithms({})).toEqual([]);
+      expect(getJwtProofSigningAlgorithms(undefined)).toEqual([]);
+    });
+  });
+
+  describe('assertJwtProofTypeSupported', () => {
+    it('accepts a configuration advertising jwt', () => {
+      expect(() =>
+        assertJwtProofTypeSupported(['jwt', 'attestation']),
+      ).not.toThrow();
+    });
+
+    it('accepts a configuration advertising nothing', () => {
+      expect(() => assertJwtProofTypeSupported([])).not.toThrow();
+      expect(() => assertJwtProofTypeSupported(undefined)).not.toThrow();
+    });
+
+    it('rejects a configuration that supports no jwt proof type', () => {
+      expect(() => assertJwtProofTypeSupported(['attestation'])).toThrow(
+        /Wallet can only produce jwt proofs/,
+      );
+    });
+  });
+
+  describe('buildProofHeader', () => {
+    const jwk = {
+      kty: 'OKP',
+      crv: 'Ed25519',
+      x: 'FSBGSlM8OT4tS3xEKGdW0kU-fVeaVfXcAOZgLBnpMWg',
+    };
+
+    it('carries a raw jwk and no kid for the jwk binding', () => {
+      const header = buildProofHeader(
+        jwk,
+        'EdDSA',
+        BindingMethod.JWK,
+        'Ed25519',
+      );
+
+      expect(header).toEqual({alg: 'EdDSA', typ: 'openid4vci-proof+jwt', jwk});
+      expect(header.kid).toBeUndefined();
+    });
+
+    it('carries a did:jwk kid and no jwk for the did:jwk binding', () => {
+      const header = buildProofHeader(
+        jwk,
+        'EdDSA',
+        BindingMethod.DID_JWK,
+        'Ed25519',
+      );
+
+      expect(header.jwk).toBeUndefined();
+      expect(header.kid).toMatch(/^did:jwk:.+#0$/);
+    });
+
+    it('carries a did:key kid for the did:key binding', () => {
+      const header = buildProofHeader(
+        jwk,
+        'EdDSA',
+        BindingMethod.DID_KEY,
+        'Ed25519',
+      );
+
+      expect(header.jwk).toBeUndefined();
+      expect(header.kid).toMatch(
+        /^did:key:z6Mk[1-9A-HJ-NP-Za-km-z]+#z6Mk[1-9A-HJ-NP-Za-km-z]+$/,
+      );
+    });
+
+    it('rejects an unknown binding method', () => {
+      expect(() =>
+        buildProofHeader(jwk, 'EdDSA', 'cose_key' as any, 'Ed25519'),
+      ).toThrow('Unsupported binding method: cose_key');
+    });
+  });
+
   describe('constructProofJWT', () => {
     it('should construct proof JWT for RS256', async () => {
       const result = await constructProofJWT(
@@ -680,7 +801,6 @@ describe('openId4VCI Utils', () => {
         'client-123',
         'RS256',
         ['RS256'],
-        false,
         'test-nonce',
       );
       expect(typeof result).toBe('string');
@@ -694,7 +814,6 @@ describe('openId4VCI Utils', () => {
         'client-123',
         'Ed25519',
         ['EdDSA'],
-        true,
         'test-nonce',
       );
       expect(typeof result).toBe('string');
@@ -708,7 +827,6 @@ describe('openId4VCI Utils', () => {
         null,
         'RS256',
         ['RS256'],
-        false,
         'test-nonce',
       );
       expect(typeof result).toBe('string');
@@ -716,16 +834,24 @@ describe('openId4VCI Utils', () => {
 
     it('should throw for unsupported key type', async () => {
       await expect(
-        constructProofJWT(
-          'key',
-          'key',
-          'issuer',
-          'client',
-          'UNKNOWN',
-          [],
-          false,
-        ),
+        constructProofJWT('key', 'key', 'issuer', 'client', 'UNKNOWN', []),
       ).rejects.toThrow('Unsupported algorithm');
+    });
+
+    it('should throw when JWK construction fails', async () => {
+      const jose = jest.requireMock('node-jose');
+      jose.JWK.asKey.mockRejectedValueOnce(new Error('malformed pem'));
+      await expect(
+        constructProofJWT(
+          'malformed-public-key',
+          'rsa-private-key',
+          'https://issuer.example.com',
+          'client-123',
+          'RS256',
+          ['RS256'],
+          'test-nonce',
+        ),
+      ).rejects.toThrow('Failed to construct JWK for keyType: RS256');
     });
   });
 

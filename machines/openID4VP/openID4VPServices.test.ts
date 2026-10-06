@@ -27,6 +27,11 @@ jest.mock('../../shared/constants', () => ({
   OVP_ERROR_CODE: {DECLINED: 'declined'},
   OVP_ERROR_MESSAGES: {DECLINED: 'User declined'},
 }));
+const mockOpenURLInSelectedBrowser = jest.fn().mockResolvedValue(undefined);
+jest.mock('../../shared/browserUtils', () => ({
+  openURLInSelectedBrowser: (...args: any[]) =>
+    mockOpenURLInSelectedBrowser(...(args as [])),
+}));
 jest.mock('../../shared/Utils', () => ({
   getVerifierKey: jest.fn(() => 'verifierKey'),
   VCShareFlowType: {
@@ -205,5 +210,56 @@ describe('openID4VPServices', () => {
     const fn = services.sendSelectedCredentialsForVP(context);
     await fn();
     expect(OpenID4VP.prepareCredentialsForVPSharing).toHaveBeenCalled();
+  });
+
+  describe('redirectToVerifier', () => {
+    const verifierResponse = (redirectUri?: unknown) => ({
+      data: {
+        status_code: 200,
+        ...(redirectUri ? {redirect_uri: redirectUri} : {}),
+      },
+    });
+
+    it('redirects to the redirect_uri returned by the verifier', async () => {
+      const redirectUri = 'https://verifier.example.org/cb#response_code=abc';
+
+      await services.redirectToVerifier({}, verifierResponse(redirectUri))();
+
+      expect(mockOpenURLInSelectedBrowser).toHaveBeenCalledWith(redirectUri);
+    });
+
+    it('does not redirect when the verifier returned no redirect_uri', async () => {
+      await services.redirectToVerifier({}, verifierResponse())();
+
+      expect(mockOpenURLInSelectedBrowser).not.toHaveBeenCalled();
+    });
+
+    it('does not redirect when the redirect_uri is not a string', async () => {
+      await services.redirectToVerifier({}, verifierResponse(42))();
+
+      expect(mockOpenURLInSelectedBrowser).not.toHaveBeenCalled();
+    });
+
+    it('does not redirect when the redirect_uri is malformed', async () => {
+      jest.spyOn(console, 'warn').mockImplementation();
+
+      await services.redirectToVerifier({}, verifierResponse('not a url'))();
+
+      expect(mockOpenURLInSelectedBrowser).not.toHaveBeenCalled();
+    });
+
+    it('never rejects when the browser could not be opened', async () => {
+      jest.spyOn(console, 'warn').mockImplementation();
+      mockOpenURLInSelectedBrowser.mockRejectedValueOnce(
+        new Error('no activity found'),
+      );
+
+      await expect(
+        services.redirectToVerifier(
+          {},
+          verifierResponse('https://verifier.example.org/cb'),
+        )(),
+      ).resolves.toBeUndefined();
+    });
   });
 });

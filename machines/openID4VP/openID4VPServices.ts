@@ -2,12 +2,11 @@ import {CACHED_API} from '../../shared/api';
 import OpenID4VP from '../../shared/openID4VP/OpenID4VP';
 import {OVP_ERROR_CODE, OVP_ERROR_MESSAGES} from '../../shared/constants';
 import {getVerifierKey, VCShareFlowType} from '../../shared/Utils';
-import {
-  signDataForVpPreparation,
-} from '../../shared/openID4VP/OpenID4VPHelper';
+import {signDataForVpPreparation} from '../../shared/openID4VP/OpenID4VPHelper';
 import {NativeModules} from 'react-native';
 import VciClient from '../../shared/vciClient/VciClient';
 import {SelectedCredentialsForVPSharing} from '../VerifiableCredential/VCMetaMachine/vc';
+import {openURLInSelectedBrowser} from '../../shared/browserUtils';
 
 export const signatureSuite = 'JsonWebSignature2020';
 
@@ -111,6 +110,20 @@ export const openID4VPServices = () => {
         throw new Error('VERIFIER_RESPONSE_ERROR');
       }
       return verifierResponse;
+    },
+
+    redirectToVerifier: (_: any, event: any) => async () => {
+      const redirectUri = event?.data?.redirect_uri;
+      if (!redirectUri || typeof redirectUri !== 'string') {
+        return;
+      }
+
+      try {
+        new URL(redirectUri);
+        await openURLInSelectedBrowser(redirectUri);
+      } catch (error) {
+        console.warn('Error during redirection:', error);
+      }
     },
   };
 };

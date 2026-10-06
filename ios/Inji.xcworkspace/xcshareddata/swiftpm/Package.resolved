@@ -1,5 +1,5 @@
 {
-  "originHash" : "02ad68e62e552c1fd39000602decf79a5df6b2193532489e34d3f7de55223a00",
+  "originHash" : "e1f2d509954e8ca6c7f187d3fb6cb3d3d011988b00306f7948dcc9ebf4826839",
   "pins" : [
     {
       "identity" : "aexml",
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/inji/inji-openid4vp-ios-swift",
       "state" : {
-        "revision" : "e61b22dcac557f80f097a1bd32299f1c165d2c25",
-        "version" : "1.0.0-alpha.1"
+        "branch" : "develop",
+        "revision" : "4e52ef37ea86a5609f37c770d5ada660d298ca5b"
       }
     },
     {
@@ -96,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/inji/inji-vci-client-ios-swift",
       "state" : {
-        "revision" : "492e159eec445dab625ba78aa5f3c74a30297924",
-        "version" : "1.0.0-alpha.1"
+        "branch" : "develop",
+        "revision" : "cfe368c59c874fca66904c84328cc3c742728206"
       }
     },
     {

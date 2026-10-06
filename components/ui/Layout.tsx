@@ -7,8 +7,8 @@ import {
   StyleSheet,
   ScrollView,
   RefreshControlProps,
-  SafeAreaView,
 } from 'react-native';
+import {SafeAreaView, type Edges} from 'react-native-safe-area-context';
 import {Theme, ElevationLevel, Spacing} from './styleUtils';
 import testIDProps from '../../shared/commonUtil';
 
@@ -45,19 +45,24 @@ function createLayout(
       props.pX ? {paddingHorizontal: props.pX} : null,
     ];
 
-    const ViewType = props.safe ? SafeAreaView : View;
-
     return props.scroll ? (
-        <ScrollView
-          {...testIDProps(props.testID)}
-          contentContainerStyle={styles}
-          refreshControl={props.refreshControl}>
-          {props.children}
-        </ScrollView>
-    ) : (
-      <ViewType {...testIDProps(props.testID)} style={styles}>
+      <ScrollView
+        {...testIDProps(props.testID)}
+        contentContainerStyle={styles}
+        refreshControl={props.refreshControl}>
         {props.children}
-      </ViewType>
+      </ScrollView>
+    ) : props.safe ? (
+      <SafeAreaView
+        {...testIDProps(props.testID)}
+        style={styles}
+        edges={props.safeEdges}>
+        {props.children}
+      </SafeAreaView>
+    ) : (
+      <View {...testIDProps(props.testID)} style={styles}>
+        {props.children}
+      </View>
     );
   };
 
@@ -93,5 +98,6 @@ interface LayoutProps {
   pY?: number | string | undefined;
   pX?: number | string | undefined;
   safe?: boolean;
+  safeEdges?: Edges;
   children: React.ReactNode;
 }

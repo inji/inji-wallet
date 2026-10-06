@@ -10,7 +10,6 @@ jest.mock('../../../shared/api', () => ({
   default: jest.fn().mockResolvedValue({
     vcDownloadMaxRetry: 10,
     vcDownloadPoolInterval: 5000,
-    disableCredentialOfferVcVerification: false,
   }),
   API_URLS: {
     walletBinding: {method: 'POST', buildURL: () => '/wallet-binding'},

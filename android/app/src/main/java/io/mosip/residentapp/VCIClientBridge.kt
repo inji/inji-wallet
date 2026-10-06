@@ -127,17 +127,9 @@ object VCIClientBridge {
 
 
     private fun getProofsCallback(): ProofsCallback =
-            {
-                    credentialIssuer: String,
-                    cNonce: String?,
-                    proofSigningAlgorithmsSupported: List<String> ->
+            { credentialRequestProofMetadata ->
                 VCIClientCallbackBridge.createProofDeferred()
-                VCIClientCallbackBridge.emitRequestProof(
-                        reactContext,
-                        credentialIssuer,
-                        cNonce,
-                        proofSigningAlgorithmsSupported
-                )
+                VCIClientCallbackBridge.emitRequestProof(reactContext, credentialRequestProofMetadata)
                 CredentialRequestProofs(proofs = listOf(VCIClientCallbackBridge.awaitProof()))
             }
 
@@ -152,7 +144,8 @@ object VCIClientBridge {
                                 "txCode" to tokenRequest.txCode,
                                 "clientId" to tokenRequest.clientId,
                                 "redirectUri" to tokenRequest.redirectUri,
-                                "codeVerifier" to tokenRequest.codeVerifier
+                                "codeVerifier" to tokenRequest.codeVerifier,
+                                "dpopProof" to tokenRequest.dpopProof
                         )
 
                 VCIClientCallbackBridge.createTokenResponseDeferred()

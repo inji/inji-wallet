@@ -52,11 +52,13 @@ import {
   AuthorizationType,
   isIOS,
   isAndroid,
+  isAndroidVersionBelow,
   GET_INDIVIDUAL_ID,
   individualId,
   SHOW_FACE_AUTH_CONSENT_SHARE_FLOW,
   SHOW_FACE_AUTH_CONSENT_QR_LOGIN_FLOW,
 } from './constants';
+import {Platform} from 'react-native';
 
 jest.mock('react-native', () => ({
   Platform: {OS: 'android', Version: 30},
@@ -117,6 +119,15 @@ describe('shared/constants', () => {
 
     it('isIOS should return false for android platform', () => {
       expect(isIOS()).toBe(false);
+    });
+
+    it('checks whether the Android version is below a given version', () => {
+      Object.defineProperty(Platform, 'Version', {
+        configurable: true,
+        value: 30,
+      });
+      expect(isAndroidVersionBelow(35)).toBe(true);
+      expect(isAndroidVersionBelow(30)).toBe(false);
     });
   });
 

@@ -13,7 +13,6 @@ jest.mock('../../shared/CloudBackupAndRestoreUtils', () => ({
 jest.mock('../../shared/api', () => ({
   __esModule: true,
   default: jest.fn().mockResolvedValue({
-    disableCredentialOfferVcVerification: false,
     vcDownloadMaxRetry: 5,
     vcDownloadPoolInterval: 3000,
   }),
@@ -31,6 +30,11 @@ jest.mock('../../shared/cryptoutil/cryptoUtil', () => ({
     .mockResolvedValue({publicKey: 'pk', privateKey: 'sk'}),
 }));
 jest.mock('../../shared/openId4VCI/Utils', () => ({
+  // Selection itself is covered in shared/openId4VCI/Utils.test.ts; here we only assert that
+  // getKeyOrderList feeds it the right context and returns what it chose.
+  assertJwtProofTypeSupported: jest.fn(),
+  selectBindingMethod: jest.fn(() => 'jwk'),
+  selectCredentialRequestKey: jest.fn(() => 'ES256'),
   constructProofJWT: jest.fn().mockResolvedValue('proof-jwt'),
   hasKeyPair: jest.fn().mockResolvedValue(true),
   updateCredentialInformation: jest
@@ -294,7 +298,7 @@ describe('IssuersService', () => {
       privateKey: 'sk',
       credentialOfferCredentialIssuer: 'issuer',
       keyType: 'ES256',
-      wellknownKeyTypes: ['ES256'],
+      jwtProofSigningAlgorithms: ['ES256'],
       cNonce: 'nonce1',
     };
     const result = await services.constructProof(context);
@@ -310,7 +314,7 @@ describe('IssuersService', () => {
       privateKey: 'sk',
       selectedIssuer: {credential_issuer_host: 'host', client_id: 'client'},
       keyType: 'ES256',
-      wellknownKeyTypes: ['ES256'],
+      jwtProofSigningAlgorithms: ['ES256'],
       cNonce: 'nonce2',
     };
     const result = await services.constructAndSendProofForTrustedIssuers(
@@ -319,10 +323,48 @@ describe('IssuersService', () => {
     expect(result).toBe('proof-jwt');
   });
 
-  it('getKeyOrderList returns parsed key order', async () => {
+  it('getKeyOrderList selects the key type and binding method', async () => {
     mockGetData.mockResolvedValueOnce([null, '["ES256"]']);
-    const result = await services.getKeyOrderList();
-    expect(result).toEqual(['ES256']);
+    const result = await services.getKeyOrderList({
+      jwtProofSigningAlgorithms: ['ES256'],
+      cryptographicBindingMethods: ['jwk'],
+      proofTypesSupported: ['jwt'],
+    });
+    expect(result).toEqual({
+      keyOrder: ['ES256'],
+      keyType: 'ES256',
+      bindingMethod: 'jwk',
+    });
+  });
+
+  it('getKeyOrderList feeds the issuer metadata into selection', async () => {
+    const Utils = require('../../shared/openId4VCI/Utils');
+    mockGetData.mockResolvedValueOnce([null, '["ES256"]']);
+
+    await services.getKeyOrderList({
+      jwtProofSigningAlgorithms: ['ES256'],
+      cryptographicBindingMethods: ['jwk'],
+      proofTypesSupported: ['jwt'],
+    });
+
+    expect(Utils.assertJwtProofTypeSupported).toHaveBeenCalledWith(['jwt']);
+    expect(Utils.selectCredentialRequestKey).toHaveBeenCalledWith(
+      ['ES256'],
+      ['ES256'],
+    );
+    expect(Utils.selectBindingMethod).toHaveBeenCalledWith(['jwk']);
+  });
+
+  it('getKeyOrderList surfaces an unsupported proof type as a failure', async () => {
+    const Utils = require('../../shared/openId4VCI/Utils');
+    mockGetData.mockResolvedValueOnce([null, '["ES256"]']);
+    Utils.assertJwtProofTypeSupported.mockImplementationOnce(() => {
+      throw new Error('Wallet can only produce jwt proofs');
+    });
+
+    await expect(
+      services.getKeyOrderList({proofTypesSupported: ['attestation']}),
+    ).rejects.toThrow(/Wallet can only produce jwt proofs/);
   });
 
   it('getKeyPair returns key pair when it exists', async () => {
@@ -355,27 +397,11 @@ describe('IssuersService', () => {
 
   it('verifyCredential returns verified result', async () => {
     const context = {
-      isCredentialOfferFlow: false,
       verifiableCredential: {credential: 'cred-data'},
       selectedCredentialType: {format: 'ldp_vc'},
     };
     const result = await services.verifyCredential(context);
     expect(result.isVerified).toBe(true);
-  });
-
-  it('verifyCredential skips verification when disabled in offer flow config', async () => {
-    const getAllConfigurations = require('../../shared/api').default;
-    getAllConfigurations.mockResolvedValueOnce({
-      disableCredentialOfferVcVerification: true,
-    });
-    const context = {
-      isCredentialOfferFlow: true,
-      verifiableCredential: {credential: 'cred-data'},
-      selectedCredentialType: {format: 'ldp_vc'},
-    };
-    const result = await services.verifyCredential(context);
-    expect(result.isVerified).toBe(true);
-    expect(result.verificationMessage).toBe('');
   });
 
   it('verifyCredential throws when verification fails', async () => {
@@ -386,7 +412,6 @@ describe('IssuersService', () => {
       verificationMessage: 'fail',
     });
     const context = {
-      isCredentialOfferFlow: false,
       verifiableCredential: {credential: 'bad-cred'},
       selectedCredentialType: {format: 'ldp_vc'},
     };
@@ -520,7 +545,6 @@ describe('IssuersService', () => {
         selectedIssuer: {
           credential_issuer_host: 'https://host.com',
           client_id: 'c1',
-          redirect_uri: 'redir',
         },
         selectedCredentialType: {id: 'mDL'},
       };
@@ -558,7 +582,6 @@ describe('IssuersService', () => {
         selectedIssuer: {
           credential_issuer_host: 'https://host.com',
           client_id: 'c1',
-          redirect_uri: 'redir',
         },
         selectedCredentialType: {id: 'mDL'},
       };

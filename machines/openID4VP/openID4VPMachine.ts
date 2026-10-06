@@ -222,6 +222,7 @@ export const openID4VPMachine = model.createMachine(
           {
             cond: 'isAuthorizationFlow',
             actions: [
+              () => console.error('No matching VCs found'),
               model.assign({
                 error: () => OVP_ERROR_MESSAGES.NO_MATCHING_VCS,
               }),
@@ -626,6 +627,9 @@ export const openID4VPMachine = model.createMachine(
       },
       success: {
         id: 'success',
+        invoke: {
+          src: 'redirectToVerifier',
+        },
       },
       authFlowFailed: {
         entry: [

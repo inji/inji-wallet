@@ -29,6 +29,7 @@ module.exports = function (api) {
         alias: {
           'isomorphic-webcrypto': 'isomorphic-webcrypto/src/react-native',
           'fast-text-encoding': 'fast-text-encoding/text',
+          'jsonld-rdfc': 'jsonld',
           jsonld: '@digitalcredentials/jsonld',
           'jsonld-signatures': '@digitalcredentials/jsonld-signatures',
         },
@@ -39,7 +40,6 @@ module.exports = function (api) {
     plugins.push(['transform-remove-console', {exclude: ['error', 'warn']}]);
   }
   return {
-    presets: ['babel-preset-expo'],
     plugins,
     presets: [
       ['@babel/preset-env', {targets: {node: 'current'}}],

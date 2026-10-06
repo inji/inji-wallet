@@ -15,6 +15,12 @@ jest.mock('../../shared/openId4VCI/Utils', () => ({
     WALLET_GENERIC_ERROR: 'wallet_generic_error',
   },
   getDisplayObjectForCurrentLanguage: jest.fn(arr => arr?.[0]),
+  getJwtProofSigningAlgorithms: jest.fn(
+    credType =>
+      credType?.proof_types_supported?.jwt
+        ?.proof_signing_alg_values_supported ?? [],
+  ),
+  selectBindingMethod: jest.fn(() => 'did:jwk'),
   Issuers_Key_Ref: 'issuers_key_ref',
   VCIServerErrorCode: {
     SERVER_ERROR: 'server_error',
@@ -173,7 +179,7 @@ describe('IssuersActions', () => {
       'setRequestTxCode',
       'resetRequestTxCode',
       'setCredentialOfferIssuerWellknownResponse',
-      'setWellknwonKeyTypes',
+      'setProofMetadata',
       'setSelectedCredentialIssuer',
       'setTokenRequestObject',
       'setTokenResponseObject',
@@ -324,13 +330,16 @@ describe('IssuersActions', () => {
         },
       };
       expect(asg.selectedCredentialType({}, event)).toEqual(event.credType);
-      expect(asg.wellknownKeyTypes({}, event)).toEqual(['ES256']);
+      expect(asg.jwtProofSigningAlgorithms({}, event)).toEqual(['ES256']);
     });
 
     it('setSelectedCredentialType returns empty for no jwt', () => {
       const asg = actions.setSelectedCredentialType.assignment;
       expect(
-        asg.wellknownKeyTypes({}, {credType: {proof_types_supported: {}}}),
+        asg.jwtProofSigningAlgorithms(
+          {},
+          {credType: {proof_types_supported: {}}},
+        ),
       ).toEqual([]);
     });
 
@@ -583,8 +592,8 @@ describe('IssuersActions', () => {
       expect(fn({}, {data: {message: 'verify err'}})).toBe('verify err');
     });
 
-    it('setWellknwonKeyTypes sets from event', () => {
-      const fn = actions.setWellknwonKeyTypes.assignment.wellknownKeyTypes;
+    it('setProofMetadata sets from event', () => {
+      const fn = actions.setProofMetadata.assignment.jwtProofSigningAlgorithms;
       expect(fn({}, {proofSigningAlgosSupported: ['ES256']})).toEqual([
         'ES256',
       ]);
@@ -711,10 +720,13 @@ describe('IssuersActions', () => {
       ).toBe(true);
     });
 
-    it('setSelectedKey calls selectCredentialRequestKey', () => {
+    it('setSelectedKey reads the key type and binding chosen by getKeyOrderList', () => {
       const fn = actions.setSelectedKey.assignment.keyType;
-      const result = fn({wellknownKeyTypes: ['ES256']}, {data: 'someData'});
-      expect(result).toBe('ES256');
+      const event = {data: {keyType: 'ES256', bindingMethod: 'jwk'}};
+      expect(fn({}, event)).toBe('ES256');
+      expect(actions.setSelectedKey.assignment.bindingMethod({}, event)).toBe(
+        'jwk',
+      );
     });
 
     it('setCredentialOfferIssuerWellknownResponse sets selectedIssuer and wellknown', () => {
