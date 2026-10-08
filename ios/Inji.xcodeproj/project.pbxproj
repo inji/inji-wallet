@@ -1190,7 +1190,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/inji/inji-vci-client-ios-swift";
 			requirement = {
-				branch = develop;
+				branch = "release-1.0.x";
 				kind = branch;
 			};
 		};
@@ -1198,7 +1198,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/inji/inji-openid4vp-ios-swift";
 			requirement = {
-				branch = develop;
+				branch = "release-1.0.x";
 				kind = branch;
 			};
 		};
