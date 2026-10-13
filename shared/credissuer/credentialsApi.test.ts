@@ -81,18 +81,41 @@ describe('fetchIssuerQrCodeUrl', () => {
 
 const PNG_BASE64 = 'iVBORw0KGgo=';
 
-// The credentials API answers first, then the presigned image download.
+const MAX_QR_IMAGE_BYTES = 1024 * 1024;
+
+// The credentials API answers first, then the presigned image download. Returns the image
+// response's blob() mock, so a test can check whether the body was read at all.
 const mockApiThenImage = (
   apiBody: unknown,
-  image: {ok?: boolean; status?: number; type?: string} = {},
-) =>
+  image: {
+    ok?: boolean;
+    status?: number;
+    type?: string;
+    /** What the server declares in Content-Length; omitted means no header. */
+    contentLength?: string;
+    /** The real size of the body. */
+    size?: number;
+  } = {},
+) => {
+  const blob = jest.fn(async () => ({
+    type: image.type ?? 'image/png',
+    size: image.size ?? 8,
+  }));
   (global.fetch as jest.Mock)
     .mockResolvedValueOnce({ok: true, status: 200, json: async () => apiBody})
     .mockResolvedValueOnce({
       ok: image.ok ?? true,
       status: image.status ?? 200,
-      blob: async () => ({type: image.type ?? 'image/png'}),
+      headers: {
+        get: (name: string) =>
+          name.toLowerCase() === 'content-length'
+            ? image.contentLength ?? null
+            : null,
+      },
+      blob,
     });
+  return blob;
+};
 
 // Reads any blob as the same PNG, labelled with the blob's own type.
 class FakeFileReader {
@@ -167,6 +190,52 @@ describe('fetchIssuerQrCodeImage', () => {
 
     await expect(fetchIssuerQrCodeImage('UTPNID002', VC_ID)).rejects.toThrow(
       'HTTP 403',
+    );
+  });
+
+  it('refuses an image the server declares as over the size limit, without reading it', async () => {
+    const blob = mockApiThenImage(credentialsApiBody(VC_ID), {
+      contentLength: String(MAX_QR_IMAGE_BYTES + 1),
+    });
+
+    await expect(fetchIssuerQrCodeImage('UTPNID002', VC_ID)).rejects.toThrow(
+      'too large',
+    );
+    expect(blob).not.toHaveBeenCalled();
+  });
+
+  it('refuses an oversized image when the server declared no size, before converting it', async () => {
+    const readAsDataURL = jest.spyOn(FakeFileReader.prototype, 'readAsDataURL');
+    mockApiThenImage(credentialsApiBody(VC_ID), {
+      size: MAX_QR_IMAGE_BYTES + 1,
+    });
+
+    await expect(fetchIssuerQrCodeImage('UTPNID002', VC_ID)).rejects.toThrow(
+      'too large',
+    );
+    expect(readAsDataURL).not.toHaveBeenCalled();
+    readAsDataURL.mockRestore();
+  });
+
+  it('refuses an oversized image even when the declared size is under the limit', async () => {
+    mockApiThenImage(credentialsApiBody(VC_ID), {
+      contentLength: '2048',
+      size: MAX_QR_IMAGE_BYTES + 1,
+    });
+
+    await expect(fetchIssuerQrCodeImage('UTPNID002', VC_ID)).rejects.toThrow(
+      'too large',
+    );
+  });
+
+  it('accepts an image exactly at the size limit', async () => {
+    mockApiThenImage(credentialsApiBody(VC_ID), {
+      contentLength: String(MAX_QR_IMAGE_BYTES),
+      size: MAX_QR_IMAGE_BYTES,
+    });
+
+    await expect(fetchIssuerQrCodeImage('UTPNID002', VC_ID)).resolves.toBe(
+      `data:image/png;base64,${PNG_BASE64}`,
     );
   });
 });

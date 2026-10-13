@@ -11,6 +11,9 @@ import {
 
 const REQUEST_TIMEOUT_MS = 15000;
 const ATTACH_QR_TIMEOUT_MS = 8000;
+// The QR image is stored inside the credential, kept in memory with it and included in backups,
+// so its size is capped. A Claim 169 QR PNG is well under this.
+const MAX_QR_IMAGE_BYTES = 1024 * 1024;
 
 // Bounds the whole URL-lookup + image-download chain so a slow network can't hold the
 // download spinner for ~30s. On timeout the on-open fallback fetches the QR later.
@@ -115,7 +118,23 @@ async function downloadImageAsDataUri(url: string): Promise<string> {
         `CredIssuer QR image download returned HTTP ${response.status}`,
       );
     }
+    // Cheap early exit when the server declares the size. A missing or unparsable header is
+    // NaN or 0, which this comparison lets through to the check below.
+    const declaredBytes = Number(response.headers.get('content-length'));
+    if (declaredBytes > MAX_QR_IMAGE_BYTES) {
+      throw new Error(
+        `CredIssuer QR image is too large (${declaredBytes} bytes, limit ${MAX_QR_IMAGE_BYTES})`,
+      );
+    }
     const blob = await response.blob();
+    // The guard that always applies, whatever the header said. React Native's fetch has already
+    // received the whole body by now and can't stream it, so the download itself can't be cut
+    // short; what this stops is the base64 copy into JS memory, and the image being stored.
+    if (blob.size > MAX_QR_IMAGE_BYTES) {
+      throw new Error(
+        `CredIssuer QR image is too large (${blob.size} bytes, limit ${MAX_QR_IMAGE_BYTES})`,
+      );
+    }
     const dataUri = await readBlobAsDataUri(blob);
     const base64 = dataUri.slice(dataUri.indexOf(',') + 1);
     if (!base64) {
