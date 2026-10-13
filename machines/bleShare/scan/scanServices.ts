@@ -170,10 +170,11 @@ export const ScanServices = (model: any) => {
         }
       };
       const { processedCredential, ...rest } = context.selectedVc;
-      // The saved CredIssuer QR image is display data kept next to the credential, not part of
-      // it, and as a base64 PNG it would add tens of KB to a slow BLE transfer.
-      if (rest.verifiableCredential?.issuerQrCode) {
-        const {issuerQrCode, ...verifiableCredential} =
+      // The saved CredIssuer QR image and credential ID are the holder's wallet-side data kept
+      // next to the credential, not part of it, so neither is shared. The ID is what looks up
+      // the holder's QR, and the image as a base64 PNG would add tens of KB to a slow BLE transfer.
+      if (rest.verifiableCredential) {
+        const {issuerQrCode, credissuerCredentialId, ...verifiableCredential} =
           rest.verifiableCredential;
         rest.verifiableCredential = verifiableCredential;
       }
