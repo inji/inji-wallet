@@ -14,6 +14,11 @@ export const VcMetaEvents = {
     vc,
     vcMetadata,
   }),
+  VC_ISSUER_QR_CODE_UPDATED: (
+    vcMetadata: VCMetadata,
+    issuerQrCode: string,
+    credissuerCredentialId: string,
+  ) => ({vcMetadata, issuerQrCode, credissuerCredentialId}),
   REFRESH_MY_VCS: () => ({}),
   REFRESH_MY_VCS_TWO: (vc: VC) => ({vc}),
   REFRESH_RECEIVED_VCS: () => ({}),

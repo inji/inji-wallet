@@ -255,6 +255,28 @@ export const VCItemActions = model => {
       vcMetadata: (_, event) => event.vcMetadata,
     }),
 
+    setIssuerQrCode: assign({
+      verifiableCredential: (context: any, event: any) => ({
+        ...context.verifiableCredential,
+        credissuerCredentialId: event.credissuerCredentialId,
+        issuerQrCode: event.issuerQrCode,
+      }),
+    }),
+
+    // VCMeta keeps every stored credential in memory and hands it to newly spawned VC items, so it
+    // must get the QR too, or a card re-created in this session would fetch it again.
+    sendIssuerQrCodeToVcMeta: send(
+      (context: any, event: any) =>
+        VcMetaEvents.VC_ISSUER_QR_CODE_UPDATED(
+          context.vcMetadata,
+          event.issuerQrCode,
+          event.credissuerCredentialId,
+        ),
+      {
+        to: (context: any) => context.serviceRefs.vcMeta,
+      },
+    ),
+
     updateWellknownResponse: assign({
       wellknownResponse: (_, event) => event.data,
     }),

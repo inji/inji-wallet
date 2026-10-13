@@ -22,6 +22,10 @@ import {
 import {createCacheObject} from '../../shared/Utils';
 import {VerificationResult} from '../../shared/vcjs/verifyCredential';
 import {sign} from '@noble/secp256k1';
+import {
+  attachIssuerQrCode,
+  resolveCredissuerCredentialId,
+} from '../../shared/credissuer/credentialsApi';
 
 export const IssuersService = () => {
   return {
@@ -271,6 +275,19 @@ export const IssuersService = () => {
         context.credential,
       );
       return credential;
+    },
+
+    // Both download flows (credential offer and issuer list) pass through here once the credential
+    // is in context, so the token response read here is the one from this download.
+    attachIssuerQrCode: async (context: any) => {
+      const credentialWrapper = context.credentialWrapper;
+      return await attachIssuerQrCode(
+        credentialWrapper,
+        resolveCredissuerCredentialId(
+          context.tokenResponse,
+          credentialWrapper?.verifiableCredential?.credential,
+        ),
+      );
     },
     cacheIssuerWellknown: async (context: any) => {
       const credentialIssuer = context.credentialOfferCredentialIssuer;

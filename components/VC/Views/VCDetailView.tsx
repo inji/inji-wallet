@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
@@ -33,7 +33,7 @@ import {
   getIssuerQrCodeUrl,
   isCredissuerCredential,
 } from '../../../shared/qr/issuerQrCode';
-import {fetchIssuerQrCodeUrl} from '../../../shared/credissuer/credentialsApi';
+import {fetchIssuerQrCodeImage} from '../../../shared/credissuer/credentialsApi';
 import {SvgImage} from '../../ui/svg';
 import {isActivationNeeded} from '../../../shared/openId4VCI/Utils';
 import {
@@ -75,16 +75,30 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
   const face = props.verifiableCredentialData.face;
   const verifiableCredential = props.credential;
   const wellknownDisplayProperty = new Display(props.wellknown);
+  // The QR image the wallet saved for this credential (at download, or on the first open after
+  // it). When there is one it is all the card needs: no lookup, no network.
+  const walletCredential = props.credentialWrapper as unknown as
+    | VerifiableCredential
+    | undefined;
+  const savedIssuerQrCode = walletCredential?.issuerQrCode ?? null;
+  // The link inside the VC itself; it expires within a day, so it is only a last resort.
   const storedIssuerQrCodeUrl = getIssuerQrCodeUrl(verifiableCredential);
-  const credissuerCredentialId = isCredissuerCredential(verifiableCredential)
-    ? getCredissuerCredentialId(verifiableCredential)
-    : null;
+  // From the token response for new downloads. Older CredIssuer credentials carry it (or a
+  // template-specific equivalent) in credentialSubject instead.
+  const credissuerCredentialId =
+    walletCredential?.credissuerCredentialId ??
+    (isCredissuerCredential(verifiableCredential)
+      ? getCredissuerCredentialId(verifiableCredential)
+      : null);
   const vcId = getCredentialId(verifiableCredential);
   // Identifies which credential a lookup result belongs to. The result is stored together with
   // this key, and a result counts only while the key matches the credential being rendered.
   // Resetting state from the effect isn't enough: the effect runs after the render in which the
   // credential changed, so that render would still show the previous credential's QR.
-  const issuerQrLookupKey = getIssuerQrLookupKey(credissuerCredentialId, vcId);
+  // Null once a QR is saved, which is what stops the lookup from running on every open.
+  const issuerQrLookupKey = savedIssuerQrCode
+    ? null
+    : getIssuerQrLookupKey(credissuerCredentialId, vcId);
   const [issuerQrLookup, setIssuerQrLookup] = useState<{
     key: string;
     url: string | null;
@@ -99,7 +113,8 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
     issuerQrLookupKey !== null && issuerQrLookup?.key !== issuerQrLookupKey;
   const freshIssuerQrCodeUrl =
     issuerQrLookup?.key === issuerQrLookupKey ? issuerQrLookup.url : null;
-  const issuerQrCodeUrl = freshIssuerQrCodeUrl ?? storedIssuerQrCodeUrl;
+  const issuerQrCodeUrl =
+    savedIssuerQrCode ?? freshIssuerQrCodeUrl ?? storedIssuerQrCodeUrl;
   // The stored link expires within a day and the fresh one needs the network, so an issuer QR
   // image that fails to load is an expected case (offline, a day after download), not an edge
   // case. When it fails, the wallet-generated QR is shown instead, because it works offline.
@@ -111,25 +126,35 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
   const showIssuerQrCode =
     !!issuerQrCodeUrl && issuerQrCodeUrl !== failedIssuerQrCodeUrl;
 
+  // A ref, not an effect dependency: the parent passes a new function on every render, which
+  // would otherwise restart the lookup each time.
+  const onIssuerQrCodeFetchedRef = useRef(props.onIssuerQrCodeFetched);
+  onIssuerQrCodeFetchedRef.current = props.onIssuerQrCodeFetched;
+
   useEffect(() => {
-    const key = getIssuerQrLookupKey(credissuerCredentialId, vcId);
+    const key = issuerQrLookupKey;
     if (!credissuerCredentialId || key === null) {
       return;
     }
     let cancelled = false;
-    fetchIssuerQrCodeUrl(credissuerCredentialId, vcId)
-      .then(url => {
-        if (!cancelled) setIssuerQrLookup({key, url});
+    fetchIssuerQrCodeImage(credissuerCredentialId, vcId)
+      .then(qrCode => {
+        if (cancelled) return;
+        setIssuerQrLookup({key, url: qrCode});
+        // Saved with the credential, so this lookup happens once, not on every open.
+        if (qrCode) {
+          onIssuerQrCodeFetchedRef.current?.(qrCode, credissuerCredentialId);
+        }
       })
       .catch(error => {
         console.error('Error fetching issuer QR code from CredIssuer:', error);
-        // Settled with no fresh URL, so the stored image or the wallet QR shows.
+        // Settled with no fresh QR, so the link inside the VC or the wallet QR shows.
         if (!cancelled) setIssuerQrLookup({key, url: null});
       });
     return () => {
       cancelled = true;
     };
-  }, [credissuerCredentialId, vcId]);
+  }, [issuerQrLookupKey, credissuerCredentialId, vcId]);
 
   const {width: deviceWidth} = Dimensions.get('window');
   const CARD_WIDTH = deviceWidth * 0.8;
@@ -525,4 +550,9 @@ export interface VCItemDetailsProps {
   /** Closes the whole VC-details modal. The mDoc share flow needs this: dismissing
    * only the QR overlay leaves this modal covering the Home screen it navigates to. */
   onCloseDetails?: () => void;
+  /** Saves a CredIssuer QR that had to be fetched on open, so it is never fetched again. */
+  onIssuerQrCodeFetched?: (
+    issuerQrCode: string,
+    credissuerCredentialId: string,
+  ) => void;
 }

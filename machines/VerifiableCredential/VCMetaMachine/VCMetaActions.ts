@@ -159,6 +159,27 @@ export const VCMetaActions = (model: any) => {
       downloadingFailedVcs: (context, event) => [],
     }),
 
+    updateMyVcIssuerQrCode: model.assign({
+      myVcs: (context: any, event: any) => {
+        const vcKey = VCMetadata.fromVC(event.vcMetadata).getVcKey();
+        const vc = context.myVcs[vcKey];
+        if (!vc?.verifiableCredential) {
+          return context.myVcs;
+        }
+        return {
+          ...context.myVcs,
+          [vcKey]: {
+            ...vc,
+            verifiableCredential: {
+              ...vc.verifiableCredential,
+              credissuerCredentialId: event.credissuerCredentialId,
+              issuerQrCode: event.issuerQrCode,
+            },
+          },
+        };
+      },
+    }),
+
     setDownloadedVc: (context, event) => {
       const vcMetaData = event.vcMetadata ? event.vcMetadata : event.vc;
       const vcUniqueId = VCMetadata.fromVC(vcMetaData).getVcKey();
