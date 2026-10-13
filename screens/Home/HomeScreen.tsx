@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import {Icon} from 'react-native-elements';
 import {Column} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
 import {HomeRouteProps} from '../../routes/routeTypes';
@@ -9,19 +8,23 @@ import {ViewVcModal} from './ViewVcModal';
 import {useHomeScreen} from './HomeScreenController';
 import {TabRef} from './HomeScreenMachine';
 import {ActorRefFrom} from 'xstate';
-import LinearGradient from 'react-native-linear-gradient';
 import {ErrorMessageOverlay} from '../../components/MessageOverlay';
-import {Pressable} from 'react-native';
-import testIDProps from '../../shared/commonUtil';
+import {DeviceEventEmitter} from 'react-native';
+import {OPEN_ISSUERS_EVENT} from '../../components/revamp/RevampTabBar';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {useTranslation} from 'react-i18next';
-import {Copilot} from '../../components/ui/Copilot';
 
 export const HomeScreen: React.FC<HomeRouteProps> = props => {
   const controller = useHomeScreen(props);
-  const {t} = useTranslation();
+
+  useEffect(() => {
+    const sub = DeviceEventEmitter.addListener(
+      OPEN_ISSUERS_EVENT,
+      controller.GOTO_ISSUERS,
+    );
+    return () => sub.remove();
+  }, []);
 
   useEffect(() => {
     if (controller.IssuersService) {
@@ -35,40 +38,6 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
     });
   };
 
-  const DownloadFABIcon: React.FC = () => {
-    const plusIcon = (
-      <Icon
-        {...testIDProps('plusIcon')}
-        accessible={true}
-        name={'plus'}
-        type={'entypo'}
-        size={36}
-        color={Theme.Colors.whiteText}
-      />
-    );
-    return (
-      <LinearGradient
-        colors={Theme.Colors.gradientBtn}
-        start={Theme.LinearGradientDirection.start}
-        end={Theme.LinearGradientDirection.end}
-        style={Theme.Styles.downloadFabIconContainer}>
-        <Pressable
-          onPress={() => {
-            controller.GOTO_ISSUERS();
-          }}
-          {...testIDProps('downloadCardButton')}
-          accessible={false}
-          style={({pressed}) =>
-            pressed
-              ? Theme.Styles.downloadFabIconPressed
-              : Theme.Styles.downloadFabIconNormal
-          }>
-          {plusIcon}
-        </Pressable>
-      </LinearGradient>
-    );
-  };
-
   return (
     <React.Fragment>
       <BannerNotificationContainer />
@@ -77,6 +46,7 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
           <Column fill>
             <MyVcsTab
               isVisible={controller.activeTab === 0}
+              onAddCredential={controller.GOTO_ISSUERS}
               service={controller.tabRefs.myVcs}
               vcItemActor={controller.selectedVc}
               isViewingVc={controller.isViewingVc}
@@ -89,14 +59,6 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
           </Column>
         )}
       </Column>
-
-      <Copilot
-        title={t('copilot:downloadTitle')}
-        description={t('copilot:downloadMessage')}
-        order={1}
-        targetStyle={Theme.Styles.downloadFabIconCopilotContainer}>
-        <DownloadFABIcon />
-      </Copilot>
 
       <ErrorMessageOverlay
         translationPath={'MyVcsTab'}
@@ -123,4 +85,5 @@ export interface HomeScreenTabProps {
   service: TabRef;
   vcItemActor: ActorRefFrom<typeof VCItemMachine>;
   vc: VerifiableCredential | Credential;
+  onAddCredential?: () => void;
 }

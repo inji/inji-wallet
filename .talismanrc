@@ -436,5 +436,29 @@ fileignoreconfig:
     checksum: 6871fad16ecb5f019f502b2f7f715bc2a7b646ee08026b321aa1f8ce071dccc1
   - filename: shared/hooks/useScreenHeight.ts
     checksum: e3f13e7181efc6e6ad5896102bac1309bd8147ba711ff71f64a600a0dffc1364
+  - filename: components/revamp/tokens.ts
+    checksum: 8d440cfb36c14d64164e3ad11391a444cee21e2f37b5a01329093656cc0b65f2
+  - filename: components/revamp/sampleCards.ts
+    checksum: 3145a88e7ce3111b9b209feca2f38217a763a6dce411b31d5a02bf02a62c3fc8
+  - filename: components/revamp/credentialClaims.ts
+    checksum: 8fb606eb8bd955c61906b62ad8e56a13f59d7d669e7e07a05c5e3d6782d64016
+  - filename: components/revamp/CardLoader.tsx
+    checksum: df9cfaff7777c85f34deddd071d6533aff29ad8ac4e9beca30412ceab6d8cd0b
+  - filename: components/revamp/Guilloche.tsx
+    checksum: efa7c5daea63c098719ac924b4d5c263baba01de0a5e4bfd6c24480dac07fcec
+  - filename: components/revamp/useCardQr.ts
+    checksum: 3971e08f62919bcf11435f43dd73efab2eb658efec2ffafafb6fe8b19af9256f
+  - filename: components/revamp/CardCarousel.tsx
+    checksum: 4be437cad6fb798b97c0986a25b7831f5dbb7ecfc38ac2a5141f93328e4542f8
+  - filename: components/revamp/CredentialParts.tsx
+    checksum: 20c610640e6a346ae6e08f1be043d621895cae3ad15c66040f36e44e2c7f98f1
+  - filename: components/revamp/CredentialCard.tsx
+    checksum: f7588c336a757b1a57893023268a6b9a9a47b1e9374b3ef9c9506ada9d5d23cd
+  - filename: components/revamp/RevampTabBar.tsx
+    checksum: 08c78b5f8f11eccc55080a57d79871b7380aea6f737359bf4d1713c1a456b47e
+  - filename: components/revamp/WalletHeader.tsx
+    checksum: 4dd697ec883c1684958a79c3d6040604415a5b6176264be55b882830c61e31e3
+  - filename: components/revamp/WalletHome.tsx
+    checksum: 79464c57aee7858ad0bec7f276f3c198daeed4b23055ac8f8da1c9bc0ff5506c
     version: "1.0"
 
