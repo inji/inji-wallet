@@ -107,9 +107,11 @@ const ShieldCheck: React.FC<{color: string}> = ({color}) => (
   </Svg>
 );
 
-export const CredentialCardFront: React.FC<{data: CredentialCardData}> = ({
+export const CredentialCardFront = React.memo(function CredentialCardFront({
   data,
-}) => {
+}: {
+  data: CredentialCardData;
+}) {
   const {bg, fg, tone, edge, brand} = cardColours(data);
   return (
     <View style={[styles.card, {backgroundColor: bg, borderColor: edge}]}>
@@ -164,7 +166,7 @@ export const CredentialCardFront: React.FC<{data: CredentialCardData}> = ({
       </View>
     </View>
   );
-};
+});
 
 const ADDRESS_KEYS = [
   'resident_address',
@@ -246,10 +248,13 @@ const QrGlyph: React.FC = () => (
   </Svg>
 );
 
-export const CredentialCardBack: React.FC<{
+export const CredentialCardBack = React.memo(function CredentialCardBack({
+  data,
+  showing,
+}: {
   data: CredentialCardData;
   showing: boolean;
-}> = ({data, showing}) => {
+}) {
   const {bg, fg, tone, edge, wash} = cardColours(data);
   const {wide, pair} = backFields(data);
   const isMdoc = data.format === VCFormat.mso_mdoc;
@@ -282,7 +287,7 @@ export const CredentialCardBack: React.FC<{
             accessibilityLabel="Verification QR code">
             {qr ? (
               <QRCode value={qr} size={92} ecl={DEFAULT_ECL} />
-            ) : showing ? (
+            ) : showing && data.credential ? (
               <ActivityIndicator color="#0a3970" />
             ) : (
               <QrGlyph />
@@ -341,7 +346,7 @@ export const CredentialCardBack: React.FC<{
       </View>
     </View>
   );
-};
+});
 
 /** Draws a card (or a flipping pair of faces) at `width`, scaled from its design size. */
 export const ScaledCard: React.FC<{

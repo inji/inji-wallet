@@ -12,15 +12,7 @@ import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
-import Svg, {
-  Defs,
-  G,
-  Mask,
-  Path,
-  RadialGradient,
-  Rect,
-  Stop,
-} from 'react-native-svg';
+import Svg, {Defs, Path, RadialGradient, Stop} from 'react-native-svg';
 import {Copilot} from '../ui/Copilot';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
 import {
@@ -68,22 +60,22 @@ const Halo: React.FC<{colour: string}> = ({colour}) => {
     };
     return `M${r} ${r}L${p(a0)}A${r} ${r} 0 0 1 ${p(a1)}Z`;
   };
+  const rays = Array.from({length: RAYS}, (_, i) => ray(i)).join('');
+  // A gradient fill rather than a mask: Android composites a mask offscreen on every frame.
   return (
     <Svg width={HALO_SIZE} height={HALO_SIZE}>
       <Defs>
-        <RadialGradient id="fade" cx="50%" cy="50%" r="50%">
-          <Stop offset="0.3" stopColor="#fff" stopOpacity={1} />
-          <Stop offset="0.68" stopColor="#fff" stopOpacity={0} />
+        <RadialGradient
+          id="fade"
+          cx={r}
+          cy={r}
+          r={r}
+          gradientUnits="userSpaceOnUse">
+          <Stop offset="0.3" stopColor={colour} stopOpacity={0.09} />
+          <Stop offset="0.68" stopColor={colour} stopOpacity={0} />
         </RadialGradient>
-        <Mask id="m">
-          <Rect width={HALO_SIZE} height={HALO_SIZE} fill="url(#fade)" />
-        </Mask>
       </Defs>
-      <G mask="url(#m)">
-        {Array.from({length: RAYS}, (_, i) => (
-          <Path key={i} d={ray(i)} fill={colour} fillOpacity={0.09} />
-        ))}
-      </G>
+      <Path d={rays} fill="url(#fade)" />
     </Svg>
   );
 };

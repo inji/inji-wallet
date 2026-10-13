@@ -43,7 +43,7 @@ import {
   UserIcon,
 } from './Icons';
 import {Chip, WalletHeader} from './WalletHeader';
-import {SAMPLE_CARDS} from './sampleCards';
+import {SAMPLE_CARDS, useShowSampleCards} from './sampleCards';
 import {CARD_WIDTH, fonts, motion, radii, shadows} from './tokens';
 import {useRevampTheme} from './useRevampTheme';
 
@@ -106,7 +106,7 @@ export const WalletHome: React.FC<{
     setChip(ALL);
   };
 
-  const [showSamples, setShowSamples] = useState(false);
+  const [showSamples, setShowSamples] = useShowSampleCards();
   const [samplePinned, setSamplePinned] = useState<string | null>(null);
   const samples = showSamples ? SAMPLE_CARDS : [];
   const cards = useMemo<Record<string, LoadedCard>>(
@@ -314,7 +314,7 @@ export const WalletHome: React.FC<{
                     : 'Show sample cards',
                   icon: (col: string) => <SparkIcon color={col} />,
                   onPress: () => {
-                    setShowSamples(s => !s);
+                    setShowSamples(!showSamples);
                     setSamplePinned(null);
                   },
                 },
@@ -374,7 +374,7 @@ export const WalletHome: React.FC<{
             </View>
             {activeEntry && cards[activeEntry.key] ? (
               <ActiveDetails
-                key={activeEntry.key}
+                cardKey={activeEntry.key}
                 card={cards[activeEntry.key]}
                 pinned={isPinned(activeEntry)}
                 actions={actionsFor(activeEntry.key)}
@@ -426,20 +426,23 @@ export const WalletHome: React.FC<{
 
 /** Title, status, actions and information for the carousel's active card; rises in on each change. */
 const ActiveDetails: React.FC<{
+  cardKey: string;
   card: LoadedCard;
   pinned: boolean;
   actions: CardActions;
   reduceMotion: boolean;
-}> = ({card, pinned, actions, reduceMotion}) => {
+}> = ({cardKey, card, pinned, actions, reduceMotion}) => {
   const {c} = useRevampTheme();
   const rise = useRef(new Animated.Value(reduceMotion ? 1 : 0)).current;
   useEffect(() => {
+    if (reduceMotion) return;
+    rise.setValue(0);
     Animated.timing(rise, {
       toValue: 1,
       ...motion.rise,
       useNativeDriver: true,
     }).start();
-  }, []);
+  }, [cardKey]);
   const {data} = card;
   return (
     <Animated.View

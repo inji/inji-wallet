@@ -439,7 +439,7 @@ fileignoreconfig:
   - filename: components/revamp/tokens.ts
     checksum: 8d440cfb36c14d64164e3ad11391a444cee21e2f37b5a01329093656cc0b65f2
   - filename: components/revamp/sampleCards.ts
-    checksum: 3145a88e7ce3111b9b209feca2f38217a763a6dce411b31d5a02bf02a62c3fc8
+    checksum: ddc220dbbb258ab83386d1558e315e70a363d96107a7d1f6cd0aa6ec9e0b1925
   - filename: components/revamp/credentialClaims.ts
     checksum: 8fb606eb8bd955c61906b62ad8e56a13f59d7d669e7e07a05c5e3d6782d64016
   - filename: components/revamp/CardLoader.tsx
@@ -449,7 +449,7 @@ fileignoreconfig:
   - filename: components/revamp/useCardQr.ts
     checksum: 3971e08f62919bcf11435f43dd73efab2eb658efec2ffafafb6fe8b19af9256f
   - filename: components/revamp/CardCarousel.tsx
-    checksum: 4be437cad6fb798b97c0986a25b7831f5dbb7ecfc38ac2a5141f93328e4542f8
+    checksum: fcb25fd37e61c55467eaedd4be90896daf63d6796e62832d9e0dd8b3a4f09c33
   - filename: components/revamp/CredentialParts.tsx
     checksum: 20c610640e6a346ae6e08f1be043d621895cae3ad15c66040f36e44e2c7f98f1
   - filename: components/revamp/CredentialCard.tsx
@@ -459,6 +459,6 @@ fileignoreconfig:
   - filename: components/revamp/WalletHeader.tsx
     checksum: 4dd697ec883c1684958a79c3d6040604415a5b6176264be55b882830c61e31e3
   - filename: components/revamp/WalletHome.tsx
-    checksum: 79464c57aee7858ad0bec7f276f3c198daeed4b23055ac8f8da1c9bc0ff5506c
+    checksum: d64fbffedf35a89922a520c1a4d3361f060bdcb3e91310222a9ad3013c0bec28
     version: "1.0"
 
