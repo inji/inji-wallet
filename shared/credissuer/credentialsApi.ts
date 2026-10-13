@@ -102,6 +102,10 @@ export async function fetchIssuerQrCodeImage(
 }
 
 async function downloadImageAsDataUri(url: string): Promise<string> {
+  // The image is stored and shown as the holder's QR, so it must not come over plain http.
+  if (!url.startsWith('https://')) {
+    throw new Error('CredIssuer QR image URL must use https');
+  }
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   try {

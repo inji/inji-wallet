@@ -147,6 +147,21 @@ describe('fetchIssuerQrCodeImage', () => {
     expect(global.fetch).toHaveBeenCalledTimes(1);
   });
 
+  it('refuses a QR image link that is not https, without downloading it', async () => {
+    mockApiThenImage({
+      credential: {
+        id: VC_ID,
+        credentialSubject: {qr_code: FRESH_QR.replace('https://', 'http://')},
+      },
+    });
+
+    await expect(fetchIssuerQrCodeImage('UTPNID002', VC_ID)).rejects.toThrow(
+      'must use https',
+    );
+    // Only the credentials API was called; the image was never requested.
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+  });
+
   it('rejects when the image download fails', async () => {
     mockApiThenImage(credentialsApiBody(VC_ID), {ok: false, status: 403});
 
