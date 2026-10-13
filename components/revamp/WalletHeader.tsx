@@ -278,6 +278,7 @@ const SearchPanel: React.FC<{search: SearchState; onCancel: () => void}> = ({
                 borderColor: c.lineStrong,
                 backgroundColor: c.card,
                 color: c.ink,
+                paddingRight: search.query ? 44 : 16,
               },
             ]}
           />
@@ -418,7 +419,6 @@ const styles = StyleSheet.create({
     borderRadius: radii.pill,
     borderWidth: 1,
     paddingLeft: 40,
-    paddingRight: 44,
     fontSize: 16,
     fontFamily: fonts.regular,
   },

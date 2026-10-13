@@ -46,7 +46,7 @@ export const statusLabel: Record<CardStatus, string> = {
   revoked: 'Revoked',
 };
 
-/** The issuer's badge: its logo on a white disc inside a ring of the card's colour. */
+/** The issuer's badge: its logo, or the design's shield, on a white disc in a ring of the card's colour. */
 const IssuerBadge: React.FC<{logoUrl?: string; colour: string}> = ({
   logoUrl,
   colour,
@@ -69,6 +69,18 @@ const IssuerBadge: React.FC<{logoUrl?: string; colour: string}> = ({
         strokeDasharray="1.2 1.6"
         opacity={0.7}
       />
+      {logoUrl ? null : (
+        <>
+          <Path
+            d="M24 11.5l10 3.8v7.5c0 6.6-4.4 11.4-10 13.7-5.6-2.3-10-7.1-10-13.7v-7.5z"
+            fill={colour}
+          />
+          <Path
+            d="M24 17.5l1.9 3.9 4.3.6-3.1 3 .7 4.3-3.8-2-3.8 2 .7-4.3-3.1-3 4.3-.6z"
+            fill="#2ed9e8"
+          />
+        </>
+      )}
     </Svg>
     {logoUrl ? (
       <Image
