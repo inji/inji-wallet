@@ -198,6 +198,32 @@ describe('attachIssuerQrCode', () => {
     expect(result.verifiableCredential).not.toHaveProperty('issuerQrCode');
   });
 
+  it('stops waiting after 8 seconds on a slow network, keeping the credential ID', async () => {
+    jest.useFakeTimers();
+    try {
+      // The credentials API never answers.
+      (global.fetch as jest.Mock).mockReturnValue(new Promise(() => undefined));
+      jest.spyOn(console, 'error').mockImplementation(() => undefined);
+
+      let result: Awaited<ReturnType<typeof wrapper>> | undefined;
+      const pending = attachIssuerQrCode(wrapper(), 'UTPNID002').then(value => {
+        result = value;
+      });
+
+      await jest.advanceTimersByTimeAsync(7999);
+      expect(result).toBeUndefined();
+
+      await jest.advanceTimersByTimeAsync(1);
+      await pending;
+      expect(result?.verifiableCredential).toMatchObject({
+        credissuerCredentialId: 'UTPNID002',
+      });
+      expect(result?.verifiableCredential).not.toHaveProperty('issuerQrCode');
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
   it('leaves the credential unchanged when the token response had no credential ID', async () => {
     const original = wrapper();
 

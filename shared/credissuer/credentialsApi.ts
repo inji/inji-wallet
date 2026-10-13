@@ -10,6 +10,28 @@ import {
 } from '../qr/issuerQrCode';
 
 const REQUEST_TIMEOUT_MS = 15000;
+const ATTACH_QR_TIMEOUT_MS = 8000;
+
+// Bounds the whole URL-lookup + image-download chain so a slow network can't hold the
+// download spinner for ~30s. On timeout the on-open fallback fetches the QR later.
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const id = setTimeout(
+      () => reject(new Error('CredIssuer QR fetch timed out')),
+      ms,
+    );
+    promise.then(
+      value => {
+        clearTimeout(id);
+        resolve(value);
+      },
+      error => {
+        clearTimeout(id);
+        reject(error);
+      },
+    );
+  });
+}
 
 /**
  * The `qr_code` stored in a downloaded credential is a presigned link that expires within a day
@@ -124,9 +146,10 @@ function readBlobAsDataUri(blob: Blob): Promise<string> {
  * credential before it is stored, so the card never has to fetch its QR on open. Both go next to
  * the signed VC (`verifiableCredential.credential`), never inside it.
  *
- * The ID is kept even when the image can't be fetched right now (offline, API down), so the card
- * can fetch it once later; it is only ever used through {@link fetchIssuerQrCodeUrl}, which checks
- * the credential it resolves to is this one. A failure here never fails the download.
+ * The ID is kept even when the image can't be fetched right now (offline, API down, or slower
+ * than ATTACH_QR_TIMEOUT_MS), so the card can fetch it once later; it is only ever used through
+ * {@link fetchIssuerQrCodeUrl}, which checks the credential it resolves to is this one. A failure
+ * here never fails the download.
  */
 export async function attachIssuerQrCode<
   T extends {verifiableCredential?: {credential?: unknown} | null},
@@ -137,9 +160,12 @@ export async function attachIssuerQrCode<
   }
   let issuerQrCode: string | null = null;
   try {
-    issuerQrCode = await fetchIssuerQrCodeImage(
-      credentialId,
-      getCredentialId(verifiableCredential.credential),
+    issuerQrCode = await withTimeout(
+      fetchIssuerQrCodeImage(
+        credentialId,
+        getCredentialId(verifiableCredential.credential),
+      ),
+      ATTACH_QR_TIMEOUT_MS,
     );
   } catch (error) {
     console.error('Error fetching issuer QR code from CredIssuer:', error);
