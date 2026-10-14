@@ -5,7 +5,7 @@ import inji.pages.*;
 import inji.testcases.BaseTest.IosBaseTest;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
-
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -25,6 +25,12 @@ public class HelpPageAndAboutPageTest extends IosBaseTest {
     HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.IOS);
 
     homePage.clickOnNextButtonForInjiTour();
+
+    HelpPage helpPage = homePage.clickOnHelpIcon();
+
+    assertFalse(helpPage.isHelpPageContentEmpty(), "Verify Help page content is not empty");
+    helpPage.exitHelpPage();
+
     SettingsPage settingsPage = homePage.clickOnSettingIcon();
 
     assertTrue(settingsPage.isSettingPageLoaded(), "Verify if setting page is displayed");
