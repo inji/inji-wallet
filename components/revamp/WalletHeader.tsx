@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -64,11 +65,13 @@ export const WalletHeader: React.FC<{
   const {c} = useRevampTheme();
   const {t} = useTranslation();
   const insets = useSafeAreaInsets();
+  // Narrow phones (under 360dp) get tighter side margins so the title and count still fit.
+  const narrow = useWindowDimensions().width < 360;
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   return (
     <View style={{paddingTop: insets.top, backgroundColor: c.canvas}}>
-      <View style={styles.bar}>
+      <View style={[styles.bar, narrow && {paddingHorizontal: 16, gap: 8}]}>
         <View style={styles.left}>
           <Pressable
             onPress={onAvatar}
@@ -82,9 +85,16 @@ export const WalletHeader: React.FC<{
               )}
             </View>
           </Pressable>
-          <View style={{gap: 2, minWidth: 0}}>
-            <Text style={[styles.h1, {color: c.ink}]}>Wallet</Text>
+          <View style={{gap: 2, minWidth: 0, flexShrink: 1}}>
             <Text
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.7}
+              style={[styles.h1, {color: c.ink}]}>
+              Wallet
+            </Text>
+            <Text
+              numberOfLines={1}
               style={[styles.count, {color: c.inkMuted}]}
               accessibilityLiveRegion="polite">
               {countText}
@@ -344,7 +354,13 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
     paddingHorizontal: 24,
   },
-  left: {flexDirection: 'row', alignItems: 'center', gap: 12, flexShrink: 1},
+  left: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    flexShrink: 1,
+    minWidth: 0,
+  },
   avatarRing: {
     width: 47,
     height: 47,

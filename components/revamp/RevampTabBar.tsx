@@ -22,7 +22,7 @@ import {
   ScanIcon,
   SettingsIcon,
 } from './Icons';
-import {fonts, radii} from './tokens';
+import {fonts, narrowTextScale, radii, SLOT_LABEL_MAX_SCALE} from './tokens';
 import {useRevampTheme} from './useRevampTheme';
 
 const BAR_HEIGHT = 104;
@@ -36,15 +36,17 @@ export const OPEN_ISSUERS_EVENT = 'revamp.openIssuers';
 /** Screens inside a tab that hide the bar, as the issuer list always has. */
 const FULL_SCREEN_ROUTES = ['IssuersScreen'];
 
-/** The bar's outline: a pill with a round notch cut in the top for the scan button. */
-function outline(w: number) {
+/** The bar's outline: a pill `inset` from each side, with a round notch for the scan button. */
+function outline(w: number, inset: number) {
   const cx = w / 2;
+  const l = inset + 30;
+  const r = w - inset - 30;
   return [
-    `M50 32H${cx - 42.25}`,
+    `M${l} 32H${cx - 42.25}`,
     `A8 8 0 0 1 ${cx - 34.39} 38.51`,
     `A35 35 0 0 0 ${cx + 34.39} 38.51`,
     `A8 8 0 0 1 ${cx + 42.25} 32`,
-    `H${w - 50}A30 30 0 0 1 ${w - 50} 92H50A30 30 0 0 1 50 32Z`,
+    `H${r}A30 30 0 0 1 ${r} 92H${l}A30 30 0 0 1 ${l} 32Z`,
   ].join('');
 }
 
@@ -101,7 +103,13 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
 }) => {
   const {c} = useRevampTheme();
   const {t} = useTranslation('MainLayout');
-  const {width} = useWindowDimensions();
+  const window = useWindowDimensions();
+  // Drawn from the bar's own measured width, so the outline, notch and buttons always line up
+  // with the tabs whatever the screen size.
+  const [width, setWidth] = useState(window.width);
+  const labelScale = narrowTextScale(width);
+  // The design's 20dp side margin, tightened on narrow phones to leave the labels room.
+  const inset = width < 360 ? 12 : 20;
   const insets = useSafeAreaInsets();
   const [keyboard, setKeyboard] = useState(false);
   useEffect(() => {
@@ -200,11 +208,17 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
         style={styles.tab}>
         {item.icon(colour, item.on)}
         <Text
+          numberOfLines={1}
+          maxFontSizeMultiplier={SLOT_LABEL_MAX_SCALE}
+          adjustsFontSizeToFit
+          minimumFontScale={0.8}
           style={[
             styles.label,
             {
               color: colour,
               fontFamily: item.on ? fonts.semibold : fonts.regular,
+              fontSize: 12 * labelScale,
+              lineHeight: 14 * labelScale,
             },
           ]}>
           {item.label}
@@ -226,6 +240,7 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
 
   return (
     <View
+      onLayout={e => setWidth(e.nativeEvent.layout.width)}
       style={{height: BAR_HEIGHT + insets.bottom, backgroundColor: c.canvas}}>
       <View
         style={[styles.halo, {left: width / 2 - HALO_SIZE / 2}]}
@@ -235,16 +250,18 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
       <View style={styles.shape} pointerEvents="none">
         <Svg width={width} height={BAR_HEIGHT}>
           <Path
-            d={outline(width)}
+            d={outline(width, inset)}
             fill={c.card}
             stroke={c.line}
             strokeWidth={1}
           />
         </Svg>
       </View>
-      <View style={styles.nav} accessibilityRole="tablist">
+      <View
+        style={[styles.nav, {left: inset, right: inset}]}
+        accessibilityRole="tablist">
         <View style={styles.half}>{left.map(renderTab)}</View>
-        <View style={{width: 88}} />
+        <View style={{width: 80}} />
         <View style={styles.half}>{right.map(renderTab)}</View>
       </View>
       <Copilot
@@ -282,19 +299,16 @@ const styles = StyleSheet.create({
   },
   nav: {
     position: 'absolute',
-    left: 20,
-    right: 20,
     top: 32,
     height: 60,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 6,
+    paddingHorizontal: 8,
   },
   half: {flex: 1, flexDirection: 'row'},
   tab: {
     flex: 1,
     minHeight: 48,
-    marginHorizontal: 2,
     paddingTop: 5,
     paddingBottom: 4,
     borderRadius: 18,

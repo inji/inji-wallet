@@ -25,7 +25,9 @@ export interface CarouselEntry {
 }
 
 const SLOT = 0.8; // card scale relative to its design size, at a 390-wide screen
-const GAP_RATIO = 200 / 390; // distance between neighbouring cards, as a share of screen width
+// The centre card is drawn 1.03x its slot, so this keeps it at most its design size on wide screens.
+const MAX_SCALE = 1 / 1.03;
+const GAP = 250; // distance between neighbouring cards at scale 1 (200 at the design's 0.8)
 const RUBBER = 0.35;
 
 /**
@@ -41,8 +43,10 @@ export const CardCarousel: React.FC<{
   reduceMotion: boolean;
 }> = ({entries, index, onIndexChange, flipped, onFlip, reduceMotion}) => {
   const {width} = useWindowDimensions();
-  const scale = (width / 390) * SLOT;
-  const gap = width * GAP_RATIO;
+  // Grows with the screen like the design, but only up to its full size, so on wide phones and
+  // tablets the centre card matches the pinned card and details page.
+  const scale = Math.min((width / 390) * SLOT, MAX_SCALE);
+  const gap = GAP * scale;
   const n = entries.length;
 
   // The card index under the centre is `base` minus the finger's travel in cards; past either

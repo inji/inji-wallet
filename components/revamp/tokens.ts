@@ -86,6 +86,16 @@ export const radii = {
   chip: 10,
 };
 
+/**
+ * Small labels in rows of equal slots (tabs, actions) shrink together on screens narrower than
+ * the design, so neighbours keep the same size instead of each shrinking on its own.
+ */
+/** How far labels in fixed-width slots (tabs, action buttons) may grow with the system font size. */
+export const SLOT_LABEL_MAX_SCALE = 1.15;
+
+export const narrowTextScale = (screenWidth: number) =>
+  Math.min(1, Math.max(0.8, screenWidth / 375));
+
 /** Card size in the design; the carousel scales it to the screen width. */
 export const CARD_WIDTH = 342;
 export const CARD_HEIGHT = 216;

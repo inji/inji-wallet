@@ -1,10 +1,16 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import {VCFormat} from '../../shared/VCFormat';
 import {statusLabel} from './CredentialCard';
 import {displayDate, maskNumber} from './credentialClaims';
 import {ShieldCheckIcon} from './Icons';
-import {fonts, radii} from './tokens';
+import {fonts, narrowTextScale, radii, SLOT_LABEL_MAX_SCALE} from './tokens';
 import {RevampColors} from './tokens';
 import {useRevampTheme} from './useRevampTheme';
 import {CardStatus, CredentialCardData} from './useCredentialCard';
@@ -103,6 +109,7 @@ export const Action: React.FC<{
   icon: (colour: string) => React.ReactNode;
 }> = ({label, primary, size = 52, onPress, icon}) => {
   const {c} = useRevampTheme();
+  const fontSize = 14 * narrowTextScale(useWindowDimensions().width);
   return (
     <Pressable
       onPress={onPress}
@@ -123,7 +130,14 @@ export const Action: React.FC<{
         ]}>
         {icon(primary ? c.onPrimary : c.ink)}
       </View>
-      <Text style={[styles.actionLabel, {color: c.ink}]}>{label}</Text>
+      <Text
+        numberOfLines={1}
+        maxFontSizeMultiplier={SLOT_LABEL_MAX_SCALE}
+        adjustsFontSizeToFit
+        minimumFontScale={0.8}
+        style={[styles.actionLabel, {color: c.ink, fontSize}]}>
+        {label}
+      </Text>
     </Pressable>
   );
 };
