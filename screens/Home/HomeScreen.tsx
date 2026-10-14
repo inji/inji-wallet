@@ -59,6 +59,10 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
               service={controller.tabRefs.myVcs}
               vcItemActor={controller.selectedVc}
               isViewingVc={controller.isViewingVc}
+              openVcKey={props.route.params?.openVcKey}
+              onVcOpened={() =>
+                props.navigation.setParams({openVcKey: undefined})
+              }
             />
             <ReceivedVcsTab
               isVisible={controller.activeTab === 1}
@@ -95,4 +99,7 @@ export interface HomeScreenTabProps {
   vcItemActor: ActorRefFrom<typeof VCItemMachine>;
   vc: VerifiableCredential | Credential;
   onAddCredential?: () => void;
+  /** Opens this credential's detail view as soon as its card has loaded. */
+  openVcKey?: string;
+  onVcOpened?: () => void;
 }

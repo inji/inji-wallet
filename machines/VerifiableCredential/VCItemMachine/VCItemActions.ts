@@ -153,6 +153,7 @@ export const VCItemActions = model => {
             timestamp: Date.now(),
             deviceName: '',
             vcStatus: status,
+            ...VCActivityLog.namesFrom(context.vcMetadata),
           }),
         );
       },
@@ -587,6 +588,7 @@ export const VCItemActions = model => {
               context.verifiableCredential.credentialConfigurationId,
             timestamp: Date.now(),
             deviceName: '',
+            ...VCActivityLog.namesFrom(context.vcMetadata),
           }),
         );
       },
@@ -606,6 +608,7 @@ export const VCItemActions = model => {
             type: 'VC_REMOVED',
             timestamp: Date.now(),
             deviceName: '',
+            ...VCActivityLog.namesFrom(vcMetadata),
           }),
         );
       },
@@ -625,6 +628,7 @@ export const VCItemActions = model => {
             issuer: vcMetadata.issuerHost!!,
             timestamp: Date.now(),
             deviceName: '',
+            ...VCActivityLog.namesFrom(vcMetadata),
           }),
         );
       },
@@ -645,6 +649,7 @@ export const VCItemActions = model => {
             issuer: vcMetadata.issuerHost!!,
             timestamp: Date.now(),
             deviceName: '',
+            ...VCActivityLog.namesFrom(vcMetadata),
           }),
         );
       },

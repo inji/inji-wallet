@@ -3,7 +3,7 @@ import {RootStackParamList} from './index';
 import {ScanStackParamList} from './routesConstants';
 
 export type MainBottomTabParamList = {
-  home: undefined;
+  home: {activeTab?: number; openVcKey?: string} | undefined;
   share: undefined;
   history: undefined;
 };

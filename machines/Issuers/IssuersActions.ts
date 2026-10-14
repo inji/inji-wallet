@@ -545,6 +545,7 @@ export const IssuersActions = (model: any) => {
               context.selectedIssuer.credential_issuer_host ??
               context.credentialOfferCredentialIssuer,
             credentialConfigurationId: context.selectedCredentialType.id,
+            ...VCActivityLog.namesFrom(vcMetadata),
           }),
           context.selectedIssuerWellknownResponse,
         );

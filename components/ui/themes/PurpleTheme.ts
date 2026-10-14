@@ -442,7 +442,7 @@ export const PurpleTheme = {
       resizeMode: 'contain',
       aspectRatio: 1,
       height: 35,
-      marginRight: 10
+      marginRight: 10,
     },
     vcDetailsLogo: {
       height: 65,
@@ -752,11 +752,6 @@ export const PurpleTheme = {
       color: Colors.LightPurple,
       maxWidth: '80%',
       overflow: 'hidden',
-    },
-    HistoryHeaderTitleStyle: {
-      fontSize: 26,
-      fontFamily: 'Montserrat_600SemiBold',
-      marginTop: isIOS() ? 5 : 15,
     },
     tabBarIconCopilot: {
       flex: 1,
