@@ -29,11 +29,14 @@ import {
   selectRequestedClaimsByVerifier,
   selectSelectedVCs,
   selectShowConfirmationPopup,
+  selectIsVerifierRegistered,
   selectshowTrustConsentModal,
   selectVCsMatchingAuthRequest,
   selectVerifiableCredentialsData,
   selectVerifierLogoInTrustModal,
   selectVerifierNameInTrustModal,
+  selectVerifierRequestNameInTrustModal,
+  selectVerifierUrlInTrustModal,
   selectVerifierNameInVPSharing,
 } from '../../machines/openID4VP/openID4VPSelectors';
 import {OpenID4VPEvents} from '../../machines/openID4VP/openID4VPMachine';
@@ -244,6 +247,18 @@ export function useSendVPScreen(props) {
     verifierLogoInTrustModal: useSelector(
       openID4VPService,
       selectVerifierLogoInTrustModal,
+    ),
+    verifierUrlInTrustModal: useSelector(
+      openID4VPService,
+      selectVerifierUrlInTrustModal,
+    ),
+    verifierRequestNameInTrustModal: useSelector(
+      openID4VPService,
+      selectVerifierRequestNameInTrustModal,
+    ),
+    isVerifierRegistered: useSelector(
+      openID4VPService,
+      selectIsVerifierRegistered,
     ),
     showConfirmationPopup,
     isSelectingVCs,

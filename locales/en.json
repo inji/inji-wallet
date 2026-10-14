@@ -1286,16 +1286,20 @@
   "trustScreen": {
     "Description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",
     "pdiDescription": "To proceed with downloading the requested card, you will need to present another credential as part of the verification process.",
-    "verifierDescription": "Make sure you recognize or trust this verifier. Once you do:",
+    "verifierFirstTime": "First time with this verifier",
+    "verifierTitle": "Trust This Verifier?",
+    "registeredVerifier": "Registered verifier · trust registry",
+    "wantsToCheck": "Wants to check",
+    "verifierIntro": "{{name}} wants to verify your identity online (OpenID4VP). If you continue:",
     "infoPoints": [
       "The card will be securely saved in your wallet.",
       "This issuer will be added to your trusted list.",
       "You won't need to review trust again when downloading from them next time."
     ],
     "verifierInfoPoints": [
-      "The card will be securely shared with the verifier.",
-      "The verifier will be added to your trusted list.",
-      "You won’t need to review trust again when sharing with them in the future."
+      "You choose exactly which IDs to share.",
+      "Nothing is sent until you confirm with a selfie.",
+      "This verifier will be added to your trusted list."
     ],
     "confirm": "Yes, I Trust This Issuer",
     "verifierConfirm": "Yes, I Trust This Verifier",

@@ -366,9 +366,11 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
             controller.verifierNameInTrustModal ??
             t('ScanScreen:unknownVerifier')
           }
+          url={controller.verifierUrlInTrustModal}
+          requestName={controller.verifierRequestNameInTrustModal}
+          isRegistered={controller.isVerifierRegistered}
           onConfirm={controller.VERIFIER_TRUST_CONSENT_GIVEN}
           onCancel={controller.CANCEL}
-          flowType={'verifier'}
         />
       }
       {Object.keys(vcsMatchingAuthRequest).length > 0 && (

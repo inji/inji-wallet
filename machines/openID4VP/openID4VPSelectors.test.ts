@@ -23,6 +23,9 @@ import {
   selectshowTrustConsentModal,
   selectVerifierNameInTrustModal,
   selectVerifierLogoInTrustModal,
+  selectVerifierUrlInTrustModal,
+  selectIsVerifierRegistered,
+  selectVerifierRequestNameInTrustModal,
   selectIsAuthorization,
 } from './openID4VPSelectors';
 import {VCShareFlowType} from '../../shared/Utils';
@@ -430,6 +433,103 @@ describe('openID4VPSelectors', () => {
 
       expect(selectVerifierLogoInTrustModal(state)).toBe(
         'https://example.com/logo.png',
+      );
+    });
+  });
+
+  describe('selectVerifierUrlInTrustModal', () => {
+    const stateWith = (authenticationResponse: object) =>
+      ({context: {authenticationResponse}} as any);
+
+    it('should return the origin of response_uri', () => {
+      expect(
+        selectVerifierUrlInTrustModal(
+          stateWith({
+            client_id: 'mock-client',
+            response_uri: 'https://verify.example.com/vp/submit?x=1',
+          }),
+        ),
+      ).toBe('https://verify.example.com');
+    });
+
+    it('should fall back to redirect_uri, then a URL inside client_id', () => {
+      expect(
+        selectVerifierUrlInTrustModal(
+          stateWith({redirect_uri: 'https://redirect.example.com/cb'}),
+        ),
+      ).toBe('https://redirect.example.com');
+      expect(
+        selectVerifierUrlInTrustModal(
+          stateWith({client_id: 'redirect_uri:https://client.example.com/cb'}),
+        ),
+      ).toBe('https://client.example.com');
+    });
+
+    it('should return a bare client_id when there is no URL', () => {
+      expect(
+        selectVerifierUrlInTrustModal(stateWith({client_id: 'mock-client'})),
+      ).toBe('mock-client');
+      expect(selectVerifierUrlInTrustModal(stateWith({}))).toBe('');
+    });
+  });
+
+  describe('selectIsVerifierRegistered', () => {
+    const stateWith = (clientId: string | undefined, trustedVerifiers: any) =>
+      ({
+        context: {
+          authenticationResponse: {client_id: clientId},
+          trustedVerifiers,
+        },
+      } as any);
+
+    it('should return true when client_id is in the trusted verifiers list', () => {
+      expect(
+        selectIsVerifierRegistered(
+          stateWith('mock-client', [{client_id: 'mock-client'}]),
+        ),
+      ).toBe(true);
+    });
+
+    it('should return false when client_id is not in the list or missing', () => {
+      expect(
+        selectIsVerifierRegistered(
+          stateWith('other-client', [{client_id: 'mock-client'}]),
+        ),
+      ).toBe(false);
+      expect(
+        selectIsVerifierRegistered(
+          stateWith(undefined, [{client_id: undefined}]),
+        ),
+      ).toBe(false);
+      expect(selectIsVerifierRegistered(stateWith('mock-client', []))).toBe(
+        false,
+      );
+    });
+  });
+
+  describe('selectVerifierRequestNameInTrustModal', () => {
+    const stateWith = (presentation_definition: any) =>
+      ({context: {authenticationResponse: {presentation_definition}}} as any);
+
+    it('should prefer the presentation definition name', () => {
+      expect(
+        selectVerifierRequestNameInTrustModal(
+          stateWith({
+            name: ' Proof of identity ',
+            input_descriptors: [{name: 'National ID'}],
+          }),
+        ),
+      ).toBe('Proof of identity');
+    });
+
+    it('should fall back to the first input descriptor name, else empty', () => {
+      expect(
+        selectVerifierRequestNameInTrustModal(
+          stateWith({input_descriptors: [{name: 'National ID'}]}),
+        ),
+      ).toBe('National ID');
+      expect(selectVerifierRequestNameInTrustModal(stateWith(undefined))).toBe(
+        '',
       );
     });
   });

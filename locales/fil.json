@@ -1178,16 +1178,20 @@
   "trustScreen": {
     "Description": "Tiyaking kilala mo o pinagkakatiwalaan mo ang issuer na ito. Kapag pinagkakatiwalaan mo na ang issuer na ito:",
     "pdiDescription": "Upang magpatuloy sa pag-download ng hinihinging card, kakailanganin mong magpakita ng isa pang credential bilang bahagi ng proseso ng pag-verify.",
-    "verifierDescription": "Tiyaking kilala mo o pinagkakatiwalaan mo ang verifier na ito. Kapag nagtiwala ka na:",
+    "verifierFirstTime": "Unang beses sa verifier na ito",
+    "verifierTitle": "Pagkatiwalaan ang Verifier na Ito?",
+    "registeredVerifier": "Rehistradong verifier · trust registry",
+    "wantsToCheck": "Gustong suriin",
+    "verifierIntro": "Gustong i-verify ng {{name}} ang iyong pagkakakilanlan online (OpenID4VP). Kung magpapatuloy ka:",
     "infoPoints": [
       "Ang card ay ligtas na mase-save sa iyong wallet.",
       "Ang issuer na ito ay idagdag sa iyong trusted list.",
       "Hindi mo na kailangang muling suriin ang tiwala kapag magda-download mula sa kanila sa susunod."
     ],
     "verifierInfoPoints": [
-      "Ang card ay ligtas na ibabahagi sa verifier.",
-      "Ang verifier ay idaragdag sa iyong listahan ng pinagkakatiwalaan.",
-      "Hindi mo na kailangang suriin muli ang tiwala kapag muling nagbahagi sa kanila sa hinaharap."
+      "Ikaw ang pipili kung aling mga ID ang ibabahagi.",
+      "Walang ipapadala hangga't hindi ka nagkukumpirma gamit ang selfie.",
+      "Ang verifier na ito ay idadagdag sa iyong trusted list."
     ],
     "confirm": "Oo, Pinagkakatiwalaan Ko ang Issuer na Ito",
     "verifierConfirm": "Oo, pinagkakatiwalaan ko ang verifier na ito",
