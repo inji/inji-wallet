@@ -739,6 +739,18 @@
     "gotoSettings": "اذهب للاعدادات"
   },
   "ScanScreen": {
+    "shareSuccess": {
+      "title": "تمت المشاركة بنجاح",
+      "message": "استلم {{verifier}} بطاقتك.",
+      "message_plural": "استلم {{verifier}} بطاقاتك ({{count}}).",
+      "messageAccepted": "استلم {{verifier}} بطاقتك وقبلها.",
+      "messageAccepted_plural": "استلم {{verifier}} بطاقاتك ({{count}}) وقبلها.",
+      "sharedWith": "تمت المشاركة مع",
+      "date": "التاريخ",
+      "card": "البطاقة",
+      "backToWallet": "العودة إلى المحفظة",
+      "viewHistory": "عرض سجل المشاركة"
+    },
     "scanVerifierTitle": "مسح المُحقق",
     "close": "إغلاق",
     "flashOn": "تشغيل الفلاش",

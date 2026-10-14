@@ -739,6 +739,18 @@
     "gotoSettings": "அமைப்புகளுக்குச் செல்லவும்"
   },
   "ScanScreen": {
+    "shareSuccess": {
+      "title": "வெற்றிகரமாகப் பகிரப்பட்டது",
+      "message": "{{verifier}} உங்கள் அட்டையைப் பெற்றது.",
+      "message_plural": "{{verifier}} உங்கள் {{count}} அட்டைகளைப் பெற்றது.",
+      "messageAccepted": "{{verifier}} உங்கள் அட்டையைப் பெற்று ஏற்றுக்கொண்டது.",
+      "messageAccepted_plural": "{{verifier}} உங்கள் {{count}} அட்டைகளைப் பெற்று ஏற்றுக்கொண்டது.",
+      "sharedWith": "பகிரப்பட்டது",
+      "date": "தேதி",
+      "card": "அட்டை",
+      "backToWallet": "வாலட்டுக்குத் திரும்பு",
+      "viewHistory": "பகிர்வு வரலாற்றைப் பார்"
+    },
     "scanVerifierTitle": "சரிபார்ப்பாளரை ஸ்கேன் செய்யவும்",
     "close": "மூடு",
     "flashOn": "ஃப்ளாஷ்லைட்டை இயக்கு",

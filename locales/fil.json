@@ -737,6 +737,18 @@
     "gotoSettings": "Pumunta sa setting"
   },
   "ScanScreen": {
+    "shareSuccess": {
+      "title": "Matagumpay na Naibahagi",
+      "message": "Natanggap ng {{verifier}} ang iyong card.",
+      "message_plural": "Natanggap ng {{verifier}} ang iyong {{count}} card.",
+      "messageAccepted": "Natanggap at tinanggap ng {{verifier}} ang iyong card.",
+      "messageAccepted_plural": "Natanggap at tinanggap ng {{verifier}} ang iyong {{count}} card.",
+      "sharedWith": "Ibinahagi kay",
+      "date": "Petsa",
+      "card": "Card",
+      "backToWallet": "Bumalik sa Wallet",
+      "viewHistory": "Tingnan ang History ng Pagbabahagi"
+    },
     "scanVerifierTitle": "I-scan ang Verifier",
     "close": "Isara",
     "flashOn": "I-on ang flashlight",

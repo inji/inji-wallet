@@ -22,6 +22,10 @@ export function selectSelectedVCs(state: State) {
   return state.context.selectedVCs;
 }
 
+export function selectSelectedDisclosuresByVc(state: State) {
+  return state.context.selectedDisclosuresByVc;
+}
+
 export function selectAreAllVCsChecked(state: State) {
   return state.context.checkedAll;
 }

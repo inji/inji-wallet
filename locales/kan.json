@@ -739,6 +739,18 @@
     "gotoSettings": "ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಗೆ ಹೋಗಿ"
   },
   "ScanScreen": {
+    "shareSuccess": {
+      "title": "ಯಶಸ್ವಿಯಾಗಿ ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ",
+      "message": "{{verifier}} ನಿಮ್ಮ ಕಾರ್ಡ್ ಸ್ವೀಕರಿಸಿದೆ.",
+      "message_plural": "{{verifier}} ನಿಮ್ಮ {{count}} ಕಾರ್ಡ್‌ಗಳನ್ನು ಸ್ವೀಕರಿಸಿದೆ.",
+      "messageAccepted": "{{verifier}} ನಿಮ್ಮ ಕಾರ್ಡ್ ಸ್ವೀಕರಿಸಿ ಅಂಗೀಕರಿಸಿದೆ.",
+      "messageAccepted_plural": "{{verifier}} ನಿಮ್ಮ {{count}} ಕಾರ್ಡ್‌ಗಳನ್ನು ಸ್ವೀಕರಿಸಿ ಅಂಗೀಕರಿಸಿದೆ.",
+      "sharedWith": "ಯಾರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ",
+      "date": "ದಿನಾಂಕ",
+      "card": "ಕಾರ್ಡ್",
+      "backToWallet": "ವಾಲೆಟ್‌ಗೆ ಹಿಂತಿರುಗಿ",
+      "viewHistory": "ಹಂಚಿಕೆ ಇತಿಹಾಸ ನೋಡಿ"
+    },
     "scanVerifierTitle": "ಪರಿಶೀಲಕರನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",
     "close": "ಮುಚ್ಚಿ",
     "flashOn": "ಫ್ಲ್ಯಾಶ್‌ಲೈಟ್ ಆನ್ ಮಾಡಿ",

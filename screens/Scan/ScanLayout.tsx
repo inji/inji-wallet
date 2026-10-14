@@ -9,15 +9,17 @@ import {SharingStatusModal} from './SharingStatusModal';
 import {Theme} from '../../components/ui/styleUtils';
 import {Icon} from 'react-native-elements';
 import {Loader} from '../../components/ui/Loader';
-import {VCShareFlowType} from '../../shared/Utils';
 import {VerifyIdentityOverlay} from '../VerifyIdentityOverlay';
 import {SvgImage} from '../../components/ui/svg';
 import {View, I18nManager} from 'react-native';
 import {Text} from './../../components/ui';
 import {BannerStatusType} from '../../components/BannerNotification';
-import {isIOS, LIVENESS_CHECK} from '../../shared/constants';
+import {LIVENESS_CHECK} from '../../shared/constants';
 import {SendVPScreen} from './SendVPScreen';
 import { useSendVPScreen } from './SendVPScreenController';
+import {useSendVcScreen} from './SendVcScreenController';
+import {ShareSuccessScreen} from './ShareSuccessScreen';
+import {VCMetadata} from '../../shared/VCMetadata';
 
 const ScanStack = createNativeStackNavigator();
 
@@ -25,6 +27,27 @@ export const ScanLayout: React.FC = () => {
   const {t} = useTranslation('ScanScreen');
   const controller = useScanLayout();
   const sendVPScreenController = useSendVPScreen();
+  const sendVcScreenController = useSendVcScreen();
+
+  // Online shares name the verifier from its request; Bluetooth shares name the receiving device.
+  const sharedWithName = controller.isVPSharingSuccess
+    ? sendVPScreenController.verifierNameInTrustModal ?? t('unknownVerifier')
+    : sendVcScreenController.receiverInfo?.name ||
+      sendVcScreenController.receiverInfo?.deviceName ||
+      t('unknownVerifier');
+  const sharedCards = controller.isVPSharingSuccess
+    ? Object.values(sendVPScreenController.userSelectedVCs ?? {})
+        .flat()
+        .map(vc => ({
+          vcMetadata: vc.vcMetadata,
+          selectedDisclosures:
+            sendVPScreenController.userSelectedDisclosuresByVc?.[
+              VCMetadata.fromVcMetadataString(vc.vcMetadata).getVcKey()
+            ],
+        }))
+    : sendVcScreenController.selectedVc?.vcMetadata
+    ? [{vcMetadata: sendVcScreenController.selectedVc.vcMetadata}]
+    : [];
   if (
     controller.statusOverlay != null &&
     !controller.isAccepted &&
@@ -176,24 +199,14 @@ export const ScanLayout: React.FC = () => {
         />
       </ScanStack.Navigator>
        
-      <SharingStatusModal
+      <ShareSuccessScreen
         isVisible={controller.isAccepted || controller.isVPSharingSuccess}
-        testId={'sharingSuccessModal'}
-        buttonStatus={
-          controller.isOVPViaDeepLink ? 'none' : 'homeAndHistoryIcons'
-        }
-        title={t('status.accepted.title')}
-        message={t('status.accepted.message')}
-        additionalMessage={
-          controller.isOVPViaDeepLink && isIOS()
-            ? t('status.accepted.additionalMessage')
-            : ''
-        }
-        image={SvgImage.SuccessLogo()}
+        verifierName={sharedWithName}
+        sharedCards={sharedCards}
+        wasAcceptedByVerifier={controller.isAccepted}
+        isViaDeepLink={controller.isOVPViaDeepLink}
         goToHome={controller.GOTO_HOME}
         goToHistory={controller.GOTO_HISTORY}
-        verifierLogo={controller.openID4VPFlowType == VCShareFlowType.OPENID4VP ? sendVPScreenController.verifierLogoInTrustModal ?? undefined : undefined}
-        verifierName={controller.openID4VPFlowType == VCShareFlowType.OPENID4VP ? sendVPScreenController.verifierNameInTrustModal ?? t('unknownVerifier') : undefined}
       />
 
       {controller.errorStatusOverlay && (

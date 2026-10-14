@@ -772,6 +772,18 @@
     "gotoSettings": "Go to settings"
   },
   "ScanScreen": {
+    "shareSuccess": {
+      "title": "Shared Successfully",
+      "message": "{{verifier}} received your card.",
+      "message_plural": "{{verifier}} received your {{count}} cards.",
+      "messageAccepted": "{{verifier}} received and accepted your card.",
+      "messageAccepted_plural": "{{verifier}} received and accepted your {{count}} cards.",
+      "sharedWith": "Shared with",
+      "date": "Date",
+      "card": "Card",
+      "backToWallet": "Back to Wallet",
+      "viewHistory": "View Sharing History"
+    },
     "scanVerifierTitle": "Scan Verifier",
     "close": "Close",
     "flashOn": "Turn on flashlight",

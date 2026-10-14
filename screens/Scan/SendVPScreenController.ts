@@ -34,6 +34,7 @@ import {
   selectPresentationDefinition,
   selectPurpose,
   selectRequestedClaimsByVerifier,
+  selectSelectedDisclosuresByVc,
   selectSelectedVCs,
   selectShowConfirmationPopup,
   selectIsVerifierRegistered,
@@ -320,6 +321,10 @@ export function useSendVPScreen(props) {
     scanScreenError: useSelector(scanService, selectIsSendingVPError),
     vcsMatchingAuthRequest,
     userSelectedVCs: useSelector(openID4VPService, selectSelectedVCs),
+    userSelectedDisclosuresByVc: useSelector(
+      openID4VPService,
+      selectSelectedDisclosuresByVc,
+    ),
     inputDescriptorIdToSelectedVcKeys,
     requestedCredentialGroups,
     isSelectionComplete,
