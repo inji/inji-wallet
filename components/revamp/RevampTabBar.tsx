@@ -1,6 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
+  Animated,
   DeviceEventEmitter,
+  Easing,
   Keyboard,
   Pressable,
   StyleSheet,
@@ -12,107 +14,76 @@ import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
-import Svg, {Defs, Path, RadialGradient, Stop} from 'react-native-svg';
 import {Copilot} from '../ui/Copilot';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
-import {
-  ActivityIcon,
-  HomeIcon,
-  IssuersIcon,
-  ScanIcon,
-  SettingsIcon,
-} from './Icons';
-import {fonts, narrowTextScale, radii, SLOT_LABEL_MAX_SCALE} from './tokens';
+import {ActivityIcon, HomeIcon, ScanIcon, SettingsIcon} from './Icons';
+import {fonts, radii, shadows, SLOT_LABEL_MAX_SCALE} from './tokens';
 import {useRevampTheme} from './useRevampTheme';
 
 const BAR_HEIGHT = 104;
-const SCAN_SIZE = 58;
-const HALO_SIZE = 128;
-const RAYS = 40;
+const NAV_TOP = 30;
+const NAV_HEIGHT = 56;
+const NAV_PAD = 3;
+const TAB_HEIGHT = 48;
+const CLOSED_TAB = 48;
+const SCAN_SIZE = 56;
+const SCAN_GAP = 12;
+const DESIGN_NAV_WIDTH = 234;
+const MIN_SIDE_MARGIN = 12;
+const SLIDE = {duration: 500, easing: Easing.bezier(0.22, 1, 0.36, 1)};
 
-/** Asks the home screen to open the issuer list, as its add button does. */
-export const OPEN_ISSUERS_EVENT = 'revamp.openIssuers';
+/** Asks the home screen to open the add-card flow at its QR scanner. */
+export const SCAN_TO_ADD_EVENT = 'revamp.scanToAdd';
 
 /** Screens inside a tab that hide the bar, as the issuer list always has. */
 const FULL_SCREEN_ROUTES = ['IssuersScreen'];
 
-/** The bar's outline: a pill `inset` from each side, with a round notch for the scan button. */
-function outline(w: number, inset: number) {
-  const cx = w / 2;
-  const l = inset + 30;
-  const r = w - inset - 30;
-  return [
-    `M${l} 32H${cx - 42.25}`,
-    `A8 8 0 0 1 ${cx - 34.39} 38.51`,
-    `A35 35 0 0 0 ${cx + 34.39} 38.51`,
-    `A8 8 0 0 1 ${cx + 42.25} 32`,
-    `H${r}A30 30 0 0 1 ${r} 92H${l}A30 30 0 0 1 ${l} 32Z`,
-  ].join('');
-}
-
-/** Thin rays fanning out from behind the scan button, fading towards the edge. */
-const Halo: React.FC<{colour: string}> = ({colour}) => {
-  const r = HALO_SIZE / 2;
-  const ray = (i: number) => {
-    const a0 = (i * 360) / RAYS;
-    const a1 = a0 + 2.5;
-    const p = (deg: number) => {
-      const rad = ((deg - 90) * Math.PI) / 180;
-      return `${r + r * Math.cos(rad)} ${r + r * Math.sin(rad)}`;
-    };
-    return `M${r} ${r}L${p(a0)}A${r} ${r} 0 0 1 ${p(a1)}Z`;
-  };
-  const rays = Array.from({length: RAYS}, (_, i) => ray(i)).join('');
-  // A gradient fill rather than a mask: Android composites a mask offscreen on every frame.
-  return (
-    <Svg
-      width={HALO_SIZE}
-      height={HALO_SIZE}
-      viewBox={`0 0 ${HALO_SIZE} ${HALO_SIZE}`}>
-      <Defs>
-        <RadialGradient
-          id="fade"
-          cx={r}
-          cy={r}
-          r={r}
-          gradientUnits="userSpaceOnUse">
-          <Stop offset="0.3" stopColor={colour} stopOpacity={0.09} />
-          <Stop offset="0.68" stopColor={colour} stopOpacity={0} />
-        </RadialGradient>
-      </Defs>
-      <Path d={rays} fill="url(#fade)" />
-    </Svg>
-  );
-};
-
 interface Tab {
-  key: string;
+  route: string;
   label: string;
   icon: (colour: string, on: boolean) => React.ReactNode;
-  onPress: () => void;
-  on: boolean;
   copilot?: string;
 }
 
+const TABS: Tab[] = [
+  {
+    route: BOTTOM_TAB_ROUTES.home,
+    label: 'Home',
+    icon: (col, on) => (
+      <HomeIcon color={col} filled={on} strokeWidth={on ? 2.5 : 2.2} />
+    ),
+  },
+  {
+    route: BOTTOM_TAB_ROUTES.history,
+    label: 'Activity',
+    icon: (col, on) => (
+      <ActivityIcon color={col} strokeWidth={on ? 2.5 : 2.2} />
+    ),
+    copilot: 'history',
+  },
+  {
+    route: BOTTOM_TAB_ROUTES.settings,
+    label: 'Settings',
+    icon: (col, on) => (
+      <SettingsIcon color={col} strokeWidth={on ? 2.5 : 2.2} />
+    ),
+    copilot: 'settings',
+  },
+];
+
 /**
- * The app's bottom bar: Home and Activity, a raised Scan button in a notch, then Issuers and
- * Settings. Plugged into the tab navigator through its `tabBar` prop, so the screens and routes
- * stay as they are.
+ * The app's bottom bar: a pill of Home, Activity and Settings where the current tab opens up to
+ * show its label under a sliding highlight, with Scan as its own button on the right. Plugged
+ * into the tab navigator through its `tabBar` prop, so the screens and routes stay as they are.
  */
 export const RevampTabBar: React.FC<BottomTabBarProps> = ({
   state,
   descriptors,
   navigation,
 }) => {
-  const {c} = useRevampTheme();
+  const {c, reduceMotion} = useRevampTheme();
   const {t} = useTranslation('MainLayout');
-  const window = useWindowDimensions();
-  // Drawn from the bar's own measured width, so the outline, notch and buttons always line up
-  // with the tabs whatever the screen size.
-  const [width, setWidth] = useState(window.width);
-  const labelScale = narrowTextScale(width);
-  // The design's 20dp side margin, tightened on narrow phones to leave the labels room.
-  const inset = width < 360 ? 12 : 20;
+  const {width} = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const [keyboard, setKeyboard] = useState(false);
   useEffect(() => {
@@ -128,7 +99,30 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
     };
   }, []);
 
+  // The pill keeps the design's width where it fits, and narrows on small phones.
+  const navWidth = Math.min(
+    DESIGN_NAV_WIDTH,
+    width - 2 * MIN_SIDE_MARGIN - SCAN_GAP - SCAN_SIZE,
+  );
+  // Inside the border and padding: two closed tabs, the open one, and a gap between each.
+  const openTab = navWidth - 2 - 2 * NAV_PAD - 2 * CLOSED_TAB - 2 * NAV_PAD;
+  const left = (width - navWidth - SCAN_GAP - SCAN_SIZE) / 2;
+
   const focused = state.routes[state.index];
+  const tabIndex = TABS.findIndex(tab => tab.route === focused.name);
+  const activeIndex = Math.max(0, tabIndex);
+
+  const slide = useRef(new Animated.Value(activeIndex)).current;
+  useEffect(() => {
+    if (reduceMotion) slide.setValue(activeIndex);
+    else
+      Animated.timing(slide, {
+        toValue: activeIndex,
+        ...SLIDE,
+        useNativeDriver: false,
+      }).start();
+  }, [activeIndex]);
+
   const tabBarStyle = StyleSheet.flatten(
     descriptors[focused.key]?.options.tabBarStyle,
   ) as {display?: string} | undefined;
@@ -152,90 +146,70 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
     if (focused.name !== name && !event.defaultPrevented)
       navigation.navigate(name);
   };
+  const copilotOrder = (name: string) =>
+    1 + state.routes.findIndex(r => r.name === name);
 
-  const tab = (
-    name: string,
-    label: string,
-    icon: Tab['icon'],
-    copilot?: string,
-  ): Tab => ({
-    key: name,
-    label,
-    icon,
-    on: focused.name === name,
-    onPress: () => go(name),
-    copilot,
-  });
-  const left: Tab[] = [
-    tab(BOTTOM_TAB_ROUTES.home, 'Home', (col, on) => (
-      <HomeIcon color={col} filled={on} strokeWidth={on ? 2 : 1.6} />
-    )),
-    tab(
-      BOTTOM_TAB_ROUTES.history,
-      'Activity',
-      (col, on) => <ActivityIcon color={col} strokeWidth={on ? 2 : 1.6} />,
-      'history',
-    ),
-  ];
-  const right: Tab[] = [
-    {
-      key: 'issuers',
-      label: 'Issuers',
-      icon: (col, on) => <IssuersIcon color={col} strokeWidth={on ? 2 : 1.6} />,
-      on: false,
-      onPress: () => {
-        go(BOTTOM_TAB_ROUTES.home);
-        DeviceEventEmitter.emit(OPEN_ISSUERS_EVENT);
-      },
-    },
-    tab(
-      BOTTOM_TAB_ROUTES.settings,
-      'Settings',
-      (col, on) => <SettingsIcon color={col} strokeWidth={on ? 2 : 1.6} />,
-      'settings',
-    ),
-  ];
-  const copilotIndex = (name: string) =>
-    state.routes.findIndex(r => r.name === name);
-
-  const renderTab = (item: Tab) => {
-    const colour = item.on ? c.sel : c.inkMuted;
+  const renderTab = (tab: Tab, i: number) => {
+    const on = i === tabIndex;
+    const colour = on ? c.sel : c.inkMuted;
+    // 0 while this tab is the open one, 1 while it is a closed icon.
+    const closed = slide.interpolate({
+      inputRange: [i - 1, i, i + 1],
+      outputRange: [1, 0, 1],
+      extrapolate: 'clamp',
+    });
     const button = (
       <Pressable
-        key={item.key}
-        onPress={item.onPress}
+        key={tab.route}
+        onPress={() => go(tab.route)}
         accessibilityRole="tab"
-        accessibilityLabel={item.label}
-        accessibilityState={{selected: item.on}}
-        testID={item.key}
-        style={styles.tab}>
-        {item.icon(colour, item.on)}
-        <ScaledText
-          numberOfLines={1}
-          maxFontSizeMultiplier={SLOT_LABEL_MAX_SCALE}
-          adjustsFontSizeToFit
-          minimumFontScale={0.8}
+        accessibilityLabel={tab.label}
+        accessibilityState={{selected: on}}
+        testID={tab.route}>
+        <Animated.View
           style={[
-            styles.label,
+            styles.tab,
             {
-              color: colour,
-              fontFamily: item.on ? fonts.semibold : fonts.regular,
-              fontSize: 12 * labelScale,
-              lineHeight: 14 * labelScale,
+              width: closed.interpolate({
+                inputRange: [0, 1],
+                outputRange: [openTab, CLOSED_TAB],
+              }),
             },
           ]}>
-          {item.label}
-        </ScaledText>
+          {tab.icon(colour, on)}
+          <Animated.View
+            style={{
+              overflow: 'hidden',
+              maxWidth: closed.interpolate({
+                inputRange: [0, 1],
+                outputRange: [openTab - 22 - 2 * 13 - 7, 0],
+              }),
+              marginLeft: closed.interpolate({
+                inputRange: [0, 1],
+                outputRange: [7, 0],
+              }),
+              opacity: closed.interpolate({
+                inputRange: [0, 0.4, 1],
+                outputRange: [1, 0, 0],
+              }),
+            }}>
+            <ScaledText
+              numberOfLines={1}
+              maxFontSizeMultiplier={SLOT_LABEL_MAX_SCALE}
+              style={[styles.label, {color: colour}]}>
+              {tab.label}
+            </ScaledText>
+          </Animated.View>
+        </Animated.View>
       </Pressable>
     );
-    if (!item.copilot) return button;
+    if (!tab.copilot) return button;
     return (
       <Copilot
-        key={item.key}
-        title={t(`copilot:${item.copilot}Title`)}
-        description={t(`copilot:${item.copilot}Message`)}
-        order={1 + copilotIndex(item.copilot)}
-        targetStyle={{flex: 1}}>
+        key={tab.route}
+        title={t(`copilot:${tab.copilot}Title`)}
+        description={t(`copilot:${tab.copilot}Message`)}
+        order={copilotOrder(tab.copilot)}>
         {button}
       </Copilot>
     );
@@ -243,92 +217,97 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
 
   return (
     <View
-      onLayout={e => setWidth(e.nativeEvent.layout.width)}
       style={{height: BAR_HEIGHT + insets.bottom, backgroundColor: c.canvas}}>
       <View
-        style={[styles.halo, {left: width / 2 - HALO_SIZE / 2}]}
-        pointerEvents="none">
-        <Halo colour={c.ink} />
-      </View>
-      <View style={styles.shape} pointerEvents="none">
-        {/* With a viewBox, react-native-svg maps the drawing onto the view's laid-out size. Without
-            one it scales by the screen density it read when the app started, which is stale
-            after a display zoom change. */}
-        <Svg
-          width={width}
-          height={BAR_HEIGHT}
-          viewBox={`0 0 ${width} ${BAR_HEIGHT}`}>
-          <Path
-            d={outline(width, inset)}
-            fill={c.card}
-            stroke={c.line}
-            strokeWidth={1}
+        accessibilityRole="tablist"
+        style={[
+          styles.nav,
+          shadows.raised,
+          {left, width: navWidth, backgroundColor: c.card, borderColor: c.line},
+        ]}>
+        {tabIndex >= 0 ? (
+          <Animated.View
+            pointerEvents="none"
+            style={[
+              styles.highlight,
+              {
+                width: openTab,
+                backgroundColor: c.tintAzure,
+                transform: [
+                  {
+                    translateX: slide.interpolate({
+                      inputRange: [0, TABS.length - 1],
+                      outputRange: [
+                        0,
+                        (TABS.length - 1) * (CLOSED_TAB + NAV_PAD),
+                      ],
+                    }),
+                  },
+                ],
+              },
+            ]}
           />
-        </Svg>
+        ) : null}
+        {TABS.map(renderTab)}
       </View>
-      <View
-        style={[styles.nav, {left: inset, right: inset}]}
-        accessibilityRole="tablist">
-        <View style={styles.half}>{left.map(renderTab)}</View>
-        <View style={{width: 80}} />
-        <View style={styles.half}>{right.map(renderTab)}</View>
-      </View>
-      <Copilot
-        title={t(`copilot:${BOTTOM_TAB_ROUTES.share}Title`)}
-        description={t(`copilot:${BOTTOM_TAB_ROUTES.share}Message`)}
-        order={1 + copilotIndex(BOTTOM_TAB_ROUTES.share)}
-        targetStyle={[styles.scanWrap, {left: width / 2 - SCAN_SIZE / 2}]}>
+      <View style={[styles.scanWrap, {left: left + navWidth + SCAN_GAP}]}>
         <Pressable
-          onPress={() => go(BOTTOM_TAB_ROUTES.share)}
+          onPress={() => {
+            go(BOTTOM_TAB_ROUTES.home);
+            DeviceEventEmitter.emit(SCAN_TO_ADD_EVENT);
+          }}
           accessibilityRole="button"
-          accessibilityLabel="Scan"
-          testID={BOTTOM_TAB_ROUTES.share}
+          accessibilityLabel="Scan a QR code to add a credential"
+          testID="scanToAdd"
           style={({pressed}) => [
             styles.scan,
+            shadows.raised,
             {backgroundColor: c.primary},
             pressed && {transform: [{scale: 0.95}]},
           ]}>
-          <ScanIcon color={c.onPrimary} />
+          <ScanIcon color={c.onPrimary} size={25} strokeWidth={2.4} />
         </Pressable>
-      </Copilot>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  halo: {position: 'absolute', top: -32, width: HALO_SIZE, height: HALO_SIZE},
-  shape: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    shadowColor: '#0a3970',
-    shadowOpacity: 0.22,
-    shadowRadius: 11,
-    shadowOffset: {width: 0, height: 14},
-  },
   nav: {
     position: 'absolute',
-    top: 32,
-    height: 60,
+    top: NAV_TOP,
+    height: NAV_HEIGHT,
+    borderRadius: radii.pill,
+    borderWidth: 1,
+    padding: NAV_PAD,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 8,
+    justifyContent: 'space-between',
   },
-  half: {flex: 1, flexDirection: 'row'},
+  highlight: {
+    position: 'absolute',
+    left: NAV_PAD,
+    top: NAV_PAD,
+    height: TAB_HEIGHT,
+    borderRadius: radii.pill,
+  },
   tab: {
-    flex: 1,
-    minHeight: 48,
-    paddingTop: 5,
-    paddingBottom: 4,
-    borderRadius: 18,
+    height: TAB_HEIGHT,
+    borderRadius: radii.pill,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 2,
+    overflow: 'hidden',
   },
-  label: {fontSize: 12, lineHeight: 14},
+  label: {
+    fontFamily: fonts.semibold,
+    fontSize: 14,
+    lineHeight: 17,
+    letterSpacing: -0.1,
+  },
   scanWrap: {
     position: 'absolute',
-    top: 3,
+    top: NAV_TOP,
     width: SCAN_SIZE,
     height: SCAN_SIZE,
     borderRadius: radii.pill,
@@ -339,10 +318,5 @@ const styles = StyleSheet.create({
     borderRadius: radii.pill,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#0a3970',
-    shadowOpacity: 0.5,
-    shadowRadius: 13,
-    shadowOffset: {width: 0, height: 10},
-    elevation: 8,
   },
 });

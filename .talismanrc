@@ -455,7 +455,7 @@ fileignoreconfig:
   - filename: components/revamp/CredentialCard.tsx
     checksum: f7588c336a757b1a57893023268a6b9a9a47b1e9374b3ef9c9506ada9d5d23cd
   - filename: components/revamp/RevampTabBar.tsx
-    checksum: 08c78b5f8f11eccc55080a57d79871b7380aea6f737359bf4d1713c1a456b47e
+    checksum: 17dd0ffe2d789038588d3c05dd5c3dd4a095283e500f9987f6b29d8512fd836b
   - filename: components/revamp/WalletHeader.tsx
     checksum: 4dd697ec883c1684958a79c3d6040604415a5b6176264be55b882830c61e31e3
   - filename: components/revamp/WalletHome.tsx
