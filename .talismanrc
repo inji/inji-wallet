@@ -460,5 +460,9 @@ fileignoreconfig:
     checksum: 4dd697ec883c1684958a79c3d6040604415a5b6176264be55b882830c61e31e3
   - filename: components/revamp/WalletHome.tsx
     checksum: d64fbffedf35a89922a520c1a4d3361f060bdcb3e91310222a9ad3013c0bec28
+  - filename: components/revamp/SettingsList.tsx
+    checksum: 6efa1f08002173d151f65c4a4833f4ace324d92285c50b6d28d36e76002408bb
+  - filename: screens/Settings/SettingScreen.tsx
+    checksum: 6cec648c6dc7d75b12249b9c978ea7a902a239db98ef0bb2c651394381a75c59
     version: "1.0"
 
