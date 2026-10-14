@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+require('react-native-get-random-values');
+
 global.TextEncoder = require('text-encoding').TextEncoder;
 
 // Upstream rdf-canonize (used by jsonld-rdfc for Data Integrity canonicalization)

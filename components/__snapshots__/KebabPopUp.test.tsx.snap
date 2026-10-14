@@ -26,144 +26,158 @@ exports[`KebabPopUp Component should match snapshot when not visible 1`] = `
   }
 >
   <View
+    accessibilityLabel="pinCard"
+    accessibilityRole="button"
     accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "flex": 1,
-        },
-        null,
-        null,
-      ]
-    }
+    onPress={[MockFunction]}
+    topDivider={true}
   >
     <View
-      style={
-        {
-          "alignItems": "center",
-          "width": 25,
-        }
-      }
-    />
-    <Text
-      accessibilityLabel="pinCard"
+      accessible={true}
       style={
         [
           {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
           },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           {
-            "fontFamily": "Montserrat_400Regular",
-            "fontSize": 14,
+            "alignItems": "center",
           },
           null,
           {
-            "textAlign": "left",
-          },
-          {
-            "marginBottom": 0,
-            "marginEnd": 0,
-            "marginStart": 10,
-            "marginTop": 0,
+            "flex": 1,
           },
           null,
-          {
-            "fontFamily": "Montserrat_600SemiBold",
-          },
+          null,
         ]
       }
     >
-      Pin Card
-    </Text>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "width": 25,
+          }
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        Pin Card
+      </Text>
+    </View>
   </View>
   <View
+    accessibilityLabel="removeFromWallet"
+    accessibilityRole="button"
     accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "flex": 1,
-        },
-        null,
-        null,
-      ]
-    }
+    onPress={[MockFunction]}
+    topDivider={true}
   >
     <View
-      style={
-        {
-          "alignItems": "center",
-          "width": 25,
-        }
-      }
-    />
-    <Text
-      accessibilityLabel="removeFromWallet"
+      accessible={true}
       style={
         [
           {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
           },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           {
-            "fontFamily": "Montserrat_400Regular",
-            "fontSize": 14,
-          },
-          {
-            "color": "#D52929",
-          },
-          {
-            "textAlign": "left",
-          },
-          {
-            "marginBottom": 0,
-            "marginEnd": 0,
-            "marginStart": 10,
-            "marginTop": 0,
+            "alignItems": "center",
           },
           null,
           {
-            "fontFamily": "Montserrat_600SemiBold",
+            "flex": 1,
           },
+          null,
+          null,
         ]
       }
     >
-      Remove
-    </Text>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "width": 25,
+          }
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#D52929",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        Remove
+      </Text>
+    </View>
   </View>
 </View>
 `;
@@ -194,144 +208,158 @@ exports[`KebabPopUp Component should match snapshot with VC that has image 1`] =
   }
 >
   <View
+    accessibilityLabel="pinCard"
+    accessibilityRole="button"
     accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "flex": 1,
-        },
-        null,
-        null,
-      ]
-    }
+    onPress={[MockFunction]}
+    topDivider={true}
   >
     <View
-      style={
-        {
-          "alignItems": "center",
-          "width": 25,
-        }
-      }
-    />
-    <Text
-      accessibilityLabel="pinCard"
+      accessible={true}
       style={
         [
           {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
           },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           {
-            "fontFamily": "Montserrat_400Regular",
-            "fontSize": 14,
+            "alignItems": "center",
           },
           null,
           {
-            "textAlign": "left",
-          },
-          {
-            "marginBottom": 0,
-            "marginEnd": 0,
-            "marginStart": 10,
-            "marginTop": 0,
+            "flex": 1,
           },
           null,
-          {
-            "fontFamily": "Montserrat_600SemiBold",
-          },
+          null,
         ]
       }
     >
-      Pin Card
-    </Text>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "width": 25,
+          }
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        Pin Card
+      </Text>
+    </View>
   </View>
   <View
+    accessibilityLabel="removeFromWallet"
+    accessibilityRole="button"
     accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "flex": 1,
-        },
-        null,
-        null,
-      ]
-    }
+    onPress={[MockFunction]}
+    topDivider={true}
   >
     <View
-      style={
-        {
-          "alignItems": "center",
-          "width": 25,
-        }
-      }
-    />
-    <Text
-      accessibilityLabel="removeFromWallet"
+      accessible={true}
       style={
         [
           {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
           },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           {
-            "fontFamily": "Montserrat_400Regular",
-            "fontSize": 14,
-          },
-          {
-            "color": "#D52929",
-          },
-          {
-            "textAlign": "left",
-          },
-          {
-            "marginBottom": 0,
-            "marginEnd": 0,
-            "marginStart": 10,
-            "marginTop": 0,
+            "alignItems": "center",
           },
           null,
           {
-            "fontFamily": "Montserrat_600SemiBold",
+            "flex": 1,
           },
+          null,
+          null,
         ]
       }
     >
-      Remove
-    </Text>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "width": 25,
+          }
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#D52929",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        Remove
+      </Text>
+    </View>
   </View>
 </View>
 `;
@@ -362,144 +390,158 @@ exports[`KebabPopUp Component should match snapshot with custom icon color 1`] =
   }
 >
   <View
+    accessibilityLabel="pinCard"
+    accessibilityRole="button"
     accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "flex": 1,
-        },
-        null,
-        null,
-      ]
-    }
+    onPress={[MockFunction]}
+    topDivider={true}
   >
     <View
-      style={
-        {
-          "alignItems": "center",
-          "width": 25,
-        }
-      }
-    />
-    <Text
-      accessibilityLabel="pinCard"
+      accessible={true}
       style={
         [
           {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
           },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           {
-            "fontFamily": "Montserrat_400Regular",
-            "fontSize": 14,
+            "alignItems": "center",
           },
           null,
           {
-            "textAlign": "left",
-          },
-          {
-            "marginBottom": 0,
-            "marginEnd": 0,
-            "marginStart": 10,
-            "marginTop": 0,
+            "flex": 1,
           },
           null,
-          {
-            "fontFamily": "Montserrat_600SemiBold",
-          },
+          null,
         ]
       }
     >
-      Pin Card
-    </Text>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "width": 25,
+          }
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        Pin Card
+      </Text>
+    </View>
   </View>
   <View
+    accessibilityLabel="removeFromWallet"
+    accessibilityRole="button"
     accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "flex": 1,
-        },
-        null,
-        null,
-      ]
-    }
+    onPress={[MockFunction]}
+    topDivider={true}
   >
     <View
-      style={
-        {
-          "alignItems": "center",
-          "width": 25,
-        }
-      }
-    />
-    <Text
-      accessibilityLabel="removeFromWallet"
+      accessible={true}
       style={
         [
           {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
           },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           {
-            "fontFamily": "Montserrat_400Regular",
-            "fontSize": 14,
-          },
-          {
-            "color": "#D52929",
-          },
-          {
-            "textAlign": "left",
-          },
-          {
-            "marginBottom": 0,
-            "marginEnd": 0,
-            "marginStart": 10,
-            "marginTop": 0,
+            "alignItems": "center",
           },
           null,
           {
-            "fontFamily": "Montserrat_600SemiBold",
+            "flex": 1,
           },
+          null,
+          null,
         ]
       }
     >
-      Remove
-    </Text>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "width": 25,
+          }
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#D52929",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        Remove
+      </Text>
+    </View>
   </View>
 </View>
 `;
@@ -533,144 +575,158 @@ exports[`KebabPopUp Component should match snapshot with custom icon component 1
     Custom
   </Text>
   <View
+    accessibilityLabel="pinCard"
+    accessibilityRole="button"
     accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "flex": 1,
-        },
-        null,
-        null,
-      ]
-    }
+    onPress={[MockFunction]}
+    topDivider={true}
   >
     <View
-      style={
-        {
-          "alignItems": "center",
-          "width": 25,
-        }
-      }
-    />
-    <Text
-      accessibilityLabel="pinCard"
+      accessible={true}
       style={
         [
           {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
           },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           {
-            "fontFamily": "Montserrat_400Regular",
-            "fontSize": 14,
+            "alignItems": "center",
           },
           null,
           {
-            "textAlign": "left",
-          },
-          {
-            "marginBottom": 0,
-            "marginEnd": 0,
-            "marginStart": 10,
-            "marginTop": 0,
+            "flex": 1,
           },
           null,
-          {
-            "fontFamily": "Montserrat_600SemiBold",
-          },
+          null,
         ]
       }
     >
-      Pin Card
-    </Text>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "width": 25,
+          }
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        Pin Card
+      </Text>
+    </View>
   </View>
   <View
+    accessibilityLabel="removeFromWallet"
+    accessibilityRole="button"
     accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "flex": 1,
-        },
-        null,
-        null,
-      ]
-    }
+    onPress={[MockFunction]}
+    topDivider={true}
   >
     <View
-      style={
-        {
-          "alignItems": "center",
-          "width": 25,
-        }
-      }
-    />
-    <Text
-      accessibilityLabel="removeFromWallet"
+      accessible={true}
       style={
         [
           {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
           },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           {
-            "fontFamily": "Montserrat_400Regular",
-            "fontSize": 14,
-          },
-          {
-            "color": "#D52929",
-          },
-          {
-            "textAlign": "left",
-          },
-          {
-            "marginBottom": 0,
-            "marginEnd": 0,
-            "marginStart": 10,
-            "marginTop": 0,
+            "alignItems": "center",
           },
           null,
           {
-            "fontFamily": "Montserrat_600SemiBold",
+            "flex": 1,
           },
+          null,
+          null,
         ]
       }
     >
-      Remove
-    </Text>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "width": 25,
+          }
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#D52929",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        Remove
+      </Text>
+    </View>
   </View>
 </View>
 `;
@@ -701,144 +757,158 @@ exports[`KebabPopUp Component should match snapshot with default icon 1`] = `
   }
 >
   <View
+    accessibilityLabel="pinCard"
+    accessibilityRole="button"
     accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "flex": 1,
-        },
-        null,
-        null,
-      ]
-    }
+    onPress={[MockFunction]}
+    topDivider={true}
   >
     <View
-      style={
-        {
-          "alignItems": "center",
-          "width": 25,
-        }
-      }
-    />
-    <Text
-      accessibilityLabel="pinCard"
+      accessible={true}
       style={
         [
           {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
           },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           {
-            "fontFamily": "Montserrat_400Regular",
-            "fontSize": 14,
+            "alignItems": "center",
           },
           null,
           {
-            "textAlign": "left",
-          },
-          {
-            "marginBottom": 0,
-            "marginEnd": 0,
-            "marginStart": 10,
-            "marginTop": 0,
+            "flex": 1,
           },
           null,
-          {
-            "fontFamily": "Montserrat_600SemiBold",
-          },
+          null,
         ]
       }
     >
-      Pin Card
-    </Text>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "width": 25,
+          }
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            null,
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        Pin Card
+      </Text>
+    </View>
   </View>
   <View
+    accessibilityLabel="removeFromWallet"
+    accessibilityRole="button"
     accessible={true}
-    style={
-      [
-        {
-          "alignItems": undefined,
-          "flexDirection": "row",
-          "justifyContent": undefined,
-        },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        {
-          "alignItems": "center",
-        },
-        null,
-        {
-          "flex": 1,
-        },
-        null,
-        null,
-      ]
-    }
+    onPress={[MockFunction]}
+    topDivider={true}
   >
     <View
-      style={
-        {
-          "alignItems": "center",
-          "width": 25,
-        }
-      }
-    />
-    <Text
-      accessibilityLabel="removeFromWallet"
+      accessible={true}
       style={
         [
           {
-            "color": "#000000",
-            "fontSize": 16,
-            "lineHeight": 18,
+            "alignItems": undefined,
+            "flexDirection": "row",
+            "justifyContent": undefined,
           },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           {
-            "fontFamily": "Montserrat_400Regular",
-            "fontSize": 14,
-          },
-          {
-            "color": "#D52929",
-          },
-          {
-            "textAlign": "left",
-          },
-          {
-            "marginBottom": 0,
-            "marginEnd": 0,
-            "marginStart": 10,
-            "marginTop": 0,
+            "alignItems": "center",
           },
           null,
           {
-            "fontFamily": "Montserrat_600SemiBold",
+            "flex": 1,
           },
+          null,
+          null,
         ]
       }
     >
-      Remove
-    </Text>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "width": 25,
+          }
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "lineHeight": 18,
+            },
+            {
+              "fontFamily": "Montserrat_400Regular",
+              "fontSize": 14,
+            },
+            {
+              "color": "#D52929",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "marginBottom": 0,
+              "marginEnd": 0,
+              "marginStart": 10,
+              "marginTop": 0,
+            },
+            null,
+            {
+              "fontFamily": "Montserrat_600SemiBold",
+            },
+          ]
+        }
+      >
+        Remove
+      </Text>
+    </View>
   </View>
 </View>
 `;

@@ -37,6 +37,12 @@ public class AddNewCardPage extends BasePage {
 			.getproperty("mdl_issuer_credentialType");
 	private static final String landRegistryIssuerRuralCredentialType = InjiWalletConfigManager
 			.getproperty("landregistry_issuer_ruralcredentialType");
+  private static final String issuerSearchTextForMosip = InjiWalletConfigManager.getproperty("issuerSearchTextForMosip");
+  private static final String issuerSearchTextForSunbird = InjiWalletConfigManager.getproperty("issuerSearchTextForSunbird");
+  private static final String issuerSearchTextForMdl = InjiWalletConfigManager.getproperty("issuerSearchTextForMdl");
+  private static final String issuerSearchTextForMock = InjiWalletConfigManager.getproperty("issuerSearchTextForMock");
+  private static final String issuerSearchTextForFarmer = InjiWalletConfigManager.getproperty("issuerSearchTextForFarmer");
+  private static final String issuerSearchTextForLand = InjiWalletConfigManager.getproperty("issuerSearchTextForLand");
 
 	@AndroidFindBy(accessibility = "title")
 	@iOSXCUITFindBy(accessibility = "title")
@@ -131,6 +137,9 @@ public class AddNewCardPage extends BasePage {
   @AndroidFindBy(accessibility = "issuerHeading-credentalOfferButton")
   @iOSXCUITFindBy(accessibility = "issuerHeading-credentalOfferButton")
   private WebElement scanAndDownloadCardButton;
+
+  @iOSXCUITFindBy(accessibility = "Return")
+  private WebElement returnKeyboardButton;
 
 	public AddNewCardPage(AppiumDriver driver) {
 		super(driver);
@@ -378,4 +387,32 @@ public class AddNewCardPage extends BasePage {
 		return scrollToElementByAccessibilityIdGetText(stayProtectedIssuerCredentialType,
 				"Gettext from the sunbird credential type");
 	}
+
+	public void searchAndSelectMosipIssuer() {
+		clearAndSendKeys(issuerSearchBar, issuerSearchTextForMosip, "Enter text in Issuer search bar for MOSIP");
+	}
+
+	public void searchAndSelectSunbirdIssuer() {
+		clearAndSendKeys(issuerSearchBar, issuerSearchTextForSunbird, "Enter text in Issuer search bar for Sunbird");
+	}
+
+	public void searchAndSelectMdlIssuer() {
+		clearAndSendKeys(issuerSearchBar, issuerSearchTextForMdl, "Enter text in Issuer search bar for MDL");
+	}
+
+	public void searchAndSelectMockIssuer() {
+		clearAndSendKeys(issuerSearchBar, issuerSearchTextForMock, "Enter text in Issuer search bar for Mock");
+	}
+
+	public void searchAndSelectFarmerIssuer() {
+		clearAndSendKeys(issuerSearchBar, issuerSearchTextForFarmer, "Enter text in Issuer search bar for Farmer");
+	}
+
+	public void searchAndSelectLandRegistryIssuer() {
+		clearAndSendKeys(issuerSearchBar, issuerSearchTextForLand, "Enter text in Issuer search bar for Land Registry");
+	}
+
+  public void hideKeyboardIos() {
+    click(returnKeyboardButton,"Click on return button to hide the keyboard");
+  }
 }
