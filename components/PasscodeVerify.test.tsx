@@ -10,6 +10,22 @@ jest.mock('./PinInput', () => ({
 // Mock commonUtil
 jest.mock('../shared/commonUtil', () => ({
   hashData: jest.fn(() => Promise.resolve('hashed-value')),
+  encodePinHash: jest.fn(
+    (version: string, hash: string) => `${version}$${hash}`,
+  ),
+  parsePinHash: jest.fn((stored: string) => {
+    const sep = stored.indexOf('$');
+    if (sep === -1 || !/^v\d+$/.test(stored.slice(0, sep))) {
+      return {version: 'v1', hash: stored};
+    }
+    return {version: stored.slice(0, sep), hash: stored.slice(sep + 1)};
+  }),
+}));
+
+// Mock constants
+jest.mock('../shared/constants', () => ({
+  CURRENT_PIN_KDF_VERSION: 'v2',
+  PIN_KDF_PROFILES: {v1: {iterations: 5}, v2: {iterations: 2}},
 }));
 
 // Mock telemetry

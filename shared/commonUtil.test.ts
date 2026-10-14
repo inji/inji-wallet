@@ -1,5 +1,6 @@
 import testIDProps, {
   bytesToMB,
+  encodePinHash,
   faceMatchConfig,
   generateBackupEncryptionKey,
   generateRandomString,
@@ -7,6 +8,7 @@ import testIDProps, {
   getDriveName,
   getMaskedText,
   hashData,
+  parsePinHash,
   removeWhiteSpace,
   sleep,
   getRandomInt,
@@ -35,6 +37,40 @@ describe('generateRandomString', () => {
   it('generateRandomString should return random string', async () => {
     const RandomString = await generateRandomString();
     expect(typeof RandomString).toBe('string');
+  });
+});
+
+describe('PIN hash version helpers', () => {
+  it('encodePinHash prefixes the hash with the version', () => {
+    expect(encodePinHash('v2', 'abcdef')).toBe('v2$abcdef');
+  });
+
+  it('parsePinHash extracts version and hash from a v2 string', () => {
+    expect(parsePinHash('v2$abcdef')).toEqual({version: 'v2', hash: 'abcdef'});
+  });
+
+  it('parsePinHash treats legacy unversioned hashes as v1', () => {
+    expect(parsePinHash('abcdefraw')).toEqual({
+      version: 'v1',
+      hash: 'abcdefraw',
+    });
+  });
+
+  it('parsePinHash treats empty stored hash as v1 (defensive)', () => {
+    expect(parsePinHash('')).toEqual({version: 'v1', hash: ''});
+  });
+
+  it('parsePinHash treats unrecognized prefixes as legacy v1', () => {
+    // A hex hash that happens to contain "$" must not be misparsed.
+    expect(parsePinHash('deadbeef$cafebabe')).toEqual({
+      version: 'v1',
+      hash: 'deadbeef$cafebabe',
+    });
+  });
+
+  it('encodePinHash + parsePinHash round-trip', () => {
+    const encoded = encodePinHash('v2', 'roundtrip');
+    expect(parsePinHash(encoded)).toEqual({version: 'v2', hash: 'roundtrip'});
   });
 });
 

@@ -26,6 +26,8 @@ import {
   argon2iConfigForBackupFileName,
   argon2iConfigForPasswordAndPhoneNumber,
   argon2iSalt,
+  PIN_KDF_PROFILES,
+  CURRENT_PIN_KDF_VERSION,
   TECHNICAL_ERROR,
   NETWORK_REQUEST_FAILED,
   NO_INTERNET,
@@ -228,6 +230,24 @@ describe('shared/constants', () => {
     it('argon2iSalt should be defined', () => {
       expect(argon2iSalt).toBeDefined();
       expect(argon2iSalt.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('PIN KDF profiles', () => {
+    it('CURRENT_PIN_KDF_VERSION points at v2', () => {
+      expect(CURRENT_PIN_KDF_VERSION).toBe('v2');
+    });
+
+    it('v1 profile is the legacy argon2iConfig (kept for verifying old PIN hashes)', () => {
+      expect(PIN_KDF_PROFILES.v1).toBe(argon2iConfig);
+    });
+
+    it('v2 profile follows OWASP 2024 mobile guidance (memory-hard Argon2id)', () => {
+      const v2 = PIN_KDF_PROFILES.v2;
+      expect(v2.mode).toBe('argon2id');
+      expect(v2.memory).toBeGreaterThanOrEqual(19 * 1024);
+      expect(v2.hashLength).toBeGreaterThanOrEqual(32);
+      expect(v2.iterations).toBeGreaterThanOrEqual(1);
     });
   });
 
