@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
-  Image,
   Modal,
   Platform,
   Pressable,
@@ -13,6 +12,7 @@ import {Icon} from 'react-native-elements';
 import {useTranslation} from 'react-i18next';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Theme} from './ui/styleUtils';
+import {VerifierAvatar} from './VerifierAvatar';
 
 const COLORS = Theme.Colors.Design;
 
@@ -41,12 +41,6 @@ export const TrustModalVerifier = ({
 }) => {
   const {t} = useTranslation('trustScreen');
   const insets = useSafeAreaInsets();
-  const [logoFailed, setLogoFailed] = useState(false);
-
-  useEffect(() => {
-    setLogoFailed(false);
-  }, [logo]);
-
   const infoPoints = t('verifierInfoPoints', {returnObjects: true});
 
   return (
@@ -79,21 +73,8 @@ export const TrustModalVerifier = ({
 
             <View style={styles.card}>
               <View style={styles.verifierRow}>
-                <View style={styles.logoCircle}>
-                  {logo && !logoFailed ? (
-                    <Image
-                      source={{uri: logo}}
-                      style={styles.logo}
-                      onError={() => setLogoFailed(true)}
-                    />
-                  ) : (
-                    <Icon
-                      name="office-building-outline"
-                      type="material-community"
-                      size={30}
-                      color={COLORS.teal}
-                    />
-                  )}
+                <View style={styles.avatar}>
+                  <VerifierAvatar logo={logo} />
                 </View>
                 <View style={styles.verifierInfo}>
                   <Text
@@ -242,27 +223,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  logoCircle: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-    borderWidth: 3,
-    borderColor: COLORS.teal,
-    backgroundColor: COLORS.surface,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
+  avatar: {
     marginRight: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.12,
-    shadowRadius: 6,
-    shadowOffset: {width: 0, height: 3},
-    elevation: 4,
-  },
-  logo: {
-    width: 48,
-    height: 48,
-    resizeMode: 'contain',
   },
   verifierInfo: {
     flex: 1,

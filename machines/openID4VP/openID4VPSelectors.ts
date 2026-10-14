@@ -176,6 +176,10 @@ export function selectIsVerifierRegistered(state: State) {
   );
 }
 
+export function selectPresentationDefinition(state: State) {
+  return state.context.authenticationResponse['presentation_definition'];
+}
+
 export function selectVerifierRequestNameInTrustModal(state: State) {
   const pd = state.context.authenticationResponse['presentation_definition'];
   return (pd?.name || pd?.input_descriptors?.[0]?.name || '').trim();

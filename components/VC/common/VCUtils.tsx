@@ -274,6 +274,74 @@ const shouldExcludeField = (field: string): boolean => {
   return EXCLUDED_FIELDS_FOR_RENDERING.includes(normalized);
 };
 
+// SD-JWT payload claims that describe the credential itself rather than its holder.
+const SD_JWT_METADATA_CLAIMS = [
+  'iss',
+  'sub',
+  'iat',
+  'nbf',
+  'exp',
+  'jti',
+  'cnf',
+  'vct',
+  'vct#integrity',
+  'status',
+  '_sd',
+  '_sd_alg',
+];
+
+/**
+ * Labels of the details sent when a credential is shared over OpenID4VP. W3C and mDoc
+ * credentials are sent whole, so every field is listed. An SD-JWT credential sends its
+ * always-visible claims plus the disclosures the holder picked.
+ */
+export function getSharedFieldLabels(
+  credential: any,
+  format: string,
+  wellknown: any,
+  selectedDisclosures: string[] = [],
+): string[] {
+  let labels: string[];
+  if (format === VCFormat.mso_mdoc) {
+    const nameSpaces: Record<string, any> =
+      credential?.nameSpaces ??
+      credential?.issuerSigned?.nameSpaces ??
+      credential?.issuerAuth?.nameSpaces ??
+      {};
+    labels = Object.entries(nameSpaces).flatMap(([namespace, entries]) =>
+      Array.isArray(entries)
+        ? entries.map(({elementIdentifier}) => {
+            const label = getFieldName(
+              `${namespace}~${elementIdentifier}`,
+              wellknown,
+              format,
+            );
+            // Without a well-known label the namespace would be part of the name.
+            return label.includes('~')
+              ? formatKeyLabel(elementIdentifier)
+              : label;
+          })
+        : [],
+    );
+  } else if (format === VCFormat.vc_sd_jwt || format === VCFormat.dc_sd_jwt) {
+    const disclosedKeys: string[] = credential?.disclosedKeys ?? [];
+    const alwaysShared = Object.keys(
+      credential?.fullResolvedPayload ?? {},
+    ).filter(
+      key =>
+        !SD_JWT_METADATA_CLAIMS.includes(key) && !disclosedKeys.includes(key),
+    );
+    labels = [...alwaysShared, ...selectedDisclosures].map(field =>
+      getFieldName(field, wellknown, format),
+    );
+  } else {
+    labels = Object.keys(credential?.credentialSubject ?? {})
+      .filter(key => !ID.includes(key))
+      .map(field => getFieldName(field, wellknown, format));
+  }
+  return Array.from(new Set(labels.filter(Boolean)));
+}
+
 export function getFaceField(obj: any): string | null {
   if (typeof obj !== 'object' || obj === null) return null;
 

@@ -1,21 +1,17 @@
 import * as React from 'react';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef} from 'react';
 import {Pressable, View} from 'react-native';
 import {ActorRefFrom} from 'xstate';
 import {ErrorMessageOverlay, MessageOverlay} from '../../MessageOverlay';
 import {Theme} from '../../ui/styleUtils';
 import {VCMetadata} from '../../../shared/VCMetadata';
-import {format} from 'date-fns';
 
 import {VCCardSkeleton} from '../common/VCCardSkeleton';
 import {VCCardViewContent} from './VCCardViewContent';
-import {useVcItemController} from '../VCItemController';
-import {getCredentialIssuersWellKnownConfig} from '../../../shared/openId4VCI/Utils';
-import {CARD_VIEW_DEFAULT_FIELDS, isVCLoaded} from '../common/VCUtils';
 import {VCItemMachine} from '../../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {useTranslation} from 'react-i18next';
 import {Copilot} from '../../ui/Copilot';
-import {VCProcessor} from '../common/VCProcessor';
+import {useVcCardData} from '../useVcCardData';
 
 export const VCCardView: React.FC<VCItemProps> = ({
   vcMetadata,
@@ -27,27 +23,17 @@ export const VCCardView: React.FC<VCItemProps> = ({
   flow,
   isInitialLaunch = false,
   isTopCard = false,
-  onDisclosuresChange,
   onMeasured,
 }) => {
-  const controller = useVcItemController(vcMetadata);
+  const {controller, vc, wellknown, isLoaded} = useVcCardData(
+    vcMetadata,
+    isDownloading,
+  );
   const {t} = useTranslation();
   const cardRef = useRef<View>(null);
 
   const service = controller.VCItemService;
   const verifiableCredentialData = controller.verifiableCredentialData;
-  const generatedOn = -controller.generatedOn;
-
-  const formattedDate =
-    generatedOn && format(new Date(generatedOn), 'MM/dd/yyyy');
-
-  useEffect(() => {
-    controller.UPDATE_VC_METADATA(vcMetadata);
-  }, [vcMetadata]);
-
-  const [fields, setFields] = useState([]);
-  const [wellknown, setWellknown] = useState(null);
-  const [vc, setVc] = useState(null);
 
   useEffect(() => {
     if (onMeasured && cardRef.current) {
@@ -63,62 +49,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
     }
   }, [onMeasured]);
 
-  useEffect(() => {
-    async function loadVc() {
-      if (!isDownloading) {
-        const processedData = await VCProcessor.processForRendering(
-          controller.credential,
-          controller.verifiableCredentialData.format,
-        );
-        setVc(processedData);
-      }
-    }
-    loadVc();
-  }, [isDownloading, controller.credential]);
-
-  useEffect(() => {
-    // Until the stored credential loads its configuration id is unknown, and the lookup
-    // fails on `undefined` before succeeding on the next run.
-    if (
-      !verifiableCredentialData ||
-      !verifiableCredentialData.vcMetadata ||
-      !isVCLoaded(controller.credential as any)
-    )
-      return;
-    const {
-      credentialConfigurationId,
-      vcMetadata: {format},
-    } = verifiableCredentialData;
-
-    if (vcMetadata.issuerHost) {
-      getCredentialIssuersWellKnownConfig(
-        vcMetadata.issuerHost,
-        CARD_VIEW_DEFAULT_FIELDS,
-        credentialConfigurationId,
-        format,
-        vcMetadata.issuerHost,
-      )
-        .then(response => {
-          if (response && response.matchingCredentialIssuerMetadata) {
-            setWellknown(response.matchingCredentialIssuerMetadata);
-          }
-          controller.STORE_INCOMING_VC_WELLKNOWN_CONFIG(
-            verifiableCredentialData?.vcMetadata.issuerHost,
-            response.wellknownResponse,
-          );
-          setFields(response.fields);
-        })
-        .catch(error => {
-          setWellknown({fallback: 'true'});
-          console.error(
-            'Error occurred while fetching wellknown for viewing VC ',
-            error,
-          );
-        });
-    }
-  }, [verifiableCredentialData, controller.credential]);
-
-  if (!isVCLoaded(controller.credential) || !wellknown || !vc) {
+  if (!isLoaded) {
     return <VCCardSkeleton />;
   }
 
@@ -139,7 +70,6 @@ export const VCCardView: React.FC<VCItemProps> = ({
       DISMISS={controller.DISMISS}
       KEBAB_POPUP={controller.KEBAB_POPUP}
       isInitialLaunch={isInitialLaunch}
-      onDisclosuresChange={onDisclosuresChange}
     />
   );
 
@@ -195,7 +125,6 @@ export interface VCItemProps {
   flow?: string;
   isInitialLaunch?: boolean;
   isTopCard?: boolean;
-  onDisclosuresChange?: (paths: string[]) => void;
   onMeasured?: (rect: {
     x: number;
     y: number;

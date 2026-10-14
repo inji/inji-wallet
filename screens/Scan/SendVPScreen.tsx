@@ -7,10 +7,19 @@ import React, {
   useState,
 } from 'react';
 import {useTranslation} from 'react-i18next';
-import {BackHandler, I18nManager, View} from 'react-native';
-import {Button, Column, Row, Text} from '../../components/ui';
+import {
+  BackHandler,
+  I18nManager,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text as RNText,
+  View,
+} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Theme} from '../../components/ui/styleUtils';
-import {VcItemContainer} from '../../components/VC/VcItemContainer';
+import {VPShareCredentialCard} from '../../components/VC/VPShareCredentialCard';
+import {VerifierAvatar} from '../../components/VerifierAvatar';
 import {
   isIOS,
   LIVENESS_CHECK,
@@ -22,13 +31,11 @@ import {
   getImpressionEventData,
   sendImpressionEvent,
 } from '../../shared/telemetry/TelemetryUtils';
-import {VCItemContainerFlowType} from '../../shared/Utils';
 import {VCMetadata} from '../../shared/VCMetadata';
 import {VerifyIdentityOverlay} from '../VerifyIdentityOverlay';
 import {VPShareOverlay} from './VPShareOverlay';
 import {FaceVerificationAlertOverlay} from './FaceVerificationAlertOverlay';
 import {useSendVPScreen} from './SendVPScreenController';
-import LinearGradient from 'react-native-linear-gradient';
 import {ErrorView} from '../../components/ui/Error';
 import {SvgImage} from '../../components/ui/svg';
 import {Loader, LoaderSkeleton} from '../../components/ui/Loader';
@@ -41,10 +48,15 @@ import {useScanScreen} from './ScanScreenController';
 import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
 import {TrustModalVerifier} from '../../components/TrustModalVerifier';
 
+const COLORS = Theme.Colors.Design;
+// Protocol names are not translated.
+const PROTOCOL_NAME = 'OpenID4VP';
+
 export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const {t} = useTranslation('SendVPScreen');
   const controller = useSendVPScreen(props);
   const scanScreenController = useScanScreen();
+  const insets = useSafeAreaInsets();
 
   const [errorModal, resetErrorModal] = useOvpErrorModal({
     error: controller.error,
@@ -156,24 +168,6 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     }
   };
 
-  const handleRejectButtonEvent = async () => {
-    // Send error to verifier is initiated and its response is not listened to here.
-    if (!controller.isAuthorizationFlow) {
-      void OpenID4VP.sendErrorToVerifier(
-        OVP_ERROR_MESSAGES.DECLINED,
-        OVP_ERROR_CODE.DECLINED,
-      );
-    }
-
-    controller.generateAndStoreLogMessage('USER_DECLINED_CONSENT');
-    if (controller.isOVPViaDeepLink) {
-      controller.GO_TO_HOME();
-      BackHandler.exitApp();
-    } else {
-      controller.CANCEL();
-    }
-  };
-
   const getAdditionalMessage = () => {
     if (
       controller.isOVPViaDeepLink &&
@@ -190,39 +184,40 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
         headerShown: false,
       });
     } else {
+      const closeButton = () => (
+        <Pressable
+          testID="shareRequestClose"
+          accessibilityRole="button"
+          accessibilityLabel={t('close')}
+          onPress={handleDismiss}
+          style={styles.closeButton}>
+          <Icon
+            name="close"
+            type="material-community"
+            size={24}
+            color={COLORS.navy}
+          />
+        </Pressable>
+      );
+      const protocolBadge = () => (
+        <View style={styles.protocolBadge}>
+          <RNText style={styles.protocolBadgeText}>{PROTOCOL_NAME}</RNText>
+        </View>
+      );
       props.navigation.setOptions({
         headerShown: true,
-        title: t('SendVPScreen:requester'),
+        title: t('shareRequestTitle'),
         headerTitleAlign: 'center',
-        headerTitle: props => (
-          <View style={Theme.Styles.sendVPHeaderContainer}>
-            <Text style={Theme.Styles.sendVPHeaderTitle}>{props.children}</Text>
-            {controller.vpVerifierName && (
-              <Text
-                numLines={1}
-                ellipsizeMode="tail"
-                style={Theme.Styles.sendVPHeaderSubTitle}>
-                {controller.vpVerifierName}
-              </Text>
-            )}
-          </View>
+        headerShadowVisible: false,
+        headerStyle: {backgroundColor: COLORS.sheetBackground},
+        headerTitle: () => (
+          <RNText style={styles.headerTitle} numberOfLines={1}>
+            {t('shareRequestTitle')}
+          </RNText>
         ),
+        headerLeft: () => (I18nManager.isRTL ? protocolBadge() : closeButton()),
         headerRight: () =>
-          !I18nManager.isRTL && (
-            <Icon
-              name="close"
-              color={Theme.Colors.blackIcon}
-              onPress={handleDismiss}
-            />
-          ),
-        headerLeft: () =>
-          I18nManager.isRTL && (
-            <Icon
-              name="close"
-              color={Theme.Colors.blackIcon}
-              onPress={handleDismiss}
-            />
-          ),
+          I18nManager.isRTL ? closeButton() : protocolBadge(),
       });
     }
   }, [
@@ -286,76 +281,33 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     return VCMetadata.fromVcMetadataString(vcData.vcMetadata).getVcKey();
   };
 
-  const noOfCardsSelected = controller.areAllVCsChecked
-    ? Object.values(controller.vcsMatchingAuthRequest).length
-    : Object.values(controller.inputDescriptorIdToSelectedVcKeys).reduce(
-        (vcCount, arr) => vcCount + arr.length,
-        0,
-      );
+  const selectedVCs = controller.getSelectedVCs();
+  const selectedCount = Object.values(selectedVCs).flat().length;
+  const selectedHasImage = controller.checkIfAnyVCHasImage(selectedVCs);
+  const selectionSummary = t('sharingIds', {
+    ids: t('idsCount', {count: selectedCount}),
+  });
 
-  const cardsSelectedText =
-    noOfCardsSelected === 1
-      ? noOfCardsSelected + ' ' + t('cardSelected')
-      : noOfCardsSelected + ' ' + t('cardsSelected');
+  const verifierName =
+    controller.vpVerifierName ??
+    controller.verifierNameInTrustModal ??
+    t('ScanScreen:unknownVerifier');
+  const purpose = controller.isAuthorizationFlow
+    ? t('authorizationPurpose')
+    : controller.purpose;
 
-  const areAllVcsChecked =
-    noOfCardsSelected ===
-    Object.values(controller.vcsMatchingAuthRequest).flatMap(vc => vc).length;
+  const shareTitle = controller.isAuthorizationFlow
+    ? t('consentShare')
+    : selectedHasImage
+    ? t('SendVcScreen:acceptRequestAndVerify')
+    : t('SendVcScreen:acceptRequest');
 
-  const shareActions = () => {
-    if (controller.isAuthorizationFlow) {
-      return (
-        <Button
-          type="gradient"
-          styles={{marginTop: 12}}
-          title={t('consentShare')}
-          testID={'consent-share-button'}
-          disabled={Object.keys(controller.getSelectedVCs()).length === 0}
-          onPress={() =>
-            controller.checkIfAnyVCHasImage(controller.getSelectedVCs())
-              ? controller.VERIFY_AND_ACCEPT_REQUEST(selectedDisclosuresByVc)
-              : controller.ACCEPT_REQUEST(selectedDisclosuresByVc)
-          }
-        />
-      );
-    }
+  // A selected card with a photo is only shared after the holder's face is verified.
+  const onShare = () =>
+    selectedHasImage
+      ? controller.VERIFY_AND_ACCEPT_REQUEST(selectedDisclosuresByVc)
+      : controller.ACCEPT_REQUEST(selectedDisclosuresByVc);
 
-    return (
-      <Fragment>
-        {!controller.checkIfAllVCsHasImage(
-          controller.vcsMatchingAuthRequest,
-        ) && (
-          <Button
-            type="gradient"
-            styles={{marginTop: 12}}
-            testID={'accept-request-button'}
-            title={t('SendVcScreen:acceptRequest')}
-            disabled={
-              Object.keys(controller.getSelectedVCs()).length === 0 ||
-              controller.checkIfAnyVCHasImage(controller.getSelectedVCs())
-            }
-            onPress={() => controller.ACCEPT_REQUEST(selectedDisclosuresByVc)}
-          />
-        )}
-        {/*If one of the selected vc has image, it needs to sent only after biometric authentication (Share with Selfie)*/}
-        {controller.checkIfAnyVCHasImage(controller.vcsMatchingAuthRequest) && (
-          <Button
-            type="gradient"
-            testID={'accept-request-and-verify-button'}
-            title={t('SendVcScreen:acceptRequestAndVerify')}
-            styles={{marginTop: 12}}
-            disabled={
-              Object.keys(controller.getSelectedVCs()).length === 0 ||
-              !controller.checkIfAnyVCHasImage(controller.getSelectedVCs())
-            }
-            onPress={() =>
-              controller.VERIFY_AND_ACCEPT_REQUEST(selectedDisclosuresByVc)
-            }
-          />
-        )}
-      </Fragment>
-    );
-  };
   return (
     <React.Fragment>
       {
@@ -375,106 +327,151 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
       }
       {Object.keys(vcsMatchingAuthRequest).length > 0 && (
         <>
-          {controller.purpose !== '' && (
-            <View style={{backgroundColor: Theme.Colors.whiteBackgroundColor}}>
-              <Column
-                padding="14 12 14 12"
-                margin="20 20 20 20"
-                style={Theme.VPSharingStyles.purposeContainer}>
-                <Text
-                  color={Theme.Colors.TimeoutHintText}
-                  style={Theme.VPSharingStyles.purposeText}>
-                  {controller.isAuthorizationFlow
-                    ? t('authorizationPurpose')
-                    : controller.purpose}
-                </Text>
-              </Column>
-            </View>
-          )}
-          <Column fill backgroundColor={Theme.Colors.lightGreyBackgroundColor}>
-            <LinearGradient colors={Theme.Colors.selectIDTextGradient}>
-              <Column>
-                <Text
-                  margin="15 0 13 24"
-                  color={Theme.Colors.textValue}
-                  style={Theme.VPSharingStyles.selectIDText}>
-                  {t('SendVcScreen:pleaseSelectAnId')}
-                </Text>
-              </Column>
-            </LinearGradient>
-            <Row
-              padding="11 24 11 24"
-              style={{
-                backgroundColor: '#FAFAFA',
-                justifyContent: 'space-between',
-              }}>
-              <Text style={Theme.VPSharingStyles.cardsSelectedText}>
-                {cardsSelectedText}
-              </Text>
-              <Text
-                style={{
-                  color: Theme.Colors.Icon,
-                  fontFamily: 'Montserrat_600SemiBold',
-                }}
-                onPress={
-                  areAllVcsChecked
-                    ? controller.UNCHECK_ALL
-                    : controller.CHECK_ALL
-                }>
-                {areAllVcsChecked ? t('unCheck') : t('checkAll')}
-              </Text>
-            </Row>
-            <Column scroll backgroundColor={Theme.Colors.whiteBackgroundColor}>
-              {Object.entries(vcsMatchingAuthRequest).map(
-                ([inputDescriptorId, vcs]) =>
-                  vcs.map(vcData => (
-                    <VcItemContainer
-                      key={`${getVcKey(vcData)}-${inputDescriptorId}`}
-                      vcMetadata={vcData.vcMetadata}
-                      margin="0 2 8 2"
-                      onPress={controller.SELECT_VC_ITEM(
-                        getVcKey(vcData),
-                        inputDescriptorId,
-                      )}
-                      selectable
-                      selected={
-                        controller.areAllVCsChecked ||
-                        (Object.keys(
-                          controller.inputDescriptorIdToSelectedVcKeys,
-                        ).includes(inputDescriptorId) &&
-                          controller.inputDescriptorIdToSelectedVcKeys[
-                            inputDescriptorId
-                          ].includes(getVcKey(vcData)))
-                      }
-                      flow={VCItemContainerFlowType.VP_SHARE}
-                      isPinned={vcData.vcMetadata.isPinned}
-                      onDisclosuresChange={disclosures => {
-                        handleDisclosureChange(getVcKey(vcData), disclosures);
-                      }}
-                    />
-                  )),
-              )}
-            </Column>
-            <Column
-              style={[
-                Theme.SendVcScreenStyles.shareOptionButtonsContainer,
-                {position: 'relative'},
-              ]}
-              backgroundColor={Theme.Colors.whiteBackgroundColor}>
-              {shareActions()}
+          <View style={styles.screen}>
+            <ScrollView contentContainerStyle={styles.content}>
+              <View style={styles.verifierCard}>
+                <VerifierAvatar
+                  logo={controller.verifierLogoInTrustModal}
+                  size={64}
+                />
+                <View style={styles.verifierInfo}>
+                  <RNText
+                    style={styles.verifierName}
+                    numberOfLines={2}
+                    testID="shareRequestVerifierName">
+                    {verifierName}
+                  </RNText>
+                  {!controller.isAuthorizationFlow && (
+                    <View style={styles.trustedRow}>
+                      <Icon
+                        name="shield-check-outline"
+                        type="material-community"
+                        size={16}
+                        color={COLORS.teal}
+                      />
+                      <RNText style={styles.trustedText}>
+                        {t('trustedVerifier')}
+                      </RNText>
+                    </View>
+                  )}
+                  {!!purpose && (
+                    <RNText style={styles.purpose} testID="shareRequestPurpose">
+                      {controller.isAuthorizationFlow
+                        ? purpose
+                        : t('purposeLabel', {purpose})}
+                    </RNText>
+                  )}
+                </View>
+              </View>
 
-              <Button
-                type="clear"
-                loading={controller.isCancelling}
-                title={
+              {Object.entries(vcsMatchingAuthRequest).map(
+                ([inputDescriptorId, vcs]) => {
+                  const group =
+                    controller.requestedCredentialGroups[inputDescriptorId];
+                  const hasChoice = vcs.length > 1;
+                  const description =
+                    group?.purpose || (hasChoice ? t('pickOneHint') : '');
+                  return (
+                    <View key={inputDescriptorId} style={styles.group}>
+                      <View style={styles.groupHeader}>
+                        <RNText style={styles.groupTitle}>
+                          {group?.name || t('requestedCard')}
+                        </RNText>
+                        <View style={styles.requiredBadge}>
+                          <RNText style={styles.requiredBadgeText}>
+                            {hasChoice ? t('requiredPickOne') : t('required')}
+                          </RNText>
+                        </View>
+                      </View>
+                      {!!description && (
+                        <RNText style={styles.groupDescription}>
+                          {description}
+                        </RNText>
+                      )}
+                      <View style={styles.groupCards}>
+                        {vcs.map(vcData => {
+                          const vcKey = getVcKey(vcData);
+                          return (
+                            <VPShareCredentialCard
+                              key={`${vcKey}-${inputDescriptorId}`}
+                              testID={`shareRequestCard-${vcKey}`}
+                              vcMetadata={vcData.vcMetadata}
+                              selected={
+                                !!controller.inputDescriptorIdToSelectedVcKeys[
+                                  inputDescriptorId
+                                ]?.includes(vcKey)
+                              }
+                              onPress={() =>
+                                controller.SELECT_VC_ITEM(
+                                  vcKey,
+                                  inputDescriptorId,
+                                )
+                              }
+                              selectedDisclosures={
+                                selectedDisclosuresByVc[vcKey]
+                              }
+                              onDisclosuresChange={disclosures =>
+                                handleDisclosureChange(vcKey, disclosures)
+                              }
+                            />
+                          );
+                        })}
+                      </View>
+                    </View>
+                  );
+                },
+              )}
+
+              {selectedHasImage && (
+                <View style={styles.selfieNote}>
+                  <Icon
+                    name="camera-outline"
+                    type="material-community"
+                    size={20}
+                    color={COLORS.link}
+                  />
+                  <RNText style={styles.selfieNoteText}>
+                    {t('selfieNote')}
+                  </RNText>
+                </View>
+              )}
+            </ScrollView>
+
+            <View style={[styles.footer, {paddingBottom: insets.bottom + 12}]}>
+              {selectedCount > 0 && (
+                <RNText style={styles.summary} testID="shareRequestSummary">
+                  {selectionSummary}
+                </RNText>
+              )}
+              <Pressable
+                testID={
                   controller.isAuthorizationFlow
-                    ? t('common:cancel')
-                    : t('SendVcScreen:reject')
+                    ? 'consent-share-button'
+                    : selectedHasImage
+                    ? 'accept-request-and-verify-button'
+                    : 'accept-request-button'
                 }
-                onPress={handleRejectButtonEvent}
-              />
-            </Column>
-          </Column>
+                accessibilityRole="button"
+                accessibilityState={{disabled: !controller.isSelectionComplete}}
+                disabled={!controller.isSelectionComplete}
+                onPress={onShare}
+                style={({pressed}) => [
+                  styles.shareButton,
+                  !controller.isSelectionComplete && styles.shareButtonDisabled,
+                  pressed && styles.pressed,
+                ]}>
+                {selectedHasImage && (
+                  <Icon
+                    name="face-recognition"
+                    type="material-community"
+                    size={22}
+                    color={COLORS.surface}
+                  />
+                )}
+                <RNText style={styles.shareButtonText}>{shareTitle}</RNText>
+              </Pressable>
+            </View>
+          </View>
           <VerifyIdentityOverlay
             credential={controller.credentials}
             verifiableCredentialData={controller.verifiableCredentialsData}
@@ -545,3 +542,167 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     </React.Fragment>
   );
 };
+
+const styles = StyleSheet.create({
+  closeButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.surface,
+    shadowColor: '#000',
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 3,
+  },
+  protocolBadge: {
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  protocolBadgeText: {
+    fontFamily: 'Montserrat_600SemiBold',
+    fontSize: 13,
+    color: COLORS.link,
+  },
+  headerTitle: {
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 20,
+    color: COLORS.navy,
+  },
+  screen: {
+    flex: 1,
+    backgroundColor: COLORS.sheetBackground,
+  },
+  content: {
+    paddingHorizontal: 20,
+    paddingTop: 8,
+    paddingBottom: 16,
+  },
+  verifierCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.mutedBackground,
+    borderRadius: 22,
+    padding: 16,
+    marginBottom: 24,
+  },
+  verifierInfo: {
+    flex: 1,
+    marginLeft: 16,
+  },
+  verifierName: {
+    fontFamily: 'Montserrat_600SemiBold',
+    fontSize: 19,
+    color: COLORS.navy,
+  },
+  trustedRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 3,
+  },
+  trustedText: {
+    marginLeft: 5,
+    fontFamily: 'Montserrat_600SemiBold',
+    fontSize: 13,
+    color: COLORS.teal,
+  },
+  purpose: {
+    marginTop: 3,
+    fontFamily: 'Montserrat_400Regular',
+    fontSize: 13,
+    color: COLORS.bodyText,
+  },
+  group: {
+    marginBottom: 10,
+  },
+  groupHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  groupTitle: {
+    flex: 1,
+    marginRight: 10,
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 20,
+    color: COLORS.navy,
+  },
+  requiredBadge: {
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+  },
+  requiredBadgeText: {
+    fontFamily: 'Montserrat_600SemiBold',
+    fontSize: 12,
+    color: COLORS.link,
+  },
+  groupCards: {
+    marginTop: 12,
+  },
+  groupDescription: {
+    marginTop: 6,
+    fontFamily: 'Montserrat_400Regular',
+    fontSize: 14,
+    lineHeight: 20,
+    color: COLORS.bodyText,
+  },
+  selfieNote: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 4,
+  },
+  selfieNoteText: {
+    flex: 1,
+    marginLeft: 10,
+    fontFamily: 'Montserrat_400Regular',
+    fontSize: 14,
+    lineHeight: 21,
+    color: COLORS.bodyText,
+  },
+  footer: {
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: COLORS.border,
+    backgroundColor: COLORS.sheetBackground,
+    paddingHorizontal: 20,
+    paddingTop: 12,
+  },
+  summary: {
+    textAlign: 'center',
+    marginBottom: 10,
+    fontFamily: 'Montserrat_500Medium',
+    fontSize: 14,
+    color: COLORS.bodyText,
+  },
+  shareButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 58,
+    borderRadius: 29,
+    backgroundColor: COLORS.navy,
+    paddingHorizontal: 20,
+    shadowColor: COLORS.navy,
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    shadowOffset: {width: 0, height: 4},
+    elevation: 5,
+  },
+  shareButtonDisabled: {
+    opacity: 0.4,
+  },
+  shareButtonText: {
+    marginLeft: 10,
+    fontFamily: 'Montserrat_600SemiBold',
+    fontSize: 17,
+    color: COLORS.surface,
+  },
+  pressed: {
+    opacity: 0.8,
+  },
+});
