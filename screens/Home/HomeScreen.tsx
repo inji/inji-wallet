@@ -11,7 +11,7 @@ import {ActorRefFrom} from 'xstate';
 import {ErrorMessageOverlay} from '../../components/MessageOverlay';
 import {DeviceEventEmitter} from 'react-native';
 import {SCAN_TO_ADD_EVENT} from '../../components/revamp/RevampTabBar';
-import {IssuersEvents} from '../../machines/Issuers/IssuersEvents';
+import {IssuerScreenTabEvents} from '../../machines/Issuers/IssuersMachine';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
@@ -35,7 +35,7 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
       if (scanOnOpen.current) {
         scanOnOpen.current = false;
         (controller.IssuersService as {send: (event: object) => void}).send(
-          IssuersEvents.SCAN_CREDENTIAL_OFFER_QR_CODE(),
+          IssuerScreenTabEvents.SCAN_CREDENTIAL_OFFER_QR_CODE(),
         );
       }
     }
