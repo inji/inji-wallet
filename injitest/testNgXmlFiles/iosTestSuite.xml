@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Ios Test Suite" parallel="methods" thread-count="1">
+    <listeners>
+         <listener class-name="inji.utils.KnownIssueInvocationListener" />
+         <listener class-name="inji.utils.KnownIssueMethodInterceptor" />
+         <listener class-name="inji.utils.ThreadCountListener" />
+         <listener class-name="inji.utils.BrowserStackStatusListener" />
+    </listeners>
+    <!-- Ios Tests -->
+    <test verbose="2" preserve-order="true" name="ios">
+         <classes>
+           <class name="inji.testcases.iosTestCases.sanityFlows.FarmerFlowSanityTest">
+             <methods>
+               <include name="downloadFarmerVCAndDeleteSmoke" />
+             </methods>
+           </class>
+           <class name="inji.testcases.iosTestCases.sanityFlows.LandFlowSanityTest">
+             <methods>
+               <include name="downloadLandVCAndDeleteSmoke" />
+             </methods>
+           </class>
+           <class name="inji.testcases.iosTestCases.sanityFlows.MdlFlowSanityTest">
+             <methods>
+               <include name="downloadMdlVCAndDeleteSmoke"/>
+             </methods>
+           </class>
+               <class name="inji.testcases.iosTestCases.sanityFlows.MockFlowSanityTest">
+                 <methods>
+                   <include name="downloadMockVCAndDeleteSmoke" />
+                 </methods>
+               </class>
+               <class name="inji.testcases.iosTestCases.sanityFlows.HelpPageAndAboutPageTest">
+                 <methods>
+                   <include name="verifyHelpPageAndAboutPage"/>
+                 </methods>
+               </class>
+               <class name="inji.testcases.iosTestCases.sanityFlows.ShareCardSanityTest">
+                 <methods>
+                   <include name="shareVc" />
+                 </methods>
+               </class>
+               <class name="inji.testcases.iosTestCases.sanityFlows.NoNetworkFlowSanityTest">
+                 <methods>
+                   <include name="downloadMosipIdVCWithoutInternet" />
+                 </methods>
+               </class>
+           <class name="inji.testcases.iosTestCases.sanityFlows.FarmerFlowSanityTest">
+             <methods>
+               <include name="downloadFarmerVCAndDeleteSmoke" />
+             </methods>
+           </class>
+        </classes>
+    </test>
+</suite>

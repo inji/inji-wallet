@@ -47,7 +47,7 @@ public class ESignetLoginPage extends BasePage {
     private WebElement verifyButton;
 
     @AndroidFindBy(xpath = "//*[contains(@text,'Please enter the 6-digit OTP sent to')]")
-    @iOSXCUITFindBy(xpath = "//*[contains(@text,'Please enter the 6-digit OTP sent to')]")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"Please enter the 6-digit OTP sent to\"]")
     private WebElement otpSendMessage;
 
     @AndroidFindBy(className = "android.view.ViewGroup")
