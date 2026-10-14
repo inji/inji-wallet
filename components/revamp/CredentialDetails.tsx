@@ -6,10 +6,10 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   useWindowDimensions,
   View,
 } from 'react-native';
+import {ScaledText} from './ScaledText';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   CredentialCardBack,
@@ -191,9 +191,11 @@ export const CredentialDetails = React.forwardRef<
             ]}>
             <BackIcon color={c.ink} />
           </Pressable>
-          <Text numberOfLines={1} style={[styles.headerTitle, {color: c.ink}]}>
+          <ScaledText
+            numberOfLines={1}
+            style={[styles.headerTitle, {color: c.ink}]}>
             {data.title}
-          </Text>
+          </ScaledText>
           <Pressable
             onPress={actions.togglePin}
             accessibilityLabel={
@@ -269,19 +271,19 @@ export const CredentialDetails = React.forwardRef<
 
           <Animated.View style={[styles.hint, risen(0)]}>
             <FlipIcon color={c.inkMuted} />
-            <Text style={[styles.hintText, {color: c.inkMuted}]}>
+            <ScaledText style={[styles.hintText, {color: c.inkMuted}]}>
               {flipped
                 ? 'Tap the card to see the front'
                 : 'Tap the card to see the back'}
-            </Text>
+            </ScaledText>
           </Animated.View>
 
           <Animated.View style={[styles.statusRow, risen(1)]}>
             <StatusPill status={data.status} large />
             {valid ? (
-              <Text style={[styles.valid, {color: c.inkMuted}]}>
+              <ScaledText style={[styles.valid, {color: c.inkMuted}]}>
                 Valid until {valid}
-              </Text>
+              </ScaledText>
             ) : null}
           </Animated.View>
 
@@ -317,9 +319,9 @@ export const CredentialDetails = React.forwardRef<
               style={styles.remove}
               accessibilityRole="button">
               <TrashIcon color={c.fail} />
-              <Text style={[styles.removeText, {color: c.fail}]}>
+              <ScaledText style={[styles.removeText, {color: c.fail}]}>
                 Remove from Wallet
-              </Text>
+              </ScaledText>
             </Pressable>
           </Animated.View>
         </ScrollView>

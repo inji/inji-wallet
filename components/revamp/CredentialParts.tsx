@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import {Pressable, StyleSheet, useWindowDimensions, View} from 'react-native';
+import {ScaledText} from './ScaledText';
 import {VCFormat} from '../../shared/VCFormat';
 import {statusLabel} from './CredentialCard';
 import {displayDate, maskNumber} from './credentialClaims';
@@ -94,9 +89,10 @@ export const StatusPill: React.FC<{status: CardStatus; large?: boolean}> = ({
     <View
       style={[styles.pill, large && styles.pillLarge, {borderColor: colour}]}>
       <ShieldCheckIcon color={colour} size={large ? 16 : 14} />
-      <Text style={[styles.pillText, large && {fontSize: 14}, {color: colour}]}>
+      <ScaledText
+        style={[styles.pillText, large && {fontSize: 14}, {color: colour}]}>
         {statusLabel[status]}
-      </Text>
+      </ScaledText>
     </View>
   );
 };
@@ -130,14 +126,14 @@ export const Action: React.FC<{
         ]}>
         {icon(primary ? c.onPrimary : c.ink)}
       </View>
-      <Text
+      <ScaledText
         numberOfLines={1}
         maxFontSizeMultiplier={SLOT_LABEL_MAX_SCALE}
         adjustsFontSizeToFit
         minimumFontScale={0.8}
         style={[styles.actionLabel, {color: c.ink, fontSize}]}>
         {label}
-      </Text>
+      </ScaledText>
     </Pressable>
   );
 };
@@ -149,9 +145,9 @@ export const CredentialInformation: React.FC<{
   const {c} = useRevampTheme();
   return (
     <View style={{gap: 10}}>
-      <Text style={[styles.sectionTitle, {color: c.ink}]}>
+      <ScaledText style={[styles.sectionTitle, {color: c.ink}]}>
         Credential Information
-      </Text>
+      </ScaledText>
       <View
         style={[
           styles.infoCard,
@@ -167,17 +163,17 @@ export const CredentialInformation: React.FC<{
                 borderBottomColor: c.line,
               },
             ]}>
-            <Text style={[styles.infoLabel, {color: c.inkMuted}]}>
+            <ScaledText style={[styles.infoLabel, {color: c.inkMuted}]}>
               {row.label}
-            </Text>
-            <Text
+            </ScaledText>
+            <ScaledText
               numberOfLines={1}
               style={[
                 row.mono ? styles.infoMono : styles.infoValue,
                 {color: row.colour ?? c.ink},
               ]}>
               {row.value}
-            </Text>
+            </ScaledText>
           </View>
         ))}
       </View>
@@ -185,7 +181,9 @@ export const CredentialInformation: React.FC<{
         onPress={onViewAll}
         style={styles.linkRow}
         accessibilityRole="link">
-        <Text style={[styles.link, {color: c.azureInk}]}>View all details</Text>
+        <ScaledText style={[styles.link, {color: c.azureInk}]}>
+          View all details
+        </ScaledText>
       </Pressable>
     </View>
   );

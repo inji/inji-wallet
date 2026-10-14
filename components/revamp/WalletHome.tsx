@@ -5,10 +5,10 @@ import {
   RefreshControl,
   ScrollView,
   StyleSheet,
-  Text,
   useWindowDimensions,
   View,
 } from 'react-native';
+import {ScaledText} from './ScaledText';
 import {useNavigation} from '@react-navigation/native';
 import {VCMetadata} from '../../shared/VCMetadata';
 import {VCShareFlowType} from '../../shared/Utils';
@@ -272,7 +272,6 @@ export const WalletHome: React.FC<{
     visible.length === all.length
       ? pluralCredentials(all.length)
       : `${visible.length} of ${all.length} shown`;
-  const avatarUri = all.find(e => e.data?.face)?.data?.face;
   const showPinned = !!pinnedEntry && !searching;
 
   return (
@@ -283,7 +282,6 @@ export const WalletHome: React.FC<{
 
       <WalletHeader
         countText={countText}
-        avatarUri={avatarUri}
         onAvatar={() => navigation.navigate(BOTTOM_TAB_ROUTES.settings)}
         onAdd={onAdd}
         searching={searching}
@@ -366,11 +364,11 @@ export const WalletHome: React.FC<{
             <Pager count={visible.length} index={index} onSelect={select} />
             <View style={styles.hint}>
               <FlipIcon color={c.inkMuted} />
-              <Text style={[styles.hintText, {color: c.inkMuted}]}>
+              <ScaledText style={[styles.hintText, {color: c.inkMuted}]}>
                 {flipped
                   ? 'Tap the card to see the front'
                   : 'Tap the card to flip it'}
-              </Text>
+              </ScaledText>
             </View>
             {activeEntry && cards[activeEntry.key] ? (
               <ActiveDetails
@@ -463,11 +461,13 @@ const ActiveDetails: React.FC<{
       ]}>
       <View style={styles.titleRow}>
         <View style={{flex: 1, minWidth: 0, gap: 4}}>
-          <Text style={[styles.title, {color: c.ink}]}>{data.title}</Text>
+          <ScaledText style={[styles.title, {color: c.ink}]}>
+            {data.title}
+          </ScaledText>
           {data.issuerName ? (
-            <Text style={[styles.sub, {color: c.inkMuted}]}>
+            <ScaledText style={[styles.sub, {color: c.inkMuted}]}>
               {data.issuerName}
-            </Text>
+            </ScaledText>
           ) : null}
         </View>
         <StatusPill status={data.status} />
@@ -504,9 +504,9 @@ const ActiveDetails: React.FC<{
         style={styles.remove}
         accessibilityRole="button">
         <TrashIcon color={c.fail} />
-        <Text style={[styles.removeText, {color: c.fail}]}>
+        <ScaledText style={[styles.removeText, {color: c.fail}]}>
           Remove from Wallet
-        </Text>
+        </ScaledText>
       </Pressable>
     </Animated.View>
   );
@@ -555,7 +555,9 @@ const PinnedCard: React.FC<{
       <View style={styles.pinnedHead}>
         <View style={styles.pinnedLabel}>
           <PinIcon color={c.azureInk} size={16} filled />
-          <Text style={[styles.pinnedText, {color: c.azureInk}]}>Pinned</Text>
+          <ScaledText style={[styles.pinnedText, {color: c.azureInk}]}>
+            Pinned
+          </ScaledText>
         </View>
         <Pressable
           onPress={actions.togglePin}
@@ -563,7 +565,9 @@ const PinnedCard: React.FC<{
             styles.unpin,
             {borderColor: c.line, backgroundColor: c.card},
           ]}>
-          <Text style={[styles.unpinText, {color: c.ink}]}>Unpin</Text>
+          <ScaledText style={[styles.unpinText, {color: c.ink}]}>
+            Unpin
+          </ScaledText>
         </Pressable>
       </View>
       <Pressable
@@ -588,7 +592,9 @@ const PinnedCard: React.FC<{
             pressed && styles.pressed,
           ]}>
           <QrIcon color={c.onPrimary} size={18} strokeWidth={1.6} />
-          <Text style={[styles.bigBtnText, {color: c.onPrimary}]}>Show QR</Text>
+          <ScaledText style={[styles.bigBtnText, {color: c.onPrimary}]}>
+            Show QR
+          </ScaledText>
         </Pressable>
         <Pressable
           onPress={actions.share}
@@ -598,7 +604,9 @@ const PinnedCard: React.FC<{
             pressed && styles.pressed,
           ]}>
           <ShareIcon color={c.ink} size={18} strokeWidth={1.6} />
-          <Text style={[styles.bigBtnText, {color: c.ink}]}>Share</Text>
+          <ScaledText style={[styles.bigBtnText, {color: c.ink}]}>
+            Share
+          </ScaledText>
         </Pressable>
       </View>
     </Animated.View>
@@ -613,12 +621,12 @@ const Rail: React.FC<{
   return (
     <View style={styles.rail}>
       <View style={styles.railHead}>
-        <Text style={[styles.railTitle, {color: c.ink}]}>
+        <ScaledText style={[styles.railTitle, {color: c.ink}]}>
           Other Credentials
-        </Text>
-        <Text style={[styles.railCount, {color: c.inkMuted}]}>
+        </ScaledText>
+        <ScaledText style={[styles.railCount, {color: c.inkMuted}]}>
           {pluralCredentials(entries.length)}
-        </Text>
+        </ScaledText>
       </View>
       <ScrollView
         horizontal
@@ -642,32 +650,32 @@ const Rail: React.FC<{
                 </ScaledCard>
               </View>
               <View style={{gap: 2, paddingHorizontal: 2}}>
-                <Text
+                <ScaledText
                   numberOfLines={1}
                   style={[styles.railCardTitle, {color: c.ink}]}>
                   {e.data.title}
-                </Text>
-                <Text
+                </ScaledText>
+                <ScaledText
                   numberOfLines={1}
                   style={[styles.railCount, {color: c.inkMuted}]}>
                   {e.data.issuerName}
-                </Text>
+                </ScaledText>
               </View>
             </Pressable>
           ) : null,
         )}
         {entries.length === 0 ? (
-          <Text style={[styles.empty, {color: c.inkMuted}]}>
+          <ScaledText style={[styles.empty, {color: c.inkMuted}]}>
             No other credentials match your search.
-          </Text>
+          </ScaledText>
         ) : null}
       </ScrollView>
       {entries.length > 0 ? (
         <View style={styles.railHint}>
           <ArrowRightIcon color={c.inkMuted} />
-          <Text style={[styles.railCount, {color: c.inkMuted}]}>
+          <ScaledText style={[styles.railCount, {color: c.inkMuted}]}>
             Swipe for more · tap a card for details
-          </Text>
+          </ScaledText>
         </View>
       ) : null}
     </View>
@@ -682,21 +690,21 @@ const NoResults: React.FC<{onReset: () => void}> = ({onReset}) => {
         styles.noResults,
         {borderColor: c.lineStrong, backgroundColor: c.sand},
       ]}>
-      <Text style={[styles.noResultsTitle, {color: c.ink}]}>
+      <ScaledText style={[styles.noResultsTitle, {color: c.ink}]}>
         No Matching Credentials
-      </Text>
-      <Text style={[styles.noResultsText, {color: c.inkMuted}]}>
+      </ScaledText>
+      <ScaledText style={[styles.noResultsText, {color: c.inkMuted}]}>
         Try another name or issuer, or clear the filters.
-      </Text>
+      </ScaledText>
       <Pressable
         onPress={onReset}
         style={[
           styles.clearFilters,
           {borderColor: c.sel, backgroundColor: c.card},
         ]}>
-        <Text style={[styles.unpinText, {fontSize: 14, color: c.ink}]}>
+        <ScaledText style={[styles.unpinText, {fontSize: 14, color: c.ink}]}>
           Clear Filters
-        </Text>
+        </ScaledText>
       </Pressable>
     </View>
   );
@@ -732,7 +740,9 @@ const Toast: React.FC<{message: string}> = ({message}) => {
         },
       ]}>
       <PinIcon color={c.onPrimary} size={16} filled />
-      <Text style={[styles.toastText, {color: c.onPrimary}]}>{message}</Text>
+      <ScaledText style={[styles.toastText, {color: c.onPrimary}]}>
+        {message}
+      </ScaledText>
     </Animated.View>
   );
 };

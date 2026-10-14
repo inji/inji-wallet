@@ -4,10 +4,10 @@ import {
   Keyboard,
   Pressable,
   StyleSheet,
-  Text,
   useWindowDimensions,
   View,
 } from 'react-native';
+import {ScaledText} from './ScaledText';
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -65,7 +65,10 @@ const Halo: React.FC<{colour: string}> = ({colour}) => {
   const rays = Array.from({length: RAYS}, (_, i) => ray(i)).join('');
   // A gradient fill rather than a mask: Android composites a mask offscreen on every frame.
   return (
-    <Svg width={HALO_SIZE} height={HALO_SIZE}>
+    <Svg
+      width={HALO_SIZE}
+      height={HALO_SIZE}
+      viewBox={`0 0 ${HALO_SIZE} ${HALO_SIZE}`}>
       <Defs>
         <RadialGradient
           id="fade"
@@ -207,7 +210,7 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
         testID={item.key}
         style={styles.tab}>
         {item.icon(colour, item.on)}
-        <Text
+        <ScaledText
           numberOfLines={1}
           maxFontSizeMultiplier={SLOT_LABEL_MAX_SCALE}
           adjustsFontSizeToFit
@@ -222,7 +225,7 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
             },
           ]}>
           {item.label}
-        </Text>
+        </ScaledText>
       </Pressable>
     );
     if (!item.copilot) return button;
@@ -248,7 +251,13 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
         <Halo colour={c.ink} />
       </View>
       <View style={styles.shape} pointerEvents="none">
-        <Svg width={width} height={BAR_HEIGHT}>
+        {/* With a viewBox, react-native-svg maps the drawing onto the view's laid-out size. Without
+            one it scales by the screen density it read when the app started, which is stale
+            after a display zoom change. */}
+        <Svg
+          width={width}
+          height={BAR_HEIGHT}
+          viewBox={`0 0 ${width} ${BAR_HEIGHT}`}>
           <Path
             d={outline(width, inset)}
             fill={c.card}

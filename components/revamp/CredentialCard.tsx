@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, Image, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Image, StyleSheet, View} from 'react-native';
+import {ScaledText} from './ScaledText';
 import Svg, {Circle, Path, Rect} from 'react-native-svg';
 import QRCode from 'react-native-qrcode-svg';
 import {DEFAULT_ECL} from '../../shared/constants';
@@ -140,47 +141,47 @@ export const CredentialCardFront = React.memo(function CredentialCardFront({
       <View style={styles.frontBody}>
         <View style={styles.topRow}>
           <View style={{flex: 1, minWidth: 0, gap: 4}}>
-            <Text
+            <ScaledText
               maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
               numberOfLines={1}
               style={[styles.title, {color: fg}]}>
               {data.title}
-            </Text>
+            </ScaledText>
             {data.issuerName ? (
-              <Text
+              <ScaledText
                 maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
                 numberOfLines={1}
                 style={[styles.issuer, {color: fg}]}>
                 {data.issuerName}
-              </Text>
+              </ScaledText>
             ) : null}
           </View>
           <IssuerBadge logoUrl={data.issuerLogoUrl} colour={brand} />
         </View>
         <View style={{marginLeft: data.face ? 98 : 0, gap: 4, minWidth: 0}}>
           {data.holderName ? (
-            <Text
+            <ScaledText
               maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
               numberOfLines={1}
               style={[styles.holder, {color: fg}]}>
               {data.holderName}
-            </Text>
+            </ScaledText>
           ) : null}
           {data.number ? (
-            <Text
+            <ScaledText
               maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
               numberOfLines={1}
               style={[styles.mono, {color: fg}]}>
               {data.number.label} {maskNumber(data.number.value)}
-            </Text>
+            </ScaledText>
           ) : null}
           <View style={styles.statusRow}>
             <ShieldCheck color={fg} />
-            <Text
+            <ScaledText
               maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
               style={[styles.statusText, {color: fg}]}>
               {statusLabel[data.status]}
-            </Text>
+            </ScaledText>
           </View>
         </View>
       </View>
@@ -295,17 +296,17 @@ export const CredentialCardBack = React.memo(function CredentialCardBack({
       />
       <View style={styles.backBody}>
         <View style={styles.backTop}>
-          <Text
+          <ScaledText
             maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
             numberOfLines={1}
             style={[styles.issuer, {color: fg, flex: 1}]}>
             {data.issuerName ?? data.title}
-          </Text>
-          <Text
+          </ScaledText>
+          <ScaledText
             maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
             style={[styles.backAction, {color: fg}]}>
             Scan to verify
-          </Text>
+          </ScaledText>
         </View>
         <View style={styles.backMiddle}>
           <View
@@ -323,34 +324,34 @@ export const CredentialCardBack = React.memo(function CredentialCardBack({
           <View style={{flex: 1, minWidth: 0, gap: 8}}>
             {wide ? (
               <View style={{gap: 2}}>
-                <Text
+                <ScaledText
                   maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
                   style={[styles.backLabel, {color: fg}]}>
                   {wide.label}
-                </Text>
-                <Text
+                </ScaledText>
+                <ScaledText
                   maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
                   numberOfLines={2}
                   style={[styles.backValue, {color: fg}]}>
                   {wide.value}
-                </Text>
+                </ScaledText>
               </View>
             ) : null}
             <View style={{flexDirection: 'row', gap: 8}}>
               {pair.map(f => (
                 <View key={f.label} style={{flex: 1, minWidth: 0, gap: 2}}>
-                  <Text
+                  <ScaledText
                     maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
                     numberOfLines={1}
                     style={[styles.backLabel, {color: fg}]}>
                     {f.label}
-                  </Text>
-                  <Text
+                  </ScaledText>
+                  <ScaledText
                     maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
                     numberOfLines={1}
                     style={[styles.backValue, {color: fg}]}>
                     {f.value}
-                  </Text>
+                  </ScaledText>
                 </View>
               ))}
             </View>
@@ -370,18 +371,18 @@ export const CredentialCardBack = React.memo(function CredentialCardBack({
           </View>
         ) : null}
         <View style={[styles.mrz, {backgroundColor: wash}]}>
-          <Text
+          <ScaledText
             maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
             numberOfLines={1}
             style={[styles.mrzText, {color: fg}]}>
             {l1}
-          </Text>
-          <Text
+          </ScaledText>
+          <ScaledText
             maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
             numberOfLines={1}
             style={[styles.mrzText, {color: fg}]}>
             {l2}
-          </Text>
+          </ScaledText>
         </View>
       </View>
     </View>

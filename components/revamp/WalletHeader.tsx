@@ -1,20 +1,20 @@
 import React, {useEffect, useRef} from 'react';
 import {
   Animated,
-  Image,
   Modal,
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   useWindowDimensions,
   View,
 } from 'react-native';
+import {ScaledText} from './ScaledText';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import {Copilot} from '../ui/Copilot';
-import {CloseIcon, MoreIcon, PlusIcon, SearchIcon, UserIcon} from './Icons';
+import CredIssuerMark from '../../assets/InjiHomeLogo.svg';
+import {CloseIcon, MoreIcon, PlusIcon, SearchIcon} from './Icons';
 import {fonts, radii, shadows} from './tokens';
 import {useRevampTheme} from './useRevampTheme';
 
@@ -45,7 +45,6 @@ const MENU_TOP = 70;
 /** "Wallet" with the count, add, search and a menu; search opens a field and filter chips below. */
 export const WalletHeader: React.FC<{
   countText: string;
-  avatarUri?: string;
   onAvatar: () => void;
   onAdd: () => void;
   searching: boolean;
@@ -54,7 +53,6 @@ export const WalletHeader: React.FC<{
   menu: MenuItem[];
 }> = ({
   countText,
-  avatarUri,
   onAvatar,
   onAdd,
   searching,
@@ -77,28 +75,25 @@ export const WalletHeader: React.FC<{
             onPress={onAvatar}
             accessibilityLabel="Open profile"
             style={[styles.avatarRing, {borderColor: c.sel}]}>
-            <View style={[styles.avatar, {backgroundColor: '#c3d3e6'}]}>
-              {avatarUri ? (
-                <Image source={{uri: avatarUri}} style={styles.avatarImg} />
-              ) : (
-                <UserIcon color={c.ink} size={22} />
-              )}
+            {/* The app's logo until there is a signed-in user with a profile picture. */}
+            <View style={[styles.avatar, {backgroundColor: c.card}]}>
+              <CredIssuerMark width={28} height={28} />
             </View>
           </Pressable>
           <View style={{gap: 2, minWidth: 0, flexShrink: 1}}>
-            <Text
+            <ScaledText
               numberOfLines={1}
               adjustsFontSizeToFit
               minimumFontScale={0.7}
               style={[styles.h1, {color: c.ink}]}>
               Wallet
-            </Text>
-            <Text
+            </ScaledText>
+            <ScaledText
               numberOfLines={1}
               style={[styles.count, {color: c.inkMuted}]}
               accessibilityLiveRegion="polite">
               {countText}
-            </Text>
+            </ScaledText>
           </View>
         </View>
         <View style={styles.right}>
@@ -230,7 +225,9 @@ const Menu: React.FC<{
               pressed && {backgroundColor: c.sand},
             ]}>
             {item.icon(c.ink)}
-            <Text style={[styles.menuText, {color: c.ink}]}>{item.label}</Text>
+            <ScaledText style={[styles.menuText, {color: c.ink}]}>
+              {item.label}
+            </ScaledText>
           </Pressable>
         </React.Fragment>
       ))}
@@ -302,7 +299,9 @@ const SearchPanel: React.FC<{search: SearchState; onCancel: () => void}> = ({
           ) : null}
         </View>
         <Pressable onPress={onCancel} style={styles.cancel}>
-          <Text style={[styles.cancelText, {color: c.azureInk}]}>Cancel</Text>
+          <ScaledText style={[styles.cancelText, {color: c.azureInk}]}>
+            Cancel
+          </ScaledText>
         </Pressable>
       </View>
       {search.chips.length > 1 ? (
@@ -327,14 +326,14 @@ const SearchPanel: React.FC<{search: SearchState; onCancel: () => void}> = ({
                     borderColor: on ? c.sel : c.line,
                   },
                 ]}>
-                <Text
+                <ScaledText
                   style={[styles.chipText, {color: on ? c.onPrimary : c.ink}]}>
                   {chip.label}
-                </Text>
-                <Text
+                </ScaledText>
+                <ScaledText
                   style={[styles.chipCount, {color: on ? c.onPrimary : c.ink}]}>
                   {chip.count}
-                </Text>
+                </ScaledText>
               </Pressable>
             );
           })}
@@ -377,7 +376,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  avatarImg: {width: 40, height: 40},
   h1: {
     fontFamily: fonts.medium,
     fontSize: 28,
