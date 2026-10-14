@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.inji.wallet</groupId>
 	<artifactId>inji-wallet</artifactId>
-	<version>1.0.0-alpha.1</version>
+	<version>1.0.0-rc.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>uitest-inji-wallet</name>
 	<description>Project for Inji Mobile UI Automation</description>
@@ -53,7 +53,7 @@
 		<maven.gpg.plugin.version>1.5</maven.gpg.plugin.version>
 		<maven.shade.plugin.version>3.6.1</maven.shade.plugin.version>
 		<central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
-		<jarName>uitest-inji-wallet-1.0.0-alpha.1-jar-with-dependencies</jarName>
+		<jarName>uitest-inji-wallet-1.0.0-rc.2-SNAPSHOT-jar-with-dependencies</jarName>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -189,7 +189,7 @@
 		<dependency>
 			<groupId>io.mosip.testrig.apitest.commons</groupId>
 			<artifactId>apitest-commons</artifactId>
-			<version>1.5.0</version>
+			<version>1.7.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
