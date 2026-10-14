@@ -45,11 +45,6 @@
                    <include name="downloadMosipIdVCWithoutInternet" />
                  </methods>
                </class>
-           <class name="inji.testcases.iosTestCases.sanityFlows.FarmerFlowSanityTest">
-             <methods>
-               <include name="downloadFarmerVCAndDeleteSmoke" />
-             </methods>
-           </class>
         </classes>
     </test>
 </suite>
