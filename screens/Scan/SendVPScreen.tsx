@@ -34,7 +34,8 @@ import {
 import {VCMetadata} from '../../shared/VCMetadata';
 import {VerifyIdentityOverlay} from '../VerifyIdentityOverlay';
 import {VPShareOverlay} from './VPShareOverlay';
-import {FaceVerificationAlertOverlay} from './FaceVerificationAlertOverlay';
+import {FaceVerificationConsentSheet} from './FaceVerificationConsentSheet';
+import {getFaceAttribute} from '../../components/VC/common/VCUtils';
 import {useSendVPScreen} from './SendVPScreenController';
 import {ErrorView} from '../../components/ui/Error';
 import {SvgImage} from '../../components/ui/svg';
@@ -74,6 +75,17 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
   const [selectedDisclosuresByVc, setSelectedDisclosuresByVc] = useState<
     Record<string, string[]>
   >({});
+  // Card type names ("National ID") reported by the cards once their issuer metadata loads.
+  const [credentialTypesByVcKey, setCredentialTypesByVcKey] = useState<
+    Record<string, string>
+  >({});
+
+  const handleCredentialTypeLoaded = (vcKey: string, credentialType: string) =>
+    setCredentialTypesByVcKey(previous =>
+      previous[vcKey] === credentialType
+        ? previous
+        : {...previous, [vcKey]: credentialType},
+    );
 
   const handleDisclosureChange = (vcKey: string, disclosures: string[]) => {
     setSelectedDisclosuresByVc(prev => ({
@@ -110,6 +122,17 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
       BackHandler.exitApp();
     }
   }, [triggerExitFlow]);
+
+  // The holder already agreed to the face check in the selfie sheet at the sharing-consent
+  // step, so the machine's separate face-consent step is confirmed without asking again.
+  useEffect(() => {
+    if (
+      controller.isFaceVerificationConsent &&
+      !controller.isAuthorizationFlow
+    ) {
+      controller.FACE_VERIFICATION_CONSENT(false);
+    }
+  }, [controller.isFaceVerificationConsent, controller.isAuthorizationFlow]);
 
   useEffect(() => {
     sendImpressionEvent(
@@ -288,6 +311,30 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
     ids: t('idsCount', {count: selectedCount}),
   });
 
+  const selectedVcKeys = Object.values(
+    controller.inputDescriptorIdToSelectedVcKeys,
+  ).flat();
+  const selectedCardNames = selectedVcKeys
+    .map(vcKey => credentialTypesByVcKey[vcKey])
+    .filter(Boolean);
+  // The selfie is matched against the photo on the first selected card that has one.
+  const photoCard = Object.values(selectedVCs)
+    .flat()
+    .map(vc => ({
+      vcKey: getVcKey(vc),
+      face: getFaceAttribute(vc.verifiableCredential, vc.format),
+    }))
+    .find(card => !!card.face);
+
+  // A selfie share asks for consent once, in the selfie sheet: agreeing there covers both
+  // sharing the cards and the face check. The issuer download flow has no sharing-consent
+  // step, so it shows the sheet at the face-check step instead.
+  const isSelfieShareConsent =
+    controller.isVPSharingConsent && controller.isShareWithSelfie;
+  const isSelfieConsentVisible =
+    isSelfieShareConsent ||
+    (controller.isFaceVerificationConsent && controller.isAuthorizationFlow);
+
   const verifierName =
     controller.vpVerifierName ??
     controller.verifierNameInTrustModal ??
@@ -413,6 +460,12 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                               onDisclosuresChange={disclosures =>
                                 handleDisclosureChange(vcKey, disclosures)
                               }
+                              onCredentialTypeLoaded={credentialType =>
+                                handleCredentialTypeLoaded(
+                                  vcKey,
+                                  credentialType,
+                                )
+                              }
                             />
                           );
                         })}
@@ -485,7 +538,7 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
             isLivenessEnabled={LIVENESS_CHECK}
           />
 
-          {controller.overlayDetails !== null && (
+          {controller.overlayDetails !== null && !isSelfieShareConsent && (
             <VPShareOverlay
               isVisible={controller.overlayDetails !== null}
               title={controller.overlayDetails.title}
@@ -510,10 +563,18 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
             />
           )}
 
-          <FaceVerificationAlertOverlay
-            isVisible={controller.isFaceVerificationConsent}
-            onConfirm={controller.FACE_VERIFICATION_CONSENT}
-            close={controller.DISMISS_POPUP}
+          <FaceVerificationConsentSheet
+            isVisible={isSelfieConsentVisible}
+            face={photoCard?.face}
+            photoCardName={photoCard && credentialTypesByVcKey[photoCard.vcKey]}
+            cardNames={selectedCardNames}
+            verifierName={verifierName}
+            onConfirm={
+              controller.isVPSharingConsent
+                ? controller.CONFIRM
+                : () => controller.FACE_VERIFICATION_CONSENT(false)
+            }
+            onCancel={controller.DISMISS_POPUP}
           />
         </>
       )}

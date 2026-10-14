@@ -907,6 +907,19 @@
     }
   },
   "SendVPScreen": {
+    "faceConsentTitle": "Kumpirmahing Ikaw Ito",
+    "faceConsentSubtitle": "Pinapatunayan ng mabilis na selfie na ikaw ang may-ari ng iyong {{card}}.",
+    "faceConsentPoints": [
+      "Itinutugma ang iyong selfie sa larawan sa iyong {{card}}, dito mismo sa phone na ito.",
+      "Hindi kailanman matatanggap ng {{verifier}} ang iyong selfie.",
+      "Ginagamit lang ang iyong selfie para sa pagsusuring ito."
+    ],
+    "faceConsentAgree": "Sumasang-ayon ako sa face verification para ibahagi ang aking {{cards}} sa {{verifier}}.",
+    "faceConsentTickToContinue": "I-tick ang box para magpatuloy",
+    "faceConsentContinue": "Magpatuloy",
+    "faceConsentNotNow": "Hindi Ngayon",
+    "cardFallback": "card",
+    "listAnd": "at",
     "shareRequestTitle": "Kahilingang Magbahagi",
     "close": "Isara",
     "trustedVerifier": "Pinagkakatiwalaang verifier",

@@ -93,6 +93,7 @@ export const PurpleTheme = {
       mutedBackground: '#EEECE6',
       border: '#D9D8D2',
       mutedIcon: '#9A9A94',
+      scanLine: '#5BC8E8',
       surface: '#FFFFFF',
       warningBackground: '#F6E9CF',
       warningText: '#8A5A0B',

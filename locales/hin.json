@@ -911,6 +911,19 @@
     }
   },
   "SendVPScreen": {
+    "faceConsentTitle": "पुष्टि करें कि यह आप हैं",
+    "faceConsentSubtitle": "एक त्वरित सेल्फ़ी साबित करती है कि आप अपने {{card}} के धारक हैं।",
+    "faceConsentPoints": [
+      "आपकी सेल्फ़ी का मिलान इसी फ़ोन पर आपके {{card}} की फ़ोटो से किया जाता है।",
+      "{{verifier}} को आपकी सेल्फ़ी कभी नहीं मिलती।",
+      "आपकी सेल्फ़ी का उपयोग केवल इसी जाँच के लिए होता है।"
+    ],
+    "faceConsentAgree": "मैं {{verifier}} के साथ अपना {{cards}} साझा करने के लिए चेहरे के सत्यापन से सहमत हूँ।",
+    "faceConsentTickToContinue": "जारी रखने के लिए बॉक्स पर टिक करें",
+    "faceConsentContinue": "जारी रखें",
+    "faceConsentNotNow": "अभी नहीं",
+    "cardFallback": "कार्ड",
+    "listAnd": "और",
     "shareRequestTitle": "साझा करने का अनुरोध",
     "close": "बंद करें",
     "trustedVerifier": "विश्वसनीय सत्यापनकर्ता",

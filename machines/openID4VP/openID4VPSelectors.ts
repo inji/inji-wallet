@@ -33,6 +33,10 @@ export function selectIsGetVPSharingConsent(state: State) {
   );
 }
 
+export function selectIsShareWithSelfie(state: State) {
+  return state.context.isShareWithSelfie;
+}
+
 export function selectIsFaceVerificationConsent(state: State) {
   return state.matches('faceVerificationConsent');
 }

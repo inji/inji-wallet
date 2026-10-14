@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {useTranslation} from 'react-i18next';
@@ -27,11 +27,18 @@ export const VPShareCredentialCard: React.FC<VPShareCredentialCardProps> = ({
   selectedDisclosures = [],
   onPress,
   onDisclosuresChange,
+  onCredentialTypeLoaded,
   testID,
 }) => {
   const {t} = useTranslation('SendVPScreen');
   const {controller, vc, wellknown, issuerWellknown, isLoaded} =
     useVcCardData(vcMetadata);
+
+  useEffect(() => {
+    if (isLoaded) {
+      onCredentialTypeLoaded?.(getCredentialType(wellknown));
+    }
+  }, [isLoaded, wellknown]);
 
   if (!isLoaded) {
     return <VCCardSkeleton />;
@@ -212,5 +219,7 @@ interface VPShareCredentialCardProps {
   selectedDisclosures?: string[];
   onPress: () => void;
   onDisclosuresChange?: (disclosures: string[]) => void;
+  // Reports the card's type name, e.g. "National ID", once it is known.
+  onCredentialTypeLoaded?: (credentialType: string) => void;
   testID?: string;
 }

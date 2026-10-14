@@ -909,6 +909,19 @@
     }
   },
   "SendVPScreen": {
+    "faceConsentTitle": "ಇದು ನೀವೇ ಎಂದು ದೃಢೀಕರಿಸಿ",
+    "faceConsentSubtitle": "ನೀವು ನಿಮ್ಮ {{card}} ಹೊಂದಿರುವವರು ಎಂದು ತ್ವರಿತ ಸೆಲ್ಫಿ ಸಾಬೀತುಪಡಿಸುತ್ತದೆ.",
+    "faceConsentPoints": [
+      "ನಿಮ್ಮ ಸೆಲ್ಫಿಯನ್ನು ಈ ಫೋನ್‌ನಲ್ಲೇ ನಿಮ್ಮ {{card}} ನ ಫೋಟೋದೊಂದಿಗೆ ಹೋಲಿಸಲಾಗುತ್ತದೆ.",
+      "{{verifier}} ಗೆ ನಿಮ್ಮ ಸೆಲ್ಫಿ ಎಂದಿಗೂ ಸಿಗುವುದಿಲ್ಲ.",
+      "ನಿಮ್ಮ ಸೆಲ್ಫಿಯನ್ನು ಈ ಪರಿಶೀಲನೆಗೆ ಮಾತ್ರ ಬಳಸಲಾಗುತ್ತದೆ."
+    ],
+    "faceConsentAgree": "{{verifier}} ಜೊತೆಗೆ ನನ್ನ {{cards}} ಹಂಚಿಕೊಳ್ಳಲು ಮುಖ ಪರಿಶೀಲನೆಗೆ ನಾನು ಒಪ್ಪುತ್ತೇನೆ.",
+    "faceConsentTickToContinue": "ಮುಂದುವರಿಸಲು ಬಾಕ್ಸ್ ಅನ್ನು ಟಿಕ್ ಮಾಡಿ",
+    "faceConsentContinue": "ಮುಂದುವರಿಸಿ",
+    "faceConsentNotNow": "ಈಗ ಬೇಡ",
+    "cardFallback": "ಕಾರ್ಡ್",
+    "listAnd": "ಮತ್ತು",
     "shareRequestTitle": "ಹಂಚಿಕೆ ವಿನಂತಿ",
     "close": "ಮುಚ್ಚಿ",
     "trustedVerifier": "ವಿಶ್ವಾಸಾರ್ಹ ಪರಿಶೀಲಕ",

@@ -26,6 +26,7 @@ import {
   selectIsInvalidIdentity,
   selectIsOVPViaDeeplink,
   selectIsSelectingVcs,
+  selectIsShareWithSelfie,
   selectIsSharingVP,
   selectIsShowLoadingScreen,
   selectIsVerifyingIdentity,
@@ -334,6 +335,9 @@ export function useSendVPScreen(props) {
       selectIsFaceVerificationConsent,
     ),
     isOVPViaDeepLink,
+    isVPSharingConsent,
+    isShareWithSelfie: useSelector(openID4VPService, selectIsShareWithSelfie),
+    CONFIRM,
     credentials: useSelector(openID4VPService, selectCredentials),
     verifiableCredentialsData: useSelector(
       openID4VPService,

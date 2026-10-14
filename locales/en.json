@@ -1007,6 +1007,19 @@
     }
   },
   "SendVPScreen": {
+    "faceConsentTitle": "Confirm It's You",
+    "faceConsentSubtitle": "A quick selfie proves you're the holder of your {{card}}.",
+    "faceConsentPoints": [
+      "Your selfie is matched with the photo on your {{card}}, right on this phone.",
+      "{{verifier}} never receives your selfie.",
+      "Your selfie is used only for this check."
+    ],
+    "faceConsentAgree": "I agree to face verification to share my {{cards}} with {{verifier}}.",
+    "faceConsentTickToContinue": "Tick the box to continue",
+    "faceConsentContinue": "Continue",
+    "faceConsentNotNow": "Not Now",
+    "cardFallback": "card",
+    "listAnd": "and",
     "shareRequestTitle": "Share Request",
     "close": "Close",
     "trustedVerifier": "Trusted verifier",
