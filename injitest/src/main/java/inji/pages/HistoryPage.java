@@ -63,7 +63,7 @@ public class HistoryPage extends BasePage {
     }
 
     private boolean verifyHistoryIosMock() {
-        By locator = By.xpath("//*[contains(@text,'Mock Verifiable Credential (SD-JWT) is downloaded.')]");
+        By locator = By.xpath("//XCUIElementTypeStaticText[@name=\"Mock Verifiable Credential (SD-JWT) is downloaded.\"]");
         return isElementVisible(locator, "Verifying downloaded Mock VC history record on iOS");
     }
 
@@ -73,7 +73,7 @@ public class HistoryPage extends BasePage {
     }
 
     private boolean verifyDeleteHistoryIosMock() {
-      By locator = By.xpath("//*[contains(@text,'Mock Verifiable Credential (SD-JWT) is removed from wallet.')]");
+      By locator = By.xpath("//XCUIElementTypeStaticText[@name=\"Mock Verifiable Credential (SD-JWT) is removed from wallet.\"]");
       return isElementVisible(locator, "Verifying delete history Mock VC history record on iOS");
     }
 
@@ -277,7 +277,7 @@ public class HistoryPage extends BasePage {
     }
 
     private boolean verifyHistoryIosForFarmer(String vcNumber){
-      By locator = By.xpath("//*[contains(@text,'Farmer Credential With Face is downloaded.')]");
+      By locator = By.xpath("//XCUIElementTypeStaticText[@name=\"Farmer Credential With Face is downloaded.\"]");
       return isElementVisible(locator, "Verifying downloaded Farmer Credential history record on Ios");
     }
 

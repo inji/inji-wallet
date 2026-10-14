@@ -35,4 +35,15 @@ public class InjiWalletConfigManager extends ConfigManager {
     public static String getSunbirdBaseURL() {
         return InjiWalletUtil.getValueFromMimotoActuator("overrides", "mosip.sunbird.url");
     }
+    public static String getPlatformVersion() {
+        return getproperty("browserstack_platformVersion");
+    }
+
+    public static int getPlatformMajorVersion() {
+        String version = getPlatformVersion();
+        if (version == null || version.isBlank()) {
+          return -1;
+        }
+        return Integer.parseInt(version.trim().split("\\.")[0]);
+    }
 }
