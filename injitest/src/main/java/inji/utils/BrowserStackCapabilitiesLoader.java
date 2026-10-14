@@ -16,7 +16,9 @@ public class BrowserStackCapabilitiesLoader {
 		String platform = InjiWalletConfigManager.getproperty("browserstack_platformName");
 		String deviceName = InjiWalletConfigManager.getproperty("browserstack_deviceName");
 		String platformVersion = InjiWalletConfigManager.getproperty("browserstack_platformVersion");
-		String appId = InjiWalletConfigManager.getproperty("browserstack_appId");
+//		String appId = InjiWalletConfigManager.getproperty("browserstack_appId");
+    String appId = System.getProperty("browserstack_appId",
+      InjiWalletConfigManager.getproperty("browserstack_appId"));
 		String buildName = InjiWalletConfigManager.getproperty("browserstack_buildName");
 
 		// Initialize desired capabilities (W3C format)

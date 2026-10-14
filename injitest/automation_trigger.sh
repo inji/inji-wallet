@@ -89,7 +89,9 @@ execute_ios_tests() {
     sed -i '' "s|accessKey:.*|accessKey: $access_key|" "iosConfig.yml"
 
     # Run UI tests using Maven with the updated iosConfig.yml file and TestNG XML file based on the test type
-    mvn clean test -DtestngXmlFile="ios${test_type}.xml" -Dbrowserstack.config="iosConfig.yml"
+    mvn clean test -DtestngXmlFile="ios${test_type}.xml" \
+        -Dbrowserstack.config="iosConfig.yml" \
+        -Dbrowserstack_appId="$app_url"
 }
 # Check if the correct number of arguments are passed
 if [ "$#" -ne 4 ]; then

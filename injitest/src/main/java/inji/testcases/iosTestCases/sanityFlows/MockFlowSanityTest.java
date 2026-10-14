@@ -67,7 +67,8 @@ public class MockFlowSanityTest extends IosBaseTest {
 
     HistoryPage historyPage = homePage.clickOnHistoryButton();
     assertTrue(historyPage.isHistoryPageLoaded(), "Verify if history page is displayed");
-    historyPage.verifyHistoryForMock(PlatformType.IOS);
+    assertTrue(historyPage.verifyHistoryForMock(PlatformType.IOS),
+      "Verify if download history is displayed");
     assertTrue(historyPage.verifyDeleteHistoryForMock(PlatformType.IOS), "Verify if deleted history is displayed");
   }
 

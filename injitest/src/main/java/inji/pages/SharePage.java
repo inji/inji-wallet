@@ -214,8 +214,9 @@ public class SharePage extends BasePage {
         try {
             String majorVersion = platformVersion.split("\\.")[0].trim();
             return Integer.parseInt(majorVersion) > 16;
-        } catch (Exception e) {
-            return false;
+        } catch (NumberFormatException e) {
+          throw new IllegalArgumentException(
+            "Invalid browserstack_platformVersion: " + platformVersion, e);
         }
     }
 }
