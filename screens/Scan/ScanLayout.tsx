@@ -99,6 +99,8 @@ export const ScanLayout: React.FC = () => {
           name={SCAN_ROUTES.ScanScreen}
           component={ScanScreen}
           options={{
+            // ScanScreen draws its own dark header.
+            headerShown: false,
             title: t('MainLayout:share'),
             headerTitleAlign: 'left',
             headerTitleStyle: Theme.Styles.scanLayoutHeaderTitle,

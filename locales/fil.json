@@ -737,6 +737,18 @@
     "gotoSettings": "Pumunta sa setting"
   },
   "ScanScreen": {
+    "scanVerifierTitle": "I-scan ang Verifier",
+    "close": "Isara",
+    "flashOn": "I-on ang flashlight",
+    "flashOff": "I-off ang flashlight",
+    "pointCameraTitle": "Itutok ang iyong camera sa QR code ng verifier",
+    "pointCameraSubtitle": "Makikita mo kung sino ang humihingi at pipiliin mo kung ano ang ibabahagi bago may maipadala.",
+    "fromPhotos": "Mula sa Photos",
+    "showMyQr": "Ipakita ang Aking QR",
+    "comingSoon": "Malapit na",
+    "cameraOffTitle": "Naka-off ang access sa camera",
+    "cameraOffSubtitle": "Payagan ang access sa camera sa Settings para ma-scan ang QR code ng verifier.",
+    "openSettings": "Buksan ang Settings",
     "shareWithSelfie": "Ibahagi sa Selfie",
     "shareWithSelfieQrLogin": "Pag-login sa QR Code",
     "shareWithSelfieMessage": "Upang maibahagi ang iyong Verifiable Credentials, ligtas naming ibe-verify ang iyong pagkakakilanlan gamit ang face authentication. Sa pagpapatuloy, pumapayag kang gamitin ng CredIssuer ang iyong camera para sa layuning ito. Ang iyong facial data ay gagamitin lamang para sa pag-verify at hindi ibabahagi sa anumang third party.",

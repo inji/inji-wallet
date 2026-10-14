@@ -772,6 +772,18 @@
     "gotoSettings": "Go to settings"
   },
   "ScanScreen": {
+    "scanVerifierTitle": "Scan Verifier",
+    "close": "Close",
+    "flashOn": "Turn on flashlight",
+    "flashOff": "Turn off flashlight",
+    "pointCameraTitle": "Point your camera at the verifier's QR code",
+    "pointCameraSubtitle": "You'll see who is asking and choose what to share before anything is sent.",
+    "fromPhotos": "From Photos",
+    "showMyQr": "Show My QR",
+    "comingSoon": "Coming soon",
+    "cameraOffTitle": "Camera access is off",
+    "cameraOffSubtitle": "Allow camera access in Settings to scan the verifier's QR code.",
+    "openSettings": "Open Settings",
     "shareWithSelfie": "Share with Selfie",
     "shareWithSelfieQrLogin": "QR Code Login",
     "shareWithSelfieMessage": "To share your Verifiable Credentials, we’ll securely verify your identity using face authentication. By continuing, you consent to CredIssuer using your camera for this purpose. Your facial data will only be used for verification and will not be shared with any third parties.",
