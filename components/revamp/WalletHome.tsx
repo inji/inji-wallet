@@ -10,6 +10,10 @@ import {
 } from 'react-native';
 import {ScaledText} from './ScaledText';
 import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
+import {useCopilot} from 'react-native-copilot';
+import {Copilot} from '../ui/Copilot';
+import {COPILOT_FINAL_STEP} from '../../shared/constants';
 import {VCMetadata} from '../../shared/VCMetadata';
 import {VCShareFlowType} from '../../shared/Utils';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
@@ -19,7 +23,7 @@ import {VCItemEvents} from '../../machines/VerifiableCredential/VCItemMachine/VC
 import {RemoveVcWarningOverlay} from '../../screens/Home/MyVcs/RemoveVcWarningOverlay';
 import {HistoryTab} from '../../screens/Home/MyVcs/HistoryTab';
 import {QrCodeOverlay} from '../QrCodeOverlay';
-import {CardCarousel} from './CardCarousel';
+import {CardCarousel, frontCardFrame} from './CardCarousel';
 import {CardLoader, LoadedCard} from './CardLoader';
 import {CredentialCardFront, ScaledCard} from './CredentialCard';
 import {Action, CredentialInformation, StatusPill} from './CredentialParts';
@@ -63,6 +67,10 @@ const pluralCredentials = (n: number) =>
  * on top with the rest in a rail), the active card's status, actions and information, search and
  * a details page per card.
  */
+const CARD_TOUR_START_DELAY_MS = 500;
+// Keeps the card's rounded corners inside the tour's rounded highlight.
+const CARD_TOUR_TARGET_PADDING = 4;
+
 export const WalletHome: React.FC<{
   vcMetadatas: VCMetadata[];
   /** Lowercased searchable text of each credential's claims, by credential key. */
@@ -71,6 +79,10 @@ export const WalletHome: React.FC<{
   onStackView: () => void;
   refreshing: boolean;
   onRefresh: () => void;
+  /** The cards are a tour step: after the first download, or while the tour is replayed. */
+  isCardTourStep?: boolean;
+  /** Start the tour at the card step once the card shows: after the first download. */
+  startCardTour?: boolean;
 }> = ({
   vcMetadatas,
   searchIndex,
@@ -78,7 +90,11 @@ export const WalletHome: React.FC<{
   onStackView,
   refreshing,
   onRefresh,
+  isCardTourStep = false,
+  startCardTour = false,
 }) => {
+  const {t} = useTranslation();
+  const {start: startTour} = useCopilot();
   const insets = useSafeAreaInsets();
   const {c, reduceMotion} = useRevampTheme();
   const navigation = useNavigation<any>();
@@ -205,6 +221,21 @@ export const WalletHome: React.FC<{
     toastTimer.current = setTimeout(() => setToast(''), 2400);
   };
   useEffect(() => () => clearTimeout(toastTimer.current), []);
+
+  // After the first download the tour opens on the card, once it has loaded and the
+  // carousel has settled, so the highlight lands on it.
+  const hasStartedCardTour = useRef(false);
+  const isActiveCardLoaded = !!(activeEntry && cards[activeEntry.key]);
+  useEffect(() => {
+    if (!startCardTour || !isActiveCardLoaded || hasStartedCardTour.current) {
+      return;
+    }
+    const timer = setTimeout(() => {
+      hasStartedCardTour.current = true;
+      startTour(t('copilot:cardTitle'));
+    }, CARD_TOUR_START_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [startCardTour, isActiveCardLoaded]);
 
   const [qrFor, setQrFor] = useState<string | null>(null);
   const qrCard = qrFor ? loaded[qrFor] : undefined;
@@ -348,6 +379,20 @@ export const WalletHome: React.FC<{
                 onFlip={() => setFlipped(f => !f)}
                 reduceMotion={reduceMotion}
               />
+              {isCardTourStep ? (
+                // An invisible box over the centre card, so the tour highlights the card
+                // itself rather than the whole carousel strip.
+                <Copilot
+                  title={t('copilot:cardTitle')}
+                  description={t('copilot:cardMessage')}
+                  order={COPILOT_FINAL_STEP}
+                  targetStyle={[
+                    styles.cardTourTarget,
+                    frontCardFrame(width, CARD_TOUR_TARGET_PADDING),
+                  ]}>
+                  <View />
+                </Copilot>
+              ) : null}
             </View>
             <Pager count={visible.length} index={index} onSelect={select} />
             <View style={styles.hint}>
@@ -800,6 +845,7 @@ const Dot: React.FC<{active: boolean}> = ({active}) => {
 };
 
 const styles = StyleSheet.create({
+  cardTourTarget: {position: 'absolute', pointerEvents: 'none'},
   pager: {
     flexDirection: 'row',
     alignItems: 'center',

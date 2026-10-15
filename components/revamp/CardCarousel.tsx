@@ -28,6 +28,27 @@ const SLOT = 0.8; // card scale relative to its design size, at a 390-wide scree
 // The centre card is drawn 1.03x its slot, so this keeps it at most its design size on wide screens.
 const MAX_SCALE = 1 / 1.03;
 const GAP = 250; // distance between neighbouring cards at scale 1 (200 at the design's 0.8)
+// The centre card is drawn slightly larger than the slot scale and lifted a little.
+const FRONT_CARD_SCALE = 1.03;
+const FRONT_CARD_LIFT = 8;
+
+/**
+ * Where the centre card is drawn inside the carousel, at rest, grown by `padding` on every side:
+ * for overlays that must line up with it, such as the tour's highlight.
+ */
+export const frontCardFrame = (screenWidth: number, padding = 0) => {
+  const scale = Math.min((screenWidth / 390) * SLOT, MAX_SCALE);
+  const width = CARD_WIDTH * scale * FRONT_CARD_SCALE;
+  const height = CARD_HEIGHT * scale * FRONT_CARD_SCALE;
+  // The slot's centre sits at 12 + (CARD_HEIGHT * scale) / 2 (see `placement` below), lifted.
+  const centreY = 12 + (CARD_HEIGHT * scale) / 2 - FRONT_CARD_LIFT;
+  return {
+    left: (screenWidth - width) / 2 - padding,
+    top: centreY - height / 2 - padding,
+    width: width + 2 * padding,
+    height: height + 2 * padding,
+  };
+};
 const RUBBER = 0.35;
 
 /**
@@ -233,14 +254,14 @@ const CarouselCard = React.memo(function CarouselCard({
         cardScale: Animated.multiply(
           e.interpolate({
             inputRange: range,
-            outputRange: [0.76, 0.91, 1.03, 0.91, 0.76],
+            outputRange: [0.76, 0.91, FRONT_CARD_SCALE, 0.91, 0.76],
             extrapolate: 'clamp',
           }),
           scale,
         ),
         translateY: e.interpolate({
           inputRange: [-1, 0, 1],
-          outputRange: [0, -8, 0],
+          outputRange: [0, -FRONT_CARD_LIFT, 0],
           extrapolate: 'clamp',
         }),
         opacity: e.interpolate({
