@@ -181,12 +181,6 @@ export const settingsIcons = {
       <Path d="M9 9h.01M15 9h.01M9 15c1.5 1.3 4.5 1.3 6 0" />
     </SettingsIcon>
   ),
-  key: (col: string) => (
-    <SettingsIcon colour={col}>
-      <Circle cx={7.5} cy={15.5} r={4.5} />
-      <Path d="m10.7 12.3 9.3-9.3M16 7l3 3M14 9l2 2" />
-    </SettingsIcon>
-  ),
   history: (col: string) => (
     <SettingsIcon colour={col}>
       <Circle cx={18} cy={5} r={3} />
@@ -217,6 +211,47 @@ export const settingsIcons = {
     <SettingsIcon colour={col}>
       <Circle cx={12} cy={12} r={9} />
       <Path d="M12 16v-4M12 8h.01" />
+    </SettingsIcon>
+  ),
+  lock: (col: string) => (
+    <SettingsIcon colour={col}>
+      <Rect x={4} y={11} width={16} height={10} rx={2} />
+      <Path d="M8 11V7a4 4 0 0 1 8 0v4" />
+    </SettingsIcon>
+  ),
+  clock: (col: string) => (
+    <SettingsIcon colour={col}>
+      <Circle cx={12} cy={12} r={9} />
+      <Path d="M12 7v5l3 2" />
+    </SettingsIcon>
+  ),
+  shield: (col: string) => (
+    <SettingsIcon colour={col}>
+      <Path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <Path d="m9 12 2 2 4-4" />
+    </SettingsIcon>
+  ),
+  appearance: (col: string) => (
+    <SettingsIcon colour={col}>
+      <Circle cx={12} cy={12} r={4} />
+      <Path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+    </SettingsIcon>
+  ),
+  document: (col: string) => (
+    <SettingsIcon colour={col}>
+      <Path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
+      <Path d="M14 3v6h6M8 13h8M8 17h5" />
+    </SettingsIcon>
+  ),
+  compass: (col: string) => (
+    <SettingsIcon colour={col}>
+      <Circle cx={12} cy={12} r={9} />
+      <Path d="m15.5 8.5-2 5-5 2 2-5z" />
+    </SettingsIcon>
+  ),
+  check: (col: string) => (
+    <SettingsIcon colour={col}>
+      <Path d="m5 12 5 5 9-10" />
     </SettingsIcon>
   ),
   tour: (col: string) => (

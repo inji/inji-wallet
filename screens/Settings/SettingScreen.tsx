@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Platform, Pressable, ScrollView, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+
+/** Rows for features that are designed but not built yet; switch on when they are. */
+const SHOW_CONNECTED_VERIFIERS = false;
+const SHOW_APPEARANCE = false;
 import {MessageOverlay} from '../../components/MessageOverlay';
 import {useSettingsScreen} from './SettingScreenController';
 import {useTranslation} from 'react-i18next';
@@ -16,11 +20,11 @@ import testIDProps from '../../shared/commonUtil';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {Theme} from '../../components/ui/styleUtils';
 import {SUPPORTED_LANGUAGES} from '../../i18n';
-import {
-  BOTTOM_TAB_ROUTES,
-  SETTINGS_ROUTES,
-  SettingsStackParamList,
-} from '../../routes/routesConstants';
+import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
+import {ChangePin} from './ChangePin';
+import {InfoPage} from './InfoPage';
+import {AUTO_LOCK_OPTIONS, useAutoLockSetting} from './autoLock';
+import {Modal} from '../../components/ui/Modal';
 import {ScaledText} from '../../components/revamp/ScaledText';
 import {
   SettingsRow,
@@ -36,12 +40,11 @@ export const SettingScreen: React.FC<
   SettingProps & RootRouteProps & RequestRouteProps
 > = props => {
   const {t, i18n} = useTranslation('SettingScreen');
-  const keyT = useTranslation('SetupKey').t;
   const receivedT = useTranslation('ReceivedVcsTab').t;
   const aboutT = useTranslation('AboutInji').t;
   const controller = useSettingsScreen(props);
   const receivedCards = useReceivedVcsTab();
-  const navigation = useNavigation<NavigationProp<SettingsStackParamList>>();
+  const navigation = useNavigation<NavigationProp<Record<string, undefined>>>();
   const {c} = useRevampTheme();
   const insets = useSafeAreaInsets();
 
@@ -62,12 +65,12 @@ export const SettingScreen: React.FC<
     }
   };
 
-  const openKeyManagement = () => {
-    controller.SET_KEY_MANAGEMENT_EXPLORED();
-    navigation.navigate(SETTINGS_ROUTES.KeyManagement, {
-      controller,
-    } as never);
-  };
+  const [page, setPage] = useState<
+    'changePin' | 'autoLock' | 'help' | 'privacy' | null
+  >(null);
+  const [autoLockMinutes, setAutoLockMinutes] = useAutoLockSetting();
+  const autoLockLabel = (minutes: number) =>
+    minutes === 0 ? t('autoLockNever') : t('autoLockAfter', {count: minutes});
 
   const languageName =
     SUPPORTED_LANGUAGES[i18n.language as keyof typeof SUPPORTED_LANGUAGES];
@@ -117,11 +120,20 @@ export const SettingScreen: React.FC<
                 <SettingsSwitch value={controller.isBiometricUnlockEnabled} />
               }
             />
+            {controller.isPasscodeSet() && (
+              <SettingsRow
+                testID="changePin"
+                icon={settingsIcons.lock}
+                label={t('changePin')}
+                onPress={() => setPage('changePin')}
+              />
+            )}
             <SettingsRow
-              testID="keyManagement"
-              icon={settingsIcons.key}
-              label={keyT('header')}
-              onPress={openKeyManagement}
+              testID="autoLock"
+              icon={settingsIcons.clock}
+              label={t('autoLock')}
+              value={autoLockLabel(autoLockMinutes)}
+              onPress={() => setPage('autoLock')}
             />
           </SettingsSection>
 
@@ -150,6 +162,13 @@ export const SettingScreen: React.FC<
                 onPress={receivedCards.TOGGLE_RECEIVED_CARDS}
               />
             )}
+            {SHOW_CONNECTED_VERIFIERS && (
+              <SettingsRow
+                testID="connectedVerifiers"
+                icon={settingsIcons.shield}
+                label={t('connectedVerifiers')}
+              />
+            )}
           </SettingsSection>
 
           <SettingsSection title={t('appSection')}>
@@ -164,6 +183,13 @@ export const SettingScreen: React.FC<
                 />
               }
             />
+            {SHOW_APPEARANCE && (
+              <SettingsRow
+                testID="appearance"
+                icon={settingsIcons.appearance}
+                label={t('appearance')}
+              />
+            )}
             {CREDENTIAL_REGISTRY_EDIT === 'true' && (
               <EditableListItem
                 testID="credentialRegistry"
@@ -193,6 +219,18 @@ export const SettingScreen: React.FC<
           </SettingsSection>
 
           <SettingsSection title={t('support')}>
+            <SettingsRow
+              testID="helpAndSupport"
+              icon={settingsIcons.tour}
+              label={t('helpAndSupport')}
+              onPress={() => setPage('help')}
+            />
+            <SettingsRow
+              testID="privacyPolicy"
+              icon={settingsIcons.document}
+              label={t('privacyPolicy')}
+              onPress={() => setPage('privacy')}
+            />
             <AboutInji
               appId={controller.appId}
               renderTrigger={open => (
@@ -206,7 +244,7 @@ export const SettingScreen: React.FC<
             />
             <SettingsRow
               testID="injiTourGuide"
-              icon={settingsIcons.tour}
+              icon={settingsIcons.compass}
               label={t('injiTourGuide')}
               onPress={() => controller.INJI_TOUR_GUIDE()}
             />
@@ -217,6 +255,55 @@ export const SettingScreen: React.FC<
           </ScaledText>
         </ScrollView>
       </View>
+      <ChangePin
+        isVisible={page === 'changePin'}
+        onDone={() => setPage(null)}
+      />
+      <Modal
+        testID="autoLockOptions"
+        isVisible={page === 'autoLock'}
+        headerTitle={t('autoLock')}
+        arrowLeft={true}
+        onDismiss={() => setPage(null)}>
+        <View style={styles.options}>
+          <SettingsSection title={t('autoLockHint')}>
+            {AUTO_LOCK_OPTIONS.map(minutes => (
+              <SettingsRow
+                key={minutes}
+                testID={'autoLock' + minutes}
+                icon={settingsIcons.clock}
+                label={autoLockLabel(minutes)}
+                accessibilityState={{checked: minutes === autoLockMinutes}}
+                onPress={() => {
+                  setAutoLockMinutes(minutes);
+                  setPage(null);
+                }}
+                trailing={
+                  minutes === autoLockMinutes ? (
+                    settingsIcons.check(c.sel)
+                  ) : (
+                    <View />
+                  )
+                }
+              />
+            ))}
+          </SettingsSection>
+        </View>
+      </Modal>
+      <InfoPage
+        testID="helpAndSupportPage"
+        isVisible={page === 'help'}
+        title={t('helpAndSupport')}
+        body={t('helpAndSupportBody')}
+        onDismiss={() => setPage(null)}
+      />
+      <InfoPage
+        testID="privacyPolicyPage"
+        isVisible={page === 'privacy'}
+        title={t('privacyPolicy')}
+        body={t('privacyPolicyBody')}
+        onDismiss={() => setPage(null)}
+      />
       <ReceivedCardsModal
         isVisible={receivedCards.isVisible}
         controller={receivedCards}
@@ -234,6 +321,7 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     letterSpacing: -0.56,
   },
+  options: {padding: 24},
   content: {paddingTop: 8, paddingHorizontal: 24, paddingBottom: 32, gap: 24},
   footer: {
     fontFamily: fonts.regular,

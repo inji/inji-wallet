@@ -200,7 +200,22 @@
     "appSection": "التطبيق",
     "support": "الدعم",
     "sharingHistory": "سجل المشاركة",
-    "footer": "محفظة CredIssuer · منتج من Ooru Digital"
+    "footer": "محفظة CredIssuer · منتج من Ooru Digital",
+    "changePin": "تغيير رمز PIN",
+    "enterCurrentPin": "أدخل رمز PIN الحالي",
+    "enterNewPin": "أدخل رمز PIN جديدًا",
+    "confirmNewPin": "أدخل رمز PIN الجديد مرة أخرى",
+    "autoLock": "القفل التلقائي",
+    "autoLockHint": "قفل المحفظة بعد بقائها في الخلفية لمدة",
+    "autoLockNever": "أبدًا",
+    "autoLockAfter": "بعد {{count}} دقيقة",
+    "autoLockAfter_plural": "بعد {{count}} دقائق",
+    "connectedVerifiers": "جهات التحقق المتصلة",
+    "appearance": "المظهر",
+    "helpAndSupport": "المساعدة والدعم",
+    "helpAndSupportBody": "ستتم إضافة معلومات المساعدة والدعم هنا قريبًا.",
+    "privacyPolicy": "سياسة الخصوصية",
+    "privacyPolicyBody": "ستتم إضافة سياسة الخصوصية هنا قريبًا."
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "تم النجاح! يمكنك الآن استخدام رمز المرور لفتح تطبيق CredIssuer.",

@@ -199,7 +199,22 @@
     "appSection": "App",
     "support": "Suporta",
     "sharingHistory": "Kasaysayan ng pagbabahagi",
-    "footer": "CredIssuer Wallet · Isang produkto ng Ooru Digital"
+    "footer": "CredIssuer Wallet · Isang produkto ng Ooru Digital",
+    "changePin": "Palitan ang PIN",
+    "enterCurrentPin": "Ilagay ang iyong kasalukuyang PIN",
+    "enterNewPin": "Maglagay ng bagong PIN",
+    "confirmNewPin": "Ilagay muli ang bagong PIN",
+    "autoLock": "Awtomatikong pag-lock",
+    "autoLockHint": "I-lock ang wallet kapag nasa background na ito nang",
+    "autoLockNever": "Hindi kailanman",
+    "autoLockAfter": "Pagkalipas ng {{count}} minuto",
+    "autoLockAfter_plural": "Pagkalipas ng {{count}} minuto",
+    "connectedVerifiers": "Mga nakakonektang verifier",
+    "appearance": "Hitsura",
+    "helpAndSupport": "Tulong at suporta",
+    "helpAndSupportBody": "Malapit nang idagdag dito ang impormasyon tungkol sa tulong at suporta.",
+    "privacyPolicy": "Patakaran sa privacy",
+    "privacyPolicyBody": "Malapit nang idagdag dito ang patakaran sa privacy."
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "Tagumpay! Magagamit mo na ngayon ang passcode upang i-unlock ang CredIssuer app.",

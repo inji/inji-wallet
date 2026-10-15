@@ -200,7 +200,22 @@
     "appSection": "பயன்பாடு",
     "support": "ஆதரவு",
     "sharingHistory": "பகிர்வு வரலாறு",
-    "footer": "CredIssuer வாலட் · Ooru Digital இன் தயாரிப்பு"
+    "footer": "CredIssuer வாலட் · Ooru Digital இன் தயாரிப்பு",
+    "changePin": "பின்னை மாற்று",
+    "enterCurrentPin": "உங்கள் தற்போதைய பின்னை உள்ளிடவும்",
+    "enterNewPin": "புதிய பின்னை உள்ளிடவும்",
+    "confirmNewPin": "புதிய பின்னை மீண்டும் உள்ளிடவும்",
+    "autoLock": "தானியங்கு பூட்டு",
+    "autoLockHint": "பின்னணியில் இவ்வளவு நேரம் இருந்தால் வாலட்டைப் பூட்டு",
+    "autoLockNever": "ஒருபோதும் இல்லை",
+    "autoLockAfter": "{{count}} நிமிடத்திற்குப் பிறகு",
+    "autoLockAfter_plural": "{{count}} நிமிடங்களுக்குப் பிறகு",
+    "connectedVerifiers": "இணைக்கப்பட்ட சரிபார்ப்பாளர்கள்",
+    "appearance": "தோற்றம்",
+    "helpAndSupport": "உதவி மற்றும் ஆதரவு",
+    "helpAndSupportBody": "உதவி மற்றும் ஆதரவு தகவல்கள் விரைவில் இங்கே சேர்க்கப்படும்.",
+    "privacyPolicy": "தனியுரிமைக் கொள்கை",
+    "privacyPolicyBody": "தனியுரிமைக் கொள்கை விரைவில் இங்கே சேர்க்கப்படும்."
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "வெற்றி! இன்ஜி பயன்பாட்டைத் திறக்க நீங்கள் இப்போது கடவுக்குறியீட்டைப் பயன்படுத்தலாம்.",

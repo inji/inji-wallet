@@ -240,9 +240,9 @@ fileignoreconfig:
   - filename: __mocks__/react-native-keychain.mock.js
     checksum: cc2798f843b776e70d957a4f7cdf47e199a29d9f6547fb9f59753108e8f252fa
   - filename: machines/auth.ts
-    checksum: 46195ee93f9b7ac6794a06eeef5dee5ea242047a557af8bf95df04e1343d7b9e
+    checksum: c7674ff59cc4f12bac36dab6ef3b93f745c92dd2f9b608872884b0aa9a663995
   - filename: machines/auth.typegen.ts
-    checksum: f93996f750549f6de91c2a35c5817cfa85ad7b255ef36dea85224a0a154db188
+    checksum: c69b98ba6a475f0508ef99a2b383cfd114c123b5a89f5f466aa2216654b0dfe1
   - filename: shared/commonUtil.generated.test.ts
     checksum: 4ca5983bb133f8f02bfd52fd0cc49ce37b24b164f3ca78a03ad97bb353ed00a4
   - filename: __mocks__/en.mock.json
@@ -465,8 +465,12 @@ fileignoreconfig:
   - filename: components/revamp/cardFields.ts
     checksum: 01b22263ca064a28e9d9ff4f00e2a300281ad8ae41f58fefab9a4e71de11d1e0
   - filename: components/revamp/SettingsList.tsx
-    checksum: 6efa1f08002173d151f65c4a4833f4ace324d92285c50b6d28d36e76002408bb
+    checksum: 34aab779e1083a573f361fc20bdd8c4943e14949139cef35eb325688c263d702
   - filename: screens/Settings/SettingScreen.tsx
-    checksum: 6cec648c6dc7d75b12249b9c978ea7a902a239db98ef0bb2c651394381a75c59
+    checksum: c625604e96d6096e7b91b13aedfd3ad15f90a79c81ec8944574e4a6747789ca5
+  - filename: screens/Settings/autoLock.ts
+    checksum: aafffaeb1bf5417893319cc235b25fbcb67eed6d271fed8340cfdc8e91420092
+  - filename: screens/Settings/ChangePin.tsx
+    checksum: deebb46105aa2894ba1d0c84d426bcbd2ed32f41295e917c4de1dd47d8bd3d10
     version: "1.0"
 

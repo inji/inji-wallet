@@ -230,7 +230,22 @@
     "appSection": "App",
     "support": "Support",
     "sharingHistory": "Sharing history",
-    "footer": "CredIssuer Wallet · A product of Ooru Digital"
+    "footer": "CredIssuer Wallet · A product of Ooru Digital",
+    "changePin": "Change PIN",
+    "enterCurrentPin": "Enter your current PIN",
+    "enterNewPin": "Enter a new PIN",
+    "confirmNewPin": "Enter the new PIN again",
+    "autoLock": "Auto-lock",
+    "autoLockHint": "Lock the wallet when it has been in the background for",
+    "autoLockNever": "Never",
+    "autoLockAfter": "After {{count}} minute",
+    "autoLockAfter_plural": "After {{count}} minutes",
+    "connectedVerifiers": "Connected verifiers",
+    "appearance": "Appearance",
+    "helpAndSupport": "Help and support",
+    "helpAndSupportBody": "Help and support information will be added here soon.",
+    "privacyPolicy": "Privacy policy",
+    "privacyPolicyBody": "The privacy policy will be added here soon."
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "Success! You can now use passcode to unlock CredIssuer app.",

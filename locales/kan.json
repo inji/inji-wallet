@@ -200,7 +200,22 @@
     "appSection": "ಅಪ್ಲಿಕೇಶನ್",
     "support": "ಬೆಂಬಲ",
     "sharingHistory": "ಹಂಚಿಕೆ ಇತಿಹಾಸ",
-    "footer": "CredIssuer ವಾಲೆಟ್ · Ooru Digital ನ ಉತ್ಪನ್ನ"
+    "footer": "CredIssuer ವಾಲೆಟ್ · Ooru Digital ನ ಉತ್ಪನ್ನ",
+    "changePin": "ಪಿನ್ ಬದಲಾಯಿಸಿ",
+    "enterCurrentPin": "ನಿಮ್ಮ ಪ್ರಸ್ತುತ ಪಿನ್ ನಮೂದಿಸಿ",
+    "enterNewPin": "ಹೊಸ ಪಿನ್ ನಮೂದಿಸಿ",
+    "confirmNewPin": "ಹೊಸ ಪಿನ್ ಅನ್ನು ಮತ್ತೊಮ್ಮೆ ನಮೂದಿಸಿ",
+    "autoLock": "ಸ್ವಯಂ-ಲಾಕ್",
+    "autoLockHint": "ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಇಷ್ಟು ಸಮಯ ಇದ್ದಾಗ ವಾಲೆಟ್ ಲಾಕ್ ಮಾಡಿ",
+    "autoLockNever": "ಎಂದಿಗೂ ಇಲ್ಲ",
+    "autoLockAfter": "{{count}} ನಿಮಿಷದ ನಂತರ",
+    "autoLockAfter_plural": "{{count}} ನಿಮಿಷಗಳ ನಂತರ",
+    "connectedVerifiers": "ಸಂಪರ್ಕಿತ ಪರಿಶೀಲಕರು",
+    "appearance": "ಗೋಚರತೆ",
+    "helpAndSupport": "ಸಹಾಯ ಮತ್ತು ಬೆಂಬಲ",
+    "helpAndSupportBody": "ಸಹಾಯ ಮತ್ತು ಬೆಂಬಲದ ಮಾಹಿತಿಯನ್ನು ಶೀಘ್ರದಲ್ಲೇ ಇಲ್ಲಿ ಸೇರಿಸಲಾಗುವುದು.",
+    "privacyPolicy": "ಗೌಪ್ಯತಾ ನೀತಿ",
+    "privacyPolicyBody": "ಗೌಪ್ಯತಾ ನೀತಿಯನ್ನು ಶೀಘ್ರದಲ್ಲೇ ಇಲ್ಲಿ ಸೇರಿಸಲಾಗುವುದು."
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "ಯಶಸ್ವಿ! ನೀವು ಈಗ ಇಂಜಿ ಅಪ್ಲಿಕೇಶನ್ ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಪಾಸ್ಕೋಡ್ ಅನ್ನು ಬಳಸಬಹುದು.",
