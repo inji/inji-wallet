@@ -24,7 +24,6 @@ import {selectAuthorizationRequest, selectIsLinkCode} from '../machines/app';
 import {BOTTOM_TAB_ROUTES} from '../routes/routesConstants';
 import {roundedSvgMaskPath} from '../shared/copilotMask';
 import {RevampTabBar} from '../components/revamp/RevampTabBar';
-import {useAutoLock} from './Settings/autoLock';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
@@ -40,7 +39,6 @@ export const MainLayout: React.FC = () => {
     ...Theme.BottomTabBarStyle,
   };
   const navigation = useNavigation<ScanLayoutNavigation>();
-  useAutoLock();
 
   const linkCode = useSelector(appService, selectIsLinkCode);
 

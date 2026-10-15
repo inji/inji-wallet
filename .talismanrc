@@ -472,5 +472,9 @@ fileignoreconfig:
     checksum: aafffaeb1bf5417893319cc235b25fbcb67eed6d271fed8340cfdc8e91420092
   - filename: screens/Settings/ChangePin.tsx
     checksum: deebb46105aa2894ba1d0c84d426bcbd2ed32f41295e917c4de1dd47d8bd3d10
+  - filename: screens/AppLayout.tsx
+    checksum: 76d6651dbde74dd425c9482ae8d5dd0e2fc5ab6f7fd77f87d527c48bc17cabcd
+  - filename: screens/AppLock.tsx
+    checksum: 3790d13c83143144cc0f5722e40d406d4387cb2c4681821d2f8c7c3ac31b6c46
     version: "1.0"
 

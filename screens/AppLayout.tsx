@@ -10,7 +10,8 @@ import {
 import {authRoutes, baseRoutes} from '../routes';
 import {useAppLayout} from './AppLayoutController';
 import {StatusBar} from 'react-native';
-import {GestureHandlerRootView} from "react-native-gesture-handler";
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {AppLock} from './AppLock';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 export const AppLayout: React.FC = () => {
@@ -25,17 +26,20 @@ export const AppLayout: React.FC = () => {
   };
 
   return (
-      <GestureHandlerRootView>
-        <NavigationContainer ref={navigationRef}>
-          <StatusBar animated={true} barStyle="dark-content" />
-          <Navigator initialRouteName={baseRoutes[0].name} screenOptions={options}>
-            {baseRoutes.map(route => (
-              <Screen key={route.name} {...route} />
-            ))}
-            {controller.isAuthorized &&
-              authRoutes.map(route => <Screen key={route.name} {...route} />)}
-          </Navigator>
-        </NavigationContainer>
-      </GestureHandlerRootView>
+    <GestureHandlerRootView>
+      <NavigationContainer ref={navigationRef}>
+        <StatusBar animated={true} barStyle="dark-content" />
+        <Navigator
+          initialRouteName={baseRoutes[0].name}
+          screenOptions={options}>
+          {baseRoutes.map(route => (
+            <Screen key={route.name} {...route} />
+          ))}
+          {controller.isAuthorized &&
+            authRoutes.map(route => <Screen key={route.name} {...route} />)}
+        </Navigator>
+        {controller.isAuthorized && <AppLock />}
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 };

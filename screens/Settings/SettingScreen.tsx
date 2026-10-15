@@ -80,9 +80,9 @@ export const SettingScreen: React.FC<
       <Pressable accessible={false} onPress={controller.TOGGLE_SETTINGS}>
         {props.triggerComponent}
       </Pressable>
-      <BannerNotificationContainer />
       <View
         style={{flex: 1, backgroundColor: c.canvas, paddingTop: insets.top}}>
+        <BannerNotificationContainer />
         <View style={styles.header}>
           <ScaledText
             accessibilityRole="header"
@@ -112,7 +112,6 @@ export const SettingScreen: React.FC<
               accessibilityState={{
                 checked: controller.isBiometricUnlockEnabled,
               }}
-              disabled={!controller.canUseBiometrics}
               onPress={() =>
                 handleBiometricToggle(!controller.isBiometricUnlockEnabled)
               }
