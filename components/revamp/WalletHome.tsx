@@ -42,8 +42,9 @@ import {Chip, WalletHeader} from './WalletHeader';
 import {SAMPLE_CARDS, useShowSampleCards} from './sampleCards';
 import {CARD_WIDTH, fonts, motion, radii, shadows} from './tokens';
 import {useRevampTheme} from './useRevampTheme';
+import {TAB_BAR_SPACE} from './RevampTabBar';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-const BOTTOM_CLEARANCE = 24;
 const RAIL_CARD_WIDTH = 212;
 const ALL = 'all';
 
@@ -78,6 +79,7 @@ export const WalletHome: React.FC<{
   refreshing,
   onRefresh,
 }) => {
+  const insets = useSafeAreaInsets();
   const {c, reduceMotion} = useRevampTheme();
   const navigation = useNavigation<any>();
   const {width} = useWindowDimensions();
@@ -309,7 +311,7 @@ export const WalletHome: React.FC<{
 
       <ScrollView
         style={{flex: 1}}
-        contentContainerStyle={{paddingBottom: BOTTOM_CLEARANCE}}
+        contentContainerStyle={{paddingBottom: TAB_BAR_SPACE + insets.bottom}}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -931,7 +933,7 @@ const styles = StyleSheet.create({
   toast: {
     position: 'absolute',
     alignSelf: 'center',
-    bottom: 24,
+    bottom: TAB_BAR_SPACE,
     height: 40,
     paddingHorizontal: 16,
     borderRadius: radii.pill,
