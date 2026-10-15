@@ -109,11 +109,17 @@ export const authMachine = model.createMachine(
           },
         },
       },
+      // First launch no longer shows intro slides: this state only generates the passcode
+      // salt, then moves straight on to choosing an unlock method.
       introSlider: {
         invoke: {
           src: 'generatePasscodeSalt',
           onDone: {
             actions: ['setPasscodeSalt', 'storeContext'],
+            target: 'settingUp',
+          },
+          onError: {
+            target: 'settingUp',
           },
         },
         on: {

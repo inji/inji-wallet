@@ -10,7 +10,6 @@ import {PasscodeScreen} from '../screens/PasscodeScreen';
 import {MainLayout} from '../screens/MainLayout';
 import {NotificationsScreen} from '../screens/NotificationsScreen';
 import {SetupLanguageScreen} from '../screens/SetupLanguageScreen';
-import {IntroSlidersScreen} from '../screens/Home/IntroSlidersScreen';
 import {RequestLayout} from '../screens/Request/RequestLayout';
 import {SplashScreen} from '../screens/SplashScreen';
 import {RequestStackParamList} from './routesConstants';
@@ -36,13 +35,6 @@ export const baseRoutes: Screen[] = [
   {
     name: 'Language',
     component: SetupLanguageScreen,
-    options: {
-      headerShown: false,
-    },
-  },
-  {
-    name: 'IntroSliders',
-    component: IntroSlidersScreen,
     options: {
       headerShown: false,
     },
@@ -89,7 +81,6 @@ export const authRoutes: Screen[] = [
 export type RootStackParamList = {
   Language: undefined;
   KeySetup: undefined;
-  IntroSliders: undefined;
   Welcome: undefined;
   Auth: undefined;
   Passcode: {
