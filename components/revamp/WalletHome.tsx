@@ -68,8 +68,6 @@ const pluralCredentials = (n: number) =>
  * a details page per card.
  */
 const CARD_TOUR_START_DELAY_MS = 500;
-// Keeps the card's rounded corners inside the tour's rounded highlight.
-const CARD_TOUR_TARGET_PADDING = 4;
 
 export const WalletHome: React.FC<{
   vcMetadatas: VCMetadata[];
@@ -386,10 +384,7 @@ export const WalletHome: React.FC<{
                   title={t('copilot:cardTitle')}
                   description={t('copilot:cardMessage')}
                   order={COPILOT_FINAL_STEP}
-                  targetStyle={[
-                    styles.cardTourTarget,
-                    frontCardFrame(width, CARD_TOUR_TARGET_PADDING),
-                  ]}>
+                  targetStyle={[styles.cardTourTarget, frontCardFrame(width)]}>
                   <View />
                 </Copilot>
               ) : null}
