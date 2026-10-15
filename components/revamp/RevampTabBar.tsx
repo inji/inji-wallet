@@ -21,6 +21,8 @@ import {fonts, radii, shadows, SLOT_LABEL_MAX_SCALE} from './tokens';
 import {useRevampTheme} from './useRevampTheme';
 
 const BAR_HEIGHT = 104;
+/** Space a screen leaves at its bottom so its last content can scroll clear of the bar. */
+export const TAB_BAR_SPACE = BAR_HEIGHT;
 const NAV_TOP = 30;
 const NAV_HEIGHT = 56;
 const NAV_PAD = 3;
@@ -217,7 +219,8 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
 
   return (
     <View
-      style={{height: BAR_HEIGHT + insets.bottom, backgroundColor: c.canvas}}>
+      pointerEvents="box-none"
+      style={[styles.overlay, {height: BAR_HEIGHT + insets.bottom}]}>
       <View
         accessibilityRole="tablist"
         style={[
@@ -273,6 +276,7 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
 };
 
 const styles = StyleSheet.create({
+  overlay: {position: 'absolute', left: 0, right: 0, bottom: 0},
   nav: {
     position: 'absolute',
     top: NAV_TOP,

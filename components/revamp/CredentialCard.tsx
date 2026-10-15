@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {ActivityIndicator, Image, StyleSheet, View} from 'react-native';
 import {ScaledText} from './ScaledText';
 import Svg, {Circle, Path, Rect} from 'react-native-svg';
@@ -8,7 +8,8 @@ import {VCFormat} from '../../shared/VCFormat';
 import {QrCodeOverlay} from '../QrCodeOverlay';
 import {Guilloche} from './Guilloche';
 import {CardStatus, CredentialCardData} from './useCredentialCard';
-import {displayDate, maskNumber} from './credentialClaims';
+import {maskNumber, mrzLines} from './credentialClaims';
+import {cardFields} from './cardFields';
 import {useCardQr} from './useCardQr';
 import {CARD_HEIGHT, CARD_WIDTH, fonts, radii} from './tokens';
 
@@ -119,6 +120,15 @@ export const CredentialCardFront = React.memo(function CredentialCardFront({
 }: {
   data: CredentialCardData;
 }) {
+  const {frontExtra} = useMemo(
+    () =>
+      cardFields(
+        data.claims,
+        data.labels ?? {},
+        data.number?.key ? [data.number.key] : [],
+      ),
+    [data],
+  );
   const {bg, fg, tone, edge, brand} = cardColours(data);
   return (
     <View style={[styles.card, {backgroundColor: bg, borderColor: edge}]}>
@@ -175,6 +185,14 @@ export const CredentialCardFront = React.memo(function CredentialCardFront({
               {data.number.label} {maskNumber(data.number.value)}
             </ScaledText>
           ) : null}
+          {frontExtra ? (
+            <ScaledText
+              maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
+              numberOfLines={1}
+              style={[styles.extra, {color: fg}]}>
+              {frontExtra}
+            </ScaledText>
+          ) : null}
           <View style={styles.statusRow}>
             <ShieldCheck color={fg} />
             <ScaledText
@@ -189,60 +207,10 @@ export const CredentialCardFront = React.memo(function CredentialCardFront({
   );
 });
 
-const ADDRESS_KEYS = [
-  'resident_address',
-  'address',
-  'fullAddress',
-  'addressLine1',
-  'permanentAddress',
-];
-const ISSUED_KEYS = ['issue_date', 'issuanceDate', 'issueDate', 'dateOfIssue'];
-const VALID_KEYS = [
-  'expiry_date',
-  'expiryDate',
-  'validUntil',
-  'dateOfExpiry',
-  'expirationDate',
-];
-const BIRTH_KEYS = ['birth_date', 'dateOfBirth', 'date_of_birth', 'dob'];
-
-function pickClaim(claims: Record<string, string>, keys: string[]) {
-  const lower = Object.fromEntries(
-    Object.entries(claims).map(([k, v]) => [k.toLowerCase(), v]),
-  );
-  return keys.map(k => lower[k.toLowerCase()]).find(Boolean);
-}
-
-interface Field {
-  label: string;
-  value: string;
-}
-
-/** The back's fields: a wide one (address, else holder), then issue and expiry dates. */
-function backFields(data: CredentialCardData) {
-  const {claims} = data;
-  const address = pickClaim(claims, ADDRESS_KEYS);
-  const issued = pickClaim(claims, ISSUED_KEYS);
-  const valid = pickClaim(claims, VALID_KEYS);
-  const birth = pickClaim(claims, BIRTH_KEYS);
-  const wide: Field | undefined = address
-    ? {label: 'Address', value: address}
-    : data.holderName
-    ? {label: 'Holder', value: data.holderName}
-    : undefined;
-  const pair = [
-    issued
-      ? {label: 'Date of issue', value: displayDate(issued)}
-      : birth
-      ? {label: 'Date of birth', value: displayDate(birth)}
-      : undefined,
-    valid ? {label: 'Valid until', value: displayDate(valid)} : undefined,
-  ].filter((f): f is Field => !!f);
-  return {wide, pair};
-}
-
 /** Machine-readable-zone style strip built from the card's own data, as on a travel document. */
 function mrz(data: CredentialCardData): [string, string] {
+  const own = mrzLines(data.claims);
+  if (own) return own;
   const clean = (s = '') => s.toUpperCase().replace(/[^A-Z0-9]+/g, '<');
   const pad = (s: string) => (s + '<'.repeat(30)).slice(0, 30);
   const [given, ...rest] = (data.holderName ?? '').split(' ');
@@ -277,7 +245,17 @@ export const CredentialCardBack = React.memo(function CredentialCardBack({
   showing: boolean;
 }) {
   const {bg, fg, tone, edge, wash} = cardColours(data);
-  const {wide, pair} = backFields(data);
+  const {
+    back: {wide, pair},
+  } = useMemo(
+    () =>
+      cardFields(
+        data.claims,
+        data.labels ?? {},
+        data.number?.key ? [data.number.key] : [],
+      ),
+    [data],
+  );
   const isMdoc = data.format === VCFormat.mso_mdoc;
   const {qr: plainQr} = useCardQr(data.vcMetadata, data.credential, showing);
   const [mdocQr, setMdocQr] = useState<string | null>(null);
@@ -453,6 +431,12 @@ const styles = StyleSheet.create({
   photo: {position: 'absolute', left: 10, bottom: 0, width: 104, height: 125},
   holder: {fontFamily: fonts.medium, fontSize: 17, lineHeight: 20},
   mono: {fontFamily: fonts.mono, fontSize: 12, lineHeight: 16, opacity: 0.9},
+  extra: {
+    fontFamily: fonts.regular,
+    fontSize: 12,
+    lineHeight: 16,
+    opacity: 0.85,
+  },
   statusRow: {flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2},
   statusText: {fontFamily: fonts.medium, fontSize: 12, lineHeight: 14.4},
   backBody: {

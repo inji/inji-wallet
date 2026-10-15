@@ -140,8 +140,7 @@ export const Action: React.FC<{
 
 export const CredentialInformation: React.FC<{
   data: CredentialCardData;
-  onViewAll: () => void;
-}> = ({data, onViewAll}) => {
+}> = ({data}) => {
   const {c} = useRevampTheme();
   return (
     <View style={{gap: 10}}>
@@ -177,14 +176,6 @@ export const CredentialInformation: React.FC<{
           </View>
         ))}
       </View>
-      <Pressable
-        onPress={onViewAll}
-        style={styles.linkRow}
-        accessibilityRole="link">
-        <ScaledText style={[styles.link, {color: c.azureInk}]}>
-          View all details
-        </ScaledText>
-      </Pressable>
     </View>
   );
 };
@@ -234,6 +225,4 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     textAlign: 'right',
   },
-  linkRow: {alignSelf: 'flex-end', paddingVertical: 4},
-  link: {fontFamily: fonts.medium, fontSize: 14},
 });

@@ -41,7 +41,6 @@ export interface CardActions {
   togglePin: () => void;
   activity: () => void;
   remove: () => void;
-  viewAll: () => void;
 }
 
 export interface CredentialDetailsHandle {
@@ -310,7 +309,7 @@ export const CredentialDetails = React.forwardRef<
           </Animated.View>
 
           <Animated.View style={risen(3)}>
-            <CredentialInformation data={data} onViewAll={actions.viewAll} />
+            <CredentialInformation data={data} />
           </Animated.View>
 
           <Animated.View style={risen(4)}>

@@ -23,11 +23,7 @@ import {CardCarousel} from './CardCarousel';
 import {CardLoader, LoadedCard} from './CardLoader';
 import {CredentialCardFront, ScaledCard} from './CredentialCard';
 import {Action, CredentialInformation, StatusPill} from './CredentialParts';
-import {
-  CardActions,
-  CredentialDetails,
-  CredentialDetailsHandle,
-} from './CredentialDetails';
+import {CardActions, CredentialDetails} from './CredentialDetails';
 import {
   ActivityIcon,
   ArrowRightIcon,
@@ -46,8 +42,9 @@ import {Chip, WalletHeader} from './WalletHeader';
 import {SAMPLE_CARDS, useShowSampleCards} from './sampleCards';
 import {CARD_WIDTH, fonts, motion, radii, shadows} from './tokens';
 import {useRevampTheme} from './useRevampTheme';
+import {TAB_BAR_SPACE} from './RevampTabBar';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-const BOTTOM_CLEARANCE = 24;
 const RAIL_CARD_WIDTH = 212;
 const ALL = 'all';
 
@@ -70,7 +67,6 @@ export const WalletHome: React.FC<{
   vcMetadatas: VCMetadata[];
   /** Lowercased searchable text of each credential's claims, by credential key. */
   searchIndex: Record<string, string>;
-  onViewDetails: (service: any) => void;
   onAdd: () => void;
   onStackView: () => void;
   refreshing: boolean;
@@ -78,12 +74,12 @@ export const WalletHome: React.FC<{
 }> = ({
   vcMetadatas,
   searchIndex,
-  onViewDetails,
   onAdd,
   onStackView,
   refreshing,
   onRefresh,
 }) => {
+  const insets = useSafeAreaInsets();
   const {c, reduceMotion} = useRevampTheme();
   const navigation = useNavigation<any>();
   const {width} = useWindowDimensions();
@@ -181,7 +177,6 @@ export const WalletHome: React.FC<{
   const activeEntry = visible[index];
 
   const [detailKey, setDetailKey] = useState<string | null>(null);
-  const details = useRef<CredentialDetailsHandle>(null);
   const detailEntry = detailKey
     ? all.find(e => e.key === detailKey)
     : undefined;
@@ -225,7 +220,6 @@ export const WalletHome: React.FC<{
         showQr: off,
         activity: off,
         remove: off,
-        viewAll: off,
         togglePin: () => {
           const pinning = samplePinned !== key;
           setSamplePinned(pinning ? key : null);
@@ -258,12 +252,6 @@ export const WalletHome: React.FC<{
       remove: () => {
         card?.service.send(VCItemEvents.KEBAB_POPUP());
         card?.service.send(VCItemEvents.REMOVE(vcMetadata));
-      },
-      viewAll: () => {
-        if (!card) return;
-        if (details.current)
-          details.current.close(() => onViewDetails(card.service));
-        else onViewDetails(card.service);
       },
     };
   };
@@ -323,7 +311,7 @@ export const WalletHome: React.FC<{
 
       <ScrollView
         style={{flex: 1}}
-        contentContainerStyle={{paddingBottom: BOTTOM_CLEARANCE}}
+        contentContainerStyle={{paddingBottom: TAB_BAR_SPACE + insets.bottom}}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -387,7 +375,6 @@ export const WalletHome: React.FC<{
 
       {detailEntry && cards[detailEntry.key] ? (
         <CredentialDetails
-          ref={details}
           key={detailEntry.key}
           data={cards[detailEntry.key].data}
           pinned={isPinned(detailEntry)}
@@ -497,7 +484,7 @@ const ActiveDetails: React.FC<{
         />
       </View>
 
-      <CredentialInformation data={data} onViewAll={actions.viewAll} />
+      <CredentialInformation data={data} />
 
       <Pressable
         onPress={actions.remove}
@@ -946,7 +933,7 @@ const styles = StyleSheet.create({
   toast: {
     position: 'absolute',
     alignSelf: 'center',
-    bottom: 24,
+    bottom: TAB_BAR_SPACE,
     height: 40,
     paddingHorizontal: 16,
     borderRadius: radii.pill,
