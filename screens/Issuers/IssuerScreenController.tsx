@@ -14,6 +14,8 @@ import {
   selectVerificationErrorMessage,
   selectIsCredentialAlreadyExists,
   selectIsQrScanning,
+  selectIsSelectingIssuer,
+  selectOfferedCredentialTypeNames,
   selectAuthWebViewStatus,
   selectAuthEndPoint,
   selectIsTxCodeRequested,
@@ -62,6 +64,10 @@ export function useIssuerScreenController({route, navigation}) {
     ovpMachine: useSelector(service, selectOVPMachine),
     issuerLogo: useSelector(service, selectIssuerLogo),
     issuerName: useSelector(service, selectIssuerName),
+    offeredCredentialTypeNames: useSelector(
+      service,
+      selectOfferedCredentialTypeNames,
+    ),
     isTxCodeRequested: useSelector(service, selectIsTxCodeRequested),
     txCodeDisplayDetails: useSelector(service, selectTxCodeDisplayDetails),
     authEndpoint: useSelector(service, selectAuthEndPoint),
@@ -73,6 +79,7 @@ export function useIssuerScreenController({route, navigation}) {
     isIdle: useSelector(service, selectIsIdle),
     loadingReason: useSelector(service, selectLoadingReason),
     isQrScanning: useSelector(service, selectIsQrScanning),
+    isSelectingIssuer: useSelector(service, selectIsSelectingIssuer),
     isAuthEndpointToOpen: useSelector(service, selectAuthWebViewStatus),
     isSelectingCredentialType: useSelector(
       service,

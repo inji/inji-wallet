@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Icon} from 'react-native-elements';
 import {Column} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
@@ -18,10 +18,25 @@ import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/V
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {useTranslation} from 'react-i18next';
 import {Copilot} from '../../components/ui/Copilot';
+import {AddToWalletSheet} from '../../components/addCredential/AddToWalletSheet';
 
 export const HomeScreen: React.FC<HomeRouteProps> = props => {
   const controller = useHomeScreen(props);
   const {t} = useTranslation();
+  const [isAddToWalletVisible, setIsAddToWalletVisible] = useState(false);
+  const shouldScanAfterSheetCloses = useRef(false);
+
+  const startScanToAdd = () => {
+    shouldScanAfterSheetCloses.current = true;
+    setIsAddToWalletVisible(false);
+  };
+
+  const onAddToWalletClosed = () => {
+    if (shouldScanAfterSheetCloses.current) {
+      shouldScanAfterSheetCloses.current = false;
+      controller.GOTO_ISSUERS();
+    }
+  };
 
   useEffect(() => {
     if (controller.IssuersService) {
@@ -53,9 +68,7 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
         end={Theme.LinearGradientDirection.end}
         style={Theme.Styles.downloadFabIconContainer}>
         <Pressable
-          onPress={() => {
-            controller.GOTO_ISSUERS();
-          }}
+          onPress={() => setIsAddToWalletVisible(true)}
           {...testIDProps('downloadCardButton')}
           accessible={false}
           style={({pressed}) =>
@@ -97,6 +110,13 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
         targetStyle={Theme.Styles.downloadFabIconCopilotContainer}>
         <DownloadFABIcon />
       </Copilot>
+
+      <AddToWalletSheet
+        isVisible={isAddToWalletVisible}
+        onScanToAdd={startScanToAdd}
+        onCancel={() => setIsAddToWalletVisible(false)}
+        onClosed={onAddToWalletClosed}
+      />
 
       <ErrorMessageOverlay
         translationPath={'MyVcsTab'}

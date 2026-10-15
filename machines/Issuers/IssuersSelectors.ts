@@ -48,6 +48,10 @@ export function selectIssuerName(state: State) {
   return state.context.issuerName;
 }
 
+export function selectOfferedCredentialTypeNames(state: State) {
+  return state.context.offeredCredentialTypeNames;
+}
+
 export function selectTxCodeDisplayDetails(state: State) {
   const context = state.context;
   return {
@@ -120,6 +124,10 @@ export function selectSupportedCredentialTypes(state: State) {
 
 export function selectIsQrScanning(state: State) {
   return state.matches('waitingForQrScan');
+}
+
+export function selectIsSelectingIssuer(state: State) {
+  return state.matches('selectingIssuer');
 }
 
 export function selectTrustedIssuerConsentStatus(state: State) {
