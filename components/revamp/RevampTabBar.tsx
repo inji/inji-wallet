@@ -16,6 +16,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import {Copilot} from '../ui/Copilot';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
+import {COPILOT_SCAN_STEP} from '../../shared/constants';
 import {ActivityIcon, HomeIcon, ScanIcon, SettingsIcon} from './Icons';
 import {fonts, radii, shadows, SLOT_LABEL_MAX_SCALE} from './tokens';
 import {useRevampTheme} from './useRevampTheme';
@@ -34,8 +35,6 @@ const DESIGN_NAV_WIDTH = 234;
 const MIN_SIDE_MARGIN = 12;
 const SLIDE = {duration: 500, easing: Easing.bezier(0.22, 1, 0.36, 1)};
 
-/** Asks the home screen to open the add-card flow at its QR scanner. */
-export const SCAN_TO_ADD_EVENT = 'revamp.scanToAdd';
 
 /** Screens inside a tab that hide the bar, as the issuer list always has. */
 const FULL_SCREEN_ROUTES = ['IssuersScreen'];
@@ -254,22 +253,27 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
         {TABS.map(renderTab)}
       </View>
       <View style={[styles.scanWrap, {left: left + navWidth + SCAN_GAP}]}>
-        <Pressable
-          onPress={() => {
-            go(BOTTOM_TAB_ROUTES.home);
-            DeviceEventEmitter.emit(SCAN_TO_ADD_EVENT);
-          }}
-          accessibilityRole="button"
-          accessibilityLabel="Scan a QR code to add a credential"
-          testID="scanToAdd"
-          style={({pressed}) => [
-            styles.scan,
-            shadows.raised,
-            {backgroundColor: c.primary},
-            pressed && {transform: [{scale: 0.95}]},
-          ]}>
-          <ScanIcon color={c.onPrimary} size={25} strokeWidth={2.4} />
-        </Pressable>
+        <Copilot
+          title={t('copilot:scanToShareTitle')}
+          description={t('copilot:scanToShareMessage')}
+          order={COPILOT_SCAN_STEP}
+          targetStyle={{borderRadius: radii.pill}}>
+          <Pressable
+            // Opens the Share tab's scanner: verifier requests online (OpenID4VP) or over
+            // Bluetooth, and QR login.
+            onPress={() => go(BOTTOM_TAB_ROUTES.share)}
+            accessibilityRole="button"
+            accessibilityLabel="Scan a verifier's QR code to share"
+            testID="scanToShare"
+            style={({pressed}) => [
+              styles.scan,
+              shadows.raised,
+              {backgroundColor: c.primary},
+              pressed && {transform: [{scale: 0.95}]},
+            ]}>
+            <ScanIcon color={c.onPrimary} size={25} strokeWidth={2.4} />
+          </Pressable>
+        </Copilot>
       </View>
     </View>
   );

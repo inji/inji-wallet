@@ -7,7 +7,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import {Spacing} from '../styleUtils';
-import {COPILOT_HEIGHT, isIOS} from '../../../shared/constants';
+import {isIOS} from '../../../shared/constants';
 import Constants from 'expo-constants';
 import HomeScreenLogo from '../../../assets/Inji_Home_Logo.svg';
 import InjiLogoSmall from '../../../assets/InjiLogo.svg';
@@ -766,11 +766,19 @@ export const PurpleTheme = {
     },
     copilotStyle: {
       position: 'absolute',
-      left: 10,
-      right: 10,
-      borderRadius: 8,
+      left: 20,
+      right: 20,
       maxWidth: Dimensions.get('screen').width,
-      minHeight: Dimensions.get('screen').height * COPILOT_HEIGHT,
+      borderRadius: 24,
+      paddingTop: 22,
+      paddingHorizontal: 22,
+      paddingBottom: 20,
+      backgroundColor: '#FFFFFF',
+      shadowColor: '#000',
+      shadowOpacity: 0.18,
+      shadowRadius: 16,
+      shadowOffset: {width: 0, height: 6},
+      elevation: 8,
     },
     copilotButton: {
       width: 104,

@@ -2,9 +2,17 @@ import {Animated} from 'react-native';
 
 // react-native-copilot's default svgMaskPath cuts a sharp-cornered rectangle
 // out of the dimmed overlay to highlight the target element. This variant
-// draws the same cutout with rounded corners so the highlight box matches
-// the app's rounded UI (e.g. the bottom tab bar icons).
-const MASK_CORNER_RADIUS = 10;
+// rounds the cutout to match the app's rounded UI: a roughly square target (a
+// round button) gets a circle, anything longer (a tab, a card) gets corners of
+// at most MAX_CORNER_RADIUS, so a tab becomes a pill and a card stays a card.
+const MAX_CORNER_RADIUS = 24;
+
+/** Overlay settings shared by every CopilotProvider, so the tour looks the same everywhere. */
+export const COPILOT_OVERLAY_PROPS = {
+  arrowColor: '#FFFFFF',
+  arrowSize: 10,
+  backdropColor: 'rgba(28, 36, 48, 0.62)',
+};
 
 interface SvgMaskPathParams {
   size: {x: Animated.Value; y: Animated.Value};
@@ -27,7 +35,10 @@ export const roundedSvgMaskPath = ({
   // @ts-ignore
   const sizeY = size.y._value;
 
-  const radius = Math.min(MASK_CORNER_RADIUS, sizeX / 2, sizeY / 2);
+  const isRoundish = Math.abs(sizeX - sizeY) <= 0.2 * Math.max(sizeX, sizeY);
+  const radius = isRoundish
+    ? Math.min(sizeX, sizeY) / 2
+    : Math.min(MAX_CORNER_RADIUS, sizeX / 2, sizeY / 2);
 
   const left = positionX;
   const top = positionY;

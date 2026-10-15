@@ -1244,6 +1244,12 @@
     "keepBoth": "Add as new"
   },
   "copilot": {
+    "scanToAddTitle": "Scan to Add",
+    "scanToAddMessage": "Tap Scan to add a credential from an issuer's QR code.",
+    "moreTitle": "Stay in the Loop",
+    "moreMessage": "Your notifications and profile live under ⋯. Notifications show each credential you download or share.",
+    "quickTour": "Quick tour",
+    "skipTour": "Skip tour",
     "helpTitle": "Help/FAQs",
     "helpMessage": "Find answers to common questions and access helpful resources in our FAQ section, ensuring you have the support whenever you need it.",
     "downloadTitle": "Download Card",

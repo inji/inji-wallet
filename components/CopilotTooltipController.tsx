@@ -16,6 +16,7 @@ export const UseCopilotTooltip = () => {
     goToPrev,
     stop,
     currentStep,
+    currentStepNumber,
     isFirstStep,
     isLastStep,
     totalStepsNumber,
@@ -47,7 +48,10 @@ export const UseCopilotTooltip = () => {
     (CURRENT_STEP === COPILOT_FINAL_STEP && isInitialDownloading) ||
     CURRENT_STEP === KEY_MANAGEMENT_STEP
       ? '1 of 1'
-      : CURRENT_STEP + ' of ' + totalStepsNumber;
+      : // The step's position among the steps on screen, not its `order`: orders can have
+        // gaps (a step whose element isn't rendered), which made the counter skip numbers
+        // and run past the total.
+        currentStepNumber + ' of ' + totalStepsNumber;
 
   const isFinalStep = CURRENT_STEP === COPILOT_FINAL_STEP;
 
@@ -56,6 +60,7 @@ export const UseCopilotTooltip = () => {
     goToPrev,
     stop,
     CURRENT_STEP,
+    currentStepNumber,
     currentStepTitle,
     currentStepDescription,
     isFirstStep,

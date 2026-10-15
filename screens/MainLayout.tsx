@@ -22,7 +22,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from '@xstate/react';
 import {selectAuthorizationRequest, selectIsLinkCode} from '../machines/app';
 import {BOTTOM_TAB_ROUTES} from '../routes/routesConstants';
-import {roundedSvgMaskPath} from '../shared/copilotMask';
+import {COPILOT_OVERLAY_PROPS, roundedSvgMaskPath} from '../shared/copilotMask';
 import {RevampTabBar} from '../components/revamp/RevampTabBar';
 
 const {Navigator, Screen} = createBottomTabNavigator();
@@ -64,6 +64,7 @@ export const MainLayout: React.FC = () => {
       tooltipStyle={Theme.Styles.copilotStyle}
       stepNumberComponent={() => null}
       svgMaskPath={roundedSvgMaskPath}
+      {...COPILOT_OVERLAY_PROPS}
       animated>
       <Navigator
         initialRouteName={mainRoutes[0].name}

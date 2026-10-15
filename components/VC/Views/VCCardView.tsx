@@ -16,6 +16,7 @@ import {VCItemMachine} from '../../../machines/VerifiableCredential/VCItemMachin
 import {useTranslation} from 'react-i18next';
 import {Copilot} from '../../ui/Copilot';
 import {VCProcessor} from '../common/VCProcessor';
+import {COPILOT_FINAL_STEP} from '../../../shared/constants';
 
 export const VCCardView: React.FC<VCItemProps> = ({
   vcMetadata,
@@ -146,7 +147,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
   const wrapTopCard = () => (
     <Copilot
       description={t('copilot:cardMessage')}
-      order={5}
+      order={COPILOT_FINAL_STEP}
       title={t('copilot:cardTitle')}>
       {CardViewContent()}
     </Copilot>

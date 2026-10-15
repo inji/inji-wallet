@@ -18,7 +18,7 @@ import {
   sendImpressionEvent,
 } from '../../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
-import {SUPPORTED_KEY_TYPES} from '../../shared/constants';
+import {KEY_MANAGEMENT_STEP, SUPPORTED_KEY_TYPES} from '../../shared/constants';
 import {SvgImage} from '../../components/ui/svg';
 import LinearGradient from 'react-native-linear-gradient';
 import {HelpIcon} from '../../components/ui/HelpIcon';
@@ -149,7 +149,7 @@ export const KeyManagementScreen: React.FC<KeyManagementScreenProps> = () => {
         <Copilot
           title={t('copilot:keyManagementTitle')}
           description={t('copilot:keyManagementDesc')}
-          order={6}>
+          order={KEY_MANAGEMENT_STEP}>
           <DragList
             style={Theme.KeyManagementScreenStyle.dragViewStyleSettingsScreen}
             scrollEnabled={false}

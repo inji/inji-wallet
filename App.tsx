@@ -32,7 +32,7 @@ import {CopilotTooltip} from './components/CopilotTooltip';
 import {Theme} from './components/ui/styleUtils';
 import {selectAppSetupComplete} from './machines/auth';
 import {COPILOT_ANDROID_STATUS_BAR_VISIBLE} from './shared/constants';
-import {roundedSvgMaskPath} from './shared/copilotMask';
+import {COPILOT_OVERLAY_PROPS, roundedSvgMaskPath} from './shared/copilotMask';
 
 const {RNSecureKeystoreModule} = NativeModules;
 // kludge: this is a bad practice but has been done temporarily to surface
@@ -177,6 +177,7 @@ export default function App() {
         tooltipStyle={Theme.Styles.copilotStyle}
         stepNumberComponent={() => null}
         svgMaskPath={roundedSvgMaskPath}
+        {...COPILOT_OVERLAY_PROPS}
         animated>
         <AppInitialization />
       </CopilotProvider>
