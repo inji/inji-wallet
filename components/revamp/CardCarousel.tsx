@@ -15,7 +15,7 @@ import {VCMetadata} from '../../shared/VCMetadata';
 import {CredentialCardBack, CredentialCardFront} from './CredentialCard';
 import {CredentialCardData} from './useCredentialCard';
 import {CARD_HEIGHT, CARD_WIDTH, motion, radii} from './tokens';
-import {VCCardSkeleton} from '../VC/common/VCCardSkeleton';
+import {CardSkeleton} from './CardSkeleton';
 
 export interface CarouselEntry {
   key: string;
@@ -154,6 +154,9 @@ export const CardCarousel: React.FC<{
     else change(i);
   }, []);
 
+  // Cards behind wait for the one in the centre, so they never fill in ahead of it.
+  const activeReady = !!entries[index]?.data;
+
   return (
     <PanGestureHandler
       onGestureEvent={onGestureEvent}
@@ -167,7 +170,7 @@ export const CardCarousel: React.FC<{
         {entries.map((entry, i) => (
           <CarouselCard
             key={entry.key}
-            data={entry.data}
+            data={activeReady || i === index ? entry.data : undefined}
             i={i}
             position={position}
             gap={gap}
@@ -334,9 +337,7 @@ const CarouselCard = React.memo(function CarouselCard({
               ) : null}
             </View>
           ) : (
-            <View style={styles.skeleton}>
-              <VCCardSkeleton />
-            </View>
+            <CardSkeleton reduceMotion={reduceMotion} />
           )}
         </Pressable>
       </Animated.View>
@@ -364,10 +365,4 @@ const styles = StyleSheet.create({
   face: {backfaceVisibility: 'hidden'},
   back: {position: 'absolute', left: 0, top: 0},
   dim: {backgroundColor: '#000', shadowOpacity: 0},
-  skeleton: {
-    width: CARD_WIDTH,
-    height: CARD_HEIGHT,
-    borderRadius: radii.card,
-    overflow: 'hidden',
-  },
 });
