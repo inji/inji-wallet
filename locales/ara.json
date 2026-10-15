@@ -194,7 +194,13 @@
     "errorMessage": "تم إدخال عنوان URL غير صحيح. الرجاء إدخال عنوان URL صالح للمتابعة.",
     "injiTourGuide": "مرشد CredIssuer السياحي",
     "logout": "تسجيل خروج",
-    "resetInjiProps": "إعادة تعيين دعائم CredIssuer ..."
+    "resetInjiProps": "إعادة تعيين دعائم CredIssuer ...",
+    "securityAndPrivacy": "الأمان والخصوصية",
+    "walletSection": "المحفظة",
+    "appSection": "التطبيق",
+    "support": "الدعم",
+    "sharingHistory": "سجل المشاركة",
+    "footer": "محفظة CredIssuer · منتج من Ooru Digital"
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "تم النجاح! يمكنك الآن استخدام رمز المرور لفتح تطبيق CredIssuer.",

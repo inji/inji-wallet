@@ -194,7 +194,13 @@
     "errorMessage": "தவறான URL உள்ளிடப்பட்டது. தொடர சரியான URL ஐ உள்ளிடவும்.",
     "injiTourGuide": "CredIssuer சுற்றுலா வழிகாட்டி",
     "logout": "வெளியேறு",
-    "resetInjiProps": "CredIssuer ப்ராப்ஸை மீட்டமைக்கிறது..."
+    "resetInjiProps": "CredIssuer ப்ராப்ஸை மீட்டமைக்கிறது...",
+    "securityAndPrivacy": "பாதுகாப்பு மற்றும் தனியுரிமை",
+    "walletSection": "வாலட்",
+    "appSection": "பயன்பாடு",
+    "support": "ஆதரவு",
+    "sharingHistory": "பகிர்வு வரலாறு",
+    "footer": "CredIssuer வாலட் · Ooru Digital இன் தயாரிப்பு"
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "வெற்றி! இன்ஜி பயன்பாட்டைத் திறக்க நீங்கள் இப்போது கடவுக்குறியீட்டைப் பயன்படுத்தலாம்.",

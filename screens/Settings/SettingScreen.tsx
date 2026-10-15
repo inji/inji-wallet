@@ -29,6 +29,7 @@ import {
   settingsIcons,
 } from '../../components/revamp/SettingsList';
 import {fonts} from '../../components/revamp/tokens';
+import {TAB_BAR_SPACE} from '../../components/revamp/RevampTabBar';
 import {useRevampTheme} from '../../components/revamp/useRevampTheme';
 
 export const SettingScreen: React.FC<
@@ -83,12 +84,15 @@ export const SettingScreen: React.FC<
           <ScaledText
             accessibilityRole="header"
             style={[styles.title, {color: c.ink}]}>
-            {t('header', {defaultValue: 'Settings'})}
+            {t('header')}
           </ScaledText>
         </View>
         <ScrollView
           {...testIDProps('settingsScreen')}
-          contentContainerStyle={styles.content}
+          contentContainerStyle={[
+            styles.content,
+            {paddingBottom: TAB_BAR_SPACE + insets.bottom},
+          ]}
           showsVerticalScrollIndicator={false}>
           <MessageOverlay
             isVisible={controller.alertMsg != ''}
@@ -96,7 +100,7 @@ export const SettingScreen: React.FC<
             title={controller.alertMsg}
           />
 
-          <SettingsSection title="Security and Privacy">
+          <SettingsSection title={t('securityAndPrivacy')}>
             <SettingsRow
               testID="biometricToggle"
               icon={settingsIcons.biometrics}
@@ -121,11 +125,11 @@ export const SettingScreen: React.FC<
             />
           </SettingsSection>
 
-          <SettingsSection title="Wallet">
+          <SettingsSection title={t('walletSection')}>
             <SettingsRow
               testID="sharingHistory"
               icon={settingsIcons.history}
-              label="Sharing history"
+              label={t('sharingHistory')}
               onPress={() =>
                 navigation.navigate(BOTTOM_TAB_ROUTES.history as never)
               }
@@ -148,7 +152,7 @@ export const SettingScreen: React.FC<
             )}
           </SettingsSection>
 
-          <SettingsSection title="App">
+          <SettingsSection title={t('appSection')}>
             <LanguageSelector
               triggerComponent={
                 <SettingsRow
@@ -188,7 +192,7 @@ export const SettingScreen: React.FC<
             )}
           </SettingsSection>
 
-          <SettingsSection title="Support">
+          <SettingsSection title={t('support')}>
             <AboutInji
               appId={controller.appId}
               renderTrigger={open => (
@@ -209,7 +213,7 @@ export const SettingScreen: React.FC<
           </SettingsSection>
 
           <ScaledText style={[styles.footer, {color: c.inkMuted}]}>
-            CredIssuer Wallet · A product of Ooru Digital
+            {t('footer')}
           </ScaledText>
         </ScrollView>
       </View>

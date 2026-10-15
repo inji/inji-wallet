@@ -195,7 +195,13 @@
     "errorMessage": "गलत यूआरएल दर्ज किया गया। कृपया आगे बढ़ने के लिए एक वैध यूआरएल दर्ज करें।",
     "injiTourGuide": "CredIssuer टूर गाइड",
     "logout": "लॉग आउट",
-    "resetInjiProps": "CredIssuer प्रॉप्स को रीसेट किया जा रहा है..."
+    "resetInjiProps": "CredIssuer प्रॉप्स को रीसेट किया जा रहा है...",
+    "securityAndPrivacy": "सुरक्षा और गोपनीयता",
+    "walletSection": "वॉलेट",
+    "appSection": "ऐप",
+    "support": "सहायता",
+    "sharingHistory": "साझा करने का इतिहास",
+    "footer": "CredIssuer वॉलेट · Ooru Digital का एक उत्पाद"
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "सफलता! अब आप इंजी ऐप को अनलॉक करने के लिए पासकोड का उपयोग कर सकते हैं।",

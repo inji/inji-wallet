@@ -193,7 +193,13 @@
     "errorMessage": "Maling URL ang inilagay. Mangyaring maglagay ng wastong URL upang magpatuloy.",
     "injiTourGuide": "CredIssuer Tour Guide",
     "logout": "Mag-logout",
-    "resetInjiProps": "Nire-reset ang CredIssuer Props..."
+    "resetInjiProps": "Nire-reset ang CredIssuer Props...",
+    "securityAndPrivacy": "Seguridad at Privacy",
+    "walletSection": "Wallet",
+    "appSection": "App",
+    "support": "Suporta",
+    "sharingHistory": "Kasaysayan ng pagbabahagi",
+    "footer": "CredIssuer Wallet · Isang produkto ng Ooru Digital"
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "Tagumpay! Magagamit mo na ngayon ang passcode upang i-unlock ang CredIssuer app.",

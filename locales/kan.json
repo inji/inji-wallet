@@ -194,7 +194,13 @@
     "errorMessage": "ತಪ್ಪಾದ URL ನಮೂದಿಸಲಾಗಿದೆ. ದಯವಿಟ್ಟು ಮುಂದುವರೆಯಲು ಮಾನ್ಯ URL ಅನ್ನು ನಮೂದಿಸಿ.",
     "injiTourGuide": "CredIssuer ಪ್ರವಾಸ ಮಾರ್ಗದರ್ಶಿ",
     "logout": "ಲಾಗ್ ಔಟ್",
-    "resetInjiProps": "CredIssuer ಪ್ರಾಪ್ಸ್ ಅನ್ನು ಮರುಹೊಂದಿಸಲಾಗುತ್ತಿದೆ..."
+    "resetInjiProps": "CredIssuer ಪ್ರಾಪ್ಸ್ ಅನ್ನು ಮರುಹೊಂದಿಸಲಾಗುತ್ತಿದೆ...",
+    "securityAndPrivacy": "ಭದ್ರತೆ ಮತ್ತು ಗೌಪ್ಯತೆ",
+    "walletSection": "ವಾಲೆಟ್",
+    "appSection": "ಅಪ್ಲಿಕೇಶನ್",
+    "support": "ಬೆಂಬಲ",
+    "sharingHistory": "ಹಂಚಿಕೆ ಇತಿಹಾಸ",
+    "footer": "CredIssuer ವಾಲೆಟ್ · Ooru Digital ನ ಉತ್ಪನ್ನ"
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "ಯಶಸ್ವಿ! ನೀವು ಈಗ ಇಂಜಿ ಅಪ್ಲಿಕೇಶನ್ ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಪಾಸ್ಕೋಡ್ ಅನ್ನು ಬಳಸಬಹುದು.",
