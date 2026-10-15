@@ -382,7 +382,6 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
           <WalletHome
             vcMetadatas={vcMetadataOrderedByPinStatus}
             searchIndex={searchIndex}
-            onViewDetails={service => controller.VIEW_VC(service)}
             onAdd={() => props.onAddCredential?.()}
             onStackView={() => setStackView(true)}
             refreshing={controller.isRefreshingVcs}

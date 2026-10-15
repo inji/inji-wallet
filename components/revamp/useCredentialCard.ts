@@ -14,6 +14,7 @@ import {
 import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
 import {documentNumber, flatClaims, holderName} from './credentialClaims';
 import {msoValidity} from './msoValidity';
+import {claimLabels} from './cardFields';
 import {VCFormat} from '../../shared/VCFormat';
 
 export type CardStatus = 'verified' | 'pending' | 'expired' | 'revoked';
@@ -23,7 +24,7 @@ export interface CredentialCardData {
   /** The issuer's own name from its metadata, else its address. */
   issuerName?: string;
   holderName?: string;
-  number?: {label: string; value: string};
+  number?: {key?: string; label: string; value: string};
   face?: string;
   issuerLogoUrl?: string;
   /** The issuer's colours for this credential type, from its metadata; undefined if it sets none. */
@@ -32,6 +33,8 @@ export interface CredentialCardData {
   status: CardStatus;
   format: string;
   claims: Record<string, string>;
+  /** The issuer's display name for each claim, by claim name. */
+  labels?: Record<string, string>;
   vcMetadata?: VCMetadata;
   /** The stored credential, for building its QR. */
   credential: any;
@@ -137,6 +140,7 @@ export function useCredentialCard(
       status,
       format,
       claims,
+      labels: claimLabels(wellknown),
       vcMetadata,
       credential: controller.credential,
     };

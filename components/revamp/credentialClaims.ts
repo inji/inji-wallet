@@ -61,22 +61,56 @@ export function flatClaims(vc: any, format: string): Record<string, string> {
         Object.entries(ns).forEach(([k, v]) => put(k, v));
       }
     });
+  } else if (format === VCFormat.vc_sd_jwt || format === VCFormat.dc_sd_jwt) {
+    const payload = vc?.fullResolvedPayload ?? {};
+    Object.entries(payload.credentialSubject ?? payload).forEach(([k, v]) =>
+      put(k, v),
+    );
   } else {
     Object.entries(vc?.credentialSubject ?? {}).forEach(([k, v]) => put(k, v));
   }
+  // W3C and SD-JWT credentials keep their validity on the credential itself, not as claims.
+  const issued =
+    vc?.validFrom ?? vc?.issuanceDate ?? vc?.fullResolvedPayload?.iat;
+  const expires =
+    vc?.validUntil ?? vc?.expirationDate ?? vc?.fullResolvedPayload?.exp;
+  const asDate = (v: unknown) =>
+    typeof v === 'number' ? new Date(v * 1000).toISOString() : v;
+  if (issued != null && pick(out, ISSUED_NAMES) === undefined)
+    put('issue_date', asDate(issued));
+  if (expires != null && pick(out, EXPIRY_NAMES) === undefined)
+    put('expiry_date', asDate(expires));
   return out;
 }
 
-const pick = (claims: Record<string, string>, keys: string[]) => {
-  const lower = Object.fromEntries(
-    Object.entries(claims).map(([k, v]) => [k.toLowerCase(), v]),
-  );
-  for (const key of keys) {
-    const value = lower[key.toLowerCase()];
-    if (value) return value;
+export const ISSUED_NAMES = ['issue_date', 'issuanceDate', 'dateOfIssue'];
+export const EXPIRY_NAMES = [
+  'expiry_date',
+  'validUntil',
+  'dateOfExpiry',
+  'expirationDate',
+];
+
+/** Claim names compared without case, underscores or dashes: `dateOfIssue` matches `date_of_issue`. */
+export const normKey = (key: string) =>
+  key.toLowerCase().replace(/[_\-\s]/g, '');
+
+export function claimKey(
+  claims: Record<string, string>,
+  names: string[],
+): string | undefined {
+  const wanted = names.map(normKey);
+  for (const name of wanted) {
+    const key = Object.keys(claims).find(k => normKey(k) === name && claims[k]);
+    if (key) return key;
   }
   return undefined;
-};
+}
+
+function pick(claims: Record<string, string>, keys: string[]) {
+  const key = claimKey(claims, keys);
+  return key ? claims[key] : undefined;
+}
 
 const join = (...parts: (string | undefined)[]) =>
   parts.filter(Boolean).join(' ') || undefined;
@@ -86,16 +120,10 @@ export function holderName(claims: Record<string, string>): string | undefined {
   return (
     pick(claims, ['fullName', 'name', 'recipient_name']) ??
     join(
-      pick(claims, [
-        'given_name',
-        'givenName',
-        'firstName',
-        'recipient_first_name',
-      ]),
+      pick(claims, ['given_name', 'first_name', 'recipient_first_name']),
       pick(claims, [
         'family_name',
-        'familyName',
-        'lastName',
+        'last_name',
         'surname',
         'recipient_last_name',
       ]),
@@ -103,10 +131,23 @@ export function holderName(claims: Record<string, string>): string | undefined {
   );
 }
 
-/** The credential's own number, labelled as the card shows it. */
+const NUMBER_WORDS = ['number', 'no', 'num'];
+const NOT_A_DOCUMENT_NUMBER = [
+  'phone',
+  'mobile',
+  'tel',
+  'house',
+  'street',
+  'postal',
+];
+
+/**
+ * The credential's own number, labelled as the card shows it: a known name first, else a field
+ * whose name ends in "number" (`nrcNumber` becomes "NRC").
+ */
 export function documentNumber(
   claims: Record<string, string>,
-): {label: string; value: string} | undefined {
+): {key: string; label: string; value: string} | undefined {
   const candidates: [string, string][] = [
     ['document_number', 'No.'],
     ['UIN', 'UIN'],
@@ -116,11 +157,38 @@ export function documentNumber(
     ['idNumber', 'ID'],
     ['licenseNumber', 'Licence no.'],
   ];
-  for (const [key, label] of candidates) {
-    const value = pick(claims, [key]);
-    if (value) return {label, value};
+  for (const [name, label] of candidates) {
+    const key = claimKey(claims, [name]);
+    if (key) return {key, label, value: claims[key]};
+  }
+  for (const [key, value] of Object.entries(claims)) {
+    const words = key
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .split(/[\s_-]+/)
+      .map(w => w.toLowerCase())
+      .filter(Boolean);
+    const last = words[words.length - 1];
+    if (
+      words.length > 1 &&
+      NUMBER_WORDS.includes(last) &&
+      !words.some(w => NOT_A_DOCUMENT_NUMBER.includes(w)) &&
+      value
+    ) {
+      const name = words.slice(0, -1).join(' ');
+      const label = name.length <= 4 ? name.toUpperCase() : 'No.';
+      return {key, label, value};
+    }
   }
   return undefined;
+}
+
+/** The credential's own machine-readable zone, when the issuer includes one. */
+export function mrzLines(
+  claims: Record<string, string>,
+): [string, string] | undefined {
+  const one = pick(claims, ['mrz_line_1', 'mrz1']);
+  const two = pick(claims, ['mrz_line_2', 'mrz2']);
+  return one && two ? [one, two] : undefined;
 }
 
 /** The last four characters shown, the rest masked, as the design shows numbers. */

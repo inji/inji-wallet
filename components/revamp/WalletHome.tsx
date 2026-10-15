@@ -23,11 +23,7 @@ import {CardCarousel} from './CardCarousel';
 import {CardLoader, LoadedCard} from './CardLoader';
 import {CredentialCardFront, ScaledCard} from './CredentialCard';
 import {Action, CredentialInformation, StatusPill} from './CredentialParts';
-import {
-  CardActions,
-  CredentialDetails,
-  CredentialDetailsHandle,
-} from './CredentialDetails';
+import {CardActions, CredentialDetails} from './CredentialDetails';
 import {
   ActivityIcon,
   ArrowRightIcon,
@@ -70,7 +66,6 @@ export const WalletHome: React.FC<{
   vcMetadatas: VCMetadata[];
   /** Lowercased searchable text of each credential's claims, by credential key. */
   searchIndex: Record<string, string>;
-  onViewDetails: (service: any) => void;
   onAdd: () => void;
   onStackView: () => void;
   refreshing: boolean;
@@ -78,7 +73,6 @@ export const WalletHome: React.FC<{
 }> = ({
   vcMetadatas,
   searchIndex,
-  onViewDetails,
   onAdd,
   onStackView,
   refreshing,
@@ -181,7 +175,6 @@ export const WalletHome: React.FC<{
   const activeEntry = visible[index];
 
   const [detailKey, setDetailKey] = useState<string | null>(null);
-  const details = useRef<CredentialDetailsHandle>(null);
   const detailEntry = detailKey
     ? all.find(e => e.key === detailKey)
     : undefined;
@@ -225,7 +218,6 @@ export const WalletHome: React.FC<{
         showQr: off,
         activity: off,
         remove: off,
-        viewAll: off,
         togglePin: () => {
           const pinning = samplePinned !== key;
           setSamplePinned(pinning ? key : null);
@@ -258,12 +250,6 @@ export const WalletHome: React.FC<{
       remove: () => {
         card?.service.send(VCItemEvents.KEBAB_POPUP());
         card?.service.send(VCItemEvents.REMOVE(vcMetadata));
-      },
-      viewAll: () => {
-        if (!card) return;
-        if (details.current)
-          details.current.close(() => onViewDetails(card.service));
-        else onViewDetails(card.service);
       },
     };
   };
@@ -387,7 +373,6 @@ export const WalletHome: React.FC<{
 
       {detailEntry && cards[detailEntry.key] ? (
         <CredentialDetails
-          ref={details}
           key={detailEntry.key}
           data={cards[detailEntry.key].data}
           pinned={isPinned(detailEntry)}
@@ -497,7 +482,7 @@ const ActiveDetails: React.FC<{
         />
       </View>
 
-      <CredentialInformation data={data} onViewAll={actions.viewAll} />
+      <CredentialInformation data={data} />
 
       <Pressable
         onPress={actions.remove}
