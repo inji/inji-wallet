@@ -198,7 +198,7 @@ export const INTRO_SLIDER_LOGO_MARGIN = Dimensions.get('screen').width * 0.45;
  * orders must stay contiguous from 1: removing or adding a step means renumbering every later
  * one and updating these constants, or the counter reads past the total and testIDs shift.
  */
-// The bottom bar's Scan button, last of the onboarding steps.
+// The bottom bar's Scan button (scan a verifier's QR to share), last of the onboarding steps.
 export const COPILOT_SCAN_STEP = 5;
 // Stopping the tour on any step up to here completes onboarding.
 export const COPILOT_PRE_FINAL_STEP = COPILOT_SCAN_STEP;
@@ -235,7 +235,7 @@ export const copilotTestID = {
   '2': 'more',
   '3': 'history',
   '4': 'settings',
-  '5': 'scanToAdd',
+  '5': 'scanToShare',
   '6': 'cardView',
 };
 

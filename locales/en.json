@@ -1244,8 +1244,8 @@
     "keepBoth": "Add as new"
   },
   "copilot": {
-    "scanToAddTitle": "Scan to Add",
-    "scanToAddMessage": "Tap Scan to add a credential from an issuer's QR code.",
+    "scanToShareTitle": "Scan to Share",
+    "scanToShareMessage": "Tap Scan and point your camera at a verifier's QR code to share your credentials.",
     "moreTitle": "Stay in the Loop",
     "moreMessage": "Your notifications and profile live under ⋯. Notifications show each credential you download or share.",
     "quickTour": "Quick tour",

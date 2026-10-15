@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import {Column} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
 import {HomeRouteProps} from '../../routes/routeTypes';
@@ -9,9 +9,6 @@ import {useHomeScreen} from './HomeScreenController';
 import {TabRef} from './HomeScreenMachine';
 import {ActorRefFrom} from 'xstate';
 import {ErrorMessageOverlay} from '../../components/MessageOverlay';
-import {DeviceEventEmitter} from 'react-native';
-import {SCAN_TO_ADD_EVENT} from '../../components/revamp/RevampTabBar';
-import {IssuerScreenTabEvents} from '../../machines/Issuers/IssuersMachine';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
@@ -19,25 +16,9 @@ import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMa
 export const HomeScreen: React.FC<HomeRouteProps> = props => {
   const controller = useHomeScreen(props);
 
-  // The bottom bar's Scan opens the add-card flow straight into its QR scanner.
-  const scanOnOpen = useRef(false);
-  useEffect(() => {
-    const sub = DeviceEventEmitter.addListener(SCAN_TO_ADD_EVENT, () => {
-      scanOnOpen.current = true;
-      controller.GOTO_ISSUERS();
-    });
-    return () => sub.remove();
-  }, []);
-
   useEffect(() => {
     if (controller.IssuersService) {
       navigateToIssuers();
-      if (scanOnOpen.current) {
-        scanOnOpen.current = false;
-        (controller.IssuersService as {send: (event: object) => void}).send(
-          IssuerScreenTabEvents.SCAN_CREDENTIAL_OFFER_QR_CODE(),
-        );
-      }
     }
   }, [controller.IssuersService]);
 
