@@ -436,5 +436,33 @@ fileignoreconfig:
     checksum: 6871fad16ecb5f019f502b2f7f715bc2a7b646ee08026b321aa1f8ce071dccc1
   - filename: shared/hooks/useScreenHeight.ts
     checksum: e3f13e7181efc6e6ad5896102bac1309bd8147ba711ff71f64a600a0dffc1364
+  - filename: components/revamp/tokens.ts
+    checksum: 8d440cfb36c14d64164e3ad11391a444cee21e2f37b5a01329093656cc0b65f2
+  - filename: components/revamp/sampleCards.ts
+    checksum: ddc220dbbb258ab83386d1558e315e70a363d96107a7d1f6cd0aa6ec9e0b1925
+  - filename: components/revamp/credentialClaims.ts
+    checksum: a8b98f7f3bfcba7e9199ef40360dac1ef7efe17e59e3b3376751d4df5468a141
+  - filename: components/revamp/CardLoader.tsx
+    checksum: df9cfaff7777c85f34deddd071d6533aff29ad8ac4e9beca30412ceab6d8cd0b
+  - filename: components/revamp/Guilloche.tsx
+    checksum: efa7c5daea63c098719ac924b4d5c263baba01de0a5e4bfd6c24480dac07fcec
+  - filename: components/revamp/useCardQr.ts
+    checksum: 3971e08f62919bcf11435f43dd73efab2eb658efec2ffafafb6fe8b19af9256f
+  - filename: components/revamp/CardCarousel.tsx
+    checksum: fcb25fd37e61c55467eaedd4be90896daf63d6796e62832d9e0dd8b3a4f09c33
+  - filename: components/revamp/CredentialParts.tsx
+    checksum: 20c610640e6a346ae6e08f1be043d621895cae3ad15c66040f36e44e2c7f98f1
+  - filename: components/revamp/CredentialCard.tsx
+    checksum: f7588c336a757b1a57893023268a6b9a9a47b1e9374b3ef9c9506ada9d5d23cd
+  - filename: components/revamp/RevampTabBar.tsx
+    checksum: 17dd0ffe2d789038588d3c05dd5c3dd4a095283e500f9987f6b29d8512fd836b
+  - filename: components/revamp/WalletHeader.tsx
+    checksum: 4dd697ec883c1684958a79c3d6040604415a5b6176264be55b882830c61e31e3
+  - filename: components/revamp/WalletHome.tsx
+    checksum: d64fbffedf35a89922a520c1a4d3361f060bdcb3e91310222a9ad3013c0bec28
+  - filename: components/revamp/useCredentialCard.ts
+    checksum: 40e892bdea792a554b3c08ad9b46bec761d14997cf6284afc03ae46b988514c8
+  - filename: components/revamp/cardFields.ts
+    checksum: 01b22263ca064a28e9d9ff4f00e2a300281ad8ae41f58fefab9a4e71de11d1e0
     version: "1.0"
 

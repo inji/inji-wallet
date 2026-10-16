@@ -488,6 +488,7 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
         }
         if (qrData?.length < MAX_QR_DATA_LENGTH) {
           setQrString(qrData);
+          props.onQrData?.(qrData);
         } else {
           setQrError(true);
         }
@@ -814,6 +815,8 @@ interface QrCodeOverlayProps {
   showInlineQr?: boolean;
   forceVisible?: boolean;
   onClose?: () => void;
+  /** Receives the QR payload once built, for screens that draw the code themselves. */
+  onQrData?: (data: string) => void;
   /** Dismisses the enclosing VC-details modal — without this, navigating to the Home
    * tab is invisible because that modal stays stacked on top of it. */
   onCloseDetails?: () => void;

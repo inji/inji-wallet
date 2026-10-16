@@ -23,6 +23,7 @@ import {useSelector} from '@xstate/react';
 import {selectAuthorizationRequest, selectIsLinkCode} from '../machines/app';
 import {BOTTOM_TAB_ROUTES} from '../routes/routesConstants';
 import {roundedSvgMaskPath} from '../shared/copilotMask';
+import {RevampTabBar} from '../components/revamp/RevampTabBar';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
@@ -66,6 +67,7 @@ export const MainLayout: React.FC = () => {
       animated>
       <Navigator
         initialRouteName={mainRoutes[0].name}
+        tabBar={props => <RevampTabBar {...props} />}
         screenOptions={({route}) => ({
           tabBarAccessibilityLabel: route.name,
           ...options,
