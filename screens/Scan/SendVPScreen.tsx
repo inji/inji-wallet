@@ -388,19 +388,20 @@ export const SendVPScreen: React.FC<ScanLayoutProps> = props => {
                     testID="shareRequestVerifierName">
                     {verifierName}
                   </RNText>
-                  {!controller.isAuthorizationFlow && (
-                    <View style={styles.trustedRow}>
-                      <Icon
-                        name="shield-check-outline"
-                        type="material-community"
-                        size={16}
-                        color={COLORS.teal}
-                      />
-                      <RNText style={styles.trustedText}>
-                        {t('trustedVerifier')}
-                      </RNText>
-                    </View>
-                  )}
+                  {!controller.isAuthorizationFlow &&
+                    controller.isVerifierRegistered && (
+                      <View style={styles.trustedRow}>
+                        <Icon
+                          name="shield-check-outline"
+                          type="material-community"
+                          size={16}
+                          color={COLORS.teal}
+                        />
+                        <RNText style={styles.trustedText}>
+                          {t('trustedVerifier')}
+                        </RNText>
+                      </View>
+                    )}
                   {!!purpose && (
                     <RNText style={styles.purpose} testID="shareRequestPurpose">
                       {controller.isAuthorizationFlow
