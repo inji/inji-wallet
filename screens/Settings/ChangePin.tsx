@@ -33,6 +33,8 @@ export const ChangePin: React.FC<{
   const [step, setStep] = useState<Step>('current');
   const [newPasscode, setNewPasscode] = useState('');
   const [error, setError] = useState('');
+  // Remounts the new-PIN boxes, which clears them.
+  const [attempt, setAttempt] = useState(0);
 
   const close = (changed: boolean) => {
     setStep('current');
@@ -74,14 +76,25 @@ export const ChangePin: React.FC<{
         )}
         {step === 'new' && (
           <PinInput
-            key="new"
+            key={'new' + attempt}
             testID="newPin"
             length={MAX_PIN}
             autosubmit={true}
             onDone={async (value: string) => {
-              setNewPasscode(await hashData(value, salt, argon2iConfig));
-              setError('');
-              setStep('confirm');
+              try {
+                const hashed = await hashData(value, salt, argon2iConfig);
+                if (hashed === storedPasscode) {
+                  setError(t('samePin'));
+                  setAttempt(a => a + 1);
+                  return;
+                }
+                setNewPasscode(hashed);
+                setError('');
+                setStep('confirm');
+              } catch (e) {
+                console.error('Hashing the new PIN failed', e);
+                setError(t('pinChangeFailed'));
+              }
             }}
           />
         )}
@@ -95,7 +108,12 @@ export const ChangePin: React.FC<{
               authService.send(AuthEvents.CHANGE_PASSCODE(newPasscode));
               close(true);
             }}
-            onError={setError}
+            onError={() => {
+              // Back to the new PIN, so a typo in either entry can be fixed.
+              setNewPasscode('');
+              setError(t('pinsDontMatch'));
+              setStep('new');
+            }}
           />
         )}
         {error ? (

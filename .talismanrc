@@ -471,10 +471,14 @@ fileignoreconfig:
   - filename: screens/Settings/autoLock.ts
     checksum: aafffaeb1bf5417893319cc235b25fbcb67eed6d271fed8340cfdc8e91420092
   - filename: screens/Settings/ChangePin.tsx
-    checksum: deebb46105aa2894ba1d0c84d426bcbd2ed32f41295e917c4de1dd47d8bd3d10
+    checksum: 5ff4cd67e92602aabf65868313254372105c2ff1a2c66c3f296c7204e213734b
   - filename: screens/AppLayout.tsx
     checksum: 76d6651dbde74dd425c9482ae8d5dd0e2fc5ab6f7fd77f87d527c48bc17cabcd
   - filename: screens/AppLock.tsx
     checksum: 3790d13c83143144cc0f5722e40d406d4387cb2c4681821d2f8c7c3ac31b6c46
+  - filename: screens/Settings/autoLock.test.ts
+    checksum: f95ca299f705fbfad765205a9fe42f09358a730da38fb59debb98e2e62a14c58
+  - filename: machines/store.biometricCancel.test.ts
+    checksum: e49d17348fa50fa1fae67f185e5706a40f9d66d3c1f96219c6d99e05ec2329c2
     version: "1.0"
 

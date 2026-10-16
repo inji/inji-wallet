@@ -215,7 +215,12 @@
     "helpAndSupport": "المساعدة والدعم",
     "helpAndSupportBody": "ستتم إضافة معلومات المساعدة والدعم هنا قريبًا.",
     "privacyPolicy": "سياسة الخصوصية",
-    "privacyPolicyBody": "ستتم إضافة سياسة الخصوصية هنا قريبًا."
+    "privacyPolicyBody": "ستتم إضافة سياسة الخصوصية هنا قريبًا.",
+    "pinChanged": "تم تغيير رمز PIN الخاص بك.",
+    "pinsDontMatch": "رموز PIN غير متطابقة. أدخل رمز PIN الجديد مرة أخرى.",
+    "samePin": "اختر رمز PIN مختلفًا عن رمزك الحالي.",
+    "pinChangeFailed": "تعذر تغيير رمز PIN. يرجى المحاولة مرة أخرى.",
+    "closeApp": "إغلاق التطبيق"
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "تم النجاح! يمكنك الآن استخدام رمز المرور لفتح تطبيق CredIssuer.",

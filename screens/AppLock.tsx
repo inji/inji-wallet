@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Modal, Pressable, StyleSheet, View} from 'react-native';
+import {BackHandler, Modal, Pressable, StyleSheet, View} from 'react-native';
 import {initialWindowMetrics} from 'react-native-safe-area-context';
 import {useSelector} from '@xstate/react';
 import * as LocalAuthentication from 'expo-local-authentication';
@@ -57,6 +57,7 @@ export const AppLock: React.FC<{isAuthorized: boolean}> = ({isAuthorized}) => {
 
 const StorageLockScreen: React.FC<{onRetry: () => void}> = ({onRetry}) => {
   const biometricT = useTranslation('BiometricScreen').t;
+  const {t} = useTranslation('SettingScreen');
   const {c} = useRevampTheme();
   return (
     <Modal
@@ -80,6 +81,15 @@ const StorageLockScreen: React.FC<{onRetry: () => void}> = ({onRetry}) => {
           style={[styles.button, {backgroundColor: c.primary}]}>
           <ScaledText style={[styles.buttonText, {color: c.onPrimary}]}>
             {biometricT('unlock')}
+          </ScaledText>
+        </Pressable>
+        <Pressable
+          testID="storageLockCloseApp"
+          accessibilityRole="button"
+          onPress={() => BackHandler.exitApp()}
+          style={styles.textButton}>
+          <ScaledText style={[styles.textButtonText, {color: c.ink}]}>
+            {t('closeApp')}
           </ScaledText>
         </Pressable>
       </View>
@@ -107,18 +117,30 @@ const LockScreen: React.FC<{onUnlock: () => void}> = ({onUnlock}) => {
   const [shown, setShown] = useState(false);
 
   const askBiometrics = async () => {
-    if (isAndroid()) await LocalAuthentication.cancelAuthenticate();
-    const res = await LocalAuthentication.authenticateAsync({
-      promptMessage: biometricT('unlock'),
-    });
-    if (res.success) onUnlock();
+    try {
+      if (isAndroid()) await LocalAuthentication.cancelAuthenticate();
+      const res = await LocalAuthentication.authenticateAsync({
+        promptMessage: biometricT('unlock'),
+        // The device's own PIN stays available, so a wallet without a passcode always has a way in.
+        disableDeviceFallback: false,
+      });
+      if (res.success) onUnlock();
+    } catch (e) {
+      console.error('App lock biometrics failed', e);
+    }
   };
 
   useEffect(() => {
+    // A wallet set up with biometrics only has no passcode to fall back on.
+    if (!passcode) {
+      setCanUseBiometrics(true);
+      askBiometrics();
+      return;
+    }
     if (!biometricEnabled || biometrics === '') return;
     // New fingerprints on the device mean the passcode is needed, as on the unlock screen.
     const changed: Promise<boolean> = isAndroid()
-      ? RNFingerprintChange.hasFingerPrintChanged()
+      ? RNFingerprintChange.hasFingerPrintChanged().catch(() => true)
       : Promise.resolve(false);
     changed.then(hasChanged => {
       if (hasChanged) return;
@@ -201,4 +223,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonText: {fontFamily: fonts.semibold, fontSize: 16},
+  textButton: {paddingVertical: 12, paddingHorizontal: 24},
+  textButtonText: {fontFamily: fonts.medium, fontSize: 16},
 });

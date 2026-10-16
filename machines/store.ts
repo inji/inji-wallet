@@ -398,7 +398,7 @@ export const storeMachine =
                 e instanceof BiometricCancellationError ||
                 String(e).includes(BIOMETRIC_CANCELLED)
               ) {
-                callback(model.events.BIOMETRIC_CANCELLED(event.requester));
+                callback(model.events.BIOMETRIC_CANCELLED());
                 return;
               }
               sendErrorEvent(getErrorEventData('ENCRYPTION', '', e));

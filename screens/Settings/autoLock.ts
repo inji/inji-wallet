@@ -15,6 +15,11 @@ export function readAutoLockMinutes(): number {
     : DEFAULT_MINUTES;
 }
 
+/** A clock moved back while away gives a negative time; that locks too. */
+export function shouldLock(awayMs: number, minutes: number): boolean {
+  return minutes > 0 && (awayMs < 0 || awayMs >= minutes * 60_000);
+}
+
 export function useAutoLockSetting(): [number, (minutes: number) => void] {
   const [minutes, setMinutes] = useState(readAutoLockMinutes);
   const update = (next: number) => {
@@ -41,8 +46,7 @@ export function useAutoLock(): [boolean, () => void] {
       if (state !== 'active' || leftAt.current === null) return;
       const away = Date.now() - leftAt.current;
       leftAt.current = null;
-      const minutes = readAutoLockMinutes();
-      if (minutes > 0 && away >= minutes * 60_000) setLocked(true);
+      if (shouldLock(away, readAutoLockMinutes())) setLocked(true);
     });
     return () => sub.remove();
   }, []);

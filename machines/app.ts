@@ -120,7 +120,11 @@ export const appMachine = model.createMachine(
         actions: 'setBiometricCancelled',
       },
       RETRY_BIOMETRIC: {
-        actions: ['unsetBiometricCancelled', 'retryStoreBiometric'],
+        actions: 'retryStoreBiometric',
+      },
+      // The store is open again; the waiting page stays up until then, prompt included.
+      READY: {
+        actions: 'unsetBiometricCancelled',
       },
     },
     states: {
@@ -135,6 +139,7 @@ export const appMachine = model.createMachine(
                   'unsetIsReadError',
                   'unsetIsDecryptError',
                   'resetKeyInvalidateError',
+                  'unsetBiometricCancelled',
                 ],
                 target: 'checkKeyPairs',
               },
@@ -207,6 +212,7 @@ export const appMachine = model.createMachine(
               },
               // The store is ready again after a retry, so ask for the settings once more.
               READY: {
+                actions: 'unsetBiometricCancelled',
                 target: 'credentialRegistry',
               },
             },

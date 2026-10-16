@@ -245,7 +245,12 @@
     "helpAndSupport": "Help and support",
     "helpAndSupportBody": "Help and support information will be added here soon.",
     "privacyPolicy": "Privacy policy",
-    "privacyPolicyBody": "The privacy policy will be added here soon."
+    "privacyPolicyBody": "The privacy policy will be added here soon.",
+    "pinChanged": "Your PIN has been changed.",
+    "pinsDontMatch": "The PINs don't match. Enter the new PIN again.",
+    "samePin": "Choose a PIN different from your current one.",
+    "pinChangeFailed": "Couldn't change the PIN. Please try again.",
+    "closeApp": "Close app"
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "Success! You can now use passcode to unlock CredIssuer app.",

@@ -1,11 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Platform, Pressable, ScrollView, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-
-/** Rows for features that are designed but not built yet; switch on when they are. */
-const SHOW_CONNECTED_VERIFIERS = false;
-const SHOW_APPEARANCE = false;
 import {MessageOverlay} from '../../components/MessageOverlay';
 import {useSettingsScreen} from './SettingScreenController';
 import {useTranslation} from 'react-i18next';
@@ -35,6 +31,11 @@ import {
 import {fonts} from '../../components/revamp/tokens';
 import {TAB_BAR_SPACE} from '../../components/revamp/RevampTabBar';
 import {useRevampTheme} from '../../components/revamp/useRevampTheme';
+import * as LocalAuthentication from 'expo-local-authentication';
+
+/** Rows for features that are designed but not built yet; switch on when they are. */
+const SHOW_CONNECTED_VERIFIERS = false;
+const SHOW_APPEARANCE = false;
 
 export const SettingScreen: React.FC<
   SettingProps & RootRouteProps & RequestRouteProps
@@ -69,6 +70,20 @@ export const SettingScreen: React.FC<
     'changePin' | 'autoLock' | 'help' | 'privacy' | null
   >(null);
   const [autoLockMinutes, setAutoLockMinutes] = useAutoLockSetting();
+  const [notice, setNotice] = useState('');
+
+  // Off only when the phone has no fingerprint or face hardware, or none is enrolled.
+  const [biometricsAvailable, setBiometricsAvailable] = useState(true);
+  useEffect(() => {
+    Promise.all([
+      LocalAuthentication.hasHardwareAsync(),
+      LocalAuthentication.isEnrolledAsync(),
+    ])
+      .then(([hardware, enrolled]) =>
+        setBiometricsAvailable(hardware && enrolled),
+      )
+      .catch(() => setBiometricsAvailable(false));
+  }, []);
   const autoLockLabel = (minutes: number) =>
     minutes === 0 ? t('autoLockNever') : t('autoLockAfter', {count: minutes});
 
@@ -98,6 +113,11 @@ export const SettingScreen: React.FC<
           ]}
           showsVerticalScrollIndicator={false}>
           <MessageOverlay
+            isVisible={notice !== ''}
+            onBackdropPress={() => setNotice('')}
+            title={notice}
+          />
+          <MessageOverlay
             isVisible={controller.alertMsg != ''}
             onBackdropPress={controller.hideAlert}
             title={controller.alertMsg}
@@ -109,6 +129,7 @@ export const SettingScreen: React.FC<
               icon={settingsIcons.biometrics}
               label={t('bioUnlock')}
               accessibilityRole="switch"
+              disabled={!biometricsAvailable}
               accessibilityState={{
                 checked: controller.isBiometricUnlockEnabled,
               }}
@@ -256,7 +277,10 @@ export const SettingScreen: React.FC<
       </View>
       <ChangePin
         isVisible={page === 'changePin'}
-        onDone={() => setPage(null)}
+        onDone={changed => {
+          setPage(null);
+          if (changed) setNotice(t('pinChanged'));
+        }}
       />
       <Modal
         testID="autoLockOptions"
