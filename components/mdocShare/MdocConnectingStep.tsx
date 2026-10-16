@@ -4,7 +4,7 @@ import {Icon} from 'react-native-elements';
 import {useTranslation} from 'react-i18next';
 import {Text} from '../ui';
 import {Theme} from '../ui/styleUtils';
-import {MdocShareHeader} from './MdocSharePrimitives';
+import {MdocShareHeader, TitleLineHeight} from './MdocSharePrimitives';
 
 const {colors: C, brand: B} = Theme.Tokens;
 
@@ -83,7 +83,8 @@ export const MdocConnectingStep: React.FC<MdocConnectingStepProps> = props => {
           weight="bold"
           size="large"
           align="center"
-          color={B.onNavy}>
+          color={B.onNavy}
+          style={TitleLineHeight.large}>
           {t('mdocShare.connectingTitle')}
         </Text>
         <Text align="center" color={B.mist} margin="6 0 24 0">

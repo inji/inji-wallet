@@ -133,6 +133,7 @@ export const MdocShareFlow: React.FC<MdocShareFlowProps> = props => {
       visible={props.visible}
       animationType="slide"
       presentationStyle="fullScreen"
+      statusBarTranslucent={true}
       onRequestClose={handleHardwareBack}>
       <StatusBar barStyle={isNavy ? 'light-content' : 'dark-content'} />
       <View

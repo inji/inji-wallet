@@ -3,6 +3,7 @@ import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {Text} from '../ui';
 import {Theme} from '../ui/styleUtils';
+import {TitleLineHeight} from './MdocSharePrimitives';
 const {brand: B} = Theme.Tokens;
 
 /**
@@ -25,7 +26,8 @@ export const MdocSendingStep: React.FC<MdocSendingStepProps> = props => {
         weight="bold"
         size="large"
         align="center"
-        color={B.onNavy}>
+        color={B.onNavy}
+        style={TitleLineHeight.large}>
         {t('mdocShare.sendingTitle', {count: props.count})}
       </Text>
       <Text align="center" color={B.mist} margin="6 0 0 0">

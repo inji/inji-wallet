@@ -15,6 +15,7 @@ import {
   MdocTag,
   ShieldIcon,
   ShrinkWrappedText,
+  TitleLineHeight,
   useElementLabel,
 } from './MdocSharePrimitives';
 import {
@@ -116,8 +117,16 @@ export const MdocConsentStep: React.FC<MdocConsentStepProps> = props => {
         closeTestID="mdocConsentClose"
         right={
           <View style={styles.bleBadge}>
-            <Icon name="bluetooth" type="material" size={12} color={C.ink} />
-            <ShrinkWrappedText size="smaller" weight="bold" color={C.ink}>
+            <Icon
+              name="bluetooth"
+              type="material"
+              size={14}
+              color={C.azureInk}
+            />
+            <ShrinkWrappedText
+              size="smaller"
+              weight="semibold"
+              color={C.azureInk}>
               {t('mdocShare.bleBadge')}
             </ShrinkWrappedText>
           </View>
@@ -137,7 +146,8 @@ export const MdocConsentStep: React.FC<MdocConsentStepProps> = props => {
               weight="bold"
               size="medium"
               color={C.ink}
-              numLines={2}>
+              numLines={2}
+              style={TitleLineHeight.medium}>
               {verifier}
             </Text>
             <Text
@@ -152,7 +162,11 @@ export const MdocConsentStep: React.FC<MdocConsentStepProps> = props => {
           </View>
         </View>
 
-        <Text weight="bold" size="medium" color={C.ink}>
+        <Text
+          weight="bold"
+          size="medium"
+          color={C.ink}
+          style={TitleLineHeight.medium}>
           {t('mdocShare.purposesTitle')}
         </Text>
         <Text size="smaller" color={C.inkMuted} margin="4 0 12 0">
@@ -189,7 +203,11 @@ export const MdocConsentStep: React.FC<MdocConsentStepProps> = props => {
         )}
 
         <View style={styles.detailsHeader}>
-          <Text weight="bold" size="medium" color={C.ink} style={styles.flex}>
+          <Text
+            weight="bold"
+            size="medium"
+            color={C.ink}
+            style={[styles.flex, TitleLineHeight.medium]}>
             {t('mdocShare.detailsTitle')}
           </Text>
           <ShrinkWrappedText
@@ -488,9 +506,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: C.tintAzure,
-    borderRadius: 14,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    borderRadius: 100,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
   },
   verifierCard: {
     flexDirection: 'row',

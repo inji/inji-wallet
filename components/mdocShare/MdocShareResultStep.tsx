@@ -11,6 +11,7 @@ import {
   SectionLabel,
   ShieldIcon,
   ShrinkWrappedText,
+  TitleLineHeight,
   useElementLabel,
 } from './MdocSharePrimitives';
 import {
@@ -304,7 +305,7 @@ const EndedBody: React.FC<BodyProps> = props => {
         align="center"
         color={isDeclined ? C.fail : C.ink}
         margin="20 0 6 0"
-        style={isDeclined && styles.declinedTitle}>
+        style={isDeclined ? styles.declinedTitle : TitleLineHeight.large}>
         {title}
       </Text>
       <Text

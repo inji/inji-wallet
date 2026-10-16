@@ -35,6 +35,15 @@ export const ShrinkWrappedText: React.FC<
   Omit<React.ComponentProps<typeof Text>, 'numLines' | 'ellipsizeMode'>
 > = props => <Text {...props} numLines={1} ellipsizeMode="clip" />;
 
+/**
+ * Line heights for the Text `size` presets. The theme's base style fixes lineHeight at 18,
+ * which clips descenders (g, y, p) once `large` raises the font to 18.
+ */
+export const TitleLineHeight = StyleSheet.create({
+  large: {lineHeight: 24},
+  medium: {lineHeight: 22},
+});
+
 /** Small rounded label, e.g. "Required" or "Will be stored". */
 export const MdocTag: React.FC<{
   label: string;
@@ -70,8 +79,8 @@ export const MdocTag: React.FC<{
 export const MdocShareHeader: React.FC<MdocShareHeaderProps> = props => {
   const dark = props.variant === 'dark';
   return (
-    <View style={styles.header}>
-      <View style={styles.headerSide}>
+    <View style={[styles.header, !dark && styles.headerLight]}>
+      <View style={dark ? styles.headerSide : null}>
         {props.onClose && (
           <Pressable
             {...testIDProps(props.closeTestID ?? 'mdocShareClose')}
@@ -86,7 +95,7 @@ export const MdocShareHeader: React.FC<MdocShareHeaderProps> = props => {
             <Icon
               name="close"
               type="material"
-              size={20}
+              size={dark ? 20 : 22}
               color={dark ? B.onNavy : C.ink}
             />
           </Pressable>
@@ -94,13 +103,16 @@ export const MdocShareHeader: React.FC<MdocShareHeaderProps> = props => {
       </View>
       <Text
         testID={props.titleTestID}
-        weight="semibold"
-        align="center"
+        weight={dark ? 'semibold' : 'bold'}
+        align={dark ? 'center' : 'left'}
         color={dark ? B.onNavy : C.ink}
-        style={styles.headerTitle}>
+        numLines={dark ? undefined : 1}
+        style={[styles.headerTitle, !dark && styles.headerTitleLarge]}>
         {props.title}
       </Text>
-      <View style={[styles.headerSide, styles.headerRight]}>{props.right}</View>
+      <View style={dark ? [styles.headerSide, styles.headerRight] : null}>
+        {props.right}
+      </View>
     </View>
   );
 };
@@ -242,8 +254,20 @@ const styles = StyleSheet.create({
   headerRight: {
     alignItems: 'flex-end',
   },
+  headerLight: {
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    paddingBottom: 16,
+  },
   headerTitle: {
     flex: 1,
+  },
+  /** Spec "display" style: screen titles. */
+  headerTitleLarge: {
+    fontSize: 28,
+    lineHeight: 34,
+    letterSpacing: -0.56,
+    marginHorizontal: 14,
   },
   closeButton: {
     width: 36,
@@ -256,8 +280,13 @@ const styles = StyleSheet.create({
     backgroundColor: B.navyFill,
   },
   closeButtonLight: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     borderWidth: 1,
     borderColor: C.line,
+    backgroundColor: C.card,
+    ...E.ghost,
   },
   button: {
     minHeight: 50,
