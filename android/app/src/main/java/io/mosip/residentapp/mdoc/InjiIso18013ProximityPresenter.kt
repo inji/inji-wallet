@@ -200,17 +200,27 @@ class InjiIso18013ProximityPresenter(
         completePendingConsent(approved = true)
     }
 
+    /**
+     * Parses `[{namespace, element}]` from JS. Null input means no narrowing. Malformed input
+     * yields an empty set, never null, so a bad payload cancels the share instead of disclosing
+     * elements the user did not agree to.
+     */
     private fun parseDisclosedElements(json: String?): Set<Pair<String, String>>? {
         if (json.isNullOrBlank()) {
             return null
         }
-        val array = org.json.JSONArray(json)
-        val agreed = mutableSetOf<Pair<String, String>>()
-        for (i in 0 until array.length()) {
-            val item = array.getJSONObject(i)
-            agreed.add(item.getString("namespace") to item.getString("element"))
+        return try {
+            val array = org.json.JSONArray(json)
+            val agreed = mutableSetOf<Pair<String, String>>()
+            for (i in 0 until array.length()) {
+                val item = array.getJSONObject(i)
+                agreed.add(item.getString("namespace") to item.getString("element"))
+            }
+            agreed
+        } catch (e: org.json.JSONException) {
+            Log.e(TAG, "parseDisclosedElements: malformed disclosedElements JSON, sharing nothing", e)
+            emptySet()
         }
-        return agreed
     }
 
     /**
