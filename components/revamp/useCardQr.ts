@@ -36,7 +36,12 @@ export function useCardQr(
         claim169 && typeof claim169 === 'object'
           ? claim169[Object.keys(claim169)[0]]
           : undefined;
-      if (typeof first === 'string' && first.trim()) return first;
+      if (
+        typeof first === 'string' &&
+        first.trim() &&
+        first.length < MAX_QR_DATA_LENGTH
+      )
+        return first;
       let data = await RNPixelpassModule.generateQRData(
         JSON.stringify(credential.credential),
         '',
