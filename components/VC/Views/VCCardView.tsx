@@ -77,7 +77,13 @@ export const VCCardView: React.FC<VCItemProps> = ({
   }, [isDownloading, controller.credential]);
 
   useEffect(() => {
-    if (!verifiableCredentialData || !verifiableCredentialData.vcMetadata)
+    // Until the stored credential loads its configuration id is unknown, and the lookup
+    // fails on `undefined` before succeeding on the next run.
+    if (
+      !verifiableCredentialData ||
+      !verifiableCredentialData.vcMetadata ||
+      !isVCLoaded(controller.credential as any)
+    )
       return;
     const {
       credentialConfigurationId,
@@ -110,7 +116,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
           );
         });
     }
-  }, [verifiableCredentialData]);
+  }, [verifiableCredentialData, controller.credential]);
 
   if (!isVCLoaded(controller.credential) || !wellknown || !vc) {
     return <VCCardSkeleton />;
