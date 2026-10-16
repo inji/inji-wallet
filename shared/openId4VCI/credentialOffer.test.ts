@@ -17,6 +17,7 @@ const offer = {
 describe('getOfferedCredentialConfigurationIds', () => {
   afterEach(() => {
     (global as any).fetch = undefined;
+    jest.useRealTimers();
   });
 
   it('reads the ids from an inline offer', async () => {
@@ -41,7 +42,37 @@ describe('getOfferedCredentialConfigurationIds', () => {
       'NationalID',
       'DrivingLicence',
     ]);
-    expect(fetchMock).toHaveBeenCalledWith(uri);
+    expect(fetchMock).toHaveBeenCalledWith(uri, {
+      signal: expect.any(AbortSignal),
+    });
+  });
+
+  it('does not fetch an offer link that is not https', async () => {
+    const fetchMock = jest.fn();
+    (global as any).fetch = fetchMock;
+    const qr = `openid-credential-offer://?credential_offer_uri=${encodeURIComponent(
+      'http://issuer.example.com/offers/123',
+    )}`;
+
+    await expect(getOfferedCredentialConfigurationIds(qr)).resolves.toEqual([]);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('gives up on an offer link that does not answer within 5 seconds', async () => {
+    jest.useFakeTimers();
+    (global as any).fetch = jest.fn(
+      (_uri: string, {signal}: {signal: AbortSignal}) =>
+        new Promise((_resolve, reject) =>
+          signal.addEventListener('abort', () => reject(new Error('aborted'))),
+        ),
+    );
+    const qr = `openid-credential-offer://?credential_offer_uri=${encodeURIComponent(
+      'https://issuer.example.com/offers/123',
+    )}`;
+
+    const result = getOfferedCredentialConfigurationIds(qr);
+    jest.advanceTimersByTime(5000);
+    await expect(result).rejects.toThrow('aborted');
   });
 
   it('returns nothing for a QR that is not a credential offer', async () => {

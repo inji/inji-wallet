@@ -20,9 +20,9 @@ export const PillButton: React.FC<PillButtonProps> = props => {
   const isLink = variant === 'link' || variant === 'linkInk';
   return (
     <Pressable
-      {...(props.testID ? testIDProps(props.testID) : {})}
       accessibilityRole="button"
       accessibilityLabel={props.title}
+      {...(props.testID ? testIDProps(props.testID) : {})}
       accessibilityState={{disabled: !!props.disabled, busy: !!props.loading}}
       disabled={props.disabled || props.loading}
       onPress={props.onPress}

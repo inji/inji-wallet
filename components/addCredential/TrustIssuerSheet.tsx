@@ -18,7 +18,10 @@ export const TrustIssuerSheet: React.FC<TrustIssuerSheetProps> = props => {
   const isLoading = props.consentStatus === 'loading';
   const isSuccess = props.consentStatus === 'success';
   const displayName = props.name || t('unknownIssuer');
-  const infoPoints = t('infoPoints', {returnObjects: true}) as string[];
+  const infoPointsValue = t('infoPoints', {returnObjects: true});
+  const infoPoints: string[] = Array.isArray(infoPointsValue)
+    ? infoPointsValue
+    : [];
 
   const onRequestClose = () => {
     if (!isLoading && !isSuccess) {

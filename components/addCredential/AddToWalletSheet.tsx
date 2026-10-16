@@ -60,9 +60,9 @@ export const AddToWalletSheet: React.FC<AddToWalletSheetProps> = props => {
 
 const AddOption: React.FC<AddOptionProps> = props => (
   <Pressable
-    {...testIDProps(props.testID)}
     accessibilityRole="button"
     accessibilityLabel={props.title}
+    {...testIDProps(props.testID)}
     onPress={props.onPress}
     style={({pressed}) => [styles.option, pressed && styles.optionPressed]}>
     <View style={styles.optionIcon}>

@@ -1,9 +1,13 @@
 import type {displayType} from '../../machines/Issuers/IssuersMachine';
 import {getDisplayObjectForCurrentLanguage} from './Utils';
 
+const OFFER_FETCH_TIMEOUT_MS = 5000;
+
 /**
  * The `credential_configuration_ids` of a scanned credential offer. The offer is either inline
- * (`credential_offer=`) or by reference (`credential_offer_uri=`), which is fetched.
+ * (`credential_offer=`) or by reference (`credential_offer_uri=`), which is fetched again here
+ * because the VCI library does not pass the ids to the trust callback. Only https links are
+ * fetched, with a timeout; an issuer that allows a link to be used once makes this fetch fail.
  */
 export async function getOfferedCredentialConfigurationIds(
   offer: string,
@@ -13,8 +17,19 @@ export async function getOfferedCredentialConfigurationIds(
   if (params.credential_offer) {
     offerObject = JSON.parse(params.credential_offer);
   } else if (params.credential_offer_uri) {
-    const response = await fetch(params.credential_offer_uri);
-    offerObject = await response.json();
+    if (!params.credential_offer_uri.startsWith('https://')) {
+      return [];
+    }
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), OFFER_FETCH_TIMEOUT_MS);
+    try {
+      const response = await fetch(params.credential_offer_uri, {
+        signal: controller.signal,
+      });
+      offerObject = await response.json();
+    } finally {
+      clearTimeout(timer);
+    }
   } else {
     return [];
   }

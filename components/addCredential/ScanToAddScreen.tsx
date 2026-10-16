@@ -170,9 +170,9 @@ const RoundIconButton: React.FC<{
   onPress: () => void;
 }> = props => (
   <Pressable
-    {...testIDProps(props.testID)}
     accessibilityRole="button"
     accessibilityLabel={props.accessibilityLabel}
+    {...testIDProps(props.testID)}
     hitSlop={8}
     onPress={props.onPress}
     style={({pressed}) => [
