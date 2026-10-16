@@ -13,6 +13,7 @@ import {
 import {Icon} from 'react-native-elements';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {format} from 'date-fns';
+import * as DateFnsLocale from 'date-fns/locale';
 import {Theme} from '../../components/ui/styleUtils';
 import {
   getCredentialType,
@@ -38,7 +39,7 @@ export const ShareSuccessScreen: React.FC<ShareSuccessScreenProps> = ({
   goToHome,
   goToHistory,
 }) => {
-  const {t} = useTranslation('ScanScreen');
+  const {t, i18n} = useTranslation('ScanScreen');
   const insets = useSafeAreaInsets();
   // The time the share finished, not the time this screen re-renders.
   const sharedAt = useMemo(() => new Date(), [isVisible]);
@@ -128,7 +129,11 @@ export const ShareSuccessScreen: React.FC<ShareSuccessScreenProps> = ({
             ))}
             <SummaryRow
               label={t('shareSuccess.date')}
-              value={format(sharedAt, 'dd MMM yyyy, h:mm a')}
+              // Month names and the time format follow the app language; `p` is the
+              // locale's short time. There is no `en` export, so English uses the default.
+              value={format(sharedAt, 'dd MMM yyyy, p', {
+                locale: DateFnsLocale[i18n.language],
+              })}
               isLast
             />
           </View>
