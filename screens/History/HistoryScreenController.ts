@@ -117,7 +117,14 @@ export function useNotificationReadState(activities: ActivityLike[]) {
       .then(([storedLastReadAt, storedReadIds]) => {
         if (cancelled) return;
         setReadIds(new Set(parseReadIds(storedReadIds)));
-        setLastReadAt(Number(storedLastReadAt) || 0);
+        if (storedLastReadAt == null) {
+          // First run with this feature: treat existing history as already seen.
+          const now = Date.now();
+          saveReadState(ACTIVITY_LOG_LAST_READ_STORE_KEY, String(now));
+          setLastReadAt(now);
+        } else {
+          setLastReadAt(Number(storedLastReadAt) || 0);
+        }
       })
       .catch(() => !cancelled && setLastReadAt(0));
     return () => {
