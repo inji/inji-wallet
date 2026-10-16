@@ -124,6 +124,7 @@ export const VPShareCredentialCard: React.FC<VPShareCredentialCardProps> = ({
       {selected && disclosedKeys.length > 0 && onDisclosuresChange && (
         <SdJwtDisclosurePicker
           disclosedKeys={disclosedKeys}
+          selectedDisclosures={selectedDisclosures}
           onDisclosuresChange={onDisclosuresChange}
         />
       )}

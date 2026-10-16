@@ -20,11 +20,14 @@ interface DisclosureTreeNode {
  */
 export const SdJwtDisclosurePicker: React.FC<SdJwtDisclosurePickerProps> = ({
   disclosedKeys,
+  selectedDisclosures = [],
   onDisclosuresChange,
 }) => {
   const {t} = useTranslation('SendVPScreen');
+  // The picker unmounts when its card is deselected, so it starts from the parent's picks
+  // to keep showing what will actually be shared.
   const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>(
-    {},
+    () => Object.fromEntries(selectedDisclosures.map(key => [key, true])),
   );
   const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>(
     {},
@@ -166,5 +169,6 @@ function buildDisclosureTree(paths: string[]): DisclosureTree {
 
 interface SdJwtDisclosurePickerProps {
   disclosedKeys: string[];
+  selectedDisclosures?: string[];
   onDisclosuresChange: (disclosures: string[]) => void;
 }
