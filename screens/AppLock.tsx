@@ -1,6 +1,7 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Modal, Pressable, StyleSheet, View} from 'react-native';
+import {initialWindowMetrics} from 'react-native-safe-area-context';
 import {useSelector} from '@xstate/react';
 import * as LocalAuthentication from 'expo-local-authentication';
 import RNFingerprintChange from 'react-native-biometrics-changed';
@@ -11,6 +12,7 @@ import {
   selectPasscodeSalt,
 } from '../machines/auth';
 import {selectBiometricUnlockEnabled} from '../machines/settings';
+import {APP_EVENTS, selectIsBiometricCancelled} from '../machines/app';
 import {PasscodeVerify} from '../components/PasscodeVerify';
 import {ScaledText} from '../components/revamp/ScaledText';
 import {fonts, radii} from '../components/revamp/tokens';
@@ -21,12 +23,68 @@ import InjiHomeLogo from '../assets/InjiHomeLogo.svg';
 
 /**
  * Covers the app after auto-lock until the holder unlocks it, leaving every screen beneath as it
- * was, so unlocking returns them to where they left off.
+ * was, so unlocking returns them to where they left off. Also covers it while the wallet's storage
+ * waits for a fingerprint the holder cancelled.
  */
-export const AppLock: React.FC = () => {
+export const AppLock: React.FC<{isAuthorized: boolean}> = ({isAuthorized}) => {
   const [locked, unlock] = useAutoLock();
-  if (!locked) return null;
+  const {appService} = useContext(GlobalContext);
+  const storageLocked = useSelector(appService, selectIsBiometricCancelled);
+  const storeService = appService.getSnapshot().context.serviceRefs.store;
+  const storeReady = useSelector(storeService, state => state.matches('ready'));
+
+  // The fingerprint that opens the storage also counts for auto-lock.
+  const retrying = useRef(false);
+  useEffect(() => {
+    if (retrying.current && storeReady) {
+      retrying.current = false;
+      unlock();
+    }
+  }, [storeReady]);
+
+  if (storageLocked)
+    return (
+      <StorageLockScreen
+        onRetry={() => {
+          retrying.current = true;
+          appService.send(APP_EVENTS.RETRY_BIOMETRIC());
+        }}
+      />
+    );
+  if (!locked || !isAuthorized) return null;
   return <LockScreen onUnlock={unlock} />;
+};
+
+const StorageLockScreen: React.FC<{onRetry: () => void}> = ({onRetry}) => {
+  const biometricT = useTranslation('BiometricScreen').t;
+  const {c} = useRevampTheme();
+  return (
+    <Modal
+      visible
+      animationType="none"
+      statusBarTranslucent
+      onRequestClose={() => undefined}>
+      <View
+        style={[
+          styles.screen,
+          {
+            backgroundColor: c.canvas,
+            paddingTop: (initialWindowMetrics?.insets.top ?? 0) + 64,
+          },
+        ]}>
+        <InjiHomeLogo width={72} height={72} />
+        <Pressable
+          testID="storageUnlockBiometrics"
+          accessibilityRole="button"
+          onPress={onRetry}
+          style={[styles.button, {backgroundColor: c.primary}]}>
+          <ScaledText style={[styles.buttonText, {color: c.onPrimary}]}>
+            {biometricT('unlock')}
+          </ScaledText>
+        </Pressable>
+      </View>
+    </Modal>
+  );
 };
 
 const LockScreen: React.FC<{onUnlock: () => void}> = ({onUnlock}) => {
@@ -45,6 +103,8 @@ const LockScreen: React.FC<{onUnlock: () => void}> = ({onUnlock}) => {
   );
   const [canUseBiometrics, setCanUseBiometrics] = useState(false);
   const [error, setError] = useState('');
+  // Mounted once the page is up, so the PIN box can take focus and open the keyboard.
+  const [shown, setShown] = useState(false);
 
   const askBiometrics = async () => {
     if (isAndroid()) await LocalAuthentication.cancelAuthenticate();
@@ -72,10 +132,18 @@ const LockScreen: React.FC<{onUnlock: () => void}> = ({onUnlock}) => {
       visible
       animationType="none"
       statusBarTranslucent
+      onShow={() => setShown(true)}
       onRequestClose={() => undefined}>
-      <View style={[styles.screen, {backgroundColor: c.canvas}]}>
-        <InjiHomeLogo width={96} height={96} />
-        {passcode ? (
+      <View
+        style={[
+          styles.screen,
+          {
+            backgroundColor: c.canvas,
+            paddingTop: (initialWindowMetrics?.insets.top ?? 0) + 64,
+          },
+        ]}>
+        <InjiHomeLogo width={72} height={72} />
+        {passcode && shown ? (
           <View style={styles.pin}>
             <ScaledText style={[styles.prompt, {color: c.ink}]}>
               {passcodeT('enterPasscode')}
@@ -114,9 +182,8 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     paddingHorizontal: 24,
-    gap: 40,
+    gap: 32,
   },
   pin: {alignSelf: 'stretch', alignItems: 'center', gap: 32},
   prompt: {

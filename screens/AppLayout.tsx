@@ -38,7 +38,7 @@ export const AppLayout: React.FC = () => {
           {controller.isAuthorized &&
             authRoutes.map(route => <Screen key={route.name} {...route} />)}
         </Navigator>
-        {controller.isAuthorized && <AppLock />}
+        <AppLock isAuthorized={controller.isAuthorized} />
       </NavigationContainer>
     </GestureHandlerRootView>
   );

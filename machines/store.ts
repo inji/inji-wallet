@@ -16,6 +16,7 @@ import {
   SETTINGS_STORE_KEY,
   SHOW_FACE_AUTH_CONSENT_SHARE_FLOW,
   ENOENT,
+  BIOMETRIC_CANCELLED,
 } from '../shared/constants';
 import {NativeModules} from 'react-native';
 import {
@@ -35,7 +36,7 @@ import {
 } from '../shared/telemetry/TelemetryUtils';
 import {Buffer} from 'buffer';
 import {VC} from './VerifiableCredential/VCMetaMachine/vc';
-import { isVCStorageInitialised } from '../shared/fileStorage';
+import {isVCStorageInitialised} from '../shared/fileStorage';
 
 export const keyinvalidatedString =
   'Key Invalidated due to biometric enrollment';
@@ -59,6 +60,7 @@ const model = createModel(
       DECRYPT_ERROR: () => ({}),
       KEY_INVALIDATE_ERROR: () => ({}),
       BIOMETRIC_CANCELLED: (requester?: string) => ({requester}),
+      RETRY_BIOMETRIC: () => ({}),
       SET: (key: string, value: unknown) => ({key, value}),
       APPEND: (key: string, value: unknown) => ({key, value}),
       PREPEND: (key: string, value: unknown) => ({key, value}),
@@ -213,6 +215,13 @@ export const storeMachine =
             ],
           },
         },
+        // Waits for the holder to ask again, instead of checking the key at once, which brought the
+        // fingerprint prompt straight back.
+        biometricCancelled: {
+          on: {
+            RETRY_BIOMETRIC: 'checkEncryptionKey',
+          },
+        },
         ready: {
           entry: 'notifyParent',
           invoke: {
@@ -285,7 +294,7 @@ export const storeMachine =
                 sendUpdate(),
                 sendParent('BIOMETRIC_CANCELLED'),
               ],
-              target: 'checkFreshInstall',
+              target: 'biometricCancelled',
             },
           },
         },
@@ -314,7 +323,7 @@ export const storeMachine =
         },
         BIOMETRIC_CANCELLED: {
           actions: [sendParent('BIOMETRIC_CANCELLED')],
-          target: 'checkFreshInstall',
+          target: 'biometricCancelled',
         },
       },
     },
@@ -383,8 +392,14 @@ export const storeMachine =
                 base64EncodedString,
               );
             } catch (e) {
-              if (e instanceof BiometricCancellationError) {
+              // The keystore's own error isn't wrapped as a BiometricCancellationError, so match its
+              // message too. A cancel waits for a retry rather than reporting the store ready.
+              if (
+                e instanceof BiometricCancellationError ||
+                String(e).includes(BIOMETRIC_CANCELLED)
+              ) {
                 callback(model.events.BIOMETRIC_CANCELLED(event.requester));
+                return;
               }
               sendErrorEvent(getErrorEventData('ENCRYPTION', '', e));
 

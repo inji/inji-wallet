@@ -260,7 +260,7 @@ fileignoreconfig:
   - filename: machines/IssuersMachine.typegen.ts
     checksum: 959fef1e51f0f3d5b12933f7b362e96401fb776ab12f0d13c6e542918b2ff255
   - filename: machines/store.typegen.ts
-    checksum: 077a1906c908daf79544f604632df36f3359075a7bc912e51ab5707cb178bf48
+    checksum: 9b13ba2980b45b5880b7a63e79bba294695803c20ce6ddc1a29fd6d617e2d195
   - filename: machines/VerifiableCredential/VCMetaMachine/VCMetaMachine.ts
     checksum: 36244323200d1e965adb48205d359fba807a5a153f2fc3ce75fe34e8b1bdb01a
   - filename: machines/Issuers/IssuersMachine.ts
@@ -316,7 +316,7 @@ fileignoreconfig:
   - filename: injitest/src/test/java/iosTestCases/VerifyHistoryTest.java
     checksum: 8a00278af4c8744c713c57328991bbca438eb5d5d89b492a7f5234c47362f44b
   - filename: machines/store.ts
-    checksum: 3fd2db0c41f8bd5f30ef922b856549cb5423997b2123c5364e643e47e5efd3cf
+    checksum: 9f28cd62d5352a25689774ea95917ebb10f8bf7b30fdc364622ae85acd7beca6
   - filename: components/BannerNotificationContainer.tsx
     checksum: 9e5b4a61b87e86666f0bee550d410df2b8576dfe5ec374de0ab139a468a234f7
   - filename: injitest/src/test/java/iosTestCases/PinVcTest.java
