@@ -35,11 +35,15 @@ export const ChangePin: React.FC<{
   const [error, setError] = useState('');
   // Remounts the new-PIN boxes, which clears them.
   const [attempt, setAttempt] = useState(0);
+  // The PIN boxes focus themselves when they mount, so they mount once the page is up and the
+  // keyboard opens with it.
+  const [shown, setShown] = useState(false);
 
   const close = (changed: boolean) => {
     setStep('current');
     setNewPasscode('');
     setError('');
+    setShown(false);
     onDone(changed);
   };
 
@@ -56,12 +60,13 @@ export const ChangePin: React.FC<{
       isVisible={isVisible}
       headerTitle={t('changePin')}
       arrowLeft={true}
+      onShow={() => setShown(true)}
       onDismiss={() => close(false)}>
       <View style={styles.body}>
         <ScaledText style={[styles.prompt, {color: c.ink}]}>
           {prompt}
         </ScaledText>
-        {step === 'current' && (
+        {shown && step === 'current' && (
           <PasscodeVerify
             key="current"
             testID="currentPin"
@@ -74,7 +79,7 @@ export const ChangePin: React.FC<{
             onError={setError}
           />
         )}
-        {step === 'new' && (
+        {shown && step === 'new' && (
           <PinInput
             key={'new' + attempt}
             testID="newPin"
@@ -98,7 +103,7 @@ export const ChangePin: React.FC<{
             }}
           />
         )}
-        {step === 'confirm' && (
+        {shown && step === 'confirm' && (
           <PasscodeVerify
             key="confirm"
             testID="confirmNewPin"

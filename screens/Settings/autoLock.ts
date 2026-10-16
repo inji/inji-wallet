@@ -6,7 +6,8 @@ const AUTO_LOCK_KEY = 'settings.autoLockMinutes';
 
 /** Minutes in the background before the wallet locks; 0 means never. */
 export const AUTO_LOCK_OPTIONS = [1, 5, 15, 0];
-const DEFAULT_MINUTES = 1;
+/** Off until the holder turns it on, so nobody is locked out by an update. */
+const DEFAULT_MINUTES = 0;
 
 export function readAutoLockMinutes(): number {
   const stored = MMKV.getInt(AUTO_LOCK_KEY);

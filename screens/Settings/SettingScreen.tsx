@@ -36,6 +36,8 @@ import * as LocalAuthentication from 'expo-local-authentication';
 /** Rows for features that are designed but not built yet; switch on when they are. */
 const SHOW_CONNECTED_VERIFIERS = false;
 const SHOW_APPEARANCE = false;
+/** Help and Privacy show placeholder text until their real content exists. */
+const SHOW_HELP_AND_PRIVACY = false;
 
 export const SettingScreen: React.FC<
   SettingProps & RootRouteProps & RequestRouteProps
@@ -116,6 +118,8 @@ export const SettingScreen: React.FC<
             isVisible={notice !== ''}
             onBackdropPress={() => setNotice('')}
             title={notice}
+            buttonText="ok"
+            onButtonPress={() => setNotice('')}
           />
           <MessageOverlay
             isVisible={controller.alertMsg != ''}
@@ -239,18 +243,22 @@ export const SettingScreen: React.FC<
           </SettingsSection>
 
           <SettingsSection title={t('support')}>
-            <SettingsRow
-              testID="helpAndSupport"
-              icon={settingsIcons.tour}
-              label={t('helpAndSupport')}
-              onPress={() => setPage('help')}
-            />
-            <SettingsRow
-              testID="privacyPolicy"
-              icon={settingsIcons.document}
-              label={t('privacyPolicy')}
-              onPress={() => setPage('privacy')}
-            />
+            {SHOW_HELP_AND_PRIVACY && (
+              <SettingsRow
+                testID="helpAndSupport"
+                icon={settingsIcons.tour}
+                label={t('helpAndSupport')}
+                onPress={() => setPage('help')}
+              />
+            )}
+            {SHOW_HELP_AND_PRIVACY && (
+              <SettingsRow
+                testID="privacyPolicy"
+                icon={settingsIcons.document}
+                label={t('privacyPolicy')}
+                onPress={() => setPage('privacy')}
+              />
+            )}
             <AboutInji
               appId={controller.appId}
               renderTrigger={open => (

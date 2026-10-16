@@ -10,10 +10,10 @@ describe('auto-lock', () => {
     delete stored['settings.autoLockMinutes'];
   });
 
-  it('defaults to one minute, also for an unknown stored value', () => {
-    expect(readAutoLockMinutes()).toBe(1);
+  it('defaults to never, also for an unknown stored value', () => {
+    expect(readAutoLockMinutes()).toBe(0);
     stored['settings.autoLockMinutes'] = 7;
-    expect(readAutoLockMinutes()).toBe(1);
+    expect(readAutoLockMinutes()).toBe(0);
   });
 
   it('reads a chosen value', () => {

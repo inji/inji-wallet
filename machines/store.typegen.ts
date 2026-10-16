@@ -52,16 +52,47 @@ export interface Typegen0 {
       | 'RESTORE_BACKUP'
       | 'SET'
       | 'UPDATE';
+    holdFailedRequest: 'BIOMETRIC_CANCELLED';
+    holdIncomingRequest:
+      | 'APPEND'
+      | 'CLEAR'
+      | 'EXPORT'
+      | 'FETCH_ALL_WELLKNOWN_CONFIG'
+      | 'GET'
+      | 'GET_VCS_DATA'
+      | 'PREPEND'
+      | 'REMOVE'
+      | 'REMOVE_ITEMS'
+      | 'REMOVE_VC_METADATA'
+      | 'RESTORE_BACKUP'
+      | 'SET'
+      | 'UPDATE';
     notifyParent:
       | 'KEY_RECEIVED'
       | 'READY'
       | 'done.invoke.store.resettingStorage:invocation[0]';
+    releaseHeldAfterReplay: 'STORE_ERROR' | 'STORE_RESPONSE';
+    replayHeldRequests: 'RETRY_BIOMETRIC';
     setEncryptionKey: 'KEY_RECEIVED';
   };
   eventsCausingDelays: {};
   eventsCausingGuards: {
     hasData: 'done.invoke.store.checkFreshInstall:invocation[0]';
     isCustomSecureKeystore: 'KEY_RECEIVED';
+    isHolding:
+      | 'APPEND'
+      | 'CLEAR'
+      | 'EXPORT'
+      | 'FETCH_ALL_WELLKNOWN_CONFIG'
+      | 'GET'
+      | 'GET_VCS_DATA'
+      | 'PREPEND'
+      | 'REMOVE'
+      | 'REMOVE_ITEMS'
+      | 'REMOVE_VC_METADATA'
+      | 'RESTORE_BACKUP'
+      | 'SET'
+      | 'UPDATE';
   };
   eventsCausingServices: {
     checkFreshInstall: 'BIOMETRIC_CANCELLED' | 'xstate.init';
@@ -70,7 +101,7 @@ export interface Typegen0 {
     clearKeys: 'done.invoke.store.checkFreshInstall:invocation[0]';
     generateEncryptionKey: 'ERROR' | 'IGNORE' | 'READY';
     getEncryptionKey: 'TRY_AGAIN';
-    hasEncryptionKey: never;
+    hasEncryptionKey: 'RETRY_BIOMETRIC';
     store:
       | 'KEY_RECEIVED'
       | 'READY'

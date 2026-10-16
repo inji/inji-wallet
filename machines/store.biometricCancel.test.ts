@@ -1,4 +1,4 @@
-import {createMachine, interpret} from 'xstate';
+import {createMachine, interpret, send} from 'xstate';
 
 // The shared jest setup replaces the store with a stub; this test needs the real machine.
 jest.unmock('./store');
@@ -66,6 +66,66 @@ describe('store: cancelled fingerprint', () => {
     await tick();
     expect(keyChecks).toBe(2);
     expect(service.getSnapshot().matches('ready')).toBe(true);
+    parent.stop();
+  });
+
+  it('keeps requests while waiting and replays them on retry', async () => {
+    let calls = 0;
+    const machine = storeMachine.withConfig({
+      services: {
+        checkFreshInstall: () => Promise.resolve('data'),
+        hasEncryptionKey: () => callback => {
+          setTimeout(() => callback(StoreEvents.READY()), 0);
+        },
+        // The first storage call is cancelled at the fingerprint prompt; later ones go through.
+        store: () => (callback, onReceive) => {
+          onReceive((event: any) => {
+            calls++;
+            const answer =
+              calls === 1
+                ? StoreEvents.BIOMETRIC_CANCELLED(event.requester, event)
+                : StoreEvents.STORE_RESPONSE('value', event.requester);
+            setTimeout(() => callback(answer), 0);
+          });
+        },
+      },
+    });
+    const seen: string[] = [];
+    const parent = interpret(
+      createMachine({
+        predictableActionArguments: true,
+        invoke: {id: 'store', src: machine},
+        on: {
+          ASK: {actions: send((_, e: any) => e.request, {to: 'store'})},
+          '*': {actions: (_, e) => seen.push(e.type)},
+        },
+      }),
+    ).start();
+    const store = parent.children.get('store') as any;
+    const ask = (request: unknown) => parent.send({type: 'ASK', request});
+
+    await tick();
+    await tick();
+    expect(store.getSnapshot().matches('ready')).toBe(true);
+
+    ask(StoreEvents.SET('auth', {passcode: 'new'}));
+    await tick();
+    expect(seen).toContain('BIOMETRIC_CANCELLED');
+    expect(store.getSnapshot().context.held).toHaveLength(1);
+
+    // Asked for while waiting: kept, not run, so no second prompt.
+    ask(StoreEvents.GET('auth'));
+    await tick();
+    expect(calls).toBe(1);
+    expect(store.getSnapshot().context.held).toHaveLength(2);
+
+    store.send(StoreEvents.RETRY_BIOMETRIC());
+    await tick();
+    await tick();
+    expect(calls).toBe(3);
+    expect(seen.filter(type => type === 'STORE_RESPONSE')).toHaveLength(2);
+    expect(store.getSnapshot().context.held).toHaveLength(0);
+    expect(store.getSnapshot().context.isHolding).toBe(false);
     parent.stop();
   });
 });

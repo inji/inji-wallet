@@ -112,7 +112,7 @@ fileignoreconfig:
   - filename: screens/Settings/BackupController.tsx
     checksum: 4a031b46646aa982c8f40e4c7fe0bd3e05a76a6af1ff1c2de7350ba6ebf9a839
   - filename: machines/settings.typegen.ts
-    checksum: c10bead6d0cc0cd8f7539d12cfecd6cd24770ed9b55a9a7c55fda8883a677d52
+    checksum: 80d6bbcbfa76136a47e39ae944d952ad48c1c851b1ba1a6c8f6ad463b95267c5
   - filename: .github/workflows/ui-automation.yml
     checksum: 85993a912fb873a3a2a11adde702918aedff56494e6d45c2d70f272497bf9a27
   - filename: injitest/src/test/java/androidTestCases/PinVcTest.java
@@ -260,7 +260,7 @@ fileignoreconfig:
   - filename: machines/IssuersMachine.typegen.ts
     checksum: 959fef1e51f0f3d5b12933f7b362e96401fb776ab12f0d13c6e542918b2ff255
   - filename: machines/store.typegen.ts
-    checksum: 9b13ba2980b45b5880b7a63e79bba294695803c20ce6ddc1a29fd6d617e2d195
+    checksum: 12027027312ed95ff9641c356500df26b8e08e6e0936fd2286f3e88d428b1860
   - filename: machines/VerifiableCredential/VCMetaMachine/VCMetaMachine.ts
     checksum: 36244323200d1e965adb48205d359fba807a5a153f2fc3ce75fe34e8b1bdb01a
   - filename: machines/Issuers/IssuersMachine.ts
@@ -479,6 +479,6 @@ fileignoreconfig:
   - filename: screens/Settings/autoLock.test.ts
     checksum: f95ca299f705fbfad765205a9fe42f09358a730da38fb59debb98e2e62a14c58
   - filename: machines/store.biometricCancel.test.ts
-    checksum: e49d17348fa50fa1fae67f185e5706a40f9d66d3c1f96219c6d99e05ec2329c2
+    checksum: f51089bc5c13f3ae4b83c4e972a545105b73e13a79dd0811eb99161e599f6b38
     version: "1.0"
 

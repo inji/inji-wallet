@@ -8,7 +8,7 @@ import {
   StateFrom,
 } from 'xstate';
 import {createModel} from 'xstate/lib/model';
-import {choose, log} from 'xstate/lib/actions';
+import {choose, log, pure} from 'xstate/lib/actions';
 import {
   isIOS,
   MY_VCS_STORE_KEY,
@@ -46,6 +46,10 @@ const {RNSecureKeystoreModule} = NativeModules;
 const model = createModel(
   {
     encryptionKey: '',
+    /** Requests kept while the storage waits for a cancelled fingerprint; replayed on retry. */
+    held: [] as unknown[],
+    isHolding: false,
+    isReplaying: false,
   },
   {
     events: {
@@ -59,7 +63,10 @@ const model = createModel(
       RESTORE_BACKUP: (data: {}) => ({data}),
       DECRYPT_ERROR: () => ({}),
       KEY_INVALIDATE_ERROR: () => ({}),
-      BIOMETRIC_CANCELLED: (requester?: string) => ({requester}),
+      BIOMETRIC_CANCELLED: (requester?: string, request?: unknown) => ({
+        requester,
+        request,
+      }),
       RETRY_BIOMETRIC: () => ({}),
       SET: (key: string, value: unknown) => ({key, value}),
       APPEND: (key: string, value: unknown) => ({key, value}),
@@ -229,45 +236,63 @@ export const storeMachine =
             id: '_store',
           },
           on: {
-            GET: {
-              actions: 'forwardStoreRequest',
+            // Runs the kept requests again; the first asks for the fingerprint, which opens the
+            // key for the rest.
+            RETRY_BIOMETRIC: {
+              actions: 'replayHeldRequests',
             },
-            GET_VCS_DATA: {
-              actions: 'forwardStoreRequest',
-            },
-            EXPORT: {
-              actions: 'forwardStoreRequest',
-            },
-            RESTORE_BACKUP: {
-              actions: 'forwardStoreRequest',
-            },
-            SET: {
-              actions: 'forwardStoreRequest',
-            },
-            APPEND: {
-              actions: 'forwardStoreRequest',
-            },
-            PREPEND: {
-              actions: 'forwardStoreRequest',
-            },
-            UPDATE: {
-              actions: 'forwardStoreRequest',
-            },
-            REMOVE: {
-              actions: 'forwardStoreRequest',
-            },
-            REMOVE_VC_METADATA: {
-              actions: 'forwardStoreRequest',
-            },
-            REMOVE_ITEMS: {
-              actions: 'forwardStoreRequest',
-            },
-            CLEAR: {
-              actions: 'forwardStoreRequest',
-            },
-            FETCH_ALL_WELLKNOWN_CONFIG: {
-              actions: 'forwardStoreRequest',
-            },
+            GET: [
+              {cond: 'isHolding', actions: 'holdIncomingRequest'},
+              {actions: 'forwardStoreRequest'},
+            ],
+            GET_VCS_DATA: [
+              {cond: 'isHolding', actions: 'holdIncomingRequest'},
+              {actions: 'forwardStoreRequest'},
+            ],
+            EXPORT: [
+              {cond: 'isHolding', actions: 'holdIncomingRequest'},
+              {actions: 'forwardStoreRequest'},
+            ],
+            RESTORE_BACKUP: [
+              {cond: 'isHolding', actions: 'holdIncomingRequest'},
+              {actions: 'forwardStoreRequest'},
+            ],
+            SET: [
+              {cond: 'isHolding', actions: 'holdIncomingRequest'},
+              {actions: 'forwardStoreRequest'},
+            ],
+            APPEND: [
+              {cond: 'isHolding', actions: 'holdIncomingRequest'},
+              {actions: 'forwardStoreRequest'},
+            ],
+            PREPEND: [
+              {cond: 'isHolding', actions: 'holdIncomingRequest'},
+              {actions: 'forwardStoreRequest'},
+            ],
+            UPDATE: [
+              {cond: 'isHolding', actions: 'holdIncomingRequest'},
+              {actions: 'forwardStoreRequest'},
+            ],
+            REMOVE: [
+              {cond: 'isHolding', actions: 'holdIncomingRequest'},
+              {actions: 'forwardStoreRequest'},
+            ],
+            REMOVE_VC_METADATA: [
+              {cond: 'isHolding', actions: 'holdIncomingRequest'},
+              {actions: 'forwardStoreRequest'},
+            ],
+            REMOVE_ITEMS: [
+              {cond: 'isHolding', actions: 'holdIncomingRequest'},
+              {actions: 'forwardStoreRequest'},
+            ],
+            CLEAR: [
+              {cond: 'isHolding', actions: 'holdIncomingRequest'},
+              {actions: 'forwardStoreRequest'},
+            ],
+            FETCH_ALL_WELLKNOWN_CONFIG: [
+              {cond: 'isHolding', actions: 'holdIncomingRequest'},
+              {actions: 'forwardStoreRequest'},
+            ],
             STORE_RESPONSE: {
               actions: [
                 send(
@@ -277,24 +302,20 @@ export const storeMachine =
                   },
                 ),
                 sendUpdate(),
+                'releaseHeldAfterReplay',
               ],
             },
             DECRYPT_ERROR: {
               actions: sendParent('DECRYPT_ERROR'),
             },
+            // The request waits with the others until the holder retries, so its sender gets an
+            // answer late rather than a cancel (sign-in restarted itself on a cancel).
             BIOMETRIC_CANCELLED: {
               actions: [
-                send(
-                  (_, event) =>
-                    model.events.BIOMETRIC_CANCELLED(event.requester),
-                  {
-                    to: (_, event) => event.requester,
-                  },
-                ),
+                'holdFailedRequest',
                 sendUpdate(),
                 sendParent('BIOMETRIC_CANCELLED'),
               ],
-              target: 'biometricCancelled',
             },
           },
         },
@@ -306,17 +327,21 @@ export const storeMachine =
           // sending to an undefined target there throws inside the interpreter, which was
           // silently respawning this whole machine in a tight infinite loop (visible as the
           // app hanging forever on the splash screen).
-          actions: choose([
-            {
-              cond: (_, event) => !!event.requester,
-              actions: [
-                send((_, event) => model.events.STORE_ERROR(event.error), {
-                  to: (_, event) => event.requester,
-                }),
-                sendUpdate(),
-              ],
-            },
-          ]),
+          actions: [
+            choose([
+              {
+                cond: (_, event) => !!event.requester,
+                actions: [
+                  send((_, event) => model.events.STORE_ERROR(event.error), {
+                    to: (_, event) => event.requester,
+                  }),
+                  sendUpdate(),
+                ],
+              },
+            ]),
+            // A replayed request that fails for another reason still means the key opened.
+            'releaseHeldAfterReplay',
+          ],
         },
         KEY_INVALIDATE_ERROR: {
           actions: sendParent('KEY_INVALIDATE_ERROR'),
@@ -330,6 +355,48 @@ export const storeMachine =
     {
       actions: {
         notifyParent: sendParent(model.events.READY()),
+
+        holdIncomingRequest: model.assign({
+          held: (context, event, meta) => [
+            ...context.held,
+            {...event, requester: meta._event.origin},
+          ],
+        }),
+
+        // The failed request goes first, so a retry repeats it before anything newer.
+        holdFailedRequest: model.assign({
+          held: (context, event) =>
+            event.request ? [event.request, ...context.held] : context.held,
+          isHolding: true,
+          isReplaying: false,
+        }),
+
+        // Only the first request runs, so a second cancel brings up one prompt, not one per
+        // request; the rest follow once it gets through.
+        replayHeldRequests: pure(context => {
+          const [first, ...rest] = context.held;
+          if (!first)
+            return [
+              model.assign({isHolding: false}),
+              sendParent(model.events.READY()),
+            ];
+          return [
+            send(first as ForwardedEvent, {to: '_store'}),
+            model.assign({held: rest, isReplaying: true}),
+          ];
+        }),
+
+        releaseHeldAfterReplay: pure(context =>
+          context.isReplaying
+            ? [
+                ...context.held.map(request =>
+                  send(request as ForwardedEvent, {to: '_store'}),
+                ),
+                model.assign({held: [], isHolding: false, isReplaying: false}),
+                sendParent(model.events.READY()),
+              ]
+            : [],
+        ),
 
         forwardStoreRequest: send(
           (_, event, meta) => ({
@@ -565,7 +632,9 @@ export const storeMachine =
                 callback(model.events.DECRYPT_ERROR());
                 sendUpdate();
               } else if (e instanceof BiometricCancellationError) {
-                callback(model.events.BIOMETRIC_CANCELLED(event.requester));
+                callback(
+                  model.events.BIOMETRIC_CANCELLED(event.requester, event),
+                );
                 sendUpdate();
               } else {
                 console.error(
@@ -619,6 +688,7 @@ export const storeMachine =
       },
 
       guards: {
+        isHolding: context => context.isHolding,
         hasData: (_, event: any) => {
           return event.data !== null;
         },

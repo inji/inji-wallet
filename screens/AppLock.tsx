@@ -30,17 +30,14 @@ export const AppLock: React.FC<{isAuthorized: boolean}> = ({isAuthorized}) => {
   const [locked, unlock] = useAutoLock();
   const {appService} = useContext(GlobalContext);
   const storageLocked = useSelector(appService, selectIsBiometricCancelled);
-  const storeService = appService.getSnapshot().context.serviceRefs.store;
-  const storeReady = useSelector(storeService, state => state.matches('ready'));
-
   // The fingerprint that opens the storage also counts for auto-lock.
   const retrying = useRef(false);
   useEffect(() => {
-    if (retrying.current && storeReady) {
+    if (retrying.current && !storageLocked) {
       retrying.current = false;
       unlock();
     }
-  }, [storeReady]);
+  }, [storageLocked]);
 
   if (storageLocked)
     return (
