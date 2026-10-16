@@ -23,7 +23,7 @@ export function useVcCardData(vcMetadata: VCMetadata, isDownloading = false) {
 
   useEffect(() => {
     async function loadVc() {
-      if (!isDownloading) {
+      if (!isDownloading && isVCLoaded(controller.credential as any)) {
         const processedData = await VCProcessor.processForRendering(
           controller.credential,
           controller.verifiableCredentialData.format,
