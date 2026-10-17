@@ -2,6 +2,7 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {UseCopilotTooltip} from './CopilotTooltipController';
+import testIDProps from '../shared/commonUtil';
 import {ArrowRightIcon} from './revamp/Icons';
 import {useRevampTheme} from './revamp/useRevampTheme';
 import {fonts, radii, shadows} from './revamp/tokens';
@@ -53,7 +54,7 @@ export const CopilotTooltip = () => {
     <View>
       <View style={styles.topRow}>
         <Text
-          testID={`${controller.CURRENT_STEP}stepCount`}
+          {...testIDProps(`${controller.CURRENT_STEP}stepCount`)}
           style={[styles.stepCount, {color: c.azureInk}]}>
           {`${t('quickTour')} · ${controller.stepCount}`}
         </Text>
@@ -76,13 +77,13 @@ export const CopilotTooltip = () => {
       </View>
 
       <Text
-        testID={controller.titleTestID}
+        {...testIDProps(controller.titleTestID)}
         style={[styles.title, {color: c.ink}]}
         accessibilityRole="header">
         {controller.currentStepTitle}
       </Text>
       <Text
-        testID={controller.descriptionTestID}
+        {...testIDProps(controller.descriptionTestID)}
         style={[styles.description, {color: c.inkMuted}]}>
         {controller.currentStepDescription}
       </Text>
@@ -90,7 +91,7 @@ export const CopilotTooltip = () => {
       <View style={styles.actions}>
         {showPrevious ? (
           <Pressable
-            testID="copilot-prev-action"
+            {...testIDProps('copilot-prev-action')}
             accessibilityRole="button"
             onPress={controller.goToPrev}
             style={({pressed}) => [
@@ -103,7 +104,7 @@ export const CopilotTooltip = () => {
           </Pressable>
         ) : !isDoneStep ? (
           <Pressable
-            testID="copilot-skip-action"
+            {...testIDProps('copilot-skip-action')}
             accessibilityRole="button"
             onPress={controller.stop}
             style={({pressed}) => [
@@ -119,7 +120,7 @@ export const CopilotTooltip = () => {
         )}
 
         <Pressable
-          testID="copilot-next-action"
+          {...testIDProps('copilot-next-action')}
           accessibilityRole="button"
           onPress={isDoneStep ? controller.stop : controller.goToNext}
           style={({pressed}) => [
