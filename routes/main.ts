@@ -6,7 +6,6 @@ import i18n from '../i18n';
 import {BOTTOM_TAB_ROUTES} from './routesConstants';
 import {HomeScreenLayout} from '../screens/HomeScreenLayout';
 import {SettingScreen} from '../screens/Settings/SettingScreen';
-import {PLATFORM_SPECIFIC} from '../shared/iosPlatform';
 
 const home: TabScreen = {
   name: BOTTOM_TAB_ROUTES.home,
@@ -42,13 +41,7 @@ const settings: TabScreen = {
   component: SettingScreen,
   icon: 'settings',
   options: {
-    headerTitleAlign: 'left',
-    headerTitleStyle: {
-      fontSize: 26,
-      fontFamily: 'Montserrat_600SemiBold',
-      marginTop: PLATFORM_SPECIFIC.settings.headerMarginTop,
-    },
-    headerStyle: {height: PLATFORM_SPECIFIC.settings.headerHeight},
+    headerShown: false,
     title: i18n.t('MainLayout:settings'),
   },
 };

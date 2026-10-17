@@ -17,8 +17,6 @@ import {
   SettingsEvents,
   selectAppId,
   selectEsignetHostUrl,
-  selectIsKeymanagementTourGuideExplored,
-  selectIsKeyOrderSet,
 } from '../../machines/settings';
 
 import {
@@ -125,11 +123,6 @@ export function useSettingsScreen(props: RootRouteProps & RequestRouteProps) {
       settingsService || {},
       selectBiometricUnlockEnabled,
     ),
-    isKeyManagementTourGuideExplored: useSelector(
-      settingsService,
-      selectIsKeymanagementTourGuideExplored,
-    ),
-    isKeyOrderSet: useSelector(settingsService, selectIsKeyOrderSet),
     canUseBiometrics: useSelector(authService || {}, selectCanUseBiometrics),
     useBiometrics,
 
@@ -167,23 +160,6 @@ export function useSettingsScreen(props: RootRouteProps & RequestRouteProps) {
       props.navigation.navigate('Passcode', {setup: true});
     },
 
-    SET_KEY_MANAGEMENT_EXPLORED: () => {
-      settingsService.send(SettingsEvents.SET_KEY_MANAGEMENT_EXPLORED());
-    },
-
-    SET_KEY_ORDER_RESPONSE: (status: boolean) => {
-      settingsService.send(SettingsEvents.SET_KEY_ORDER_RESPONSE(status));
-    },
-
-    RESET_KEY_ORDER_RESPONSE: () => {
-      settingsService.send(SettingsEvents.RESET_KEY_ORDER_RESPONSE());
-    },
-
-    SET_KEY_MANAGEMENT_TOUR_GUIDE_EXPLORED: () => {
-      settingsService.send(
-        SettingsEvents.SET_KEY_MANAGEMENT_TOUR_GUIDE_EXPLORED(),
-      );
-    },
     INJI_TOUR_GUIDE: () => {
       settingsService.send(SettingsEvents.INJI_TOUR_GUIDE());
       props.navigation.navigate(BOTTOM_TAB_ROUTES.home);

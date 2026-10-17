@@ -23,6 +23,7 @@ const model = createModel(
   {
     events: {
       SETUP_PASSCODE: (passcode: string) => ({passcode}),
+      CHANGE_PASSCODE: (passcode: string) => ({passcode}),
       SETUP_BIOMETRICS: (biometrics: string) => ({biometrics}),
       CHANGE_METHOD: (isToggleFromSettings: boolean) => ({
         isToggleFromSettings,
@@ -160,6 +161,9 @@ export const authMachine = model.createMachine(
           LOGOUT: 'unauthorized',
           SETUP_BIOMETRICS: {
             actions: ['setBiometrics', 'storeContext'],
+          },
+          CHANGE_PASSCODE: {
+            actions: ['setPasscode', 'storeContext'],
           },
           CHANGE_METHOD: {
             actions: ['setIsToggleFromSettings'],
