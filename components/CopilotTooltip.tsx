@@ -45,7 +45,7 @@ export const CopilotTooltip = () => {
 
   // The dots follow the same count as the "n of total" label, which shows
   // standalone steps as "1 of 1".
-  const isStandalone = controller.stepCount === '1 of 1';
+  const {isStandalone} = controller;
   const dotCount = isStandalone ? 1 : controller.totalStepsNumber ?? 1;
   const activeDot = isStandalone ? 0 : (controller.currentStepNumber ?? 1) - 1;
 
