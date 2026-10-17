@@ -49,12 +49,12 @@ export const UseCopilotTooltip = () => {
     (CURRENT_STEP === COPILOT_FINAL_STEP && isInitialDownloading) ||
     CURRENT_STEP === KEY_MANAGEMENT_STEP;
 
-  const stepCount = isStandalone
-    ? '1 of 1'
-    : // The step's position among the steps on screen, not its `order`: orders can have
-      // gaps (a step whose element isn't rendered), which made the counter skip numbers
-      // and run past the total.
-      currentStepNumber + ' of ' + totalStepsNumber;
+  // The step's position among the steps on screen, not its `order`: orders can have
+  // gaps (a step whose element isn't rendered), which made the counter skip numbers
+  // and run past the total. The library can report no step between steps, hence `?? 1`.
+  const stepNumber = isStandalone ? 1 : currentStepNumber ?? 1;
+  const stepTotal = isStandalone ? 1 : totalStepsNumber ?? 1;
+  const stepCount = stepNumber + ' of ' + stepTotal;
 
   const isFinalStep = CURRENT_STEP === COPILOT_FINAL_STEP;
 
@@ -77,6 +77,8 @@ export const UseCopilotTooltip = () => {
     totalStepsNumber,
     copilotEvents,
     stepCount,
+    stepNumber,
+    stepTotal,
     isStandalone,
     showPrevious,
     isDoneStep,

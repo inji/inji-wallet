@@ -32,12 +32,11 @@ export const CopilotTooltip = () => {
     settingsController.BACK();
   });
 
-  const {showPrevious, isDoneStep, isStandalone} = controller;
+  const {showPrevious, isDoneStep} = controller;
 
-  // The dots follow the same count as the "n of total" label, which shows
-  // standalone steps as "1 of 1".
-  const dotCount = isStandalone ? 1 : controller.totalStepsNumber ?? 1;
-  const activeDot = isStandalone ? 0 : (controller.currentStepNumber ?? 1) - 1;
+  // The dots follow the same count as the "n of total" label.
+  const dotCount = controller.stepTotal;
+  const activeDot = controller.stepNumber - 1;
 
   return (
     <View>
