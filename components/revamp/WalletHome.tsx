@@ -221,10 +221,14 @@ export const WalletHome: React.FC<{
   };
   useEffect(() => () => clearTimeout(toastTimer.current), []);
 
+  const showPinned = !!pinnedEntry && !searching;
+
   // After the first download the tour opens on the card, once it has loaded and the
-  // carousel has settled, so the highlight lands on it.
+  // carousel has settled, so the highlight lands on it. A pinned card replaces the
+  // carousel, and then it is the card the tour step points at.
   const hasStartedCardTour = useRef(false);
-  const isActiveCardLoaded = !!(activeEntry && cards[activeEntry.key]);
+  const tourCardEntry = showPinned ? pinnedEntry : activeEntry;
+  const isActiveCardLoaded = !!(tourCardEntry && cards[tourCardEntry.key]);
   useEffect(() => {
     if (!startCardTour || !isActiveCardLoaded || hasStartedCardTour.current) {
       return;
@@ -290,7 +294,6 @@ export const WalletHome: React.FC<{
     visible.length === all.length
       ? pluralCredentials(all.length)
       : `${visible.length} of ${all.length} shown`;
-  const showPinned = !!pinnedEntry && !searching;
 
   return (
     <View style={{flex: 1, backgroundColor: c.canvas}}>
@@ -364,6 +367,7 @@ export const WalletHome: React.FC<{
               actions={actionsFor(pinnedEntry.key)}
               onOpen={() => openDetails(pinnedEntry.key)}
               reduceMotion={reduceMotion}
+              isCardTourStep={isCardTourStep}
             />
             <Rail entries={rail} onOpen={openDetails} />
           </>
@@ -548,8 +552,11 @@ const PinnedCard: React.FC<{
   actions: CardActions;
   onOpen: () => void;
   reduceMotion: boolean;
-}> = ({entry, width, actions, onOpen, reduceMotion}) => {
+  /** Registers the card as the tour's card step; the carousel isn't shown to take it. */
+  isCardTourStep: boolean;
+}> = ({entry, width, actions, onOpen, reduceMotion, isCardTourStep}) => {
   const {c} = useRevampTheme();
+  const {t} = useTranslation();
   const rise = useRef(new Animated.Value(reduceMotion ? 1 : 0)).current;
   useEffect(() => {
     Animated.timing(rise, {
@@ -560,6 +567,20 @@ const PinnedCard: React.FC<{
     }).start();
   }, []);
   if (!entry.data) return null;
+  const card = (
+    <Pressable
+      onPress={onOpen}
+      accessibilityLabel={`Open ${entry.data.title} details`}
+      style={({pressed}) => [
+        shadows.card,
+        {borderRadius: radii.card},
+        pressed && {transform: [{scale: 0.98}]},
+      ]}>
+      <ScaledCard width={width}>
+        <CredentialCardFront data={entry.data} />
+      </ScaledCard>
+    </Pressable>
+  );
   return (
     <Animated.View
       style={[
@@ -600,18 +621,16 @@ const PinnedCard: React.FC<{
           </ScaledText>
         </Pressable>
       </View>
-      <Pressable
-        onPress={onOpen}
-        accessibilityLabel={`Open ${entry.data.title} details`}
-        style={({pressed}) => [
-          shadows.card,
-          {borderRadius: radii.card},
-          pressed && {transform: [{scale: 0.98}]},
-        ]}>
-        <ScaledCard width={width}>
-          <CredentialCardFront data={entry.data} />
-        </ScaledCard>
-      </Pressable>
+      {isCardTourStep ? (
+        <Copilot
+          title={t('copilot:cardTitle')}
+          description={t('copilot:cardMessage')}
+          order={COPILOT_FINAL_STEP}>
+          {card}
+        </Copilot>
+      ) : (
+        card
+      )}
       <View style={styles.pinnedButtons}>
         <Pressable
           onPress={actions.showQr}
