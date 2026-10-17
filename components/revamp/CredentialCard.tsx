@@ -342,6 +342,8 @@ export const CredentialCardBack = React.memo(function CredentialCardBack({
             <QrCodeOverlay
               verifiableCredential={data.credential}
               meta={data.vcMetadata}
+              credentialName={data.title}
+              issuerLogoUrl={data.issuerLogoUrl}
               showInlineQr={false}
               forceVisible={false}
               onQrData={setMdocQr}

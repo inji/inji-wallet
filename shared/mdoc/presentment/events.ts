@@ -17,8 +17,12 @@ export const MDOC_PRESENTMENT_CONSENT_DISMISSED =
   'MdocPresentmentConsentDismissed';
 export const MDOC_PRESENTMENT_CANNOT_SATISFY = 'MdocPresentmentCannotSatisfy';
 export const MDOC_PRESENTMENT_RESPONSE_SENT = 'MdocPresentmentResponseSent';
+/** A reader attached over BLE (i.e. it scanned the QR); fired before any DeviceRequest. */
+export const MDOC_PRESENTMENT_READER_CONNECTED =
+  'MdocPresentmentReaderConnected';
 
 export type PresentmentEventName =
+  | typeof MDOC_PRESENTMENT_READER_CONNECTED
   | typeof MDOC_PRESENTMENT_CONSENT_REQUIRED
   | typeof MDOC_PRESENTMENT_CONSENT_DISMISSED
   | typeof MDOC_PRESENTMENT_CANNOT_SATISFY

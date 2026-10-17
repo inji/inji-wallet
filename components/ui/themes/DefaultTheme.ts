@@ -12,6 +12,7 @@ import Constants from 'expo-constants';
 import HomeScreenLogo from '../../../assets/CredIssuerHorizontalLogo.svg';
 import InjiLogoSmall from '../../../assets/InjiHomeLogo.svg';
 import i18next from '../../../i18n';
+import {DesignTokens} from './designTokens';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -159,6 +160,7 @@ export const DefaultTheme = {
     secondaryText: Colors.Secondary,
     disabled: Colors.mildGray,
   },
+  Tokens: DesignTokens,
   Styles: StyleSheet.create({
     title: {
       color: Colors.Black,
@@ -747,11 +749,6 @@ export const DefaultTheme = {
       color: Colors.Secondary,
       maxWidth: '80%',
       overflow: 'hidden',
-    },
-    HistoryHeaderTitleStyle: {
-      fontSize: 26,
-      fontFamily: 'Montserrat_600SemiBold',
-      marginTop: isIOS() ? 5 : 15,
     },
     tabBarIconCopilot: {
       flex: 1,

@@ -22,6 +22,7 @@ import {
   MDOC_PRESENTMENT_CANNOT_SATISFY,
   MDOC_PRESENTMENT_CONSENT_DISMISSED,
   MDOC_PRESENTMENT_CONSENT_REQUIRED,
+  MDOC_PRESENTMENT_READER_CONNECTED,
   MDOC_PRESENTMENT_RESPONSE_SENT,
   type PresentmentEventName,
 } from './presentment/events';
@@ -127,11 +128,27 @@ export interface MdocPresentmentConsentRequest {
     verifier_name?: string;
     purpose?: string;
     purposes?: Array<{
+      id?: string;
       name: string;
       is_required: boolean;
       description?: string;
+      /** Longer explanation shown under the purpose title. */
+      details?: string;
+      /** Element identifiers this purpose needs; elements no agreed purpose needs are withheld. */
+      elements?: string[];
+      /** How the verifier keeps data for this purpose, e.g. "Anonymised · stored for 1 year". */
+      retention?: string;
     }>;
+    legal_basis?: string;
+    /** Who else receives the data, e.g. "No third parties". */
+    shared_with?: string;
   };
+}
+
+/** One element the user agreed to disclose; echoed back to the engine on approve. */
+export interface MdocDisclosedElement {
+  namespace: string;
+  element: string;
 }
 
 // Defined in a leaf module so the common TypeScript engine can emit them without importing this
@@ -141,6 +158,7 @@ export {
   MDOC_PRESENTMENT_CANNOT_SATISFY,
   MDOC_PRESENTMENT_CONSENT_DISMISSED,
   MDOC_PRESENTMENT_CONSENT_REQUIRED,
+  MDOC_PRESENTMENT_READER_CONNECTED,
   MDOC_PRESENTMENT_RESPONSE_SENT,
 } from './presentment/events';
 
@@ -163,7 +181,10 @@ export class Iso18013PresentmentNotImplementedError extends Error {
 type MdocNative = {
   startPresentment: (config: Record<string, unknown>) => Promise<boolean>;
   stopPresentment: () => void;
-  approvePresentment?: (purposesJson?: string) => Promise<boolean>;
+  approvePresentment?: (
+    purposesJson: string | null,
+    disclosedElementsJson: string | null,
+  ) => Promise<boolean>;
   denyPresentment?: () => Promise<boolean>;
   addListener?: (eventName: string) => void;
   removeListeners?: (count: number) => void;
@@ -293,6 +314,20 @@ const noopSubscription = {
     // Nothing was ever subscribed, so there is nothing to detach.
   },
 };
+
+/**
+ * Subscribe to "a reader attached over BLE" — the verifier scanned the QR and the session is
+ * being established, but no DeviceRequest has arrived yet.
+ */
+export function subscribeMdocPresentmentReaderConnected(
+  listener: () => void,
+): EmitterSubscription | {remove: () => void} {
+  return (
+    addEngineListener(MDOC_PRESENTMENT_READER_CONNECTED, () => {
+      listener();
+    }) ?? noopSubscription
+  );
+}
 
 /**
  * Subscribe to "consent required" (after DeviceRequest, before DeviceResponse).
@@ -432,14 +467,19 @@ export function stopIso18013ProximityPresentment(): void {
   nm?.stopPresentment?.();
 }
 
-/** Approve sharing after [MDOC_PRESENTMENT_CONSENT_REQUIRED]. */
+/**
+ * Approve sharing after [MDOC_PRESENTMENT_CONSENT_REQUIRED].
+ *
+ * @param disclosedElements the subset of the consent request's `elements` the user agreed to
+ *   share; omitted means all of them. Both engines drop everything else from the DeviceResponse.
+ */
 export async function approveIso18013PresentmentConsent(
   purposesJson?: string,
+  disclosedElements?: MdocDisclosedElement[],
 ): Promise<void> {
   if (usesCommonEngine()) {
-    // The TS engine already holds the narrowed disclosure set it showed the user, so there is
-    // nothing for the caller to pass back; purposesJson is an Android-only echo.
-    approveMdocPresentmentConsent();
+    // purposesJson is an Android-only echo into the DeviceResponse.
+    approveMdocPresentmentConsent(disclosedElements);
     return;
   }
   const nm = getNativeModule();
@@ -448,7 +488,10 @@ export async function approveIso18013PresentmentConsent(
       'approvePresentment is not available on this build',
     );
   }
-  await nm.approvePresentment(purposesJson);
+  await nm.approvePresentment(
+    purposesJson ?? null,
+    disclosedElements ? JSON.stringify(disclosedElements) : null,
+  );
 }
 
 /** Deny sharing after [MDOC_PRESENTMENT_CONSENT_REQUIRED] — no DeviceResponse is sent. */

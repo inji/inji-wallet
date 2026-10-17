@@ -5,7 +5,6 @@ import {HistoryScreen} from '../screens/History/HistoryScreen';
 import i18n from '../i18n';
 import {BOTTOM_TAB_ROUTES} from './routesConstants';
 import {HomeScreenLayout} from '../screens/HomeScreenLayout';
-import {Theme} from '../components/ui/styleUtils';
 import {SettingScreen} from '../screens/Settings/SettingScreen';
 
 const home: TabScreen = {
@@ -32,8 +31,8 @@ const history: TabScreen = {
   component: HistoryScreen,
   icon: 'history',
   options: {
-    headerTitleStyle: Theme.Styles.HistoryHeaderTitleStyle,
     title: i18n.t('MainLayout:history'),
+    headerShown: false,
   },
 };
 

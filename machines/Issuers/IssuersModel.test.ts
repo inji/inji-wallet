@@ -134,6 +134,10 @@ describe('IssuersModel', () => {
       expect(initialContext.issuerName).toBe('');
     });
 
+    it('should have offeredCredentialTypeNames as empty array', () => {
+      expect(initialContext.offeredCredentialTypeNames).toEqual([]);
+    });
+
     it('should have txCodeInputMode as empty string', () => {
       expect(initialContext.txCodeInputMode).toBe('');
     });
@@ -170,9 +174,9 @@ describe('IssuersModel', () => {
       expect(initialContext.authorizationSuccess).toBe(false);
     });
 
-    it('should have all 41 required properties', () => {
+    it('should have all 42 required properties', () => {
       const properties = Object.keys(initialContext);
-      expect(properties).toHaveLength(41);
+      expect(properties).toHaveLength(42);
     });
   });
 

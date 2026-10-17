@@ -627,6 +627,7 @@ export const requestMachine =
                 timestamp: Date.now(),
                 deviceName:
                   context.senderInfo.name || context.senderInfo.deviceName,
+                ...VCActivityLog.namesFrom(vcMetadata),
               }),
             );
           },

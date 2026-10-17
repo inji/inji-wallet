@@ -6,7 +6,7 @@
 // SafeAreaProvider, the context objects — TrustModal's existing snapshot depends on the
 // real SafeAreaView rendering as RNCSafeAreaView) and override only the two hooks that
 // read context, which is what crashes ("No safe area value available") when a component
-// like Header or MdocProximityConsentOverlay renders outside a SafeAreaProvider in tests.
+// like Header or MdocShareFlow renders outside a SafeAreaProvider in tests.
 jest.mock('react-native-safe-area-context', () => {
   const RNSafeAreaContext = jest.requireActual(
     'react-native-safe-area-context',

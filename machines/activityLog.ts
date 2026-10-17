@@ -17,6 +17,7 @@ const model = createModel(
   {
     events: {
       STORE_RESPONSE: (response: unknown) => ({response}),
+      STORE_ERROR: (error: Error) => ({error}),
       LOG_ACTIVITY: (
         log: VCActivityLog | VCActivityLog[] | VPShareActivityLog,
         wellknown?: any,
@@ -93,6 +94,9 @@ export const activityLogMachine =
                   actions: 'prependActivity',
                   target: 'idle',
                 },
+                STORE_ERROR: {
+                  target: 'idle',
+                },
               },
             },
             refreshing: {
@@ -100,6 +104,9 @@ export const activityLogMachine =
               on: {
                 STORE_RESPONSE: {
                   actions: 'setActivities',
+                  target: 'idle',
+                },
+                STORE_ERROR: {
                   target: 'idle',
                 },
               },
@@ -168,10 +175,10 @@ export const activityLogMachine =
         }),
 
         storeWellknownConfig: model.assign({
-          wellKnownIssuerMap: (context, event) => {
-            context.wellKnownIssuerMap[event.issuer] = event.wellknown;
-            return context.wellKnownIssuerMap;
-          },
+          wellKnownIssuerMap: (context, event) =>
+            event.wellknown
+              ? {...context.wellKnownIssuerMap, [event.issuer]: event.wellknown}
+              : context.wellKnownIssuerMap,
         }),
       },
     },
