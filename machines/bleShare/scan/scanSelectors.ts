@@ -1,7 +1,10 @@
 import {StateFrom} from 'xstate';
 import {scanMachine} from './scanMachine';
 import {VCMetadata} from '../../../shared/VCMetadata';
-import {getMosipLogo, getFaceAttribute} from '../../../components/VC/common/VCUtils';
+import {
+  getMosipLogo,
+  getFaceAttribute,
+} from '../../../components/VC/common/VCUtils';
 
 type State = StateFrom<typeof scanMachine>;
 
@@ -15,6 +18,10 @@ export function selectOpenID4VPFlowType(state: State) {
 
 export function selectReceiverInfo(state: State) {
   return state.context.receiverInfo;
+}
+
+export function selectSelectedVc(state: State) {
+  return state.context.selectedVc;
 }
 
 export function selectVcName(state: State) {
@@ -31,8 +38,10 @@ export function selectCredential(state: State) {
 export function selectVerifiableCredentialData(state: State) {
   const vcMetadata = new VCMetadata(state.context.selectedVc?.vcMetadata);
   const faceField =
-    getFaceAttribute(state.context.selectedVc,state.context.selectedVc?.format) ??
-      state.context.selectedVc?.credential?.biometrics?.face;
+    getFaceAttribute(
+      state.context.selectedVc,
+      state.context.selectedVc?.format,
+    ) ?? state.context.selectedVc?.credential?.biometrics?.face;
   return [
     {
       vcMetadata: vcMetadata,
@@ -40,7 +49,7 @@ export function selectVerifiableCredentialData(state: State) {
       issuerLogo:
         state.context.selectedVc?.verifiableCredential?.issuerLogo ||
         getMosipLogo(),
-      face:faceField,
+      face: faceField,
       wellKnown: state.context.selectedVc?.verifiableCredential?.wellKnown,
     },
   ];

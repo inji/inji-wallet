@@ -39,7 +39,10 @@ import {shareImageToAllSupportedApps} from '../shared/sharing/imageUtils';
 import {ShareOptions} from 'react-native-share';
 import {GlobalContext} from '../shared/GlobalContext';
 import {ActivityLogEvents} from '../machines/activityLog';
-import {VCActivityLog} from './ActivityLogEvent';
+import {
+  buildInPersonShareLog,
+  InPersonShareOutcome,
+} from '../shared/mdoc/presentmentActivityLog';
 import {MdocShareFlow} from './mdocShare/MdocShareFlow';
 import {
   buildShareSummary,
@@ -224,8 +227,6 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
   const userDeclinedRef = useRef(false);
   const readerConnectedRef = useRef(readerConnected);
   readerConnectedRef.current = readerConnected;
-  const lastRequestRef = useRef(lastRequest);
-  lastRequestRef.current = lastRequest;
   const metaRef = useRef(props.meta);
   metaRef.current = props.meta;
   /** Safety timer for the gap between "approve accepted" and the signing/send finishing,
@@ -245,24 +246,29 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
   const verifiableCredentialRef = useRef(props.verifiableCredential);
   verifiableCredentialRef.current = props.verifiableCredential;
 
-  /** Records the completed proximity share in the Activity log ("View in Activity"). */
-  function logShareActivity() {
-    const activityLogService = appService?.children?.get('activityLog');
-    if (!activityLogService) {
+  const activityLogService = appService?.children.get('activityLog');
+  /** Reset for each verifier request, so a session's outcome is logged to History once. */
+  const outcomeLoggedRef = useRef(false);
+  /** What the user approved; the request's elements also include the ones they unticked. */
+  const sharedElementsRef = useRef<MdocPresentmentConsentElement[] | null>(
+    null,
+  );
+
+  // Called from the subscriptions set up once below, so it reads everything through refs.
+  function logInPersonShare(type: InPersonShareOutcome) {
+    if (outcomeLoggedRef.current) {
       return;
     }
-    const vcMetadata = VCMetadata.fromVC(metaRef.current);
-    activityLogService.send(
+    outcomeLoggedRef.current = true;
+    activityLogService?.send(
       ActivityLogEvents.LOG_ACTIVITY(
-        VCActivityLog.getLogFromObject({
-          _vcKey: vcMetadata.getVcKey(),
-          type: 'VC_SHARED',
-          credentialConfigurationId:
-            verifiableCredentialRef.current?.credentialConfigurationId ?? '',
-          issuer: vcMetadata.issuerHost ?? '',
-          timestamp: Date.now(),
-          deviceName: resolveVerifierName(lastRequestRef.current) ?? '',
-        }),
+        buildInPersonShareLog(
+          type,
+          metaRef.current,
+          verifiableCredentialRef.current?.credentialConfigurationId,
+          consentRequestRef.current,
+          sharedElementsRef.current,
+        ),
       ),
     );
   }
@@ -404,6 +410,9 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
       hasUserActedRef.current = false;
       responseSentRef.current = false;
       userDeclinedRef.current = false;
+      outcomeLoggedRef.current = false;
+      consentRequestRef.current = request;
+      sharedElementsRef.current = null;
       setLastRequest(request);
       setAgreedPurposes([]);
       setSharedElements(null);
@@ -417,8 +426,8 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
     // keystore biometric prompt) and the transport send both completed.
     const responseSentSub = subscribeMdocPresentmentResponseSent(() => {
       responseSentRef.current = true;
+      logInPersonShare('VC_SHARED_IN_PERSON');
       clearResponseWaitTimer();
-      logShareActivity();
       setConsentBusy(false);
       setIsSending(false);
       setConsentRequest(null);
@@ -435,6 +444,13 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
       }
       const wasPending =
         consentRequestRef.current != null || readerConnectedRef.current;
+      if (wasPending) {
+        logInPersonShare(
+          userDeclinedRef.current
+            ? 'VC_SHARE_IN_PERSON_DECLINED'
+            : 'VC_SHARE_IN_PERSON_FAILED',
+        );
+      }
       clearResponseWaitTimer();
       setConsentBusy(false);
       setIsSending(false);
@@ -446,6 +462,7 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
       }
     });
     const cannotSatisfySub = subscribeMdocPresentmentCannotSatisfy(event => {
+      logInPersonShare('VC_SHARE_IN_PERSON_FAILED');
       setTypeMismatch(getCredentialTypeMismatch(event));
       clearResponseWaitTimer();
       setConsentRequest(null);
@@ -482,6 +499,7 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
           '[QrCodeOverlay] No response within the consent timeout — the verifier will have given up by now.',
         );
       }
+      logInPersonShare('VC_SHARE_IN_PERSON_FAILED');
       setConsentRequest(null);
       setConsentBusy(false);
       setConsentResult('failure');
@@ -658,6 +676,7 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
     hasUserActedRef.current = true;
     setConsentBusy(true);
     setAgreedPurposes(purposesAgreed);
+    sharedElementsRef.current = elementsToShare;
     setSharedElements(elementsToShare);
     setIsSending(true);
     const disclosed = elementsToShare.map(({namespace, element}) => ({
@@ -699,12 +718,14 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
             '[QrCodeOverlay] No ResponseSent/Dismissed after approve — treating as failed.',
           );
         }
+        logInPersonShare('VC_SHARE_IN_PERSON_FAILED');
         setConsentBusy(false);
         setIsSending(false);
         setConsentRequest(null);
         setConsentResult('failure');
       }, RESPONSE_SENT_TIMEOUT_MS);
     } catch (e) {
+      logInPersonShare('VC_SHARE_IN_PERSON_FAILED');
       clearResponseWaitTimer();
       setConsentBusy(false);
       setIsSending(false);
@@ -728,6 +749,8 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
     // the reset re-renders, and must not read it as a failure of the session being left.
     readerConnectedRef.current = false;
     consentRequestRef.current = null;
+    outcomeLoggedRef.current = false;
+    sharedElementsRef.current = null;
     setConsentRequest(null);
     setConsentResult(null);
     setConsentBusy(false);
@@ -812,6 +835,7 @@ export const QrCodeOverlay: React.FC<QrCodeOverlayProps> = props => {
     hasUserActedRef.current = true;
     userDeclinedRef.current = true;
     setConsentBusy(true);
+    logInPersonShare('VC_SHARE_IN_PERSON_DECLINED');
     try {
       await denyIso18013PresentmentConsent();
       setConsentRequest(null);

@@ -52,6 +52,7 @@ const model = createModel(
     isReadError: false,
     isDecryptError: false,
     isKeyInvalidateError: false,
+    isBiometricCancelled: false,
     linkCode: '',
     authorizationRequest: '',
   },
@@ -73,6 +74,7 @@ const model = createModel(
       RESET_LINKCODE: () => ({}),
       RESET_AUTHORIZATION_REQUEST: () => ({}),
       BIOMETRIC_CANCELLED: () => ({}),
+      RETRY_BIOMETRIC: () => ({}),
     },
   },
 );
@@ -112,8 +114,17 @@ export const appMachine = model.createMachine(
         actions: ['resetKeyInvalidateError'],
         target: 'init',
       },
+      // The store waits for the holder to ask again. Restarting here re-prompted at once, so a
+      // cancelled prompt came back endlessly, and it restarted sign-in, which logged them out.
       BIOMETRIC_CANCELLED: {
-        target: 'init',
+        actions: 'setBiometricCancelled',
+      },
+      RETRY_BIOMETRIC: {
+        actions: 'retryStoreBiometric',
+      },
+      // The store is open again; the waiting page stays up until then, prompt included.
+      READY: {
+        actions: 'unsetBiometricCancelled',
       },
     },
     states: {
@@ -128,6 +139,7 @@ export const appMachine = model.createMachine(
                   'unsetIsReadError',
                   'unsetIsDecryptError',
                   'resetKeyInvalidateError',
+                  'unsetBiometricCancelled',
                 ],
                 target: 'checkKeyPairs',
               },
@@ -196,7 +208,12 @@ export const appMachine = model.createMachine(
                 target: 'info',
               },
               BIOMETRIC_CANCELLED: {
-                target: 'store',
+                actions: 'setBiometricCancelled',
+              },
+              // The store is ready again after a retry, so ask for the settings once more.
+              READY: {
+                actions: 'unsetBiometricCancelled',
+                target: 'credentialRegistry',
               },
             },
           },
@@ -310,6 +327,15 @@ export const appMachine = model.createMachine(
       ),
       setIsReadError: assign({
         isReadError: true,
+      }),
+      setBiometricCancelled: assign({
+        isBiometricCancelled: true,
+      }),
+      unsetBiometricCancelled: assign({
+        isBiometricCancelled: false,
+      }),
+      retryStoreBiometric: send(StoreEvents.RETRY_BIOMETRIC(), {
+        to: context => context.serviceRefs.store,
       }),
       setIsDecryptError: assign({
         isDecryptError: true,
@@ -580,6 +606,10 @@ export function selectIsActive(state: State) {
 
 export function selectIsFocused(state: State) {
   return state.matches('ready.focus');
+}
+
+export function selectIsBiometricCancelled(state: State) {
+  return state.context.isBiometricCancelled;
 }
 
 export function selectIsReadError(state: State) {

@@ -16,6 +16,40 @@ describe('ActivityLog', () => {
   });
 });
 
+describe('VCActivityLog credential and issuer names', () => {
+  const t = jest.fn(key => key) as any;
+
+  it('copies the names from a card metadata record', () => {
+    expect(
+      VCActivityLog.namesFrom({
+        credentialType: 'Driving Licence',
+        issuerName: 'Road Transport Authority',
+      }),
+    ).toEqual({
+      credentialName: 'Driving Licence',
+      issuerName: 'Road Transport Authority',
+    });
+    expect(VCActivityLog.namesFrom(undefined)).toEqual({
+      credentialName: '',
+      issuerName: '',
+    });
+  });
+
+  it('labels the credential with its saved name before any lookup', () => {
+    const log = new VCActivityLog({
+      credentialName: 'Driving Licence',
+      credentialConfigurationId: 'unknown',
+    });
+    expect(log.getCredentialTypeLabel(t, {})).toBe('Driving Licence');
+  });
+
+  it('falls back to the generic label without a saved name or metadata', () => {
+    expect(new VCActivityLog().getCredentialTypeLabel(t, undefined)).toBe(
+      'VcDetails:identityCard',
+    );
+  });
+});
+
 describe('getActionText', () => {
   let activityLog;
   let mockIl18nfn;

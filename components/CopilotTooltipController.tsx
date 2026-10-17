@@ -16,6 +16,7 @@ export const UseCopilotTooltip = () => {
     goToPrev,
     stop,
     currentStep,
+    currentStepNumber,
     isFirstStep,
     isLastStep,
     totalStepsNumber,
@@ -43,19 +44,31 @@ export const UseCopilotTooltip = () => {
     copilotTestID[CURRENT_STEP?.toString()]
   }Description`;
 
-  const stepCount =
+  // A step shown on its own rather than as part of the tour.
+  const isStandalone =
     (CURRENT_STEP === COPILOT_FINAL_STEP && isInitialDownloading) ||
-    CURRENT_STEP === KEY_MANAGEMENT_STEP
-      ? '1 of 1'
-      : CURRENT_STEP + ' of ' + totalStepsNumber;
+    CURRENT_STEP === KEY_MANAGEMENT_STEP;
+
+  // The step's position among the steps on screen, not its `order`: orders can have
+  // gaps (a step whose element isn't rendered), which made the counter skip numbers
+  // and run past the total. The library can report no step between steps, hence `?? 1`.
+  const stepNumber = isStandalone ? 1 : currentStepNumber ?? 1;
+  const stepTotal = isStandalone ? 1 : totalStepsNumber ?? 1;
+  const stepCount = stepNumber + ' of ' + stepTotal;
 
   const isFinalStep = CURRENT_STEP === COPILOT_FINAL_STEP;
+
+  // A standalone step has nothing to go back to.
+  const showPrevious = !(isFirstStep || isStandalone);
+  // The step whose primary button ends the tour ("Done") instead of moving on ("Next").
+  const isDoneStep = isLastStep || CURRENT_STEP === KEY_MANAGEMENT_STEP;
 
   return {
     goToNext,
     goToPrev,
     stop,
     CURRENT_STEP,
+    currentStepNumber,
     currentStepTitle,
     currentStepDescription,
     isFirstStep,
@@ -64,6 +77,11 @@ export const UseCopilotTooltip = () => {
     totalStepsNumber,
     copilotEvents,
     stepCount,
+    stepNumber,
+    stepTotal,
+    isStandalone,
+    showPrevious,
+    isDoneStep,
     isOnboarding,
     isInitialDownloading,
     titleTestID,

@@ -9,6 +9,8 @@ import {CopilotStep, walkthroughable} from 'react-native-copilot';
 // down and recreating props.children's views on every parent render.
 const CopilotView = walkthroughable(View);
 
+// The ring and halo around a highlighted step are drawn by the tour overlay itself (see
+// roundedSvgMaskPath.highlightPaths in shared/copilotMask.ts), not here.
 export const Copilot: React.FC<CopilotProps> = (props: CopilotProps) => {
   return (
     <CopilotStep

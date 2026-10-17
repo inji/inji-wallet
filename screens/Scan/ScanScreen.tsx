@@ -1,16 +1,29 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
   ErrorMessageOverlay,
   MessageOverlay,
 } from '../../components/MessageOverlay';
-import {QrScanner} from '../../components/QrScanner';
-import {Button, Centered, Column, Text} from '../../components/ui';
+import {Centered} from '../../components/ui';
+import {VerifierQrScanner} from '../../components/VerifierQrScanner';
 import {Theme} from '../../components/ui/styleUtils';
 import {QrLogin} from '../QrLogin/QrLogin';
 import {useScanScreen} from './ScanScreenController';
 import BluetoothStateManager from 'react-native-bluetooth-state-manager';
-import {BackHandler, Linking} from 'react-native';
+import {
+  BackHandler,
+  Linking,
+  Platform,
+  Pressable,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+import {Icon} from 'react-native-elements';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {isIOS, LIVENESS_CHECK} from '../../shared/constants';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {SharingStatusModal} from './SharingStatusModal';
@@ -27,6 +40,9 @@ import {APP_EVENTS} from '../../machines/app';
 import {GlobalContext} from '../../shared/GlobalContext';
 import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
 import {useScanStackScreenSwitcher} from './useScanStackScreenSwitcher';
+
+const COLORS = Theme.Colors.Design;
+const COMING_SOON_MS = 2000;
 
 export const ScanScreen: React.FC = () => {
   const {t} = useTranslation('ScanScreen');
@@ -49,6 +65,44 @@ export const ScanScreen: React.FC = () => {
     t,
   });
   const [isBluetoothOn, setIsBluetoothOn] = useState(false);
+  const insets = useSafeAreaInsets();
+  const [isTorchOn, setIsTorchOn] = useState(false);
+  const [isComingSoonVisible, setIsComingSoonVisible] = useState(false);
+
+  // This tab is dark, so the status bar switches to light icons while it is in focus.
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('light-content');
+      if (Platform.OS === 'android') {
+        StatusBar.setBackgroundColor(COLORS.darkBackground);
+      }
+      return () => {
+        StatusBar.setBarStyle('dark-content');
+        if (Platform.OS === 'android') {
+          StatusBar.setBackgroundColor(Theme.Colors.whiteBackgroundColor);
+        }
+      };
+    }, []),
+  );
+
+  useEffect(() => {
+    if (!scanScreenController.isScanning) {
+      setIsTorchOn(false);
+    }
+  }, [scanScreenController.isScanning]);
+
+  // "From Photos" and "Show My QR" are placeholders until those features are built.
+  useEffect(() => {
+    if (!isComingSoonVisible) {
+      return;
+    }
+    const timeout = setTimeout(
+      () => setIsComingSoonVisible(false),
+      COMING_SOON_MS,
+    );
+    return () => clearTimeout(timeout);
+  }, [isComingSoonVisible]);
+  const showComingSoon = () => setIsComingSoonVisible(true);
   const showErrorModal =
     sendVPScreenController.scanScreenError ||
     (errorModal.show &&
@@ -112,12 +166,7 @@ export const ScanScreen: React.FC = () => {
 
   function noShareableVcText() {
     return (
-      <Text
-        testID="noShareableVcs"
-        align="center"
-        style={{paddingTop: 3}}
-        color={Theme.Colors.errorMessage}
-        margin="0 10">
+      <Text testID="noShareableVcs" style={styles.stateMessage}>
         {t('noShareableVcs')}
       </Text>
     );
@@ -125,90 +174,76 @@ export const ScanScreen: React.FC = () => {
 
   function bluetoothIsOffText() {
     return (
-      <Text
-        testID="bluetoothIsTurnedOffMessage"
-        align="center"
-        color={Theme.Colors.errorMessage}
-        margin="0 10">
+      <Text testID="bluetoothIsTurnedOffMessage" style={styles.stateMessage}>
         {t(isIOS() ? 'bluetoothStateIos' : 'bluetoothStateAndroid')}
       </Text>
     );
   }
 
-  function allowBluetoothPermissionComponent() {
+  function stateWithAction(
+    messageTestID: string,
+    message: string,
+    buttonTestID: string,
+    buttonTitle: string,
+    onPress: () => void,
+  ) {
     return (
-      <Column padding="24" fill align="space-between">
-        <Centered fill>
-          <Text
-            align="center"
-            testID="enableBluetoothMessage"
-            color={Theme.Colors.errorMessage}>
-            {t('enableBluetoothMessage')}
-          </Text>
-        </Centered>
+      <View style={styles.stateWithAction}>
+        <Text testID={messageTestID} style={styles.stateMessage}>
+          {message}
+        </Text>
+        <Pressable
+          testID={buttonTestID}
+          accessibilityRole="button"
+          onPress={onPress}
+          style={({pressed}) => [
+            styles.primaryPill,
+            pressed && styles.pressed,
+          ]}>
+          <Text style={styles.primaryPillText}>{buttonTitle}</Text>
+        </Pressable>
+      </View>
+    );
+  }
 
-        <Button
-          testID="enableBluetoothButton"
-          type="gradient"
-          title={t('enableBluetoothButtonText')}
-          onPress={openSettings}
-        />
-      </Column>
+  function allowBluetoothPermissionComponent() {
+    return stateWithAction(
+      'enableBluetoothMessage',
+      t('enableBluetoothMessage'),
+      'enableBluetoothButton',
+      t('enableBluetoothButtonText'),
+      openSettings,
     );
   }
 
   function allowNearbyDevicesPermissionComponent() {
-    return (
-      <Column padding="24" fill align="space-between">
-        <Centered fill>
-          <Text
-            testID="allowNearbyDevicesPermissionMessage"
-            align="center"
-            color={Theme.Colors.errorMessage}>
-            {t('errors.nearbyDevicesPermissionDenied.message')}
-          </Text>
-        </Centered>
-
-        <Button
-          type="gradient"
-          testID="allowNearbyDevicesPermissionButton"
-          title={t('errors.nearbyDevicesPermissionDenied.button')}
-          onPress={openSettings}
-        />
-      </Column>
+    return stateWithAction(
+      'allowNearbyDevicesPermissionMessage',
+      t('errors.nearbyDevicesPermissionDenied.message'),
+      'allowNearbyDevicesPermissionButton',
+      t('errors.nearbyDevicesPermissionDenied.button'),
+      openSettings,
     );
   }
 
   function allowLocationComponent() {
-    return (
-      <Column padding="24" fill align="space-between">
-        <Centered fill>
-          <Text
-            testID="enableLocationServicesMessage"
-            align="center"
-            color={Theme.Colors.errorMessage}>
-            {scanScreenController.locationError.message}
-          </Text>
-        </Centered>
-
-        <Button
-          testID="enableLocationServicesButton"
-          type="gradient"
-          title={scanScreenController.locationError.button}
-          onPress={scanScreenController.LOCATION_REQUEST}
-        />
-      </Column>
+    return stateWithAction(
+      'enableLocationServicesMessage',
+      scanScreenController.locationError.message,
+      'enableLocationServicesButton',
+      scanScreenController.locationError.button,
+      scanScreenController.LOCATION_REQUEST,
     );
   }
 
   function qrScannerComponent() {
     return (
-      <Column crossAlign="center">
-        <QrScanner
-          onQrFound={scanScreenController.SCAN}
-          title={t('scanningGuide')}
-        />
-      </Column>
+      <VerifierQrScanner
+        onQrFound={scanScreenController.SCAN}
+        isTorchOn={isTorchOn}
+        title={t('pointCameraTitle')}
+        subtitle={t('pointCameraSubtitle')}
+      />
     );
   }
 
@@ -316,7 +351,9 @@ export const ScanScreen: React.FC = () => {
       : sendVcScreenController.DISMISS;
 
   return (
-    <Column fill backgroundColor={Theme.Colors.whiteBackgroundColor}>
+    <LinearGradient
+      colors={[COLORS.darkBackground, COLORS.darkBackgroundEnd]}
+      style={[styles.screen, {paddingTop: insets.top + 8}]}>
       <BannerNotificationContainer />
       <FaceVerificationAlertOverlay
         isVisible={faceVerificationController.isFaceVerificationConsent}
@@ -324,10 +361,51 @@ export const ScanScreen: React.FC = () => {
         close={faceVerificationConsentOnClose}
       />
 
-      <Centered
-        padding="24 0"
-        align="space-evenly"
-        backgroundColor={Theme.Colors.whiteBackgroundColor}>
+      <View style={styles.header}>
+        <Pressable
+          testID="scanClose"
+          accessibilityRole="button"
+          accessibilityLabel={t('close')}
+          onPress={scanScreenController.GOTO_HOME}
+          style={({pressed}) => [
+            styles.roundButton,
+            pressed && styles.pressed,
+          ]}>
+          <Icon
+            name="close"
+            type="material-community"
+            size={24}
+            color={COLORS.darkText}
+          />
+        </Pressable>
+        <Text style={styles.headerTitle} accessibilityRole="header">
+          {t('scanVerifierTitle')}
+        </Text>
+        {scanScreenController.isScanning ? (
+          <Pressable
+            testID="scanTorch"
+            accessibilityRole="button"
+            accessibilityLabel={isTorchOn ? t('flashOff') : t('flashOn')}
+            accessibilityState={{selected: isTorchOn}}
+            onPress={() => setIsTorchOn(on => !on)}
+            style={({pressed}) => [
+              styles.roundButton,
+              isTorchOn && styles.roundButtonOn,
+              pressed && styles.pressed,
+            ]}>
+            <Icon
+              name={isTorchOn ? 'flash' : 'flash-outline'}
+              type="material-community"
+              size={24}
+              color={isTorchOn ? COLORS.darkBackground : COLORS.darkText}
+            />
+          </Pressable>
+        ) : (
+          <View style={styles.roundButtonPlaceholder} />
+        )}
+      </View>
+
+      <Centered fill style={styles.content}>
         {loadQRScanner()}
         {scanScreenController.isQrLogin && (
           <QrLogin
@@ -341,6 +419,55 @@ export const ScanScreen: React.FC = () => {
           progress
         />
       </Centered>
+
+      {scanScreenController.isScanning && (
+        <View style={styles.footer}>
+          {isComingSoonVisible && (
+            <View style={styles.comingSoon}>
+              <Text style={styles.comingSoonText}>{t('comingSoon')}</Text>
+            </View>
+          )}
+          <View style={styles.footerButtons}>
+            <Pressable
+              testID="scanFromPhotos"
+              accessibilityRole="button"
+              onPress={showComingSoon}
+              style={({pressed}) => [
+                styles.outlinePill,
+                pressed && styles.pressed,
+              ]}>
+              <Icon
+                name="image-outline"
+                type="material-community"
+                size={20}
+                color={COLORS.darkText}
+              />
+              <Text
+                style={styles.outlinePillText}
+                numberOfLines={1}
+                adjustsFontSizeToFit>
+                {t('fromPhotos')}
+              </Text>
+            </Pressable>
+            <Pressable
+              testID="scanShowMyQr"
+              accessibilityRole="button"
+              onPress={showComingSoon}
+              style={({pressed}) => [
+                styles.primaryPill,
+                styles.footerPill,
+                pressed && styles.pressed,
+              ]}>
+              <Text
+                style={styles.primaryPillText}
+                numberOfLines={1}
+                adjustsFontSizeToFit>
+                {t('showMyQr')}
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      )}
       {displayStorageLimitReachedError()}
 
       {sendVPScreenController.flowType.startsWith('OpenID4VP') &&
@@ -408,6 +535,114 @@ export const ScanScreen: React.FC = () => {
           isLivenessEnabled={LIVENESS_CHECK}
         />
       </>
-    </Column>
+    </LinearGradient>
   );
 };
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  headerTitle: {
+    flex: 1,
+    marginHorizontal: 16,
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 26,
+    color: COLORS.darkText,
+  },
+  roundButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.darkSurface,
+  },
+  roundButtonOn: {
+    backgroundColor: COLORS.darkText,
+  },
+  roundButtonPlaceholder: {
+    width: 48,
+  },
+  content: {
+    paddingHorizontal: 24,
+  },
+  stateWithAction: {
+    alignItems: 'center',
+  },
+  stateMessage: {
+    textAlign: 'center',
+    marginHorizontal: 12,
+    fontFamily: 'Montserrat_500Medium',
+    fontSize: 16,
+    lineHeight: 24,
+    color: COLORS.darkText,
+  },
+  footer: {
+    paddingHorizontal: 20,
+    paddingBottom: 16,
+  },
+  footerButtons: {
+    flexDirection: 'row',
+  },
+  outlinePill: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 54,
+    marginRight: 12,
+    paddingHorizontal: 12,
+    borderRadius: 27,
+    borderWidth: 1.5,
+    borderColor: COLORS.darkBorder,
+  },
+  outlinePillText: {
+    flexShrink: 1,
+    marginLeft: 8,
+    fontFamily: 'Montserrat_600SemiBold',
+    fontSize: 15,
+    color: COLORS.darkText,
+  },
+  primaryPill: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 54,
+    marginTop: 20,
+    paddingHorizontal: 28,
+    borderRadius: 27,
+    backgroundColor: COLORS.surface,
+  },
+  // Same padding as the outline pill, so the two footer buttons come out equal width.
+  footerPill: {
+    flex: 1,
+    marginTop: 0,
+    paddingHorizontal: 12,
+  },
+  primaryPillText: {
+    fontFamily: 'Montserrat_600SemiBold',
+    fontSize: 16,
+    color: COLORS.navy,
+  },
+  comingSoon: {
+    alignSelf: 'center',
+    marginBottom: 12,
+    backgroundColor: COLORS.darkSurface,
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  comingSoonText: {
+    fontFamily: 'Montserrat_500Medium',
+    fontSize: 14,
+    color: COLORS.darkText,
+  },
+  pressed: {
+    opacity: 0.75,
+  },
+});

@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-copilot/dist/index.js b/node_modules/react-native-copilot/dist/index.js
-index b9127da..509b57a 100644
+index b9127da..6f6d474 100644
 --- a/node_modules/react-native-copilot/dist/index.js
 +++ b/node_modules/react-native-copilot/dist/index.js
 @@ -188,12 +188,12 @@ var init_SvgMask = __esm({
@@ -17,3 +17,53 @@ index b9127da..509b57a 100644
      SvgMask = ({
        size,
        position,
+@@ -217,6 +217,16 @@ var init_SvgMask = __esm({
+         new import_react_native4.Animated.ValueXY(position)
+       ).current;
+       const maskRef = (0, import_react3.useRef)(null);
++      // inji-wallet patch: an svgMaskPath may carry a `highlightPaths` function returning
++      // outlines (ring, halo) to stroke around the cutout. They are drawn in this same SVG, so
++      // they follow the cutout exactly and are never clipped by the app's views.
++      const highlightRefs = (0, import_react3.useRef)([]);
++      const highlightPathsFor = () => svgMaskPath.highlightPaths ? svgMaskPath.highlightPaths({
++        size: sizeValue,
++        position: positionValue,
++        canvasSize,
++        step: currentStep
++      }) : [];
+       const animationListener = (0, import_react3.useCallback)(() => {
+         const d = svgMaskPath({
+           size: sizeValue,
+@@ -227,6 +237,11 @@ var init_SvgMask = __esm({
+         if (maskRef.current) {
+           maskRef.current.setNativeProps({ d });
+         }
++        highlightPathsFor().forEach((path, i) => {
++          if (highlightRefs.current[i]) {
++            highlightRefs.current[i].setNativeProps({ d: path.d });
++          }
++        });
+       }, [canvasSize, currentStep, svgMaskPath, positionValue, sizeValue]);
+       const animate = (0, import_react3.useCallback)(
+         (toSize = size, toPosition = position) => {
+@@ -302,7 +317,19 @@ var init_SvgMask = __esm({
+               step: currentStep
+             })
+           }
+-        )) : null
++        ), highlightPathsFor().map((path, i) => /* @__PURE__ */ import_react3.default.createElement(
++          AnimatedSvgPath,
++          {
++            key: `highlight-${i}`,
++            ref: (el) => {
++              highlightRefs.current[i] = el;
++            },
++            fill: "none",
++            stroke: path.stroke,
++            strokeWidth: path.strokeWidth,
++            d: path.d
++          }
++        ))) : null
+       );
+     };
+   }

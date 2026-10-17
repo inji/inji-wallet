@@ -10,6 +10,10 @@ import {
 } from 'react-native';
 import {ScaledText} from './ScaledText';
 import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
+import {useCopilot} from 'react-native-copilot';
+import {Copilot} from '../ui/Copilot';
+import {COPILOT_FINAL_STEP} from '../../shared/constants';
 import {VCMetadata} from '../../shared/VCMetadata';
 import {VCShareFlowType} from '../../shared/Utils';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
@@ -20,6 +24,7 @@ import {RemoveVcWarningOverlay} from '../../screens/Home/MyVcs/RemoveVcWarningOv
 import {HistoryTab} from '../../screens/Home/MyVcs/HistoryTab';
 import {QrCodeOverlay} from '../QrCodeOverlay';
 import {CardCarousel} from './CardCarousel';
+import {frontCardFrame} from './carouselLayout';
 import {CardLoader, LoadedCard} from './CardLoader';
 import {CredentialCardFront, ScaledCard} from './CredentialCard';
 import {Action, CredentialInformation, StatusPill} from './CredentialParts';
@@ -63,6 +68,8 @@ const pluralCredentials = (n: number) =>
  * on top with the rest in a rail), the active card's status, actions and information, search and
  * a details page per card.
  */
+const CARD_TOUR_START_DELAY_MS = 500;
+
 export const WalletHome: React.FC<{
   vcMetadatas: VCMetadata[];
   /** Lowercased searchable text of each credential's claims, by credential key. */
@@ -71,6 +78,10 @@ export const WalletHome: React.FC<{
   onStackView: () => void;
   refreshing: boolean;
   onRefresh: () => void;
+  /** The cards are a tour step: after the first download, or while the tour is replayed. */
+  isCardTourStep?: boolean;
+  /** Start the tour at the card step once the card shows: after the first download. */
+  startCardTour?: boolean;
 }> = ({
   vcMetadatas,
   searchIndex,
@@ -78,7 +89,11 @@ export const WalletHome: React.FC<{
   onStackView,
   refreshing,
   onRefresh,
+  isCardTourStep = false,
+  startCardTour = false,
 }) => {
+  const {t} = useTranslation();
+  const {start: startTour} = useCopilot();
   const insets = useSafeAreaInsets();
   const {c, reduceMotion} = useRevampTheme();
   const navigation = useNavigation<any>();
@@ -206,6 +221,25 @@ export const WalletHome: React.FC<{
   };
   useEffect(() => () => clearTimeout(toastTimer.current), []);
 
+  const showPinned = !!pinnedEntry && !searching;
+
+  // After the first download the tour opens on the card, once it has loaded and the
+  // carousel has settled, so the highlight lands on it. A pinned card replaces the
+  // carousel, and then it is the card the tour step points at.
+  const hasStartedCardTour = useRef(false);
+  const tourCardEntry = showPinned ? pinnedEntry : activeEntry;
+  const isActiveCardLoaded = !!(tourCardEntry && cards[tourCardEntry.key]);
+  useEffect(() => {
+    if (!startCardTour || !isActiveCardLoaded || hasStartedCardTour.current) {
+      return;
+    }
+    const timer = setTimeout(() => {
+      hasStartedCardTour.current = true;
+      startTour(t('copilot:cardTitle'));
+    }, CARD_TOUR_START_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [startCardTour, isActiveCardLoaded]);
+
   const [qrFor, setQrFor] = useState<string | null>(null);
   const qrCard = qrFor ? loaded[qrFor] : undefined;
   const qrEntry = qrFor ? all.find(e => e.key === qrFor) : undefined;
@@ -260,7 +294,6 @@ export const WalletHome: React.FC<{
     visible.length === all.length
       ? pluralCredentials(all.length)
       : `${visible.length} of ${all.length} shown`;
-  const showPinned = !!pinnedEntry && !searching;
 
   return (
     <View style={{flex: 1, backgroundColor: c.canvas}}>
@@ -334,6 +367,7 @@ export const WalletHome: React.FC<{
               actions={actionsFor(pinnedEntry.key)}
               onOpen={() => openDetails(pinnedEntry.key)}
               reduceMotion={reduceMotion}
+              isCardTourStep={isCardTourStep}
             />
             <Rail entries={rail} onOpen={openDetails} />
           </>
@@ -348,6 +382,17 @@ export const WalletHome: React.FC<{
                 onFlip={() => setFlipped(f => !f)}
                 reduceMotion={reduceMotion}
               />
+              {isCardTourStep ? (
+                // An invisible box over the centre card, so the tour highlights the card
+                // itself rather than the whole carousel strip.
+                <Copilot
+                  title={t('copilot:cardTitle')}
+                  description={t('copilot:cardMessage')}
+                  order={COPILOT_FINAL_STEP}
+                  targetStyle={[styles.cardTourTarget, frontCardFrame(width)]}>
+                  <View />
+                </Copilot>
+              ) : null}
             </View>
             <Pager count={visible.length} index={index} onSelect={select} />
             <View style={styles.hint}>
@@ -507,8 +552,11 @@ const PinnedCard: React.FC<{
   actions: CardActions;
   onOpen: () => void;
   reduceMotion: boolean;
-}> = ({entry, width, actions, onOpen, reduceMotion}) => {
+  /** Registers the card as the tour's card step; the carousel isn't shown to take it. */
+  isCardTourStep: boolean;
+}> = ({entry, width, actions, onOpen, reduceMotion, isCardTourStep}) => {
   const {c} = useRevampTheme();
+  const {t} = useTranslation();
   const rise = useRef(new Animated.Value(reduceMotion ? 1 : 0)).current;
   useEffect(() => {
     Animated.timing(rise, {
@@ -519,6 +567,20 @@ const PinnedCard: React.FC<{
     }).start();
   }, []);
   if (!entry.data) return null;
+  const card = (
+    <Pressable
+      onPress={onOpen}
+      accessibilityLabel={`Open ${entry.data.title} details`}
+      style={({pressed}) => [
+        shadows.card,
+        {borderRadius: radii.card},
+        pressed && {transform: [{scale: 0.98}]},
+      ]}>
+      <ScaledCard width={width}>
+        <CredentialCardFront data={entry.data} />
+      </ScaledCard>
+    </Pressable>
+  );
   return (
     <Animated.View
       style={[
@@ -559,18 +621,16 @@ const PinnedCard: React.FC<{
           </ScaledText>
         </Pressable>
       </View>
-      <Pressable
-        onPress={onOpen}
-        accessibilityLabel={`Open ${entry.data.title} details`}
-        style={({pressed}) => [
-          shadows.card,
-          {borderRadius: radii.card},
-          pressed && {transform: [{scale: 0.98}]},
-        ]}>
-        <ScaledCard width={width}>
-          <CredentialCardFront data={entry.data} />
-        </ScaledCard>
-      </Pressable>
+      {isCardTourStep ? (
+        <Copilot
+          title={t('copilot:cardTitle')}
+          description={t('copilot:cardMessage')}
+          order={COPILOT_FINAL_STEP}>
+          {card}
+        </Copilot>
+      ) : (
+        card
+      )}
       <View style={styles.pinnedButtons}>
         <Pressable
           onPress={actions.showQr}
@@ -802,6 +862,7 @@ const Dot: React.FC<{active: boolean}> = ({active}) => {
 };
 
 const styles = StyleSheet.create({
+  cardTourTarget: {position: 'absolute', pointerEvents: 'none'},
   pager: {
     flexDirection: 'row',
     alignItems: 'center',

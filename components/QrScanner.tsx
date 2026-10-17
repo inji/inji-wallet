@@ -9,8 +9,14 @@ import {selectIsActive} from '../machines/app';
 import {useTranslation} from 'react-i18next';
 import testIDProps from '../shared/commonUtil';
 import {SvgImage} from './ui/svg';
-import {CameraView, useCameraPermissions, PermissionStatus, BarcodeScanningResult, CameraType} from 'expo-camera';
-import {CameraPosition} from "../shared/Utils";
+import {
+  CameraView,
+  useCameraPermissions,
+  PermissionStatus,
+  BarcodeScanningResult,
+  CameraType,
+} from 'expo-camera';
+import {CameraPosition} from '../shared/Utils';
 
 export const QrScanner: React.FC<QrScannerProps> = props => {
   const {t} = useTranslation('QrScanner');
@@ -58,11 +64,11 @@ export const QrScanner: React.FC<QrScannerProps> = props => {
             </Column>
             <Pressable>
               <Icon
-                  testID="close"
-                  name="close"
-                  onPress={() => setShowCameraPermissionDeniedBanner(false)}
-                  color={Theme.Colors.whiteText}
-                  size={18}
+                testID="close"
+                name="close"
+                onPress={() => setShowCameraPermissionDeniedBanner(false)}
+                color={Theme.Colors.whiteText}
+                size={18}
               />
             </Pressable>
           </Row>
@@ -113,7 +119,9 @@ export const QrScanner: React.FC<QrScannerProps> = props => {
               <TouchableOpacity
                 onPress={() => {
                   setCameraType(
-                    cameraType === CameraPosition.FRONT ? CameraPosition.BACK : CameraPosition.FRONT,
+                    cameraType === CameraPosition.FRONT
+                      ? CameraPosition.BACK
+                      : CameraPosition.FRONT,
                   );
                 }}>
                 {SvgImage.FlipCameraIcon()}

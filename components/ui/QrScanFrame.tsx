@@ -1,5 +1,11 @@
 import React, {useEffect, useRef} from 'react';
-import {AccessibilityInfo, Animated, Easing, StyleSheet, View} from 'react-native';
+import {
+  AccessibilityInfo,
+  Animated,
+  Easing,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {BarcodeScanningResult, CameraView} from 'expo-camera';
 import {Theme} from './styleUtils';
 import {ColorTokens} from './themes/designTokens';

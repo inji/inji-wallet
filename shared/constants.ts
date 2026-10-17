@@ -75,6 +75,12 @@ export const GET_INDIVIDUAL_ID = (currentIndividualId: IndividualId) => {
 
 export const ACTIVITY_LOG_STORE_KEY = 'activityLog';
 
+/** Timestamp (ms) up to which the user has marked history notifications as read. */
+export const ACTIVITY_LOG_LAST_READ_STORE_KEY = 'activityLogLastReadAt';
+
+/** JSON list of history notifications opened individually since `activityLogLastReadAt`. */
+export const ACTIVITY_LOG_READ_IDS_STORE_KEY = 'activityLogReadIds';
+
 export const SETTINGS_STORE_KEY = 'settings';
 
 export const APP_ID_LENGTH = 12;
@@ -198,11 +204,14 @@ export const INTRO_SLIDER_LOGO_MARGIN = Dimensions.get('screen').width * 0.45;
  * orders must stay contiguous from 1: removing or adding a step means renumbering every later
  * one and updating these constants, or the counter reads past the total and testIDs shift.
  */
-export const COPILOT_PRE_FINAL_STEP = 4;
-export const COPILOT_FINAL_STEP = 5;
-export const COPILOT_HEIGHT = 0.22;
+// The bottom bar's Scan button (scan a verifier's QR to share), last of the onboarding steps.
+export const COPILOT_SCAN_STEP = 5;
+// Stopping the tour on any step up to here completes onboarding.
+export const COPILOT_PRE_FINAL_STEP = COPILOT_SCAN_STEP;
+// The first card, toured on its own after the first download.
+export const COPILOT_FINAL_STEP = 6;
 
-export const KEY_MANAGEMENT_STEP = 6;
+export const KEY_MANAGEMENT_STEP = 7;
 
 /**
  * Value for CopilotProvider's `androidStatusBarVisible`, which decides whether the tour
@@ -229,10 +238,11 @@ export const COPILOT_ANDROID_STATUS_BAR_VISIBLE =
 /** Copilot step `order` → testID prefix. Keys must match the `order` props one-for-one. */
 export const copilotTestID = {
   '1': 'download',
-  '2': 'scan',
+  '2': 'more',
   '3': 'history',
   '4': 'settings',
-  '5': 'cardView',
+  '5': 'scanToShare',
+  '6': 'cardView',
 };
 
 export const FACE_SDK_MODEL_PATH = isAndroid()

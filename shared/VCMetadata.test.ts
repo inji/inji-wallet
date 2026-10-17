@@ -316,6 +316,33 @@ describe('getVCMetadata', () => {
     expect(result.timestamp).toBe('1234567890');
     expect(result.downloadKeyType).toBe('ED25519');
     expect(result.format).toBe(VCFormat.ldp_vc);
+    expect(result.issuerName).toBe('');
+  });
+
+  it('saves the issuer display name and keeps it through fromVC', () => {
+    const mockContext: any = {
+      selectedIssuer: {
+        credential_issuer_host: 'https://issuer.example.com',
+        issuer_id: 'TestIssuer',
+        protocol: 'OpenId4VCI',
+        display: [{name: 'Road Transport Authority', locale: 'en'}],
+      },
+      timestamp: '1234567890',
+      vcMetadata: {},
+      verifiableCredential: null,
+      credentialWrapper: {format: VCFormat.ldp_vc},
+      selectedCredentialType: null,
+    };
+
+    const result = getVCMetadata(mockContext, 'ED25519');
+
+    expect(result.issuerName).toBe('Road Transport Authority');
+    expect(VCMetadata.fromVC(result).issuerName).toBe(
+      'Road Transport Authority',
+    );
+    expect(
+      VCMetadata.fromVcMetadataString(JSON.stringify(result)).issuerName,
+    ).toBe('Road Transport Authority');
   });
 
   it('should handle credential_issuer when credential_issuer_host is not available', () => {

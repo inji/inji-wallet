@@ -93,10 +93,11 @@ export function useCredentialCard(
         setIssuerDisplay(
           issuer ? getDisplayObjectForCurrentLanguage(issuer) : null,
         );
-        controller.STORE_INCOMING_VC_WELLKNOWN_CONFIG(
-          vcMetadata.issuerHost,
-          response.wellknownResponse,
-        );
+        if (response?.wellknownResponse)
+          controller.STORE_INCOMING_VC_WELLKNOWN_CONFIG(
+            vcMetadata.issuerHost,
+            response.wellknownResponse,
+          );
       })
       .catch(() => setWellknown({fallback: 'true'}));
   }, [loaded, configurationId]);

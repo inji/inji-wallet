@@ -194,11 +194,16 @@ export const openID4VPActions = (model: any) => {
         const data: any = event.data;
         console.error(
           'Error occurred during the authenticateVerifier call:',
-          '\n  name:', data?.name,
-          '\n  message:', data?.message,
-          '\n  code:', data?.code,
-          '\n  userInfo:', data?.userInfo,
-          '\n  stack:', data?.stack,
+          '\n  name:',
+          data?.name,
+          '\n  message:',
+          data?.message,
+          '\n  code:',
+          data?.code,
+          '\n  userInfo:',
+          data?.userInfo,
+          '\n  stack:',
+          data?.stack,
         );
         return (
           data?.code ??
@@ -274,6 +279,10 @@ export const openID4VPActions = (model: any) => {
           VPShareActivityLog.getLogFromObject({
             type: logType,
             timestamp: Date.now(),
+            ...VPShareActivityLog.namesFrom(
+              context.authenticationResponse,
+              context.selectedVCs,
+            ),
           }),
         );
       },

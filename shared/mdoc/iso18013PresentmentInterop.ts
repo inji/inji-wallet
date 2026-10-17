@@ -415,7 +415,10 @@ export async function startIso18013ProximityPresentment(
 ): Promise<void> {
   const nm = getNativeModule();
   const useCommonEngine = usesCommonEngine();
-  if (!useCommonEngine && (Platform.OS !== 'android' || !nm?.startPresentment)) {
+  if (
+    !useCommonEngine &&
+    (Platform.OS !== 'android' || !nm?.startPresentment)
+  ) {
     throw new Iso18013PresentmentNotImplementedError();
   }
 

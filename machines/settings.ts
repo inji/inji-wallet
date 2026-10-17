@@ -1,4 +1,11 @@
-import {assign, ContextFrom, EventFrom, send, StateFrom, sendUpdate} from 'xstate';
+import {
+  assign,
+  ContextFrom,
+  EventFrom,
+  send,
+  StateFrom,
+  sendUpdate,
+} from 'xstate';
 import {createModel} from 'xstate/lib/model';
 import {AppServices} from '../shared/GlobalContext';
 import {
@@ -31,8 +38,6 @@ const model = createModel(
     esignetHostUrl: ESIGNET_BASE_URL,
     appId: null,
     isBackupAndRestoreExplored: false as boolean,
-    isKeyManagementTourGuideExplored: false as boolean,
-    isKeyOrderSet: undefined as unknown as boolean,
     hasUserShownWithHardwareKeystoreNotExists: false,
     isAccountSelectionConfirmationShown: false,
     credentialRegistryResponse: '' as string,
@@ -64,10 +69,6 @@ const model = createModel(
       BACK: () => ({}),
       CANCEL: () => ({}),
       ACCEPT_HARDWARE_SUPPORT_NOT_EXISTS: () => ({}),
-      SET_KEY_MANAGEMENT_EXPLORED: () => ({}),
-      SET_KEY_MANAGEMENT_TOUR_GUIDE_EXPLORED: () => ({}),
-      SET_KEY_ORDER_RESPONSE: (status: boolean) => ({status}),
-      RESET_KEY_ORDER_RESPONSE: () => ({}),
       SHOWN_ACCOUNT_SELECTION_CONFIRMATION: () => ({}),
       DISMISS: () => ({}),
       BIOMETRIC_CANCELLED: (requester?: string) => ({requester}),
@@ -106,17 +107,17 @@ export const settingsMachine = model.createMachine(
             {target: 'storingDefaults'},
           ],
           BIOMETRIC_CANCELLED: {
-              actions: [
-                send(
-                  (_, event) => model.events.BIOMETRIC_CANCELLED(event.requester),
-                  {
-                    to: (_, event) => event.requester,
-                  },
-                ),
-                sendUpdate(),
-              ],
-              target: 'init',
-            },
+            actions: [
+              send(
+                (_, event) => model.events.BIOMETRIC_CANCELLED(event.requester),
+                {
+                  to: (_, event) => event.requester,
+                },
+              ),
+              sendUpdate(),
+            ],
+            target: 'init',
+          },
         },
       },
       storingDefaults: {
@@ -137,20 +138,8 @@ export const settingsMachine = model.createMachine(
           UPDATE_NAME: {
             actions: ['updateName', 'storeContext'],
           },
-          SET_KEY_MANAGEMENT_EXPLORED: {
-            actions: ['setKeyManagementExplored', 'storeContext'],
-          },
           UPDATE_VC_LABEL: {
             actions: ['updateVcLabel', 'storeContext'],
-          },
-          SET_KEY_ORDER_RESPONSE: {
-            actions: ['setKeyOrderingResponse'],
-          },
-          RESET_KEY_ORDER_RESPONSE: {
-            actions: ['resetKeyOrderingResponse'],
-          },
-          SET_KEY_MANAGEMENT_TOUR_GUIDE_EXPLORED: {
-            actions: ['setKeyManagementTourGuideExplored'],
           },
           UPDATE_HOST: {
             actions: [
@@ -275,15 +264,6 @@ export const settingsMachine = model.createMachine(
       setBackupAndRestoreOptionExplored: model.assign({
         isBackupAndRestoreExplored: () => true,
       }),
-      setKeyOrderingResponse: model.assign({
-        isKeyOrderSet: (_, event: any) => event.status,
-      }),
-      resetKeyOrderingResponse: model.assign({
-        isKeyOrderSet: undefined,
-      }),
-      setKeyManagementTourGuideExplored: model.assign({
-        isKeyManagementTourGuideExplored: true,
-      }),
       updateEsignetHostUrl: model.assign({
         esignetHostUrl: (_, event) => event.esignetHostUrl,
       }),
@@ -375,7 +355,6 @@ export function selectAppId(state: State) {
   return state?.context?.appId;
 }
 
-
 /** Alerting the user when the hardware keystore not supported by device and
  * not shown to user atlease once */
 
@@ -423,12 +402,4 @@ export function selectIsPasscodeUnlock(state: State) {
   return (
     state.context.isBiometricToggled && !state.context.isBiometricUnlockEnabled
   );
-}
-
-export function selectIsKeyOrderSet(state: State) {
-  return state.context.isKeyOrderSet;
-}
-
-export function selectIsKeymanagementTourGuideExplored(state: State) {
-  return state.context.isKeyManagementTourGuideExplored;
 }

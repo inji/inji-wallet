@@ -386,6 +386,10 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
             onStackView={() => setStackView(true)}
             refreshing={controller.isRefreshingVcs}
             onRefresh={controller.REFRESH}
+            isCardTourStep={
+              controller.isInitialDownloading || controller.isTourGuide
+            }
+            startCardTour={controller.isInitialDownloading}
           />
         ) : (
           <WalletHeader
@@ -490,8 +494,14 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
                           vcKey,
                         )}
                         isPinned={vcMetadata.isPinned}
-                        isInitialLaunch={controller.isInitialDownloading}
-                        isTopCard={index === 0}
+                        // While the new home shows, its carousel is the card tour step;
+                        // this hidden list must not register a second one.
+                        isInitialLaunch={
+                          controller.isInitialDownloading && !showWalletHome
+                        }
+                        isTopCard={index === 0 && !showWalletHome}
+                        autoOpen={vcKey === props.openVcKey}
+                        onAutoOpened={props.onVcOpened}
                         onMeasured={rect => {
                           if (highlightType && !highlightCardLayout) {
                             setHighlightCardLayout({
@@ -517,6 +527,8 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
                             vcKey,
                           )}
                           isPinned={vcMetadata.isPinned}
+                          autoOpen={vcKey === props.openVcKey}
+                          onAutoOpened={props.onVcOpened}
                         />
                       );
                     })

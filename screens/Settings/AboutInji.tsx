@@ -12,30 +12,34 @@ import {BannerNotificationContainer} from '../../components/BannerNotificationCo
 import {SvgImage} from '../../components/ui/svg';
 import LinearGradient from 'react-native-linear-gradient';
 
-export const AboutInji: React.FC<AboutInjiProps> = ({appId}) => {
+export const AboutInji: React.FC<AboutInjiProps> = ({appId, renderTrigger}) => {
   const {t} = useTranslation('AboutInji');
 
   const [showAboutInji, setShowAboutInji] = useState(false);
 
   return (
     <React.Fragment>
-      <Pressable
-        onPress={() => {
-          setShowAboutInji(!showAboutInji);
-        }}>
-        <ListItem {...testIDProps('aboutInji')} topDivider bottomDivider>
-          {SvgImage.abotInjiIcon()}
-          <ListItem.Content>
-            <ListItem.Title
-              {...testIDProps('aboutInjiTitle')}
-              style={Theme.AboutInjiScreenStyle.titleStyle}>
-              <Text weight="semibold" color={Theme.Colors.settingsLabel}>
-                {t('aboutInji')}
-              </Text>
-            </ListItem.Title>
-          </ListItem.Content>
-        </ListItem>
-      </Pressable>
+      {renderTrigger ? (
+        renderTrigger(() => setShowAboutInji(true))
+      ) : (
+        <Pressable
+          onPress={() => {
+            setShowAboutInji(!showAboutInji);
+          }}>
+          <ListItem {...testIDProps('aboutInji')} topDivider bottomDivider>
+            {SvgImage.abotInjiIcon()}
+            <ListItem.Content>
+              <ListItem.Title
+                {...testIDProps('aboutInjiTitle')}
+                style={Theme.AboutInjiScreenStyle.titleStyle}>
+                <Text weight="semibold" color={Theme.Colors.settingsLabel}>
+                  {t('aboutInji')}
+                </Text>
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        </Pressable>
+      )}
       <Modal
         testID="aboutInji"
         isVisible={showAboutInji}
@@ -125,6 +129,8 @@ export const AboutInji: React.FC<AboutInjiProps> = ({appId}) => {
 };
 
 interface AboutInjiProps {
+  /** Draws the row that opens the About page, in place of the default list item. */
+  renderTrigger?: (open: () => void) => React.ReactNode;
   isVisible?: boolean;
   appId?: string;
 }

@@ -2,7 +2,6 @@ import {
   BOTTOM_TAB_ROUTES,
   SCAN_ROUTES,
   REQUEST_ROUTES,
-  SETTINGS_ROUTES,
   AUTH_ROUTES,
 } from './routesConstants';
 
@@ -77,20 +76,6 @@ describe('routesConstants', () => {
     });
   });
 
-  describe('SETTINGS_ROUTES', () => {
-    it('should be defined', () => {
-      expect(SETTINGS_ROUTES).toBeDefined();
-    });
-
-    it('should have KeyManagement route', () => {
-      expect(SETTINGS_ROUTES.KeyManagement).toBe('KeyManagement');
-    });
-
-    it('should have exactly 1 route', () => {
-      expect(Object.keys(SETTINGS_ROUTES)).toHaveLength(1);
-    });
-  });
-
   describe('AUTH_ROUTES', () => {
     it('should be defined', () => {
       expect(AUTH_ROUTES).toBeDefined();
@@ -120,12 +105,6 @@ describe('routesConstants', () => {
 
     it('all REQUEST_ROUTES values should be strings', () => {
       Object.values(REQUEST_ROUTES).forEach(route => {
-        expect(typeof route).toBe('string');
-      });
-    });
-
-    it('all SETTINGS_ROUTES values should be strings', () => {
-      Object.values(SETTINGS_ROUTES).forEach(route => {
         expect(typeof route).toBe('string');
       });
     });

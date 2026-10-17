@@ -9,8 +9,7 @@ import {useHomeScreen} from './HomeScreenController';
 import {TabRef} from './HomeScreenMachine';
 import {ActorRefFrom} from 'xstate';
 import {ErrorMessageOverlay} from '../../components/MessageOverlay';
-import {DeviceEventEmitter, Linking} from 'react-native';
-import {SCAN_TO_ADD_EVENT} from '../../components/revamp/RevampTabBar';
+import {Linking} from 'react-native';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
@@ -40,14 +39,6 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
       controller.GOTO_ISSUERS();
     }
   };
-
-  // The bottom bar's Scan opens the add-card flow; IssuersScreen starts its QR scanner.
-  useEffect(() => {
-    const sub = DeviceEventEmitter.addListener(SCAN_TO_ADD_EVENT, () => {
-      controller.GOTO_ISSUERS();
-    });
-    return () => sub.remove();
-  }, []);
 
   useEffect(() => {
     const startCredentialOfferDownload = (url: string | null) => {
@@ -105,6 +96,10 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
               service={controller.tabRefs.myVcs}
               vcItemActor={controller.selectedVc}
               isViewingVc={controller.isViewingVc}
+              openVcKey={props.route.params?.openVcKey}
+              onVcOpened={() =>
+                props.navigation.setParams({openVcKey: undefined})
+              }
             />
             <ReceivedVcsTab
               isVisible={controller.activeTab === 1}
@@ -148,4 +143,7 @@ export interface HomeScreenTabProps {
   vcItemActor: ActorRefFrom<typeof VCItemMachine>;
   vc: VerifiableCredential | Credential;
   onAddCredential?: () => void;
+  /** Opens this credential's detail view as soon as its card has loaded. */
+  openVcKey?: string;
+  onVcOpened?: () => void;
 }

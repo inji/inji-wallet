@@ -23,6 +23,14 @@ export const SetupLanguageScreen: React.FC<RootRouteProps> = props => {
     backupRestoreController.DOWNLOAD_UNSYNCED_BACKUP_FILES();
   }, []);
 
+  // After Save, the auth machine generates the passcode salt and moves to setting up; the
+  // unlock method screen opens only then, so the salt always exists before a passcode is set.
+  useEffect(() => {
+    if (controller.isSettingUp) {
+      props.navigation.navigate('Auth');
+    }
+  }, [controller.isSettingUp]);
+
   useEffect(() => {
     const backAction = () => {
       BackHandler.exitApp();
@@ -71,7 +79,7 @@ export const SetupLanguageScreen: React.FC<RootRouteProps> = props => {
         type="gradient"
         title={t('save')}
         onPress={() => {
-          controller.SELECT(), controller.unlockPage;
+          controller.SELECT();
         }}
       />
     </Column>
