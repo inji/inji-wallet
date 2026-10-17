@@ -15,6 +15,7 @@
  */
 
 import type {
+  MdocDisclosedElement,
   MdocPresentmentConsentElement,
   MdocPresentmentConsentRequest,
   MdocPresentmentRequestedElement,
@@ -24,6 +25,7 @@ import {
   MDOC_PRESENTMENT_CANNOT_SATISFY,
   MDOC_PRESENTMENT_CONSENT_DISMISSED,
   MDOC_PRESENTMENT_CONSENT_REQUIRED,
+  MDOC_PRESENTMENT_READER_CONNECTED,
   MDOC_PRESENTMENT_RESPONSE_SENT,
   type PresentmentEventName,
 } from './events';
@@ -214,9 +216,23 @@ export class MdocPresentmentSession {
     this.finished.resolve();
   }
 
-  /** User approved the consent sheet. */
-  approveConsent(): void {
-    this.pendingConsent?.resolve(true);
+  /**
+   * User approved the consent sheet. `disclosedElements`, when given, narrows the disclosure to
+   * that subset of what the sheet showed; nothing left means nothing to send, so it is a denial.
+   */
+  approveConsent(disclosedElements?: MdocDisclosedElement[]): void {
+    if (!this.pendingConsent) {
+      return;
+    }
+    if (disclosedElements) {
+      const agreed = new Set(
+        disclosedElements.map(e => `${e.namespace}\u0000${e.element}`),
+      );
+      this.disclosureOnApproval = this.disclosureOnApproval.filter(item =>
+        agreed.has(`${item.namespace}\u0000${item.elementIdentifier}`),
+      );
+    }
+    this.pendingConsent.resolve(this.disclosureOnApproval.length > 0);
   }
 
   /** User denied the consent sheet — no DeviceResponse is sent. */
@@ -230,6 +246,7 @@ export class MdocPresentmentSession {
       this.readerTimeout = null;
     }
     this.phase('sessionEstablishment');
+    this.params.emit(MDOC_PRESENTMENT_READER_CONNECTED, {});
     if (__DEV__) {
       console.log('[mdoc presentment] reader connected over BLE');
     }

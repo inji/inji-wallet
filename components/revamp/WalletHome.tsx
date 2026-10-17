@@ -400,6 +400,8 @@ export const WalletHome: React.FC<{
         <QrCodeOverlay
           verifiableCredential={qrCard.controller.credential}
           meta={qrEntry.vcMetadata}
+          credentialName={qrCard.data.title}
+          issuerLogoUrl={qrCard.data.issuerLogoUrl}
           showInlineQr={false}
           forceVisible
           onClose={() => setQrFor(null)}

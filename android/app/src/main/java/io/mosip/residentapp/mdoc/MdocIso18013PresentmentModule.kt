@@ -160,11 +160,18 @@ class MdocIso18013PresentmentModule(
         }
     }
 
-    /** User approved sharing requested mDOC elements — resumes native presentment. */
+    /**
+     * User approved sharing requested mDOC elements — resumes native presentment.
+     * [disclosedElementsJson] is `[{namespace, element}]`, the subset agreed to; null shares all.
+     */
     @ReactMethod
-    fun approvePresentment(purposesJson: String?, promise: Promise) {
+    fun approvePresentment(
+        purposesJson: String?,
+        disclosedElementsJson: String?,
+        promise: Promise,
+    ) {
         try {
-            getPresenter().approveConsent(purposesJson)
+            getPresenter().approveConsent(purposesJson, disclosedElementsJson)
             promise.resolve(true)
         } catch (e: Exception) {
             promise.reject("E_MDOC_CONSENT", e.message, e)
