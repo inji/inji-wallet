@@ -751,7 +751,7 @@
     "searchByName": "Search",
     "bringYourDigitalID": "Bring your digital identity",
     "generateVcDescription": "Tap on \"Download card\" below to download your card",
-    "generateVcFABDescription": "Tap on  \"+\" below to download your card",
+    "generateVcFABDescription": "Tap on  \"+\" above to download your card",
     "downloadCard": "Download Card",
     "downloadingYourCard": "Downloading your card, this can take upto 5 minutes",
     "downloadingVcSuccess": "Your card has been downloaded successfully",
@@ -1545,6 +1545,12 @@
     "keepBoth": "Add as new"
   },
   "copilot": {
+    "scanToShareTitle": "Scan to Share",
+    "scanToShareMessage": "Tap Scan and point your camera at a verifier's QR code to share your credentials.",
+    "moreTitle": "Stay in the Loop",
+    "moreMessage": "Your notifications and profile live inside ⋯. Notifications show each credential you download or share.",
+    "quickTour": "Quick tour",
+    "skipTour": "Skip tour",
     "helpTitle": "Help/FAQs",
     "helpMessage": "Find answers to common questions and access helpful resources in our FAQ section, ensuring you have the support whenever you need it.",
     "downloadTitle": "Download Card",

@@ -32,7 +32,6 @@ const model = createModel(
       LOGIN: () => ({}),
       STORE_RESPONSE: (response?: unknown) => ({response}),
       SELECT: () => ({}),
-      NEXT: () => ({}),
       ONBOARDING_DONE: () => ({}),
       INITIAL_DOWNLOAD_DONE: () => ({}),
       SET_TOUR_GUIDE: (set: boolean) => ({set}),
@@ -100,7 +99,9 @@ export const authMachine = model.createMachine(
           {cond: 'hasLanguageset', target: 'languagesetup'},
           {cond: 'hasPasscodeSet', target: 'unauthorized'},
           {cond: 'hasBiometricSet', target: 'unauthorized'},
-          {target: 'settingUp'},
+          // A passcode is hashed with the salt, so setup never starts without one.
+          {cond: 'hasPasscodeSalt', target: 'settingUp'},
+          {target: 'introSlider'},
         ],
       },
       languagesetup: {
@@ -110,16 +111,18 @@ export const authMachine = model.createMachine(
           },
         },
       },
+      // First launch no longer shows intro slides: this state only generates the passcode
+      // salt, then moves straight on to choosing an unlock method. Setup is reached only with
+      // a salt: if generating it fails, the language screen stays up and Save tries again.
       introSlider: {
         invoke: {
           src: 'generatePasscodeSalt',
           onDone: {
             actions: ['setPasscodeSalt', 'storeContext'],
-          },
-        },
-        on: {
-          NEXT: {
             target: 'settingUp',
+          },
+          onError: {
+            target: 'languagesetup',
           },
         },
       },
@@ -251,6 +254,9 @@ export const authMachine = model.createMachine(
       },
       hasBiometricSet: context => {
         return context.biometrics !== '';
+      },
+      hasPasscodeSalt: context => {
+        return !!context.passcodeSalt;
       },
       hasLanguageset: context => {
         return !context.selectLanguage;

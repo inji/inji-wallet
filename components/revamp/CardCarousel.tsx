@@ -16,6 +16,13 @@ import {CredentialCardBack, CredentialCardFront} from './CredentialCard';
 import {CredentialCardData} from './useCredentialCard';
 import {CARD_HEIGHT, CARD_WIDTH, motion, radii} from './tokens';
 import {CardSkeleton} from './CardSkeleton';
+import {
+  carouselScale,
+  FRONT_CARD_LIFT,
+  FRONT_CARD_SCALE,
+  SLOT_TOP,
+  slotPosition,
+} from './carouselLayout';
 
 export interface CarouselEntry {
   key: string;
@@ -24,9 +31,6 @@ export interface CarouselEntry {
   data?: CredentialCardData;
 }
 
-const SLOT = 0.8; // card scale relative to its design size, at a 390-wide screen
-// The centre card is drawn 1.03x its slot, so this keeps it at most its design size on wide screens.
-const MAX_SCALE = 1 / 1.03;
 const GAP = 250; // distance between neighbouring cards at scale 1 (200 at the design's 0.8)
 const RUBBER = 0.35;
 
@@ -43,9 +47,7 @@ export const CardCarousel: React.FC<{
   reduceMotion: boolean;
 }> = ({entries, index, onIndexChange, flipped, onFlip, reduceMotion}) => {
   const {width} = useWindowDimensions();
-  // Grows with the screen like the design, but only up to its full size, so on wide phones and
-  // tablets the centre card matches the pinned card and details page.
-  const scale = Math.min((width / 390) * SLOT, MAX_SCALE);
+  const scale = carouselScale(width);
   const gap = GAP * scale;
   const n = entries.length;
 
@@ -164,7 +166,7 @@ export const CardCarousel: React.FC<{
       activeOffsetX={[-8, 8]}
       failOffsetY={[-14, 14]}>
       <Animated.View
-        style={{height: CARD_HEIGHT * scale + 24, width}}
+        style={{height: CARD_HEIGHT * scale + 2 * SLOT_TOP, width}}
         accessibilityRole="adjustable"
         accessibilityLabel="Your credentials. Swipe left or right">
         {entries.map((entry, i) => (
@@ -233,14 +235,14 @@ const CarouselCard = React.memo(function CarouselCard({
         cardScale: Animated.multiply(
           e.interpolate({
             inputRange: range,
-            outputRange: [0.76, 0.91, 1.03, 0.91, 0.76],
+            outputRange: [0.76, 0.91, FRONT_CARD_SCALE, 0.91, 0.76],
             extrapolate: 'clamp',
           }),
           scale,
         ),
         translateY: e.interpolate({
           inputRange: [-1, 0, 1],
-          outputRange: [0, -8, 0],
+          outputRange: [0, -FRONT_CARD_LIFT, 0],
           extrapolate: 'clamp',
         }),
         opacity: e.interpolate({
@@ -284,9 +286,7 @@ const CarouselCard = React.memo(function CarouselCard({
   });
 
   const placement = {
-    left: (width - CARD_WIDTH) / 2,
-    // Scaling is about the centre, so shift up by the space the shrink leaves at the top.
-    top: 12 - (CARD_HEIGHT * (1 - scale)) / 2,
+    ...slotPosition(width, scale),
     // Android stacks by elevation before zIndex, so both follow the depth.
     zIndex: 10 - depth,
     elevation: depth === 0 ? 10 : Math.max(0, 2 - depth),

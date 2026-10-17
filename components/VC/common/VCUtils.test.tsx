@@ -7,7 +7,7 @@ import * as i18n from '../../../i18n';
 
 // Mock dependencies
 jest.mock('../../../i18n', () => ({
-  getLocalizedField: jest.fn((value) => {
+  getLocalizedField: jest.fn(value => {
     if (typeof value === 'string') return value;
     if (Array.isArray(value)) {
       const match = value.find((item: any) => item.language === 'en');
@@ -253,7 +253,9 @@ describe('getFieldValue', () => {
             'org.iso.18013.5.1': [
               {
                 elementIdentifier: 'driving_privileges',
-                elementValue: [{issueDate: '2023-01-15', vehicleCategoryCode: 'B'}],
+                elementValue: [
+                  {issueDate: '2023-01-15', vehicleCategoryCode: 'B'},
+                ],
               },
             ],
           },
@@ -281,7 +283,10 @@ describe('getFieldValue', () => {
             'org.iso.18013.5.1': [
               {
                 elementIdentifier: 'driving_privileges',
-                elementValue: {issueDate: '2023-01-15', vehicleCategoryCode: 'B'},
+                elementValue: {
+                  issueDate: '2023-01-15',
+                  vehicleCategoryCode: 'B',
+                },
               },
             ],
           },
@@ -402,7 +407,9 @@ describe('getFieldValue', () => {
 
     it('should return null for object values', () => {
       const verifiableCredential = {
-        fullResolvedPayload: {address: {street: '123 Main St', city: 'TestCity'}},
+        fullResolvedPayload: {
+          address: {street: '123 Main St', city: 'TestCity'},
+        },
       } as any;
 
       const result = getFieldValue(
@@ -414,16 +421,13 @@ describe('getFieldValue', () => {
         VCFormat.vc_sd_jwt,
       );
 
-      expect(result).toBe("");
+      expect(result).toBe('');
     });
 
     it('should handle nested array paths in SD-JWT', () => {
       const verifiableCredential = {
         fullResolvedPayload: {
-          users: [
-            {profile: {name: 'John'}},
-            {profile: {name: 'Jane'}},
-          ],
+          users: [{profile: {name: 'John'}}, {profile: {name: 'Jane'}}],
         },
       } as any;
 

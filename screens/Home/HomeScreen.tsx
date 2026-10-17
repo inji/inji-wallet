@@ -9,8 +9,6 @@ import {useHomeScreen} from './HomeScreenController';
 import {TabRef} from './HomeScreenMachine';
 import {ActorRefFrom} from 'xstate';
 import {ErrorMessageOverlay} from '../../components/MessageOverlay';
-import {DeviceEventEmitter} from 'react-native';
-import {SCAN_TO_ADD_EVENT} from '../../components/revamp/RevampTabBar';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
@@ -32,14 +30,6 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
       controller.GOTO_ISSUERS();
     }
   };
-
-  // The bottom bar's Scan opens the add-card flow; IssuersScreen starts its QR scanner.
-  useEffect(() => {
-    const sub = DeviceEventEmitter.addListener(SCAN_TO_ADD_EVENT, () => {
-      controller.GOTO_ISSUERS();
-    });
-    return () => sub.remove();
-  }, []);
 
   useEffect(() => {
     if (controller.IssuersService) {

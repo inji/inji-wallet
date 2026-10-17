@@ -1358,6 +1358,12 @@
     "keepBoth": "Idagdag bilang bago"
   },
   "copilot": {
+    "scanToShareTitle": "I-scan para Magbahagi",
+    "scanToShareMessage": "I-tap ang Scan at itutok ang camera sa QR code ng verifier para ibahagi ang iyong mga credential.",
+    "moreTitle": "Manatiling Updated",
+    "moreMessage": "Nasa ⋯ ang iyong mga notification at profile. Ipinapakita ng mga notification ang bawat credential na dina-download o ibinabahagi mo.",
+    "quickTour": "Mabilis na tour",
+    "skipTour": "Laktawan ang tour",
     "helpTitle": "Tulong/Mga FAQ",
     "helpMessage": "Maghanap ng mga sagot sa mga karaniwang tanong at i-access ang mga kapaki-pakinabang na mapagkukunan sa aming seksyong FAQ, na tinitiyak na mayroon kang suporta sa tuwing kailangan mo ito.",
     "downloadTitle": "I-download ang Card",

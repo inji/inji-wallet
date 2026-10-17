@@ -122,15 +122,6 @@ export const BannerNotificationContainer: React.FC<
           testId={'reverificationFailedPopup'}
         />
       )}
-      {bannerNotificationController.isDownloadingSuccess && (
-        <BannerNotification
-          type={BannerStatusType.SUCCESS}
-          message={t('MyVcsTab:downloadingVcSuccess')}
-          onClosePress={bannerNotificationController.RESET_DOWNLOADING_SUCCESS}
-          key={'downloadingVcSuccessPopup'}
-          testId={'downloadingVcSuccessPopup'}
-        />
-      )}
     </>
   );
 };

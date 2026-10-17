@@ -22,7 +22,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from '@xstate/react';
 import {selectAuthorizationRequest, selectIsLinkCode} from '../machines/app';
 import {BOTTOM_TAB_ROUTES} from '../routes/routesConstants';
-import {roundedSvgMaskPath} from '../shared/copilotMask';
+import {COPILOT_OVERLAY_PROPS, roundedSvgMaskPath} from '../shared/copilotMask';
 import {RevampTabBar} from '../components/revamp/RevampTabBar';
 
 const {Navigator, Screen} = createBottomTabNavigator();
@@ -55,6 +55,8 @@ export const MainLayout: React.FC = () => {
 
   return (
     <CopilotProvider
+      // Shared look of the overlay; first, so the props below always win.
+      {...COPILOT_OVERLAY_PROPS}
       stopOnOutsideClick
       // Whether the status bar correction is needed depends on the Android version —
       // see COPILOT_ANDROID_STATUS_BAR_VISIBLE. Not a fixed true/false: either constant

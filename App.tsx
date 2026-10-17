@@ -32,7 +32,7 @@ import {CopilotTooltip} from './components/CopilotTooltip';
 import {Theme} from './components/ui/styleUtils';
 import {selectAppSetupComplete} from './machines/auth';
 import {COPILOT_ANDROID_STATUS_BAR_VISIBLE} from './shared/constants';
-import {roundedSvgMaskPath} from './shared/copilotMask';
+import {COPILOT_OVERLAY_PROPS, roundedSvgMaskPath} from './shared/copilotMask';
 
 const {RNSecureKeystoreModule} = NativeModules;
 // kludge: this is a bad practice but has been done temporarily to surface
@@ -169,6 +169,8 @@ export default function App() {
   return (
     <GlobalContextProvider>
       <CopilotProvider
+        // Shared look of the overlay; first, so the props below always win.
+        {...COPILOT_OVERLAY_PROPS}
         stopOnOutsideClick
         // Version-dependent — see COPILOT_ANDROID_STATUS_BAR_VISIBLE. Keep in sync with
         // MainLayout's provider.

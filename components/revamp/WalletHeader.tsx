@@ -133,13 +133,22 @@ export const WalletHeader: React.FC<{
                 <SearchIcon color={c.ink} />
               </Pressable>
             ) : null}
-            <Pressable
-              onPress={() => setMenuOpen(true)}
-              accessibilityLabel="More options"
-              accessibilityState={{expanded: menuOpen}}
-              style={[styles.groupBtn, menuOpen && {backgroundColor: c.sand}]}>
-              <MoreIcon color={c.ink} />
-            </Pressable>
+            <Copilot
+              title={t('copilot:moreTitle')}
+              description={t('copilot:moreMessage')}
+              order={2}
+              targetStyle={{borderRadius: radii.pill}}>
+              <Pressable
+                onPress={() => setMenuOpen(true)}
+                accessibilityLabel="More options"
+                accessibilityState={{expanded: menuOpen}}
+                style={[
+                  styles.groupBtn,
+                  menuOpen && {backgroundColor: c.sand},
+                ]}>
+                <MoreIcon color={c.ink} />
+              </Pressable>
+            </Copilot>
           </View>
         </View>
       </View>

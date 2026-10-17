@@ -16,7 +16,7 @@ import {Text} from './../../components/ui';
 import {BannerStatusType} from '../../components/BannerNotification';
 import {LIVENESS_CHECK} from '../../shared/constants';
 import {SendVPScreen} from './SendVPScreen';
-import { useSendVPScreen } from './SendVPScreenController';
+import {useSendVPScreen} from './SendVPScreenController';
 import {useSendVcScreen} from './SendVcScreenController';
 import {ShareSuccessScreen} from './ShareSuccessScreen';
 import {VCMetadata} from '../../shared/VCMetadata';
@@ -198,7 +198,7 @@ export const ScanLayout: React.FC = () => {
           }}
         />
       </ScanStack.Navigator>
-       
+
       <ShareSuccessScreen
         isVisible={controller.isAccepted || controller.isVPSharingSuccess}
         verifierName={sharedWithName}

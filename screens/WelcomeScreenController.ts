@@ -52,12 +52,9 @@ export function useWelcomeScreen(props: RootRouteProps) {
     isLanguagesetup,
     isPasscodeSet,
     isBiometricUnlock,
-    NEXT: () => {
-      authService.send(AuthEvents.NEXT()), props.navigation.navigate('Auth');
-    },
-    SELECT: (screen: any) => {
-      authService.send(AuthEvents.SELECT()),
-        props.navigation.navigate('IntroSliders');
+    // The language screen then opens the unlock setup once the auth machine is ready for it.
+    SELECT: () => {
+      authService.send(AuthEvents.SELECT());
     },
     BACK: () => {
       settingsService.send(SettingsEvents.BACK()),
