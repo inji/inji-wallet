@@ -52,10 +52,11 @@ export interface Typegen0 {
     hasBiometricSet: '';
     hasData: 'STORE_RESPONSE';
     hasLanguageset: '';
+    hasPasscodeSalt: '';
     hasPasscodeSet: '';
   };
   eventsCausingServices: {
-    generatePasscodeSalt: 'SELECT';
+    generatePasscodeSalt: '' | 'SELECT';
     initializeFaceSdkModel: 'LOGIN' | 'SETUP_BIOMETRICS' | 'SETUP_PASSCODE';
   };
   matchesStates:
