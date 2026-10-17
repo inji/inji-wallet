@@ -129,6 +129,9 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
   if (
     keyboard ||
     tabBarStyle?.display === 'none' ||
+    // The share flow (scanner, choosing what to share, sending) is full screen, with its
+    // own close buttons and bottom actions that the floating bar would cover.
+    focused.name === BOTTOM_TAB_ROUTES.share ||
     (nested && FULL_SCREEN_ROUTES.includes(nested))
   ) {
     return null;

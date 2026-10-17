@@ -38,6 +38,13 @@ import {useCopilot} from 'react-native-copilot';
 import {isTranslationKeyFound} from '../../shared/commonUtil';
 
 /**
+ * How long a tour start blocks another one. Longer than the library's wait for the first
+ * step to register (120 frames, about 2 s at 60 fps), after which the tour is showing and
+ * its own visible flag takes over.
+ */
+const TOUR_START_GUARD_MS = 3000;
+
+/**
  * Anything longer than this is a base64 photo or an encoded blob, never something a
  * person types into the search bar. Real names and addresses stay well under it.
  */
@@ -185,7 +192,28 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
     setClearSearchIcon(false);
     setShowPinVc(true);
   };
-  const {start} = useCopilot();
+  const {start, visible: isTourVisible} = useCopilot();
+
+  /**
+   * Starts the tour unless it is already showing or starting. A replay from Settings asks
+   * twice at nearly the same moment: the flag turning on (the effect below) and this
+   * screen's onLayout, which fires again whenever Home re-lays out, such as when its tab
+   * comes back into view. A second start while the tour was starting or showing is what
+   * left a copy of the overlay frozen on step 1 under the live one.
+   */
+  const isTourStarting = useRef(false);
+  const startTour = () => {
+    if (isTourVisible || isTourStarting.current) {
+      return;
+    }
+    isTourStarting.current = true;
+    start(t('copilot:downloadTitle'));
+    // `start` retries until the step has registered and then gives up without a word, so
+    // the guard lapses rather than blocking every later start.
+    setTimeout(() => {
+      isTourStarting.current = false;
+    }, TOUR_START_GUARD_MS);
+  };
 
   // The tour starts automatically only while onboarding (a fresh install, until the first tour is
   // finished or dismissed), or when isTourGuide is turned on by the Settings "tour guide" button.
@@ -196,10 +224,11 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
   /**
    * Covers the Settings "Replay tour guide". The onLayout below is what starts the tour
    * on first launch — deliberately, so the first step is measured after native layout
-   * rather than during the mount commit — but that signal never arrives on a replay:
-   * Home is already mounted and laid out by then, nothing re-lays out, and onLayout
-   * doesn't fire again. The flag turning on is the only signal in that case, and since
-   * the screen is already laid out there's nothing left to wait for.
+   * rather than during the mount commit — but that signal can't be relied on for a replay:
+   * Home is already mounted and laid out by then, and onLayout fires only if something
+   * re-lays it out. The flag turning on is the dependable signal in that case, and since
+   * the screen is already laid out there's nothing left to wait for. When onLayout does
+   * fire as well, startTour ignores the second start.
    *
    * Only the off->on transition, never the mount: on mount previous and current already
    * agree, so this stays out of the way and leaves the first-launch path to onLayout. If
@@ -210,7 +239,7 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
     const justTurnedOn = shouldStartTour && !wasStartingTourRef.current;
     wasStartingTourRef.current = shouldStartTour;
     if (justTurnedOn) {
-      start(t('copilot:downloadTitle'));
+      startTour();
     }
   }, [shouldStartTour]);
 
@@ -363,9 +392,7 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
       <Column
         fill
         style={{display: props.isVisible ? 'flex' : 'none'}}
-        onLayout={
-          shouldStartTour ? () => start(t('copilot:downloadTitle')) : undefined
-        }>
+        onLayout={shouldStartTour ? startTour : undefined}>
         {controller.isRequestSuccessful && (
           <BannerNotification
             type={BannerStatusType.SUCCESS}
