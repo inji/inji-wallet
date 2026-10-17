@@ -23,7 +23,8 @@ import {VCItemEvents} from '../../machines/VerifiableCredential/VCItemMachine/VC
 import {RemoveVcWarningOverlay} from '../../screens/Home/MyVcs/RemoveVcWarningOverlay';
 import {HistoryTab} from '../../screens/Home/MyVcs/HistoryTab';
 import {QrCodeOverlay} from '../QrCodeOverlay';
-import {CardCarousel, frontCardFrame} from './CardCarousel';
+import {CardCarousel} from './CardCarousel';
+import {frontCardFrame} from './carouselLayout';
 import {CardLoader, LoadedCard} from './CardLoader';
 import {CredentialCardFront, ScaledCard} from './CredentialCard';
 import {Action, CredentialInformation, StatusPill} from './CredentialParts';
