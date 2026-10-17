@@ -55,6 +55,8 @@ export const MainLayout: React.FC = () => {
 
   return (
     <CopilotProvider
+      // Shared look of the overlay; first, so the props below always win.
+      {...COPILOT_OVERLAY_PROPS}
       stopOnOutsideClick
       // Whether the status bar correction is needed depends on the Android version —
       // see COPILOT_ANDROID_STATUS_BAR_VISIBLE. Not a fixed true/false: either constant
@@ -64,7 +66,6 @@ export const MainLayout: React.FC = () => {
       tooltipStyle={Theme.Styles.copilotStyle}
       stepNumberComponent={() => null}
       svgMaskPath={roundedSvgMaskPath}
-      {...COPILOT_OVERLAY_PROPS}
       animated>
       <Navigator
         initialRouteName={mainRoutes[0].name}

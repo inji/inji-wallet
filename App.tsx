@@ -169,6 +169,8 @@ export default function App() {
   return (
     <GlobalContextProvider>
       <CopilotProvider
+        // Shared look of the overlay; first, so the props below always win.
+        {...COPILOT_OVERLAY_PROPS}
         stopOnOutsideClick
         // Version-dependent — see COPILOT_ANDROID_STATUS_BAR_VISIBLE. Keep in sync with
         // MainLayout's provider.
@@ -177,7 +179,6 @@ export default function App() {
         tooltipStyle={Theme.Styles.copilotStyle}
         stepNumberComponent={() => null}
         svgMaskPath={roundedSvgMaskPath}
-        {...COPILOT_OVERLAY_PROPS}
         animated>
         <AppInitialization />
       </CopilotProvider>
