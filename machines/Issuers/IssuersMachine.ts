@@ -276,7 +276,18 @@ export const IssuersMachine = model.createMachine(
           credentialOfferDownloadConsent: {
             description:
               'waits for the user to give consent to download the credential offer',
-            entry: ['resetTrustedIssuerConsentStatus'],
+            entry: [
+              'resetTrustedIssuerConsentStatus',
+              'resetOfferedCredentialTypeNames',
+            ],
+            invoke: {
+              src: 'fetchOfferedCredentialTypeNames',
+              onDone: {
+                actions: ['setOfferedCredentialTypeNames'],
+              },
+              // Only fills in the "Offering" row; the consent itself doesn't depend on it.
+              onError: {},
+            },
             on: {
               CANCEL: {
                 actions: [

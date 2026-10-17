@@ -492,6 +492,13 @@ export const IssuersActions = (model: any) => {
       },
     }),
 
+    setOfferedCredentialTypeNames: model.assign({
+      offeredCredentialTypeNames: (_: any, event: any) => event.data,
+    }),
+    resetOfferedCredentialTypeNames: model.assign({
+      offeredCredentialTypeNames: () => [],
+    }),
+
     setCredentialOfferFlowType: model.assign({
       isCredentialOfferFlow: (_: any, event: any) => {
         return true;

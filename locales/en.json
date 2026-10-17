@@ -81,6 +81,28 @@
     "cameraPermissionGuideLabel": "Go to phone settings and enable the camera access manually.",
     "flipCamera": "Flip Camera"
   },
+  "AddToWallet": {
+    "title": "Add to Wallet",
+    "subtitle": "How would you like to add a credential?",
+    "scanToAdd": {
+      "title": "Scan to Add",
+      "description": "Scan a credential offer from an issuer's screen, letter or SMS."
+    },
+    "signedNote": "Credentials come straight from the issuing authority, digitally signed. CredIssuer can't change them."
+  },
+  "ScanToAdd": {
+    "title": "Scan to Add",
+    "close": "Close",
+    "torchOn": "Turn on flashlight",
+    "torchOff": "Turn off flashlight",
+    "instructionTitle": "Point your camera at the issuer's QR code",
+    "instructionBody": "It scans automatically. Look for the code on the issuer's screen, letter or SMS.",
+    "processingTitle": "Reading the credential offer",
+    "processingBody": "This will only take a moment.",
+    "cameraOffTitle": "Camera access is off",
+    "cameraOffBody": "Allow camera access in your phone settings to scan the issuer's QR code.",
+    "openSettings": "Open Settings"
+  },
   "VcDetails": {
     "generatedOn": "Generated On",
     "status": "Status",
@@ -1514,8 +1536,13 @@
       "This issuer will be added to your trusted list.",
       "You won't need to review trust again when downloading from them next time."
     ],
-    "description": "You're about to download a credential from {{name}} issuer.",
-    "title": "Quick Check",
-    "subTitle": "Before proceeding, confirm you recognize this issuer"
+    "description": "You're about to download a credential from {{name}}. If you continue:",
+    "title": "Trust This Issuer?",
+    "subTitle": "Before proceeding, confirm you recognize this issuer",
+    "firstTime": "First time with this issuer",
+    "trustedSubtitle": "You can now safely receive cards from {{name}}.",
+    "downloadingCard": "Downloading your card…",
+    "unknownIssuer": "Unknown issuer",
+    "offering": "Offering"
   }
 }
