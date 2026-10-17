@@ -9,15 +9,24 @@ import {useHomeScreen} from './HomeScreenController';
 import {TabRef} from './HomeScreenMachine';
 import {ActorRefFrom} from 'xstate';
 import {ErrorMessageOverlay} from '../../components/MessageOverlay';
+import {Linking} from 'react-native';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {AddToWalletSheet} from '../../components/addCredential/AddToWalletSheet';
+import {IssuerScreenTabEvents} from '../../machines/Issuers/IssuersMachine';
+
+const CREDENTIAL_OFFER_SCHEME = 'openid-credential-offer://';
+
+// getInitialURL keeps returning the launch link for the life of the process, and HomeScreen
+// remounts after a logout, so the launch link must only be handled once.
+let isInitialUrlHandled = false;
 
 export const HomeScreen: React.FC<HomeRouteProps> = props => {
   const controller = useHomeScreen(props);
   const [isAddToWalletVisible, setIsAddToWalletVisible] = useState(false);
   const shouldScanAfterSheetCloses = useRef(false);
+  const pendingCredentialOffer = useRef('');
 
   const startScanToAdd = () => {
     shouldScanAfterSheetCloses.current = true;
@@ -32,10 +41,42 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
   };
 
   useEffect(() => {
+    const startCredentialOfferDownload = (url: string | null) => {
+      if (!url?.startsWith(CREDENTIAL_OFFER_SCHEME)) return;
+      pendingCredentialOffer.current = url;
+      controller.GOTO_ISSUERS();
+    };
+
+    if (!isInitialUrlHandled) {
+      isInitialUrlHandled = true;
+      Linking.getInitialURL().then(startCredentialOfferDownload);
+    }
+    const subscription = Linking.addEventListener('url', ({url}) =>
+      startCredentialOfferDownload(url),
+    );
+    return () => subscription.remove();
+  }, []);
+
+  useEffect(() => {
     if (controller.IssuersService) {
+      if (pendingCredentialOffer.current !== '') {
+        controller.IssuersService.send(
+          IssuerScreenTabEvents.SCAN_CREDENTIAL_OFFER_QR_CODE(),
+        );
+        controller.IssuersService.send(
+          IssuerScreenTabEvents.QR_CODE_SCANNED(pendingCredentialOffer.current),
+        );
+        pendingCredentialOffer.current = '';
+      }
       navigateToIssuers();
     }
   }, [controller.IssuersService]);
+
+  useEffect(() => {
+    if (controller.isMinimumStorageLimitReached) {
+      pendingCredentialOffer.current = '';
+    }
+  }, [controller.isMinimumStorageLimitReached]);
 
   const navigateToIssuers = () => {
     props.navigation.navigate('IssuersScreen', {

@@ -34,7 +34,6 @@ const DESIGN_NAV_WIDTH = 234;
 const MIN_SIDE_MARGIN = 12;
 const SLIDE = {duration: 500, easing: Easing.bezier(0.22, 1, 0.36, 1)};
 
-
 /** Screens inside a tab that hide the bar, as the issuer list always has. */
 const FULL_SCREEN_ROUTES = ['IssuersScreen'];
 
