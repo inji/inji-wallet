@@ -21,6 +21,7 @@ import {
 } from './presentmentSession';
 import type {
   Iso18013PresentmentParams,
+  MdocDisclosedElement,
   PresentmentPhase,
 } from '../iso18013PresentmentInterop';
 
@@ -138,8 +139,10 @@ export async function stopMdocPresentmentSession(): Promise<void> {
   session?.cancel();
 }
 
-export function approveMdocPresentmentConsent(): void {
-  activeSession?.approveConsent();
+export function approveMdocPresentmentConsent(
+  disclosedElements?: MdocDisclosedElement[],
+): void {
+  activeSession?.approveConsent(disclosedElements);
 }
 
 export function denyMdocPresentmentConsent(): void {

@@ -41,6 +41,7 @@ import {
   DETAIL_VIEW_BOTTOM_SECTION_FIELDS,
   Display,
   fieldItemIterator,
+  getCredentialType,
 } from '../common/VCUtils';
 import {VCFormat} from '../../../shared/VCFormat';
 
@@ -297,6 +298,8 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                 forceVisible={true}
                 onClose={() => setShowQrOverlay(false)}
                 onCloseDetails={props.onCloseDetails}
+                credentialName={getCredentialType(props.wellknown)}
+                issuerLogoUrl={logo?.url}
               />
             )}
           </Column>
@@ -336,6 +339,8 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                         meta={props.verifiableCredentialData.vcMetadata}
                         showInlineQr={true}
                         onCloseDetails={props.onCloseDetails}
+                        credentialName={getCredentialType(props.wellknown)}
+                        issuerLogoUrl={logo?.url}
                       />
                     )}
                     <Column

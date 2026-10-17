@@ -13,6 +13,10 @@ import {
   verifyCredentialData,
 } from '../../shared/openId4VCI/Utils';
 import VciClient from '../../shared/vciClient/VciClient';
+import {
+  getCredentialConfigurationNames,
+  getOfferedCredentialConfigurationIds,
+} from '../../shared/openId4VCI/credentialOffer';
 import {displayType, issuerType} from './IssuersMachine';
 import {setItem} from '../store';
 import {
@@ -288,6 +292,18 @@ export const IssuersService = () => {
           credentialWrapper?.verifiableCredential?.credential,
         ),
       );
+    },
+    fetchOfferedCredentialTypeNames: async (context: any) => {
+      const configurationIds = await getOfferedCredentialConfigurationIds(
+        context.qrData,
+      );
+      if (configurationIds.length === 0) {
+        return [];
+      }
+      const issuerMetadata = await VciClient.getInstance().getIssuerMetadata(
+        context.credentialOfferCredentialIssuer,
+      );
+      return getCredentialConfigurationNames(issuerMetadata, configurationIds);
     },
     cacheIssuerWellknown: async (context: any) => {
       const credentialIssuer = context.credentialOfferCredentialIssuer;

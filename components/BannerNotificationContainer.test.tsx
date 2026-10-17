@@ -31,10 +31,7 @@ jest.mock('../screens/Scan/ScanScreenController', () => ({
 }));
 
 jest.mock('../screens/Settings/SettingScreenController', () => ({
-  useSettingsScreen: jest.fn(() => ({
-    isKeyOrderSet: null,
-    RESET_KEY_ORDER_RESPONSE: jest.fn(),
-  })),
+  useSettingsScreen: jest.fn(() => ({})),
 }));
 
 jest.mock('./BackupAndRestoreBannerNotification', () => ({

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Column} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
 import {HomeRouteProps} from '../../routes/routeTypes';
@@ -12,9 +12,24 @@ import {ErrorMessageOverlay} from '../../components/MessageOverlay';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {AddToWalletSheet} from '../../components/addCredential/AddToWalletSheet';
 
 export const HomeScreen: React.FC<HomeRouteProps> = props => {
   const controller = useHomeScreen(props);
+  const [isAddToWalletVisible, setIsAddToWalletVisible] = useState(false);
+  const shouldScanAfterSheetCloses = useRef(false);
+
+  const startScanToAdd = () => {
+    shouldScanAfterSheetCloses.current = true;
+    setIsAddToWalletVisible(false);
+  };
+
+  const onAddToWalletClosed = () => {
+    if (shouldScanAfterSheetCloses.current) {
+      shouldScanAfterSheetCloses.current = false;
+      controller.GOTO_ISSUERS();
+    }
+  };
 
   useEffect(() => {
     if (controller.IssuersService) {
@@ -36,10 +51,14 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
           <Column fill>
             <MyVcsTab
               isVisible={controller.activeTab === 0}
-              onAddCredential={controller.GOTO_ISSUERS}
+              onAddCredential={() => setIsAddToWalletVisible(true)}
               service={controller.tabRefs.myVcs}
               vcItemActor={controller.selectedVc}
               isViewingVc={controller.isViewingVc}
+              openVcKey={props.route.params?.openVcKey}
+              onVcOpened={() =>
+                props.navigation.setParams({openVcKey: undefined})
+              }
             />
             <ReceivedVcsTab
               isVisible={controller.activeTab === 1}
@@ -49,6 +68,13 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
           </Column>
         )}
       </Column>
+
+      <AddToWalletSheet
+        isVisible={isAddToWalletVisible}
+        onScanToAdd={startScanToAdd}
+        onCancel={() => setIsAddToWalletVisible(false)}
+        onClosed={onAddToWalletClosed}
+      />
 
       <ErrorMessageOverlay
         translationPath={'MyVcsTab'}
@@ -76,4 +102,7 @@ export interface HomeScreenTabProps {
   vcItemActor: ActorRefFrom<typeof VCItemMachine>;
   vc: VerifiableCredential | Credential;
   onAddCredential?: () => void;
+  /** Opens this credential's detail view as soon as its card has loaded. */
+  openVcKey?: string;
+  onVcOpened?: () => void;
 }

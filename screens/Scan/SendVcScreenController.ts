@@ -7,6 +7,7 @@ import {
   selectCredential,
   selectIsSelectingVc,
   selectReceiverInfo,
+  selectSelectedVc,
   selectVcName,
   selectVerifiableCredentialData,
 } from '../../machines/bleShare/scan/scanSelectors';
@@ -41,6 +42,7 @@ export function useSendVcScreen() {
   return {
     selectedIndex,
     receiverInfo: useSelector(scanService, selectReceiverInfo),
+    selectedVc: useSelector(scanService, selectSelectedVc),
     vcName: useSelector(scanService, selectVcName),
     shareableVcsMetadata: useSelector(
       vcMetaService,

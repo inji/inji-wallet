@@ -9,23 +9,25 @@ import {selectIsActive} from '../machines/app';
 import {useTranslation} from 'react-i18next';
 import testIDProps from '../shared/commonUtil';
 import {SvgImage} from './ui/svg';
-import {isAndroid} from '../shared/constants';
-import {CameraView, useCameraPermissions, PermissionStatus, BarcodeScanningResult, CameraType} from 'expo-camera';
-import {CameraPosition} from "../shared/Utils";
+import {
+  CameraView,
+  useCameraPermissions,
+  PermissionStatus,
+  BarcodeScanningResult,
+  CameraType,
+} from 'expo-camera';
+import {CameraPosition} from '../shared/Utils';
 
 export const QrScanner: React.FC<QrScannerProps> = props => {
   const {t} = useTranslation('QrScanner');
-  const {appService} = useContext(GlobalContext);
   const [scanned, setScanned] = useState(false);
   const [cameraType, setCameraType] = useState<CameraType>(CameraPosition.BACK);
-  const [hasCameraPermission, setHasCameraPermission] = useState<
-    boolean | null
-  >(null);
-  const [
+  const {
+    hasCameraPermission,
     showCameraPermissionDeniedBanner,
     setShowCameraPermissionDeniedBanner,
-  ] = useState(false);
-  const [_, requestCameraPermission, getCameraPermissionsAsync] = useCameraPermissions();
+    openSettings,
+  } = useCameraPermission();
   const [isCameraActive, setIsCameraActive] = useState<boolean>(true);
 
   useEffect(() => {
@@ -33,37 +35,6 @@ export const QrScanner: React.FC<QrScannerProps> = props => {
       setIsCameraActive(false);
     };
   }, []);
-
-  const isActive = useSelector(appService, selectIsActive);
-
-  const openSettings = () => {
-    if (isAndroid()) {
-      Linking.openSettings();
-    } else {
-      Linking.openURL('App-Prefs:Privacy');
-    }
-  };
-
-  useEffect(() => {
-    if (isActive && !Boolean(hasCameraPermission)) {
-      (async () => {
-        setShowCameraPermissionDeniedBanner(false);
-        const cameraPermissionResult = await getCameraPermissionsAsync();
-        if (cameraPermissionResult.status === PermissionStatus.UNDETERMINED) {
-          const response = await requestCameraPermission();
-          setHasCameraPermission(response.granted);
-          if (response.granted === false) {
-            setShowCameraPermissionDeniedBanner(true);
-          }
-        } else if (cameraPermissionResult.status === PermissionStatus.GRANTED) {
-          setHasCameraPermission(true);
-        } else {
-          setHasCameraPermission(false);
-          setShowCameraPermissionDeniedBanner(true);
-        }
-      })();
-    }
-  }, [isActive]);
 
   if (hasCameraPermission === null) {
     return <View />;
@@ -93,11 +64,11 @@ export const QrScanner: React.FC<QrScannerProps> = props => {
             </Column>
             <Pressable>
               <Icon
-                  testID="close"
-                  name="close"
-                  onPress={() => setShowCameraPermissionDeniedBanner(false)}
-                  color={Theme.Colors.whiteText}
-                  size={18}
+                testID="close"
+                name="close"
+                onPress={() => setShowCameraPermissionDeniedBanner(false)}
+                color={Theme.Colors.whiteText}
+                size={18}
               />
             </Pressable>
           </Row>
@@ -148,7 +119,9 @@ export const QrScanner: React.FC<QrScannerProps> = props => {
               <TouchableOpacity
                 onPress={() => {
                   setCameraType(
-                    cameraType === CameraPosition.FRONT ? CameraPosition.BACK : CameraPosition.FRONT,
+                    cameraType === CameraPosition.FRONT
+                      ? CameraPosition.BACK
+                      : CameraPosition.FRONT,
                   );
                 }}>
                 {SvgImage.FlipCameraIcon()}
@@ -173,6 +146,55 @@ export const QrScanner: React.FC<QrScannerProps> = props => {
     setScanned(true);
   }
 };
+
+/**
+ * Camera permission for QR scanning: asks once when it is undetermined, re-checks whenever
+ * the app comes back to the foreground, and reports whether the "camera access disabled"
+ * guidance should show.
+ */
+export function useCameraPermission() {
+  const {appService} = useContext(GlobalContext);
+  const isActive = useSelector(appService, selectIsActive);
+  const [hasCameraPermission, setHasCameraPermission] = useState<
+    boolean | null
+  >(null);
+  const [
+    showCameraPermissionDeniedBanner,
+    setShowCameraPermissionDeniedBanner,
+  ] = useState(false);
+  const [_, requestCameraPermission, getCameraPermissionsAsync] =
+    useCameraPermissions();
+
+  const openSettings = () => Linking.openSettings();
+
+  useEffect(() => {
+    if (isActive && !Boolean(hasCameraPermission)) {
+      (async () => {
+        setShowCameraPermissionDeniedBanner(false);
+        const cameraPermissionResult = await getCameraPermissionsAsync();
+        if (cameraPermissionResult.status === PermissionStatus.UNDETERMINED) {
+          const response = await requestCameraPermission();
+          setHasCameraPermission(response.granted);
+          if (response.granted === false) {
+            setShowCameraPermissionDeniedBanner(true);
+          }
+        } else if (cameraPermissionResult.status === PermissionStatus.GRANTED) {
+          setHasCameraPermission(true);
+        } else {
+          setHasCameraPermission(false);
+          setShowCameraPermissionDeniedBanner(true);
+        }
+      })();
+    }
+  }, [isActive]);
+
+  return {
+    hasCameraPermission,
+    showCameraPermissionDeniedBanner,
+    setShowCameraPermissionDeniedBanner,
+    openSettings,
+  };
+}
 
 interface QrScannerProps {
   onQrFound: (data: string) => void;

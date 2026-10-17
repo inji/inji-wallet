@@ -12,6 +12,7 @@ import Constants from 'expo-constants';
 import HomeScreenLogo from '../../../assets/CredIssuerHorizontalLogo.svg';
 import InjiLogoSmall from '../../../assets/InjiHomeLogo.svg';
 import i18next from '../../../i18n';
+import {DesignTokens} from './designTokens';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -78,6 +79,32 @@ export type ElevationLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export const DefaultTheme = {
   Colors: {
+    // Colours for the new screen designs (first used by the verifier trust sheet).
+    Design: {
+      navy: '#1B3A6B',
+      teal: '#2E6B5E',
+      tealSoft: '#DDEBE5',
+      link: '#2F7391',
+      bodyText: '#3A4A5A',
+      sheetBackground: '#FBFAF7',
+      sheetHandle: '#CFCFCF',
+      cardBackground: '#E3ECF2',
+      mutedBackground: '#EEECE6',
+      border: '#D9D8D2',
+      mutedIcon: '#9A9A94',
+      scanLine: '#5BC8E8',
+      // Dark camera screens.
+      darkBackground: '#07090C',
+      darkBackgroundEnd: '#0E1621',
+      darkSurface: '#1E2125',
+      darkBorder: '#3A3D42',
+      darkText: '#F2F4F7',
+      darkMutedText: '#AEB6C2',
+      darkPlaceholder: '#4A4D52',
+      surface: '#FFFFFF',
+      warningBackground: '#F6E9CF',
+      warningText: '#8A5A0B',
+    },
     ProfileIconColor: Colors.DarkGray,
     DetailedViewBackground: Colors.Gray97,
     TabItemText: Colors.Secondary,
@@ -159,6 +186,7 @@ export const DefaultTheme = {
     secondaryText: Colors.Secondary,
     disabled: Colors.mildGray,
   },
+  Tokens: DesignTokens,
   Styles: StyleSheet.create({
     title: {
       color: Colors.Black,
@@ -747,11 +775,6 @@ export const DefaultTheme = {
       color: Colors.Secondary,
       maxWidth: '80%',
       overflow: 'hidden',
-    },
-    HistoryHeaderTitleStyle: {
-      fontSize: 26,
-      fontFamily: 'Montserrat_600SemiBold',
-      marginTop: isIOS() ? 5 : 15,
     },
     tabBarIconCopilot: {
       flex: 1,
@@ -1739,59 +1762,6 @@ export const DefaultTheme = {
       maxHeight: Dimensions.get('window').height,
     },
   }),
-  KeyManagementScreenStyle: StyleSheet.create({
-    columnStyle: {
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      flex: 1,
-    },
-    listItemTitle: {
-      paddingTop: 3,
-    },
-    iconStyle: {
-      marginRight: 15,
-    },
-    outerViewStyle: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingHorizontal: 15,
-      paddingBottom: 10,
-      backgroundColor: '#fff',
-      elevation: 5, // For Android
-      shadowColor: '#000', // For iOS
-      shadowOffset: {width: 0, height: 2},
-      shadowOpacity: 0.2,
-      shadowRadius: 4,
-      zIndex: 1,
-    },
-    heading: {
-      color: 'black',
-      fontFamily: 'Montserrat_700Bold',
-      fontSize: 18,
-      lineHeight: 19,
-      padding: 10,
-    },
-    copilotViewStyle: {
-      flex: 1,
-      paddingTop: 10,
-      backgroundColor: '#fff',
-    },
-    textStyle: {
-      paddingRight: 10,
-      paddingTop: 10,
-    },
-    dragViewStyle: {
-      padding: 10,
-      marginBottom: 20,
-      width: Dimensions.get('window').width * 0.8,
-    },
-    dragViewStyleSettingsScreen: {
-      padding: 10,
-      marginBottom: 20,
-      width: Dimensions.get('window').width * 0.95,
-    },
-  }),
   HelpScreenStyle: StyleSheet.create({
     viewStyle: {
       borderRadius: 8,
@@ -2312,72 +2282,6 @@ export const DefaultTheme = {
       textAlign: 'center',
       lineHeight: 20,
       marginBottom: 28,
-    },
-  }),
-
-  TrustVerifierScreenStyle: StyleSheet.create({
-    modalOverlay: {
-      flex: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 20,
-    },
-    modalContainer: {
-      backgroundColor: '#fff',
-      borderRadius: 20,
-      width: '100%',
-      height: 470,
-      padding: 20,
-      alignItems: 'center',
-    },
-    issuerHeader: {
-      padding: 10,
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    issuerLogo: {
-      width: 60,
-      height: 60,
-      resizeMode: 'contain',
-    },
-    issuerName: {
-      marginTop: 8,
-      fontWeight: 'bold',
-      fontSize: 16,
-    },
-    description: {
-      fontSize: 14,
-      color: '#666',
-      textAlign: 'center',
-      lineHeight: 20,
-      marginBottom: 16,
-    },
-    infoContainer: {
-      width: '100%',
-      marginBottom: 10,
-    },
-    infoItem: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      marginBottom: 6,
-      paddingHorizontal: 4,
-    },
-    info: {
-      fontSize: 14,
-      color: '#666',
-      marginRight: 8,
-      marginTop: 1,
-    },
-    infoText: {
-      flex: 1,
-      fontSize: 14,
-      color: '#666',
-      lineHeight: 18,
-    },
-    buttonText: {
-      textAlign: 'center',
-      flexWrap: 'wrap',
     },
   }),
 

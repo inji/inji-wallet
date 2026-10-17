@@ -123,6 +123,40 @@ describe('VPShareActivityLog', () => {
     });
   });
 
+  describe('namesFrom', () => {
+    it("uses the verifier's client_name and each selected card's name once", () => {
+      const card = (credentialType: string) => ({vcMetadata: {credentialType}});
+      expect(
+        VPShareActivityLog.namesFrom(
+          {client_metadata: {client_name: 'City Health Clinic'}},
+          {
+            idDescriptor: [card('National ID')],
+            licenceDescriptor: [card('Driving Licence'), card('National ID')],
+          },
+        ),
+      ).toEqual({
+        verifierName: 'City Health Clinic',
+        credentialName: 'National ID, Driving Licence',
+      });
+    });
+
+    it('leaves names empty when the request or selection is missing', () => {
+      expect(VPShareActivityLog.namesFrom(undefined, undefined)).toEqual({
+        verifierName: '',
+        credentialName: '',
+      });
+    });
+
+    it('keeps names from a stored log', () => {
+      const log = VPShareActivityLog.getLogFromObject({
+        type: 'USER_DECLINED_CONSENT',
+        verifierName: 'Metro Rentals',
+      });
+      expect(log.verifierName).toBe('Metro Rentals');
+      expect(log.credentialName).toBe('');
+    });
+  });
+
   describe('getActionLabel', () => {
     it('should return formatted action label in English', () => {
       const log = new VPShareActivityLog({

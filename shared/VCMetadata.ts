@@ -4,7 +4,10 @@ import {
   VcIdType,
   VerifiableCredential,
 } from '../machines/VerifiableCredential/VCMetaMachine/vc';
-import {Protocols} from './openId4VCI/Utils';
+import {
+  getDisplayObjectForCurrentLanguage,
+  Protocols,
+} from './openId4VCI/Utils';
 import {getMosipIdentifier} from './commonUtil';
 import {VCFormat} from './VCFormat';
 import {isMosipVC, UUID} from './Utils';
@@ -37,6 +40,8 @@ export class VCMetadata {
   downloadKeyType: string = '';
   credentialType: string = '';
   issuerHost: string = '';
+  /** Issuer's display name from its metadata at download time. */
+  issuerName: string = '';
   lastKnownStatusTimestamp?: string = '';
 
   constructor({
@@ -55,6 +60,7 @@ export class VCMetadata {
     isRevoked = RevocationStatus.FALSE,
     credentialType = '',
     issuerHost = '',
+    issuerName = '',
     lastKnownStatusTimestamp = '',
   } = {}) {
     this.idType = idType;
@@ -72,6 +78,7 @@ export class VCMetadata {
     this.isRevoked = isRevoked;
     this.credentialType = credentialType;
     this.issuerHost = issuerHost;
+    this.issuerName = issuerName;
     this.lastKnownStatusTimestamp = lastKnownStatusTimestamp;
   }
 
@@ -97,6 +104,7 @@ export class VCMetadata {
       downloadKeyType: vc.downloadKeyType,
       credentialType: vc.credentialType,
       issuerHost: vc.issuerHost,
+      issuerName: vc.issuerName,
       lastKnownStatusTimestamp: vc.lastKnownStatusTimestamp,
     });
   }
@@ -175,6 +183,9 @@ export const getVCMetadata = (context: object, keyType: string) => {
     downloadKeyType: keyType,
     credentialType: getCredentialType(context.selectedCredentialType),
     issuerHost: issuerHost,
+    issuerName:
+      getDisplayObjectForCurrentLanguage(context.selectedIssuer.display)
+        ?.name ?? '',
   });
 };
 

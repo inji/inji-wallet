@@ -81,6 +81,6 @@ export const backupAndRestoreSetupActions = model => {
     unsetShouldTriggerAutoBackup: model.assign({
       shouldTriggerAutoBackup: false,
     }),
-    openSettings: () => Linking.openURL('App-Prefs:CASTLE'),
+    openSettings: () => Linking.openSettings(),
   };
 };

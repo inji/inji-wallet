@@ -111,6 +111,10 @@ class InjiIso18013ProximityPresenter(
     private var consentContextRequestInfoJson: String = ""
     private var consentContextPurposesJson: String? = null
 
+    /** (namespace, element) pairs the user agreed to disclose; null discloses the whole selection. */
+    @Volatile
+    private var consentDisclosedElements: Set<Pair<String, String>>? = null
+
     /** One data element the reader asked for, and whether this credential can serve it. */
     private data class RequestedElement(
         val namespace: String,
@@ -185,16 +189,65 @@ class InjiIso18013ProximityPresenter(
     }
 
     /** RN Approve — resume [promptModelRnBridgedConsent] with the Multipaz credential selection. */
-    fun approveConsent(purposesJson: String?) {
-        Log.i(TAG, "approveConsent() from JS with purposesJson: $purposesJson")
+    fun approveConsent(purposesJson: String?, disclosedElementsJson: String?) {
+        Log.i(
+            TAG,
+            "approveConsent() from JS with purposesJson: $purposesJson " +
+                "disclosedElements: $disclosedElementsJson",
+        )
         this.consentContextPurposesJson = purposesJson
+        this.consentDisclosedElements = parseDisclosedElements(disclosedElementsJson)
         completePendingConsent(approved = true)
+    }
+
+    /**
+     * Parses `[{namespace, element}]` from JS. Null input means no narrowing. Malformed input
+     * yields an empty set, never null, so a bad payload cancels the share instead of disclosing
+     * elements the user did not agree to.
+     */
+    private fun parseDisclosedElements(json: String?): Set<Pair<String, String>>? {
+        if (json.isNullOrBlank()) {
+            return null
+        }
+        return try {
+            val array = org.json.JSONArray(json)
+            val agreed = mutableSetOf<Pair<String, String>>()
+            for (i in 0 until array.length()) {
+                val item = array.getJSONObject(i)
+                agreed.add(item.getString("namespace") to item.getString("element"))
+            }
+            agreed
+        } catch (e: org.json.JSONException) {
+            Log.e(TAG, "parseDisclosedElements: malformed disclosedElements JSON, sharing nothing", e)
+            emptySet()
+        }
+    }
+
+    /**
+     * Drops every mdoc claim the user did not agree to. Returns null when nothing is left, since a
+     * DeviceResponse with no elements is not a share.
+     */
+    private fun narrowSelection(
+        selection: CredentialPresentmentSelection,
+        agreed: Set<Pair<String, String>>,
+    ): CredentialPresentmentSelection? {
+        var kept = 0
+        val matches = selection.matches.map { match ->
+            val claims = match.claims.filterKeys { claim ->
+                claim !is MdocRequestedClaim ||
+                    (claim.namespaceName to claim.dataElementName) in agreed
+            }
+            kept += claims.keys.count { it is MdocRequestedClaim }
+            match.copy(claims = claims)
+        }
+        return if (kept == 0) null else CredentialPresentmentSelection(matches)
     }
 
     /** RN Deny — resume consent with null selection → [PresentmentCanceledException]. */
     fun denyConsent() {
         Log.i(TAG, "denyConsent() from JS")
         this.consentContextPurposesJson = null
+        this.consentDisclosedElements = null
         completePendingConsent(approved = false)
         emitConsentDismissed()
     }
@@ -254,6 +307,7 @@ class InjiIso18013ProximityPresenter(
         val requestInfoJson = consentContextRequestInfoJson
 
         val deferred = CompletableDeferred<Boolean>()
+        consentDisclosedElements = null
         synchronized(consentLock) {
             consentDeferred?.complete(false)
             consentDeferred = deferred
@@ -281,8 +335,19 @@ class InjiIso18013ProximityPresenter(
                 Log.i(TAG, "promptModelRnBridgedConsent: user denied / cancelled")
                 null
             } else {
-                Log.i(TAG, "promptModelRnBridgedConsent: user approved — proceeding with DeviceResponse")
-                selection
+                val agreed = consentDisclosedElements
+                if (agreed == null) {
+                    Log.i(TAG, "promptModelRnBridgedConsent: user approved — proceeding with DeviceResponse")
+                    selection
+                } else {
+                    val narrowed = narrowSelection(selection, agreed)
+                    Log.i(
+                        TAG,
+                        "promptModelRnBridgedConsent: user approved ${agreed.size} element(s) — " +
+                            if (narrowed == null) "none servable, cancelling" else "proceeding with DeviceResponse",
+                    )
+                    narrowed
+                }
             }
         } finally {
             synchronized(consentLock) {
@@ -444,6 +509,7 @@ class InjiIso18013ProximityPresenter(
         consentContextPurposeHintCode = null
         consentContextRequestInfoJson = ""
         consentContextPurposesJson = null
+        consentDisclosedElements = null
         consentContextRequestedElements = emptyList()
     }
 
@@ -1283,6 +1349,7 @@ class InjiIso18013ProximityPresenter(
         Log.i(TAG, "runSession#$sid advertising active; waitForConnection (blocks until reader attaches)…")
         val transport = transports.waitForConnection(eDevicePrivate.publicKey)
         Log.i(TAG, "runSession#$sid BLE transport connected; starting Iso18013Presentment…")
+        emitJsEvent(EVENT_READER_CONNECTED, Arguments.createMap())
         try {
             // Local replacement for `org.multipaz.presentment.Iso18013Presentment`.
             //
@@ -1882,6 +1949,7 @@ class InjiIso18013ProximityPresenter(
         const val EVENT_CONSENT_REQUIRED = "MdocPresentmentConsentRequired"
         const val EVENT_CONSENT_DISMISSED = "MdocPresentmentConsentDismissed"
         const val EVENT_CANNOT_SATISFY = "MdocPresentmentCannotSatisfy"
+        const val EVENT_READER_CONNECTED = "MdocPresentmentReaderConnected"
 
         /**
          * Emitted only once the encrypted DeviceResponse has actually been handed to the

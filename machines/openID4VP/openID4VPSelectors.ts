@@ -22,6 +22,10 @@ export function selectSelectedVCs(state: State) {
   return state.context.selectedVCs;
 }
 
+export function selectSelectedDisclosuresByVc(state: State) {
+  return state.context.selectedDisclosuresByVc;
+}
+
 export function selectAreAllVCsChecked(state: State) {
   return state.context.checkedAll;
 }
@@ -31,6 +35,10 @@ export function selectIsGetVPSharingConsent(state: State) {
     state.matches('getConsentForVPSharing') &&
     state.context.flowType !== VCShareFlowType.OPENID4VP_AUTHORIZATION
   );
+}
+
+export function selectIsShareWithSelfie(state: State) {
+  return state.context.isShareWithSelfie;
 }
 
 export function selectIsFaceVerificationConsent(state: State) {
@@ -143,6 +151,46 @@ export function selectVerifierNameInTrustModal(state: State) {
 
 export function selectVerifierLogoInTrustModal(state: State) {
   return state.context.authenticationResponse['client_metadata']?.['logo_uri'];
+}
+
+// The site the card would be sent to. client_id can be a bare pre-registered name, or carry a
+// scheme prefix such as "redirect_uri:", so the response URI is preferred.
+export function selectVerifierUrlInTrustModal(state: State) {
+  const response = state.context.authenticationResponse;
+  const candidates = [
+    response['response_uri'],
+    response['redirect_uri'],
+    response['client_id'],
+  ];
+  for (const candidate of candidates) {
+    const origin =
+      typeof candidate === 'string' && candidate.match(/https?:\/\/[^/?#]+/);
+    if (origin) {
+      return origin[0];
+    }
+  }
+  return response['client_id'] ?? '';
+}
+
+// True when the verifier is in the trusted verifiers list fetched from the backend.
+export function selectIsVerifierRegistered(state: State) {
+  const clientId = state.context.authenticationResponse['client_id'];
+  return (
+    !!clientId &&
+    Array.isArray(state.context.trustedVerifiers) &&
+    state.context.trustedVerifiers.some(
+      verifier => verifier.client_id === clientId,
+    )
+  );
+}
+
+export function selectPresentationDefinition(state: State) {
+  return state.context.authenticationResponse['presentation_definition'];
+}
+
+export function selectVerifierRequestNameInTrustModal(state: State) {
+  const pd = state.context.authenticationResponse['presentation_definition'];
+  return (pd?.name || pd?.input_descriptors?.[0]?.name || '').trim();
 }
 
 export function selectIsAuthorization(state: State) {

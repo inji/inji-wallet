@@ -75,6 +75,12 @@ export const GET_INDIVIDUAL_ID = (currentIndividualId: IndividualId) => {
 
 export const ACTIVITY_LOG_STORE_KEY = 'activityLog';
 
+/** Timestamp (ms) up to which the user has marked history notifications as read. */
+export const ACTIVITY_LOG_LAST_READ_STORE_KEY = 'activityLogLastReadAt';
+
+/** JSON list of history notifications opened individually since `activityLogLastReadAt`. */
+export const ACTIVITY_LOG_READ_IDS_STORE_KEY = 'activityLogReadIds';
+
 export const SETTINGS_STORE_KEY = 'settings';
 
 export const APP_ID_LENGTH = 12;
