@@ -175,10 +175,10 @@ export const activityLogMachine =
         }),
 
         storeWellknownConfig: model.assign({
-          wellKnownIssuerMap: (context, event) => {
-            context.wellKnownIssuerMap[event.issuer] = event.wellknown;
-            return context.wellKnownIssuerMap;
-          },
+          wellKnownIssuerMap: (context, event) =>
+            event.wellknown
+              ? {...context.wellKnownIssuerMap, [event.issuer]: event.wellknown}
+              : context.wellKnownIssuerMap,
         }),
       },
     },

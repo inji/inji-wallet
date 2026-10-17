@@ -259,6 +259,7 @@ export const ScanActions = (model: any) => {
             timestamp: Date.now(),
             deviceName:
               context.receiverInfo.name || context.receiverInfo.deviceName,
+            ...VCActivityLog.namesFrom(vcMetadata),
           }),
         );
       },
@@ -278,6 +279,7 @@ export const ScanActions = (model: any) => {
             issuer: vcMetadata.issuerHost!!,
             deviceName:
               context.receiverInfo.name || context.receiverInfo.deviceName,
+            ...VCActivityLog.namesFrom(context.selectedVc?.vcMetadata),
           }),
         );
       },
@@ -371,6 +373,7 @@ export const ScanActions = (model: any) => {
             type: 'QRLOGIN_SUCCESFULL',
             timestamp: Date.now(),
             deviceName: '',
+            ...VCActivityLog.namesFrom(vcMetadata),
           }),
         );
       },

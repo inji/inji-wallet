@@ -750,11 +750,6 @@ export const DefaultTheme = {
       maxWidth: '80%',
       overflow: 'hidden',
     },
-    HistoryHeaderTitleStyle: {
-      fontSize: 26,
-      fontFamily: 'Montserrat_600SemiBold',
-      marginTop: isIOS() ? 5 : 15,
-    },
     tabBarIconCopilot: {
       flex: 1,
       justifyContent: 'center',
