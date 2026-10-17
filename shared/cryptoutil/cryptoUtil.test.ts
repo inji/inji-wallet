@@ -41,6 +41,7 @@ import {
   fetchKeyPair,
   checkAllKeyPairs,
   generateKeyPairsAndStoreOrder,
+  getKeyPriorityOrder,
   generateKeyPairRSA,
   generateKeyPairECR1,
   generateKeyPairED,
@@ -269,6 +270,68 @@ describe('cryptoUtil', () => {
         expect.any(String),
       );
       expect(RNSecureKeystoreModule.storeGenericKey).toHaveBeenCalledTimes(2);
+      spy.mockRestore();
+    });
+
+    it('stores the default key order when no keyPriorityOrder is configured', async () => {
+      const spy = jest.spyOn(console, 'warn').mockImplementation();
+      await generateKeyPairsAndStoreOrder();
+      expect(RNSecureKeystoreModule.storeData).toHaveBeenCalledWith(
+        'keyPreference',
+        JSON.stringify({0: 'Ed25519', 1: 'ES256K', 2: 'ES256', 3: 'RS256'}),
+      );
+      spy.mockRestore();
+    });
+
+    it('stores the configured keyPriorityOrder', async () => {
+      const spy = jest.spyOn(console, 'warn').mockImplementation();
+      await generateKeyPairsAndStoreOrder('RS256,ES256,ES256K,Ed25519');
+      expect(RNSecureKeystoreModule.storeData).toHaveBeenCalledWith(
+        'keyPreference',
+        JSON.stringify({0: 'RS256', 1: 'ES256', 2: 'ES256K', 3: 'Ed25519'}),
+      );
+      spy.mockRestore();
+    });
+  });
+
+  describe('getKeyPriorityOrder', () => {
+    const defaultKeyOrder = ['Ed25519', 'ES256K', 'ES256', 'RS256'];
+
+    it('returns the default order when config is undefined or empty', () => {
+      expect(getKeyPriorityOrder(undefined)).toEqual(defaultKeyOrder);
+      expect(getKeyPriorityOrder('')).toEqual(defaultKeyOrder);
+    });
+
+    it('returns the configured order and trims whitespace', () => {
+      expect(getKeyPriorityOrder(' RS256 , ES256,ES256K , Ed25519 ')).toEqual([
+        'RS256',
+        'ES256',
+        'ES256K',
+        'Ed25519',
+      ]);
+    });
+
+    it('appends key types missing from the config in default order', () => {
+      expect(getKeyPriorityOrder('RS256,ES256')).toEqual([
+        'RS256',
+        'ES256',
+        'Ed25519',
+        'ES256K',
+      ]);
+    });
+
+    it('ignores unsupported and duplicate entries with a warning', () => {
+      const spy = jest.spyOn(console, 'warn').mockImplementation();
+      expect(
+        getKeyPriorityOrder('RS256,PS256,rs256,RS256,EdDSA,ES256'),
+      ).toEqual(['RS256', 'ES256', 'Ed25519', 'ES256K']);
+      expect(spy).toHaveBeenCalledTimes(3);
+      spy.mockRestore();
+    });
+
+    it('returns the default order when no configured entry is supported', () => {
+      const spy = jest.spyOn(console, 'warn').mockImplementation();
+      expect(getKeyPriorityOrder('PS256,RSA')).toEqual(defaultKeyOrder);
       spy.mockRestore();
     });
   });

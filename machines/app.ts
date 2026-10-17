@@ -564,7 +564,8 @@ export const appMachine = model.createMachine(
       },
 
       generateKeyPairsAndStoreOrder: async () => {
-        return await generateKeyPairsAndStoreOrder();
+        const keyPriorityOrder = await getKeyPriorityOrderFromConfig();
+        return await generateKeyPairsAndStoreOrder(keyPriorityOrder);
       },
 
       fetchAndUpdateCacheTTLFromConfig: async () => {
@@ -597,6 +598,20 @@ const updateCacheTTLFromConfig = async () => {
     console.info(
       'All Properties API is called and updated the cacheTTL based on config/OnErrorHardCodedValue',
     );
+  }
+};
+
+// generateKeyPairs has no error transition, hence fall back to the default key order on failure
+const getKeyPriorityOrderFromConfig = async (): Promise<string | undefined> => {
+  try {
+    const response = await getAllConfigurations(undefined, false);
+    return response?.keyPriorityOrder;
+  } catch (error) {
+    console.warn(
+      'Failed to fetch keyPriorityOrder from config, using default key order',
+      error,
+    );
+    return undefined;
   }
 };
 

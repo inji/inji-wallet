@@ -126,16 +126,38 @@ export async function checkAllKeyPairs() {
   if (!(RSAKey && ECR1Key && ECK1Key && EDKey)) throw Error('Keys not present');
 }
 
-export async function generateKeyPairsAndStoreOrder() {
+// Builds the key order from config, skipping invalid values and adding missing key types at the end
+export function getKeyPriorityOrder(configuredKeyOrder?: string): string[] {
+  const defaultKeyOrder: string[] = Object.values(SUPPORTED_KEY_TYPES);
+  const keyOrder: string[] = [];
+  (configuredKeyOrder ?? '')
+    .split(',')
+    .map(keyType => keyType.trim())
+    .filter(Boolean)
+    .forEach(keyType => {
+      if (!defaultKeyOrder.includes(keyType)) {
+        console.warn(
+          `Ignoring unsupported key type in keyPriorityOrder: ${keyType}`,
+        );
+      } else if (!keyOrder.includes(keyType)) {
+        keyOrder.push(keyType);
+      }
+    });
+  defaultKeyOrder.forEach(keyType => {
+    if (!keyOrder.includes(keyType)) {
+      keyOrder.push(keyType);
+    }
+  });
+  return keyOrder;
+}
+
+export async function generateKeyPairsAndStoreOrder(keyPriorityOrder?: string) {
   const {RNSecureKeystoreModule} = NativeModules;
   const RSAKeyPair = await generateKeyPair(KeyTypes.RS256);
   const ECR1KeyPair = await generateKeyPair(KeyTypes.ES256);
   const ECK1KeyPair = await generateKeyPair(KeyTypes.ES256K);
   const EDKeyPair = await generateKeyPair(KeyTypes.ED25519);
-  const keys = Object.entries(SUPPORTED_KEY_TYPES).map(([label, value]) => ({
-    label,
-    value,
-  }));
+  const keys = getKeyPriorityOrder(keyPriorityOrder).map(value => ({value}));
   const keyOrderMap = convertToKeyValue(keys);
   await RNSecureKeystoreModule.storeData(
     'keyPreference',
@@ -270,7 +292,10 @@ export async function createSignatureED(privateKey, payloadBytes) {
   return replaceCharactersInB64(Buffer.from(sign).toString('base64'));
 }
 
-export async function createSignatureECR1(privateKey: string, payload: Uint8Array) {
+export async function createSignatureECR1(
+  privateKey: string,
+  payload: Uint8Array,
+) {
   if (!isHardwareKeystoreExists) {
     throw Error;
   } else {

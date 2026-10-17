@@ -1,10 +1,11 @@
-
 # Inji Wallet - Key Management Feature
 
 ## Overview
+
 The Inji Wallet supports **RSA, EC R1, EC K1, and ED** keys for signing operations. This document provides a detailed breakdown of the key management process for each key type and its interaction with different system components.
 
-## Supported Key Types 
+## Supported Key Types
+
 - RSA-2048
 - EC R1
 - EC k1
@@ -12,11 +13,35 @@ The Inji Wallet supports **RSA, EC R1, EC K1, and ED** keys for signing operatio
 
 ---
 
-##  Key Management Flow: 
+## Key Priority Order
 
-***RSA & EC R1***
+When downloading a credential via OpenID4VCI, the wallet picks the first key type in the priority order whose algorithm is listed in the issuer's `proof_types_supported.jwt.proof_signing_alg_values_supported`. If no key type matches, or the issuer does not list any algorithms, the first key type in the order is used.
 
-***Android Flow***
+The default priority order is:
+
+1. ED25519 (`Ed25519`)
+2. EC K1 (`ES256K`)
+3. EC R1 (`ES256`)
+4. RSA (`RS256`)
+
+The default order can be configured through Mimoto using the `mosip.inji.keyPriorityOrder` property, which is returned as `keyPriorityOrder` in the `/allProperties` response:
+
+```properties
+mosip.inji.keyPriorityOrder=Ed25519,ES256K,ES256,RS256
+```
+
+- The configured order is applied only when the wallet generates its keys, i.e. on a fresh install. Existing installations keep their current order.
+- The user can change the order at any time from **Settings → Key Management**, and that order is never overwritten by the configuration.
+- Unsupported or duplicate values are ignored, and supported key types missing from the configuration are appended in the default order.
+- If the configuration cannot be fetched (e.g. no network on first launch) or the property is not set, the default order is used.
+
+---
+
+## Key Management Flow:
+
+**_RSA & EC R1_**
+
+**_Android Flow_**
 
 ```mermaid
 sequenceDiagram
@@ -40,7 +65,7 @@ sequenceDiagram
   Secure-Keystore(Android) -->> Inji Wallet: Return Signed Data
 ```
 
-***iOS Flow***
+**_iOS Flow_**
 
 ```mermaid
 sequenceDiagram
@@ -69,15 +94,14 @@ sequenceDiagram
   Secure-keystore(iOS) -->> Inji Wallet: Return Signed Data
 ```
 
-
 The RSA and EC R1 keys are directly supported by the android hardware-keystore, hence all cryptographic operations like signing take place there itself.
 For iOS we make use of keyWrapping to store the keys safely in keychain, and use them for necessary operations.
 
 ---
 
-***EC K1 & ED***
+**_EC K1 & ED_**
 
-***Android Flow***
+**_Android Flow_**
 
 ```mermaid
 sequenceDiagram
@@ -86,7 +110,7 @@ sequenceDiagram
   participant Secure-Keystore(Android)
   participant EncryptedPreferences
   participant HardwareKeystore
-  
+
   Inji-Wallet ->> Inji-Wallet: Generate EC K1|ED25519 Keys
   Inji-Wallet ->> Secure-Keystore(Android): Store EC K1|ED25519 Keys Request
   Secure-Keystore(Android) ->> EncryptedPreferences: Store EC K1|ED25519 Keys Request
@@ -105,7 +129,7 @@ sequenceDiagram
   Inji-Wallet ->> Inji-Wallet: Return Signed Data
 ```
 
-***iOS Flow***
+**_iOS Flow_**
 
 ```mermaid
 sequenceDiagram
@@ -116,7 +140,7 @@ sequenceDiagram
   participant SecureEnclave
 
   Inji-Wallet -->> Inji-Wallet: Generate EC K1|ED25519 Keys
-  Inji-Wallet ->> Secure-Keystore(iOS): Store EC K1|ED25519 Keys Request 
+  Inji-Wallet ->> Secure-Keystore(iOS): Store EC K1|ED25519 Keys Request
   Secure-Keystore(iOS) ->> iOSKeychain: Store EC K1|ED25519 Keys Request
   iOSKeychain ->> SecureEnclave: Encrypt Keys
   SecureEnclave -->> iOSKeychain: Encrypted Keys
@@ -134,7 +158,6 @@ sequenceDiagram
   Inji-Wallet ->> Inji-Wallet: Sign Data
   Inji-Wallet ->> Inji-Wallet: Return Signed Data
 ```
-
 
 The EC K1 and Ed25519 keys are not directly supported by hardware keystore in android or iOS, hence in both platforms we make use of secure storage areas; encryptedPreferences in android, keychain in ios, with the help of key wrapping.
 

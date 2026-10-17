@@ -800,6 +800,33 @@ describe('appMachine service implementations', () => {
     expect(generateKeyPairsAndStoreOrder).toHaveBeenCalled();
   });
 
+  it('generateKeyPairsAndStoreOrder passes keyPriorityOrder from config', async () => {
+    const {
+      generateKeyPairsAndStoreOrder,
+    } = require('../shared/cryptoutil/cryptoUtil');
+    const getAllConfigurations = require('../shared/api');
+    getAllConfigurations.mockResolvedValueOnce({
+      keyPriorityOrder: 'RS256,ES256,ES256K,Ed25519',
+    });
+    await services.generateKeyPairsAndStoreOrder();
+    expect(getAllConfigurations).toHaveBeenCalledWith(undefined, false);
+    expect(generateKeyPairsAndStoreOrder).toHaveBeenCalledWith(
+      'RS256,ES256,ES256K,Ed25519',
+    );
+  });
+
+  it('generateKeyPairsAndStoreOrder falls back to default order when config fetch fails', async () => {
+    const {
+      generateKeyPairsAndStoreOrder,
+    } = require('../shared/cryptoutil/cryptoUtil');
+    const getAllConfigurations = require('../shared/api');
+    getAllConfigurations.mockRejectedValueOnce(new Error('network error'));
+    const spy = jest.spyOn(console, 'warn').mockImplementation();
+    await services.generateKeyPairsAndStoreOrder();
+    expect(generateKeyPairsAndStoreOrder).toHaveBeenCalledWith(undefined);
+    spy.mockRestore();
+  });
+
   it('fetchAndUpdateCacheTTLFromConfig calls updateCacheTTLFromConfig', async () => {
     const getAllConfigurations = require('../shared/api');
     getAllConfigurations.mockResolvedValue({cacheTTLInMilliSeconds: 5000});

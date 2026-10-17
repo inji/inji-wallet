@@ -33,7 +33,7 @@ fileignoreconfig:
 - filename: shared/openId4VCI/Utils.ts
   checksum: 5a93d5de806ce5bda0aab2b9f6db8e81c7ebb62e28e28e2dc66be0a27ad9c336
 - filename: shared/cryptoutil/cryptoUtil.ts
-  checksum: 281f061ae6eb722c75c2caf2bdfb5b1bf72f292b471318d972c898c5a972c65f
+  checksum: 8f3d969122969e56730bcb0032187353deee56cb0c34ed54a431b1bea0227acd
 - filename: shared/telemetry/TelemetryConstants.js
   checksum: fd8dc3a69cdef68855dc5f0531d8e634bfa2621bb4dc22f85b8247512a349c4c
 - filename: shared/telemetry/TelemetryUtils.js
@@ -318,7 +318,7 @@ fileignoreconfig:
 - filename: machines/VerifiableCredential/VCItemMachine/VCItemActions.ts
   checksum: 511f6f95c0491ad16b03236cd7cc3ef5f4a89d336be1a0202f3f0aaf9e29497d
 - filename: machines/app.ts
-  checksum: 5da59bb384d04e29c7745d773108903fa144275c57edc1aca1898fcae7baea84
+  checksum: ff86f211c9de854725201c7bf8a8063c0d3f01e0712e06d3b216af23165c3b26
 - filename: shared/cryptoutil/signFormatConverter.ts
   checksum: 3a0a03f4e719194858a61810d12180cdc407c53f04ce1455360d5d535556b7ac
 - filename: shared/CloudBackupAndRestoreUtils.ts
@@ -426,7 +426,7 @@ fileignoreconfig:
 - filename: __mocks__/@noble/mock-secp256k1.js
   checksum: 6e933c6c1862ab9a1e8be444938917660e5ab9ae2369093a5d861fb6964362d2
 - filename: shared/cryptoutil/cryptoUtil.test.ts
-  checksum: 535dc824bef7848e76fdc7ebd1d8567c51a92767b7f85123f0609f8090d5d3a2
+  checksum: 41592eb60f9d0805e70decc4979dd858745ebd9e1673c4e68e6c4290a8260dbc
 - filename: shared/telemetry/TelemetryUtils.test.js
   checksum: 9b1fc611937e6916cdd6fd87302013b2988d46bdbe63bf6f8d4825289344dbd3
 - filename: screens/Settings/SettingScreen.test.tsx
@@ -562,7 +562,7 @@ fileignoreconfig:
 - filename: components/TrustModalVerifier.test.tsx
   checksum: 8feb875eb0653dfae154c9e82b985f1964755f68da6acc136e302631c94ac84d
 - filename: machines/app.test.ts
-  checksum: 7e3ed4af0d41f794ba51335cf2416f05b2a4c79796b865b6b30dfbe72bf73da7
+  checksum: 3826951702441793eb4c2b24699ca4ea20064f8453115cf7cc58cb070c5d785c
 - filename: screens/Scan/ScanLayoutController.test.ts
   checksum: a9be2f0ce562e7329449bba8ba4656dc1c2cf9fe03c110c6a902221328fb7784
 - filename: screens/Scan/ScanScreenController.test.ts
@@ -651,4 +651,6 @@ fileignoreconfig:
 - filename: screens/Issuers/__snapshots__/TransactionCodeScreen.test.tsx.snap
   allowed_patterns:
   - keyboardShouldPersistTaps
+- filename: docs/key-management-support.md
+  checksum: 7570678c8e603e1040b2b16fbb5352bab406230d41841c069a3e01557e176f9d
 version: "1.0"
