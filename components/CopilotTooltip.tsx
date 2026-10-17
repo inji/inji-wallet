@@ -6,11 +6,7 @@ import testIDProps from '../shared/commonUtil';
 import {ArrowRightIcon} from './revamp/Icons';
 import {useRevampTheme} from './revamp/useRevampTheme';
 import {fonts, radii, shadows} from './revamp/tokens';
-import {
-  COPILOT_FINAL_STEP,
-  COPILOT_PRE_FINAL_STEP,
-  KEY_MANAGEMENT_STEP,
-} from '../shared/constants';
+import {COPILOT_FINAL_STEP, COPILOT_PRE_FINAL_STEP} from '../shared/constants';
 import {useSettingsScreen} from '../screens/Settings/SettingScreenController';
 
 export const CopilotTooltip = () => {
@@ -36,17 +32,10 @@ export const CopilotTooltip = () => {
     settingsController.BACK();
   });
 
-  const showPrevious = !(
-    controller.isFirstStep ||
-    controller.CURRENT_STEP === KEY_MANAGEMENT_STEP ||
-    (controller.isFinalStep && controller.isInitialDownloading)
-  );
-  const isDoneStep =
-    controller.isLastStep || controller.CURRENT_STEP === KEY_MANAGEMENT_STEP;
+  const {showPrevious, isDoneStep, isStandalone} = controller;
 
   // The dots follow the same count as the "n of total" label, which shows
   // standalone steps as "1 of 1".
-  const {isStandalone} = controller;
   const dotCount = isStandalone ? 1 : controller.totalStepsNumber ?? 1;
   const activeDot = isStandalone ? 0 : (controller.currentStepNumber ?? 1) - 1;
 

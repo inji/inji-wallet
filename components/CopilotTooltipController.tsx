@@ -58,6 +58,11 @@ export const UseCopilotTooltip = () => {
 
   const isFinalStep = CURRENT_STEP === COPILOT_FINAL_STEP;
 
+  // A standalone step has nothing to go back to.
+  const showPrevious = !(isFirstStep || isStandalone);
+  // The step whose primary button ends the tour ("Done") instead of moving on ("Next").
+  const isDoneStep = isLastStep || CURRENT_STEP === KEY_MANAGEMENT_STEP;
+
   return {
     goToNext,
     goToPrev,
@@ -73,6 +78,8 @@ export const UseCopilotTooltip = () => {
     copilotEvents,
     stepCount,
     isStandalone,
+    showPrevious,
+    isDoneStep,
     isOnboarding,
     isInitialDownloading,
     titleTestID,
