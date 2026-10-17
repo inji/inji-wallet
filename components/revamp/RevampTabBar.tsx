@@ -262,7 +262,7 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
             // Bluetooth, and QR login.
             onPress={() => go(BOTTOM_TAB_ROUTES.share)}
             accessibilityRole="button"
-            accessibilityLabel="Scan a verifier's QR code to share"
+            accessibilityLabel={t('copilot:scanToShareTitle')}
             testID="scanToShare"
             style={({pressed}) => [
               styles.scan,
