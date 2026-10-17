@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import {getFieldValue} from './VCUtils';
+import {getFieldValue, getSharedFieldLabels} from './VCUtils';
 import {VCFormat} from '../../../shared/VCFormat';
 import * as i18n from '../../../i18n';
 
@@ -599,5 +599,76 @@ describe('getFieldValue', () => {
       expect(result).not.toBeNull();
       expect(result).not.toBeUndefined();
     });
+  });
+});
+
+describe('getSharedFieldLabels', () => {
+  it('lists every credentialSubject field of a W3C credential except its id', () => {
+    const credential = {
+      credentialSubject: {
+        id: 'did:example:holder',
+        fullName: [{language: 'en', value: 'Amara Mensah'}],
+        dateOfBirth: '1990/01/01',
+        face: 'data:image/png;base64,AAAA',
+      },
+    };
+    const wellknown = {
+      credential_definition: {
+        credentialSubject: {
+          fullName: {display: [{locale: 'en', name: 'Full Name'}]},
+        },
+      },
+    };
+
+    expect(
+      getSharedFieldLabels(credential, VCFormat.ldp_vc, wellknown),
+    ).toEqual(['Full Name', 'Date Of Birth', 'Face']);
+  });
+
+  it('lists every element of an mDoc, without the namespace when there is no label', () => {
+    const credential = {
+      issuerSigned: {
+        nameSpaces: {
+          'org.iso.18013.5.1': [
+            {elementIdentifier: 'family_name'},
+            {elementIdentifier: 'portrait'},
+          ],
+        },
+      },
+    };
+    const wellknown = {
+      claims: {
+        'org.iso.18013.5.1': {
+          family_name: {display: [{locale: 'en', name: 'Last Name'}]},
+        },
+      },
+    };
+
+    expect(
+      getSharedFieldLabels(credential, VCFormat.mso_mdoc, wellknown),
+    ).toEqual(['Last Name', 'Portrait']);
+  });
+
+  it('lists always-visible SD-JWT claims plus only the picked disclosures', () => {
+    const credential = {
+      fullResolvedPayload: {
+        iss: 'https://issuer.example',
+        vct: 'IdentityCredential',
+        cnf: {},
+        given_name: 'Amara',
+        address: {street: 'Main St'},
+        birthdate: '1990-01-01',
+      },
+      disclosedKeys: ['address', 'birthdate'],
+    };
+
+    expect(
+      getSharedFieldLabels(credential, VCFormat.dc_sd_jwt, {claims: {}}, [
+        'birthdate',
+      ]),
+    ).toEqual(['Given Name', 'Birthdate']);
+    expect(
+      getSharedFieldLabels(credential, VCFormat.dc_sd_jwt, {claims: {}}),
+    ).toEqual(['Given Name']);
   });
 });

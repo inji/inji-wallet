@@ -1,8 +1,14 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useSelector} from '@xstate/react';
-import {useCallback, useContext, useRef, useState} from 'react';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {useTranslation} from 'react-i18next';
-import {ActorRefFrom} from 'xstate';
 import {Theme} from '../../components/ui/styleUtils';
 import {selectIsCancelling} from '../../machines/bleShare/commonSelectors';
 import {ScanEvents} from '../../machines/bleShare/scan/scanMachine';
@@ -12,7 +18,6 @@ import {
 } from '../../machines/bleShare/scan/scanSelectors';
 import {
   selectIsAuthorization,
-  selectAreAllVCsChecked,
   selectCredentials,
   selectIsError,
   selectIsFaceVerificationConsent,
@@ -21,24 +26,29 @@ import {
   selectIsInvalidIdentity,
   selectIsOVPViaDeeplink,
   selectIsSelectingVcs,
+  selectIsShareWithSelfie,
   selectIsSharingVP,
   selectIsShowLoadingScreen,
   selectIsVerifyingIdentity,
   selectOpenID4VPRetryCount,
+  selectPresentationDefinition,
   selectPurpose,
   selectRequestedClaimsByVerifier,
+  selectSelectedDisclosuresByVc,
   selectSelectedVCs,
   selectShowConfirmationPopup,
+  selectIsVerifierRegistered,
   selectshowTrustConsentModal,
   selectVCsMatchingAuthRequest,
   selectVerifiableCredentialsData,
   selectVerifierLogoInTrustModal,
   selectVerifierNameInTrustModal,
+  selectVerifierRequestNameInTrustModal,
+  selectVerifierUrlInTrustModal,
   selectVerifierNameInVPSharing,
 } from '../../machines/openID4VP/openID4VPSelectors';
 import {OpenID4VPEvents} from '../../machines/openID4VP/openID4VPMachine';
 import {selectMyVcs} from '../../machines/QrLogin/QrLoginSelectors';
-import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {selectShareableVcs} from '../../machines/VerifiableCredential/VCMetaMachine/VCMetaSelectors';
 import {RootRouteProps} from '../../routes';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
@@ -50,6 +60,7 @@ import {ActivityLogEvents} from '../../machines/activityLog';
 import {VPShareActivityLog} from '../../components/VPShareActivityLogEvent';
 import {isIOS} from '../../shared/constants';
 import {getFaceAttribute} from '../../components/VC/common/VCUtils';
+import {getRequestedCredentialGroups} from '../../shared/openID4VP/requestedCredentialGroups';
 
 type MyVcsTabNavigation = NavigationProp<RootRouteProps>;
 
@@ -89,14 +100,53 @@ export function useSendVPScreen(props) {
     openID4VPService.send('DOWNLOADED_VCS', {vcs: shareableVcs});
   }
 
-  const areAllVCsChecked = useSelector(
-    openID4VPService,
-    selectAreAllVCsChecked,
-  );
   const vcsMatchingAuthRequest = useSelector(
     openID4VPService,
     selectVCsMatchingAuthRequest,
   );
+
+  const presentationDefinition = useSelector(
+    openID4VPService,
+    selectPresentationDefinition,
+  );
+  const requestedCredentialGroups = useMemo(
+    () => getRequestedCredentialGroups(presentationDefinition),
+    [presentationDefinition],
+  );
+
+  // A request item that only one card can satisfy starts with that card picked.
+  useEffect(() => {
+    setInputDescriptorIdToSelectedVcKeys(previous => {
+      let next = previous;
+      Object.entries(vcsMatchingAuthRequest ?? {}).forEach(
+        ([inputDescriptorId, vcs]) => {
+          if (
+            Array.isArray(vcs) &&
+            vcs.length === 1 &&
+            !previous[inputDescriptorId]
+          ) {
+            next = {
+              ...next,
+              [inputDescriptorId]: [
+                VCMetadata.fromVcMetadataString(vcs[0].vcMetadata).getVcKey(),
+              ],
+            };
+          }
+        },
+      );
+      return next;
+    });
+  }, [vcsMatchingAuthRequest]);
+
+  // Every request item the wallet has a card for needs one picked before sharing.
+  const isSelectionComplete =
+    Object.keys(vcsMatchingAuthRequest ?? {}).length > 0 &&
+    Object.entries(vcsMatchingAuthRequest).every(
+      ([inputDescriptorId, vcs]) =>
+        !Array.isArray(vcs) ||
+        vcs.length === 0 ||
+        inputDescriptorIdToSelectedVcKeys[inputDescriptorId]?.length > 0,
+    );
 
   const checkIfAnyVCHasImage = vcs => {
     return Object.values(vcs)
@@ -250,6 +300,18 @@ export function useSendVPScreen(props) {
       openID4VPService,
       selectVerifierLogoInTrustModal,
     ),
+    verifierUrlInTrustModal: useSelector(
+      openID4VPService,
+      selectVerifierUrlInTrustModal,
+    ),
+    verifierRequestNameInTrustModal: useSelector(
+      openID4VPService,
+      selectVerifierRequestNameInTrustModal,
+    ),
+    isVerifierRegistered: useSelector(
+      openID4VPService,
+      selectIsVerifierRegistered,
+    ),
     showConfirmationPopup,
     isSelectingVCs,
     checkIfAnyVCHasImage,
@@ -264,8 +326,13 @@ export function useSendVPScreen(props) {
     scanScreenError: useSelector(scanService, selectIsSendingVPError),
     vcsMatchingAuthRequest,
     userSelectedVCs: useSelector(openID4VPService, selectSelectedVCs),
-    areAllVCsChecked,
+    userSelectedDisclosuresByVc: useSelector(
+      openID4VPService,
+      selectSelectedDisclosuresByVc,
+    ),
     inputDescriptorIdToSelectedVcKeys,
+    requestedCredentialGroups,
+    isSelectionComplete,
     isVerifyingIdentity: useSelector(
       openID4VPService,
       selectIsVerifyingIdentity,
@@ -278,6 +345,9 @@ export function useSendVPScreen(props) {
       selectIsFaceVerificationConsent,
     ),
     isOVPViaDeepLink,
+    isVPSharingConsent,
+    isShareWithSelfie: useSelector(openID4VPService, selectIsShareWithSelfie),
+    CONFIRM,
     credentials: useSelector(openID4VPService, selectCredentials),
     verifiableCredentialsData: useSelector(
       openID4VPService,
@@ -302,63 +372,16 @@ export function useSendVPScreen(props) {
         changeTabBarVisible('flex');
       }, 0);
     },
-    SELECT_VC_ITEM:
-      (vcKey: string, inputDescriptorId: string) =>
-      (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
-        let descriptorMappingToVCs = {...inputDescriptorIdToSelectedVcKeys};
-
-        const isVCSelected =
-          Object.keys(inputDescriptorIdToSelectedVcKeys)?.includes(
-            inputDescriptorId,
-          ) &&
-          inputDescriptorIdToSelectedVcKeys[inputDescriptorId]?.includes(vcKey)
-            ? false
-            : true;
-        if (isVCSelected) {
-          if (descriptorMappingToVCs[inputDescriptorId]) {
-            if (!descriptorMappingToVCs[inputDescriptorId].includes(vcKey)) {
-              descriptorMappingToVCs[inputDescriptorId].push(vcKey);
-            }
-          } else {
-            descriptorMappingToVCs[inputDescriptorId] = [vcKey];
-          }
+    // Picks one card per request item; picking the selected card again clears the item.
+    SELECT_VC_ITEM: (vcKey: string, inputDescriptorId: string) => {
+      setInputDescriptorIdToSelectedVcKeys(previous => {
+        const next = {...previous};
+        if (previous[inputDescriptorId]?.includes(vcKey)) {
+          delete next[inputDescriptorId];
         } else {
-          // remove vc key from the input descriptor mapping
-          if (descriptorMappingToVCs[inputDescriptorId]) {
-            descriptorMappingToVCs[inputDescriptorId] = descriptorMappingToVCs[
-              inputDescriptorId
-            ].filter(key => key !== vcKey); // remove the vcKey from the array
-            if (descriptorMappingToVCs[inputDescriptorId].length === 0) {
-              // if the array is empty, remove the input descriptor id
-              delete descriptorMappingToVCs[inputDescriptorId];
-            }
-          }
+          next[inputDescriptorId] = [vcKey];
         }
-        setInputDescriptorIdToSelectedVcKeys(descriptorMappingToVCs);
-        const {serviceRefs, wellknownResponse, ...vcData} =
-          vcRef.getSnapshot().context;
-      },
-
-    UNCHECK_ALL: () => {
-      setInputDescriptorIdToSelectedVcKeys({});
-    },
-
-    CHECK_ALL: () => {
-      const updatedInputDescriptorToCredentialsMapping: Record<string, any[]> =
-        {};
-      Object.entries(vcsMatchingAuthRequest).map(([inputDescriptorId, vcs]) => {
-        updatedInputDescriptorToCredentialsMapping[inputDescriptorId] = [];
-        vcs.map(vcData => {
-          const vcKey = VCMetadata.fromVcMetadataString(
-            vcData.vcMetadata,
-          ).getVcKey();
-          updatedInputDescriptorToCredentialsMapping[inputDescriptorId].push(
-            vcKey,
-          );
-        });
-      });
-      setInputDescriptorIdToSelectedVcKeys({
-        ...updatedInputDescriptorToCredentialsMapping,
+        return next;
       });
     },
 

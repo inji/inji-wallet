@@ -17,6 +17,10 @@ export function selectReceiverInfo(state: State) {
   return state.context.receiverInfo;
 }
 
+export function selectSelectedVc(state: State) {
+  return state.context.selectedVc;
+}
+
 export function selectVcName(state: State) {
   return state.context.vcName;
 }

@@ -81,6 +81,32 @@ export type ElevationLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export const PurpleTheme = {
   Colors: {
+    // Colours for the new screen designs (first used by the verifier trust sheet).
+    Design: {
+      navy: '#1B3A6B',
+      teal: '#2E6B5E',
+      tealSoft: '#DDEBE5',
+      link: '#2F7391',
+      bodyText: '#3A4A5A',
+      sheetBackground: '#FBFAF7',
+      sheetHandle: '#CFCFCF',
+      cardBackground: '#E3ECF2',
+      mutedBackground: '#EEECE6',
+      border: '#D9D8D2',
+      mutedIcon: '#9A9A94',
+      scanLine: '#5BC8E8',
+      // Dark camera screens.
+      darkBackground: '#07090C',
+      darkBackgroundEnd: '#0E1621',
+      darkSurface: '#1E2125',
+      darkBorder: '#3A3D42',
+      darkText: '#F2F4F7',
+      darkMutedText: '#AEB6C2',
+      darkPlaceholder: '#4A4D52',
+      surface: '#FFFFFF',
+      warningBackground: '#F6E9CF',
+      warningText: '#8A5A0B',
+    },
     ProfileIconColor: Colors.DarkGray,
     DetailedViewBackground: Colors.Gray97,
     TabItemText: Colors.Primary,
@@ -2293,71 +2319,6 @@ export const PurpleTheme = {
       textAlign: 'center',
       lineHeight: 20,
       marginBottom: 28,
-    },
-  }),
-  TrustVerifierScreenStyle: StyleSheet.create({
-    modalOverlay: {
-      flex: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 20,
-    },
-    modalContainer: {
-      backgroundColor: '#fff',
-      borderRadius: 20,
-      width: '100%',
-      height: 470,
-      padding: 20,
-      alignItems: 'center',
-    },
-    issuerHeader: {
-      padding: 10,
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    issuerLogo: {
-      width: 60,
-      height: 60,
-      resizeMode: 'contain',
-    },
-    issuerName: {
-      marginTop: 8,
-      fontWeight: 'bold',
-      fontSize: 16,
-    },
-    description: {
-      fontSize: 14,
-      color: '#666',
-      textAlign: 'center',
-      lineHeight: 20,
-      marginBottom: 16,
-    },
-    infoContainer: {
-      width: '100%',
-      marginBottom: 10,
-    },
-    infoItem: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      marginBottom: 6,
-      paddingHorizontal: 4,
-    },
-    info: {
-      fontSize: 14,
-      color: '#666',
-      marginRight: 8,
-      marginTop: 1,
-    },
-    infoText: {
-      flex: 1,
-      fontSize: 14,
-      color: '#666',
-      lineHeight: 18,
-    },
-    buttonText: {
-      textAlign: 'center',
-      flexWrap: 'wrap',
     },
   }),
 
