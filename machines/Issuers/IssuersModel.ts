@@ -57,6 +57,7 @@ export const IssuersModel = createModel(
     isConsentRequested: false as boolean,
     issuerLogo: '' as string,
     issuerName: '' as string,
+    offeredCredentialTypeNames: [] as string[],
     txCodeInputMode: '' as string,
     txCodeDescription: '' as string,
     txCodeLength: null as number | null,

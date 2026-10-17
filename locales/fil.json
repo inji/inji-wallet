@@ -76,6 +76,28 @@
     "cameraPermissionGuideLabel": "Pumunta sa mga setting ng telepono at manual na paganahin ang access ng camera.",
     "flipCamera": "I-flip ang Camera"
   },
+  "AddToWallet": {
+    "title": "Idagdag sa Wallet",
+    "subtitle": "Paano mo gustong magdagdag ng credential?",
+    "scanToAdd": {
+      "title": "I-scan para Idagdag",
+      "description": "I-scan ang credential offer mula sa screen, sulat o SMS ng issuer."
+    },
+    "signedNote": "Direktang nagmumula ang mga credential sa nag-isyung awtoridad at digitally signed ang mga ito. Hindi ito mababago ng CredIssuer."
+  },
+  "ScanToAdd": {
+    "title": "I-scan para Idagdag",
+    "close": "Isara",
+    "torchOn": "I-on ang flashlight",
+    "torchOff": "I-off ang flashlight",
+    "instructionTitle": "Itutok ang iyong camera sa QR code ng issuer",
+    "instructionBody": "Awtomatiko itong nag-i-scan. Hanapin ang code sa screen, sulat o SMS ng issuer.",
+    "processingTitle": "Binabasa ang credential offer",
+    "processingBody": "Sandali lang ito.",
+    "cameraOffTitle": "Naka-off ang access sa camera",
+    "cameraOffBody": "Payagan ang access sa camera sa settings ng iyong telepono para ma-scan ang QR code ng issuer.",
+    "openSettings": "Buksan ang Settings"
+  },
   "VcDetails": {
     "generatedOn": "Nilikha noong",
     "status": "Katayuan",
@@ -1204,8 +1226,13 @@
       "Idadagdag ang issuer na ito sa iyong listahan ng mga pinagkakatiwalaan.",
       "Hindi mo na kailangang suriin muli ang tiwala sa susunod na pag-download mula sa kanila."
     ],
-    "description": "Tiyaking kilala mo o pinagkakatiwalaan ang issuer na ito. Kapag pinagkatiwalaan na:",
-    "title": "Mabilis na Pagsusuri",
-    "subTitle": "Bago magpatuloy, kumpirmahin na kilala mo ang issuer na ito"
+    "description": "Magda-download ka ng credential mula sa {{name}}. Kung magpapatuloy ka:",
+    "title": "Pagkatiwalaan ang Issuer na Ito?",
+    "subTitle": "Bago magpatuloy, kumpirmahin na kilala mo ang issuer na ito",
+    "firstTime": "Unang beses sa issuer na ito",
+    "trustedSubtitle": "Maaari ka nang ligtas na tumanggap ng mga card mula sa {{name}}.",
+    "downloadingCard": "Dina-download ang iyong card…",
+    "unknownIssuer": "Hindi kilalang issuer",
+    "offering": "Iniaalok"
   }
 }

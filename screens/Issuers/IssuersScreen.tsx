@@ -1,15 +1,13 @@
-import React, {Fragment, useEffect, useLayoutEffect} from 'react';
+import React, {Fragment, useCallback, useEffect, useLayoutEffect} from 'react';
 import {useTranslation} from 'react-i18next';
-import {View} from 'react-native';
-import {Issuer} from '../../components/openId4VCI/Issuer';
+import {useFocusEffect} from '@react-navigation/native';
 import {Header} from '../../components/ui/Header';
-import {Button, Column, Row} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
+import {Button, Row} from '../../components/ui';
 import {RootRouteProps} from '../../routes';
 import {HomeRouteProps} from '../../routes/routeTypes';
 import {useIssuerScreenController} from './IssuerScreenController';
 import {Loader} from '../../components/ui/Loader';
-import ScanIcon from '../../assets/scanIcon.svg';
 import {isTranslationKeyFound} from '../../shared/commonUtil';
 import {ErrorMessage} from '../../shared/openId4VCI/Utils';
 import {
@@ -21,13 +19,12 @@ import {
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {MessageOverlay} from '../../components/MessageOverlay';
 import {SvgImage} from '../../components/ui/svg';
-import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {CredentialTypeSelectionScreen} from './CredentialTypeSelectionScreen';
 import {ReplaceCredentialSelectionScreen} from './ReplaceCredentialSelectionScreen';
-import {QrScanner} from '../../components/QrScanner';
 import {AUTH_ROUTES} from '../../routes/routesConstants';
 import {TransactionCodeModal} from './TransactionCodeScreen';
-import {TrustModal} from '../../components/TrustModal';
+import {ScanToAddScreen} from '../../components/addCredential/ScanToAddScreen';
+import {TrustIssuerSheet} from '../../components/addCredential/TrustIssuerSheet';
 import {SendVPScreen} from '../Scan/SendVPScreen';
 
 import {AuthorizationType} from '../../shared/constants';
@@ -42,7 +39,7 @@ export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
   const controller = useIssuerScreenController(props);
-  const {i18n, t} = useTranslation('IssuersScreen');
+  const {t} = useTranslation('IssuersScreen');
   const showFullScreenError = controller.isError;
   const [successDownloadRedirectTimer, initiateSuccessDownloadRedirectTimer] =
     useTimer({initialValue: 5});
@@ -55,8 +52,41 @@ export const IssuersScreen: React.FC<
     ? t(translationKey)
     : t('errors.verificationFailed.ERR_GENERIC');
 
+  const isPreparingOffer =
+    controller.loadingReason === 'preparingRequest' &&
+    !controller.isPresentationAuthorization;
+  // Scanning, reading the offer and the trust sheet all sit on the scanner, so the sheet can
+  // slide in and out over it instead of the whole screen being swapped.
+  const isInScanFlow =
+    controller.isSelectingIssuer ||
+    controller.isQrScanning ||
+    controller.isConsentRequested ||
+    isPreparingOffer;
+
+  useFocusEffect(
+    useCallback(() => {
+      const tabs = props.navigation.getParent();
+      tabs?.setOptions({tabBarStyle: {display: 'none'}});
+      return () =>
+        tabs?.setOptions({
+          tabBarStyle: {
+            ...Theme.BottomTabBarStyle.tabBarStyle,
+            display: 'flex',
+          },
+        });
+    }, [props.navigation]),
+  );
+
+  // The scanner is where this screen starts, and where cancelling the trust sheet or closing an
+  // error returns to.
+  useEffect(() => {
+    if (controller.isSelectingIssuer) {
+      controller.SCAN_CREDENTIAL_OFFER_QR_CODE();
+    }
+  }, [controller.isSelectingIssuer]);
+
   useLayoutEffect(() => {
-    if (controller.loadingReason || showFullScreenError) {
+    if (controller.loadingReason || showFullScreenError || isInScanFlow) {
       props.navigation.setOptions({
         headerShown: false,
       });
@@ -66,17 +96,13 @@ export const IssuersScreen: React.FC<
         header: props => (
           <Header
             goBack={props.navigation.goBack}
-            title={controller.isQrScanning ? t('download') : t('title')}
+            title={t('title')}
             testID="issuersScreenHeader"
           />
         ),
       });
     }
-  }, [
-    controller.loadingReason,
-    controller.errorMessageType,
-    controller.isQrScanning,
-  ]);
+  }, [controller.loadingReason, controller.errorMessageType, isInScanFlow]);
 
   useLayoutEffect(() => {
     if (controller.loadingReason && controller.isPresentationAuthorization) {
@@ -275,9 +301,6 @@ export const IssuersScreen: React.FC<
   if (controller.isSelectingCredentialsToReplace) {
     return <ReplaceCredentialSelectionScreen {...props} />;
   }
-  if (controller.isConsentRequested) {
-    return issuerTrustConsentComponent();
-  }
   if (controller.isTxCodeRequested) {
     return (
       <TransactionCodeModal
@@ -342,6 +365,12 @@ export const IssuersScreen: React.FC<
     );
   }
 
+  if (isInScanFlow) {
+    return scanToAddComponent(
+      isPreparingOffer && !controller.isConsentRequested,
+    );
+  }
+
   if (controller.loadingReason) {
     return (
       <Fragment>
@@ -370,47 +399,29 @@ export const IssuersScreen: React.FC<
     );
   }
 
-  if (controller.isQrScanning) {
-    return qrScannerComponent();
-  }
-  function qrScannerComponent() {
+  // Nothing else to show on the way out, e.g. once the card is stored and the screen is
+  // about to close.
+  return scanToAddComponent(true);
+
+  function scanToAddComponent(isProcessing: boolean) {
     return (
-      <Column crossAlign="center">
-        <QrScanner onQrFound={controller.QR_CODE_SCANNED} />
-      </Column>
+      <Fragment>
+        <ScanToAddScreen
+          isCameraActive={controller.isQrScanning}
+          isProcessing={isProcessing}
+          onQrFound={controller.QR_CODE_SCANNED}
+          onClose={props.navigation.goBack}
+        />
+        <TrustIssuerSheet
+          isVisible={controller.isConsentRequested}
+          name={controller.issuerName}
+          credentialTypes={controller.offeredCredentialTypeNames}
+          logo={controller.issuerLogo}
+          consentStatus={controller.trustedIssuerConsentStatus}
+          onConfirm={controller.ON_CONSENT_GIVEN}
+          onCancel={controller.CANCEL}
+        />
+      </Fragment>
     );
   }
-
-  function issuerTrustConsentComponent() {
-    return (
-      <TrustModal
-        isVisible={true}
-        logo={controller.issuerLogo}
-        name={controller.issuerName}
-        onConfirm={controller.ON_CONSENT_GIVEN}
-        consentStatus={controller.trustedIssuerConsentStatus}
-        onCancel={controller.CANCEL}
-      />
-    );
-  }
-
-  return (
-    <React.Fragment>
-      <BannerNotificationContainer />
-      <Column style={Theme.IssuersScreenStyles.issuerListOuterContainer}>
-        <View style={{height: 85}}>
-          <Issuer
-            defaultLogo={ScanIcon}
-            displayDetails={{
-              title: t('offerTitle'),
-              locale: i18n.language,
-              description: t('offerDescription'),
-            }}
-            onPress={controller.SCAN_CREDENTIAL_OFFER_QR_CODE}
-            testID={'credentalOfferButton'}
-          />
-        </View>
-      </Column>
-    </React.Fragment>
-  );
 };
