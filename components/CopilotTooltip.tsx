@@ -57,7 +57,10 @@ export const CopilotTooltip = () => {
           style={[styles.stepCount, {color: c.azureInk}]}>
           {`${t('quickTour')} · ${controller.stepCount}`}
         </Text>
-        <View style={styles.dots} accessibilityElementsHidden>
+        <View
+          style={styles.dots}
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants">
           {Array.from({length: dotCount}, (_, index) => (
             <View
               key={index}
