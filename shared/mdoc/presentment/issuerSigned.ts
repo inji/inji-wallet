@@ -102,13 +102,12 @@ function extractIssuerSignedMap(
 }
 
 /**
- * Pulls `docType` out of the MSO carried in the `issuerAuth` payload.
+ * The MSO carried in the `issuerAuth` payload, or null when it cannot be read.
  *
  * `issuerAuth` is a COSE_Sign1 whose payload is `MobileSecurityObjectBytes = #6.24(bstr .cbor
- * MobileSecurityObject)`. This is best-effort: the caller falls back to the docType recorded
- * alongside the credential, and a credential whose MSO we cannot read is still presentable.
+ * MobileSecurityObject)`.
  */
-function msoDocTypeFromIssuerAuth(issuerAuth: unknown): string | null {
+function msoFromIssuerAuth(issuerAuth: unknown): Map<unknown, unknown> | null {
   try {
     const sign1 = parseCoseSign1(issuerAuth);
     if (!sign1.payload) {
@@ -120,9 +119,49 @@ function msoDocTypeFromIssuerAuth(issuerAuth: unknown): string | null {
       payloadItem instanceof DecodedTag
         ? payloadItem.embeddedCbor
         : sign1.payload;
-    const mso = asMap(decodeCbor(msoBytes), 'MobileSecurityObject');
-    const docType = mso.get('docType');
-    return typeof docType === 'string' ? docType : null;
+    return asMap(decodeCbor(msoBytes), 'MobileSecurityObject');
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Pulls `docType` out of the MSO. This is best-effort: the caller falls back to the docType
+ * recorded alongside the credential, and a credential whose MSO we cannot read is still
+ * presentable.
+ */
+function msoDocTypeFromIssuerAuth(issuerAuth: unknown): string | null {
+  const docType = msoFromIssuerAuth(issuerAuth)?.get('docType');
+  return typeof docType === 'string' ? docType : null;
+}
+
+/** A `tdate` (#6.0 text) or epoch-seconds (#6.1, or untagged) CBOR date. */
+function cborDate(value: unknown): Date | null {
+  const inner = value instanceof DecodedTag ? value.value : value;
+  const date =
+    typeof inner === 'string'
+      ? new Date(inner)
+      : typeof inner === 'number'
+      ? new Date(inner * 1000)
+      : null;
+  return date && !Number.isNaN(date.getTime()) ? date : null;
+}
+
+/**
+ * The MSO's `validityInfo.validUntil`, after which verifiers reject the credential. Null when
+ * the credential, its MSO or the date cannot be read.
+ */
+export function readMsoValidUntil(compact: string): Date | null {
+  try {
+    const issuerSigned = extractIssuerSignedMap(
+      decodeIssuerSignedCompact(compact),
+    );
+    const validityInfo = msoFromIssuerAuth(issuerSigned.get('issuerAuth'))?.get(
+      'validityInfo',
+    );
+    return validityInfo instanceof Map
+      ? cborDate(validityInfo.get('validUntil'))
+      : null;
   } catch {
     return null;
   }

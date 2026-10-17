@@ -9,7 +9,6 @@ import {selectIsActive} from '../machines/app';
 import {useTranslation} from 'react-i18next';
 import testIDProps from '../shared/commonUtil';
 import {SvgImage} from './ui/svg';
-import {isAndroid} from '../shared/constants';
 import {CameraView, useCameraPermissions, PermissionStatus, BarcodeScanningResult, CameraType} from 'expo-camera';
 import {CameraPosition} from "../shared/Utils";
 
@@ -158,13 +157,7 @@ export function useCameraPermission() {
   const [_, requestCameraPermission, getCameraPermissionsAsync] =
     useCameraPermissions();
 
-  const openSettings = () => {
-    if (isAndroid()) {
-      Linking.openSettings();
-    } else {
-      Linking.openURL('App-Prefs:Privacy');
-    }
-  };
+  const openSettings = () => Linking.openSettings();
 
   useEffect(() => {
     if (isActive && !Boolean(hasCameraPermission)) {

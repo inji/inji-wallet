@@ -24,6 +24,8 @@ export const VCCardView: React.FC<VCItemProps> = ({
   isInitialLaunch = false,
   isTopCard = false,
   onMeasured,
+  autoOpen = false,
+  onAutoOpened,
 }) => {
   const {controller, vc, wellknown, isLoaded} = useVcCardData(
     vcMetadata,
@@ -48,6 +50,13 @@ export const VCCardView: React.FC<VCItemProps> = ({
       return () => cancelAnimationFrame(handle);
     }
   }, [onMeasured]);
+
+  useEffect(() => {
+    if (autoOpen && isLoaded) {
+      onPress(service);
+      onAutoOpened?.();
+    }
+  }, [autoOpen, isLoaded]);
 
   if (!isLoaded) {
     return <VCCardSkeleton />;
@@ -125,6 +134,9 @@ export interface VCItemProps {
   flow?: string;
   isInitialLaunch?: boolean;
   isTopCard?: boolean;
+  /** Opens the card (as if pressed) once it has finished loading. */
+  autoOpen?: boolean;
+  onAutoOpened?: () => void;
   onMeasured?: (rect: {
     x: number;
     y: number;

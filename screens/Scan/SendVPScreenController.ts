@@ -221,17 +221,22 @@ export function useSendVPScreen(props) {
 
   const generateAndStoreLogMessage = useCallback(
     (logType: string, errorInfo?: string) => {
+      const openID4VPContext = openID4VPService?.getSnapshot()?.context;
       activityLogService.send(
         ActivityLogEvents.LOG_ACTIVITY(
           VPShareActivityLog.getLogFromObject({
             timestamp: Date.now(),
             type: logType,
             info: errorInfo,
+            ...VPShareActivityLog.namesFrom(
+              openID4VPContext?.authenticationResponse,
+              openID4VPContext?.selectedVCs,
+            ),
           }),
         ),
       );
     },
-    [activityLogService],
+    [activityLogService, openID4VPService],
   );
 
   const requestedClaimsByVerifier = useSelector(
