@@ -40,6 +40,10 @@ const VCItemEvents = {
   REMOVE_VERIFICATION_STATUS_BANNER: () => ({}),
   SHOW_VERIFICATION_STATUS_BANNER: (response: unknown) => ({response}),
   CLOSE_BANNER: () => ({}),
+  STORE_ISSUER_QR_CODE: (
+    issuerQrCode: string,
+    credissuerCredentialId: string,
+  ) => ({issuerQrCode, credissuerCredentialId}),
 };
 
 export const VCItemModel = createModel(

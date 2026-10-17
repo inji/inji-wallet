@@ -24,6 +24,26 @@ export const VCItemMachine = model.createMachine(
       'This machine is spawned for every VC downloaded, and tracks its lifecycle.',
     id: machineName,
     type: 'parallel',
+    on: {
+      // A CredIssuer QR fetched after download (credentials downloaded before QRs were stored at
+      // download time, or whose download-time fetch failed), so it is only fetched once.
+      STORE_ISSUER_QR_CODE: [
+        {
+          cond: 'canStoreIssuerQrCodeNow',
+          actions: [
+            'setIssuerQrCode',
+            'storeContext',
+            'sendIssuerQrCodeToVcMeta',
+          ],
+        },
+        {
+          // Something else is mid-write and waiting on the store's reply, which a write from here
+          // could be mistaken for. Keep the QR in context instead: the next storeContext (e.g.
+          // after verification) writes the whole context, QR included.
+          actions: ['setIssuerQrCode', 'sendIssuerQrCodeToVcMeta'],
+        },
+      ],
+    },
     states: {
       vcUtilitiesState: {
         on: {

@@ -70,6 +70,10 @@ export interface VerifiableCredential {
   processedCredential?: object;
   wellKnown: string;
   credentialConfigurationId: string;
+  /** CredIssuer's ID for this credential, from the token response; not part of the signed VC. */
+  credissuerCredentialId?: string;
+  /** The CredIssuer-issued QR image as a `data:` URI, stored so it isn't fetched on every open. */
+  issuerQrCode?: string;
 }
 
 export interface VerifiableCredentialData {

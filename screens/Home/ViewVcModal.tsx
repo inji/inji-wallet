@@ -220,6 +220,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
           svgRendererError={svgRendererError}
           loadingSvg={loadingSvg}
           onCloseDetails={handleModalDismiss}
+          onIssuerQrCodeFetched={controller.STORE_ISSUER_QR_CODE}
         />
       )}
 

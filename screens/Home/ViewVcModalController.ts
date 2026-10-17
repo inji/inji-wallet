@@ -153,6 +153,13 @@ export function useViewVcModal({vcItemActor, isVisible}: ViewVcModalProps) {
     RESEND_OTP: () => vcItemActor.send(VCItemEvents.RESEND_OTP()),
     CANCEL: () => vcItemActor.send(VCItemEvents.CANCEL()),
     CONFIRM: () => vcItemActor.send(VCItemEvents.CONFIRM()),
+    STORE_ISSUER_QR_CODE: (
+      issuerQrCode: string,
+      credissuerCredentialId: string,
+    ) =>
+      vcItemActor.send(
+        VCItemEvents.STORE_ISSUER_QR_CODE(issuerQrCode, credissuerCredentialId),
+      ),
   };
 }
 

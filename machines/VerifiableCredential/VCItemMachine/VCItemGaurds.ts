@@ -31,6 +31,17 @@ export const VCItemGaurds = () => {
 
     hasVcStatusChangedAfterReverification: (context:any) => {
       return context.statusChangedDuringVerification;
-    }
+    },
+
+    // True when no state is waiting on a STORE_RESPONSE, so a write from STORE_ISSUER_QR_CODE
+    // can't be taken as the reply to someone else's write (e.g. removal or verification).
+    canStoreIssuerQrCodeNow: (
+      _context: unknown,
+      _event: unknown,
+      {state}: {state: {matches: (stateValue: string) => boolean}},
+    ) =>
+      state.matches('vcUtilitiesState.idle') &&
+      (state.matches('verifyState.idle') ||
+        state.matches('verifyState.verificationCompleted')),
   };
 };

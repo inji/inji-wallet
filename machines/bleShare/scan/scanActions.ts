@@ -119,7 +119,7 @@ export const ScanActions = (model: any) => {
     openBluetoothSettings: () => {
       isAndroid()
         ? BluetoothStateManager.openSettings().catch()
-        : Linking.openURL('App-Prefs:Bluetooth');
+        : Linking.openSettings();
     },
 
     openAppPermission: () => Linking.openSettings(),

@@ -54,6 +54,7 @@ android/artifactory.local.properties
 *.hprof
 *.hprof
 .cxx/
+.kotlin/
 *.keystore
 !debug.keystore
 

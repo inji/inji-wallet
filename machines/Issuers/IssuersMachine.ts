@@ -94,7 +94,13 @@ export const IssuersMachine = model.createMachine(
       },
 
       credentialDownloadFromOffer: {
-        entry: ['setCredentialOfferFlowType', 'resetSelectedIssuer'],
+        entry: [
+          'setCredentialOfferFlowType',
+          'resetSelectedIssuer',
+          // The CredIssuer credential_id is read from this flow's token response, so one left
+          // over from an earlier download must never be attached to this credential.
+          model.assign({tokenResponse: {}}),
+        ],
         invoke: {
           src: 'downloadCredentialFromOffer',
           onDone: {
@@ -270,7 +276,18 @@ export const IssuersMachine = model.createMachine(
           credentialOfferDownloadConsent: {
             description:
               'waits for the user to give consent to download the credential offer',
-            entry: ['resetTrustedIssuerConsentStatus'],
+            entry: [
+              'resetTrustedIssuerConsentStatus',
+              'resetOfferedCredentialTypeNames',
+            ],
+            invoke: {
+              src: 'fetchOfferedCredentialTypeNames',
+              onDone: {
+                actions: ['setOfferedCredentialTypeNames'],
+              },
+              // Only fills in the "Offering" row; the consent itself doesn't depend on it.
+              onError: {},
+            },
             on: {
               CANCEL: {
                 actions: [
@@ -518,7 +535,7 @@ export const IssuersMachine = model.createMachine(
           src: 'updateCredential',
           onDone: {
             actions: ['setVerifiableCredential', 'setCredentialWrapper'],
-            target: 'verifyingCredential',
+            target: 'fetchingIssuerQrCode',
           },
           // Without this the credential is already downloaded and verified-pending, but a throw
           // here (e.g. a CBOR/base64 decode failure in processForRendering) left the machine with
@@ -583,7 +600,11 @@ export const IssuersMachine = model.createMachine(
       },
 
       downloadCredentials: {
-        entry: ['setLoadingReasonAsPreparingRequest'],
+        entry: [
+          'setLoadingReasonAsPreparingRequest',
+          // See credentialDownloadFromOffer: the credential_id must come from this download.
+          model.assign({tokenResponse: {}}),
+        ],
         invoke: {
           src: 'downloadCredential',
           onDone: {
@@ -594,7 +615,7 @@ export const IssuersMachine = model.createMachine(
                 authEndpointToOpen: false,
               }),
             ],
-            target: 'verifyingCredential',
+            target: 'fetchingIssuerQrCode',
           },
           onError: [
             {
@@ -856,6 +877,22 @@ export const IssuersMachine = model.createMachine(
                 },
               },
             },
+          },
+        },
+      },
+
+      fetchingIssuerQrCode: {
+        description:
+          'stores the CredIssuer QR with a credential as it is downloaded, so the card never fetches it on open',
+        invoke: {
+          src: 'attachIssuerQrCode',
+          onDone: {
+            actions: ['setVerifiableCredential', 'setCredentialWrapper'],
+            target: 'verifyingCredential',
+          },
+          // attachIssuerQrCode doesn't throw, but if it ever did the download must still go on.
+          onError: {
+            target: 'verifyingCredential',
           },
         },
       },

@@ -11,7 +11,7 @@
           "isUserSignedAlready": "done.invoke.vcMeta.ready.tamperedVCs.triggerAutoBackupForTamperedVcDeletion:invocation[0]";
         };
         missingImplementations: {
-          actions: "addVcToInProgressDownloads" | "getVcItemResponse" | "loadMyVcs" | "loadReceivedVcs" | "logTamperedVCsremoved" | "prependToMyVcsMetadata" | "removeDownloadFailedVcsFromStorage" | "removeDownloadingFailedVcsFromMyVcs" | "removeVcFromInProgressDownlods" | "removeVcFromMyVcsMetadata" | "resetDownloadCreadentialsFailed" | "resetDownloadCredentialsSuccess" | "resetDownloadFailedVcs" | "resetHighlightVcKey" | "resetInProgressVcsDownloaded" | "resetReverificationFailed" | "resetReverificationSuccess" | "resetTamperedVcs" | "resetVerificationErrorMessage" | "resetVerificationStatus" | "resetWalletBindingSuccess" | "sendBackupEvent" | "setDownloadCreadentialsFailed" | "setDownloadCredentialsSuccess" | "setDownloadedVc" | "setDownloadingFailedVcs" | "setMyVcs" | "setReceivedVcs" | "setReverificationFailed" | "setReverificationSuccess" | "setUpdatedVcMetadatas" | "setVerificationErrorMessage" | "setVerificationStatus" | "setWalletBindingSuccess" | "updateMyVcsMetadata";
+          actions: "addVcToInProgressDownloads" | "getVcItemResponse" | "loadMyVcs" | "loadReceivedVcs" | "logTamperedVCsremoved" | "prependToMyVcsMetadata" | "removeDownloadFailedVcsFromStorage" | "removeDownloadingFailedVcsFromMyVcs" | "removeVcFromInProgressDownlods" | "removeVcFromMyVcsMetadata" | "resetDownloadCreadentialsFailed" | "resetDownloadCredentialsSuccess" | "resetDownloadFailedVcs" | "resetHighlightVcKey" | "resetInProgressVcsDownloaded" | "resetReverificationFailed" | "resetReverificationSuccess" | "resetTamperedVcs" | "resetVerificationErrorMessage" | "resetVerificationStatus" | "resetWalletBindingSuccess" | "sendBackupEvent" | "setDownloadCreadentialsFailed" | "setDownloadCredentialsSuccess" | "setDownloadedVc" | "setDownloadingFailedVcs" | "setMyVcs" | "setReceivedVcs" | "setReverificationFailed" | "setReverificationSuccess" | "setUpdatedVcMetadatas" | "setVerificationErrorMessage" | "setVerificationStatus" | "setWalletBindingSuccess" | "updateMyVcIssuerQrCode" | "updateMyVcsMetadata";
           delays: never;
           guards: "isAnyVcTampered" | "isSignedIn";
           services: "isUserSignedAlready";
@@ -51,6 +51,7 @@
 "setVerificationErrorMessage": "VERIFY_VC_FAILED";
 "setVerificationStatus": "SET_VERIFICATION_STATUS";
 "setWalletBindingSuccess": "WALLET_BINDING_SUCCESS";
+"updateMyVcIssuerQrCode": "VC_ISSUER_QR_CODE_UPDATED";
 "updateMyVcsMetadata": "VC_METADATA_UPDATED";
         };
         eventsCausingDelays: {

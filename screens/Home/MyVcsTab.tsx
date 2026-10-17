@@ -20,7 +20,15 @@ import {
 } from '../../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
 import {ErrorView} from '../../components/ui/Error';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
+import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
+import {WalletHome} from '../../components/revamp/WalletHome';
+import {WalletHeader} from '../../components/revamp/WalletHeader';
+import {BellIcon, CarouselIcon, UserIcon} from '../../components/revamp/Icons';
 import {getVCsOrderedByPinStatus} from '../../shared/Utils';
 import {SvgImage} from '../../components/ui/svg';
 import {SearchBar} from '../../components/ui/SearchBar';
@@ -148,6 +156,9 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
     Array<Record<string, VCMetadata>>
   >([]);
   const [showPinVc, setShowPinVc] = useState(true);
+  const [stackView, setStackView] = useState(false);
+  const navigation = useNavigation<any>();
+  const showWalletHome = vcMetadataOrderedByPinStatus.length > 0 && !stackView;
   const [highlightCardLayout, setHighlightCardLayout] = useState<null | {
     x: number;
     y: number;
@@ -367,8 +378,47 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
             testId={'downloadingVcPopup'}
           />
         )}
-        <Column fill pY={2} pX={8}>
-          {vcMetadataOrderedByPinStatus.length > 0 && (
+        {showWalletHome ? (
+          <WalletHome
+            vcMetadatas={vcMetadataOrderedByPinStatus}
+            searchIndex={searchIndex}
+            onAdd={() => props.onAddCredential?.()}
+            onStackView={() => setStackView(true)}
+            refreshing={controller.isRefreshingVcs}
+            onRefresh={controller.REFRESH}
+          />
+        ) : (
+          <WalletHeader
+            countText={cardsAvailableText}
+            onAvatar={() => navigation.navigate(BOTTOM_TAB_ROUTES.settings)}
+            onAdd={() => props.onAddCredential?.()}
+            searching={false}
+            menu={[
+              {
+                label: 'Profile',
+                icon: col => <UserIcon color={col} />,
+                onPress: () => navigation.navigate(BOTTOM_TAB_ROUTES.settings),
+              },
+              {
+                label: 'Notifications',
+                icon: col => <BellIcon color={col} />,
+                onPress: () => navigation.navigate(BOTTOM_TAB_ROUTES.history),
+              },
+              ...(stackView
+                ? [
+                    {
+                      label: 'Carousel view',
+                      icon: (col: string) => <CarouselIcon color={col} />,
+                      onPress: () => setStackView(false),
+                      separated: true,
+                    },
+                  ]
+                : []),
+            ]}
+          />
+        )}
+        <Column fill pY={2} pX={8} style={showWalletHome && {display: 'none'}}>
+          {vcMetadataOrderedByPinStatus.length > 0 && stackView && (
             <React.Fragment>
               <Column
                 scroll

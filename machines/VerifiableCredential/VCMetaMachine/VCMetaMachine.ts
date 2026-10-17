@@ -135,6 +135,9 @@ export const vcMetaMachine =
             VC_DOWNLOADED: {
               actions: ['setDownloadCredentialsSuccess', 'setDownloadedVc'],
             },
+            VC_ISSUER_QR_CODE_UPDATED: {
+              actions: 'updateMyVcIssuerQrCode',
+            },
             ADD_VC_TO_IN_PROGRESS_DOWNLOADS: {
               actions: 'addVcToInProgressDownloads',
             },

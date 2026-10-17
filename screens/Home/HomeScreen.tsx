@@ -1,5 +1,4 @@
-import React, {useEffect, useRef} from 'react';
-import {Icon} from 'react-native-elements';
+import React, {useEffect, useRef, useState} from 'react';
 import {Column} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
 import {HomeRouteProps} from '../../routes/routeTypes';
@@ -9,15 +8,13 @@ import {ViewVcModal} from './ViewVcModal';
 import {useHomeScreen} from './HomeScreenController';
 import {TabRef} from './HomeScreenMachine';
 import {ActorRefFrom} from 'xstate';
-import LinearGradient from 'react-native-linear-gradient';
 import {ErrorMessageOverlay} from '../../components/MessageOverlay';
-import {Linking, Pressable} from 'react-native';
-import testIDProps from '../../shared/commonUtil';
+import {DeviceEventEmitter, Linking} from 'react-native';
+import {SCAN_TO_ADD_EVENT} from '../../components/revamp/RevampTabBar';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
-import {useTranslation} from 'react-i18next';
-import {Copilot} from '../../components/ui/Copilot';
+import {AddToWalletSheet} from '../../components/addCredential/AddToWalletSheet';
 import {IssuerScreenTabEvents} from '../../machines/Issuers/IssuersMachine';
 
 const CREDENTIAL_OFFER_SCHEME = 'openid-credential-offer://';
@@ -28,8 +25,29 @@ let isInitialUrlHandled = false;
 
 export const HomeScreen: React.FC<HomeRouteProps> = props => {
   const controller = useHomeScreen(props);
-  const {t} = useTranslation();
+  const [isAddToWalletVisible, setIsAddToWalletVisible] = useState(false);
+  const shouldScanAfterSheetCloses = useRef(false);
   const pendingCredentialOffer = useRef('');
+
+  const startScanToAdd = () => {
+    shouldScanAfterSheetCloses.current = true;
+    setIsAddToWalletVisible(false);
+  };
+
+  const onAddToWalletClosed = () => {
+    if (shouldScanAfterSheetCloses.current) {
+      shouldScanAfterSheetCloses.current = false;
+      controller.GOTO_ISSUERS();
+    }
+  };
+
+  // The bottom bar's Scan opens the add-card flow; IssuersScreen starts its QR scanner.
+  useEffect(() => {
+    const sub = DeviceEventEmitter.addListener(SCAN_TO_ADD_EVENT, () => {
+      controller.GOTO_ISSUERS();
+    });
+    return () => sub.remove();
+  }, []);
 
   useEffect(() => {
     const startCredentialOfferDownload = (url: string | null) => {
@@ -75,40 +93,6 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
     });
   };
 
-  const DownloadFABIcon: React.FC = () => {
-    const plusIcon = (
-      <Icon
-        {...testIDProps('plusIcon')}
-        accessible={true}
-        name={'plus'}
-        type={'entypo'}
-        size={36}
-        color={Theme.Colors.whiteText}
-      />
-    );
-    return (
-      <LinearGradient
-        colors={Theme.Colors.gradientBtn}
-        start={Theme.LinearGradientDirection.start}
-        end={Theme.LinearGradientDirection.end}
-        style={Theme.Styles.downloadFabIconContainer}>
-        <Pressable
-          onPress={() => {
-            controller.GOTO_ISSUERS();
-          }}
-          {...testIDProps('downloadCardButton')}
-          accessible={false}
-          style={({pressed}) =>
-            pressed
-              ? Theme.Styles.downloadFabIconPressed
-              : Theme.Styles.downloadFabIconNormal
-          }>
-          {plusIcon}
-        </Pressable>
-      </LinearGradient>
-    );
-  };
-
   return (
     <React.Fragment>
       <BannerNotificationContainer />
@@ -117,6 +101,7 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
           <Column fill>
             <MyVcsTab
               isVisible={controller.activeTab === 0}
+              onAddCredential={() => setIsAddToWalletVisible(true)}
               service={controller.tabRefs.myVcs}
               vcItemActor={controller.selectedVc}
               isViewingVc={controller.isViewingVc}
@@ -130,13 +115,12 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
         )}
       </Column>
 
-      <Copilot
-        title={t('copilot:downloadTitle')}
-        description={t('copilot:downloadMessage')}
-        order={1}
-        targetStyle={Theme.Styles.downloadFabIconCopilotContainer}>
-        <DownloadFABIcon />
-      </Copilot>
+      <AddToWalletSheet
+        isVisible={isAddToWalletVisible}
+        onScanToAdd={startScanToAdd}
+        onCancel={() => setIsAddToWalletVisible(false)}
+        onClosed={onAddToWalletClosed}
+      />
 
       <ErrorMessageOverlay
         translationPath={'MyVcsTab'}
@@ -163,4 +147,5 @@ export interface HomeScreenTabProps {
   service: TabRef;
   vcItemActor: ActorRefFrom<typeof VCItemMachine>;
   vc: VerifiableCredential | Credential;
+  onAddCredential?: () => void;
 }
