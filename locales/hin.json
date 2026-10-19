@@ -449,6 +449,18 @@
     "offerDescription": "अपना कार्ड तुरंत डाउनलोड करने के लिए QR कोड स्कैन करें।",
     "download": "कार्ड डाउनलोड करें",
     "downloadSuccess": "कार्ड सफलतापूर्वक डाउनलोड हो गया है",
+    "addedToWallet": {
+      "title": "आपके वॉलेट में जोड़ा गया",
+      "subtitle": "आपका {{credential}} उपयोग और साझा करने के लिए तैयार है।",
+      "subtitleGeneric": "आपका क्रेडेंशियल उपयोग और साझा करने के लिए तैयार है।",
+      "identityVerified": "पहचान सत्यापित",
+      "identityVerifiedDetail": "आपके आईडी रिकॉर्ड से मेल खाता है",
+      "signedByIssuer": "जारीकर्ता द्वारा हस्ताक्षरित",
+      "savedOnDevice": "इस डिवाइस पर सहेजा गया",
+      "savedOnDeviceDetail": "सुरक्षित स्टोरेज में एन्क्रिप्टेड",
+      "done": "पूर्ण",
+      "viewInWallet": "वॉलेट में देखें"
+    },
     "goHome": "होम जाएँ",
     "errors": {
       "noInternetConnection": {

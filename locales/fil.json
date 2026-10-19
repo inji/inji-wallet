@@ -447,6 +447,18 @@
     "offerDescription": "I-scan ang QR code para agad ma-download ang iyong card.",
     "download": "I-download ang Card",
     "downloadSuccess": "Matagumpay na na-download ang iyong card",
+    "addedToWallet": {
+      "title": "Naidagdag sa Iyong Wallet",
+      "subtitle": "Handa nang gamitin at ibahagi ang iyong {{credential}}.",
+      "subtitleGeneric": "Handa nang gamitin at ibahagi ang iyong credential.",
+      "identityVerified": "Na-verify ang pagkakakilanlan",
+      "identityVerifiedDetail": "Tugma sa iyong ID record",
+      "signedByIssuer": "Pinirmahan ng issuer",
+      "savedOnDevice": "Naka-save sa device na ito",
+      "savedOnDeviceDetail": "Naka-encrypt sa secure na storage",
+      "done": "Tapos",
+      "viewInWallet": "Tingnan sa Wallet"
+    },
     "goHome": "Pumunta sa Home",
     "errors": {
       "noInternetConnection": {

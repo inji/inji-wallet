@@ -103,6 +103,10 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
               onVcOpened={() =>
                 props.navigation.setParams({openVcKey: undefined})
               }
+              highlightVcKey={props.route.params?.highlightVcKey}
+              onHighlightTaken={() =>
+                props.navigation.setParams({highlightVcKey: undefined})
+              }
             />
           </Column>
         )}
@@ -144,4 +148,8 @@ export interface HomeScreenTabProps {
   /** Opens this credential's detail view as soon as its card has loaded. */
   openVcKey?: string;
   onVcOpened?: () => void;
+  /** A just-downloaded credential for the tour to highlight on its own. */
+  highlightVcKey?: string;
+  /** Called once the highlight has been taken up, so it isn't shown again. */
+  onHighlightTaken?: () => void;
 }

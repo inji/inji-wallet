@@ -6,6 +6,7 @@ import {
   AuthEvents,
   selectIsInitialDownload,
   selectIsOnboarding,
+  selectIsTourGuide,
 } from '../machines/auth';
 import {useSelector} from '@xstate/react';
 import {copilotTestID} from '../shared/constants';
@@ -35,6 +36,7 @@ export const UseCopilotTooltip = () => {
     authService,
     selectIsInitialDownload,
   );
+  const isTourGuide = useSelector(authService, selectIsTourGuide);
 
   const CURRENT_STEP = currentStep?.order;
   const currentStepTitle = currentStep?.name;
@@ -44,9 +46,10 @@ export const UseCopilotTooltip = () => {
     copilotTestID[CURRENT_STEP?.toString()]
   }Description`;
 
-  // A step shown on its own rather than as part of the tour.
+  // A step shown on its own rather than as part of the tour. Outside a replay from Settings,
+  // the card step only ever runs alone: it highlights a card that was just downloaded.
   const isStandalone =
-    (CURRENT_STEP === COPILOT_FINAL_STEP && isInitialDownloading) ||
+    (CURRENT_STEP === COPILOT_FINAL_STEP && !isTourGuide) ||
     CURRENT_STEP === KEY_MANAGEMENT_STEP;
 
   // The step's position among the steps on screen, not its `order`: orders can have
@@ -61,7 +64,7 @@ export const UseCopilotTooltip = () => {
   // A standalone step has nothing to go back to.
   const showPrevious = !(isFirstStep || isStandalone);
   // The step whose primary button ends the tour ("Done") instead of moving on ("Next").
-  const isDoneStep = isLastStep || CURRENT_STEP === KEY_MANAGEMENT_STEP;
+  const isDoneStep = isLastStep || isStandalone;
 
   return {
     goToNext,
