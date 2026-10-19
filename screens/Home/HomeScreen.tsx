@@ -59,7 +59,8 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
 
   useEffect(() => {
     if (controller.IssuersService) {
-      if (pendingCredentialOffer.current !== '') {
+      const isCredentialOfferLink = pendingCredentialOffer.current !== '';
+      if (isCredentialOfferLink) {
         controller.IssuersService.send(
           IssuerScreenTabEvents.SCAN_CREDENTIAL_OFFER_QR_CODE(),
         );
@@ -68,7 +69,7 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
         );
         pendingCredentialOffer.current = '';
       }
-      navigateToIssuers();
+      navigateToIssuers(isCredentialOfferLink);
     }
   }, [controller.IssuersService]);
 
@@ -78,9 +79,10 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
     }
   }, [controller.isMinimumStorageLimitReached]);
 
-  const navigateToIssuers = () => {
+  const navigateToIssuers = (isCredentialOfferLink: boolean) => {
     props.navigation.navigate('IssuersScreen', {
       service: controller.IssuersService,
+      isCredentialOfferLink,
     });
   };
 

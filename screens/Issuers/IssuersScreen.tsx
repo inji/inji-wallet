@@ -40,6 +40,11 @@ export const IssuersScreen: React.FC<
 > = props => {
   const controller = useIssuerScreenController(props);
   const {t} = useTranslation('IssuersScreen');
+  // Opened from an "Add to Wallet" link: the offer is already known, so there is nothing to scan.
+  const isCredentialOfferLink = Boolean(
+    (props.route.params as {isCredentialOfferLink?: boolean} | undefined)
+      ?.isCredentialOfferLink,
+  );
   const showFullScreenError = controller.isError;
   const [successDownloadRedirectTimer, initiateSuccessDownloadRedirectTimer] =
     useTimer({initialValue: 5});
@@ -78,9 +83,14 @@ export const IssuersScreen: React.FC<
   );
 
   // The scanner is where this screen starts, and where cancelling the trust sheet or closing an
-  // error returns to.
+  // error returns to. A link's offer has nothing to go back to, so that closes the screen instead.
   useEffect(() => {
-    if (controller.isSelectingIssuer) {
+    if (!controller.isSelectingIssuer) {
+      return;
+    }
+    if (isCredentialOfferLink) {
+      props.navigation.goBack();
+    } else {
       controller.SCAN_CREDENTIAL_OFFER_QR_CODE();
     }
   }, [controller.isSelectingIssuer]);
@@ -406,12 +416,19 @@ export const IssuersScreen: React.FC<
   function scanToAddComponent(isProcessing: boolean) {
     return (
       <Fragment>
-        <ScanToAddScreen
-          isCameraActive={controller.isQrScanning}
-          isProcessing={isProcessing}
-          onQrFound={controller.QR_CODE_SCANNED}
-          onClose={props.navigation.goBack}
-        />
+        {isCredentialOfferLink ? (
+          <Loader
+            title={t('loaders.preparingRequest')}
+            subTitle={t('loaders.subTitle.preparingRequest')}
+          />
+        ) : (
+          <ScanToAddScreen
+            isCameraActive={controller.isQrScanning}
+            isProcessing={isProcessing}
+            onQrFound={controller.QR_CODE_SCANNED}
+            onClose={props.navigation.goBack}
+          />
+        )}
         <TrustIssuerSheet
           isVisible={controller.isConsentRequested}
           name={controller.issuerName}

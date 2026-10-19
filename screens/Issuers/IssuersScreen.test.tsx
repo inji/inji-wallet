@@ -52,7 +52,9 @@ jest.mock('./TransactionCodeScreen', () => ({
 jest.mock('../../components/MessageOverlay', () => ({
   MessageOverlay: () => null,
 }));
-jest.mock('../../components/ui/Loader', () => ({Loader: () => null}));
+jest.mock('../../components/ui/Loader', () => ({
+  Loader: (props: any) => <Text testID="loader">{props.title}</Text>,
+}));
 jest.mock('../../components/ui/processingScreen/ProcessingModal', () => ({
   ProcessingModal: () => null,
   ProgressIndicator: () => null,
@@ -218,5 +220,52 @@ describe('IssuersScreen scan flow', () => {
     expect(mockController.SCAN_CREDENTIAL_OFFER_QR_CODE).toHaveBeenCalledTimes(
       1,
     );
+  });
+});
+
+describe('IssuersScreen opened from an Add to Wallet link', () => {
+  const tabs = {setOptions: jest.fn()};
+  const navigation = {
+    setOptions: jest.fn(),
+    getParent: () => tabs,
+    goBack: jest.fn(),
+    navigate: jest.fn(),
+  };
+  const route = {params: {isCredentialOfferLink: true}} as any;
+  const renderScreen = () =>
+    render(<IssuersScreen navigation={navigation as any} route={route} />);
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockController = baseController();
+  });
+
+  it('reads the offer without opening the scanner', () => {
+    mockController.loadingReason = 'preparingRequest';
+
+    const {getByTestId, queryByTestId} = renderScreen();
+
+    expect(getByTestId('loader')).toBeTruthy();
+    expect(queryByTestId('scanToAddScreen')).toBeNull();
+    expect(mockController.SCAN_CREDENTIAL_OFFER_QR_CODE).not.toHaveBeenCalled();
+  });
+
+  it('asks to trust a new issuer without opening the scanner', () => {
+    mockController.isConsentRequested = true;
+    mockController.loadingReason = 'preparingRequest';
+
+    const {getByText, queryByTestId} = renderScreen();
+
+    expect(queryByTestId('scanToAddScreen')).toBeNull();
+    expect(getByText('Ministry of Transport Driving Licence')).toBeTruthy();
+  });
+
+  it('closes instead of starting the scanner once the offer is declined or fails', () => {
+    mockController.isSelectingIssuer = true;
+
+    renderScreen();
+
+    expect(navigation.goBack).toHaveBeenCalledTimes(1);
+    expect(mockController.SCAN_CREDENTIAL_OFFER_QR_CODE).not.toHaveBeenCalled();
   });
 });
