@@ -72,7 +72,7 @@ function infoRows(data: CredentialCardData, c: RevampColors): InfoRow[] {
     {label: 'Format', value: formatName[data.format] ?? data.format},
     {
       label: 'Signature',
-      value: data.status === 'verified' ? 'Valid' : statusLabel[data.status],
+      value: statusLabel[data.status],
       colour: statusColour(c, data.status),
     },
   ];

@@ -41,7 +41,6 @@ import {
   StackIcon,
   SparkIcon,
   TrashIcon,
-  UserIcon,
 } from './Icons';
 import {Chip, WalletHeader} from './WalletHeader';
 import {SAMPLE_CARDS, useShowSampleCards} from './sampleCards';
@@ -310,11 +309,6 @@ export const WalletHome: React.FC<{
         search={{query, onQuery: setQuery, chips, chip, onChip: setChip}}
         menu={[
           {
-            label: 'Profile',
-            icon: col => <UserIcon color={col} />,
-            onPress: () => navigation.navigate(BOTTOM_TAB_ROUTES.settings),
-          },
-          {
             label: 'Notifications',
             icon: col => <BellIcon color={col} />,
             onPress: () => navigation.navigate(BOTTOM_TAB_ROUTES.history),
@@ -573,7 +567,8 @@ const PinnedCard: React.FC<{
       accessibilityLabel={`Open ${entry.data.title} details`}
       style={({pressed}) => [
         shadows.card,
-        {borderRadius: radii.card},
+        // Android draws elevation only behind a filled view.
+        {borderRadius: radii.card, backgroundColor: c.card},
         pressed && {transform: [{scale: 0.98}]},
       ]}>
       <ScaledCard width={width}>

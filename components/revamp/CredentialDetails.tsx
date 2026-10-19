@@ -217,7 +217,10 @@ export const CredentialDetails = React.forwardRef<
         </Animated.View>
 
         <ScrollView
-          contentContainerStyle={styles.body}
+          contentContainerStyle={[
+            styles.body,
+            {paddingBottom: 36 + insets.bottom},
+          ]}
           showsVerticalScrollIndicator={false}>
           <Animated.View style={[{alignSelf: 'center'}, cardStyle]}>
             <Pressable
@@ -354,7 +357,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 22,
   },
-  body: {paddingTop: 12, paddingHorizontal: 24, paddingBottom: 36, gap: 18},
+  body: {paddingTop: 12, paddingHorizontal: 24, gap: 18},
   face: {width: CARD_WIDTH, backfaceVisibility: 'hidden'},
   back: {position: 'absolute', left: 0, top: 0},
   hint: {

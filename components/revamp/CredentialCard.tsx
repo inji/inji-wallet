@@ -48,8 +48,8 @@ function cardColours(data: CredentialCardData) {
 }
 
 export const statusLabel: Record<CardStatus, string> = {
-  verified: 'Verified',
-  pending: 'Not verified yet',
+  verified: 'Valid',
+  pending: 'Pending',
   expired: 'Expired',
   revoked: 'Revoked',
 };
