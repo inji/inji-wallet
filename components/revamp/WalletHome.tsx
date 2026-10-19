@@ -567,8 +567,15 @@ const PinnedCard: React.FC<{
       accessibilityLabel={`Open ${entry.data.title} details`}
       style={({pressed}) => [
         shadows.card,
-        // Android draws elevation only behind a filled view.
-        {borderRadius: radii.card, backgroundColor: c.card},
+        // Hugs the card: on wide screens the card stops at its design size, and a wrapper
+        // stretched past it drew its shadow as a strip beside the card. Android also draws
+        // elevation only behind a filled view.
+        {
+          width,
+          alignSelf: 'center',
+          borderRadius: radii.card,
+          backgroundColor: c.card,
+        },
         pressed && {transform: [{scale: 0.98}]},
       ]}>
       <ScaledCard width={width}>
