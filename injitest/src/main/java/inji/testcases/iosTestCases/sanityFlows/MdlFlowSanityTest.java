@@ -1,6 +1,6 @@
 package inji.testcases.iosTestCases.sanityFlows;
 
-import inji.annotations.NeedsMdlUIN;
+import inji.annotations.NeedsMockUIN;
 import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
@@ -13,7 +13,7 @@ import static org.testng.Assert.assertTrue;
 
 public class MdlFlowSanityTest extends IosBaseTest {
   @Test
-  @NeedsMdlUIN
+  @NeedsMockUIN
   public void downloadMdlVCAndDeleteSmoke(){
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
@@ -46,7 +46,7 @@ public class MdlFlowSanityTest extends IosBaseTest {
       addNewCardPage::clickOnDownloadViaMockCertify);
 
     addNewCardPage.clickOnContinueButtonInSigninPopupIos();
-    OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMdlUIN());
+    OtpVerificationPage otpVerification = mockCertifyLoginPage.setEnterIdTextBox(getMockUIN());
     mockCertifyLoginPage.clickOnGetOtpButton();
 
     otpVerification.enterOtpForeSignet(InjiWalletUtil.getOtpForMock(), PlatformType.IOS);

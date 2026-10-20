@@ -1,6 +1,5 @@
 package inji.testcases.iosTestCases.sanityFlows;
 
-import inji.annotations.NeedsUIN;
 import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
@@ -12,7 +11,6 @@ import org.testng.annotations.Test;
 
 public class NoNetworkFlowSanityTest extends IosBaseTest {
   @Test
-  @NeedsUIN
   public void downloadMosipIdVCWithoutInternet(){
     String sessionId = getDriver().getSessionId().toString();
     UpdateNetworkSettings.setNoNetworkProfile(sessionId);
