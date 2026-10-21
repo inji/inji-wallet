@@ -31,6 +31,7 @@ public class NoNetworkFlowSanityTest extends IosBaseTest {
     homePage.clickOnNextButtonForInjiTour();
     AddNewCardPage addNewCardPage = homePage.downloadCard();
 
-    Assert.assertFalse(addNewCardPage.isIssuerDescriptionEsignetDisplayed());
+    Assert.assertTrue(homePage.verifyLanguageForNoInternetConnectionDisplayed("English"),
+      "Verify if no internet connection message is displayed");
   }
 }
