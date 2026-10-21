@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 
 public class NoNetworkFlowSanityTest extends IosBaseTest {
   @Test
-  public void downloadMosipIdVCWithoutInternet(){
+  public void should_not_show_issuer_options_when_internet_is_unavailable(){
     String sessionId = getDriver().getSessionId().toString();
     UpdateNetworkSettings.setNoNetworkProfile(sessionId);
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());

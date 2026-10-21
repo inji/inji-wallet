@@ -207,16 +207,15 @@ public class SharePage extends BasePage {
     }
 
     private boolean isIosCameraPermissionAllowFlow() {
-        String platformVersion = InjiWalletConfigManager.getproperty("browserstack_platformVersion");
-        if (platformVersion == null || platformVersion.trim().isEmpty()) {
+        Object cap = driver.getCapabilities().getCapability("platformVersion");
+        String version = cap != null ? cap.toString() : InjiWalletConfigManager.getPlatformVersion();
+        if (version == null || version.isBlank()) {
             return false;
         }
         try {
-            String majorVersion = platformVersion.split("\\.")[0].trim();
-            return Integer.parseInt(majorVersion) > 16;
+            return Integer.parseInt(version.trim().split("\\.")[0]) > 16;
         } catch (NumberFormatException e) {
-          throw new IllegalArgumentException(
-            "Invalid browserstack_platformVersion: " + platformVersion, e);
+            throw new IllegalArgumentException("Invalid iOS platformVersion: " + version, e);
         }
     }
 }

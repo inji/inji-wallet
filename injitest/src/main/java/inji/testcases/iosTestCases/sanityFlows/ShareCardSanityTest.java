@@ -13,7 +13,7 @@ import static org.testng.Assert.assertTrue;
 public class ShareCardSanityTest extends IosBaseTest {
   @Test
   @NeedsMockUIN
-  public void shareVc(){
+  public void should_share_vc_when_camera_permission_is_granted(){
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
     WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -64,5 +64,9 @@ public class ShareCardSanityTest extends IosBaseTest {
     sharePage.acceptPermissionPopupCameraIos();
     assertTrue(sharePage.isCameraPageLoaded(), "Verify camera page is displayed");
     assertTrue(sharePage.isFlipCameraClickable(), "Verify if flip camera is enabled");
+
+    sharePage.acceptPermissionPopupBluetoothIos();
+    assertTrue(sharePage.isAllowNearbyDevicesButtonDisplayed(),
+      "Verify if allow nearby devices button is displayed");
   }
 }
