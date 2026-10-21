@@ -15,7 +15,7 @@ public class MockFlowSanityTest extends IosBaseTest {
 
   @Test
   @NeedsMockUIN
-  public void downloadMockVCAndDeleteSmoke() {
+  public void should_download_and_delete_mock_vc_when_mock_issuer_flow_completes() {
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
     WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
     AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();

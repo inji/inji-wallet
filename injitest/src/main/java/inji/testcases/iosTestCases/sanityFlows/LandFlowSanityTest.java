@@ -15,7 +15,7 @@ public class LandFlowSanityTest extends IosBaseTest {
 
   @Test
   @NeedsLandUIN
-  public void downloadLandVCAndDeleteSmoke(){
+  public void should_download_and_delete_land_vc_when_land_issuer_flow_completes(){
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
     WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();

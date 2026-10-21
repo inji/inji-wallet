@@ -11,7 +11,7 @@ import static org.testng.Assert.assertTrue;
 
 public class HelpPageAndAboutPageTest extends IosBaseTest {
   @Test
-  public void verifyHelpPageAndAboutPage() {
+  public void should_show_help_and_about_pages_when_user_opens_help_and_settings() {
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
     WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
