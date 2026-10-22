@@ -44,4 +44,10 @@ declare module 'react-native-dotenv' {
    * Flag for Toggling for Liveness Detection
    */
   export const LIVENESS_DETECTION: string;
+
+  /**
+   * Google Cloud project number linked to the app for Play Integrity (Play Console > App integrity).
+   * Optional; used for wallet device attestation with mimoto.
+   */
+  export const PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER: string;
 }

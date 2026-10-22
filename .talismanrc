@@ -1,4 +1,10 @@
 fileignoreconfig:
+- filename: shared/deviceAttestation/DeviceAttestationService.test.ts
+  checksum: f1cb1196ed3898d9ad64c24b264f46cdbb44eac9b57ffdc04e07cb46f8814b34
+- filename: shared/deviceAttestation/DeviceAttestationService.ts
+  checksum: 98f3d428182137975532bbde841ed42aa00ddd71eaa60357429670056e159987
+- filename: shared/openId4VCI/TokenService.ts
+  checksum: dd5a5580ecabffdd47ad27a0877106b8cafc204482a393b61361f14a53c40a05
 
 - filename: components/VC/common/StatusInfoModal.tsx
   checksum: 5db61aa419e0c1c70b067993272da93822917daa55523371fc196022bd7c25a3
@@ -159,7 +165,7 @@ fileignoreconfig:
 - filename: screens/Home/IntroSlidersScreen.tsx
   checksum: 9880724461b194db7651737576ad2fd2db9cf3b4e732747f59be422a7ff4e4a1
 - filename: .env
-  checksum: ac76b852842c44ff5dac96c1fa5061e569bea4f54b3080d869a9dc25abd17991
+  checksum: 016ec8ec2dbf0fbd383d2f6b47d9d5b4e63c955e6e8e84eea6c40c4f8187e04b
 - filename: machines/VCItemMachine/VCItemMachine.typegen.ts
   checksum: 850b5d02636bef9e286fc0fbc4ffffbd38068f332c319302a906496f4bc1c8a1
 - filename: machines/VerifiableCredential/VCItemMachine/VCItemModel.ts

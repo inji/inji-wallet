@@ -9,6 +9,26 @@ jest.mock('../vciClient/VciClient', () => ({
   },
 }));
 
+const mockEnsureRegistered = jest.fn();
+const mockBuildDeviceProof = jest.fn();
+const mockForgetRegistration = jest.fn();
+const mockIsDeviceAttestationSupported = jest.fn();
+
+jest.mock('../deviceAttestation/DeviceAttestationService', () => {
+  const actual = jest.requireActual(
+    '../deviceAttestation/DeviceAttestationService',
+  );
+  return {
+    DEVICE_PROOF_HEADER: actual.DEVICE_PROOF_HEADER,
+    DEVICE_NOT_REGISTERED: actual.DEVICE_NOT_REGISTERED,
+    mimotoBaseFromTokenEndpoint: actual.mimotoBaseFromTokenEndpoint,
+    ensureRegistered: (...args: any[]) => mockEnsureRegistered(...args),
+    buildDeviceProof: (...args: any[]) => mockBuildDeviceProof(...args),
+    forgetRegistration: (...args: any[]) => mockForgetRegistration(...args),
+    isDeviceAttestationSupported: () => mockIsDeviceAttestationSupported(),
+  };
+});
+
 import {sendTokenRequest} from './TokenService';
 
 type FakeResponseOptions = {
@@ -187,5 +207,141 @@ describe('sendTokenRequest', () => {
     await expect(
       sendTokenRequest({grantType: 'authorization_code'}),
     ).rejects.toThrow('tokenEndpoint is required');
+  });
+});
+
+describe('sendTokenRequest through the mimoto get-token proxy', () => {
+  const MIMOTO = 'https://api.example.net/v1/mimoto';
+  const PROXY = `${MIMOTO}/v2/get-token/issuerX`;
+  const request = {
+    grantType: 'authorization_code',
+    tokenEndpoint: 'https://as.example.com/token',
+    authCode: 'auth-code',
+    codeVerifier: 'verifier',
+    dpopProof: 'dpop-proof',
+  };
+  const expectedBody =
+    'grant_type=authorization_code&code=auth-code&code_verifier=verifier';
+  const sentHeaders = (call: number) =>
+    (global.fetch as jest.Mock).mock.calls[call][1].headers;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    global.fetch = jest.fn();
+    mockIsDeviceAttestationSupported.mockReturnValue(true);
+    mockEnsureRegistered.mockResolvedValue(undefined);
+    mockForgetRegistration.mockResolvedValue(undefined);
+    let n = 0;
+    mockBuildDeviceProof.mockImplementation(async () => `device-proof-${++n}`);
+  });
+
+  it('attaches a device proof bound to the exact body sent', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce(
+      fakeResponse({ok: true, body: '{"access_token":"t"}'}),
+    );
+
+    await sendTokenRequest({...request}, PROXY);
+
+    expect(mockEnsureRegistered).toHaveBeenCalledWith(MIMOTO);
+    expect(mockBuildDeviceProof).toHaveBeenCalledWith(PROXY, expectedBody);
+    expect((global.fetch as jest.Mock).mock.calls[0][1].body).toBe(
+      expectedBody,
+    );
+    expect(sentHeaders(0)['X-Inji-Device-Proof']).toBe('device-proof-1');
+    expect(sentHeaders(0).DPoP).toBe('dpop-proof');
+  });
+
+  it('re-registers once and retries with a fresh proof when mimoto does not know the device', async () => {
+    (global.fetch as jest.Mock)
+      .mockResolvedValueOnce(
+        fakeResponse({
+          ok: false,
+          status: 401,
+          body: '{"error":"device_not_registered"}',
+        }),
+      )
+      .mockResolvedValueOnce(
+        fakeResponse({ok: true, body: '{"access_token":"t"}'}),
+      );
+
+    const result = await sendTokenRequest({...request}, PROXY);
+
+    expect(result).toEqual({access_token: 't'});
+    expect(mockForgetRegistration).toHaveBeenCalledWith(MIMOTO);
+    expect(mockEnsureRegistered).toHaveBeenCalledTimes(2);
+    expect(sentHeaders(1)['X-Inji-Device-Proof']).toBe('device-proof-2');
+    expect(sentHeaders(1).DPoP).toBe('dpop-proof');
+  });
+
+  it('does not loop when the device is still not registered after retrying', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue(
+      fakeResponse({
+        ok: false,
+        status: 401,
+        body: '{"error":"device_not_registered"}',
+      }),
+    );
+
+    await expect(sendTokenRequest({...request}, PROXY)).rejects.toMatchObject({
+      code: 'device_not_registered',
+    });
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends a new device proof with the DPoP nonce retry', async () => {
+    mockGenerateTokenDPoPProof.mockResolvedValueOnce('dpop-proof-with-nonce');
+    (global.fetch as jest.Mock)
+      .mockResolvedValueOnce(
+        fakeResponse({
+          ok: false,
+          status: 400,
+          body: '{"error":"use_dpop_nonce"}',
+          nonce: 'as-nonce',
+        }),
+      )
+      .mockResolvedValueOnce(
+        fakeResponse({ok: true, body: '{"access_token":"t"}'}),
+      );
+
+    await sendTokenRequest({...request}, PROXY);
+
+    expect(sentHeaders(1)['X-Inji-Device-Proof']).toBe('device-proof-2');
+    expect(sentHeaders(1).DPoP).toBe('dpop-proof-with-nonce');
+  });
+
+  it('still sends the token request when registration fails', async () => {
+    mockEnsureRegistered.mockRejectedValue(
+      new Error('Play Integrity unavailable'),
+    );
+    (global.fetch as jest.Mock).mockResolvedValueOnce(
+      fakeResponse({ok: true, body: '{"access_token":"t"}'}),
+    );
+
+    await sendTokenRequest({...request}, PROXY);
+
+    expect(sentHeaders(0)['X-Inji-Device-Proof']).toBeUndefined();
+  });
+
+  it('adds no device proof when attestation is not supported (e.g. iOS)', async () => {
+    mockIsDeviceAttestationSupported.mockReturnValue(false);
+    (global.fetch as jest.Mock).mockResolvedValueOnce(
+      fakeResponse({ok: true, body: '{}'}),
+    );
+
+    await sendTokenRequest({...request}, PROXY);
+
+    expect(mockEnsureRegistered).not.toHaveBeenCalled();
+    expect(sentHeaders(0)['X-Inji-Device-Proof']).toBeUndefined();
+  });
+
+  it('adds no device proof when calling the authorization server directly', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce(
+      fakeResponse({ok: true, body: '{}'}),
+    );
+
+    await sendTokenRequest({...request});
+
+    expect(mockEnsureRegistered).not.toHaveBeenCalled();
+    expect(sentHeaders(0)['X-Inji-Device-Proof']).toBeUndefined();
   });
 });
