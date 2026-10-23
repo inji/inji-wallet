@@ -23,6 +23,7 @@ import {VCItemEvents} from '../../machines/VerifiableCredential/VCItemMachine/VC
 import {RemoveVcWarningOverlay} from '../../screens/Home/MyVcs/RemoveVcWarningOverlay';
 import {HistoryTab} from '../../screens/Home/MyVcs/HistoryTab';
 import {QrCodeOverlay} from '../QrCodeOverlay';
+import {IssuerQrDialog} from '../IssuerQrCodeImage';
 import {CardCarousel} from './CardCarousel';
 import {frontCardFrame} from './carouselLayout';
 import {CardLoader, LoadedCard} from './CardLoader';
@@ -455,15 +456,30 @@ export const WalletHome: React.FC<{
         </>
       ) : null}
       {qrCard && qrEntry?.vcMetadata ? (
-        <QrCodeOverlay
-          verifiableCredential={qrCard.controller.credential}
-          meta={qrEntry.vcMetadata}
-          credentialName={qrCard.data.title}
-          issuerLogoUrl={qrCard.data.issuerLogoUrl}
-          showInlineQr={false}
-          forceVisible
-          onClose={() => setQrFor(null)}
-        />
+        // CredIssuer's own QR (its Claim 169 QR) when the card has one, since that is what
+        // verifiers read; the wallet-generated QR otherwise, or if that image fails to load.
+        qrCard.data.issuerQr?.url || qrCard.data.issuerQr?.isFetching ? (
+          <IssuerQrDialog
+            visible
+            qrCodeUrl={qrCard.data.issuerQr.url}
+            onClose={() => setQrFor(null)}
+            onLoadError={qrCard.data.issuerQr.onLoadError}
+            credentialName={qrCard.data.title}
+            issuerName={qrCard.data.issuerName}
+            issuerLogoUrl={qrCard.data.issuerLogoUrl}
+            holderName={qrCard.data.holderName}
+          />
+        ) : (
+          <QrCodeOverlay
+            verifiableCredential={qrCard.controller.credential}
+            meta={qrEntry.vcMetadata}
+            credentialName={qrCard.data.title}
+            issuerLogoUrl={qrCard.data.issuerLogoUrl}
+            showInlineQr={false}
+            forceVisible
+            onClose={() => setQrFor(null)}
+          />
+        )
       ) : null}
     </View>
   );
