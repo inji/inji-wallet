@@ -26,8 +26,14 @@ import {QrCodeOverlay} from '../QrCodeOverlay';
 import {CardCarousel} from './CardCarousel';
 import {frontCardFrame} from './carouselLayout';
 import {CardLoader, LoadedCard} from './CardLoader';
-import {CredentialCardFront, ScaledCard} from './CredentialCard';
-import {Action, CredentialInformation, StatusPill} from './CredentialParts';
+import {CredentialCardFront, isInactive, ScaledCard} from './CredentialCard';
+import {
+  Action,
+  CredentialInformation,
+  StatusNotice,
+  StatusPill,
+  StatusRow,
+} from './CredentialParts';
 import {CardActions, CredentialDetails} from './CredentialDetails';
 import {
   ActivityIcon,
@@ -506,29 +512,38 @@ const ActiveDetails: React.FC<{
           ],
         },
       ]}>
-      <View style={styles.titleRow}>
-        <View style={{flex: 1, minWidth: 0, gap: 4}}>
-          <ScaledText style={[styles.title, {color: c.ink}]}>
-            {data.title}
-          </ScaledText>
-          {data.issuerName ? (
-            <ScaledText style={[styles.sub, {color: c.inkMuted}]}>
-              {data.issuerName}
+      {isInactive(data.status) ? (
+        <>
+          <StatusRow data={data} />
+          <StatusNotice data={data} />
+        </>
+      ) : (
+        <View style={styles.titleRow}>
+          <View style={{flex: 1, minWidth: 0, gap: 4}}>
+            <ScaledText style={[styles.title, {color: c.ink}]}>
+              {data.title}
             </ScaledText>
-          ) : null}
+            {data.issuerName ? (
+              <ScaledText style={[styles.sub, {color: c.inkMuted}]}>
+                {data.issuerName}
+              </ScaledText>
+            ) : null}
+          </View>
+          <StatusPill status={data.status} />
         </View>
-        <StatusPill status={data.status} />
-      </View>
+      )}
 
       <View style={styles.actions}>
         <Action
           label="Share"
           primary
+          disabled={isInactive(data.status)}
           onPress={actions.share}
           icon={col => <ShareIcon color={col} />}
         />
         <Action
           label="Show QR"
+          disabled={isInactive(data.status)}
           onPress={actions.showQr}
           icon={col => <QrIcon color={col} />}
         />

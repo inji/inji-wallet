@@ -16,6 +16,7 @@ import {documentNumber, flatClaims, holderName} from './credentialClaims';
 import {msoValidity} from './msoValidity';
 import {claimLabels} from './cardFields';
 import {VCFormat} from '../../shared/VCFormat';
+import {getCredentialExpiryDate} from '../../shared/credentialExpiry';
 
 export type CardStatus = 'verified' | 'pending' | 'expired' | 'revoked';
 
@@ -38,6 +39,10 @@ export interface CredentialCardData {
   vcMetadata?: VCMetadata;
   /** The stored credential, for building its QR. */
   credential: any;
+  /** When the credential stops being valid, as an ISO 8601 string; empty if it doesn't say. */
+  expiryDate?: string;
+  /** When the wallet found the credential revoked, as an ISO 8601 string; empty otherwise. */
+  revokedOn?: string;
 }
 
 /**
@@ -144,6 +149,8 @@ export function useCredentialCard(
       labels: claimLabels(wellknown),
       vcMetadata,
       credential: controller.credential,
+      expiryDate: getCredentialExpiryDate(controller.credential, format),
+      revokedOn: vcMetadata.revokedOn ?? '',
     };
   }, [
     ready,

@@ -98,6 +98,28 @@ export const ChevronIcon: React.FC<
   </Svg>
 );
 
+export const ShieldCheckIcon: React.FC<IconProps> = ({
+  color,
+  size = 14,
+  strokeWidth = 2,
+}) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    <Path d="m9 12 2 2 4-4" />
+  </Svg>
+);
+
+export const AlertIcon: React.FC<IconProps> = ({
+  color,
+  size = 16,
+  strokeWidth = 2,
+}) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Circle cx={12} cy={12} r={9.5} />
+    <Path d="M12 7.5v5.5M12 16.5v.01" />
+  </Svg>
+);
+
 export const PlusIcon: React.FC<IconProps> = ({
   color,
   size = 22,
