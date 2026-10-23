@@ -29,6 +29,15 @@ export const VCItemGaurds = () => {
     isVerificationPendingBecauseOfNetworkIssue: (_context, event) =>
       (event.data as Error).message == VerificationErrorType.NETWORK_ERROR,
 
+    isReverifyingInBackground: (context: any) =>
+      context.isReverifyingInBackground,
+
+    isNetworkIssueDuringBackgroundReverification: (context: any, event: any) =>
+      context.isReverifyingInBackground &&
+      [VerificationErrorType.NETWORK_ERROR, 'VERIFICATION_TIMEOUT'].includes(
+        (event.data as Error)?.message,
+      ),
+
     hasVcStatusChangedAfterReverification: (context:any) => {
       return context.statusChangedDuringVerification;
     },

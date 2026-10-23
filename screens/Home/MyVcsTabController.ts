@@ -40,6 +40,7 @@ import {
   selectIsOnboarding,
   selectIsTourGuide,
 } from '../../machines/auth';
+import {useVcStatusRefresh} from './useVcStatusRefresh';
 
 export function useMyVcsTab(props: HomeScreenTabProps) {
   const service = props.service as ActorRefFrom<typeof MyVcsTabMachine>;
@@ -47,6 +48,7 @@ export function useMyVcsTab(props: HomeScreenTabProps) {
   const vcMetaService = appService.children.get('vcMeta')!!;
   const settingsService = appService.children.get('settings')!!;
   const authService = appService.children.get('auth');
+  useVcStatusRefresh();
   return {
     service,
     AddVcModalService: useSelector(service, selectAddVcModal),

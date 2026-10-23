@@ -1,5 +1,5 @@
 import {Buffer} from 'buffer';
-import {getCredentialExpiryDate} from './credentialExpiry';
+import {getCredentialExpiryDate, isCredentialExpired} from './credentialExpiry';
 import {VCFormat} from './VCFormat';
 import {CborTag24, CborTagged, encodeCbor} from './mdoc/cborEncodeMinimal';
 
@@ -82,5 +82,33 @@ describe('getCredentialExpiryDate', () => {
   it('is empty when the credential has no expiry', () => {
     expect(getCredentialExpiryDate({credential: {}}, VCFormat.ldp_vc)).toBe('');
     expect(getCredentialExpiryDate(undefined, VCFormat.ldp_vc)).toBe('');
+  });
+});
+
+describe('isCredentialExpired', () => {
+  const credential = {credential: {validUntil: '2026-11-12T00:00:00Z'}};
+
+  it('is true once the expiry date has passed', () => {
+    expect(
+      isCredentialExpired(
+        credential,
+        VCFormat.ldp_vc,
+        new Date('2026-11-12T00:00:01Z'),
+      ),
+    ).toBe(true);
+  });
+
+  it('is false before the expiry date', () => {
+    expect(
+      isCredentialExpired(
+        credential,
+        VCFormat.ldp_vc,
+        new Date('2026-11-11T23:59:59Z'),
+      ),
+    ).toBe(false);
+  });
+
+  it('is false when the credential has no expiry', () => {
+    expect(isCredentialExpired({credential: {}}, VCFormat.ldp_vc)).toBe(false);
   });
 });

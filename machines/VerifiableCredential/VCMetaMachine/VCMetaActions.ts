@@ -291,6 +291,12 @@ export const VCMetaActions = (model: any) => {
       ],
     }),
 
+    // Each card's VC item machine reruns its own "Check Card Status" when this changes.
+    requestReverifyAllVcs: model.assign({
+      reverifyAllVcsRequestId: (context: any) =>
+        context.reverifyAllVcsRequestId + 1,
+    }),
+
     setWalletBindingSuccess: model.assign({
       walletBindingSuccess: () => true,
       myVcs: (

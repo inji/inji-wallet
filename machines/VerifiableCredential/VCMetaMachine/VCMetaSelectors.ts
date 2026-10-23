@@ -80,6 +80,10 @@ export function selectMyVcs(state: State) {
   return state.context.myVcs;
 }
 
+export function selectReverifyAllVcsRequestId(state: State) {
+  return state.context.reverifyAllVcsRequestId;
+}
+
 export function selectVerificationErrorMessage(state: State) {
   return state.context.verificationErrorMessage;
 }

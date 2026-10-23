@@ -21,6 +21,8 @@ export interface RevampColors {
   pass: string;
   warn: string;
   fail: string;
+  /** The stack view's expired-status orange. */
+  expired: string;
   sel: string;
   tintAzure: string;
   tintPass: string;
@@ -43,6 +45,7 @@ export const colors: Record<RevampScheme, RevampColors> = {
     pass: '#0f6b5a',
     warn: '#8a5a00',
     fail: '#b3261e',
+    expired: '#E27835',
     sel: '#0a3970',
     tintAzure: '#e3eef4',
     tintPass: '#e2efec',
@@ -62,6 +65,7 @@ export const colors: Record<RevampScheme, RevampColors> = {
     pass: '#5fd4b4',
     warn: '#e7b55a',
     fail: '#ff9b90',
+    expired: '#E27835',
     sel: '#4ab6e0',
     tintAzure: '#14324a',
     tintPass: '#12352f',

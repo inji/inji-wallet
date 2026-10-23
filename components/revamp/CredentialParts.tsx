@@ -2,9 +2,8 @@ import React from 'react';
 import {Pressable, StyleSheet, useWindowDimensions, View} from 'react-native';
 import {ScaledText} from './ScaledText';
 import {VCFormat} from '../../shared/VCFormat';
-import {statusLabel} from './CredentialCard';
+import {statusIcon, statusLabel} from './CredentialCard';
 import {displayDate, maskNumber} from './credentialClaims';
-import {ShieldCheckIcon} from './Icons';
 import {fonts, narrowTextScale, radii, SLOT_LABEL_MAX_SCALE} from './tokens';
 import {RevampColors} from './tokens';
 import {useRevampTheme} from './useRevampTheme';
@@ -44,7 +43,13 @@ export const validUntil = (data: CredentialCardData) =>
   date(data.claims, DATE_KEYS.valid);
 
 export const statusColour = (c: RevampColors, s: CardStatus) =>
-  s === 'verified' ? c.pass : s === 'pending' ? c.warn : c.fail;
+  s === 'verified'
+    ? c.pass
+    : s === 'pending'
+    ? c.warn
+    : s === 'expired'
+    ? c.expired
+    : c.fail;
 
 interface InfoRow {
   label: string;
@@ -88,7 +93,7 @@ export const StatusPill: React.FC<{status: CardStatus; large?: boolean}> = ({
   return (
     <View
       style={[styles.pill, large && styles.pillLarge, {borderColor: colour}]}>
-      <ShieldCheckIcon color={colour} size={large ? 16 : 14} />
+      {statusIcon(status, large ? 16 : 14)}
       <ScaledText
         style={[styles.pillText, large && {fontSize: 14}, {color: colour}]}>
         {statusLabel[status]}

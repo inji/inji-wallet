@@ -63,3 +63,13 @@ export function getCredentialExpiryDate(
     return '';
   }
 }
+
+/** Whether the stored credential's expiry date (see {@link getCredentialExpiryDate}) has passed. */
+export function isCredentialExpired(
+  verifiableCredential: unknown,
+  format: string,
+  now: Date = new Date(),
+): boolean {
+  const expiryDate = getCredentialExpiryDate(verifiableCredential, format);
+  return expiryDate !== '' && new Date(expiryDate).getTime() <= now.getTime();
+}

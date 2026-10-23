@@ -121,6 +121,14 @@ export const VCItemActions = model => {
       statusChangedDuringVerification: () => false,
     }),
 
+    setReverifyingInBackground: assign({
+      isReverifyingInBackground: () => true,
+    }),
+
+    resetReverifyingInBackground: assign({
+      isReverifyingInBackground: () => false,
+    }),
+
     sendReverificationFailureToVcMeta: send(
       (context: any) => ({
         type: 'REVERIFY_VC_FAILED',
@@ -239,6 +247,7 @@ export const VCItemActions = model => {
           isMachineInKebabPopupState,
           verificationStatus,
           showVerificationStatusBanner,
+          isReverifyingInBackground,
           ...data
         } = context;
         data.credentialRegistry = MIMOTO_BASE_URL;

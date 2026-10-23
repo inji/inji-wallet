@@ -34,6 +34,9 @@ export const vcMetaMachine =
         REMOVE_VC_FROM_IN_PROGRESS_DOWNLOADS: {
           actions: 'removeVcFromInProgressDownlods',
         },
+        REVERIFY_ALL_VCS: {
+          actions: 'requestReverifyAllVcs',
+        },
       },
       states: {
         ready: {

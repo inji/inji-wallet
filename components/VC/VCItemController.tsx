@@ -1,4 +1,4 @@
-import {useContext, useRef} from 'react';
+import {useContext, useEffect, useRef} from 'react';
 import {GlobalContext} from '../../shared/GlobalContext';
 import {
   selectContext,
@@ -8,7 +8,9 @@ import {
   selectVerifiableCredentialData,
   selectCredential,
   isReverifyingVc,
+  selectIsVcItemIdle,
 } from '../../machines/VerifiableCredential/VCItemMachine/VCItemSelectors';
+import {selectReverifyAllVcsRequestId} from '../../machines/VerifiableCredential/VCMetaMachine/VCMetaSelectors';
 import {useInterpret, useSelector} from '@xstate/react';
 import {
   createVCItemMachine,
@@ -31,6 +33,22 @@ export function useVcItemController(vcMetadata: VCMetadata) {
   const VCItemService = useInterpret(machine.current, {devTools: __DEV__});
   const authService = appService.children.get('auth');
   const activityService = appService.children.get('activityLog');
+  const vcMetaService = appService.children.get('vcMeta')!;
+
+  // Waits until the card is idle (loaded, no menu or binding open) before checking it, and
+  // ignores requests made before this card existed.
+  const reverifyAllVcsRequestId = useSelector(
+    vcMetaService,
+    selectReverifyAllVcsRequestId,
+  );
+  const isIdle = useSelector(VCItemService, selectIsVcItemIdle);
+  const handledReverifyRequestId = useRef(reverifyAllVcsRequestId);
+  useEffect(() => {
+    if (!isIdle || handledReverifyRequestId.current === reverifyAllVcsRequestId)
+      return;
+    handledReverifyRequestId.current = reverifyAllVcsRequestId;
+    VCItemService.send(VCItemEvents.REVERIFY_VC_IN_BACKGROUND());
+  }, [reverifyAllVcsRequestId, isIdle]);
 
   return {
     VCItemService,

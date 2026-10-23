@@ -6,6 +6,7 @@ import QRCode from 'react-native-qrcode-svg';
 import {DEFAULT_ECL} from '../../shared/constants';
 import {VCFormat} from '../../shared/VCFormat';
 import {QrCodeOverlay} from '../QrCodeOverlay';
+import {SvgImage} from '../ui/svg';
 import {Guilloche} from './Guilloche';
 import {CardStatus, CredentialCardData} from './useCredentialCard';
 import {maskNumber, mrzLines} from './credentialClaims';
@@ -54,6 +55,20 @@ export const statusLabel: Record<CardStatus, string> = {
   revoked: 'Revoked',
 };
 
+/** The same status icons as the stack view's cards. */
+export const statusIcon = (status: CardStatus, size: number) => {
+  switch (status) {
+    case 'revoked':
+      return SvgImage.statusRevokedIcon(size, size);
+    case 'expired':
+      return SvgImage.statusExpiredIcon(size, size);
+    case 'pending':
+      return SvgImage.statusPendingIcon(size, size);
+    default:
+      return SvgImage.statusValidIcon(size, size);
+  }
+};
+
 /** The issuer's badge: its logo, or the design's shield, on a white disc in a ring of the card's colour. */
 const IssuerBadge: React.FC<{logoUrl?: string; colour: string}> = ({
   logoUrl,
@@ -98,21 +113,6 @@ const IssuerBadge: React.FC<{logoUrl?: string; colour: string}> = ({
       />
     ) : null}
   </View>
-);
-
-const ShieldCheck: React.FC<{color: string}> = ({color}) => (
-  <Svg
-    width={14}
-    height={14}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke={color}
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round">
-    <Path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-    <Path d="m9 12 2 2 4-4" />
-  </Svg>
 );
 
 export const CredentialCardFront = React.memo(function CredentialCardFront({
@@ -194,7 +194,7 @@ export const CredentialCardFront = React.memo(function CredentialCardFront({
             </ScaledText>
           ) : null}
           <View style={styles.statusRow}>
-            <ShieldCheck color={fg} />
+            {statusIcon(data.status, 14)}
             <ScaledText
               maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
               style={[styles.statusText, {color: fg}]}>

@@ -563,6 +563,12 @@ export const VCItemMachine = model.createMachine(
                 target: '#vc-item-machine.vcUtilitiesState.kebabPopUp.pinCard',
                 actions: 'setPinCard',
               },
+              // The same check as REVERIFY_VC, run for every card when the app is opened,
+              // unlocked or brought back, without a banner per card.
+              REVERIFY_VC_IN_BACKGROUND: {
+                actions: 'setReverifyingInBackground',
+                target: '#vc-item-machine.vcUtilitiesState.reverificationState',
+              },
             },
           },
           reverificationState: {
@@ -572,24 +578,52 @@ export const VCItemMachine = model.createMachine(
                 entry: () => console.log('🔄 reverification started'),
                 invoke: {
                   src: 'verifyCredential',
-                  onDone: {
-                    actions: [
-                      'setIsVerified',
-                      'storeContext',
-                      'updateVcMetadata',
-                      'sendReverificationSuccessToVcMeta',
-                    ],
-                    target: 'checkingStatusChange',
-                  },
-                  onError: {
-                    actions: [
-                      'resetIsVerified',
-                      'storeContext',
-                      'updateVcMetadata',
-                      'sendReverificationFailureToVcMeta',
-                    ],
-                    target: 'checkingStatusChange',
-                  },
+                  onDone: [
+                    {
+                      cond: 'isReverifyingInBackground',
+                      actions: [
+                        'setIsVerified',
+                        'storeContext',
+                        'updateVcMetadata',
+                      ],
+                      target: 'checkingStatusChange',
+                    },
+                    {
+                      actions: [
+                        'setIsVerified',
+                        'storeContext',
+                        'updateVcMetadata',
+                        'sendReverificationSuccessToVcMeta',
+                      ],
+                      target: 'checkingStatusChange',
+                    },
+                  ],
+                  onError: [
+                    {
+                      // A dropped connection says nothing about the card, so it keeps its status.
+                      cond: 'isNetworkIssueDuringBackgroundReverification',
+                      actions: 'resetReverifyingInBackground',
+                      target: '#vc-item-machine.vcUtilitiesState.idle',
+                    },
+                    {
+                      cond: 'isReverifyingInBackground',
+                      actions: [
+                        'resetIsVerified',
+                        'storeContext',
+                        'updateVcMetadata',
+                      ],
+                      target: 'checkingStatusChange',
+                    },
+                    {
+                      actions: [
+                        'resetIsVerified',
+                        'storeContext',
+                        'updateVcMetadata',
+                        'sendReverificationFailureToVcMeta',
+                      ],
+                      target: 'checkingStatusChange',
+                    },
+                  ],
                 },
               },
 
@@ -600,10 +634,12 @@ export const VCItemMachine = model.createMachine(
                     actions: [
                       'logStatusChangedOnReverification',
                       'resetStatusChangedFlag',
+                      'resetReverifyingInBackground',
                     ],
                     target: '#vc-item-machine.vcUtilitiesState.idle',
                   },
                   {
+                    actions: 'resetReverifyingInBackground',
                     target: '#vc-item-machine.vcUtilitiesState.idle',
                   },
                 ],

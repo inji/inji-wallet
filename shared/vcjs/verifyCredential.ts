@@ -14,6 +14,7 @@ import {getMosipIdentifier} from '../commonUtil';
 import {NativeModules} from 'react-native';
 import {isAndroid, isIOS} from '../constants';
 import {VCFormat} from '../VCFormat';
+import {isCredentialExpired} from '../credentialExpiry';
 import VCVerifier, {
   CredentialStatusResult,
   RevocationStatus,
@@ -113,6 +114,17 @@ async function verifyCredentialForIos(
 
     const result = await vcjs.verifyCredential(vcjsOptions);
     verificationResponse = handleResponse(result, verifiableCredential);
+  }
+
+  // vcjs only checks the date is well formed, and the iOS verifier only checks status, so
+  // expiry is checked here, reported the way the Android verifier does: still verified.
+  if (
+    verificationResponse.isVerified &&
+    isCredentialExpired(verifiableCredential, credentialFormat)
+  ) {
+    verificationResponse.verificationMessage = VerificationErrorMessage.EXPIRED;
+    verificationResponse.verificationErrorCode =
+      VerificationErrorType.EXPIRATION_ERROR;
   }
 
   if (verificationResponse.isVerified) {
@@ -315,6 +327,7 @@ export const VerificationErrorMessage = {
   NO_ERROR: '',
   RANGE_ERROR: 'RangeError',
   NETWORK_ERROR: 'NetworkError',
+  EXPIRED: 'VC is expired',
 };
 
 export interface VerificationResult {

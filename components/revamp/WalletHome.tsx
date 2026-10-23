@@ -82,6 +82,9 @@ export const WalletHome: React.FC<{
   isCardTourStep?: boolean;
   /** Start the tour at the card step once the card shows: after the first download. */
   startCardTour?: boolean;
+  /** A card to open the details page of once it has loaded, e.g. from a notification. */
+  openVcKey?: string;
+  onVcOpened?: () => void;
 }> = ({
   vcMetadatas,
   searchIndex,
@@ -91,6 +94,8 @@ export const WalletHome: React.FC<{
   onRefresh,
   isCardTourStep = false,
   startCardTour = false,
+  openVcKey,
+  onVcOpened,
 }) => {
   const {t} = useTranslation();
   const {start: startTour} = useCopilot();
@@ -200,6 +205,14 @@ export const WalletHome: React.FC<{
     setFlipped(false);
     setDetailKey(key);
   };
+
+  const isOpenVcLoaded = !!(openVcKey && loaded[openVcKey]);
+  useEffect(() => {
+    if (!openVcKey || !isOpenVcLoaded) return;
+    setActiveKey(openVcKey);
+    openDetails(openVcKey);
+    onVcOpened?.();
+  }, [openVcKey, isOpenVcLoaded]);
 
   // The card the actions act on: the open details page's, else the carousel's active one.
   const targetEntry =
