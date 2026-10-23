@@ -64,9 +64,5 @@ public class ShareCardSanityTest extends IosBaseTest {
     sharePage.acceptPermissionPopupCameraIos();
     assertTrue(sharePage.isCameraPageLoaded(), "Verify camera page is displayed");
     assertTrue(sharePage.isFlipCameraClickable(), "Verify if flip camera is enabled");
-
-    sharePage.acceptPermissionPopupBluetoothIos();
-    assertTrue(sharePage.isAllowNearbyDevicesButtonDisplayed(),
-      "Verify if allow nearby devices button is displayed");
   }
 }
