@@ -356,7 +356,7 @@
     "enterNewPin": "أدخل رمز PIN جديدًا",
     "confirmNewPin": "أدخل رمز PIN الجديد مرة أخرى",
     "autoLock": "القفل التلقائي",
-    "autoLockHint": "قفل المحفظة بعد بقائها في الخلفية لمدة",
+    "autoLockHint": "اختر المدة التي يمكن أن تبقى فيها المحفظة في الخلفية قبل أن تُقفل.",
     "autoLockNever": "أبدًا",
     "autoLockAfter": "بعد {{count}} دقيقة",
     "autoLockAfter_plural": "بعد {{count}} دقائق",
@@ -371,7 +371,8 @@
     "samePin": "اختر رمز PIN مختلفًا عن رمزك الحالي.",
     "pinChangeFailed": "تعذر تغيير رمز PIN. يرجى المحاولة مرة أخرى.",
     "closeApp": "إغلاق التطبيق",
-    "languageHint": "يتغير لغة التطبيق فورًا."
+    "languageHint": "يتغير لغة التطبيق فورًا.",
+    "wrongCurrentPin": "هذا ليس رمز PIN الحالي."
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "تم النجاح! يمكنك الآن استخدام رمز المرور لفتح تطبيق CredIssuer.",

@@ -357,7 +357,7 @@
     "enterNewPin": "नया पिन दर्ज करें",
     "confirmNewPin": "नया पिन फिर से दर्ज करें",
     "autoLock": "ऑटो-लॉक",
-    "autoLockHint": "बैकग्राउंड में इतनी देर रहने पर वॉलेट लॉक करें",
+    "autoLockHint": "चुनें कि वॉलेट लॉक होने से पहले कितनी देर बैकग्राउंड में रह सकता है।",
     "autoLockNever": "कभी नहीं",
     "autoLockAfter": "{{count}} मिनट बाद",
     "autoLockAfter_plural": "{{count}} मिनट बाद",
@@ -372,7 +372,8 @@
     "samePin": "अपने मौजूदा पिन से अलग पिन चुनें।",
     "pinChangeFailed": "पिन नहीं बदला जा सका। कृपया फिर से प्रयास करें।",
     "closeApp": "ऐप बंद करें",
-    "languageHint": "ऐप की भाषा तुरंत बदल जाती है।"
+    "languageHint": "ऐप की भाषा तुरंत बदल जाती है।",
+    "wrongCurrentPin": "यह आपका मौजूदा PIN नहीं है।"
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "सफलता! अब आप इंजी ऐप को अनलॉक करने के लिए पासकोड का उपयोग कर सकते हैं।",

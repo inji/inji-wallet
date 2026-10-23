@@ -61,16 +61,39 @@ export const Page: React.FC<{
 export const PageModal: React.FC<{
   visible: boolean;
   onRequestClose: () => void;
+  onShow?: () => void;
   children: React.ReactNode;
-}> = ({visible, onRequestClose, children}) => (
+}> = ({visible, onRequestClose, onShow, children}) => (
   <Modal
     visible={visible}
     animationType="slide"
     statusBarTranslucent
+    onShow={onShow}
     onRequestClose={onRequestClose}>
     <SafeAreaProvider>{children}</SafeAreaProvider>
   </Modal>
 );
+
+/** Where the user is in a multi-step page: one dot per step, the current one solid. */
+export const StepDots: React.FC<{current: number; count?: number}> = ({
+  current,
+  count = 2,
+}) => {
+  const {c} = useRevampTheme();
+  return (
+    <View style={styles.dots} accessible={false}>
+      {Array.from({length: count}, (_, i) => (
+        <View
+          key={i}
+          style={[
+            styles.dot,
+            {backgroundColor: c.ink, opacity: i === current ? 1 : 0.3},
+          ]}
+        />
+      ))}
+    </View>
+  );
+};
 
 /** Round back or close button, a centred title, and a slot on the right. */
 export const PageHeader: React.FC<{
@@ -454,6 +477,8 @@ export const AlertSheet: React.FC<{
 };
 
 const styles = StyleSheet.create({
+  dots: {flexDirection: 'row', gap: 8, alignSelf: 'center'},
+  dot: {width: 7, height: 7, borderRadius: 4},
   page: {flex: 1},
   body: {flex: 1, paddingHorizontal: 24},
   footer: {paddingHorizontal: 24, paddingTop: 12, gap: 6},

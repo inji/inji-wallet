@@ -465,7 +465,7 @@
     "enterNewPin": "Enter a new PIN",
     "confirmNewPin": "Enter the new PIN again",
     "autoLock": "Auto-lock",
-    "autoLockHint": "Lock the wallet when it has been in the background for",
+    "autoLockHint": "Choose how long the wallet can stay in the background before it locks.",
     "autoLockNever": "Never",
     "autoLockAfter": "After {{count}} minute",
     "autoLockAfter_plural": "After {{count}} minutes",
@@ -480,7 +480,8 @@
     "samePin": "Choose a PIN different from your current one.",
     "pinChangeFailed": "Couldn't change the PIN. Please try again.",
     "closeApp": "Close app",
-    "languageHint": "The app changes language straight away."
+    "languageHint": "The app changes language straight away.",
+    "wrongCurrentPin": "That isn't your current PIN."
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "Success! You can now use passcode to unlock CredIssuer app.",

@@ -27,9 +27,9 @@ import {
   PageButton,
   PageHeader,
   PageHeading,
+  StepDots,
 } from '../components/revamp/Page';
 import {BiometricsIcon} from '../components/revamp/Icons';
-import {useRevampTheme} from '../components/revamp/useRevampTheme';
 import InjiHomeLogo from '../assets/InjiHomeLogo.svg';
 
 export const PasscodeScreen: React.FC<PasscodeRouteProps> = props => {
@@ -223,27 +223,8 @@ const UnlockPasscode: React.FC<{
   );
 };
 
-const StepDots: React.FC<{current: number}> = ({current}) => {
-  const {c} = useRevampTheme();
-  return (
-    <View style={styles.dots} accessible={false}>
-      {[0, 1].map(i => (
-        <View
-          key={i}
-          style={[
-            styles.dot,
-            {backgroundColor: c.ink, opacity: i === current ? 1 : 0.3},
-          ]}
-        />
-      ))}
-    </View>
-  );
-};
-
 const styles = StyleSheet.create({
   setup: {paddingTop: 20, paddingBottom: 24, gap: 18},
   unlock: {paddingTop: 48, paddingBottom: 24, gap: 18, alignItems: 'center'},
   pins: {marginTop: 18, alignSelf: 'stretch', alignItems: 'center'},
-  dots: {flexDirection: 'row', gap: 8, alignSelf: 'center'},
-  dot: {width: 7, height: 7, borderRadius: 4},
 });

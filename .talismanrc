@@ -467,11 +467,11 @@ fileignoreconfig:
   - filename: components/revamp/SettingsList.tsx
     checksum: 34aab779e1083a573f361fc20bdd8c4943e14949139cef35eb325688c263d702
   - filename: screens/Settings/SettingScreen.tsx
-    checksum: c625604e96d6096e7b91b13aedfd3ad15f90a79c81ec8944574e4a6747789ca5
+    checksum: 6b7a55da2b44d156f049af0105f70e9930c8f2c3ea7e0e8846d2fb4ecd80367f
   - filename: screens/Settings/autoLock.ts
     checksum: aafffaeb1bf5417893319cc235b25fbcb67eed6d271fed8340cfdc8e91420092
   - filename: screens/Settings/ChangePin.tsx
-    checksum: 5ff4cd67e92602aabf65868313254372105c2ff1a2c66c3f296c7204e213734b
+    checksum: 7651398d1d8b9e501d638588732a04ba9082fdd1bff07c98f64945e11a171e8e
   - filename: screens/AppLayout.tsx
     checksum: 76d6651dbde74dd425c9482ae8d5dd0e2fc5ab6f7fd77f87d527c48bc17cabcd
   - filename: screens/AppLock.tsx

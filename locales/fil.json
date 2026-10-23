@@ -355,7 +355,7 @@
     "enterNewPin": "Maglagay ng bagong PIN",
     "confirmNewPin": "Ilagay muli ang bagong PIN",
     "autoLock": "Awtomatikong pag-lock",
-    "autoLockHint": "I-lock ang wallet kapag nasa background na ito nang",
+    "autoLockHint": "Piliin kung gaano katagal maaaring nasa background ang wallet bago ito mag-lock.",
     "autoLockNever": "Hindi kailanman",
     "autoLockAfter": "Pagkalipas ng {{count}} minuto",
     "autoLockAfter_plural": "Pagkalipas ng {{count}} minuto",
@@ -370,7 +370,8 @@
     "samePin": "Pumili ng PIN na iba sa kasalukuyan mo.",
     "pinChangeFailed": "Hindi mapalitan ang PIN. Pakisubukang muli.",
     "closeApp": "Isara ang app",
-    "languageHint": "Agad na nagbabago ang wika ng app."
+    "languageHint": "Agad na nagbabago ang wika ng app.",
+    "wrongCurrentPin": "Hindi iyan ang kasalukuyan mong PIN."
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "Tagumpay! Magagamit mo na ngayon ang passcode upang i-unlock ang CredIssuer app.",

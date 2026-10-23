@@ -18,7 +18,13 @@ import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
 import {ChangePin} from './ChangePin';
 import {InfoPage} from './InfoPage';
 import {AUTO_LOCK_OPTIONS, useAutoLockSetting} from './autoLock';
-import {Modal} from '../../components/ui/Modal';
+import {
+  ChoiceList,
+  ChoiceRow,
+  Page,
+  PageHeader,
+  PageModal,
+} from '../../components/revamp/Page';
 import {ScaledText} from '../../components/revamp/ScaledText';
 import {
   SettingsRow,
@@ -268,37 +274,36 @@ export const SettingScreen: React.FC<SettingProps & RootRouteProps> = props => {
           if (changed) setNotice(t('pinChanged'));
         }}
       />
-      <Modal
-        testID="autoLockOptions"
-        isVisible={page === 'autoLock'}
-        headerTitle={t('autoLock')}
-        arrowLeft={true}
-        onDismiss={() => setPage(null)}>
-        <View style={styles.options}>
-          <SettingsSection title={t('autoLockHint')}>
-            {AUTO_LOCK_OPTIONS.map(minutes => (
-              <SettingsRow
-                key={minutes}
-                testID={'autoLock' + minutes}
-                icon={settingsIcons.clock}
-                label={autoLockLabel(minutes)}
-                accessibilityState={{checked: minutes === autoLockMinutes}}
-                onPress={() => {
-                  setAutoLockMinutes(minutes);
-                  setPage(null);
-                }}
-                trailing={
-                  minutes === autoLockMinutes ? (
-                    settingsIcons.check(c.sel)
-                  ) : (
-                    <View />
-                  )
-                }
-              />
-            ))}
-          </SettingsSection>
-        </View>
-      </Modal>
+      <PageModal
+        visible={page === 'autoLock'}
+        onRequestClose={() => setPage(null)}>
+        <Page
+          testID="autoLockOptions"
+          header={
+            <PageHeader title={t('autoLock')} onBack={() => setPage(null)} />
+          }>
+          <ScrollView contentContainerStyle={styles.options}>
+            <ScaledText style={[styles.optionsHint, {color: c.inkMuted}]}>
+              {t('autoLockHint')}
+            </ScaledText>
+            <ChoiceList>
+              {AUTO_LOCK_OPTIONS.map(minutes => (
+                <ChoiceRow
+                  key={minutes}
+                  testID={'autoLock' + minutes}
+                  label={autoLockLabel(minutes)}
+                  mark="check"
+                  selected={minutes === autoLockMinutes}
+                  onPress={() => {
+                    setAutoLockMinutes(minutes);
+                    setPage(null);
+                  }}
+                />
+              ))}
+            </ChoiceList>
+          </ScrollView>
+        </Page>
+      </PageModal>
       <InfoPage
         testID="helpAndSupportPage"
         isVisible={page === 'help'}
@@ -325,7 +330,8 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     letterSpacing: -0.56,
   },
-  options: {padding: 24},
+  options: {paddingTop: 12, paddingBottom: 24, gap: 12},
+  optionsHint: {fontFamily: fonts.regular, fontSize: 13, paddingHorizontal: 4},
   content: {paddingTop: 8, paddingHorizontal: 24, paddingBottom: 32, gap: 24},
   footer: {
     fontFamily: fonts.regular,
