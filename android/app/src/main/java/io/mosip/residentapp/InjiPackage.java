@@ -29,6 +29,7 @@ public class InjiPackage implements ReactPackage {
         modules.add(new InjiOpenID4VPModule(reactApplicationContext));
         modules.add(new RNVCVerifierModule(reactApplicationContext));
         modules.add(new RNInjiVcRendererModule(reactApplicationContext));
+        modules.add(new RNPlayIntegrityModule(reactApplicationContext));
         return modules;
     }
 

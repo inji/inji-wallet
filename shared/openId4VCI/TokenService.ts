@@ -4,6 +4,15 @@ import {
   DPOP_NONCE_HEADER,
   USE_DPOP_NONCE_ERROR,
 } from '../constants';
+import {
+  buildDeviceProof,
+  DEVICE_NOT_REGISTERED,
+  DEVICE_PROOF_HEADER,
+  ensureRegistered,
+  forgetRegistration,
+  isDeviceAttestationSupported,
+  mimotoBaseFromTokenEndpoint,
+} from '../deviceAttestation/DeviceAttestationService';
 
 function buildTokenFormBody(tokenRequestObject: any): URLSearchParams {
   const formBody = new URLSearchParams();
@@ -32,11 +41,13 @@ function buildTokenFormBody(tokenRequestObject: any): URLSearchParams {
 
 async function postTokenRequest(
   tokenEndpoint: string,
-  formBody: URLSearchParams,
+  formBody: string,
   dpopProof?: string | null,
+  extraHeaders: Record<string, string> = {},
 ): Promise<Response> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/x-www-form-urlencoded',
+    ...extraHeaders,
   };
   if (dpopProof) {
     headers[DPOP_HEADER] = dpopProof;
@@ -44,8 +55,31 @@ async function postTokenRequest(
   return await fetch(tokenEndpoint, {
     method: 'POST',
     headers,
-    body: formBody.toString(),
+    body: formBody,
   });
+}
+
+/**
+ * Device proof header for mimoto's get-token proxy. Registration or signing failures are logged and the
+ * request goes out without a proof, so a mimoto in monitor mode keeps working; one in enforce mode rejects it.
+ */
+async function deviceProofHeaders(
+  tokenEndpoint: string,
+  formBody: string,
+): Promise<Record<string, string>> {
+  const mimotoBase = mimotoBaseFromTokenEndpoint(tokenEndpoint);
+  if (!mimotoBase || !isDeviceAttestationSupported()) {
+    return {};
+  }
+  try {
+    await ensureRegistered(mimotoBase);
+    return {
+      [DEVICE_PROOF_HEADER]: await buildDeviceProof(tokenEndpoint, formBody),
+    };
+  } catch (error) {
+    console.warn('Sending token request without a device proof:', error);
+    return {};
+  }
 }
 
 function parseError(errorText: string): any {
@@ -73,6 +107,10 @@ function toVciClientError(errorText: string): VciClientErrorResponse {
  * library and arrives on `tokenRequestObject.dpopProof`; the wallet only attaches it as the
  * `DPoP` header. On an authorization server `use_dpop_nonce` challenge the wallet asks the
  * library for a fresh proof bound to the supplied nonce and retries once (RFC 9449).
+ *
+ * When the token endpoint is mimoto's get-token proxy, each attempt also carries a fresh device proof.
+ * If mimoto no longer knows the device key (`device_not_registered`), the wallet registers again and
+ * retries once.
  */
 export async function sendTokenRequest(
   tokenRequestObject: any,
@@ -86,16 +124,33 @@ export async function sendTokenRequest(
     throw new Error('tokenEndpoint is required');
   }
 
-  const formBody = buildTokenFormBody(tokenRequestObject);
+  const tokenEndpoint: string = tokenRequestObject.tokenEndpoint;
+  const formBody = buildTokenFormBody(tokenRequestObject).toString();
+  const send = async (dpopProof?: string | null) =>
+    postTokenRequest(
+      tokenEndpoint,
+      formBody,
+      dpopProof,
+      await deviceProofHeaders(tokenEndpoint, formBody),
+    );
 
-  let response = await postTokenRequest(
-    tokenRequestObject.tokenEndpoint,
-    formBody,
-    tokenRequestObject.dpopProof,
-  );
+  let response = await send(tokenRequestObject.dpopProof);
+  let errorText = response.ok ? '' : await response.text();
+
+  const mimotoBase = mimotoBaseFromTokenEndpoint(tokenEndpoint);
+  if (
+    !response.ok &&
+    response.status === 401 &&
+    mimotoBase &&
+    parseError(errorText)?.error === DEVICE_NOT_REGISTERED
+  ) {
+    // mimoto rejected the request before forwarding it, so the DPoP proof was never used
+    await forgetRegistration(mimotoBase).catch(() => undefined);
+    response = await send(tokenRequestObject.dpopProof);
+    errorText = response.ok ? '' : await response.text();
+  }
 
   if (!response.ok) {
-    const errorText = await response.text();
     const dpopNonce = response.headers?.get(DPOP_NONCE_HEADER);
 
     if (
@@ -105,11 +160,7 @@ export async function sendTokenRequest(
     ) {
       const refreshedProof =
         await VciClient.getInstance().generateTokenDPoPProof(dpopNonce);
-      response = await postTokenRequest(
-        tokenRequestObject.tokenEndpoint,
-        formBody,
-        refreshedProof,
-      );
+      response = await send(refreshedProof);
 
       if (!response.ok) {
         const retryError = await response.text();
