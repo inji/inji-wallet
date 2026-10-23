@@ -24,7 +24,7 @@ import {useRevampTheme} from '../revamp/useRevampTheme';
 
 /**
  * Shown once a downloaded credential is saved: the card itself, what was checked on the way
- * in, and a way into the wallet, where the new card is then highlighted.
+ * in, and a way into the wallet, where the new card is then marked as new.
  */
 export const AddedToWalletScreen: React.FC<AddedToWalletScreenProps> = ({
   vcMetadata,
@@ -208,6 +208,6 @@ const styles = StyleSheet.create({
 
 interface AddedToWalletScreenProps {
   vcMetadata: VCMetadata;
-  /** Leaves for the wallet, which highlights this card. */
+  /** Leaves for the wallet, which marks this card as new. */
   onViewInWallet: () => void;
 }

@@ -148,8 +148,8 @@ export interface HomeScreenTabProps {
   /** Opens this credential's detail view as soon as its card has loaded. */
   openVcKey?: string;
   onVcOpened?: () => void;
-  /** A just-downloaded credential for the tour to highlight on its own. */
+  /** A just-downloaded credential, marked as new on the wallet home. */
   highlightVcKey?: string;
-  /** Called once the highlight has been taken up, so it isn't shown again. */
+  /** Called once the home has taken it up, so it isn't applied again. */
   onHighlightTaken?: () => void;
 }

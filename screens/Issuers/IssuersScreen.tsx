@@ -182,7 +182,7 @@ export const IssuersScreen: React.FC<
     }
   }, [controller.isDownloadSuccess]);
 
-  // Back to the wallet, which highlights the new card.
+  // Back to the wallet, which brings the new card to the front and marks it as new.
   const viewInWallet = useCallback(() => {
     if (!addedVcMetadata) {
       return;
