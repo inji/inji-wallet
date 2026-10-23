@@ -1,17 +1,17 @@
 import React, {useState} from 'react';
-import {
-  I18nManager,
-  Modal,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import {I18nManager, Pressable, ScrollView, StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import i18next, {i18n} from 'i18next';
 import RNRestart from 'react-native-restart';
 import {SUPPORTED_LANGUAGES} from '../i18n';
 import {setItem} from '../machines/store';
-import {ChoiceList, ChoiceRow, Page, PageHeader} from './revamp/Page';
+import {
+  ChoiceList,
+  ChoiceRow,
+  Page,
+  PageHeader,
+  PageModal,
+} from './revamp/Page';
 import {ScaledText} from './revamp/ScaledText';
 import {fonts} from './revamp/tokens';
 import {useRevampTheme} from './revamp/useRevampTheme';
@@ -31,11 +31,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = props => {
       <Pressable onPress={() => setIsOpen(true)}>
         {props.triggerComponent}
       </Pressable>
-      <Modal
-        visible={isOpen}
-        animationType="slide"
-        statusBarTranslucent
-        onRequestClose={() => setIsOpen(false)}>
+      <PageModal visible={isOpen} onRequestClose={() => setIsOpen(false)}>
         <Page
           testID="languages"
           header={
@@ -63,7 +59,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = props => {
             </ScaledText>
           </ScrollView>
         </Page>
-      </Modal>
+      </PageModal>
     </>
   );
 };

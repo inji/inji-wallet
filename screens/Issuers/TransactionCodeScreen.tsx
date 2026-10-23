@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {
-  Modal,
   ModalProps,
   Pressable,
   ScrollView,
@@ -14,6 +13,7 @@ import {
   AlertSheet,
   FieldError,
   Page,
+  PageModal,
   PageButton,
   PageHeader,
   PageHeading,
@@ -61,10 +61,8 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
   };
 
   return (
-    <Modal
+    <PageModal
       visible={props.visible ?? false}
-      animationType="slide"
-      statusBarTranslucent
       onRequestClose={() => setShowCancelConfirm(true)}>
       <Page
         testID="transactionCode"
@@ -160,7 +158,7 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
         }}
         onRequestClose={() => setShowCancelConfirm(false)}
       />
-    </Modal>
+    </PageModal>
   );
 };
 

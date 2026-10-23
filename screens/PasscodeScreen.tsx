@@ -115,7 +115,8 @@ export const PasscodeScreen: React.FC<PasscodeRouteProps> = props => {
         />
       ) : (
         <PasscodeVerify
-          key={`confirm-${attempt}`}
+          key="confirm"
+          clearKey={attempt}
           testID="confirmPasscodePin"
           onSuccess={() => {
             resetRetryCount();
@@ -134,7 +135,7 @@ export const PasscodeScreen: React.FC<PasscodeRouteProps> = props => {
         props.navigation.navigate('Biometric', {setup: false})
       }>
       <PasscodeVerify
-        key={`unlock-${attempt}`}
+        clearKey={attempt}
         testID="enterPasscodePin"
         onSuccess={() => {
           resetRetryCount();

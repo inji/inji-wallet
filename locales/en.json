@@ -893,7 +893,8 @@
     "chooseHint": "You’ll use it to open the wallet and to approve sharing.",
     "confirmTitle": "Enter it once more",
     "confirmHint": "Just to make sure it’s the one you meant.",
-    "confirmMismatch": "The passcodes don’t match. Try again."
+    "confirmMismatch": "The passcodes don’t match. Try again.",
+    "reEnableBiometrics": "Enter your passcode to turn biometric unlock back on."
   },
   "QrLogin": {
     "title": "QR Login",

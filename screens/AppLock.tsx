@@ -170,7 +170,7 @@ const LockScreen: React.FC<{onUnlock: () => void}> = ({onUnlock}) => {
               {passcodeT('enterPasscode')}
             </ScaledText>
             <PasscodeVerify
-              key={attempt}
+              clearKey={attempt}
               testID="appLockPasscode"
               passcode={passcode}
               salt={salt}

@@ -1,8 +1,8 @@
-import { useRef, createRef, MutableRefObject } from 'react';
-import { useMachine } from '@xstate/react';
-import { EventFrom } from 'xstate';
-import { createModel } from 'xstate/lib/model';
-import { TextInput } from 'react-native';
+import {useRef, createRef, MutableRefObject} from 'react';
+import {useMachine} from '@xstate/react';
+import {EventFrom} from 'xstate';
+import {createModel} from 'xstate/lib/model';
+import {TextInput} from 'react-native';
 
 const model = createModel(
   {
@@ -13,11 +13,12 @@ const model = createModel(
   },
   {
     events: {
-      FOCUS_INPUT: (index: number) => ({ index }),
-      UPDATE_INPUT: (value: string, index: number) => ({ value, index }),
-      KEY_PRESS: (key: string) => ({ key }),
+      FOCUS_INPUT: (index: number) => ({index}),
+      UPDATE_INPUT: (value: string, index: number) => ({value, index}),
+      KEY_PRESS: (key: string) => ({key}),
+      CLEAR: () => ({}),
     },
-  }
+  },
 );
 
 export const pinInputMachine = model.createMachine(
@@ -34,6 +35,9 @@ export const pinInputMachine = model.createMachine(
     states: {
       idle: {
         on: {
+          CLEAR: {
+            actions: ['clearAll', 'focusSelected'],
+          },
           FOCUS_INPUT: {
             actions: ['selectInput'],
           },
@@ -80,19 +84,24 @@ export const pinInputMachine = model.createMachine(
       }),
 
       selectNextInput: model.assign({
-        selectedIndex: ({ selectedIndex }) => selectedIndex + 1,
+        selectedIndex: ({selectedIndex}) => selectedIndex + 1,
       }),
 
       selectPrevInput: model.assign({
-        selectedIndex: ({ selectedIndex }) => selectedIndex - 1,
+        selectedIndex: ({selectedIndex}) => selectedIndex - 1,
       }),
 
-      focusSelected: ({ selectedIndex, inputRefs }) => {
+      focusSelected: ({selectedIndex, inputRefs}) => {
         inputRefs[selectedIndex].current.focus();
       },
 
+      clearAll: model.assign({
+        values: () => [],
+        selectedIndex: () => 0,
+      }),
+
       clearInput: model.assign({
-        values: ({ values, selectedIndex }) => {
+        values: ({values, selectedIndex}) => {
           const newValues = [...values];
           newValues[selectedIndex] = '';
           return newValues;
@@ -100,7 +109,7 @@ export const pinInputMachine = model.createMachine(
       }),
 
       updateInput: model.assign({
-        values: ({ values }, event) => {
+        values: ({values}, event) => {
           const newValues = [...values];
           newValues[event.index] = event.value;
           return newValues;
@@ -109,7 +118,7 @@ export const pinInputMachine = model.createMachine(
     },
 
     guards: {
-      hasNextInput: ({ inputRefs, selectedIndex }) => {
+      hasNextInput: ({inputRefs, selectedIndex}) => {
         return selectedIndex + 1 < inputRefs.length;
       },
 
@@ -117,7 +126,7 @@ export const pinInputMachine = model.createMachine(
         return !event.value;
       },
 
-      canGoBack: ({ values, selectedIndex }, event) => {
+      canGoBack: ({values, selectedIndex}, event) => {
         return (
           selectedIndex - 1 >= 0 &&
           !values[selectedIndex] &&
@@ -129,7 +138,7 @@ export const pinInputMachine = model.createMachine(
     delays: {
       INITIAL_FOCUS_DELAY: 100,
     },
-  }
+  },
 );
 
 export function usePinInput(length: number) {
@@ -139,7 +148,7 @@ export function usePinInput(length: number) {
       inputRefs: Array(length)
         .fill(null)
         .map(() => createRef()),
-    })
+    }),
   );
 
   const [state, send] = useMachine(machine.current);

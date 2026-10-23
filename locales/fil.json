@@ -783,7 +783,8 @@
     "chooseHint": "Gagamitin mo ito para buksan ang wallet at aprubahan ang pagbabahagi.",
     "confirmTitle": "Ilagay itong muli",
     "confirmHint": "Para matiyak na ito nga ang gusto mo.",
-    "confirmMismatch": "Hindi magkatugma ang mga passcode. Subukang muli."
+    "confirmMismatch": "Hindi magkatugma ang mga passcode. Subukang muli.",
+    "reEnableBiometrics": "Ilagay ang iyong passcode para muling i-on ang pag-unlock gamit ang biometrics."
   },
   "QrLogin": {
     "title": "QR Login",

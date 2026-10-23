@@ -22,7 +22,15 @@ export const PasscodeVerify: React.FC<PasscodeVerifyProps> = props => {
     }
   }, [isVerified]);
 
-  return <PinInput testID={props.testID} length={MAX_PIN} onDone={verify} autosubmit={true} />;
+  return (
+    <PinInput
+      testID={props.testID}
+      length={MAX_PIN}
+      onDone={verify}
+      autosubmit={true}
+      clearKey={props.clearKey}
+    />
+  );
 
   async function verify(value: string) {
     try {
@@ -53,4 +61,6 @@ interface PasscodeVerifyProps {
   onError?: (error: string) => void;
   salt: string;
   testID: string;
+  /** Changing it empties the boxes and puts the cursor back on the first. */
+  clearKey?: number;
 }

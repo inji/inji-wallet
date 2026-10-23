@@ -16,11 +16,11 @@ fileignoreconfig:
   - filename: lib/jsonld-signatures/suites/ed255192018/ed25519.ts
     checksum: 493b6e31144116cb612c24d98b97d8adcad5609c0a52c865a6847ced0a0ddc3a
   - filename: components/PasscodeVerify.tsx
-    checksum: 14654c0f038979fcd0d260170a45894a072f81e0767ca9a0e66935d33b5cc703
+    checksum: b84a53a0eebc3051d580b5bb80f45bdd4a2691d08e9cb369e91a142fc6907571
   - filename: i18n.ts
     checksum: e80d40f33692c195d034774d024cafdf63d010ac6d4a35f94b2a5d81b78c234b
   - filename: components/Passcode.tsx
-    checksum: db4a18001be8c63bf7ffb389359861401fa1d22261b10ad729a76fd431c019a7
+    checksum: 749a36b7138ee0a29fb27db4f16d5774f4a4455881a676015527dab1b4c324a1
   - filename: components/PasscodeVerify.tsx
     checksum: 14654c0f038979fcd0d260170a45894a072f81e0767ca9a0e66935d33b5cc703
   - filename: screens/Home/MyVcs/GetIdInputModal.tsx
@@ -62,7 +62,7 @@ fileignoreconfig:
   - filename: machines/bleShare/scan/scanMachine.ts
     checksum: 5f4a183db610fe0ffe36e3e1129d67221535335e4a866341a5b8759228ddee15
   - filename: screens/PasscodeScreen.tsx
-    checksum: 11c38ff526212c746390efa9bc17d9434bae42820c2e2e5a859b011a3345742d
+    checksum: 95e97305ed4a3374231155a6dd87598b70db869698ec316f9a7af983ae49e6bd
   - filename: screens/PasscodeScreen.tsx
     checksum: 11c38ff526212c746390efa9bc17d9434bae42820c2e2e5a859b011a3345742d
   - filename: screens/Home/MyVcs/OtpVerificationModal.tsx
@@ -475,7 +475,7 @@ fileignoreconfig:
   - filename: screens/AppLayout.tsx
     checksum: 76d6651dbde74dd425c9482ae8d5dd0e2fc5ab6f7fd77f87d527c48bc17cabcd
   - filename: screens/AppLock.tsx
-    checksum: 37a9b39502f13c8ebe142caa324ce1633922fcffaa7b14c6fe9cf55a176ce7ee
+    checksum: 69655c6f125f6713b0c6d3daa670d4e285a8e8671eeed62a8a56b3e52a4f7d3e
   - filename: screens/Settings/autoLock.test.ts
     checksum: f95ca299f705fbfad765205a9fe42f09358a730da38fb59debb98e2e62a14c58
   - filename: machines/store.biometricCancel.test.ts
@@ -524,5 +524,9 @@ fileignoreconfig:
     checksum: 7b849aba8798be144ae86529c2ef068b728397a69a9f32c884e0365a24f6a036
   - filename: screens/Issuers/ReplaceCredentialSelectionScreen.tsx
     checksum: e37f6104a0c352489553f847dcb11877d580138de73f5c0286558ddcc6d22c57
+  - filename: machines/pinInput.ts
+    checksum: 075709d836cf28cf6c13efdf6d4d14822d3d4cc2dff964a4eabd01439bce924f
+  - filename: components/PinInput.tsx
+    checksum: d3b140d060c2de8d4e155b87739c0ffbaca34bfda75b3f6e13522b8117952ff5
     version: "1.0"
 

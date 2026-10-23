@@ -56,7 +56,6 @@ export const BiometricScreen: React.FC<RootRouteProps> = props => {
       <LockedBrand />
       {controller.isReEnabling && (
         <Passcode
-          message="Enter your passcode to re-enable biometrics authentication."
           onSuccess={handleOnSuccess}
           onError={handlePasscodeMismatch}
           storedPasscode={controller.storedPasscode}

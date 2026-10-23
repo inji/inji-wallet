@@ -112,7 +112,6 @@ const BiometricUnlockButton: React.FC<RootRouteProps> = props => {
       />
       {controller.isReEnabling && (
         <Passcode
-          message="Enter your passcode to re-enable biometrics authentication."
           onSuccess={handleOnSuccess}
           onError={handlePasscodeMismatch}
           storedPasscode={controller.storedPasscode}

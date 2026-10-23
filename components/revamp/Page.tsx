@@ -1,13 +1,17 @@
 import React from 'react';
 import {
   ActivityIndicator,
+  Modal,
   Pressable,
   StyleProp,
   StyleSheet,
   View,
   ViewStyle,
 } from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import {BottomSheet} from '../ui/BottomSheet';
 import {BackIcon, CheckIcon, CloseIcon} from './Icons';
 import {ScaledText} from './ScaledText';
@@ -51,6 +55,22 @@ export const Page: React.FC<{
     </View>
   );
 };
+
+/** A Page that slides over the current screen. It measures its own insets: the screen's are
+ * zero at the top under a navigator header. */
+export const PageModal: React.FC<{
+  visible: boolean;
+  onRequestClose: () => void;
+  children: React.ReactNode;
+}> = ({visible, onRequestClose, children}) => (
+  <Modal
+    visible={visible}
+    animationType="slide"
+    statusBarTranslucent
+    onRequestClose={onRequestClose}>
+    <SafeAreaProvider>{children}</SafeAreaProvider>
+  </Modal>
+);
 
 /** Round back or close button, a centred title, and a slot on the right. */
 export const PageHeader: React.FC<{

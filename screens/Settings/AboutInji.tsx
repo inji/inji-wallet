@@ -1,9 +1,14 @@
 import React, {useState} from 'react';
-import {Modal, Pressable, ScrollView, StyleSheet, View} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {__InjiVersion} from '../../shared/GlobalVariables';
-import {ChoiceList, Page, PageHeader} from '../../components/revamp/Page';
+import {
+  ChoiceList,
+  Page,
+  PageModal,
+  PageHeader,
+} from '../../components/revamp/Page';
 import {CheckIcon, CopyIcon} from '../../components/revamp/Icons';
 import {ScaledText} from '../../components/revamp/ScaledText';
 import {fonts, radii} from '../../components/revamp/tokens';
@@ -26,11 +31,7 @@ export const AboutInji: React.FC<AboutInjiProps> = ({appId, renderTrigger}) => {
   return (
     <React.Fragment>
       {renderTrigger?.(() => setIsOpen(true))}
-      <Modal
-        visible={isOpen}
-        animationType="slide"
-        statusBarTranslucent
-        onRequestClose={() => setIsOpen(false)}>
+      <PageModal visible={isOpen} onRequestClose={() => setIsOpen(false)}>
         <Page
           testID="aboutInji"
           header={
@@ -87,7 +88,7 @@ export const AboutInji: React.FC<AboutInjiProps> = ({appId, renderTrigger}) => {
             </ChoiceList>
           </ScrollView>
         </Page>
-      </Modal>
+      </PageModal>
     </React.Fragment>
   );
 };

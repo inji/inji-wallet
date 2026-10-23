@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {TextInput} from 'react-native';
 import {usePinInput} from '../machines/pinInput';
 import {Row} from './ui';
@@ -7,8 +7,15 @@ import {Theme} from './ui/styleUtils';
 export const PinInput: React.FC<PinInputProps> = props => {
   const {state, send, events} = usePinInput(props.length);
   const {inputRefs, values} = state.context;
-  const {UPDATE_INPUT, FOCUS_INPUT, KEY_PRESS} = events;
+  const {UPDATE_INPUT, FOCUS_INPUT, KEY_PRESS, CLEAR} = events;
   const [focusedIndex, setFocusedIndex] = useState(0);
+  const firstClearKey = useRef(props.clearKey);
+
+  useEffect(() => {
+    if (props.clearKey !== firstClearKey.current) {
+      send(CLEAR());
+    }
+  }, [props.clearKey]);
 
   useEffect(() => {
     const current = values.join('');
@@ -65,4 +72,6 @@ interface PinInputProps {
   onDone?: (value: string) => void;
   onChange?: (value: string) => void;
   autosubmit?: boolean;
+  /** Changing it empties the boxes and puts the cursor back on the first. */
+  clearKey?: number;
 }

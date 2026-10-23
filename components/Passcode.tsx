@@ -1,16 +1,26 @@
-import React, {useEffect} from 'react';
-import {Modal as RNModal} from 'react-native';
-import {Icon} from 'react-native-elements';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 import {PasscodeVerify} from '../components/PasscodeVerify';
-import {Column, Text} from '../components/ui';
-import {Theme} from '../components/ui/styleUtils';
+import {
+  FieldError,
+  Page,
+  PageHeader,
+  PageHeading,
+  PageModal,
+} from './revamp/Page';
 import {
   getImpressionEventData,
   sendImpressionEvent,
 } from '../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../shared/telemetry/TelemetryConstants';
+import InjiHomeLogo from '../assets/InjiHomeLogo.svg';
 
+/** Asks for the passcode over the current screen, e.g. to turn biometrics back on. */
 export const Passcode: React.FC<PasscodeProps> = props => {
+  const {t} = useTranslation('PasscodeScreen');
+  const [attempt, setAttempt] = useState(0);
+
   useEffect(() => {
     sendImpressionEvent(
       getImpressionEventData(
@@ -21,32 +31,37 @@ export const Passcode: React.FC<PasscodeProps> = props => {
   }, []);
 
   return (
-    <RNModal
-      animationType="slide"
-      style={Theme.PasscodeStyles.modal}
-      visible={true}
-      onRequestClose={props.onDismiss}>
-      <Column
-        fill
-        padding="32"
-        backgroundColor={Theme.Colors.whiteBackgroundColor}>
-        <Icon name="lock" color={Theme.Colors.Icon} size={60} />
-        <Column fill align="space-between" width="100%">
-          <Text align="center">{props.message || 'Enter your passcode'}</Text>
-          <PasscodeVerify
-            onSuccess={props.onSuccess}
-            onError={props.onError}
-            passcode={props.storedPasscode}
-            salt={props.salt}
+    <PageModal visible={true} onRequestClose={props.onDismiss}>
+      <Page
+        testID="passcodePrompt"
+        header={<PageHeader onClose={props.onDismiss} />}>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          contentContainerStyle={styles.content}>
+          <InjiHomeLogo width={64} height={64} />
+          <PageHeading
+            testID="passcodePromptTitle"
+            size="medium"
+            title={t('enterPasscode')}
+            body={props.message ?? t('reEnableBiometrics')}
           />
-        </Column>
-        <Column fill>
-          <Text align="center" color={Theme.Colors.errorMessage}>
-            {props.error}
-          </Text>
-        </Column>
-      </Column>
-    </RNModal>
+          <View style={styles.pins}>
+            <PasscodeVerify
+              testID="passcodePromptPin"
+              clearKey={attempt}
+              onSuccess={props.onSuccess}
+              onError={message => {
+                props.onError(message);
+                setAttempt(a => a + 1);
+              }}
+              passcode={props.storedPasscode}
+              salt={props.salt}
+            />
+          </View>
+          <FieldError testID="passcodePromptError" message={props.error} />
+        </ScrollView>
+      </Page>
+    </PageModal>
   );
 };
 
@@ -59,3 +74,8 @@ interface PasscodeProps {
   onError: (value: string) => void;
   onDismiss: () => void;
 }
+
+const styles = StyleSheet.create({
+  content: {paddingTop: 24, paddingBottom: 24, gap: 18, alignItems: 'center'},
+  pins: {marginTop: 18, alignSelf: 'stretch', alignItems: 'center'},
+});

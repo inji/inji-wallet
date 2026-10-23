@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Pressable, ScrollView, StyleSheet, View} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {HomeRouteProps} from '../../routes/routeTypes';
 import {RootRouteProps} from '../../routes';
@@ -8,6 +8,7 @@ import {VCMetadata} from '../../shared/VCMetadata';
 import {
   ChoiceList,
   Page,
+  PageModal,
   PageButton,
   PageHeader,
 } from '../../components/revamp/Page';
@@ -45,10 +46,8 @@ export const ReplaceCredentialSelectionScreen: React.FC<
     duplicates.length > 0 && selectedKeys.length === duplicates.length;
 
   return (
-    <Modal
+    <PageModal
       visible={controller.isSelectingCredentialsToReplace}
-      animationType="slide"
-      statusBarTranslucent
       onRequestClose={controller.CANCEL_REPLACE}>
       <Page
         testID="replaceCredentialSelectionScreen"
@@ -115,7 +114,7 @@ export const ReplaceCredentialSelectionScreen: React.FC<
           </ChoiceList>
         </ScrollView>
       </Page>
-    </Modal>
+    </PageModal>
   );
 };
 
