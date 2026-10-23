@@ -1,136 +1,140 @@
 import React, {useState} from 'react';
+import {Modal, Pressable, ScrollView, StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {Dimensions, Pressable, I18nManager, View} from 'react-native';
-import {Modal} from '../../components/ui/Modal';
-import {Column, Row, Text} from '../../components/ui';
-import {Theme} from '../../components/ui/styleUtils';
-import {ListItem} from 'react-native-elements';
-import {CopyButton} from '../../components/CopyButton';
-import testIDProps from '../../shared/commonUtil';
+import Clipboard from '@react-native-clipboard/clipboard';
 import {__InjiVersion} from '../../shared/GlobalVariables';
-import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
-import {SvgImage} from '../../components/ui/svg';
-import LinearGradient from 'react-native-linear-gradient';
+import {ChoiceList, Page, PageHeader} from '../../components/revamp/Page';
+import {CheckIcon, CopyIcon} from '../../components/revamp/Icons';
+import {ScaledText} from '../../components/revamp/ScaledText';
+import {fonts, radii} from '../../components/revamp/tokens';
+import {useRevampTheme} from '../../components/revamp/useRevampTheme';
+import testIDProps from '../../shared/commonUtil';
+import InjiHomeLogo from '../../assets/InjiHomeLogo.svg';
 
 export const AboutInji: React.FC<AboutInjiProps> = ({appId, renderTrigger}) => {
   const {t} = useTranslation('AboutInji');
+  const {c} = useRevampTheme();
+  const [isOpen, setIsOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const [showAboutInji, setShowAboutInji] = useState(false);
+  const copyAppId = () => {
+    Clipboard.setString(appId ?? '');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <React.Fragment>
-      {renderTrigger ? (
-        renderTrigger(() => setShowAboutInji(true))
-      ) : (
-        <Pressable
-          onPress={() => {
-            setShowAboutInji(!showAboutInji);
-          }}>
-          <ListItem {...testIDProps('aboutInji')} topDivider bottomDivider>
-            {SvgImage.abotInjiIcon()}
-            <ListItem.Content>
-              <ListItem.Title
-                {...testIDProps('aboutInjiTitle')}
-                style={Theme.AboutInjiScreenStyle.titleStyle}>
-                <Text weight="semibold" color={Theme.Colors.settingsLabel}>
-                  {t('aboutInji')}
-                </Text>
-              </ListItem.Title>
-            </ListItem.Content>
-          </ListItem>
-        </Pressable>
-      )}
+      {renderTrigger?.(() => setIsOpen(true))}
       <Modal
-        testID="aboutInji"
-        isVisible={showAboutInji}
-        headerTitle={t('header')}
-        headerElevation={2}
-        arrowLeft={true}
-        onDismiss={() => {
-          setShowAboutInji(!showAboutInji);
-        }}>
-        <BannerNotificationContainer />
-        <LinearGradient
-          colors={Theme.Colors.GradientColorsLight}
-          start={Theme.LinearGradientDirection.start}
-          end={Theme.LinearGradientDirection.end}>
-          <Row
-            testID="appID"
-            crossAlign="flex-start"
-            style={Theme.Styles.primaryRow}>
-            <Row>
-              <Text
-                weight="semibold"
-                style={Theme.AboutInjiScreenStyle.appIdTitleStyle}>
-                {t('appID')}
-              </Text>
-              <Text
-                weight="semibold"
-                style={Theme.AboutInjiScreenStyle.appIdTextStyle}>
-                {I18nManager.isRTL ? appId : ' : ' + appId}
-              </Text>
-            </Row>
-            <CopyButton content={appId} />
-          </Row>
-        </LinearGradient>
-        <Column
-          align="space-between"
-          style={Theme.AboutInjiScreenStyle.containerStyle}>
-          <Column>
-            <Text
-              testID="aboutDetails"
-              style={Theme.AboutInjiScreenStyle.aboutDetailstextStyle}>
-              {t('aboutDetails')}
-            </Text>
-          </Column>
-
-          <Column
-            pY={25}
-            align="space-between"
-            crossAlign="center"
-            style={Theme.Styles.versionContainer}>
-            <Row style={Theme.AboutInjiScreenStyle.injiVersionContainerStyle}>
-              <Text
+        visible={isOpen}
+        animationType="slide"
+        statusBarTranslucent
+        onRequestClose={() => setIsOpen(false)}>
+        <Page
+          testID="aboutInji"
+          header={
+            <PageHeader title={t('header')} onBack={() => setIsOpen(false)} />
+          }
+          footer={
+            <ScaledText style={[styles.footer, {color: c.inkMuted}]}>
+              {t('footer')}
+            </ScaledText>
+          }>
+          <ScrollView contentContainerStyle={styles.content}>
+            <View style={styles.brand}>
+              <InjiHomeLogo width={72} height={72} />
+              <ScaledText style={[styles.name, {color: c.ink}]}>
+                {t('appName')}
+              </ScaledText>
+              <ScaledText
                 testID="tuvaliVersion"
-                weight="semibold"
-                style={Theme.AboutInjiScreenStyle.injiVersionTitle}
-                color={Theme.Colors.aboutVersion}>
-                {t('version') + ' : '}
-              </Text>
-              <Text
-                weight="semibold"
-                style={Theme.AboutInjiScreenStyle.injiVersionText}
-                color={Theme.Colors.aboutVersion}>
-                {__InjiVersion.getValue()}
-              </Text>
-            </Row>
-            <View style={Theme.AboutInjiScreenStyle.horizontalLineStyle} />
-            <Column
-              crossAlign="center"
-              style={Theme.AboutInjiScreenStyle.footerContainer}>
-              <Row style={Theme.AboutInjiScreenStyle.poweredByRow}>
-                <View style={Theme.AboutInjiScreenStyle.logoStyle}>
-                  {SvgImage.logoIcon(40, 40)}
+                style={[styles.version, {color: c.inkMuted}]}>
+                {t('versionLine', {version: __InjiVersion.getValue()})}
+              </ScaledText>
+            </View>
+            <ScaledText
+              testID="aboutDetails"
+              style={[styles.details, {color: c.inkMuted}]}>
+              {t('aboutDetails')}
+            </ScaledText>
+            <ChoiceList>
+              <View style={styles.row} {...testIDProps('appID')}>
+                <View style={styles.rowText}>
+                  <ScaledText style={[styles.label, {color: c.inkMuted}]}>
+                    {t('appID')}
+                  </ScaledText>
+                  <ScaledText style={[styles.appId, {color: c.ink}]}>
+                    {appId}
+                  </ScaledText>
                 </View>
-
-                <Text
-                  weight="semibold"
-                  style={Theme.AboutInjiScreenStyle.poweredByTextStyle}
-                  color="black">
-                  {t('poweredBy')}
-                </Text>
-              </Row>
-            </Column>
-          </Column>
-        </Column>
+                <Pressable
+                  {...testIDProps('copyAppId')}
+                  accessibilityRole="button"
+                  accessibilityLabel={t('copy')}
+                  onPress={copyAppId}
+                  style={[styles.copy, {backgroundColor: c.tintAzure}]}>
+                  {copied ? (
+                    <CheckIcon color={c.azureInk} size={16} />
+                  ) : (
+                    <CopyIcon color={c.azureInk} size={16} />
+                  )}
+                  <ScaledText style={[styles.copyText, {color: c.azureInk}]}>
+                    {copied ? t('copied') : t('copy')}
+                  </ScaledText>
+                </Pressable>
+              </View>
+            </ChoiceList>
+          </ScrollView>
+        </Page>
       </Modal>
     </React.Fragment>
   );
 };
 
 interface AboutInjiProps {
-  /** Draws the row that opens the About page, in place of the default list item. */
+  /** Draws the row that opens the About page. */
   renderTrigger?: (open: () => void) => React.ReactNode;
   isVisible?: boolean;
   appId?: string;
 }
+
+const styles = StyleSheet.create({
+  content: {paddingTop: 24, paddingBottom: 24, gap: 24},
+  brand: {alignItems: 'center', gap: 8},
+  name: {
+    fontFamily: fonts.semibold,
+    fontSize: 22,
+    lineHeight: 27,
+    letterSpacing: -0.4,
+    marginTop: 4,
+  },
+  version: {fontFamily: fonts.regular, fontSize: 14},
+  details: {
+    fontFamily: fonts.regular,
+    fontSize: 15,
+    lineHeight: 22,
+    textAlign: 'center',
+    paddingHorizontal: 8,
+  },
+  row: {
+    minHeight: 64,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  rowText: {flex: 1, gap: 2},
+  label: {fontFamily: fonts.regular, fontSize: 12},
+  appId: {fontFamily: fonts.mono, fontSize: 15, letterSpacing: 0.5},
+  copy: {
+    height: 32,
+    paddingHorizontal: 12,
+    borderRadius: radii.pill,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  copyText: {fontFamily: fonts.semibold, fontSize: 13},
+  footer: {fontFamily: fonts.regular, fontSize: 12, textAlign: 'center'},
+});

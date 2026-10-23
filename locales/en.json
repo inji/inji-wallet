@@ -286,23 +286,26 @@
     "no": "No"
   },
   "RemoveVcWarningOverlay": {
-    "alert": "Remove from Wallet?",
-    "removeWarning": "You're going to remove the card from the wallet. Once removed, this action cannot be undone.\nHowever, you can download the card again to your wallet.",
-    "confirm": "Yes, I confirm",
-    "cancel": "Cancel"
+    "alert": "Remove this card?",
+    "removeWarning": "It will be deleted from this phone. You can download it again from the issuer at any time.",
+    "confirm": "Remove card",
+    "cancel": "Keep it"
   },
   "AuthScreen": {
-    "header": "Select App Unlock Method",
-    "Description": "To unlock the app securely, you can set up either biometric authentication, such as fingerprint or facial recognition or opt for a 6-digit Passcode for quick access.",
+    "header": "Protect your wallet",
+    "Description": "Choose how you’ll unlock CredIssuer Wallet. Your cards stay encrypted on this phone either way.",
     "PasswordTypeDescription": "Choose ‘Use Biometrics’ to enable biometric authentication or ‘I’ll Do Later’ to set up a 6-digit passcode.",
-    "useBiometrics": "Use Biometrics",
-    "usePasscode": "I'll Do Later",
+    "useBiometrics": "Fingerprint or face",
+    "usePasscode": "6-digit passcode",
     "errors": {
       "unavailable": "Device does not support Biometrics",
       "unenrolled": "To use Biometrics, please enroll your biometrics in your device settings",
       "failed": "Failed to authenticate with Biometrics",
       "generic": "There seems to be an error in Biometrics authentication"
-    }
+    },
+    "useBiometricsHint": "Uses the biometrics already set up on this phone. A passcode is still set as a backup.",
+    "usePasscodeHint": "A code only you know. You can turn on biometrics later in Settings.",
+    "continue": "Continue"
   },
   "BiometricScreen": {
     "unlock": "Unlock with biometrics"
@@ -433,12 +436,14 @@
       "noMatchingCredential": "No Matching Credential",
       "sharingFailed": "Sharing Failed",
       "walletActivity": "Wallet Activity"
-    }
+    },
+    "cardActivityTitle": "Activity",
+    "noCardActivity": "No activity for this card yet.",
+    "openAllNotifications": "Open all notifications"
   },
   "SettingScreen": {
     "header": "Settings",
     "injiAsVerifierApp": "CredIssuer Wallet",
-    "receiveCard": "Receive Card",
     "basicSettings": "Basic settings",
     "bioUnlock": "Unlock with Biometric",
     "language": "Language",
@@ -474,7 +479,8 @@
     "pinsDontMatch": "The PINs don't match. Enter the new PIN again.",
     "samePin": "Choose a PIN different from your current one.",
     "pinChangeFailed": "Couldn't change the PIN. Please try again.",
-    "closeApp": "Close app"
+    "closeApp": "Close app",
+    "languageHint": "The app changes language straight away."
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "Success! You can now use passcode to unlock CredIssuer app.",
@@ -494,14 +500,19 @@
   },
   "AboutInji": {
     "aboutInji": "About CredIssuer Wallet",
-    "header": "About CredIssuer Wallet",
+    "header": "About",
     "appID": "App ID",
-    "aboutDetails": "CredIssuer Wallet is a mobile app that can be used by anyone to store certificates issued by CredIssuer.",
+    "aboutDetails": "Keep your digital IDs, licences and certificates on your phone, and share only what each verifier needs.",
     "forMoreDetails": "For more details",
     "clickHere": "Click here",
     "version": "Version",
     "poweredBy": "A OORU Product",
-    "copyright": "© 2022 OORU. All rights reserved."
+    "copyright": "© 2022 OORU. All rights reserved.",
+    "appName": "CredIssuer Wallet",
+    "versionLine": "Version {{version}}",
+    "copy": "Copy",
+    "copied": "Copied",
+    "footer": "A product of Ooru Digital"
   },
   "IssuersScreen": {
     "selectCard": "Select Card",
@@ -544,8 +555,10 @@
         "message": "We are unable to precess your request at the moment."
       },
       "biometricsCancelled": {
-        "title": "Do you want to cancel download?",
-        "message": "Biometric confirmation is required to continue downloading the card."
+        "title": "Stop adding this card?",
+        "message": "Your fingerprint is needed to finish. If you stop now, nothing is saved; you can scan the code again later.",
+        "retry": "Try the fingerprint again",
+        "stop": "Stop"
       },
       "generic": {
         "title": "Something went wrong!",
@@ -574,14 +587,28 @@
       },
       "replaceCredential": {
         "title": "Replace card",
-        "description": "Select the card or cards you want to replace with the one you just downloaded.",
-        "confirm": "Replace selected"
+        "description": "Choose the {{card}} cards the new one should replace. They’ll be removed from this phone.",
+        "confirm": "Replace {{count}} card",
+        "confirm_plural": "Replace {{count}} cards",
+        "selected": "{{count}} card selected",
+        "selected_plural": "{{count}} cards selected",
+        "selectAll": "Select all",
+        "clear": "Clear"
       },
       "credentialAlreadyExists": {
-        "title": "Card already exists",
-        "message": "You already have a card of this type in your wallet. Would you like to replace an existing card or add the new card as another card?"
+        "title": "You already have this card",
+        "message": "The new {{card}} can replace the one you have, or sit next to it as a second card."
       }
-    }
+    },
+    "downloadingPill": "Downloading",
+    "addingCard": "Adding your {{card}}",
+    "addingYourCard": "Adding your card",
+    "issuerSending": "{{issuer}} is sending your card. This usually takes a few seconds; keep the app open.",
+    "issuerTrusted": "Issuer trusted",
+    "couldNotAddCard": "Couldn’t add your card",
+    "backToWallet": "Back to wallet",
+    "thisCard": "this card",
+    "validUntil": "Valid until {{date}}"
   },
   "HelpScreen": {
     "header": "Help",
@@ -817,12 +844,6 @@
     "skip": "Skip",
     "next": "Next"
   },
-  "ReceivedVcsTab": {
-    "receivedCards": "Received Cards",
-    "header": "Received Cards",
-    "noReceivedVcsTitle": "No card available yet",
-    "noReceivedVcsText": "Tap on Request below to receive card"
-  },
   "VcVerificationBanner": {
     "inProgress": "We are validating your card, this may take sometime. Once verified, you’ll be able to activate your card.",
     "success": "{{vcDetails}} is verified successfully and now available for activation.",
@@ -861,13 +882,18 @@
     "settings": "Settings"
   },
   "PasscodeScreen": {
-    "header": "Set Passcode",
+    "header": "Set passcode",
     "enterNewPassword": "Enter a new passcode",
     "reEnterPassword": "Re-enter the new passcode",
     "enterAlternateNewPassword": "Your passcode is your key to access the app securely. Choose a 6-digit passcode which is unique and memorable, ensuring the safety of your data and privacy within the app.",
     "reEnterAlternatePassword": "Confirm your passcode by entering it again. Once confirmed, your passcode will be securely set for accessing the app.",
     "confirmPasscode": "Confirm passcode",
-    "enterPasscode": "Enter your passcode"
+    "enterPasscode": "Enter your passcode",
+    "chooseTitle": "Choose a 6-digit passcode",
+    "chooseHint": "You’ll use it to open the wallet and to approve sharing.",
+    "confirmTitle": "Enter it once more",
+    "confirmHint": "Just to make sure it’s the one you meant.",
+    "confirmMismatch": "The passcodes don’t match. Try again."
   },
   "QrLogin": {
     "title": "QR Login",
@@ -895,21 +921,6 @@
     "required": "It is necessary",
     "errors": {
       "invalidQR": "QR code is invalid. Please try again!"
-    }
-  },
-  "ReceiveVcScreen": {
-    "header": "Card details",
-    "save": "Save card",
-    "verifyAndSave": "Verify and save",
-    "reject": "Reject",
-    "discard": "Discard",
-    "goToReceivedVCTab": "View Received card",
-    "saving": "Card is being saved",
-    "errors": {
-      "savingFailed": {
-        "title": "Failed to save the card!",
-        "message": "Due to technical error, we were unable to save the card. Please request the sender to transfer again."
-      }
     }
   },
   "Permissions": {
@@ -1034,15 +1045,12 @@
       "backToWallet": "Back to Wallet",
       "viewHistory": "View Sharing History"
     },
-    "scanVerifierTitle": "Scan Verifier",
+    "scanVerifierTitle": "Scan verifier",
     "close": "Close",
     "flashOn": "Turn on flashlight",
     "flashOff": "Turn off flashlight",
     "pointCameraTitle": "Point your camera at the verifier's QR code",
     "pointCameraSubtitle": "You'll see who is asking and choose what to share before anything is sent.",
-    "fromPhotos": "From Photos",
-    "showMyQr": "Show My QR",
-    "comingSoon": "Coming soon",
     "cameraOffTitle": "Camera access is off",
     "cameraOffSubtitle": "Allow camera access in Settings to scan the verifier's QR code.",
     "openSettings": "Open Settings",
@@ -1239,15 +1247,24 @@
     },
     "postFaceCapture": {
       "captureSuccessMessage": "Face Verification is successful! Credential sharing is initiated.",
-      "captureFailureTitle": "Face verification failed!",
-      "captureFailureMessage": "Please ensure that your face is clearly visible and try taking selfie again."
+      "captureFailureTitle": "We couldn’t match your face",
+      "captureFailureMessage": "Nothing was shared. For the next try:",
+      "retakeSelfie": "Take the selfie again",
+      "cancelSharing": "Cancel sharing",
+      "faceTipLight": "Face the light, not a window behind you",
+      "faceTipGlasses": "Take off glasses and hats",
+      "faceTipFrame": "Keep your whole face in the frame"
     },
     "rational": {
       "title": "Turn on your location",
       "message": "This app needs your location to search for nearby systems to receive your data.",
       "accept": "OK",
       "cancel": "Cancel"
-    }
+    },
+    "notVerifierCodeTitle": "This isn’t a verifier’s code",
+    "notVerifierCodeMessage": "The wallet reads QR codes from verifiers asking for your details. Ask the verifier to show theirs again, then point the camera at it.",
+    "scanAgain": "Scan again",
+    "backToWallet": "Back to wallet"
   },
   "SelectVcOverlay": {
     "header": "Share Card",
@@ -1499,12 +1516,17 @@
       "title": "Setup incomplete",
       "message": "Please finish the initial setup to proceed."
     },
-    "ignore": "Ignore"
+    "ignore": "Ignore",
+    "appName": "CredIssuer Wallet",
+    "locked": "Your cards are locked.",
+    "unlock": "Unlock",
+    "usePasscode": "Use passcode instead"
   },
   "SetupLanguage": {
-    "header": "Choose Language",
-    "description": "Select your preferred language",
-    "save": "Save Preference"
+    "header": "Choose your language",
+    "description": "You can change it any time in Settings.",
+    "save": "Save Preference",
+    "continue": "Continue"
   },
   "SetupKey": {
     "header": "Key Management",
@@ -1541,8 +1563,9 @@
       "title": "Unlock App",
       "description": "Please use fingerprint to unlock the app"
     },
-    "replaceExisting": "Replace existing",
-    "keepBoth": "Add as new"
+    "replaceExisting": "Replace the existing card",
+    "keepBoth": "Keep both",
+    "notNow": "Not now"
   },
   "copilot": {
     "scanToShareTitle": "Scan to Share",
@@ -1577,10 +1600,10 @@
     "continue": "Continue"
   },
   "cancelDownloadModal": {
-    "heading": "Do you want to cancel downloading?",
-    "subHeading": "Once cancelled, your card will not be downloaded and you need to reinitiate the download.",
-    "cancel": "No, I’ll wait",
-    "confirm": "Yes, Cancel"
+    "heading": "Stop adding this card?",
+    "subHeading": "If you stop now, the card isn’t downloaded. You can scan the issuer’s code again later.",
+    "cancel": "Keep going",
+    "confirm": "Stop"
   },
   "transactionCodeScreen": {
     "description": "We’ve sent the transaction code to your registered email Id",
@@ -1588,7 +1611,12 @@
     "verify": "Verify",
     "emptyCodeError": "Code cannot be empty",
     "invalidCharacters": "Only letters and numbers are allowed",
-    "TransactionCode": "Transasction Code"
+    "TransactionCode": "Transasction Code",
+    "pageTitle": "Add new card",
+    "title": "Enter the code from the issuer",
+    "continue": "Continue",
+    "show": "Show",
+    "hide": "Hide"
   },
   "trustScreen": {
     "Description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",

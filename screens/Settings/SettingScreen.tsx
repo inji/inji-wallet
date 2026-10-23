@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Platform, Pressable, ScrollView, StyleSheet, View} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {MessageOverlay} from '../../components/MessageOverlay';
@@ -9,9 +9,7 @@ import {LanguageSelector} from '../../components/LanguageSelector';
 import {CREDENTIAL_REGISTRY_EDIT} from 'react-native-dotenv';
 import {AboutInji} from './AboutInji';
 import {EditableListItem} from '../../components/EditableListItem';
-import {RequestRouteProps, RootRouteProps} from '../../routes';
-import {ReceivedCardsModal} from './ReceivedCardsModal';
-import {useReceivedVcsTab} from '../Home/ReceivedVcsTabController';
+import {RootRouteProps} from '../../routes';
 import testIDProps from '../../shared/commonUtil';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {Theme} from '../../components/ui/styleUtils';
@@ -39,14 +37,10 @@ const SHOW_APPEARANCE = false;
 /** Help and Privacy show placeholder text until their real content exists. */
 const SHOW_HELP_AND_PRIVACY = false;
 
-export const SettingScreen: React.FC<
-  SettingProps & RootRouteProps & RequestRouteProps
-> = props => {
+export const SettingScreen: React.FC<SettingProps & RootRouteProps> = props => {
   const {t, i18n} = useTranslation('SettingScreen');
-  const receivedT = useTranslation('ReceivedVcsTab').t;
   const aboutT = useTranslation('AboutInji').t;
   const controller = useSettingsScreen(props);
-  const receivedCards = useReceivedVcsTab();
   const navigation = useNavigation<NavigationProp<Record<string, undefined>>>();
   const {c} = useRevampTheme();
   const insets = useSafeAreaInsets();
@@ -170,22 +164,6 @@ export const SettingScreen: React.FC<
                 navigation.navigate(BOTTOM_TAB_ROUTES.history as never)
               }
             />
-            {Platform.OS !== 'ios' && (
-              <SettingsRow
-                testID="receiveCardPressableArea"
-                icon={settingsIcons.receive}
-                label={t('receiveCard')}
-                onPress={controller.RECEIVE_CARD}
-              />
-            )}
-            {Platform.OS !== 'ios' && (
-              <SettingsRow
-                testID="receivedCardsPressableArea"
-                icon={settingsIcons.received}
-                label={receivedT('receivedCards')}
-                onPress={receivedCards.TOGGLE_RECEIVED_CARDS}
-              />
-            )}
             {SHOW_CONNECTED_VERIFIERS && (
               <SettingsRow
                 testID="connectedVerifiers"
@@ -334,11 +312,6 @@ export const SettingScreen: React.FC<
         title={t('privacyPolicy')}
         body={t('privacyPolicyBody')}
         onDismiss={() => setPage(null)}
-      />
-      <ReceivedCardsModal
-        isVisible={receivedCards.isVisible}
-        controller={receivedCards}
-        onDismiss={receivedCards.TOGGLE_RECEIVED_CARDS}
       />
     </React.Fragment>
   );

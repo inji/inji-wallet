@@ -434,6 +434,7 @@ export const WalletHome: React.FC<{
             testID="removeVcWarningOverlay"
             service={target.service as never}
             vcMetadata={targetEntry.vcMetadata}
+            card={target.data}
           />
           <HistoryTab
             service={target.service}

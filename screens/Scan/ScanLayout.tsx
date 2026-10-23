@@ -5,12 +5,12 @@ import {SendVcScreen} from './SendVcScreen';
 import {useScanLayout} from './ScanLayoutController';
 import {ScanScreen} from './ScanScreen';
 import {SCAN_ROUTES} from '../../routes/routesConstants';
-import {SharingStatusModal} from './SharingStatusModal';
+import {AlertSheet} from '../../components/revamp/Page';
+import {AlertCircleIcon} from '../../components/revamp/Icons';
 import {Theme} from '../../components/ui/styleUtils';
 import {Icon} from 'react-native-elements';
 import {Loader} from '../../components/ui/Loader';
 import {VerifyIdentityOverlay} from '../VerifyIdentityOverlay';
-import {SvgImage} from '../../components/ui/svg';
 import {View, I18nManager} from 'react-native';
 import {Text} from './../../components/ui';
 import {BannerStatusType} from '../../components/BannerNotification';
@@ -210,16 +210,24 @@ export const ScanLayout: React.FC = () => {
       />
 
       {controller.errorStatusOverlay && (
-        <SharingStatusModal
+        <AlertSheet
+          testID="walletSideSharingErrorModal"
           isVisible={controller.errorStatusOverlay !== null}
-          testId={'walletSideSharingErrorModal'}
-          image={SvgImage.ErrorLogo()}
+          tone="fail"
+          icon={colour => <AlertCircleIcon color={colour} />}
           title={controller.errorStatusOverlay.title}
           message={controller.errorStatusOverlay.message}
-          gradientButtonTitle={t('status.bleError.retry')}
-          clearButtonTitle={t('status.bleError.home')}
-          onGradientButton={controller.onRetry}
-          onClearButton={controller.GOTO_HOME}
+          primary={{
+            testID: 'retry',
+            title: t('status.bleError.retry'),
+            onPress: controller.onRetry,
+          }}
+          secondary={{
+            testID: 'home',
+            title: t('backToWallet'),
+            onPress: controller.GOTO_HOME,
+          }}
+          onRequestClose={controller.GOTO_HOME}
         />
       )}
     </React.Fragment>

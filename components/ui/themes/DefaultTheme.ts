@@ -534,15 +534,6 @@ export const DefaultTheme = {
       height: 36,
       borderRadius: 10,
     },
-    receiveCardsContainer: {
-      height: Dimensions.get('window').height * 0.14,
-      width: Dimensions.get('window').width * 0.47,
-      alignItems: 'center',
-      borderBottomRightRadius: 0,
-      padding: 15,
-      marginVertical: 18,
-      elevation: 1,
-    },
     pinIcon: {
       height: 39,
       width: 39,

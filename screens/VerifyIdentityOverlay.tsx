@@ -5,8 +5,12 @@ import {Theme} from '../components/ui/styleUtils';
 import {VerifiableCredential} from '../machines/VerifiableCredential/VCMetaMachine/vc';
 import {Modal} from '../components/ui/Modal';
 import {useTranslation} from 'react-i18next';
-import {ErrorView} from '../components/ui/Error';
-import {SvgImage} from '../components/ui/svg';
+import {AlertSheet, ChoiceList} from '../components/revamp/Page';
+import {WarningIcon} from '../components/revamp/Icons';
+import {ScaledText} from '../components/revamp/ScaledText';
+import {fonts} from '../components/revamp/tokens';
+import {useRevampTheme} from '../components/revamp/useRevampTheme';
+import {StyleSheet, View} from 'react-native';
 
 export const VerifyIdentityOverlay: React.FC<
   VerifyIdentityOverlayProps
@@ -53,24 +57,27 @@ export const VerifyIdentityOverlay: React.FC<
         </Column>
       </Modal>
 
-      <ErrorView
-        isModal
-        alignActionsOnEnd
-        showClose={false}
+      <AlertSheet
+        testID="shareWithSelfieError"
         isVisible={props.isInvalidIdentity}
+        tone="warn"
+        icon={colour => <WarningIcon color={colour} />}
         title={t('ScanScreen:postFaceCapture.captureFailureTitle')}
         message={t('ScanScreen:postFaceCapture.captureFailureMessage')}
-        image={SvgImage.PermissionDenied()}
-        primaryButtonTestID={'retry'}
-        primaryButtonText={t('ScanScreen:status.retry')}
-        primaryButtonEvent={props.onRetryVerification}
-        textButtonTestID={'home'}
-        textButtonText={t('ScanScreen:status.accepted.home')}
-        textButtonEvent={props.onNavigateHome}
-        customImageStyles={{paddingBottom: 0, marginBottom: -6}}
-        customStyles={{marginTop: '20%'}}
-        testID={'shareWithSelfieError'}
-      />
+        primary={{
+          testID: 'retry',
+          title: t('ScanScreen:postFaceCapture.retakeSelfie'),
+          onPress: props.onRetryVerification,
+        }}
+        secondary={{
+          testID: 'home',
+          title: t('ScanScreen:postFaceCapture.cancelSharing'),
+          onPress: props.onNavigateHome,
+        }}
+        dismissOnBackdropPress={false}
+        onRequestClose={props.onNavigateHome}>
+        <FaceTips />
+      </AlertSheet>
     </>
   );
 };
@@ -87,3 +94,33 @@ export interface VerifyIdentityOverlayProps {
   onRetryVerification: () => void;
   isLivenessEnabled: boolean;
 }
+
+const FaceTips: React.FC = () => {
+  const {t} = useTranslation('ScanScreen');
+  const {c} = useRevampTheme();
+  const tips = ['faceTipLight', 'faceTipGlasses', 'faceTipFrame'];
+  return (
+    <ChoiceList>
+      {tips.map(tip => (
+        <View key={tip} style={tipStyles.row}>
+          <View style={[tipStyles.dot, {backgroundColor: c.azureInk}]} />
+          <ScaledText style={[tipStyles.text, {color: c.ink}]}>
+            {t(`postFaceCapture.${tip}`)}
+          </ScaledText>
+        </View>
+      ))}
+    </ChoiceList>
+  );
+};
+
+const tipStyles = StyleSheet.create({
+  row: {
+    minHeight: 46,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  dot: {width: 6, height: 6, borderRadius: 3},
+  text: {flex: 1, fontFamily: fonts.regular, fontSize: 14, lineHeight: 19},
+});

@@ -14,12 +14,6 @@ export const SCAN_ROUTES = {
   SendVPScreen: 'SendVPScreen' as keyof ScanStackParamList,
 };
 
-export const REQUEST_ROUTES = {
-  Request: 'Request' as keyof RequestStackParamList,
-  RequestScreen: 'RequestScreen' as keyof RequestStackParamList,
-  ReceiveVcScreen: 'ReceiveVcScreen' as keyof RequestStackParamList,
-};
-
 export const AUTH_ROUTES = {
   AuthView: 'AuthView' as keyof AuthStackParamList,
 };
@@ -28,12 +22,6 @@ export type ScanStackParamList = {
   ScanScreen: undefined;
   SendVcScreen: undefined;
   SendVPScreen: undefined;
-};
-
-export type RequestStackParamList = {
-  Request: undefined;
-  RequestScreen: undefined;
-  ReceiveVcScreen: undefined;
 };
 
 export type AuthStackParamList = {

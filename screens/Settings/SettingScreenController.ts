@@ -27,10 +27,10 @@ import {
 } from '../../machines/biometrics';
 import {GlobalContext} from '../../shared/GlobalContext';
 import {useTranslation} from 'react-i18next';
-import {RequestRouteProps, RootRouteProps} from '../../routes';
-import {BOTTOM_TAB_ROUTES, REQUEST_ROUTES} from '../../routes/routesConstants';
+import {RootRouteProps} from '../../routes';
+import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
 
-export function useSettingsScreen(props: RootRouteProps & RequestRouteProps) {
+export function useSettingsScreen(props: RootRouteProps) {
   const {appService} = useContext(GlobalContext);
   const authService = appService?.children?.get('auth') || {};
   const settingsService = appService?.children?.get('settings') || {};
@@ -149,11 +149,6 @@ export function useSettingsScreen(props: RootRouteProps & RequestRouteProps) {
           credentialRegistryResponse,
         ),
       ),
-
-    RECEIVE_CARD: () => {
-      props.navigation.navigate(REQUEST_ROUTES.Request);
-      setIsVisible(false);
-    },
 
     CHANGE_UNLOCK_METHOD: (val: boolean) => {
       authService.send(AuthEvents.CHANGE_METHOD(true));

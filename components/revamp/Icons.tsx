@@ -268,3 +268,113 @@ export const ScanIcon: React.FC<IconProps> = ({
     <Path d="M13 13h3.5v3.5" />
   </Svg>
 );
+
+export const GlobeIcon: React.FC<IconProps> = ({
+  color,
+  size = 22,
+  strokeWidth = 1.5,
+}) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Circle cx={12} cy={12} r={9} />
+    <Path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+  </Svg>
+);
+
+export const LockIcon: React.FC<IconProps> = ({
+  color,
+  size = 22,
+  strokeWidth = 1.5,
+}) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Rect x={4} y={11} width={16} height={10} rx={2} />
+    <Path d="M8 11V7a4 4 0 0 1 8 0v4" />
+  </Svg>
+);
+
+export const BiometricsIcon: React.FC<IconProps> = ({
+  color,
+  size = 22,
+  strokeWidth = 1.5,
+}) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" />
+    <Path d="M9 9h.01M15 9h.01M9 15c1.5 1.3 4.5 1.3 6 0" />
+  </Svg>
+);
+
+export const KeypadIcon: React.FC<IconProps> = ({
+  color,
+  size = 22,
+  strokeWidth = 1.5,
+}) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Rect x={3} y={5} width={18} height={14} rx={2} />
+    <Path d="M7 12h.01M11 12h.01M15 12h.01" />
+  </Svg>
+);
+
+export const WarningIcon: React.FC<IconProps> = ({
+  color,
+  size = 24,
+  strokeWidth = 1.6,
+}) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" />
+  </Svg>
+);
+
+export const AlertCircleIcon: React.FC<IconProps> = ({
+  color,
+  size = 24,
+  strokeWidth = 1.6,
+}) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Circle cx={12} cy={12} r={9} />
+    <Path d="M12 8v4M12 16h.01" />
+  </Svg>
+);
+
+export const ShieldXIcon: React.FC<IconProps> = ({
+  color,
+  size = 24,
+  strokeWidth = 1.5,
+}) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    <Path d="m15 9-6 6M9 9l6 6" />
+  </Svg>
+);
+
+export const CheckIcon: React.FC<IconProps> = ({
+  color,
+  size = 20,
+  strokeWidth = 2,
+}) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Path d="m5 12 5 5 9-10" />
+  </Svg>
+);
+
+export const CopyIcon: React.FC<IconProps> = ({
+  color,
+  size = 18,
+  strokeWidth = 1.6,
+}) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Rect x={9} y={9} width={12} height={12} rx={2} />
+    <Path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
+  </Svg>
+);
+
+export const QrUnknownIcon: React.FC<IconProps> = ({
+  color,
+  size = 24,
+  strokeWidth = 1.6,
+}) => (
+  <Svg {...base(size, color, strokeWidth)}>
+    <Rect x={3} y={3} width={7} height={7} rx={1} />
+    <Rect x={14} y={3} width={7} height={7} rx={1} />
+    <Rect x={3} y={14} width={7} height={7} rx={1} />
+    <Path d="m15 15 5 5M20 15l-5 5" />
+  </Svg>
+);

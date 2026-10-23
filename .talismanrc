@@ -26,9 +26,9 @@ fileignoreconfig:
   - filename: screens/Home/MyVcs/GetIdInputModal.tsx
     checksum: 5c736ed79a372d0ffa7c02eb33d0dc06edbbb08d120978ff287f5f06cd6c7746
   - filename: screens/AuthScreen.tsx
-    checksum: 4a096c467bb9b3fa476c220993ef0a58d72a758c40cf741dc2e4ec4db0c692e8
+    checksum: 5110aaf198f39a321c0a4d28ab48a4c79e48d9e4f381511e6f676e4cacc739d5
   - filename: screens/BiometricScreen.tsx
-    checksum: 7a730731aaa7540eec9d05d73de277a665dc06425666280842e0f9ba6e5b8514
+    checksum: b0a8a2f5fe825d9da56cedee8f905d5f955ab39dc320892253473bf83e7759f3
   - filename: screens/AuthScreenController.ts
     checksum: 18af825821bc95e1056050623b804a5a8e7435b9e3383916a5d63024eeba9553
   - filename: screens/BiometricScreenController.ts
@@ -38,7 +38,7 @@ fileignoreconfig:
   - filename: screens/Home/MyVcs/IdInputModal.tsx
     checksum: 6f21b2caf20ee1821b69e178a69e755e0b1094275e4a9f9cb4ae5ab515ce5d23
   - filename: screens/WelcomeScreenController.ts
-    checksum: 71917c8c543a4a5b7ab61df259b785d233a80718123b0c8edf6ec81e1b3a81e0
+    checksum: 1b02218a8b010a6f7310517165185071b83908e44d412659babd014ab37c5193
   - filename: shared/telemetry/TelemetryUtils.js
     checksum: ffe9aac2dcc590b98b0d588885c088eff189504ade653a77f74b67312bfd27ad
   - filename: shared/fileStorage.ts
@@ -62,9 +62,9 @@ fileignoreconfig:
   - filename: machines/bleShare/scan/scanMachine.ts
     checksum: 5f4a183db610fe0ffe36e3e1129d67221535335e4a866341a5b8759228ddee15
   - filename: screens/PasscodeScreen.tsx
-    checksum: 5d3003027b245234f8c00bfc98836f1fb90a5d9525ffacf61c53f3d50954aa6a
+    checksum: 11c38ff526212c746390efa9bc17d9434bae42820c2e2e5a859b011a3345742d
   - filename: screens/PasscodeScreen.tsx
-    checksum: 3330b9db9cfce407782e82b4fe3c0b60a9ecb0f9327af2b69971e254f9e52921
+    checksum: 11c38ff526212c746390efa9bc17d9434bae42820c2e2e5a859b011a3345742d
   - filename: screens/Home/MyVcs/OtpVerificationModal.tsx
     checksum: a99fe136d9d1348c541d413324d266e179ecad6a1fe6b6bd1e0b2856a5a6d6b5
   - filename: screens/QrLogin/QrConsent.tsx
@@ -140,23 +140,23 @@ fileignoreconfig:
   - filename: components/BackupAndRestoreAllScreenBanner.tsx
     checksum: 2c98e7e83959c9dac4dd12da32f81483c3d334bd05e279637cf465475fbf54b8
   - filename: locales/en.json
-    checksum: e78b997a5bb5a8c028a23baccf1419eded10a019c12b714470c0fae784fbfcb3
+    checksum: 58b9d2e9ec752c693f57c3ccb4276027166c659feb2d512f8a2eb6074a01f0a4
   - filename: locales/hin.json
-    checksum: a087de0436a98f2be6c4318574515ec8bdfaf9459200b90071a2b50d226dc165
+    checksum: 6d07c6172b26360648123b7273fa1b4e59a7d4da02734942cacffce517738cd0
   - filename: locales/kan.json
-    checksum: aabe9b94c030b163c21731e335e2cc04f0a98e05d6a2dd25f870c4bbcb88d1b1
+    checksum: cae6b7c459eb7a40b1a0d51bbe1ef1282b6b764e5d0edfd2f1b3bf9a8888339c
   - filename: locales/ara.json
-    checksum: 70b2ec0a9183e3f10c73aca4d4a061f4f04d6695c6441962ef910754aebba13d
+    checksum: 95737220c032361c12495ed1a6931b32dca7f9c6b82de1343027fe19a5018abd
   - filename: locales/tam.json
-    checksum: d487b7ee3afd72c17b6a750b5b2e56c8fb5590584ae553132d13760b1dcb3648
+    checksum: 4f94fce35165003a35f43f8edc382fd31fb2f488257b9d74f383d290f65c8d8b
   - filename: locales/spa.json
     checksum: a03c5fa839d761f7bf5bbf0ea9bbd48da57116430a99e1d22f0e7184435d468c
   - filename: locales/fil.json
-    checksum: 583d188a57e4c9693a1fed9181b9722e2ef33fdc8e978757fac26ddf1fdd9d8e
+    checksum: ec53371fa6c50931d3ce1a4ede4322c28ef75a40878b6db9e86ca3764c3f5b76
   - filename: screens/Home/MyVcs/GetIdInputModal.tsx
     checksum: 067664e19817d3aba98b0cfa68ef57a04958a982ee23b96b612e4bf466a73890
   - filename: screens/PasscodeScreen.tsx
-    checksum: 9af4308001e7e260ffffd26955ca49df3b388e34686509371e23dd837b11d030
+    checksum: 11c38ff526212c746390efa9bc17d9434bae42820c2e2e5a859b011a3345742d
   - filename: screens/Home/MyVcs/IdInputModal.tsx
     checksum: b735aedc84164d03c199fe89ccbf9df58f8997bfb4f60e7058a22bfe952fda3e
   - filename: .github/workflows/ui-automation.yml
@@ -475,7 +475,7 @@ fileignoreconfig:
   - filename: screens/AppLayout.tsx
     checksum: 76d6651dbde74dd425c9482ae8d5dd0e2fc5ab6f7fd77f87d527c48bc17cabcd
   - filename: screens/AppLock.tsx
-    checksum: 3790d13c83143144cc0f5722e40d406d4387cb2c4681821d2f8c7c3ac31b6c46
+    checksum: 37a9b39502f13c8ebe142caa324ce1633922fcffaa7b14c6fe9cf55a176ce7ee
   - filename: screens/Settings/autoLock.test.ts
     checksum: f95ca299f705fbfad765205a9fe42f09358a730da38fb59debb98e2e62a14c58
   - filename: machines/store.biometricCancel.test.ts
@@ -512,5 +512,17 @@ fileignoreconfig:
     checksum: 5ffddb63f338014f73608b99b8ca699451dc63f4ff254aff157c768e6b30237b
   - filename: screens/Issuers/IssuersScreen.test.tsx
     checksum: d4d2fec82ec432b8bfd2aca794471a3d7eecb80490f3985228065004980ca18d
+  - filename: components/revamp/Icons.tsx
+    checksum: 90f54ef95c4e61561264dcc8a03c88a154c8a5ad46e4fc9a49dfef2611ef0a89
+  - filename: screens/Home/MyVcs/HistoryTab.tsx
+    checksum: 8c5be6a98ea21ff1b10fa60ff4c913d5ad8038a14dd5d0145f49efd7175a9f21
+  - filename: components/revamp/Page.tsx
+    checksum: 3fab616950dcb2d46fa2c33565421a938b0519b7dcb88ec7af1dc9084b052e01
+  - filename: screens/Issuers/TransactionCodeScreen.tsx
+    checksum: a1b1fee446e712ae4ef73c3696000066958a4a3ac9903a80fddd2a675a55a828
+  - filename: screens/VerifyIdentityOverlay.tsx
+    checksum: 7b849aba8798be144ae86529c2ef068b728397a69a9f32c884e0365a24f6a036
+  - filename: screens/Issuers/ReplaceCredentialSelectionScreen.tsx
+    checksum: e37f6104a0c352489553f847dcb11877d580138de73f5c0286558ddcc6d22c57
     version: "1.0"
 

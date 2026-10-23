@@ -13,7 +13,6 @@ import PinICon from '../../assets/Pin_Icon.svg';
 import LockIcon from '../../assets/Lock_Icon1.svg';
 import DigitalIdentity from '../../assets/Digital_Identity_Icon1.svg';
 import ReceiveCard from '../../assets/Receive_Card.svg';
-import ReceivedCards from '../../assets/Received_Cards.svg';
 import ProgressIcon from '../../assets/Progress_Icon1.svg';
 import testIDProps from '../../shared/commonUtil';
 import Logo from '../../assets/Inji_Logo.svg';
@@ -371,16 +370,6 @@ export class SvgImage {
   static ReceiveCard() {
     return (
       <ReceiveCard
-        color1={Theme.Colors.linearGradientStart}
-        color2={Theme.Colors.linearGradientEnd}
-        stroke={Theme.Colors.IconBg}
-      />
-    );
-  }
-
-  static ReceivedCards() {
-    return (
-      <ReceivedCards
         color1={Theme.Colors.linearGradientStart}
         color2={Theme.Colors.linearGradientEnd}
         stroke={Theme.Colors.IconBg}

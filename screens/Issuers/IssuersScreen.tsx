@@ -3,11 +3,10 @@ import {useTranslation} from 'react-i18next';
 import {useFocusEffect} from '@react-navigation/native';
 import {Header} from '../../components/ui/Header';
 import {Theme} from '../../components/ui/styleUtils';
-import {Button, Row} from '../../components/ui';
+import {Button} from '../../components/ui';
 import {RootRouteProps} from '../../routes';
 import {HomeRouteProps} from '../../routes/routeTypes';
 import {useIssuerScreenController} from './IssuerScreenController';
-import {Loader} from '../../components/ui/Loader';
 import {isTranslationKeyFound} from '../../shared/commonUtil';
 import {ErrorMessage} from '../../shared/openId4VCI/Utils';
 import {
@@ -17,14 +16,16 @@ import {
   sendStartEvent,
 } from '../../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
-import {MessageOverlay} from '../../components/MessageOverlay';
-import {SvgImage} from '../../components/ui/svg';
 import {CredentialTypeSelectionScreen} from './CredentialTypeSelectionScreen';
 import {ReplaceCredentialSelectionScreen} from './ReplaceCredentialSelectionScreen';
 import {AUTH_ROUTES} from '../../routes/routesConstants';
 import {TransactionCodeModal} from './TransactionCodeScreen';
 import {ScanToAddScreen} from '../../components/addCredential/ScanToAddScreen';
 import {TrustIssuerSheet} from '../../components/addCredential/TrustIssuerSheet';
+import {DownloadingCard} from '../../components/addCredential/DownloadingCard';
+import {DownloadFailed} from '../../components/addCredential/DownloadFailed';
+import {AlertSheet} from '../../components/revamp/Page';
+import {WarningIcon} from '../../components/revamp/Icons';
 import {SendVPScreen} from '../Scan/SendVPScreen';
 
 import {AuthorizationType} from '../../shared/constants';
@@ -33,7 +34,6 @@ import {
   ProcessingModal,
   ProgressIndicator,
 } from '../../components/ui/processingScreen/ProcessingModal';
-import {ErrorView} from '../../components/ui/Error';
 
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
@@ -148,35 +148,12 @@ export const IssuersScreen: React.FC<
     }
   }, [controller.isAuthEndpointToOpen]);
 
-  const isGenericError = () => {
-    return controller.errorMessageType === ErrorMessage.GENERIC;
-  };
-
-  function isBackendError(): boolean {
-    return (
-      controller.errorMessageType === ErrorMessage.TECHNICAL_DIFFICULTIES ||
-      controller.errorMessageType ===
-        ErrorMessage.CREDENTIAL_TYPE_DOWNLOAD_FAILURE ||
-      controller.errorMessageType ===
-        ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED ||
-      controller.errorMessageType === ErrorMessage.NETWORK_REQUEST_FAILED
-    );
-  }
-
   // Used to conditionally skip back with navigation.goBack() when the error happened during the
   // old issuers-list fetch (nothing useful to reset back to, since that fetch is what populated
   // this screen in the first place). That fetch is gone — the machine starts straight in
   // selectingIssuer now — so any error here always has selectingIssuer to reset back to.
   const goBack = () => {
     controller.RESET_ERROR();
-  };
-
-  const getImage = () => {
-    if (isGenericError()) {
-      return SvgImage.SomethingWentWrong();
-    }
-    if (isBackendError()) return SvgImage.ErrorOccurred();
-    return SvgImage.NoInternetConnection();
   };
 
   if (
@@ -258,44 +235,46 @@ export const IssuersScreen: React.FC<
 
   if (isVerificationFailed) {
     return (
-      <ErrorView
+      <DownloadFailed
         testID="verificationError"
-        isVisible={isVerificationFailed}
-        isModal={true}
-        alignActionsOnEnd
-        title={t('MyVcsTab:errors.verificationFailed.title')}
+        kind="verification"
+        title={t('couldNotAddCard')}
         message={verificationErrorMessage}
-        image={SvgImage.PermissionDenied()}
-        showClose={false}
-        primaryButtonText="goBack"
-        primaryButtonEvent={controller.RESET_VERIFY_ERROR}
-        primaryButtonTestID="goBack"
-        customStyles={{marginTop: '30%'}}
+        primary={{
+          testID: 'goBack',
+          title: t('backToWallet'),
+          onPress: controller.RESET_VERIFY_ERROR,
+        }}
       />
     );
   }
   if (controller.isCredentialAlreadyExists) {
     return (
-      <ErrorView
-        testID="credentialAlreadyExists"
-        isVisible={controller.isCredentialAlreadyExists}
-        isModal={true}
-        alignActionsOnEnd
-        title={t('errors.credentialAlreadyExists.title')}
-        message={t('errors.credentialAlreadyExists.message')}
-        // A choice, not a failure — the red error shield overstates it.
-        image={SvgImage.WarningLogo()}
-        showClose={false}
-        // Button labels are resolved by ErrorView against the `common` namespace, so these are
-        // keys in `common` — not `IssuersScreen` like the title and message above.
-        primaryButtonText="replaceExisting"
-        primaryButtonEvent={controller.REPLACE_EXISTING}
-        primaryButtonTestID="replaceExistingCredential"
-        textButtonText="keepBoth"
-        textButtonEvent={controller.KEEP_BOTH}
-        textButtonTestID="keepBothCredentials"
-        customStyles={{marginTop: '30%'}}
-      />
+      <Fragment>
+        {scanToAddComponent(true)}
+        <AlertSheet
+          testID="credentialAlreadyExists"
+          isVisible={controller.isCredentialAlreadyExists}
+          tone="warn"
+          icon={colour => <WarningIcon color={colour} />}
+          title={t('errors.credentialAlreadyExists.title')}
+          message={t('errors.credentialAlreadyExists.message', {
+            card: controller.offeredCredentialTypeNames[0] ?? t('thisCard'),
+          })}
+          primary={{
+            testID: 'replaceExistingCredential',
+            title: t('common:replaceExisting'),
+            onPress: controller.REPLACE_EXISTING,
+          }}
+          outline={{
+            testID: 'keepBothCredentials',
+            title: t('common:keepBoth'),
+            onPress: controller.KEEP_BOTH,
+          }}
+          dismissOnBackdropPress={false}
+          onRequestClose={() => undefined}
+        />
+      </Fragment>
     );
   }
   if (controller.isSelectingCredentialsToReplace) {
@@ -316,51 +295,69 @@ export const IssuersScreen: React.FC<
 
   if (controller.isBiometricsCancelled) {
     return (
-      <MessageOverlay
-        isVisible={controller.isBiometricsCancelled}
-        minHeight={'auto'}
-        title={t('errors.biometricsCancelled.title')}
-        message={t('errors.biometricsCancelled.message')}
-        onBackdropPress={controller.RESET_ERROR}>
-        <Row>
-          <Button
-            fill
-            type="clear"
-            title={t('common:cancel')}
-            onPress={controller.RESET_ERROR}
-            margin={[0, 8, 0, 0]}
-          />
-          <Button
-            testID="tryAgain"
-            fill
-            title={t('common:tryAgain')}
-            onPress={controller.TRY_AGAIN}
-          />
-        </Row>
-      </MessageOverlay>
+      <Fragment>
+        {scanToAddComponent(true)}
+        <AlertSheet
+          testID="biometricsCancelled"
+          isVisible={controller.isBiometricsCancelled}
+          tone="warn"
+          icon={colour => <WarningIcon color={colour} />}
+          title={t('errors.biometricsCancelled.title')}
+          message={t('errors.biometricsCancelled.message')}
+          primary={{
+            testID: 'tryAgain',
+            title: t('errors.biometricsCancelled.retry'),
+            onPress: controller.TRY_AGAIN,
+          }}
+          secondary={{
+            testID: 'stopDownload',
+            title: t('errors.biometricsCancelled.stop'),
+            destructive: true,
+            onPress: controller.RESET_ERROR,
+          }}
+          onRequestClose={controller.RESET_ERROR}
+        />
+      </Fragment>
     );
   }
   if (showFullScreenError) {
     return (
-      <ErrorView
+      <DownloadFailed
         testID={`${controller.errorMessageType}Error`}
-        isVisible={controller.errorMessageType !== ''}
+        kind={
+          controller.errorMessageType === ErrorMessage.NO_INTERNET
+            ? 'connection'
+            : 'generic'
+        }
         title={t(`errors.${controller.errorMessageType}.title`)}
         message={t(`errors.${controller.errorMessageType}.message`)}
-        goBack={goBack}
-        tryAgain={controller.TRY_AGAIN}
-        image={getImage()}
-        showClose
-        primaryButtonTestID="tryAgain"
-        primaryButtonText={
+        onClose={goBack}
+        primary={
           controller.errorMessageType != ErrorMessage.TECHNICAL_DIFFICULTIES &&
           controller.errorMessageType !=
             ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED
-            ? 'tryAgain'
+            ? {
+                testID: 'tryAgain',
+                title: t('common:tryAgain'),
+                onPress: controller.TRY_AGAIN,
+              }
+            : {
+                testID: 'backToWallet',
+                title: t('backToWallet'),
+                onPress: props.navigation.goBack,
+              }
+        }
+        secondary={
+          controller.errorMessageType != ErrorMessage.TECHNICAL_DIFFICULTIES &&
+          controller.errorMessageType !=
+            ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED
+            ? {
+                testID: 'backToWallet',
+                title: t('backToWallet'),
+                onPress: props.navigation.goBack,
+              }
             : undefined
         }
-        primaryButtonEvent={controller.TRY_AGAIN}
-        onDismiss={goBack}
       />
     );
   }
@@ -386,13 +383,16 @@ export const IssuersScreen: React.FC<
             }}
           />
         ) : (
-          <Loader
-            title={
-              controller.loadingReason === 'preparingRequest'
-                ? t('loaders.preparingRequest')
-                : t('loaders.loading')
+          <DownloadingCard
+            reason={controller.loadingReason}
+            cardType={controller.offeredCredentialTypeNames[0]}
+            issuerName={controller.issuerName}
+            issuerTrusted
+            onCancel={
+              controller.loadingReason === 'downloadingCredentials'
+                ? controller.CANCEL
+                : undefined
             }
-            subTitle={t(`loaders.subTitle.${controller.loadingReason}`)}
           />
         )}
       </Fragment>

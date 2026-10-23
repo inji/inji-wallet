@@ -177,23 +177,26 @@
     "no": "Hindi"
   },
   "RemoveVcWarningOverlay": {
-    "alert": "Alisin sa Wallet?",
-    "removeWarning": "Aalisin mo ang card sa wallet. Kapag naalis na, hindi na mababawi ang pagkilos na ito.\nGayunpaman, maaari mong i-download muli ang card sa iyong wallet.",
-    "confirm": "Oo, kinukumpirma ko",
-    "cancel": "Kanselahin"
+    "alert": "Alisin ang card na ito?",
+    "removeWarning": "Buburahin ito sa teleponong ito. Maaari mo itong i-download muli mula sa issuer anumang oras.",
+    "confirm": "Alisin ang card",
+    "cancel": "Panatilihin"
   },
   "AuthScreen": {
-    "header": "Gusto mo bang gumamit ng biometrics upang i-unlock ang aplikasyon?",
-    "Description": "Para secure na i-unlock ang app, maaari mong i-set up ang alinman sa biometric authentication, gaya ng fingerprint o facial recognition o mag-opt para sa 6-digit na Passcode para sa mabilis na pag-access.",
+    "header": "Protektahan ang iyong wallet",
+    "Description": "Piliin kung paano mo bubuksan ang CredIssuer Wallet. Mananatiling naka-encrypt ang iyong mga card sa teleponong ito alinman ang piliin mo.",
     "PasswordTypeDescription": "Piliin ang ‘Gumamit ng Biometrics’ para i-enable ang biometric authentication o ‘I’ll Do Later’ para mag-set up ng 6-digit na passcode.",
-    "useBiometrics": "Gamitin ang biometrics",
-    "usePasscode": "Gagawin Ko Mamaya",
+    "useBiometrics": "Fingerprint o mukha",
+    "usePasscode": "6-digit na passcode",
     "errors": {
       "unavailable": "Hindi sinusuportahan ng device ang Biometrics",
       "unenrolled": "Upang magamit ang Biometrics, mangyaring i-enroll ang iyong fingerprint sa mga setting ng iyong device",
       "failed": "Nabigong mag-authenticate gamit ang Biometrics",
       "generic": "May problema sa Biometrics authentication"
-    }
+    },
+    "useBiometricsHint": "Ginagamit ang biometrics na naka-set up na sa teleponong ito. Magtatakda pa rin ng passcode bilang backup.",
+    "usePasscodeHint": "Isang code na ikaw lang ang nakakaalam. Maaari mong i-on ang biometrics mamaya sa Mga Setting.",
+    "continue": "Magpatuloy"
   },
   "BiometricScreen": {
     "unlock": "I-unlock gamit ang biometrics"
@@ -324,12 +327,14 @@
       "noMatchingCredential": "Walang Tugmang Kredensyal",
       "sharingFailed": "Hindi Naibahagi",
       "walletActivity": "Aktibidad sa Wallet"
-    }
+    },
+    "cardActivityTitle": "Aktibidad",
+    "noCardActivity": "Wala pang aktibidad para sa card na ito.",
+    "openAllNotifications": "Buksan ang lahat ng notification"
   },
   "SettingScreen": {
     "header": "Mga setting",
     "injiAsVerifierApp": "CredIssuer bilang Verifier App",
-    "receiveCard": "Tumanggap ng Card",
     "basicSettings": "Mga Pangunahing Setting",
     "bioUnlock": "I-unlock gamit ang Biometrics",
     "language": "Wika",
@@ -364,7 +369,8 @@
     "pinsDontMatch": "Hindi magkatugma ang mga PIN. Ilagay muli ang bagong PIN.",
     "samePin": "Pumili ng PIN na iba sa kasalukuyan mo.",
     "pinChangeFailed": "Hindi mapalitan ang PIN. Pakisubukang muli.",
-    "closeApp": "Isara ang app"
+    "closeApp": "Isara ang app",
+    "languageHint": "Agad na nagbabago ang wika ng app."
   },
   "BannerNotification": {
     "alternatePasscodeSuccess": "Tagumpay! Magagamit mo na ngayon ang passcode upang i-unlock ang CredIssuer app.",
@@ -384,14 +390,19 @@
   },
   "AboutInji": {
     "aboutInji": "Tungkol kay CredIssuer Wallet",
-    "header": "Tungkol Sa CredIssuer Wallet",
+    "header": "Tungkol",
     "appID": "App ID",
-    "aboutDetails": "Ginagawa ng CredIssuer Wallet na mapagkakatiwalaan at portable ang data, na nagtatampok ng dalawang pangunahing interface na tumutugon sa magkakaibang pangangailangan ng user, kung saan ang CredIssuer ang isa sa mga ito. Bilang isang mobile-based na wallet app, ang CredIssuer ay isang secure, desentralisadong solusyon na nagbibigay-daan sa mga user na mag-download, mamahala, magbahagi, at mag-verify ng mga nabe-verify na kredensyal nang direkta mula sa kanilang mga smartphone, na nagbibigay ng maayos at mapagkakatiwalaang paraan upang mahawakan ang mga kredensyal on the go.",
+    "aboutDetails": "Itago sa iyong telepono ang iyong mga digital ID, lisensya at sertipiko, at ibahagi lamang ang kailangan ng bawat verifier.",
     "forMoreDetails": "Para sa karagdagang detalye",
     "clickHere": "Pindutin dito",
     "version": "Bersyon",
     "poweredBy": "Isang Produktong OORU",
-    "copyright": "© 2022 OORU. Lahat ng karapatan ay nakalaan."
+    "copyright": "© 2022 OORU. Lahat ng karapatan ay nakalaan.",
+    "appName": "CredIssuer Wallet",
+    "versionLine": "Bersyon {{version}}",
+    "copy": "Kopyahin",
+    "copied": "Nakopya",
+    "footer": "Isang produkto ng Ooru Digital"
   },
   "IssuersScreen": {
     "selectCard": "Pumili ng Card",
@@ -434,8 +445,10 @@
         "message": "Hindi namin maiproseso ang iyong kahilingan sa ngayon."
       },
       "biometricsCancelled": {
-        "title": "Gusto mo bang kanselahin ang pag-download?",
-        "message": "Kinakailangan ang biometric confirmation para magpatuloy sa pag-download ng card."
+        "title": "Itigil ang pagdaragdag ng card na ito?",
+        "message": "Kailangan ang iyong fingerprint para matapos. Kung titigil ka ngayon, walang mase-save; maaari mong i-scan muli ang code mamaya.",
+        "retry": "Subukang muli ang fingerprint",
+        "stop": "Itigil"
       },
       "generic": {
         "title": "may nangyaring mali!",
@@ -463,15 +476,29 @@
         "ERR_INVALID_VALIDUNTIL": "Di-wasto ang petsa. Tingnan kung may wastong petsa."
       },
       "replaceCredential": {
-        "title": "Replace card",
-        "description": "Select the card or cards you want to replace with the one you just downloaded.",
-        "confirm": "Replace selected"
+        "title": "Palitan ang card",
+        "description": "Piliin ang mga {{card}} card na papalitan ng bago. Aalisin ang mga ito sa teleponong ito.",
+        "confirm": "Palitan ang {{count}} card",
+        "confirm_plural": "Palitan ang {{count}} card",
+        "selected": "{{count}} card ang napili",
+        "selected_plural": "{{count}} card ang napili",
+        "selectAll": "Piliin lahat",
+        "clear": "I-clear"
       },
       "credentialAlreadyExists": {
-        "title": "Umiiral na ang card",
-        "message": "Mayroon ka nang card na ganitong uri sa iyong wallet. Gusto mo bang palitan ang isang umiiral na card o idagdag ang bagong card bilang isa pang card?"
+        "title": "Mayroon ka nang card na ito",
+        "message": "Maaaring palitan ng bagong {{card}} ang mayroon ka, o idagdag ito bilang pangalawang card."
       }
-    }
+    },
+    "downloadingPill": "Dina-download",
+    "addingCard": "Idinadagdag ang iyong {{card}}",
+    "addingYourCard": "Idinadagdag ang iyong card",
+    "issuerSending": "Ipinapadala ng {{issuer}} ang iyong card. Karaniwang ilang segundo lang ito; panatilihing bukas ang app.",
+    "issuerTrusted": "Pinagkakatiwalaang issuer",
+    "couldNotAddCard": "Hindi maidagdag ang iyong card",
+    "backToWallet": "Bumalik sa wallet",
+    "thisCard": "card na ito",
+    "validUntil": "Valid hanggang {{date}}"
   },
   "HelpScreen": {
     "header": "Tulong",
@@ -707,12 +734,6 @@
     "skip": "Laktawan",
     "next": "Susunod"
   },
-  "ReceivedVcsTab": {
-    "receivedCards": "Mga Natanggap na Card",
-    "header": "Mga Natanggap na Card",
-    "noReceivedVcsTitle": "Wala pang card",
-    "noReceivedVcsText": "Pindutin ang Humiling sa ibaba para makatanggap ng card"
-  },
   "VcVerificationBanner": {
     "inProgress": "Pina-validate namin ang iyong card, maaaring magtagal ito. Kapag na-verify na, magagawa mong i-activate ang iyong card.",
     "success": "Matagumpay na na-verify ang {{vcDetails}} at magagamit na ngayon para sa pag-activate.",
@@ -751,13 +772,18 @@
     "settings": "mga setting"
   },
   "PasscodeScreen": {
-    "header": "Itakda ang Passcode",
+    "header": "Itakda ang passcode",
     "enterNewPassword": "Maglagay ng bagong passcode",
     "reEnterPassword": "Ipasok muli ang bagong passcode",
     "enterAlternateNewPassword": "Ang iyong passcode ay ang iyong susi upang ma-access ang app nang ligtas. Pumili ng isang 6 na digit na passcode na natatangi at hindi malilimutan, na tinitiyak ang kaligtasan ng iyong data at privacy sa loob ng app.",
     "reEnterAlternatePassword": "Kumpirmahin ang iyong passcode sa pamamagitan ng muling pagpasok nito. Kapag nakumpirma na, ang iyong passcode ay ligtas na itatakda para sa pag-access sa app.",
     "confirmPasscode": "Kumpirmahin ang passcode",
-    "enterPasscode": "Ilagay ang iyong passcode"
+    "enterPasscode": "Ilagay ang iyong passcode",
+    "chooseTitle": "Pumili ng 6-digit na passcode",
+    "chooseHint": "Gagamitin mo ito para buksan ang wallet at aprubahan ang pagbabahagi.",
+    "confirmTitle": "Ilagay itong muli",
+    "confirmHint": "Para matiyak na ito nga ang gusto mo.",
+    "confirmMismatch": "Hindi magkatugma ang mga passcode. Subukang muli."
   },
   "QrLogin": {
     "title": "QR Login",
@@ -783,20 +809,6 @@
     "essentialClaims": "Mahahalagang Claim",
     "voluntaryClaims": "Mga Kusang-loob na Claim",
     "required": "Kailangan"
-  },
-  "ReceiveVcScreen": {
-    "header": "Card mga detalye",
-    "save": "I-save ang card",
-    "reject": "Tanggihan",
-    "discard": "Itapon",
-    "goToReceivedVCTab": "Tingnan ang Natanggap na card",
-    "saving": "Sine-save ang card",
-    "errors": {
-      "savingFailed": {
-        "title": "Nabigong i-save ang card!",
-        "message": "Dahil sa teknikal na error, hindi namin na-save ang card. Mangyaring hilingin ang nagpadala na maglipat muli."
-      }
-    }
   },
   "Permissions": {
     "enablePermission": "Paganahin ang Pahintulot"
@@ -920,15 +932,12 @@
       "backToWallet": "Bumalik sa Wallet",
       "viewHistory": "Tingnan ang History ng Pagbabahagi"
     },
-    "scanVerifierTitle": "I-scan ang Verifier",
+    "scanVerifierTitle": "I-scan ang verifier",
     "close": "Isara",
     "flashOn": "I-on ang flashlight",
     "flashOff": "I-off ang flashlight",
     "pointCameraTitle": "Itutok ang iyong camera sa QR code ng verifier",
     "pointCameraSubtitle": "Makikita mo kung sino ang humihingi at pipiliin mo kung ano ang ibabahagi bago may maipadala.",
-    "fromPhotos": "Mula sa Photos",
-    "showMyQr": "Ipakita ang Aking QR",
-    "comingSoon": "Malapit na",
     "cameraOffTitle": "Naka-off ang access sa camera",
     "cameraOffSubtitle": "Payagan ang access sa camera sa Settings para ma-scan ang QR code ng verifier.",
     "openSettings": "Buksan ang Settings",
@@ -1060,15 +1069,24 @@
     },
     "postFaceCapture": {
       "captureSuccessMessage": "Matagumpay ang Face Verification! Sinisimulan ang pagbabahagi ng kredensyal.",
-      "captureFailureTitle": "Nabigo ang pag-verify ng mukha!",
-      "captureFailureMessage": "Pakitiyak na malinaw na nakikita ang iyong mukha at subukang mag-selfie muli."
+      "captureFailureTitle": "Hindi namin maitugma ang iyong mukha",
+      "captureFailureMessage": "Walang naibahagi. Para sa susunod na subok:",
+      "retakeSelfie": "Kumuha muli ng selfie",
+      "cancelSharing": "Kanselahin ang pagbabahagi",
+      "faceTipLight": "Humarap sa liwanag, hindi sa bintana sa likod mo",
+      "faceTipGlasses": "Alisin ang salamin at sumbrero",
+      "faceTipFrame": "Panatilihin ang buong mukha sa frame"
     },
     "rational": {
       "title": "I-on ang iyong lokasyon",
       "message": "Kailangan ng app na ito ang iyong lokasyon upang maghanap ng mga kalapit na system upang matanggap ang iyong data.",
       "accept": "OK",
       "cancel": "Kanselahin"
-    }
+    },
+    "notVerifierCodeTitle": "Hindi ito code ng verifier",
+    "notVerifierCodeMessage": "Binabasa ng wallet ang mga QR code mula sa mga verifier na humihingi ng iyong detalye. Hilingin sa verifier na ipakita muli ang kanilang code, saka itutok ang camera rito.",
+    "scanAgain": "I-scan muli",
+    "backToWallet": "Bumalik sa wallet"
   },
   "SelectVcOverlay": {
     "header": "Ibahagi ang card",
@@ -1312,12 +1330,17 @@
         "message": "Dahil sa update sa fingerprint / facial recognition, naapektuhan ang seguridad ng app, at inalis ang mga na-download na card. Mangyaring i-download muli."
       }
     },
-    "ignore": "Huwag pansinin"
+    "ignore": "Huwag pansinin",
+    "appName": "CredIssuer Wallet",
+    "locked": "Naka-lock ang iyong mga card.",
+    "unlock": "I-unlock",
+    "usePasscode": "Gumamit na lang ng passcode"
   },
   "SetupLanguage": {
-    "header": "Piliin ang Wika",
-    "description": "Piliin ang iyong gustong wika",
-    "save": "I-save ang Kagustuhan"
+    "header": "Piliin ang iyong wika",
+    "description": "Maaari mo itong palitan anumang oras sa Mga Setting.",
+    "save": "I-save ang Kagustuhan",
+    "continue": "Magpatuloy"
   },
   "SetupKey": {
     "header": "Pamamahala ng Key",
@@ -1354,8 +1377,9 @@
       "title": "I-unlock ang App",
       "description": "Mangyaring gumamit ng fingerprint upang i-unlock ang app"
     },
-    "replaceExisting": "Palitan ang umiiral",
-    "keepBoth": "Idagdag bilang bago"
+    "replaceExisting": "Palitan ang kasalukuyang card",
+    "keepBoth": "Panatilihin ang dalawa",
+    "notNow": "Hindi muna"
   },
   "copilot": {
     "scanToShareTitle": "I-scan para Magbahagi",
@@ -1390,10 +1414,10 @@
     "continue": "Magpatuloy"
   },
   "cancelDownloadModal": {
-    "heading": "Gusto mo bang kanselahin ang pag-download?",
-    "subHeading": "Kapag nakansela, hindi madadownload ang iyong card at kailangan mong simulan muli.",
-    "cancel": "Hindi, maghihintay ako",
-    "confirm": "Oo, Kanselahin"
+    "heading": "Itigil ang pagdaragdag ng card na ito?",
+    "subHeading": "Kung titigil ka ngayon, hindi mada-download ang card. Maaari mong i-scan muli ang code ng issuer mamaya.",
+    "cancel": "Ituloy",
+    "confirm": "Itigil"
   },
   "transactionCodeScreen": {
     "description": "Ipinadala na namin ang transaction code sa iyong rehistradong email",
@@ -1401,7 +1425,12 @@
     "verify": "I-verify",
     "emptyCodeError": "Hindi puwedeng walang laman ang code",
     "invalidCharacters": "Mga letra at numero lamang ang pinapayagan",
-    "TransactionCode": "Transaction Code"
+    "TransactionCode": "Transaction Code",
+    "pageTitle": "Magdagdag ng bagong card",
+    "title": "Ilagay ang code mula sa issuer",
+    "continue": "Magpatuloy",
+    "show": "Ipakita",
+    "hide": "Itago"
   },
   "trustScreen": {
     "Description": "Tiyaking kilala mo o pinagkakatiwalaan mo ang issuer na ito. Kapag pinagkakatiwalaan mo na ang issuer na ito:",

@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Button, Column, Row, Text} from '../../components/ui';
+import {Column, Row, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
 import {Pressable, RefreshControl, View} from 'react-native';
 import {useMyVcsTab} from './MyVcsTabController';
@@ -19,7 +19,6 @@ import {
   sendErrorEvent,
 } from '../../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../../shared/telemetry/TelemetryConstants';
-import {ErrorView} from '../../components/ui/Error';
 import {
   useFocusEffect,
   useIsFocused,
@@ -28,7 +27,15 @@ import {
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
 import {WalletHome} from '../../components/revamp/WalletHome';
 import {WalletHeader} from '../../components/revamp/WalletHeader';
-import {BellIcon, CarouselIcon, UserIcon} from '../../components/revamp/Icons';
+import {
+  AlertCircleIcon,
+  BellIcon,
+  CarouselIcon,
+  ShieldXIcon,
+  UserIcon,
+  WarningIcon,
+} from '../../components/revamp/Icons';
+import {AlertSheet} from '../../components/revamp/Page';
 import {getVCsOrderedByPinStatus} from '../../shared/Utils';
 import {SvgImage} from '../../components/ui/svg';
 import {SearchBar} from '../../components/ui/SearchBar';
@@ -645,80 +652,88 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
         <GetVcModal service={controller.GetVcModalService} />
       )}
 
-      <MessageOverlay
+      <AlertSheet
         testID="keyStoreNotExists"
         isVisible={controller.showHardwareKeystoreNotExistsAlert}
+        tone="warn"
+        icon={colour => <WarningIcon color={colour} />}
         title={t('errors.keystoreNotExists.title')}
         message={t('errors.keystoreNotExists.message')}
-        onButtonPress={controller.ACCEPT_HARDWARE_SUPPORT_NOT_EXISTS}
-        buttonText={t('errors.keystoreNotExists.riskOkayText')}
-        minHeight={'auto'}>
-        <Row>
-          <Button
-            testID="ok"
-            type="gradient"
-            title={t('errors.keystoreNotExists.riskOkayText')}
-            onPress={controller.ACCEPT_HARDWARE_SUPPORT_NOT_EXISTS}
-            margin={[0, 8, 0, 0]}
-          />
-        </Row>
-      </MessageOverlay>
-
-      <MessageOverlay
-        isVisible={controller.isBindingError}
-        title={controller.walletBindingError}
-        onButtonPress={controller.DISMISS}
+        primary={{
+          testID: 'ok',
+          title: t('errors.keystoreNotExists.riskOkayText'),
+          onPress: controller.ACCEPT_HARDWARE_SUPPORT_NOT_EXISTS,
+        }}
+        dismissOnBackdropPress={false}
+        onRequestClose={controller.ACCEPT_HARDWARE_SUPPORT_NOT_EXISTS}
       />
-      <MessageOverlay
+
+      <AlertSheet
+        testID="walletBindingError"
+        isVisible={controller.isBindingError}
+        tone="fail"
+        icon={colour => <AlertCircleIcon color={colour} />}
+        title={controller.walletBindingError}
+        primary={{title: t('common:ok'), onPress: controller.DISMISS}}
+        onRequestClose={controller.DISMISS}
+      />
+      <AlertSheet
+        testID="vcIsTampered"
         isVisible={controller.isTampered}
+        tone="fail"
+        icon={colour => <ShieldXIcon color={colour} />}
         title={t('errors.vcIsTampered.title')}
         message={t('errors.vcIsTampered.message')}
-        onButtonPress={controller.REMOVE_TAMPERED_VCS}
-        buttonText={t('common:ok')}
-        minHeight={'auto'}
+        primary={{
+          title: t('common:ok'),
+          onPress: controller.REMOVE_TAMPERED_VCS,
+        }}
+        dismissOnBackdropPress={false}
+        onRequestClose={controller.REMOVE_TAMPERED_VCS}
       />
 
-      <MessageOverlay
+      <AlertSheet
+        testID="downloadLimitExpires"
         isVisible={isDownloadFailedVcs}
+        tone="fail"
+        icon={colour => <AlertCircleIcon color={colour} />}
         title={t('errors.downloadLimitExpires.title')}
         message={downloadFailedVcsErrorMessage}
-        onButtonPress={controller.DELETE_VC}
-        buttonText={t('common:ok')}
-        minHeight={'auto'}
+        primary={{title: t('common:ok'), onPress: controller.DELETE_VC}}
+        dismissOnBackdropPress={false}
+        onRequestClose={controller.DELETE_VC}
       />
 
-      {isVerificationFailed && (
-        <ErrorView
-          testID="verificationError"
-          isVisible={isVerificationFailed}
-          isModal={true}
-          alignActionsOnEnd
-          title={t('errors.verificationFailed.title')}
-          message={verificationErrorMessage}
-          image={SvgImage.PermissionDenied()}
-          showClose={false}
-          primaryButtonText="goBack"
-          primaryButtonEvent={controller.RESET_VERIFY_ERROR}
-          primaryButtonTestID="goBack"
-          customStyles={{marginTop: '30%'}}
-        />
-      )}
+      <AlertSheet
+        testID="verificationError"
+        isVisible={isVerificationFailed}
+        tone="fail"
+        icon={colour => <ShieldXIcon color={colour} />}
+        title={t('errors.verificationFailed.title')}
+        message={verificationErrorMessage}
+        primary={{
+          testID: 'goBack',
+          title: t('common:ok'),
+          onPress: controller.RESET_VERIFY_ERROR,
+        }}
+        onRequestClose={controller.RESET_VERIFY_ERROR}
+      />
 
-      {controller.isNetworkOff && (
-        <ErrorView
-          testID="networkOffError"
-          isVisible={controller.isNetworkOff}
-          isModal
-          title={t('errors.noInternetConnection.title')}
-          message={t('errors.noInternetConnection.message')}
-          onDismiss={controller.DISMISS}
-          image={SvgImage.NoInternetConnection()}
-          showClose
-          primaryButtonText="tryAgain"
-          primaryButtonEvent={controller.TRY_AGAIN}
-          primaryButtonTestID="tryAgain"
-        />
-      )}
+      <AlertSheet
+        testID="networkOffError"
+        isVisible={controller.isNetworkOff}
+        tone="warn"
+        icon={colour => <AlertCircleIcon color={colour} />}
+        title={t('errors.noInternetConnection.title')}
+        message={t('errors.noInternetConnection.message')}
+        primary={{
+          testID: 'tryAgain',
+          title: t('common:tryAgain'),
+          onPress: controller.TRY_AGAIN,
+        }}
+        secondary={{title: t('common:notNow'), onPress: controller.DISMISS}}
+        onRequestClose={controller.DISMISS}
+      />
       <MessageOverlay
         overlayMode="highlight"
         isVisible={!!highlightCardLayout && !props.isViewingVc}
