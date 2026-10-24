@@ -108,8 +108,8 @@ export const IssuersActions = (model: any) => {
 
     setError: model.assign({
       errorMessage: (_: any, event: any) => {
-        console.error(`Error occurred while ${event} -> `, event.data.message);
-        const error = event.data.message;
+        const error: string = event.data?.message ?? String(event.data ?? '');
+        console.error(`Error occurred while ${event.type} -> `, error);
         if (error.includes(NO_INTERNET)) {
           return ErrorMessage.NO_INTERNET;
         }

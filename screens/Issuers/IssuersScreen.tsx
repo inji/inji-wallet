@@ -321,21 +321,17 @@ export const IssuersScreen: React.FC<
     );
   }
   if (showFullScreenError) {
+    const errorType = controller.errorMessageType || ErrorMessage.GENERIC;
     return (
       <DownloadFailed
-        testID={`${controller.errorMessageType}Error`}
-        kind={
-          controller.errorMessageType === ErrorMessage.NO_INTERNET
-            ? 'connection'
-            : 'generic'
-        }
-        title={t(`errors.${controller.errorMessageType}.title`)}
-        message={t(`errors.${controller.errorMessageType}.message`)}
+        testID={`${errorType}Error`}
+        kind={errorType === ErrorMessage.NO_INTERNET ? 'connection' : 'generic'}
+        title={t(`errors.${errorType}.title`)}
+        message={t(`errors.${errorType}.message`)}
         onClose={goBack}
         primary={
-          controller.errorMessageType != ErrorMessage.TECHNICAL_DIFFICULTIES &&
-          controller.errorMessageType !=
-            ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED
+          errorType != ErrorMessage.TECHNICAL_DIFFICULTIES &&
+          errorType != ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED
             ? {
                 testID: 'tryAgain',
                 title: t('common:tryAgain'),
@@ -348,9 +344,8 @@ export const IssuersScreen: React.FC<
               }
         }
         secondary={
-          controller.errorMessageType != ErrorMessage.TECHNICAL_DIFFICULTIES &&
-          controller.errorMessageType !=
-            ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED
+          errorType != ErrorMessage.TECHNICAL_DIFFICULTIES &&
+          errorType != ErrorMessage.AUTHORIZATION_GRANT_TYPE_NOT_SUPPORTED
             ? {
                 testID: 'backToWallet',
                 title: t('backToWallet'),
