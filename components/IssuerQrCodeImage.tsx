@@ -16,6 +16,8 @@ import {Text} from './ui';
 import {Theme} from './ui/styleUtils';
 import {SvgImage} from './ui/svg';
 import testIDProps from '../shared/commonUtil';
+import QRCode from 'react-native-qrcode-svg';
+import {DEFAULT_ECL} from '../shared/constants';
 import {
   MdocShareButton,
   MdocShareHeader,
@@ -127,6 +129,8 @@ export const IssuerQrDialog: React.FC<IssuerQrDialogProps> = ({
   qrCodeUrl,
   onClose,
   onLoadError,
+  fallbackQrValue,
+  fallbackFailed = false,
   credentialName,
   issuerName,
   issuerLogoUrl,
@@ -194,6 +198,29 @@ export const IssuerQrDialog: React.FC<IssuerQrDialogProps> = ({
                 size={QR_SIZE}
                 onError={onLoadError}
               />
+            ) : fallbackQrValue ? (
+              <QRCode
+                {...testIDProps('issuerQrFallbackCode')}
+                size={QR_SIZE}
+                value={fallbackQrValue}
+                backgroundColor={C.card}
+                color={C.ink}
+                ecl={DEFAULT_ECL}
+                quietZone={4}
+              />
+            ) : fallbackFailed ? (
+              <View style={styles.qrPlaceholder}>
+                <Text weight="semibold" align="center" color={C.ink}>
+                  {t('mdocShare.qrErrorTitle')}
+                </Text>
+                <Text
+                  size="smaller"
+                  align="center"
+                  color={C.inkMuted}
+                  margin="4 0 0 0">
+                  {t('mdocShare.qrErrorMessage')}
+                </Text>
+              </View>
             ) : (
               <View style={styles.qrPlaceholder}>
                 <ActivityIndicator color={C.ink} />
@@ -227,7 +254,9 @@ export const IssuerQrDialog: React.FC<IssuerQrDialogProps> = ({
               containerStyle={styles.infoIcon}
             />
             <Text size="smaller" color={B.mist} style={styles.infoText}>
-              {issuerName
+              {!qrCodeUrl && fallbackQrValue
+                ? t('issuerQr.walletInfo')
+                : issuerName
                 ? t('issuerQr.info', {issuer: issuerName})
                 : t('issuerQr.infoGeneric')}
             </Text>
@@ -440,6 +469,14 @@ interface IssuerQrDialogProps {
   onClose: () => void;
   /** Called with the URL that failed, so the caller can fall back to another QR. */
   onLoadError?: (uri: string) => void;
+  /**
+   * The wallet-generated QR, shown on this same page when the issuer has none for this card or its
+   * image fails to load. Swapping to another modal at that point would mean presenting it while
+   * this one is still being dismissed, which iOS refuses.
+   */
+  fallbackQrValue?: string | null;
+  /** The fallback QR could not be built either. */
+  fallbackFailed?: boolean;
   /** Shown above the QR with the issuer, as on the mDoc "Show QR" page; optional. */
   credentialName?: string;
   issuerName?: string;
