@@ -1,7 +1,6 @@
 import React from 'react';
+import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {Button, HorizontallyCentered, Column} from '../components/ui';
-import {Theme} from '../components/ui/styleUtils';
 import {RootRouteProps} from '../routes';
 import {useWelcomeScreen} from './WelcomeScreenController';
 import {useBiometricScreen} from './BiometricScreenController';
@@ -12,34 +11,66 @@ import {
   resetRetryCount,
 } from '../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../shared/telemetry/TelemetryConstants';
-// Rendered directly (rather than via SvgImage.InjiLogo/Theme.HomeScreenLogo) because that
-// theme key now points at the horizontal icon+wordmark lockup used in the Home header, while
-// this unlock screen keeps the icon-only mark.
+import {Page, PageButton} from '../components/revamp/Page';
+import {BiometricsIcon} from '../components/revamp/Icons';
+import {ScaledText} from '../components/revamp/ScaledText';
+import {fonts} from '../components/revamp/tokens';
+import {useRevampTheme} from '../components/revamp/useRevampTheme';
 import CredIssuerMark from '../assets/CredIssuerMark.svg';
 
 export const WelcomeScreen: React.FC<RootRouteProps> = props => {
   const {t} = useTranslation('WelcomeScreen');
   const controller = useWelcomeScreen(props);
+  const biometricIcon = controller.hasBiometricUnlock
+    ? (colour: string) => <BiometricsIcon color={colour} size={20} />
+    : undefined;
+
   return (
-    <Column
-      fill
-      padding="32 32 0"
-      backgroundColor={Theme.Colors.whiteBackgroundColor}>
-      <HorizontallyCentered fill>
-        <CredIssuerMark {...Theme.Styles.welcomeLogo} />
-      </HorizontallyCentered>
-      {controller.isBiometricUnlock ? (
-        <BiometricUnlockButton {...props} />
-      ) : (
-        <Button
-          testID="unlockApplication"
-          margin="0 0 32"
-          type="gradient"
-          title={t('unlockApplication')}
-          onPress={controller.unlockPage}
-        />
-      )}
-    </Column>
+    <Page
+      testID="welcome"
+      footer={
+        <>
+          {controller.isBiometricUnlock ? (
+            <BiometricUnlockButton {...props} />
+          ) : (
+            <PageButton
+              testID="unlockApplication"
+              title={t('unlock')}
+              icon={biometricIcon}
+              onPress={controller.unlockPage}
+            />
+          )}
+          {controller.hasBiometricUnlock ? (
+            <PageButton
+              testID="usePasscodeInstead"
+              variant="link"
+              title={t('usePasscode')}
+              onPress={controller.usePasscode}
+            />
+          ) : null}
+        </>
+      }>
+      <LockedBrand />
+    </Page>
+  );
+};
+
+/** The logo, the app's name and "Your cards are locked", centred on the page. */
+export const LockedBrand: React.FC = () => {
+  const {t} = useTranslation('WelcomeScreen');
+  const {c} = useRevampTheme();
+  return (
+    <View style={styles.brand}>
+      <CredIssuerMark width={96} height={96} />
+      <ScaledText
+        accessibilityRole="header"
+        style={[styles.name, {color: c.ink}]}>
+        {t('appName')}
+      </ScaledText>
+      <ScaledText style={[styles.locked, {color: c.inkMuted}]}>
+        {t('locked')}
+      </ScaledText>
+    </View>
   );
 };
 
@@ -72,17 +103,15 @@ const BiometricUnlockButton: React.FC<RootRouteProps> = props => {
 
   return (
     <>
-      <Button
+      <PageButton
         testID="unlockApplication"
-        margin="0 0 32"
-        type="gradient"
-        title={t('unlockApplication')}
+        title={t('unlock')}
+        icon={colour => <BiometricsIcon color={colour} size={20} />}
         onPress={controller.unlock}
         disabled={controller.isSuccessBio}
       />
       {controller.isReEnabling && (
         <Passcode
-          message="Enter your passcode to re-enable biometrics authentication."
           onSuccess={handleOnSuccess}
           onError={handlePasscodeMismatch}
           storedPasscode={controller.storedPasscode}
@@ -94,3 +123,16 @@ const BiometricUnlockButton: React.FC<RootRouteProps> = props => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  brand: {flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12},
+  name: {
+    fontFamily: fonts.semibold,
+    fontSize: 28,
+    lineHeight: 34,
+    letterSpacing: -0.5,
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  locked: {fontFamily: fonts.regular, fontSize: 15, lineHeight: 20},
+});

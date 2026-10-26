@@ -15,7 +15,12 @@ const validCredential = {
   credential: {expirationDate: '2027-01-01T00:00:00.000Z'},
 };
 const verified = (fields = {}) =>
-  new VCMetadata({id: 'vc', format: VCFormat.ldp_vc, isVerified: true, ...fields});
+  new VCMetadata({
+    id: 'vc',
+    format: VCFormat.ldp_vc,
+    isVerified: true,
+    ...fields,
+  });
 
 describe('cardStatusOf', () => {
   it('shows a card past its expiry date as expired before any check marks it', () => {

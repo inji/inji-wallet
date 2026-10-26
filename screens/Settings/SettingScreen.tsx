@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Platform, Pressable, ScrollView, StyleSheet, View} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {MessageOverlay} from '../../components/MessageOverlay';
@@ -9,9 +9,7 @@ import {LanguageSelector} from '../../components/LanguageSelector';
 import {CREDENTIAL_REGISTRY_EDIT} from 'react-native-dotenv';
 import {AboutInji} from './AboutInji';
 import {EditableListItem} from '../../components/EditableListItem';
-import {RequestRouteProps, RootRouteProps} from '../../routes';
-import {ReceivedCardsModal} from './ReceivedCardsModal';
-import {useReceivedVcsTab} from '../Home/ReceivedVcsTabController';
+import {RootRouteProps} from '../../routes';
 import testIDProps from '../../shared/commonUtil';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
 import {Theme} from '../../components/ui/styleUtils';
@@ -20,7 +18,13 @@ import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
 import {ChangePin} from './ChangePin';
 import {InfoPage} from './InfoPage';
 import {AUTO_LOCK_OPTIONS, useAutoLockSetting} from './autoLock';
-import {Modal} from '../../components/ui/Modal';
+import {
+  ChoiceList,
+  ChoiceRow,
+  Page,
+  PageHeader,
+  PageModal,
+} from '../../components/revamp/Page';
 import {ScaledText} from '../../components/revamp/ScaledText';
 import {
   SettingsRow,
@@ -39,14 +43,10 @@ const SHOW_APPEARANCE = false;
 /** Help and Privacy show placeholder text until their real content exists. */
 const SHOW_HELP_AND_PRIVACY = false;
 
-export const SettingScreen: React.FC<
-  SettingProps & RootRouteProps & RequestRouteProps
-> = props => {
+export const SettingScreen: React.FC<SettingProps & RootRouteProps> = props => {
   const {t, i18n} = useTranslation('SettingScreen');
-  const receivedT = useTranslation('ReceivedVcsTab').t;
   const aboutT = useTranslation('AboutInji').t;
   const controller = useSettingsScreen(props);
-  const receivedCards = useReceivedVcsTab();
   const navigation = useNavigation<NavigationProp<Record<string, undefined>>>();
   const {c} = useRevampTheme();
   const insets = useSafeAreaInsets();
@@ -167,25 +167,12 @@ export const SettingScreen: React.FC<
               icon={settingsIcons.history}
               label={t('sharingHistory')}
               onPress={() =>
-                navigation.navigate(BOTTOM_TAB_ROUTES.history as never)
+                navigation.navigate({
+                  name: BOTTOM_TAB_ROUTES.history,
+                  params: {filter: 'sharing'},
+                } as never)
               }
             />
-            {Platform.OS !== 'ios' && (
-              <SettingsRow
-                testID="receiveCardPressableArea"
-                icon={settingsIcons.receive}
-                label={t('receiveCard')}
-                onPress={controller.RECEIVE_CARD}
-              />
-            )}
-            {Platform.OS !== 'ios' && (
-              <SettingsRow
-                testID="receivedCardsPressableArea"
-                icon={settingsIcons.received}
-                label={receivedT('receivedCards')}
-                onPress={receivedCards.TOGGLE_RECEIVED_CARDS}
-              />
-            )}
             {SHOW_CONNECTED_VERIFIERS && (
               <SettingsRow
                 testID="connectedVerifiers"
@@ -290,37 +277,36 @@ export const SettingScreen: React.FC<
           if (changed) setNotice(t('pinChanged'));
         }}
       />
-      <Modal
-        testID="autoLockOptions"
-        isVisible={page === 'autoLock'}
-        headerTitle={t('autoLock')}
-        arrowLeft={true}
-        onDismiss={() => setPage(null)}>
-        <View style={styles.options}>
-          <SettingsSection title={t('autoLockHint')}>
-            {AUTO_LOCK_OPTIONS.map(minutes => (
-              <SettingsRow
-                key={minutes}
-                testID={'autoLock' + minutes}
-                icon={settingsIcons.clock}
-                label={autoLockLabel(minutes)}
-                accessibilityState={{checked: minutes === autoLockMinutes}}
-                onPress={() => {
-                  setAutoLockMinutes(minutes);
-                  setPage(null);
-                }}
-                trailing={
-                  minutes === autoLockMinutes ? (
-                    settingsIcons.check(c.sel)
-                  ) : (
-                    <View />
-                  )
-                }
-              />
-            ))}
-          </SettingsSection>
-        </View>
-      </Modal>
+      <PageModal
+        visible={page === 'autoLock'}
+        onRequestClose={() => setPage(null)}>
+        <Page
+          testID="autoLockOptions"
+          header={
+            <PageHeader title={t('autoLock')} onBack={() => setPage(null)} />
+          }>
+          <ScrollView contentContainerStyle={styles.options}>
+            <ScaledText style={[styles.optionsHint, {color: c.inkMuted}]}>
+              {t('autoLockHint')}
+            </ScaledText>
+            <ChoiceList>
+              {AUTO_LOCK_OPTIONS.map(minutes => (
+                <ChoiceRow
+                  key={minutes}
+                  testID={'autoLock' + minutes}
+                  label={autoLockLabel(minutes)}
+                  mark="check"
+                  selected={minutes === autoLockMinutes}
+                  onPress={() => {
+                    setAutoLockMinutes(minutes);
+                    setPage(null);
+                  }}
+                />
+              ))}
+            </ChoiceList>
+          </ScrollView>
+        </Page>
+      </PageModal>
       <InfoPage
         testID="helpAndSupportPage"
         isVisible={page === 'help'}
@@ -335,11 +321,6 @@ export const SettingScreen: React.FC<
         body={t('privacyPolicyBody')}
         onDismiss={() => setPage(null)}
       />
-      <ReceivedCardsModal
-        isVisible={receivedCards.isVisible}
-        controller={receivedCards}
-        onDismiss={receivedCards.TOGGLE_RECEIVED_CARDS}
-      />
     </React.Fragment>
   );
 };
@@ -352,7 +333,8 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     letterSpacing: -0.56,
   },
-  options: {padding: 24},
+  options: {paddingTop: 12, paddingBottom: 24, gap: 12},
+  optionsHint: {fontFamily: fonts.regular, fontSize: 13, paddingHorizontal: 4},
   content: {paddingTop: 8, paddingHorizontal: 24, paddingBottom: 32, gap: 24},
   footer: {
     fontFamily: fonts.regular,

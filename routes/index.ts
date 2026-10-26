@@ -10,9 +10,7 @@ import {PasscodeScreen} from '../screens/PasscodeScreen';
 import {MainLayout} from '../screens/MainLayout';
 import {NotificationsScreen} from '../screens/NotificationsScreen';
 import {SetupLanguageScreen} from '../screens/SetupLanguageScreen';
-import {RequestLayout} from '../screens/Request/RequestLayout';
 import {SplashScreen} from '../screens/SplashScreen';
-import {RequestStackParamList} from './routesConstants';
 import AuthWebViewScreen from '../screens/AuthWebViewScreen';
 
 export const baseRoutes: Screen[] = [
@@ -37,22 +35,27 @@ export const baseRoutes: Screen[] = [
   {
     name: 'Welcome',
     component: WelcomeScreen,
+    options: {
+      headerShown: false,
+    },
   },
   {
     name: 'Auth',
     component: AuthScreen,
+    options: {
+      headerShown: false,
+    },
   },
   {
     name: 'Passcode',
     component: PasscodeScreen,
+    options: {
+      headerShown: false,
+    },
   },
   {
     name: 'Biometric',
     component: BiometricScreen,
-  },
-  {
-    name: 'Request',
-    component: RequestLayout,
     options: {
       headerShown: false,
     },
@@ -105,9 +108,4 @@ export type PasscodeRouteProps = NativeStackScreenProps<
 export type BiometricRouteProps = NativeStackScreenProps<
   RootStackParamList,
   'Biometric'
->;
-
-export type RequestRouteProps = NativeStackScreenProps<
-  RequestStackParamList,
-  'Request'
 >;

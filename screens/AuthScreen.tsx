@@ -1,8 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {MessageOverlay} from '../components/MessageOverlay';
-import {Button, Column, Text} from '../components/ui';
-import {Theme} from '../components/ui/styleUtils';
 import {RootRouteProps} from '../routes';
 import {useAuthScreen} from './AuthScreenController';
 import {
@@ -12,13 +10,32 @@ import {
   sendStartEvent,
 } from '../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../shared/telemetry/TelemetryConstants';
-import {SvgImage} from '../components/ui/svg';
+import {
+  AlertSheet,
+  ChoiceCards,
+  ChoiceRow,
+  Page,
+  PageButton,
+  PageHeading,
+} from '../components/revamp/Page';
+import {
+  AlertCircleIcon,
+  BiometricsIcon,
+  KeypadIcon,
+} from '../components/revamp/Icons';
+
+type Method = 'biometrics' | 'passcode';
 
 export const AuthScreen: React.FC<RootRouteProps> = props => {
   const {t} = useTranslation('AuthScreen');
   const controller = useAuthScreen(props);
+  const [method, setMethod] = useState<Method>('passcode');
 
-  const handleUsePasscodeButtonPress = () => {
+  useEffect(() => {
+    if (controller.isBiometricsAvailable) setMethod('biometrics');
+  }, [controller.isBiometricsAvailable]);
+
+  const usePasscode = () => {
     sendStartEvent(
       getStartEventData(TelemetryConstants.FlowType.appOnboarding),
     );
@@ -31,63 +48,59 @@ export const AuthScreen: React.FC<RootRouteProps> = props => {
     );
     controller.navigateToPasscode();
   };
-  return (
-    <Column
-      fill
-      padding={[32, 25, 32, 32]}
-      backgroundColor={Theme.Colors.whiteBackgroundColor}
-      align="space-between">
-      <MessageOverlay
-        isVisible={controller.alertMsg != ''}
-        onBackdropPress={controller.hideAlert}
-        title={controller.alertMsg}
-      />
-      <Column crossAlign="center">
-        {SvgImage.fingerprintIcon(66)}
-        <Column margin="30 0 0 0">
-          <Text
-            testID="selectAppUnlockMethod"
-            align="center"
-            style={Theme.TextStyles.header}>
-            {t('header')}
-          </Text>
-          <Text
-            testID="description"
-            align="center"
-            style={{paddingTop: 3}}
-            weight="semibold"
-            color={Theme.Colors.GrayText}
-            margin="6 0">
-            {t('Description')}
-          </Text>
-          <Text
-            testID="passwordTypeDescription"
-            align="center"
-            style={{paddingTop: 3}}
-            weight="semibold"
-            color={Theme.Colors.GrayText}
-            margin="6 0">
-            {t('PasswordTypeDescription')}
-          </Text>
-        </Column>
-      </Column>
 
-      <Column>
-        <Button
-          testID="useBiometrics"
-          title={t('useBiometrics')}
-          type="gradient"
-          margin="0 0 8 0"
-          disabled={!controller.isBiometricsAvailable}
-          onPress={controller.useBiometrics}
+  return (
+    <Page
+      testID="selectAppUnlockMethod"
+      footer={
+        <PageButton
+          testID="continue"
+          title={t('continue')}
+          onPress={
+            method === 'biometrics' ? controller.useBiometrics : usePasscode
+          }
         />
-        <Button
-          testID="usePasscode"
-          type="clear"
-          title={t('usePasscode')}
-          onPress={() => handleUsePasscodeButtonPress()}
-        />
-      </Column>
-    </Column>
+      }>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}>
+        <PageHeading align="left" title={t('header')} body={t('Description')} />
+        <ChoiceCards>
+          {controller.isBiometricsAvailable ? (
+            <ChoiceRow
+              card
+              testID="useBiometrics"
+              icon={colour => <BiometricsIcon color={colour} size={20} />}
+              label={t('useBiometrics')}
+              hint={t('useBiometricsHint')}
+              selected={method === 'biometrics'}
+              onPress={() => setMethod('biometrics')}
+            />
+          ) : null}
+          <ChoiceRow
+            card
+            testID="usePasscode"
+            icon={colour => <KeypadIcon color={colour} size={20} />}
+            label={t('usePasscode')}
+            hint={t('usePasscodeHint')}
+            selected={method === 'passcode'}
+            onPress={() => setMethod('passcode')}
+          />
+        </ChoiceCards>
+      </ScrollView>
+      <AlertSheet
+        testID="unlockMethodAlert"
+        isVisible={controller.alertMsg != ''}
+        tone="fail"
+        icon={colour => <AlertCircleIcon color={colour} />}
+        title={controller.alertMsg}
+        primary={{title: t('common:ok'), onPress: controller.hideAlert}}
+        onRequestClose={controller.hideAlert}
+      />
+    </Page>
   );
 };
+
+const styles = StyleSheet.create({
+  content: {paddingTop: 40, paddingBottom: 16, gap: 24},
+});

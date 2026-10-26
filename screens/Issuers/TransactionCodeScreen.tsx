@@ -1,34 +1,42 @@
 import React, {useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {Button, Column, Text} from '../../components/ui';
-import {Theme} from '../../components/ui/styleUtils';
 import {
-  Dimensions,
-  Keyboard,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  View,
   ModalProps,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  View,
 } from 'react-native';
-import {isIOS} from '../../shared/constants';
-import {SvgImage} from '../../components/ui/svg';
-import {useScreenHeight} from '../../shared/hooks/useScreenHeight';
+import {useTranslation} from 'react-i18next';
 import {PinInput} from '../../components/PinInput';
-import {Modal} from '../../components/ui/Modal';
-import {CancelDownloadModal} from './ConfirmationModal';
-import {Icon, Input} from 'react-native-elements';
+import {
+  AlertSheet,
+  FieldError,
+  Page,
+  PageModal,
+  PageButton,
+  PageHeader,
+  PageHeading,
+} from '../../components/revamp/Page';
+import {WarningIcon} from '../../components/revamp/Icons';
+import {ScaledText} from '../../components/revamp/ScaledText';
+import {fonts, radii} from '../../components/revamp/tokens';
+import {useRevampTheme} from '../../components/revamp/useRevampTheme';
 
+/** Asks for the code an issuer sends (by email or SMS) before it releases the card. */
 export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
   const {t} = useTranslation('transactionCodeScreen');
-  const {isSmallScreen, screenHeight} = useScreenHeight();
+  const cancelT = useTranslation('cancelDownloadModal').t;
+  const {c} = useRevampTheme();
   const [transactionCode, setTransactionCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [showCode, setShowCode] = useState(false);
   const [touched, setTouched] = useState(false);
-  const [showFullDescription, setShowFullDescription] = useState(false);
-  const [textLineCount, setTextLineCount] = useState(0);
-  const maxLines = 2;
+  const isShortNumeric =
+    (!props.inputMode || props.inputMode === 'numeric') &&
+    !!props.length &&
+    props.length <= 6;
 
   const validateCode = (code: string): string => {
     if (!code.trim()) return t('emptyCodeError');
@@ -36,192 +44,121 @@ export const TransactionCodeModal: React.FC<ExtendedModalProps> = props => {
     return '';
   };
 
-  const handleVerify = () => {
-    const error = validateCode(transactionCode);
+  const verify = (code: string) => {
+    const error = validateCode(code);
     if (error) {
       setErrorMessage(error);
       return;
     }
     setErrorMessage('');
-    props.onVerify?.(transactionCode);
+    props.onVerify?.(code);
   };
 
   const handleChange = (text: string) => {
     if (!touched) setTouched(true);
     setTransactionCode(text);
-    let error;
-    if (touched) error = validateCode(text);
-    setErrorMessage(error);
+    setErrorMessage(touched ? validateCode(text) : '');
   };
 
   return (
-    <>
-      {showCancelConfirm ? (
-        <CancelDownloadModal
-          onCancel={() => setShowCancelConfirm(false)}
-          onConfirm={props.onDismiss ?? (() => {})}
-          visible={showCancelConfirm}
-        />
-      ) : (
-        <Modal
-          isVisible={props.visible ?? false}
-          onDismiss={() => setShowCancelConfirm(true)}>
-          <KeyboardAvoidingView
-            style={
-              isSmallScreen
-                ? {flex: 1, paddingHorizontal: 10}
-                : Theme.Styles.keyboardAvoidStyle
-            }
-            behavior={isIOS() ? 'padding' : 'height'}>
-            <TouchableWithoutFeedback
-              onPress={Keyboard.dismiss}
-              accessible={false}>
-              <View style={{height: 700}}>
-                <Column
-                  crossAlign="center"
-                  style={
-                    isSmallScreen
-                      ? null
-                      : {
-                          maxHeight: screenHeight,
-                          flex: 1,
-                          justifyContent: 'space-around',
-                          marginBottom: 20,
-                        }
-                  }>
-                  {SvgImage.OtpVerificationIcon()}
-                  <View>
-                    <Column crossAlign="center">
-                      <Text
-                        testID="otpVerificationHeader"
-                        weight="bold"
-                        style={Theme.TextStyles.header}>
-                        {t('TransactionCode')}
-                      </Text>
-                      <Text
-                        style={{marginTop: 15}}
-                        testID="otpVerificationDescription"
-                        color={Theme.Colors.RetrieveIdLabel}
-                        numLines={showFullDescription ? undefined : 2}
-                        ellipsizeMode="tail"
-                        weight="semibold"
-                        size="small"
-                        align="center"
-                        onTextLayout={e => {
-                          if (textLineCount !== e.nativeEvent.lines.length) {
-                            setTextLineCount(e.nativeEvent.lines.length);
-                          }
-                        }}>
-                        {t(`${props.description || t('description')}`)}
-                      </Text>
-                      {textLineCount > maxLines && (
-                        <Text
-                          onPress={() => setShowFullDescription(prev => !prev)}
-                          style={
-                            Theme.TransactionCodeScreenStyle.showMoreButton
-                          }>
-                          {showFullDescription
-                            ? t('Show less ↑')
-                            : t('Show more ↓')}
-                        </Text>
-                      )}
-                    </Column>
-                  </View>
-
-                  {(props.error || errorMessage) && (
-                    <View style={Theme.TransactionCodeScreenStyle.errorView}>
-                      <Text
-                        testID="otpVerificationError"
-                        align="center"
-                        color={Theme.Colors.errorMessage}>
-                        {errorMessage || props.error}
-                      </Text>
-                    </View>
-                  )}
-
-                  <View style={{alignItems: 'center'}}>
-                    {(!props.inputMode ||
-                      (props.inputMode && props.inputMode === 'numeric')) &&
-                    props.length &&
-                    props.length <= 6 ? (
-                      <>
-                        <PinInput
-                          testID="pinInput"
-                          length={props.length}
-                          autosubmit={false}
-                          onChange={handleChange}
-                          onDone={(code: string) => {
-                            const error = validateCode(code);
-                            if (error) {
-                              setErrorMessage(error);
-                              return;
-                            }
-                            setErrorMessage('');
-                            props.onVerify?.(code);
-                            props.onDismiss?.();
-                          }}
-                        />
-                        <Button
-                          styles={{marginTop: 30}}
-                          disabled={transactionCode.length == 0}
-                          title={t('verify')}
-                          type="gradient"
-                          onPress={handleVerify}
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <Input
-                          containerStyle={{
-                            width: Dimensions.get('window').width - 80,
-                            alignSelf: 'center',
-                          }}
-                          placeholder={t('placeholder')}
-                          placeholderTextColor="#ACACAC"
-                          inputContainerStyle={{
-                            borderBottomColor: '#C1C1C1',
-                            borderBottomWidth: 1,
-                            marginBottom: 16,
-                          }}
-                          inputStyle={
-                            Theme.TransactionCodeScreenStyle.inputStyle
-                          }
-                          maxLength={props.length ?? 30}
-                          autoFocus
-                          secureTextEntry={!showCode}
-                          value={transactionCode}
-                          keyboardType={
-                            props.inputMode === 'numeric'
-                              ? 'numeric'
-                              : 'default'
-                          }
-                          onChangeText={handleChange}
-                          rightIcon={
-                            <Icon
-                              name={showCode ? 'eye-off' : 'eye'}
-                              type="feather"
-                              size={20}
-                              color="#888"
-                              onPress={() => setShowCode(prev => !prev)}
-                            />
-                          }
-                        />
-                        <Button
-                          disabled={transactionCode.length == 0}
-                          title="Verify"
-                          type="gradient"
-                          onPress={handleVerify}
-                        />
-                      </>
-                    )}
-                  </View>
-                </Column>
-              </View>
-            </TouchableWithoutFeedback>
-          </KeyboardAvoidingView>
-        </Modal>
-      )}
-    </>
+    <PageModal
+      visible={props.visible ?? false}
+      onRequestClose={() => setShowCancelConfirm(true)}>
+      <Page
+        testID="transactionCode"
+        header={
+          <PageHeader
+            title={t('pageTitle')}
+            onClose={() => setShowCancelConfirm(true)}
+          />
+        }
+        footer={
+          <PageButton
+            testID="verifyTransactionCode"
+            title={t('continue')}
+            disabled={transactionCode.length === 0}
+            onPress={() => verify(transactionCode)}
+          />
+        }>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          contentContainerStyle={styles.content}>
+          <PageHeading
+            testID="transactionCodeTitle"
+            size="medium"
+            title={t('title')}
+            body={props.description || t('description')}
+          />
+          {isShortNumeric ? (
+            <View style={styles.pins}>
+              <PinInput
+                testID="pinInput"
+                length={props.length!}
+                autosubmit={false}
+                onChange={handleChange}
+                onDone={verify}
+              />
+            </View>
+          ) : (
+            <View
+              style={[
+                styles.field,
+                {borderColor: c.lineStrong, backgroundColor: c.card},
+              ]}>
+              <TextInput
+                testID="transactionCodeInput"
+                autoFocus
+                style={[styles.input, {color: c.ink}]}
+                placeholder={t('placeholder')}
+                placeholderTextColor={c.inkMuted}
+                maxLength={props.length ?? 30}
+                secureTextEntry={!showCode}
+                value={transactionCode}
+                keyboardType={
+                  props.inputMode === 'numeric' ? 'numeric' : 'default'
+                }
+                onChangeText={handleChange}
+              />
+              <Pressable
+                accessibilityRole="button"
+                hitSlop={8}
+                onPress={() => setShowCode(shown => !shown)}>
+                <ScaledText style={[styles.show, {color: c.azureInk}]}>
+                  {showCode ? t('hide') : t('show')}
+                </ScaledText>
+              </Pressable>
+            </View>
+          )}
+          <FieldError
+            testID="otpVerificationError"
+            message={errorMessage || props.error}
+          />
+        </ScrollView>
+      </Page>
+      <AlertSheet
+        testID="cancelDownload"
+        isVisible={showCancelConfirm}
+        tone="warn"
+        icon={colour => <WarningIcon color={colour} />}
+        title={cancelT('heading')}
+        message={cancelT('subHeading')}
+        primary={{
+          testID: 'cancelDownloadModalNoButton',
+          title: cancelT('cancel'),
+          onPress: () => setShowCancelConfirm(false),
+        }}
+        secondary={{
+          testID: 'cancelDownloadModalYesButton',
+          title: cancelT('confirm'),
+          destructive: true,
+          onPress: () => {
+            setShowCancelConfirm(false);
+            props.onDismiss?.();
+          },
+        }}
+        onRequestClose={() => setShowCancelConfirm(false)}
+      />
+    </PageModal>
   );
 };
 
@@ -232,3 +169,19 @@ interface ExtendedModalProps extends ModalProps {
   inputMode?: 'text' | 'numeric';
   length?: number;
 }
+
+const styles = StyleSheet.create({
+  content: {paddingTop: 16, paddingBottom: 24, gap: 24},
+  pins: {alignItems: 'center', marginTop: 8},
+  field: {
+    height: 56,
+    borderRadius: radii.card,
+    borderWidth: 1,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  input: {flex: 1, fontFamily: fonts.regular, fontSize: 17},
+  show: {fontFamily: fonts.semibold, fontSize: 14},
+});

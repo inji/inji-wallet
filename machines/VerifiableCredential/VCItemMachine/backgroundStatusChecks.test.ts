@@ -70,8 +70,9 @@ describe('background card status checks', () => {
     });
     await flush();
 
-    expect(first.getSnapshot().matches('vcUtilitiesState.reverificationState'))
-      .toBe(true);
+    expect(
+      first.getSnapshot().matches('vcUtilitiesState.reverificationState'),
+    ).toBe(true);
     expect(second.getSnapshot().matches('vcUtilitiesState.idle')).toBe(true);
     expect(secondCheck).not.toHaveBeenCalled();
 

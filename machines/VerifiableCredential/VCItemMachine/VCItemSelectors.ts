@@ -49,8 +49,10 @@ export function selectVerifiableCredentialData(
 ): VerifiableCredentialData {
   const vcMetadata = new VCMetadata(state.context.vcMetadata);
   const faceField =
-    getFaceAttribute(state.context.verifiableCredential,state.context.format) ??
-    state.context.credential?.biometrics?.face;
+    getFaceAttribute(
+      state.context.verifiableCredential,
+      state.context.format,
+    ) ?? state.context.credential?.biometrics?.face;
 
   return {
     vcMetadata: vcMetadata,

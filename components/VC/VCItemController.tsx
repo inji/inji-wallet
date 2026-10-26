@@ -22,9 +22,9 @@ import {
 } from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {selectIsSavingFailedInIdle} from '../../screens/Home/MyVcsTabMachine';
 import {selectIsTourGuide} from '../../machines/auth';
-import {VCMetadata} from "../../shared/VCMetadata";
-import {ActivityLogEvents} from "../../machines/activityLog";
-import {IssuerWellknownResponse} from "../../machines/VerifiableCredential/VCMetaMachine/vc";
+import {VCMetadata} from '../../shared/VCMetadata';
+import {ActivityLogEvents} from '../../machines/activityLog';
+import {IssuerWellknownResponse} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {
   checkCardInBackground,
   queueBackgroundStatusCheck,
@@ -109,9 +109,12 @@ export function useVcItemController(vcMetadata: VCMetadata) {
     storeErrorTranslationPath: 'errors.savingFailed',
     generatedOn: useSelector(VCItemService, selectGeneratedOn),
     isTourGuide: useSelector(authService, selectIsTourGuide),
-    STORE_INCOMING_VC_WELLKNOWN_CONFIG: (issuer: string, wellknown: IssuerWellknownResponse) =>
-        activityService?.send(
-            ActivityLogEvents.STORE_INCOMING_VC_WELLKNOWN_CONFIG(issuer, wellknown),
-        )
+    STORE_INCOMING_VC_WELLKNOWN_CONFIG: (
+      issuer: string,
+      wellknown: IssuerWellknownResponse,
+    ) =>
+      activityService?.send(
+        ActivityLogEvents.STORE_INCOMING_VC_WELLKNOWN_CONFIG(issuer, wellknown),
+      ),
   };
 }

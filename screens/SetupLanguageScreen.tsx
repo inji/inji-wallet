@@ -1,23 +1,23 @@
 import React, {useEffect} from 'react';
-import i18n, {SUPPORTED_LANGUAGES} from '../i18n';
+import {BackHandler, ScrollView, StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {SetupPicker} from '../components/ui/SetupPicker';
-import {Button, Column, Text} from '../components/ui';
-import {Theme} from '../components/ui/styleUtils';
+import i18n, {SUPPORTED_LANGUAGES} from '../i18n';
 import {RootRouteProps} from '../routes';
 import {useWelcomeScreen} from './WelcomeScreenController';
 import {changeLanguage} from '../components/LanguageSelector';
-import {BackHandler, Dimensions} from 'react-native';
 import {useBackupRestoreScreen} from './Settings/BackupRestoreController';
-import {SvgImage} from '../components/ui/svg';
+import {
+  ChoiceCards,
+  ChoiceRow,
+  Page,
+  PageButton,
+  PageHeading,
+} from '../components/revamp/Page';
 
 export const SetupLanguageScreen: React.FC<RootRouteProps> = props => {
   const {t} = useTranslation('SetupLanguage');
   const controller = useWelcomeScreen(props);
   const backupRestoreController = useBackupRestoreScreen();
-  const languages = Object.entries(SUPPORTED_LANGUAGES).map(
-    ([value, label]) => ({label, value}),
-  );
 
   useEffect(() => {
     backupRestoreController.DOWNLOAD_UNSYNCED_BACKUP_FILES();
@@ -32,56 +32,62 @@ export const SetupLanguageScreen: React.FC<RootRouteProps> = props => {
   }, [controller.isSettingUp]);
 
   useEffect(() => {
-    const backAction = () => {
-      BackHandler.exitApp();
-      return true;
-    };
-
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
-      backAction,
+      () => {
+        BackHandler.exitApp();
+        return true;
+      },
     );
-
     return () => backHandler.remove();
   }, []);
 
   return (
-    <Column style={Theme.SetupLanguageScreenStyle.columnStyle}>
-      {SvgImage.settingsLanguageIcon(58)}
-      <Column crossAlign="center" width={Dimensions.get('window').width * 0.8}>
-        <Text
-          testID="chooseLanguage"
-          style={{paddingTop: 3}}
-          margin="10 0 10 0"
-          size="large"
-          weight="semibold">
-          {t('header')}
-        </Text>
-        <Text
-          weight="semibold"
-          style={{paddingTop: 3}}
-          align="center"
-          size="mediumSmall"
-          color={Theme.Colors.GrayText}>
-          {t('description')}
-        </Text>
-      </Column>
-
-      <SetupPicker
-        testID="languagePicker"
-        items={languages}
-        selectedValue={i18n.language}
-        onValueChange={language => changeLanguage(i18n, language)}
-      />
-
-      <Button
-        testID="savePreference"
-        type="gradient"
-        title={t('save')}
-        onPress={() => {
-          controller.SELECT();
-        }}
-      />
-    </Column>
+    <Page
+      testID="chooseLanguage"
+      footer={
+        <PageButton
+          testID="savePreference"
+          title={t('continue')}
+          onPress={controller.SELECT}
+        />
+      }>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}>
+        <PageHeading align="left" title={t('header')} body={t('description')} />
+        <ChoiceCards>
+          {Object.entries(SUPPORTED_LANGUAGES).map(([value, label]) => (
+            <ChoiceRow
+              key={value}
+              testID={`language-${value}`}
+              card
+              label={label}
+              hint={
+                ENGLISH_NAMES[value] !== label
+                  ? ENGLISH_NAMES[value]
+                  : undefined
+              }
+              selected={i18n.language === value}
+              onPress={() => changeLanguage(i18n, value)}
+            />
+          ))}
+        </ChoiceCards>
+      </ScrollView>
+    </Page>
   );
 };
+
+// Shown under each native name so every option can be read in English too.
+const ENGLISH_NAMES: Record<string, string> = {
+  en: 'English',
+  fil: 'Filipino',
+  ar: 'Arabic',
+  hi: 'Hindi',
+  kn: 'Kannada',
+  ta: 'Tamil',
+};
+
+const styles = StyleSheet.create({
+  content: {paddingTop: 40, paddingBottom: 16, gap: 24},
+});

@@ -1,8 +1,5 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {TouchableOpacity} from 'react-native';
-import {Button, Centered, Column} from '../components/ui';
-import {Theme} from '../components/ui/styleUtils';
 import {RootRouteProps} from '../routes';
 import {useBiometricScreen} from './BiometricScreenController';
 import {Passcode} from '../components/Passcode';
@@ -12,10 +9,13 @@ import {
   resetRetryCount,
 } from '../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../shared/telemetry/TelemetryConstants';
-import {SvgImage} from '../components/ui/svg';
+import {Page, PageButton} from '../components/revamp/Page';
+import {BiometricsIcon} from '../components/revamp/Icons';
+import {LockedBrand} from './WelcomeScreen';
 
+/** Android's biometric prompt opens over this page by itself; the button asks again. */
 export const BiometricScreen: React.FC<RootRouteProps> = props => {
-  const {t} = useTranslation('BiometricScreen');
+  const {t} = useTranslation('WelcomeScreen');
   const controller = useBiometricScreen(props);
 
   const handlePasscodeMismatch = (error: string) => {
@@ -32,27 +32,30 @@ export const BiometricScreen: React.FC<RootRouteProps> = props => {
   };
 
   return (
-    <Column
-      fill
-      pY={32}
-      pX={32}
-      backgroundColor={Theme.Colors.whiteBackgroundColor}>
-      <Centered fill>
-        <TouchableOpacity onPress={controller.useBiometrics}>
-          {SvgImage.fingerprintIcon(180)}
-        </TouchableOpacity>
-      </Centered>
-
-      <Button
-        title={t('unlock')}
-        margin="8 0"
-        type="gradient"
-        onPress={controller.useBiometrics}
-        disabled={controller.isSuccessBio}
-      />
+    <Page
+      testID="biometricUnlock"
+      footer={
+        <>
+          <PageButton
+            testID="unlockWithBiometrics"
+            title={t('unlock')}
+            icon={colour => <BiometricsIcon color={colour} size={20} />}
+            onPress={controller.useBiometrics}
+            disabled={controller.isSuccessBio}
+          />
+          <PageButton
+            testID="usePasscodeInstead"
+            variant="link"
+            title={t('usePasscode')}
+            onPress={() =>
+              props.navigation.navigate('Passcode', {setup: false})
+            }
+          />
+        </>
+      }>
+      <LockedBrand />
       {controller.isReEnabling && (
         <Passcode
-          message="Enter your passcode to re-enable biometrics authentication."
           onSuccess={handleOnSuccess}
           onError={handlePasscodeMismatch}
           storedPasscode={controller.storedPasscode}
@@ -61,6 +64,6 @@ export const BiometricScreen: React.FC<RootRouteProps> = props => {
           salt={controller.passcodeSalt}
         />
       )}
-    </Column>
+    </Page>
   );
 };

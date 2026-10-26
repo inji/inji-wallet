@@ -1,9 +1,4 @@
-import {
-  BOTTOM_TAB_ROUTES,
-  SCAN_ROUTES,
-  REQUEST_ROUTES,
-  AUTH_ROUTES,
-} from './routesConstants';
+import {BOTTOM_TAB_ROUTES, SCAN_ROUTES, AUTH_ROUTES} from './routesConstants';
 
 describe('routesConstants', () => {
   describe('BOTTOM_TAB_ROUTES', () => {
@@ -54,28 +49,6 @@ describe('routesConstants', () => {
     });
   });
 
-  describe('REQUEST_ROUTES', () => {
-    it('should be defined', () => {
-      expect(REQUEST_ROUTES).toBeDefined();
-    });
-
-    it('should have Request route', () => {
-      expect(REQUEST_ROUTES.Request).toBe('Request');
-    });
-
-    it('should have RequestScreen route', () => {
-      expect(REQUEST_ROUTES.RequestScreen).toBe('RequestScreen');
-    });
-
-    it('should have ReceiveVcScreen route', () => {
-      expect(REQUEST_ROUTES.ReceiveVcScreen).toBe('ReceiveVcScreen');
-    });
-
-    it('should have exactly 3 routes', () => {
-      expect(Object.keys(REQUEST_ROUTES)).toHaveLength(3);
-    });
-  });
-
   describe('AUTH_ROUTES', () => {
     it('should be defined', () => {
       expect(AUTH_ROUTES).toBeDefined();
@@ -99,12 +72,6 @@ describe('routesConstants', () => {
 
     it('all SCAN_ROUTES values should be strings', () => {
       Object.values(SCAN_ROUTES).forEach(route => {
-        expect(typeof route).toBe('string');
-      });
-    });
-
-    it('all REQUEST_ROUTES values should be strings', () => {
-      Object.values(REQUEST_ROUTES).forEach(route => {
         expect(typeof route).toBe('string');
       });
     });

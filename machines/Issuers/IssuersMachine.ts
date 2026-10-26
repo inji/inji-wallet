@@ -525,7 +525,7 @@ export const IssuersMachine = model.createMachine(
             target: 'proccessingCredential',
           },
           onError: {
-            actions: ['resetLoadingReason'],
+            actions: ['setError', 'resetLoadingReason'],
             target: '#issuersMachine.error',
           },
         },

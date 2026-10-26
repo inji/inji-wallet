@@ -1,28 +1,66 @@
-import React from 'react';
-import {SUPPORTED_LANGUAGES} from '../i18n';
-import {I18nManager, View} from 'react-native';
-import {Picker} from './ui/Picker';
+import React, {useState} from 'react';
+import {I18nManager, Pressable, ScrollView, StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import i18next, {i18n} from 'i18next';
 import RNRestart from 'react-native-restart';
+import {SUPPORTED_LANGUAGES} from '../i18n';
 import {setItem} from '../machines/store';
+import {
+  ChoiceList,
+  ChoiceRow,
+  Page,
+  PageHeader,
+  PageModal,
+} from './revamp/Page';
+import {ScaledText} from './revamp/ScaledText';
+import {fonts} from './revamp/tokens';
+import {useRevampTheme} from './revamp/useRevampTheme';
 
+/** Languages written right to left, whose names align right in the lists. */
+export const RTL_LANGUAGES = ['ar'];
+
+/** The trigger opens a page listing the app's languages; choosing one applies it and goes back. */
 export const LanguageSelector: React.FC<LanguageSelectorProps> = props => {
   const {i18n} = useTranslation();
-  const languages = Object.entries(SUPPORTED_LANGUAGES).map(
-    ([value, label]) => ({label, value}),
-  );
+  const {t} = useTranslation('SettingScreen');
+  const {c} = useRevampTheme();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <View>
-      <Picker
-        testID="languages"
-        items={languages}
-        selectedValue={i18n.language}
-        onValueChange={language => changeLanguage(i18n, language)}
-        triggerComponent={props.triggerComponent}
-      />
-    </View>
+    <>
+      <Pressable onPress={() => setIsOpen(true)}>
+        {props.triggerComponent}
+      </Pressable>
+      <PageModal visible={isOpen} onRequestClose={() => setIsOpen(false)}>
+        <Page
+          testID="languages"
+          header={
+            <PageHeader title={t('language')} onBack={() => setIsOpen(false)} />
+          }>
+          <ScrollView contentContainerStyle={styles.content}>
+            <ChoiceList>
+              {Object.entries(SUPPORTED_LANGUAGES).map(([value, label]) => (
+                <ChoiceRow
+                  key={value}
+                  testID={`language-${value}`}
+                  label={label}
+                  mark="check"
+                  rtl={RTL_LANGUAGES.includes(value)}
+                  selected={i18n.language === value}
+                  onPress={() => {
+                    setIsOpen(false);
+                    changeLanguage(i18n, value);
+                  }}
+                />
+              ))}
+            </ChoiceList>
+            <ScaledText style={[styles.hint, {color: c.inkMuted}]}>
+              {t('languageHint')}
+            </ScaledText>
+          </ScrollView>
+        </Page>
+      </PageModal>
+    </>
   );
 };
 
@@ -48,3 +86,8 @@ export const changeLanguage = async (i18n: i18n, language: string) => {
 interface LanguageSelectorProps {
   triggerComponent: React.ReactElement;
 }
+
+const styles = StyleSheet.create({
+  content: {paddingTop: 12, paddingBottom: 24, gap: 12},
+  hint: {fontFamily: fonts.regular, fontSize: 13, paddingHorizontal: 4},
+});

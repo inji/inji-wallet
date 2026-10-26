@@ -3,7 +3,6 @@ import {ActorRefFrom, InterpreterFrom} from 'xstate';
 import {activityLogMachine} from '../machines/activityLog';
 import {appMachine} from '../machines/app';
 import {authMachine} from '../machines/auth';
-import {requestMachine} from '../machines/bleShare/request/requestMachine';
 import {scanMachine} from '../machines/bleShare/scan/scanMachine';
 import {settingsMachine} from '../machines/settings';
 import {storeMachine} from '../machines/store';
@@ -23,7 +22,6 @@ export interface AppServices {
   vcMeta: ActorRefFrom<typeof vcMetaMachine>;
   settings: ActorRefFrom<typeof settingsMachine>;
   activityLog: ActorRefFrom<typeof activityLogMachine>;
-  request: ActorRefFrom<typeof requestMachine>;
   scan: ActorRefFrom<typeof scanMachine>;
   backup: ActorRefFrom<typeof backupMachine>;
   backupRestore: ActorRefFrom<typeof restoreMachine>;

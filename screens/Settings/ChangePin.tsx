@@ -1,13 +1,17 @@
 import React, {useContext, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {useSelector} from '@xstate/react';
-import {Modal} from '../../components/ui/Modal';
-import {MAX_PIN, PasscodeVerify} from '../../components/PasscodeVerify';
+import {MAX_PIN} from '../../components/PasscodeVerify';
 import {PinInput} from '../../components/PinInput';
-import {ScaledText} from '../../components/revamp/ScaledText';
-import {fonts} from '../../components/revamp/tokens';
-import {useRevampTheme} from '../../components/revamp/useRevampTheme';
+import {
+  FieldError,
+  Page,
+  PageHeader,
+  PageHeading,
+  PageModal,
+  StepDots,
+} from '../../components/revamp/Page';
 import {GlobalContext} from '../../shared/GlobalContext';
 import {
   AuthEvents,
@@ -17,7 +21,8 @@ import {
 import {hashData} from '../../shared/commonUtil';
 import {argon2iConfig} from '../../shared/constants';
 
-type Step = 'current' | 'new' | 'confirm';
+const STEPS = ['current', 'new', 'confirm'] as const;
+type Step = (typeof STEPS)[number];
 
 /** Confirm the current PIN, then enter the new one twice. */
 export const ChangePin: React.FC<{
@@ -25,7 +30,6 @@ export const ChangePin: React.FC<{
   onDone: (changed: boolean) => void;
 }> = ({isVisible, onDone}) => {
   const {t} = useTranslation('SettingScreen');
-  const {c} = useRevampTheme();
   const {appService} = useContext(GlobalContext);
   const authService = appService.children.get('auth')!;
   const storedPasscode = useSelector(authService, selectPasscode);
@@ -33,8 +37,8 @@ export const ChangePin: React.FC<{
   const [step, setStep] = useState<Step>('current');
   const [newPasscode, setNewPasscode] = useState('');
   const [error, setError] = useState('');
-  // Remounts the new-PIN boxes, which clears them.
-  const [attempt, setAttempt] = useState(0);
+  // One set of boxes serves every step; bumping this empties them without closing the keyboard.
+  const [clearKey, setClearKey] = useState(0);
   // The PIN boxes focus themselves when they mount, so they mount once the page is up and the
   // keyboard opens with it.
   const [shown, setShown] = useState(false);
@@ -47,7 +51,43 @@ export const ChangePin: React.FC<{
     onDone(changed);
   };
 
-  const prompt =
+  const goTo = (next: Step, message = '') => {
+    setStep(next);
+    setError(message);
+    setClearKey(k => k + 1);
+  };
+
+  const onEntered = async (value: string) => {
+    let hashed: string;
+    try {
+      hashed = await hashData(value, salt, argon2iConfig);
+    } catch (e) {
+      console.error('Hashing the PIN failed', e);
+      goTo(step, t('pinChangeFailed'));
+      return;
+    }
+    if (step === 'current') {
+      hashed === storedPasscode
+        ? goTo('new')
+        : goTo('current', t('wrongCurrentPin'));
+    } else if (step === 'new') {
+      if (hashed === storedPasscode) {
+        goTo('new', t('samePin'));
+      } else {
+        setNewPasscode(hashed);
+        goTo('confirm');
+      }
+    } else if (hashed === newPasscode) {
+      authService.send(AuthEvents.CHANGE_PASSCODE(newPasscode));
+      close(true);
+    } else {
+      // Back to the new PIN, so a typo in either entry can be fixed.
+      setNewPasscode('');
+      goTo('new', t('pinsDontMatch'));
+    }
+  };
+
+  const title =
     step === 'current'
       ? t('enterCurrentPin')
       : step === 'new'
@@ -55,89 +95,45 @@ export const ChangePin: React.FC<{
       : t('confirmNewPin');
 
   return (
-    <Modal
-      testID="changePin"
-      isVisible={isVisible}
-      headerTitle={t('changePin')}
-      arrowLeft={true}
+    <PageModal
+      visible={isVisible}
       onShow={() => setShown(true)}
-      onDismiss={() => close(false)}>
-      <View style={styles.body}>
-        <ScaledText style={[styles.prompt, {color: c.ink}]}>
-          {prompt}
-        </ScaledText>
-        {shown && step === 'current' && (
-          <PasscodeVerify
-            key="current"
-            testID="currentPin"
-            passcode={storedPasscode}
-            salt={salt}
-            onSuccess={() => {
-              setError('');
-              setStep('new');
-            }}
-            onError={setError}
-          />
-        )}
-        {shown && step === 'new' && (
-          <PinInput
-            key={'new' + attempt}
-            testID="newPin"
-            length={MAX_PIN}
-            autosubmit={true}
-            onDone={async (value: string) => {
-              try {
-                const hashed = await hashData(value, salt, argon2iConfig);
-                if (hashed === storedPasscode) {
-                  setError(t('samePin'));
-                  setAttempt(a => a + 1);
-                  return;
+      onRequestClose={() => close(false)}>
+      <Page
+        testID="changePin"
+        header={
+          <PageHeader title={t('changePin')} onBack={() => close(false)} />
+        }>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          contentContainerStyle={styles.content}>
+          <StepDots current={STEPS.indexOf(step)} count={STEPS.length} />
+          <PageHeading testID="changePinTitle" size="medium" title={title} />
+          <View style={styles.pins}>
+            {shown && (
+              <PinInput
+                testID={
+                  step === 'current'
+                    ? 'currentPin'
+                    : step === 'new'
+                    ? 'newPin'
+                    : 'confirmNewPin'
                 }
-                setNewPasscode(hashed);
-                setError('');
-                setStep('confirm');
-              } catch (e) {
-                console.error('Hashing the new PIN failed', e);
-                setError(t('pinChangeFailed'));
-              }
-            }}
-          />
-        )}
-        {shown && step === 'confirm' && (
-          <PasscodeVerify
-            key="confirm"
-            testID="confirmNewPin"
-            passcode={newPasscode}
-            salt={salt}
-            onSuccess={() => {
-              authService.send(AuthEvents.CHANGE_PASSCODE(newPasscode));
-              close(true);
-            }}
-            onError={() => {
-              // Back to the new PIN, so a typo in either entry can be fixed.
-              setNewPasscode('');
-              setError(t('pinsDontMatch'));
-              setStep('new');
-            }}
-          />
-        )}
-        {error ? (
-          <ScaledText style={[styles.error, {color: c.fail}]}>
-            {error}
-          </ScaledText>
-        ) : null}
-      </View>
-    </Modal>
+                length={MAX_PIN}
+                autosubmit={true}
+                clearKey={clearKey}
+                onDone={onEntered}
+              />
+            )}
+          </View>
+          <FieldError testID="changePinError" message={error} />
+        </ScrollView>
+      </Page>
+    </PageModal>
   );
 };
 
 const styles = StyleSheet.create({
-  body: {paddingHorizontal: 24, paddingTop: 48, gap: 32, alignItems: 'center'},
-  prompt: {
-    fontFamily: fonts.medium,
-    fontSize: 18,
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  error: {fontFamily: fonts.regular, fontSize: 14, textAlign: 'center'},
+  content: {paddingTop: 20, paddingBottom: 24, gap: 18},
+  pins: {marginTop: 18, alignSelf: 'stretch', alignItems: 'center'},
 });

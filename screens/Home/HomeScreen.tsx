@@ -3,7 +3,6 @@ import {Column} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
 import {HomeRouteProps} from '../../routes/routeTypes';
 import {MyVcsTab} from './MyVcsTab';
-import {ReceivedVcsTab} from './ReceivedVcsTab';
 import {ViewVcModal} from './ViewVcModal';
 import {useHomeScreen} from './HomeScreenController';
 import {TabRef} from './HomeScreenMachine';
@@ -104,11 +103,6 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
               onVcOpened={() =>
                 props.navigation.setParams({openVcKey: undefined})
               }
-            />
-            <ReceivedVcsTab
-              isVisible={controller.activeTab === 1}
-              service={controller.tabRefs.receivedVcs}
-              vcItemActor={controller.selectedVc}
             />
           </Column>
         )}

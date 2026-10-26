@@ -43,8 +43,10 @@ export const VCItemGaurds = () => {
       if (!context.isReverifyingInBackground) return false;
       const previous = context.vcMetadata;
       return (
-        hasStatusChanged(previous, statusAfterCheck(previous, event.data, '')) ||
-        !wasStatusCheckedRecently(previous)
+        hasStatusChanged(
+          previous,
+          statusAfterCheck(previous, event.data, ''),
+        ) || !wasStatusCheckedRecently(previous)
       );
     },
 
@@ -54,7 +56,7 @@ export const VCItemGaurds = () => {
         (event.data as Error)?.message,
       ),
 
-    hasVcStatusChangedAfterReverification: (context:any) => {
+    hasVcStatusChangedAfterReverification: (context: any) => {
       return context.statusChangedDuringVerification;
     },
 

@@ -76,15 +76,21 @@ export function useMyVcsTab(props: HomeScreenTabProps) {
       vcMetaService,
       selectVerificationErrorMessage,
     ),
-    reverificationSuccess: useSelector(vcMetaService,selectIsReverificationSuccess),
-    reverificationfailure: useSelector(vcMetaService,selectIsReverificationFailure),
+    reverificationSuccess: useSelector(
+      vcMetaService,
+      selectIsReverificationSuccess,
+    ),
+    reverificationfailure: useSelector(
+      vcMetaService,
+      selectIsReverificationFailure,
+    ),
     RESET_REVERIFICATION_FAILURE: () => {
       vcMetaService.send(VcMetaEvents.RESET_REVERIFY_VC_FAILED());
     },
     RESET_REVERIFICATION_SUCCESS: () => {
       vcMetaService.send(VcMetaEvents.RESET_REVERIFY_VC_SUCCESS());
     },
-    RESET_HIGHLIGHT:()=>{
+    RESET_HIGHLIGHT: () => {
       vcMetaService.send(VcMetaEvents.RESET_HIGHLIGHT());
     },
     SET_STORE_VC_ITEM_STATUS: () =>

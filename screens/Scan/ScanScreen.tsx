@@ -26,7 +26,8 @@ import {Icon} from 'react-native-elements';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {isIOS, LIVENESS_CHECK} from '../../shared/constants';
 import {BannerNotificationContainer} from '../../components/BannerNotificationContainer';
-import {SharingStatusModal} from './SharingStatusModal';
+import {AlertSheet} from '../../components/revamp/Page';
+import {QrUnknownIcon} from '../../components/revamp/Icons';
 import {SvgImage} from '../../components/ui/svg';
 import {LocationPermissionRational} from './LocationPermissionRational';
 import {FaceVerificationAlertOverlay} from './FaceVerificationAlertOverlay';
@@ -42,7 +43,6 @@ import {useOvpErrorModal} from '../../shared/hooks/useOvpErrorModal';
 import {useScanStackScreenSwitcher} from './useScanStackScreenSwitcher';
 
 const COLORS = Theme.Colors.Design;
-const COMING_SOON_MS = 2000;
 
 export const ScanScreen: React.FC = () => {
   const {t} = useTranslation('ScanScreen');
@@ -67,7 +67,6 @@ export const ScanScreen: React.FC = () => {
   const [isBluetoothOn, setIsBluetoothOn] = useState(false);
   const insets = useSafeAreaInsets();
   const [isTorchOn, setIsTorchOn] = useState(false);
-  const [isComingSoonVisible, setIsComingSoonVisible] = useState(false);
 
   // This tab is dark, so the status bar switches to light icons while it is in focus.
   useFocusEffect(
@@ -91,18 +90,6 @@ export const ScanScreen: React.FC = () => {
     }
   }, [scanScreenController.isScanning]);
 
-  // "From Photos" and "Show My QR" are placeholders until those features are built.
-  useEffect(() => {
-    if (!isComingSoonVisible) {
-      return;
-    }
-    const timeout = setTimeout(
-      () => setIsComingSoonVisible(false),
-      COMING_SOON_MS,
-    );
-    return () => clearTimeout(timeout);
-  }, [isComingSoonVisible]);
-  const showComingSoon = () => setIsComingSoonVisible(true);
   const showErrorModal =
     sendVPScreenController.scanScreenError ||
     (errorModal.show &&
@@ -308,16 +295,24 @@ export const ScanScreen: React.FC = () => {
   function displayInvalidQRpopup(): React.ReactNode {
     return (
       !scanScreenController.isNoSharableVCs && (
-        <SharingStatusModal
+        <AlertSheet
+          testID="invalidQrPopup"
           isVisible={scanScreenController.selectIsInvalid}
-          testId={'invalidQrPopup'}
-          image={SvgImage.ErrorLogo()}
-          title={t(`status.bleError.TVW_CON_001.title`)}
-          message={t(`status.bleError.TVW_CON_001.message`)}
-          gradientButtonTitle={t('status.bleError.retry')}
-          clearButtonTitle={t('status.bleError.home')}
-          onGradientButton={scanScreenController.DISMISS}
-          onClearButton={scanScreenController.GOTO_HOME}
+          tone="warn"
+          icon={colour => <QrUnknownIcon color={colour} />}
+          title={t('notVerifierCodeTitle')}
+          message={t('notVerifierCodeMessage')}
+          primary={{
+            testID: 'scanAgain',
+            title: t('scanAgain'),
+            onPress: scanScreenController.DISMISS,
+          }}
+          secondary={{
+            testID: 'backToWallet',
+            title: t('backToWallet'),
+            onPress: scanScreenController.GOTO_HOME,
+          }}
+          onRequestClose={scanScreenController.DISMISS}
         />
       )
     );
@@ -420,54 +415,6 @@ export const ScanScreen: React.FC = () => {
         />
       </Centered>
 
-      {scanScreenController.isScanning && (
-        <View style={styles.footer}>
-          {isComingSoonVisible && (
-            <View style={styles.comingSoon}>
-              <Text style={styles.comingSoonText}>{t('comingSoon')}</Text>
-            </View>
-          )}
-          <View style={styles.footerButtons}>
-            <Pressable
-              testID="scanFromPhotos"
-              accessibilityRole="button"
-              onPress={showComingSoon}
-              style={({pressed}) => [
-                styles.outlinePill,
-                pressed && styles.pressed,
-              ]}>
-              <Icon
-                name="image-outline"
-                type="material-community"
-                size={20}
-                color={COLORS.darkText}
-              />
-              <Text
-                style={styles.outlinePillText}
-                numberOfLines={1}
-                adjustsFontSizeToFit>
-                {t('fromPhotos')}
-              </Text>
-            </Pressable>
-            <Pressable
-              testID="scanShowMyQr"
-              accessibilityRole="button"
-              onPress={showComingSoon}
-              style={({pressed}) => [
-                styles.primaryPill,
-                styles.footerPill,
-                pressed && styles.pressed,
-              ]}>
-              <Text
-                style={styles.primaryPillText}
-                numberOfLines={1}
-                adjustsFontSizeToFit>
-                {t('showMyQr')}
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-      )}
       {displayStorageLimitReachedError()}
 
       {sendVPScreenController.flowType.startsWith('OpenID4VP') &&
@@ -583,32 +530,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: COLORS.darkText,
   },
-  footer: {
-    paddingHorizontal: 20,
-    paddingBottom: 16,
-  },
-  footerButtons: {
-    flexDirection: 'row',
-  },
-  outlinePill: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 54,
-    marginRight: 12,
-    paddingHorizontal: 12,
-    borderRadius: 27,
-    borderWidth: 1.5,
-    borderColor: COLORS.darkBorder,
-  },
-  outlinePillText: {
-    flexShrink: 1,
-    marginLeft: 8,
-    fontFamily: 'Montserrat_600SemiBold',
-    fontSize: 15,
-    color: COLORS.darkText,
-  },
   primaryPill: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -618,29 +539,10 @@ const styles = StyleSheet.create({
     borderRadius: 27,
     backgroundColor: COLORS.surface,
   },
-  // Same padding as the outline pill, so the two footer buttons come out equal width.
-  footerPill: {
-    flex: 1,
-    marginTop: 0,
-    paddingHorizontal: 12,
-  },
   primaryPillText: {
     fontFamily: 'Montserrat_600SemiBold',
     fontSize: 16,
     color: COLORS.navy,
-  },
-  comingSoon: {
-    alignSelf: 'center',
-    marginBottom: 12,
-    backgroundColor: COLORS.darkSurface,
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  comingSoonText: {
-    fontFamily: 'Montserrat_500Medium',
-    fontSize: 14,
-    color: COLORS.darkText,
   },
   pressed: {
     opacity: 0.75,

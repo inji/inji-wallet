@@ -110,6 +110,8 @@ const LockScreen: React.FC<{onUnlock: () => void}> = ({onUnlock}) => {
   );
   const [canUseBiometrics, setCanUseBiometrics] = useState(false);
   const [error, setError] = useState('');
+  // Bumped after a wrong PIN; the boxes clear without losing focus.
+  const [attempt, setAttempt] = useState(0);
   // Mounted once the page is up, so the PIN box can take focus and open the keyboard.
   const [shown, setShown] = useState(false);
 
@@ -168,11 +170,15 @@ const LockScreen: React.FC<{onUnlock: () => void}> = ({onUnlock}) => {
               {passcodeT('enterPasscode')}
             </ScaledText>
             <PasscodeVerify
+              clearKey={attempt}
               testID="appLockPasscode"
               passcode={passcode}
               salt={salt}
               onSuccess={onUnlock}
-              onError={setError}
+              onError={message => {
+                setError(message);
+                setAttempt(a => a + 1);
+              }}
             />
             {error ? (
               <ScaledText style={[styles.error, {color: c.fail}]}>

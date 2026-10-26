@@ -189,18 +189,6 @@ export const settingsIcons = {
       <Path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4" />
     </SettingsIcon>
   ),
-  receive: (col: string) => (
-    <SettingsIcon colour={col}>
-      <Path d="M12 3v12M7 10l5 5 5-5" />
-      <Path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
-    </SettingsIcon>
-  ),
-  received: (col: string) => (
-    <SettingsIcon colour={col}>
-      <Rect x={3} y={7} width={18} height={13} rx={2} />
-      <Path d="M7 4h10M7 12h5M7 16h8" />
-    </SettingsIcon>
-  ),
   language: (col: string) => (
     <SettingsIcon colour={col}>
       <Circle cx={12} cy={12} r={9} />

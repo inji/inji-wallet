@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   I18nManager,
   Pressable,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   useHistoryTab,
@@ -46,6 +46,16 @@ export const HistoryScreen: React.FC = () => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const [filter, setFilter] = useState<NotificationFilter>('all');
+  // Another screen can open this one on a filter, e.g. Settings → Sharing history.
+  const requestedFilter = (
+    useRoute().params as {filter?: NotificationFilter} | undefined
+  )?.filter;
+  useEffect(() => {
+    if (requestedFilter) {
+      setFilter(requestedFilter);
+      navigation.setParams({filter: undefined} as never);
+    }
+  }, [requestedFilter]);
   const [selectedActivity, setSelectedActivity] =
     useState<VCActivityLog | null>(null);
   const walletCredentials = useWalletCredentials();

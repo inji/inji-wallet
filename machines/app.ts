@@ -7,10 +7,6 @@ import {authMachine, createAuthMachine} from './auth';
 import {createSettingsMachine, settingsMachine} from './settings';
 import {StoreEvents, storeMachine} from './store';
 import {activityLogMachine, createActivityLogMachine} from './activityLog';
-import {
-  createRequestMachine,
-  requestMachine,
-} from './bleShare/request/requestMachine';
 import {createScanMachine, scanMachine} from './bleShare/scan/scanMachine';
 import {pure, respond} from 'xstate/lib/actions';
 import {AppServices} from '../shared/GlobalContext';
@@ -418,13 +414,6 @@ export const appMachine = model.createMachine(
             createScanMachine(serviceRefs),
             scanMachine.id,
           );
-
-          if (isAndroid()) {
-            serviceRefs.request = spawn(
-              createRequestMachine(serviceRefs),
-              requestMachine.id,
-            );
-          }
           return serviceRefs;
         },
       }),
@@ -437,10 +426,6 @@ export const appMachine = model.createMachine(
         context.serviceRefs.scan.subscribe(logState);
         context.serviceRefs.backup.subscribe(logState);
         context.serviceRefs.backupRestore.subscribe(logState);
-
-        if (isAndroid()) {
-          context.serviceRefs.request.subscribe(logState);
-        }
       },
 
       setAppInfo: model.assign({

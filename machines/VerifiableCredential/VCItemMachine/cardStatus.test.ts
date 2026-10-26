@@ -24,9 +24,9 @@ describe('wasStatusCheckedRecently', () => {
   });
 
   it('is false for a card that was never checked', () => {
-    expect(
-      wasStatusCheckedRecently({lastKnownStatusTimestamp: ''}, now),
-    ).toBe(false);
+    expect(wasStatusCheckedRecently({lastKnownStatusTimestamp: ''}, now)).toBe(
+      false,
+    );
     expect(wasStatusCheckedRecently(undefined, now)).toBe(false);
   });
 });
@@ -52,7 +52,10 @@ describe('statusAfterCheck', () => {
   it('marks an expired card', () => {
     const next = statusAfterCheck(
       new VCMetadata({id: 'vc'}),
-      {isRevoked: RevocationStatus.FALSE, verificationErrorCode: 'ERR_VC_EXPIRED'},
+      {
+        isRevoked: RevocationStatus.FALSE,
+        verificationErrorCode: 'ERR_VC_EXPIRED',
+      },
       '',
     );
     expect(next.isExpired).toBe(true);
