@@ -46,13 +46,14 @@ export const AddedToWalletScreen: React.FC<AddedToWalletScreenProps> = ({
     return () => sub.remove();
   }, [onViewInWallet]);
 
+  // Only what the download actually established gets a tick. The credential is always saved by the
+  // time this screen shows, but its signature check may have failed for lack of network (status
+  // `pending`), and an expired or revoked credential is stored too. Nothing checks the holder's
+  // identity at download, so there is no row claiming it.
+  const status = data?.status;
+  const isVerified = status === 'verified';
   const checks = [
-    {
-      key: 'identityVerified',
-      title: t('addedToWallet.identityVerified'),
-      detail: t('addedToWallet.identityVerifiedDetail'),
-    },
-    {
+    isVerified && {
       key: 'signedByIssuer',
       title: t('addedToWallet.signedByIssuer'),
       detail: data ? issuerIdentifier(data) : '',
@@ -62,7 +63,19 @@ export const AddedToWalletScreen: React.FC<AddedToWalletScreenProps> = ({
       title: t('addedToWallet.savedOnDevice'),
       detail: t('addedToWallet.savedOnDeviceDetail'),
     },
-  ];
+  ].filter(Boolean) as {key: string; title: string; detail: string}[];
+
+  const credentialName = data?.title || t('addedToWallet.credentialFallback');
+  const subtitle =
+    status === 'verified'
+      ? t('addedToWallet.subtitle', {credential: credentialName})
+      : status === 'pending'
+      ? t('addedToWallet.subtitlePending', {credential: credentialName})
+      : status === 'expired'
+      ? t('addedToWallet.subtitleExpired', {credential: credentialName})
+      : status === 'revoked'
+      ? t('addedToWallet.subtitleRevoked', {credential: credentialName})
+      : null;
 
   return (
     <View style={[styles.screen, {backgroundColor: c.canvas}]}>
@@ -94,11 +107,14 @@ export const AddedToWalletScreen: React.FC<AddedToWalletScreenProps> = ({
           style={[styles.title, {color: c.ink}]}>
           {t('addedToWallet.title')}
         </ScaledText>
-        <ScaledText style={[styles.subtitle, {color: c.inkMuted}]}>
-          {data?.title
-            ? t('addedToWallet.subtitle', {credential: data.title})
-            : t('addedToWallet.subtitleGeneric')}
-        </ScaledText>
+        {/* Nothing is claimed until the saved credential has loaded and its status is known. */}
+        {subtitle ? (
+          <ScaledText
+            {...testIDProps('addedToWalletSubtitle')}
+            style={[styles.subtitle, {color: c.inkMuted}]}>
+            {subtitle}
+          </ScaledText>
+        ) : null}
 
         <View style={styles.checks}>
           {checks.map(check => (

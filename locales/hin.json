@@ -452,9 +452,10 @@
     "addedToWallet": {
       "title": "आपके वॉलेट में जोड़ा गया",
       "subtitle": "आपका {{credential}} उपयोग और साझा करने के लिए तैयार है।",
-      "subtitleGeneric": "आपका क्रेडेंशियल उपयोग और साझा करने के लिए तैयार है।",
-      "identityVerified": "पहचान सत्यापित",
-      "identityVerifiedDetail": "आपके आईडी रिकॉर्ड से मेल खाता है",
+      "credentialFallback": "क्रेडेंशियल",
+      "subtitlePending": "आपका {{credential}} सहेज लिया गया है, लेकिन जारीकर्ता से अभी इसका सत्यापन नहीं हो सका।",
+      "subtitleExpired": "आपका {{credential}} सहेज लिया गया है, लेकिन इसकी समय-सीमा समाप्त हो चुकी है।",
+      "subtitleRevoked": "आपका {{credential}} सहेज लिया गया है, लेकिन जारीकर्ता ने इसे रद्द कर दिया है।",
       "signedByIssuer": "जारीकर्ता द्वारा हस्ताक्षरित",
       "savedOnDevice": "इस डिवाइस पर सहेजा गया",
       "savedOnDeviceDetail": "सुरक्षित स्टोरेज में एन्क्रिप्टेड",

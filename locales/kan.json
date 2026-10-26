@@ -451,9 +451,10 @@
     "addedToWallet": {
       "title": "ನಿಮ್ಮ ವಾಲೆಟ್‌ಗೆ ಸೇರಿಸಲಾಗಿದೆ",
       "subtitle": "ನಿಮ್ಮ {{credential}} ಬಳಸಲು ಮತ್ತು ಹಂಚಿಕೊಳ್ಳಲು ಸಿದ್ಧವಾಗಿದೆ.",
-      "subtitleGeneric": "ನಿಮ್ಮ ಕ್ರೆಡೆನ್ಶಿಯಲ್ ಬಳಸಲು ಮತ್ತು ಹಂಚಿಕೊಳ್ಳಲು ಸಿದ್ಧವಾಗಿದೆ.",
-      "identityVerified": "ಗುರುತು ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
-      "identityVerifiedDetail": "ನಿಮ್ಮ ಐಡಿ ದಾಖಲೆಯೊಂದಿಗೆ ಹೊಂದಿಕೆಯಾಗಿದೆ",
+      "credentialFallback": "ಕ್ರೆಡೆನ್ಶಿಯಲ್",
+      "subtitlePending": "ನಿಮ್ಮ {{credential}} ಉಳಿಸಲಾಗಿದೆ, ಆದರೆ ವಿತರಕರೊಂದಿಗೆ ಇನ್ನೂ ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.",
+      "subtitleExpired": "ನಿಮ್ಮ {{credential}} ಉಳಿಸಲಾಗಿದೆ, ಆದರೆ ಅದರ ಅವಧಿ ಮುಗಿದಿದೆ.",
+      "subtitleRevoked": "ನಿಮ್ಮ {{credential}} ಉಳಿಸಲಾಗಿದೆ, ಆದರೆ ವಿತರಕರು ಅದನ್ನು ಹಿಂಪಡೆದಿದ್ದಾರೆ.",
       "signedByIssuer": "ವಿತರಕರಿಂದ ಸಹಿ ಮಾಡಲಾಗಿದೆ",
       "savedOnDevice": "ಈ ಸಾಧನದಲ್ಲಿ ಉಳಿಸಲಾಗಿದೆ",
       "savedOnDeviceDetail": "ಸುರಕ್ಷಿತ ಸಂಗ್ರಹಣೆಯಲ್ಲಿ ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡಲಾಗಿದೆ",

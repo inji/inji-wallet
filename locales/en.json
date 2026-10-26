@@ -553,9 +553,10 @@
     "addedToWallet": {
       "title": "Added to Your Wallet",
       "subtitle": "Your {{credential}} is ready to use and share.",
-      "subtitleGeneric": "Your credential is ready to use and share.",
-      "identityVerified": "Identity verified",
-      "identityVerifiedDetail": "Matched with your ID record",
+      "credentialFallback": "credential",
+      "subtitlePending": "Your {{credential}} is saved, but it could not be verified with the issuer yet.",
+      "subtitleExpired": "Your {{credential}} is saved, but it has expired.",
+      "subtitleRevoked": "Your {{credential}} is saved, but the issuer has revoked it.",
       "signedByIssuer": "Signed by issuer",
       "savedOnDevice": "Saved on this device",
       "savedOnDeviceDetail": "Encrypted in secure storage",
