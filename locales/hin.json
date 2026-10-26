@@ -1388,7 +1388,8 @@
     },
     "replaceExisting": "मौजूदा कार्ड बदलें",
     "keepBoth": "दोनों रखें",
-    "notNow": "अभी नहीं"
+    "notNow": "अभी नहीं",
+    "close": "बंद करें"
   },
   "copilot": {
     "scanToShareTitle": "साझा करने के लिए स्कैन करें",

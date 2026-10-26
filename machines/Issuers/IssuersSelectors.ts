@@ -90,6 +90,15 @@ export function selectStoring(state: State) {
   return state.matches('storing');
 }
 
+// CANCEL is only handled while the offer is still being worked through; once the issuer has
+// sent the card, the remaining steps finish on their own.
+export function selectCanCancelDownload(state: State) {
+  return (
+    state.matches('credentialDownloadFromOffer') ||
+    state.matches('downloadCredentials')
+  );
+}
+
 export function selectIsError(state: State) {
   return state.matches('error');
 }

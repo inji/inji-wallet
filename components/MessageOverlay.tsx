@@ -129,7 +129,6 @@ export const ErrorMessageOverlay: React.FC<ErrorMessageOverlayProps> = ({
   translationPath,
 }) => {
   const {t} = useTranslation(translationPath);
-  const dismiss = onDismiss ?? (() => undefined);
 
   return (
     <AlertSheet
@@ -139,8 +138,8 @@ export const ErrorMessageOverlay: React.FC<ErrorMessageOverlayProps> = ({
       icon={colour => <AlertCircleIcon color={colour} />}
       title={t(error + '.title')}
       message={t(error + '.message')}
-      primary={{title: t('common:ok'), onPress: dismiss}}
-      onRequestClose={dismiss}
+      primary={{title: t('common:ok'), onPress: onDismiss}}
+      onRequestClose={onDismiss}
     />
   );
 };
@@ -148,7 +147,7 @@ export const ErrorMessageOverlay: React.FC<ErrorMessageOverlayProps> = ({
 export interface ErrorMessageOverlayProps {
   isVisible: boolean;
   error?: string;
-  onDismiss?: () => void;
+  onDismiss: () => void;
   translationPath: string;
   testID?: string;
 }

@@ -1387,7 +1387,8 @@
     },
     "replaceExisting": "Palitan ang kasalukuyang card",
     "keepBoth": "Panatilihin ang dalawa",
-    "notNow": "Hindi muna"
+    "notNow": "Hindi muna",
+    "close": "Isara"
   },
   "copilot": {
     "scanToShareTitle": "I-scan para Magbahagi",

@@ -1388,7 +1388,8 @@
     },
     "replaceExisting": "استبدال البطاقة الحالية",
     "keepBoth": "الاحتفاظ بالاثنتين",
-    "notNow": "ليس الآن"
+    "notNow": "ليس الآن",
+    "close": "إغلاق"
   },
   "copilot": {
     "scanToShareTitle": "امسح للمشاركة",

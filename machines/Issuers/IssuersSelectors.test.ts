@@ -27,6 +27,7 @@ import {
   selectIsPresentationAuthorizationInProgress,
   selectIsPresentationAuthorization,
   selectSelectedCredentialType,
+  selectCanCancelDownload,
 } from './IssuersSelectors';
 
 describe('IssuersSelectors', () => {
@@ -539,5 +540,29 @@ describe('IssuersSelectors', () => {
       };
       expect(selectIsAuthorizationSuccess(state as any)).toBeUndefined();
     });
+  });
+});
+
+describe('selectCanCancelDownload', () => {
+  const stateIn = (current: string): any => ({
+    matches: (name: string) => name === current,
+  });
+
+  it('allows Cancel while the offer is still being worked through', () => {
+    expect(
+      selectCanCancelDownload(stateIn('credentialDownloadFromOffer')),
+    ).toBe(true);
+    expect(selectCanCancelDownload(stateIn('downloadCredentials'))).toBe(true);
+  });
+
+  it('hides Cancel once the issuer has sent the card', () => {
+    [
+      'cachingCredentialOfferIssuerWellknown',
+      'proccessingCredential',
+      'fetchingIssuerQrCode',
+      'verifyingCredential',
+    ].forEach(state =>
+      expect(selectCanCancelDownload(stateIn(state))).toBe(false),
+    );
   });
 });

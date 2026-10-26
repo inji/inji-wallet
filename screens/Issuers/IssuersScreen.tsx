@@ -419,9 +419,7 @@ export const IssuersScreen: React.FC<
             issuerName={controller.issuerName}
             issuerTrusted
             onCancel={
-              controller.loadingReason === 'downloadingCredentials'
-                ? controller.CANCEL
-                : undefined
+              controller.canCancelDownload ? controller.CANCEL : undefined
             }
           />
         )}

@@ -36,7 +36,7 @@ export const PasscodeScreen: React.FC<PasscodeRouteProps> = props => {
   const {t} = useTranslation('PasscodeScreen');
   const controller = usePasscodeScreen(props);
   const isSettingUp = props.route.params?.setup;
-  // Remounts the boxes, which clears them and puts the cursor back in the first one.
+  // Bumped after a wrong PIN; the boxes clear without losing focus.
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {

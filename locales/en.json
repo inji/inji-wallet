@@ -1573,7 +1573,8 @@
     },
     "replaceExisting": "Replace the existing card",
     "keepBoth": "Keep both",
-    "notNow": "Not now"
+    "notNow": "Not now",
+    "close": "Close"
   },
   "copilot": {
     "scanToShareTitle": "Scan to Share",

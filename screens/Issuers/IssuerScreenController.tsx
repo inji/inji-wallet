@@ -3,6 +3,7 @@ import {
   selectSupportedCredentialTypes,
   selectErrorMessageType,
   selectIsBiometricCancelled,
+  selectCanCancelDownload,
   selectIsDownloadCredentials,
   selectIsIdle,
   selectIssuers,
@@ -99,6 +100,7 @@ export function useIssuerScreenController({route, navigation}) {
       selectVerificationErrorMessage,
     ),
     isError: useSelector(service, selectIsError),
+    canCancelDownload: useSelector(service, selectCanCancelDownload),
     isCredentialAlreadyExists: useSelector(
       service,
       selectIsCredentialAlreadyExists,

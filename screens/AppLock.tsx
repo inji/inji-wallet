@@ -110,7 +110,7 @@ const LockScreen: React.FC<{onUnlock: () => void}> = ({onUnlock}) => {
   );
   const [canUseBiometrics, setCanUseBiometrics] = useState(false);
   const [error, setError] = useState('');
-  // Remounts the boxes after a wrong PIN, which clears them.
+  // Bumped after a wrong PIN; the boxes clear without losing focus.
   const [attempt, setAttempt] = useState(0);
   // Mounted once the page is up, so the PIN box can take focus and open the keyboard.
   const [shown, setShown] = useState(false);

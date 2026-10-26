@@ -660,7 +660,7 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
           onPress: controller.ACCEPT_HARDWARE_SUPPORT_NOT_EXISTS,
         }}
         dismissOnBackdropPress={false}
-        onRequestClose={controller.ACCEPT_HARDWARE_SUPPORT_NOT_EXISTS}
+        onRequestClose={() => undefined}
       />
 
       <AlertSheet

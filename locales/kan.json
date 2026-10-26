@@ -1388,7 +1388,8 @@
     },
     "replaceExisting": "ಈಗಿರುವ ಕಾರ್ಡ್ ಬದಲಾಯಿಸಿ",
     "keepBoth": "ಎರಡನ್ನೂ ಇರಿಸಿ",
-    "notNow": "ಈಗ ಬೇಡ"
+    "notNow": "ಈಗ ಬೇಡ",
+    "close": "ಮುಚ್ಚಿ"
   },
   "copilot": {
     "scanToShareTitle": "ಹಂಚಿಕೊಳ್ಳಲು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",

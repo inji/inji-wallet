@@ -96,6 +96,7 @@ export const PageHeader: React.FC<{
   onClose?: () => void;
   right?: React.ReactNode;
 }> = ({title, onBack, onClose, right}) => {
+  const {t} = useTranslation('common');
   const {c} = useRevampTheme();
   const action = onBack ?? onClose;
   return (
@@ -103,7 +104,7 @@ export const PageHeader: React.FC<{
       {action ? (
         <RoundButton
           testID={onBack ? 'goBack' : 'close'}
-          accessibilityLabel={onBack ? 'Go back' : 'Close'}
+          accessibilityLabel={onBack ? t('goBack') : t('close')}
           onPress={action}>
           {onBack ? <BackIcon color={c.ink} /> : <CloseIcon color={c.ink} />}
         </RoundButton>
