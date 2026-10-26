@@ -386,9 +386,13 @@ export function useIssuerQrCode(
       : null;
 
   // A ref, not an effect dependency: callers pass a new function on every render, which would
-  // otherwise restart the lookup each time.
+  // otherwise restart the lookup each time. Updated after each committed render, never during
+  // one, so a lookup that resolves late can't call the callback of a render React discarded.
+  // Declared before the lookup effect, so it is current by the time that effect runs.
   const onFetchedRef = useRef(onFetched);
-  onFetchedRef.current = onFetched;
+  useEffect(() => {
+    onFetchedRef.current = onFetched;
+  });
 
   useEffect(() => {
     const key = issuerQrLookupKey;
