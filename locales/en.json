@@ -1660,7 +1660,7 @@
       "You won't need to review trust again when downloading from them next time."
     ],
     "description": "You're about to download a credential from {{name}}. If you continue:",
-    "title": "Trust This Issuer?",
+    "title": "Trust this issuer?",
     "subTitle": "Before proceeding, confirm you recognize this issuer",
     "firstTime": "First time with this issuer",
     "trustedSubtitle": "You can now safely receive cards from {{name}}.",

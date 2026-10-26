@@ -11,11 +11,12 @@ import {
   getCredentialIssuersWellKnownConfig,
   getDisplayObjectForCurrentLanguage,
 } from '../../shared/openId4VCI/Utils';
-import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
 import {documentNumber, flatClaims, holderName} from './credentialClaims';
 import {msoValidity} from './msoValidity';
 import {claimLabels} from './cardFields';
 import {VCFormat} from '../../shared/VCFormat';
+import {getCredentialExpiryDate} from '../../shared/credentialExpiry';
+import {cardStatusOf} from './cardStatus';
 
 export type CardStatus = 'verified' | 'pending' | 'expired' | 'revoked';
 
@@ -38,6 +39,10 @@ export interface CredentialCardData {
   vcMetadata?: VCMetadata;
   /** The stored credential, for building its QR. */
   credential: any;
+  /** When the credential stops being valid, as an ISO 8601 string; empty if it doesn't say. */
+  expiryDate?: string;
+  /** When the wallet found the credential revoked, as an ISO 8601 string; empty otherwise. */
+  revokedOn?: string;
 }
 
 /**
@@ -121,14 +126,7 @@ export function useCredentialCard(
     const display = wellknown?.display
       ? getDisplayObjectForCurrentLanguage(wellknown.display)
       : undefined;
-    const status: CardStatus =
-      vcMetadata.isRevoked === RevocationStatus.TRUE
-        ? 'revoked'
-        : vcMetadata.isExpired
-        ? 'expired'
-        : vcMetadata.isVerified
-        ? 'verified'
-        : 'pending';
+    const status = cardStatusOf(vcMetadata, controller.credential);
     return {
       title: getCredentialType(wellknown),
       issuerName: issuerDisplay?.name ?? verifiableCredentialData?.issuer,
@@ -144,6 +142,8 @@ export function useCredentialCard(
       labels: claimLabels(wellknown),
       vcMetadata,
       credential: controller.credential,
+      expiryDate: getCredentialExpiryDate(controller.credential, format),
+      revokedOn: vcMetadata.revokedOn ?? '',
     };
   }, [
     ready,

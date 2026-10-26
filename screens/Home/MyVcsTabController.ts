@@ -40,6 +40,7 @@ import {
   selectIsOnboarding,
   selectIsTourGuide,
 } from '../../machines/auth';
+import {useVcStatusRefresh} from './useVcStatusRefresh';
 
 export function useMyVcsTab(props: HomeScreenTabProps) {
   const service = props.service as ActorRefFrom<typeof MyVcsTabMachine>;
@@ -47,6 +48,7 @@ export function useMyVcsTab(props: HomeScreenTabProps) {
   const vcMetaService = appService.children.get('vcMeta')!!;
   const settingsService = appService.children.get('settings')!!;
   const authService = appService.children.get('auth');
+  const vcStatusRefresh = useVcStatusRefresh();
   return {
     service,
     AddVcModalService: useSelector(service, selectAddVcModal),
@@ -74,15 +76,21 @@ export function useMyVcsTab(props: HomeScreenTabProps) {
       vcMetaService,
       selectVerificationErrorMessage,
     ),
-    reverificationSuccess: useSelector(vcMetaService,selectIsReverificationSuccess),
-    reverificationfailure: useSelector(vcMetaService,selectIsReverificationFailure),
+    reverificationSuccess: useSelector(
+      vcMetaService,
+      selectIsReverificationSuccess,
+    ),
+    reverificationfailure: useSelector(
+      vcMetaService,
+      selectIsReverificationFailure,
+    ),
     RESET_REVERIFICATION_FAILURE: () => {
       vcMetaService.send(VcMetaEvents.RESET_REVERIFY_VC_FAILED());
     },
     RESET_REVERIFICATION_SUCCESS: () => {
       vcMetaService.send(VcMetaEvents.RESET_REVERIFY_VC_SUCCESS());
     },
-    RESET_HIGHLIGHT:()=>{
+    RESET_HIGHLIGHT: () => {
       vcMetaService.send(VcMetaEvents.RESET_HIGHLIGHT());
     },
     SET_STORE_VC_ITEM_STATUS: () =>
@@ -102,7 +110,10 @@ export function useMyVcsTab(props: HomeScreenTabProps) {
 
     GET_VC: () => service.send(MyVcsTabEvents.GET_VC()),
 
-    REFRESH: () => vcMetaService.send(VcMetaEvents.REFRESH_MY_VCS()),
+    REFRESH: () => {
+      vcStatusRefresh.onPullToRefresh();
+      vcMetaService.send(VcMetaEvents.REFRESH_MY_VCS());
+    },
 
     VIEW_VC: (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
       return service.send(MyVcsTabEvents.VIEW_VC(vcRef));

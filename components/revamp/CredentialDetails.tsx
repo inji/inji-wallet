@@ -14,13 +14,14 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   CredentialCardBack,
   CredentialCardFront,
+  isInactive,
   ScaledCard,
 } from './CredentialCard';
 import {
   Action,
   CredentialInformation,
-  StatusPill,
-  validUntil,
+  StatusNotice,
+  StatusRow,
 } from './CredentialParts';
 import {
   ActivityIcon,
@@ -34,6 +35,7 @@ import {
 import {CARD_WIDTH, fonts, motion, radii, shadows} from './tokens';
 import {useRevampTheme} from './useRevampTheme';
 import {CredentialCardData} from './useCredentialCard';
+import {PillButton} from '../ui/PillButton';
 
 export interface CardActions {
   share: () => void;
@@ -168,7 +170,8 @@ export const CredentialDetails = React.forwardRef<
       },
     ],
   };
-  const valid = validUntil(data);
+  const inactive = isInactive(data.status);
+  const revoked = data.status === 'revoked';
 
   return (
     <View style={StyleSheet.absoluteFill} accessibilityViewIsModal>
@@ -219,7 +222,8 @@ export const CredentialDetails = React.forwardRef<
         <ScrollView
           contentContainerStyle={[
             styles.body,
-            {paddingBottom: 36 + insets.bottom},
+            // The revoked card's footer already sits above the navigation bar.
+            {paddingBottom: 36 + (revoked ? 0 : insets.bottom)},
           ]}
           showsVerticalScrollIndicator={false}>
           <Animated.View style={[{alignSelf: 'center'}, cardStyle]}>
@@ -280,13 +284,9 @@ export const CredentialDetails = React.forwardRef<
             </ScaledText>
           </Animated.View>
 
-          <Animated.View style={[styles.statusRow, risen(1)]}>
-            <StatusPill status={data.status} large />
-            {valid ? (
-              <ScaledText style={[styles.valid, {color: c.inkMuted}]}>
-                Valid until {valid}
-              </ScaledText>
-            ) : null}
+          <Animated.View style={[styles.statusGroup, risen(1)]}>
+            <StatusRow data={data} />
+            <StatusNotice data={data} />
           </Animated.View>
 
           <Animated.View style={[styles.actions, risen(2)]}>
@@ -294,12 +294,14 @@ export const CredentialDetails = React.forwardRef<
               label="Share"
               primary
               size={56}
+              disabled={inactive}
               onPress={actions.share}
               icon={col => <ShareIcon color={col} />}
             />
             <Action
               label="Show QR"
               size={56}
+              disabled={inactive}
               onPress={actions.showQr}
               icon={col => <QrIcon color={col} />}
             />
@@ -315,18 +317,38 @@ export const CredentialDetails = React.forwardRef<
             <CredentialInformation data={data} />
           </Animated.View>
 
-          <Animated.View style={risen(4)}>
-            <Pressable
-              onPress={actions.remove}
-              style={styles.remove}
-              accessibilityRole="button">
-              <TrashIcon color={c.fail} />
-              <ScaledText style={[styles.removeText, {color: c.fail}]}>
-                Remove from Wallet
-              </ScaledText>
-            </Pressable>
-          </Animated.View>
+          {revoked ? null : (
+            <Animated.View style={risen(4)}>
+              <Pressable
+                onPress={actions.remove}
+                style={styles.remove}
+                accessibilityRole="button">
+                <TrashIcon color={c.fail} />
+                <ScaledText style={[styles.removeText, {color: c.fail}]}>
+                  Remove from Wallet
+                </ScaledText>
+              </Pressable>
+            </Animated.View>
+          )}
         </ScrollView>
+
+        {revoked ? (
+          <Animated.View
+            style={[
+              styles.footer,
+              {
+                borderTopColor: c.line,
+                paddingBottom: insets.bottom + 12,
+                opacity: bg,
+              },
+            ]}>
+            <PillButton
+              title="Remove from Wallet"
+              icon={<TrashIcon color={c.onPrimary} />}
+              onPress={actions.remove}
+            />
+          </Animated.View>
+        ) : null}
       </View>
     </View>
   );
@@ -357,6 +379,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 22,
   },
+  footer: {
+    borderTopWidth: 1,
+    paddingTop: 12,
+    paddingHorizontal: 24,
+  },
   body: {paddingTop: 12, paddingHorizontal: 24, gap: 18},
   face: {width: CARD_WIDTH, backfaceVisibility: 'hidden'},
   back: {position: 'absolute', left: 0, top: 0},
@@ -367,19 +394,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   hintText: {fontFamily: fonts.regular, fontSize: 12, lineHeight: 14.4},
-  statusRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 12,
-  },
-  valid: {
-    fontFamily: fonts.regular,
-    fontSize: 14,
-    lineHeight: 16.8,
-    flexShrink: 1,
-    textAlign: 'right',
-  },
+  statusGroup: {gap: 18},
   actions: {flexDirection: 'row', justifyContent: 'space-between', gap: 12},
   remove: {
     height: 48,

@@ -429,6 +429,8 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
               controller.isInitialDownloading || controller.isTourGuide
             }
             startCardTour={controller.isInitialDownloading}
+            openVcKey={props.openVcKey}
+            onVcOpened={props.onVcOpened}
           />
         ) : (
           <WalletHeader

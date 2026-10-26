@@ -49,8 +49,10 @@ export function selectVerifiableCredentialData(
 ): VerifiableCredentialData {
   const vcMetadata = new VCMetadata(state.context.vcMetadata);
   const faceField =
-    getFaceAttribute(state.context.verifiableCredential,state.context.format) ??
-    state.context.credential?.biometrics?.face;
+    getFaceAttribute(
+      state.context.verifiableCredential,
+      state.context.format,
+    ) ?? state.context.credential?.biometrics?.face;
 
   return {
     vcMetadata: vcMetadata,
@@ -137,7 +139,14 @@ export function selectShowWalletBindingError(state: State) {
 }
 
 export function isReverifyingVc(state: State) {
-  return state.matches('vcUtilitiesState.reverificationState');
+  return (
+    state.matches('vcUtilitiesState.reverificationState') &&
+    !state.context.isReverifyingInBackground
+  );
+}
+
+export function selectIsVcItemIdle(state: State) {
+  return state.matches('vcUtilitiesState.idle');
 }
 
 export function showReverificationSuccessBanner(state: State) {

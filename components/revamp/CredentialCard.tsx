@@ -11,7 +11,13 @@ import {CardStatus, CredentialCardData} from './useCredentialCard';
 import {maskNumber, mrzLines} from './credentialClaims';
 import {cardFields} from './cardFields';
 import {useCardQr} from './useCardQr';
-import {CARD_HEIGHT, CARD_WIDTH, fonts, radii} from './tokens';
+import {
+  CARD_HEIGHT,
+  CARD_WIDTH,
+  colors as revampColors,
+  fonts,
+  radii,
+} from './tokens';
 
 /**
  * The card is a fixed layout drawn to scale, so its text can only grow so far with the system font
@@ -32,10 +38,23 @@ function isLight(hex: string): boolean {
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.62;
 }
 
+/** Expired and revoked cards can't be shared, and are shown greyed out with a stamp. */
+export const isInactive = (status: CardStatus) =>
+  status === 'expired' || status === 'revoked';
+
+/** The design's greys for an inactive card, in place of the issuer's colours. */
+const INACTIVE_BACKGROUND = '#e4e4e1';
+const INACTIVE_TEXT = '#6b6b6b';
+
 function cardColours(data: CredentialCardData) {
-  const bg = data.background ?? DEFAULT_BACKGROUND;
+  const inactive = isInactive(data.status);
+  const bg = inactive
+    ? INACTIVE_BACKGROUND
+    : data.background ?? DEFAULT_BACKGROUND;
   const light = isLight(bg);
-  const fg = data.text ?? (light ? '#0a3970' : '#fcfcfa');
+  const fg = inactive
+    ? INACTIVE_TEXT
+    : data.text ?? (light ? '#0a3970' : '#fcfcfa');
   return {
     bg,
     fg,
@@ -115,6 +134,25 @@ const ShieldCheck: React.FC<{color: string}> = ({color}) => (
   </Svg>
 );
 
+/** The card is drawn the same in both schemes, so its status marks use the light scheme's colours. */
+const stampColour = (status: CardStatus) =>
+  status === 'expired' ? revampColors.light.warn : revampColors.light.fail;
+
+const StatusStamp: React.FC<{status: CardStatus}> = ({status}) => {
+  const colour = stampColour(status);
+  return (
+    <View pointerEvents="none" style={styles.stampWrap}>
+      <View style={[styles.stamp, {borderColor: colour}]}>
+        <ScaledText
+          maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
+          style={[styles.stampText, {color: colour}]}>
+          {statusLabel[status].toUpperCase()}
+        </ScaledText>
+      </View>
+    </View>
+  );
+};
+
 export const CredentialCardFront = React.memo(function CredentialCardFront({
   data,
 }: {
@@ -129,6 +167,7 @@ export const CredentialCardFront = React.memo(function CredentialCardFront({
       ),
     [data],
   );
+  const inactive = isInactive(data.status);
   const {bg, fg, tone, edge, brand} = cardColours(data);
   return (
     <View style={[styles.card, {backgroundColor: bg, borderColor: edge}]}>
@@ -141,12 +180,21 @@ export const CredentialCardFront = React.memo(function CredentialCardFront({
         tone={tone}
         opacity={tone === 'dark' ? 0.85 : 0.8}
       />
-      {data.face ? (
+      {data.face && !inactive ? (
         <Image
           source={{uri: data.face}}
           style={styles.photo}
           resizeMode="cover"
         />
+      ) : null}
+      {data.face && inactive ? (
+        <View style={[styles.photo, styles.inactive]}>
+          <Image
+            source={{uri: data.face}}
+            style={StyleSheet.absoluteFill}
+            resizeMode="cover"
+          />
+        </View>
       ) : null}
       <View style={styles.frontBody}>
         <View style={styles.topRow}>
@@ -193,16 +241,19 @@ export const CredentialCardFront = React.memo(function CredentialCardFront({
               {frontExtra}
             </ScaledText>
           ) : null}
-          <View style={styles.statusRow}>
-            <ShieldCheck color={fg} />
-            <ScaledText
-              maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
-              style={[styles.statusText, {color: fg}]}>
-              {statusLabel[data.status]}
-            </ScaledText>
-          </View>
+          {inactive ? null : (
+            <View style={styles.statusRow}>
+              <ShieldCheck color={fg} />
+              <ScaledText
+                maxFontSizeMultiplier={CARD_TEXT_MAX_SCALE}
+                style={[styles.statusText, {color: fg}]}>
+                {statusLabel[data.status]}
+              </ScaledText>
+            </View>
+          )}
         </View>
       </View>
+      {inactive ? <StatusStamp status={data.status} /> : null}
     </View>
   );
 });
@@ -441,6 +492,27 @@ const styles = StyleSheet.create({
   },
   statusRow: {flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2},
   statusText: {fontFamily: fonts.medium, fontSize: 12, lineHeight: 14.4},
+  // Greys the photo too on Android; iOS doesn't support the grayscale filter.
+  inactive: {filter: [{grayscale: 1}]},
+  stampWrap: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stamp: {
+    borderWidth: 2.5,
+    borderRadius: 6,
+    paddingHorizontal: 16,
+    paddingVertical: 5,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    transform: [{rotate: '-6deg'}],
+  },
+  stampText: {
+    fontFamily: fonts.semibold,
+    fontSize: 20,
+    lineHeight: 24,
+    letterSpacing: 2.5,
+  },
   backBody: {
     ...StyleSheet.absoluteFillObject,
     paddingHorizontal: 16,

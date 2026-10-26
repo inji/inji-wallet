@@ -17,7 +17,7 @@ import {
 import {CredentialDownloadResponse, request} from '../../../shared/request';
 import {WalletBindingResponse} from '../VCMetaMachine/vc';
 import {getVerifiableCredential} from './VCItemSelectors';
-import { VERIFICATION_TIMEOUT_IN_MS } from '../../../shared/vcjs/verifyCredential';
+import {VERIFICATION_TIMEOUT_IN_MS} from '../../../shared/vcjs/verifyCredential';
 
 const {RNSecureKeystoreModule} = NativeModules;
 export const VCItemServices = model => {
@@ -197,35 +197,48 @@ export const VCItemServices = model => {
 
     verifyCredential: async (context: any) => {
       try {
-    
         if (!context.verifiableCredential) {
           throw new Error('Missing verifiable credential in context');
         }
-    
-        const credential = getVerifiableCredential(context.verifiableCredential);
-        const format = context.selectedCredentialType?.format ?? context.format;
-    
 
-        
-        const verificationResult = await withTimeout(
-          verifyCredentialData(credential, format),
-          VERIFICATION_TIMEOUT_IN_MS
+        const credential = getVerifiableCredential(
+          context.verifiableCredential,
         );
-    
+        const format = context.selectedCredentialType?.format ?? context.format;
+
+        const verificationResult = await oneAtATime(() =>
+          withTimeout(
+            verifyCredentialData(
+              credential,
+              format,
+              context.verifiableCredential,
+            ),
+            VERIFICATION_TIMEOUT_IN_MS,
+          ),
+        );
+
         if (!verificationResult.isVerified) {
           throw new Error(verificationResult.verificationErrorCode);
         }
-    
-         return verificationResult;
-    
+
+        return verificationResult;
       } catch (error) {
         console.error('Credential verification failed:', error);
         throw error;
       }
-    }
-    
+    },
   };
 };
+
+// The native verifier handles one credential at a time, so when every card checks at once the
+// later ones would use up their timeout waiting in line. Queuing them here starts each card's
+// timeout only when its own check begins.
+let verificationQueue: Promise<unknown> = Promise.resolve();
+function oneAtATime<T>(task: () => Promise<T>): Promise<T> {
+  const turn = verificationQueue.then(task, task);
+  verificationQueue = turn.catch(() => undefined);
+  return turn;
+}
 
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   return Promise.race([
@@ -235,4 +248,3 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
     ),
   ]);
 }
-

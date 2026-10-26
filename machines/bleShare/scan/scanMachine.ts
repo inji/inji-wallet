@@ -62,6 +62,7 @@ export const scanMachine =
           target: '#scan.reviewing.disconnect',
         },
         SELECT_VC: {
+          cond: 'isSelectedVcShareable',
           actions: ['setSelectedVc', 'setFlowType'],
           target: '.checkStorage',
         },
@@ -609,6 +610,7 @@ export const scanMachine =
                   target: '#scan.disconnected',
                 },
                 SELECT_VC: {
+                  cond: 'isSelectedVcShareable',
                   actions: ['setSelectedVc', 'setFlowType'],
                 },
                 VERIFY_AND_ACCEPT_REQUEST: [

@@ -44,6 +44,7 @@ import {
   getCredentialType,
 } from '../common/VCUtils';
 import {VCFormat} from '../../../shared/VCFormat';
+import {isShareable} from '../../../shared/shareability';
 
 import testIDProps from '../../../shared/commonUtil';
 import {ShareableInfoModal} from './ShareableInfoModal';
@@ -211,6 +212,10 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
   const [showQrOverlay, setShowQrOverlay] = useState(false);
 
   const [shareModalVisible, setShareModalVisible] = useState(false);
+  const shareable = isShareable(
+    props.verifiableCredentialData?.vcMetadata,
+    props.credentialWrapper,
+  );
 
   if (props.loadingSvg) {
     return (
@@ -274,7 +279,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
 
                     <View style={{height: 12}} />
 
-                    {item.includes(QR_IMAGE_ID) && (
+                    {shareable && item.includes(QR_IMAGE_ID) && (
                       <Button
                         testID="zoomQrCode"
                         title="Tap to zoom QR Code"
@@ -288,7 +293,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
               }}
             />
 
-            {showQrOverlay && (
+            {shareable && showQrOverlay && (
               <QrCodeOverlay
                 verifiableCredential={
                   props.credentialWrapper as unknown as VerifiableCredential
@@ -324,7 +329,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                 <Row padding="14 14 0 14" margin="0 0 0 0">
                   <Column crossAlign="center">
                     {getProfileImage(face)}
-                    {isFetchingIssuerQrCode ? (
+                    {!shareable ? null : isFetchingIssuerQrCode ? (
                       <IssuerQrCodePlaceholder />
                     ) : showIssuerQrCode ? (
                       <IssuerQrCodeImage
@@ -405,87 +410,85 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
           </Column>
         )}
       </Column>
-      {!props.svgTemplate &&
-        props.vcHasImage &&
-        !props.verifiableCredentialData?.vcMetadata.isExpired && (
-          <View
-            style={{
-              position: 'relative',
-              backgroundColor: Theme.Colors.DetailedViewBackground,
-            }}>
-            {props.activeTab !== 1 &&
-              (!props.walletBindingResponse &&
-              isActivationNeeded(props.verifiableCredentialData?.issuer) ? (
-                <Column
-                  padding="10"
-                  style={Theme.Styles.detailedViewActivationPopupContainer}>
-                  <Row>
-                    <Column crossAlign="flex-start" margin={'2 0 0 10'}>
-                      {SvgImage.WalletUnActivatedLargeIcon()}
-                    </Column>
-                    <Column crossAlign="flex-start" margin={'5 18 13 8'}>
-                      <Text
-                        testID="offlineAuthDisabledHeader"
-                        style={{
-                          fontFamily: 'Inter_600SemiBold',
-                          fontSize: 14,
-                        }}
-                        color={Theme.Colors.statusLabel}
-                        margin={'0 18 0 0'}>
-                        {t('offlineAuthDisabledHeader')}
-                      </Text>
-                      <Text
-                        testID="offlineAuthDisabledMessage"
-                        style={{
-                          fontFamily: 'Inter_400Regular',
-                          fontSize: 12,
-                        }}
-                        color={Theme.Colors.statusMessage}
-                        margin={'0 18 0 0'}>
-                        {t('offlineAuthDisabledMessage')}
-                      </Text>
-                    </Column>
-                  </Row>
-                  <Button
-                    testID="enableVerification"
-                    title={t('enableVerification')}
-                    onPress={props.onBinding}
-                    type="gradient"
-                    size="Large"
-                    disabled={
-                      !props.verifiableCredentialData.vcMetadata.isVerified
-                    }
-                  />
-                </Column>
-              ) : (
-                <Column
-                  style={Theme.Styles.detailedViewActivationPopupContainer}
-                  padding="10">
-                  <Row>
-                    <Column crossAlign="flex-start" margin={'2 0 0 10'}>
-                      {SvgImage.WalletActivatedLargeIcon()}
-                    </Column>
-                    <Column crossAlign="flex-start" margin={'5 18 13 8'}>
-                      <Text
-                        testID="profileAuthenticated"
-                        color={Theme.Colors.statusLabel}
-                        style={{
-                          fontFamily: 'Inter_600SemiBold',
-                          fontSize: 14,
-                        }}
-                        margin={'0 18 0 0'}>
-                        {isActivationNeeded(
-                          props.verifiableCredentialData?.issuer,
-                        )
-                          ? t('profileAuthenticated')
-                          : t('credentialActivated')}
-                      </Text>
-                    </Column>
-                  </Row>
-                </Column>
-              ))}
-          </View>
-        )}
+      {!props.svgTemplate && props.vcHasImage && shareable && (
+        <View
+          style={{
+            position: 'relative',
+            backgroundColor: Theme.Colors.DetailedViewBackground,
+          }}>
+          {props.activeTab !== 1 &&
+            (!props.walletBindingResponse &&
+            isActivationNeeded(props.verifiableCredentialData?.issuer) ? (
+              <Column
+                padding="10"
+                style={Theme.Styles.detailedViewActivationPopupContainer}>
+                <Row>
+                  <Column crossAlign="flex-start" margin={'2 0 0 10'}>
+                    {SvgImage.WalletUnActivatedLargeIcon()}
+                  </Column>
+                  <Column crossAlign="flex-start" margin={'5 18 13 8'}>
+                    <Text
+                      testID="offlineAuthDisabledHeader"
+                      style={{
+                        fontFamily: 'Inter_600SemiBold',
+                        fontSize: 14,
+                      }}
+                      color={Theme.Colors.statusLabel}
+                      margin={'0 18 0 0'}>
+                      {t('offlineAuthDisabledHeader')}
+                    </Text>
+                    <Text
+                      testID="offlineAuthDisabledMessage"
+                      style={{
+                        fontFamily: 'Inter_400Regular',
+                        fontSize: 12,
+                      }}
+                      color={Theme.Colors.statusMessage}
+                      margin={'0 18 0 0'}>
+                      {t('offlineAuthDisabledMessage')}
+                    </Text>
+                  </Column>
+                </Row>
+                <Button
+                  testID="enableVerification"
+                  title={t('enableVerification')}
+                  onPress={props.onBinding}
+                  type="gradient"
+                  size="Large"
+                  disabled={
+                    !props.verifiableCredentialData.vcMetadata.isVerified
+                  }
+                />
+              </Column>
+            ) : (
+              <Column
+                style={Theme.Styles.detailedViewActivationPopupContainer}
+                padding="10">
+                <Row>
+                  <Column crossAlign="flex-start" margin={'2 0 0 10'}>
+                    {SvgImage.WalletActivatedLargeIcon()}
+                  </Column>
+                  <Column crossAlign="flex-start" margin={'5 18 13 8'}>
+                    <Text
+                      testID="profileAuthenticated"
+                      color={Theme.Colors.statusLabel}
+                      style={{
+                        fontFamily: 'Inter_600SemiBold',
+                        fontSize: 14,
+                      }}
+                      margin={'0 18 0 0'}>
+                      {isActivationNeeded(
+                        props.verifiableCredentialData?.issuer,
+                      )
+                        ? t('profileAuthenticated')
+                        : t('credentialActivated')}
+                    </Text>
+                  </Column>
+                </Row>
+              </Column>
+            ))}
+        </View>
+      )}
       {props.credential.disclosedKeys != null && (
         <View
           style={{

@@ -524,10 +524,12 @@ export function getMatchingCredentialIssuerMetadata(
 export async function verifyCredentialData(
   credential: Credential,
   credentialFormat: string,
+  storedCredential?: unknown,
 ) {
   const verificationResult = await verifyCredential(
     credential,
     credentialFormat,
+    storedCredential ?? credential,
   );
   return verificationResult;
 }

@@ -14,6 +14,7 @@ import {VCItemMachine} from '../../machines/VerifiableCredential/VCItemMachine/V
 import {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {AddToWalletSheet} from '../../components/addCredential/AddToWalletSheet';
 import {IssuerScreenTabEvents} from '../../machines/Issuers/IssuersMachine';
+import type {IssuersScreenParams} from '../Issuers/IssuersScreen';
 
 const CREDENTIAL_OFFER_SCHEME = 'openid-credential-offer://';
 
@@ -58,16 +59,17 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
 
   useEffect(() => {
     if (controller.IssuersService) {
-      if (pendingCredentialOffer.current !== '') {
+      const credentialOfferUrl = pendingCredentialOffer.current || undefined;
+      if (credentialOfferUrl) {
         controller.IssuersService.send(
           IssuerScreenTabEvents.SCAN_CREDENTIAL_OFFER_QR_CODE(),
         );
         controller.IssuersService.send(
-          IssuerScreenTabEvents.QR_CODE_SCANNED(pendingCredentialOffer.current),
+          IssuerScreenTabEvents.QR_CODE_SCANNED(credentialOfferUrl),
         );
         pendingCredentialOffer.current = '';
       }
-      navigateToIssuers();
+      navigateToIssuers(credentialOfferUrl);
     }
   }, [controller.IssuersService]);
 
@@ -77,10 +79,12 @@ export const HomeScreen: React.FC<HomeRouteProps> = props => {
     }
   }, [controller.isMinimumStorageLimitReached]);
 
-  const navigateToIssuers = () => {
-    props.navigation.navigate('IssuersScreen', {
+  const navigateToIssuers = (credentialOfferUrl?: string) => {
+    const params: IssuersScreenParams = {
       service: controller.IssuersService,
-    });
+      credentialOfferUrl,
+    };
+    props.navigation.navigate('IssuersScreen', params);
   };
 
   return (

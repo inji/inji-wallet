@@ -166,6 +166,7 @@ async function processAndStoreVCs(
       const verificationResult = await verifyCredentialData(
         verifiableCredential,
         vcData.vcMetadata.format,
+        vcData.verifiableCredential,
       );
       const isVerified = verificationResult.isVerified;
       const isRevoked = verificationResult.isRevoked ?? RevocationStatus.FALSE;

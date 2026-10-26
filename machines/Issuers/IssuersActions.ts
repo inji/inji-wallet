@@ -52,6 +52,10 @@ export const IssuersActions = (model: any) => {
           isExpired: event.data.verificationErrorCode == EXPIRED_VC_ERROR_CODE,
           isRevoked: event.data.isRevoked,
           lastKnownStatusTimestamp: new Date().toISOString(),
+          revokedOn:
+            event.data.isRevoked === RevocationStatus.TRUE
+              ? new Date().toISOString()
+              : '',
         }),
     }),
     resetVerificationResult: assign({

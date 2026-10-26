@@ -294,7 +294,7 @@ fileignoreconfig:
   - filename: injitest/src/test/java/androidTestCases/GenerateUinOrVidTest.java
     checksum: 3dec3f9d8b28467af89f574e868058446beff12d5dfba13892a2d2f3033b6894
   - filename: machines/VerifiableCredential/VCMetaMachine/VCMetaSelectors.ts
-    checksum: 0aa2f9aff9da14fad92f4e4b414b73d3f492fa7f6dabb3a17f550a20b3e4debf
+    checksum: 4edb67d518af3a6a94849cbc23db1dffb3eafcd8d3f05669c14951531fa6db68
   - filename: injitest/src/test/java/androidTestCases/UnlockWithPasscodeTest.java
     checksum: efe21ba6b9e1b760cee02f0d6c5c776722142feeff7417cfdb7536ab80be3476
   - filename: injitest/src/test/java/androidTestCases/VerifyHistoryTest.java
@@ -324,7 +324,7 @@ fileignoreconfig:
   - filename: injitest/src/test/java/androidTestCases/VcBackupAndRestoreTest.java
     checksum: 3700867ed1c7accda814ca1870c7d1ad7e27a9ba0571607eaabb5d1fa4fbdab3
   - filename: machines/VerifiableCredential/VCItemMachine/VCItemMachine.typegen.ts
-    checksum: 6164156146b0474943237d1e1a69ec05ba66d89ced06508353b6cffe582237b5
+    checksum: de05324fa3727e42975277f11763794f4663bc8dcb987d8d86e3f6a54acc0372
   - filename: machines/backupAndRestore/backupWithEncryption.typegen.ts
     checksum: 19ccac58df42ce0b6e36c66592e53441d709713fb1bff64454e0039dd3b0ac97
   - filename: injitest/src/main/java/inji/utils/TestDataReader.java
@@ -383,7 +383,7 @@ fileignoreconfig:
   - filename: machines/VerifiableCredential/VCItemMachine/VCItemActions.ts
     checksum: 511f6f95c0491ad16b03236cd7cc3ef5f4a89d336be1a0202f3f0aaf9e29497d
   - filename: machines/VerifiableCredential/VCMetaMachine/VCMetaEvents.ts
-    checksum: 9143fde5bb626a35406a104eaa6d110c5e771dbf450cf23fab09271512adf493
+    checksum: 99f95487c31edda7473896d34ab073f9931d8590fa24efeb7df26209a36c9402
   - filename: machines/app.ts
     checksum: 5da59bb384d04e29c7745d773108903fa144275c57edc1aca1898fcae7baea84
   - filename: shared/cryptoutil/signFormatConverter.ts
@@ -425,7 +425,7 @@ fileignoreconfig:
   - filename: components/ui/SetupPicker.tsx
     checksum: 669e85d1c8ff526b97fa4ed4b8ed33a100eaba9f2f41bceccd75dc7a85a12103
   - filename: screens/Home/MyVcsTab.tsx
-    checksum: 64dabd3b98dbc94e15d36b5419218d2a89f402a02731604cc9da2811e14f82ad
+    checksum: 9b689c38514a99fe25a1de9088f07f4939c3f4c125afe46cd7ce433ff24ae0c9
   - filename: package-lock.json
     checksum: 3a38d02673f03c2edf1daa2003a3ff2b191482a1d26a97f945f7656b9e2cfcce
   - filename: screens/IntroSliders/secureShareIntro.tsx
@@ -459,7 +459,7 @@ fileignoreconfig:
   - filename: components/revamp/WalletHeader.tsx
     checksum: 4dd697ec883c1684958a79c3d6040604415a5b6176264be55b882830c61e31e3
   - filename: components/revamp/WalletHome.tsx
-    checksum: d64fbffedf35a89922a520c1a4d3361f060bdcb3e91310222a9ad3013c0bec28
+    checksum: 3d969673e69701d353e7c049b498b74e737a05b019456debd7a0cb5bbd892e47
   - filename: components/revamp/useCredentialCard.ts
     checksum: 40e892bdea792a554b3c08ad9b46bec761d14997cf6284afc03ae46b988514c8
   - filename: components/revamp/cardFields.ts
@@ -530,5 +530,17 @@ fileignoreconfig:
     checksum: d3b140d060c2de8d4e155b87739c0ffbaca34bfda75b3f6e13522b8117952ff5
   - filename: ios/Inji/SplashScreen.storyboard
     checksum: cb624c7a100d00d9dda403a55aa89d059c3bc86d301dd5c1ec92af152a7452ed
+  - filename: machines/VerifiableCredential/VCItemMachine/VCItemMachine.reverify.test.ts
+    checksum: c1a73c5b534dd8d2ba4ba72f639b38b1e0a6e25ef276dad7d1c98fef6841d630
+  - filename: machines/VerifiableCredential/VCMetaMachine/VCMetaMachine.typegen.ts
+    checksum: b5c570d48e30059d63cfe15ed236e85f0ac195aa60b21a68519831d2cfda2acc
+  - filename: shared/vcjs/verifyCredential.test.ts
+    checksum: 0790ee6f6636e6f98143ee23a2cdfdc278c69f8bf5596da0d544cf17248ddc87
+  - filename: shared/credentialExpiry.test.ts
+    checksum: acd42914aae643d6a874aaf5b5a06636ae608d9117d778de3132c6727b289cc1
+  - filename: machines/VerifiableCredential/VCItemMachine/cardStatus.test.ts
+    checksum: 32e9d6f9b404bb6b47394769adfd2f00ecdbbad78ffc191e0380c2186b099890
+  - filename: machines/VerifiableCredential/VCItemMachine/backgroundStatusChecks.test.ts
+    checksum: b2ed9fc13c625e64f53764d42013a76c4b3ee21fa4cc60c810b7a143fafd9de4
     version: "1.0"
 
