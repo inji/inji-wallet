@@ -702,6 +702,7 @@ const PinnedCard: React.FC<{
       <ScaledCard width={width}>
         <CredentialCardFront data={entry.data} />
       </ScaledCard>
+      {/* The Pressable is exactly the card's size, so the dot sits on the card's corner. */}
       {isNew ? <NewCardDot /> : null}
     </Pressable>
   );
