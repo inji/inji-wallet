@@ -12,9 +12,8 @@ import {
 import {TelemetryConstants} from '../shared/telemetry/TelemetryConstants';
 import {
   AlertSheet,
-  ChoiceList,
+  ChoiceCards,
   ChoiceRow,
-  Glyph,
   Page,
   PageButton,
   PageHeading,
@@ -23,7 +22,6 @@ import {
   AlertCircleIcon,
   BiometricsIcon,
   KeypadIcon,
-  LockIcon,
 } from '../components/revamp/Icons';
 
 type Method = 'biometrics' | 'passcode';
@@ -66,11 +64,11 @@ export const AuthScreen: React.FC<RootRouteProps> = props => {
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}>
-        <Glyph>{colour => <LockIcon color={colour} size={40} />}</Glyph>
-        <PageHeading title={t('header')} body={t('Description')} />
-        <ChoiceList>
+        <PageHeading align="left" title={t('header')} body={t('Description')} />
+        <ChoiceCards>
           {controller.isBiometricsAvailable ? (
             <ChoiceRow
+              card
               testID="useBiometrics"
               icon={colour => <BiometricsIcon color={colour} size={20} />}
               label={t('useBiometrics')}
@@ -80,6 +78,7 @@ export const AuthScreen: React.FC<RootRouteProps> = props => {
             />
           ) : null}
           <ChoiceRow
+            card
             testID="usePasscode"
             icon={colour => <KeypadIcon color={colour} size={20} />}
             label={t('usePasscode')}
@@ -87,7 +86,7 @@ export const AuthScreen: React.FC<RootRouteProps> = props => {
             selected={method === 'passcode'}
             onPress={() => setMethod('passcode')}
           />
-        </ChoiceList>
+        </ChoiceCards>
       </ScrollView>
       <AlertSheet
         testID="unlockMethodAlert"

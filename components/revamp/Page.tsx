@@ -1,4 +1,5 @@
 import React from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   ActivityIndicator,
   Modal,
@@ -74,24 +75,17 @@ export const PageModal: React.FC<{
   </Modal>
 );
 
-/** Where the user is in a multi-step page: one dot per step, the current one solid. */
+/** Where the user is in a multi-step page, as "Step 2 of 2". */
 export const StepDots: React.FC<{current: number; count?: number}> = ({
   current,
   count = 2,
 }) => {
+  const {t} = useTranslation('PasscodeScreen');
   const {c} = useRevampTheme();
   return (
-    <View style={styles.dots} accessible={false}>
-      {Array.from({length: count}, (_, i) => (
-        <View
-          key={i}
-          style={[
-            styles.dot,
-            {backgroundColor: c.ink, opacity: i === current ? 1 : 0.3},
-          ]}
-        />
-      ))}
-    </View>
+    <ScaledText style={[styles.step, {color: c.inkMuted}]}>
+      {t('step', {current: current + 1, total: count})}
+    </ScaledText>
   );
 };
 
@@ -195,22 +189,26 @@ export const PageHeading: React.FC<{
   title: string;
   body?: string;
   size?: 'large' | 'medium';
+  align?: 'center' | 'left';
   testID?: string;
-}> = ({title, body, size = 'large', testID}) => {
+}> = ({title, body, size = 'large', align = 'center', testID}) => {
   const {c} = useRevampTheme();
+  const left = align === 'left';
   return (
-    <View style={styles.heading}>
+    <View style={[styles.heading, left && styles.headingLeft]}>
       <ScaledText
         {...(testID ? testIDProps(testID) : {})}
         accessibilityRole="header"
         style={[
           size === 'large' ? styles.titleLarge : styles.titleMedium,
           {color: c.ink},
+          left && styles.textLeft,
         ]}>
         {title}
       </ScaledText>
       {body ? (
-        <ScaledText style={[styles.lead, {color: c.inkMuted}]}>
+        <ScaledText
+          style={[styles.lead, {color: c.inkMuted}, left && styles.textLeft]}>
           {body}
         </ScaledText>
       ) : null}
@@ -301,7 +299,19 @@ export const ChoiceRow: React.FC<{
   onPress: () => void;
   testID?: string;
   rtl?: boolean;
-}> = ({label, hint, icon, selected, mark = 'radio', onPress, testID, rtl}) => {
+  /** Draw the row as its own rounded card, tinted when selected; used inside ChoiceCards. */
+  card?: boolean;
+}> = ({
+  label,
+  hint,
+  icon,
+  selected,
+  mark = 'radio',
+  onPress,
+  testID,
+  rtl,
+  card,
+}) => {
   const {c} = useRevampTheme();
   return (
     <Pressable
@@ -313,10 +323,21 @@ export const ChoiceRow: React.FC<{
       style={({pressed}) => [
         styles.choice,
         hint ? styles.choiceTall : null,
+        card && [
+          styles.choiceCard,
+          selected
+            ? {backgroundColor: c.tintAzure, borderColor: c.ink}
+            : {backgroundColor: c.card, borderColor: c.line},
+        ],
         pressed && {backgroundColor: c.sand},
       ]}>
       {icon ? (
-        <View style={[styles.choiceIcon, {backgroundColor: c.sand}]}>
+        <View
+          style={[
+            styles.choiceIcon,
+            card && styles.choiceIconCard,
+            {backgroundColor: card ? c.tintAzure : c.sand},
+          ]}>
           {icon(c.ink)}
         </View>
       ) : null}
@@ -324,6 +345,7 @@ export const ChoiceRow: React.FC<{
         <ScaledText
           style={[
             styles.choiceLabel,
+            card && styles.choiceLabelCard,
             {color: c.ink, textAlign: rtl ? 'right' : 'left'},
           ]}>
           {label}
@@ -353,6 +375,11 @@ export const ChoiceRow: React.FC<{
 };
 
 /** Rows on one bordered card, divided by hairlines (the Settings list style). */
+/** Choices as separate rounded cards with space between them. */
+export const ChoiceCards: React.FC<{children: React.ReactNode}> = ({
+  children,
+}) => <View style={styles.cards}>{children}</View>;
+
 export const ChoiceList: React.FC<{children: React.ReactNode}> = ({
   children,
 }) => {
@@ -477,8 +504,7 @@ export const AlertSheet: React.FC<{
 };
 
 const styles = StyleSheet.create({
-  dots: {flexDirection: 'row', gap: 8, alignSelf: 'center'},
-  dot: {width: 7, height: 7, borderRadius: 4},
+  step: {fontFamily: fonts.regular, fontSize: 13, textAlign: 'center'},
   page: {flex: 1},
   body: {flex: 1, paddingHorizontal: 24},
   footer: {paddingHorizontal: 24, paddingTop: 12, gap: 6},
@@ -518,6 +544,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   heading: {alignItems: 'center', gap: 8},
+  headingLeft: {alignItems: 'flex-start'},
+  textLeft: {textAlign: 'left'},
   titleLarge: {
     fontFamily: fonts.semibold,
     fontSize: 26,
@@ -569,6 +597,10 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   choiceTall: {paddingVertical: 14},
+  choiceCard: {borderWidth: 1, borderRadius: 14},
+  choiceIconCard: {borderRadius: 10, width: 40, height: 40},
+  choiceLabelCard: {fontFamily: fonts.semibold},
+  cards: {gap: 10},
   choiceIcon: {
     width: 36,
     height: 36,

@@ -826,7 +826,10 @@
         "ERR_VALID_FROM_IS_FUTURE_DATE": "Date is invalid or set in the future. Check for a valid date.",
         "ERR_INVALID_VALIDUNTIL": "Date is invalid. Check for a valid date."
       }
-    }
+    },
+    "emptyTitle": "No cards yet",
+    "emptyBody": "Add your first card by scanning the QR code your issuer gives you.",
+    "addCard": "Add a card"
   },
   "OnboardingOverlay": {
     "stepOneTitle": "Welcome!",
@@ -895,7 +898,8 @@
     "confirmTitle": "Enter it once more",
     "confirmHint": "Just to make sure it’s the one you meant.",
     "confirmMismatch": "The passcodes don’t match. Try again.",
-    "reEnableBiometrics": "Enter your passcode to turn biometric unlock back on."
+    "reEnableBiometrics": "Enter your passcode to turn biometric unlock back on.",
+    "step": "Step {{current}} of {{total}}"
   },
   "QrLogin": {
     "title": "QR Login",

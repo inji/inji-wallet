@@ -716,7 +716,10 @@
         "ERR_VALID_FROM_IS_FUTURE_DATE": "Ang petsa ay hindi wasto o nakatakda sa hinaharap. Tingnan kung may wastong petsa.",
         "ERR_INVALID_VALIDUNTIL": "Di-wasto ang petsa. Tingnan kung may wastong petsa."
       }
-    }
+    },
+    "emptyTitle": "Wala pang card",
+    "emptyBody": "Idagdag ang una mong card sa pag-scan ng QR code mula sa iyong issuer.",
+    "addCard": "Magdagdag ng card"
   },
   "OnboardingOverlay": {
     "stepOneTitle": "Maligayang pagdating!",
@@ -785,7 +788,8 @@
     "confirmTitle": "Ilagay itong muli",
     "confirmHint": "Para matiyak na ito nga ang gusto mo.",
     "confirmMismatch": "Hindi magkatugma ang mga passcode. Subukang muli.",
-    "reEnableBiometrics": "Ilagay ang iyong passcode para muling i-on ang pag-unlock gamit ang biometrics."
+    "reEnableBiometrics": "Ilagay ang iyong passcode para muling i-on ang pag-unlock gamit ang biometrics.",
+    "step": "Hakbang {{current}} ng {{total}}"
   },
   "QrLogin": {
     "title": "QR Login",

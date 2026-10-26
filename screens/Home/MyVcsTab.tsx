@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Column, Row, Text} from '../../components/ui';
 import {Theme} from '../../components/ui/styleUtils';
-import {Pressable, RefreshControl, View} from 'react-native';
+import {Pressable, RefreshControl, StyleSheet, View} from 'react-native';
 import {useMyVcsTab} from './MyVcsTabController';
 import {HomeScreenTabProps} from './HomeScreen';
 import {AddVcModal} from './MyVcs/AddVcModal';
@@ -31,12 +31,18 @@ import {
   AlertCircleIcon,
   BellIcon,
   CarouselIcon,
+  PlusIcon,
+  StackIcon,
   ShieldXIcon,
   WarningIcon,
 } from '../../components/revamp/Icons';
-import {AlertSheet} from '../../components/revamp/Page';
+import {
+  AlertSheet,
+  Glyph,
+  PageButton,
+  PageHeading,
+} from '../../components/revamp/Page';
 import {getVCsOrderedByPinStatus} from '../../shared/Utils';
-import {SvgImage} from '../../components/ui/svg';
 import {SearchBar} from '../../components/ui/SearchBar';
 import {Icon} from 'react-native-elements';
 import {VCMetadata} from '../../shared/VCMetadata';
@@ -599,38 +605,31 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
               <Column
                 scroll
                 fill
-                style={Theme.Styles.homeScreenContainer}
+                style={emptyStyles.page}
                 refreshControl={
                   <RefreshControl
                     refreshing={controller.isRefreshingVcs}
                     onRefresh={controller.REFRESH}
                   />
                 }>
-                <View
-                  style={{
-                    alignItems: 'center',
-                  }}>
-                  {SvgImage.DigitalIdentity()}
-                  <Text
+                <View style={emptyStyles.empty}>
+                  <Glyph tone="azure">
+                    {colour => <StackIcon color={colour} size={36} />}
+                  </Glyph>
+                  <PageHeading
                     testID="bringYourDigitalID"
-                    style={{paddingTop: 3}}
-                    align="center"
-                    weight="bold"
-                    margin="33 0 6 0"
-                    lineHeight={1}>
-                    {t('bringYourDigitalID')}
-                  </Text>
-                  <Text
-                    testID="generateVcFABDescription"
-                    style={{
-                      ...Theme.TextStyles.bold,
-                      paddingTop: 3,
-                    }}
-                    color={Theme.Colors.textLabel}
-                    align="center"
-                    margin="0 12 30 12">
-                    {t('generateVcFABDescription')}
-                  </Text>
+                    size="medium"
+                    title={t('emptyTitle')}
+                    body={t('emptyBody')}
+                  />
+                  <View style={emptyStyles.button}>
+                    <PageButton
+                      testID="addFirstCard"
+                      title={t('addCard')}
+                      icon={colour => <PlusIcon color={colour} size={18} />}
+                      onPress={() => props.onAddCredential?.()}
+                    />
+                  </View>
                 </View>
               </Column>
             </React.Fragment>
@@ -740,3 +739,16 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
     </React.Fragment>
   );
 };
+
+const emptyStyles = StyleSheet.create({
+  page: {flexGrow: 1},
+  empty: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 32,
+    paddingVertical: 48,
+    gap: 20,
+  },
+  button: {alignSelf: 'stretch', marginTop: 8},
+});

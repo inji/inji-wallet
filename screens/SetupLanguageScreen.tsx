@@ -4,17 +4,15 @@ import {useTranslation} from 'react-i18next';
 import i18n, {SUPPORTED_LANGUAGES} from '../i18n';
 import {RootRouteProps} from '../routes';
 import {useWelcomeScreen} from './WelcomeScreenController';
-import {changeLanguage, RTL_LANGUAGES} from '../components/LanguageSelector';
+import {changeLanguage} from '../components/LanguageSelector';
 import {useBackupRestoreScreen} from './Settings/BackupRestoreController';
 import {
-  ChoiceList,
+  ChoiceCards,
   ChoiceRow,
-  Glyph,
   Page,
   PageButton,
   PageHeading,
 } from '../components/revamp/Page';
-import {GlobeIcon} from '../components/revamp/Icons';
 
 export const SetupLanguageScreen: React.FC<RootRouteProps> = props => {
   const {t} = useTranslation('SetupLanguage');
@@ -57,23 +55,37 @@ export const SetupLanguageScreen: React.FC<RootRouteProps> = props => {
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}>
-        <Glyph>{colour => <GlobeIcon color={colour} size={40} />}</Glyph>
-        <PageHeading title={t('header')} body={t('description')} />
-        <ChoiceList>
+        <PageHeading align="left" title={t('header')} body={t('description')} />
+        <ChoiceCards>
           {Object.entries(SUPPORTED_LANGUAGES).map(([value, label]) => (
             <ChoiceRow
               key={value}
               testID={`language-${value}`}
+              card
               label={label}
-              rtl={RTL_LANGUAGES.includes(value)}
+              hint={
+                ENGLISH_NAMES[value] !== label
+                  ? ENGLISH_NAMES[value]
+                  : undefined
+              }
               selected={i18n.language === value}
               onPress={() => changeLanguage(i18n, value)}
             />
           ))}
-        </ChoiceList>
+        </ChoiceCards>
       </ScrollView>
     </Page>
   );
+};
+
+// Shown under each native name so every option can be read in English too.
+const ENGLISH_NAMES: Record<string, string> = {
+  en: 'English',
+  fil: 'Filipino',
+  ar: 'Arabic',
+  hi: 'Hindi',
+  kn: 'Kannada',
+  ta: 'Tamil',
 };
 
 const styles = StyleSheet.create({
