@@ -550,6 +550,19 @@
     "offerDescription": "Scan a QR code to instantly download your card.",
     "download": " Download Card",
     "downloadSuccess": "Card Downloaded Successfully",
+    "addedToWallet": {
+      "title": "Added to Your Wallet",
+      "subtitle": "Your {{credential}} is ready to use and share.",
+      "credentialFallback": "credential",
+      "subtitlePending": "Your {{credential}} is saved, but it could not be verified with the issuer yet.",
+      "subtitleExpired": "Your {{credential}} is saved, but it has expired.",
+      "subtitleRevoked": "Your {{credential}} is saved, but the issuer has revoked it.",
+      "signedByIssuer": "Signed by issuer",
+      "savedOnDevice": "Saved on this device",
+      "savedOnDeviceDetail": "Encrypted in secure storage",
+      "done": "Done",
+      "viewInWallet": "View in Wallet"
+    },
     "goHome": "Go to Home",
     "errors": {
       "noInternetConnection": {

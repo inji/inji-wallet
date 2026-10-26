@@ -448,6 +448,19 @@
     "offerDescription": "امسح رمز QR لتنزيل بطاقتك فورًا.",
     "download": "تنزيل البطاقة",
     "downloadSuccess": "اكتمل تنزيل البطاقة بنجاح",
+    "addedToWallet": {
+      "title": "تمت الإضافة إلى محفظتك",
+      "subtitle": "{{credential}} جاهزة للاستخدام والمشاركة.",
+      "credentialFallback": "بيانات الاعتماد",
+      "subtitlePending": "تم حفظ {{credential}}، لكن لم يتم التحقق منها لدى الجهة المُصدِرة بعد.",
+      "subtitleExpired": "تم حفظ {{credential}}، لكنها منتهية الصلاحية.",
+      "subtitleRevoked": "تم حفظ {{credential}}، لكن الجهة المُصدِرة ألغتها.",
+      "signedByIssuer": "موقّعة من الجهة المُصدِرة",
+      "savedOnDevice": "محفوظة على هذا الجهاز",
+      "savedOnDeviceDetail": "مشفّرة في تخزين آمن",
+      "done": "تم",
+      "viewInWallet": "عرض في المحفظة"
+    },
     "goHome": "الانتقال إلى الصفحة الرئيسية",
     "errors": {
       "noInternetConnection": {

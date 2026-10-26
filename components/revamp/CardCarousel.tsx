@@ -16,6 +16,7 @@ import {CredentialCardBack, CredentialCardFront} from './CredentialCard';
 import {CredentialCardData} from './useCredentialCard';
 import {CARD_HEIGHT, CARD_WIDTH, motion, radii} from './tokens';
 import {CardSkeleton} from './CardSkeleton';
+import {NewCardDot} from './NewCardDot';
 import {
   carouselScale,
   FRONT_CARD_LIFT,
@@ -45,7 +46,17 @@ export const CardCarousel: React.FC<{
   flipped: boolean;
   onFlip: () => void;
   reduceMotion: boolean;
-}> = ({entries, index, onIndexChange, flipped, onFlip, reduceMotion}) => {
+  /** The most recently added card, marked with a dot. */
+  newCardKey?: string | null;
+}> = ({
+  entries,
+  index,
+  onIndexChange,
+  flipped,
+  onFlip,
+  reduceMotion,
+  newCardKey,
+}) => {
   const {width} = useWindowDimensions();
   const scale = carouselScale(width);
   const gap = GAP * scale;
@@ -183,6 +194,7 @@ export const CardCarousel: React.FC<{
             flipped={i === index && flipped}
             onPressCard={onPressCard}
             reduceMotion={reduceMotion}
+            isNew={entry.key === newCardKey}
           />
         ))}
       </Animated.View>
@@ -202,6 +214,7 @@ const CarouselCard = React.memo(function CarouselCard({
   flipped,
   onPressCard,
   reduceMotion,
+  isNew,
 }: {
   data?: CredentialCardData;
   i: number;
@@ -215,6 +228,7 @@ const CarouselCard = React.memo(function CarouselCard({
   flipped: boolean;
   onPressCard: (i: number) => void;
   reduceMotion: boolean;
+  isNew: boolean;
 }) {
   const {translateX, rotateY, cardScale, translateY, opacity, dim} =
     useMemo(() => {
@@ -311,9 +325,9 @@ const CarouselCard = React.memo(function CarouselCard({
           accessibilityRole="button"
           accessibilityLabel={
             data
-              ? isActive
-                ? `${data.title}. Tap to flip`
-                : `Show ${data.title}`
+              ? `${isNew ? 'New. ' : ''}${
+                  isActive ? `${data.title}. Tap to flip` : `Show ${data.title}`
+                }`
               : 'Loading credential'
           }>
           {data ? (
@@ -346,6 +360,15 @@ const CarouselCard = React.memo(function CarouselCard({
         pointerEvents="none"
         style={[styles.slot, styles.dim, placement, {opacity: dim}]}
       />
+      {/* Its own layer, moved like the card: the card's texture would clip the part of the dot
+          that sits over its edge. */}
+      {isNew && data ? (
+        <Animated.View
+          pointerEvents="none"
+          style={[styles.slot, styles.badgeLayer, placement, {opacity}]}>
+          <NewCardDot />
+        </Animated.View>
+      ) : null}
     </>
   );
 });
@@ -365,4 +388,5 @@ const styles = StyleSheet.create({
   face: {backfaceVisibility: 'hidden'},
   back: {position: 'absolute', left: 0, top: 0},
   dim: {backgroundColor: '#000', shadowOpacity: 0},
+  badgeLayer: {shadowOpacity: 0},
 });

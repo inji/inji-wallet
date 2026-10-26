@@ -34,6 +34,7 @@ import {
   selectIsSelectingCredentialsToReplace,
   selectDuplicateVcMetadatas,
   selectSelectedDuplicateVcKeys,
+  selectDownloadedVcMetadata,
 } from '../../machines/Issuers/IssuersSelectors';
 import {ActorRefFrom} from 'xstate';
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
@@ -60,6 +61,7 @@ export function useIssuerScreenController({route, navigation}) {
     ),
     authorizationType: useSelector(service, selectAuthorizationType),
     isDownloadSuccess: useSelector(service, selectStoring),
+    downloadedVcMetadata: useSelector(service, selectDownloadedVcMetadata),
     isAuthorizationSuccess: useSelector(service, selectIsAuthorizationSuccess),
     issuers: useSelector(service, selectIssuers),
     ovpMachine: useSelector(service, selectOVPMachine),

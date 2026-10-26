@@ -448,6 +448,19 @@
     "offerDescription": "ನಿಮ್ಮ ಕಾರ್ಡ್ ಅನ್ನು ತಕ್ಷಣವೇ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು QR ಕೋಡ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ.",
     "download": "ಕಾರ್ಡ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
     "downloadSuccess": "ಕಾರ್ಡ್ ಯಶಸ್ವಿಯಾಗಿ ಡೌನ್‌ಲೋಡ್ ಆಯಿತು",
+    "addedToWallet": {
+      "title": "ನಿಮ್ಮ ವಾಲೆಟ್‌ಗೆ ಸೇರಿಸಲಾಗಿದೆ",
+      "subtitle": "ನಿಮ್ಮ {{credential}} ಬಳಸಲು ಮತ್ತು ಹಂಚಿಕೊಳ್ಳಲು ಸಿದ್ಧವಾಗಿದೆ.",
+      "credentialFallback": "ಕ್ರೆಡೆನ್ಶಿಯಲ್",
+      "subtitlePending": "ನಿಮ್ಮ {{credential}} ಉಳಿಸಲಾಗಿದೆ, ಆದರೆ ವಿತರಕರೊಂದಿಗೆ ಇನ್ನೂ ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.",
+      "subtitleExpired": "ನಿಮ್ಮ {{credential}} ಉಳಿಸಲಾಗಿದೆ, ಆದರೆ ಅದರ ಅವಧಿ ಮುಗಿದಿದೆ.",
+      "subtitleRevoked": "ನಿಮ್ಮ {{credential}} ಉಳಿಸಲಾಗಿದೆ, ಆದರೆ ವಿತರಕರು ಅದನ್ನು ಹಿಂಪಡೆದಿದ್ದಾರೆ.",
+      "signedByIssuer": "ವಿತರಕರಿಂದ ಸಹಿ ಮಾಡಲಾಗಿದೆ",
+      "savedOnDevice": "ಈ ಸಾಧನದಲ್ಲಿ ಉಳಿಸಲಾಗಿದೆ",
+      "savedOnDeviceDetail": "ಸುರಕ್ಷಿತ ಸಂಗ್ರಹಣೆಯಲ್ಲಿ ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡಲಾಗಿದೆ",
+      "done": "ಮುಗಿದಿದೆ",
+      "viewInWallet": "ವಾಲೆಟ್‌ನಲ್ಲಿ ನೋಡಿ"
+    },
     "goHome": "ಹೋಮ್‌ಗೆ ಹೋಗಿ",
     "errors": {
       "noInternetConnection": {
