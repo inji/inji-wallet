@@ -13,7 +13,7 @@ import {ScaledText} from './ScaledText';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import {Copilot} from '../ui/Copilot';
-import CredIssuerMark from '../../assets/InjiHomeLogo.svg';
+import CredIssuerMark from '../../assets/CredIssuerMark.svg';
 import {CloseIcon, MoreIcon, PlusIcon, SearchIcon} from './Icons';
 import {fonts, radii, shadows} from './tokens';
 import {useRevampTheme} from './useRevampTheme';

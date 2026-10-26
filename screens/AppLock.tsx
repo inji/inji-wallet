@@ -19,7 +19,7 @@ import {fonts, radii} from '../components/revamp/tokens';
 import {useRevampTheme} from '../components/revamp/useRevampTheme';
 import {isAndroid} from '../shared/constants';
 import {useAutoLock} from './Settings/autoLock';
-import InjiHomeLogo from '../assets/InjiHomeLogo.svg';
+import CredIssuerMark from '../assets/CredIssuerMark.svg';
 
 /**
  * Covers the app after auto-lock until the holder unlocks it, leaving every screen beneath as it
@@ -70,7 +70,7 @@ const StorageLockScreen: React.FC<{onRetry: () => void}> = ({onRetry}) => {
             paddingTop: (initialWindowMetrics?.insets.top ?? 0) + 64,
           },
         ]}>
-        <InjiHomeLogo width={72} height={72} />
+        <CredIssuerMark width={72} height={72} />
         <Pressable
           testID="storageUnlockBiometrics"
           accessibilityRole="button"
@@ -161,7 +161,7 @@ const LockScreen: React.FC<{onUnlock: () => void}> = ({onUnlock}) => {
             paddingTop: (initialWindowMetrics?.insets.top ?? 0) + 64,
           },
         ]}>
-        <InjiHomeLogo width={72} height={72} />
+        <CredIssuerMark width={72} height={72} />
         {passcode && shown ? (
           <View style={styles.pin}>
             <ScaledText style={[styles.prompt, {color: c.ink}]}>
