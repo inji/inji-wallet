@@ -167,7 +167,10 @@ export const SettingScreen: React.FC<SettingProps & RootRouteProps> = props => {
               icon={settingsIcons.history}
               label={t('sharingHistory')}
               onPress={() =>
-                navigation.navigate(BOTTOM_TAB_ROUTES.history as never)
+                navigation.navigate({
+                  name: BOTTOM_TAB_ROUTES.history,
+                  params: {filter: 'sharing'},
+                } as never)
               }
             />
             {SHOW_CONNECTED_VERIFIERS && (

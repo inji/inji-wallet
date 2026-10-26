@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   content: {flex: 1, alignItems: 'center', paddingTop: 72, gap: 28},
   pill: {
     position: 'absolute',
-    left: 134,
+    left: 16,
     bottom: 12,
     height: 28,
     paddingHorizontal: 12,

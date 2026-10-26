@@ -500,7 +500,9 @@
     "couldNotAddCard": "تعذّرت إضافة بطاقتك",
     "backToWallet": "العودة إلى المحفظة",
     "thisCard": "هذه البطاقة",
-    "validUntil": "صالحة حتى {{date}}"
+    "validUntil": "صالحة حتى {{date}}",
+    "downloadFailedPill": "فشل التنزيل",
+    "verificationFailedPill": "تعذّر التحقق"
   },
   "HelpScreen": {
     "header": "يساعد",

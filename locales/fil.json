@@ -499,7 +499,9 @@
     "couldNotAddCard": "Hindi maidagdag ang iyong card",
     "backToWallet": "Bumalik sa wallet",
     "thisCard": "card na ito",
-    "validUntil": "Valid hanggang {{date}}"
+    "validUntil": "Valid hanggang {{date}}",
+    "downloadFailedPill": "Hindi na-download",
+    "verificationFailedPill": "Hindi ma-verify"
   },
   "HelpScreen": {
     "header": "Tulong",

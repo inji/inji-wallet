@@ -326,7 +326,7 @@ export const IssuersScreen: React.FC<
       <DownloadFailed
         testID={`${errorType}Error`}
         kind={errorType === ErrorMessage.NO_INTERNET ? 'connection' : 'generic'}
-        title={t(`errors.${errorType}.title`)}
+        title={t('couldNotAddCard')}
         message={t(`errors.${errorType}.message`)}
         onClose={goBack}
         primary={

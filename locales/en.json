@@ -609,7 +609,9 @@
     "couldNotAddCard": "Couldn’t add your card",
     "backToWallet": "Back to wallet",
     "thisCard": "this card",
-    "validUntil": "Valid until {{date}}"
+    "validUntil": "Valid until {{date}}",
+    "downloadFailedPill": "Download failed",
+    "verificationFailedPill": "Couldn’t verify"
   },
   "HelpScreen": {
     "header": "Help",

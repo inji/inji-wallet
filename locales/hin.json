@@ -501,7 +501,9 @@
     "couldNotAddCard": "आपका कार्ड नहीं जोड़ा जा सका",
     "backToWallet": "वॉलेट पर वापस जाएँ",
     "thisCard": "यह कार्ड",
-    "validUntil": "{{date}} तक मान्य"
+    "validUntil": "{{date}} तक मान्य",
+    "downloadFailedPill": "डाउनलोड विफल",
+    "verificationFailedPill": "सत्यापित नहीं हो सका"
   },
   "HelpScreen": {
     "header": "मदद",

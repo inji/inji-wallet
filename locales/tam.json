@@ -500,7 +500,9 @@
     "couldNotAddCard": "உங்கள் அட்டையைச் சேர்க்க முடியவில்லை",
     "backToWallet": "வாலட்டுக்குத் திரும்பு",
     "thisCard": "இந்த அட்டை",
-    "validUntil": "{{date}} வரை செல்லும்"
+    "validUntil": "{{date}} வரை செல்லும்",
+    "downloadFailedPill": "பதிவிறக்கம் தோல்வி",
+    "verificationFailedPill": "சரிபார்க்க முடியவில்லை"
   },
   "HelpScreen": {
     "header": "உதவி",

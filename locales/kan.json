@@ -500,7 +500,9 @@
     "couldNotAddCard": "ನಿಮ್ಮ ಕಾರ್ಡ್ ಸೇರಿಸಲಾಗಲಿಲ್ಲ",
     "backToWallet": "ವಾಲೆಟ್‌ಗೆ ಹಿಂತಿರುಗಿ",
     "thisCard": "ಈ ಕಾರ್ಡ್",
-    "validUntil": "{{date}} ವರೆಗೆ ಮಾನ್ಯ"
+    "validUntil": "{{date}} ವರೆಗೆ ಮಾನ್ಯ",
+    "downloadFailedPill": "ಡೌನ್‌ಲೋಡ್ ವಿಫಲವಾಗಿದೆ",
+    "verificationFailedPill": "ಪರಿಶೀಲಿಸಲಾಗಲಿಲ್ಲ"
   },
   "HelpScreen": {
     "header": "ಸಹಾಯ",
