@@ -15,7 +15,7 @@ import {TelemetryConstants} from '../shared/telemetry/TelemetryConstants';
 // Rendered directly (rather than via SvgImage.InjiLogo/Theme.HomeScreenLogo) because that
 // theme key now points at the horizontal icon+wordmark lockup used in the Home header, while
 // this unlock screen keeps the icon-only mark.
-import InjiHomeLogo from '../assets/InjiHomeLogo.svg';
+import CredIssuerMark from '../assets/CredIssuerMark.svg';
 
 export const WelcomeScreen: React.FC<RootRouteProps> = props => {
   const {t} = useTranslation('WelcomeScreen');
@@ -26,7 +26,7 @@ export const WelcomeScreen: React.FC<RootRouteProps> = props => {
       padding="32 32 0"
       backgroundColor={Theme.Colors.whiteBackgroundColor}>
       <HorizontallyCentered fill>
-        <InjiHomeLogo {...Theme.Styles.welcomeLogo} />
+        <CredIssuerMark {...Theme.Styles.welcomeLogo} />
       </HorizontallyCentered>
       {controller.isBiometricUnlock ? (
         <BiometricUnlockButton {...props} />

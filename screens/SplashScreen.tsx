@@ -5,13 +5,13 @@ import {APPLICATION_THEME} from 'react-native-dotenv';
 import {Column} from '../components/ui';
 import {Theme} from '../components/ui/styleUtils';
 import {useAppLayout} from './AppLayoutController';
-import CredIssuerLogo from '../assets/CredIssuerFullLogo.svg';
+import CredIssuerWalletLogo from '../assets/images/png/CredIssuerWalletLogo.svg';
 
 const isPurpleTheme = APPLICATION_THEME?.toLowerCase() === 'purple';
 
 // The logo's own viewBox aspect ratio (width/height), used to size it without distortion.
-const LOGO_ASPECT_RATIO = 1082 / 608;
-const LOGO_WIDTH = Dimensions.get('screen').width * 0.65;
+const LOGO_ASPECT_RATIO = 209 / 174;
+const LOGO_WIDTH = Dimensions.get('screen').width * 0.6;
 
 export const SplashScreen: React.FC<RootRouteProps> = props => {
   const controller = useAppLayout();
@@ -41,7 +41,10 @@ export const SplashScreen: React.FC<RootRouteProps> = props => {
           source={require('../assets/images/png/purpleSplashScreen.png')}
         />
       ) : (
-        <CredIssuerLogo width={LOGO_WIDTH} height={LOGO_WIDTH / LOGO_ASPECT_RATIO} />
+        <CredIssuerWalletLogo
+          width={LOGO_WIDTH}
+          height={LOGO_WIDTH / LOGO_ASPECT_RATIO}
+        />
       )}
     </Column>
   );
