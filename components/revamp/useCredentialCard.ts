@@ -17,6 +17,8 @@ import {claimLabels} from './cardFields';
 import {VCFormat} from '../../shared/VCFormat';
 import {getCredentialExpiryDate} from '../../shared/credentialExpiry';
 import {cardStatusOf} from './cardStatus';
+import {useIssuerQrCode} from '../IssuerQrCodeImage';
+import {VCItemEvents} from '../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 
 export type CardStatus = 'verified' | 'pending' | 'expired' | 'revoked';
 
@@ -43,6 +45,17 @@ export interface CredentialCardData {
   expiryDate?: string;
   /** When the wallet found the credential revoked, as an ISO 8601 string; empty otherwise. */
   revokedOn?: string;
+  /**
+   * CredIssuer's own QR image for this credential (its Claim 169 QR), which a verifier must be
+   * shown instead of the wallet-generated QR. `url` is null when there is none or it failed to
+   * load; while `isFetching`, no QR should be shown. See `useIssuerQrCode`. Absent on the
+   * built-in sample cards.
+   */
+  issuerQr?: {
+    url: string | null;
+    isFetching: boolean;
+    onLoadError: (url: string) => void;
+  };
 }
 
 /**
@@ -52,6 +65,8 @@ export interface CredentialCardData {
 export function useCredentialCard(
   vcMetadata: VCMetadata,
   isDownloading = false,
+  /** Look up CredIssuer's QR for this card: only while its QR is shown, or about to be. */
+  issuerQrNeeded = false,
 ) {
   const controller = useVcItemController(vcMetadata);
   const verifiableCredentialData = controller.verifiableCredentialData;
@@ -59,6 +74,22 @@ export function useCredentialCard(
   const [wellknown, setWellknown] = useState<any>(null);
   const [issuerDisplay, setIssuerDisplay] = useState<any>(null);
   const loaded = isVCLoaded(controller.credential as any);
+  // An mdoc's QR is a live Bluetooth engagement, never an issued image.
+  const issuerQrSource =
+    vcMetadata.format === VCFormat.mso_mdoc ? null : controller.credential;
+  const {
+    url: issuerQrUrl,
+    isFetching: isFetchingIssuerQr,
+    onLoadError: onIssuerQrLoadError,
+  } = useIssuerQrCode(
+    issuerQrSource as any,
+    (issuerQrCode, credentialId) =>
+      controller.VCItemService.send(
+        VCItemEvents.STORE_ISSUER_QR_CODE(issuerQrCode, credentialId),
+      ),
+    undefined,
+    issuerQrNeeded,
+  );
   const configurationId = verifiableCredentialData?.credentialConfigurationId;
 
   useEffect(() => {
@@ -144,8 +175,15 @@ export function useCredentialCard(
       credential: controller.credential,
       expiryDate: getCredentialExpiryDate(controller.credential, format),
       revokedOn: vcMetadata.revokedOn ?? '',
+      issuerQr: {
+        url: issuerQrUrl,
+        isFetching: isFetchingIssuerQr,
+        onLoadError: onIssuerQrLoadError,
+      },
     };
   }, [
+    issuerQrUrl,
+    isFetchingIssuerQr,
     ready,
     vc,
     wellknown,

@@ -120,6 +120,18 @@
     "idType": "Uri ng ID",
     "id": "Id",
     "qrCodeHeader": "QR Code",
+    "issuerQr": {
+      "info": "Inisyu ng {{issuer}} ang QR code na ito kasama ng iyong credential. Ini-scan ito ng verifier para basahin at suriin ang iyong mga detalye, kaya ipakita lang ito sa mga verifier na pinagkakatiwalaan mo.",
+      "infoGeneric": "Inisyu ang QR code na ito kasama ng iyong credential. Ini-scan ito ng verifier para basahin at suriin ang iyong mga detalye, kaya ipakita lang ito sa mga verifier na pinagkakatiwalaan mo.",
+      "walletInfo": "Ini-scan ng verifier ang QR code na ito para basahin at suriin ang iyong credential, kaya ipakita lang ito sa mga verifier na pinagkakatiwalaan mo."
+    },
+    "mdocShare": {
+      "titleCredential": "Ipakita ang Credential",
+      "close": "Isara",
+      "loadingQr": "Inihahanda ang iyong QR code…",
+      "qrErrorTitle": "Hindi magawa ang QR code",
+      "qrErrorMessage": "Isara ang screen na ito at subukang muli."
+    },
     "nationalCard": "Pambansang ID",
     "identityCard": "Kard ng Pagkakakilanlan",
     "insuranceCard": "Insurance Card",

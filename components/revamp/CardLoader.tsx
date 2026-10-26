@@ -12,8 +12,14 @@ export interface LoadedCard {
 export const CardLoader: React.FC<{
   vcMetadata: VCMetadata;
   onLoaded: (key: string, card: LoadedCard) => void;
-}> = ({vcMetadata, onLoaded}) => {
-  const {data, service, controller} = useCredentialCard(vcMetadata);
+  /** The card's QR is shown (its back, or Show QR), so CredIssuer's QR may be looked up. */
+  issuerQrNeeded?: boolean;
+}> = ({vcMetadata, onLoaded, issuerQrNeeded = false}) => {
+  const {data, service, controller} = useCredentialCard(
+    vcMetadata,
+    false,
+    issuerQrNeeded,
+  );
   useEffect(() => {
     if (data) onLoaded(vcMetadata.getVcKey(), {data, service, controller});
   }, [data, controller.credential]);

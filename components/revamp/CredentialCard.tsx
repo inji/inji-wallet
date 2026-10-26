@@ -308,7 +308,16 @@ export const CredentialCardBack = React.memo(function CredentialCardBack({
     [data],
   );
   const isMdoc = data.format === VCFormat.mso_mdoc;
-  const {qr: plainQr} = useCardQr(data.vcMetadata, data.credential, showing);
+  // CredIssuer's own QR (its Claim 169 QR) comes first: it is the one verifiers can read. The
+  // wallet-generated QR is only built when there is none, or its image failed to load.
+  const issuerQr = isMdoc ? undefined : data.issuerQr;
+  const issuerQrUrl = issuerQr?.url ?? null;
+  const isFetchingIssuerQr = !!issuerQr?.isFetching;
+  const {qr: plainQr} = useCardQr(
+    data.vcMetadata,
+    data.credential,
+    showing && !issuerQrUrl && !isFetchingIssuerQr,
+  );
   const [mdocQr, setMdocQr] = useState<string | null>(null);
   const qr = isMdoc ? (showing ? mdocQr : null) : plainQr;
   const [l1, l2] = mrz(data);
@@ -342,9 +351,17 @@ export const CredentialCardBack = React.memo(function CredentialCardBack({
             style={styles.qrBox}
             accessibilityRole="image"
             accessibilityLabel="Verification QR code">
-            {qr ? (
+            {issuerQrUrl ? (
+              <Image
+                source={{uri: issuerQrUrl}}
+                style={styles.issuerQr}
+                resizeMode="contain"
+                onError={() => issuerQr?.onLoadError(issuerQrUrl)}
+              />
+            ) : qr && !isFetchingIssuerQr ? (
+              // A wallet QR built earlier must not show while CredIssuer's is still being looked up.
               <QRCode value={qr} size={92} ecl={DEFAULT_ECL} />
-            ) : showing && data.credential ? (
+            ) : showing && (data.credential || isFetchingIssuerQr) ? (
               <ActivityIndicator color="#0a3970" />
             ) : (
               <QrGlyph />
@@ -527,6 +544,7 @@ const styles = StyleSheet.create({
   },
   backAction: {fontFamily: fonts.medium, fontSize: 12, lineHeight: 14.4},
   backMiddle: {flexDirection: 'row', gap: 14, alignItems: 'flex-start'},
+  issuerQr: {width: 92, height: 92},
   qrBox: {
     width: 104,
     height: 104,

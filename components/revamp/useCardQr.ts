@@ -20,6 +20,9 @@ export function useCardQr(
   enabled: boolean,
 ) {
   const [qr, setQr] = useState<string | null>(null);
+  // The QR could not be built (too large, or the native module failed), so callers can say so
+  // rather than wait for ever.
+  const [failed, setFailed] = useState(false);
   const supported = !!meta && meta.format !== VCFormat.mso_mdoc;
 
   useEffect(() => {
@@ -59,11 +62,15 @@ export function useCardQr(
       return null;
     })()
       .catch(() => null)
-      .then(data => !cancelled && setQr(data ?? null));
+      .then(data => {
+        if (cancelled) return;
+        setQr(data ?? null);
+        setFailed(!data);
+      });
     return () => {
       cancelled = true;
     };
   }, [enabled, supported, credential]);
 
-  return {qr, supported};
+  return {qr, supported, failed};
 }

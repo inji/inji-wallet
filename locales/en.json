@@ -122,6 +122,11 @@
     "idType": "ID Type",
     "id": "ID",
     "qrCodeHeader": "QR Code",
+    "issuerQr": {
+      "info": "{{issuer}} issued this QR code with your credential. A verifier scans it to read and check your details, so show it only to verifiers you trust.",
+      "infoGeneric": "This QR code was issued with your credential. A verifier scans it to read and check your details, so show it only to verifiers you trust.",
+      "walletInfo": "A verifier scans this QR code to read and check your credential, so show it only to verifiers you trust."
+    },
     "nationalCard": "National ID",
     "identityCard": "Identity Card",
     "insuranceCard": "Insurance Card",

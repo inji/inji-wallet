@@ -23,9 +23,11 @@ import {VCItemEvents} from '../../machines/VerifiableCredential/VCItemMachine/VC
 import {RemoveVcWarningOverlay} from '../../screens/Home/MyVcs/RemoveVcWarningOverlay';
 import {HistoryTab} from '../../screens/Home/MyVcs/HistoryTab';
 import {QrCodeOverlay} from '../QrCodeOverlay';
+import {IssuerQrDialog} from '../IssuerQrCodeImage';
 import {CardCarousel} from './CardCarousel';
 import {frontCardFrame} from './carouselLayout';
 import {CardLoader, LoadedCard} from './CardLoader';
+import {useCardQr} from './useCardQr';
 import {CredentialCardFront, isInactive, ScaledCard} from './CredentialCard';
 import {
   Action,
@@ -259,6 +261,20 @@ export const WalletHome: React.FC<{
   }, [startCardTour, isActiveCardLoaded]);
 
   const [qrFor, setQrFor] = useState<string | null>(null);
+  // Which Show QR modal opened, chosen once when it opens: switching modals while one is open
+  // would present the second while the first is still being dismissed, which iOS refuses.
+  const [qrInIssuerDialog, setQrInIssuerDialog] = useState(false);
+  // Whether the details page's card is showing its back.
+  const [isDetailFlipped, setIsDetailFlipped] = useState(false);
+  // The cards whose QR is in use (Show QR, or a card back showing). CredIssuer's QR is only looked
+  // up for these, not for every card as the wallet opens.
+  const issuerQrNeededKeys = new Set(
+    [
+      qrFor,
+      flipped ? activeEntry?.key : null,
+      isDetailFlipped ? detailKey : null,
+    ].filter(Boolean),
+  );
   const qrCard = qrFor ? loaded[qrFor] : undefined;
   const qrEntry = qrFor ? all.find(e => e.key === qrFor) : undefined;
 
@@ -289,7 +305,13 @@ export const WalletHome: React.FC<{
         );
         navigation.navigate(BOTTOM_TAB_ROUTES.share);
       },
-      showQr: () => setQrFor(key),
+      showQr: () => {
+        // CredIssuer's page when the card has its QR or is still looking it up; it shows the
+        // wallet-generated QR itself if the lookup then comes back empty.
+        const issuerQr = card?.data.issuerQr;
+        setQrInIssuerDialog(!!(issuerQr?.url || issuerQr?.isFetching));
+        setQrFor(key);
+      },
       togglePin: () => {
         if (!card) return;
         const pinning = !vcMetadata.isPinned;
@@ -316,7 +338,12 @@ export const WalletHome: React.FC<{
   return (
     <View style={{flex: 1, backgroundColor: c.canvas}}>
       {vcMetadatas.map(m => (
-        <CardLoader key={m.getVcKey()} vcMetadata={m} onLoaded={onLoaded} />
+        <CardLoader
+          key={m.getVcKey()}
+          vcMetadata={m}
+          onLoaded={onLoaded}
+          issuerQrNeeded={issuerQrNeededKeys.has(m.getVcKey())}
+        />
       ))}
 
       <WalletHeader
@@ -437,7 +464,11 @@ export const WalletHome: React.FC<{
           data={cards[detailEntry.key].data}
           pinned={isPinned(detailEntry)}
           actions={actionsFor(detailEntry.key)}
-          onClosed={() => setDetailKey(null)}
+          onClosed={() => {
+            setDetailKey(null);
+            setIsDetailFlipped(false);
+          }}
+          onFlipChange={setIsDetailFlipped}
         />
       ) : null}
 
@@ -456,17 +487,61 @@ export const WalletHome: React.FC<{
         </>
       ) : null}
       {qrCard && qrEntry?.vcMetadata ? (
-        <QrCodeOverlay
-          verifiableCredential={qrCard.controller.credential}
-          meta={qrEntry.vcMetadata}
-          credentialName={qrCard.data.title}
-          issuerLogoUrl={qrCard.data.issuerLogoUrl}
-          showInlineQr={false}
-          forceVisible
-          onClose={() => setQrFor(null)}
-        />
+        // CredIssuer's own QR (its Claim 169 QR) when the card has one, since that is what
+        // verifiers read; the wallet-generated QR otherwise, or if that image fails to load.
+        qrInIssuerDialog ? (
+          <IssuerCardQrDialog
+            key={qrFor}
+            card={qrCard}
+            meta={qrEntry.vcMetadata}
+            onClose={() => setQrFor(null)}
+          />
+        ) : (
+          <QrCodeOverlay
+            verifiableCredential={qrCard.controller.credential}
+            meta={qrEntry.vcMetadata}
+            credentialName={qrCard.data.title}
+            issuerLogoUrl={qrCard.data.issuerLogoUrl}
+            showInlineQr={false}
+            forceVisible
+            onClose={() => setQrFor(null)}
+          />
+        )
       ) : null}
     </View>
+  );
+};
+
+/**
+ * CredIssuer's QR on its full-screen page. When the lookup ends with no QR, or the image fails to
+ * load, the wallet-generated QR is built and shown on the same page instead of in another modal.
+ * Keyed by card, so each card builds its own fallback.
+ */
+const IssuerCardQrDialog: React.FC<{
+  card: LoadedCard;
+  meta: VCMetadata;
+  onClose: () => void;
+}> = ({card, meta, onClose}) => {
+  const issuerQr = card.data.issuerQr;
+  const needsFallback = !issuerQr?.url && !issuerQr?.isFetching;
+  const {qr: fallbackQr, failed: fallbackFailed} = useCardQr(
+    meta,
+    card.data.credential,
+    needsFallback,
+  );
+  return (
+    <IssuerQrDialog
+      visible
+      qrCodeUrl={issuerQr?.url ?? null}
+      onClose={onClose}
+      onLoadError={issuerQr?.onLoadError}
+      fallbackQrValue={needsFallback ? fallbackQr : null}
+      fallbackFailed={needsFallback && fallbackFailed}
+      credentialName={card.data.title}
+      issuerName={card.data.issuerName}
+      issuerLogoUrl={card.data.issuerLogoUrl}
+      holderName={card.data.holderName}
+    />
   );
 };
 
