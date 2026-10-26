@@ -14,7 +14,7 @@ import {ScaledText} from '../../components/revamp/ScaledText';
 import {fonts, radii} from '../../components/revamp/tokens';
 import {useRevampTheme} from '../../components/revamp/useRevampTheme';
 import testIDProps from '../../shared/commonUtil';
-import InjiHomeLogo from '../../assets/InjiHomeLogo.svg';
+import CredIssuerMark from '../../assets/CredIssuerMark.svg';
 
 export const AboutInji: React.FC<AboutInjiProps> = ({appId, renderTrigger}) => {
   const {t} = useTranslation('AboutInji');
@@ -44,7 +44,7 @@ export const AboutInji: React.FC<AboutInjiProps> = ({appId, renderTrigger}) => {
           }>
           <ScrollView contentContainerStyle={styles.content}>
             <View style={styles.brand}>
-              <InjiHomeLogo width={72} height={72} />
+              <CredIssuerMark width={72} height={72} />
               <ScaledText style={[styles.name, {color: c.ink}]}>
                 {t('appName')}
               </ScaledText>

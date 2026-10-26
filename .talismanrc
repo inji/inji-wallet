@@ -528,5 +528,7 @@ fileignoreconfig:
     checksum: 075709d836cf28cf6c13efdf6d4d14822d3d4cc2dff964a4eabd01439bce924f
   - filename: components/PinInput.tsx
     checksum: d3b140d060c2de8d4e155b87739c0ffbaca34bfda75b3f6e13522b8117952ff5
+  - filename: ios/Inji/SplashScreen.storyboard
+    checksum: cb624c7a100d00d9dda403a55aa89d059c3bc86d301dd5c1ec92af152a7452ed
     version: "1.0"
 

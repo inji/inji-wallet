@@ -30,7 +30,7 @@ import {
   StepDots,
 } from '../components/revamp/Page';
 import {BiometricsIcon} from '../components/revamp/Icons';
-import InjiHomeLogo from '../assets/InjiHomeLogo.svg';
+import CredIssuerMark from '../assets/CredIssuerMark.svg';
 
 export const PasscodeScreen: React.FC<PasscodeRouteProps> = props => {
   const {t} = useTranslation('PasscodeScreen');
@@ -201,7 +201,7 @@ const UnlockPasscode: React.FC<{
       <ScrollView
         keyboardShouldPersistTaps="always"
         contentContainerStyle={styles.unlock}>
-        <InjiHomeLogo width={64} height={64} />
+        <CredIssuerMark width={64} height={64} />
         <PageHeading
           testID="enterPasscode"
           size="medium"

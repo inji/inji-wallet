@@ -14,7 +14,7 @@ import {
   sendImpressionEvent,
 } from '../shared/telemetry/TelemetryUtils';
 import {TelemetryConstants} from '../shared/telemetry/TelemetryConstants';
-import InjiHomeLogo from '../assets/InjiHomeLogo.svg';
+import CredIssuerMark from '../assets/CredIssuerMark.svg';
 
 /** Asks for the passcode over the current screen, e.g. to turn biometrics back on. */
 export const Passcode: React.FC<PasscodeProps> = props => {
@@ -38,7 +38,7 @@ export const Passcode: React.FC<PasscodeProps> = props => {
         <ScrollView
           keyboardShouldPersistTaps="always"
           contentContainerStyle={styles.content}>
-          <InjiHomeLogo width={64} height={64} />
+          <CredIssuerMark width={64} height={64} />
           <PageHeading
             testID="passcodePromptTitle"
             size="medium"

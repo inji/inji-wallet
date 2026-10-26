@@ -10,7 +10,7 @@ import {Spacing, Theme} from '../styleUtils';
 import {isIOS} from '../../../shared/constants';
 import Constants from 'expo-constants';
 import HomeScreenLogo from '../../../assets/CredIssuerHorizontalLogo.svg';
-import InjiLogoSmall from '../../../assets/InjiHomeLogo.svg';
+import InjiLogoSmall from '../../../assets/CredIssuerMark.svg';
 import i18next from '../../../i18n';
 import {DesignTokens} from './designTokens';
 

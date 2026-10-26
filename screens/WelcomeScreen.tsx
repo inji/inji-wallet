@@ -16,7 +16,7 @@ import {BiometricsIcon} from '../components/revamp/Icons';
 import {ScaledText} from '../components/revamp/ScaledText';
 import {fonts} from '../components/revamp/tokens';
 import {useRevampTheme} from '../components/revamp/useRevampTheme';
-import InjiHomeLogo from '../assets/InjiHomeLogo.svg';
+import CredIssuerMark from '../assets/CredIssuerMark.svg';
 
 export const WelcomeScreen: React.FC<RootRouteProps> = props => {
   const {t} = useTranslation('WelcomeScreen');
@@ -61,7 +61,7 @@ export const LockedBrand: React.FC = () => {
   const {c} = useRevampTheme();
   return (
     <View style={styles.brand}>
-      <InjiHomeLogo width={96} height={96} />
+      <CredIssuerMark width={96} height={96} />
       <ScaledText
         accessibilityRole="header"
         style={[styles.name, {color: c.ink}]}>
