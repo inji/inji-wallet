@@ -65,6 +65,8 @@ export interface CredentialCardData {
 export function useCredentialCard(
   vcMetadata: VCMetadata,
   isDownloading = false,
+  /** Look up CredIssuer's QR for this card: only while its QR is shown, or about to be. */
+  issuerQrNeeded = false,
 ) {
   const controller = useVcItemController(vcMetadata);
   const verifiableCredentialData = controller.verifiableCredentialData;
@@ -79,10 +81,14 @@ export function useCredentialCard(
     url: issuerQrUrl,
     isFetching: isFetchingIssuerQr,
     onLoadError: onIssuerQrLoadError,
-  } = useIssuerQrCode(issuerQrSource as any, (issuerQrCode, credentialId) =>
-    controller.VCItemService.send(
-      VCItemEvents.STORE_ISSUER_QR_CODE(issuerQrCode, credentialId),
-    ),
+  } = useIssuerQrCode(
+    issuerQrSource as any,
+    (issuerQrCode, credentialId) =>
+      controller.VCItemService.send(
+        VCItemEvents.STORE_ISSUER_QR_CODE(issuerQrCode, credentialId),
+      ),
+    undefined,
+    issuerQrNeeded,
   );
   const configurationId = verifiableCredentialData?.credentialConfigurationId;
 

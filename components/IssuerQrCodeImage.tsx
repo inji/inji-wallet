@@ -334,6 +334,11 @@ export function useIssuerQrCode(
     | undefined,
   onFetched?: (issuerQrCode: string, credissuerCredentialId: string) => void,
   credential: unknown = walletCredential?.credential,
+  /**
+   * Whether the QR is needed now (shown, or about to be). The lookup only runs while it is, so
+   * cards nobody looks at don't each call CredIssuer when the wallet opens.
+   */
+  enabled = true,
 ) {
   // The QR image the wallet saved for this credential (at download, or on the first open after
   // it). When there is one it is all the card needs: no lookup, no network.
@@ -353,9 +358,11 @@ export function useIssuerQrCode(
   // Resetting state from the effect isn't enough: the effect runs after the render in which the
   // credential changed, so that render would still show the previous credential's QR.
   // Null once a QR is saved, which is what stops the lookup from running on every open.
-  const issuerQrLookupKey = savedIssuerQrCode
+  const pendingLookupKey = savedIssuerQrCode
     ? null
     : getIssuerQrLookupKey(credissuerCredentialId, vcId);
+  // The lookup to run now: only once the QR is needed.
+  const issuerQrLookupKey = enabled ? pendingLookupKey : null;
   const [issuerQrLookup, setIssuerQrLookup] = useState<{
     key: string;
     url: string | null;
@@ -366,10 +373,12 @@ export function useIssuerQrCode(
   // during that window gets a QR that doesn't verify, which made verification look intermittent.
   // Being derived, this is already true on the first render and on the first render after the
   // credential changes, so no frame ever shows a QR that belongs to nobody or to someone else.
+  // It follows the lookup the credential needs, not whether it is enabled yet: a caller can show
+  // the QR a render before `enabled` reaches here, and must see "fetching" in that render too.
   const isFetching =
-    issuerQrLookupKey !== null && issuerQrLookup?.key !== issuerQrLookupKey;
+    pendingLookupKey !== null && issuerQrLookup?.key !== pendingLookupKey;
   const freshIssuerQrCodeUrl =
-    issuerQrLookup?.key === issuerQrLookupKey ? issuerQrLookup.url : null;
+    issuerQrLookup?.key === pendingLookupKey ? issuerQrLookup.url : null;
   const issuerQrCodeUrl =
     savedIssuerQrCode ?? freshIssuerQrCodeUrl ?? storedIssuerQrCodeUrl;
   // The stored link expires within a day and the fresh one needs the network, so an issuer QR
@@ -380,8 +389,10 @@ export function useIssuerQrCode(
   const [failedIssuerQrCodeUrl, setFailedIssuerQrCodeUrl] = useState<
     string | null
   >(null);
+  // Nothing while the lookup is pending, not even the link inside the VC: the fresh QR may differ,
+  // and one shown in the meantime could be scanned and fail to verify.
   const url =
-    issuerQrCodeUrl && issuerQrCodeUrl !== failedIssuerQrCodeUrl
+    !isFetching && issuerQrCodeUrl && issuerQrCodeUrl !== failedIssuerQrCodeUrl
       ? issuerQrCodeUrl
       : null;
 

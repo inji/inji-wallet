@@ -358,7 +358,8 @@ export const CredentialCardBack = React.memo(function CredentialCardBack({
                 resizeMode="contain"
                 onError={() => issuerQr?.onLoadError(issuerQrUrl)}
               />
-            ) : qr ? (
+            ) : qr && !isFetchingIssuerQr ? (
+              // A wallet QR built earlier must not show while CredIssuer's is still being looked up.
               <QRCode value={qr} size={92} ecl={DEFAULT_ECL} />
             ) : showing && (data.credential || isFetchingIssuerQr) ? (
               <ActivityIndicator color="#0a3970" />

@@ -62,8 +62,13 @@ export const CredentialDetails = React.forwardRef<
     pinned: boolean;
     actions: CardActions;
     onClosed: () => void;
+    /** Whether the card's back (with its QR) is showing. */
+    onFlipChange?: (flipped: boolean) => void;
   }
->(function CredentialDetails({data, pinned, actions, onClosed}, ref) {
+>(function CredentialDetails(
+  {data, pinned, actions, onClosed, onFlipChange},
+  ref,
+) {
   const {c, reduceMotion} = useRevampTheme();
   const insets = useSafeAreaInsets();
   const cardWidth = Math.min(CARD_WIDTH, useWindowDimensions().width - 48);
@@ -100,6 +105,7 @@ export const CredentialDetails = React.forwardRef<
   }, []);
 
   useEffect(() => {
+    onFlipChange?.(flipped);
     if (reduceMotion) flip.setValue(flipped ? 1 : 0);
     else
       Animated.timing(flip, {

@@ -260,6 +260,17 @@ export const WalletHome: React.FC<{
   }, [startCardTour, isActiveCardLoaded]);
 
   const [qrFor, setQrFor] = useState<string | null>(null);
+  // Whether the details page's card is showing its back.
+  const [isDetailFlipped, setIsDetailFlipped] = useState(false);
+  // The cards whose QR is in use (Show QR, or a card back showing). CredIssuer's QR is only looked
+  // up for these, not for every card as the wallet opens.
+  const issuerQrNeededKeys = new Set(
+    [
+      qrFor,
+      flipped ? activeEntry?.key : null,
+      isDetailFlipped ? detailKey : null,
+    ].filter(Boolean),
+  );
   const qrCard = qrFor ? loaded[qrFor] : undefined;
   const qrEntry = qrFor ? all.find(e => e.key === qrFor) : undefined;
 
@@ -317,7 +328,12 @@ export const WalletHome: React.FC<{
   return (
     <View style={{flex: 1, backgroundColor: c.canvas}}>
       {vcMetadatas.map(m => (
-        <CardLoader key={m.getVcKey()} vcMetadata={m} onLoaded={onLoaded} />
+        <CardLoader
+          key={m.getVcKey()}
+          vcMetadata={m}
+          onLoaded={onLoaded}
+          issuerQrNeeded={issuerQrNeededKeys.has(m.getVcKey())}
+        />
       ))}
 
       <WalletHeader
@@ -438,7 +454,11 @@ export const WalletHome: React.FC<{
           data={cards[detailEntry.key].data}
           pinned={isPinned(detailEntry)}
           actions={actionsFor(detailEntry.key)}
-          onClosed={() => setDetailKey(null)}
+          onClosed={() => {
+            setDetailKey(null);
+            setIsDetailFlipped(false);
+          }}
+          onFlipChange={setIsDetailFlipped}
         />
       ) : null}
 
