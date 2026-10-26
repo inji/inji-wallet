@@ -32,7 +32,6 @@ import {
   BellIcon,
   CarouselIcon,
   ShieldXIcon,
-  UserIcon,
   WarningIcon,
 } from '../../components/revamp/Icons';
 import {AlertSheet} from '../../components/revamp/Page';
@@ -432,11 +431,6 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
             onAdd={() => props.onAddCredential?.()}
             searching={false}
             menu={[
-              {
-                label: 'Profile',
-                icon: col => <UserIcon color={col} />,
-                onPress: () => navigation.navigate(BOTTOM_TAB_ROUTES.settings),
-              },
               {
                 label: 'Notifications',
                 icon: col => <BellIcon color={col} />,
