@@ -61,9 +61,12 @@ jest.mock('../../components/ui/processingScreen/ProcessingModal', () => ({
 }));
 jest.mock('../../components/ui/Error', () => ({
   ErrorView: (props: any) => (
-    <Pressable testID="errorView" onPress={props.primaryButtonEvent}>
-      <Text>{props.title}</Text>
-    </Pressable>
+    <>
+      <Pressable testID="errorView" onPress={props.primaryButtonEvent}>
+        <Text>{props.title}</Text>
+      </Pressable>
+      <Pressable testID="closeError" onPress={props.onDismiss} />
+    </>
   ),
 }));
 jest.mock('../../components/addCredential/ScanToAddScreen', () => ({
@@ -231,9 +234,21 @@ describe('IssuersScreen opened from an Add to Wallet link', () => {
     goBack: jest.fn(),
     navigate: jest.fn(),
   };
-  const route = {params: {isCredentialOfferLink: true}} as any;
+  const credentialOfferUrl = 'openid-credential-offer://?link';
+  const route = {params: {credentialOfferUrl}} as any;
   const renderScreen = () =>
     render(<IssuersScreen navigation={navigation as any} route={route} />);
+  const resetToSelectingIssuer = (
+    rerender: (ui: React.ReactElement) => void,
+  ) => {
+    mockController = {
+      ...mockController,
+      isError: false,
+      errorMessageType: '',
+      isSelectingIssuer: true,
+    };
+    rerender(<IssuersScreen navigation={navigation as any} route={route} />);
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -267,5 +282,65 @@ describe('IssuersScreen opened from an Add to Wallet link', () => {
 
     expect(navigation.goBack).toHaveBeenCalledTimes(1);
     expect(mockController.SCAN_CREDENTIAL_OFFER_QR_CODE).not.toHaveBeenCalled();
+  });
+
+  it('reads the same offer again on "Try again" after an error, and stays open', () => {
+    mockController.isError = true;
+    mockController.errorMessageType = 'networkRequestFailed';
+
+    const {getByTestId, queryByTestId, rerender} = renderScreen();
+    fireEvent.press(getByTestId('errorView'));
+    expect(mockController.TRY_AGAIN).toHaveBeenCalledTimes(1);
+
+    resetToSelectingIssuer(rerender);
+
+    expect(navigation.goBack).not.toHaveBeenCalled();
+    expect(mockController.SCAN_CREDENTIAL_OFFER_QR_CODE).toHaveBeenCalledTimes(
+      1,
+    );
+    expect(mockController.QR_CODE_SCANNED).toHaveBeenCalledWith(
+      credentialOfferUrl,
+    );
+    expect(queryByTestId('scanToAddScreen')).toBeNull();
+  });
+
+  it('closes when an error is dismissed', () => {
+    mockController.isError = true;
+    mockController.errorMessageType = 'networkRequestFailed';
+
+    const {getByTestId, rerender} = renderScreen();
+    fireEvent.press(getByTestId('closeError'));
+    expect(mockController.RESET_ERROR).toHaveBeenCalledTimes(1);
+
+    resetToSelectingIssuer(rerender);
+
+    expect(navigation.goBack).toHaveBeenCalledTimes(1);
+    expect(mockController.QR_CODE_SCANNED).not.toHaveBeenCalled();
+  });
+
+  it('closes on a later decline after a retry', () => {
+    mockController.isError = true;
+    mockController.errorMessageType = 'networkRequestFailed';
+
+    const {getByTestId, rerender} = renderScreen();
+    fireEvent.press(getByTestId('errorView'));
+    resetToSelectingIssuer(rerender);
+    expect(navigation.goBack).not.toHaveBeenCalled();
+
+    mockController = {
+      ...mockController,
+      isSelectingIssuer: false,
+      isConsentRequested: true,
+    };
+    rerender(<IssuersScreen navigation={navigation as any} route={route} />);
+    mockController = {
+      ...mockController,
+      isConsentRequested: false,
+      isSelectingIssuer: true,
+    };
+    rerender(<IssuersScreen navigation={navigation as any} route={route} />);
+
+    expect(navigation.goBack).toHaveBeenCalledTimes(1);
+    expect(mockController.QR_CODE_SCANNED).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,4 +1,10 @@
-import React, {Fragment, useCallback, useEffect, useLayoutEffect} from 'react';
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useFocusEffect} from '@react-navigation/native';
 import {Header} from '../../components/ui/Header';
@@ -35,16 +41,24 @@ import {
 } from '../../components/ui/processingScreen/ProcessingModal';
 import {ErrorView} from '../../components/ui/Error';
 
+export type IssuersScreenParams = {
+  service: unknown;
+  /** Set when opened from an "Add to Wallet" link: the offer is already known, so there is nothing to scan. */
+  credentialOfferUrl?: string;
+};
+
 export const IssuersScreen: React.FC<
   HomeRouteProps | RootRouteProps
 > = props => {
   const controller = useIssuerScreenController(props);
   const {t} = useTranslation('IssuersScreen');
-  // Opened from an "Add to Wallet" link: the offer is already known, so there is nothing to scan.
-  const isCredentialOfferLink = Boolean(
-    (props.route.params as {isCredentialOfferLink?: boolean} | undefined)
-      ?.isCredentialOfferLink,
-  );
+  const credentialOfferUrl = (
+    props.route.params as IssuersScreenParams | undefined
+  )?.credentialOfferUrl;
+  const isCredentialOfferLink = credentialOfferUrl !== undefined;
+  // "Try again" and closing an error both reset the machine to selectingIssuer, so this records
+  // which one the user chose.
+  const isRetryingCredentialOffer = useRef(false);
   const showFullScreenError = controller.isError;
   const [successDownloadRedirectTimer, initiateSuccessDownloadRedirectTimer] =
     useTimer({initialValue: 5});
@@ -83,15 +97,20 @@ export const IssuersScreen: React.FC<
   );
 
   // The scanner is where this screen starts, and where cancelling the trust sheet or closing an
-  // error returns to. A link's offer has nothing to go back to, so that closes the screen instead.
+  // error returns to. A link's offer has nothing to go back to, so that closes the screen instead,
+  // unless the user asked to try the offer again.
   useEffect(() => {
     if (!controller.isSelectingIssuer) {
       return;
     }
-    if (isCredentialOfferLink) {
-      props.navigation.goBack();
-    } else {
+    if (!isCredentialOfferLink) {
       controller.SCAN_CREDENTIAL_OFFER_QR_CODE();
+    } else if (isRetryingCredentialOffer.current) {
+      isRetryingCredentialOffer.current = false;
+      controller.SCAN_CREDENTIAL_OFFER_QR_CODE();
+      controller.QR_CODE_SCANNED(credentialOfferUrl);
+    } else {
+      props.navigation.goBack();
     }
   }, [controller.isSelectingIssuer]);
 
@@ -178,7 +197,13 @@ export const IssuersScreen: React.FC<
   // this screen in the first place). That fetch is gone — the machine starts straight in
   // selectingIssuer now — so any error here always has selectingIssuer to reset back to.
   const goBack = () => {
+    isRetryingCredentialOffer.current = false;
     controller.RESET_ERROR();
+  };
+
+  const tryAgain = () => {
+    isRetryingCredentialOffer.current = isCredentialOfferLink;
+    controller.TRY_AGAIN();
   };
 
   const getImage = () => {
@@ -358,7 +383,7 @@ export const IssuersScreen: React.FC<
         title={t(`errors.${controller.errorMessageType}.title`)}
         message={t(`errors.${controller.errorMessageType}.message`)}
         goBack={goBack}
-        tryAgain={controller.TRY_AGAIN}
+        tryAgain={tryAgain}
         image={getImage()}
         showClose
         primaryButtonTestID="tryAgain"
@@ -369,7 +394,7 @@ export const IssuersScreen: React.FC<
             ? 'tryAgain'
             : undefined
         }
-        primaryButtonEvent={controller.TRY_AGAIN}
+        primaryButtonEvent={tryAgain}
         onDismiss={goBack}
       />
     );
