@@ -152,6 +152,12 @@ export const IssuersScreen: React.FC<
     isInScanFlow,
   ]);
 
+  // On the success screen, View in Wallet (or Android's back button) is the way out: it marks the
+  // new card on the way home. iOS's swipe-back would pop straight to Home without it.
+  useLayoutEffect(() => {
+    props.navigation.setOptions({gestureEnabled: !addedVcMetadata});
+  }, [addedVcMetadata]);
+
   useLayoutEffect(() => {
     if (controller.loadingReason && controller.isPresentationAuthorization) {
       props.navigation.setOptions({

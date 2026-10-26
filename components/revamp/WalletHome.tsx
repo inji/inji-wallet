@@ -256,6 +256,11 @@ export const WalletHome: React.FC<{
     }
     setNewCardKey(highlightVcKey);
     onHighlightTaken?.();
+    // A search or issuer filter left on could hide the new card, and the carousel would then
+    // quietly show the first card instead. Clear them so the new card is among those shown.
+    setSearching(false);
+    setQuery('');
+    setChip(ALL);
     // Brings the new card to the front of the carousel, face up.
     setActiveKey(highlightVcKey);
     setFlipped(false);
