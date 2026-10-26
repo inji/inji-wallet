@@ -28,7 +28,7 @@ import {
 import {BOTTOM_TAB_ROUTES} from '../../routes/routesConstants';
 import {WalletHome} from '../../components/revamp/WalletHome';
 import {WalletHeader} from '../../components/revamp/WalletHeader';
-import {BellIcon, CarouselIcon, UserIcon} from '../../components/revamp/Icons';
+import {BellIcon, CarouselIcon} from '../../components/revamp/Icons';
 import {getVCsOrderedByPinStatus} from '../../shared/Utils';
 import {SvgImage} from '../../components/ui/svg';
 import {SearchBar} from '../../components/ui/SearchBar';
@@ -427,11 +427,6 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
             onAdd={() => props.onAddCredential?.()}
             searching={false}
             menu={[
-              {
-                label: 'Profile',
-                icon: col => <UserIcon color={col} />,
-                onPress: () => navigation.navigate(BOTTOM_TAB_ROUTES.settings),
-              },
               {
                 label: 'Notifications',
                 icon: col => <BellIcon color={col} />,

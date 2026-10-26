@@ -220,7 +220,11 @@ export const CredentialDetails = React.forwardRef<
         </Animated.View>
 
         <ScrollView
-          contentContainerStyle={styles.body}
+          contentContainerStyle={[
+            styles.body,
+            // The revoked card's footer already sits above the navigation bar.
+            {paddingBottom: 36 + (revoked ? 0 : insets.bottom)},
+          ]}
           showsVerticalScrollIndicator={false}>
           <Animated.View style={[{alignSelf: 'center'}, cardStyle]}>
             <Pressable
@@ -380,7 +384,7 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     paddingHorizontal: 24,
   },
-  body: {paddingTop: 12, paddingHorizontal: 24, paddingBottom: 36, gap: 18},
+  body: {paddingTop: 12, paddingHorizontal: 24, gap: 18},
   face: {width: CARD_WIDTH, backfaceVisibility: 'hidden'},
   back: {position: 'absolute', left: 0, top: 0},
   hint: {
