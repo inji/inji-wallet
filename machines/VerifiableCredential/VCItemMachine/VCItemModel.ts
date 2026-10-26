@@ -29,6 +29,7 @@ const VCItemEvents = {
   KEBAB_POPUP: () => ({}),
   SHOW_ACTIVITY: () => ({}),
   REVERIFY_VC: () => ({}),
+  REVERIFY_VC_IN_BACKGROUND: () => ({}),
   CLOSE_VC_MODAL: () => ({}),
   REMOVE: (vcMetadata: VCMetadata) => ({vcMetadata}),
   UPDATE_VC_METADATA: (vcMetadata: VCMetadata) => ({vcMetadata}),
@@ -72,6 +73,7 @@ export const VCItemModel = createModel(
     showReverificationSuccessBanner: false as boolean,
     showVerificationFailureBanner: false as boolean,
     statusChangedDuringVerification: false,
+    isReverifyingInBackground: false,
   },
   {
     events: VCItemEvents,

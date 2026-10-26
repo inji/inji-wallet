@@ -1,5 +1,6 @@
 import {VCShareFlowType} from '../../../shared/Utils';
 import {androidVersion, isAndroid, isIOS} from '../../../shared/constants';
+import {isShareable} from '../../../shared/shareability';
 
 export const ScanGuards = () => {
   return {
@@ -49,5 +50,8 @@ export const ScanGuards = () => {
 
     isFlowTypeSimpleShare: context =>
       context.flowType === VCShareFlowType.SIMPLE_SHARE,
+
+    isSelectedVcShareable: (_context, event) =>
+      isShareable(event.vc?.vcMetadata, event.vc?.verifiableCredential),
   };
 };

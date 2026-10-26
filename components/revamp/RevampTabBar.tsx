@@ -111,31 +111,32 @@ export const RevampTabBar: React.FC<BottomTabBarProps> = ({
   const tabIndex = TABS.findIndex(tab => tab.route === focused.name);
   const activeIndex = Math.max(0, tabIndex);
 
+  const tabBarStyle = StyleSheet.flatten(
+    descriptors[focused.key]?.options.tabBarStyle,
+  ) as {display?: string} | undefined;
+  const nested = getFocusedRouteNameFromRoute(focused);
+  const hidden =
+    keyboard ||
+    tabBarStyle?.display === 'none' ||
+    // The share flow (scanner, choosing what to share, sending) is full screen, with its
+    // own close buttons and bottom actions that the floating bar would cover.
+    focused.name === BOTTOM_TAB_ROUTES.share ||
+    (!!nested && FULL_SCREEN_ROUTES.includes(nested));
+
   const slide = useRef(new Animated.Value(activeIndex)).current;
+  // Hiding the bar unmounts its views, which stops a slide part way; the bar would then come
+  // back highlighting the tab it left, so while hidden it jumps straight to the current tab.
   useEffect(() => {
-    if (reduceMotion) slide.setValue(activeIndex);
+    if (reduceMotion || hidden) slide.setValue(activeIndex);
     else
       Animated.timing(slide, {
         toValue: activeIndex,
         ...SLIDE,
         useNativeDriver: false,
       }).start();
-  }, [activeIndex]);
+  }, [activeIndex, hidden]);
 
-  const tabBarStyle = StyleSheet.flatten(
-    descriptors[focused.key]?.options.tabBarStyle,
-  ) as {display?: string} | undefined;
-  const nested = getFocusedRouteNameFromRoute(focused);
-  if (
-    keyboard ||
-    tabBarStyle?.display === 'none' ||
-    // The share flow (scanner, choosing what to share, sending) is full screen, with its
-    // own close buttons and bottom actions that the floating bar would cover.
-    focused.name === BOTTOM_TAB_ROUTES.share ||
-    (nested && FULL_SCREEN_ROUTES.includes(nested))
-  ) {
-    return null;
-  }
+  if (hidden) return null;
 
   const go = (name: string) => {
     const route = state.routes.find(r => r.name === name);

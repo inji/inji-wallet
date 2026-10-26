@@ -117,9 +117,9 @@ describe('VCItemModel', () => {
       expect(typeof initialContext.wellknownResponse).toBe('object');
     });
 
-    it('should have all 24 required properties', () => {
+    it('should have all 25 required properties', () => {
       const properties = Object.keys(initialContext);
-      expect(properties).toHaveLength(24);
+      expect(properties).toHaveLength(25);
     });
   });
 
@@ -178,6 +178,7 @@ describe('VCItemModel', () => {
       const booleans = [
         context.isMachineInKebabPopupState,
         context.showVerificationStatusBanner,
+        context.isReverifyingInBackground,
       ];
 
       booleans.forEach(bool => {

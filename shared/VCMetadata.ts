@@ -43,6 +43,8 @@ export class VCMetadata {
   /** Issuer's display name from its metadata at download time. */
   issuerName: string = '';
   lastKnownStatusTimestamp?: string = '';
+  /** When the wallet first found the credential revoked; the status list doesn't say when it was. */
+  revokedOn?: string = '';
 
   constructor({
     idType = '',
@@ -62,6 +64,7 @@ export class VCMetadata {
     issuerHost = '',
     issuerName = '',
     lastKnownStatusTimestamp = '',
+    revokedOn = '',
   } = {}) {
     this.idType = idType;
     this.requestId = requestId;
@@ -80,6 +83,7 @@ export class VCMetadata {
     this.issuerHost = issuerHost;
     this.issuerName = issuerName;
     this.lastKnownStatusTimestamp = lastKnownStatusTimestamp;
+    this.revokedOn = revokedOn;
   }
 
   //TODO: Remove any typing and use appropriate typing
@@ -106,6 +110,7 @@ export class VCMetadata {
       issuerHost: vc.issuerHost,
       issuerName: vc.issuerName,
       lastKnownStatusTimestamp: vc.lastKnownStatusTimestamp,
+      revokedOn: vc.revokedOn,
     });
   }
 
@@ -144,7 +149,6 @@ export class VCMetadata {
 export function parseMetadatas(metadataStrings: object[]) {
   return metadataStrings.map(o => new VCMetadata(o));
 }
-
 export const getVCMetadata = (context: object, keyType: string) => {
   const issuerHost =
     context.selectedIssuer.credential_issuer_host ??
@@ -175,6 +179,7 @@ export const getVCMetadata = (context: object, keyType: string) => {
     isExpired: context.vcMetadata.isExpired ?? false,
     isRevoked: context.vcMetadata.isRevoked ?? RevocationStatus.FALSE,
     lastKnownStatusTimestamp: context.vcMetadata.lastKnownStatusTimestamp ?? '',
+    revokedOn: context.vcMetadata.revokedOn ?? '',
     mosipIndividualId: getMosipIndividualId(
       context['verifiableCredential'] as VerifiableCredential,
       issuer,

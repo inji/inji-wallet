@@ -2,9 +2,9 @@ import React from 'react';
 import {Pressable, StyleSheet, useWindowDimensions, View} from 'react-native';
 import {ScaledText} from './ScaledText';
 import {VCFormat} from '../../shared/VCFormat';
-import {statusLabel} from './CredentialCard';
+import {isInactive, statusLabel} from './CredentialCard';
 import {displayDate, maskNumber} from './credentialClaims';
-import {ShieldCheckIcon} from './Icons';
+import {AlertIcon, ShieldCheckIcon} from './Icons';
 import {fonts, narrowTextScale, radii, SLOT_LABEL_MAX_SCALE} from './tokens';
 import {RevampColors} from './tokens';
 import {useRevampTheme} from './useRevampTheme';
@@ -44,7 +44,11 @@ export const validUntil = (data: CredentialCardData) =>
   date(data.claims, DATE_KEYS.valid);
 
 export const statusColour = (c: RevampColors, s: CardStatus) =>
-  s === 'verified' ? c.pass : s === 'pending' ? c.warn : c.fail;
+  s === 'verified'
+    ? c.pass
+    : s === 'pending' || s === 'expired'
+    ? c.warn
+    : c.fail;
 
 interface InfoRow {
   label: string;
@@ -88,7 +92,11 @@ export const StatusPill: React.FC<{status: CardStatus; large?: boolean}> = ({
   return (
     <View
       style={[styles.pill, large && styles.pillLarge, {borderColor: colour}]}>
-      <ShieldCheckIcon color={colour} size={large ? 16 : 14} />
+      {isInactive(status) ? (
+        <AlertIcon color={colour} size={large ? 16 : 14} />
+      ) : (
+        <ShieldCheckIcon color={colour} size={large ? 16 : 14} />
+      )}
       <ScaledText
         style={[styles.pillText, large && {fontSize: 14}, {color: colour}]}>
         {statusLabel[status]}
@@ -97,22 +105,89 @@ export const StatusPill: React.FC<{status: CardStatus; large?: boolean}> = ({
   );
 };
 
+const revokedOn = (data: CredentialCardData) =>
+  data.revokedOn ? displayDate(data.revokedOn) : undefined;
+
+/** The date beside the status: when the card expires, expired or was found revoked. */
+function statusDate(data: CredentialCardData): string | undefined {
+  if (data.status === 'revoked') {
+    const date = revokedOn(data);
+    return date ? `Found revoked on ${date}` : undefined;
+  }
+  if (data.status === 'expired') {
+    const date = data.expiryDate
+      ? displayDate(data.expiryDate)
+      : validUntil(data);
+    return date ? `Expired on ${date}` : undefined;
+  }
+  const date = validUntil(data);
+  return date ? `Valid until ${date}` : undefined;
+}
+
+export const StatusRow: React.FC<{data: CredentialCardData}> = ({data}) => {
+  const {c} = useRevampTheme();
+  const date = statusDate(data);
+  return (
+    <View style={styles.statusRow}>
+      <StatusPill status={data.status} large />
+      {date ? (
+        <ScaledText style={[styles.statusDate, {color: c.inkMuted}]}>
+          {date}
+        </ScaledText>
+      ) : null}
+    </View>
+  );
+};
+
+/** The notice under an expired or revoked card's status: what it means and what to do. */
+export const StatusNotice: React.FC<{data: CredentialCardData}> = ({data}) => {
+  const {c} = useRevampTheme();
+  if (!isInactive(data.status)) return null;
+  const issuer = data.issuerName ?? 'The issuer';
+  const expired = data.status === 'expired';
+  const colour = statusColour(c, data.status);
+  return (
+    <View
+      accessibilityRole="alert"
+      style={[
+        styles.notice,
+        {backgroundColor: expired ? c.tintWarn : c.tintFail},
+      ]}>
+      <AlertIcon color={colour} size={18} />
+      <View style={{flex: 1, gap: 4}}>
+        <ScaledText style={[styles.noticeTitle, {color: colour}]}>
+          {expired ? 'This credential has expired' : 'Revoked by the issuer'}
+        </ScaledText>
+        <ScaledText style={[styles.noticeText, {color: c.ink}]}>
+          {expired
+            ? `Verifiers will reject it. Get an updated copy from ${issuer}.`
+            : `${issuer} has revoked this credential, so it can't be shared. Contact them if you think this is a mistake.`}
+        </ScaledText>
+      </View>
+    </View>
+  );
+};
+
 export const Action: React.FC<{
   label: string;
   primary?: boolean;
   size?: number;
+  disabled?: boolean;
   onPress: () => void;
   icon: (colour: string) => React.ReactNode;
-}> = ({label, primary, size = 52, onPress, icon}) => {
+}> = ({label, primary, size = 52, disabled, onPress, icon}) => {
   const {c} = useRevampTheme();
   const fontSize = 14 * narrowTextScale(useWindowDimensions().width);
   return (
     <Pressable
       onPress={onPress}
+      disabled={disabled}
       accessibilityRole="button"
       accessibilityLabel={label}
+      accessibilityState={{disabled}}
       style={({pressed}) => [
         styles.action,
+        disabled && styles.actionDisabled,
         pressed && {transform: [{scale: 0.96}]},
       ]}>
       <View
@@ -193,6 +268,29 @@ const styles = StyleSheet.create({
   pillLarge: {height: 32, paddingLeft: 10, paddingRight: 12, gap: 6},
   pillText: {fontFamily: fonts.medium, fontSize: 12},
   action: {flex: 1, alignItems: 'center', gap: 8},
+  actionDisabled: {opacity: 0.4},
+  statusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  statusDate: {
+    fontFamily: fonts.regular,
+    fontSize: 14,
+    lineHeight: 16.8,
+    flexShrink: 1,
+    textAlign: 'right',
+  },
+  notice: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+    padding: 16,
+    borderRadius: radii.surface,
+  },
+  noticeTitle: {fontFamily: fonts.medium, fontSize: 16, lineHeight: 20},
+  noticeText: {fontFamily: fonts.regular, fontSize: 14, lineHeight: 19},
   actionCircle: {
     borderRadius: radii.pill,
     alignItems: 'center',

@@ -207,9 +207,15 @@ export const VCItemServices = model => {
     
 
         
-        const verificationResult = await withTimeout(
-          verifyCredentialData(credential, format),
-          VERIFICATION_TIMEOUT_IN_MS
+        const verificationResult = await oneAtATime(() =>
+          withTimeout(
+            verifyCredentialData(
+              credential,
+              format,
+              context.verifiableCredential,
+            ),
+            VERIFICATION_TIMEOUT_IN_MS,
+          ),
         );
     
         if (!verificationResult.isVerified) {
@@ -226,6 +232,16 @@ export const VCItemServices = model => {
     
   };
 };
+
+// The native verifier handles one credential at a time, so when every card checks at once the
+// later ones would use up their timeout waiting in line. Queuing them here starts each card's
+// timeout only when its own check begins.
+let verificationQueue: Promise<unknown> = Promise.resolve();
+function oneAtATime<T>(task: () => Promise<T>): Promise<T> {
+  const turn = verificationQueue.then(task, task);
+  verificationQueue = turn.catch(() => undefined);
+  return turn;
+}
 
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   return Promise.race([

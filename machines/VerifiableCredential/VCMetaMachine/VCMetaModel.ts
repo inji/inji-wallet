@@ -23,6 +23,8 @@ export const VCMetamodel = createModel(
     DownloadingCredentialsSuccess: false,
     reverificationSuccess: {status: false, statusValue: '', vcKey: '', vcType: ''},
     reverificationFailed: {status: false, statusValue: '', vcKey: '', vcType: ''},
+    reverifyAllVcsRequestId: 0,
+    reverifyAllVcsIgnoringRecentChecks: false,
   },
   {
     events: VcMetaEvents,

@@ -10,6 +10,7 @@ export const VcMetaEvents = {
   VC_ADDED: (vcMetadata: VCMetadata) => ({vcMetadata}),
   REMOVE_VC_FROM_CONTEXT: (vcMetadata: VCMetadata) => ({vcMetadata}),
   VC_METADATA_UPDATED: (vcMetadata: VCMetadata) => ({vcMetadata}),
+  REVERIFY_ALL_VCS: (ignoreRecentChecks = false) => ({ignoreRecentChecks}),
   VC_DOWNLOADED: (vc: VC, vcMetadata?: VCMetadata) => ({
     vc,
     vcMetadata,

@@ -44,6 +44,7 @@ import {
   getCredentialType,
 } from '../common/VCUtils';
 import {VCFormat} from '../../../shared/VCFormat';
+import {isShareable} from '../../../shared/shareability';
 
 import testIDProps from '../../../shared/commonUtil';
 import {ShareableInfoModal} from './ShareableInfoModal';
@@ -211,6 +212,10 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
   const [showQrOverlay, setShowQrOverlay] = useState(false);
 
   const [shareModalVisible, setShareModalVisible] = useState(false);
+  const shareable = isShareable(
+    props.verifiableCredentialData?.vcMetadata,
+    props.credentialWrapper,
+  );
 
   if (props.loadingSvg) {
     return (
@@ -274,7 +279,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
 
                     <View style={{height: 12}} />
 
-                    {item.includes(QR_IMAGE_ID) && (
+                    {shareable && item.includes(QR_IMAGE_ID) && (
                       <Button
                         testID="zoomQrCode"
                         title="Tap to zoom QR Code"
@@ -288,7 +293,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
               }}
             />
 
-            {showQrOverlay && (
+            {shareable && showQrOverlay && (
               <QrCodeOverlay
                 verifiableCredential={
                   props.credentialWrapper as unknown as VerifiableCredential
@@ -324,7 +329,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
                 <Row padding="14 14 0 14" margin="0 0 0 0">
                   <Column crossAlign="center">
                     {getProfileImage(face)}
-                    {isFetchingIssuerQrCode ? (
+                    {!shareable ? null : isFetchingIssuerQrCode ? (
                       <IssuerQrCodePlaceholder />
                     ) : showIssuerQrCode ? (
                       <IssuerQrCodeImage
@@ -407,7 +412,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
       </Column>
       {!props.svgTemplate &&
         props.vcHasImage &&
-        !props.verifiableCredentialData?.vcMetadata.isExpired && (
+        shareable && (
           <View
             style={{
               position: 'relative',

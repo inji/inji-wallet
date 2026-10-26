@@ -14,6 +14,7 @@ import {getMosipIdentifier} from '../commonUtil';
 import {NativeModules} from 'react-native';
 import {isAndroid, isIOS} from '../constants';
 import {VCFormat} from '../VCFormat';
+import {isCredentialExpired} from '../credentialExpiry';
 import VCVerifier, {
   CredentialStatusResult,
   RevocationStatus,
@@ -36,18 +37,28 @@ const ProofPurpose = {
 
 const vcVerifier = NativeModules.VCVerifierModule;
 
+/**
+ * `expiryCredential` is the stored credential wrapper: the expiry of mdoc and SD-JWT credentials
+ * is read from its `credential` and `processedCredential`, which the bare credential doesn't have.
+ */
 export async function verifyCredential(
   verifiableCredential: Credential,
   credentialFormat: string,
+  expiryCredential: unknown = verifiableCredential,
 ): Promise<VerificationResult> {
   try {
     if (isAndroid()) {
       return await verifyCredentialForAndroid(
         verifiableCredential,
         credentialFormat,
+        expiryCredential,
       );
     }
-    return await verifyCredentialForIos(verifiableCredential, credentialFormat);
+    return await verifyCredentialForIos(
+      verifiableCredential,
+      credentialFormat,
+      expiryCredential,
+    );
   } catch (error) {
     console.error('Error occurred during credential verification:', error);
 
@@ -62,12 +73,17 @@ export async function verifyCredential(
 async function verifyCredentialForAndroid(
   verifiableCredential: Credential,
   credentialFormat: string,
+  expiryCredential: unknown,
 ): Promise<VerificationResult> {
   // Skip verification for mso_mdoc on Android - vcverifier-aar:1.6.0 crashes
   // with "Index 1 out of bounds for length 1" when parsing mdoc CBOR.
   // This mirrors the iOS behavior (see verifyCredentialForIos).
   if (credentialFormat === VCFormat.mso_mdoc) {
-    return createSuccessfulVerificationResult();
+    return markExpiredIfNeeded(
+      createSuccessfulVerificationResult(),
+      expiryCredential,
+      credentialFormat,
+    );
   }
   const credentialString =
     typeof verifiableCredential === 'string'
@@ -84,13 +100,18 @@ async function verifyCredentialForAndroid(
 async function verifyCredentialForIos(
   verifiableCredential: Credential,
   credentialFormat: string,
+  expiryCredential: unknown,
 ): Promise<VerificationResult> {
   if (
     credentialFormat === VCFormat.mso_mdoc ||
     credentialFormat === VCFormat.vc_sd_jwt ||
     credentialFormat === VCFormat.dc_sd_jwt
   ) {
-    return createSuccessfulVerificationResult();
+    return markExpiredIfNeeded(
+      createSuccessfulVerificationResult(),
+      expiryCredential,
+      credentialFormat,
+    );
   }
   /*
   Since Digital Bazaar library is not able to verify ProofType: "Ed25519Signature2020",
@@ -114,6 +135,9 @@ async function verifyCredentialForIos(
     const result = await vcjs.verifyCredential(vcjsOptions);
     verificationResponse = handleResponse(result, verifiableCredential);
   }
+
+  // vcjs only checks the date is well formed, and the iOS verifier only checks status.
+  markExpiredIfNeeded(verificationResponse, expiryCredential, credentialFormat);
 
   if (verificationResponse.isVerified) {
     const statusArray = await VCVerifier.getInstance().getCredentialStatus(
@@ -273,6 +297,23 @@ export async function checkIsStatusRevoked(
   return RevocationStatus.TRUE;
 }
 
+/** Reports an expired credential the way the Android verifier does: still verified. */
+function markExpiredIfNeeded(
+  verificationResponse: VerificationResult,
+  expiryCredential: unknown,
+  credentialFormat: string,
+): VerificationResult {
+  if (
+    verificationResponse.isVerified &&
+    isCredentialExpired(expiryCredential, credentialFormat)
+  ) {
+    verificationResponse.verificationMessage = VerificationErrorMessage.EXPIRED;
+    verificationResponse.verificationErrorCode =
+      VerificationErrorType.EXPIRATION_ERROR;
+  }
+  return verificationResponse;
+}
+
 function createSuccessfulVerificationResult(): VerificationResult {
   return {
     isVerified: true,
@@ -315,6 +356,7 @@ export const VerificationErrorMessage = {
   NO_ERROR: '',
   RANGE_ERROR: 'RangeError',
   NETWORK_ERROR: 'NetworkError',
+  EXPIRED: 'VC is expired',
 };
 
 export interface VerificationResult {

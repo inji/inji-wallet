@@ -1,5 +1,6 @@
 import {StateFrom} from 'xstate';
 import {VCMetadata} from '../../../shared/VCMetadata';
+import {isShareable} from '../../../shared/shareability';
 import {vcMetaMachine} from './VCMetaMachine';
 import {VC} from './vc';
 
@@ -14,16 +15,35 @@ export function selectMyVcsMetadata(state: State): VCMetadata[] {
 }
 
 export function selectShareableVcsMetadata(state: State): VCMetadata[] {
-  return state.context.myVcsMetadata.filter(
-    vcMetadata =>
-      state.context.myVcs[vcMetadata.getVcKey()]?.verifiableCredential != null,
-  );
+  return state.context.myVcsMetadata.filter(vcMetadata => {
+    const verifiableCredential =
+      state.context.myVcs[vcMetadata.getVcKey()]?.verifiableCredential;
+    return (
+      verifiableCredential != null &&
+      isShareable(vcMetadata, verifiableCredential)
+    );
+  });
 }
 
 export function selectShareableVcs(state: State): VC[] {
-  return Object.values(state.context.myVcs).filter(
-    vc => vc?.verifiableCredential != null,
+  // The status checks update myVcsMetadata, not the copy of the metadata inside each VC.
+  const unshareableKeys = new Set(
+    state.context.myVcsMetadata
+      .filter(
+        vcMetadata =>
+          !isShareable(
+            vcMetadata,
+            state.context.myVcs[vcMetadata.getVcKey()]?.verifiableCredential,
+          ),
+      )
+      .map(vcMetadata => vcMetadata.getVcKey()),
   );
+  return Object.entries(state.context.myVcs)
+    .filter(
+      ([vcKey, vc]) =>
+        vc?.verifiableCredential != null && !unshareableKeys.has(vcKey),
+    )
+    .map(([, vc]) => vc);
 }
 
 export function selectReceivedVcsMetadata(state: State): VCMetadata[] {
@@ -78,6 +98,14 @@ export function selectDownloadingFailedVcs(state: State) {
 
 export function selectMyVcs(state: State) {
   return state.context.myVcs;
+}
+
+export function selectReverifyAllVcsRequestId(state: State) {
+  return state.context.reverifyAllVcsRequestId;
+}
+
+export function selectReverifyAllVcsIgnoringRecentChecks(state: State) {
+  return state.context.reverifyAllVcsIgnoringRecentChecks;
 }
 
 export function selectVerificationErrorMessage(state: State) {

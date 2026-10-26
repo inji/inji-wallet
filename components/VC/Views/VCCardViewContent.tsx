@@ -7,6 +7,7 @@ import {
   ImageBackgroundProps,
 } from 'react-native';
 import {VCMetadata} from '../../../shared/VCMetadata';
+import {isShareable} from '../../../shared/shareability';
 import {KebabPopUp} from '../../KebabPopUp';
 import {Credential} from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {Column, Row} from '../../ui';
@@ -117,7 +118,10 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
 
           {!Object.values(VCItemContainerFlowType).includes(flow) && (
             <>
-              {!verifiableCredentialData?.vcMetadata.isExpired &&
+              {isShareable(
+                verifiableCredentialData?.vcMetadata,
+                service?.getSnapshot()?.context.verifiableCredential,
+              ) &&
                 (!walletBindingResponse &&
                 isActivationNeeded(verifiableCredentialData?.issuer)
                   ? SvgImage.walletUnActivatedIcon()

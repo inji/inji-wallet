@@ -25,6 +25,7 @@ export interface RevampColors {
   tintAzure: string;
   tintPass: string;
   tintWarn: string;
+  tintFail: string;
   /** Filled primary action: navy in both schemes. */
   primary: string;
   onPrimary: string;
@@ -47,6 +48,7 @@ export const colors: Record<RevampScheme, RevampColors> = {
     tintAzure: '#e3eef4',
     tintPass: '#e2efec',
     tintWarn: '#f5ead6',
+    tintFail: '#f6e7e5',
     primary: '#0a3970',
     onPrimary: '#fcfcfa',
   },
@@ -66,6 +68,7 @@ export const colors: Record<RevampScheme, RevampColors> = {
     tintAzure: '#14324a',
     tintPass: '#12352f',
     tintWarn: '#3a2e14',
+    tintFail: '#3d1b18',
     primary: '#0a3970',
     onPrimary: '#fcfcfa',
   },

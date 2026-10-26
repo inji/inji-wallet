@@ -1,6 +1,11 @@
 import {isSignedInResult} from '../../../shared/CloudBackupAndRestoreUtils';
 import {isHardwareKeystoreExists} from '../../../shared/cryptoutil/cryptoUtil';
 import {VerificationErrorType} from '../../../shared/vcjs/verifyCredential';
+import {
+  hasStatusChanged,
+  statusAfterCheck,
+  wasStatusCheckedRecently,
+} from './cardStatus';
 
 export const VCItemGaurds = () => {
   return {
@@ -28,6 +33,26 @@ export const VCItemGaurds = () => {
 
     isVerificationPendingBecauseOfNetworkIssue: (_context, event) =>
       (event.data as Error).message == VerificationErrorType.NETWORK_ERROR,
+
+    isReverifyingInBackground: (context: any) =>
+      context.isReverifyingInBackground,
+
+    // A background check that changes nothing only moves the "last checked" time, which is saved
+    // once per check interval: often enough for a restarted app to skip recently checked cards.
+    isBackgroundCheckWorthStoring: (context: any, event: any) => {
+      if (!context.isReverifyingInBackground) return false;
+      const previous = context.vcMetadata;
+      return (
+        hasStatusChanged(previous, statusAfterCheck(previous, event.data, '')) ||
+        !wasStatusCheckedRecently(previous)
+      );
+    },
+
+    isNetworkIssueDuringBackgroundReverification: (context: any, event: any) =>
+      context.isReverifyingInBackground &&
+      [VerificationErrorType.NETWORK_ERROR, 'VERIFICATION_TIMEOUT'].includes(
+        (event.data as Error)?.message,
+      ),
 
     hasVcStatusChangedAfterReverification: (context:any) => {
       return context.statusChangedDuringVerification;

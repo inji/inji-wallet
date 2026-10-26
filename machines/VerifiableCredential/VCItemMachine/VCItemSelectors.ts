@@ -137,7 +137,14 @@ export function selectShowWalletBindingError(state: State) {
 }
 
 export function isReverifyingVc(state: State) {
-  return state.matches('vcUtilitiesState.reverificationState');
+  return (
+    state.matches('vcUtilitiesState.reverificationState') &&
+    !state.context.isReverifyingInBackground
+  );
+}
+
+export function selectIsVcItemIdle(state: State) {
+  return state.matches('vcUtilitiesState.idle');
 }
 
 export function showReverificationSuccessBanner(state: State) {

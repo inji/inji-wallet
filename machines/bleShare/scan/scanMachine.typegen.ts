@@ -29,7 +29,7 @@
         missingImplementations: {
           actions: "clearUri" | "enableLocation" | "getFaceAuthConsent" | "loadMetaDataToMemory" | "loadVCDataToMemory" | "logFailedVerification" | "logShared" | "openAppPermission" | "openBluetoothSettings" | "refreshVCs" | "registerLoggers" | "removeLoggers" | "resetAuthorizationRequest" | "resetBleError" | "resetFaceCaptureBannerStatus" | "resetFlowType" | "resetIsOVPViaDeepLink" | "resetIsQrLoginViaDeepLink" | "resetLinkCode" | "resetOpenID4VPFlowType" | "resetSelectedVc" | "resetShowQuickShareSuccessBanner" | "sendBLEConnectionErrorEvent" | "sendScanData" | "sendVCShareFlowCancelEndEvent" | "sendVCShareFlowTimeoutEndEvent" | "sendVPScanData" | "sendVcShareSuccessEvent" | "sendVcSharingStartEvent" | "setAuthRequestFromDeepLink" | "setBleError" | "setFlowType" | "setIsOVPViaDeepLink" | "setIsQrLoginViaDeepLink" | "setLinkCode" | "setLinkCodeFromDeepLink" | "setOpenId4VPFlowType" | "setOpenId4VPRef" | "setQrLoginRef" | "setQuickShareData" | "setReadyForBluetoothStateCheck" | "setReceiverInfo" | "setSelectedVc" | "setSenderInfo" | "setShareLogTypeUnverified" | "setShareLogTypeVerified" | "setShowFaceAuthConsent" | "setShowQuickShareSuccessBanner" | "setUri" | "storeLoginItem" | "storeShowFaceAuthConsent" | "storingActivityLog" | "updateFaceCaptureBannerStatus" | "updateShowFaceAuthConsent";
           delays: never;
-          guards: "isFlowTypeDeepLink" | "isFlowTypeMiniViewShare" | "isFlowTypeMiniViewShareWithSelfie" | "isFlowTypeSimpleShare" | "isIOS" | "isMinimumStorageRequiredForAuditEntryReached" | "isOVPViaDeepLink" | "isOnlineSharing" | "isOpenIdQr" | "isQrLogin" | "isQrLoginViaDeepLinking" | "isQuickShare" | "showFaceAuthConsentScreen" | "uptoAndroid11";
+          guards: "isFlowTypeDeepLink" | "isFlowTypeMiniViewShare" | "isFlowTypeMiniViewShareWithSelfie" | "isFlowTypeSimpleShare" | "isIOS" | "isMinimumStorageRequiredForAuditEntryReached" | "isOVPViaDeepLink" | "isOnlineSharing" | "isOpenIdQr" | "isQrLogin" | "isQrLoginViaDeepLinking" | "isQuickShare" | "isSelectedVcShareable" | "showFaceAuthConsentScreen" | "uptoAndroid11";
           services: "checkBluetoothPermission" | "checkBluetoothState" | "checkLocationPermission" | "checkLocationStatus" | "checkNearByDevicesPermission" | "checkStorageAvailability" | "disconnect" | "monitorConnection" | "requestBluetooth" | "requestNearByDevicesPermission" | "requestToEnableLocationPermission" | "sendVc" | "startConnection";
         };
         eventsCausingActions: {
@@ -106,6 +106,7 @@
 "isQrLogin": "SCAN";
 "isQrLoginViaDeepLinking": "" | "STORE_RESPONSE";
 "isQuickShare": "SCAN";
+"isSelectedVcShareable": "SELECT_VC";
 "showFaceAuthConsentScreen": "" | "VERIFY_AND_ACCEPT_REQUEST";
 "uptoAndroid11": "" | "START_PERMISSION_CHECK";
         };
