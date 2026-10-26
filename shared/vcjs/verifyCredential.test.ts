@@ -31,6 +31,9 @@ jest.mock('../telemetry/TelemetryConstants', () => ({
 }));
 jest.mock('../commonUtil', () => ({getMosipIdentifier: jest.fn()}));
 jest.mock('../constants', () => ({isAndroid: jest.fn(), isIOS: jest.fn()}));
+jest.mock('../mdoc/presentment/issuerSigned', () => ({
+  readMsoValidUntil: (credential: string) => new Date(credential),
+}));
 
 const mockVerifier = {
   getCredentialStatus: jest.fn(),
@@ -145,6 +148,94 @@ describe('verifyCredential for ldp_vc', () => {
           isVerified: true,
           isRevoked: RevocationStatus.TRUE,
         }),
+      );
+    });
+  });
+});
+
+describe('verifyCredential for formats the verifiers skip', () => {
+  // The mocked mdoc reader treats the encoded credential as its expiry date.
+  const storedMdoc = (validUntil: string) => ({credential: validUntil});
+  const storedSdJwt = (exp: string) => ({
+    credential: 'header.payload.signature',
+    processedCredential: {
+      fullResolvedPayload: {exp: new Date(exp).getTime() / 1000},
+    },
+  });
+
+  beforeEach(() => jest.clearAllMocks());
+
+  describe.each([
+    ['Android', true],
+    ['iOS', false],
+  ])('on %s', (_platform, android) => {
+    beforeEach(() => {
+      (isAndroid as jest.Mock).mockReturnValue(android);
+      (isIOS as jest.Mock).mockReturnValue(!android);
+    });
+
+    it('reports an expired mdoc as verified with ERR_VC_EXPIRED', async () => {
+      const stored = storedMdoc(PAST);
+      expect(
+        await verifyCredential(
+          stored.credential as any,
+          VCFormat.mso_mdoc,
+          stored,
+        ),
+      ).toEqual(
+        expect.objectContaining({
+          isVerified: true,
+          verificationErrorCode: 'ERR_VC_EXPIRED',
+        }),
+      );
+    });
+
+    it('reports a valid mdoc without an error', async () => {
+      const stored = storedMdoc(FUTURE);
+      expect(
+        await verifyCredential(
+          stored.credential as any,
+          VCFormat.mso_mdoc,
+          stored,
+        ),
+      ).toEqual(
+        expect.objectContaining({isVerified: true, verificationErrorCode: ''}),
+      );
+    });
+  });
+
+  describe('on iOS', () => {
+    beforeEach(() => {
+      (isAndroid as jest.Mock).mockReturnValue(false);
+      (isIOS as jest.Mock).mockReturnValue(true);
+    });
+
+    it('reads SD-JWT expiry from the stored wrapper', async () => {
+      const stored = storedSdJwt(PAST);
+      expect(
+        await verifyCredential(
+          stored.credential as any,
+          VCFormat.dc_sd_jwt,
+          stored,
+        ),
+      ).toEqual(
+        expect.objectContaining({
+          isVerified: true,
+          verificationErrorCode: 'ERR_VC_EXPIRED',
+        }),
+      );
+    });
+
+    it('reports a valid SD-JWT without an error', async () => {
+      const stored = storedSdJwt(FUTURE);
+      expect(
+        await verifyCredential(
+          stored.credential as any,
+          VCFormat.vc_sd_jwt,
+          stored,
+        ),
+      ).toEqual(
+        expect.objectContaining({isVerified: true, verificationErrorCode: ''}),
       );
     });
   });

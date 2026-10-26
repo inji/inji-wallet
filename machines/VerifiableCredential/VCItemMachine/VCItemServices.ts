@@ -209,7 +209,11 @@ export const VCItemServices = model => {
         
         const verificationResult = await oneAtATime(() =>
           withTimeout(
-            verifyCredentialData(credential, format),
+            verifyCredentialData(
+              credential,
+              format,
+              context.verifiableCredential,
+            ),
             VERIFICATION_TIMEOUT_IN_MS,
           ),
         );

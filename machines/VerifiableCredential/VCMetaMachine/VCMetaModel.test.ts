@@ -114,13 +114,25 @@ describe('VCMetaModel', () => {
       expect(initialContext).toHaveProperty('DownloadingCredentialsSuccess');
     });
 
-    it('should have exactly 17 properties in initial context', () => {
+    it('should have exactly 18 properties in initial context', () => {
       const propertyCount = Object.keys(initialContext).length;
-      expect(propertyCount).toBe(17);
+      expect(propertyCount).toBe(18);
     });
 
     it('should start with no request to check every card', () => {
       expect(initialContext.reverifyAllVcsRequestId).toBe(0);
+      expect(initialContext.reverifyAllVcsIgnoringRecentChecks).toBe(false);
+    });
+
+    it('should skip recently checked cards unless asked not to', () => {
+      expect(VCMetamodel.events.REVERIFY_ALL_VCS()).toEqual({
+        type: 'REVERIFY_ALL_VCS',
+        ignoreRecentChecks: false,
+      });
+      expect(VCMetamodel.events.REVERIFY_ALL_VCS(true)).toEqual({
+        type: 'REVERIFY_ALL_VCS',
+        ignoreRecentChecks: true,
+      });
     });
   });
 

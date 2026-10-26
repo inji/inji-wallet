@@ -19,6 +19,7 @@ import {
   selectIsDownloadingSuccess,
 } from './VCMetaSelectors';
 import {VCMetadata} from '../../../shared/VCMetadata';
+import {RevocationStatus} from '../../../shared/vcVerifier/VcVerifier';
 
 describe('VCMetaSelectors', () => {
   const mockVcMetadata1 = new VCMetadata({
@@ -134,9 +135,57 @@ describe('VCMetaSelectors', () => {
       const result = selectShareableVcsMetadata(state);
       expect(result).toEqual([]);
     });
+
+    it('leaves out expired and revoked cards', () => {
+      const expired = new VCMetadata({id: 'vc1', isExpired: true});
+      const revoked = new VCMetadata({
+        id: 'vc2',
+        isRevoked: RevocationStatus.TRUE,
+      });
+      const state: any = {
+        ...mockState,
+        context: {
+          ...mockState.context,
+          myVcsMetadata: [expired, revoked],
+        },
+      };
+      expect(selectShareableVcsMetadata(state)).toEqual([]);
+    });
+
+    it('leaves out a card past its stored expiry date before any check marks it', () => {
+      const state: any = {
+        ...mockState,
+        context: {
+          ...mockState.context,
+          myVcs: {
+            ...mockState.context.myVcs,
+            [mockVcMetadata1.getVcKey()]: {
+              verifiableCredential: {
+                credential: {expirationDate: '2000-01-01T00:00:00Z'},
+              },
+            },
+          },
+        },
+      };
+      expect(selectShareableVcsMetadata(state)).toEqual([mockVcMetadata2]);
+    });
   });
 
   describe('selectShareableVcs', () => {
+    it('leaves out cards whose current metadata is expired or revoked', () => {
+      const state: any = {
+        ...mockState,
+        context: {
+          ...mockState.context,
+          myVcsMetadata: [
+            new VCMetadata({id: 'vc1', isExpired: true}),
+            new VCMetadata({id: 'vc2', isRevoked: RevocationStatus.TRUE}),
+          ],
+        },
+      };
+      expect(selectShareableVcs(state)).toEqual([]);
+    });
+
     it('should filter VCs that have verifiableCredential', () => {
       const result = selectShareableVcs(mockState);
       expect(result).toHaveLength(2);

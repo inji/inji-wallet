@@ -112,7 +112,7 @@ const revokedOn = (data: CredentialCardData) =>
 function statusDate(data: CredentialCardData): string | undefined {
   if (data.status === 'revoked') {
     const date = revokedOn(data);
-    return date ? `Revoked on ${date}` : undefined;
+    return date ? `Found revoked on ${date}` : undefined;
   }
   if (data.status === 'expired') {
     const date = data.expiryDate
@@ -146,7 +146,6 @@ export const StatusNotice: React.FC<{data: CredentialCardData}> = ({data}) => {
   const issuer = data.issuerName ?? 'The issuer';
   const expired = data.status === 'expired';
   const colour = statusColour(c, data.status);
-  const revokedDate = revokedOn(data);
   return (
     <View
       accessibilityRole="alert"
@@ -162,9 +161,7 @@ export const StatusNotice: React.FC<{data: CredentialCardData}> = ({data}) => {
         <ScaledText style={[styles.noticeText, {color: c.ink}]}>
           {expired
             ? `Verifiers will reject it. Get an updated copy from ${issuer}.`
-            : `${issuer} revoked this credential${
-                revokedDate ? ` on ${revokedDate}` : ''
-              }, so it can't be shared. Contact them if you think this is a mistake.`}
+            : `${issuer} has revoked this credential, so it can't be shared. Contact them if you think this is a mistake.`}
         </ScaledText>
       </View>
     </View>

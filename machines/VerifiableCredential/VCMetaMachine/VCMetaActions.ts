@@ -295,6 +295,8 @@ export const VCMetaActions = (model: any) => {
     requestReverifyAllVcs: model.assign({
       reverifyAllVcsRequestId: (context: any) =>
         context.reverifyAllVcsRequestId + 1,
+      reverifyAllVcsIgnoringRecentChecks: (_context: any, event: any) =>
+        event.ignoreRecentChecks === true,
     }),
 
     setWalletBindingSuccess: model.assign({

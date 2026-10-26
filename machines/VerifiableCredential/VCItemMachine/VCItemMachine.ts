@@ -564,7 +564,8 @@ export const VCItemMachine = model.createMachine(
                 actions: 'setPinCard',
               },
               // The same check as REVERIFY_VC, run for every card when the app is opened,
-              // unlocked or brought back, without a banner per card.
+              // unlocked or brought back, without a banner per card. Cards are sent this one
+              // at a time, since reverificationState doesn't take the user's taps.
               REVERIFY_VC_IN_BACKGROUND: {
                 actions: 'setReverifyingInBackground',
                 target: '#vc-item-machine.vcUtilitiesState.reverificationState',
@@ -580,12 +581,17 @@ export const VCItemMachine = model.createMachine(
                   src: 'verifyCredential',
                   onDone: [
                     {
-                      cond: 'isReverifyingInBackground',
+                      cond: 'isBackgroundCheckWorthStoring',
                       actions: [
                         'setIsVerified',
                         'storeContext',
                         'updateVcMetadata',
                       ],
+                      target: 'checkingStatusChange',
+                    },
+                    {
+                      cond: 'isReverifyingInBackground',
+                      actions: 'setIsVerified',
                       target: 'checkingStatusChange',
                     },
                     {

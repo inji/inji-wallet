@@ -3,6 +3,7 @@ import {SvgImage} from './ui/svg';
 import {useKebabPopUp} from './KebabPopUpController';
 import {isActivationNeeded} from '../shared/openId4VCI/Utils';
 import {VCShareFlowType} from '../shared/Utils';
+import {isShareable} from '../shared/shareability';
 
 export const getKebabMenuOptions = props => {
   const controller = useKebabPopUp(props);
@@ -72,16 +73,14 @@ export const getKebabMenuOptions = props => {
     testID: 'pendingActivationOrActivated',
   };
 
-  if (props.vcMetadata.isVerified) {
+  const shareable = isShareable(
+    props.vcMetadata,
+    props.service?.getSnapshot()?.context.verifiableCredential,
+  );
+  if (props.vcMetadata.isVerified && shareable) {
     vcActionsList.splice(1, 0, share);
     if (props.vcHasImage) {
       vcActionsList.splice(2, 0, shareWithSelfieOption, VCActivationOption);
-    }
-    if (props.vcMetadata.isExpired) {
-      const indexOfActivation = vcActionsList.indexOf(VCActivationOption);
-      if (indexOfActivation !== -1) {
-        vcActionsList.splice(indexOfActivation, 1);
-      }
     }
   }
 

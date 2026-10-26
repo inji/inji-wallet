@@ -29,7 +29,19 @@ const vcMetadata = new VCMetadata({
   isExpired: false,
 });
 
-function startCard(verifyCredential: () => Promise<unknown>) {
+const revokedVcMetadata = new VCMetadata({
+  id: 'card',
+  timestamp: '1',
+  isVerified: true,
+  isRevoked: RevocationStatus.TRUE,
+  isExpired: false,
+  revokedOn: '2026-01-01T00:00:00.000Z',
+});
+
+function startCard(
+  verifyCredential: () => Promise<unknown>,
+  metadata: VCMetadata = vcMetadata,
+) {
   const spies = {
     storeContext: jest.fn(),
     updateVcMetadata: jest.fn(),
@@ -42,7 +54,7 @@ function startCard(verifyCredential: () => Promise<unknown>) {
     actions: {...spies, requestVcContext: jest.fn()} as any,
   }).withContext({
     ...VCItemMachine.context,
-    vcMetadata,
+    vcMetadata: metadata,
   });
   const service = interpret(machine).start({
     vcUtilitiesState: 'idle',
@@ -100,6 +112,54 @@ describe('VCItemMachine background "Check Card Status"', () => {
     expect(spies.sendReverificationSuccessToVcMeta).not.toHaveBeenCalled();
   });
 
+  it('does not rewrite a recently checked card whose status is unchanged', async () => {
+    const recentlyChecked = new VCMetadata({
+      ...vcMetadata,
+      lastKnownStatusTimestamp: new Date().toISOString(),
+    });
+    const {service, spies} = startCard(
+      () =>
+        Promise.resolve({
+          isVerified: true,
+          verificationErrorCode: '',
+          isRevoked: RevocationStatus.FALSE,
+        }),
+      recentlyChecked,
+    );
+    const idle = backToIdle(service);
+    service.send(VCItemEvents.REVERIFY_VC_IN_BACKGROUND());
+    const state = await idle;
+
+    expect(state.context.vcMetadata.lastKnownStatusTimestamp).not.toBe(
+      recentlyChecked.lastKnownStatusTimestamp,
+    );
+    expect(spies.storeContext).not.toHaveBeenCalled();
+    expect(spies.updateVcMetadata).not.toHaveBeenCalled();
+    expect(spies.logStatusChangedOnReverification).not.toHaveBeenCalled();
+  });
+
+  it('saves an unchanged card when its last check is older than the interval', async () => {
+    const checkedLongAgo = new VCMetadata({
+      ...vcMetadata,
+      lastKnownStatusTimestamp: '2026-01-01T00:00:00.000Z',
+    });
+    const {service, spies} = startCard(
+      () =>
+        Promise.resolve({
+          isVerified: true,
+          verificationErrorCode: '',
+          isRevoked: RevocationStatus.FALSE,
+        }),
+      checkedLongAgo,
+    );
+    const idle = backToIdle(service);
+    service.send(VCItemEvents.REVERIFY_VC_IN_BACKGROUND());
+    await idle;
+
+    expect(spies.storeContext).toHaveBeenCalled();
+    expect(spies.updateVcMetadata).toHaveBeenCalled();
+  });
+
   it('keeps the card as it was when the network drops', async () => {
     const {service, spies} = startCard(() =>
       Promise.reject(new Error('ERR_NETWORK')),
@@ -113,6 +173,43 @@ describe('VCItemMachine background "Check Card Status"', () => {
     expect(spies.storeContext).not.toHaveBeenCalled();
     expect(spies.updateVcMetadata).not.toHaveBeenCalled();
     expect(spies.sendReverificationFailureToVcMeta).not.toHaveBeenCalled();
+  });
+
+  it('keeps a revoked card revoked when the status list cannot be reached', async () => {
+    const {service, spies} = startCard(
+      () =>
+        Promise.resolve({
+          isVerified: true,
+          verificationErrorCode: '',
+          isRevoked: RevocationStatus.UNDETERMINED,
+        }),
+      revokedVcMetadata,
+    );
+    const idle = backToIdle(service);
+    service.send(VCItemEvents.REVERIFY_VC_IN_BACKGROUND());
+    const state = await idle;
+
+    expect(state.context.vcMetadata.isRevoked).toBe(RevocationStatus.TRUE);
+    expect(state.context.vcMetadata.revokedOn).toBe(
+      revokedVcMetadata.revokedOn,
+    );
+    expect(spies.logStatusChangedOnReverification).not.toHaveBeenCalled();
+  });
+
+  it('keeps a revoked card revoked when a background check fails', async () => {
+    const {service} = startCard(
+      () => Promise.reject(new Error('ERR_SIGNATURE_VERIFICATION_FAILED')),
+      revokedVcMetadata,
+    );
+    const idle = backToIdle(service);
+    service.send(VCItemEvents.REVERIFY_VC_IN_BACKGROUND());
+    const state = await idle;
+
+    expect(state.context.vcMetadata.isVerified).toBe(false);
+    expect(state.context.vcMetadata.isRevoked).toBe(RevocationStatus.TRUE);
+    expect(state.context.vcMetadata.revokedOn).toBe(
+      revokedVcMetadata.revokedOn,
+    );
   });
 
   it('marks the card unverified, without a banner, when verification fails', async () => {
@@ -146,7 +243,7 @@ describe('VCItemMachine background "Check Card Status"', () => {
   });
 
   it('does not show the "In Progress" overlay while checking in the background', () => {
-    const {service} = startCard(() => new Promise(() => {}));
+    const {service} = startCard(() => new Promise<never>(() => undefined));
     service.send(VCItemEvents.REVERIFY_VC_IN_BACKGROUND());
 
     const state = service.getSnapshot();

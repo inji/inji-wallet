@@ -7,7 +7,6 @@ import {
 import {StoreEvents} from '../../store';
 import {VCMetadata} from '../../../shared/VCMetadata';
 import {
-  EXPIRED_VC_ERROR_CODE,
   MIMOTO_BASE_URL,
   MY_VCS_STORE_KEY,
 } from '../../../shared/constants';
@@ -36,44 +35,40 @@ import {WalletBindingResponse} from '../VCMetaMachine/vc';
 import {BannerStatusType} from '../../../components/BannerNotification';
 import {VCActivityLog} from '../../../components/ActivityLogEvent';
 import {RevocationStatus} from '../../../shared/vcVerifier/VcVerifier';
+import {hasStatusChanged, statusAfterCheck} from './cardStatus';
 
 export const VCItemActions = model => {
   return {
     setIsVerified: assign((context: any, event: any) => {
       const previous = context.vcMetadata;
       const now = new Date().toISOString();
-      const isRevoked = event.data.isRevoked === RevocationStatus.TRUE;
       const next = new VCMetadata({
         ...previous,
-        isVerified: true,
-        isRevoked: event.data.isRevoked,
-        isExpired: event.data.verificationErrorCode == EXPIRED_VC_ERROR_CODE,
+        ...statusAfterCheck(previous, event.data, now),
         lastKnownStatusTimestamp: now,
-        revokedOn: isRevoked ? previous.revokedOn || now : '',
       });
-
-      const statusChanged =
-        previous.isVerified !== next.isVerified ||
-        previous.isRevoked !== next.isRevoked ||
-        previous.isExpired !== next.isExpired;
       return {
         ...context,
         vcMetadata: next,
-        statusChangedDuringVerification: statusChanged,
+        statusChangedDuringVerification: hasStatusChanged(previous, next),
       };
     }),
 
     resetIsVerified: assign((context: any) => {
       const previous = context.vcMetadata;
       const statusChanged = previous.isVerified;
+      // An automatic check must never downgrade a card already known to be revoked or expired.
+      const keepKnownStatus = context.isReverifyingInBackground;
 
       return {
         ...context,
         vcMetadata: new VCMetadata({
           ...previous,
           isVerified: false,
-          isRevoked: RevocationStatus.FALSE,
-          isExpired: false,
+          isRevoked: keepKnownStatus
+            ? previous.isRevoked
+            : RevocationStatus.FALSE,
+          isExpired: keepKnownStatus ? previous.isExpired : false,
           lastKnownStatusTimestamp: new Date().toISOString(),
         }),
         statusChangedDuringVerification: statusChanged,

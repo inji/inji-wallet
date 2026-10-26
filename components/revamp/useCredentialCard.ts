@@ -11,12 +11,12 @@ import {
   getCredentialIssuersWellKnownConfig,
   getDisplayObjectForCurrentLanguage,
 } from '../../shared/openId4VCI/Utils';
-import {RevocationStatus} from '../../shared/vcVerifier/VcVerifier';
 import {documentNumber, flatClaims, holderName} from './credentialClaims';
 import {msoValidity} from './msoValidity';
 import {claimLabels} from './cardFields';
 import {VCFormat} from '../../shared/VCFormat';
 import {getCredentialExpiryDate} from '../../shared/credentialExpiry';
+import {cardStatusOf} from './cardStatus';
 
 export type CardStatus = 'verified' | 'pending' | 'expired' | 'revoked';
 
@@ -126,14 +126,7 @@ export function useCredentialCard(
     const display = wellknown?.display
       ? getDisplayObjectForCurrentLanguage(wellknown.display)
       : undefined;
-    const status: CardStatus =
-      vcMetadata.isRevoked === RevocationStatus.TRUE
-        ? 'revoked'
-        : vcMetadata.isExpired
-        ? 'expired'
-        : vcMetadata.isVerified
-        ? 'verified'
-        : 'pending';
+    const status = cardStatusOf(vcMetadata, controller.credential);
     return {
       title: getCredentialType(wellknown),
       issuerName: issuerDisplay?.name ?? verifiableCredentialData?.issuer,

@@ -48,7 +48,7 @@ export function useMyVcsTab(props: HomeScreenTabProps) {
   const vcMetaService = appService.children.get('vcMeta')!!;
   const settingsService = appService.children.get('settings')!!;
   const authService = appService.children.get('auth');
-  useVcStatusRefresh();
+  const vcStatusRefresh = useVcStatusRefresh();
   return {
     service,
     AddVcModalService: useSelector(service, selectAddVcModal),
@@ -104,7 +104,10 @@ export function useMyVcsTab(props: HomeScreenTabProps) {
 
     GET_VC: () => service.send(MyVcsTabEvents.GET_VC()),
 
-    REFRESH: () => vcMetaService.send(VcMetaEvents.REFRESH_MY_VCS()),
+    REFRESH: () => {
+      vcStatusRefresh.onPullToRefresh();
+      vcMetaService.send(VcMetaEvents.REFRESH_MY_VCS());
+    },
 
     VIEW_VC: (vcRef: ActorRefFrom<typeof VCItemMachine>) => {
       return service.send(MyVcsTabEvents.VIEW_VC(vcRef));

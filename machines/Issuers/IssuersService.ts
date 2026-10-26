@@ -394,6 +394,7 @@ export const IssuersService = () => {
       const verificationResult = await verifyCredentialData(
         verifiableCredential?.credential,
         selectedCredentialType.format,
+        verifiableCredential,
       );
       if (!verificationResult.isVerified) {
         throw new Error(verificationResult.verificationErrorCode);
