@@ -136,3 +136,4 @@ injitest/target/
 
 ## runtime bundles / assets
 android/app/src/main/assets/faceModel.tflite
+shared/openID4VP/walletConfig/generated/

@@ -87,6 +87,9 @@ public class OpenId4VPUtils {
 
     List<Verifier> trustedVerifiers = parseTrustedVerifiers(walletConfigMap);
 
+    List<String> verifierTrustAnchors =
+      convertReadableArrayToStringList(walletConfigMap, "verifier_trust_anchors");
+
     return new WalletConfig(
       vpFormatsSupportedMap.isEmpty() ? WalletConfigDefaultsKt.getDefaultVpFormatsSupported() : vpFormatsSupportedMap,
       clientIdPrefixesSupported != null ? clientIdPrefixesSupported : WalletConfigDefaultsKt.getDefaultClientIdPrefixesSupported(),
@@ -96,7 +99,8 @@ public class OpenId4VPUtils {
       responseTypes != null ? responseTypes : WalletConfigDefaultsKt.getDefaultResponseTypeSupported(),
       presentationDefinitionUriSupported,
       trustedVerifiers,
-      validateTrustedVerifier
+      validateTrustedVerifier,
+      verifierTrustAnchors != null ? verifierTrustAnchors : Collections.emptyList()
     );
   }
 

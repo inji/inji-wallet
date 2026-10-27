@@ -308,7 +308,7 @@ fileignoreconfig:
 - filename: android/app/src/main/AndroidManifest.xml
   checksum: 8f4bd61770b8bb0a28859ca0f3b4b095aed4e3fb5adef435cb74b9389ff13e09
 - filename: ios/Inji.xcodeproj/project.pbxproj
-  checksum: 5bb246fa39bc7a9994b50bc5b1505d5389d0e254a4e30cfb2a57e6a1025e9087
+  checksum: 4bfaf13e25494187c2ad7d021f23d7329047da20950d770dcdeefdf91a3ff59b
 - filename: screens/Settings/ReceivedCardsModal.tsx
   checksum: 6dee9153a61009b0252d294154c88d5e1b241a517c76e930b391a39d7bc52392
 - filename: components/FaceScanner/FaceCompare.tsx
@@ -651,4 +651,8 @@ fileignoreconfig:
 - filename: screens/Issuers/__snapshots__/TransactionCodeScreen.test.tsx.snap
   allowed_patterns:
   - keyboardShouldPersistTaps
+- filename: shared/openID4VP/walletConfig/verifierTrustAnchorUrls.json
+  checksum: 1778a640054e163b8dbd0de1968c14cb490b61585fa7958abed86400324b6f55
+- filename: docs/openid4vp/openid4vp-support.md
+  checksum: 682c7ef63f7774b606dea7a053fb3ed9822b12914a636f1bae794ba48f8839af
 version: "1.0"

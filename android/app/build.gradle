@@ -348,6 +348,18 @@ task copyFaceSdkModel(type: Copy) {
 
 preBuild.dependsOn copyFaceSdkModel
 
+// Downloads the x509_hash Verifier CA certificates that the app bundles
+task bundleVerifierTrustAnchors(type: Exec) {
+    workingDir '../..'
+    commandLine 'node', 'tools/verifier-trust-anchors/bundle-verifier-trust-anchors.js'
+}
+
+preBuild.dependsOn bundleVerifierTrustAnchors
+// The JS bundle includes them
+tasks.matching { it.name ==~ /createBundle.*JsAndAssets/ }.configureEach {
+    dependsOn bundleVerifierTrustAnchors
+}
+
 task CaptureLibraryVersion {
     def libDef = project.configurations.getByName('implementation').allDependencies.matching {
         it.group.equals("io.inji") && it.name.equals("tuvali")

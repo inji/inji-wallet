@@ -34,6 +34,11 @@ target 'Inji' do
   )
 
   post_install do |installer|
+    # expo-updates bundles the JS while the pods build, before the app's Bundle Verifier Trust Anchors phase runs
+    unless system('node', "#{Pod::Config.instance.installation_root}/../tools/verifier-trust-anchors/bundle-verifier-trust-anchors.js")
+      raise 'Could not bundle the verifier trust anchors'
+    end
+
     # Xcode 26: Disable explicit modules for RNArgon2 compatibility
     installer.pods_project.targets.each do |target|
       if ['RNArgon2'].include?(target.name)

@@ -588,6 +588,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				1E55884F2CC0EF2C00CF55B4 /* Copy FaceSDK Model */,
+				1E55884F2CC0EF2C00CF55B5 /* Bundle Verifier Trust Anchors */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				D864AD95A969870E3F1029D7 /* [CP] Embed Pods Frameworks */,
 				467F10C0B5070779AA08A7BB /* [CP] Copy Pods Resources */,
@@ -714,6 +715,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "MODEL_SRC_DIR=\"${PROJECT_DIR}/../assets/models\"\nMODEL_DST_DIR=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\n\ncp -v \"$MODEL_SRC_DIR/faceModel.tflite\" \"$MODEL_DST_DIR\" || {\n    echo \"Failed to copy face model\"\n    exit 1\n}\n";
+		};
+		1E55884F2CC0EF2C00CF55B5 /* Bundle Verifier Trust Anchors */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle Verifier Trust Anchors";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n\"$NODE_BINARY\" \"$PROJECT_DIR/../tools/verifier-trust-anchors/bundle-verifier-trust-anchors.js\"\n";
 		};
 		467F10C0B5070779AA08A7BB /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -1,0 +1,18 @@
+[
+  {
+    "name": "EUDI reference verifier: PID Issuer CA 02",
+    "url": "https://preprod.pki.eudiw.dev/aia/PIDIssuerCA02-EU.cacert.pem",
+    "sha256": "3b0a223e8748f3c42217298ad905ecf1a104e73cd2c54ff21da16fda8070b297"
+  },
+  {
+    "name": "Animo playground verifier: Animo root CA",
+    "url": "https://playground.animo.id/api/x509",
+    "jsonField": "pem",
+    "sha256": "8dc5438cd4cd073234a5f2fc893221527c2737b7c7c50f5e7035e9a16b3308ca"
+  },
+  {
+    "name": "Inji mock verifier: Inji Mock Root CA",
+    "url": "https://raw.githubusercontent.com/inji/inji-mock-services/develop/openid4vp-service/x509/root-ca-cert.pem",
+    "sha256": "1331f02af572a83b5b2c7d1b1209e96a199ae5307fd3e6cce7b0070ab6393fd5"
+  }
+]
