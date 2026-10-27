@@ -422,7 +422,6 @@ export const MyVcsTab: React.FC<HomeScreenTabProps> = props => {
             vcMetadatas={vcMetadataOrderedByPinStatus}
             searchIndex={searchIndex}
             onAdd={() => props.onAddCredential?.()}
-            onStackView={() => setStackView(true)}
             refreshing={controller.isRefreshingVcs}
             onRefresh={controller.REFRESH}
             isCardTourStep={controller.isTourGuide}

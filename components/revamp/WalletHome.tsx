@@ -46,7 +46,6 @@ import {
   PinIcon,
   QrIcon,
   ShareIcon,
-  StackIcon,
   SparkIcon,
   TrashIcon,
 } from './Icons';
@@ -59,6 +58,8 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const RAIL_CARD_WIDTH = 212;
 const ALL = 'all';
+/** The ⋯ menu's "Show sample cards" option, hidden for now; switch on to bring it back. */
+const SHOW_SAMPLE_CARDS_OPTION = false;
 
 interface HomeEntry {
   key: string;
@@ -80,7 +81,6 @@ export const WalletHome: React.FC<{
   /** Lowercased searchable text of each credential's claims, by credential key. */
   searchIndex: Record<string, string>;
   onAdd: () => void;
-  onStackView: () => void;
   refreshing: boolean;
   onRefresh: () => void;
   /** The shown card is a tour step: while the tour is replayed from Settings. */
@@ -96,7 +96,6 @@ export const WalletHome: React.FC<{
   vcMetadatas,
   searchIndex,
   onAdd,
-  onStackView,
   refreshing,
   onRefresh,
   isCardTourStep = false,
@@ -131,7 +130,7 @@ export const WalletHome: React.FC<{
 
   const [showSamples, setShowSamples] = useShowSampleCards();
   const [samplePinned, setSamplePinned] = useState<string | null>(null);
-  const samples = showSamples ? SAMPLE_CARDS : [];
+  const samples = SHOW_SAMPLE_CARDS_OPTION && showSamples ? SAMPLE_CARDS : [];
   const cards = useMemo<Record<string, LoadedCard>>(
     () => ({
       ...loaded,
@@ -369,13 +368,7 @@ export const WalletHome: React.FC<{
             icon: col => <BellIcon color={col} />,
             onPress: () => navigation.navigate(BOTTOM_TAB_ROUTES.history),
           },
-          {
-            label: 'Stack view',
-            icon: col => <StackIcon color={col} />,
-            onPress: onStackView,
-            separated: true,
-          },
-          ...(SAMPLE_CARDS.length
+          ...(SHOW_SAMPLE_CARDS_OPTION && SAMPLE_CARDS.length
             ? [
                 {
                   label: showSamples
@@ -386,6 +379,7 @@ export const WalletHome: React.FC<{
                     setShowSamples(!showSamples);
                     setSamplePinned(null);
                   },
+                  separated: true,
                 },
               ]
             : []),

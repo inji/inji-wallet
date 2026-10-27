@@ -21,11 +21,14 @@ import {AUTO_LOCK_OPTIONS, useAutoLockSetting} from './autoLock';
 import {
   ChoiceList,
   ChoiceRow,
+  Dialog,
   Page,
   PageHeader,
   PageModal,
+  Snackbar,
 } from '../../components/revamp/Page';
 import {ScaledText} from '../../components/revamp/ScaledText';
+import {CheckIcon} from '../../components/revamp/Icons';
 import {
   SettingsRow,
   SettingsSection,
@@ -72,7 +75,12 @@ export const SettingScreen: React.FC<SettingProps & RootRouteProps> = props => {
     'changePin' | 'autoLock' | 'help' | 'privacy' | null
   >(null);
   const [autoLockMinutes, setAutoLockMinutes] = useAutoLockSetting();
-  const [notice, setNotice] = useState('');
+  const [showPinChanged, setShowPinChanged] = useState(false);
+  const [snackbar, setSnackbar] = useState('');
+  const closePinChanged = () => {
+    setShowPinChanged(false);
+    setSnackbar(t('pinChanged'));
+  };
 
   // Off only when the phone has no fingerprint or face hardware, or none is enrolled.
   const [biometricsAvailable, setBiometricsAvailable] = useState(true);
@@ -114,13 +122,6 @@ export const SettingScreen: React.FC<SettingProps & RootRouteProps> = props => {
             {paddingBottom: TAB_BAR_SPACE + insets.bottom},
           ]}
           showsVerticalScrollIndicator={false}>
-          <MessageOverlay
-            isVisible={notice !== ''}
-            onBackdropPress={() => setNotice('')}
-            title={notice}
-            buttonText="ok"
-            onButtonPress={() => setNotice('')}
-          />
           <MessageOverlay
             isVisible={controller.alertMsg != ''}
             onBackdropPress={controller.hideAlert}
@@ -269,13 +270,33 @@ export const SettingScreen: React.FC<SettingProps & RootRouteProps> = props => {
             {t('footer')}
           </ScaledText>
         </ScrollView>
+        <Snackbar
+          testID="settingsSnackbar"
+          message={snackbar}
+          onHide={() => setSnackbar('')}
+        />
       </View>
       <ChangePin
         isVisible={page === 'changePin'}
         onDone={changed => {
           setPage(null);
-          if (changed) setNotice(t('pinChanged'));
+          if (changed) setShowPinChanged(true);
         }}
+      />
+      <Dialog
+        testID="pinChangedDialog"
+        isVisible={showPinChanged}
+        icon={colour => (
+          <CheckIcon color={colour} size={30} strokeWidth={2.5} />
+        )}
+        title={t('pinChanged')}
+        message={t('pinChangedMessage')}
+        button={{
+          title: t('done'),
+          onPress: closePinChanged,
+          testID: 'pinChangedDone',
+        }}
+        onRequestClose={closePinChanged}
       />
       <PageModal
         visible={page === 'autoLock'}
