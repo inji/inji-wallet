@@ -233,13 +233,13 @@ describe('CredentialSetSection', () => {
     const {getByText} = render(<CredentialSetSection {...props} />);
 
     // Divider renders an "OR" text label
-    expect(getByText('OR')).toBeTruthy();
+    expect(getByText('dcqlSection.or')).toBeTruthy();
   });
 
   it('does NOT render a divider when there is only one option', () => {
     const props = buildDefaultProps();
     const {queryByText} = render(<CredentialSetSection {...props} />);
-    expect(queryByText('OR')).toBeNull();
+    expect(queryByText('dcqlSection.or')).toBeNull();
   });
 
   // ─── Multi-query option (combined section) ───────────────────────────────
@@ -448,7 +448,7 @@ describe('CredentialSetSection', () => {
     );
 
     // Find and press close button by text since Button component wraps testID
-    fireEvent.press(getByText('Close'));
+    fireEvent.press(getByText('dcqlSection.close'));
 
     await waitFor(() => {
       expect(

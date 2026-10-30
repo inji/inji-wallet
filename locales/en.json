@@ -1171,7 +1171,12 @@
       "stepOf": "Step {{current}} of {{total}}",
       "previous": "Previous",
       "next": "Next",
-      "instruction": "Select a card from each step to continue"
+      "instruction": "Select a card from each step to continue",
+      "moreCardsInfo": "One card is selected. Tap \"Show more\" to see additional options.",
+      "cards": "Cards",
+      "close": "Close",
+      "showAllCards": "Show all cards",
+      "or": "OR"
   },
     "verifierInfo": {
       "trusted": "Trusted",

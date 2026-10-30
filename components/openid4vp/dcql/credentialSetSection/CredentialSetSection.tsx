@@ -570,7 +570,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
       <Fragment>
         <InfoBox
           style={{marginHorizontal: 4}}
-          message={"One card is selected. Tap \"Show more\" to see additional options."}
+          message={t('dcqlSection.moreCardsInfo')}
           testID={"more-cards-matching-info"}
           backgroundColor={Theme.Colors.infoBackground}
           borderColor={Theme.Colors.infoBorder}
@@ -580,11 +580,11 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
           items={matchResult.matchingVcs ?? []}
           testID={`${testId}-option-${optionIndex}-query-${credentialQueryId}-multi-vc`}
           introText={""}
-          title={"Cards"}
+          title={t('dcqlSection.cards')}
           footerText={""}
-          closeText={"Close"}
+          closeText={t('dcqlSection.close')}
           alignShowMoreTextAtRight
-          showMoreText={() => "Show all cards"}
+          showMoreText={() => t('dcqlSection.showAllCards')}
           priorityItemPredicate={item =>
             getPriorityVcKey(optionIndex, credentialQueryId) === item.matchingVcInfo.vcKey
           }
@@ -637,7 +637,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
               {optionIndex > 0 && (
                 <Divider
                   testId={`${testId}-option-${optionIndex}-divider`}
-                  text={'OR'}
+                  text={t('dcqlSection.or')}
                 />
               )}
               {isMultipleCardsCombinedOption(option) ? (
