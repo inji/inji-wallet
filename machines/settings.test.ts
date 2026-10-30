@@ -131,6 +131,7 @@ jest.mock('../shared/cryptoutil/cryptoUtil', () => ({
   encryptJson: jest.fn(),
   hmacSHA: jest.fn(),
   generateKeys: jest.fn(),
+  storeKeyPriorityOrder: jest.fn().mockResolvedValue(undefined),
 }));
 
 const mockState = (ctx: any = {}, matchVal?: string) => ({
@@ -880,5 +881,77 @@ describe('settingsMachine guards', () => {
     } as any);
     // hasPartialData: response != null && appId == null → true → idle with setContext + updatePartialDefaults
     expect(next.value).toBe('idle');
+  });
+});
+
+describe('settingsMachine key priority order on environment change', () => {
+  const {storeKeyPriorityOrder} = jest.requireMock(
+    '../shared/cryptoutil/cryptoUtil',
+  );
+  const {INITIAL_CONFIG} = jest.requireActual('../shared/InitialConfig');
+  const actions = settingsMachine.options.actions as any;
+  const resetInjiPropsDone =
+    'done.invoke.settings.resetInjiProps:invocation[0]';
+  const configResponse = {
+    warningDomainName: 'https://mimoto.new',
+    keyPriorityOrder: 'RS256,ES256,ES256K,Ed25519',
+  };
+  const getMachine = () =>
+    settingsMachine.withContext({
+      ...settingsMachine.context,
+      serviceRefs: {store: {}} as any,
+    });
+
+  beforeEach(() => {
+    storeKeyPriorityOrder.mockClear();
+  });
+
+  it('stores the key order only when the host change completes', () => {
+    const machine = getMachine();
+    const completed = machine.transition('resetInjiProps', {
+      type: resetInjiPropsDone,
+      data: configResponse,
+    } as any);
+    expect(completed.actions.map(action => action.type)).toContain(
+      'storeKeyPriorityOrderOfEnvironment',
+    );
+
+    const canceled = machine.transition('resetInjiProps', {
+      type: 'CANCEL',
+    } as any);
+    const lateResponse = machine.transition(canceled, {
+      type: resetInjiPropsDone,
+      data: configResponse,
+    } as any);
+    expect(lateResponse.actions.map(action => action.type)).not.toContain(
+      'storeKeyPriorityOrderOfEnvironment',
+    );
+  });
+
+  it('stores the key order of the new environment from the config response', () => {
+    actions.storeKeyPriorityOrderOfEnvironment({}, {data: configResponse});
+    expect(storeKeyPriorityOrder).toHaveBeenCalledWith(
+      'RS256,ES256,ES256K,Ed25519',
+    );
+  });
+
+  it('keeps the stored key order when the config of the new environment could not be fetched', () => {
+    actions.storeKeyPriorityOrderOfEnvironment(
+      {},
+      {data: INITIAL_CONFIG.allProperties},
+    );
+    expect(storeKeyPriorityOrder).not.toHaveBeenCalled();
+  });
+
+  it('logs a warning when storing the key order fails', async () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    storeKeyPriorityOrder.mockRejectedValueOnce(new Error('keystore error'));
+    actions.storeKeyPriorityOrderOfEnvironment({}, {data: configResponse});
+    await new Promise(process.nextTick);
+    expect(warnSpy).toHaveBeenCalledWith(
+      'Failed to store keyPriorityOrder of the new environment',
+      expect.any(Error),
+    );
+    warnSpy.mockRestore();
   });
 });
