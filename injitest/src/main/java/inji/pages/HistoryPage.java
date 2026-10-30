@@ -53,7 +53,7 @@ public class HistoryPage extends BasePage {
     }
 
     private boolean verifyHistoryAndroidformdl() {
-        By locator = By.xpath("//*[contains(@text,'Mobile Driving License is downloaded.')]");
+        By locator = By.xpath("//*[contains(@text,'DrivingLicenseCredential is downloaded.')]");
         return isElementVisible(locator, "Verifying downloaded mDL history record on Android");
     }
 
@@ -78,7 +78,7 @@ public class HistoryPage extends BasePage {
     }
 
     private boolean verifyHistoryIosmdl() {
-        By locator = By.xpath("//XCUIElementTypeStaticText[@name=\"Mobile Driving License is downloaded.\"]");
+        By locator = By.xpath("//XCUIElementTypeStaticText[@name=\"DrivingLicenseCredential is downloaded.\"]");
         return isElementVisible(locator, "Verifying downloaded mDL history record on iOS");
     }
 
@@ -112,12 +112,12 @@ public class HistoryPage extends BasePage {
     }
 
     private boolean verifyDeleteHistoryAndroidMdl() {
-        By locator = By.xpath("//*[contains(@text,'Mobile Driving License is removed from wallet.')]");
+        By locator = By.xpath("//*[contains(@text,'DrivingLicenseCredential is removed from wallet.')]");
         return isElementVisible(locator, "Verifying deleted mDL history record on Android");
     }
 
     private boolean verifyDeleteHistoryIosMdl() {
-        By locator = By.xpath("//*[contains(@name,'Mobile Driving License is removed from wallet.')]");
+        By locator = By.xpath("//*[contains(@name,'DrivingLicenseCredential is removed from wallet.')]");
         return isElementVisible(locator, "Verifying deleted mDL history record on iOS");
     }
 
