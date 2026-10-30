@@ -1047,6 +1047,7 @@
   },
   "SendVPScreen": {
     "authorizationPurpose": "حدّد البطاقة/البطاقات المطلوبة للتحقق واستلام بطاقتك الجديدة من جهة الإصدار الموثوقة.",
+    "consentAndShare": "الموافقة والمشاركة",
     "consentShare": "أوافق وأشارك",
     "requester": "جهة التحقق",
     "cardsSelected": "البطاقات المختارة",
@@ -1163,7 +1164,12 @@
       "stepOf": "الخطوة {{current}} من {{total}}",
       "previous": "السابق",
       "next": "التالي",
-      "instruction": "اختر بطاقة من كل خطوة للمتابعة"
+      "instruction": "اختر بطاقة من كل خطوة للمتابعة",
+      "moreCardsInfo": "تم تحديد بطاقة واحدة. اضغط على \"عرض المزيد\" لرؤية خيارات إضافية.",
+      "cards": "البطاقات",
+      "close": "إغلاق",
+      "showAllCards": "عرض كل البطاقات",
+      "or": "أو"
     },
     "verifierInfo": {
       "trusted": "موثوق",
@@ -1299,6 +1305,7 @@
     "editLabel": "يحرر {{label}}",
     "tryAgain": "حاول مجددا",
     "ignore": "يتجاهل",
+    "decline": "رفض",
     "goBack": "عُد",
     "back": "خلف",
     "camera": {
