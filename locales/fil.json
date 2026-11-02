@@ -1033,6 +1033,7 @@
   },
   "SendVPScreen": {
     "authorizationPurpose": "Piliin ang mga hinihinging card upang ma-verify at matanggap ang iyong bagong card mula sa pinagkakatiwalaang issuer.",
+    "consentAndShare": "Pumayag at Ibahagi",
     "consentShare": "Ako ay pumapayag at nagbabahagi",
     "requester": "Entity ng Pagpapatunay",
     "cardsSelected": "mga card na napili",
@@ -1149,7 +1150,12 @@
       "stepOf": "Hakbang {{current}} ng {{total}}",
       "previous": "Nakaraan",
       "next": "Susunod",
-      "instruction": "Pumili ng card sa bawat hakbang para magpatuloy"
+      "instruction": "Pumili ng card sa bawat hakbang para magpatuloy",
+      "moreCardsInfo": "Isang card ang napili. I-tap ang \"Magpakita pa\" para makita ang iba pang opsyon.",
+      "cards": "Mga Card",
+      "close": "Isara",
+      "showAllCards": "Ipakita ang lahat ng card",
+      "or": "O"
     },
     "verifierInfo": {
       "trusted": "Pinagkakatiwalaan",
@@ -1293,6 +1299,7 @@
       "allowAccess": "Payagan ang access sa camera"
     },
     "ignore": "Huwag pansinin",
+    "decline": "Tanggihan",
     "errors": {
       "genericError": "Ikinalulungkot namin! Dahil sa teknikal na error, hindi namin maibigay ang iyong kahilingan ngayon. Subukang muli mamaya!"
     },
