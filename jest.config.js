@@ -56,7 +56,6 @@ module.exports = {
     '<rootDir>/__mocks__/jest-init.js',
     '<rootDir>/__mocks__/mmkv-db-setup.js',
     '<rootDir>/__mocks__/react-native.mock.js',
-    '<rootDir>/__mocks__/telemetry-sdk.mock.js',
     '<rootDir>/__mocks__/expo-constants.mock.js',
     '<rootDir>/node_modules/react-native-mmkv-storage/jest/mmkvJestSetup.js',
     '<rootDir>/node_modules/@react-native-community/netinfo/jest/netinfo-mock.js',
