@@ -73,7 +73,7 @@ fileignoreconfig:
 - filename: .github/workflows/push-triggers.yml
   checksum: 4a031b46646aa982c8f40e4c7fe0bd3e05a76a6af1ff1c2de7350ba6ebf9a839
 - filename: components/VC/Views/VCCardViewContent.tsx
-  checksum: 02655ff3d7f8a8ea4f3664485f98c961802c598242ec44408594a2ddb721fa5e
+  checksum: 0353918e5a8a3725fa0cac9acc2d1ed4cd2734860ef931100720a94aa7317b12
 - filename: screens/Settings/BackupController.tsx
   checksum: 4a031b46646aa982c8f40e4c7fe0bd3e05a76a6af1ff1c2de7350ba6ebf9a839
 - filename: machines/settings.typegen.ts
@@ -360,7 +360,7 @@ fileignoreconfig:
 - filename: screens/Home/MyVcsTab.tsx
   checksum: 68ff83c5d9062fbc077d008956fa654540253c52ce68d7105c175c51562b3dc9
 - filename: package-lock.json
-  checksum: bc550df46accda76fffc32e016ed072f2ef8da0a49c367778fe23bb79db3b4a3
+  checksum: 462a7048cd8984bb6c71689138e0d9acf0d598164401e91a741d27bb8a3bdbef
 - filename: screens/IntroSliders/secureShareIntro.tsx
   checksum: ea51350b13ce6287c8965d177bfef275e117e16e42c119f46c738a444dfc0beb
 - filename: shared/backupUtils/restoreData.ts
@@ -651,4 +651,8 @@ fileignoreconfig:
 - filename: screens/Issuers/__snapshots__/TransactionCodeScreen.test.tsx.snap
   allowed_patterns:
   - keyboardShouldPersistTaps
+- filename: shared/openID4VP/mdocSelectiveDisclosure.test.ts
+  checksum: 8eae5cc8256b7842fe9531305918eb7f4f7fad5ec9996225dfdf099f5a57ae3c
+- filename: components/openid4vp/dcql/credentialSetSection/CredentialSetSection.tsx
+  checksum: 93ab67b0e9950c3429b94f98ab18fb6a09ada274c64d57cab5a4e63a9a9c92b3
 version: "1.0"
