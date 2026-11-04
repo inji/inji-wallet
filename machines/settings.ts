@@ -1,4 +1,11 @@
-import {assign, ContextFrom, EventFrom, send, StateFrom, sendUpdate} from 'xstate';
+import {
+  assign,
+  ContextFrom,
+  EventFrom,
+  send,
+  StateFrom,
+  sendUpdate,
+} from 'xstate';
 import {createModel} from 'xstate/lib/model';
 import {AppServices} from '../shared/GlobalContext';
 import {
@@ -16,7 +23,11 @@ import getAllConfigurations from '../shared/api';
 import Storage from '../shared/storage';
 import ShortUniqueId from 'short-unique-id';
 import {__AppId} from '../shared/GlobalVariables';
-import {isHardwareKeystoreExists} from '../shared/cryptoutil/cryptoUtil';
+import {
+  isHardwareKeystoreExists,
+  storeKeyPriorityOrder,
+} from '../shared/cryptoutil/cryptoUtil';
+import {INITIAL_CONFIG} from '../shared/InitialConfig';
 
 const model = createModel(
   {
@@ -106,17 +117,17 @@ export const settingsMachine = model.createMachine(
             {target: 'storingDefaults'},
           ],
           BIOMETRIC_CANCELLED: {
-              actions: [
-                send(
-                  (_, event) => model.events.BIOMETRIC_CANCELLED(event.requester),
-                  {
-                    to: (_, event) => event.requester,
-                  },
-                ),
-                sendUpdate(),
-              ],
-              target: 'init',
-            },
+            actions: [
+              send(
+                (_, event) => model.events.BIOMETRIC_CANCELLED(event.requester),
+                {
+                  to: (_, event) => event.requester,
+                },
+              ),
+              sendUpdate(),
+            ],
+            target: 'init',
+          },
         },
       },
       storingDefaults: {
@@ -192,6 +203,7 @@ export const settingsMachine = model.createMachine(
           onDone: {
             actions: [
               'updateCredentialRegistrySuccess',
+              'storeKeyPriorityOrderOfEnvironment',
               'updateCredentialRegistry',
               'storeContext',
             ],
@@ -306,6 +318,17 @@ export const settingsMachine = model.createMachine(
         credentialRegistryResponse: () => 'success',
       }),
 
+      storeKeyPriorityOrderOfEnvironment: (_context, event: any) => {
+        if (event.data !== INITIAL_CONFIG.allProperties) {
+          storeKeyPriorityOrder(event.data?.keyPriorityOrder).catch(error =>
+            console.warn(
+              'Failed to store keyPriorityOrder of the new environment',
+              error,
+            ),
+          );
+        }
+      },
+
       resetCredentialRegistryResponse: model.assign({
         credentialRegistryResponse: () => '',
       }),
@@ -374,7 +397,6 @@ export function selectName(state: State) {
 export function selectAppId(state: State) {
   return state?.context?.appId;
 }
-
 
 /** Alerting the user when the hardware keystore not supported by device and
  * not shown to user atlease once */

@@ -17,7 +17,7 @@ configurations.all {
     exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15to18'
     exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
     exclude module: 'bcprov-jdk15to18'
-    exclude module: 'bcutil-jdk18on'
+    exclude module: 'bcutil-jdk15to18'
     exclude module: 'bcprov-jdk15on'
     exclude module: 'bcutil-jdk15on'
     exclude module: 'titanium-json-ld'
@@ -265,6 +265,7 @@ android {
         resources {
             excludes += "META-INF/*"
             excludes += "META-INF/spring/aot.factories"
+            excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
         }
     }
 }
@@ -277,8 +278,8 @@ dependencies {
     implementation 'com.facebook.soloader:soloader:0.10.1'
     implementation("com.google.code.gson:gson:2.10.1")
 
-    implementation("io.inji:injivcrenderer-aar:1.0.0-alpha.1-SNAPSHOT")
-    implementation("io.inji:inji-openid4vp-aar:1.0.0-alpha.2-SNAPSHOT"){
+    implementation("io.inji:injivcrenderer-aar:1.0.0-rc.2-SNAPSHOT")
+    implementation("io.inji:inji-openid4vp-aar:1.0.0-rc.2-SNAPSHOT"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
@@ -286,10 +287,10 @@ dependencies {
         exclude group: 'com.google.crypto.tink', module: 'tink'
         exclude group: 'com.augustcellars.cose', module:'cose-java'
     }
-    implementation("io.inji:pixelpass-aar:1.0.0-alpha.1-SNAPSHOT")
-    implementation("io.inji:secure-keystore:1.0.0-alpha.1-SNAPSHOT")
-    implementation("io.inji:tuvali:1.0.0-alpha.1-SNAPSHOT")
-    implementation("io.inji:inji-vci-client-aar:1.0.0-alpha.2-SNAPSHOT"){
+    implementation("io.inji:pixelpass-aar:1.0.0-rc.2-SNAPSHOT")
+    implementation("io.inji:secure-keystore:1.0.0-rc.2-SNAPSHOT")
+    implementation("io.inji:tuvali:1.0.0-rc.2-SNAPSHOT")
+    implementation("io.inji:inji-vci-client-aar:1.0.0-rc.2-SNAPSHOT"){
         changing = true
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk18on'
@@ -302,6 +303,7 @@ dependencies {
     implementation("io.inji:vcverifier-aar:1.10.0-SNAPSHOT") {
         exclude group: 'org.bouncycastle', module: 'bcpkix-jdk15on'
     }
+    implementation("org.bouncycastle:bcutil-jdk18on:1.78")
 
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
