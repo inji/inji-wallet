@@ -489,7 +489,11 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     matchingCredentialDataResult: VcWithMatchedClaims,
   ): Set<string> | undefined {
     const vcFormat = matchingCredentialDataResult.matchingVcInfo.metadata.format;
-    if (vcFormat == VCFormat.dc_sd_jwt || vcFormat == VCFormat.vc_sd_jwt) {
+    if (
+      vcFormat == VCFormat.dc_sd_jwt ||
+      vcFormat == VCFormat.vc_sd_jwt ||
+      vcFormat == VCFormat.mso_mdoc
+    ) {
       const jsonPaths = matchingCredentialDataResult.matchedClaims?.map(claim =>
         claimPathPointersToJsonPath(claim.path),
       );

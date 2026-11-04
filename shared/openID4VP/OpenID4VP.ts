@@ -19,6 +19,7 @@ import {
 } from '../../components/VC/common/VCUtils';
 import {isIOS} from '../constants';
 import {getDisclosuresForPath} from '../claimsPathMatching';
+import {filterMdocCredential} from './mdocSelectiveDisclosure';
 import {
   CredentialSetOption,
   MatchingVcsResult,
@@ -279,6 +280,9 @@ class OpenID4VP {
     selectedDisclosures: any,
     isDcqlRequestFlow = true,
   ) {
+    if (credentialFormat === VCFormat.mso_mdoc && isDcqlRequestFlow) {
+      return this.processMdocForSharing(vcData, selectedDisclosures);
+    }
     if (
       credentialFormat === VCFormat.mso_mdoc ||
       credentialFormat === VCFormat.ldp_vc
@@ -296,6 +300,32 @@ class OpenID4VP {
         selectedDisclosures,
       );
     }
+  }
+
+  /**
+   * mso_mdoc selective disclosure (DCQL flow). Fails closed: the full
+   * credential is never returned. Only the selected issuer-signed items are
+   * kept; issuerAuth and the retained items' bytes stay untouched.
+   * If no claims are requested (DCQL `claims` omitted), the mdoc is shared
+   * without any issuer-signed items, since all mdoc claims are selectively
+   * disclosable.
+   */
+  private static processMdocForSharing(
+    vcData: VC,
+    selectedDisclosures: string[],
+  ): string {
+    const credential = vcData?.verifiableCredential?.credential;
+    if (typeof credential !== 'string' || !credential.trim()) {
+      throw new Error('Invalid VC: missing credential');
+    }
+    if (!selectedDisclosures?.length) {
+      return filterMdocCredential(credential, {});
+    }
+    const selection = resolveMdocSelection(
+      vcData.verifiableCredential?.processedCredential,
+      selectedDisclosures,
+    );
+    return filterMdocCredential(credential, selection);
   }
 
   private static processSdJwtVcForSharingWithSdClaimsOnly(
@@ -354,6 +384,49 @@ class OpenID4VP {
 }
 
 export default OpenID4VP;
+
+/**
+ * Resolves selected mdoc claim paths ("<namespace>.<element>") into
+ * {namespace: [elementIdentifier]} by matching against the credential's
+ * actual namespaces, so namespaces containing dots are handled correctly.
+ * Throws if anything cannot be resolved (never falls back to full disclosure).
+ */
+function resolveMdocSelection(
+  processedCredential: any,
+  selectedPaths: string[],
+): Record<string, string[]> {
+  const namespaces =
+    processedCredential?.issuerSigned?.nameSpaces ??
+    processedCredential?.nameSpaces;
+  if (!namespaces) {
+    throw new Error('mso_mdoc: namespaces not found in processed credential');
+  }
+  const selectedSet = new Set(selectedPaths);
+  const matched = new Set<string>();
+  const result: Record<string, string[]> = {};
+
+  for (const ns of Object.keys(namespaces)) {
+    for (const item of namespaces[ns]) {
+      const full = `${ns}.${item.elementIdentifier}`;
+      if (selectedSet.has(full)) {
+        if (!result[ns]) {
+          result[ns] = [];
+        }
+        result[ns].push(item.elementIdentifier);
+        matched.add(full);
+      }
+    }
+  }
+
+  const unresolved = selectedPaths.filter(p => !matched.has(p));
+  if (unresolved.length > 0) {
+    throw new Error(`mso_mdoc: unresolved claims: ${unresolved.join(', ')}`);
+  }
+  if (Object.keys(result).length === 0) {
+    throw new Error('mso_mdoc: empty selection after resolution');
+  }
+  return result;
+}
 
 function decodeDidJwk(didJwk: string) {
   const encoded = didJwk.replace('did:jwk:', '').split('#')[0];
