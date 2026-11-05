@@ -4,16 +4,27 @@ import {Buffer} from 'buffer';
 import base64url from 'base64url';
 import {sha256} from '@noble/hashes/sha256';
 import {PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER} from 'react-native-dotenv';
-import {isAndroid} from '../constants';
+import {isAndroid, isIOS} from '../constants';
 import {isHardwareKeystoreExists} from '../cryptoutil/cryptoUtil';
 import convertDerToRsFormat from '../cryptoutil/signFormatConverter';
+import {
+  appAttest,
+  deviceKeyPublicPem,
+  hasAppAttestModule,
+  resetAppAttestKey,
+  signWithDeviceKey,
+} from './AppAttest';
 
 /**
  * Proves to mimoto that a get-token call comes from a genuine Inji Wallet install.
  *
  * Once per install (and per mimoto), the wallet registers a hardware-backed EC P-256 device key with a
- * Play Integrity verdict requested for base64url(SHA-256(nonce + JWK thumbprint)). Every get-token call
- * through mimoto then carries a short-lived JWT signed by that key in the X-Inji-Device-Proof header.
+ * platform attestation requested for base64url(SHA-256(nonce + JWK thumbprint)): a Play Integrity verdict
+ * on Android, an App Attest attestation on iOS. Every get-token call through mimoto then carries a
+ * short-lived JWT signed by that key in the X-Inji-Device-Proof header.
+ * On Android the device key lives in RNSecureKeystoreModule's hardware keystore; on iOS it is a Secure
+ * Enclave key in RNAppAttestModule, because RNSecureKeystoreModule's iOS EC keys are not Secure Enclave
+ * keys and sign with SHA-1.
  * See mimoto docs/WalletDeviceAttestation.md.
  */
 
@@ -45,6 +56,11 @@ export function mimotoBaseFromTokenEndpoint(
 }
 
 export function isDeviceAttestationSupported(): boolean {
+  if (isIOS()) {
+    // Whether the device supports App Attest is only known asynchronously; registration fails on
+    // devices that do not, and the token request then goes without a proof
+    return hasAppAttestModule() && !!NativeModules.RNSecureKeystoreModule;
+  }
   return (
     isAndroid() &&
     isHardwareKeystoreExists &&
@@ -60,7 +76,10 @@ export function integrityNonce(nonce: string, thumbprint: string): string {
   return base64url(Buffer.from(sha256(nonce + thumbprint)));
 }
 
-async function deviceKey(): Promise<DeviceKey> {
+async function devicePublicKeyPem(): Promise<string> {
+  if (isIOS()) {
+    return deviceKeyPublicPem(DEVICE_KEY_ALIAS);
+  }
   const {RNSecureKeystoreModule} = NativeModules;
   let publicKeyPem: string | null = null;
   try {
@@ -77,7 +96,11 @@ async function deviceKey(): Promise<DeviceKey> {
       0,
     );
   }
-  const key = await jose.JWK.asKey(publicKeyPem, 'pem');
+  return publicKeyPem as string;
+}
+
+async function deviceKey(): Promise<DeviceKey> {
+  const key = await jose.JWK.asKey(await devicePublicKeyPem(), 'pem');
   const {kty, crv, x, y} = key.toJSON() as DeviceKey['publicJwk'];
   const thumbprint = base64url(Buffer.from(await key.thumbprint('SHA-256')));
   return {publicJwk: {kty, crv, x, y}, thumbprint};
@@ -104,34 +127,56 @@ async function registeredThumbprint(
     const data = await NativeModules.RNSecureKeystoreModule.getData(
       REGISTRATION_KEY_PREFIX + mimotoBase,
     );
-    return Array.isArray(data) && data[0] ? data[0] : null;
+    // iOS getData returns [privateKey, publicKey] and storeData keeps the value as the public key
+    const value = Array.isArray(data) ? (isIOS() ? data[1] : data[0]) : null;
+    return value ? value : null;
   } catch {
     return null;
   }
 }
 
-async function register(mimotoBase: string, key: DeviceKey) {
-  const nonce = await fetchNonce(mimotoBase);
+/**
+ * The platform attestation for the integrity nonce: a Play Integrity token on Android, a base64
+ * App Attest attestation object on iOS (its clientDataHash is SHA-256 of the integrity nonce).
+ */
+async function platformAttestation(
+  challenge: string,
+): Promise<{platform: 'ANDROID' | 'IOS'; integrityToken: string}> {
+  if (isIOS()) {
+    const {attestation} = await appAttest(challenge);
+    return {platform: 'IOS', integrityToken: attestation};
+  }
   const integrityToken =
     await NativeModules.RNPlayIntegrityModule.requestIntegrityToken(
-      integrityNonce(nonce, key.thumbprint),
+      challenge,
       PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER ?? '',
     );
+  return {platform: 'ANDROID', integrityToken};
+}
+
+async function register(mimotoBase: string, key: DeviceKey) {
+  const nonce = await fetchNonce(mimotoBase);
+  const {platform, integrityToken} = await platformAttestation(
+    integrityNonce(nonce, key.thumbprint),
+  );
   const response = await fetch(`${mimotoBase}/device/register`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
-      platform: 'ANDROID',
+      platform,
       nonce,
       public_key_jwk: key.publicJwk,
       integrity_token: integrityToken,
     }),
   });
   if (response.status !== 201) {
+    const errorText = await response.text();
+    if (platform === 'IOS' && errorText.includes('attestation_failed')) {
+      // Apple: a key whose attestation is rejected should not be reused; the next attempt makes a new one
+      await resetAppAttestKey().catch(() => undefined);
+    }
     throw new Error(
-      `Device registration failed with status ${
-        response.status
-      }: ${await response.text()}`,
+      `Device registration failed with status ${response.status}: ${errorText}`,
     );
   }
   await NativeModules.RNSecureKeystoreModule.storeData(
@@ -169,12 +214,14 @@ export async function forgetRegistration(mimotoBase: string): Promise<void> {
 }
 
 async function signEs256(signingInput: string): Promise<string> {
-  const derBase64: string =
-    await NativeModules.RNSecureKeystoreModule.signBytes(
-      'ES256',
-      DEVICE_KEY_ALIAS,
-      Buffer.from(signingInput, 'utf8').toString('base64'),
-    );
+  const input = Buffer.from(signingInput, 'utf8').toString('base64');
+  const derBase64: string = isIOS()
+    ? await signWithDeviceKey(DEVICE_KEY_ALIAS, input)
+    : await NativeModules.RNSecureKeystoreModule.signBytes(
+        'ES256',
+        DEVICE_KEY_ALIAS,
+        input,
+      );
   const der = Buffer.from(derBase64.replace(/\n/g, ''), 'base64');
   return base64url.fromBase64(convertDerToRsFormat(der));
 }

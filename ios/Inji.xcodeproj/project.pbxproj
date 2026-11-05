@@ -19,6 +19,8 @@
 		61450CD968A57153077CB5A9 /* libPods-Inji.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 433CCC1AA8055E18ADC2C596 /* libPods-Inji.a */; };
 		717E6FEC33D6D8A2F9B01CBC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1D23B9CD47CFD7F3C87D202F /* PrivacyInfo.xcprivacy */; };
 		73295844242A4AD3AA52D0BE /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98B96A488E54CBDB286B26F /* noop-file.swift */; };
+		7964633930934A43000D0400 /* RNAppAttestModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7964633830934A43000D0400 /* RNAppAttestModule.swift */; };
+		7964633A30934A43000D0400 /* RNAppAttestModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 7964633730934A43000D0400 /* RNAppAttestModule.m */; };
 		9C0E86B52BEE357A00E9F9F6 /* RNPixelpassModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0E86B42BEE357A00E9F9F6 /* RNPixelpassModule.swift */; };
 		9C0E86BB2BEE36C300E9F9F6 /* RNPixelpassModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0E86BA2BEE36C300E9F9F6 /* RNPixelpassModule.m */; };
 		9C3BD80E2EA8C8DE00101656 /* RNVCVerifierModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD80D2EA8C8D600101656 /* RNVCVerifierModule.swift */; };
@@ -110,6 +112,8 @@
 		1EED69FC2DA914D00042EAFC /* RNDeepLinkIntentModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNDeepLinkIntentModule.m; sourceTree = "<group>"; };
 		433CCC1AA8055E18ADC2C596 /* libPods-Inji.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Inji.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		457171B817B28D9B58D26B1A /* Pods-Inji.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Inji.release.xcconfig"; path = "Target Support Files/Pods-Inji/Pods-Inji.release.xcconfig"; sourceTree = "<group>"; };
+		7964633730934A43000D0400 /* RNAppAttestModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNAppAttestModule.m; sourceTree = "<group>"; };
+		7964633830934A43000D0400 /* RNAppAttestModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAppAttestModule.swift; sourceTree = "<group>"; };
 		9C0E86B42BEE357A00E9F9F6 /* RNPixelpassModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNPixelpassModule.swift; sourceTree = "<group>"; };
 		9C0E86BA2BEE36C300E9F9F6 /* RNPixelpassModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNPixelpassModule.m; sourceTree = "<group>"; };
 		9C3BD80D2EA8C8D600101656 /* RNVCVerifierModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNVCVerifierModule.swift; sourceTree = "<group>"; };
@@ -201,6 +205,8 @@
 		13B07FAE1A68108700A75B9A /* Inji */ = {
 			isa = PBXGroup;
 			children = (
+				7964633730934A43000D0400 /* RNAppAttestModule.m */,
+				7964633830934A43000D0400 /* RNAppAttestModule.swift */,
 				9C3BD83B2EA8D63A00101656 /* vcverifier */,
 				C3F6A9DE2E6618F6006C9904 /* RNInjiVcRenderer.m */,
 				C3F6A9DC2E66188D006C9904 /* RNInjiVcRenderer.swift */,
@@ -876,6 +882,8 @@
 				E6D946E12EFAA2FE004DA688 /* LdpStatusChecker.swift in Sources */,
 				E6D946E22EFAA2FE004DA688 /* NetworkManagerClientExceptions.swift in Sources */,
 				E6D946E32EFAA2FE004DA688 /* base64.swift in Sources */,
+				7964633930934A43000D0400 /* RNAppAttestModule.swift in Sources */,
+				7964633A30934A43000D0400 /* RNAppAttestModule.m in Sources */,
 				E6D946E42EFAA2FE004DA688 /* LdpVerifiableCredential.swift in Sources */,
 				E6D946E52EFAA2FE004DA688 /* CredentialFormat.swift in Sources */,
 				E6D946E62EFAA2FE004DA688 /* RevocationCheckExceptions.swift in Sources */,
