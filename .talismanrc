@@ -1,8 +1,16 @@
 fileignoreconfig:
+- filename: ios/Inji/InjiRelease.entitlements
+  checksum: ea8a446741dbf5c6fb3e14312480ec4795097bafd595fa2292d51548606a89cd
+- filename: shared/deviceAttestation/AppAttest.ts
+  checksum: ec5ce36c504a78686eefb8f802a122ccd4d22f09617df09b72491309521c7942
+- filename: ios/RNAppAttestModule.m
+  checksum: e790a4709f4d775a261f0b8474e5bdb5a6f65c6fb421c82727744e6b95ec13a3
+- filename: ios/RNAppAttestModule.swift
+  checksum: 077fe9380d5a9597a6ee16adc132df8ef6978dded5f6c24ea3ff24cac90031d4
 - filename: shared/deviceAttestation/DeviceAttestationService.test.ts
-  checksum: f1cb1196ed3898d9ad64c24b264f46cdbb44eac9b57ffdc04e07cb46f8814b34
+  checksum: 0cc58a9aad8a2d3b14394a5da5614cc8f05b7885be088bc055f7958804043915
 - filename: shared/deviceAttestation/DeviceAttestationService.ts
-  checksum: 98f3d428182137975532bbde841ed42aa00ddd71eaa60357429670056e159987
+  checksum: ceb229fee102915ef94b546143657950fee7e1be30b5acf3ab9c572861470290
 - filename: shared/openId4VCI/TokenService.ts
   checksum: dd5a5580ecabffdd47ad27a0877106b8cafc204482a393b61361f14a53c40a05
 
@@ -151,7 +159,7 @@ fileignoreconfig:
 - filename: injitest/src/test/java/androidTestCases/ChangeLanguageTest.java
   checksum: 2c318055f0567a01b60204e00747d24bd757b73ffed12505787c61b033f45036
 - filename: ios/Inji/Inji.entitlements
-  checksum: b2d643f91a929933747b539b9d6a87fcac17317716dbb9ccfb399e7c53d8cd52
+  checksum: f33b9b39f1636ac556797560b691507990109de42db7315bfc7e2865693e1f2a
 - filename: injitest/src/test/java/iosTestCases/ChangeLanguageTest.java
   checksum: 600e8cd0167d51511be6b9f91c6de19adf49d0c1d300aa41d2ecd050c8c2952f
 - filename: screens/Home/MyVcs/IdInputModal.tsx
@@ -314,7 +322,7 @@ fileignoreconfig:
 - filename: android/app/src/main/AndroidManifest.xml
   checksum: 8f4bd61770b8bb0a28859ca0f3b4b095aed4e3fb5adef435cb74b9389ff13e09
 - filename: ios/Inji.xcodeproj/project.pbxproj
-  checksum: 5bb246fa39bc7a9994b50bc5b1505d5389d0e254a4e30cfb2a57e6a1025e9087
+  checksum: ba255d79596225ed2d1cad2ff3694253db9aaae63895e095a58452aa2dd0e6bf
 - filename: screens/Settings/ReceivedCardsModal.tsx
   checksum: 6dee9153a61009b0252d294154c88d5e1b241a517c76e930b391a39d7bc52392
 - filename: components/FaceScanner/FaceCompare.tsx

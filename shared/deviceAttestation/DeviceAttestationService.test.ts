@@ -7,9 +7,11 @@ import {
 } from 'crypto';
 import {NativeModules} from 'react-native';
 
+let mockPlatform: 'android' | 'ios' = 'android';
 jest.mock('../constants', () => ({
   ...jest.requireActual('../constants'),
-  isAndroid: () => true,
+  isAndroid: () => mockPlatform === 'android',
+  isIOS: () => mockPlatform === 'ios',
 }));
 
 import {
@@ -46,6 +48,7 @@ describe('DeviceAttestationService', () => {
   let requestIntegrityToken: jest.Mock;
 
   beforeEach(() => {
+    mockPlatform = 'android';
     keystoreHasKey = false;
     stored = new Map();
     nonces = [
@@ -73,7 +76,12 @@ describe('DeviceAttestationService', () => {
           'base64',
         ),
       ),
-      getData: jest.fn(async (key: string) => [stored.get(key) ?? '', '']),
+      // Android returns [value, ...]; iOS returns [privateKey, publicKey] with the value as public key
+      getData: jest.fn(async (key: string) =>
+        mockPlatform === 'ios'
+          ? ['', stored.get(key) ?? '']
+          : [stored.get(key) ?? '', ''],
+      ),
       storeData: jest.fn(async (key: string, value: string) => {
         stored.set(key, value);
         return 'success';
@@ -236,5 +244,128 @@ describe('DeviceAttestationService', () => {
     expect(isDeviceAttestationSupported()).toBe(true);
     delete (NativeModules as any).RNPlayIntegrityModule;
     expect(isDeviceAttestationSupported()).toBe(false);
+  });
+  describe('on iOS', () => {
+    let attest: jest.Mock;
+    let resetKey: jest.Mock;
+    let getOrCreateDeviceKey: jest.Mock;
+
+    beforeEach(() => {
+      mockPlatform = 'ios';
+      delete (NativeModules as any).RNPlayIntegrityModule;
+      attest = jest.fn().mockResolvedValue({
+        keyId: 'app-attest-key-id',
+        attestation: 'o2NmbXQ=',
+      });
+      resetKey = jest.fn().mockResolvedValue(true);
+      getOrCreateDeviceKey = jest.fn().mockResolvedValue(publicPem);
+      (NativeModules as any).RNAppAttestModule = {
+        attest,
+        resetKey,
+        getOrCreateDeviceKey,
+        signWithDeviceKey: jest.fn(async (_alias: string, b64: string) =>
+          sign('sha256', Buffer.from(b64, 'base64'), privateKey).toString(
+            'base64',
+          ),
+        ),
+      };
+    });
+
+    afterEach(() => {
+      delete (NativeModules as any).RNAppAttestModule;
+    });
+
+    it('is supported when the App Attest module is present, without Play Integrity', () => {
+      expect(isDeviceAttestationSupported()).toBe(true);
+      delete (NativeModules as any).RNAppAttestModule;
+      expect(isDeviceAttestationSupported()).toBe(false);
+    });
+
+    it('registers the Secure Enclave device key with an App Attest attestation bound to the nonce and thumbprint', async () => {
+      await ensureRegistered(MIMOTO);
+
+      expect(getOrCreateDeviceKey).toHaveBeenCalledWith(
+        'inji-device-attestation-es256',
+      );
+      expect(
+        NativeModules.RNSecureKeystoreModule.generateKeyPair,
+      ).not.toHaveBeenCalled();
+      expect(attest).toHaveBeenCalledWith(
+        sha256b64url(
+          'nonce-1-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' + expectedThumbprint,
+        ),
+      );
+      const [, init] = registerCalls()[0];
+      expect(JSON.parse(init.body)).toEqual({
+        platform: 'IOS',
+        nonce: 'nonce-1-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+        public_key_jwk: {kty: 'EC', crv: 'P-256', x: jwk.x, y: jwk.y},
+        integrity_token: 'o2NmbXQ=',
+      });
+    });
+
+    it('reads the stored registration back from the iOS keystore and does not register again', async () => {
+      await ensureRegistered(MIMOTO);
+      await ensureRegistered(MIMOTO);
+
+      expect(registerCalls()).toHaveLength(1);
+      expect(attest).toHaveBeenCalledTimes(1);
+    });
+
+    it('resets the App Attest key when mimoto rejects the attestation', async () => {
+      fetchMock.mockImplementation(async (url: string) =>
+        url.endsWith('/device/nonce')
+          ? {ok: true, status: 200, json: async () => ({nonce: 'n'})}
+          : {
+              ok: false,
+              status: 400,
+              text: async () => '{"error":"attestation_failed"}',
+            },
+      );
+
+      await expect(ensureRegistered(MIMOTO)).rejects.toThrow(
+        'attestation_failed',
+      );
+      expect(resetKey).toHaveBeenCalledTimes(1);
+      expect(stored.size).toBe(0);
+    });
+
+    it('keeps the App Attest key when registration fails for another reason', async () => {
+      fetchMock.mockImplementation(async (url: string) =>
+        url.endsWith('/device/nonce')
+          ? {ok: true, status: 200, json: async () => ({nonce: 'n'})}
+          : {
+              ok: false,
+              status: 503,
+              text: async () => '{"error":"server_unavailable"}',
+            },
+      );
+
+      await expect(ensureRegistered(MIMOTO)).rejects.toThrow('503');
+      expect(resetKey).not.toHaveBeenCalled();
+    });
+
+    it('signs device proofs with the Secure Enclave device key', async () => {
+      const proof = await buildDeviceProof(TOKEN_ENDPOINT, 'a=1');
+
+      const [h, p, sig] = proof.split('.');
+      expect(
+        verify(
+          'sha256',
+          Buffer.from(`${h}.${p}`),
+          {key: publicKey, dsaEncoding: 'ieee-p1363'},
+          Buffer.from(sig, 'base64url'),
+        ),
+      ).toBe(true);
+      expect(
+        NativeModules.RNAppAttestModule.signWithDeviceKey,
+      ).toHaveBeenCalledWith(
+        'inji-device-attestation-es256',
+        Buffer.from(`${h}.${p}`, 'utf8').toString('base64'),
+      );
+      expect(
+        NativeModules.RNSecureKeystoreModule.signBytes,
+      ).not.toHaveBeenCalled();
+    });
   });
 });
