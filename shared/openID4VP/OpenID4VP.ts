@@ -386,9 +386,11 @@ class OpenID4VP {
 export default OpenID4VP;
 
 /**
- * Resolves selected mdoc claim paths ("<namespace>.<element>") into
- * {namespace: [elementIdentifier]} by matching against the credential's
- * actual namespaces, so namespaces containing dots are handled correctly.
+ * Resolves the selected mdoc claims, each written as
+ * JSON.stringify([namespace, element]), into {namespace: [elementIdentifier]}
+ * by matching against the credential's actual namespaces. Keeping namespace
+ * and element separate means dots in either can't make two claims look the
+ * same.
  * Throws if anything cannot be resolved (never falls back to full disclosure).
  */
 function resolveMdocSelection(
@@ -407,7 +409,7 @@ function resolveMdocSelection(
 
   for (const ns of Object.keys(namespaces)) {
     for (const item of namespaces[ns]) {
-      const full = `${ns}.${item.elementIdentifier}`;
+      const full = JSON.stringify([ns, item.elementIdentifier]);
       if (selectedSet.has(full)) {
         if (!result[ns]) {
           result[ns] = [];
