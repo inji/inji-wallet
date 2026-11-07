@@ -58,6 +58,7 @@ export const Button: React.FC<ButtonProps> = props => {
   return !(type === 'gradient') ? (
     <RNEButton
       {...testIDProps(props.testID)}
+      testID={props.testID}
       buttonStyle={buttonStyle}
       containerStyle={[
         props.fill ? Theme.ButtonStyles.fill : null,
@@ -65,6 +66,7 @@ export const Button: React.FC<ButtonProps> = props => {
       ]}
       type={props.type}
       raised={props.raised}
+      disabled={props.disabled}
       title={
         <Text
           style={[{paddingTop: 3}, props.titleStyle]}
@@ -91,7 +93,9 @@ export const Button: React.FC<ButtonProps> = props => {
   ) : (
     <RNEButton
       {...testIDProps(props.testID)}
+      testID={props.testID}
       buttonStyle={buttonStyle}
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       ViewComponent={require('react-native-linear-gradient').default}
       linearGradientProps={{
         colors: !props.disabled
@@ -106,6 +110,7 @@ export const Button: React.FC<ButtonProps> = props => {
       ]}
       type={props.type}
       raised={props.raised}
+      disabled={props.disabled}
       title={
         props.customLoader ? (
           <View

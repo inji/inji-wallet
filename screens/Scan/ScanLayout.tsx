@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SendVcScreen} from './SendVcScreen';
 import {useScanLayout} from './ScanLayoutController';
-import {ScanScreen} from './ScanScreen';
+import {ShareScreen} from '../ShareNearby/ShareScreen';
 import {SCAN_ROUTES} from '../../routes/routesConstants';
 import {SharingStatusModal} from './SharingStatusModal';
 import {Theme} from '../../components/ui/styleUtils';
@@ -149,8 +149,9 @@ export const ScanLayout: React.FC = () => {
         ) : (
           <ScanStack.Screen
             name={SCAN_ROUTES.ScanScreen}
-            component={ScanScreen}
+            component={ShareScreen}
             options={{
+              headerShown: false,
               title: t('MainLayout:share'),
               headerTitleAlign: 'left',
               headerTitleStyle: Theme.Styles.scanLayoutHeaderTitle,

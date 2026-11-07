@@ -1,3 +1,8 @@
+/**
+ * TODO: Extract a shared bottom-sheet container with UpdatedModal and StatusInfoModal.
+ * Reuse presentation, safe-area handling, scrolling, and dismissal while preserving
+ * this component's list expansion, item ordering, and list-specific content.
+ */
 import React, {ReactNode, useCallback, useMemo, useState} from 'react';
 import {
   Modal,
@@ -9,7 +14,7 @@ import {
 import {Text} from '../Text';
 import {Divider} from '../divider/Divider';
 import {Theme} from '../styleUtils';
-import {Button} from "../Button";
+import {Button} from '../Button';
 
 const DEFAULT_COLLAPSED_ITEM_COUNT = 3;
 const SHEET_MAX_HEIGHT = '85%' as const;
@@ -53,7 +58,11 @@ function movePriorityItemToFront<T>(
     return items;
   }
 
-  return [items[priorityIndex], ...items.slice(0, priorityIndex), ...items.slice(priorityIndex + 1)];
+  return [
+    items[priorityIndex],
+    ...items.slice(0, priorityIndex),
+    ...items.slice(priorityIndex + 1),
+  ];
 }
 
 function getExpandableIds(baseTestID: string) {
@@ -72,22 +81,22 @@ function getExpandableIds(baseTestID: string) {
 }
 
 export function ExpandableListSheetView<T>({
-                                             items,
-                                             testID,
-                                             introText,
-                                             title,
-                                             footerText,
-                                             closeText,
-                                             showMoreText,
-                                             alignShowMoreTextAtRight = false,
-                                             badge,
-                                             visibleItemsStyle,
-                                             collapsedItemCount = DEFAULT_COLLAPSED_ITEM_COUNT,
-                                             initialExpanded = false,
-                                             priorityItemPredicate,
-                                             renderItem,
-                                             keyExtractor,
-                                           }: ExpandableListSheetViewProps<T>) {
+  items,
+  testID,
+  introText,
+  title,
+  footerText,
+  closeText,
+  showMoreText,
+  alignShowMoreTextAtRight = false,
+  badge,
+  visibleItemsStyle,
+  collapsedItemCount = DEFAULT_COLLAPSED_ITEM_COUNT,
+  initialExpanded = false,
+  priorityItemPredicate,
+  renderItem,
+  keyExtractor,
+}: ExpandableListSheetViewProps<T>) {
   const [expanded, setExpanded] = useState(initialExpanded);
   const orderedItems = useMemo(
     () => movePriorityItemToFront(items, priorityItemPredicate),
@@ -102,7 +111,10 @@ export function ExpandableListSheetView<T>({
     [orderedItems.length, collapsedItemCount],
   );
   const ids = useMemo(() => getExpandableIds(testID), [testID]);
-  const showMoreLabel = useMemo(() => showMoreText(hiddenCount), [showMoreText, hiddenCount]);
+  const showMoreLabel = useMemo(
+    () => showMoreText(hiddenCount),
+    [showMoreText, hiddenCount],
+  );
 
   const openModal = useCallback(() => setExpanded(true), []);
   const closeModal = useCallback(() => setExpanded(false), []);
@@ -113,7 +125,9 @@ export function ExpandableListSheetView<T>({
         {introText}
       </Text>
 
-      <View testID={ids.card} style={visibleItemsStyle ? visibleItemsStyle : styles.container}>
+      <View
+        testID={ids.card}
+        style={visibleItemsStyle ? visibleItemsStyle : styles.container}>
         {visibleItems.map((item, index) => (
           <React.Fragment
             key={
@@ -156,14 +170,14 @@ export function ExpandableListSheetView<T>({
               onPress={closeModal}
             />
             <View testID={ids.modalSheet} style={styles.sheet}>
-              <View testID={ids.modalHandle} style={styles.handle}/>
+              <View testID={ids.modalHandle} style={styles.handle} />
               <View style={styles.modalHeader}>
                 <Text testID={ids.modalTitle} style={styles.modalTitle}>
                   {title}
                 </Text>
                 {badge}
               </View>
-              <Divider testId={ids.modalDivider}/>
+              <Divider testId={ids.modalDivider} />
               <ScrollView>
                 {orderedItems.map((item, index) => (
                   <React.Fragment
@@ -183,7 +197,13 @@ export function ExpandableListSheetView<T>({
               <Text testID={ids.modalFooter} style={styles.modalFooter}>
                 {footerText}
               </Text>
-              <Button type="clear" title={closeText} testID={ids.modalCloseButton} onPress={closeModal} styles={{marginBottom: 20, marginTop: -15}}/>
+              <Button
+                type="clear"
+                title={closeText}
+                testID={ids.modalCloseButton}
+                onPress={closeModal}
+                styles={{marginBottom: 20, marginTop: -15}}
+              />
             </View>
           </View>
         </Modal>
@@ -218,7 +238,7 @@ const styles = StyleSheet.create({
   },
   showMoreButtonRight: {
     alignSelf: 'flex-end',
-    paddingRight: 4
+    paddingRight: 4,
   },
   showMoreText: {
     fontFamily: 'Montserrat_600SemiBold',

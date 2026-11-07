@@ -38,6 +38,31 @@ const OPENID4VP_REF_ID = 'OpenID4VP';
 export const ScanActions = (model: any) => {
   const {RNPixelpassModule} = NativeModules;
   return {
+    startMdocFlow: assign({
+      mdocSharedDetailCount: 0,
+      mdocEndedWithoutSharing: false,
+      isMdocFlow: true,
+      mdocScreenBlurred: false,
+      isOVPViaDeepLink: false,
+      isQrLoginViaDeepLink: false,
+      openId4VpUri: '',
+    }),
+    resetMdocFlow: assign({isMdocFlow: false}),
+    recordMdocResult: assign({
+      mdocSharedDetailCount: (
+        _,
+        event: DoneInvokeEvent<{sharedDetailCount: number}>,
+      ) => event.data.sharedDetailCount,
+      mdocEndedWithoutSharing: (
+        _,
+        event: DoneInvokeEvent<{nothingShared: boolean}>,
+      ) => event.data.nothingShared,
+    }),
+    dismissMdocBanner: assign({
+      mdocSharedDetailCount: 0,
+      mdocEndedWithoutSharing: false,
+    }),
+    markMdocScreenBlurred: assign({mdocScreenBlurred: true}),
     setQrLoginRef: assign({
       QrLoginRef: (context: any) => {
         const service = spawn(

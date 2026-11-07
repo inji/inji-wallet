@@ -1,3 +1,8 @@
+/**
+ * TODO: Consolidate this bottom-sheet container with UpdatedModal, StatusInfoModal,
+ * and ExpandableListSheetView. Share presentation, safe-area handling, scrolling,
+ * and dismissal while preserving the menu options and their controller actions.
+ */
 import React from 'react';
 import {Icon, ListItem, Overlay} from 'react-native-elements';
 import {Theme} from '../components/ui/styleUtils';

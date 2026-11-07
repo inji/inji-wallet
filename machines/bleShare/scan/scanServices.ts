@@ -18,9 +18,52 @@ import {isIOS} from '../../../shared/constants';
 
 import {wallet, EventTypes, VerificationStatus} from '../../../shared/tuvali';
 import {WalletDataEvent} from '../../../shared/tuvali/types/events';
+import {createMdocPresentationMachine} from '../../mdocPresentation/mdocPresentationMachine';
+import {selectShareableVcs} from '../../VerifiableCredential/VCMetaMachine/VCMetaSelectors';
+import type {AnyStateMachine} from 'xstate';
+import type {ScanModel} from './scanModel';
+import {ActivityLogEvents} from '../../activityLog';
+import {MdocShareActivityLog} from '../../../components/MdocShareActivityLogEvent';
+import {docTypeName} from '../../../screens/ShareNearby/request/requestUtils';
+import {VCMetadata} from '../../../shared/VCMetadata';
 
 export const ScanServices = (model: any) => {
   return {
+    presentMdoc: (context: typeof ScanModel.initialContext): AnyStateMachine =>
+      createMdocPresentationMachine({
+        getCredentials: () => {
+          const state = context.serviceRefs.vcMeta?.getSnapshot();
+          return state ? selectShareableVcs(state) : [];
+        },
+        showFaceAuthConsent: context.showFaceAuthConsent,
+        recordActivity: (records, timestamp) => {
+          const activities = records.map(record => {
+            const metadata = record.credential
+              ? VCMetadata.fromVcMetadataString(record.credential.vcMetadata)
+              : undefined;
+            return MdocShareActivityLog.getLogFromObject({
+              type: record.type,
+              timestamp,
+              _vcKey: metadata?.getVcKey() ?? '',
+              issuer: metadata?.issuerHost ?? '',
+              credentialConfigurationId:
+                record.credential?.verifiableCredential
+                  .credentialConfigurationId ?? '',
+              docType: record.docType,
+              cardName:
+                record.credential?.vcMetadata.credentialType ||
+                docTypeName(record.docType),
+              readerName: record.readerName ?? '',
+              readerTrust: record.readerTrust,
+              details: record.details,
+            });
+          });
+          context.serviceRefs.activityLog.send(
+            ActivityLogEvents.LOG_ACTIVITY(activities),
+          );
+        },
+        ...context.mdocPresentationDependencies,
+      }),
     checkBluetoothPermission: () => async callback => {
       // wait a bit for animation to finish when app becomes active
       await new Promise(resolve => setTimeout(resolve, 250));

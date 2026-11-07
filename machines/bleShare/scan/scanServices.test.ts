@@ -1,6 +1,12 @@
 jest.mock('react-native-device-info', () => ({
   isLocationEnabled: jest.fn().mockResolvedValue(true),
 }));
+jest.mock('../../mdocPresentation/mdocPresentationMachine', () => ({
+  createMdocPresentationMachine: jest.fn(),
+}));
+jest.mock('../../VerifiableCredential/VCMetaMachine/VCMetaSelectors', () => ({
+  selectShareableVcs: jest.fn(),
+}));
 jest.mock('../../../shared/storage', () => ({
   isMinimumStorageLimitReached: jest.fn().mockResolvedValue(false),
 }));
@@ -34,6 +40,7 @@ jest.mock('../../../shared/location', () => ({
 }));
 jest.mock('../../../shared/constants', () => ({
   isIOS: jest.fn(() => false),
+  isAndroid: jest.fn(() => true),
 }));
 
 const mockHandleDataEvents = jest.fn();
@@ -63,8 +70,95 @@ jest.mock('../../../shared/tuvali', () => ({
 jest.mock('../../../shared/tuvali/types/events', () => ({}));
 
 import {ScanServices} from './scanServices';
+import {createMdocPresentationMachine} from '../../mdocPresentation/mdocPresentationMachine';
+import type {MdocPresentationDependencies} from '../../mdocPresentation/mdocPresentationModel';
+import type {VC} from '../../VerifiableCredential/VCMetaMachine/vc';
+import {MdocShareActivityLog} from '../../../components/MdocShareActivityLogEvent';
 
 describe('ScanServices', () => {
+  it('logs each in-person mdoc share as an mdoc history entry against its card', () => {
+    const logActivity = jest.fn();
+    ScanServices({}).presentMdoc({
+      serviceRefs: {activityLog: {send: logActivity}},
+      showFaceAuthConsent: false,
+      mdocPresentationDependencies: {},
+    } as unknown as Parameters<ReturnType<typeof ScanServices>['presentMdoc']>[0]);
+    const dependencies = jest
+      .mocked(createMdocPresentationMachine)
+      .mock.calls.at(-1)?.[0] as MdocPresentationDependencies;
+    const credential = {
+      vcMetadata: {
+        id: 'card-1',
+        timestamp: 'issued-at',
+        issuerHost: 'https://issuer.example',
+        credentialType: 'Driving Licence',
+      },
+      verifiableCredential: {credentialConfigurationId: 'mobile-id'},
+    } as VC;
+
+    dependencies.recordActivity?.(
+      [
+        {
+          type: 'SHARED',
+          credential,
+          docType: 'org.iso.18013.5.1.mDL',
+          details: ['given_name'],
+          readerName: 'Reader',
+          readerTrust: 'unverified',
+        },
+      ],
+      1000,
+    );
+
+    expect(logActivity).toHaveBeenCalledWith({
+      type: 'LOG_ACTIVITY',
+      log: [
+        MdocShareActivityLog.getLogFromObject({
+          type: 'SHARED',
+          timestamp: 1000,
+          _vcKey: 'VC_issued-at_card-1',
+          issuer: 'https://issuer.example',
+          credentialConfigurationId: 'mobile-id',
+          docType: 'org.iso.18013.5.1.mDL',
+          cardName: 'Driving Licence',
+          readerName: 'Reader',
+          readerTrust: 'unverified',
+          details: ['given_name'],
+        }),
+      ],
+      wellknown: undefined,
+    });
+  });
+
+  it('names a requested document the wallet has no card for by its document type', () => {
+    const logActivity = jest.fn();
+    ScanServices({}).presentMdoc({
+      serviceRefs: {activityLog: {send: logActivity}},
+      showFaceAuthConsent: false,
+      mdocPresentationDependencies: {},
+    } as unknown as Parameters<ReturnType<typeof ScanServices>['presentMdoc']>[0]);
+    const dependencies = jest
+      .mocked(createMdocPresentationMachine)
+      .mock.calls.at(-1)?.[0] as MdocPresentationDependencies;
+
+    dependencies.recordActivity?.(
+      [
+        {
+          type: 'DECLINED',
+          docType: 'org.iso.18013.5.1.mDL',
+          details: [],
+          readerTrust: 'notSigned',
+        },
+      ],
+      1000,
+    );
+
+    expect(logActivity.mock.calls[0][0].log[0]).toMatchObject({
+      _vcKey: '',
+      cardName: 'Mobile Driving Licence',
+    });
+  });
+
   const mockModel = {
     events: {
       BLUETOOTH_PERMISSION_ENABLED: jest.fn(() => ({

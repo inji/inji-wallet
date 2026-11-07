@@ -58,6 +58,7 @@ jest.mock('../openid4vp/SendVPScreenController', () => ({
 
 jest.mock('./SendVcScreen', () => ({SendVcScreen: () => null}));
 jest.mock('./ScanScreen', () => ({ScanScreen: () => null}));
+jest.mock('../ShareNearby/ShareScreen', () => ({ShareScreen: () => null}));
 jest.mock('../openid4vp/SendVPScreen', () => ({SendVPScreen: () => null}));
 jest.mock('./SharingStatusModal', () => ({SharingStatusModal: () => null}));
 jest.mock('../../components/ui/Loader', () => ({Loader: () => null}));

@@ -87,6 +87,24 @@ describe('BannerNotificationContainer Component', () => {
     expect(toJSON()).toMatchSnapshot();
   });
 
+  it('uses the existing success banner for confirmed mdoc sharing', () => {
+    const dismiss = jest.fn();
+    (useScanScreen as jest.Mock).mockReturnValueOnce({
+      mdocSharedDetailCount: 5,
+      DISMISS_MDOC_BANNER: dismiss,
+    });
+    render(<BannerNotificationContainer />);
+    expect(BannerNotification).toHaveBeenCalledWith(
+      expect.objectContaining({
+        testId: 'mdocSharedBanner',
+        type: 'success',
+        message: 'ShareNearby:outcome.banner',
+        onClosePress: dismiss,
+      }),
+      expect.anything(),
+    );
+  });
+
   it('should render wallet binding success banner', () => {
     (UseBannerNotification as jest.Mock).mockReturnValueOnce({
       ...defaultBannerState,

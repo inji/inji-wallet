@@ -184,6 +184,7 @@ exports[`SendVPScreen should render authorization flow purpose text 1`] = `
             "opacity": 1,
           }
         }
+        testID="consent-share-button"
       >
         <Text>
           <Text
@@ -477,6 +478,7 @@ exports[`SendVPScreen should render authorization flow with consent share button
             "opacity": 1,
           }
         }
+        testID="consent-share-button"
       >
         <Text>
           <Text
@@ -699,6 +701,7 @@ exports[`SendVPScreen should render non-authorization flow share actions with im
           "opacity": 1,
         }
       }
+      testID="consent-share-button"
     >
       <Text>
         <Text
@@ -912,6 +915,7 @@ exports[`SendVPScreen should render non-authorization flow with all VCs having i
           "opacity": 1,
         }
       }
+      testID="consent-share-button"
     >
       <Text>
         <Text
@@ -1129,6 +1133,7 @@ exports[`SendVPScreen should render with all VCs checked 1`] = `
           "opacity": 1,
         }
       }
+      testID="consent-share-button"
     >
       <Text>
         <Text
@@ -1342,6 +1347,7 @@ exports[`SendVPScreen should render with cancelling state 1`] = `
           "opacity": 1,
         }
       }
+      testID="consent-share-button"
     >
       <Text>
         <Text
@@ -1555,6 +1561,7 @@ exports[`SendVPScreen should render with confirmation popup overlay 1`] = `
           "opacity": 1,
         }
       }
+      testID="consent-share-button"
     >
       <Text>
         <Text
@@ -1768,6 +1775,7 @@ exports[`SendVPScreen should render with face verification consent 1`] = `
           "opacity": 1,
         }
       }
+      testID="consent-share-button"
     >
       <Text>
         <Text
@@ -1981,6 +1989,7 @@ exports[`SendVPScreen should render with invalid identity state 1`] = `
           "opacity": 1,
         }
       }
+      testID="consent-share-button"
     >
       <Text>
         <Text
@@ -2273,6 +2282,7 @@ exports[`SendVPScreen should render with matching VCs and purpose 1`] = `
             "opacity": 1,
           }
         }
+        testID="consent-share-button"
       >
         <Text>
           <Text
@@ -2566,6 +2576,7 @@ exports[`SendVPScreen should render with multiple input descriptors and cards se
             "opacity": 1,
           }
         }
+        testID="consent-share-button"
       >
         <Text>
           <Text
@@ -2780,6 +2791,7 @@ exports[`SendVPScreen should render with overlay details 1`] = `
           "opacity": 1,
         }
       }
+      testID="consent-share-button"
     >
       <Text>
         <Text
@@ -2993,6 +3005,7 @@ exports[`SendVPScreen should render with verifying identity state 1`] = `
           "opacity": 1,
         }
       }
+      testID="consent-share-button"
     >
       <Text>
         <Text

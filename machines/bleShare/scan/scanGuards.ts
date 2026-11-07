@@ -3,6 +3,17 @@ import {androidVersion, isAndroid, isIOS} from '../../../shared/constants';
 
 export const ScanGuards = () => {
   return {
+    isMdocFlow: (context: {isMdocFlow: boolean}) => context.isMdocFlow === true,
+    isMdocOnIos: (context: {isMdocFlow: boolean}) =>
+      context.isMdocFlow && isIOS(),
+    isMdocScreenBlurred: (context: {mdocScreenBlurred: boolean}) =>
+      context.mdocScreenBlurred === true,
+    isMdocBleBusy: (context: {
+      serviceRefs: {request?: {getSnapshot(): {value: unknown} | undefined}};
+    }): boolean => {
+      const request = context.serviceRefs.request?.getSnapshot();
+      return !!request && request.value !== 'inactive';
+    },
     showFaceAuthConsentScreen: context => {
       return context.showFaceAuthConsent;
     },

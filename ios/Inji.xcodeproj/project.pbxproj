@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -48,6 +48,8 @@
 		9CCCA19E2CF87A8400D5A461 /* securekeystore in Frameworks */ = {isa = PBXBuildFile; productRef = 9CCCA19D2CF87A8400D5A461 /* securekeystore */; };
 		9CCDB2E02EAB63D9009E8E2B /* RNSecureKeystoreModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CCDB2DF2EAB63C9009E8E2B /* RNSecureKeystoreModule.swift */; };
 		9CE2B71D2F3E03B8001A3231 /* OpenId4VPUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2B71C2F3E03B8001A3231 /* OpenId4VPUtils.swift */; };
+		AD0C00000000000000000001 /* RNMdocPresentationModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AD0C00000000000000000003 /* RNMdocPresentationModule.m */; };
+		AD0C00000000000000000002 /* RNMdocPresentationModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0C00000000000000000004 /* RNMdocPresentationModule.swift */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		C339223B2E79A536004A01EC /* InjiVcRenderer in Frameworks */ = {isa = PBXBuildFile; productRef = C339223A2E79A536004A01EC /* InjiVcRenderer */; };
@@ -137,6 +139,8 @@
 		9CCDB2DF2EAB63C9009E8E2B /* RNSecureKeystoreModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSecureKeystoreModule.swift; sourceTree = "<group>"; };
 		9CE2B71C2F3E03B8001A3231 /* OpenId4VPUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenId4VPUtils.swift; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = Inji/SplashScreen.storyboard; sourceTree = "<group>"; };
+		AD0C00000000000000000003 /* RNMdocPresentationModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNMdocPresentationModule.m; sourceTree = "<group>"; };
+		AD0C00000000000000000004 /* RNMdocPresentationModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNMdocPresentationModule.swift; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		C3F6A9DC2E66188D006C9904 /* RNInjiVcRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNInjiVcRenderer.swift; sourceTree = "<group>"; };
 		C3F6A9DE2E6618F6006C9904 /* RNInjiVcRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNInjiVcRenderer.m; sourceTree = "<group>"; };
@@ -230,6 +234,8 @@
 				1E6875EA2CA554FD0086D870 /* RNOpenID4VPModule.m */,
 				9CCDB2DF2EAB63C9009E8E2B /* RNSecureKeystoreModule.swift */,
 				1E6875EC2CA5550F0086D870 /* RNOpenID4VPModule.swift */,
+				AD0C00000000000000000003 /* RNMdocPresentationModule.m */,
+				AD0C00000000000000000004 /* RNMdocPresentationModule.swift */,
 				1D23B9CD47CFD7F3C87D202F /* PrivacyInfo.xcprivacy */,
 				1EED69F82DA913D30042EAFC /* IntentData.swift */,
 				1EED69FA2DA914130042EAFC /* RNDeepLinkIntentModule.swift */,
@@ -852,6 +858,8 @@
 			files = (
 				1EED69FD2DA914D00042EAFC /* RNDeepLinkIntentModule.m in Sources */,
 				1E6875ED2CA5550F0086D870 /* RNOpenID4VPModule.swift in Sources */,
+				AD0C00000000000000000002 /* RNMdocPresentationModule.swift in Sources */,
+				AD0C00000000000000000001 /* RNMdocPresentationModule.m in Sources */,
 				1E55C20B2DB120C2009DF38B /* RNDeepLinkIntentModule.swift in Sources */,
 				C3F6A9DD2E661896006C9904 /* RNInjiVcRenderer.swift in Sources */,
 				9C3BD8102EA8C8F800101656 /* RNVCVerifierModule.m in Sources */,
@@ -934,7 +942,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "1.0.0";
+				MARKETING_VERSION = 1.0.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 c++20";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -975,7 +983,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "1.0.0";
+				MARKETING_VERSION = 1.0.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 c++20";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1095,7 +1103,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "Apple Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
 				CXX = "";
@@ -1154,6 +1162,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E660F6F92FF23611007D2934 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/abhip2565/inji-openid4vp-ios-swift.git";
+			requirement = {
+				branch = "feat/mdoc-proximity-device-response";
+				kind = branch;
+			};
+		};
 		9CAE74EC2E2E38F800C2532C /* XCRemoteSwiftPackageReference "pixelpass-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mosip/pixelpass-ios-swift/";
@@ -1164,10 +1180,10 @@
 		};
 		9CCC57752E9D7C7000669DB7 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mosip/tuvali-ios-swift/";
+			repositoryURL = "https://github.com/abhip2565/tuvali-ios-swift";
 			requirement = {
-				kind = exactVersion;
-				version = "1.0.0-alpha.1";
+				branch = "feat/iso-mdoc-session";
+				kind = branch;
 			};
 		};
 		9CCCA19C2CF87A8400D5A461 /* XCRemoteSwiftPackageReference "secure-keystore-ios-swift" */ = {
@@ -1188,17 +1204,9 @@
 		};
 		E641C9E42FEAE9C9002D18A7 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/inji/inji-vci-client-ios-swift";
+			repositoryURL = "https://github.com/abhip2565/inji-vci-client-ios-swift.git";
 			requirement = {
-				branch = develop;
-				kind = branch;
-			};
-		};
-		E660F6F92FF23611007D2934 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/inji/inji-openid4vp-ios-swift";
-			requirement = {
-				branch = develop;
+				branch = "build/mdoc-proximity-ovp";
 				kind = branch;
 			};
 		};

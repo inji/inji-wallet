@@ -692,13 +692,17 @@ describe('openId4VCI Utils', () => {
       );
     });
 
+    it('uses a jwk proof header when an mso_mdoc issuer advertises cose_key', () => {
+      expect(selectBindingMethod(['cose_key'])).toBe(BindingMethod.JWK);
+    });
+
     it('falls back to did:jwk when the issuer advertises nothing', () => {
       expect(selectBindingMethod([])).toBe(BindingMethod.DID_JWK);
       expect(selectBindingMethod(undefined as any)).toBe(BindingMethod.DID_JWK);
     });
 
     it('falls back to did:jwk when no advertised method is supported', () => {
-      expect(selectBindingMethod(['cose_key', 'x5c'])).toBe(
+      expect(selectBindingMethod(['x5c', 'did:web'])).toBe(
         BindingMethod.DID_JWK,
       );
     });

@@ -9,9 +9,24 @@ const ButtonProps = {};
 const ListItem = props => React.createElement('View', props, props.children);
 ListItem.Content = ({children}) => React.createElement('View', null, children);
 
-const CheckBox = props => React.createElement('View', props);
+const CheckBox = props =>
+  React.createElement(
+    'View',
+    {...props, ...(props.containerStyle ? {style: props.containerStyle} : {})},
+    props.title,
+  );
 const Input = props => React.createElement('View', props);
 const Overlay = props => React.createElement('View', props, props.children);
 const Divider = props => React.createElement('View', props);
 
-export {Button, ButtonProps, Icon, ListItem, Tooltip, CheckBox, Input, Overlay, Divider};
+export {
+  Button,
+  ButtonProps,
+  Icon,
+  ListItem,
+  Tooltip,
+  CheckBox,
+  Input,
+  Overlay,
+  Divider,
+};

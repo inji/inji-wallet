@@ -39,6 +39,17 @@ jest.mock('./VPShareActivityLogEvent', () => ({
   },
 }));
 
+// Mock MdocShareActivityLogEvent
+jest.mock('./MdocShareActivityLogEvent', () => ({
+  MdocShareActivityLog: {
+    getLogFromObject: jest.fn(obj => ({
+      ...obj,
+      getActionLabel: jest.fn(() => 'Reader'),
+      getActionText: jest.fn(() => 'Driving Licence shared in person.'),
+    })),
+  },
+}));
+
 describe('ActivityLogText Component', () => {
   const mockActivity = {
     vcLabel: 'Test VC',
@@ -61,5 +72,21 @@ describe('ActivityLogText Component', () => {
     } as unknown as VPShareActivityLog;
     const {toJSON} = render(<ActivityLogText activity={vpActivity} />);
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('reads an in-person mdoc share as an mdoc history entry', () => {
+    const {MdocShareActivityLog} = jest.requireMock(
+      './MdocShareActivityLogEvent',
+    );
+    const mdocActivity = {
+      ...mockActivity,
+      flow: VCItemContainerFlowType.MDOC_SHARE,
+    };
+
+    render(<ActivityLogText activity={mdocActivity} />);
+
+    expect(MdocShareActivityLog.getLogFromObject).toHaveBeenCalledWith(
+      mdocActivity,
+    );
   });
 });

@@ -1,5 +1,5 @@
 {
-  "originHash" : "e1f2d509954e8ca6c7f187d3fb6cb3d3d011988b00306f7948dcc9ebf4826839",
+  "originHash" : "877983db3d59292d32fc84d9db6b0775c5ca4e061e56a6736d93d21448feac9f",
   "pins" : [
     {
       "identity" : "aexml",
@@ -76,10 +76,10 @@
     {
       "identity" : "inji-openid4vp-ios-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/inji/inji-openid4vp-ios-swift",
+      "location" : "https://github.com/abhip2565/inji-openid4vp-ios-swift.git",
       "state" : {
-        "branch" : "develop",
-        "revision" : "4e52ef37ea86a5609f37c770d5ada660d298ca5b"
+        "branch" : "feat/mdoc-proximity-device-response",
+        "revision" : "af5d76d0ff8878bd00bcfee2c9d07d33901f52ef"
       }
     },
     {
@@ -94,10 +94,10 @@
     {
       "identity" : "inji-vci-client-ios-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/inji/inji-vci-client-ios-swift",
+      "location" : "https://github.com/abhip2565/inji-vci-client-ios-swift.git",
       "state" : {
-        "branch" : "develop",
-        "revision" : "cfe368c59c874fca66904c84328cc3c742728206"
+        "branch" : "build/mdoc-proximity-ovp",
+        "revision" : "7f666d6e41e842e0f72794164105262143710fdd"
       }
     },
     {
@@ -177,17 +177,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/abhip2565/SwiftCBOR",
       "state" : {
-        "revision" : "04ccff117f6549121d5721ec84fdf0162122b90e",
+        "revision" : "cc4e195a0ea2dce88f2fd6c6d73b2504e3c884fd",
         "version" : "0.5.0"
       }
     },
     {
       "identity" : "tuvali-ios-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mosip/tuvali-ios-swift/",
+      "location" : "https://github.com/abhip2565/tuvali-ios-swift",
       "state" : {
-        "revision" : "6d9d9e8b74086f03bbec76671c684c2830cbb0e3",
-        "version" : "1.0.0-alpha.1"
+        "branch" : "feat/iso-mdoc-session",
+        "revision" : "42ccc825ab8e9c84360e62a317c191009a9c1a4c"
       }
     },
     {

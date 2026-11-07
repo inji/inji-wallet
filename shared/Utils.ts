@@ -34,6 +34,7 @@ export enum VCItemContainerFlowType {
   QR_LOGIN = 'qr login',
   VC_SHARE = 'vc share',
   VP_SHARE = 'vp share',
+  MDOC_SHARE = 'mdoc share',
 }
 
 export enum CameraPosition {

@@ -108,9 +108,11 @@ export const requestMachine =
       initial: 'inactive',
       on: {
         SCREEN_BLUR: {
-          target: '.inactive',
+          target: '.disconnecting',
         },
         SCREEN_FOCUS: {
+          cond: (context): boolean =>
+            !context.serviceRefs.scan?.getSnapshot()?.context.isMdocFlow,
           // eslint-disable-next-line sonarjs/no-duplicate-string
           target: '.checkStorage',
         },
@@ -119,6 +121,8 @@ export const requestMachine =
           actions: ['sendBLEConnectionErrorEvent', 'setBleError'],
         },
         RESET: {
+          cond: (context): boolean =>
+            !context.serviceRefs.scan?.getSnapshot()?.context.isMdocFlow,
           target: '.checkNearbyDevicesPermission',
         },
         GOTO_HOME: {
@@ -128,6 +132,15 @@ export const requestMachine =
       states: {
         inactive: {
           entry: 'removeLoggers',
+          on: {SCREEN_BLUR: {}},
+        },
+        disconnecting: {
+          entry: 'removeLoggers',
+          invoke: {src: 'disconnect'},
+          on: {
+            SCREEN_BLUR: {},
+            DISCONNECT: 'inactive',
+          },
         },
         checkStorage: {
           invoke: {
@@ -432,6 +445,7 @@ export const requestMachine =
                 src: 'disconnect',
               },
               on: {
+                SCREEN_BLUR: {},
                 DISCONNECT: {
                   target: '#request.inactive',
                 },

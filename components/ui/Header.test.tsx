@@ -1,4 +1,5 @@
 import React from 'react';
+import {Pressable, Text} from 'react-native';
 import {render, fireEvent} from '@testing-library/react-native';
 import {Header} from './Header';
 
@@ -27,13 +28,45 @@ describe('Header', () => {
     expect(getByText('My Title')).toBeTruthy();
   });
 
-  it('should call goBack when back button is pressed', () => {
+  it('keeps the standard back button when a right action is provided', () => {
     const goBack = jest.fn();
     const {getByLabelText} = render(
-      <Header title="My Title" goBack={goBack} testID="header" />,
+      <Header
+        title="My Title"
+        goBack={goBack}
+        testID="header"
+        headerRight={<Text>Help</Text>}
+      />,
     );
 
     fireEvent.press(getByLabelText('goBack'));
     expect(goBack).toHaveBeenCalled();
+  });
+  it('renders optional header actions and routes their presses independently', () => {
+    const onBack = jest.fn();
+    const onHelp = jest.fn();
+    const screen = render(
+      <Header
+        safeArea={false}
+        elevation={0}
+        title="Review request"
+        headerLeft={
+          <Pressable accessibilityLabel="Back" onPress={onBack}>
+            <Text>Back</Text>
+          </Pressable>
+        }
+        headerRight={
+          <Pressable accessibilityLabel="Help" onPress={onHelp}>
+            <Text>Help</Text>
+          </Pressable>
+        }
+      />,
+    );
+    expect(screen.getByText('Review request')).toBeOnTheScreen();
+    fireEvent.press(screen.getByLabelText('Help'));
+    expect(onHelp).toHaveBeenCalledTimes(1);
+    expect(onBack).not.toHaveBeenCalled();
+    fireEvent.press(screen.getByLabelText('Back'));
+    expect(onBack).toHaveBeenCalledTimes(1);
   });
 });
