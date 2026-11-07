@@ -1914,10 +1914,6 @@ export const PurpleTheme = {
       lineHeight: 19,
       color: Colors.ShadeOfGrey,
     },
-    medium: {
-      fontFamily: 'Montserrat_500Medium',
-      fontSize: 14,
-    },
     semibold: {
       fontFamily: 'Montserrat_600SemiBold',
       fontSize: 15,

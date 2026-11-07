@@ -86,5 +86,5 @@ interface HeaderProps {
   titleAlign?: 'left' | 'center';
   containerStyle?: StyleProp<ViewStyle>;
   titleStyle?: StyleProp<TextStyle>;
-  titleWeight?: 'regular' | 'medium' | 'semibold' | 'bold' | 'extraLight';
+  titleWeight?: 'regular' | 'semibold' | 'bold' | 'extraLight';
 }

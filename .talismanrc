@@ -662,7 +662,7 @@ fileignoreconfig:
 
 
 - filename: docs/mdoc-ios-local-build.md
-  checksum: 1f7b09b534ec5e0ded9b5be2e5bceac59b7e792d60189ff9f7564b089c508c80
+  checksum: c00c3405610ed6f04c3cd9d50214e82322b5a9514b019f61c60e82dc89c60133
 
 - filename: screens/ShareNearby/request/IdentityHelp.tsx
   checksum: 001c1457d257159fc6fd9a60b675bb9cfe09dd412a9412326685fbe31718ece2

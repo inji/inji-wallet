@@ -34,7 +34,7 @@ interface TextProps {
   testID?: string;
   children: React.ReactNode;
   color?: string;
-  weight?: 'regular' | 'medium' | 'semibold' | 'bold' | 'extraLight';
+  weight?: 'regular' | 'semibold' | 'bold' | 'extraLight';
   align?: TextStyle['textAlign'];
   margin?: Spacing;
   size?:
