@@ -2,11 +2,18 @@ import React from 'react';
 import '@testing-library/jest-native/extend-expect';
 import {Animated, AppState, Platform, View} from 'react-native';
 import {interpret} from 'xstate';
-import {act, fireEvent, render, within} from '@testing-library/react-native';
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  within,
+} from '@testing-library/react-native';
 import {ShareNearbyEntry} from './entry/ShareNearbyEntry';
 import {MdocEngagement} from './engagement/MdocEngagement';
 import {MdocRequestReview} from './request/MdocRequestReview';
 import {MdocOutcomeView} from './outcome/MdocOutcomeView';
+import {useMdocOutcome} from './outcome/MdocOutcomeController';
 import {matchRequest} from '../../shared/mdocPresentation/matching';
 import type {VC} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
 import type {MdocRequest} from '../../shared/mdocPresentation/types';
@@ -1293,6 +1300,39 @@ describe('Outcome screens', () => {
     jest.useFakeTimers();
   });
   afterEach(() => jest.useRealTimers());
+
+  it.each([
+    ['verified', true],
+    ['unverified', false],
+    ['notSigned', false],
+    ['invalid', false],
+  ] as const)(
+    'uses every document trust result in the outcome (%s)',
+    (status, expectedVerified) => {
+      const matches = matchRequest(
+        {
+          ...request,
+          documents: [
+            {
+              ...request.documents[0],
+              readerTrust: {status: 'verified', readerName: 'Reader'},
+            },
+            {
+              ...request.documents[0],
+              docType: 'org.iso.23220.photoid.1',
+              readerTrust: {status, readerName: 'Reader'},
+            },
+          ],
+        },
+        [],
+      );
+      const {result} = renderHook(() =>
+        useMdocOutcome({...outcomeProps, matches}),
+      );
+
+      expect(result.current.isVerifiedVerifier).toBe(expectedVerified);
+    },
+  );
 
   it('goes back Home by itself ten seconds after a share', () => {
     render(<MdocOutcomeView {...outcomeProps} outcome="shared" />);

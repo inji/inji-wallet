@@ -97,7 +97,7 @@
       "location": "https://github.com/abhip2565/inji-vci-client-ios-swift.git",
       "state": {
         "branch": "pr/mdoc-proximity-ovp",
-        "revision": "6fca198ce6cf55a80c169db15c1bc810916030c6"
+        "revision": "fca2771d88606f1f9a04accf4dfd0f43a4fb18e8"
       }
     },
     {
@@ -187,7 +187,7 @@
       "location": "https://github.com/abhip2565/tuvali-ios-swift",
       "state": {
         "branch": "pr/iso-mdoc-session",
-        "revision": "87d10430e0643e134b26a176ddffc33a6dbb6b27"
+        "revision": "c091de54f5f9fb9493decd3c560d9261ccfb7efd"
       }
     },
     {

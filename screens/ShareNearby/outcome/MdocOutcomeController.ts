@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {countApprovedElements} from '../../../machines/mdocPresentation/mdocPresentationGuards';
 import type {MdocOutcomeViewProps} from './types';
+import {leastTrustedReader} from '../request/requestUtils';
 
 export function useMdocOutcome({
   matches,
@@ -24,7 +25,7 @@ export function useMdocOutcome({
           .length),
     0,
   );
-  const readerTrust = matches[0]?.requested.readerTrust;
+  const readerTrust = leastTrustedReader(matches);
   const selectedCardNames = matches.flatMap(documentMatch =>
     documentMatch.candidates
       .filter(
@@ -44,7 +45,7 @@ export function useMdocOutcome({
   return {
     approvedCount,
     requestedCount,
-    verifierName: readerTrust?.readerName || t('request.unknownVerifier'),
+    verifierName: readerTrust?.readerName || t('request.unknownVerifier') || '',
     isVerifiedVerifier: readerTrust?.status === 'verified',
     cardName: selectedCardNames.join(', '),
     time,

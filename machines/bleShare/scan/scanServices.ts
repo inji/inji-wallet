@@ -47,8 +47,12 @@ export const ScanServices = (model: any) => {
               _vcKey: metadata?.getVcKey() ?? '',
               issuer: metadata?.issuerHost ?? '',
               credentialConfigurationId:
-                record.credential?.verifiableCredential
-                  .credentialConfigurationId ?? '',
+                record.credential &&
+                'credentialConfigurationId' in
+                  record.credential.verifiableCredential
+                  ? record.credential.verifiableCredential
+                      .credentialConfigurationId ?? ''
+                  : '',
               docType: record.docType,
               cardName:
                 record.credential?.vcMetadata.credentialType ||

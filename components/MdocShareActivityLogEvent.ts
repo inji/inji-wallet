@@ -24,7 +24,7 @@ export class MdocShareActivityLog implements ActivityLog {
   constructor({
     type = '' as MdocShareLogType | '',
     timestamp = Date.now(),
-    flow = VCItemContainerFlowType.MDOC_SHARE,
+    flow = VCItemContainerFlowType.MDOC_SHARE as string,
     _vcKey = '',
     issuer = '',
     credentialConfigurationId = '',
@@ -65,7 +65,7 @@ export class MdocShareActivityLog implements ActivityLog {
       this.readerName,
       formatDistanceToNow(this.timestamp, {
         addSuffix: true,
-        locale: DateFnsLocale[language],
+        locale: DateFnsLocale[language as keyof typeof DateFnsLocale],
       }),
     ]
       .filter(label => label?.trim() !== '')
