@@ -7,7 +7,7 @@
  * handlers to the appropriate parent, and remove the empty overrides. Keep only events
  * valid throughout the machine at the root; cover existing flows with regression tests.
  */
-import {actions, EventFrom, raise, send, StateFrom} from 'xstate';
+import {EventFrom, raise, send, StateFrom} from 'xstate';
 import {AppState} from 'react-native';
 import {AppServices} from '../../../shared/GlobalContext';
 import {TelemetryConstants} from '../../../shared/telemetry/TelemetryConstants';

@@ -263,6 +263,7 @@ exports[`FaceVerificationAlertOverlay should match snapshot when not visible 1`]
           ],
         ]
       }
+      testID="iUnderstand"
       title={
         <Text
           color="#FFFFFF"
@@ -649,6 +650,7 @@ exports[`FaceVerificationAlertOverlay should match snapshot when visible 1`] = `
           ],
         ]
       }
+      testID="iUnderstand"
       title={
         <Text
           color="#FFFFFF"
@@ -1035,6 +1037,7 @@ exports[`FaceVerificationAlertOverlay should match snapshot with QR login varian
           ],
         ]
       }
+      testID="iUnderstand"
       title={
         <Text
           color="#FFFFFF"

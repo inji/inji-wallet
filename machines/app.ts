@@ -150,7 +150,7 @@ export const appMachine = model.createMachine(
               ],
               onError: [
                 {
-                  target: 'generateKeyPairs',
+                  target: 'fetchConfig',
                 },
               ],
             },
@@ -160,7 +160,7 @@ export const appMachine = model.createMachine(
               src: 'generateKeyPairsAndStoreOrder',
               onDone: [
                 {
-                  target: 'fetchConfig',
+                  target: 'services',
                 },
               ],
             },
@@ -170,12 +170,12 @@ export const appMachine = model.createMachine(
               src: 'fetchAndUpdateCacheTTLFromConfig',
               onDone: [
                 {
-                  target: 'checkKeyPairs',
+                  target: 'generateKeyPairs',
                 },
               ],
               onError: [
                 {
-                  target: 'checkKeyPairs',
+                  target: 'generateKeyPairs',
                 },
               ],
             },
@@ -563,8 +563,10 @@ export const appMachine = model.createMachine(
         return await checkAllKeyPairs();
       },
 
-      generateKeyPairsAndStoreOrder: async () => {
-        return await generateKeyPairsAndStoreOrder();
+      generateKeyPairsAndStoreOrder: async (_context, event: any) => {
+        return await generateKeyPairsAndStoreOrder(
+          event.data?.keyPriorityOrder,
+        );
       },
 
       fetchAndUpdateCacheTTLFromConfig: async () => {
@@ -598,6 +600,7 @@ const updateCacheTTLFromConfig = async () => {
       'All Properties API is called and updated the cacheTTL based on config/OnErrorHardCodedValue',
     );
   }
+  return response;
 };
 
 export function selectAppInfo(state: State) {

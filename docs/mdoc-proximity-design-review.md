@@ -18,8 +18,8 @@ comment anchor could not be resolved. The user explicitly clarified the header c
   Metadata does not establish exact typography, artwork, or rendered layout fidelity.
 - User confirmed “Proximity QR Code” for the mdoc option, retaining the mDoc badge.
 - User confirmed removal of the QR/connection header only; entry and request/outcome headers stay.
-- Whole selected mdocs are sent, including unticked/unrequested details. Consent/help must
-  explain that honestly even where Figma describes future selective disclosure.
+- Selective disclosure now uses the existing helper from develop. Only approved, available
+  requested details are sent. Earlier whole-card notes below describe superseded iterations.
 - Use the existing app success banner instead of the dark Figma “details shared / View” toast.
 - User requested a minimum two seconds each for connecting and connected before request
   review. The display sequence runs independently of native transport/consent; errors and
@@ -151,3 +151,10 @@ until the shared components support the required behavior and design.
 
 Already reused by nearby: app buttons, text/layout primitives, shared header, HelpIcon, Badge, Checkbox,
 success/error banners, existing selfie verification, and the shared modal's sheet presentation.
+
+## Final integration review, 2026-11-07
+
+Selective disclosure and mdoc-specific success/failure history entries are implemented. Earlier
+whole-card and generic-history-only notes above are historical. The PR includes shared Badge,
+Checkbox, Header, Button, HelpIcon and existing confirmation banner reuse. Complete rendered
+Figma/device-size verification remains pending; source review is not visual certification.

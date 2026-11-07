@@ -1,31 +1,21 @@
 # mdoc proximity: v1 scope and deferred work
 
-## Current decision: whole selected mdocs, interactive consent UI
+## Current scope: selected mdocs with selective disclosure
 
-Latest user decision on 2026-11-01: wire the functional flow and card/field selection UI now,
-but send the entire selected mdoc for each requested document. Selective disclosure will be
-connected later. This supersedes the earlier requirement to block Share until a filtering
-hook is supplied. Partial protocol responses and document/element omission errors remain deferred.
+The review flow matches requested document types, offers each card holding at least one requested
+field, and shares only the ticked fields that the selected card holds. Missing fields are shown as
+“Not on your card” and are never shared. One selected card with at least one approved available
+field is required for every requested document. Revoked cards are blocked; expired cards show a
+warning and can be selected.
 
-- Offer every card whose document type matches and that holds at least one requested element;
-  requested elements not on the card are listed as "Not on your card, so they won't be shared"
-  (design frame 31; user decision 2026-11-03, superseding the 2026-11-01 complete-match rule).
-  Share needs at least one ticked element that the selected card holds, and a filtering hook
-  receives only those ticked, available elements.
-- Require one selected, shareable card for every requested document. A missing document or
-  incomplete card selection must not result in a partial response.
-- Field checkboxes are interactive and their state is held by the mdoc machine. At least one
-  requested field must remain checked per selected document to enable Share. These choices
-  currently affect the UI only; they do not filter the native payload.
-- Consent explicitly says that whole cards, including unticked and unrequested details, will
-  be shared. The action says "Share entire selected card(s)". Other details on the selected
-  card are listed separately, so requested fields are not presented as the full disclosure.
-- The holder can decline the whole request. The existing decline path ends the session.
-- Send the original stored base64url CBOR through the native DeviceResponse builder; do not
-  reconstruct an issuer-signed credential from decoded JSON. The existing signing callback
-  still signs DeviceAuthentication. Missing original credential bytes fail before sending.
-- Selective disclosure belongs to the later filtering integration. When enabled, update the
-  consent notice, actual disclosure counts, checkbox guards, and omission-error handling together.
+`prepareApprovedElements` reuses the selective-disclosure helper from `develop`:
+`shared/openID4VP/mdocSelectiveDisclosure.ts`. It keeps each selected IssuerSignedItemBytes and
+issuerAuth untouched, preserving issuer digests/signatures. Both native OpenID4VP builders validate
+the retained digests and sign DeviceAuthentication over Tuvali's session transcript. Original stored
+CBOR is required; decoded presentation JSON is never reconstructed as a credential.
+
+The earlier whole-card-only scope is superseded. Partial document responses and explicit
+protocol omission errors remain deferred as described below.
 
 ## Screen decisions
 
@@ -42,7 +32,7 @@ Request help now covers verifier details for each trust status, “Who is asking
 “About kept copies”, and “What the verifier can see”. Verifier details link to the identity
 explanation; privacy help links to retention help. The top question icon opens scan help
 while showing/connecting the code and privacy help after that. Linked content uses one modal.
-Help copy reflects whole-card sharing; unticking fields does not exclude them yet.
+Help copy reflects selective disclosure; unticking a field excludes it from the response.
 Certificate issuer, certificate expiry, organisation details, and trusted-list update date
 are not supplied by the current native `ReaderTrust` contract and are not fabricated in the UI.
 These richer verifier metadata rows and exact Figma visual verification remain pending.
@@ -59,11 +49,11 @@ flow is active, and an active Receive-card flow blocks mdoc startup.
 The invoked actor is available through `selectMdocPresentationRef` in the scan selectors. Its own
 selectors expose data for the agreed draft 3 + draft 2 screens. It reads the current wallet
 credentials for every request and checks the selected cards again before preparing the response.
-Expired and revoked cards cannot be selected for sharing.
+Revoked cards cannot be selected; expired cards remain available with a warning.
 
 `createScanMachine(serviceRefs, mdocPresentationDependencies)` accepts an optional
-`prepareMdocForSharing(vc, requestedElements)` override for later integration and tests. Without
-it, the authorised default sends the entire stored selected mdoc. Never enable a preparation
+`prepareMdocForSharing(vc, requestedElements)` override for later integration and tests. By default,
+it filters the stored selected mdoc to the approved available fields. Never enable a preparation
 override whose disclosure scope conflicts with what the consent screen tells the holder.
 
 Cancellation waits for the native presentation to settle before offering a new code. Disposing
@@ -74,7 +64,7 @@ come from native; the wallet does not infer successful delivery from a consent d
 preparation retry, optional existing selfie UI, cancellation confirmation, and outcome views.
 The scanner is unmounted while the nearby entry/session is shown. Backgrounding cancels the
 active presentation; transient iOS permission prompts do not. Only confirmed native delivery
-populates the existing success banner, and its count covers the whole selected cards.
+populates the existing success banner, and its count covers the approved available fields.
 
 The nearby UI directly reuses the app's `Button`, `Text`, and `Column`. The shared `Header`
 uses one layout with optional `headerLeft`/`headerRight` controls, title styling, elevation,
@@ -95,17 +85,18 @@ before outcome dismissal. Each card uses its existing VC storage key, issuer, co
 reader name when supplied, and completion timestamp. Unconfirmed/failed/cancelled sessions do
 not receive a successful-share entry. Dedicated mdoc outcome/history detail designs remain pending.
 
-Remaining: finish visual verification of the remaining exact Figma frames/assets, selective
-disclosure, remaining card-validity rules, non-success history entries, telemetry, translations,
+Remaining: finish visual verification of the remaining exact Figma frames/assets, remaining card-validity rules, telemetry, translations,
 and real-device/reader validation. Functional outcome views exist; this is not a claim that all
 draft 2 error/history frames have been visually matched.
-The machine accepts `connecting`, but the Tuvali libraries still need to emit that new callback.
+The UI keeps connecting and connected phases visible for at least two seconds each, and sending
+for at least one second. Failures and cancellation are displayed immediately.
 
 Validation for this functional UI pass: 532 focused regression tests and 31 snapshots passed;
 the iOS simulator native build, Android `compileResidentappDebugKotlin` using JDK 17, and both
 platforms' production JavaScript bundles passed. The focused TypeScript check found no errors
-in the new mdoc/screen files; existing repository type errors remain. No physical-reader BLE
-session or complete visual/device-size review has been claimed.
+in the new mdoc/screen files; existing repository type errors remain. Physical iPhone-to-reader sharing was subsequently confirmed, including a Certify card on
+2026-11-07. A complete visual/device-size matrix and the earlier intermittent sending failure
+remain unverified.
 
 ## Deferred: partial responses and omission errors
 

@@ -188,6 +188,7 @@ exports[`LocationPermissionRational should match snapshot 1`] = `
           ],
         ]
       }
+      testID="yesConfirm"
       title={
         <Text
           color="#FFFFFF"
@@ -289,6 +290,7 @@ exports[`LocationPermissionRational should match snapshot 1`] = `
           ],
         ]
       }
+      testID="no"
       title={
         <Text
           align="center"

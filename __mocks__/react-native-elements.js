@@ -12,7 +12,9 @@ ListItem.Content = ({children}) => React.createElement('View', null, children);
 const CheckBox = props =>
   React.createElement(
     'View',
+    // eslint-disable-next-line react/prop-types -- Test double forwards RNE layout props.
     {...props, ...(props.containerStyle ? {style: props.containerStyle} : {})},
+    // eslint-disable-next-line react/prop-types -- Test double renders RNE title content.
     props.title,
   );
 const Input = props => React.createElement('View', props);

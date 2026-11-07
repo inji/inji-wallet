@@ -446,6 +446,7 @@ exports[`StaticSendVcScreen should render secure share intro 1`] = `
               "opacity": 1,
             }
           }
+          testID="shareButton"
         >
           <Text>
             <Text
@@ -515,6 +516,7 @@ exports[`StaticSendVcScreen should render secure share intro 1`] = `
               "opacity": 1,
             }
           }
+          testID="shareWithSelfieButton"
         >
           <Text>
             <Text
@@ -584,6 +586,7 @@ exports[`StaticSendVcScreen should render secure share intro 1`] = `
               "opacity": 1,
             }
           }
+          testID="rejectButton"
         >
           <Text>
             <Text

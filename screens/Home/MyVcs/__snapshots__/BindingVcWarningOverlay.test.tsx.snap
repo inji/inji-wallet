@@ -245,6 +245,7 @@ exports[`BindingVcWarningOverlay should match snapshot when not visible 1`] = `
           ],
         ]
       }
+      testID="yesConfirm"
       title={
         <Text
           color="#FFFFFF"
@@ -346,6 +347,7 @@ exports[`BindingVcWarningOverlay should match snapshot when not visible 1`] = `
           ],
         ]
       }
+      testID="no"
       title={
         <Text
           align="center"
@@ -646,6 +648,7 @@ exports[`BindingVcWarningOverlay should match snapshot when visible 1`] = `
           ],
         ]
       }
+      testID="yesConfirm"
       title={
         <Text
           color="#FFFFFF"
@@ -747,6 +750,7 @@ exports[`BindingVcWarningOverlay should match snapshot when visible 1`] = `
           ],
         ]
       }
+      testID="no"
       title={
         <Text
           align="center"

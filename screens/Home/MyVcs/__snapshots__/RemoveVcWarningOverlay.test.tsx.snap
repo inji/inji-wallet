@@ -251,6 +251,7 @@ exports[`RemoveVcWarningOverlay should match snapshot when visible 1`] = `
           ],
         ]
       }
+      testID="yesConfirm"
       title={
         <Text
           color="#FFFFFF"
@@ -352,6 +353,7 @@ exports[`RemoveVcWarningOverlay should match snapshot when visible 1`] = `
           ],
         ]
       }
+      testID="no"
       title={
         <Text
           align="center"

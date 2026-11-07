@@ -248,6 +248,7 @@ exports[`SharingStatusModal should match snapshot with gradient and clear button
           ],
         ]
       }
+      testID="failedVcSharedRetryButton"
       title={
         <Text
           color="#FFFFFF"
@@ -370,6 +371,7 @@ exports[`SharingStatusModal should match snapshot with gradient and clear button
           ],
         ]
       }
+      testID="failedVcSharedHomeButton"
       title={
         <Text
           align="center"

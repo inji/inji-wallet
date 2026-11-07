@@ -322,6 +322,7 @@ exports[`AccountSelectionConfirmation should render when visible 1`] = `
               ],
             ]
           }
+          testID="proceed"
           title={
             <Text
               color="#FFFFFF"
@@ -440,6 +441,7 @@ exports[`AccountSelectionConfirmation should render when visible 1`] = `
               ],
             ]
           }
+          testID="goBack"
           title={
             <Text
               align="center"
