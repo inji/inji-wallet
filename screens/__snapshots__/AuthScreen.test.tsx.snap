@@ -259,6 +259,7 @@ exports[`AuthScreen should match snapshot 1`] = `
           ],
         ]
       }
+      disabled={false}
       linearGradientProps={
         {
           "colors": [
@@ -293,6 +294,7 @@ exports[`AuthScreen should match snapshot 1`] = `
           ],
         ]
       }
+      testID="useBiometrics"
       title={
         <Text
           color="#FFFFFF"
@@ -389,6 +391,7 @@ exports[`AuthScreen should match snapshot 1`] = `
           ],
         ]
       }
+      testID="usePasscode"
       title={
         <Text
           align="center"

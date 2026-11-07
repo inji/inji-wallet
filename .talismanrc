@@ -53,7 +53,7 @@ fileignoreconfig:
 - filename: screens/MainLayout.tsx
   checksum: 8909ef957c866221e864c6edaf93081af7f5968857200284bf7047631f525322
 - filename: android/app/build.gradle
-  checksum: 8d5715e179a398518e6acff82c75b27077c9f893dc90b2972c77f9a09f10be95
+  checksum: 6007746310559f41eede7aefb0c62d60789962ed1ccaa932b68b94535f352cb5
 - filename: android/fastlane/Fastfile
   checksum: a5e816489a80b0a7498f35b7a2919f2287d4307b660687c2a9c51412aa8eceb7
 - filename: .github/workflows/internal-build.yml
@@ -73,7 +73,7 @@ fileignoreconfig:
 - filename: .github/workflows/push-triggers.yml
   checksum: 4a031b46646aa982c8f40e4c7fe0bd3e05a76a6af1ff1c2de7350ba6ebf9a839
 - filename: components/VC/Views/VCCardViewContent.tsx
-  checksum: 01ca1b454d843e26f704e6828b22f2fcc17a3e3b35b2ee35edefb3bb623433d7
+  checksum: d32f1d424c0c4a5b4942fd55042dbefd913cdf138492ba6fc7c7f11faeb39f63
 - filename: screens/Settings/BackupController.tsx
   checksum: 4a031b46646aa982c8f40e4c7fe0bd3e05a76a6af1ff1c2de7350ba6ebf9a839
 - filename: machines/settings.typegen.ts
@@ -284,7 +284,7 @@ fileignoreconfig:
 - filename: android/app/src/main/java/io/mosip/residentapp/InjiVciClientModule.java
   checksum: 17f55840bab193bc353034445ba4fce53e1ce466e95f616c15a1351f8d2f23bc
 - filename: ios/Inji.xcworkspace/xcshareddata/swiftpm/Package.resolved
-  checksum: 481cd2f77029a192c3be2452a02dcc61c81dd537dfa3fc5bb09b8b166b8b7451
+  checksum: 38b93a5069b9368421064ca044620154568f1316a7307b0e8142cebacb37d2d2
 - filename: injitest/src/main/resources/Vids.json
   checksum: 8bcffed7a6dd565ae695e1b29de0655e10bd5c5420af2718defd593a687b8817
 - filename: injitest/src/main/java/inji/utils/UpdateNetworkSettings.java
@@ -308,7 +308,7 @@ fileignoreconfig:
 - filename: android/app/src/main/AndroidManifest.xml
   checksum: 8f4bd61770b8bb0a28859ca0f3b4b095aed4e3fb5adef435cb74b9389ff13e09
 - filename: ios/Inji.xcodeproj/project.pbxproj
-  checksum: 5bb246fa39bc7a9994b50bc5b1505d5389d0e254a4e30cfb2a57e6a1025e9087
+  checksum: 9a15b8ce89e6a5088f726564525e07e1ce9dc0795db30c18a339bbea36be9214
 - filename: screens/Settings/ReceivedCardsModal.tsx
   checksum: 6dee9153a61009b0252d294154c88d5e1b241a517c76e930b391a39d7bc52392
 - filename: components/FaceScanner/FaceCompare.tsx
@@ -404,7 +404,7 @@ fileignoreconfig:
 - filename: screens/WelcomeScreenController.test.ts
   checksum: 2ddc812f1f84b580548f075717e86eb57b721379cd12fc73b1eacb3d3d2b75fe
 - filename: shared/api.test.ts
-  checksum: 142e6b9d3df2cc0ba7811d2135d790289725d06e2ef85090255f4ec549e35651
+  checksum: 71656d6c1e0136287637c95913ebc18d5c47768eebc2c2973ac24039b741017c
 - filename: shared/keystore/SecureKeystore.test.ts
   checksum: 2d7ed666e030d000533d5d587dc87b2f57f0808891573c468733a62ea7c50ef2
 - filename: screens/Settings/KeyManagementScreen.test.tsx
@@ -436,7 +436,7 @@ fileignoreconfig:
 - filename: shared/vcRenderer/VcRenderer.test.ts
   checksum: 9376788e007405923782381bd54488200c4d4953d1ced592be4243ed48d77252
 - filename: shared/openId4VCI/Utils.test.ts
-  checksum: 30761c5e92c6fdb32930683388d3669ebfad3c0a7f227b61c414ff90c00b79b1
+  checksum: 34bb089d61ccec0ec1d16a267bbf4d3cf1e4f53806c7168a73c3ba246ad1bf56
 - filename: screens/Home/ReceivedVcsTab.test.tsx
   checksum: 14a5afee28e55a5a1fdb3ea0b79512b84c4dca48f92e57037c221fc9f5ba60c3
 - filename: screens/AuthScreenController.test.ts
@@ -659,4 +659,100 @@ fileignoreconfig:
   checksum: e014e1de003f9456c5ab4948107f1775ea80b3d3816a6248f7269b68bc7a17ff
 - filename: machines/settings.ts
   checksum: cecb0101cb18e6ff6343c0a0e27b91a1f7a528b6ed5998c5eea59cef58621e2a
+
+
+- filename: docs/mdoc-ios-local-build.md
+  checksum: c00c3405610ed6f04c3cd9d50214e82322b5a9514b019f61c60e82dc89c60133
+
+- filename: screens/ShareNearby/request/IdentityHelp.tsx
+  checksum: 001c1457d257159fc6fd9a60b675bb9cfe09dd412a9412326685fbe31718ece2
+
+- filename: machines/bleShare/scan/scanServices.ts
+  checksum: 01896198b8499c2f34f04abeb4bacca22d3039ce24f6e1d25cb4048a534aa778
+
+- filename: screens/ShareNearby/ShareScreen.tsx
+  checksum: 5766c519bec2b92fb6e20573e92aa4bffa88441f275d3ff5ec1d983cfcb7cd5b
+
+- filename: screens/ShareNearby/share/ShareHelpSheet.tsx
+  checksum: ff9d307ca0fd7e5234e3e8950e66ea2aa5d33639ef2069ada65fdba5c29082f9
+
+- filename: screens/ShareNearby/request/CardChoices.tsx
+  checksum: b864a079a12dddb682238d718be397944636be1e75a527706450b95bd8fbd4fe
+
+- filename: machines/mdocPresentation/mdocPresentationGuards.ts
+  checksum: ef76152394a22bc6176788b9d8e45088e6bf57cdd2a5bdbdae8a4bd5f9cde782
+
+- filename: screens/ShareNearby/sending/useSendingVisibility.test.tsx
+  checksum: 3edd3540305b20c53a8ce0d6869d870d5102ce1b69e6cb16cc66424e61d26066
+
+- filename: components/MdocShareActivityLogEvent.test.ts
+  checksum: a42586dd64d57707760b17fb569c918eaabb997db6fb933e542a0ded2ea99a07
+
+- filename: screens/ShareNearby/engagement/ConnectionPanel.tsx
+  checksum: e16f6cb46c1b7dd148844797dcd62dafc42830b7a23688fb1344c5909a747314
+
+- filename: screens/ShareNearby/outcome/OutcomeStatus.tsx
+  checksum: 0f3bfa93b4f750a0fd9fca48b5b1303ab02914ea55ad095163e5afe35caaded2
+
+- filename: ios/RNMdocPresentationModule.swift
+  checksum: fae71afec135971bd33fc1a95a7afd50075f2dfeb6157027fa302db798db7173
+
+- filename: shared/mdocPresentation/MdocPresentation.ts
+  checksum: 7e1f1154cbfde43a2e1030e25db2b9f0033ec642d8382eee2fbe03904f12af8b
+
+- filename: machines/bleShare/scan/scanServices.test.ts
+  checksum: 6677634251ff2b0171c3651fbc577bf75bbe4c18712bb88fdd3ca69293db4d93
+
+- filename: machines/mdocPresentation/mdocPresentationActions.ts
+  checksum: f54051dba195f876cb8d9ffb96f644771aadf43fde1665d6db256f1303c73247
+
+- filename: android/app/src/main/java/io/mosip/residentapp/InjiMdocPresentationModule.kt
+  checksum: a22cb632d87b4a7eacf3c938030fb18710a901ddaf9f15557fa1acdbe112aedc
+
+- filename: docs/mdoc-proximity-scope.md
+  checksum: a7dc030731fde62c3d06ca0a650c3e02a5d88ecce34be0eb62c58280956c4280
+
+- filename: docs/mdoc-proximity-design-review.md
+  checksum: 832ddc5b82b8fd876245e73548ac9116b723c5d0f054e97dec3ee26d0421abb0
+
+- filename: screens/ShareNearby/request/RequestedDetails.tsx
+  checksum: 185c561c46c4152f2223ebc35e9ce39a1458853db5c3d0742dfa838836bfec65
+
+- filename: screens/ShareNearby/request/VerifierCard.tsx
+  checksum: 7cec104aab25cfc0cddb84c6c9fc430eb0acbdbaaef5e54f4e0e76e8d06c106f
+
+- filename: screens/ShareNearby/request/MdocRequestReview.tsx
+  checksum: b52b3baa6b9ac0a195e77fe99efbd256e43717042f6d194fdac57389a2aae63f
+
+- filename: screens/ShareNearby/request/NoMatchingCard.tsx
+  checksum: 706a2f5ad1560faee936ab381f3602d524066e57aeee53574f6fde1fc80e9eab
+
+- filename: screens/ShareNearby/engagement/ConnectionIllustration.tsx
+  checksum: 7299f8f355ea349e86e039eac4c59d71b0c839320e398a2a90aa654a59f36f71
+
+- filename: machines/mdocPresentation/mdocPresentationMachine.test.ts
+  checksum: e1646f6036849ecdd2249ce1faf4248cd758a3eb38cca0fbf66c4cb22eaa1024
+
+- filename: shared/mdocPresentation/MdocPresentation.test.ts
+  checksum: e485f368757e20b9364e3b6e6013fa572d75b60e7886fcc58ddde885a6ef0d87
+
+- filename: screens/ShareNearby/outcome/MdocOutcomeView.tsx
+  checksum: 02531b33311cd76333d308af98fdd9ba48d9ec20ee268d08198accef6b20258c
+
+- filename: screens/ShareNearby/request/PrivacyHelp.tsx
+  checksum: 5f5493f08bb480d1278d0f75658b68c71ff14ad90a7bd3bd4e5a5d83e721df3f
+
+- filename: screens/ShareNearby/outcome/outcomeConfig.ts
+  checksum: a2ee557ef7b4a0983aada27bd14b70c46470bccae17201ed6eaadb057a27f7d8
+
+
+
+
+
+- filename: components/openid4vp/dcql/matchingVc/DcqlMatchingVcController.ts
+  checksum: efcb568f979380830d3f51ad923ebfe72a26de761b08205ee0dfc6549966245c
+
+- filename: components/openid4vp/dcql/credentialSetSection/CredentialSetSection.test.tsx
+  checksum: fdb8da9e121a2539c81145b6d0d18f368b716fe8608c84bb5ddb03dcd04d995f
+
 version: "1.0"

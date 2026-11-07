@@ -1,5 +1,14 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import {actions, EventFrom, send, StateFrom} from 'xstate';
+/**
+ * TODO: Scope navigation and flow-start handlers to the states where they apply.
+ * Root handlers currently let events such as SELECT_VC and incoming deep links interrupt
+ * active sharing. presentingMdoc uses empty handlers to consume those events temporarily.
+ * Group ready/scanning and active-sharing states under separate parents, move shared
+ * handlers to the appropriate parent, and remove the empty overrides. Keep only events
+ * valid throughout the machine at the root; cover existing flows with regression tests.
+ */
+import {EventFrom, raise, send, StateFrom} from 'xstate';
+import {AppState} from 'react-native';
 import {AppServices} from '../../../shared/GlobalContext';
 import {TelemetryConstants} from '../../../shared/telemetry/TelemetryConstants';
 import {
@@ -13,6 +22,7 @@ import {ScanGuards} from './scanGuards';
 import {ScanModel} from './scanModel';
 import {ScanServices} from './scanServices';
 import {openID4VPMachine} from '../../openID4VP/openID4VPMachine';
+import type {MdocPresentationDependencies} from '../../mdocPresentation/mdocPresentationModel';
 
 const model = ScanModel;
 export const ScanEvents = model.events;
@@ -34,8 +44,9 @@ export const scanMachine =
       id: 'scan',
       initial: 'inactive',
       on: {
+        DISMISS_MDOC_BANNER: {actions: 'dismissMdocBanner'},
         SCREEN_BLUR: {
-          actions: 'resetOpenID4VPFlowType',
+          actions: ['resetOpenID4VPFlowType', 'resetMdocFlow'],
           target: '#scan.disconnectDevice',
         },
         SCREEN_FOCUS: {
@@ -55,12 +66,23 @@ export const scanMachine =
             'resetIsOVPViaDeepLink',
             'resetAuthorizationRequest',
             'resetLinkCode',
+            'resetMdocFlow',
           ],
           target: '.checkStorage',
         },
-        DISMISS: {
-          target: '#scan.reviewing.disconnect',
+        CANCEL: {
+          cond: 'isMdocFlow',
+          actions: 'resetMdocFlow',
+          target: '.checkStorage',
         },
+        DISMISS: [
+          {
+            cond: 'isMdocFlow',
+            actions: 'resetMdocFlow',
+            target: '.checkStorage',
+          },
+          {target: '#scan.reviewing.disconnect'},
+        ],
         SELECT_VC: {
           actions: ['setSelectedVc', 'setFlowType'],
           target: '.checkStorage',
@@ -88,6 +110,12 @@ export const scanMachine =
       },
       states: {
         inactive: {
+          on: {
+            PRESENT_MDOC: [
+              {cond: 'isMdocBleBusy', target: 'mdocBusy'},
+              {target: 'checkStorage', actions: 'startMdocFlow'},
+            ],
+          },
           entry: [
             'removeLoggers',
             'resetFlowType',
@@ -219,6 +247,15 @@ export const scanMachine =
                 },
                 BLUETOOTH_STATE_DISABLED: [
                   {
+                    cond: 'isMdocOnIos',
+                    target: '#scan.bluetoothDenied',
+                  },
+                  // Mobile ID explains first (NBY-03); Android asks only after the holder taps.
+                  {
+                    cond: 'isMdocFlow',
+                    target: '#scan.bluetoothDenied',
+                  },
+                  {
                     cond: 'isIOS',
                     target: '#scan.checkBluetoothPermission',
                   },
@@ -248,7 +285,7 @@ export const scanMachine =
                   target: '#scan.checkingLocationState',
                 },
                 {
-                  target: '#scan.clearingConnectionBeforeBleConnect',
+                  target: '#scan.readyForBleConnection',
                 },
               ],
             },
@@ -278,7 +315,7 @@ export const scanMachine =
                   target: '#scan.checkingLocationState',
                 },
                 {
-                  target: '#scan.clearingConnectionBeforeBleConnect',
+                  target: '#scan.readyForBleConnection',
                 },
               ],
             },
@@ -287,7 +324,10 @@ export const scanMachine =
 
         bluetoothPermissionDenied: {
           on: {
-            APP_ACTIVE: '#scan.checkBluetoothState',
+            APP_ACTIVE: [
+              {cond: 'isMdocFlow', target: '#scan.checkBluetoothPermission'},
+              {target: '#scan.checkBluetoothState'},
+            ],
             GOTO_SETTINGS: {
               actions: 'openBluetoothSettings',
             },
@@ -297,6 +337,7 @@ export const scanMachine =
         bluetoothDenied: {
           on: {
             APP_ACTIVE: '#scan.recheckBluetoothState',
+            REQUEST_BLUETOOTH: '#scan.checkBluetoothState.requesting',
           },
         },
 
@@ -356,6 +397,11 @@ export const scanMachine =
         checkForDeepLinkFlow: {
           always: [
             {
+              cond: 'isMdocFlow',
+              target: '#scan.startPermissionCheck',
+              actions: raise({type: 'START_PERMISSION_CHECK'}),
+            },
+            {
               cond: 'isQrLoginViaDeepLinking',
               target: '#scan.showQrLogin',
             },
@@ -378,6 +424,13 @@ export const scanMachine =
             'resetReadyForBluetoothStateCheck',
           ],
           on: {
+            PRESENT_MDOC: [
+              {cond: 'isMdocBleBusy', target: 'mdocBusy'},
+              {
+                target: 'checkStorage',
+                actions: ['removeLoggers', 'startMdocFlow'],
+              },
+            ],
             SCAN: [
               {
                 target: 'startPermissionCheck',
@@ -407,6 +460,61 @@ export const scanMachine =
                 target: 'invalid',
               },
             ],
+          },
+        },
+        readyForBleConnection: {
+          always: [
+            {cond: 'isMdocFlow', target: 'presentingMdoc'},
+            {target: 'clearingConnectionBeforeBleConnect'},
+          ],
+        },
+        mdocBusy: {
+          on: {
+            DISMISS: 'checkStorage',
+            PRESENT_MDOC: [
+              {cond: 'isMdocBleBusy'},
+              {target: 'checkStorage', actions: 'startMdocFlow'},
+            ],
+          },
+        },
+        presentingMdoc: {
+          invoke: {
+            id: 'MdocPresentation',
+            src: 'presentMdoc',
+            onDone: [
+              {
+                cond: 'isMdocScreenBlurred',
+                target: 'inactive',
+                actions: ['recordMdocResult', 'resetMdocFlow'],
+              },
+              {
+                target: 'checkStorage',
+                actions: ['recordMdocResult', 'resetMdocFlow'],
+              },
+            ],
+          },
+          on: {
+            CANCEL: {actions: send('CANCEL', {to: 'MdocPresentation'})},
+            APP_INACTIVE: {
+              // iOS key authentication briefly makes the app inactive. Only a real
+              // background transition should cancel sharing during signing.
+              cond: () => AppState.currentState === 'background',
+              actions: send('APP_INACTIVE', {to: 'MdocPresentation'}),
+            },
+            DISMISS: {actions: send('DISMISS', {to: 'MdocPresentation'})},
+            SCREEN_BLUR: {
+              actions: [
+                'markMdocScreenBlurred',
+                send('DISMISS', {to: 'MdocPresentation'}),
+              ],
+            },
+            RESET: {actions: send('DISMISS', {to: 'MdocPresentation'})},
+            SCREEN_FOCUS: {},
+            SELECT_VC: {},
+            OVP_VIA_DEEP_LINK: {},
+            QRLOGIN_VIA_DEEP_LINK: {},
+            BLE_ERROR: {},
+            PRESENT_MDOC: {},
           },
         },
         startVPSharing: {
@@ -892,7 +1000,7 @@ export const scanMachine =
               },
               on: {
                 LOCATION_ENABLED: {
-                  target: '#scan.clearingConnectionBeforeBleConnect',
+                  target: '#scan.readyForBleConnection',
                 },
                 LOCATION_DISABLED: {
                   target: 'requestToEnableLocation',
@@ -905,7 +1013,7 @@ export const scanMachine =
               },
               on: {
                 LOCATION_ENABLED: {
-                  target: '#scan.clearingConnectionBeforeBleConnect',
+                  target: '#scan.readyForBleConnection',
                 },
                 LOCATION_DISABLED: {
                   target: 'denied',
@@ -914,6 +1022,10 @@ export const scanMachine =
             },
             denied: {
               on: {
+                APP_ACTIVE: {
+                  cond: 'isMdocFlow',
+                  target: 'checkLocationService',
+                },
                 LOCATION_REQUEST: {
                   actions: 'openAppPermission',
                 },
@@ -921,6 +1033,10 @@ export const scanMachine =
             },
             disabled: {
               on: {
+                APP_ACTIVE: {
+                  cond: 'isMdocFlow',
+                  target: 'checkLocationService',
+                },
                 LOCATION_REQUEST: {
                   target: 'checkLocationService',
                   actions: 'enableLocation',
@@ -945,9 +1061,13 @@ export const scanMachine =
 
 type State = StateFrom<typeof scanMachine>;
 
-export function createScanMachine(serviceRefs: AppServices) {
+export function createScanMachine(
+  serviceRefs: AppServices,
+  mdocPresentationDependencies: Partial<MdocPresentationDependencies> = {},
+) {
   return scanMachine.withContext({
     ...scanMachine.context,
     serviceRefs,
+    mdocPresentationDependencies,
   });
 }

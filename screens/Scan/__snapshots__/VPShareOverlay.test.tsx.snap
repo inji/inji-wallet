@@ -228,6 +228,7 @@ exports[`VPShareOverlay should match snapshot when not visible 1`] = `
           ],
         ]
       }
+      testID="primaryBtn"
       title={
         <Text
           color="#FFFFFF"
@@ -329,6 +330,7 @@ exports[`VPShareOverlay should match snapshot when not visible 1`] = `
           ],
         ]
       }
+      testID="secondaryBtn"
       title={
         <Text
           align="center"
@@ -612,6 +614,7 @@ exports[`VPShareOverlay should match snapshot when visible 1`] = `
           ],
         ]
       }
+      testID="primaryBtn"
       title={
         <Text
           color="#FFFFFF"
@@ -713,6 +716,7 @@ exports[`VPShareOverlay should match snapshot when visible 1`] = `
           ],
         ]
       }
+      testID="secondaryBtn"
       title={
         <Text
           align="center"
@@ -996,6 +1000,7 @@ exports[`VPShareOverlay should match snapshot with different text 1`] = `
           ],
         ]
       }
+      testID="primaryBtn"
       title={
         <Text
           color="#FFFFFF"
@@ -1097,6 +1102,7 @@ exports[`VPShareOverlay should match snapshot with different text 1`] = `
           ],
         ]
       }
+      testID="secondaryBtn"
       title={
         <Text
           align="center"

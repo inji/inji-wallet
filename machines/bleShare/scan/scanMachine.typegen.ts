@@ -3,6 +3,10 @@
 export interface Typegen0 {
   '@@xstate/typegen': true;
   internalEvents: {
+    'done.invoke.MdocPresentation': {
+      type: 'done.invoke.MdocPresentation';
+      data: {sharedDetailCount: number};
+    };
     '': {type: ''};
     'done.invoke.QrLogin': {
       type: 'done.invoke.QrLogin';
@@ -24,6 +28,7 @@ export interface Typegen0 {
     'xstate.stop': {type: 'xstate.stop'};
   };
   invokeSrcNameMap: {
+    presentMdoc: 'done.invoke.MdocPresentation';
     checkBluetoothPermission: 'done.invoke.scan.checkBluetoothPermission.checking:invocation[0]';
     checkBluetoothState:
       | 'done.invoke.scan.checkBluetoothState.checking:invocation[0]'
@@ -46,6 +51,11 @@ export interface Typegen0 {
   };
   missingImplementations: {
     actions:
+      | 'recordMdocResult'
+      | 'dismissMdocBanner'
+      | 'startMdocFlow'
+      | 'resetMdocFlow'
+      | 'markMdocScreenBlurred'
       | 'clearUri'
       | 'enableLocation'
       | 'getFaceAuthConsent'
@@ -102,6 +112,10 @@ export interface Typegen0 {
       | 'updateShowFaceAuthConsent';
     delays: never;
     guards:
+      | 'isMdocOnIos'
+      | 'isMdocFlow'
+      | 'isMdocScreenBlurred'
+      | 'isMdocBleBusy'
       | 'isFlowTypeDeepLink'
       | 'isFlowTypeMiniViewShare'
       | 'isFlowTypeMiniViewShareWithSelfie'
@@ -117,6 +131,7 @@ export interface Typegen0 {
       | 'showFaceAuthConsentScreen'
       | 'uptoAndroid11';
     services:
+      | 'presentMdoc'
       | 'checkBluetoothPermission'
       | 'checkBluetoothState'
       | 'checkLocationPermission'
@@ -132,6 +147,16 @@ export interface Typegen0 {
       | 'startConnection';
   };
   eventsCausingActions: {
+    recordMdocResult: 'done.invoke.MdocPresentation';
+    dismissMdocBanner: 'DISMISS_MDOC_BANNER';
+    startMdocFlow: 'PRESENT_MDOC';
+    resetMdocFlow:
+      | 'SCREEN_BLUR'
+      | 'RESET'
+      | 'CANCEL'
+      | 'DISMISS'
+      | 'done.invoke.MdocPresentation';
+    markMdocScreenBlurred: 'SCREEN_BLUR';
     clearUri: '';
     enableLocation: 'ALLOWED' | 'LOCATION_REQUEST';
     getFaceAuthConsent:
@@ -251,6 +276,15 @@ export interface Typegen0 {
     SHARING_TIMEOUT: 'ACCEPT_REQUEST' | 'CHECK_FLOW_TYPE' | 'FACE_VALID';
   };
   eventsCausingGuards: {
+    isMdocOnIos: 'BLUETOOTH_STATE_DISABLED';
+    isMdocFlow:
+      | ''
+      | 'APP_ACTIVE'
+      | 'BLUETOOTH_STATE_DISABLED'
+      | 'CANCEL'
+      | 'DISMISS';
+    isMdocScreenBlurred: 'done.invoke.MdocPresentation';
+    isMdocBleBusy: 'PRESENT_MDOC';
     isFlowTypeDeepLink: 'START_PERMISSION_CHECK';
     isFlowTypeMiniViewShare: 'CHECK_FLOW_TYPE';
     isFlowTypeMiniViewShareWithSelfie: 'CHECK_FLOW_TYPE' | 'DISMISS';
@@ -267,6 +301,7 @@ export interface Typegen0 {
     uptoAndroid11: '' | 'START_PERMISSION_CHECK';
   };
   eventsCausingServices: {
+    presentMdoc: '';
     OpenId4VP: '' | 'SCAN';
     QrLogin: '' | 'SCAN';
     checkBluetoothPermission:
@@ -309,6 +344,9 @@ export interface Typegen0 {
       | 'xstate.after(DESTROY_TIMEOUT)#scan.clearingConnectionBeforeBleConnect';
   };
   matchesStates:
+    | 'readyForBleConnection'
+    | 'mdocBusy'
+    | 'presentingMdoc'
     | 'bluetoothDenied'
     | 'bluetoothPermissionDenied'
     | 'checkBluetoothPermission'

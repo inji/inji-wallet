@@ -72,14 +72,22 @@ exports[`Header should render with title 1`] = `
   >
     <View
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "flexDirection": "row",
-          "paddingBottom": 16,
-          "paddingHorizontal": 10,
-          "paddingTop": 44,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+          },
+          {
+            "paddingBottom": 16,
+            "paddingHorizontal": 10,
+            "paddingTop": 24,
+          },
+          {
+            "paddingTop": 44,
+          },
+          undefined,
+        ]
       }
     >
       <View
@@ -164,31 +172,43 @@ exports[`Header should render with title 1`] = `
               null,
               null,
               null,
-              null,
+              {
+                "flexShrink": 1,
+              },
               null,
               null,
             ]
           }
         >
           <View
+            accessibilityRole="header"
             style={
-              {
-                "alignItems": "center",
-                "marginLeft": -40,
-              }
+              [
+                {
+                  "alignItems": "center",
+                  "marginLeft": 0,
+                },
+                {
+                  "marginLeft": -40,
+                },
+              ]
             }
           >
             <Text
               accessibilityLabel="title"
               accessible={true}
               style={
-                {
-                  "color": "#000000",
-                  "fontFamily": "Montserrat_600SemiBold",
-                  "fontSize": 18,
-                  "lineHeight": 21,
-                  "paddingTop": 4,
-                }
+                [
+                  {
+                    "color": "#000000",
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 18,
+                    "lineHeight": 21,
+                    "paddingTop": 4,
+                  },
+                  undefined,
+                  undefined,
+                ]
               }
             >
               Test Title
@@ -273,14 +293,22 @@ exports[`Header should render without title 1`] = `
   >
     <View
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "flexDirection": "row",
-          "paddingBottom": 16,
-          "paddingHorizontal": 10,
-          "paddingTop": 44,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+          },
+          {
+            "paddingBottom": 16,
+            "paddingHorizontal": 10,
+            "paddingTop": 24,
+          },
+          {
+            "paddingTop": 44,
+          },
+          undefined,
+        ]
       }
     >
       <View
@@ -365,31 +393,43 @@ exports[`Header should render without title 1`] = `
               null,
               null,
               null,
-              null,
+              {
+                "flexShrink": 1,
+              },
               null,
               null,
             ]
           }
         >
           <View
+            accessibilityRole="header"
             style={
-              {
-                "alignItems": "center",
-                "marginLeft": -40,
-              }
+              [
+                {
+                  "alignItems": "center",
+                  "marginLeft": 0,
+                },
+                {
+                  "marginLeft": -40,
+                },
+              ]
             }
           >
             <Text
               accessibilityLabel="title"
               accessible={true}
               style={
-                {
-                  "color": "#000000",
-                  "fontFamily": "Montserrat_600SemiBold",
-                  "fontSize": 18,
-                  "lineHeight": 21,
-                  "paddingTop": 4,
-                }
+                [
+                  {
+                    "color": "#000000",
+                    "fontFamily": "Montserrat_600SemiBold",
+                    "fontSize": 18,
+                    "lineHeight": 21,
+                    "paddingTop": 4,
+                  },
+                  undefined,
+                  undefined,
+                ]
               }
             />
           </View>

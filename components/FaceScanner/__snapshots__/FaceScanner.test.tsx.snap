@@ -122,6 +122,7 @@ exports[`FaceScanner should render permission denied state 1`] = `
         "opacity": 1,
       }
     }
+    testID="allowCameraButton"
   >
     <Text>
       <Text

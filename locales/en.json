@@ -21,6 +21,17 @@
       "EXPIRED": "Status check completed. The status of {{idType}} is Expired.",
       "PENDING": "Status check completed. The status of {{idType}} is Pending Verification."
     },
+    "mdocSharing": {
+      "SHARED": "{{card}} shared in person.",
+      "SHARED_WITH_FACE_VERIFICATION": "Face verification is successful and {{card}} is shared in person.",
+      "SENT_NOT_CONFIRMED": "{{card}} sent in person, but the verifier didn't confirm they received it.",
+      "SENDING_STOPPED": "Sending {{card}} in person was stopped. Some details may have reached the verifier.",
+      "SENDING_INTERRUPTED": "Sending {{card}} in person was interrupted. Some details may have reached the verifier.",
+      "VERIFIER_REPORTED_PROBLEM": "{{card}} sent in person, but the verifier reported a problem.",
+      "SENDING_FAILED": "Sharing {{card}} in person didn't complete.",
+      "DECLINED": "Declined an in-person request for {{card}}.",
+      "FACE_VERIFICATION_FAILED": "Face verification failed while sharing {{card}} in person."
+    },
     "vpSharing": {
       "SHARED_SUCCESSFULLY": "Credential Presentation is shared successfully.",
       "SHARED_WITH_FACE_VERIFIACTION": "Face verification is successful, and the Credential Presentation is shared successfully.",
@@ -1422,5 +1433,346 @@
     "description": "Make sure you recognize or trust this issuer. Once you trust this issuer:",
     "title": "Quick Check",
     "subTitle": "Before proceeding, confirm you recognize this issuer"
+  },
+  "ShareNearby": {
+    "title": "Share",
+    "nearby": "Share nearby",
+    "scan": "Scan QR code",
+    "help": "Help?",
+    "close": "Close",
+    "back": "Back",
+    "cancel": "Cancel",
+    "decline": "Decline",
+    "retry": "Try again",
+    "done": "Done",
+    "newCode": "Show a new code",
+    "home": "Go to Home",
+    "entry": {
+      "title": "Show a QR code to the verifier",
+      "description": "They scan it with their device to connect. Nothing is shared until you approve.",
+      "offlineTitle": "Both options work offline",
+      "offlineDescription": "No internet or mobile data needed. Your phone connects straight to the verifier's device.",
+      "choose": "Choose the code their device can read",
+      "mdocTitle": "Mobile ID QR code",
+      "mdocDescription": "For ID readers that check mobile driving licences and other mobile IDs.",
+      "noMdoc": "Add a mobile ID (mdoc) to your wallet to use this option.",
+      "bleTitle": "Bluetooth QR code",
+      "bleDescription": "Receive a card from another Inji Wallet. Your phone acts as the verifier.",
+      "chooseHint": "Not sure? Ask the verifier which code they can read.",
+      "compare": "Compare the two",
+      "sessionEnded": "Session ended. Nothing was shared.",
+      "bleUnavailable": "Not available on iPhone yet."
+    },
+    "engagement": {
+      "steps": {
+        "show": "Show code",
+        "connect": "Connect",
+        "share": "Share"
+      },
+      "step": {
+        "showingCode": "Step 1 of 3: show code",
+        "connecting": "Step 2 of 3: connecting",
+        "waitingForRequest": "Step 3 of 3: connected",
+        "sharing": "Step 3 of 3: review and share"
+      },
+      "showingCode": {
+        "title": "Show this code to the verifier",
+        "description": "Turn your screen towards them and let them scan it with their device.",
+        "status": "Waiting for the verifier to scan"
+      },
+      "connecting": {
+        "title": "Connecting to the verifier",
+        "description": "They scanned your code. Keep your phone near their device while a secure connection is set up.",
+        "status": "Connecting securely"
+      },
+      "waitingForRequest": {
+        "title": "Connected",
+        "description": "Waiting for the verifier to send their request. It will show here in a moment.",
+        "status": "Waiting for a request"
+      },
+      "codeLabel": "Mobile ID QR code",
+      "expires": "Code expires in {{time}}",
+      "expiring": "Code expired. Ending this session…",
+      "bluetooth": "Bluetooth is on",
+      "private": "Nothing is shared until you approve the request",
+      "scanHelp": "Verifier can't scan it?",
+      "you": "You",
+      "verifier": "Verifier",
+      "nextTitle": "What happens next",
+      "next": [
+        "You'll see who is asking and what they want",
+        "Untick anything you don't want to share",
+        "Nothing leaves your phone until you tap Share"
+      ],
+      "sessionEnds": "Session ends in {{time}}",
+      "endSession": "End session"
+    },
+    "request": {
+      "title": "Share these details?",
+      "description": "Untick anything you don't want to share.",
+      "unknownVerifier": "Unknown verifier",
+      "verifierDetails": "View details about {{name}}",
+      "verifierTitle": "Who is asking?",
+      "chooseCard": "Choose a card",
+      "detailCount": "{{count}} detail",
+      "share": "Share {{count}} detail",
+      "verifyShare": "Share with selfie verification",
+      "retained": "Verifier will keep a copy",
+      "retentionHelp": "About kept copies",
+      "retentionDescription": "The verifier said it will keep a copy of these details after you share them.",
+      "noMatch": "No card in your wallet has the details requested for this document. You can decline this request.",
+      "notOnCard": "Not on your card, so they won't be shared",
+      "revokedCard": "The issuer has suspended or revoked this card, so it can't be shared.",
+      "expires": "Session ends in",
+      "expiring": "Session ending…",
+      "prepareError": "We couldn't prepare the selected details. Nothing has been sent. Try again or decline.",
+      "trust": {
+        "verified": "Verified verifier",
+        "unverified": "Unverified verifier",
+        "notSigned": "Unverified verifier",
+        "invalid": "Verifier check failed"
+      },
+      "trustDescription": {
+        "verified": "Verified. Its certificate matches the trusted verifier list.",
+        "unverified": "It didn't prove its identity, or it isn't on the trusted list. A secure connection doesn't prove who they are.",
+        "notSigned": "It didn't prove its identity, or it isn't on the trusted list. A secure connection doesn't prove who they are.",
+        "invalid": "Its certificate is invalid or expired. It's safest to decline."
+      },
+      "share_plural": "Share {{count}} details",
+      "detailCount_plural": "{{count}} details",
+      "shareAnyway": "Share anyway",
+      "trustCard": {
+        "unverified": {
+          "title": "Unverified verifier",
+          "description": "We couldn't confirm who is asking. Share only if you trust the person or device in front of you."
+        },
+        "invalid": {
+          "title": "This verifier failed its identity check",
+          "description": "Its certificate is invalid or has expired. This can be a mistake, or an attempt to collect your details."
+        }
+      },
+      "askingFrom": "They're asking for details from",
+      "cardCount": "{{count}} card",
+      "cardCount_plural": "{{count}} cards",
+      "untickRest": ". Untick anything you don't want to share.",
+      "shareFromCards": "Share {{count}} detail from {{cards}} cards",
+      "shareFromCards_plural": "Share {{count}} details from {{cards}} cards",
+      "followUpTitle": "The verifier is asking for more",
+      "followUpDescription": "You already shared details with this verifier. Check what they are asking for now before you share again.",
+      "notShared": "Won't be shared",
+      "shareNothing": "Share",
+      "nothingSelected": "Select at least one detail to share, or decline.",
+      "sharePartial": "Share {{count}} of {{total}} details",
+      "partialShareNote": "The verifier may not accept a partial share.",
+      "expiredBadge": "Expired",
+      "expiredOn": "Expired on {{date}}. The verifier will see this if you share it.",
+      "expiredWarning": "This card has expired. The verifier will see this if you share it.",
+      "noCard": {
+        "title": "You don't have the card they asked for",
+        "askedFor": "They asked for",
+        "notInWallet": "{{count}} detail · Not in your wallet",
+        "notInWallet_plural": "{{count}} details · Not in your wallet",
+        "description": "Nothing has been shared. End the session now, or add the card and show a new code.",
+        "addCard": "Add a card"
+      },
+      "detailsRequested": "{{count}} detail requested",
+      "detailsRequested_plural": "{{count}} details requested",
+      "selectAll": "Select all",
+      "clearAll": "Clear all",
+      "chooseCardFirst": "Choose a card above to see which of these details it holds."
+    },
+    "requestHelp": {
+      "trustLabel": {
+        "verified": "Verified",
+        "unverified": "Unverified",
+        "notSigned": "Unverified",
+        "invalid": "Failed check"
+      },
+      "gotIt": "Got it",
+      "learnMore": "Learn more",
+      "identity": "Identity",
+      "secureConnection": "A secure connection doesn't prove who the verifier is.",
+      "identityIntro": "Before you share, Inji Wallet checks who is asking.",
+      "identityDescription": {
+        "verified": "Its certificate matches the trusted verifier list. You can see who they are.",
+        "unverified": "It didn't prove who it is. Share only if you trust the person or device in front of you.",
+        "invalid": "Its certificate is invalid or expired. It's safest to decline."
+      },
+      "retentionMeaningTitle": "What this means",
+      "retentionMeaning": "Inji Wallet can't delete their copy for you.",
+      "retentionActionTitle": "What you can do",
+      "retentionAction": "Ask the verifier how long they keep it, or untick the detail.",
+      "seeTitle": "They see",
+      "notSeeTitle": "They don't see",
+      "seeItems": [
+        "The details you tick",
+        "Which card they came from",
+        "That the card is genuine"
+      ],
+      "notSeeItems": [
+        "The rest of your card",
+        "Your other cards",
+        "Your location"
+      ],
+      "keptCopies": "They keep a copy only of the details that say “Verifier will keep a copy”."
+    },
+    "helpContent": {
+      "title": "Which QR code should I use?",
+      "description": "Use the one the verifier's device can read. If you're not sure, ask them.",
+      "scanTitle": "Verifier can't scan your code?",
+      "privacyTitle": "What the verifier can see",
+      "privacyDescription": "Only what you tick on this screen.",
+      "mdocDescription": "For ID readers, at a counter or checkpoint, that check mobile driving licences and other mobile IDs.",
+      "bothTitle": "Both of them",
+      "bothOffline": "Work offline, with no internet or mobile data",
+      "bothApproval": "Only connect your phones. Nothing is shared until you approve",
+      "bothChoose": "Let you choose the card and details after the verifier asks",
+      "scanReadableTitle": "Make the code easy to read",
+      "scanReadableDescription": "Turn your screen towards them and hold it still, about a hand's length away.",
+      "scanTheirsTitle": "Do they have a code to show?",
+      "scanTheirsDescription": "Then scan theirs from the Scan QR code tab.",
+      "scanTryAgain": "Try again",
+      "scanInstead": "Scan their code instead"
+    },
+    "readiness": {
+      "title": "Getting ready to share",
+      "description": "Checking Bluetooth and nearby-device permissions.",
+      "bluetoothTitle": "Turn on Bluetooth",
+      "bluetoothDescription": "Your phone connects to the verifier's device over Bluetooth. Nothing is shared until you approve a request.",
+      "permissionTitle": "Turn on Bluetooth permission",
+      "permissionDescription": "Inji Wallet can't ask again, so turn it on in Settings.",
+      "locationTitle": "Turn on location services",
+      "locationDescription": "Older versions of Android need location services to use Bluetooth. Your location isn't shared with the verifier.",
+      "busyTitle": "Bluetooth is busy",
+      "busyDescription": "Another sharing session is still open on this phone. Wait a moment, then try again.",
+      "storageTitle": "Not enough space",
+      "storageDescription": "Free up storage so your wallet can record the sharing activity.",
+      "settings": "Open settings",
+      "continue": "Continue",
+      "bluetoothSheet": {
+        "title": "Turn on Bluetooth to show your code",
+        "description": "Your code connects your phone to the verifier's device over Bluetooth. Nothing is shared until you approve a request.",
+        "androidNote": "Android asks you to confirm. Bluetooth stays on until you turn it off.",
+        "iosDescription": "Turn it on in Control Centre, or in Settings › Bluetooth. We'll continue as soon as it's on.",
+        "iosWaiting": "Waiting for Bluetooth to turn on",
+        "turnOn": "Turn on Bluetooth",
+        "openSettings": "Open settings"
+      }
+    },
+    "sending": {
+      "title": "Sending…",
+      "description": "Keep your phone near the verifier",
+      "stopping": "Ending the session…",
+      "preparing": "Preparing your details…",
+      "declining": "Declining the request…",
+      "stop": "Stop sending",
+      "stopTitle": "Stop sending?",
+      "stopDescription": "Some details may have already reached the verifier. Stopping won't take them back.",
+      "keepSending": "Keep sending",
+      "details": "Sending the {{count}} detail you approved",
+      "details_plural": "Sending the {{count}} details you approved"
+    },
+    "selfie": {
+      "title": "Verify your identity",
+      "description": "Use your camera to compare your face with the photo on your selected card.",
+      "continue": "Continue to camera"
+    },
+    "outcome": {
+      "shared": {
+        "title": "Shared",
+        "description": "Your details were shared and the session has ended."
+      },
+      "sentNotConfirmed": {
+        "title": "Details sent",
+        "description": "The verifier did not confirm receipt. Check with the verifier before trying again."
+      },
+      "declined": {
+        "title": "Declined",
+        "description": "Nothing was shared. The verifier was told you declined."
+      },
+      "stopped": {
+        "title": "Sending stopped",
+        "description": "Some details may have reached the verifier before you stopped. Check with them."
+      },
+      "sessionEnded": {
+        "title": "Session ended",
+        "description": "Nothing was shared."
+      },
+      "codeExpired": {
+        "title": "This code expired",
+        "description": "Nothing was shared. Show a new code when the verifier is ready to scan.",
+        "badge": "Code expired",
+        "note": "Each code works for 30 seconds, so an old code can't be used by someone else."
+      },
+      "couldntConnect": {
+        "title": "Couldn't connect to the verifier",
+        "description": "They scanned your code, but your phones couldn't set up a secure connection. Nothing was shared.",
+        "tips": [
+          "Keep your phone close to the verifier's device",
+          "Check that Bluetooth is on",
+          "Show a new code and let them scan it again"
+        ]
+      },
+      "connectionLost": {
+        "title": "Connection lost",
+        "description": "Your phones lost their connection, so this session has ended. Nothing was shared.",
+        "tipsTitle": "To share",
+        "tips": [
+          "Show a new code and let them scan it",
+          "Stay close until you see Shared"
+        ],
+        "footnote": "A lost session can't be picked up again."
+      },
+      "interrupted": {
+        "title": "Sending interrupted",
+        "description": "The connection was lost before sending finished. Some details may have reached the verifier. Check with them before sharing again."
+      },
+      "bluetoothOff": {
+        "title": "Bluetooth was turned off",
+        "description": "The session ended and nothing was shared. Turn Bluetooth on, then show a new code."
+      },
+      "timedOut": {
+        "title": "Session ended",
+        "description": "Time ran out before anything was shared. To share, show a new code.",
+        "tipsTitle": "Next time",
+        "tips": [
+          "Open the request as soon as it arrives",
+          "Each new code starts a new 5 minute session"
+        ]
+      },
+      "verifierError": {
+        "title": "The verifier reported a problem",
+        "description": "Your details were sent but may not have been accepted. Ask the verifier what to do next."
+      },
+      "requestUnreadable": {
+        "title": "The request couldn't be read",
+        "description": "Nothing was shared. Ask the verifier to try again, then show a new code."
+      },
+      "readerEnded": {
+        "title": "Verifier ended the session",
+        "description": "The verifier closed the connection. Check with them before starting again."
+      },
+      "error": {
+        "title": "Couldn't complete sharing",
+        "description": "The session has ended. Check with the verifier before trying again."
+      },
+      "requestFrom": "Request from",
+      "details": "Details",
+      "banner": "{{count}} detail shared securely with the verifier over a nearby connection.",
+      "banner_plural": "{{count}} details shared securely with the verifier over a nearby connection.",
+      "tipsTitle": "Try this",
+      "sessionHasEnded": "This session has ended.",
+      "turnOnBluetooth": "Turn on Bluetooth",
+      "askedFor": "Asked for",
+      "time": "Time",
+      "detailsFrom": "{{count}} from {{card}}",
+      "detailsCount": "{{count}} detail",
+      "detailsCount_plural": "{{count}} details",
+      "today": "Today, {{time}}",
+      "viewHistory": "View in history",
+      "goingHome": "Going to Home in",
+      "seconds": "{{count}} s",
+      "stayHere": "Stay here"
+    }
   }
 }

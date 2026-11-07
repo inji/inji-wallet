@@ -168,6 +168,7 @@ exports[`CancelDownloadModal should match snapshot when visible 1`] = `
             ],
           ]
         }
+        testID="cancelDownloadModalNoButton"
         title={
           <Text
             color="#FFFFFF"
@@ -267,6 +268,7 @@ exports[`CancelDownloadModal should match snapshot when visible 1`] = `
             ],
           ]
         }
+        testID="cancelDownloadModalYesButton"
         title={
           <Text
             align="center"

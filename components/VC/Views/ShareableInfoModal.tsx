@@ -1,3 +1,8 @@
+/**
+ * TODO: Reuse a shared bottom-sheet container with UpdatedModal, StatusInfoModal,
+ * KebabPopUp, and ExpandableListSheetView. Share presentation, safe-area handling,
+ * scrolling, and dismissal while preserving disclosed-field grouping and its explanatory note.
+ */
 import React from 'react';
 import {Overlay} from 'react-native-elements';
 import {Text} from '../../../components/ui';

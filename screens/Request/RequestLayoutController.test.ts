@@ -83,6 +83,18 @@ describe('RequestLayoutController', () => {
     expect(mockRequestSend).toHaveBeenCalled();
   });
 
+  it('ends the receive flow when Back unmounts the screen without a blur event', () => {
+    let cleanup: () => void;
+    (React.useEffect as jest.Mock).mockImplementationOnce(effect => {
+      cleanup = effect();
+    });
+    useRequestLayout();
+
+    cleanup();
+
+    expect(mockRequestSend).toHaveBeenCalledWith({type: 'SCREEN_BLUR'});
+  });
+
   it('errorStatusOverlay is null by default', () => {
     const result = useRequestLayout();
     expect(result.errorStatusOverlay).toBeNull();
