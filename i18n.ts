@@ -14,12 +14,7 @@ import {iso6393To1} from 'iso-639-3';
 import {getItem} from './machines/store';
 import {LocalizedField} from './machines/VerifiableCredential/VCMetaMachine/vc';
 
-const resources = Object.fromEntries(
-  Object.entries({en, fil, ar, hi, kn, ta}).map(([language, strings]) => [
-    language,
-    {ShareNearby: en.ShareNearby, ...strings},
-  ]),
-);
+const resources = {en, fil, ar, hi, kn, ta};
 const locale = Localization.locale;
 const languageCodeMap = {} as {[key: string]: string};
 
