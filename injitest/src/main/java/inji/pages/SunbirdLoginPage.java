@@ -5,6 +5,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.WebElement;
+import java.time.format.DateTimeFormatter;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -230,8 +231,9 @@ public class SunbirdLoginPage extends BasePage {
 	}
 
 	public void enterDateOfBirth() {
-		click(enterDateOfBirthTextBox, "Click on date of birth input field");
-		click(setButton, "Click on set button to confirm date of birth");
+//		click(enterDateOfBirthTextBox, "Click on date of birth input field");
+//		click(setButton, "Click on set button to confirm date of birth");
+    enterText(enterDateOfBirthTextBox,LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),"Enter date of birth as text");
 	}
 
 	public void clickOnLoginButton() {
