@@ -749,4 +749,6 @@ fileignoreconfig:
 - filename: components/openid4vp/dcql/credentialSetSection/CredentialSetSection.test.tsx
   checksum: fdb8da9e121a2539c81145b6d0d18f368b716fe8608c84bb5ddb03dcd04d995f
 
+- filename: docs/mdoc-proximity-design.md
+  checksum: f5fcefeaf63be73e8846c281915b99c8cd1c6f3c9169ae6922bf930e9e00e74d
 version: "1.0"
