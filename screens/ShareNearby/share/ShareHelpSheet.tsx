@@ -99,7 +99,7 @@ export function ShareHelpSheet({
         </Text>
         {(['bothOffline', 'bothApproval', 'bothChoose'] as const).map(key => (
           <View key={key} style={shareStyles.bothRow}>
-            <Tick color={Theme.ShareNearbyColors.detailTick} />
+            <Tick color={Theme.ShareNearbyColors.accent} />
             <Text style={[styles.flexible, shareStyles.bothText]}>
               {t(`helpContent.${key}`)}
             </Text>

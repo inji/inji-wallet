@@ -34,7 +34,7 @@ export function ConnectionPanel({
           {Array.isArray(nextSteps) &&
             nextSteps.map(step => (
               <View key={step} style={engagementStyles.panelRow}>
-                <Tick color={Theme.ShareNearbyColors.detailTick} />
+                <Tick color={Theme.ShareNearbyColors.accent} />
                 <Text style={[styles.flexible, engagementStyles.panelText]}>
                   {step}
                 </Text>

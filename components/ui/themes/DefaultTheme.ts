@@ -77,17 +77,19 @@ const Colors = {
 
 export type ElevationLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
+const InfoBackground = '#FCF0F7';
+
+// Share nearby reuses the palette; only the status colours below have no existing token.
 const ShareNearbyColors = {
   background: Colors.White,
   text: Colors.Black,
-  secondary: '#5D5D5D',
+  secondary: Colors.Zambezi,
   border: Colors.platinumGrey,
-  subtle: '#FAFAFA',
+  subtle: Colors.LightGrey,
   accent: Colors.Secondary,
-  tint: '#FCF0F7',
+  tint: InfoBackground,
   success: '#1B6B35',
   successTint: '#E6F4EA',
-  detailTick: '#951F6F',
   error: '#B3261E',
   connectionDots: ['#F9A26C', '#EE8C78', '#DC7F90', '#C27AB3', '#9E6ED0'],
 };
@@ -973,9 +975,6 @@ export const DefaultTheme = {
     fill: {flex: 1, borderRadius: 3},
   }),
   Colors: {
-    bodyText: '#5D5D5D',
-    cardBorder: Colors.platinumGrey,
-    subtleSurface: '#FAFAFA',
     BadgeColors: {
       requiredBorder: '#FECACA',
       requiredText: '#DC2626',
@@ -984,7 +983,7 @@ export const DefaultTheme = {
       optionalText: '#79732D',
       optionalBg: '#FFFDDE',
     },
-    infoBackground: '#FCF0F7',
+    infoBackground: InfoBackground,
     infoBorder: '#F3DDEA',
     infoText: '#64748B',
     dottedBorderColor: '#D6DBE3',

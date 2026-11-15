@@ -84,7 +84,7 @@ export function OutcomeStatus({
           </Text>
           {tips.map(tip => (
             <View key={tip} style={outcomeStyles.tipRow}>
-              <Tick color={Theme.ShareNearbyColors.detailTick} />
+              <Tick color={Theme.ShareNearbyColors.accent} />
               <Text style={[styles.flexible, outcomeStyles.tipText]}>
                 {tip}
               </Text>
