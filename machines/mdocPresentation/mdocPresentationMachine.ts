@@ -75,10 +75,21 @@ export function createMdocPresentationMachine(
             APP_INACTIVE: {target: '.stopping'},
             DISMISS: {target: '.stopping', actions: 'dismissAfterStop'},
           },
+          // Step markers for the screens. Their events are handled once on `presenting` above,
+          // since every step reacts to progress, requests, results and cancel the same way.
           states: {
-            showingCode: {},
-            connecting: {},
-            waitingForRequest: {},
+            showingCode: {
+              description:
+                'The QR code is shown; waiting for a reader to scan it.',
+            },
+            connecting: {
+              description:
+                'A reader scanned the code; the secure session is being set up.',
+            },
+            waitingForRequest: {
+              description:
+                'Connected; waiting for the reader to send its request.',
+            },
             reviewingRequest: {
               on: {
                 SELECT_CARD: {actions: 'selectCard'},
