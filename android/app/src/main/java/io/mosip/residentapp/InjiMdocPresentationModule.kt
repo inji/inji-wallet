@@ -11,7 +11,6 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import io.mosip.openID4VP.mdoc.MdocProximity
 import io.mosip.openID4VP.mdoc.MdocSigningInput
 import io.mosip.tuvali.iso.MdocCallbacks
-import io.mosip.tuvali.iso.MdocFailure
 import io.mosip.tuvali.iso.MdocPresentationOptions
 import io.mosip.tuvali.iso.MdocPresenter
 import io.mosip.tuvali.iso.MdocProgress
@@ -160,11 +159,9 @@ class InjiMdocPresentationModule(private val reactContext: ReactApplicationConte
             is MdocResult.Completed -> put("status", "completed").put("confirmedByReader", result.confirmedByReader)
             MdocResult.Declined -> put("status", "declined")
             MdocResult.Cancelled -> put("status", "cancelled")
-            is MdocResult.Failed -> put("status", "failed").put("failure", failureName(result.failure)).put("detail", result.detail)
+            is MdocResult.Failed -> put("status", "failed").put("failure", camelCase(result.failure.name)).put("detail", result.detail)
         }
     }
-
-    private fun failureName(failure: MdocFailure) = camelCase(failure.name)
 
     /** NO_READER_FOUND → noReaderFound, matching the iOS names. */
     private fun camelCase(name: String): String {
