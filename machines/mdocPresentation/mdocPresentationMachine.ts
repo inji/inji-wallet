@@ -5,7 +5,11 @@ import {
   countApprovedElements,
   hasCompleteSelection,
 } from './mdocPresentationGuards';
-import {mdocPresentationModel as presentationModel} from './mdocPresentationModel';
+import {
+  MdocOutcome,
+  mdocPresentationModel as presentationModel,
+} from './mdocPresentationModel';
+import {MdocProgress} from '../../shared/mdocPresentation/types';
 import type {
   MdocPresentationContext,
   MdocPresentationDependencies,
@@ -41,17 +45,18 @@ export function createMdocPresentationMachine(
             QR_READY: {actions: 'setQr'},
             PROGRESS: [
               {
-                cond: (_, event) => event.progress === 'connecting',
+                cond: (_, event) => event.progress === MdocProgress.Connecting,
                 target: '.connecting',
                 actions: ['setProgress', 'hideQr'],
               },
               {
-                cond: (_, event) => event.progress === 'connected',
+                cond: (_, event) => event.progress === MdocProgress.Connected,
                 target: '.waitingForRequest',
                 actions: ['setProgress', 'hideQr'],
               },
               {
-                cond: (_, event) => event.progress === 'sendingResponse',
+                cond: (_, event) =>
+                  event.progress === MdocProgress.SendingResponse,
                 target: '.sending',
                 actions: ['setProgress', 'markSending'],
               },
@@ -176,7 +181,7 @@ export function createMdocPresentationMachine(
             outcome: context.outcome,
             nothingShared: !context.responseStarted,
             sharedDetailCount:
-              context.outcome === 'shared'
+              context.outcome === MdocOutcome.Shared
                 ? countApprovedElements(
                     context.matches,
                     context.selection,

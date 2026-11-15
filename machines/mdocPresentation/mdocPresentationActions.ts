@@ -5,7 +5,6 @@ import {
   isShareableCandidate,
 } from './mdocPresentationGuards';
 import type {
-  MdocOutcome,
   MdocPresentationContext,
   MdocPresentationDependencies,
   MdocPresentationEvent,
@@ -14,11 +13,13 @@ import type {
   MdocShareRecord,
 } from './mdocPresentationModel';
 import {
+  MdocOutcome,
   ENGAGEMENT_TIMEOUT_SECONDS,
   INACTIVITY_TIMEOUT_SECONDS,
   mdocPresentationModel as presentationModel,
 } from './mdocPresentationModel';
 import {getPresentationOutcome} from './mdocPresentationServices';
+import {MdocProgress} from '../../shared/mdocPresentation/types';
 
 const SENT_RESPONSE_LOG_TYPE: Partial<Record<MdocOutcome, MdocShareLogType>> = {
   shared: 'SHARED',
@@ -76,7 +77,7 @@ export function MdocPresentationActions(
     setProgress: presentationModel.assign((_, event) => {
       if (event.type !== 'PROGRESS') return {};
       // Once connected, the session ends after the inactivity time-out with no message.
-      return event.progress === 'connected'
+      return event.progress === MdocProgress.Connected
         ? {
             progress: event.progress,
             requestExpiresAt:
@@ -256,7 +257,7 @@ export function MdocPresentationActions(
           const type =
             response.requestNumber < currentRequestNumber
               ? 'SHARED'
-              : SENT_RESPONSE_LOG_TYPE[context.outcome ?? 'error'] ??
+              : SENT_RESPONSE_LOG_TYPE[context.outcome ?? MdocOutcome.Error] ??
                 'SENDING_FAILED';
           return response.cards.map(card => ({
             ...card,

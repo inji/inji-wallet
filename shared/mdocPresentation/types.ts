@@ -26,12 +26,14 @@ export type MdocRequest = {
 /** Share the approved mdoc credentials (filtered to the approved details) as base64url CBOR, or decline. */
 export type MdocDecision = {share: string[]} | 'decline';
 
-export type MdocProgress =
-  | 'waitingForReader'
-  | 'connecting'
-  | 'connected'
-  | 'requestReceived'
-  | 'sendingResponse';
+/** Session progress reported by the native layers; values match their camelCase names. */
+export enum MdocProgress {
+  WaitingForReader = 'waitingForReader',
+  Connecting = 'connecting',
+  Connected = 'connected',
+  RequestReceived = 'requestReceived',
+  SendingResponse = 'sendingResponse',
+}
 
 export type MdocSigningInput = {
   dataToSign: string;

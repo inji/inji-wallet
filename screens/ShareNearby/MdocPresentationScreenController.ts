@@ -2,6 +2,7 @@ import {useCallback, useEffect, useState, useSyncExternalStore} from 'react';
 import {AppState, BackHandler, Linking, Platform} from 'react-native';
 import BluetoothStateManager from 'react-native-bluetooth-state-manager';
 import type {MdocPresentationRef} from '../../machines/mdocPresentation/mdocPresentationMachine';
+import {MdocOutcome} from '../../machines/mdocPresentation/mdocPresentationModel';
 import {MdocPresentationEvents as presentationEvents} from '../../machines/mdocPresentation/mdocPresentationModel';
 import {selectCanShareMdoc} from '../../machines/mdocPresentation/mdocPresentationSelectors';
 import {getFaceAttribute} from '../../components/VC/common/VCUtils';
@@ -59,7 +60,8 @@ export function useMdocPresentationScreen(
   );
   const isShowingOutcome = hasNativeOutcome && !isSendingResponse;
   const isShowingExpiredCode =
-    isShowingOutcome && presentationContext?.outcome === 'codeExpired';
+    isShowingOutcome &&
+    presentationContext?.outcome === MdocOutcome.CodeExpired;
   const selectedCards =
     presentationContext?.matches.flatMap(documentMatch =>
       documentMatch.candidates

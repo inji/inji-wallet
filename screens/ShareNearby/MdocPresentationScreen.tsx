@@ -8,6 +8,7 @@ import {Text, Button} from '../../components/ui';
 import {VerifyIdentityOverlay} from '../VerifyIdentityOverlay';
 import {LIVENESS_CHECK} from '../../shared/constants';
 import type {VerifiableCredential} from '../../machines/VerifiableCredential/VCMetaMachine/vc';
+import {MdocOutcome} from '../../machines/mdocPresentation/mdocPresentationModel';
 import {MdocEngagement} from './engagement/MdocEngagement';
 import {EngagementSteps} from './engagement/EngagementSteps';
 import {ScanHelpSheet} from './engagement/ScanHelpSheet';
@@ -64,7 +65,7 @@ export function MdocPresentationScreen({
       {/* The design shows the stepper while connecting, not on review, sending or outcomes. */}
       {(isShowingEngagement ||
         (isShowingOutcome &&
-          presentationContext.outcome === 'codeExpired')) && (
+          presentationContext.outcome === MdocOutcome.CodeExpired)) && (
         <EngagementSteps stage={engagementStage ?? 'showingCode'} />
       )}
       {isShowingEngagement && engagementStage && (

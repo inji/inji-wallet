@@ -10,12 +10,12 @@ import {
   hasCompleteSelection,
 } from './mdocPresentationGuards';
 import {
+  MdocOutcome,
   ENGAGEMENT_TIMEOUT_SECONDS,
   INACTIVITY_TIMEOUT_SECONDS,
   MdocPresentationEvents as presentationEvents,
 } from './mdocPresentationModel';
 import type {
-  MdocOutcome,
   MdocPresentationContext,
   MdocPresentationDependencies,
   MdocPresentationEvent,
@@ -41,25 +41,29 @@ export function getPresentationOutcome(
 ): MdocOutcome {
   switch (result.status) {
     case 'completed':
-      return result.confirmedByReader ? 'shared' : 'sentNotConfirmed';
+      return result.confirmedByReader
+        ? MdocOutcome.Shared
+        : MdocOutcome.SentNotConfirmed;
     case 'declined':
-      return 'declined';
+      return MdocOutcome.Declined;
     case 'cancelled':
-      return responseStarted ? 'stopped' : 'sessionEnded';
+      return responseStarted ? MdocOutcome.Stopped : MdocOutcome.SessionEnded;
     case 'failed': {
       if (result.failure === 'connectionLost')
-        return responseStarted ? 'interrupted' : 'connectionLost';
+        return responseStarted
+          ? MdocOutcome.Interrupted
+          : MdocOutcome.ConnectionLost;
       const failureOutcomes: Record<string, MdocOutcome> = {
-        noReaderFound: 'codeExpired',
-        connectionFailed: 'couldntConnect',
-        bluetoothOff: 'bluetoothOff',
-        timedOut: 'timedOut',
-        readerReportedError: 'verifierError',
-        requestUnreadable: 'requestUnreadable',
-        readerSecurityError: 'requestUnreadable',
-        readerEnded: 'readerEnded',
+        noReaderFound: MdocOutcome.CodeExpired,
+        connectionFailed: MdocOutcome.CouldntConnect,
+        bluetoothOff: MdocOutcome.BluetoothOff,
+        timedOut: MdocOutcome.TimedOut,
+        readerReportedError: MdocOutcome.VerifierError,
+        requestUnreadable: MdocOutcome.RequestUnreadable,
+        readerSecurityError: MdocOutcome.RequestUnreadable,
+        readerEnded: MdocOutcome.ReaderEnded,
       };
-      return failureOutcomes[result.failure] ?? 'error';
+      return failureOutcomes[result.failure] ?? MdocOutcome.Error;
     }
   }
 }

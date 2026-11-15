@@ -9,11 +9,11 @@ import type {
   MdocDecision,
   MdocPresentationHandlers,
   MdocPresentationOptions,
-  MdocProgress,
   MdocRequest,
   MdocResult,
   ReaderTrust,
 } from '../../shared/mdocPresentation/types';
+import {MdocProgress} from '../../shared/mdocPresentation/types';
 
 export type PrepareMdocForSharing = (
   vc: VC,
@@ -63,29 +63,30 @@ export const ENGAGEMENT_TIMEOUT_SECONDS = 30;
 /** Allowed silence between session messages once connected (9.1.1.4). */
 export const INACTIVITY_TIMEOUT_SECONDS = 300;
 
-export type MdocOutcome =
-  | 'shared'
-  | 'sentNotConfirmed'
-  | 'declined'
-  | 'stopped'
-  | 'sessionEnded'
-  | 'codeExpired'
-  | 'couldntConnect'
-  | 'connectionLost'
-  | 'interrupted'
-  | 'bluetoothOff'
-  | 'timedOut'
-  | 'verifierError'
-  | 'requestUnreadable'
-  | 'readerEnded'
-  | 'error';
+export enum MdocOutcome {
+  Shared = 'shared',
+  SentNotConfirmed = 'sentNotConfirmed',
+  Declined = 'declined',
+  Stopped = 'stopped',
+  SessionEnded = 'sessionEnded',
+  CodeExpired = 'codeExpired',
+  CouldntConnect = 'couldntConnect',
+  ConnectionLost = 'connectionLost',
+  Interrupted = 'interrupted',
+  BluetoothOff = 'bluetoothOff',
+  TimedOut = 'timedOut',
+  VerifierError = 'verifierError',
+  RequestUnreadable = 'requestUnreadable',
+  ReaderEnded = 'readerEnded',
+  Error = 'error',
+}
 
 export const mdocPresentationModel = createModel(
   {
     qrText: '',
     codeExpiresAt: undefined as number | undefined,
     requestExpiresAt: undefined as number | undefined,
-    progress: 'waitingForReader' as MdocProgress,
+    progress: MdocProgress.WaitingForReader,
     request: undefined as MdocRequest | undefined,
     matches: [] as MdocDocumentMatch[],
     selection: {} as Record<string, string>,
