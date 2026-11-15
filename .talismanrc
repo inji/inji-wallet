@@ -661,8 +661,6 @@ fileignoreconfig:
   checksum: cecb0101cb18e6ff6343c0a0e27b91a1f7a528b6ed5998c5eea59cef58621e2a
 
 
-- filename: docs/mdoc-ios-local-build.md
-  checksum: c00c3405610ed6f04c3cd9d50214e82322b5a9514b019f61c60e82dc89c60133
 
 - filename: screens/ShareNearby/request/IdentityHelp.tsx
   checksum: 001c1457d257159fc6fd9a60b675bb9cfe09dd412a9412326685fbe31718ece2
@@ -709,11 +707,7 @@ fileignoreconfig:
 - filename: android/app/src/main/java/io/mosip/residentapp/InjiMdocPresentationModule.kt
   checksum: a22cb632d87b4a7eacf3c938030fb18710a901ddaf9f15557fa1acdbe112aedc
 
-- filename: docs/mdoc-proximity-scope.md
-  checksum: a7dc030731fde62c3d06ca0a650c3e02a5d88ecce34be0eb62c58280956c4280
 
-- filename: docs/mdoc-proximity-design-review.md
-  checksum: 832ddc5b82b8fd876245e73548ac9116b723c5d0f054e97dec3ee26d0421abb0
 
 - filename: screens/ShareNearby/request/RequestedDetails.tsx
   checksum: 185c561c46c4152f2223ebc35e9ce39a1458853db5c3d0742dfa838836bfec65
