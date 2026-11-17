@@ -9,6 +9,7 @@ import {CardChoices} from './CardChoices';
 import {RequestedDetails} from './RequestedDetails';
 import {getRequestedElements} from './requestUtils';
 import type {SelectCard, ToggleField} from './types';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 const reviewStyles = Theme.ShareNearbyReviewStyles;
@@ -60,6 +61,9 @@ export function RequestedDocument({
             </Text>
             <Pressable
               accessibilityRole="button"
+              {...testIDProps(
+                `mdocSelectAll-${documentMatch.requested.docType}`,
+              )}
               onPress={() =>
                 onSelectAllFields(documentMatch.requested.docType)
               }>
@@ -69,6 +73,9 @@ export function RequestedDocument({
             </Pressable>
             <Pressable
               accessibilityRole="button"
+              {...testIDProps(
+                `mdocClearAll-${documentMatch.requested.docType}`,
+              )}
               onPress={() => onClearAllFields(documentMatch.requested.docType)}>
               <Text weight="semibold" style={styles.link}>
                 {t('request.clearAll')}

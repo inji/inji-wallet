@@ -6,6 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {Text, Button} from '../../../components/ui';
 import type {useCountdown} from '../useCountdown';
 import type {MdocRequestReviewProps} from './types';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 const reviewStyles = Theme.ShareNearbyReviewStyles;
@@ -100,6 +101,7 @@ export function RequestReviewActions({
             styles={styles.buttonContainer}
             type="gradient"
             title={t('retry')}
+            testID="mdocRetryPreparation"
             onPress={onRetryPreparation}
             disabled={hasRequestExpired}
           />
@@ -107,6 +109,7 @@ export function RequestReviewActions({
             styles={styles.buttonContainer}
             type="outline"
             title={t('decline')}
+            testID="declineMdoc"
             onPress={onDeclineRequest}
           />
         </>
@@ -117,6 +120,7 @@ export function RequestReviewActions({
             styles={styles.buttonContainer}
             type="gradient"
             title={t('decline')}
+            testID="declineMdoc"
             onPress={onDeclineRequest}
           />
           <Pressable
@@ -124,7 +128,7 @@ export function RequestReviewActions({
             accessibilityState={{disabled: isShareDisabled}}
             disabled={isShareDisabled}
             onPress={onShareSelectedCards}
-            testID="shareMdoc"
+            {...testIDProps('shareMdocAnyway')}
             style={({pressed}) => [
               styles.linkButton,
               pressed && styles.pressed,
@@ -150,6 +154,7 @@ export function RequestReviewActions({
             styles={styles.buttonContainer}
             type="outline"
             title={t('decline')}
+            testID="declineMdoc"
             onPress={onDeclineRequest}
           />
         </>

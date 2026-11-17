@@ -9,6 +9,7 @@ import Sun from '../../../assets/shareNearby/sun.svg';
 import Qr from '../../../assets/shareNearby/qr.svg';
 import Bluetooth from '../../../assets/shareNearby/bluetooth.svg';
 import {IconTip} from '../IconTip';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 const helpStyles = Theme.ShareNearbyHelpStyles;
@@ -60,10 +61,12 @@ export function ScanHelpSheet({
         styles={styles.buttonContainer}
         type="gradient"
         title={t('helpContent.scanTryAgain')}
+        testID="mdocScanTryAgain"
         onPress={onClose}
       />
       <Pressable
         accessibilityRole="button"
+        {...testIDProps('mdocScanInstead')}
         onPress={onScanInstead}
         style={({pressed}) => [styles.linkButton, pressed && styles.pressed]}>
         <Text weight="semibold" style={styles.link}>

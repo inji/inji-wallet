@@ -14,6 +14,7 @@ import {ShareTabs} from './share/ShareTabs';
 import {ShareContent} from './share/ShareContent';
 import {ShareHelpSheet} from './share/ShareHelpSheet';
 import {BluetoothOffSheet} from './readiness/BluetoothOffSheet';
+import testIDProps from '../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 
@@ -52,6 +53,7 @@ export function ShareScreen() {
                 <Pressable
                   accessibilityRole="button"
                   accessibilityLabel={t('back')}
+                  {...testIDProps('mdocBack')}
                   onPress={handleHeaderBack}
                   style={({pressed}) => [
                     styles.iconButton,
@@ -66,6 +68,7 @@ export function ShareScreen() {
                 <Pressable
                   accessibilityRole="button"
                   accessibilityLabel={t('help')}
+                  {...testIDProps('mdocHelp')}
                   onPress={presentationController.OPEN_HELP}
                   style={({pressed}) => [
                     styles.helpButton,

@@ -51,6 +51,7 @@ export function MdocOutcomeView(props: MdocOutcomeViewProps) {
           styles={styles.buttonContainer}
           type="clear"
           title={t('outcome.viewHistory')}
+          testID="mdocViewHistory"
           onPress={props.onViewHistory}
         />
       )}

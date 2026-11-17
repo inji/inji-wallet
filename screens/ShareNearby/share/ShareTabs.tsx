@@ -7,6 +7,7 @@ import {Text} from '../../../components/ui';
 import Scan from '../../../assets/shareNearby/scan.svg';
 import Nearby from '../../../assets/shareNearby/nearby.svg';
 import type {ShareTab} from './types';
+import testIDProps from '../../../shared/commonUtil';
 
 const shareStyles = Theme.ShareNearbyShareStyles;
 
@@ -24,6 +25,7 @@ export function ShareTabs({
         <Pressable
           accessibilityRole="tab"
           accessibilityState={{selected: selectedTab === value}}
+          {...testIDProps(value === 'scan' ? 'scanQrTab' : 'shareNearbyTab')}
           key={value}
           onPress={() => onSelectTab(value)}
           style={shareStyles.tab}>

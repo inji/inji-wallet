@@ -35,6 +35,7 @@ export function OutcomeActions({
             styles={styles.buttonContainer}
             type="gradient"
             title={t('done')}
+            testID="mdocOutcomeDone"
             onPress={onDone}
           />
           {!isShared && (
@@ -42,6 +43,7 @@ export function OutcomeActions({
               styles={styles.buttonContainer}
               type="clear"
               title={t('newCode')}
+              testID="mdocOutcomeNewCode"
               onPress={onNewCode}
             />
           )}
@@ -56,6 +58,11 @@ export function OutcomeActions({
                 ? 'outcome.turnOnBluetooth'
                 : 'newCode',
             )}
+            testID={
+              layout.primary === 'turnOnBluetooth'
+                ? 'mdocOutcomeTurnOnBluetooth'
+                : 'mdocOutcomeNewCode'
+            }
             onPress={
               layout.primary === 'turnOnBluetooth'
                 ? onTurnOnBluetooth
@@ -66,6 +73,7 @@ export function OutcomeActions({
             styles={styles.buttonContainer}
             type="clear"
             title={t('done')}
+            testID="mdocOutcomeDone"
             onPress={onDone}
           />
         </>

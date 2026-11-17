@@ -5,6 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {Text, Button} from '../../../components/ui';
 import TickGreen from '../../../assets/shareNearby/check.svg';
 import CrossRed from '../../../assets/shareNearby/cross-red.svg';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 const helpStyles = Theme.ShareNearbyHelpStyles;
@@ -71,10 +72,12 @@ export function PrivacyHelp({
         styles={styles.buttonContainer}
         type="gradient"
         title={t('requestHelp.gotIt')}
+        testID="mdocPrivacyGotIt"
         onPress={onClose}
       />
       <Pressable
         accessibilityRole="button"
+        {...testIDProps('mdocRetentionHelpLink')}
         onPress={onOpenRetentionHelp}
         style={({pressed}) => [styles.linkButton, pressed && styles.pressed]}>
         <Text weight="semibold" style={styles.link}>

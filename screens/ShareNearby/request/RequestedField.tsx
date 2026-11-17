@@ -8,12 +8,14 @@ import {
   CheckboxSelectionType,
 } from '../../../components/ui/checkbox/Checkbox';
 import Copy from '../../../assets/shareNearby/copy.svg';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 const reviewStyles = Theme.ShareNearbyReviewStyles;
 
 export function RequestedField({
   label,
+  elementIdentifier,
   checked,
   disabled,
   intentToRetain,
@@ -21,6 +23,7 @@ export function RequestedField({
   onOpenRetentionHelp,
 }: {
   label: string;
+  elementIdentifier: string;
   checked: boolean;
   disabled: boolean;
   intentToRetain: boolean;
@@ -31,7 +34,7 @@ export function RequestedField({
   return (
     <View style={reviewStyles.field}>
       <Checkbox
-        testId={label}
+        testId={elementIdentifier}
         selectionType={CheckboxSelectionType.MULTIPLE}
         accessibilityLabel={label}
         checked={checked}
@@ -53,6 +56,7 @@ export function RequestedField({
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={t('request.retentionHelp')}
+              {...testIDProps(`mdocRetentionHelp-${elementIdentifier}`)}
               onPress={onOpenRetentionHelp}
               style={reviewStyles.retention}>
               <Copy />

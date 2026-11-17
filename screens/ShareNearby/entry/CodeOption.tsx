@@ -5,6 +5,7 @@ import {Text} from '../../../components/ui';
 import {Theme} from '../../../components/ui/styleUtils';
 import Qr from '../../../assets/shareNearby/qr.svg';
 import Chevron from '../../../assets/shareNearby/chevron.svg';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 const entryStyles = Theme.ShareNearbyEntryStyles;
@@ -32,7 +33,7 @@ export function CodeOption({
       accessibilityState={{disabled: !!disabled}}
       disabled={disabled}
       onPress={onPress}
-      testID={testID}
+      {...testIDProps(testID)}
       style={({pressed}) => [
         styles.card,
         entryStyles.option,

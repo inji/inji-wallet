@@ -3,6 +3,7 @@ import React from 'react';
 import {Pressable, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {Text, Button} from '../../../components/ui';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 
@@ -25,6 +26,7 @@ export function EngagementActions({
         <Pressable
           accessibilityRole="button"
           style={styles.linkButton}
+          {...testIDProps('mdocScanHelp')}
           onPress={onHelp}>
           <Text weight="semibold" style={styles.link}>
             {t('engagement.scanHelp')}
@@ -35,6 +37,7 @@ export function EngagementActions({
         styles={styles.buttonContainer}
         type="outline"
         title={t(isConnected ? 'engagement.endSession' : 'cancel')}
+        testID={isConnected ? 'endMdocSession' : 'cancelMdocQr'}
         onPress={onCancel}
       />
     </View>

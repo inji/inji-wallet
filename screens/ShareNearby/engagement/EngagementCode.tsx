@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import {ActivityIndicator, LayoutChangeEvent, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import QRCode from 'react-native-qrcode-svg';
+import testIDProps from '../../../shared/commonUtil';
 
 const colors = Theme.ShareNearbyColors;
 const engagementStyles = Theme.ShareNearbyEngagementStyles;
@@ -26,12 +27,12 @@ export function EngagementCode({
     <View
       style={engagementStyles.measure}
       onLayout={handleQrContainerLayout}
-      testID="mdocQrContainer">
+      {...testIDProps('mdocQrContainer')}>
       <View
         style={engagementStyles.frame}
         accessible
         accessibilityLabel={t('engagement.codeLabel')}
-        testID="mdocQr">
+        {...testIDProps('mdocQr')}>
         {qrText && qrCodeSize > 0 && !isExpired ? (
           <QRCode value={qrText} size={qrCodeSize} quietZone={0} ecl="M" />
         ) : (

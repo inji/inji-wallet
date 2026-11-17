@@ -8,6 +8,7 @@ import Verified from '../../../assets/shareNearby/verified.svg';
 import Chevron from '../../../assets/shareNearby/chevron.svg';
 import QuestionGrey from '../../../assets/shareNearby/question-grey.svg';
 import ShieldX from '../../../assets/shareNearby/shield-x.svg';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 const reviewStyles = Theme.ShareNearbyReviewStyles;
@@ -24,6 +25,7 @@ function VerifiedVerifier({
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={t('request.verifierDetails', {name: readerName})}
+      {...testIDProps('mdocVerifierCard')}
       onPress={onPress}
       style={[styles.card, reviewStyles.verifier]}>
       <View style={reviewStyles.avatar}>
@@ -76,6 +78,7 @@ export function VerifierCard({
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={t(`request.trustCard.${copyKey}.title`)}
+        {...testIDProps('mdocVerifierTrustCard')}
         onPress={onPress}
         style={reviewStyles.trustCardHeader}>
         <View

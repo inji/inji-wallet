@@ -6,6 +6,7 @@ import {Modal} from '../../../components/ui/UpdatedModal';
 import {Button, Text} from '../../../components/ui';
 import BluetoothOff from '../../../assets/shareNearby/bluetooth-off.svg';
 import Close from '../../../assets/shareNearby/close.svg';
+import testIDProps from '../../../shared/commonUtil';
 
 const colors = Theme.ShareNearbyColors;
 const styles = Theme.ShareNearbyStyles;
@@ -48,6 +49,7 @@ export function BluetoothOffSheet({
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={t('close')}
+          {...testIDProps('mdocBluetoothSheetClose')}
           onPress={onCancel}
           style={readinessStyles.sheetClose}>
           <Close />
@@ -85,6 +87,7 @@ export function BluetoothOffSheet({
       />
       <Pressable
         accessibilityRole="button"
+        {...testIDProps('mdocBluetoothSheetCancel')}
         onPress={onCancel}
         style={({pressed}) => [styles.linkButton, pressed && styles.pressed]}>
         <Text weight="semibold" style={styles.link}>

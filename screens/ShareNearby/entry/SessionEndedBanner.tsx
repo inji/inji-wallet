@@ -5,6 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {Text} from '../../../components/ui';
 import Info from '../../../assets/Info.svg';
 import Close from '../../../assets/shareNearby/close.svg';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 const entryStyles = Theme.ShareNearbyEntryStyles;
@@ -15,7 +16,7 @@ export function SessionEndedBanner({onDismiss}: {onDismiss: () => void}) {
     <View
       accessibilityRole="alert"
       style={entryStyles.banner}
-      testID="mdocSessionEndedBanner">
+      {...testIDProps('mdocSessionEndedBanner')}>
       <Info
         width={16}
         height={16}
@@ -28,6 +29,7 @@ export function SessionEndedBanner({onDismiss}: {onDismiss: () => void}) {
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={t('close')}
+        {...testIDProps('mdocSessionEndedClose')}
         onPress={onDismiss}
         style={({pressed}) => [
           entryStyles.bannerClose,

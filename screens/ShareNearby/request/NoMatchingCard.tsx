@@ -8,6 +8,7 @@ import type {ReaderTrust} from '../../../shared/mdocPresentation/types';
 import IdBadge from '../../../assets/shareNearby/id-badge.svg';
 import {VerifierCard} from './VerifierCard';
 import {docTypeName, getRequestedElements} from './requestUtils';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 const reviewStyles = Theme.ShareNearbyReviewStyles;
@@ -70,11 +71,13 @@ export function NoMatchingCard({
           styles={styles.buttonContainer}
           type="gradient"
           title={t('engagement.endSession')}
+          testID="mdocNoMatchEndSession"
           onPress={onEndSession}
         />
         {onAddCard && (
           <Pressable
             accessibilityRole="button"
+            {...testIDProps('mdocAddCard')}
             onPress={onAddCard}
             style={({pressed}) => [
               styles.linkButton,

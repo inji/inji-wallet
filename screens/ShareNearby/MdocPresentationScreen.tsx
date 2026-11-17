@@ -22,6 +22,7 @@ import {RequestHelpSheets} from './request/RequestHelpSheets';
 import Close from '../../assets/shareNearby/close.svg';
 
 import type {MdocPresentationController} from './MdocPresentationScreenController';
+import testIDProps from '../../shared/commonUtil';
 
 const helpStyles = Theme.ShareNearbyHelpStyles;
 const colors = Theme.ShareNearbyColors;
@@ -172,7 +173,7 @@ export function MdocPresentationScreen({
               <Pressable
                 accessibilityRole="button"
                 onPress={presentationController.OPEN_STOP_CONFIRMATION}
-                testID="stopMdoc"
+                {...testIDProps('stopMdoc')}
                 style={({pressed}) => [
                   styles.linkButton,
                   pressed && styles.pressed,
@@ -213,11 +214,12 @@ export function MdocPresentationScreen({
           styles={styles.buttonContainer}
           type="gradient"
           title={t('sending.keepSending')}
+          testID="keepSendingMdoc"
           onPress={presentationController.CLOSE_STOP_CONFIRMATION}
         />
         <Pressable
           accessibilityRole="button"
-          testID="confirmStopMdoc"
+          {...testIDProps('confirmStopMdoc')}
           onPress={presentationController.CONFIRM_STOP}
           style={({pressed}) => [styles.linkButton, pressed && styles.pressed]}>
           <Text weight="semibold" style={[styles.link, styles.sendingStop]}>
@@ -238,6 +240,7 @@ export function MdocPresentationScreen({
           styles={styles.buttonContainer}
           type="gradient"
           title={t('selfie.continue')}
+          testID="continueMdocSelfie"
           onPress={() =>
             sendPresentationEvent(
               presentationEvents.FACE_VERIFICATION_CONSENT(),

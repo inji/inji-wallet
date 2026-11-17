@@ -5,6 +5,7 @@ import {Text} from '../../../components/ui';
 import {Theme} from '../../../components/ui/styleUtils';
 import Help from '../../../assets/Colored_Info.svg';
 import {Header} from '../../../components/ui/Header';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 const shareStyles = Theme.ShareNearbyShareStyles;
@@ -24,6 +25,7 @@ export function ShareHeader({onHelp}: {onHelp: () => void}) {
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={t('help')}
+          {...testIDProps('shareNearbyHelp')}
           onPress={onHelp}
           style={shareStyles.help}>
           <Help

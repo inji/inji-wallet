@@ -5,6 +5,7 @@ import {useTranslation} from 'react-i18next';
 import QRCode from 'react-native-qrcode-svg';
 import {Button, Text} from '../../../components/ui';
 import Timer from '../../../assets/shareNearby/timer.svg';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 const engagementStyles = Theme.ShareNearbyEngagementStyles;
@@ -32,7 +33,7 @@ export function ExpiredCode({
         <Text style={[styles.body, styles.centeredText]}>
           {t('outcome.codeExpired.description')}
         </Text>
-        <View style={engagementStyles.frame} testID="mdocExpiredQr">
+        <View style={engagementStyles.frame} {...testIDProps('mdocExpiredQr')}>
           <View style={outcomeStyles.fadedQr}>
             <QRCode value={PLACEHOLDER_QR} size={176} quietZone={0} />
           </View>
@@ -54,10 +55,12 @@ export function ExpiredCode({
           styles={styles.buttonContainer}
           type="gradient"
           title={t('newCode')}
+          testID="mdocExpiredNewCode"
           onPress={onNewCode}
         />
         <Pressable
           accessibilityRole="button"
+          {...testIDProps('mdocExpiredCancel')}
           onPress={onCancel}
           style={({pressed}) => [styles.linkButton, pressed && styles.pressed]}>
           <Text weight="semibold" style={styles.link}>

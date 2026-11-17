@@ -32,12 +32,14 @@ export function ReadinessActions({
             styles={styles.buttonContainer}
             type="gradient"
             title={t('readiness.settings')}
+            testID="mdocOpenSettings"
             onPress={onSettings}
           />
           <Button
             styles={styles.buttonContainer}
             type="outline"
             title={t('retry')}
+            testID="mdocReadinessRetry"
             onPress={onRetry}
           />
         </>
@@ -47,6 +49,7 @@ export function ReadinessActions({
           styles={styles.buttonContainer}
           type="gradient"
           title={t('readiness.continue')}
+          testID="mdocReadinessContinue"
           onPress={onContinue}
         />
       )}
@@ -55,6 +58,7 @@ export function ReadinessActions({
           styles={styles.buttonContainer}
           type="gradient"
           title={t('retry')}
+          testID="mdocReadinessRetry"
           onPress={onRetry}
         />
       )}
@@ -62,6 +66,7 @@ export function ReadinessActions({
         styles={styles.buttonContainer}
         type="outline"
         title={t('cancel')}
+        testID="mdocReadinessCancel"
         onPress={onCancel}
       />
     </View>

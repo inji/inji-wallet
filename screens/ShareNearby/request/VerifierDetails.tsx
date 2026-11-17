@@ -5,6 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {Text, Button} from '../../../components/ui';
 import type {ReaderTrust} from '../../../shared/mdocPresentation/types';
 import {VerifierTrustBadge} from './VerifierTrustBadge';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 
@@ -33,10 +34,12 @@ export function VerifierDetails({
         styles={styles.buttonContainer}
         type="gradient"
         title={t('close')}
+        testID="mdocVerifierDetailsClose"
         onPress={onClose}
       />
       <Pressable
         accessibilityRole="button"
+        {...testIDProps('mdocVerifierLearnMore')}
         onPress={onLearnMore}
         style={({pressed}) => [styles.linkButton, pressed && styles.pressed]}>
         <Text weight="semibold" style={styles.link}>

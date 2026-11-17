@@ -5,6 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Text} from '../../../components/ui';
 import {Theme} from '../../../components/ui/styleUtils';
 import {AUTO_HOME_SECONDS} from './OutcomeActions';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 const outcomeStyles = Theme.ShareNearbyOutcomeStyles;
@@ -46,7 +47,7 @@ export function AutoHome({onDone}: {onDone: () => void}) {
   }, [isStaying, remaining, onDone]);
   if (isStaying) return null;
   return (
-    <View style={outcomeStyles.autoHome} testID="mdocAutoHome">
+    <View style={outcomeStyles.autoHome} {...testIDProps('mdocAutoHome')}>
       <View style={outcomeStyles.autoHomeRow}>
         <Text style={styles.small}>
           {t('outcome.goingHome')}{' '}
@@ -54,7 +55,10 @@ export function AutoHome({onDone}: {onDone: () => void}) {
             {t('outcome.seconds', {count: remaining})}
           </Text>
         </Text>
-        <Pressable accessibilityRole="button" onPress={() => setStaying(true)}>
+        <Pressable
+          accessibilityRole="button"
+          {...testIDProps('mdocStayHere')}
+          onPress={() => setStaying(true)}>
           <Text weight="semibold" style={styles.link}>
             {t('outcome.stayHere')}
           </Text>

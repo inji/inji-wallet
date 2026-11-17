@@ -115,6 +115,7 @@ export function RequestedDetails({
               <RequestedField
                 key={fieldKey}
                 label={getRequestedFieldLabel(shownCandidate, element)}
+                elementIdentifier={element.elementIdentifier}
                 checked={
                   !!selectedCandidate && checkedFields.includes(fieldKey)
                 }

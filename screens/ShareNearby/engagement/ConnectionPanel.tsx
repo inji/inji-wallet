@@ -7,6 +7,7 @@ import Lock from '../../../assets/shareNearby/lock.svg';
 import Clock from '../../../assets/shareNearby/clock.svg';
 import Tick from '../../../assets/shareNearby/check.svg';
 import {useCountdown} from '../useCountdown';
+import testIDProps from '../../../shared/commonUtil';
 
 const styles = Theme.ShareNearbyStyles;
 const engagementStyles = Theme.ShareNearbyEngagementStyles;
@@ -52,7 +53,9 @@ export function ConnectionPanel({
       {isConnected && sessionExpiresAt !== undefined && (
         <>
           <View style={engagementStyles.panelDivider} />
-          <View style={engagementStyles.panelRow} testID="mdocSessionCountdown">
+          <View
+            style={engagementStyles.panelRow}
+            {...testIDProps('mdocSessionCountdown')}>
             <Clock />
             <Text weight="semibold" style={engagementStyles.panelTitle}>
               {t('engagement.sessionEnds', {time: countdown.formattedTime})}

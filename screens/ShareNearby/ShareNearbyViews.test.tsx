@@ -150,7 +150,7 @@ describe('Share nearby entry', () => {
       />,
     );
     expect(onPresent).not.toHaveBeenCalled();
-    fireEvent.press(screen.getByTestId('presentMdoc'));
+    fireEvent.press(screen.getByLabelText('presentMdoc'));
     expect(onPresent).toHaveBeenCalledTimes(1);
   });
 
@@ -166,7 +166,7 @@ describe('Share nearby entry', () => {
         onHelp={jest.fn()}
       />,
     );
-    fireEvent.press(screen.getByTestId('presentMdoc'));
+    fireEvent.press(screen.getByLabelText('presentMdoc'));
     expect(onPresent).not.toHaveBeenCalled();
     expect(screen.getByText('entry.noMdoc')).toBeOnTheScreen();
   });
@@ -208,7 +208,7 @@ describe('Share nearby entry', () => {
     const onReceive = jest.fn();
     const screen = renderEntryOn('android', onReceive);
 
-    fireEvent.press(screen.getByTestId('receiveBluetooth'));
+    fireEvent.press(screen.getByLabelText('receiveBluetooth'));
 
     expect(onReceive).toHaveBeenCalledTimes(1);
     expect(screen.queryByText('entry.bleUnavailable')).not.toBeOnTheScreen();
@@ -228,7 +228,7 @@ describe('Share nearby entry', () => {
     );
 
     expect(screen.getByText('entry.sessionEnded')).toBeOnTheScreen();
-    fireEvent.press(screen.getByLabelText('close'));
+    fireEvent.press(screen.getByLabelText('mdocSessionEndedClose'));
 
     expect(onDismissSessionEnded).toHaveBeenCalledTimes(1);
   });
@@ -269,7 +269,7 @@ describe('Live mdoc engagement', () => {
         onHelp={jest.fn()}
       />,
     );
-    fireEvent(screen.getByTestId('mdocQrContainer'), 'layout', {
+    fireEvent(screen.getByLabelText('mdocQrContainer'), 'layout', {
       nativeEvent: {layout: {width: 220}},
     });
     expect(screen.getByTestId('generatedQr')).toHaveProp(
@@ -292,7 +292,7 @@ describe('Live mdoc engagement', () => {
         onHelp={jest.fn()}
       />,
     );
-    fireEvent(screen.getByTestId('mdocQrContainer'), 'layout', {
+    fireEvent(screen.getByLabelText('mdocQrContainer'), 'layout', {
       nativeEvent: {layout: {width: 335}},
     });
     act(() => jest.advanceTimersByTime(1000));
@@ -402,7 +402,7 @@ describe('Presentation screen and actor', () => {
     act(() => flow.callbacks.onProgress('connected'));
     act(() => jest.advanceTimersByTime(2000));
 
-    expect(screen.getByTestId('mdocSessionCountdown')).toBeOnTheScreen();
+    expect(screen.getByLabelText('mdocSessionCountdown')).toBeOnTheScreen();
   });
 
   it('lets the holder end the session while waiting for the verifier request', () => {
@@ -446,10 +446,10 @@ describe('Presentation screen and actor', () => {
     await act(async () => {
       await Promise.resolve();
     });
-    fireEvent.press(screen.getByLabelText('back'));
+    fireEvent.press(screen.getByLabelText('mdocBack'));
     expect(flow.cancel).not.toHaveBeenCalled();
     expect(screen.getByText('sending.stopTitle')).toBeOnTheScreen();
-    fireEvent.press(screen.getByTestId('confirmStopMdoc'));
+    fireEvent.press(screen.getByLabelText('confirmStopMdoc'));
     expect(flow.cancel).toHaveBeenCalledTimes(1);
     expect(screen.queryByText('newCode')).toBeNull();
     await act(async () => {
@@ -496,7 +496,7 @@ describe('Presentation screen and actor', () => {
       void flow.callbacks.onRequest(request);
     });
     finishConnectionPhases();
-    fireEvent.press(screen.getByLabelText('help'));
+    fireEvent.press(screen.getByLabelText('mdocHelp'));
     expect(screen.getByText('helpContent.privacyTitle')).toBeOnTheScreen();
     expect(
       screen.getByText('helpContent.privacyDescription'),
@@ -530,11 +530,7 @@ describe('Presentation screen and actor', () => {
       // verified readers show a details row; the others show a warning card
       fireEvent.press(
         screen.getByLabelText(
-          status === 'verified'
-            ? 'request.verifierDetails'
-            : `request.trustCard.${
-                status === 'invalid' ? 'invalid' : 'unverified'
-              }.title`,
+          status === 'verified' ? 'mdocVerifierCard' : 'mdocVerifierTrustCard',
         ),
       );
       expect(
@@ -583,7 +579,7 @@ describe('Presentation screen and actor', () => {
         await Promise.resolve();
       });
       expect(setBoostEnabled).toHaveBeenLastCalledWith(true);
-      fireEvent.press(screen.getByLabelText('help'));
+      fireEvent.press(screen.getByLabelText('mdocHelp'));
       expect(
         screen.getByText('helpContent.scanReadableTitle'),
       ).toBeOnTheScreen();
@@ -603,7 +599,7 @@ describe('Presentation screen and actor', () => {
     const flow = start();
     const screen = renderPresentation(flow);
 
-    fireEvent.press(screen.getByLabelText('help'));
+    fireEvent.press(screen.getByLabelText('mdocHelp'));
 
     expect(screen.getByText('helpContent.scanReadableTitle')).toBeOnTheScreen();
     expect(screen.getByText('helpContent.scanCodeTypeTitle')).toBeOnTheScreen();
@@ -643,8 +639,8 @@ describe('Presentation screen and actor', () => {
     });
 
     expect(screen.getByText('outcome.codeExpired.title')).toBeOnTheScreen();
-    expect(screen.getByTestId('mdocExpiredQr')).toBeOnTheScreen();
-    expect(screen.queryByTestId('mdocQr')).toBeNull();
+    expect(screen.getByLabelText('mdocExpiredQr')).toBeOnTheScreen();
+    expect(screen.queryByLabelText('mdocQr')).toBeNull();
   });
 
   it('returns to Share nearby rather than Home when the holder cancels an expired code', async () => {
@@ -689,7 +685,7 @@ describe('Presentation screen and actor', () => {
     screen.rerender(<ShareScreen />);
     expect(remove).toHaveBeenCalledTimes(1);
     expect(screen.getByTestId('scanner')).toBeOnTheScreen();
-    expect(screen.queryByLabelText('back')).toBeNull();
+    expect(screen.queryByLabelText('mdocBack')).toBeNull();
   });
 
   it('cancels when backgrounded and tolerates transient permission prompts', () => {
@@ -713,7 +709,7 @@ describe('Shared screen shell', () => {
     const screen = render(<ShareScreen />);
     expect(screen.queryByTestId('scanner')).toBeNull();
     expect(screen.queryByRole('tablist')).toBeNull();
-    fireEvent.press(screen.getByLabelText('back'));
+    fireEvent.press(screen.getByLabelText('mdocBack'));
     expect(controller.readinessController.CANCEL).toHaveBeenCalledTimes(1);
   });
 
@@ -728,7 +724,7 @@ describe('Shared screen shell', () => {
     jest.mocked(useShareScreen).mockReturnValue(controller);
     const screen = render(<ShareScreen />);
 
-    expect(screen.getByTestId('presentMdoc')).toBeOnTheScreen();
+    expect(screen.getByLabelText('presentMdoc')).toBeOnTheScreen();
     fireEvent.press(screen.getByTestId('turnOnBluetooth'));
 
     expect(
@@ -749,7 +745,7 @@ describe('Shared screen shell', () => {
       .mockReturnValue({...controller, selectedTab: 'nearby'});
     screen.rerender(<ShareScreen />);
     expect(screen.queryByTestId('scanner')).toBeNull();
-    fireEvent.press(screen.getByTestId('presentMdoc'));
+    fireEvent.press(screen.getByLabelText('presentMdoc'));
     expect(controller.PRESENT_MDOC).toHaveBeenCalledTimes(1);
   });
 });
@@ -902,7 +898,7 @@ describe('Complete-request consent', () => {
 
     const choiceLogos = screen
       .getAllByRole('radio')
-      .map(choice => within(choice).queryByTestId('issuerLogo'));
+      .map(choice => within(choice).queryByLabelText('mdocCardIssuerLogo'));
     expect(choiceLogos.every(Boolean)).toBe(true);
   });
 
