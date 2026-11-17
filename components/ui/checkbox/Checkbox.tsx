@@ -56,8 +56,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   if (selectionType === 'multiple') {
     return (
       <CheckBox
-        {...testIDProps(`checkbox-multiple-${testId}`)}
         {...additionalProps}
+        {...testIDProps(`checkbox-multiple-${testId}`)}
         checked={checked}
         checkedIcon={SvgImage.selectedCheckBox(
           disabled ? '#667085' : checkedColor,
@@ -79,8 +79,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
   return (
     <CheckBox
-      {...testIDProps(`checkbox-single-${testId}`)}
       {...additionalProps}
+      {...testIDProps(`checkbox-single-${testId}`)}
       checked={checked}
       checkedIcon={
         <Icon
