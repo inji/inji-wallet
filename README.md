@@ -34,7 +34,7 @@ Be sure to have the following build tools installed before proceeding:
 ### iOS
 
 - [XCode](https://developer.apple.com/xcode/) = >15
-- Minimum Deployment Target = 14.0
+- Minimum Deployment Target = 15.0
 - cocoapods > 1.12
 - Ruby >= 2.6.10
 

@@ -1,4 +1,11 @@
 // Mock all heavy dependencies to avoid deep import chains
+import {interpret} from 'xstate';
+import {
+  checkAllKeyPairs,
+  generateKeyPairsAndStoreOrder,
+} from '../shared/cryptoutil/cryptoUtil';
+import getAllConfigurations from '../shared/api';
+
 jest.mock('../shared/tuvali', () => ({
   wallet: {},
   verifier: {},
@@ -71,6 +78,7 @@ jest.mock('../shared/Utils', () => ({DEEPLINK_FLOWS: {}}));
 
 import {
   APP_EVENTS,
+  appMachine,
   selectAppInfo,
   selectIsReady,
   selectIsOnline,
@@ -98,6 +106,66 @@ const mockState = (ctx: any = {}, matchVal?: string) => ({
     ...ctx,
   },
   matches: (v: string) => v === matchVal,
+});
+
+describe('app startup key setup', () => {
+  const startApp = async () => {
+    const machine = appMachine.withConfig({
+      actions: {
+        spawnStoreActor: jest.fn(),
+        logStoreEvents: jest.fn(),
+        spawnServiceActors: jest.fn(),
+        logServiceEvents: jest.fn(),
+        unsetIsReadError: jest.fn(),
+        unsetIsDecryptError: jest.fn(),
+        resetKeyInvalidateError: jest.fn(),
+      } as any,
+    });
+    const service = interpret(machine);
+    const servicesReady = new Promise<void>(resolve => {
+      service.onTransition(state => {
+        if (state.matches({init: 'services'})) resolve();
+      });
+    });
+    service.start();
+    service.send(APP_EVENTS.READY());
+    await servicesReady;
+    service.stop();
+  };
+
+  beforeEach(() => {
+    checkAllKeyPairs.mockReset();
+    generateKeyPairsAndStoreOrder.mockReset();
+    getAllConfigurations.mockReset();
+    generateKeyPairsAndStoreOrder.mockResolvedValue(undefined);
+  });
+
+  it('skips config fetch and key generation when keys already exist', async () => {
+    checkAllKeyPairs.mockResolvedValue(undefined);
+    await startApp();
+    expect(checkAllKeyPairs).toHaveBeenCalledTimes(1);
+    expect(getAllConfigurations).not.toHaveBeenCalled();
+    expect(generateKeyPairsAndStoreOrder).not.toHaveBeenCalled();
+  });
+
+  it('fetches config before generating missing keys with its priority order', async () => {
+    checkAllKeyPairs.mockRejectedValue(new Error('Keys not present'));
+    getAllConfigurations.mockResolvedValue({keyPriorityOrder: 'RS256,ES256'});
+    await startApp();
+    expect(checkAllKeyPairs).toHaveBeenCalledTimes(1);
+    expect(getAllConfigurations).toHaveBeenCalledTimes(1);
+    expect(generateKeyPairsAndStoreOrder).toHaveBeenCalledWith('RS256,ES256');
+    expect(getAllConfigurations.mock.invocationCallOrder[0]).toBeLessThan(
+      generateKeyPairsAndStoreOrder.mock.invocationCallOrder[0],
+    );
+  });
+
+  it('generates missing keys with default order if config fetch fails', async () => {
+    checkAllKeyPairs.mockRejectedValue(new Error('Keys not present'));
+    getAllConfigurations.mockRejectedValue(new Error('network error'));
+    await startApp();
+    expect(generateKeyPairsAndStoreOrder).toHaveBeenCalledWith(undefined);
+  });
 });
 
 describe('app selectors', () => {
@@ -796,8 +864,15 @@ describe('appMachine service implementations', () => {
       generateKeyPairsAndStoreOrder,
     } = require('../shared/cryptoutil/cryptoUtil');
     generateKeyPairsAndStoreOrder.mockResolvedValue(true);
-    const result = await services.generateKeyPairsAndStoreOrder();
-    expect(generateKeyPairsAndStoreOrder).toHaveBeenCalled();
+    await services.generateKeyPairsAndStoreOrder(
+      {},
+      {
+        data: {keyPriorityOrder: 'RS256,ES256,ES256K,Ed25519'},
+      },
+    );
+    expect(generateKeyPairsAndStoreOrder).toHaveBeenCalledWith(
+      'RS256,ES256,ES256K,Ed25519',
+    );
   });
 
   it('fetchAndUpdateCacheTTLFromConfig calls updateCacheTTLFromConfig', async () => {
@@ -805,6 +880,31 @@ describe('appMachine service implementations', () => {
     getAllConfigurations.mockResolvedValue({cacheTTLInMilliSeconds: 5000});
     await services.fetchAndUpdateCacheTTLFromConfig();
     expect(getAllConfigurations).toHaveBeenCalled();
+  });
+
+  it('fetchAndUpdateCacheTTLFromConfig returns the config for key generation', async () => {
+    const getAllConfigurations = require('../shared/api');
+    getAllConfigurations.mockClear();
+    const config = {
+      keyPriorityOrder: 'RS256,ES256,ES256K,Ed25519',
+    };
+    getAllConfigurations.mockResolvedValueOnce(config);
+    await expect(services.fetchAndUpdateCacheTTLFromConfig()).resolves.toEqual(
+      config,
+    );
+    expect(getAllConfigurations).toHaveBeenCalledTimes(1);
+    expect(getAllConfigurations).toHaveBeenCalledWith(undefined, false);
+  });
+
+  it('generateKeyPairsAndStoreOrder uses the default order after a config fetch error', async () => {
+    const {
+      generateKeyPairsAndStoreOrder,
+    } = require('../shared/cryptoutil/cryptoUtil');
+    await services.generateKeyPairsAndStoreOrder(
+      {},
+      {data: new Error('network error')},
+    );
+    expect(generateKeyPairsAndStoreOrder).toHaveBeenCalledWith(undefined);
   });
 
   it('checkNetworkState subscribes to NetInfo', () => {

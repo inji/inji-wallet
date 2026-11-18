@@ -489,9 +489,16 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
     matchingCredentialDataResult: VcWithMatchedClaims,
   ): Set<string> | undefined {
     const vcFormat = matchingCredentialDataResult.matchingVcInfo.metadata.format;
-    if (vcFormat == VCFormat.dc_sd_jwt || vcFormat == VCFormat.vc_sd_jwt) {
+    if (
+      vcFormat == VCFormat.dc_sd_jwt ||
+      vcFormat == VCFormat.vc_sd_jwt ||
+      vcFormat == VCFormat.mso_mdoc
+    ) {
+      // mso_mdoc uses a collision-free [namespace, element] key
       const jsonPaths = matchingCredentialDataResult.matchedClaims?.map(claim =>
-        claimPathPointersToJsonPath(claim.path),
+        vcFormat == VCFormat.mso_mdoc
+          ? JSON.stringify(claim.path)
+          : claimPathPointersToJsonPath(claim.path),
       );
       return new Set(jsonPaths);
     }
@@ -570,7 +577,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
       <Fragment>
         <InfoBox
           style={{marginHorizontal: 4}}
-          message={"One card is selected. Tap \"Show more\" to see additional options."}
+          message={t('dcqlSection.moreCardsInfo')}
           testID={"more-cards-matching-info"}
           backgroundColor={Theme.Colors.infoBackground}
           borderColor={Theme.Colors.infoBorder}
@@ -580,11 +587,11 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
           items={matchResult.matchingVcs ?? []}
           testID={`${testId}-option-${optionIndex}-query-${credentialQueryId}-multi-vc`}
           introText={""}
-          title={"Cards"}
+          title={t('dcqlSection.cards')}
           footerText={""}
-          closeText={"Close"}
+          closeText={t('dcqlSection.close')}
           alignShowMoreTextAtRight
-          showMoreText={() => "Show all cards"}
+          showMoreText={() => t('dcqlSection.showAllCards')}
           priorityItemPredicate={item =>
             getPriorityVcKey(optionIndex, credentialQueryId) === item.matchingVcInfo.vcKey
           }
@@ -637,7 +644,7 @@ export const CredentialSetSection: React.FC<DcqlCredentialSetSectionProps> = ({
               {optionIndex > 0 && (
                 <Divider
                   testId={`${testId}-option-${optionIndex}-divider`}
-                  text={'OR'}
+                  text={t('dcqlSection.or')}
                 />
               )}
               {isMultipleCardsCombinedOption(option) ? (

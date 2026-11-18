@@ -1,6 +1,7 @@
 import {useCallback, useState} from 'react';
 import {MatchingVCsResultForDcql} from '../../../../shared/openID4VP/openid4vp.types';
 import {claimPathPointersToJsonPath} from '../../../../shared/openID4VP/OpenID4VPHelper';
+import {VCFormat} from '../../../../shared/VCFormat';
 import {
   OptionSelectionState,
   SectionSelectionState,
@@ -90,10 +91,15 @@ export function useDcqlMatchingVcController() {
             ({matchingVcInfo, matchedClaims}) => {
               const setOfMatchingClaims = new Set<string>();
               const vcKey = matchingVcInfo.vcKey;
+              const isMdoc =
+                matchingVcInfo.metadata?.format === VCFormat.mso_mdoc;
               if (selectedVcKeys.has(vcKey)) {
                 matchedClaims?.forEach(claim => {
+                  // mso_mdoc uses a collision-free [namespace, element] key
                   setOfMatchingClaims.add(
-                    claimPathPointersToJsonPath(claim.path),
+                    isMdoc
+                      ? JSON.stringify(claim.path)
+                      : claimPathPointersToJsonPath(claim.path),
                   );
                 });
               }

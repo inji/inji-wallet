@@ -41,6 +41,7 @@ import {
   fetchKeyPair,
   checkAllKeyPairs,
   generateKeyPairsAndStoreOrder,
+  storeKeyPriorityOrder,
   generateKeyPairRSA,
   generateKeyPairECR1,
   generateKeyPairED,
@@ -270,6 +271,61 @@ describe('cryptoUtil', () => {
       );
       expect(RNSecureKeystoreModule.storeGenericKey).toHaveBeenCalledTimes(2);
       spy.mockRestore();
+    });
+
+    it('stores the default key order when no keyPriorityOrder is configured', async () => {
+      const spy = jest.spyOn(console, 'warn').mockImplementation();
+      await generateKeyPairsAndStoreOrder();
+      expect(RNSecureKeystoreModule.storeData).toHaveBeenCalledWith(
+        'keyPreference',
+        JSON.stringify({0: 'Ed25519', 1: 'ES256K', 2: 'ES256', 3: 'RS256'}),
+      );
+      spy.mockRestore();
+    });
+
+    it('stores the configured key order with newly generated key pairs', async () => {
+      const spy = jest.spyOn(console, 'warn').mockImplementation();
+      await generateKeyPairsAndStoreOrder('RS256,ES256,ES256K,Ed25519');
+      expect(RNSecureKeystoreModule.storeData).toHaveBeenCalledWith(
+        'keyPreference',
+        JSON.stringify({0: 'RS256', 1: 'ES256', 2: 'ES256K', 3: 'Ed25519'}),
+      );
+      spy.mockRestore();
+    });
+  });
+
+  describe('storeKeyPriorityOrder', () => {
+    it('stores the configured keyPriorityOrder without generating key pairs', async () => {
+      await storeKeyPriorityOrder('RS256,ES256,ES256K,Ed25519');
+      expect(RNSecureKeystoreModule.storeData).toHaveBeenCalledWith(
+        'keyPreference',
+        JSON.stringify({0: 'RS256', 1: 'ES256', 2: 'ES256K', 3: 'Ed25519'}),
+      );
+      expect(RNSecureKeystoreModule.storeGenericKey).not.toHaveBeenCalled();
+    });
+
+    it('stores the default key order when keyPriorityOrder is not provided', async () => {
+      await storeKeyPriorityOrder(undefined);
+      expect(RNSecureKeystoreModule.storeData).toHaveBeenCalledWith(
+        'keyPreference',
+        JSON.stringify({0: 'Ed25519', 1: 'ES256K', 2: 'ES256', 3: 'RS256'}),
+      );
+    });
+
+    it('stores the default order for an empty keyPriorityOrder', async () => {
+      await storeKeyPriorityOrder('');
+      expect(RNSecureKeystoreModule.storeData).toHaveBeenCalledWith(
+        'keyPreference',
+        JSON.stringify({0: 'Ed25519', 1: 'ES256K', 2: 'ES256', 3: 'RS256'}),
+      );
+    });
+
+    it('trims whitespace in the configured order', async () => {
+      await storeKeyPriorityOrder(' RS256 , ES256,ES256K , Ed25519 ');
+      expect(RNSecureKeystoreModule.storeData).toHaveBeenCalledWith(
+        'keyPreference',
+        JSON.stringify({0: 'RS256', 1: 'ES256', 2: 'ES256K', 3: 'Ed25519'}),
+      );
     });
   });
 

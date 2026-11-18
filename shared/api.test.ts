@@ -450,6 +450,18 @@ describe('CACHED_API', () => {
       const result = await CACHED_API.getAllProperties(true);
       expect(result).toEqual({minStorageRequired: 100});
     });
+
+    it('should return the hardcoded allProperties object itself on error with API preference', async () => {
+      const {INITIAL_CONFIG} = jest.requireMock('./InitialConfig');
+      mockRequest.mockRejectedValueOnce(new Error('Network error'));
+
+      const result = await CACHED_API.getAllProperties(false);
+      expect(mockRequest).toHaveBeenCalledWith(
+        'GET',
+        '/v1/mimoto/allProperties',
+      );
+      expect(result).toBe(INITIAL_CONFIG.allProperties);
+    });
   });
 });
 

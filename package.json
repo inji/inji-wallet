@@ -44,6 +44,7 @@
     "base64url-universal": "^1.1.0",
     "bs58": "^4.0.1",
     "buffer": "^6.0.3",
+    "cbor2": "^2.3.0",
     "color-diff": "^1.4.0",
     "date-fns": "2.28.0",
     "expo": "^51.0.0",

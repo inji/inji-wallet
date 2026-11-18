@@ -29,6 +29,7 @@ module.exports = function (api) {
         alias: {
           'isomorphic-webcrypto': 'isomorphic-webcrypto/src/react-native',
           'fast-text-encoding': 'fast-text-encoding/text',
+          '^cbor2$': 'cbor2/lib/index.js',
           'jsonld-rdfc': 'jsonld',
           jsonld: '@digitalcredentials/jsonld',
           'jsonld-signatures': '@digitalcredentials/jsonld-signatures',
