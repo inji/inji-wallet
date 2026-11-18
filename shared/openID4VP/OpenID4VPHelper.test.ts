@@ -146,6 +146,17 @@ describe('OpenID4VPHelper', () => {
 
       expect(result.verifier_trust_anchors).toEqual([]);
     });
+
+    it('uses no verifier trust anchors when an entry is not a string', async () => {
+      mockGetAllConfigurations.mockResolvedValue({
+        openid4vpClientValidation: 'true',
+        openid4vpVerifierTrustAnchors: '["verifier-ca", 123]',
+      });
+
+      const result = await getWalletConfig();
+
+      expect(result.verifier_trust_anchors).toEqual([]);
+    });
   });
 
   describe('signDataForVpPreparation', () => {
