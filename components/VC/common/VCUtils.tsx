@@ -47,6 +47,7 @@ export const CARD_VIEW_ADD_ON_FIELDS = ['UIN', 'VID'];
 export const DETAIL_VIEW_ADD_ON_FIELDS = [
   'status',
   'idType',
+  'issuerName',
   'credentialRegistry',
 ];
 
@@ -95,6 +96,11 @@ export const getFieldValue = (
       );
     case 'idType':
       return getCredentialType(wellknown);
+    case 'issuerName':
+      return getIssuerName(
+        props.issuerDisplay,
+        props.verifiableCredentialData?.vcMetadata?.issuer,
+      );
     case 'credentialRegistry':
       return props?.vc?.credentialRegistry;
     case 'address':
@@ -706,6 +712,26 @@ export const getMosipLogo = () => {
     alt_text: 'a square logo of mosip',
   };
 };
+
+/**
+ * The issuer's name for display: its metadata display name in the current
+ * language, else the host of its URL (offer downloads store the URL), else its id.
+ */
+export function getIssuerName(
+  issuerDisplay: unknown,
+  issuer: string | undefined,
+): string | undefined {
+  if (Array.isArray(issuerDisplay) && issuerDisplay.length > 0) {
+    const name = getDisplayObjectForCurrentLanguage(issuerDisplay)?.name;
+    if (typeof name === 'string' && name) return name;
+  }
+  if (!issuer) return undefined;
+  try {
+    return /^https?:\/\//.test(issuer) ? new URL(issuer).host : issuer;
+  } catch {
+    return issuer;
+  }
+}
 
 /**
  *

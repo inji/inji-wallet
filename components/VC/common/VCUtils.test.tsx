@@ -17,6 +17,7 @@ import {
   getIssuerAuthenticationAlgorithmForMdocVC,
   getMdocAuthenticationAlgorithm,
   getFaceAttribute,
+  getIssuerName,
   fieldItemIterator,
   CARD_VIEW_DEFAULT_FIELDS,
   DETAIL_VIEW_DEFAULT_FIELDS,
@@ -159,6 +160,44 @@ describe('getFieldValue', () => {
 
       expect(result).toBe('National ID');
       expect(result).toHaveLength(11);
+    });
+
+    it('getFieldValue shows the issuer display name for issuerName', () => {
+      const props = {
+        ...mockProps,
+        issuerDisplay: [{name: 'Agro Veritas Authority', locale: 'en'}],
+      };
+      const verifiableCredential = {credentialSubject: {}} as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'issuerName',
+        mockWellknown,
+        props,
+        mockDisplay as any,
+        VCFormat.ldp_vc,
+      );
+
+      expect(result).toBe('Agro Veritas Authority');
+    });
+
+    it('getFieldValue falls back to the stored issuer id for issuerName when the issuer has no display name', () => {
+      const props = {
+        ...mockProps,
+        verifiableCredentialData: {vcMetadata: {issuer: 'Farmer'}},
+      };
+      const verifiableCredential = {credentialSubject: {}} as any;
+
+      const result = getFieldValue(
+        verifiableCredential,
+        'issuerName',
+        mockWellknown,
+        props,
+        mockDisplay as any,
+        VCFormat.ldp_vc,
+      );
+
+      expect(result).toBe('Farmer');
     });
 
     it('should return credential registry for credentialRegistry field', () => {
@@ -698,6 +737,7 @@ describe('Constants', () => {
     expect(DETAIL_VIEW_ADD_ON_FIELDS).toEqual([
       'status',
       'idType',
+      'issuerName',
       'credentialRegistry',
     ]);
   });
@@ -1998,5 +2038,33 @@ describe('getFieldValue regression tests for MSO MDOC format', () => {
       expect(result1).toBe('Smith');
       expect(result2).toBe('John');
     });
+  });
+});
+
+describe('getIssuerName', () => {
+  it('getIssuerName returns the issuer display name from its metadata', () => {
+    const display = [{name: 'State Transport Authority', locale: 'en'}];
+
+    const name = getIssuerName(display, 'https://issuer.example.org');
+
+    expect(name).toBe('State Transport Authority');
+  });
+
+  it('getIssuerName falls back to the host when the issuer is a URL without a display name', () => {
+    const name = getIssuerName(undefined, 'https://issuer.example.org/path');
+
+    expect(name).toBe('issuer.example.org');
+  });
+
+  it('getIssuerName falls back to the issuer id when it is not a URL', () => {
+    const name = getIssuerName([], 'Mosip');
+
+    expect(name).toBe('Mosip');
+  });
+
+  it('getIssuerName returns undefined when there is neither a display name nor an issuer', () => {
+    const name = getIssuerName(undefined, undefined);
+
+    expect(name).toBeUndefined();
   });
 });

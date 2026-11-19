@@ -416,6 +416,7 @@ export const DisclosureInfoNote = () => {
 export interface VCItemDetailsProps {
   fields: any[];
   wellknown: any;
+  issuerDisplay?: unknown;
   wellknownFieldsFlag: boolean;
   credential: VerifiableCredential | Credential;
   verifiableCredentialData: VerifiableCredentialData;

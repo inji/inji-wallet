@@ -12,12 +12,13 @@ import {SvgImage} from '../../components/ui/svg';
 import {DETAIL_VIEW_DEFAULT_FIELDS} from '../../components/VC/common/VCUtils';
 import {getDetailedViewFields} from '../../shared/openId4VCI/Utils';
 import {VCProcessor} from '../../components/VC/common/VCProcessor';
-import VcRenderer from '../../shared/vcRenderer/VcRenderer';
+import {useCredentialSvg} from '../../shared/vcRenderer/useCredentialSvg';
 
 export const ReceiveVcScreen: React.FC = () => {
   const {t} = useTranslation('ReceiveVcScreen');
   const [fields, setFields] = useState([]);
   const [wellknown, setWellknown] = useState(null);
+  const [issuerDisplay, setIssuerDisplay] = useState<unknown>(undefined);
   const controller = useReceiveVcScreen();
   const savingOverlayVisible = useOverlayVisibleAfterTimeout(
     controller.isAccepting,
@@ -56,6 +57,7 @@ export const ReceiveVcScreen: React.FC = () => {
       verifiableCredentialData.vcMetadata.issuerHost,
     ).then(response => {
       setWellknown(response.matchingCredentialIssuerMetadata);
+      setIssuerDisplay(response.wellknownResponse?.display);
       setFields(response.fields);
       controller.STORE_INCOMING_VC_WELLKNOWN_CONFIG(
         verifiableCredentialData?.vcMetadata.issuerHost,
@@ -79,6 +81,7 @@ export const ReceiveVcScreen: React.FC = () => {
             <VcDetailsContainer
               fields={fields}
               wellknown={wellknown}
+              issuerDisplay={issuerDisplay}
               credential={credential}
               credentialWrapper={controller.credential}
               verifiableCredentialData={verifiableCredentialData}
