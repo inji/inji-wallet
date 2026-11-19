@@ -29,8 +29,8 @@ public class CredentialRegistryPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "esignetHostInputField")
     public WebElement credentialRegistryEsignetTextBox;
 
-    @AndroidFindBy(accessibility = "save")
-    @iOSXCUITFindBy(accessibility = "save")
+    @AndroidFindBy(xpath = "//android.widget.Button[@content-desc=\"save\"]/android.view.ViewGroup/android.view.View")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"save\"]")
     public WebElement saveButton;
 
     @AndroidFindBy(accessibility = "cancel")
@@ -45,6 +45,9 @@ public class CredentialRegistryPage extends BasePage {
     @iOSXCUITFindBy(accessibility = "credentialRegistryErrorMessage")
     public WebElement credentialRegistryErrorMessage;
 
+    @AndroidFindBy(xpath = "//android.widget.LinearLayout")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"Return\"]")
+    private WebElement returnKeyboardButton;
 
     public CredentialRegistryPage(AppiumDriver driver) {
         super(driver);
@@ -86,15 +89,33 @@ public class CredentialRegistryPage extends BasePage {
         return this;
     }
 
+    public CredentialRegistryPage setCredentialRegistryValue(String text) {
+        clearAndSendKeys(credentialRegistryTextBox, text, "Enter Credential Registry URL");
+        return this;
+    }
+
+    public CredentialRegistryPage setEsignetHostUrl(String text) {
+        clearAndSendKeys(credentialRegistryEsignetTextBox, text, "Enter eSignet Host URL");
+        return this;
+    }
+
+    public CredentialRegistryPage saveConfiguration() {
+        click(saveButton, "Click on Save button");
+        return this;
+    }
+
+    public void hideKeyboardIos() {
+        click(returnKeyboardButton, "Click on return button to hide the keyboard");
+    }
+
     public void clickOnBackArrow() {
         click(backArrow, "Click on the back arrow to return to the previous screen");
     }
 
-
     public String checkEnvNotChanged() {
         return credentialRegistryTextBox.getText();
     }
-    
+
     public String getCurrentEnvValue() {
         return credentialRegistryTextBox.getText();
     }

@@ -8,6 +8,7 @@ import inji.testcases.BaseTest.IosBaseTest;
 import inji.utils.InjiWalletUtil;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
+import inji.utils.CredentialRegistryUpdater;
 
 import static org.testng.Assert.assertTrue;
 
@@ -15,7 +16,7 @@ public class FarmerFlowSanityTest extends IosBaseTest {
 
   @Test
   @NeedsSvgWithFaceUIN
-  public void downloadFarmerVCAndDeleteSmoke() throws InterruptedException {
+  public void should_download_and_delete_farmer_vc_when_farmer_issuer_flow_completes() throws InterruptedException {
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
     WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -32,7 +33,16 @@ public class FarmerFlowSanityTest extends IosBaseTest {
 
     homePage.clickOnNextButtonForInjiTour();
 
-    AddNewCardPage addNewCardPage = homePage.downloadCard();
+    //Updating Credential Registry if enabled in config file
+    CredentialRegistryUpdater.updateCredentialRegistryIfEnabled(homePage);
+
+    // Navigate back
+    homePage.clickOnHomeButton();
+
+    // Home page
+    HomePage refreshedHomePage = new HomePage(getDriver());
+
+    AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
 
     assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
     assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(),"Verify if search bar is displayed");

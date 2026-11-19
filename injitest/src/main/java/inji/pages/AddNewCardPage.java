@@ -290,8 +290,21 @@ public class AddNewCardPage extends BasePage {
 		return isElementVisible(issuerSearchBar, "Verify Issuer search bar is visible in Hindi");
 	}
 
+	private void slowTypeInIssuerSearchBar(String text, String stepDesc) {
+		if (isElementVisible(issuerSearchBar)) {
+			issuerSearchBar.clear();
+			for (int i = 0; i < text.length(); i++) {
+				issuerSearchBar.sendKeys(String.valueOf(text.charAt(i)));
+				sleep(400);
+			}
+			logStep(stepDesc + " - Slowly entered: '" + text + "'", issuerSearchBar);
+		} else {
+			throw new RuntimeException("Element not visible: " + stepDesc);
+		}
+	}
+
 	public void sendTextInIssuerSearchBar(String text) {
-		clearAndSendKeys(issuerSearchBar, text, "Enter text in Issuer search bar: " + text);
+		slowTypeInIssuerSearchBar(text, "Enter text in Issuer search bar: " + text);
 	}
 
 	public boolean isDownloadViaSunbirdDisplayed() {
@@ -389,27 +402,27 @@ public class AddNewCardPage extends BasePage {
 	}
 
 	public void searchAndSelectMosipIssuer() {
-		clearAndSendKeys(issuerSearchBar, issuerSearchTextForMosip, "Enter text in Issuer search bar for MOSIP");
+		slowTypeInIssuerSearchBar(issuerSearchTextForMosip, "Enter text in Issuer search bar for MOSIP");
 	}
 
 	public void searchAndSelectSunbirdIssuer() {
-		clearAndSendKeys(issuerSearchBar, issuerSearchTextForSunbird, "Enter text in Issuer search bar for Sunbird");
+		slowTypeInIssuerSearchBar(issuerSearchTextForSunbird, "Enter text in Issuer search bar for Sunbird");
 	}
 
 	public void searchAndSelectMdlIssuer() {
-		clearAndSendKeys(issuerSearchBar, issuerSearchTextForMdl, "Enter text in Issuer search bar for MDL");
+		slowTypeInIssuerSearchBar(issuerSearchTextForMdl, "Enter text in Issuer search bar for MDL");
 	}
 
 	public void searchAndSelectMockIssuer() {
-		clearAndSendKeys(issuerSearchBar, issuerSearchTextForMock, "Enter text in Issuer search bar for Mock");
+		slowTypeInIssuerSearchBar(issuerSearchTextForMock, "Enter text in Issuer search bar for Mock");
 	}
 
 	public void searchAndSelectFarmerIssuer() {
-		clearAndSendKeys(issuerSearchBar, issuerSearchTextForFarmer, "Enter text in Issuer search bar for Farmer");
+		slowTypeInIssuerSearchBar(issuerSearchTextForFarmer, "Enter text in Issuer search bar for Farmer");
 	}
 
 	public void searchAndSelectLandRegistryIssuer() {
-		clearAndSendKeys(issuerSearchBar, issuerSearchTextForLand, "Enter text in Issuer search bar for Land Registry");
+		slowTypeInIssuerSearchBar(issuerSearchTextForLand, "Enter text in Issuer search bar for Land Registry");
 	}
 
   public void hideKeyboardIos() {
