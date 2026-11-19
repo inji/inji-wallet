@@ -1,4 +1,8 @@
 (function fill() {
+    // The page may have navigated since injection; re-check on every run.
+    if (window.location.origin !== '__EXPECTED_ORIGIN__') {
+        return;
+    }
     var policy = document.getElementById('policyNumber');
     var name = document.getElementById('fullName');
     if (!policy || !name) {
@@ -23,6 +27,9 @@
     if (dob) setReactValue(dob, '__DOB__');
 
     setTimeout(function () {
+        if (window.location.origin !== '__EXPECTED_ORIGIN__') {
+            return;
+        }
         var btn = document.getElementById('form-submit-button')
             || document.querySelector('button[type="submit"]');
         if (btn && !btn.disabled) {

@@ -3,9 +3,6 @@ package io.mosip.residentapp.sdkcontract
 import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.gson.Gson
-import com.nimbusds.jose.JWSAlgorithm
-import com.nimbusds.jose.JWSHeader
-import com.nimbusds.jose.crypto.Ed25519Signer
 import io.mosip.residentapp.sdkcontract.SdkContractTestSupport.TRACEABILITY_ID
 import io.mosip.residentapp.sdkcontract.SdkContractTestSupport.logBanner
 import io.mosip.residentapp.sdkcontract.SdkContractTestSupport.logMultiline
@@ -17,7 +14,6 @@ import io.mosip.openID4VP.authorizationResponse.vpTokenSigningResult.VPTokenSign
 import io.mosip.openID4VP.constants.FormatType
 import io.mosip.openID4VP.wallet.Credential
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Assume.assumeTrue

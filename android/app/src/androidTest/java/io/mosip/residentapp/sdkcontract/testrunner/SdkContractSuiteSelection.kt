@@ -84,6 +84,7 @@ internal object SdkContractSuiteSelection {
                 ?: throw IllegalArgumentException(
                     "Unknown suite '$suiteName'. Available suites: ${suiteDefinitions.keys.joinToString(", ")}"
                 )
+                require(classes.isNotEmpty()) { "Suite '$suiteName' in '$suiteAssetFileName' has no classes." }
             selectedClasses.addAll(classes)
         }
 

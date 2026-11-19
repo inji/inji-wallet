@@ -14,7 +14,6 @@ data class IssuerRuntimeConfig(
     val credentialConfigurationId: String,
     val tokenEndpointProxy: String,
     val clientId: String,
-    val authorizationServer: String? = null,
 )
 
 object MimotoIssuerConfigResolver {
@@ -39,18 +38,12 @@ object MimotoIssuerConfigResolver {
         val clientId = readString(issuerConfig, "client_id")
           ?: throw IllegalStateException("Missing client_id for issuerId=$issuerId")
 
-        val authorizationServer =  run {
-          val wellKnown = fetchIssuerWellKnown(credentialIssuer)
-          extractAuthorizationServerFromWellKnown(wellKnown)
-        }
-
         return IssuerRuntimeConfig(
             issuerId = issuerId,
             credentialIssuer = credentialIssuer,
             credentialConfigurationId = credentialConfigurationId,
             tokenEndpointProxy = "$API_BASE_URL/v1/mimoto/get-token/$issuerId",
             clientId = clientId,
-            authorizationServer = authorizationServer,
         )
     }
 
@@ -70,20 +63,6 @@ object MimotoIssuerConfigResolver {
         return root.getAsJsonObject("response")
             ?: root.getAsJsonObject("issuer")
             ?: root
-    }
-
-    private fun fetchIssuerWellKnown(credentialIssuer: String): JsonObject {
-        val url = "$credentialIssuer/.well-known/openid-credential-issuer"
-        return httpGetJson(url)
-    }
-
-    private fun extractAuthorizationServerFromWellKnown(wellKnown: JsonObject): String? {
-        val authorizationServers = wellKnown.getAsJsonArray("authorization_servers")
-            ?: return null
-        if (authorizationServers.size() == 0) {
-            return null
-        }
-        return authorizationServers[0].asStringOrNull()
     }
 
     private fun httpGetJson(url: String): JsonObject {
@@ -113,6 +92,4 @@ object MimotoIssuerConfigResolver {
     private fun JsonElement.asJsonObjectOrNull(): JsonObject? =
         if (isJsonObject) asJsonObject else null
 
-    private fun JsonElement.asStringOrNull(): String? =
-        runCatching { asString }.getOrNull()?.takeIf { it.isNotBlank() }
 }

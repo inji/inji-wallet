@@ -6,12 +6,9 @@ import com.nimbusds.jose.JOSEObjectType
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jose.JWSHeader
 import com.nimbusds.jose.crypto.ECDSASigner
-import com.nimbusds.jose.crypto.Ed25519Signer
 import com.nimbusds.jose.jwk.Curve
 import com.nimbusds.jose.jwk.ECKey
-import com.nimbusds.jose.jwk.OctetKeyPair
 import com.nimbusds.jose.jwk.gen.ECKeyGenerator
-import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import io.mosip.vciclient.proof.CredentialRequestProofMetadata
@@ -64,18 +61,10 @@ class SdkDownloadCallbacks(
         client.newCall(builder.build()).execute().use { response ->
             val body = response.body?.string().orEmpty()
             check(response.isSuccessful) {
-                "Token request to $endpoint failed: HTTP ${response.code} $body"
+              "Token exchange failed: HTTP ${response.code}"
             }
 
             val json = JsonParser.parseString(body).asJsonObject
-            Log.i(
-                TAG,
-                "token_type=${json.get("token_type")?.asString} " +
-                    "expires_in=${json.get("expires_in")?.asInt} " +
-                    "c_nonce=${json.get("c_nonce")?.asString} "+
-                    "TOKEN=${json.get("access_token")?.asString}",
-            )
-
 
             return TokenResponse(
                 accessToken = json.get("access_token").asString,

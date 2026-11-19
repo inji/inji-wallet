@@ -5,8 +5,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import io.mosip.residentapp.sdkcontract.SdkContractTestSupport.TRACEABILITY_ID
 import io.mosip.residentapp.sdkcontract.SdkContractTestSupport.logBanner
-import io.mosip.residentapp.sdkcontract.SdkContractTestSupport.logMultiline
-import io.mosip.residentapp.sdkcontract.SdkContractTestSupport.prettyPrint
 import io.mosip.vciclient.VCIClient
 import io.mosip.vciclient.authorizationCodeFlow.AuthorizationMethod
 import io.mosip.vciclient.authorizationCodeFlow.clientMetadata.ClientMetadata
@@ -75,7 +73,6 @@ class SunbirdCredentialDownloadInstrumentedTest {
     }
 
     logBanner(TAG, "DOWNLOADED CREDENTIAL")
-    logMultiline(TAG, prettyPrint(credentialResponse))
 
     //validations
     val credentials = credentialResponse.credentials
@@ -101,7 +98,11 @@ class SunbirdCredentialDownloadInstrumentedTest {
     val credentialJson = credential.toString()
     val credentialId = credential.asJsonObject.get("id")?.asString
         ?: "${java.util.UUID.randomUUID()}_injicertify-insurance"
-    Log.i(TAG, prettyPrint(credentialJson))
+    val credentialSubject = credential.asJsonObject.getAsJsonObject("credentialSubject")
+    assertTrue("Validation of policy name",credentialSubject.asJsonObject.get("policyName")?.asString.equals(POLICY_NAME))
+    assertTrue("Validation of policy number",credentialSubject.asJsonObject.get("policyNumber")?.asString.equals(POLICY_NUMBER))
+    assertTrue("Validation of date of birth",credentialSubject.asJsonObject.get("dob")?.asString.equals(DOB))
+
     SdkContractTestSupport.lastDownloadedCredential =
         SdkContractTestSupport.DownloadedCredential(credentialJson, credentialId)
     SdkContractTestSupport.lastHolderPrivateKey = callbacks.lastUsedHolderEcPrivateKey

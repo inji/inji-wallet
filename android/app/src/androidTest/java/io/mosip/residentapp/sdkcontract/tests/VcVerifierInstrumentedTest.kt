@@ -24,6 +24,7 @@ class VcVerifierInstrumentedTest {
     Log.i(TAG, "using live credential")
     val result = credentialsVerifier.verify(credential = liveCredential!!, credentialFormat = CredentialFormat.LDP_VC)
     Log.i(TAG, prettyPrint(result))
+    assertTrue("Credential verification failed: ${result.verificationMessage}", result.verificationStatus)
   }
 
   @Test
@@ -39,6 +40,19 @@ class VcVerifierInstrumentedTest {
     //verify
     val result = presentationVerifier.verifyV2(livePresentation!!)
     Log.i(TAG, prettyPrint(result))
+
+    assertTrue(
+      "Presentation proof verification failed: ${result.proofVerificationResult.verificationMessage}",
+      result.proofVerificationResult.verificationStatus,
+    )
+    assertTrue("vcResults is empty", result.vcResults.isNotEmpty())
+    result.vcResults.forEachIndexed { index, vcResult ->
+      assertTrue("vcResults[$index].vc is blank", vcResult.vc.isNotBlank())
+      assertTrue(
+        "vcResults[$index] verification failed: ${vcResult.verificationResult.verificationMessage}",
+        vcResult.verificationResult.verificationStatus,
+      )
+    }
   }
 
   private companion object {

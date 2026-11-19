@@ -2,10 +2,9 @@ package io.mosip.residentapp.sdkcontract
 
 import android.util.Log
 import com.google.gson.GsonBuilder
-import com.nimbusds.jose.jwk.OctetKeyPair
 
 object SdkContractTestSupport {
-    const val TEST_CREDENTIAL_ISSUER = "https://injicertify-mock.qainji.mosip.net"
+    const val TEST_CREDENTIAL_ISSUER = "https://injicertify-mock.released.mosip.net"
 
     const val TRACEABILITY_ID = "inji-sdk-poc-test"
 
