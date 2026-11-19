@@ -21,6 +21,10 @@ import {
   serializeClaimPath,
 } from '../../../shared/openId4VCI/Utils';
 import {VCFormat} from '../../../shared/VCFormat';
+import {
+  readOriginalMdoc,
+  toImageDataUriOrNull,
+} from '../../../shared/vcRenderer/mdoc/MdocImages';
 import {displayType} from '../../../machines/Issuers/IssuersMachine';
 import {Image} from 'react-native-elements/dist/image/Image';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -828,6 +832,33 @@ const PROOF_TYPE_ALGORITHM_MAP = {
   [-7]: 'ES256',
 };
 
+// PixelPass turns binary portraits into text, so the portrait is read from the original credential;
+// cached by credential because selectors call this on every render
+const ORIGINAL_PORTRAIT_CACHE_SIZE = 50;
+const originalPortraitByCredential = new Map<string, string | null>();
+
+function readOriginalPortrait(encodedMdoc: string): string | null {
+  try {
+    const {images} = readOriginalMdoc(encodedMdoc);
+    const portraitBytes = Object.values(images.portraits)[0];
+    return portraitBytes ? toImageDataUriOrNull(portraitBytes) : null;
+  } catch {
+    return null;
+  }
+}
+
+function originalMdocPortrait(encodedMdoc: unknown): string | null {
+  if (typeof encodedMdoc !== 'string') return null;
+  if (originalPortraitByCredential.has(encodedMdoc)) {
+    return originalPortraitByCredential.get(encodedMdoc) ?? null;
+  }
+  const portrait = readOriginalPortrait(encodedMdoc);
+  if (originalPortraitByCredential.size >= ORIGINAL_PORTRAIT_CACHE_SIZE)
+    originalPortraitByCredential.clear();
+  originalPortraitByCredential.set(encodedMdoc, portrait);
+  return portrait;
+}
+
 export function getFaceAttribute(verifiableCredential, format) {
   let credentialSubject = {};
   if (format === VCFormat.ldp_vc) {
@@ -836,6 +867,10 @@ export function getFaceAttribute(verifiableCredential, format) {
       verifiableCredential?.verifiableCredential.credential.credentialSubject ??
       {};
   } else if (format === VCFormat.mso_mdoc) {
+    const originalPortrait = originalMdocPortrait(
+      verifiableCredential?.credential,
+    );
+    if (originalPortrait) return originalPortrait;
     const nameSpaces =
       verifiableCredential?.processedCredential?.issuerSigned?.nameSpaces ??
       verifiableCredential?.processedCredential?.nameSpaces ??

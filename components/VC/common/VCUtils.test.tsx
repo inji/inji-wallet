@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
+import {encode, Tag} from 'cbor2';
+import {Buffer} from 'buffer';
 import {
   getFieldValue,
   getFieldName,
@@ -1161,6 +1163,90 @@ describe('getFaceAttribute', () => {
       },
     };
     expect(getFaceAttribute(vc, VCFormat.mso_mdoc)).toBe('photoVal');
+  });
+
+  it('getFaceAttribute returns the binary mdoc portrait as a JPEG data URI when PixelPass mangled it into text', () => {
+    // JPEG magic bytes stored as a CBOR byte string, as ISO issuers do
+    const jpeg = new Uint8Array([0xff, 0xd8, 0xff, 0xe0]);
+    const issuerSigned = {
+      nameSpaces: {
+        'org.iso.18013.5.1': [
+          new Tag(
+            24,
+            encode({elementIdentifier: 'portrait', elementValue: jpeg}),
+          ),
+        ],
+      },
+    };
+    const vc = {
+      credential: Buffer.from(encode(issuerSigned)).toString('base64url'),
+      processedCredential: {
+        issuerSigned: {
+          nameSpaces: {
+            'org.iso.18013.5.1': [
+              {elementIdentifier: 'portrait', elementValue: '��'},
+            ],
+          },
+        },
+      },
+    };
+
+    const face = getFaceAttribute(vc, VCFormat.mso_mdoc);
+
+    expect(face).toBe('data:image/jpeg;base64,/9j/4A==');
+  });
+
+  it('getFaceAttribute keeps the decoded string portrait when the mdoc has no binary portrait', () => {
+    // Certify style: portrait issued as a text string
+    const issuerSigned = {
+      nameSpaces: {
+        'org.iso.18013.5.1': [
+          new Tag(
+            24,
+            encode({
+              elementIdentifier: 'portrait',
+              elementValue: 'data:image/png;base64,abc',
+            }),
+          ),
+        ],
+      },
+    };
+    const vc = {
+      credential: Buffer.from(encode(issuerSigned)).toString('base64url'),
+      processedCredential: {
+        issuerSigned: {
+          nameSpaces: {
+            'org.iso.18013.5.1': [
+              {
+                elementIdentifier: 'portrait',
+                elementValue: 'data:image/png;base64,abc',
+              },
+            ],
+          },
+        },
+      },
+    };
+
+    const face = getFaceAttribute(vc, VCFormat.mso_mdoc);
+
+    expect(face).toBe('data:image/png;base64,abc');
+  });
+
+  it('getFaceAttribute falls back to the decoded portrait when the encoded mdoc cannot be parsed', () => {
+    const vc = {
+      credential: 'not-cbor',
+      processedCredential: {
+        nameSpaces: {
+          'org.iso.18013.5.1': [
+            {elementIdentifier: 'portrait', elementValue: 'portraitData'},
+          ],
+        },
+      },
+    };
+
+    const face = getFaceAttribute(vc, VCFormat.mso_mdoc);
+
+    expect(face).toBe('portraitData');
   });
 
   it('should extract face from vc_sd_jwt fullResolvedPayload', () => {
