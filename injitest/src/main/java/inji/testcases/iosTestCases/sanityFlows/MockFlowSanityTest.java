@@ -10,23 +10,39 @@ import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+import inji.utils.CredentialRegistryUpdater;
 
 public class MockFlowSanityTest extends IosBaseTest {
 
   @Test
   @NeedsMockUIN
-  public void downloadMockVCAndDeleteSmoke() {
+  public void should_download_and_delete_mock_vc_when_mock_issuer_flow_completes() {
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
+
     WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
+
     AppUnlockMethodPage appUnlockMethodPage = welcomePage.clickOnSkipButton();
+
     SetPasscode setPasscode = appUnlockMethodPage.clickOnUsePasscode();
+
     ConfirmPasscode confirmPasscode =
       setPasscode.enterPasscode(TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
+
     HomePage homePage =
       confirmPasscode.enterPasscodeInConfirmPasscodePage(
         TestDataReader.readData(InjiWalletConstants.PASSCODE), PlatformType.IOS);
     homePage.clickOnNextButtonForInjiTour();
-    AddNewCardPage addNewCardPage = homePage.downloadCard();
+
+    //Updating Credential Registry if enabled in config file
+    CredentialRegistryUpdater.updateCredentialRegistryIfEnabled(homePage);
+
+    // Navigate back
+    homePage.clickOnHomeButton();
+
+    // Home page
+    HomePage refreshedHomePage = new HomePage(getDriver());
+
+    AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
     assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(),
       "Verify if issuer description  esignet displayed");
     assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(),
