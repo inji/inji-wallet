@@ -280,8 +280,7 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
           </Column>
         )}
       </Column>
-      {!props.svgTemplate &&
-        props.vcHasImage &&
+      {props.vcHasImage &&
         !props.verifiableCredentialData?.vcMetadata.isExpired && (
           <View
             style={{
