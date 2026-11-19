@@ -35,6 +35,12 @@ import {VCFormat} from '../../../shared/VCFormat';
 
 import testIDProps from '../../../shared/commonUtil';
 import {ShareableInfoModal} from './ShareableInfoModal';
+import {SvgCardFullScreen} from './SvgCardFullScreen';
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from 'react-native-gesture-handler';
 import {SvgCss} from 'react-native-svg/css';
 import {QR_IMAGE_ID} from '../../../shared/constants';
 
@@ -99,6 +105,10 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
     return false;
   };
   const [showQrOverlay, setShowQrOverlay] = useState(false);
+  const [fullScreenSvg, setFullScreenSvg] = useState<{
+    svg: string;
+    aspectRatio: number;
+  } | null>(null);
 
   const [shareModalVisible, setShareModalVisible] = useState(false);
 
@@ -115,67 +125,104 @@ export const VCDetailView: React.FC<VCItemDetailsProps> = (
       <Column scroll>
         {Array.isArray(props.svgTemplate) && props.svgTemplate.length > 0 ? (
           <Column padding="30 0 0 0">
-            <FlatList
-              data={props.svgTemplate}
-              keyExtractor={(_, index) => `svg-${index}`}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              pagingEnabled={props.svgTemplate.length > 1}
-              snapToInterval={
-                props.svgTemplate.length > 1
-                  ? CARD_WIDTH + CARD_SPACING
-                  : undefined
-              }
-              decelerationRate="fast"
-              snapToAlignment="start"
-              contentContainerStyle={{
-                paddingHorizontal: 16,
-                justifyContent: 'center',
-                alignItems:
-                  props.svgTemplate.length === 1 ? 'center' : 'flex-start',
-              }}
-              ItemSeparatorComponent={() => (
-                <View style={{width: CARD_SPACING}} />
-              )}
-              renderItem={({item}) => {
-                let aspectRatio: number | null = null;
-                const match = item.match(/viewBox="0 0 (\d+) (\d+)"/);
-                if (match) {
-                  const [, w, h] = match.map(Number);
-                  aspectRatio = h / w;
+            {/* gestures in a native Modal need their own root on Android */}
+            <GestureHandlerRootView>
+              <FlatList
+                data={props.svgTemplate}
+                keyExtractor={(_, index) => `svg-${index}`}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                pagingEnabled={props.svgTemplate.length > 1}
+                snapToInterval={
+                  props.svgTemplate.length > 1
+                    ? CARD_WIDTH + CARD_SPACING
+                    : undefined
                 }
+                decelerationRate="fast"
+                snapToAlignment="start"
+                contentContainerStyle={{
+                  paddingHorizontal: 16,
+                  justifyContent: 'center',
+                  alignItems:
+                    props.svgTemplate.length === 1 ? 'center' : 'flex-start',
+                }}
+                ItemSeparatorComponent={() => (
+                  <View style={{width: CARD_SPACING}} />
+                )}
+                renderItem={({item}) => {
+                  let aspectRatio: number | null = null;
+                  const match = item.match(/viewBox="0 0 (\d+) (\d+)"/);
+                  if (match) {
+                    const [, w, h] = match.map(Number);
+                    aspectRatio = h / w;
+                  }
 
-                const targetWidth =
-                  props.svgTemplate.length === 1
-                    ? deviceWidth - 32
-                    : CARD_WIDTH;
-                const targetHeight = aspectRatio
-                  ? targetWidth * aspectRatio
-                  : targetWidth * 0.7;
+                  const targetWidth =
+                    props.svgTemplate.length === 1
+                      ? deviceWidth - 32
+                      : CARD_WIDTH;
+                  const targetHeight = aspectRatio
+                    ? targetWidth * aspectRatio
+                    : targetWidth * 0.7;
 
-                return (
-                  <Column style={{width: targetWidth}}>
-                    <SvgCss
-                      xml={item}
-                      width="100%"
-                      height={targetHeight}
-                      preserveAspectRatio="xMidYMid meet"
-                    />
+                  const enlarge = Gesture.Tap()
+                    .numberOfTaps(2)
+                    .onEnd(() =>
+                      setFullScreenSvg({
+                        svg: item,
+                        aspectRatio: targetHeight / targetWidth,
+                      }),
+                    );
 
-                    <View style={{height: 12}} />
+                  return (
+                    <Column style={{width: targetWidth}}>
+                      <GestureDetector gesture={enlarge}>
+                        <View {...testIDProps('svgCard')}>
+                          <SvgCss
+                            xml={item}
+                            width="100%"
+                            height={targetHeight}
+                            preserveAspectRatio="xMidYMid meet"
+                          />
+                        </View>
+                      </GestureDetector>
 
-                    {item.includes(QR_IMAGE_ID) && (
-                      <Button
-                        testID="zoomQrCode"
-                        title="Tap to zoom QR Code"
-                        type="gradient"
-                        size="Large"
-                        onPress={() => setShowQrOverlay(true)}
-                      />
-                    )}
-                  </Column>
-                );
-              }}
+                      <Row crossAlign="center" align="center" margin="8 0 0 0">
+                        <Icon
+                          name="expand"
+                          size={12}
+                          color={Theme.Colors.textLabel}
+                        />
+                        <Text
+                          testID="doubleTapToEnlarge"
+                          size="smaller"
+                          color={Theme.Colors.textLabel}
+                          style={{marginLeft: 6}}>
+                          {t('doubleTapToEnlarge')}
+                        </Text>
+                      </Row>
+
+                      <View style={{height: 12}} />
+
+                      {item.includes(QR_IMAGE_ID) && (
+                        <Button
+                          testID="zoomQrCode"
+                          title="Tap to zoom QR Code"
+                          type="gradient"
+                          size="Large"
+                          onPress={() => setShowQrOverlay(true)}
+                        />
+                      )}
+                    </Column>
+                  );
+                }}
+              />
+            </GestureHandlerRootView>
+
+            <SvgCardFullScreen
+              svg={fullScreenSvg?.svg ?? null}
+              aspectRatio={fullScreenSvg?.aspectRatio ?? 0.63}
+              onClose={() => setFullScreenSvg(null)}
             />
 
             {showQrOverlay && (

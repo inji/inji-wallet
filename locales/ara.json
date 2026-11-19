@@ -77,6 +77,7 @@
     "flipCamera": "فليب الكاميرا"
   },
   "VcDetails": {
+    "doubleTapToEnlarge": "انقر نقرًا مزدوجًا على البطاقة لتكبيرها",
     "generatedOn": "تم إنشاؤه في",
     "status": "الحالة",
     "lastChecked": "آخر تحقق",

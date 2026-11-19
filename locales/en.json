@@ -77,6 +77,7 @@
     "flipCamera": "Flip Camera"
   },
   "VcDetails": {
+    "doubleTapToEnlarge": "Double tap the card to enlarge",
     "generatedOn": "Generated On",
     "status": "Status",
     "lastChecked": "Last Checked",
