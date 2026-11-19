@@ -14,7 +14,7 @@ import inji.utils.CredentialRegistryUpdater;
 public class NoNetworkFlowSanityTest extends AndroidBaseTest {
   @Test
   @NeedsUIN
-  public void should_not_show_issuer_options_when_internet_is_unavailable(){
+  public void downloadMosipIdVCWithoutInternet(){
     String sessionId = getDriver().getSessionId().toString();
     UpdateNetworkSettings.setNoNetworkProfile(sessionId);
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
