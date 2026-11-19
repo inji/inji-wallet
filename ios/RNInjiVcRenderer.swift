@@ -20,11 +20,12 @@ class RNInjiVcRenderer: NSObject, RCTBridgeModule {
   }
   
   
-  @objc(generateCredentialDisplayContent:wellKnown:vcJsonString:resolver:rejecter:)
+  @objc(generateCredentialDisplayContent:wellKnown:vcJsonString:qrCodeData:resolver:rejecter:)
   func generateCredentialDisplayContent(
     credentialFormat: String,
     wellKnown: String?,
     vcJsonString: String,
+    qrCodeData: String?,
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
@@ -40,7 +41,8 @@ class RNInjiVcRenderer: NSObject, RCTBridgeModule {
       let result = try renderer.generateCredentialDisplayContent(
         credentialFormat: format,
         wellKnownJson: wellKnown,
-        vcJsonString: vcJsonString
+        vcJsonString: vcJsonString,
+        qrCodeData: qrCodeData
       )
       resolve(result)
     } catch {

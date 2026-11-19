@@ -27,11 +27,11 @@ export const ReceiveVcScreen: React.FC = () => {
 
   const [credential, setCredential] = useState(null);
 
-  const [svgTemplate, setSvgTemplate] = useState<string[] | null>(null);
-  const [svgRendererError, setSvgRendererError] = useState<string[] | null>(
-    null,
+  const {svgTemplate, svgRendererError, loadingSvg} = useCredentialSvg(
+    controller.credential,
+    verifiableCredentialData.vcMetadata.format,
+    wellknown,
   );
-  const [loadingSvg, setLoadingSvg] = useState<boolean>(true);
 
   useEffect(() => {
     async function processVC() {
@@ -46,35 +46,6 @@ export const ReceiveVcScreen: React.FC = () => {
 
     processVC();
   }, [controller.credential]);
-
-  useEffect(() => {
-    const fetchSvg = async () => {
-      try {
-        setLoadingSvg(true);
-
-        const vcJsonString = JSON.stringify(controller.credential.credential);
-        const result = await VcRenderer.getInstance().generateCredentialDisplayContent(
-          verifiableCredentialData.vcMetadata.format,
-          wellknown ?? null,
-          vcJsonString,
-        );
-
-        setSvgTemplate(result);
-        setSvgRendererError(null);
-      } catch (err: any) {
-        setSvgTemplate(null);
-        setSvgRendererError(err.errorCode ?? 'Unknown error');
-      } finally {
-        setLoadingSvg(false);
-      }
-    };
-
-    if (controller.credential?.credential['renderMethod']) {
-      requestAnimationFrame(fetchSvg);
-    } else {
-      setLoadingSvg(false);
-    }
-  }, [controller.credential?.credential, wellknown]);
 
   useEffect(() => {
     getDetailedViewFields(

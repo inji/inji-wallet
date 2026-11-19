@@ -33,7 +33,7 @@ import {
 } from '../../components/BannerNotification';
 import { VCProcessor } from '../../components/VC/common/VCProcessor';
 import { HelpIcon } from '../../components/ui/HelpIcon';
-import VcRenderer from '../../shared/vcRenderer/VcRenderer';
+import {useCredentialSvg} from '../../shared/vcRenderer/useCredentialSvg';
 import { RevocationStatus } from '../../shared/vcVerifier/VcVerifier';
 
 export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
@@ -48,11 +48,6 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
         ? 'expired'
         : controller.verificationStatus?.statusType;
   const [verifiableCredential, setVerifiableCredential] = useState(null);
-  const [svgTemplate, setSvgTemplate] = useState<string[] | null>(null);
-  const [svgRendererError, setSvgRendererError] = useState<string[] | null>(
-    null,
-  );
-
   useEffect(() => {
     async function processVC() {
       if (controller.credential) {

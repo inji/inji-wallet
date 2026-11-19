@@ -15,6 +15,9 @@ NativeModules.InjiVcRenderer = {
   ),
   init: jest.fn(),
 };
+NativeModules.RNPixelpassModule = {
+  generateQRData: jest.fn(() => Promise.resolve('NCFPIXELPASSQR')),
+};
 
 jest.mock('../GlobalVariables', () => ({
   __AppId: {
@@ -40,6 +43,16 @@ jest.mock('react-native-mmkv-storage', () => ({
 }));
 
 import VcRenderer from './VcRenderer';
+import {isCacheExpired} from '../Utils';
+
+jest.mock('./mdoc/MdocTemplates', () => ({
+  templateUrlFor: jest.fn(() => 'https://mimoto.example/coastal.svg'),
+}));
+
+const templateConfig = {
+  baseUrl: 'https://mimoto.example/',
+  templateFileByDocType: {demo: 'coastal.svg'},
+};
 
 describe('VcRenderer', () => {
   let renderer: any;
@@ -66,14 +79,83 @@ describe('VcRenderer', () => {
     });
   });
 
+  it('renders an ephemeral mdoc model through native without persistent caching', async () => {
+    const result = await renderer.generateMdocDisplayContent(
+      {
+        nameSpaces: {
+          demo: [{elementIdentifier: 'name', elementValue: 'Holder'}],
+        },
+      },
+      templateConfig,
+      'encoded-mdoc',
+    );
+    expect(result).toEqual(['<svg>page1</svg>', '<svg>page2</svg>']);
+    expect(
+      NativeModules.InjiVcRenderer.generateCredentialDisplayContent,
+    ).toHaveBeenCalledWith(
+      'ldp_vc',
+      null,
+      JSON.stringify({
+        claims: {demo: {name: 'Holder'}},
+        portraits: {
+          demo: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4nGNgAAIAAAUAAXpeqz8AAAAASUVORK5CYII=',
+        },
+        signatures: {
+          demo: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4nGNgAAIAAAUAAXpeqz8AAAAASUVORK5CYII=',
+        },
+        renderMethod: [
+          {
+            type: 'TemplateRenderMethod',
+            renderSuite: 'svg-mustache',
+            template: {id: 'https://mimoto.example/coastal.svg'},
+          },
+        ],
+      }),
+      'NCFPIXELPASSQR',
+    );
+    expect(mockMMKV.setItem).not.toHaveBeenCalled();
+    expect(mockMMKV.getItem).not.toHaveBeenCalled();
+  });
+
+  it('generateMdocDisplayContent builds the QR from the encoded credential the same way the field view QR does', async () => {
+    const decoded = {
+      nameSpaces: {demo: [{elementIdentifier: 'name', elementValue: 'Holder'}]},
+    };
+
+    await renderer.generateMdocDisplayContent(
+      decoded,
+      templateConfig,
+      'encoded-mdoc',
+    );
+
+    expect(NativeModules.RNPixelpassModule.generateQRData).toHaveBeenCalledWith(
+      JSON.stringify('encoded-mdoc'),
+      '',
+    );
+  });
+
+  it('generateMdocDisplayContent rejects without calling native when the encoded credential is missing', async () => {
+    const decoded = {
+      nameSpaces: {demo: [{elementIdentifier: 'name', elementValue: 'Holder'}]},
+    };
+
+    const render = renderer.generateMdocDisplayContent(decoded, templateConfig);
+
+    await expect(render).rejects.toThrow(
+      'Mdoc QR requires the encoded credential',
+    );
+    expect(
+      NativeModules.InjiVcRenderer.generateCredentialDisplayContent,
+    ).not.toHaveBeenCalled();
+  });
+
   describe('generateCredentialDisplayContent', () => {
     it('is a method on the instance', () => {
       expect(typeof renderer.generateCredentialDisplayContent).toBe('function');
     });
 
     it('should return cached data if available and not expired', async () => {
-      const {isCacheExpired} = require('../Utils');
-      isCacheExpired.mockReturnValue(false);
+      jest.mocked(isCacheExpired).mockReturnValue(false);
       mockMMKV.getItem.mockResolvedValue(
         JSON.stringify({data: ['<svg>cached</svg>'], timestamp: Date.now()}),
       );
@@ -86,8 +168,7 @@ describe('VcRenderer', () => {
     });
 
     it('should fetch from native when cache is expired', async () => {
-      const {isCacheExpired} = require('../Utils');
-      isCacheExpired.mockReturnValue(true);
+      jest.mocked(isCacheExpired).mockReturnValue(true);
       mockMMKV.getItem.mockResolvedValue(
         JSON.stringify({data: ['<svg>old</svg>'], timestamp: 1000}),
       );
@@ -97,6 +178,17 @@ describe('VcRenderer', () => {
         JSON.stringify({id: 'test-vc-2', type: 'VerifiableCredential'}),
       );
       expect(result).toEqual(['<svg>page1</svg>', '<svg>page2</svg>']);
+    });
+
+    it('generateCredentialDisplayContent leaves QR data to the native renderer for JSON-LD credentials', async () => {
+      mockMMKV.getItem.mockResolvedValue(null);
+      const vcJson = JSON.stringify({id: 'ldp-qr-vc'});
+
+      await renderer.generateCredentialDisplayContent('ldp_vc', null, vcJson);
+
+      expect(
+        NativeModules.InjiVcRenderer.generateCredentialDisplayContent,
+      ).toHaveBeenCalledWith('ldp_vc', null, vcJson, null);
     });
 
     it('should fetch from native when no cache', async () => {
@@ -155,7 +247,7 @@ describe('VcRenderer', () => {
       );
       expect(
         NativeModules.InjiVcRenderer.generateCredentialDisplayContent,
-      ).toHaveBeenCalledWith('ldp_vc', null, expect.any(String));
+      ).toHaveBeenCalledWith('ldp_vc', null, expect.any(String), null);
     });
 
     it('should throw when vcJson is undefined', async () => {

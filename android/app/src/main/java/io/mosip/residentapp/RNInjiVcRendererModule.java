@@ -34,7 +34,7 @@ public class RNInjiVcRendererModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void generateCredentialDisplayContent(String credentialFormat, String wellKnown, String vcJsonString, Promise promise) {
+    public void generateCredentialDisplayContent(String credentialFormat, String wellKnown, String vcJsonString, @Nullable String qrCodeData, Promise promise) {
         try {
             CredentialFormat format = CredentialFormat.Companion.fromValue(credentialFormat);
             if (format == null) {
@@ -43,7 +43,8 @@ public class RNInjiVcRendererModule extends ReactContextBaseJavaModule {
             List<Object> results = injiVcRenderer.generateCredentialDisplayContent(
                     format,
                     wellKnown,
-                    vcJsonString
+                    vcJsonString,
+                    qrCodeData
             );
 
             WritableArray resultArray = new WritableNativeArray();
