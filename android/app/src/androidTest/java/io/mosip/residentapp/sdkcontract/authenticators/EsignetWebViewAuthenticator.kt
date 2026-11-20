@@ -46,7 +46,6 @@ class EsignetWebViewAuthenticator(
         val codeRef = AtomicReference<String?>(null)
         var webView: WebView? = null
         val context = instrumentation.targetContext
-        val state = Uri.parse(authorizationUrl).getQueryParameter("state") ?: error("Authorization URL [$authorizationUrl] carries no state parameter")
         val trustedOrigin = canonicalHttpsOrigin(authorizationUrl)
 
         instrumentation.runOnMainSync {
@@ -59,11 +58,11 @@ class EsignetWebViewAuthenticator(
                     override fun shouldOverrideUrlLoading(
                         view: WebView,
                         request: WebResourceRequest,
-                    ): Boolean = handleUrl(request.url.toString(), state, codeRef, latch, request.isForMainFrame)
+                    ): Boolean = handleUrl(request.url.toString(), codeRef, latch, request.isForMainFrame)
 
                     @Suppress("DEPRECATION")
                     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean =
-                        handleUrl(url, state, codeRef, latch)
+                        handleUrl(url, codeRef, latch)
 
                     override fun onPageFinished(view: WebView, url: String) {
                         Log.i(TAG, "Page finished: $url")
@@ -104,7 +103,6 @@ class EsignetWebViewAuthenticator(
     // handles redirect
     private fun handleUrl(
         url: String,
-        expectedState : String,
         codeRef: AtomicReference<String?>,
         latch: CountDownLatch,
         isMainFrame: Boolean = true, // the legacy String overload carries no frame info
@@ -115,10 +113,6 @@ class EsignetWebViewAuthenticator(
             Log.w(TAG, "Ignoring callback-like navigation from a subframe")
             return true
         }
-        if (callback.getQueryParameter("state") != expectedState) {
-          Log.w(TAG, "Ignoring redirect whose state does not match the active authorization request")
-          return true
-        }
         val code = callback.getQueryParameter("code")
         Log.i(TAG, "Redirect intercepted; code present=${!code.isNullOrBlank()}")
         codeRef.set(code)
@@ -126,7 +120,6 @@ class EsignetWebViewAuthenticator(
         return true
     }
 
-    // Exact scheme/authority/path match; the query (code, state) is intentionally not compared.
     private fun isRegisteredCallback(uri: Uri): Boolean {
         val registered = Uri.parse(REDIRECT_URI)
         return registered.scheme.equals(uri.scheme, ignoreCase = true) &&
@@ -179,8 +172,11 @@ class EsignetWebViewAuthenticator(
             .replace("\r", "\\r")
 
     //inject js for otp flow
-    private fun injectOtpFill(view: WebView, otp: EsignetAuthMethod.Otp, trustedOrigin: String) {
+    private fun injectOtpFill(view: WebView, uinDetails: EsignetAuthMethod.Otp, trustedOrigin: String) {
         Log.i(TAG, "OTP form JS injection not yet implemented")
+        val uin = uinDetails.individualId;
+        val otp = uinDetails.otp
+
     }
 
 
