@@ -1,11 +1,11 @@
 import {Theme} from '../../../components/ui/styleUtils';
 import React from 'react';
-import {Platform} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {Text} from '../../../components/ui';
 import IdBadge from '../../../assets/shareNearby/id-badge.svg';
 import BluetoothBadge from '../../../assets/shareNearby/bluetooth-badge.svg';
 import {CodeOption} from './CodeOption';
+import {isIOS} from '../../../shared/constants';
 
 const styles = Theme.ShareNearbyStyles;
 
@@ -41,12 +41,12 @@ export function CodeOptions({
         title={t('entry.bleTitle')}
         badge="BLE"
         description={t('entry.bleDescription')}
-        disabled={Platform.OS !== 'android'}
+        disabled={isIOS()}
         onPress={onReceive}
         testID="receiveBluetooth"
         icon={<BluetoothBadge />}
       />
-      {Platform.OS !== 'android' && (
+      {isIOS() && (
         <Text style={styles.small}>{t('entry.bleUnavailable')}</Text>
       )}
     </>
