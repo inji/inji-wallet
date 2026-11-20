@@ -2,7 +2,6 @@ import React from 'react';
 import {render} from '@testing-library/react-native';
 import {BannerNotificationContainer} from './BannerNotificationContainer';
 
-// Mock all controllers
 jest.mock('./BannerNotificationController', () => ({
   UseBannerNotification: jest.fn(() => ({
     isBindingSuccess: false,
@@ -85,6 +84,24 @@ describe('BannerNotificationContainer Component', () => {
   it('should match snapshot with default props', () => {
     const {toJSON} = render(<BannerNotificationContainer />);
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('uses the existing success banner for confirmed mdoc sharing', () => {
+    const dismiss = jest.fn();
+    (useScanScreen as jest.Mock).mockReturnValueOnce({
+      mdocSharedDetailCount: 5,
+      DISMISS_MDOC_BANNER: dismiss,
+    });
+    render(<BannerNotificationContainer />);
+    expect(BannerNotification).toHaveBeenCalledWith(
+      expect.objectContaining({
+        testId: 'mdocSharedBanner',
+        type: 'success',
+        message: 'ShareNearby:outcome.banner',
+        onClosePress: dismiss,
+      }),
+      expect.anything(),
+    );
   });
 
   it('should render wallet binding success banner', () => {

@@ -1,3 +1,8 @@
+/**
+ * TODO: Reuse a shared bottom-sheet container with UpdatedModal and
+ * ExpandableListSheetView for presentation, safe-area handling, scrolling, and dismissal.
+ * Keep card-status explanations and icons specific to this component.
+ */
 import React from 'react';
 import {View, TouchableOpacity} from 'react-native';
 import {Overlay} from 'react-native-elements';

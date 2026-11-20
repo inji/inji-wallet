@@ -251,6 +251,7 @@ exports[`GetIdInputModal should match snapshot 1`] = `
             ],
           ]
         }
+        disabled={true}
         linearGradientProps={
           {
             "colors": [
@@ -593,6 +594,7 @@ exports[`GetIdInputModal should match snapshot when not visible 1`] = `
             ],
           ]
         }
+        disabled={true}
         linearGradientProps={
           {
             "colors": [

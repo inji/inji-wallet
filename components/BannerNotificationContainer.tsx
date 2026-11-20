@@ -36,6 +36,18 @@ export const BannerNotificationContainer: React.FC<
   return (
     <>
       <BackupAndRestoreBannerNotification />
+      {scanScreenController.mdocSharedDetailCount > 0 && (
+        <View style={Theme.BannerStyles.topBanner}>
+          <BannerNotification
+            type={BannerStatusType.SUCCESS}
+            message={t('ShareNearby:outcome.banner', {
+              count: scanScreenController.mdocSharedDetailCount,
+            })}
+            onClosePress={scanScreenController.DISMISS_MDOC_BANNER}
+            testId="mdocSharedBanner"
+          />
+        </View>
+      )}
       {bannerNotificationController.isResolvingCredentialOffer && (
         <BannerNotification
           type={BannerStatusType.IN_PROGRESS}
