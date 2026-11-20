@@ -12,7 +12,7 @@ This document focuses on the technical design to support presentations during th
 
 ## Specification References
 
-- [OpenID4VCI v1.1 Specification Commit](https://github.com/openid/OpenID4VCI/blob/31636e9bb7f0eef6933175e1e41c78ce79a69783/1.1/openid-4-verifiable-credential-issuance-1_1.md)
+- [OpenID4VCI v1.1 Specification](https://openid.github.io/OpenID4VCI/openid-4-verifiable-credential-issuance-1_1-wg-draft.html)
 - [OpenID for Verifiable Presentations 1.0](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)
 - [OAuth 2.0 Pushed Authorization Requests](https://www.rfc-editor.org/info/rfc9126)
 - [The OAuth 2.0 Authorization Framework](https://www.rfc-editor.org/info/rfc6749)
@@ -20,8 +20,8 @@ This document focuses on the technical design to support presentations during th
 
 ## Clarifications
 
-- The OVP request received is no different from current OVP request (DIF Presentation Exchange) structure followed in Wallet. ([Draft 23 OpenID4VP specification using DIF presentation exchange](https://openid.net/specs/openid-4-verifiable-presentations-1_0-ID3.html#name-dif-presentation-exchange-2).)
-- The VP response created is also similar to the current VP response (DIF Presentation Exchange) structure followed in Wallet. ([Draft 23 VP response (Presentation Exchange)](https://openid.net/specs/openid-4-verifiable-presentations-1_0-ID3.html#name-examples-presentation-excha).)
+- The issuer can provide presentation requirements in the OpenID4VP request using either `presentation_definition` (DIF Presentation Exchange) or `dcql_query` (Digital Credentials Query Language), with one query format per request. The Wallet validates and processes the request according to the query format provided by the issuer. ([Presentation Exchange in OpenID4VP Draft 23](https://openid.net/specs/openid-4-verifiable-presentations-1_0-ID3.html#name-dif-presentation-exchange-2), [DCQL in OpenID4VP 1.0](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-6))
+- The VP response follows the query format: Presentation Exchange responses include `vp_token` and `presentation_submission`; DCQL responses include a `vp_token` object keyed by the DCQL credential query IDs. ([Presentation Exchange response example](https://openid.net/specs/openid-4-verifiable-presentations-1_0-ID3.html#name-examples-presentation-excha), [OpenID4VP 1.0 response parameters](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-8.1))
 - Wallet supports for `openid4vp_presentation` interaction type only. Other interaction types like `redirect_to_web` will be supported in the future.
 
 ### Future scope
@@ -39,6 +39,8 @@ This document focuses on the technical design to support presentations during th
 - OVP: OpenID for Verifiable Presentations
 - VP: Verifiable Presentation
 - IAR: Interactive Authorization Request
+- PE: DIF Presentation Exchange
+- DCQL: Digital Credentials Query Language
 
 ## Credential Download with Presentation During Issuance
 
@@ -69,7 +71,7 @@ sequenceDiagram
         wallet->>issuer: 5. Initial request to interactive authorization endpoint <br/>POST Content-Type: application/x-www-form-urlencoded /iar<br/>{response_type="code", client_id, code_challenge, code_challenge_method:"S256", redirect_uri, interaction_types_supported=openid4vp_presentation, <br/>authorization_details=[{"type": "openid_credential", "credential_configuration_id": "UniversityDegreeCredential" }]}
         issuer->>wallet: 6. 200 Interactive Authorization Response
         Note over wallet,issuer: II. Presentation Flow with Issuer
-        Note over wallet, issuer: The response body has the structure<br/>{status:"require_interaction", type:"openid4vp_presentation", auth_session:"..random string",<br/>//Presentation request<br/>openid4vp_request: {standard ovp request by value with response_mode as "iar-post" or "iar-post.jwt"}}
+        Note over wallet, issuer: The response body has the structure<br/>{status:"require_interaction", type:"openid4vp_presentation", auth_session:"..random string",<br/>//Presentation request<br/>openid4vp_request: {standard OVP request with response_mode "iae_post" or "iae_post.jwt"; "iar_post" and "iar_post.jwt" are supported for backward compatibility}}
         wallet->>wallet: 7. Validate the Interactive Authorization Response and validate openid4vp_request
         wallet->>wallet: 8. Filter the Wallet's downloaded credential(s) which satisfies presentation request criteria
         wallet->>user: 9. Display the list of filtered credentials for user to select
@@ -275,50 +277,74 @@ POST Content-Type: application/x-www-form-urlencoded /iar
 }
 ```
 
-- The Issuer responds with a 200 OK response, indicating that interactive authorization is required, along with the OVP request in the response body. The OVP request has the response mode as either `iar_post` or `iar_post.jwt` .The OVP request has the following structure:
+- The Issuer responds with a 200 OK response, indicating that interactive authorization is required, along with the OVP request in the response body. The OVP request can use `iae_post` or `iae_post.jwt`; `iar_post` and `iar_post.jwt` are also supported for backward compatibility. Modes ending in `.jwt` require the OpenID4VP authorization response to be encrypted; the other modes carry an unencrypted response. The request contains either a `presentation_definition` for Presentation Exchange or a `dcql_query` for DCQL. The Wallet submits the response to the Issuer's interactive authorization endpoint, including the `auth_session`. The Presentation Exchange request has the following structure:
 
-```shell
+```json
 {
   "status": "require_interaction",
   "type": "openid4vp_presentation",
   "auth_session": "..random string",
   "openid4vp_request": {
-    {
-      "client_id": "did:example:123456",
-      "response_uri": "https://client.example.org/post",
-      "response_type": "vp_token",
-      "response_mode": "iar_post",
-      "presentation_definition": {
-        "input_descriptors": [
-          {
-            "id": "id card credential",
-            "format": {
-              "ldp_vc": {
-                "proof_type": [
-                  "Ed25519Signature2018"
-                ]
-              }
-            },
-            "constraints": {
-              "fields": [
-                {
-                  "path": [
-                    "$.type"
-                  ],
-                  "filter": {
-                    "type": "string",
-                    "pattern": "IDCardCredential"
-                  }
-                }
-              ]
+    "client_id": "did:example:123456",
+    "response_uri": "https://client.example.org/post",
+    "response_type": "vp_token",
+    "response_mode": "iar_post",
+    "presentation_definition": {
+      "input_descriptors": [
+        {
+          "id": "id card credential",
+          "format": {
+            "ldp_vc": {
+              "proof_type": ["Ed25519Signature2018"]
             }
+          },
+          "constraints": {
+            "fields": [
+              {
+                "path": ["$.type"],
+                "filter": {
+                  "type": "string",
+                  "pattern": "IDCardCredential"
+                }
+              }
+            ]
           }
-        ]
-      },
-      "nonce": "...nonce",
-      "state" : "...state",
-      "id": "vp token example",
-    }
+        }
+      ]
+    },
+    "nonce": "...nonce",
+    "state": "...state",
+    "id": "vp token example"
+  }
+}
+```
+
+The Issuer can provide a DCQL query instead of a Presentation Exchange definition. For example:
+
+```json
+{
+  "status": "require_interaction",
+  "type": "openid4vp_presentation",
+  "auth_session": "..random string",
+  "openid4vp_request": {
+    "client_id": "did:example:123456",
+    "response_uri": "https://client.example.org/post",
+    "response_type": "vp_token",
+    "response_mode": "iar_post",
+    "dcql_query": {
+      "credentials": [
+        {
+          "id": "id_card",
+          "format": "dc+sd-jwt",
+          "meta": {
+            "vct_values": ["https://credentials.example.org/id-card"]
+          },
+          "claims": [{"path": ["given_name"]}, {"path": ["family_name"]}]
+        }
+      ]
+    },
+    "nonce": "...nonce",
+    "state": "...state"
   }
 }
 ```
@@ -347,6 +373,19 @@ Content-Type - application/x-www-form-urlencoded
     "vp_token": <VP Token>,
     "presentation_submission": <Presentation Submission>
    }
+}
+```
+
+For a DCQL request, the `vp_token` object is keyed by the credential query ID and contains the matching presentation(s). It does not include a `presentation_submission` parameter. For example:
+
+```json
+{
+  "auth_session": "...",
+  "openid4vp_presentation": {
+    "vp_token": {
+      "id_card": ["<VP Token>"]
+    }
+  }
 }
 ```
 
