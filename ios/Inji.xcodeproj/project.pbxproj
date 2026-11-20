@@ -1172,9 +1172,9 @@
 /* Begin XCRemoteSwiftPackageReference section */
 		E660F6F92FF23611007D2934 /* XCRemoteSwiftPackageReference "inji-openid4vp-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/abhip2565/inji-openid4vp-ios-swift.git";
+			repositoryURL = "https://github.com/inji/inji-openid4vp-ios-swift";
 			requirement = {
-				branch = "pr/mdoc-proximity-device-response";
+				branch = develop;
 				kind = branch;
 			};
 		};
@@ -1188,9 +1188,9 @@
 		};
 		9CCC57752E9D7C7000669DB7 /* XCRemoteSwiftPackageReference "tuvali-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/abhip2565/tuvali-ios-swift";
+			repositoryURL = "https://github.com/inji/tuvali-ios-swift";
 			requirement = {
-				branch = "pr/iso-mdoc-session";
+				branch = develop;
 				kind = branch;
 			};
 		};
@@ -1212,9 +1212,9 @@
 		};
 		E641C9E42FEAE9C9002D18A7 /* XCRemoteSwiftPackageReference "inji-vci-client-ios-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/abhip2565/inji-vci-client-ios-swift.git";
+			repositoryURL = "https://github.com/inji/inji-vci-client-ios-swift";
 			requirement = {
-				branch = "pr/mdoc-proximity-ovp";
+				branch = develop;
 				kind = branch;
 			};
 		};
