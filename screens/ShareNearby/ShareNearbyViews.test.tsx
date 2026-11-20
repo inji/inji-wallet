@@ -423,14 +423,14 @@ describe('Presentation screen and actor', () => {
       void flow.callbacks.onRequest(request);
     });
     expect(screen.getByText('engagement.connecting.title')).toBeOnTheScreen();
-    expect(screen.queryByTestId('shareMdoc')).toBeNull();
+    expect(screen.queryByLabelText('shareMdoc')).toBeNull();
     act(() => jest.advanceTimersByTime(2000));
     expect(
       screen.getByText('engagement.waitingForRequest.title'),
     ).toBeOnTheScreen();
-    expect(screen.queryByTestId('shareMdoc')).toBeNull();
+    expect(screen.queryByLabelText('shareMdoc')).toBeNull();
     act(() => jest.advanceTimersByTime(2000));
-    expect(screen.getByTestId('shareMdoc')).toBeOnTheScreen();
+    expect(screen.getByLabelText('shareMdoc')).toBeOnTheScreen();
     expect(screen.queryByLabelText('engagement.step.sharing')).toBeNull();
     expect(flow.cancel).not.toHaveBeenCalled();
   });
@@ -442,7 +442,7 @@ describe('Presentation screen and actor', () => {
       void flow.callbacks.onRequest(request);
     });
     finishConnectionPhases();
-    fireEvent.press(screen.getByTestId('shareMdoc'));
+    fireEvent.press(screen.getByLabelText('shareMdoc'));
     await act(async () => {
       await Promise.resolve();
     });
@@ -467,7 +467,7 @@ describe('Presentation screen and actor', () => {
       void flow.callbacks.onRequest(request);
     });
     finishConnectionPhases();
-    fireEvent.press(screen.getByTestId('shareMdoc'));
+    fireEvent.press(screen.getByLabelText('shareMdoc'));
     await act(async () => {
       await Promise.resolve();
     });
@@ -725,7 +725,7 @@ describe('Shared screen shell', () => {
     const screen = render(<ShareScreen />);
 
     expect(screen.getByLabelText('presentMdoc')).toBeOnTheScreen();
-    fireEvent.press(screen.getByTestId('turnOnBluetooth'));
+    fireEvent.press(screen.getByLabelText('turnOnBluetooth'));
 
     expect(
       controller.readinessController.TURN_ON_BLUETOOTH,
@@ -777,7 +777,7 @@ describe('Complete-request consent', () => {
       />,
     );
 
-    fireEvent.press(screen.getByTestId('shareMdoc'));
+    fireEvent.press(screen.getByLabelText('shareMdoc'));
     fireEvent.press(screen.getAllByRole('radio')[1]);
 
     expect(props.onShareSelectedCards).not.toHaveBeenCalled();
@@ -1312,7 +1312,7 @@ describe('Complete-request consent', () => {
       />,
     );
     expect(props.onShareSelectedCards).not.toHaveBeenCalled();
-    fireEvent.press(screen.getByTestId('shareMdoc'));
+    fireEvent.press(screen.getByLabelText('shareMdoc'));
     expect(props.onShareSelectedCards).toHaveBeenCalledTimes(1);
   });
 });
