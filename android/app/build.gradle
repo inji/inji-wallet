@@ -366,3 +366,29 @@ apply from: file("../../node_modules/@react-native-community/cli-platform-androi
 // https://github.com/oblador/react-native-vector-icons?tab=readme-ov-file#android-setup
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 apply from: "./eas-build.gradle"
+
+// JaCoCo coverage for unit tests. Used by the PR Gate workflow
+// (./gradlew testDebugUnitTest jacocoTestReport) and uploaded to Codecov.
+apply plugin: 'jacoco'
+
+android {
+    buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+        }
+    }
+}
+
+tasks.register('jacocoTestReport', JacocoReport) {
+    dependsOn 'testDebugUnitTest'
+    reports {
+        xml.required = true
+        html.required = false
+    }
+    classDirectories.setFrom(files(
+        fileTree(dir: "$buildDir/tmp/kotlin-classes/debug"),
+        fileTree(dir: "$buildDir/intermediates/javac/debug/classes")
+    ))
+    sourceDirectories.setFrom(files('src/main/java', 'src/main/kotlin'))
+    executionData.setFrom(fileTree(dir: "$buildDir/outputs/unit_test_code_coverage", include: '**/*.exec'))
+}
