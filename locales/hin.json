@@ -77,6 +77,7 @@
     "flipCamera": "कैमरा पलटें"
   },
   "VcDetails": {
+    "doubleTapToEnlarge": "कार्ड को बड़ा करने के लिए दो बार टैप करें",
     "generatedOn": "पर उत्पन्न हुआ",
     "status": "दर्जा",
     "lastChecked": "अंतिम जांच",

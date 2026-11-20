@@ -4,6 +4,11 @@ declare module 'react-native-dotenv' {
    */
   export const MIMOTO_HOST: string;
 
+  /** Wallet default for mdocTemplateBaseUrl when Mimoto does not provide it: the folder of mdoc SVG templates. */
+  export const MDOC_SVG_TEMPLATE_BASE_URL: string | undefined;
+  /** Wallet default for mdocTemplates when Mimoto does not provide it: JSON map of docType to SVG file name. */
+  export const MDOC_SVG_TEMPLATES: string | undefined;
+
   /**
    * URL for the Esignet backend server
    */
