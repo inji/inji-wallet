@@ -8,7 +8,7 @@ cd ..
 
 yes | sudo gem install bundler
 
-yes | sudo fastlane install_plugins
+sudo bundle install
 
 if [ "$APPLICATION_TYPE" == "debug" ]; then
   bundle exec fastlane android_build_debug
