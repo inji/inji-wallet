@@ -751,4 +751,6 @@ fileignoreconfig:
 
 - filename: docs/mdoc-proximity-design.md
   checksum: f5fcefeaf63be73e8846c281915b99c8cd1c6f3c9169ae6922bf930e9e00e74d
+- filename: shared/mdocPresentation/trustedReaderRoots.test.ts
+  checksum: f1b0c5e1a7685adaf4bfec3bb3a1265db940e63ff19cbb840777f66ca4bdb039
 version: "1.0"

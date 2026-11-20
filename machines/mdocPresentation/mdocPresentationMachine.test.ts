@@ -284,7 +284,6 @@ describe('mdoc presentation machine', () => {
   it('shows a code that waits 30 seconds for a reader, then five minutes between messages', () => {
     const flow = start();
     expect(flow.present.mock.calls[0][0]).toEqual({
-      trustedReaderRoots: [],
       engagementTimeoutSeconds: 30,
       inactivityTimeoutSeconds: 300,
     });

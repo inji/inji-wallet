@@ -6,6 +6,7 @@ const mockSignDataForVpPreparation = jest.fn();
 type NativeEvent = Record<string, string>;
 const listeners: Record<string, (event: NativeEvent) => unknown> = {};
 const mockRemove = jest.fn();
+const mockGetTrustedReaderRoots = jest.fn();
 
 // The project's setup file mocks react-native for every test; reset the module registry and
 // register this file's mock before loading MdocPresentation, as the VciClient tests do.
@@ -33,6 +34,9 @@ beforeAll(() => {
       },
     })),
   }));
+  jest.doMock('./trustedReaderRoots', () => ({
+    getTrustedReaderRoots: () => mockGetTrustedReaderRoots(),
+  }));
   jest.doMock('../openID4VP/OpenID4VPHelper', () => ({
     signDataForVpPreparation: (tokens: unknown) =>
       mockSignDataForVpPreparation(tokens),
@@ -46,6 +50,9 @@ beforeAll(() => {
 /** Lets pending promise callbacks run. */
 const settle = () => new Promise(resolve => setTimeout(resolve, 0));
 
+// roots given up front, so the session starts without waiting for configuration
+const rootsGiven = {trustedReaderRoots: []};
+
 const handlers = (overrides: Record<string, unknown> = {}) => ({
   onQrReady: jest.fn(),
   onProgress: jest.fn(),
@@ -57,6 +64,7 @@ describe('MdocPresentation', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     Object.keys(listeners).forEach(name => delete listeners[name]);
+    mockGetTrustedReaderRoots.mockResolvedValue([]);
   });
 
   describe('present', () => {
@@ -75,8 +83,48 @@ describe('MdocPresentation', () => {
 
       expect(JSON.parse(mockPresent.mock.calls[0][0])).toEqual({
         inactivityTimeoutSeconds: 120,
+        trustedReaderRoots: [],
       });
       expect(result).toEqual({status: 'completed', confirmedByReader: true});
+    });
+
+    it('loads the trusted reader roots from configuration when none are given', async () => {
+      mockGetTrustedReaderRoots.mockResolvedValue(['cm9vdA==']);
+      mockPresent.mockResolvedValue(JSON.stringify({status: 'declined'}));
+
+      await MdocPresentation.present({}, handlers());
+
+      expect(
+        JSON.parse(mockPresent.mock.calls[0][0]).trustedReaderRoots,
+      ).toEqual(['cm9vdA==']);
+    });
+
+    it('uses the trusted reader roots it is given instead of loading them', async () => {
+      mockPresent.mockResolvedValue(JSON.stringify({status: 'declined'}));
+
+      await MdocPresentation.present(
+        {trustedReaderRoots: ['Z2l2ZW4=']},
+        handlers(),
+      );
+
+      expect(mockGetTrustedReaderRoots).not.toHaveBeenCalled();
+      expect(
+        JSON.parse(mockPresent.mock.calls[0][0]).trustedReaderRoots,
+      ).toEqual(['Z2l2ZW4=']);
+    });
+
+    it('does not start the native session when cancelled while the roots load', async () => {
+      let finishLoading: (roots: string[]) => void = () => undefined;
+      mockGetTrustedReaderRoots.mockReturnValue(
+        new Promise<string[]>(resolve => (finishLoading = resolve)),
+      );
+
+      const presenting = MdocPresentation.present({}, handlers());
+      MdocPresentation.cancel();
+      finishLoading([]);
+
+      expect(await presenting).toEqual({status: 'cancelled'});
+      expect(mockPresent).not.toHaveBeenCalled();
     });
 
     it('rejects with the native error when the presentation cannot start', async () => {
@@ -122,7 +170,7 @@ describe('MdocPresentation', () => {
 
     it('passes the QR text to onQrReady', async () => {
       const callbacks = handlers();
-      const presenting = MdocPresentation.present({}, callbacks);
+      const presenting = MdocPresentation.present(rootsGiven, callbacks);
 
       listeners.onMdocQrReady({qrText: 'mdoc:owBjMS4w'});
       finishPresentation(JSON.stringify({status: 'cancelled'}));
@@ -133,7 +181,7 @@ describe('MdocPresentation', () => {
 
     it('passes progress to onProgress', async () => {
       const callbacks = handlers();
-      const presenting = MdocPresentation.present({}, callbacks);
+      const presenting = MdocPresentation.present(rootsGiven, callbacks);
 
       listeners.onMdocProgress({progress: 'connected'});
       finishPresentation(JSON.stringify({status: 'cancelled'}));
@@ -156,7 +204,7 @@ describe('MdocPresentation', () => {
       const callbacks = handlers({
         onRequest: jest.fn().mockResolvedValue({share: ['b2RvYw']}),
       });
-      const presenting = MdocPresentation.present({}, callbacks);
+      const presenting = MdocPresentation.present(rootsGiven, callbacks);
 
       listeners.onMdocRequest({request: JSON.stringify(request)});
       await settle();
@@ -172,7 +220,7 @@ describe('MdocPresentation', () => {
     });
 
     it('sends a decline when the holder declines', async () => {
-      const presenting = MdocPresentation.present({}, handlers());
+      const presenting = MdocPresentation.present(rootsGiven, handlers());
 
       listeners.onMdocRequest({
         request: JSON.stringify({requestNumber: 1, documents: []}),
@@ -192,7 +240,7 @@ describe('MdocPresentation', () => {
           .fn()
           .mockRejectedValue(new Error('no matching credential')),
       });
-      const presenting = MdocPresentation.present({}, callbacks);
+      const presenting = MdocPresentation.present(rootsGiven, callbacks);
 
       listeners.onMdocRequest({
         request: JSON.stringify({requestNumber: 1, documents: []}),
@@ -212,7 +260,7 @@ describe('MdocPresentation', () => {
       mockSignDataForVpPreparation.mockResolvedValue([
         {id: 'mdoc-proximity', signedData: 'c2lnbmF0dXJl'},
       ]);
-      const presenting = MdocPresentation.present({}, handlers());
+      const presenting = MdocPresentation.present(rootsGiven, handlers());
 
       listeners.onMdocSignRequest({
         dataToSign: 'ZGF0YQ',
@@ -239,7 +287,7 @@ describe('MdocPresentation', () => {
 
     it('signs with the sign handler when one is given', async () => {
       const sign = jest.fn().mockResolvedValue('b3du');
-      const presenting = MdocPresentation.present({}, handlers({sign}));
+      const presenting = MdocPresentation.present(rootsGiven, handlers({sign}));
 
       listeners.onMdocSignRequest({
         dataToSign: 'ZGF0YQ',
@@ -265,7 +313,7 @@ describe('MdocPresentation', () => {
       const sign = jest
         .fn()
         .mockRejectedValue(new Error('biometric prompt cancelled'));
-      const presenting = MdocPresentation.present({}, handlers({sign}));
+      const presenting = MdocPresentation.present(rootsGiven, handlers({sign}));
 
       listeners.onMdocSignRequest({
         dataToSign: 'ZGF0YQ',
@@ -284,12 +332,12 @@ describe('MdocPresentation', () => {
     });
 
     it('rejects a concurrent presentation without attaching another set of listeners', async () => {
-      const presenting = MdocPresentation.present({}, handlers());
+      const presenting = MdocPresentation.present(rootsGiven, handlers());
       const firstRequestListener = listeners.onMdocRequest;
 
-      await expect(MdocPresentation.present({}, handlers())).rejects.toThrow(
-        'A presentation is already running',
-      );
+      await expect(
+        MdocPresentation.present(rootsGiven, handlers()),
+      ).rejects.toThrow('A presentation is already running');
       expect(mockPresent).toHaveBeenCalledTimes(1);
       expect(listeners.onMdocRequest).toBe(firstRequestListener);
       finishPresentation(JSON.stringify({status: 'cancelled'}));
@@ -298,7 +346,7 @@ describe('MdocPresentation', () => {
 
     it('reports a synchronous request-handler error to native code', async () => {
       const presenting = MdocPresentation.present(
-        {},
+        rootsGiven,
         handlers({
           onRequest: () => {
             throw new Error('Unable to load wallet');
@@ -322,7 +370,7 @@ describe('MdocPresentation', () => {
 
     it('reports malformed native request JSON rather than leaving native waiting', async () => {
       const callbacks = handlers();
-      const presenting = MdocPresentation.present({}, callbacks);
+      const presenting = MdocPresentation.present(rootsGiven, callbacks);
 
       listeners.onMdocRequest({request: 'not JSON'});
       await settle();
@@ -340,7 +388,7 @@ describe('MdocPresentation', () => {
 
     it('reports a synchronous signing error to native code', async () => {
       const presenting = MdocPresentation.present(
-        {},
+        rootsGiven,
         handlers({
           sign: () => {
             throw new Error('Key unavailable');
@@ -369,7 +417,7 @@ describe('MdocPresentation', () => {
       async ending => {
         let decide: (value: {share: string[]}) => void = () => undefined;
         const presenting = MdocPresentation.present(
-          {},
+          rootsGiven,
           handlers({
             onRequest: () =>
               new Promise(resolve => {
@@ -400,7 +448,7 @@ describe('MdocPresentation', () => {
     it('does not deliver an old signature into a new presentation', async () => {
       let finishSigning: (signature: string) => void = () => undefined;
       const presenting = MdocPresentation.present(
-        {},
+        rootsGiven,
         handlers({
           sign: () =>
             new Promise(resolve => {
@@ -417,7 +465,7 @@ describe('MdocPresentation', () => {
       finishPresentation(JSON.stringify({status: 'cancelled'}));
       await presenting;
 
-      const nextPresentation = MdocPresentation.present({}, handlers());
+      const nextPresentation = MdocPresentation.present(rootsGiven, handlers());
       finishSigning('b2xk');
       await settle();
 

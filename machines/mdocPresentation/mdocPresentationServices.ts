@@ -114,7 +114,6 @@ export function MdocPresentationServices(
           dependencies
             .present(
               {
-                trustedReaderRoots: [],
                 engagementTimeoutSeconds: ENGAGEMENT_TIMEOUT_SECONDS,
                 inactivityTimeoutSeconds: INACTIVITY_TIMEOUT_SECONDS,
               },

@@ -8,6 +8,7 @@ import {
   MdocResult,
   MdocSigningInput,
 } from './types';
+import {getTrustedReaderRoots} from './trustedReaderRoots';
 
 const InjiMdocPresentation = NativeModules.InjiMdocPresentation;
 
@@ -51,6 +52,10 @@ export const MdocPresentation = {
       activePresentationSession === presentationSession &&
       presentationSession.isAcceptingResponses;
     try {
+      const trustedReaderRoots =
+        options.trustedReaderRoots ?? (await getTrustedReaderRoots());
+      if (!presentationSession.isAcceptingResponses)
+        return {status: 'cancelled'};
       const nativeEventEmitter = new NativeEventEmitter(InjiMdocPresentation);
       nativeEventSubscriptions.push(
         nativeEventEmitter.addListener(
@@ -112,7 +117,9 @@ export const MdocPresentation = {
         ),
       );
       const serializedPresentationResult: string =
-        await InjiMdocPresentation.present(JSON.stringify(options));
+        await InjiMdocPresentation.present(
+          JSON.stringify({...options, trustedReaderRoots}),
+        );
       return JSON.parse(serializedPresentationResult);
     } finally {
       presentationSession.isAcceptingResponses = false;
