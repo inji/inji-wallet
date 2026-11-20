@@ -53,7 +53,7 @@ export interface Typegen0 {
     actions:
       | 'recordMdocResult'
       | 'dismissMdocBanner'
-      | 'startMdocFlow'
+      | 'startMdocProximityFlow'
       | 'resetMdocFlow'
       | 'markMdocScreenBlurred'
       | 'clearUri'
@@ -112,7 +112,6 @@ export interface Typegen0 {
       | 'updateShowFaceAuthConsent';
     delays: never;
     guards:
-      | 'isMdocOnIos'
       | 'isMdocFlow'
       | 'isMdocScreenBlurred'
       | 'isMdocBleBusy'
@@ -149,7 +148,7 @@ export interface Typegen0 {
   eventsCausingActions: {
     recordMdocResult: 'done.invoke.MdocPresentation';
     dismissMdocBanner: 'DISMISS_MDOC_BANNER';
-    startMdocFlow: 'PRESENT_MDOC';
+    startMdocProximityFlow: 'PRESENT_MDOC';
     resetMdocFlow:
       | 'SCREEN_BLUR'
       | 'RESET'
@@ -276,7 +275,6 @@ export interface Typegen0 {
     SHARING_TIMEOUT: 'ACCEPT_REQUEST' | 'CHECK_FLOW_TYPE' | 'FACE_VALID';
   };
   eventsCausingGuards: {
-    isMdocOnIos: 'BLUETOOTH_STATE_DISABLED';
     isMdocFlow:
       | ''
       | 'APP_ACTIVE'

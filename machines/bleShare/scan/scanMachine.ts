@@ -113,7 +113,7 @@ export const scanMachine =
           on: {
             PRESENT_MDOC: [
               {cond: 'isMdocBleBusy', target: 'mdocBusy'},
-              {target: 'checkStorage', actions: 'startMdocFlow'},
+              {target: 'checkStorage', actions: 'startMdocProximityFlow'},
             ],
           },
           entry: [
@@ -246,10 +246,6 @@ export const scanMachine =
                   target: 'enabled',
                 },
                 BLUETOOTH_STATE_DISABLED: [
-                  {
-                    cond: 'isMdocOnIos',
-                    target: '#scan.bluetoothDenied',
-                  },
                   // Mobile ID explains first (NBY-03); Android asks only after the holder taps.
                   {
                     cond: 'isMdocFlow',
@@ -428,7 +424,7 @@ export const scanMachine =
               {cond: 'isMdocBleBusy', target: 'mdocBusy'},
               {
                 target: 'checkStorage',
-                actions: ['removeLoggers', 'startMdocFlow'],
+                actions: ['removeLoggers', 'startMdocProximityFlow'],
               },
             ],
             SCAN: [
@@ -473,7 +469,7 @@ export const scanMachine =
             DISMISS: 'checkStorage',
             PRESENT_MDOC: [
               {cond: 'isMdocBleBusy'},
-              {target: 'checkStorage', actions: 'startMdocFlow'},
+              {target: 'checkStorage', actions: 'startMdocProximityFlow'},
             ],
           },
         },

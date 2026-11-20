@@ -38,7 +38,7 @@ const OPENID4VP_REF_ID = 'OpenID4VP';
 export const ScanActions = (model: any) => {
   const {RNPixelpassModule} = NativeModules;
   return {
-    startMdocFlow: assign({
+    startMdocProximityFlow: assign({
       mdocSharedDetailCount: 0,
       mdocEndedWithoutSharing: false,
       isMdocFlow: true,

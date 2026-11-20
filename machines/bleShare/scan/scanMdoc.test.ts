@@ -121,8 +121,6 @@ function setup({
     guards: {
       uptoAndroid11: () => olderAndroid,
       isIOS: () => ios,
-      isMdocOnIos: (context: {isMdocFlow: boolean}) =>
-        ios && context.isMdocFlow,
     },
   };
   // Existing scan typegen cannot infer implementations returned by its options factories.

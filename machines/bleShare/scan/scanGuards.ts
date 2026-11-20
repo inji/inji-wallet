@@ -4,8 +4,6 @@ import {androidVersion, isAndroid, isIOS} from '../../../shared/constants';
 export const ScanGuards = () => {
   return {
     isMdocFlow: (context: {isMdocFlow: boolean}) => context.isMdocFlow === true,
-    isMdocOnIos: (context: {isMdocFlow: boolean}) =>
-      context.isMdocFlow && isIOS(),
     isMdocScreenBlurred: (context: {mdocScreenBlurred: boolean}) =>
       context.mdocScreenBlurred === true,
     isMdocBleBusy: (context: {
