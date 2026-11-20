@@ -249,7 +249,7 @@ The wallet retrieves its OpenID4VP configuration from the Mimoto backend.
 - **API:** `/v1/mimoto/allProperties`
 - **Property:** `openid4vpWalletConfig`
 
-This property defines the wallet capabilities supported by the OpenID4VP library. If the property is not available, the [default configuration](../../shared/openID4VP/walletConfig/WalletConfig.ts) is used. The property replaces the default configuration as a whole, so it must list `x509_hash` and `ES256` for the wallet to accept `x509_hash` verifiers.
+This property defines the wallet capabilities supported by the OpenID4VP library. If the property is not available, the [default configuration](../../shared/openID4VP/walletConfig/WalletConfig.ts) is used.
 
 #### Configuration Parameters
 
