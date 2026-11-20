@@ -10,6 +10,7 @@ import type {
 import type {ReaderTrust} from '../../../shared/mdocPresentation/types';
 import type {VerifiableCredential} from '../../../machines/VerifiableCredential/VCMetaMachine/vc';
 import {format} from 'date-fns';
+import {knownDocTypeName} from '../../../shared/mdocDocTypeNames';
 
 export function getRequestedElements(
   documentMatch: MdocDocumentMatch,
@@ -141,16 +142,8 @@ export function leastTrustedReader(
     );
 }
 
-// Readable names for well-known document types, for requests no stored card can answer.
-const DOC_TYPE_NAMES: Record<string, string> = {
-  'org.iso.18013.5.1.mDL': 'Mobile Driving Licence',
-  'org.iso.7367.1.mVRC': 'Vehicle Registration',
-  'org.iso.23220.photoid.1': 'Photo ID',
-  'eu.europa.ec.eudi.pid.1': 'Personal ID',
-};
-
 export function docTypeName(docType: string): string {
-  return DOC_TYPE_NAMES[docType] ?? docType;
+  return knownDocTypeName(docType) ?? docType;
 }
 
 /** The MSO's validUntil as "2 Oct 2026", or undefined when the decoded card doesn't carry it. */
