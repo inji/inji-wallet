@@ -659,4 +659,6 @@ fileignoreconfig:
   checksum: e014e1de003f9456c5ab4948107f1775ea80b3d3816a6248f7269b68bc7a17ff
 - filename: machines/settings.ts
   checksum: cecb0101cb18e6ff6343c0a0e27b91a1f7a528b6ed5998c5eea59cef58621e2a
+- filename: docs/openid4vp/openid4vp-support.md
+  checksum: c3c6495e5180fbd2c92fc1a3e2aa960b14035f31ff4fac8ab3190cdacc80cd08
 version: "1.0"
