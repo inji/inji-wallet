@@ -148,7 +148,6 @@ exports[`KeyManagementScreen should render 1`] = `
         "opacity": 1,
       }
     }
-    testID="saveKeyOrderingPreference"
   >
     <Text>
       <Text
@@ -336,7 +335,6 @@ exports[`KeyManagementScreen should render with key order data loaded 1`] = `
         "opacity": 1,
       }
     }
-    testID="saveKeyOrderingPreference"
   >
     <Text>
       <Text

@@ -136,7 +136,6 @@ exports[`BackupAndRestoreScreen should render default state 1`] = `
                   "opacity": 1,
                 }
               }
-              testID="backup"
             >
               <Text>
                 <Text
@@ -337,7 +336,6 @@ exports[`BackupAndRestoreScreen should render default state 1`] = `
                   "opacity": 1,
                 }
               }
-              testID="restore"
             >
               <Text>
                 <Text

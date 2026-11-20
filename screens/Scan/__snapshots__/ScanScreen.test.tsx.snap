@@ -339,7 +339,6 @@ exports[`ScanScreen should render bluetooth permission denied state 1`] = `
             ],
           ]
         }
-        testID="enableBluetoothButton"
         title={
           <Text
             color="#FFFFFF"
@@ -735,7 +734,6 @@ exports[`ScanScreen should render location denied state 1`] = `
             ],
           ]
         }
-        testID="enableLocationServicesButton"
         title={
           <Text
             color="#FFFFFF"
@@ -1005,7 +1003,6 @@ exports[`ScanScreen should render location disabled state 1`] = `
             ],
           ]
         }
-        testID="enableLocationServicesButton"
         title={
           <Text
             color="#FFFFFF"
@@ -1275,7 +1272,6 @@ exports[`ScanScreen should render nearby devices permission denied 1`] = `
             ],
           ]
         }
-        testID="allowNearbyDevicesPermissionButton"
         title={
           <Text
             color="#FFFFFF"

@@ -164,7 +164,6 @@ exports[`IntroSlidersScreen should render intro sliders 1`] = `
                   ],
                 ]
               }
-              testID="skipButton-one"
               title={
                 <Text
                   align="center"
@@ -484,7 +483,6 @@ exports[`IntroSlidersScreen should render intro sliders 1`] = `
                   ],
                 ]
               }
-              testID="skipButton-two"
               title={
                 <Text
                   align="center"
@@ -804,7 +802,6 @@ exports[`IntroSlidersScreen should render intro sliders 1`] = `
                   ],
                 ]
               }
-              testID="skipButton-three"
               title={
                 <Text
                   align="center"
@@ -1124,7 +1121,6 @@ exports[`IntroSlidersScreen should render intro sliders 1`] = `
                   ],
                 ]
               }
-              testID="skipButton-four"
               title={
                 <Text
                   align="center"

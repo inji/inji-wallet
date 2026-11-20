@@ -197,7 +197,6 @@ exports[`SetupLanguageScreen should render setup language screen 1`] = `
         ],
       ]
     }
-    testID="savePreference"
     title={
       <Text
         color="#FFFFFF"

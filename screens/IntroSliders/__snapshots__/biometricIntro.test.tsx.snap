@@ -364,7 +364,6 @@ exports[`StaticAuthScreen should render biometric intro 1`] = `
                 ],
               ]
             }
-            testID="useBiometricsButton"
             title={
               <Text
                 color="#FFFFFF"
@@ -462,7 +461,6 @@ exports[`StaticAuthScreen should render biometric intro 1`] = `
                 ],
               ]
             }
-            testID="usePasscodeButton"
             title={
               <Text
                 align="center"
