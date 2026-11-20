@@ -750,7 +750,7 @@ fileignoreconfig:
   checksum: fdb8da9e121a2539c81145b6d0d18f368b716fe8608c84bb5ddb03dcd04d995f
 
 - filename: docs/mdoc-proximity-design.md
-  checksum: f5fcefeaf63be73e8846c281915b99c8cd1c6f3c9169ae6922bf930e9e00e74d
+  checksum: a40f5397ee79cd387de5e8a5d4b9d60c608f95128519a7075690bb9241419020
 - filename: shared/mdocPresentation/trustedReaderRoots.test.ts
   checksum: f1b0c5e1a7685adaf4bfec3bb3a1265db940e63ff19cbb840777f66ca4bdb039
 version: "1.0"

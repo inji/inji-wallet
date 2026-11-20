@@ -61,7 +61,8 @@ it to Tuvali to send.
 ### Bridge contract
 
 JS starts a session with `present(options)`; options carry the trusted reader roots and the
-engagement and inactivity timeouts. While the session runs, the native module talks to JS through
+engagement and inactivity timeouts. When the caller passes no roots, `present` loads them from
+configuration first. While the session runs, the native module talks to JS through
 the events below, and `present` resolves with the session result: completed (confirmed by the
 reader or not), declined, cancelled, or failed with a reason.
 
@@ -195,7 +196,10 @@ revoked, is not sent. This uses the stored status; it does not run a new revocat
 needs its own approval.
 
 **B7. Reader trust.** Reader authentication results are shown as verified, unverified or failed
-check. No trusted reader roots are configured yet, so signed readers show as unverified. A
+check. The trusted reader roots come from Mimoto's `mosip.inji.mdocTrustedReaderRoots` property, a
+JSON list of base64 DER certificates (PEM is accepted). Entries that are not certificates are left
+out, since one bad root would stop every session, and when Mimoto cannot be reached the wallet
+uses an empty list. No environment lists any roots yet, so signed readers show as unverified. A
 failed check makes Decline the main action; Share anyway remains.
 
 **B8. Face verification.** Share with selfie verification follows the online sharing rule and
@@ -211,7 +215,7 @@ before any answer are not logged.
 
 ## Known limitations
 
-- Trusted reader roots not configured (B7).
+- No environment lists trusted reader roots yet, so signed readers show as unverified (B7).
 - No partial answers across documents (B4).
 - No signal for photo transfer progress, signal loss or card updates.
 - iOS holder ES256 key is generated in JS and exportable ([inji-wallet#2690](https://github.com/inji/inji-wallet/issues/2690)).
