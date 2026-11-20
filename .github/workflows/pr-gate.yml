@@ -683,6 +683,7 @@ jobs:
           severity: ${{ inputs.SCAN_SEVERITY }}
           exit-code: '0'
           format: sarif
+          limit-severities-for-sarif: true
           output: trivy-fs.sarif
 
       - name: Upload SARIF to Security tab
@@ -735,6 +736,7 @@ jobs:
           severity: ${{ inputs.SCAN_SEVERITY }}
           exit-code: 0
           format: sarif
+          limit-severities-for-sarif: true
           output: trivy-config.sarif
 
       - name: Upload results to Security tab
@@ -877,6 +879,7 @@ jobs:
           severity: ${{ inputs.SCAN_SEVERITY }}
           exit-code: '0'
           format: sarif
+          limit-severities-for-sarif: true
           output: trivy-image.sarif
 
       - name: Note that the image could not be scanned
