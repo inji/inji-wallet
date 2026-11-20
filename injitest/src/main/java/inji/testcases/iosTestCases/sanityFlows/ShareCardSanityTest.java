@@ -4,6 +4,7 @@ import inji.annotations.NeedsMockUIN;
 import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
+import inji.utils.CredentialRegistryUpdater;
 import inji.utils.InjiWalletUtil;
 import inji.utils.TestDataReader;
 import inji.testcases.BaseTest.IosBaseTest;
@@ -13,7 +14,7 @@ import static org.testng.Assert.assertTrue;
 public class ShareCardSanityTest extends IosBaseTest {
   @Test
   @NeedsMockUIN
-  public void shareVc(){
+  public void should_share_vc_when_camera_permission_is_granted(){
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
     WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
@@ -30,9 +31,16 @@ public class ShareCardSanityTest extends IosBaseTest {
 
     homePage.clickOnNextButtonForInjiTour();
 
-    //Download VC
+    //Updating Credential Registry if enabled in config file
+    CredentialRegistryUpdater.updateCredentialRegistryIfEnabled(homePage);
 
-    AddNewCardPage addNewCardPage = homePage.downloadCard();
+    // Navigate back
+    homePage.clickOnHomeButton();
+
+    // Home page
+    HomePage refreshedHomePage = new HomePage(getDriver());
+
+    AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
     assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(),
       "Verify if issuer description  esignet displayed");
     assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(),

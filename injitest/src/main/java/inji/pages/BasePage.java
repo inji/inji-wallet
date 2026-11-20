@@ -50,7 +50,7 @@ public class BasePage {
 
 	// -------- Enhanced Logging Methods --------
 
-	private void logStep(String description, WebElement element) {
+	protected void logStep(String description, WebElement element) {
     ExtentReportManager.getTest()
         .log(
             Status.INFO,
@@ -60,7 +60,7 @@ public class BasePage {
                 + "</pre></details>");
 	}
 
-	private void logStep(String description, By locator) {
+	protected void logStep(String description, By locator) {
     ExtentReportManager.getTest()
         .log(
             Status.INFO,

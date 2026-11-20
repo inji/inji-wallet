@@ -8,6 +8,7 @@ import inji.testcases.BaseTest.AndroidBaseTest;
 import inji.utils.IosUtil;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
+import inji.utils.CredentialRegistryUpdater;
 
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.assertFalse;
@@ -49,15 +50,24 @@ public class MosipFlowSanityTest extends AndroidBaseTest {
     homePage.clickOnHomeButton();
 
     //Download card
-    AddNewCardPage addNewCardPage = homePage.downloadCard();
 
+    //Updating Credential Registry if enabled in config file
+    CredentialRegistryUpdater.updateCredentialRegistryIfEnabled(homePage);
+
+    // Navigate back
+    homePage.clickOnHomeButton();
+
+    // Home page
+    HomePage refreshedHomePage = new HomePage(getDriver());
+
+    AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
     assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
     ESignetLoginPage esignetLoginPage = executeStep("Download VC via eSignet",
-      () -> addNewCardPage.clickOnDownloadViaEsignet());
+      addNewCardPage::clickOnDownloadViaEsignet);
 
     //clicking on continue button
     executeStep("Click eSignet Login with OTP button",
-      () -> esignetLoginPage.clickOnEsignetLoginWithOtpButton());
+      esignetLoginPage::clickOnEsignetLoginWithOtpButton);
 
     assertTrue(esignetLoginPage.isESignetLogoDisplayed(), "Verify if Esignet Login page is landed");
     OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getUIN());
@@ -70,7 +80,7 @@ public class MosipFlowSanityTest extends AndroidBaseTest {
     esignetLoginPage.clickOnVerifyButton();
 
     executeStep("Complete VC download",
-      () -> addNewCardPage.clickOnDoneButton());
+      addNewCardPage::clickOnDoneButton);
     assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 
     //PinAndUnPin

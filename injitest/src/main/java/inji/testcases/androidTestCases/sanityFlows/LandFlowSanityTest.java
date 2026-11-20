@@ -8,6 +8,7 @@ import inji.testcases.BaseTest.AndroidBaseTest;
 import inji.utils.InjiWalletUtil;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
+import inji.utils.CredentialRegistryUpdater;
 
 import static org.testng.Assert.assertTrue;
 
@@ -32,12 +33,20 @@ public class LandFlowSanityTest extends AndroidBaseTest {
 
     homePage.clickOnNextButtonForInjiTour();
 
-    AddNewCardPage addNewCardPage = homePage.downloadCard();
+    //Updating Credential Registry if enabled in config file
+    CredentialRegistryUpdater.updateCredentialRegistryIfEnabled(homePage);
 
+    // Navigate back
+    homePage.clickOnHomeButton();
+
+    // Home page
+    HomePage refreshedHomePage = new HomePage(getDriver());
+
+    AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
     assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
 
     ESignetLoginPage esignetLoginPage = executeStep("Download VC via Farmer Issuer",
-      () -> addNewCardPage.clickOnDownloadViaLandRegistry());
+      addNewCardPage::clickOnDownloadViaLandRegistry);
 
     esignetLoginPage.clickOnEsignetLoginWithOtpButton();
 

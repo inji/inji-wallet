@@ -8,6 +8,7 @@ import inji.testcases.BaseTest.AndroidBaseTest;
 import inji.utils.InjiWalletUtil;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
+import inji.utils.CredentialRegistryUpdater;
 
 import static org.testng.Assert.assertTrue;
 
@@ -33,7 +34,16 @@ public class MdlFlowSanityTest extends AndroidBaseTest {
 
     //vc download
 
-    AddNewCardPage addNewCardPage = homePage.downloadCard();
+    //Updating Credential Registry if enabled in config file
+    CredentialRegistryUpdater.updateCredentialRegistryIfEnabled(homePage);
+
+    // Navigate back
+    homePage.clickOnHomeButton();
+
+    // Home page
+    HomePage refreshedHomePage = new HomePage(getDriver());
+
+    AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
     assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(),
       "Verify if issuer description  esignet displayed");
 

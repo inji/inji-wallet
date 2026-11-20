@@ -8,6 +8,7 @@ import inji.testcases.BaseTest.AndroidBaseTest;
 import inji.utils.InjiWalletUtil;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
+import inji.utils.CredentialRegistryUpdater;
 
 import static org.testng.Assert.assertTrue;
 
@@ -33,12 +34,21 @@ public class MockFlowSanityTest extends AndroidBaseTest {
 
     //Download VC
 
-    AddNewCardPage addNewCardPage = homePage.downloadCard();
+    //Updating Credential Registry if enabled in config file
+    CredentialRegistryUpdater.updateCredentialRegistryIfEnabled(homePage);
+
+    // Navigate back
+    homePage.clickOnHomeButton();
+
+    // Home page
+    HomePage refreshedHomePage = new HomePage(getDriver());
+
+    AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
     assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(),
       "Verify if issuer description  esignet displayed");
 
     ESignetLoginPage esignetLoginPage = executeStep("Download VC via eSignet",
-      () -> addNewCardPage.clickOnDownloadViaMockSdJwt());
+      addNewCardPage::clickOnDownloadViaMockSdJwt);
 
     addNewCardPage.clickOnContinueButton();
     OtpVerificationPage otpVerification = esignetLoginPage.setEnterIdTextBox(getMockUIN());
@@ -49,7 +59,7 @@ public class MockFlowSanityTest extends AndroidBaseTest {
     esignetLoginPage.clickOnVerifyButton();
 
     executeStep("Complete VC download",
-      () -> addNewCardPage.clickOnDoneButton());
+      addNewCardPage::clickOnDoneButton);
     assertTrue(homePage.isCredentialTypeValueDisplayed(), "Verify if credential type value is displayed");
 
     //delete
