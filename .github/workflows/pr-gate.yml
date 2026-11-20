@@ -1,0 +1,1689 @@
+name: PR Gate
+
+on:
+  # A caller can still run this gate manually: a small stub in the caller repo
+  # with on: workflow_dispatch that does `uses: <this file>`. Inside a called
+  # workflow github.event_name is the CALLER's event, so spotbugs-security sees
+  # workflow_dispatch there and does its "full backlog scan" -- see
+  # SPOTBUGS_COMMENT_MODE below. No trigger is needed on this file itself.
+  workflow_call:
+    inputs:
+      SERVICE_LOCATION:
+        required: false
+        type: string
+        default: '.'
+        description: 'Base path used by all stacks unless a type-specific override is set'
+      JAVA_SERVICE_LOCATION:
+        required: false
+        type: string
+        default: ''
+        description: 'Java service root; falls back to SERVICE_LOCATION if empty'
+      GO_SERVICE_LOCATION:
+        required: false
+        type: string
+        default: ''
+        description: 'Go service root; falls back to SERVICE_LOCATION if empty'
+      NPM_SERVICE_LOCATION:
+        required: false
+        type: string
+        default: ''
+        description: 'npm service root; falls back to SERVICE_LOCATION if empty'
+      ANDROID_SERVICE_LOCATION:
+        required: false
+        type: string
+        default: ''
+        description: 'Android project root; falls back to SERVICE_LOCATION if empty'
+      FLUTTER_SERVICE_LOCATION:
+        required: false
+        type: string
+        default: ''
+        description: 'Flutter project root; falls back to SERVICE_LOCATION if empty'
+      JAVA_VERSION:
+        required: false
+        type: number
+        default: 21
+      NODE_VERSION:
+        required: false
+        type: string
+        default: '20'
+      FLUTTER_VERSION:
+        required: false
+        type: string
+        default: ''
+        description: 'Flutter SDK version; empty = latest of the stable channel'
+      SCAN_SEVERITY:
+        required: false
+        type: string
+        default: 'HIGH,CRITICAL'
+      trivy_comment_mode:
+        description: '"full" = comment on, and gate on, all current HIGH/CRITICAL; "diff" = comment on, and gate on, only findings newly introduced by the PR'
+        required: false
+        type: string
+        default: 'full'
+      ANDROID_COVERAGE_COMMAND:
+        description: 'Gradle command that runs the Android unit tests and writes JaCoCo XML under build/reports/jacoco/. Empty (the default) skips the Android coverage job, because it needs a JaCoCo task the build defines.'
+        required: false
+        type: string
+        default: ''
+      NPM_COVERAGE_COMMAND:
+        description: 'Command to run tests and generate coverage. Override for non-Jest runners (e.g. "npx vitest run --coverage" for Vitest).'
+        required: false
+        type: string
+        default: 'npm test -- --coverage'
+      SPOTBUGS_COMMENT_MODE:
+        description: '"diff" = the PR comment only shows SpotBugs/Find Security Bugs findings newly introduced vs the base branch (pre-existing backlog is omitted); "full" = comment shows every current finding on every PR. Only affects pull_request runs -- a manual workflow_dispatch run always does a full scan and uploads the report as a workflow artifact instead of a PR comment.'
+        required: false
+        type: string
+        default: 'diff'
+      PROTECTED_BRANCHES:
+        description: 'Comma-separated list of PR base-branch patterns (glob, e.g. "release-*") that enforce hard blocking on findings. A PR targeting any other branch gets the same scans and comments, but nothing here fails the PR -- findings surface for review, not as a merge blocker. Override per caller to match its own branch naming.'
+        required: false
+        type: string
+        default: 'master,main,develop,release-*,INJI*,develop*,inji*'
+    secrets:
+      # OSSRH_* and GITLEAKS_LICENSE are no longer used by any job. They stay declared
+      # only so a caller that still passes them does not fail with "secret not defined".
+      OSSRH_USER:
+        required: false
+      OSSRH_SECRET:
+        required: false
+      CODECOV_LICENSE:
+        required: false
+      GITLEAKS_LICENSE:
+        required: false
+
+# Every job sets its own permissions; nothing is granted by default.
+permissions: {}
+
+# A new push to a PR cancels that PR's still-running gate, so superseded runs do
+# not keep occupying the org's shared runner pool. Push runs get a unique group
+# (the run id), so they are never cancelled or replaced while pending -- GitHub
+# keeps only one pending run per group, which would otherwise drop a push run's
+# SARIF upload and cache refresh.
+concurrency:
+  group: pr-gate-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  # ─────────────────────────────────────────────
+  # DETECT — Check for stack marker files at the
+  # declared service locations (not a repo-wide
+  # search). Security jobs run in parallel with
+  # this; coverage jobs wait for its output.
+  # ─────────────────────────────────────────────
+  detect:
+    name: Detect Stacks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      has_java:         ${{ steps.detect.outputs.has_java || steps.cached.outputs.has_java }}
+      has_go:           ${{ steps.detect.outputs.has_go || steps.cached.outputs.has_go }}
+      has_npm:          ${{ steps.detect.outputs.has_npm || steps.cached.outputs.has_npm }}
+      has_android:      ${{ steps.detect.outputs.has_android || steps.cached.outputs.has_android }}
+      has_flutter:      ${{ steps.detect.outputs.has_flutter || steps.cached.outputs.has_flutter }}
+      java_location:    ${{ steps.detect.outputs.java_location || steps.cached.outputs.java_location }}
+      go_location:      ${{ steps.detect.outputs.go_location || steps.cached.outputs.go_location }}
+      npm_location:     ${{ steps.detect.outputs.npm_location || steps.cached.outputs.npm_location }}
+      android_location: ${{ steps.detect.outputs.android_location || steps.cached.outputs.android_location }}
+      flutter_location: ${{ steps.detect.outputs.flutter_location || steps.cached.outputs.flutter_location }}
+      images:           ${{ steps.discover.outputs.images || steps.cached.outputs.images }}
+      is_protected:     ${{ steps.branch-check.outputs.is_protected }}
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          fetch-depth: 0
+
+      # Determines whether this run enforces hard blocking. On a pull_request,
+      # checks the PR's base branch against PROTECTED_BRANCHES (glob patterns).
+      # On push/workflow_dispatch there's no PR to merge, so nothing here needs
+      # to block anything -- treated as protected only in the sense that these
+      # triggers are what write the stack-detection cache, unrelated to blocking.
+      - name: Check whether this PR targets a protected branch
+        id: branch-check
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          PROTECTED_BRANCHES: ${{ inputs.PROTECTED_BRANCHES }}
+        run: |
+          IS_PROTECTED=false
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            IFS=',' read -ra PATTERNS <<< "$PROTECTED_BRANCHES"
+            for pattern in "${PATTERNS[@]}"; do
+              pattern="$(echo "$pattern" | xargs)"  # trim whitespace
+              # shellcheck disable=SC2254  # the pattern is a glob on purpose
+              case "$BASE_REF" in
+                $pattern) IS_PROTECTED=true ;;
+              esac
+            done
+          fi
+          echo "is_protected=$IS_PROTECTED" >> "$GITHUB_OUTPUT"
+          echo "PR base ref: $BASE_REF -- protected: $IS_PROTECTED"
+
+      # On a PR, reuse the detection cache committed by the last push to the
+      # base branch instead of recomputing from scratch on every PR (stack
+      # detection + Dockerfile discovery used to be separate jobs re-run on
+      # every PR; now they only run live on push, and a PR reads the cache).
+      # Falls back to live detection if the cache doesn't exist yet, or if
+      # this PR's own diff touches a stack-marker file or Dockerfile -- a PR
+      # that introduces a new stack must still be scanned for it immediately,
+      # not only after it merges and the cache next updates.
+      # The cache is used only when (a) it records the same location inputs the
+      # caller passes now, (b) the commit it was built from is present in this
+      # clone and the diff from that commit to this PR's merge commit could be
+      # computed, and (c) that diff touches no marker file. Diffing from the
+      # cache's own source commit (not just base..head) also catches a stale
+      # cache left behind when a cache commit was rejected. The marker pattern
+      # matches the discovery rule below (Dockerfile or Dockerfile.<anything>).
+      # The checkout above is a full clone, so no depth-limited fetch is done.
+      - name: Decide whether to use the cached detection
+        id: mode
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          INPUTS_KEY: ${{ inputs.SERVICE_LOCATION }}|${{ inputs.JAVA_SERVICE_LOCATION }}|${{ inputs.GO_SERVICE_LOCATION }}|${{ inputs.NPM_SERVICE_LOCATION }}|${{ inputs.ANDROID_SERVICE_LOCATION }}|${{ inputs.FLUTTER_SERVICE_LOCATION }}
+        run: |
+          USE_CACHE=false
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            git fetch origin "$BASE_REF" 2>/dev/null || true
+            if git show "origin/$BASE_REF:.pr-gate-cache.json" > /tmp/pr-gate-cache.json 2>/dev/null \
+               && [ "$(jq -r '.inputs_key // ""' /tmp/pr-gate-cache.json)" = "$INPUTS_KEY" ]; then
+              SRC="$(jq -r '.source_sha // ""' /tmp/pr-gate-cache.json)"
+              if [ -n "$SRC" ] && git cat-file -e "${SRC}^{commit}" 2>/dev/null \
+                 && git diff --no-renames --name-only -z "$SRC" HEAD > /tmp/pr-gate-changed.z 2>/dev/null; then
+                if ! grep -zqE '(^|/)(pom\.xml|go\.mod|package\.json|settings\.gradle(\.kts)?|pubspec\.yaml|Dockerfile(\.[^/]*)?)$' /tmp/pr-gate-changed.z; then
+                  USE_CACHE=true
+                fi
+              fi
+            fi
+          fi
+          echo "use_cache=$USE_CACHE" >> "$GITHUB_OUTPUT"
+
+      - name: Read cached detection
+        id: cached
+        if: steps.mode.outputs.use_cache == 'true'
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: |
+          python3 -c "
+          import json, os
+          d = json.load(open('/tmp/pr-gate-cache.json'))
+          det = d.get('detect', {})
+          images = d.get('images', [])
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              for k, v in det.items():
+                  f.write(f'{k}={v}\n')
+              f.write('images=' + json.dumps(images) + '\n')
+          "
+          echo "Using cached detection from origin/$BASE_REF."
+
+      - name: Detect stacks (live)
+        id: detect
+        if: steps.mode.outputs.use_cache != 'true'
+        env:
+          BASE_IN: ${{ inputs.SERVICE_LOCATION }}
+          JAVA_IN: ${{ inputs.JAVA_SERVICE_LOCATION }}
+          GO_IN: ${{ inputs.GO_SERVICE_LOCATION }}
+          NPM_IN: ${{ inputs.NPM_SERVICE_LOCATION }}
+          ANDROID_IN: ${{ inputs.ANDROID_SERVICE_LOCATION }}
+          FLUTTER_IN: ${{ inputs.FLUTTER_SERVICE_LOCATION }}
+        run: |
+          # Resolve each stack location: use the type-specific input when set,
+          # otherwise fall back to SERVICE_LOCATION. Single-stack callers only
+          # need SERVICE_LOCATION; multi-stack callers set per-type overrides.
+          fexists() { [ -f "$1" ] && echo "true" || echo "false"; }
+          BASE="$BASE_IN"
+          resolve() { local v="$1"; [ -n "$v" ] && echo "$v" || echo "$BASE"; }
+
+          JAVA_LOC="$(resolve "$JAVA_IN")"
+          GO_LOC="$(resolve "$GO_IN")"
+          NPM_LOC="$(resolve "$NPM_IN")"
+          ANDROID_LOC="$(resolve "$ANDROID_IN")"
+          FLUTTER_LOC="$(resolve "$FLUTTER_IN")"
+
+          {
+            echo "has_java=$(fexists "$JAVA_LOC/pom.xml")"
+            echo "has_go=$(fexists "$GO_LOC/go.mod")"
+            echo "has_npm=$(fexists "$NPM_LOC/package.json")"
+            if [ -f "$ANDROID_LOC/settings.gradle" ] || [ -f "$ANDROID_LOC/settings.gradle.kts" ]; then
+              echo "has_android=true"
+            else
+              echo "has_android=false"
+            fi
+            echo "has_flutter=$(fexists "$FLUTTER_LOC/pubspec.yaml")"
+
+            echo "java_location=$JAVA_LOC"
+            echo "go_location=$GO_LOC"
+            echo "npm_location=$NPM_LOC"
+            echo "android_location=$ANDROID_LOC"
+            echo "flutter_location=$FLUTTER_LOC"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Discover Dockerfile base images (live)
+        id: discover
+        if: steps.mode.outputs.use_cache != 'true'
+        run: |
+          python3 - <<'PYEOF'
+          import re, os, json
+
+          from_pattern = re.compile(r'^\s*FROM\s+(.+?)\s*$', re.IGNORECASE)
+          arg_pattern = re.compile(r'^\s*ARG\s+([A-Za-z_][A-Za-z0-9_]*)(?:=(.*?))?\s*$', re.IGNORECASE)
+          var_pattern = re.compile(r'\$\{([A-Za-z_][A-Za-z0-9_]*)(?::?-([^}]*))?\}|\$([A-Za-z_][A-Za-z0-9_]*)')
+          # Only characters legal in an image reference. Anything else (shell
+          # metacharacters, quotes, spaces) is dropped: these values flow into
+          # later steps and must never be able to carry code.
+          valid_image = re.compile(r'^[A-Za-z0-9][A-Za-z0-9._/:@-]*$')
+          base_images = set()
+
+          def logical_lines(fh):
+              # Join continued lines so an instruction split across lines is
+              # parsed as one. The continuation character is a backslash unless
+              # the Dockerfile's leading parser directives set "# escape=`".
+              # Comments and blank lines inside a continuation are ignored.
+              lines = fh.read().splitlines()
+              esc = '\\'
+              for first in lines:
+                  dm = re.match(r'^\s*#\s*([A-Za-z]+)\s*=\s*(\S+)\s*$', first)
+                  if not dm:
+                      break
+                  if dm.group(1).lower() == 'escape' and dm.group(2) in ('\\', '`'):
+                      esc = dm.group(2)
+              buf = ''
+              for raw in lines:
+                  stripped = raw.strip()
+                  if buf and (not stripped or stripped.startswith('#')):
+                      continue
+                  line = raw.rstrip('\r\n').rstrip()
+                  if not buf and stripped.startswith('#'):
+                      # A comment (or parser directive such as "# escape=`") is
+                      # never continued, even if it ends with the escape character.
+                      yield line
+                      continue
+                  if line.endswith(esc):
+                      buf += line[:-1]
+                      continue
+                  yield buf + line
+                  buf = ''
+              if buf:
+                  yield buf
+
+          for root, dirs, files in os.walk('.'):
+              dirs[:] = [d for d in dirs if d not in ('.git', 'node_modules', 'vendor')]
+              for f in files:
+                  if f == 'Dockerfile' or f.startswith('Dockerfile.'):
+                      aliases = set()
+                      global_args = {}
+                      seen_from = False
+                      path = os.path.join(root, f)
+                      with open(path, encoding='utf-8', errors='ignore') as fh:
+                          for line in logical_lines(fh):
+                              # ARGs declared before the first FROM are the only
+                              # ones FROM itself can reference.
+                              if not seen_from:
+                                  am = arg_pattern.match(line)
+                                  if am:
+                                      global_args[am.group(1)] = (am.group(2) or '').strip().strip('"\'')
+                                      continue
+                              m = from_pattern.match(line)
+                              if not m:
+                                  continue
+                              seen_from = True
+                              # Drop flags such as --platform=..., then
+                              # "<image> [AS <alias>]".
+                              tokens = [t for t in m.group(1).split() if not t.startswith('--')]
+                              if not tokens:
+                                  continue
+                              image = tokens[0]
+                              alias = tokens[2] if len(tokens) >= 3 and tokens[1].lower() == 'as' else None
+
+                              def _sub(mo):
+                                  name = mo.group(1) or mo.group(3)
+                                  default = mo.group(2)
+                                  value = global_args.get(name)
+                                  if value is None or value == '':
+                                      value = default if default is not None else ''
+                                  return value
+                              image = var_pattern.sub(_sub, image)
+
+                              # Skip references to a previously-defined build
+                              # stage alias (not a real pullable image),
+                              # FROM scratch, and anything still unresolved.
+                              if (image and '$' not in image
+                                      and image.lower() not in aliases
+                                      and image.lower() != 'scratch'
+                                      and valid_image.match(image)):
+                                  base_images.add(image)
+                              if alias:
+                                  aliases.add(alias.lower())
+
+          images = sorted(base_images)
+          print("Discovered base images:", images)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as gh_out:
+              gh_out.write(f"images={json.dumps(images)}\n")
+          PYEOF
+
+      - name: Print detected stacks
+        env:
+          MODE_CACHED: ${{ steps.mode.outputs.use_cache }}
+          HAS_JAVA: ${{ steps.detect.outputs.has_java || steps.cached.outputs.has_java }}
+          JAVA_LOC: ${{ steps.detect.outputs.java_location || steps.cached.outputs.java_location }}
+          HAS_GO: ${{ steps.detect.outputs.has_go || steps.cached.outputs.has_go }}
+          GO_LOC: ${{ steps.detect.outputs.go_location || steps.cached.outputs.go_location }}
+          HAS_NPM: ${{ steps.detect.outputs.has_npm || steps.cached.outputs.has_npm }}
+          NPM_LOC: ${{ steps.detect.outputs.npm_location || steps.cached.outputs.npm_location }}
+          HAS_ANDROID: ${{ steps.detect.outputs.has_android || steps.cached.outputs.has_android }}
+          ANDROID_LOC: ${{ steps.detect.outputs.android_location || steps.cached.outputs.android_location }}
+          HAS_FLUTTER: ${{ steps.detect.outputs.has_flutter || steps.cached.outputs.has_flutter }}
+          FLUTTER_LOC: ${{ steps.detect.outputs.flutter_location || steps.cached.outputs.flutter_location }}
+          IMAGES_JSON: ${{ steps.discover.outputs.images || steps.cached.outputs.images }}
+        run: |
+          echo "Mode:    $([ "$MODE_CACHED" = 'true' ] && echo cached || echo live)"
+          echo "Java:    $HAS_JAVA  ($JAVA_LOC)"
+          echo "Go:      $HAS_GO  ($GO_LOC)"
+          echo "npm:     $HAS_NPM  ($NPM_LOC)"
+          echo "Android: $HAS_ANDROID  ($ANDROID_LOC)"
+          echo "Flutter: $HAS_FLUTTER  ($FLUTTER_LOC)"
+          echo "Docker base images: $IMAGES_JSON"
+
+  # ─────────────────────────────────────────────
+  # TIER 1 — Security (always run, all parallel)
+  # ─────────────────────────────────────────────
+  secret-scan:
+    name: Secret Scan
+    needs: detect
+    # Pull requests only: findings are posted as inline review comments, which need a PR, and on a
+    # push there is no commit range to scope to, so it would rescan the whole git history each time.
+    if: ${{ !cancelled() && github.event_name == 'pull_request' }}   # still runs if detect failed; an empty is_protected then blocks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write   # reviewdog inline PR review comments
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          fetch-depth: 0
+
+      # Runs the open-source gitleaks CLI directly (no GITLEAKS_LICENSE needed --
+      # that was specific to gitleaks/gitleaks-action's own distribution model,
+      # not a limitation of gitleaks itself) and posts findings as inline PR
+      # review comments via reviewdog. filter_mode: added (the action's default)
+      # only flags secrets on lines this PR actually introduces, not the whole
+      # repo's history on every PR. continue-on-error makes this advisory on
+      # any branch not listed in PROTECTED_BRANCHES -- see that input's
+      # description for the reasoning.
+      - uses: reviewdog/action-gitleaks@2b7b5685e3e3eecddab5d30cfa04f18123031421  # v1.8.0
+        continue-on-error: ${{ needs.detect.outputs.is_protected == 'false' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          level: error
+          fail_level: error
+          # Scan only the commits the PR adds, not the repo's whole history.
+          gitleaks_flags: ${{ format('--log-opts={0}..{1}', github.event.pull_request.base.sha, github.event.pull_request.head.sha) }}
+
+  dependency-review:
+    name: Dependency CVE Review
+    needs: detect
+    # Compares the PR's base and head, so it only makes sense on a pull request; on a push or
+    # manual run the action has no base/head and would just log an error.
+    if: ${{ !cancelled() && github.event_name == 'pull_request' }}   # still runs if detect failed; an empty is_protected then blocks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294  # v5.0.0
+        continue-on-error: ${{ needs.detect.outputs.is_protected == 'false' }}
+        with:
+          fail-on-severity: high
+          comment-summary-in-pr: on-failure
+
+  lint-workflows:
+    name: Lint GitHub Actions Workflows
+    needs: detect
+    if: ${{ !cancelled() }}   # keep scanning even if detect failed; an empty is_protected then blocks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write   # reviewdog inline PR review comments
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      # Official reviewdog integration -- runs actionlint and posts inline PR
+      # review comments in one step, replacing the previous manual install+run.
+      - uses: reviewdog/action-actionlint@2085657ab2c7f48c58edcc767fba576f63bea76b  # v1.77.0
+        continue-on-error: ${{ needs.detect.outputs.is_protected == 'false' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          fail_level: error
+          # Only count findings on lines this PR adds. Without this, the check
+          # falls back to "file" mode (a fork PR's token cannot post review
+          # comments) and fails on old errors elsewhere in any file the PR touches.
+          filter_mode: added
+
+  trivy-fs:
+    name: Trivy Filesystem Vulnerability Scan
+    needs: detect
+    if: ${{ !cancelled() }}   # keep scanning even if detect failed; an empty is_protected then blocks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: write
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      # ── Step A: Table scan for comment (never fails the job) ──────────────
+      # The table report is only used by full mode; diff mode compares the JSON
+      # scans below, so a PR in diff mode skips this extra full-tree scan.
+      - name: Trivy scan (table report for comment)
+        if: inputs.trivy_comment_mode != 'diff' || github.event_name != 'pull_request'
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
+        with:
+          scan-type: fs
+          scanners: vuln
+          timeout: 20m
+          scan-ref: .
+          severity: ${{ inputs.SCAN_SEVERITY }}
+          exit-code: '0'
+          format: table
+          output: trivy-report.txt
+
+      # ── Step B (diff mode): Checkout base ref for comparison ──────────────
+      - name: Checkout base ref for diff comparison
+        if: inputs.trivy_comment_mode == 'diff' && github.event_name == 'pull_request'
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: trivy-base
+
+      # Each scan must use the .trivyignore of the tree it scans. Trivy opens the
+      # ignore file relative to the workspace, not the scan target, so without this
+      # a PR that removes an ignore entry would suppress the finding in the base
+      # scan too, and the diff gate would drop it as pre-existing.
+      - name: Select Trivy ignore files
+        id: trivy-ignore
+        if: inputs.trivy_comment_mode == 'diff' && github.event_name == 'pull_request'
+        run: |
+          : > "$RUNNER_TEMP/trivyignore-empty"
+          if [ -f trivy-base/.trivyignore ]; then
+            echo "base=trivy-base/.trivyignore" >> "$GITHUB_OUTPUT"
+          else
+            echo "base=$RUNNER_TEMP/trivyignore-empty" >> "$GITHUB_OUTPUT"
+          fi
+          if [ -f .trivyignore ]; then
+            echo "head=.trivyignore" >> "$GITHUB_OUTPUT"
+          else
+            echo "head=$RUNNER_TEMP/trivyignore-empty" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Trivy scan base ref (JSON for diff)
+        if: inputs.trivy_comment_mode == 'diff' && github.event_name == 'pull_request'
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
+        with:
+          scan-type: fs
+          scanners: vuln
+          timeout: 20m
+          scan-ref: trivy-base
+          trivyignores: ${{ steps.trivy-ignore.outputs.base }}
+          severity: ${{ inputs.SCAN_SEVERITY }}
+          exit-code: '0'
+          format: json
+          output: trivy-base.json
+
+      # trivy-base/ (the checkout above) sits inside the workspace, so scanning "."
+      # would also report its manifests as "trivy-base/<file>", which never match a
+      # base finding and would list every existing finding as new. Skip it.
+      - name: Trivy scan head ref (JSON for diff)
+        if: inputs.trivy_comment_mode == 'diff' && github.event_name == 'pull_request'
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
+        with:
+          scan-type: fs
+          scanners: vuln
+          timeout: 20m
+          scan-ref: .
+          skip-dirs: trivy-base
+          trivyignores: ${{ steps.trivy-ignore.outputs.head }}
+          severity: ${{ inputs.SCAN_SEVERITY }}
+          exit-code: '0'
+          format: json
+          output: trivy-head.json
+
+      # ── Step C: Build Markdown comment body ──────────────────────────────
+      - name: Build Trivy comment body
+        id: trivy-body
+        env:
+          MODE: ${{ inputs.trivy_comment_mode }}
+        run: |
+          COMMENT_FILE="trivy-comment.md"
+          BLOCKING=false
+
+          if [ "$MODE" = "diff" ] && [ -f "trivy-base.json" ] && [ -f "trivy-head.json" ]; then
+            # A finding is "the same" only if package, CVE, target file and installed
+            # version all match, so a new manifest or a version bump of an
+            # already-flagged package/CVE pair is still reported as new.
+            base_ids=$(jq -r '.Results[]? | .Target as $t | .Vulnerabilities[]? | [.PkgName, .VulnerabilityID, $t, (.InstalledVersion // "-")] | join(":::")' trivy-base.json 2>/dev/null | sort -u || true)
+            new_rows=""
+            while IFS=$'\t' read -r pkg vuln_id severity target version title; do
+              if ! printf '%s\n' "$base_ids" | grep -qxF "${pkg}:::${vuln_id}:::${target}:::${version}"; then
+                pkg="${pkg//|/\\|}"
+                target="${target//|/\\|}"
+                title="${title//|/\\|}"
+                new_rows="${new_rows}| ${pkg} | ${version} | ${vuln_id} | ${severity} | ${target} | ${title} |\n"
+              fi
+            done < <(jq -r '.Results[]? | .Target as $t | .Vulnerabilities[]? | [.PkgName, .VulnerabilityID, .Severity, $t, (.InstalledVersion // "-"), (.Title // "N/A")] | @tsv' trivy-head.json 2>/dev/null || true)
+
+            if [ -n "$new_rows" ]; then
+              BLOCKING=true
+              {
+                echo "## Trivy — New HIGH/CRITICAL Findings"
+                echo ""
+                echo "These vulnerabilities were **introduced by this PR**:"
+                echo ""
+                echo "| Package | Version | CVE | Severity | Target | Title |"
+                echo "|---|---|---|---|---|---|"
+                printf '%b' "$new_rows"
+              } > "$COMMENT_FILE"
+            else
+              : > "$COMMENT_FILE"
+            fi
+          else
+            if grep -qE "^Total: [1-9]" trivy-report.txt 2>/dev/null; then
+              BLOCKING=true
+              {
+                echo "## Trivy Security Scan Findings"
+                echo ""
+                echo '```'
+                cat trivy-report.txt
+                echo '```'
+              } > "$COMMENT_FILE"
+            else
+              : > "$COMMENT_FILE"
+            fi
+          fi
+
+          echo "blocking=$BLOCKING" >> "$GITHUB_OUTPUT"
+
+      # ── Step D: Post sticky PR comment only when there is something to report ─
+      # A clean scan posts nothing, and removes a stale comment left by an earlier push.
+      - name: Check whether Trivy has anything to report
+        id: trivy-has-findings
+        run: |
+          if [ -s trivy-comment.md ]; then echo "value=true" >> "$GITHUB_OUTPUT"; else echo "value=false" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Post Trivy findings comment
+        # Comment only on same-repo PRs (the default token can't write to a base repo from a
+        # cross-fork PR). NOTE: head.repo.fork is true whenever the repo itself is a fork of an
+        # upstream, so compare head/base repo names instead of using !head.repo.fork.
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name && steps.trivy-has-findings.outputs.value == 'true'
+        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0  # v3.0.4
+        with:
+          header: trivy
+          path: trivy-comment.md
+
+      - name: Remove stale Trivy comment (now clean)
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name && steps.trivy-has-findings.outputs.value != 'true'
+        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0  # v3.0.4
+        with:
+          header: trivy
+          delete: true
+
+      # ── SARIF upload for Security tab (always, independent of gate) ───────
+      - name: Trivy SARIF scan
+        if: github.event_name != 'pull_request'
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
+        with:
+          scan-type: fs
+          scanners: vuln
+          timeout: 20m
+          scan-ref: .
+          severity: ${{ inputs.SCAN_SEVERITY }}
+          exit-code: '0'
+          format: sarif
+          limit-severities-for-sarif: true
+          output: trivy-fs.sarif
+
+      - name: Upload SARIF to Security tab
+        uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8  # v3.29.4
+        if: always() && github.event_name != 'pull_request'
+        with:
+          sarif_file: trivy-fs.sarif
+          category: trivy-fs
+
+      # ── Step E: Gate — fail the job if HIGH/CRITICAL exist ────────────────
+      # continue-on-error makes this advisory on any branch not listed in
+      # PROTECTED_BRANCHES; the comment above still shows every finding either way.
+      - name: Gate on HIGH/CRITICAL findings
+        continue-on-error: ${{ needs.detect.outputs.is_protected == 'false' }}
+        env:
+          BLOCKING: ${{ steps.trivy-body.outputs.blocking }}
+          MODE: ${{ inputs.trivy_comment_mode }}
+        run: |
+          # "blocking" follows the same view as the comment: all current findings
+          # in full mode, only findings introduced by this PR in diff mode.
+          if [ "$BLOCKING" = "true" ]; then
+            # A fork PR gets no sticky comment (the token cannot write to the base
+            # repo), so put a bounded copy of the report in the job summary.
+            if [ -s trivy-comment.md ]; then
+              head -c 60000 trivy-comment.md >> "$GITHUB_STEP_SUMMARY"
+            fi
+            if [ "$MODE" = "diff" ]; then
+              echo "::error::This PR introduces HIGH or CRITICAL vulnerabilities. See the Trivy comment on this PR, or the job summary on a fork PR."
+            else
+              echo "::error::HIGH or CRITICAL vulnerabilities found. See the Trivy comment on this PR, or the job summary on a fork PR."
+            fi
+            exit 1
+          fi
+          echo "No blocking HIGH or CRITICAL findings."
+
+  trivy-config:
+    name: Trivy Dockerfile / IaC Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      checks: write          # reviewdog PR annotations (github-pr-check reporter)
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      - name: Scan Dockerfiles and IaC configs
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
+        with:
+          scan-type: config
+          scan-ref: .
+          severity: ${{ inputs.SCAN_SEVERITY }}
+          exit-code: 0
+          format: sarif
+          limit-severities-for-sarif: true
+          output: trivy-config.sarif
+
+      - name: Upload results to Security tab
+        uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8  # v3.29.4
+        if: always() && github.event_name != 'pull_request'
+        with:
+          sarif_file: trivy-config.sarif
+          category: trivy-config
+
+      - uses: reviewdog/action-setup@d8a7baabd7f3e8544ee4dbde3ee41d0011c3a93f  # v1.5.0
+        if: github.event_name == 'pull_request'
+        with:
+          reviewdog_version: v0.21.2
+
+      - name: Post inline PR comments
+        continue-on-error: true   # a failure to publish annotations is not a finding
+        if: github.event_name == 'pull_request'
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          reviewdog -f=sarif -name="trivy-config" -reporter=github-pr-check \
+            -filter-mode=added -fail-level=none < trivy-config.sarif
+
+  semgrep:
+    name: Semgrep SAST
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      checks: write          # reviewdog PR annotations (github-pr-check reporter)
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      # Polyglot SAST across every stack in one job (Go, Java/Kotlin, JS/TS, etc.)
+      # using Semgrep's free, public OSS rulesets — the one tool here that covers
+      # all detected stacks without a per-language matrix or build step. Pinned to
+      # an exact version via pip (no first-party pinnable action exists).
+      # Advisory only: semgrep exits 0 on findings unless --error is passed, so
+      # this never fails the PR -- findings surface as PR annotations (reviewdog)
+      # and, on push runs, in the Security tab via the SARIF upload.
+      - name: Install Semgrep
+        run: pip install "semgrep==1.177.0"
+
+      - name: Run Semgrep
+        run: |
+          semgrep scan \
+            --config p/security-audit \
+            --config p/secrets \
+            --config p/owasp-top-ten \
+            --sarif --output semgrep.sarif \
+            .
+
+      - name: Upload SARIF to Security tab
+        uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8  # v3.29.4
+        if: always() && github.event_name != 'pull_request'
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+
+      - uses: reviewdog/action-setup@d8a7baabd7f3e8544ee4dbde3ee41d0011c3a93f  # v1.5.0
+        if: github.event_name == 'pull_request'
+        with:
+          reviewdog_version: v0.21.2
+
+      - name: Post inline PR comments
+        continue-on-error: true   # a failure to publish annotations is not a finding
+        if: github.event_name == 'pull_request'
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          reviewdog -f=sarif -name="semgrep" -reporter=github-pr-check \
+            -filter-mode=added -fail-level=none < semgrep.sarif
+
+  # ─────────────────────────────────────────────
+  # Trivy base-image scan — OS-package vulnerabilities only. Deliberately scoped
+  # with vuln-type: os to avoid duplicating trivy-fs, which already covers
+  # language-level dependencies (go.sum/package-lock.json/pom.xml) from source.
+  # Scans each Dockerfile's base image(s) directly rather than a fully built
+  # production image, so it does not need each stack's build artifacts/context —
+  # it will not catch OS packages added via an explicit RUN apt/apk install step
+  # in a Dockerfile, only what the base image itself ships. Discovery of which
+  # base images exist now lives in the detect job (see its cache/live-detection
+  # logic above) rather than a separate trivy-image-discover job, both to avoid
+  # two parallel jobs racing to commit the same cache file and because it's the
+  # same category of "what does this repo look like" work as stack detection.
+  # ─────────────────────────────────────────────
+  trivy-image-scan:
+    name: Trivy Base Image Scan (${{ matrix.image }})
+    needs: detect
+    if: ${{ needs.detect.outputs.images != '[]' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 3        # cap parallel image scans so one PR cannot flood the shared runner pool
+      matrix:
+        image: ${{ fromJson(needs.detect.outputs.images) }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      checks: write          # reviewdog PR annotations (github-pr-check reporter)
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      # Needed only for reviewdog below, which requires a .git directory to
+      # exist even with -filter-mode=nofilter -- the scan itself just needs
+      # the image reference, not repo content. nofilter (not added) because
+      # OS-package findings point to paths inside the container image, not
+      # files in this repo, so they would never match any diff line anyway;
+      # annotation volume here is naturally small (a handful of OS CVEs per
+      # image), unlike a whole-repo SAST scan.
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        if: github.event_name == 'pull_request'
+
+      - name: Sanitize image reference for artifact/category naming
+        id: safe
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: |
+          # The hash keeps references that sanitize to the same text (alpine:3.22
+          # vs alpine_3.22) from sharing one SARIF category / artifact name.
+          HASH="$(printf '%s' "$IMAGE" | sha256sum | cut -c1-8)"
+          echo "name=$(printf '%s' "$IMAGE" | tr -c 'a-zA-Z0-9._-' '_')-${HASH}" >> "$GITHUB_OUTPUT"
+
+      # An image that cannot be pulled (private registry, unresolved reference) is
+      # a tooling problem, not a finding: warn and skip instead of failing the job.
+      - name: Scan base image (OS packages only)
+        id: scan
+        continue-on-error: true
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
+        with:
+          scan-type: image
+          image-ref: ${{ matrix.image }}
+          vuln-type: os
+          severity: ${{ inputs.SCAN_SEVERITY }}
+          exit-code: '0'
+          format: sarif
+          limit-severities-for-sarif: true
+          output: trivy-image.sarif
+
+      - name: Note that the image could not be scanned
+        if: steps.scan.outcome == 'failure'
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: echo "::warning title=Image not scanned::Trivy could not scan '$IMAGE' (it may be private or unreachable). See the scan step log."
+
+      - name: Upload SARIF to Security tab
+        uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8  # v3.29.4
+        if: always() && github.event_name != 'pull_request' && steps.scan.outcome == 'success'
+        with:
+          sarif_file: trivy-image.sarif
+          category: trivy-image-${{ steps.safe.outputs.name }}
+
+      # Each matrix instance (one per discovered base image) posts its own PR
+      # comments independently -- no separate aggregation job needed.
+      - uses: reviewdog/action-setup@d8a7baabd7f3e8544ee4dbde3ee41d0011c3a93f  # v1.5.0
+        if: github.event_name == 'pull_request' && steps.scan.outcome == 'success'
+        with:
+          reviewdog_version: v0.21.2
+
+      - name: Post inline PR comments
+        continue-on-error: true   # a failure to publish annotations is not a finding
+        if: github.event_name == 'pull_request' && steps.scan.outcome == 'success'
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IMAGE_NAME: ${{ steps.safe.outputs.name }}
+        run: |
+          reviewdog -f=sarif -name="trivy-image-$IMAGE_NAME" \
+            -reporter=github-pr-check -filter-mode=nofilter -fail-level=none < trivy-image.sarif
+
+  android-lint:
+    name: Android Lint (security-relevant checks)
+    needs: detect
+    if: ${{ needs.detect.outputs.has_android == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      - uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287  # v5.3.0
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.JAVA_VERSION }}
+
+      # settings.gradle resolves React Native / Expo from ../node_modules, so the
+      # JS dependencies must be installed before Gradle runs.
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
+        with:
+          node-version: ${{ inputs.NODE_VERSION }}
+
+      - name: Install JS dependencies (React Native projects)
+        env:
+          LOC: ${{ needs.detect.outputs.android_location }}
+        run: |
+          ROOT="$(cd "$LOC/.." && pwd)"
+          if [ -f "$ROOT/package.json" ]; then
+            cd "$ROOT"
+            if [ -f package-lock.json ]; then npm ci; else npm install; fi
+          fi
+
+      # Bundled with the Android Gradle plugin -- no new tooling. Includes real
+      # security-relevant checks (ExportedContentProvider, TrustAllX509TrustManager,
+      # AllowBackup, SetJavaScriptEnabled, cleartext traffic, etc.) that generic
+      # SAST tools don't catch since they require Android manifest/API semantics.
+      # Advisory only: exit code is captured and forced to 0; the report is
+      # uploaded as a workflow artifact rather than failing the PR.
+      - name: Run Android Lint
+        id: lint
+        env:
+          LOC: ${{ needs.detect.outputs.android_location }}
+        run: |
+          cd "$LOC"
+          set +e
+          ./gradlew lint
+          code=$?
+          set -e
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          echo "Android Lint finished with exit code $code (non-blocking)."
+
+      - name: Upload lint report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: android-lint-report
+          path: ${{ needs.detect.outputs.android_location }}/**/build/reports/lint-results*.*
+          if-no-files-found: warn
+
+
+  # ─────────────────────────────────────────────
+  # SpotBugs + Find Security Bugs — Java-only, bytecode-level static analysis.
+  # Distinct from semgrep: SpotBugs analyzes compiled .class files, not source
+  # text, so it follows dataflow across method calls (e.g. tainted user input
+  # reaching a JDBC query several calls later) that syntactic pattern matching
+  # generally misses. find-sec-bugs adds ~140 security-specific bug patterns
+  # (SQL/LDAP/XPath injection, XXE, SSRF, weak crypto, Spring/JPA-specific
+  # issues) on top of SpotBugs' own general correctness checks (null derefs,
+  # resource leaks, bad equals/hashCode) -- neither of which anything else in
+  # this gate currently covers for Java.
+  #
+  # find-sec-bugs is downloaded directly (pinned version) and passed via
+  # -Dspotbugs.pluginList, so this works on any caller's pom.xml without
+  # requiring spotbugs-maven-plugin to be declared there -- the same ad-hoc
+  # plugin-goal approach verify-maven-signatures uses for pgpverify.
+  # Advisory only: the "spotbugs" goal (not "check") never fails the build on
+  # findings, exit code is still captured defensively, and the PR comment
+  # explicitly calls out that this never blocks the PR.
+  # ─────────────────────────────────────────────
+  spotbugs-security:
+    name: SpotBugs + Find Security Bugs
+    needs: detect
+    if: ${{ needs.detect.outputs.has_java == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: write
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287  # v5.3.0
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.JAVA_VERSION }}
+
+      - name: Cache Maven repository
+        uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8  # v6.0.0
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-spotbugs-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
+      # No OSSRH credentials here: this job only resolves dependencies and plugins
+      # (Inji's snapshot repository is readable anonymously), and it runs Maven on
+      # the PR's own pom.xml, so it must not be handed publishing credentials.
+
+      - name: Download find-sec-bugs plugin
+        run: |
+          curl -sSL --fail --retry 5 --retry-all-errors --retry-delay 5 -o "$GITHUB_WORKSPACE/findsecbugs-plugin.jar" \
+            "https://repo1.maven.org/maven2/com/h3xstream/findsecbugs/findsecbugs-plugin/1.14.0/findsecbugs-plugin-1.14.0.jar"
+
+      # If the project itself cannot be compiled (e.g. a pom problem a newer Maven
+      # rejects), skip SpotBugs rather than failing the PR for a tooling reason.
+      - name: Compile (SpotBugs analyzes bytecode, not source)
+        id: head-compile
+        continue-on-error: true
+        env:
+          LOC: ${{ needs.detect.outputs.java_location }}
+        run: |
+          cd "$LOC"
+          mvn -U -B compile -Dgpg.skip=true -Dmaven.wagon.http.retryHandler.count=2 \
+            --file pom.xml
+
+      - name: Note that SpotBugs was skipped
+        if: steps.head-compile.outcome == 'failure'
+        run: |
+          echo "::warning title=SpotBugs skipped::The project could not be compiled, so SpotBugs did not run. See the Compile step log."
+          printf '### SpotBugs skipped\nThe project could not be compiled, so SpotBugs did not run. See the Compile step log.\n' >> "$GITHUB_STEP_SUMMARY"
+          # Replaces any earlier SpotBugs comment so it cannot show stale findings.
+          printf '## SpotBugs + Find Security Bugs\n\n_SpotBugs was skipped for this commit because the project could not be compiled. See the Compile step in the PR Gate run._\n' > spotbugs-comment.md
+
+      - name: Run SpotBugs + Find Security Bugs (non-blocking)
+        id: spotbugs
+        if: steps.head-compile.outcome == 'success'
+        env:
+          LOC: ${{ needs.detect.outputs.java_location }}
+        run: |
+          cd "$LOC"
+          set +e
+          mvn -B compile -Dgpg.skip=true com.github.spotbugs:spotbugs-maven-plugin:4.10.4.1:spotbugs \
+            -Dspotbugs.pluginList="$GITHUB_WORKSPACE/findsecbugs-plugin.jar" \
+            -Dspotbugs.sarifOutput=true \
+            --file pom.xml
+          code=$?
+          set -e
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          echo "SpotBugs finished with exit code $code (non-blocking)."
+
+      - name: Collect head SARIF reports
+        id: collect-head
+        if: steps.head-compile.outcome == 'success'
+        env:
+          LOC: ${{ needs.detect.outputs.java_location }}
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/spotbugs-sarif-head"
+          find "$LOC" -name 'spotbugsSarif.json' -print0 | \
+            while IFS= read -r -d '' f; do
+              # Prefix with a letter: java_location often starts with "./", and
+              # tr keeps "." as a literal character, so an unprefixed name can
+              # start with a dot and become a hidden file -- invisible to plain
+              # `ls` and to Python's glob.glob("*.sarif") in the next step.
+              safe="report_$(echo "$f" | tr -c 'a-zA-Z0-9._-' '_')"
+              cp "$f" "$GITHUB_WORKSPACE/spotbugs-sarif-head/${safe}.sarif"
+            done
+          HEAD_COUNT="$(find "$GITHUB_WORKSPACE/spotbugs-sarif-head" -maxdepth 1 -name '*.sarif' 2>/dev/null | wc -l)"
+          echo "Collected $HEAD_COUNT head SARIF file(s)."
+          echo "count=$HEAD_COUNT" >> "$GITHUB_OUTPUT"
+          if [ "$HEAD_COUNT" -eq 0 ]; then
+            echo "::warning title=SpotBugs produced no report::SpotBugs ran but wrote no spotbugsSarif.json, so a clean result here does not mean the code is clean. See the Run SpotBugs step log."
+          fi
+
+      - name: Upload SARIF to Security tab
+        uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8  # v3.29.4
+        if: always() && github.event_name != 'pull_request' && steps.head-compile.outcome == 'success' && steps.collect-head.outputs.count > 0
+        with:
+          sarif_file: spotbugs-sarif-head
+          category: spotbugs-findsecbugs
+
+      # Diff mode also scans the PR's base ref, so the comment can show only
+      # findings this PR actually introduces instead of repeating a long-lived
+      # backlog on every single PR. Skipped entirely outside pull_request
+      # (e.g. a manual workflow_dispatch backlog run always does a full scan).
+      - name: Checkout base ref for diff comparison
+        if: inputs.SPOTBUGS_COMMENT_MODE == 'diff' && github.event_name == 'pull_request' && steps.head-compile.outcome == 'success'
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: spotbugs-base
+          persist-credentials: false
+
+      # The base ref can fail to build for reasons unrelated to this PR (e.g. a
+      # SNAPSHOT dependency that is no longer published). When that happens, fall
+      # back to reporting all head findings instead of failing the job.
+      - name: Compile base ref
+        id: base-compile
+        continue-on-error: true
+        if: inputs.SPOTBUGS_COMMENT_MODE == 'diff' && github.event_name == 'pull_request' && steps.head-compile.outcome == 'success'
+        env:
+          LOC: ${{ needs.detect.outputs.java_location }}
+        run: |
+          cd "spotbugs-base/$LOC"
+          mvn -U -B compile -Dgpg.skip=true -Dmaven.wagon.http.retryHandler.count=2 \
+            --file pom.xml
+
+      - name: Run SpotBugs + Find Security Bugs (base ref, for diffing)
+        id: base-scan
+        continue-on-error: true
+        if: inputs.SPOTBUGS_COMMENT_MODE == 'diff' && github.event_name == 'pull_request' && steps.base-compile.outcome == 'success'
+        env:
+          LOC: ${{ needs.detect.outputs.java_location }}
+        run: |
+          cd "spotbugs-base/$LOC"
+          set +e
+          mvn -B compile -Dgpg.skip=true com.github.spotbugs:spotbugs-maven-plugin:4.10.4.1:spotbugs \
+            -Dspotbugs.pluginList="$GITHUB_WORKSPACE/findsecbugs-plugin.jar" \
+            -Dspotbugs.sarifOutput=true \
+            --file pom.xml
+          rc=$?
+          set -e
+          exit "$rc"
+
+      - name: Collect base SARIF reports
+        if: inputs.SPOTBUGS_COMMENT_MODE == 'diff' && github.event_name == 'pull_request' && steps.base-compile.outcome == 'success'
+        env:
+          LOC: ${{ needs.detect.outputs.java_location }}
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/spotbugs-sarif-base"
+          find "spotbugs-base/$LOC" -name 'spotbugsSarif.json' -print0 | \
+            while IFS= read -r -d '' f; do
+              safe="report_$(echo "$f" | tr -c 'a-zA-Z0-9._-' '_')"
+              cp "$f" "$GITHUB_WORKSPACE/spotbugs-sarif-base/${safe}.sarif"
+            done
+          echo "Collected $(find "$GITHUB_WORKSPACE/spotbugs-sarif-base" -maxdepth 1 -name '*.sarif' 2>/dev/null | wc -l) base SARIF file(s)."
+
+      # Builds a per-finding table with a direct link to find-sec-bugs' own
+      # pattern-detail page (bugs.htm#<RULE_ID>) so every row has concrete fix
+      # guidance, not just a bare pattern name. In diff mode on a PR, findings are
+      # compared per (rule ID, file path) by count: occurrences up to the base
+      # ref's count are pre-existing, any beyond that are new. Line number is
+      # deliberately excluded since unrelated nearby edits can shift bytecode
+      # line refs. Known gap: a PR that removes one occurrence of a rule in a
+      # file and adds another in the same file looks unchanged.
+      - name: Build report
+        if: always() && steps.head-compile.outcome == 'success'
+        run: |
+          python3 - <<'PYEOF'
+          import json, glob, os, collections
+
+          def load_findings(sarif_dir):
+              findings = []
+              for path in glob.glob(os.path.join(sarif_dir, "*.sarif")):
+                  try:
+                      with open(path, encoding="utf-8") as fh:
+                          sarif = json.load(fh)
+                  except (json.JSONDecodeError, OSError):
+                      continue
+                  for run in sarif.get("runs", []):
+                      rules = {r["id"]: r for r in run.get("tool", {}).get("driver", {}).get("rules", [])}
+                      for result in run.get("results", []):
+                          rule_id = result.get("ruleId", "UNKNOWN")
+                          rule = rules.get(rule_id, {})
+                          message = result.get("message", {}).get("text", "").strip().replace("|", "\\|")
+                          loc = (result.get("locations") or [{}])[0].get("physicalLocation", {})
+                          uri = loc.get("artifactLocation", {}).get("uri", "?")
+                          line = loc.get("region", {}).get("startLine", "?")
+                          severity = result.get("level", "warning")
+                          short_desc = rule.get("shortDescription", {}).get("text", rule_id)
+                          findings.append({
+                              "rule_id": rule_id,
+                              "short_desc": short_desc,
+                              "message": message,
+                              "uri": uri,
+                              "line": line,
+                              "severity": severity,
+                          })
+              return findings
+
+          workspace = os.environ["GITHUB_WORKSPACE"]
+          event_name = os.environ.get("GITHUB_EVENT_NAME", "")
+          mode = os.environ.get("SPOTBUGS_COMMENT_MODE", "diff")
+
+          head_findings = load_findings(os.path.join(workspace, "spotbugs-sarif-head"))
+          base_ok = os.environ.get("BASE_BUILD_OK") == "true"
+          diff_active = (mode == "diff" and event_name == "pull_request" and base_ok)
+          base_failed = (mode == "diff" and event_name == "pull_request" and not base_ok)
+          head_exit = os.environ.get("HEAD_EXIT_CODE") or "0"
+          head_failed = head_exit != "0"
+          # Zero collected SARIF files means SpotBugs produced no report; that must
+          # not be rendered as "no findings" (which would delete the old comment).
+          head_missing = os.environ.get("HEAD_REPORT_COUNT") == "0"
+
+          if diff_active:
+              base_findings = load_findings(os.path.join(workspace, "spotbugs-sarif-base"))
+              # Count per (rule, file): the first N head occurrences are the N that
+              # already existed in the base; any beyond that are new.
+              base_counts = collections.Counter((f["rule_id"], f["uri"]) for f in base_findings)
+              seen = collections.Counter()
+              shown = []
+              for f in head_findings:
+                  key = (f["rule_id"], f["uri"])
+                  if seen[key] < base_counts[key]:
+                      seen[key] += 1
+                  else:
+                      shown.append(f)
+              pre_existing_count = len(head_findings) - len(shown)
+          else:
+              shown = head_findings
+              pre_existing_count = 0
+
+          out = os.path.join(workspace, "spotbugs-comment.md")
+          with open(out, "w", encoding="utf-8") as f:
+              f.write("## SpotBugs + Find Security Bugs\n\n")
+              if head_failed:
+                  f.write(
+                      "> **SpotBugs exited with code %s**, so the results below may be incomplete. "
+                      "This is not a clean result. See the Run SpotBugs step in the PR Gate run.\n\n"
+                      % head_exit
+                  )
+              if head_missing:
+                  f.write(
+                      "> **No SpotBugs report was produced for this commit.** This is not a "
+                      "clean result. See the Run SpotBugs step in the PR Gate run.\n\n"
+                  )
+              if diff_active and not head_failed:
+                  f.write(
+                      "_Showing findings newly introduced by this PR only. %d pre-existing "
+                      "finding(s) also exist in the codebase (not shown here -- run this "
+                      "workflow manually via workflow_dispatch for the full backlog)._\n\n"
+                      % pre_existing_count
+                  )
+              if base_failed:
+                  f.write(
+                      "_The PR's base ref could not be built or scanned, so this lists ALL findings "
+                      "(including pre-existing ones) rather than only newly introduced ones._\n\n"
+                  )
+              if shown:
+                  f.write(
+                      "> **%d finding(s).** This check is **non-blocking** and will not fail "
+                      "the PR, but please review the items below.\n\n" % len(shown)
+                  )
+                  f.write("| Severity | File:Line | Bug Pattern | Message | How to fix |\n")
+                  f.write("|---|---|---|---|---|\n")
+                  for item in shown:
+                      fix_link = "https://find-sec-bugs.github.io/bugs.htm#" + item["rule_id"]
+                      f.write(
+                          "| %s | `%s:%s` | `%s` (%s) | %s | [Fix guidance](%s) |\n"
+                          % (item["severity"], item["uri"], item["line"], item["rule_id"],
+                             item["short_desc"], item["message"], fix_link)
+                      )
+                  f.write(
+                      "\n<sub>Full SARIF detail is also available under the repo's Security tab "
+                      "(category `spotbugs-findsecbugs`).</sub>\n"
+                  )
+          if not shown and not head_failed and not head_missing:
+              open(out, "w").close()
+          print(
+              "Wrote report with %d finding(s) (mode=%s, diff_active=%s)."
+              % (len(shown), mode, diff_active)
+          )
+          PYEOF
+        env:
+          SPOTBUGS_COMMENT_MODE: ${{ inputs.SPOTBUGS_COMMENT_MODE }}
+          BASE_BUILD_OK: ${{ steps.base-compile.outcome == 'success' && steps.base-scan.outcome == 'success' }}
+          HEAD_EXIT_CODE: ${{ steps.spotbugs.outputs.exit_code }}
+          HEAD_REPORT_COUNT: ${{ steps.collect-head.outputs.count }}
+
+      - name: Check whether SpotBugs has anything to report
+        id: sb-has-findings
+        if: always()
+        run: |
+          if [ -s spotbugs-comment.md ]; then echo "value=true" >> "$GITHUB_OUTPUT"; else echo "value=false" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Post SpotBugs findings comment
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name && steps.sb-has-findings.outputs.value == 'true'
+        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0  # v3.0.4
+        with:
+          header: spotbugs
+          path: spotbugs-comment.md
+
+      - name: Remove stale SpotBugs comment (now clean)
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name && steps.sb-has-findings.outputs.value != 'true' && steps.head-compile.outcome == 'success'
+        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0  # v3.0.4
+        with:
+          header: spotbugs
+          delete: true
+
+      # Non-PR triggers (a manual workflow_dispatch backlog run) have no PR to
+      # comment on -- upload the full report as a downloadable artifact.
+      - name: Upload report as artifact (non-PR runs)
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: spotbugs-backlog-report
+          path: |
+            spotbugs-comment.md
+            spotbugs-sarif-head/
+          if-no-files-found: warn
+
+
+  # ─────────────────────────────────────────────
+  # TIER 2 — Coverage (conditional on detect output, all parallel)
+  # ─────────────────────────────────────────────
+  coverage-java:
+    name: Java Coverage → Codecov
+    needs: detect
+    if: ${{ needs.detect.outputs.has_java == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287  # v5.3.0
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.JAVA_VERSION }}
+
+      - name: Cache Maven repository
+        uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8  # v6.0.0
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
+      # No OSSRH credentials here: `mvn verify` stops before the deploy phase, which is
+      # the only place the ossrh publishing server is used, and this step runs Maven on
+      # the PR's own pom.xml, so it must not be handed publishing credentials.
+
+      - name: Run tests and generate coverage
+        continue-on-error: ${{ needs.detect.outputs.is_protected == 'false' }}
+        env:
+          LOC: ${{ needs.detect.outputs.java_location }}
+        run: |
+          cd "$LOC"
+          mvn -U -B verify -Dgpg.skip=true -Dmaven.wagon.http.retryHandler.count=2 \
+            --file pom.xml
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f  # v7.0.0
+        with:
+          token: ${{ secrets.CODECOV_LICENSE }}
+          files: '${{ needs.detect.outputs.java_location }}/**/target/site/jacoco/jacoco.xml'
+          flags: java
+          fail_ci_if_error: ${{ needs.detect.outputs.is_protected != 'false' }}
+
+  coverage-go:
+    name: Go Coverage → Codecov
+    needs: detect
+    if: ${{ needs.detect.outputs.has_go == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16  # v6.5.0
+        with:
+          go-version-file: ${{ needs.detect.outputs.go_location }}/go.mod
+          cache: true
+
+      - name: Run tests and generate coverage
+        continue-on-error: ${{ needs.detect.outputs.is_protected == 'false' }}
+        env:
+          LOC: ${{ needs.detect.outputs.go_location }}
+        run: |
+          cd "$LOC"
+          go test -v -coverprofile=coverage.out -covermode=atomic ./...
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f  # v7.0.0
+        with:
+          token: ${{ secrets.CODECOV_LICENSE }}
+          files: ${{ needs.detect.outputs.go_location }}/coverage.out
+          flags: go
+          fail_ci_if_error: ${{ needs.detect.outputs.is_protected != 'false' }}
+
+  coverage-npm:
+    name: npm Coverage → Codecov
+    needs: detect
+    if: ${{ needs.detect.outputs.has_npm == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      # Choose the package manager from the committed lockfile instead of
+      # assuming npm: package.json alone is what detection checks for.
+      - name: Detect package manager
+        id: pm
+        env:
+          NPM_LOC: ${{ needs.detect.outputs.npm_location }}
+        run: |
+          cd "$NPM_LOC"
+          if   [ -f package-lock.json ]; then echo "manager=npm"  >> "$GITHUB_OUTPUT"; echo "lockfile=package-lock.json" >> "$GITHUB_OUTPUT"
+          elif [ -f yarn.lock ];         then echo "manager=yarn" >> "$GITHUB_OUTPUT"; echo "lockfile=yarn.lock"         >> "$GITHUB_OUTPUT"
+          elif [ -f pnpm-lock.yaml ];    then echo "manager=pnpm" >> "$GITHUB_OUTPUT"; echo "lockfile=pnpm-lock.yaml"    >> "$GITHUB_OUTPUT"
+          else echo "manager=none" >> "$GITHUB_OUTPUT"; echo "lockfile=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
+        with:
+          node-version: ${{ inputs.NODE_VERSION }}
+          cache: ${{ (steps.pm.outputs.manager == 'npm' || steps.pm.outputs.manager == 'yarn') && steps.pm.outputs.manager || '' }}
+          cache-dependency-path: ${{ needs.detect.outputs.npm_location }}/${{ steps.pm.outputs.lockfile }}
+
+      - name: Install dependencies
+        continue-on-error: ${{ needs.detect.outputs.is_protected == 'false' }}
+        env:
+          NPM_LOC: ${{ needs.detect.outputs.npm_location }}
+          MANAGER: ${{ steps.pm.outputs.manager }}
+        run: |
+          cd "$NPM_LOC"
+          case "$MANAGER" in
+            npm)  npm ci ;;
+            yarn) corepack enable
+                  if [ "$(yarn --version | cut -d. -f1)" -ge 2 ]; then yarn install --immutable; else yarn install --frozen-lockfile; fi ;;
+            pnpm) corepack enable && pnpm install --frozen-lockfile ;;
+            *)    npm install --no-audit --no-fund ;;
+          esac
+
+      - name: Run tests and generate coverage
+        continue-on-error: ${{ needs.detect.outputs.is_protected == 'false' }}
+        env:
+          LOC: ${{ needs.detect.outputs.npm_location }}
+          NPM_COVERAGE_COMMAND: ${{ inputs.NPM_COVERAGE_COMMAND }}
+        run: |
+          cd "$LOC"
+          bash -c "$NPM_COVERAGE_COMMAND"
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f  # v7.0.0
+        with:
+          token: ${{ secrets.CODECOV_LICENSE }}
+          files: '${{ needs.detect.outputs.npm_location }}/coverage/lcov.info'
+          flags: npm
+          fail_ci_if_error: ${{ needs.detect.outputs.is_protected != 'false' }}
+
+  coverage-android:
+    name: Android Coverage → Codecov
+    needs: detect
+    if: ${{ needs.detect.outputs.has_android == 'true' && inputs.ANDROID_COVERAGE_COMMAND != '' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      - uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287  # v5.3.0
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.JAVA_VERSION }}
+
+      # settings.gradle resolves React Native / Expo from ../node_modules, so the
+      # JS dependencies must be installed before Gradle runs.
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
+        with:
+          node-version: ${{ inputs.NODE_VERSION }}
+
+      - name: Install JS dependencies (React Native projects)
+        env:
+          LOC: ${{ needs.detect.outputs.android_location }}
+        run: |
+          ROOT="$(cd "$LOC/.." && pwd)"
+          if [ -f "$ROOT/package.json" ]; then
+            cd "$ROOT"
+            if [ -f package-lock.json ]; then npm ci; else npm install; fi
+          fi
+
+      - name: Run Android unit tests with coverage
+        continue-on-error: ${{ needs.detect.outputs.is_protected == 'false' }}
+        env:
+          LOC: ${{ needs.detect.outputs.android_location }}
+          COVERAGE_COMMAND: ${{ inputs.ANDROID_COVERAGE_COMMAND }}
+        run: |
+          cd "$LOC"
+          eval "$COVERAGE_COMMAND"
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f  # v7.0.0
+        with:
+          token: ${{ secrets.CODECOV_LICENSE }}
+          files: '${{ needs.detect.outputs.android_location }}/**/build/reports/jacoco/**/*.xml'
+          flags: android
+          fail_ci_if_error: ${{ needs.detect.outputs.is_protected != 'false' }}
+
+  coverage-flutter:
+    name: Flutter Coverage → Codecov
+    needs: detect
+    if: ${{ needs.detect.outputs.has_flutter == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2  # v2.23.0
+        with:
+          channel: stable
+          flutter-version: ${{ inputs.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install dependencies
+        continue-on-error: ${{ needs.detect.outputs.is_protected == 'false' }}
+        env:
+          LOC: ${{ needs.detect.outputs.flutter_location }}
+        run: |
+          cd "$LOC"
+          flutter pub get
+
+      - name: Run tests and generate coverage
+        continue-on-error: ${{ needs.detect.outputs.is_protected == 'false' }}
+        env:
+          LOC: ${{ needs.detect.outputs.flutter_location }}
+        run: |
+          cd "$LOC"
+          flutter test --coverage
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f  # v7.0.0
+        with:
+          token: ${{ secrets.CODECOV_LICENSE }}
+          files: '${{ needs.detect.outputs.flutter_location }}/coverage/lcov.info'
+          flags: flutter
+          fail_ci_if_error: ${{ needs.detect.outputs.is_protected != 'false' }}
+
+  # ─────────────────────────────────────────────
+  # TIER 2 — Supply-chain integrity (POM-gated)
+  # Verify PGP signatures of Maven dependencies via
+  # simplify4u/pgpverify-maven-plugin. Advisory only:
+  # never fails the PR, but posts a sticky comment
+  # flagging unsigned / invalid / untrusted deps.
+  # ─────────────────────────────────────────────
+  verify-maven-signatures:
+    name: Maven Dependency Signature Check (pgpverify)
+    needs: detect
+    if: ${{ needs.detect.outputs.has_java == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411  # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287  # v5.3.0
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.JAVA_VERSION }}
+
+      - name: Cache Maven repository
+        uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8  # v6.0.0
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-pgpverify-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
+      # No OSSRH credentials here: this job only resolves dependencies and plugins
+      # (Inji's snapshot repository is readable anonymously), and it runs Maven on
+      # the PR's own pom.xml, so it must not be handed publishing credentials.
+
+      # pgpverify:check verifies PGP signatures of all resolved dependencies.
+      # Plugin version is pinned (supply-chain: never LATEST/RELEASE). The result
+      # is captured but never propagated — this gate is advisory, so we force the
+      # step green and let the comment step surface any problems.
+      - name: Run pgpverify (non-blocking)
+        id: pgpverify
+        env:
+          LOC: ${{ needs.detect.outputs.java_location }}
+        run: |
+          cd "$LOC"
+          set +e
+          mvn -B -U \
+            org.simplify4u.plugins:pgpverify-maven-plugin:1.19.1:check \
+            --file pom.xml \
+            2>&1 | tee "$GITHUB_WORKSPACE/pgpverify.log"
+          code=${PIPESTATUS[0]}
+          set -e
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          echo "pgpverify finished with exit code $code (non-blocking)."
+
+      - name: Build pgpverify comment body
+        env:
+          CODE: ${{ steps.pgpverify.outputs.exit_code }}
+        run: |
+          LOG="$GITHUB_WORKSPACE/pgpverify.log"
+          OUT="$GITHUB_WORKSPACE/pgpverify-comment.md"
+
+          # Strip ANSI, then keep the signature-relevant WARN/ERROR lines the
+          # plugin emits (unsigned / invalid / untrusted / missing-key entries).
+          # A bare "not found" or "invalid" is deliberately not a signature signal: a 404 on
+          # a download or an invalid POM is a build problem, not a signature problem, and
+          # Maven's own goal-failure lines are excluded below.
+          problems="$(sed 's/\x1b\[[0-9;]*m//g' "$LOG" 2>/dev/null \
+            | grep -Ei 'pgp|signature|no key|untrusted|not trusted|unsigned' \
+            | grep -Ei 'warn|error|invalid|no signature|untrusted|not trusted|unsigned|no key' \
+            | grep -Eiv 'Failed to execute goal|BUILD FAILURE|Help [0-9]|Re-run Maven|full stack trace|For more information|MojoExecutionException|MojoFailureException' \
+            | head -100 || true)"
+
+          if [ "$CODE" = "0" ]; then
+            : > "$OUT"
+          else
+            {
+              echo "## 🔐 pgpverify — Maven Dependency Signature Check"
+              echo ""
+              if [ -n "$problems" ]; then
+                echo "> ⚠️ **Warning — signature problems found (exit code \`$CODE\`).**"
+                echo "> This check is **non-blocking**: it will **not** fail the PR, but the items below are supply-chain risks worth reviewing."
+              else
+                echo "> ℹ️ **pgpverify exited with code \`$CODE\` but no signature-specific problems were found in its output.** This is more likely a build or download problem than a signature problem."
+                echo "> This check is **non-blocking** and will not fail the PR."
+              fi
+              echo ""
+              if [ -n "$problems" ]; then
+                echo "### 🚩 Warning signs"
+                echo ""
+                echo '```'
+                printf '%s\n' "$problems"
+                echo '```'
+              else
+                echo "_pgpverify reported a failure but no signature-specific lines were parsed — see the full log below._"
+              fi
+              echo ""
+              echo "<details><summary>📋 Full pgpverify log (tail)</summary>"
+              echo ""
+              echo '```'
+              sed 's/\x1b\[[0-9;]*m//g' "$LOG" | tail -300
+              echo '```'
+              echo ""
+              echo "</details>"
+            } > "$OUT"
+          fi
+
+      # Sticky comment on same-repo PRs only (a read-only token can't comment from
+      # a cross-fork PR) — same guard as the Trivy filesystem job.
+      - name: Check whether pgpverify has anything to report
+        id: pgp-has-findings
+        run: |
+          if [ -s pgpverify-comment.md ]; then echo "value=true" >> "$GITHUB_OUTPUT"; else echo "value=false" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Post pgpverify findings comment
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name && steps.pgp-has-findings.outputs.value == 'true'
+        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0  # v3.0.4
+        with:
+          header: pgpverify
+          path: pgpverify-comment.md
+
+      - name: Remove stale pgpverify comment (now clean)
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name && steps.pgp-has-findings.outputs.value != 'true'
+        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0  # v3.0.4
+        with:
+          header: pgpverify
+          delete: true

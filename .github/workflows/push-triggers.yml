@@ -39,6 +39,28 @@ jobs:
       IOS_SERVICE_LOCATION: 'ios'
       SCRIPT_NAME: "fastlane ios_app_build"
 
+  pr-gate:
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: write
+      checks: write
+    uses: ./.github/workflows/pr-gate.yml
+    with:
+      SERVICE_LOCATION: '.'
+      ANDROID_SERVICE_LOCATION: 'android'
+      NPM_SERVICE_LOCATION: '.'
+      NODE_VERSION: '18'
+      JAVA_VERSION: 17
+      # Only block on vulnerabilities this PR introduces; the repo already has
+      # HIGH/CRITICAL findings, which would otherwise fail every PR.
+      trivy_comment_mode: 'diff'
+      # The default list plus the other branches this repo builds.
+      PROTECTED_BRANCHES: 'master,main,develop,release-*,INJI*,develop*,inji*,qa-develop'
+    secrets:
+      CODECOV_LICENSE: ${{ secrets.CODECOV_LICENSE }}
+
   run-tests:
     runs-on: ubuntu-latest
     steps:
