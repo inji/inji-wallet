@@ -32,11 +32,7 @@ export function useMdocOutcome({
           candidate.vc.vcMetadata.id ===
           selection[documentMatch.requested.docType],
       )
-      .map(
-        candidate =>
-          candidate.vc.vcMetadata.credentialType ||
-          documentMatch.requested.docType,
-      ),
+      .map(candidate => candidate.vc.vcMetadata.credentialType),
   );
   const time = t('outcome.today', {
     time: endedAt.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}),

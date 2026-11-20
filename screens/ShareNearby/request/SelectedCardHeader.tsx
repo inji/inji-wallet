@@ -26,8 +26,9 @@ export function SelectedCardHeader({
       <IssuerLogo candidate={selectedCandidate} />
       <View style={styles.flexible}>
         <Text weight="semibold" style={reviewStyles.cardTitle}>
-          {selectedCandidate?.vc.vcMetadata.credentialType ||
-            docTypeName(docType)}
+          {selectedCandidate
+            ? selectedCandidate.vc.vcMetadata.credentialType
+            : docTypeName(docType)}
         </Text>
         {getIssuerDisplayName(selectedCandidate) ? (
           <Text style={styles.small}>

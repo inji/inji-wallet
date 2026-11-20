@@ -7,7 +7,7 @@ import {Text} from '../../../components/ui';
 import {isShareableCandidate} from '../../../machines/mdocPresentation/mdocPresentationGuards';
 import type {MdocCandidate} from '../../../shared/mdocPresentation/matching';
 import type {SelectCard} from './types';
-import {docTypeName, getIssuerLabel} from './requestUtils';
+import {getIssuerLabel} from './requestUtils';
 import {IssuerLogo} from './IssuerLogo';
 
 const styles = Theme.ShareNearbyStyles;
@@ -35,7 +35,7 @@ export function CardChoices({
       {candidates.map(candidate => {
         const cardMetadata = candidate.vc.vcMetadata;
         const isShareable = isShareableCandidate(candidate);
-        const cardTitle = cardMetadata.credentialType || docTypeName(docType);
+        const cardTitle = cardMetadata.credentialType;
         const issuerLabel = getIssuerLabel(candidate);
         const statusLabel = !isShareable
           ? t('request.revokedCard')

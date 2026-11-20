@@ -54,9 +54,9 @@ export const ScanServices = (model: any) => {
                       .credentialConfigurationId ?? ''
                   : '',
               docType: record.docType,
-              cardName:
-                record.credential?.vcMetadata.credentialType ||
-                docTypeName(record.docType),
+              cardName: record.credential
+                ? record.credential.vcMetadata.credentialType
+                : docTypeName(record.docType),
               readerName: record.readerName ?? '',
               readerTrust: record.readerTrust,
               details: record.details,
