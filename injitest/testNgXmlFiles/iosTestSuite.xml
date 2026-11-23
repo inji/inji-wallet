@@ -12,37 +12,37 @@
          <classes>
            <class name="inji.testcases.iosTestCases.sanityFlows.FarmerFlowSanityTest">
              <methods>
-               <include name="should_download_and_delete_farmer_vc_when_farmer_issuer_flow_completes" />
+               <include name="downloadFarmerVCAndDeleteSmoke" />
              </methods>
            </class>
            <class name="inji.testcases.iosTestCases.sanityFlows.LandFlowSanityTest">
              <methods>
-               <include name="should_download_and_delete_land_vc_when_land_issuer_flow_completes" />
+               <include name="downloadLandVCAndDeleteSmoke" />
              </methods>
            </class>
            <class name="inji.testcases.iosTestCases.sanityFlows.MdlFlowSanityTest">
              <methods>
-               <include name="should_download_and_delete_mdl_vc_when_mdl_issuer_flow_completes"/>
+               <include name="downloadMdlVCAndDeleteSmoke"/>
              </methods>
            </class>
                <class name="inji.testcases.iosTestCases.sanityFlows.MockFlowSanityTest">
                  <methods>
-                   <include name="should_download_and_delete_mock_vc_when_mock_issuer_flow_completes" />
+                   <include name="downloadMockVCAndDeleteSmoke" />
                  </methods>
                </class>
                <class name="inji.testcases.iosTestCases.sanityFlows.HelpPageAndAboutPageTest">
                  <methods>
-                   <include name="should_show_help_and_about_pages_when_user_opens_help_and_settings"/>
+                   <include name="verifyHelpPageAndAboutPage"/>
                  </methods>
                </class>
                <class name="inji.testcases.iosTestCases.sanityFlows.ShareCardSanityTest">
                  <methods>
-                   <include name="should_share_vc_when_camera_permission_is_granted" />
+                   <include name="shareVc" />
                  </methods>
                </class>
                <class name="inji.testcases.iosTestCases.sanityFlows.NoNetworkFlowSanityTest">
                  <methods>
-                   <include name="should_not_show_issuer_options_when_internet_is_unavailable" />
+                   <include name="downloadMosipIdVCWithoutInternet" />
                  </methods>
                </class>
         </classes>

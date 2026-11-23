@@ -15,7 +15,7 @@ import static org.testng.Assert.assertTrue;
 public class MdlFlowSanityTest extends IosBaseTest {
   @Test
   @NeedsMdlUIN
-  public void should_download_and_delete_mdl_vc_when_mdl_issuer_flow_completes(){
+  public void downloadMdlVCAndDeleteSmoke(){
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
     WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();

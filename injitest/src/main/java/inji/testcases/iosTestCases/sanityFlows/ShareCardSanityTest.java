@@ -14,7 +14,7 @@ import static org.testng.Assert.assertTrue;
 public class ShareCardSanityTest extends IosBaseTest {
   @Test
   @NeedsMockUIN
-  public void should_share_vc_when_camera_permission_is_granted(){
+  public void shareVc(){
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
     WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();

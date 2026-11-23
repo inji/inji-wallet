@@ -16,7 +16,7 @@ public class FarmerFlowSanityTest extends IosBaseTest {
 
   @Test
   @NeedsSvgWithFaceUIN
-  public void should_download_and_delete_farmer_vc_when_farmer_issuer_flow_completes() throws InterruptedException {
+  public void downloadFarmerVCAndDeleteSmoke() throws InterruptedException {
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
 
     WelcomePage welcomePage = chooseLanguagePage.clickOnSavePreference();
