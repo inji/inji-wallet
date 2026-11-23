@@ -1191,6 +1191,40 @@ describe('getMdocAuthenticationAlgorithm', () => {
 });
 
 describe('getFaceAttribute', () => {
+  it('evicts only the oldest mdoc portrait when the cache reaches 50 entries', () => {
+    jest.isolateModules(() => {
+      const {getFaceAttribute: readFace} = jest.requireActual('./VCUtils');
+      const images = jest.requireActual(
+        '../../../shared/vcRenderer/mdoc/MdocImages',
+      );
+      const readOriginal = jest.spyOn(images, 'readOriginalMdoc');
+      const credentials = Array.from({length: 51}, (_, index) => ({
+        credential: Buffer.from(
+          encode({cacheEvictionFixture: index, nameSpaces: {}}),
+        ).toString('base64url'),
+      }));
+
+      try {
+        credentials.slice(0, 50).forEach(vc => {
+          expect(readFace(vc, VCFormat.mso_mdoc)).toBeNull();
+        });
+        expect(readOriginal).toHaveBeenCalledTimes(50);
+
+        expect(readFace(credentials[50], VCFormat.mso_mdoc)).toBeNull();
+        expect(readOriginal).toHaveBeenCalledTimes(51);
+
+        expect(readFace(credentials[1], VCFormat.mso_mdoc)).toBeNull();
+        expect(readFace(credentials[50], VCFormat.mso_mdoc)).toBeNull();
+        expect(readOriginal).toHaveBeenCalledTimes(51);
+
+        expect(readFace(credentials[0], VCFormat.mso_mdoc)).toBeNull();
+        expect(readOriginal).toHaveBeenCalledTimes(52);
+      } finally {
+        readOriginal.mockRestore();
+      }
+    });
+  });
+
   it('should extract face from ldp_vc credential', () => {
     const vc = {
       credential: {

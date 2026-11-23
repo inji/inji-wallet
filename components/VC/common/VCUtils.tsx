@@ -887,8 +887,11 @@ function originalMdocPortrait(encodedMdoc: unknown): string | null {
     return originalPortraitByCredential.get(encodedMdoc) ?? null;
   }
   const portrait = readOriginalPortrait(encodedMdoc);
-  if (originalPortraitByCredential.size >= ORIGINAL_PORTRAIT_CACHE_SIZE)
-    originalPortraitByCredential.clear();
+  if (originalPortraitByCredential.size >= ORIGINAL_PORTRAIT_CACHE_SIZE) {
+    const oldestCredential = originalPortraitByCredential.keys().next().value;
+    if (oldestCredential !== undefined)
+      originalPortraitByCredential.delete(oldestCredential);
+  }
   originalPortraitByCredential.set(encodedMdoc, portrait);
   return portrait;
 }
