@@ -436,6 +436,7 @@ fileignoreconfig:
 - filename: shared/vcRenderer/VcRenderer.test.ts
   checksum: 9376788e007405923782381bd54488200c4d4953d1ced592be4243ed48d77252
 - filename: shared/openId4VCI/Utils.test.ts
+  checksum: 34bb089d61ccec0ec1d16a267bbf4d3cf1e4f53806c7168a73c3ba246ad1bf56
   checksum: f5c4d4fbebaa2d8f3e4fb8a2eaa47dde844a8275176ff03cda73d73378288753
 - filename: screens/Home/ReceivedVcsTab.test.tsx
   checksum: 14a5afee28e55a5a1fdb3ea0b79512b84c4dca48f92e57037c221fc9f5ba60c3
