@@ -75,23 +75,26 @@ describe('credential SVG loading', () => {
     expect(VcRenderer.getInstance).not.toHaveBeenCalled();
   });
 
-  it.each([new Error('fetch failed'), {errorCode: 'INVALID_TEMPLATE'}])(
-    'falls back after renderer failure %p',
-    async error => {
-      mockMdocRender.mockRejectedValue(error);
-      const {result} = renderHook(() =>
-        useCredentialSvg(credential, 'mso_mdoc', null),
-      );
-      await waitFor(() =>
-        expect(result.current).toEqual({
-          svgTemplate: null,
-          loadingSvg: false,
-          svgRendererError:
-            'errorCode' in error ? error.errorCode : 'Unknown error',
-        }),
-      );
-    },
-  );
+  it.each([
+    [new Error('fetch failed'), 'Unknown error'],
+    [{errorCode: 'INVALID_TEMPLATE'}, 'INVALID_TEMPLATE'],
+    [{code: 'INVALID_TEMPLATE'}, 'INVALID_TEMPLATE'],
+    [{code: 42, errorCode: 'INVALID_TEMPLATE'}, 'INVALID_TEMPLATE'],
+    [null, 'Unknown error'],
+    [{code: 42}, 'Unknown error'],
+  ])('falls back after renderer failure %p', async (error, expectedError) => {
+    mockMdocRender.mockRejectedValue(error);
+    const {result} = renderHook(() =>
+      useCredentialSvg(credential, 'mso_mdoc', null),
+    );
+    await waitFor(() =>
+      expect(result.current).toEqual({
+        svgTemplate: null,
+        loadingSvg: false,
+        svgRendererError: expectedError,
+      }),
+    );
+  });
 
   it('does not display an obsolete render after switching credentials', async () => {
     let finish!: (result: string[]) => void;

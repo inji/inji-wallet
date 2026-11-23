@@ -15,6 +15,14 @@ function hasRenderMethod(source: unknown): boolean {
 }
 
 function errorCodeOf(error: unknown): string {
+  if (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    typeof error.code === 'string'
+  ) {
+    return error.code;
+  }
   return typeof error === 'object' &&
     error !== null &&
     'errorCode' in error &&
