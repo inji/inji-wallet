@@ -1,5 +1,5 @@
 {
-  "originHash" : "e1f2d509954e8ca6c7f187d3fb6cb3d3d011988b00306f7948dcc9ebf4826839",
+  "originHash" : "fd25c12620d418ce63147183554621d4c414fca5a20e16817685bdd897352f17",
   "pins" : [
     {
       "identity" : "aexml",
@@ -79,7 +79,7 @@
       "location" : "https://github.com/inji/inji-openid4vp-ios-swift",
       "state" : {
         "branch" : "develop",
-        "revision" : "3edea652a73fe66e815ab350ffd90179b1a15aae"
+        "revision" : "14b7b9b0c15a62f3b61b8db0acc5e5ddf3bca478"
       }
     },
     {
@@ -97,7 +97,7 @@
       "location" : "https://github.com/inji/inji-vci-client-ios-swift",
       "state" : {
         "branch" : "develop",
-        "revision" : "279795ec92ba9ff10a35bd09f5a4c88e352b6154"
+        "revision" : "f1d70246566d3bdcdeec6f1b28017c3d0689bf42"
       }
     },
     {
@@ -177,7 +177,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/abhip2565/SwiftCBOR",
       "state" : {
-        "revision" : "04ccff117f6549121d5721ec84fdf0162122b90e",
+        "revision" : "cc4e195a0ea2dce88f2fd6c6d73b2504e3c884fd",
         "version" : "0.5.0"
       }
     },
@@ -187,7 +187,7 @@
       "location" : "https://github.com/inji/tuvali-ios-swift",
       "state" : {
         "branch" : "develop",
-        "revision" : "d0c3b0a7117ff7c930db9e31b6df8027665857af"
+        "revision" : "50c0fd6e48f8830d51d2b3e6732dcb365ee0023a"
       }
     },
     {

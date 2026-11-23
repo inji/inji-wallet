@@ -1023,6 +1023,40 @@ describe('getCredentialType', () => {
     const result = getCredentialType(wellknown);
     expect(result).toBe('VcDetails:identityCard');
   });
+
+  it('names an mdoc without display after its well-known doctype', () => {
+    const wellknown = {
+      format: VCFormat.mso_mdoc,
+      doctype: 'org.iso.18013.5.1.mDL',
+    } as any;
+
+    const result = getCredentialType(wellknown);
+
+    expect(result).toBe('Mobile Driving Licence');
+  });
+
+  it('names an mdoc without display and with an unknown doctype an identity card', () => {
+    const wellknown = {
+      format: VCFormat.mso_mdoc,
+      doctype: 'com.example.loyalty.1',
+    } as any;
+
+    const result = getCredentialType(wellknown);
+
+    expect(result).toBe('VcDetails:identityCard');
+  });
+
+  it("prefers the issuer's display name over the mdoc doctype name", () => {
+    const wellknown = {
+      format: VCFormat.mso_mdoc,
+      doctype: 'org.iso.18013.5.1.mDL',
+      display: [{name: 'Coastal Driving Licence', locale: 'en'}],
+    } as any;
+
+    const result = getCredentialType(wellknown);
+
+    expect(result).toBe('Coastal Driving Licence');
+  });
 });
 
 describe('getCredentialTypeFromWellKnown', () => {

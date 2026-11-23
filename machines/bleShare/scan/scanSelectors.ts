@@ -1,9 +1,25 @@
 import {StateFrom} from 'xstate';
 import {scanMachine} from './scanMachine';
 import {VCMetadata} from '../../../shared/VCMetadata';
-import {getMosipLogo, getFaceAttribute} from '../../../components/VC/common/VCUtils';
+import {
+  getMosipLogo,
+  getFaceAttribute,
+} from '../../../components/VC/common/VCUtils';
+import type {MdocPresentationRef} from '../../mdocPresentation/mdocPresentationMachine';
 
 type State = StateFrom<typeof scanMachine>;
+export const selectIsPresentingMdoc = (state: State) =>
+  state.matches('presentingMdoc');
+export const selectIsMdocBusy = (state: State) => state.matches('mdocBusy');
+export const selectIsMdocReadiness = (state: State) =>
+  selectIsMdocBusy(state) ||
+  (state.context.isMdocFlow && !selectIsPresentingMdoc(state));
+export const selectMdocPresentationRef = (state: State) =>
+  state.children.MdocPresentation as MdocPresentationRef | undefined;
+export const selectMdocSharedDetailCount = (state: State) =>
+  state.context.mdocSharedDetailCount;
+export const selectMdocEndedWithoutSharing = (state: State) =>
+  state.context.mdocEndedWithoutSharing;
 
 export function selectFlowType(state: State) {
   return state.context.flowType;
@@ -31,8 +47,10 @@ export function selectCredential(state: State) {
 export function selectVerifiableCredentialData(state: State) {
   const vcMetadata = new VCMetadata(state.context.selectedVc?.vcMetadata);
   const faceField =
-    getFaceAttribute(state.context.selectedVc,state.context.selectedVc?.format) ??
-      state.context.selectedVc?.credential?.biometrics?.face;
+    getFaceAttribute(
+      state.context.selectedVc,
+      state.context.selectedVc?.format,
+    ) ?? state.context.selectedVc?.credential?.biometrics?.face;
   return [
     {
       vcMetadata: vcMetadata,
@@ -40,7 +58,7 @@ export function selectVerifiableCredentialData(state: State) {
       issuerLogo:
         state.context.selectedVc?.verifiableCredential?.issuerLogo ||
         getMosipLogo(),
-      face:faceField,
+      face: faceField,
       wellKnown: state.context.selectedVc?.verifiableCredential?.wellKnown,
     },
   ];

@@ -21,6 +21,17 @@
       "EXPIRED": "Tapos na ang pag-check ng status. Ang status ng {{idType}} ay Expired.",
       "PENDING": "Tapos na ang pag-check ng status. Ang status ng {{idType}} ay Naka-pending para sa beripikasyon."
     },
+    "mdocSharing": {
+      "SHARED": "Naibahagi nang personal ang {{card}}.",
+      "SHARED_WITH_FACE_VERIFICATION": "Matagumpay ang face verification at naibahagi nang personal ang {{card}}.",
+      "SENT_NOT_CONFIRMED": "Naipadala nang personal ang {{card}}, pero hindi kinumpirma ng verifier na natanggap nila ito.",
+      "SENDING_STOPPED": "Inihinto ang personal na pagpapadala ng {{card}}. Maaaring nakarating sa verifier ang ilang detalye.",
+      "SENDING_INTERRUPTED": "Naantala ang personal na pagpapadala ng {{card}}. Maaaring nakarating sa verifier ang ilang detalye.",
+      "VERIFIER_REPORTED_PROBLEM": "Naipadala nang personal ang {{card}}, pero may iniulat na problema ang verifier.",
+      "SENDING_FAILED": "Hindi natapos ang personal na pagbabahagi ng {{card}}.",
+      "DECLINED": "Tinanggihan ang isang personal na request para sa {{card}}.",
+      "FACE_VERIFICATION_FAILED": "Bumagsak ang face verification habang personal na ibinabahagi ang {{card}}."
+    },
     "vpSharing": {
       "SHARED_SUCCESSFULLY": "Matagumpay na naibahagi ang Pagtatanghal ng Kredensyal.",
       "SHARED_WITH_FACE_VERIFIACTION": "Matagumpay ang pag-verify sa mukha, at matagumpay na naibahagi ang Credential Presentation.",
@@ -1389,5 +1400,349 @@
   "pagination": {
     "next": "Susunod",
     "previous": "Nakaraan"
+  },
+  "ShareNearby": {
+    "title": "Ibahagi",
+    "nearby": "Ibahagi nang malapitan",
+    "scan": "I-scan ang QR code",
+    "help": "Tulong?",
+    "close": "Isara",
+    "back": "Bumalik",
+    "cancel": "Kanselahin",
+    "decline": "Tanggihan",
+    "retry": "Subukang muli",
+    "done": "Tapos na",
+    "newCode": "Magpakita ng bagong code",
+    "home": "Pumunta sa Home",
+    "entry": {
+      "title": "Ipakita ang QR code sa verifier",
+      "description": "Ii-scan nila ito gamit ang kanilang device para kumonekta. Walang maibabahagi hangga't hindi mo inaaprubahan.",
+      "offlineTitle": "Gumagana offline ang parehong opsyon",
+      "offlineDescription": "Hindi kailangan ng internet o mobile data. Direktang kumokonekta ang iyong phone sa device ng verifier.",
+      "choose": "Piliin ang code na kayang basahin ng kanilang device",
+      "mdocTitle": "Mobile ID QR code",
+      "mdocDescription": "Para sa mga ID reader na tumitingin ng mobile driving licence at iba pang mobile ID.",
+      "noMdoc": "Magdagdag ng mobile ID (mdoc) sa iyong wallet para magamit ang opsyong ito.",
+      "bleTitle": "Bluetooth QR code",
+      "bleDescription": "Tumanggap ng card mula sa ibang Inji Wallet. Ang iyong phone ang magsisilbing verifier.",
+      "chooseHint": "Hindi sigurado? Tanungin ang verifier kung aling code ang kaya nilang basahin.",
+      "compare": "Ikumpara ang dalawa",
+      "sessionEnded": "Natapos ang session. Walang naibahagi.",
+      "bleUnavailable": "Hindi pa available sa iPhone."
+    },
+    "engagement": {
+      "steps": {
+        "show": "Ipakita ang code",
+        "connect": "Kumonekta",
+        "share": "Ibahagi"
+      },
+      "step": {
+        "showingCode": "Hakbang 1 ng 3: ipakita ang code",
+        "connecting": "Hakbang 2 ng 3: kumokonekta",
+        "waitingForRequest": "Hakbang 3 ng 3: nakakonekta",
+        "sharing": "Hakbang 3 ng 3: suriin at ibahagi"
+      },
+      "showingCode": {
+        "title": "Ipakita ang code na ito sa verifier",
+        "description": "Iharap sa kanila ang iyong screen at hayaang i-scan nila ito gamit ang kanilang device.",
+        "status": "Hinihintay na i-scan ng verifier"
+      },
+      "connecting": {
+        "title": "Kumokonekta sa verifier",
+        "description": "Na-scan nila ang iyong code. Ilapit ang iyong phone sa kanilang device habang inaayos ang secure na koneksyon.",
+        "status": "Kumokonekta nang secure"
+      },
+      "waitingForRequest": {
+        "title": "Nakakonekta",
+        "description": "Hinihintay na ipadala ng verifier ang kanilang request. Lalabas ito rito sa ilang sandali.",
+        "status": "Naghihintay ng request"
+      },
+      "codeLabel": "Mobile ID QR code",
+      "expires": "Mag-e-expire ang code sa loob ng {{time}}",
+      "expiring": "Nag-expire ang code. Tinatapos ang session na ito…",
+      "bluetooth": "Naka-on ang Bluetooth",
+      "private": "Walang maibabahagi hangga't hindi mo inaaprubahan ang request",
+      "scanHelp": "Hindi ito ma-scan ng verifier?",
+      "you": "Ikaw",
+      "verifier": "Verifier",
+      "nextTitle": "Ano ang susunod",
+      "next": [
+        "Makikita mo kung sino ang humihingi at kung ano ang gusto nila",
+        "Alisan ng tsek ang anumang ayaw mong ibahagi",
+        "Walang aalis sa iyong phone hangga't hindi mo pinipindot ang Ibahagi"
+      ],
+      "sessionEnds": "Matatapos ang session sa loob ng {{time}}",
+      "endSession": "Tapusin ang session"
+    },
+    "request": {
+      "title": "Ibahagi ang mga detalyeng ito?",
+      "description": "Alisan ng tsek ang anumang ayaw mong ibahagi.",
+      "unknownVerifier": "Hindi kilalang verifier",
+      "verifierDetails": "Tingnan ang mga detalye tungkol sa {{name}}",
+      "verifierTitle": "Sino ang humihingi?",
+      "chooseCard": "Pumili ng card",
+      "detailCount": "{{count}} detalye",
+      "share": "Ibahagi ang {{count}} detalye",
+      "verifyShare": "Ibahagi gamit ang selfie verification",
+      "retained": "Magtatabi ng kopya ang verifier",
+      "retentionHelp": "Tungkol sa mga itinatabing kopya",
+      "retentionDescription": "Sinabi ng verifier na magtatabi ito ng kopya ng mga detalyeng ito pagkatapos mong ibahagi.",
+      "noMatch": "Walang card sa iyong wallet na may mga detalyeng hinihingi para sa dokumentong ito. Maaari mong tanggihan ang request na ito.",
+      "notOnCard": "Wala sa iyong card, kaya hindi ito maibabahagi",
+      "revokedCard": "Sinuspinde o binawi ng issuer ang card na ito, kaya hindi ito maibabahagi.",
+      "expires": "Matatapos ang session sa loob ng",
+      "expiring": "Natatapos ang session…",
+      "prepareError": "Hindi namin naihanda ang mga napiling detalye. Walang naipadala. Subukang muli o tanggihan.",
+      "trust": {
+        "verified": "Verified na verifier",
+        "unverified": "Hindi verified na verifier",
+        "notSigned": "Hindi verified na verifier",
+        "invalid": "Bumagsak ang pagsusuri sa verifier"
+      },
+      "trustDescription": {
+        "verified": "Verified. Tugma ang certificate nito sa listahan ng mga pinagkakatiwalaang verifier.",
+        "unverified": "Hindi nito napatunayan ang pagkakakilanlan nito, o wala ito sa pinagkakatiwalaang listahan. Hindi napapatunayan ng secure na koneksyon kung sino sila.",
+        "notSigned": "Hindi nito napatunayan ang pagkakakilanlan nito, o wala ito sa pinagkakatiwalaang listahan. Hindi napapatunayan ng secure na koneksyon kung sino sila.",
+        "invalid": "Invalid o expired na ang certificate nito. Pinakaligtas na tanggihan."
+      },
+      "share_plural": "Ibahagi ang {{count}} na detalye",
+      "detailCount_plural": "{{count}} na detalye",
+      "shareAnyway": "Ibahagi pa rin",
+      "trustCard": {
+        "unverified": {
+          "title": "Hindi verified na verifier",
+          "description": "Hindi namin makumpirma kung sino ang humihingi. Ibahagi lang kung pinagkakatiwalaan mo ang tao o device na nasa harap mo."
+        },
+        "invalid": {
+          "title": "Bumagsak ang verifier na ito sa pagsusuri ng pagkakakilanlan",
+          "description": "Invalid o expired na ang certificate nito. Maaaring pagkakamali ito, o pagtatangkang kunin ang iyong mga detalye."
+        }
+      },
+      "askingFrom": "Humihingi sila ng mga detalye mula sa",
+      "cardCount": "{{count}} card",
+      "cardCount_plural": "{{count}} na card",
+      "untickRest": ". Alisan ng tsek ang anumang ayaw mong ibahagi.",
+      "shareFromCards": "Ibahagi ang {{count}} detalye mula sa {{cards}} card",
+      "shareFromCards_plural": "Ibahagi ang {{count}} na detalye mula sa {{cards}} card",
+      "followUpTitle": "Humihingi pa ng iba ang verifier",
+      "followUpDescription": "Nakapagbahagi ka na ng mga detalye sa verifier na ito. Tingnan kung ano ang hinihingi nila ngayon bago ka muling magbahagi.",
+      "notShared": "Hindi ibabahagi",
+      "shareNothing": "Ibahagi",
+      "nothingSelected": "Pumili ng kahit isang detalyeng ibabahagi, o tanggihan.",
+      "sharePartial": "Ibahagi ang {{count}} sa {{total}} na detalye",
+      "partialShareNote": "Maaaring hindi tanggapin ng verifier ang bahagyang pagbabahagi.",
+      "expiredBadge": "Expired",
+      "expiredOn": "Nag-expire noong {{date}}. Makikita ito ng verifier kung ibabahagi mo.",
+      "expiredWarning": "Expired na ang card na ito. Makikita ito ng verifier kung ibabahagi mo.",
+      "noCard": {
+        "title": "Wala sa iyo ang card na hinihingi nila",
+        "askedFor": "Ang hiningi nila",
+        "notInWallet": "{{count}} detalye · Wala sa iyong wallet",
+        "notInWallet_plural": "{{count}} na detalye · Wala sa iyong wallet",
+        "description": "Walang naibahagi. Tapusin na ang session, o idagdag ang card at magpakita ng bagong code.",
+        "addCard": "Magdagdag ng card"
+      },
+      "detailsRequested": "{{count}} detalye ang hiningi",
+      "detailsRequested_plural": "{{count}} na detalye ang hiningi",
+      "selectAll": "Piliin lahat",
+      "clearAll": "Alisin lahat",
+      "chooseCardFirst": "Pumili ng card sa itaas para makita kung alin sa mga detalyeng ito ang nasa card."
+    },
+    "requestHelp": {
+      "trustLabel": {
+        "verified": "Verified",
+        "unverified": "Hindi verified",
+        "notSigned": "Hindi verified",
+        "invalid": "Bumagsak sa pagsusuri"
+      },
+      "gotIt": "Sige",
+      "learnMore": "Alamin pa",
+      "identity": "Pagkakakilanlan",
+      "secureConnection": "Hindi napapatunayan ng secure na koneksyon kung sino ang verifier.",
+      "identityIntro": "Bago ka magbahagi, tinitingnan ng Inji Wallet kung sino ang humihingi.",
+      "identityDescription": {
+        "verified": "Tugma ang certificate nito sa listahan ng mga pinagkakatiwalaang verifier. Makikita mo kung sino sila.",
+        "unverified": "Hindi nito napatunayan kung sino ito. Ibahagi lang kung pinagkakatiwalaan mo ang tao o device na nasa harap mo.",
+        "invalid": "Invalid o expired na ang certificate nito. Pinakaligtas na tanggihan."
+      },
+      "retentionMeaningTitle": "Ano ang ibig sabihin nito",
+      "retentionMeaning": "Hindi kayang burahin ng Inji Wallet ang kanilang kopya para sa iyo.",
+      "retentionActionTitle": "Ano ang magagawa mo",
+      "retentionAction": "Tanungin ang verifier kung gaano katagal nila ito itatabi, o alisan ng tsek ang detalye.",
+      "seeTitle": "Nakikita nila",
+      "notSeeTitle": "Hindi nila nakikita",
+      "seeItems": [
+        "Ang mga detalyeng tsinekan mo",
+        "Kung saang card ito nanggaling",
+        "Na tunay ang card"
+      ],
+      "notSeeItems": [
+        "Ang iba pang bahagi ng iyong card",
+        "Ang iba mo pang card",
+        "Ang iyong lokasyon"
+      ],
+      "keptCopies": "Magtatabi lang sila ng kopya ng mga detalyeng may nakasulat na “Magtatabi ng kopya ang verifier”."
+    },
+    "helpContent": {
+      "title": "Aling QR code ang dapat kong gamitin?",
+      "description": "Gamitin ang kayang basahin ng device ng verifier. Kung hindi ka sigurado, tanungin sila.",
+      "scanTitle": "Hindi ma-scan ng verifier ang iyong code?",
+      "privacyTitle": "Ano ang nakikita ng verifier",
+      "privacyDescription": "Ang tsinekan mo lang sa screen na ito.",
+      "mdocDescription": "Para sa mga ID reader sa counter o checkpoint na tumitingin ng mobile driving licence at iba pang mobile ID.",
+      "bothTitle": "Pareho sila",
+      "bothOffline": "Gumagana offline, nang walang internet o mobile data",
+      "bothApproval": "Pinagkokonekta lang ang inyong mga phone. Walang maibabahagi hangga't hindi mo inaaprubahan",
+      "bothChoose": "Hinahayaan kang pumili ng card at mga detalye pagkatapos humingi ng verifier",
+      "scanReadableTitle": "Gawing madaling basahin ang code",
+      "scanBrightnessDescription": "Iharap sa kanila ang iyong screen at hawakan ito nang hindi gumagalaw, mga isang dangkal ang layo. Nakataas na ang liwanag ng screen.",
+      "scanReadableDescription": "Iharap sa kanila ang iyong screen at hawakan ito nang hindi gumagalaw, mga isang dangkal ang layo.",
+      "scanCodeTypeTitle": "Alamin kung aling code ang kailangan nila",
+      "scanCodeTypeDescription": "Para sa beripikasyon ng mobile ID, ipakita ang Proximity QR Code. Ang Bluetooth QR code ay para sa pagtanggap ng card.",
+      "scanTheirsTitle": "May code ba silang maipapakita?",
+      "scanTheirsDescription": "Kung gayon, i-scan ang sa kanila mula sa tab na I-scan ang QR code.",
+      "scanTryAgain": "Subukang muli",
+      "scanInstead": "I-scan na lang ang kanilang code"
+    },
+    "readiness": {
+      "title": "Naghahanda para magbahagi",
+      "description": "Tinitingnan ang Bluetooth at mga pahintulot para sa mga kalapit na device.",
+      "bluetoothTitle": "I-on ang Bluetooth",
+      "bluetoothDescription": "Kumokonekta ang iyong phone sa device ng verifier sa pamamagitan ng Bluetooth. Walang maibabahagi hangga't hindi mo inaaprubahan ang isang request.",
+      "permissionTitle": "I-on ang pahintulot sa Bluetooth",
+      "permissionDescription": "Hindi na muling makakapagtanong ang Inji Wallet, kaya i-on ito sa Settings.",
+      "locationTitle": "I-on ang location services",
+      "locationDescription": "Kailangan ng mga lumang bersyon ng Android ang location services para magamit ang Bluetooth. Hindi ibinabahagi sa verifier ang iyong lokasyon.",
+      "busyTitle": "Abala ang Bluetooth",
+      "busyDescription": "May isa pang session ng pagbabahagi na bukas pa sa phone na ito. Maghintay sandali, pagkatapos ay subukang muli.",
+      "storageTitle": "Kulang ang espasyo",
+      "storageDescription": "Magbakante ng storage para maitala ng iyong wallet ang aktibidad ng pagbabahagi.",
+      "settings": "Buksan ang settings",
+      "continue": "Magpatuloy",
+      "bluetoothSheet": {
+        "title": "I-on ang Bluetooth para maipakita ang iyong code",
+        "description": "Ikinokonekta ng iyong code ang iyong phone sa device ng verifier sa pamamagitan ng Bluetooth. Walang maibabahagi hangga't hindi mo inaaprubahan ang isang request.",
+        "androidNote": "Hihingi ng kumpirmasyon ang Android. Mananatiling naka-on ang Bluetooth hangga't hindi mo ito ino-off.",
+        "iosDescription": "I-on ito sa Control Centre, o sa Settings › Bluetooth. Magpapatuloy kami kapag naka-on na ito.",
+        "iosWaiting": "Hinihintay na mag-on ang Bluetooth",
+        "turnOn": "I-on ang Bluetooth",
+        "openSettings": "Buksan ang settings"
+      }
+    },
+    "sending": {
+      "title": "Ipinapadala…",
+      "description": "Ilapit ang iyong phone sa verifier",
+      "stopping": "Tinatapos ang session…",
+      "preparing": "Inihahanda ang iyong mga detalye…",
+      "declining": "Tinatanggihan ang request…",
+      "stop": "Ihinto ang pagpapadala",
+      "stopTitle": "Ihinto ang pagpapadala?",
+      "stopDescription": "Maaaring nakarating na sa verifier ang ilang detalye. Hindi na ito mababawi kahit ihinto mo.",
+      "keepSending": "Ituloy ang pagpapadala",
+      "details": "Ipinapadala ang {{count}} detalyeng inaprubahan mo",
+      "details_plural": "Ipinapadala ang {{count}} na detalyeng inaprubahan mo"
+    },
+    "selfie": {
+      "title": "I-verify ang iyong pagkakakilanlan",
+      "description": "Gamitin ang iyong camera para ikumpara ang iyong mukha sa larawan sa napili mong card.",
+      "continue": "Magpatuloy sa camera"
+    },
+    "outcome": {
+      "shared": {
+        "title": "Naibahagi",
+        "description": "Naibahagi ang iyong mga detalye at natapos na ang session."
+      },
+      "sentNotConfirmed": {
+        "title": "Naipadala ang mga detalye",
+        "description": "Hindi kinumpirma ng verifier na natanggap nila ito. Makipag-ugnayan sa verifier bago subukang muli."
+      },
+      "declined": {
+        "title": "Tinanggihan",
+        "description": "Walang naibahagi. Sinabihan ang verifier na tumanggi ka."
+      },
+      "stopped": {
+        "title": "Inihinto ang pagpapadala",
+        "description": "Maaaring nakarating sa verifier ang ilang detalye bago mo ito inihinto. Kausapin sila."
+      },
+      "sessionEnded": {
+        "title": "Natapos ang session",
+        "description": "Walang naibahagi."
+      },
+      "codeExpired": {
+        "title": "Nag-expire ang code na ito",
+        "description": "Walang naibahagi. Magpakita ng bagong code kapag handa nang mag-scan ang verifier.",
+        "badge": "Expired na ang code",
+        "note": "Gumagana ang bawat code nang 30 segundo, kaya hindi magagamit ng iba ang lumang code."
+      },
+      "couldntConnect": {
+        "title": "Hindi makakonekta sa verifier",
+        "description": "Na-scan nila ang iyong code, pero hindi nakapag-set up ng secure na koneksyon ang inyong mga phone. Walang naibahagi.",
+        "tips": [
+          "Ilapit ang iyong phone sa device ng verifier",
+          "Tiyaking naka-on ang Bluetooth",
+          "Magpakita ng bagong code at hayaan silang i-scan ito ulit"
+        ]
+      },
+      "connectionLost": {
+        "title": "Naputol ang koneksyon",
+        "description": "Naputol ang koneksyon ng inyong mga phone, kaya natapos na ang session na ito. Walang naibahagi.",
+        "tipsTitle": "Para makapagbahagi",
+        "tips": [
+          "Magpakita ng bagong code at hayaan silang i-scan ito",
+          "Manatiling malapit hanggang makita mo ang Naibahagi"
+        ],
+        "footnote": "Hindi na maipagpapatuloy ang naputol na session."
+      },
+      "interrupted": {
+        "title": "Naantala ang pagpapadala",
+        "description": "Naputol ang koneksyon bago natapos ang pagpapadala. Maaaring nakarating sa verifier ang ilang detalye. Kausapin sila bago muling magbahagi."
+      },
+      "bluetoothOff": {
+        "title": "Na-off ang Bluetooth",
+        "description": "Natapos ang session at walang naibahagi. I-on ang Bluetooth, pagkatapos ay magpakita ng bagong code."
+      },
+      "timedOut": {
+        "title": "Natapos ang session",
+        "description": "Naubos ang oras bago may naibahagi. Para makapagbahagi, magpakita ng bagong code.",
+        "tipsTitle": "Sa susunod",
+        "tips": [
+          "Buksan agad ang request pagdating nito",
+          "Bawat bagong code ay nagsisimula ng bagong 5 minutong session"
+        ]
+      },
+      "verifierError": {
+        "title": "May iniulat na problema ang verifier",
+        "description": "Naipadala ang iyong mga detalye pero maaaring hindi ito tinanggap. Tanungin ang verifier kung ano ang susunod na gagawin."
+      },
+      "requestUnreadable": {
+        "title": "Hindi mabasa ang request",
+        "description": "Walang naibahagi. Hilingin sa verifier na subukang muli, pagkatapos ay magpakita ng bagong code."
+      },
+      "readerEnded": {
+        "title": "Tinapos ng verifier ang session",
+        "description": "Isinara ng verifier ang koneksyon. Kausapin sila bago magsimulang muli."
+      },
+      "error": {
+        "title": "Hindi natapos ang pagbabahagi",
+        "description": "Natapos na ang session. Kausapin ang verifier bago subukang muli."
+      },
+      "requestFrom": "Request mula sa",
+      "details": "Mga detalye",
+      "banner": "{{count}} detalye ang ligtas na naibahagi sa verifier sa pamamagitan ng malapitang koneksyon.",
+      "banner_plural": "{{count}} na detalye ang ligtas na naibahagi sa verifier sa pamamagitan ng malapitang koneksyon.",
+      "tipsTitle": "Subukan ito",
+      "sessionHasEnded": "Natapos na ang session na ito.",
+      "turnOnBluetooth": "I-on ang Bluetooth",
+      "askedFor": "Hiningi",
+      "time": "Oras",
+      "detailsFrom": "{{count}} mula sa {{card}}",
+      "detailsCount": "{{count}} detalye",
+      "detailsCount_plural": "{{count}} na detalye",
+      "today": "Ngayon, {{time}}",
+      "viewHistory": "Tingnan sa history",
+      "goingHome": "Pupunta sa Home sa loob ng",
+      "seconds": "{{count}} s",
+      "stayHere": "Manatili rito"
+    }
   }
 }

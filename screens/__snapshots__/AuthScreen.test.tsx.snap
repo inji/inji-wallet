@@ -259,6 +259,7 @@ exports[`AuthScreen should match snapshot 1`] = `
           ],
         ]
       }
+      disabled={false}
       linearGradientProps={
         {
           "colors": [

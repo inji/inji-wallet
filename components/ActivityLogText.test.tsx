@@ -5,19 +5,16 @@ import {VCItemContainerFlowType} from '../shared/Utils';
 import {VCActivityLog} from './ActivityLogEvent';
 import {VPShareActivityLog} from './VPShareActivityLogEvent';
 
-// Mock TextItem
 jest.mock('./ui/TextItem', () => ({
   TextItem: jest.fn(() => null),
 }));
 
-// Mock HistoryScreenController
 jest.mock('../screens/History/HistoryScreenController', () => ({
   useHistoryTab: jest.fn(() => ({
     getWellKnownIssuerMap: jest.fn(() => ({display: [{name: 'Test Issuer'}]})),
   })),
 }));
 
-// Mock ActivityLogEvent
 jest.mock('./ActivityLogEvent', () => ({
   VCActivityLog: {
     getLogFromObject: jest.fn(obj => ({
@@ -28,13 +25,22 @@ jest.mock('./ActivityLogEvent', () => ({
   },
 }));
 
-// Mock VPShareActivityLogEvent
 jest.mock('./VPShareActivityLogEvent', () => ({
   VPShareActivityLog: {
     getLogFromObject: jest.fn(obj => ({
       ...obj,
       getActionLabel: jest.fn(() => 'Verified'),
       getActionText: jest.fn(() => 'Verified by Test Device'),
+    })),
+  },
+}));
+
+jest.mock('./MdocShareActivityLogEvent', () => ({
+  MdocShareActivityLog: {
+    getLogFromObject: jest.fn(obj => ({
+      ...obj,
+      getActionLabel: jest.fn(() => 'Reader'),
+      getActionText: jest.fn(() => 'Driving Licence shared in person.'),
     })),
   },
 }));
@@ -61,5 +67,21 @@ describe('ActivityLogText Component', () => {
     } as unknown as VPShareActivityLog;
     const {toJSON} = render(<ActivityLogText activity={vpActivity} />);
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('reads an in-person mdoc share as an mdoc history entry', () => {
+    const {MdocShareActivityLog} = jest.requireMock(
+      './MdocShareActivityLogEvent',
+    );
+    const mdocActivity = {
+      ...mockActivity,
+      flow: VCItemContainerFlowType.MDOC_SHARE,
+    };
+
+    render(<ActivityLogText activity={mdocActivity} />);
+
+    expect(MdocShareActivityLog.getLogFromObject).toHaveBeenCalledWith(
+      mdocActivity,
+    );
   });
 });

@@ -27,5 +27,6 @@ export const INITIAL_CONFIG = {
     openid4vpClientValidation: 'true',
     mdocTemplateBaseUrl: MDOC_SVG_TEMPLATE_BASE_URL ?? '',
     mdocTemplates: MDOC_SVG_TEMPLATES ?? '',
+    mdocTrustedReaderRoots: '[]',
   },
 };

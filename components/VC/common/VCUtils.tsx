@@ -28,6 +28,7 @@ import {
 import {displayType} from '../../../machines/Issuers/IssuersMachine';
 import {Image} from 'react-native-elements/dist/image/Image';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {knownDocTypeName} from '../../../shared/mdocDocTypeNames';
 
 export const CARD_VIEW_DEFAULT_FIELDS = ['fullName'];
 export const DETAIL_VIEW_DEFAULT_FIELDS = [
@@ -753,6 +754,13 @@ export const getCredentialType = (
     const wellknownDisplayProperty =
       getDisplayObjectForCurrentLanguage(credentialDisplay);
     return wellknownDisplayProperty.name;
+  }
+  if (supportedCredentialsWellknown.format === VCFormat.mso_mdoc) {
+    return (
+      knownDocTypeName(
+        (supportedCredentialsWellknown as {doctype?: string}).doctype,
+      ) ?? i18n.t('VcDetails:identityCard')
+    );
   }
   if (supportedCredentialsWellknown.format === VCFormat.ldp_vc) {
     const types = supportedCredentialsWellknown.credential_definition

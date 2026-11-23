@@ -71,8 +71,13 @@ import DoneIcon from '../../assets/done-icon.svg';
 import CircleArrowRight from '../../assets/arrow-circle-broken-right.svg';
 
 export class SvgImage {
-  static selectedCheckBox(color = '#951F6F') {
-    return <SelectedCheckBox color1={color} />;
+  static selectedCheckBox(color = '#951F6F', size?: number) {
+    return (
+      <SelectedCheckBox
+        color1={color}
+        {...(size ? {width: size, height: size} : {})}
+      />
+    );
   }
   static copyIcon(): React.ReactNode {
     return (
