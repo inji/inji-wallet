@@ -6,6 +6,7 @@ import inji.pages.*;
 import inji.testcases.BaseTest.AndroidBaseTest;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
+import inji.utils.CredentialRegistryUpdater;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -28,8 +29,17 @@ public class SunbirdFlowSanityTest extends AndroidBaseTest {
     HomePage homePage = confirmPasscode.enterPasscodeInConfirmPasscodePage(TestDataReader.readData("passcode"), PlatformType.ANDROID);
 
     homePage.clickOnNextButtonForInjiTour();
-    AddNewCardPage addNewCardPage = homePage.downloadCard();
 
+    //Updating Credential Registry if enabled in config file
+    CredentialRegistryUpdater.updateCredentialRegistryIfEnabled(homePage);
+
+    // Navigate back
+    homePage.clickOnHomeButton();
+
+    // Home page
+    HomePage refreshedHomePage = new HomePage(getDriver());
+
+    AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
     assertTrue(addNewCardPage.isDownloadViaSunbirdDisplayed(), "Verify if download sunbird displayed");
     SunbirdLoginPage sunbirdLoginPage = addNewCardPage.clickOnDownloadViaSunbird();
     addNewCardPage.clickOnCredentialTypeHeadingInsuranceCredential();

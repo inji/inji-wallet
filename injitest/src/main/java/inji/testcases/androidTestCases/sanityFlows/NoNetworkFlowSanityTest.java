@@ -9,6 +9,7 @@ import inji.utils.TestDataReader;
 import inji.utils.UpdateNetworkSettings;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import inji.utils.CredentialRegistryUpdater;
 
 public class NoNetworkFlowSanityTest extends AndroidBaseTest {
   @Test
@@ -31,8 +32,17 @@ public class NoNetworkFlowSanityTest extends AndroidBaseTest {
       PlatformType.ANDROID);
 
     homePage.clickOnNextButtonForInjiTour();
-    AddNewCardPage addNewCardPage = homePage.downloadCard();
 
+    //Updating Credential Registry if enabled in config file
+    CredentialRegistryUpdater.updateCredentialRegistryIfEnabled(homePage);
+
+    // Navigate back
+    homePage.clickOnHomeButton();
+
+    // Home page
+    HomePage refreshedHomePage = new HomePage(getDriver());
+
+    AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
     Assert.assertFalse(addNewCardPage.isIssuerDescriptionEsignetDisplayed());
   }
 }

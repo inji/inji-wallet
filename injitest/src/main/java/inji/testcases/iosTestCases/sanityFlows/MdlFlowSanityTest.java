@@ -5,6 +5,7 @@ import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.IosBaseTest;
+import inji.utils.CredentialRegistryUpdater;
 import inji.utils.InjiWalletUtil;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
@@ -31,9 +32,17 @@ public class MdlFlowSanityTest extends IosBaseTest {
 
     homePage.clickOnNextButtonForInjiTour();
 
-    //vc download
+    //Updating Credential Registry if enabled in config file
+    CredentialRegistryUpdater.updateCredentialRegistryIfEnabled(homePage);
 
-    AddNewCardPage addNewCardPage = homePage.downloadCard();
+    // Navigate back
+    homePage.clickOnHomeButton();
+
+    // Home page
+    HomePage refreshedHomePage = new HomePage(getDriver());
+
+    AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
+
     assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(),
       "Verify if issuer description  esignet displayed");
     assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(),"Verify if search bar is displayed");

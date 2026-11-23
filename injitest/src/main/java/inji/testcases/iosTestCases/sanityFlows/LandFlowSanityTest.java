@@ -5,6 +5,7 @@ import inji.constants.InjiWalletConstants;
 import inji.constants.PlatformType;
 import inji.pages.*;
 import inji.testcases.BaseTest.IosBaseTest;
+import inji.utils.CredentialRegistryUpdater;
 import inji.utils.InjiWalletUtil;
 import inji.utils.TestDataReader;
 import org.testng.annotations.Test;
@@ -32,7 +33,16 @@ public class LandFlowSanityTest extends IosBaseTest {
 
     homePage.clickOnNextButtonForInjiTour();
 
-    AddNewCardPage addNewCardPage = homePage.downloadCard();
+    //Updating Credential Registry if enabled in config file
+    CredentialRegistryUpdater.updateCredentialRegistryIfEnabled(homePage);
+
+    // Navigate back
+    homePage.clickOnHomeButton();
+
+    // Home page
+    HomePage refreshedHomePage = new HomePage(getDriver());
+
+    AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
 
     assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
     assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(),"Verify if search bar is displayed");

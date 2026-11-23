@@ -9,11 +9,12 @@ import inji.utils.TestDataReader;
 import inji.utils.UpdateNetworkSettings;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import inji.utils.CredentialRegistryUpdater;
 
 public class NoNetworkFlowSanityTest extends IosBaseTest {
   @Test
   @NeedsUIN
-  public void downloadMosipIdVCWithoutInternet(){
+  public void downloadMosipIdVCWithoutInternet() {
     String sessionId = getDriver().getSessionId().toString();
     UpdateNetworkSettings.setNoNetworkProfile(sessionId);
     ChooseLanguagePage chooseLanguagePage = new ChooseLanguagePage(getDriver());
@@ -31,7 +32,17 @@ public class NoNetworkFlowSanityTest extends IosBaseTest {
       PlatformType.IOS);
 
     homePage.clickOnNextButtonForInjiTour();
-    AddNewCardPage addNewCardPage = homePage.downloadCard();
+
+    //Updating Credential Registry if enabled in config file
+    CredentialRegistryUpdater.updateCredentialRegistryIfEnabled(homePage);
+
+    // Navigate back
+    homePage.clickOnHomeButton();
+
+    // Home page
+    HomePage refreshedHomePage = new HomePage(getDriver());
+
+    AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
 
     Assert.assertFalse(addNewCardPage.isIssuerDescriptionEsignetDisplayed());
   }
