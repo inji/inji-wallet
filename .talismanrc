@@ -53,7 +53,7 @@ fileignoreconfig:
 - filename: screens/MainLayout.tsx
   checksum: 8909ef957c866221e864c6edaf93081af7f5968857200284bf7047631f525322
 - filename: android/app/build.gradle
-  checksum: 8d5715e179a398518e6acff82c75b27077c9f893dc90b2972c77f9a09f10be95
+  checksum: 5f45b14894e7ed17c6ffed24628cccf181ee70c3624e630c7cd4b009db4fa29a
 - filename: android/fastlane/Fastfile
   checksum: a5e816489a80b0a7498f35b7a2919f2287d4307b660687c2a9c51412aa8eceb7
 - filename: .github/workflows/internal-build.yml
@@ -284,7 +284,7 @@ fileignoreconfig:
 - filename: android/app/src/main/java/io/mosip/residentapp/InjiVciClientModule.java
   checksum: 17f55840bab193bc353034445ba4fce53e1ce466e95f616c15a1351f8d2f23bc
 - filename: ios/Inji.xcworkspace/xcshareddata/swiftpm/Package.resolved
-  checksum: 338adbbb9d12e1aba6f53ddaf84bbf24678b052d076c9537664659801d81bf27
+  checksum: 876bd656333eedce4a4c9f17918484753eea1584ae60e36bd1aa603af67bbd17
 - filename: injitest/src/main/resources/Vids.json
   checksum: 8bcffed7a6dd565ae695e1b29de0655e10bd5c5420af2718defd593a687b8817
 - filename: injitest/src/main/java/inji/utils/UpdateNetworkSettings.java

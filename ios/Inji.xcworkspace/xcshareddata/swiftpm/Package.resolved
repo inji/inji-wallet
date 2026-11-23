@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/inji/inji-openid4vp-ios-swift",
       "state" : {
-        "branch" : "release-1.0.x",
-        "revision" : "c134f7c5cd988360fc9f271e943cb667ce83c4cf"
+        "revision" : "d8c19266288044ef2583a02552ecea10b14e9711",
+        "version" : "1.0.0-rc.1"
       }
     },
     {
@@ -87,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/inji/inji-vc-renderer-ios-swift",
       "state" : {
-        "branch" : "release-1.0.x",
-        "revision" : "fbffd9f6f11335377832b85b0b2c5182799b9d30"
+        "revision" : "af7e1d9cd8e76051d845a83690c20846daa66f0b",
+        "version" : "1.0.0-rc.1"
       }
     },
     {
@@ -96,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/inji/inji-vci-client-ios-swift",
       "state" : {
-        "branch" : "release-1.0.x",
-        "revision" : "e5971896997bfbef1774a2f61725e30be1485781"
+        "revision" : "2fe9e509edcda581f7ae9535fb3fabceda47050a",
+        "version" : "1.0.0-rc.1"
       }
     },
     {
@@ -123,8 +123,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/inji/pixelpass-ios-swift",
       "state" : {
-        "branch" : "release-1.0.x",
-        "revision" : "0f6223ef65012260d93ec4a2273ca9f14be2a2a5"
+        "revision" : "c444b72ca08bcdf493d32fa93f2493d7800ce019",
+        "version" : "1.0.0-rc.1"
       }
     },
     {
@@ -141,8 +141,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/inji/secure-keystore-ios-swift",
       "state" : {
-        "branch" : "release-1.0.x",
-        "revision" : "19defe6f77dcc1ed5daa65ddf38be8370027f8d5"
+        "revision" : "3ffba1e24495cea7dac5a8fd1b7c2d751bf4600c",
+        "version" : "1.0.0-rc.1"
       }
     },
     {
@@ -186,8 +186,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/inji/tuvali-ios-swift",
       "state" : {
-        "branch" : "release-1.0.x",
-        "revision" : "6d9d9e8b74086f03bbec76671c684c2830cbb0e3"
+        "revision" : "c034b8b42a5fd6a313ea265550b013f69251d6e3",
+        "version" : "1.0.0-rc.1"
       }
     },
     {
