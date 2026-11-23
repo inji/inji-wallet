@@ -8,7 +8,11 @@ jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter', () => {
 
 jest.mock('../../../shared/tuvali', () => ({
   wallet: {startConnection: jest.fn()},
-  verifier: {startAdvertisement: jest.fn(), sendVerificationStatus: jest.fn()},
+  verifier: {
+    startAdvertisement: jest.fn(),
+    sendVerificationStatus: jest.fn(),
+    disconnect: jest.fn(),
+  },
   EventTypes: {onDataReceived: 'DATA_EVENT'},
   VerificationStatus: {ACCEPTED: 0, REJECTED: 1},
 }));
@@ -25,8 +29,49 @@ import {
   createRequestMachine,
   selectIsMinimumStorageLimitReached,
 } from './requestMachine';
+import type {AppServices} from '../../../shared/GlobalContext';
+import {interpret} from 'xstate';
+import {verifier} from '../../../shared/tuvali';
 
 describe('requestMachine', () => {
+  it('stops Bluetooth advertising on leaving and releases ownership after native cleanup', () => {
+    const machine = createRequestMachine({} as AppServices).withConfig({
+      services: {monitorConnection: () => () => undefined},
+      actions: {registerLoggers: () => undefined},
+    });
+    const service = interpret(machine).start('waitingForConnection');
+    jest.mocked(verifier.disconnect).mockClear();
+    try {
+      service.send(RequestEvents.SCREEN_BLUR());
+
+      expect(verifier.disconnect).toHaveBeenCalledTimes(1);
+      expect(service.state.matches('inactive')).toBe(false);
+      service.send(RequestEvents.SCREEN_BLUR());
+      expect(verifier.disconnect).toHaveBeenCalledTimes(1);
+
+      service.send(RequestEvents.DISCONNECT());
+
+      expect(service.state.matches('inactive')).toBe(true);
+      service.send(RequestEvents.SCREEN_BLUR());
+      expect(verifier.disconnect).toHaveBeenCalledTimes(1);
+    } finally {
+      service.stop();
+    }
+  });
+
+  it.each(['SCREEN_FOCUS', 'RESET'])(
+    'blocks %s while an mdoc flow owns Bluetooth',
+    event => {
+      const refs = {
+        scan: {getSnapshot: () => ({context: {isMdocFlow: true}})},
+      } as unknown as AppServices;
+      const machine = createRequestMachine(refs);
+
+      const next = machine.transition(machine.initialState, event);
+
+      expect(next.matches('inactive')).toBe(true);
+    },
+  );
   describe('exports', () => {
     it('requestMachine is defined', () => {
       expect(requestMachine).toBeDefined();

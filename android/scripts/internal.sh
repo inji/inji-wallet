@@ -5,6 +5,6 @@ cd ..
 
 yes | sudo gem install bundler
 
-yes | sudo fastlane install_plugins
+sudo bundle install
 
 bundle exec fastlane android_build_internal

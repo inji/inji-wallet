@@ -50,8 +50,10 @@ export function useRequestLayout() {
 
     return () => {
       subscriptions.forEach(unsubscribe => unsubscribe());
+      // Native-stack Back can unmount this screen without emitting blur.
+      requestService.send(RequestEvents.SCREEN_BLUR());
     };
-  }, []);
+  }, [navigation, requestService]);
 
   const isReviewing = useSelector(requestService, selectIsReviewing);
   const isDone = useSelector(requestService, selectIsDone);

@@ -13,6 +13,7 @@ import {
   selectQrLoginRef,
   selectIsQuickShareDone,
   selectShowQuickShareSuccessBanner,
+  selectMdocSharedDetailCount,
 } from '../../machines/bleShare/scan/scanSelectors';
 import {
   selectIsBluetoothDenied,
@@ -87,6 +88,12 @@ export function useScanScreen() {
   const isNoSharableVCs = !shareableVcsMetadata.length;
 
   return {
+    mdocSharedDetailCount: useSelector(
+      scanService,
+      selectMdocSharedDetailCount,
+    ),
+    DISMISS_MDOC_BANNER: () =>
+      scanService.send(ScanEvents.DISMISS_MDOC_BANNER()),
     locationError,
     isNoSharableVCs,
     isBluetoothPermissionDenied,
