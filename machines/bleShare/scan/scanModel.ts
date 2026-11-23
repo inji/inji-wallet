@@ -10,8 +10,11 @@ import {VC} from '../../VerifiableCredential/VCMetaMachine/vc';
 import {ActivityLogType} from '../../activityLog';
 import {BLEError} from '../types';
 import {openID4VPMachine} from '../../openID4VP/openID4VPMachine';
+import type {MdocPresentationDependencies} from '../../mdocPresentation/mdocPresentationModel';
 
 const ScanEvents = {
+  PRESENT_MDOC: () => ({}),
+  APP_INACTIVE: () => ({}),
   SELECT_VC: (vc: VC, flowType: string) => ({vc, flowType}),
   SCAN: (params: string) => ({params}),
   ACCEPT_REQUEST: () => ({}),
@@ -25,6 +28,8 @@ const ScanEvents = {
   RETRY: () => ({}),
   DISMISS: () => ({}),
   DISMISS_QUICK_SHARE_BANNER: () => ({}),
+  DISMISS_MDOC_BANNER: () => ({}),
+  REQUEST_BLUETOOTH: () => ({}),
   GOTO_HISTORY: () => ({}),
   CONNECTED: () => ({}),
   DISCONNECT: () => ({}),
@@ -81,6 +86,8 @@ export const ScanModel = createModel(
     QrLoginRef: {} as ActorRefFrom<typeof qrLoginMachine>,
     OpenId4VPRef: {} as ActorRefFrom<typeof openID4VPMachine>,
     showQuickShareSuccessBanner: false,
+    mdocSharedDetailCount: 0,
+    mdocEndedWithoutSharing: false,
     linkCode: '',
     authorizationRequest: '',
     quickShareData: {},
@@ -88,6 +95,9 @@ export const ScanModel = createModel(
     isOVPViaDeepLink: false,
     showFaceAuthConsent: true as boolean,
     readyForBluetoothStateCheck: false,
+    isMdocFlow: false,
+    mdocScreenBlurred: false,
+    mdocPresentationDependencies: {} as Partial<MdocPresentationDependencies>,
     showFaceCaptureSuccessBanner: false,
   },
   {

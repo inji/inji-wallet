@@ -6,6 +6,7 @@ import {StoreEvents} from './store';
 import {VCActivityLog} from '../components/ActivityLogEvent';
 import {IssuerWellknownResponse} from './VerifiableCredential/VCMetaMachine/vc';
 import {VPShareActivityLog} from '../components/VPShareActivityLogEvent';
+import {MdocShareActivityLog} from '../components/MdocShareActivityLogEvent';
 import {parseJSON} from '../shared/Utils';
 
 const model = createModel(
@@ -18,7 +19,11 @@ const model = createModel(
     events: {
       STORE_RESPONSE: (response: unknown) => ({response}),
       LOG_ACTIVITY: (
-        log: VCActivityLog | VCActivityLog[] | VPShareActivityLog,
+        log:
+          | VCActivityLog
+          | VCActivityLog[]
+          | VPShareActivityLog
+          | MdocShareActivityLog[],
         wellknown?: any,
       ) => ({
         log,

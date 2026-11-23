@@ -20,7 +20,9 @@ export function selectShareableVcsMetadata(state: State): VCMetadata[] {
   );
 }
 
-export function selectShareableVcs(state: State): VC[] {
+export function selectShareableVcs(state: {
+  context: {myVcs: Record<string, VC>};
+}): VC[] {
   return Object.values(state.context.myVcs).filter(
     vc => vc?.verifiableCredential != null,
   );
