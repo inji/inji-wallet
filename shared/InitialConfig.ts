@@ -20,5 +20,6 @@ export const INITIAL_CONFIG = {
     openId4VCIDownloadVCTimeout: '30000',
     cacheTTLInMilliSeconds: '3600000',
     openid4vpClientValidation: 'true',
+    mdocTrustedReaderRoots: '[]',
   },
 };

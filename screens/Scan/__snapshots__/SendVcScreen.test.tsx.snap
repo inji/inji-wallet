@@ -186,6 +186,7 @@ exports[`SendVcScreen should render empty state 1`] = `
           ],
         ]
       }
+      disabled={true}
       linearGradientProps={
         {
           "colors": [
