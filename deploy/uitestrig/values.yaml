@@ -441,16 +441,16 @@ modules:
     enabled: true
     image:
       registry: docker.io
-      repository: injistackdev/uitest-inji-wallet
-      tag: develop
+      repository: injistack/uitest-inji-wallet
+      tag: 1.0.0-rc.1
     extraEnvVarsCM:
       - android
   - name: ios
     enabled: true
     image:
       registry: docker.io
-      repository: injistackdev/uitest-inji-wallet
-      tag: develop
+      repository: injistack/uitest-inji-wallet
+      tag: 1.0.0-rc.1
     extraEnvVarsCM:
       - ios
 
