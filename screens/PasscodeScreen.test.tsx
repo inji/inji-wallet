@@ -42,15 +42,22 @@ jest.mock('./PasscodeScreenController', () => ({
     setError: jest.fn(),
     SETUP_PASSCODE: jest.fn(),
     LOGIN: jest.fn(),
+    UPGRADE_PASSCODE_HASH: jest.fn(),
   })),
 }));
 jest.mock('../shared/commonUtil', () => ({
   hashData: jest.fn().mockResolvedValue('hashed'),
+  encodePinHash: jest.fn(
+    (version: string, hash: string) => `${version}$${hash}`,
+  ),
+  parsePinHash: jest.fn((stored: string) => ({version: 'v1', hash: stored})),
   __esModule: true,
   default: (id: string) => ({accessibilityLabel: id, accessible: true}),
 }));
 jest.mock('../shared/constants', () => ({
   argon2iConfig: {},
+  CURRENT_PIN_KDF_VERSION: 'v2',
+  PIN_KDF_PROFILES: {v1: {iterations: 5}, v2: {iterations: 2}},
   isIOS: () => false,
 }));
 jest.mock('../shared/telemetry/TelemetryUtils', () => ({
@@ -110,6 +117,7 @@ describe('PasscodeScreen', () => {
       setError: jest.fn(),
       SETUP_PASSCODE: jest.fn(),
       LOGIN: jest.fn(),
+      UPGRADE_PASSCODE_HASH: jest.fn(),
     });
     const {getByLabelText} = render(
       React.createElement(PasscodeScreen, defaultProps),

@@ -125,6 +125,21 @@ export const argon2iConfig: Argon2iConfig = {
   mode: 'argon2i',
 };
 
+export const PIN_KDF_PROFILES: Record<string, Argon2iConfig> = {
+  v1: argon2iConfig,
+  v2: {
+    iterations: 2,
+    memory: 19 * 1024,
+    parallelism: 1,
+    hashLength: 32,
+    mode: 'argon2id',
+  },
+};
+
+export type PinKdfVersion = 'v1' | 'v2';
+export const CURRENT_PIN_KDF_VERSION: PinKdfVersion = 'v2';
+export const PIN_HASH_VERSION_SEPARATOR = '$';
+
 export const argon2iConfigForUinVid: Argon2iConfig = {
   iterations: 5,
   memory: 16 * 1024,
