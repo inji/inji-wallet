@@ -151,6 +151,7 @@ Keep these aligned with the environment and test data available:
 - `landregistry_uin`
 - `svgwithface_uin`
 - `svgwithoutface_uin`
+- `mdl_uin`
 - `testcases_toRun`
 
 Note: `testcases_toRun` is optional. If populated, it filters execution to specific methods or `ClassName.methodName` values.
