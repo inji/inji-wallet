@@ -1461,8 +1461,7 @@
       "bleDescription": "Receive a card from another Inji Wallet. Your phone acts as the verifier.",
       "chooseHint": "Not sure? Ask the verifier which code they can read.",
       "compare": "Compare the two",
-      "sessionEnded": "Session ended. Nothing was shared.",
-      "bleUnavailable": "Not available on iPhone yet."
+      "sessionEnded": "Session ended. Nothing was shared."
     },
     "engagement": {
       "steps": {

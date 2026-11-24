@@ -191,17 +191,13 @@ describe('Share nearby entry', () => {
     return screen;
   };
 
-  it('shows the Bluetooth QR code option greyed out on iOS, where it is not available yet', () => {
+  it('lets the holder use the Bluetooth QR code option on iOS, where the phone can act as the verifier', () => {
     const onReceive = jest.fn();
     const screen = renderEntryOn('ios', onReceive);
 
     fireEvent.press(screen.getByTestId('receiveBluetooth'));
 
-    expect(screen.getByTestId('receiveBluetooth')).toHaveAccessibilityState({
-      disabled: true,
-    });
-    expect(screen.getByText('entry.bleUnavailable')).toBeOnTheScreen();
-    expect(onReceive).not.toHaveBeenCalled();
+    expect(onReceive).toHaveBeenCalledTimes(1);
   });
 
   it('lets the holder use the Bluetooth QR code option on Android', () => {
@@ -211,7 +207,6 @@ describe('Share nearby entry', () => {
     fireEvent.press(screen.getByLabelText('receiveBluetooth'));
 
     expect(onReceive).toHaveBeenCalledTimes(1);
-    expect(screen.queryByText('entry.bleUnavailable')).not.toBeOnTheScreen();
   });
 
   it('tells the holder nothing was shared when they come back from an ended session and lets them close the notice', () => {

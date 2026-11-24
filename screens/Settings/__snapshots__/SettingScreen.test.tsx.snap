@@ -54,9 +54,7 @@ exports[`SettingScreen should render settings screen 1`] = `
             null,
             null,
             null,
-            {
-              "display": "flex",
-            },
+            null,
             null,
             null,
           ]

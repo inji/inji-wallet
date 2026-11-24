@@ -22,21 +22,18 @@ const wallet: Wallet = NativeModules.WalletModule
       },
     );
 
-// TODO: Use Actual Verifier module on IOS once Verifier is implemented
 const verifier: Verifier = NativeModules.VerifierModule;
 
-if (!isIOS()) {
-  if (verifier) setupModule(verifier);
-  else
-    new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(VERIFIER_NOT_IMPLEMENTATED_ERROR);
-        },
+if (verifier) setupModule(verifier);
+else
+  new Proxy(
+    {},
+    {
+      get() {
+        throw new Error(VERIFIER_NOT_IMPLEMENTATED_ERROR);
       },
-    );
-}
+    },
+  );
 
 setupModule(wallet);
 
@@ -48,7 +45,8 @@ function setupModule(module: any) {
   }
 
   if (isIOS()) {
-    const eventEmitter = new NativeEventEmitter(module);
+    // Tuvali iOS sends wallet and verifier events through one emitter, which only WalletModule forwards
+    const eventEmitter = new NativeEventEmitter(NativeModules.WalletModule);
     module.handleDataEvents = (callback: (event: any) => void) =>
       eventEmitter.addListener('DATA_EVENT', callback);
   }
