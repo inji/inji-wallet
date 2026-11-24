@@ -660,6 +660,20 @@ fileignoreconfig:
   checksum: e014e1de003f9456c5ab4948107f1775ea80b3d3816a6248f7269b68bc7a17ff
 - filename: machines/settings.ts
   checksum: cecb0101cb18e6ff6343c0a0e27b91a1f7a528b6ed5998c5eea59cef58621e2a
+- filename: shared/vcRenderer/mdoc/MdocImages.ts
+  checksum: bbdcfa06b1651fbbd0061eb584bd0659cca4b298937c6afa8e5a2b87915e7f27
+- filename: components/VC/common/VCUtils.tsx
+  checksum: 23f2a3bc3306778443735a89fde4c19c898dab1dedc67ccf4a2d1c4ebe1a1c38
+- filename: docs/mdoc-support.md
+  checksum: 08df73c51aa327d20a65d32c398c018a38efb0139e5062c72c79b50e096bcf3c
+- filename: shared/vcRenderer/mdoc/MdocDisplayModel.ts
+  checksum: b062ef1d1711a871b9364ae74e3e72d4303bdee9391feca7f05498fd9e689ceb
+- filename: components/VC/Views/VCDetailView.test.tsx
+  checksum: ebd533d7278c004bdf652d4b6f96f290503b67faaa2de3a600ee2447fce125a1
+- filename: components/VC/common/VCUtils.test.tsx
+  checksum: 57c364b6a6dd5f49a12a50e089b6476c04aea277149abab043b5529dacccb331
+- filename: components/VC/Views/VCDetailView.tsx
+  checksum: f9670e8bd319b43db9e2b2f644d5d1bae6bf9b215d644cab4855c8de4d36f3cf
 
 
 

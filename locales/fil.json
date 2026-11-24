@@ -88,6 +88,7 @@
     "flipCamera": "I-flip ang Camera"
   },
   "VcDetails": {
+    "doubleTapToEnlarge": "I-double tap ang card para palakihin",
     "generatedOn": "Nilikha noong",
     "status": "Katayuan",
     "lastChecked": "Huling Suri",

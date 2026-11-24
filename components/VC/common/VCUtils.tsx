@@ -21,6 +21,10 @@ import {
   serializeClaimPath,
 } from '../../../shared/openId4VCI/Utils';
 import {VCFormat} from '../../../shared/VCFormat';
+import {
+  readOriginalMdoc,
+  toImageDataUriOrNull,
+} from '../../../shared/vcRenderer/mdoc/MdocImages';
 import {displayType} from '../../../machines/Issuers/IssuersMachine';
 import {Image} from 'react-native-elements/dist/image/Image';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -44,6 +48,7 @@ export const CARD_VIEW_ADD_ON_FIELDS = ['UIN', 'VID'];
 export const DETAIL_VIEW_ADD_ON_FIELDS = [
   'status',
   'idType',
+  'issuerName',
   'credentialRegistry',
 ];
 
@@ -92,6 +97,11 @@ export const getFieldValue = (
       );
     case 'idType':
       return getCredentialType(wellknown);
+    case 'issuerName':
+      return getIssuerName(
+        props.issuerDisplay,
+        props.verifiableCredentialData?.vcMetadata?.issuer,
+      );
     case 'credentialRegistry':
       return props?.vc?.credentialRegistry;
     case 'address':
@@ -705,6 +715,26 @@ export const getMosipLogo = () => {
 };
 
 /**
+ * The issuer's name for display: its metadata display name in the current
+ * language, else the host of its URL (offer downloads store the URL), else its id.
+ */
+export function getIssuerName(
+  issuerDisplay: unknown,
+  issuer: string | undefined,
+): string | undefined {
+  if (Array.isArray(issuerDisplay) && issuerDisplay.length > 0) {
+    const name = getDisplayObjectForCurrentLanguage(issuerDisplay)?.name;
+    if (typeof name === 'string' && name) return name;
+  }
+  if (!issuer) return undefined;
+  try {
+    return /^https?:\/\//.test(issuer) ? new URL(issuer).host : issuer;
+  } catch {
+    return issuer;
+  }
+}
+
+/**
  *
  * @param wellknown (either supportedCredential's wellknown or whole well known response of issuer)
  * @param credentialConfigurationId
@@ -836,6 +866,36 @@ const PROOF_TYPE_ALGORITHM_MAP = {
   [-7]: 'ES256',
 };
 
+// PixelPass turns binary portraits into text, so the portrait is read from the original credential;
+// cached by credential because selectors call this on every render
+const ORIGINAL_PORTRAIT_CACHE_SIZE = 50;
+const originalPortraitByCredential = new Map<string, string | null>();
+
+function readOriginalPortrait(encodedMdoc: string): string | null {
+  try {
+    const {images} = readOriginalMdoc(encodedMdoc);
+    const portraitBytes = Object.values(images.portraits)[0];
+    return portraitBytes ? toImageDataUriOrNull(portraitBytes) : null;
+  } catch {
+    return null;
+  }
+}
+
+function originalMdocPortrait(encodedMdoc: unknown): string | null {
+  if (typeof encodedMdoc !== 'string') return null;
+  if (originalPortraitByCredential.has(encodedMdoc)) {
+    return originalPortraitByCredential.get(encodedMdoc) ?? null;
+  }
+  const portrait = readOriginalPortrait(encodedMdoc);
+  if (originalPortraitByCredential.size >= ORIGINAL_PORTRAIT_CACHE_SIZE) {
+    const oldestCredential = originalPortraitByCredential.keys().next().value;
+    if (oldestCredential !== undefined)
+      originalPortraitByCredential.delete(oldestCredential);
+  }
+  originalPortraitByCredential.set(encodedMdoc, portrait);
+  return portrait;
+}
+
 export function getFaceAttribute(verifiableCredential, format) {
   let credentialSubject = {};
   if (format === VCFormat.ldp_vc) {
@@ -844,6 +904,10 @@ export function getFaceAttribute(verifiableCredential, format) {
       verifiableCredential?.verifiableCredential.credential.credentialSubject ??
       {};
   } else if (format === VCFormat.mso_mdoc) {
+    const originalPortrait = originalMdocPortrait(
+      verifiableCredential?.credential,
+    );
+    if (originalPortrait) return originalPortrait;
     const nameSpaces =
       verifiableCredential?.processedCredential?.issuerSigned?.nameSpaces ??
       verifiableCredential?.processedCredential?.nameSpaces ??

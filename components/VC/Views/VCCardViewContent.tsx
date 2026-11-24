@@ -55,6 +55,7 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
                                                                   isInitialLaunch,
                                                                   claimsPath,
                                                                   onDisclosuresChange,
+                                                                  issuerName,
                                                                 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedFields, setSelectedFields] = useState<Record<string, boolean>>(
@@ -265,6 +266,29 @@ export const VCCardViewContent: React.FC<VCItemContentProps> = ({
                 Theme.Colors.Details,
               )}
             />
+            {issuerName ? (
+              <Row crossAlign="center" margin="2 0 0 0">
+                <Icon
+                  name="building-o"
+                  type="font-awesome"
+                  size={11}
+                  color={wellknownDisplayProperty.getTextColor(
+                    Theme.Colors.Details,
+                  )}
+                />
+                <Text
+                  testID="issuerName"
+                  size="smaller"
+                  numLines={1}
+                  ellipsizeMode="tail"
+                  color={wellknownDisplayProperty.getTextColor(
+                    Theme.Colors.Details,
+                  )}
+                  style={{marginLeft: 6, flexShrink: 1}}>
+                  {issuerName}
+                </Text>
+              </Row>
+            ) : null}
             <Row>
               <VCVerification
                 vcMetadata={verifiableCredentialData?.vcMetadata}
@@ -542,4 +566,5 @@ export interface VCItemContentProps {
   claimsPath?: Set<string>;
   minimalDisclosure?: boolean;
   onDisclosuresChange?: (disclosures: string[]) => void;
+  issuerName?: string;
 }

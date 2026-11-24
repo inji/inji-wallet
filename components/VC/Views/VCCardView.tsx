@@ -12,7 +12,11 @@ import {VCCardSkeleton} from '../common/VCCardSkeleton';
 import {VCCardViewContent} from './VCCardViewContent';
 import {useVcItemController} from '../VCItemController';
 import {getCredentialIssuersWellKnownConfig} from '../../../shared/openId4VCI/Utils';
-import {CARD_VIEW_DEFAULT_FIELDS, isVCLoaded} from '../common/VCUtils';
+import {
+  CARD_VIEW_DEFAULT_FIELDS,
+  getIssuerName,
+  isVCLoaded,
+} from '../common/VCUtils';
 import {VCItemMachine} from '../../../machines/VerifiableCredential/VCItemMachine/VCItemMachine';
 import {useTranslation} from 'react-i18next';
 import {Copilot} from '../../ui/Copilot';
@@ -54,6 +58,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
 
   const [fields, setFields] = useState([]);
   const [wellknown, setWellknown] = useState(null);
+  const [issuerDisplay, setIssuerDisplay] = useState<unknown>(undefined);
   const [vc, setVc] = useState(null);
 
   useEffect(() => {
@@ -103,6 +108,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
           if (response && response.matchingCredentialIssuerMetadata) {
             setWellknown(response.matchingCredentialIssuerMetadata);
           }
+          setIssuerDisplay(response?.wellknownResponse?.display);
           controller.STORE_INCOMING_VC_WELLKNOWN_CONFIG(
             verifiableCredentialData?.vcMetadata.issuerHost,
             response.wellknownResponse,
@@ -130,6 +136,7 @@ export const VCCardView: React.FC<VCItemProps> = ({
       credential={vc}
       verifiableCredentialData={verifiableCredentialData}
       wellknown={wellknown}
+      issuerName={getIssuerName(issuerDisplay, vcMetadata.issuer)}
       selectable={selectable}
       disableSelection={disableSelection}
       selected={selected}
