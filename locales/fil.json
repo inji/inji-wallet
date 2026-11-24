@@ -1426,8 +1426,7 @@
       "bleDescription": "Tumanggap ng card mula sa ibang Inji Wallet. Ang iyong phone ang magsisilbing verifier.",
       "chooseHint": "Hindi sigurado? Tanungin ang verifier kung aling code ang kaya nilang basahin.",
       "compare": "Ikumpara ang dalawa",
-      "sessionEnded": "Natapos ang session. Walang naibahagi.",
-      "bleUnavailable": "Hindi pa available sa iPhone."
+      "sessionEnded": "Natapos ang session. Walang naibahagi."
     },
     "engagement": {
       "steps": {
