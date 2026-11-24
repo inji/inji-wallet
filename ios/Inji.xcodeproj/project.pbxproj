@@ -36,6 +36,8 @@
 		9C3BD8462EA8D63A00101656 /* NetworkManagerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD8362EA8D63A00101656 /* NetworkManagerClient.swift */; };
 		9C3BD8472EA8D63A00101656 /* CredentialFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD8272EA8D63A00101656 /* CredentialFormat.swift */; };
 		9C48504B2C3E59B5002ECBD5 /* RNWalletModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4850442C3E59B5002ECBD5 /* RNWalletModule.swift */; };
+		AB10F0012F00000000000001 /* RNVerifierModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB10F0012F00000000000003 /* RNVerifierModule.swift */; };
+		AB10F0012F00000000000002 /* RNVerifierModule.m in Sources */ = {isa = PBXBuildFile; fileRef = AB10F0012F00000000000004 /* RNVerifierModule.m */; };
 		9C48504D2C3E59B5002ECBD5 /* RNWalletModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4850462C3E59B5002ECBD5 /* RNWalletModule.m */; };
 		9C48504E2C3E59B5002ECBD5 /* RNEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4850472C3E59B5002ECBD5 /* RNEventEmitter.swift */; };
 		9C48504F2C3E59B5002ECBD5 /* RNVersionModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4850482C3E59B5002ECBD5 /* RNVersionModule.swift */; };
@@ -132,6 +134,8 @@
 		9C3BD83A2EA8D63A00101656 /* CredentialsVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsVerifier.swift; sourceTree = "<group>"; };
 		9C4850442C3E59B5002ECBD5 /* RNWalletModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNWalletModule.swift; path = Inji/RNWalletModule.swift; sourceTree = "<group>"; };
 		9C4850462C3E59B5002ECBD5 /* RNWalletModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNWalletModule.m; path = Inji/RNWalletModule.m; sourceTree = "<group>"; };
+		AB10F0012F00000000000003 /* RNVerifierModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNVerifierModule.swift; path = Inji/RNVerifierModule.swift; sourceTree = "<group>"; };
+		AB10F0012F00000000000004 /* RNVerifierModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNVerifierModule.m; path = Inji/RNVerifierModule.m; sourceTree = "<group>"; };
 		9C4850472C3E59B5002ECBD5 /* RNEventEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNEventEmitter.swift; path = Inji/RNEventEmitter.swift; sourceTree = "<group>"; };
 		9C4850482C3E59B5002ECBD5 /* RNVersionModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNVersionModule.swift; path = Inji/RNVersionModule.swift; sourceTree = "<group>"; };
 		9C4850492C3E59B5002ECBD5 /* RNEventMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNEventMapper.swift; path = Inji/RNEventMapper.swift; sourceTree = "<group>"; };
@@ -226,6 +230,8 @@
 				9C4850482C3E59B5002ECBD5 /* RNVersionModule.swift */,
 				9C4850462C3E59B5002ECBD5 /* RNWalletModule.m */,
 				9C4850442C3E59B5002ECBD5 /* RNWalletModule.swift */,
+				AB10F0012F00000000000004 /* RNVerifierModule.m */,
+				AB10F0012F00000000000003 /* RNVerifierModule.swift */,
 				9C7CDF422C7CC13500243A9A /* RNSecureKeystoreModule.m */,
 				9C0E86BA2BEE36C300E9F9F6 /* RNPixelpassModule.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -902,6 +908,8 @@
 				E6D946EE2EFAA332004DA688 /* VciBridge.swift in Sources */,
 				1EED69F92DA913D30042EAFC /* IntentData.swift in Sources */,
 				9C48504D2C3E59B5002ECBD5 /* RNWalletModule.m in Sources */,
+				AB10F0012F00000000000001 /* RNVerifierModule.swift in Sources */,
+				AB10F0012F00000000000002 /* RNVerifierModule.m in Sources */,
 				9C3BD83C2EA8D63A00101656 /* CredentialsVerifierFactory.swift in Sources */,
 				9C3BD83D2EA8D63A00101656 /* VerifiableCredential.swift in Sources */,
 				9C3BD83E2EA8D63A00101656 /* NetworkManagerClientExceptions.swift in Sources */,
