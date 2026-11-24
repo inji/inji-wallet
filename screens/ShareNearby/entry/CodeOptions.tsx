@@ -5,7 +5,6 @@ import {Text} from '../../../components/ui';
 import IdBadge from '../../../assets/shareNearby/id-badge.svg';
 import BluetoothBadge from '../../../assets/shareNearby/bluetooth-badge.svg';
 import {CodeOption} from './CodeOption';
-import {isIOS} from '../../../shared/constants';
 
 const styles = Theme.ShareNearbyStyles;
 
@@ -36,19 +35,14 @@ export function CodeOptions({
       {!hasMdocCredential && (
         <Text style={styles.small}>{t('entry.noMdoc')}</Text>
       )}
-      {/* iOS can't act as the Tuvali verifier yet, so the option is shown but greyed out. */}
       <CodeOption
         title={t('entry.bleTitle')}
         badge="BLE"
         description={t('entry.bleDescription')}
-        disabled={isIOS()}
         onPress={onReceive}
         testID="receiveBluetooth"
         icon={<BluetoothBadge />}
       />
-      {isIOS() && (
-        <Text style={styles.small}>{t('entry.bleUnavailable')}</Text>
-      )}
     </>
   );
 }

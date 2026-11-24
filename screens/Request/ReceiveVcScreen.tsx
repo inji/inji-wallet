@@ -12,12 +12,13 @@ import {SvgImage} from '../../components/ui/svg';
 import {DETAIL_VIEW_DEFAULT_FIELDS} from '../../components/VC/common/VCUtils';
 import {getDetailedViewFields} from '../../shared/openId4VCI/Utils';
 import {VCProcessor} from '../../components/VC/common/VCProcessor';
-import VcRenderer from '../../shared/vcRenderer/VcRenderer';
+import {useCredentialSvg} from '../../shared/vcRenderer/useCredentialSvg';
 
 export const ReceiveVcScreen: React.FC = () => {
   const {t} = useTranslation('ReceiveVcScreen');
   const [fields, setFields] = useState([]);
   const [wellknown, setWellknown] = useState(null);
+  const [issuerDisplay, setIssuerDisplay] = useState<unknown>(undefined);
   const controller = useReceiveVcScreen();
   const savingOverlayVisible = useOverlayVisibleAfterTimeout(
     controller.isAccepting,
@@ -27,11 +28,11 @@ export const ReceiveVcScreen: React.FC = () => {
 
   const [credential, setCredential] = useState(null);
 
-  const [svgTemplate, setSvgTemplate] = useState<string[] | null>(null);
-  const [svgRendererError, setSvgRendererError] = useState<string[] | null>(
-    null,
+  const {svgTemplate, svgRendererError, loadingSvg} = useCredentialSvg(
+    controller.credential,
+    verifiableCredentialData.vcMetadata.format,
+    wellknown,
   );
-  const [loadingSvg, setLoadingSvg] = useState<boolean>(true);
 
   useEffect(() => {
     async function processVC() {
@@ -48,35 +49,6 @@ export const ReceiveVcScreen: React.FC = () => {
   }, [controller.credential]);
 
   useEffect(() => {
-    const fetchSvg = async () => {
-      try {
-        setLoadingSvg(true);
-
-        const vcJsonString = JSON.stringify(controller.credential.credential);
-        const result = await VcRenderer.getInstance().generateCredentialDisplayContent(
-          verifiableCredentialData.vcMetadata.format,
-          wellknown ?? null,
-          vcJsonString,
-        );
-
-        setSvgTemplate(result);
-        setSvgRendererError(null);
-      } catch (err: any) {
-        setSvgTemplate(null);
-        setSvgRendererError(err.errorCode ?? 'Unknown error');
-      } finally {
-        setLoadingSvg(false);
-      }
-    };
-
-    if (controller.credential?.credential['renderMethod']) {
-      requestAnimationFrame(fetchSvg);
-    } else {
-      setLoadingSvg(false);
-    }
-  }, [controller.credential?.credential, wellknown]);
-
-  useEffect(() => {
     getDetailedViewFields(
       verifiableCredentialData.vcMetadata.issuerHost,
       verifiableCredentialData.credentialConfigurationId,
@@ -85,6 +57,7 @@ export const ReceiveVcScreen: React.FC = () => {
       verifiableCredentialData.vcMetadata.issuerHost,
     ).then(response => {
       setWellknown(response.matchingCredentialIssuerMetadata);
+      setIssuerDisplay(response.wellknownResponse?.display);
       setFields(response.fields);
       controller.STORE_INCOMING_VC_WELLKNOWN_CONFIG(
         verifiableCredentialData?.vcMetadata.issuerHost,
@@ -108,6 +81,7 @@ export const ReceiveVcScreen: React.FC = () => {
             <VcDetailsContainer
               fields={fields}
               wellknown={wellknown}
+              issuerDisplay={issuerDisplay}
               credential={credential}
               credentialWrapper={controller.credential}
               verifiableCredentialData={verifiableCredentialData}

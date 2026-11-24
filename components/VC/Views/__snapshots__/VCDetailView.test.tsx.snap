@@ -223,6 +223,76 @@ exports[`VCDetailView should render SVG template when svgTemplate is provided 1`
                   ]
                 }
               >
+                <View />
+                <View
+                  style={
+                    [
+                      {
+                        "alignItems": undefined,
+                        "flexDirection": "row",
+                        "justifyContent": undefined,
+                      },
+                      null,
+                      null,
+                      {
+                        "marginBottom": 0,
+                        "marginEnd": 0,
+                        "marginStart": 0,
+                        "marginTop": 8,
+                      },
+                      null,
+                      null,
+                      null,
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                      null,
+                      null,
+                      null,
+                      null,
+                    ]
+                  }
+                >
+                  <FontAwesomeIcon
+                    color="#C7C7C7"
+                    name="expand"
+                    size={12}
+                  />
+                  <Text
+                    style={
+                      [
+                        {
+                          "color": "#000000",
+                          "fontSize": 16,
+                          "lineHeight": 18,
+                        },
+                        {
+                          "fontFamily": "Montserrat_400Regular",
+                          "fontSize": 14,
+                        },
+                        {
+                          "color": "#C7C7C7",
+                        },
+                        {
+                          "textAlign": "left",
+                        },
+                        null,
+                        {
+                          "fontSize": 11,
+                          "lineHeight": 18,
+                        },
+                        {
+                          "marginLeft": 6,
+                        },
+                      ]
+                    }
+                  >
+                    doubleTapToEnlarge
+                  </Text>
+                </View>
                 <View
                   style={
                     {

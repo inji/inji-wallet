@@ -708,6 +708,8 @@ export function selectBindingMethod(
   }
 
   const advertised = new Set(cryptographicBindingMethodsSupported);
+  // mdoc binds the device COSE key; its JWT proof conveys the same public key as a JWK.
+  if (advertised.has('cose_key')) advertised.add(BindingMethod.JWK);
 
   return (
     WALLET_BINDING_PREFERENCE.find(bindingMethod =>

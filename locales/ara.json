@@ -88,6 +88,7 @@
     "flipCamera": "فليب الكاميرا"
   },
   "VcDetails": {
+    "doubleTapToEnlarge": "انقر نقرًا مزدوجًا على البطاقة لتكبيرها",
     "generatedOn": "تم إنشاؤه في",
     "status": "الحالة",
     "lastChecked": "آخر تحقق",
@@ -1440,8 +1441,7 @@
       "bleDescription": "استلم بطاقة من محفظة Inji Wallet أخرى. يعمل هاتفك كمُحقق.",
       "chooseHint": "لست متأكدًا؟ اسأل المُحقق عن الرمز الذي يستطيع قراءته.",
       "compare": "قارن بين الاثنين",
-      "sessionEnded": "انتهت الجلسة. لم تتم مشاركة أي شيء.",
-      "bleUnavailable": "غير متاح على iPhone بعد."
+      "sessionEnded": "انتهت الجلسة. لم تتم مشاركة أي شيء."
     },
     "engagement": {
       "steps": {

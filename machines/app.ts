@@ -420,12 +420,10 @@ export const appMachine = model.createMachine(
             scanMachine.id,
           );
 
-          if (isAndroid()) {
-            serviceRefs.request = spawn(
-              createRequestMachine(serviceRefs),
-              requestMachine.id,
-            );
-          }
+          serviceRefs.request = spawn(
+            createRequestMachine(serviceRefs),
+            requestMachine.id,
+          );
           return serviceRefs;
         },
       }),
@@ -439,9 +437,7 @@ export const appMachine = model.createMachine(
         context.serviceRefs.backup.subscribe(logState);
         context.serviceRefs.backupRestore.subscribe(logState);
 
-        if (isAndroid()) {
-          context.serviceRefs.request.subscribe(logState);
-        }
+        context.serviceRefs.request.subscribe(logState);
       },
 
       setAppInfo: model.assign({

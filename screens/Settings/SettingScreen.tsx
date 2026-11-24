@@ -79,9 +79,7 @@ export const SettingScreen: React.FC<
       </Pressable>
       <BannerNotificationContainer />
       <ScrollView {...testIDProps('settingsScreen')}>
-        <Column
-          style={{display: Platform.OS !== 'ios' ? 'flex' : 'none'}}
-          backgroundColor={Theme.Colors.lightGreyBackgroundColor}>
+        <Column backgroundColor={Theme.Colors.lightGreyBackgroundColor}>
           <Text
             style={{paddingTop: 3}}
             testID="injiAsVerifierApp"

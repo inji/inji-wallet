@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, fireEvent} from '@testing-library/react-native';
+import {act, render, fireEvent} from '@testing-library/react-native';
 
 jest.mock('react-native-elements', () => {
   const {View, TouchableOpacity, Text: RNText} = require('react-native');
@@ -14,7 +14,33 @@ jest.mock('react-native-elements', () => {
   };
 });
 
+// the global setup stubs useState, so the full screen view would never appear
+jest.unmock('react');
+jest.mock('react-native-gesture-handler', () => {
+  const mockTaps: any[] = [];
+  const Tap = () => {
+    const tap: any = {
+      numberOfTaps: (count: number) => ((tap.count = count), tap),
+      onEnd: (callback: () => void) => ((tap.end = callback), tap),
+    };
+    mockTaps.push(tap);
+    return tap;
+  };
+  const passThrough = ({children}: any) => children;
+  return {
+    Gesture: {Tap},
+    GestureDetector: passThrough,
+    GestureHandlerRootView: passThrough,
+    mockTaps,
+  };
+});
 jest.mock('react-native-svg/css', () => ({SvgCss: () => null}));
+jest.mock('./SvgCardFullScreen', () => ({
+  SvgCardFullScreen: ({svg}: {svg: string | null}) => {
+    const {Text} = jest.requireActual('react-native');
+    return svg ? <Text testID="svgCardFullScreen">{svg}</Text> : null;
+  },
+}));
 jest.mock('react-native-vector-icons/FontAwesome', () => 'FontAwesomeIcon');
 jest.mock('react-native-vector-icons/Feather', () => 'FeatherIcon');
 jest.mock('../../../shared/VCMetadata', () => ({VCMetadata: jest.fn()}));
@@ -109,6 +135,25 @@ describe('VCDetailView', () => {
       <VCDetailView {...defaultProps} loadingSvg={true} />,
     );
     expect(toJSON()).toMatchSnapshot();
+  });
+
+  it('VCDetailView opens the SVG card full screen on a double tap', () => {
+    const {getByTestId, queryByTestId} = render(
+      <VCDetailView
+        {...defaultProps}
+        svgTemplate={['<svg viewBox="0 0 300 200"></svg>']}
+      />,
+    );
+    const {mockTaps} = jest.requireMock('react-native-gesture-handler');
+    const cardTap = mockTaps[mockTaps.length - 1];
+    expect(queryByTestId('svgCardFullScreen')).toBeNull();
+
+    act(() => cardTap.end());
+
+    expect(cardTap.count).toBe(2);
+    expect(getByTestId('svgCardFullScreen')).toHaveTextContent(
+      '<svg viewBox="0 0 300 200"></svg>',
+    );
   });
 
   it('should render SVG template when svgTemplate is provided', () => {

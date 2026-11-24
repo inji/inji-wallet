@@ -33,7 +33,7 @@ import {
 } from '../../components/BannerNotification';
 import { VCProcessor } from '../../components/VC/common/VCProcessor';
 import { HelpIcon } from '../../components/ui/HelpIcon';
-import VcRenderer from '../../shared/vcRenderer/VcRenderer';
+import {useCredentialSvg} from '../../shared/vcRenderer/useCredentialSvg';
 import { RevocationStatus } from '../../shared/vcVerifier/VcVerifier';
 
 export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
@@ -48,11 +48,6 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
         ? 'expired'
         : controller.verificationStatus?.statusType;
   const [verifiableCredential, setVerifiableCredential] = useState(null);
-  const [svgTemplate, setSvgTemplate] = useState<string[] | null>(null);
-  const [svgRendererError, setSvgRendererError] = useState<string[] | null>(
-    null,
-  );
-
   useEffect(() => {
     async function processVC() {
       if (controller.credential) {
@@ -81,41 +76,16 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
 
   let [fields, setFields] = useState([]);
   const [wellknown, setWellknown] = useState(null);
+  const [issuerDisplay, setIssuerDisplay] = useState<unknown>(undefined);
   const [wellknownFieldsFlag, setWellknownFieldsFlag] = useState(false);
   const [wellknownSettled, setWellknownSettled] = useState(false);
   const verifiableCredentialData = controller.verifiableCredentialData;
 
-  const [loadingSvg, setLoadingSvg] = useState<boolean>(true);
-
-  useEffect(() => {
-    const fetchSvg = async () => {
-      try {
-        setLoadingSvg(true);
-
-        const vcJsonString = JSON.stringify(controller.credential.credential);
-        const result =
-          await VcRenderer.getInstance().generateCredentialDisplayContent(
-            controller.verifiableCredentialData.format,
-            wellknown ?? null,
-            vcJsonString,
-          );
-
-        setSvgTemplate(result);
-        setSvgRendererError(null);
-      } catch (err: any) {
-        setSvgTemplate(null);
-        setSvgRendererError(err.errorCode ?? 'Unknown error');
-      } finally {
-        setLoadingSvg(false);
-      }
-    };
-
-    if (controller.credential?.credential['renderMethod']) {
-      requestAnimationFrame(fetchSvg);
-    } else {
-      setLoadingSvg(false);
-    }
-  }, [controller.credential?.credential, wellknown]);
+  const {svgTemplate, svgRendererError, loadingSvg} = useCredentialSvg(
+    controller.credential,
+    controller.verifiableCredentialData.format,
+    wellknown,
+  );
 
   useEffect(() => {
     getDetailedViewFields(
@@ -127,6 +97,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
     )
       .then(response => {
         setWellknown(response.matchingCredentialIssuerMetadata);
+        setIssuerDisplay(response.wellknownResponse?.display);
         setFields(response.fields);
         setWellknownFieldsFlag(response.wellknownFieldsFlag);
       })
@@ -209,6 +180,7 @@ export const ViewVcModal: React.FC<ViewVcModalProps> = props => {
           fields={fields}
           wellknownFieldsFlag={wellknownFieldsFlag}
           wellknown={wellknown}
+          issuerDisplay={issuerDisplay}
           credential={verifiableCredential}
           credentialWrapper={controller.credential}
           verifiableCredentialData={controller.verifiableCredentialData}

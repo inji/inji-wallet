@@ -18,6 +18,7 @@ class RNEventMapper {
         case is ConnectedEvent: return "onConnected"
         case is SecureChannelEstablishedEvent: return "onSecureChannelEstablished"
         case is DataSentEvent: return "onDataSent"
+        case is DataReceivedEvent: return "onDataReceived"
         case is VerificationStatusEvent: return "onVerificationStatusReceived"
         case is ErrorEvent: return  "onError"
         case is DisconnectedEvent: return "onDisconnected"

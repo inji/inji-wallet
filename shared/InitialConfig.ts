@@ -1,6 +1,11 @@
 // Initial configs used by app if network is not available when app is opened for first time. once network is available response is cached and used from then
 // Note: Need to keep this config in sync with actual mimoto response.
 
+import {
+  MDOC_SVG_TEMPLATE_BASE_URL,
+  MDOC_SVG_TEMPLATES,
+} from 'react-native-dotenv';
+
 export const INITIAL_CONFIG = {
   // These properties are stored in mosip-config github repo / inji-default.properties
   allProperties: {
@@ -20,6 +25,8 @@ export const INITIAL_CONFIG = {
     openId4VCIDownloadVCTimeout: '30000',
     cacheTTLInMilliSeconds: '3600000',
     openid4vpClientValidation: 'true',
+    mdocTemplateBaseUrl: MDOC_SVG_TEMPLATE_BASE_URL ?? '',
+    mdocTemplates: MDOC_SVG_TEMPLATES ?? '',
     mdocTrustedReaderRoots: '[]',
   },
 };
