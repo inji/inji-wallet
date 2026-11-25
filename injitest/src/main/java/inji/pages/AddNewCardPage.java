@@ -298,8 +298,8 @@ public class AddNewCardPage extends BasePage {
       if (driver instanceof io.appium.java_client.HidesKeyboard hidesKeyboard) {
         try {
           hidesKeyboard.hideKeyboard();
-        } catch (Exception ignored) {
-          // Keyboard may already be hidden by the application.
+        } catch (Exception e ) {
+          logStep("Keyboard dismissal failed: " + e.getClass().getSimpleName(), issuerSearchBar);
         }
       }
       logStep(stepDesc + " - Entered text: '" + text + "'", issuerSearchBar);
