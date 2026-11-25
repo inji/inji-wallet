@@ -1,0 +1,22 @@
+apiVersion: v2
+name: inji-wallet-uitestrig
+description: A Helm chart to deploy the INJI Wallet UI test rig (Android and iOS UI automation cronjobs)
+type: application
+version: 0.0.1-develop
+appVersion: ""
+dependencies:
+  - name: common
+    repository: https://charts.bitnami.com/bitnami
+    tags:
+      - bitnami-common
+    version: 1.x.x
+home: https://inji.io
+keywords:
+  - mosip
+  - inji
+  - inji-wallet
+  - uitestrig
+  - testrig
+maintainers:
+  - email: info@inji.io
+    name: INJI

@@ -1,0 +1,11 @@
+INJI Wallet UITESTRIG has been installed in namespace {{ .Release.Namespace }}.
+
+CronJobs created:
+{{- range $module := .Values.modules }}
+{{- if $module.enabled }}
+  - {{ template "uitestrig.cronjob" $ }}-{{ $module.name }}  (schedule: {{ default $.Values.crontime $module.crontime }})
+{{- end }}
+{{- end }}
+
+To trigger a run manually:
+  kubectl -n {{ .Release.Namespace }} create job --from=cronjob/<cronjob-name> <job-name>

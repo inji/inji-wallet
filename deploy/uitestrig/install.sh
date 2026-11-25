@@ -7,6 +7,7 @@ if [ $# -ge 1 ] ; then
 fi
 
 NS=injiuitestrig
+CHART_NAME=inji/inji-wallet-uitestrig   # chart maintained in ../../helm/inji-wallet-uitestrig
 CHART_VERSION=0.0.1-develop
 
 echo Create $NS namespace
@@ -41,11 +42,12 @@ function installing_uitestrig() {
 
   ENABLE_INSECURE=''
   if [ "$flag" = "n" ]; then
-    ENABLE_INSECURE='--set uitestrig.configmaps.uitestrig.ENABLE_INSECURE=true';
+    ENABLE_INSECURE='--set uitestrig.configmaps.uitestrig.ENABLE_INSECURE=true --set enable_insecure=true';
   fi
 
   echo Istio label
   kubectl label ns $NS istio-injection=disabled --overwrite
+  helm repo add inji https://inji.github.io/helm
   helm repo update
 
   echo Copy configmaps
@@ -81,7 +83,7 @@ function installing_uitestrig() {
   esac
 
   echo Installing uitestrig
-  helm -n $NS install injiuitestrig mosip/uitestrig \
+  helm -n $NS install injiuitestrig $CHART_NAME \
   -f values.yaml \
   --set crontime="0 $time * * *" \
   --version $CHART_VERSION \
@@ -93,7 +95,6 @@ function installing_uitestrig() {
   --set uitestrig.configmaps.db.db-port="5432" \
   --set uitestrig.configmaps.uitestrig.apiInternalEndPoint="https://$API_INTERNAL_HOST" \
   --set uitestrig.configmaps.uitestrig.apiEnvUser="$API_INTERNAL_HOST" \
-  --set uitestrig.configmaps.uitestrig.NS="$NS" \
   $ENABLE_INSECURE
 
   return 0

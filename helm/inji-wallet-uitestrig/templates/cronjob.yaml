@@ -1,0 +1,138 @@
+{{- range $module := $.Values.modules }}
+{{- if $module.enabled }}
+---
+apiVersion: {{ include "common.capabilities.cronjob.apiVersion" $ }}
+kind: CronJob
+metadata:
+  name: {{ template "uitestrig.cronjob" $ }}-{{ $module.name }}
+  namespace: {{ $.Release.Namespace }}
+  {{- if $.Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" $.Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+  labels: {{- include "common.labels.standard" $ | nindent 4 }}
+    {{- if $.Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" $.Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+spec:
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  schedule: {{ default $.Values.crontime $module.crontime | quote }}
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          serviceAccountName: {{ template "uitestrig.serviceAccountName" $ }}
+          restartPolicy: Never
+          {{- if $.Values.enable_insecure }}
+          initContainers:
+            {{- include "common.tplvalues.render" (dict "value" $.Values.initContainers "context" $) | nindent 12 }}
+          {{- end }}
+          containers:
+          - name: {{ $module.name }}
+            image: {{ $module.image.registry }}/{{ $module.image.repository }}:{{ $module.image.tag }}
+            imagePullPolicy: {{ default "Always" $module.image.pullPolicy }}
+            {{- if $.Values.lifecycleHooks }}
+            lifecycle: {{- include "common.tplvalues.render" (dict "value" $.Values.lifecycleHooks "context" $) | nindent 12 }}
+            {{- end }}
+            {{- if $.Values.containerSecurityContext.enabled }}
+            securityContext: {{- omit $.Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+            {{- end }}
+            {{- if $.Values.command }}
+            command: {{- include "common.tplvalues.render" (dict "value" $.Values.command "context" $ ) | nindent 12 }}
+            {{- end }}
+            {{- if $.Values.args }}
+            args: {{- include "common.tplvalues.render" (dict "value" $.Values.args "context" $ ) | nindent 12 }}
+            {{- end }}
+
+            env:
+              - name: container_user
+                value: {{ quote $.Values.containerUser }}
+              - name: JDK_JAVA_OPTIONS
+                value: {{ quote $.Values.additionalResources.javaOpts }}
+              ## `modules` is read by the MOSIP rig scripts, `MODULES` by injitest/entrypoint.sh
+              - name: modules
+                value: {{ quote $module.name }}
+              - name: MODULES
+                value: {{ quote $module.name }}
+              ## Namespace used by fetch_docker_image_hash_ids.sh
+              - name: NS
+                value: {{ quote $.Release.Namespace }}
+
+              {{- if $.Values.extraEnvVars }}
+              {{- include "common.tplvalues.render" ( dict "value" $.Values.extraEnvVars "context" $ ) | nindent 14 }}
+              {{- end }}
+
+              {{- if $module.extraEnvVars }}
+              {{- include "common.tplvalues.render" ( dict "value" $module.extraEnvVars "context" $ ) | nindent 14 }}
+              {{- end }}
+
+            # ============================================================
+            # ENV FROM: GLOBAL + MODULE-WISE CONFIGMAPS + SECRETS
+            # ============================================================
+            envFrom:
+              # -----------------------------
+              # Global ConfigMaps
+              # -----------------------------
+              {{- range $.Values.extraEnvVarsCM }}
+              - configMapRef:
+                  name: {{ . }}
+              {{- end }}
+
+              # -----------------------------
+              # Global Secrets
+              # -----------------------------
+              {{- range $.Values.extraEnvVarsSecret }}
+              - secretRef:
+                  name: {{ . }}
+              {{- end }}
+
+              # -----------------------------
+              # Module-wise ConfigMaps
+              # -----------------------------
+              {{- range $module.extraEnvVarsCM }}
+              - configMapRef:
+                  name: {{ . }}
+              {{- end }}
+
+              # -----------------------------
+              # Module-wise Secrets
+              # -----------------------------
+              {{- range $module.extraEnvVarsSecret }}
+              - secretRef:
+                  name: {{ . }}
+              {{- end }}
+
+            ports:
+              - name: spring-service
+                containerPort: {{ $.Values.springServicePort }}
+
+            volumeMounts:
+              {{- if $.Values.enable_insecure }}
+              - mountPath: {{ $.Values.cacertsPath }}
+                name: cacerts
+                subPath: cacerts
+              {{- end }}
+              {{- if $.Values.uitestrig.volumes }}
+              {{- range $volume_name, $volume_value := $.Values.uitestrig.volumes.configmaps }}
+              - name: {{ $volume_name }}
+                mountPath: {{ $volume_value.volumeMounts.mountPath }}
+              {{- end }}
+              {{- end }}
+
+          volumes:
+            {{- if $.Values.enable_insecure }}
+            - name: cacerts
+              emptyDir: {}
+            {{- end }}
+            {{- if $.Values.uitestrig.volumes }}
+            {{- range $volume_name, $volume_value := $.Values.uitestrig.volumes.configmaps }}
+            - name: {{ $volume_name }}
+              configMap:
+                defaultMode: {{ $volume_value.defaultMode }}
+                name: {{ $volume_name }}
+            {{- end }}
+            {{- end }}
+{{- end }}
+{{- end }}

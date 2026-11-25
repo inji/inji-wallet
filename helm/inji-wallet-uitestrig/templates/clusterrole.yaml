@@ -1,0 +1,16 @@
+{{- if .Values.rbac.create }}
+## Cluster-wide read access to pods is needed by fetch_docker_image_hash_ids.sh,
+## which records the images running in the cluster alongside the test report.
+apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
+kind: ClusterRole
+metadata:
+  name: {{ template "uitestrig.serviceAccountName" . }}-{{ .Release.Namespace }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "patch", "list", "watch"]
+{{- end }}
