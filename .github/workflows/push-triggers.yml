@@ -168,3 +168,17 @@ jobs:
       ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
       RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_INJI_TEAM }}
+
+  pr-gate:
+    if: github.event_name != 'release'
+    uses: mosip/kattu/.github/workflows/pr-gate.yml@develop
+    permissions:
+      contents: write
+      pull-requests: write
+      security-events: write
+      checks: write
+    with:
+      SERVICE_LOCATION: .
+      ANDROID_SERVICE_LOCATION: android
+    secrets:
+      CODECOV_LICENSE: ${{ secrets.CODECOV_LICENSE }}
