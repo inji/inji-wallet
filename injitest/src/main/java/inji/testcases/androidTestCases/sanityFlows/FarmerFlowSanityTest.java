@@ -44,6 +44,10 @@ public class FarmerFlowSanityTest extends AndroidBaseTest {
 
     AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
     assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
+    assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(),"Verify if search bar is displayed");
+
+    executeStep("Entering search text in search bar",
+      addNewCardPage::searchAndSelectFarmerIssuer);
 
     ESignetLoginPage esignetLoginPage = executeStep("Download VC via Farmer Issuer",
       addNewCardPage::clickOnDownloadViaLandSVGWithFace);

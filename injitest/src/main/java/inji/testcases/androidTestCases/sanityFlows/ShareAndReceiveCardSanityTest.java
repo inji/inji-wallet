@@ -48,6 +48,10 @@ public class ShareAndReceiveCardSanityTest extends AndroidBaseTest {
     AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
     assertTrue(addNewCardPage.isIssuerDescriptionEsignetDisplayed(),
       "Verify if issuer description  esignet displayed");
+    assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(),"Verify if search bar is displayed");
+
+    executeStep("Entering search text in search bar",
+      addNewCardPage::searchAndSelectMockIssuer);
 
     ESignetLoginPage esignetLoginPage = executeStep("Download VC via eSignet",
       addNewCardPage::clickOnDownloadViaMockSdJwt);

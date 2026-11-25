@@ -62,6 +62,11 @@ public class MosipFlowSanityTest extends AndroidBaseTest {
 
     AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
     assertTrue(addNewCardPage.isAddNewCardPageLoaded(), "Verify if add new card page is displayed");
+    assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(),"Verify if search bar is displayed");
+
+    executeStep("Entering search text in search bar",
+      addNewCardPage::searchAndSelectMosipIssuer);
+
     ESignetLoginPage esignetLoginPage = executeStep("Download VC via eSignet",
       addNewCardPage::clickOnDownloadViaEsignet);
 

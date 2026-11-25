@@ -41,6 +41,10 @@ public class SunbirdFlowSanityTest extends AndroidBaseTest {
 
     AddNewCardPage addNewCardPage = refreshedHomePage.downloadCard();
     assertTrue(addNewCardPage.isDownloadViaSunbirdDisplayed(), "Verify if download sunbird displayed");
+    assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(),"Verify if search bar is displayed");
+
+    executeStep("Entering search text in search bar",
+      addNewCardPage::searchAndSelectSunbirdIssuer);
     SunbirdLoginPage sunbirdLoginPage = addNewCardPage.clickOnDownloadViaSunbird();
     addNewCardPage.clickOnCredentialTypeHeadingInsuranceCredential();
 

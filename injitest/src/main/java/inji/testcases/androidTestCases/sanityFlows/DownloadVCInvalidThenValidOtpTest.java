@@ -46,6 +46,10 @@ public class DownloadVCInvalidThenValidOtpTest extends AndroidBaseTest {
       addNewCardPage.isAddNewCardPageLoaded(),
       "Verify if add new card page is displayed"
     );
+    assertTrue(addNewCardPage.isIssuerSearchBarDisplayed(),"Verify if search bar is displayed");
+
+    executeStep("Entering search text in search bar",
+      addNewCardPage::searchAndSelectMockIssuer);
 
     ESignetLoginPage esignetLoginPage = executeStep("Download VC via eSignet",
       addNewCardPage::clickOnDownloadViaMockSdJwt);
