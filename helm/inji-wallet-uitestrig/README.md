@@ -12,7 +12,12 @@ $ helm repo add inji https://inji.github.io/helm
 $ helm install inji-wallet-uitestrig inji/inji-wallet-uitestrig
 ```
 
-For the full install flow (config maps, secrets, BrowserStack credentials) use the [deploy scripts](../../deploy/uitestrig).
+The CronJobs load env from ConfigMaps and Secrets that this chart does **not** create. They must exist in the release namespace before a run, or the pods fail to start:
+
+- ConfigMaps: `global` (from `default`), `keycloak-host` (from `keycloak`)
+- Secrets: `keycloak-client-secrets` (from `keycloak`), `s3` (from `s3`), `postgres-postgresql` (from `postgres`)
+
+The [deploy scripts](../../deploy/uitestrig) copy them (`copy_cm.sh`, `copy_secrets.sh`) and run the full install flow, so prefer those over a bare `helm install`. BrowserStack credentials go in `uitestrig.secrets.uitestrig-browserstack`.
 
 ## Key values
 
@@ -28,6 +33,8 @@ For the full install flow (config maps, secrets, BrowserStack credentials) use t
 | `cacertsPath` | JDK truststore path in the test image, used with `enable_insecure` | `/etc/ssl/certs/java/cacerts` |
 | `extraEnvVarsCM` / `extraEnvVarsSecret` | ConfigMaps / Secrets loaded as env by every module | see `values.yaml` |
 | `uitestrig.configmaps.*` | ConfigMaps created by the chart (`uitestrig`, `android`, `ios`, `s3`, `db`, `scripts`) | see `values.yaml` |
-| `uitestrig.secrets.*` | Secrets created by the chart (values are base64-encoded by the chart) | empty |
+| `uitestrig.secrets.*` | Secrets created by the chart (values are base64-encoded by the chart) | `uitestrig-browserstack` |
+| `activeDeadlineSeconds` | Max duration of a test Job before it is terminated | `21600` |
+| `resources` | Test container resource requests / limits | `1000m` CPU, `3500Mi` memory |
 
 `NS` (used by the image-hash script) is set automatically to the release namespace.

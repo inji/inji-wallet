@@ -45,10 +45,17 @@ function installing_uitestrig() {
     ENABLE_INSECURE='--set uitestrig.configmaps.uitestrig.ENABLE_INSECURE=true --set enable_insecure=true';
   fi
 
-  echo Istio label
-  kubectl label ns $NS istio-injection=disabled --overwrite
   helm repo add inji https://inji.github.io/helm
   helm repo update
+
+  ## Fail before touching the namespace if the chart version is not published yet
+  if ! helm show chart "$CHART_NAME" --version "$CHART_VERSION" > /dev/null 2>&1; then
+    echo "ERROR: $CHART_NAME version $CHART_VERSION not found in the inji helm repo; EXITING;"
+    exit 1
+  fi
+
+  echo Istio label
+  kubectl label ns $NS istio-injection=disabled --overwrite
 
   echo Copy configmaps
   ./copy_cm.sh

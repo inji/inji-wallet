@@ -4,7 +4,7 @@
 apiVersion: {{ include "common.capabilities.cronjob.apiVersion" $ }}
 kind: CronJob
 metadata:
-  name: {{ template "uitestrig.cronjob" $ }}-{{ $module.name }}
+  name: {{ include "uitestrig.cronjobName" (dict "module" $module "context" $) }}
   namespace: {{ $.Release.Namespace }}
   {{- if $.Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" ( dict "value" $.Values.commonAnnotations "context" $ ) | nindent 4 }}
@@ -21,6 +21,9 @@ spec:
   jobTemplate:
     spec:
       backoffLimit: 0
+      {{- if $.Values.activeDeadlineSeconds }}
+      activeDeadlineSeconds: {{ $.Values.activeDeadlineSeconds }}
+      {{- end }}
       template:
         spec:
           serviceAccountName: {{ template "uitestrig.serviceAccountName" $ }}
@@ -34,16 +37,19 @@ spec:
             image: {{ $module.image.registry }}/{{ $module.image.repository }}:{{ $module.image.tag }}
             imagePullPolicy: {{ default "Always" $module.image.pullPolicy }}
             {{- if $.Values.lifecycleHooks }}
-            lifecycle: {{- include "common.tplvalues.render" (dict "value" $.Values.lifecycleHooks "context" $) | nindent 12 }}
+            lifecycle: {{- include "common.tplvalues.render" (dict "value" $.Values.lifecycleHooks "context" $) | nindent 14 }}
             {{- end }}
             {{- if $.Values.containerSecurityContext.enabled }}
-            securityContext: {{- omit $.Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+            securityContext: {{- omit $.Values.containerSecurityContext "enabled" | toYaml | nindent 14 }}
             {{- end }}
             {{- if $.Values.command }}
-            command: {{- include "common.tplvalues.render" (dict "value" $.Values.command "context" $ ) | nindent 12 }}
+            command: {{- include "common.tplvalues.render" (dict "value" $.Values.command "context" $ ) | nindent 14 }}
             {{- end }}
             {{- if $.Values.args }}
-            args: {{- include "common.tplvalues.render" (dict "value" $.Values.args "context" $ ) | nindent 12 }}
+            args: {{- include "common.tplvalues.render" (dict "value" $.Values.args "context" $ ) | nindent 14 }}
+            {{- end }}
+            {{- if $.Values.resources }}
+            resources: {{- toYaml $.Values.resources | nindent 14 }}
             {{- end }}
 
             env:
@@ -117,7 +123,7 @@ spec:
               {{- if $.Values.uitestrig.volumes }}
               {{- range $volume_name, $volume_value := $.Values.uitestrig.volumes.configmaps }}
               - name: {{ $volume_name }}
-                mountPath: {{ $volume_value.volumeMounts.mountPath }}
+                mountPath: {{ tpl $volume_value.volumeMounts.mountPath $ }}
               {{- end }}
               {{- end }}
 

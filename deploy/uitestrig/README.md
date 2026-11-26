@@ -15,10 +15,12 @@ It is deployed using the [inji-wallet-uitestrig](../../helm/inji-wallet-uitestri
 Before installing INJI-WALLET UITESTRIG, update the environment-specific values in this folder's `values.yaml`
 (chart defaults live in [`helm/inji-wallet-uitestrig/values.yaml`](../../helm/inji-wallet-uitestrig/values.yaml)):
 
-1. Create BrowserStack credentials by referring to this [documentation](https://www.browserstack.com/docs/references/service-accounts) and add them (`browserstack_username`, `browserstack_accesskey`) along with the Android/iOS app IDs and devices.
+1. Create BrowserStack credentials by referring to this [documentation](https://www.browserstack.com/docs/references/service-accounts) and add them under `uitestrig.secrets.uitestrig-browserstack` (`browserstack_username`, `browserstack_accesskey`; rendered as a Kubernetes Secret), along with the Android/iOS app IDs and devices under `uitestrig.configmaps.android` / `ios`.
 2. Enable or disable the Android/iOS modules under `modules`.
-3. Replace `sandbox` with the appropriate environment name, e.g. `api-internal.sandbox` to `api-internal.dev`.
-4. Replace `sandbox.xyz.net` with the required environment endpoint, e.g. `api-internal.sandbox.xyz.net` to `api-internal.dev.mosip.net`.
+3. Replace `sandbox.xyz.net` with the required environment domain first, e.g. `api-internal.sandbox.xyz.net` to `api-internal.dev.mosip.net` and `esignet.sandbox.xyz.net` to `esignet.dev.mosip.net`.
+4. Then replace the remaining `sandbox` occurrences with the environment name, e.g. `ENV_USER: api-internal.sandbox` to `api-internal.dev`.
+
+   Doing these in the opposite order leaves `ENV_ENDPOINT`, `eSignetbaseurl` and the other URLs pointing at the wrong domain.
 
 ## Install
 ```sh
@@ -31,6 +33,10 @@ Before installing INJI-WALLET UITESTRIG, update the environment-specific values 
 ```
 
 ## Run UITESTRIG manually
+If you passed a kubeconfig to `install.sh`, point `kubectl` at the same cluster first:
+```sh
+export KUBECONFIG=<path-to-kubeconfig>
+```
 Create a new job from an existing cronjob:
 ```sh
 kubectl -n injiuitestrig get cronjobs

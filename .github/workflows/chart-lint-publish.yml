@@ -18,7 +18,7 @@ on:
         description: 'Chart publishing to gh-pages branch'
         required: false
         default: 'NO'
-        type: string
+        type: choice
         options:
           - YES
           - NO
@@ -26,13 +26,12 @@ on:
         description: 'Include all charts for Linting/Publishing (YES/NO)'
         required: false
         default: 'NO'
-        type: string
+        type: choice
         options:
           - YES
           - NO
   push:
     branches:
-      - '!release-branch'
       - master
       - 1.*
       - 0.*
@@ -40,11 +39,17 @@ on:
       - issue*
       - release*
       - INJI*
+      - '!release-branch'
     paths:
       - 'helm/**'
 
+permissions:
+  contents: read
+
 jobs:
   chart-lint-publish:
+    permissions:
+      contents: read
     uses: mosip/kattu/.github/workflows/chart-lint-publish.yml@v0.0.1
     with:
       CHARTS_DIR: ./helm

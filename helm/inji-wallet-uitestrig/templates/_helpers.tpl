@@ -46,5 +46,16 @@ Return podAnnotations
 Base name for the per-module cronjobs
 */}}
 {{- define "uitestrig.cronjob" -}}
-{{ default (printf "cronjob-%s" (include "common.names.fullname" .)) .Values.serviceAccount.name }}
+{{- printf "cronjob-%s" (include "common.names.fullname" .) -}}
+{{- end -}}
+
+{{/*
+Name of a module's CronJob, kept within the 52-character CronJob name limit.
+The base is truncated (not the module suffix) so module names stay distinct.
+Usage: include "uitestrig.cronjobName" (dict "module" $module "context" $)
+*/}}
+{{- define "uitestrig.cronjobName" -}}
+{{- $suffix := printf "-%s" .module.name -}}
+{{- $base := include "uitestrig.cronjob" .context | trunc (int (sub 52 (len $suffix))) | trimSuffix "-" -}}
+{{- printf "%s%s" $base $suffix -}}
 {{- end -}}

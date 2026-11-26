@@ -18,6 +18,7 @@ extraEnvVarsSecret:
   - s3
   - keycloak-client-secrets
   - postgres-postgresql
+  - uitestrig-browserstack
 
 ## Enable/disable modules and pick the test image. Lists are replaced, not merged, so keep both entries.
 modules:
@@ -58,8 +59,6 @@ uitestrig:
       loginlang: sin
       push-reports-to-s3: 'yes'
       s3-account: Injiuitestrig
-      browserstack_username: <provide browserstack_username>
-      browserstack_accesskey: <provide browserstack_accesskey>
       eSignet_resource_bundle_url: https://github.com/mosip/esignet/blob/v1.6.1/oidc-ui/public/locales/en.json
       mosip_components_base_urls: auditmanager=api-internal.sandbox.xyz.net;idrepository=api-internal.sandbox.xyz.net;partnermanager=api-internal.sandbox.xyz.net;idauthentication=api-internal.sandbox.xyz.net;policymanager=api-internal.sandbox.xyz.net;authmanager=api-internal.sandbox.xyz.net;resident=api-internal.sandbox.xyz.net;preregistration=api-internal.sandbox.xyz.net;masterdata=api-internal.sandbox.xyz.net;idgenerator=api-internal.sandbox.xyz.net;
       ENV_ENDPOINT: https://api-internal.sandbox.xyz.net
@@ -83,3 +82,8 @@ uitestrig:
       browserstack_buildName: <provide browserstack_buildName>  # eg: dev-int-inji Ios Build
       ENV_TESTNG_XML_FILE: iosRegression.xml
       ENV_BROWSERSTACK_CONFIG: iosConfig.yml
+  ## BrowserStack credentials are rendered into a Secret (loaded via extraEnvVarsSecret), not a ConfigMap.
+  secrets:
+    uitestrig-browserstack:
+      browserstack_username: <provide browserstack_username>
+      browserstack_accesskey: <provide browserstack_accesskey>
