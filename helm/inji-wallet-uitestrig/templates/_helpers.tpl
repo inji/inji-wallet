@@ -20,6 +20,15 @@ Return the proper Docker Image Registry Secret Names
 {{- end -}}
 
 {{/*
+Image pull secrets for a module's CronJob Pod: global, chart-level image and the module's own image.
+Usage: include "uitestrig.moduleImagePullSecrets" (dict "module" $module "context" $)
+*/}}
+{{- define "uitestrig.moduleImagePullSecrets" -}}
+{{- $ctx := .context -}}
+{{- include "common.images.pullSecrets" (dict "images" (list $ctx.Values.image .module.image) "global" $ctx.Values.global) -}}
+{{- end -}}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "uitestrig.serviceAccountName" -}}
@@ -56,6 +65,10 @@ Usage: include "uitestrig.cronjobName" (dict "module" $module "context" $)
 */}}
 {{- define "uitestrig.cronjobName" -}}
 {{- $suffix := printf "-%s" .module.name -}}
-{{- $base := include "uitestrig.cronjob" .context | trunc (int (sub 52 (len $suffix))) | trimSuffix "-" -}}
+{{- $room := int (sub 52 (len $suffix)) -}}
+{{- if lt $room 1 -}}
+{{- fail (printf "module name %q is too long: it must leave room for the release name within the 52-character CronJob name limit" .module.name) -}}
+{{- end -}}
+{{- $base := include "uitestrig.cronjob" .context | trunc $room | trimSuffix "-" -}}
 {{- printf "%s%s" $base $suffix -}}
 {{- end -}}

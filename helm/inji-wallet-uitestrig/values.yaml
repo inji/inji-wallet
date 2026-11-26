@@ -257,19 +257,26 @@ extraVolumeMounts: []
 ##         containerPort: 1234
 ##
 initContainers:
+  ## Uses the same JDK 21 base as the test image (injitest/Dockerfile), so the truststore it prepares
+  ## starts from the test JVM's own root set. The host certificate is fetched with keytool in the
+  ## foreground and checked before import.
   - command:
       - /bin/bash
       - -c
-      - if [ "$ENABLE_INSECURE" = "true" ]; then HOST=$( env | grep "mosip-api-internal-host"
-        |sed "s/mosip-api-internal-host=//g"); if [ -z "$HOST" ]; then echo "HOST
-        $HOST is empty; EXITING"; exit 1; fi; openssl s_client -servername "$HOST"
-        -connect "$HOST":443  > "$HOST.cer" 2>/dev/null & sleep 2 ; sed -i -ne '/-BEGIN
-        CERTIFICATE-/,/-END CERTIFICATE-/p' "$HOST.cer"; cat "$HOST.cer"; /usr/local/openjdk-11/bin/keytool
-        -delete -alias "$HOST" -keystore $JAVA_HOME/lib/security/cacerts  -storepass
-        changeit; /usr/local/openjdk-11/bin/keytool -trustcacerts -keystore "$JAVA_HOME/lib/security/cacerts"
-        -storepass changeit -noprompt -importcert -alias "$HOST" -file "$HOST.cer"
-        ; if [ $? -gt 0 ]; then echo "Failed to add SSL certificate for host $host;
-        EXITING"; exit 1; fi; cp /usr/local/openjdk-11/lib/security/cacerts /cacerts;
+      - |
+        if [ "$ENABLE_INSECURE" != "true" ]; then exit 0; fi
+        HOST=$(env | grep "mosip-api-internal-host" | sed "s/mosip-api-internal-host=//g")
+        if [ -z "$HOST" ]; then echo "HOST is empty; EXITING"; exit 1; fi
+        SRC_CACERTS=/etc/ssl/certs/java/cacerts
+        if [ ! -f "$SRC_CACERTS" ]; then SRC_CACERTS="$JAVA_HOME/lib/security/cacerts"; fi
+        cp -L "$SRC_CACERTS" /cacerts/cacerts
+        "$JAVA_HOME/bin/keytool" -printcert -rfc -sslserver "$HOST:443" < /dev/null > "/tmp/$HOST.pem" 2>/dev/null
+        sed -n '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/{p;/-END CERTIFICATE-/q}' "/tmp/$HOST.pem" > "/tmp/$HOST.cer"
+        if [ ! -s "/tmp/$HOST.cer" ]; then echo "Could not fetch SSL certificate for host $HOST; EXITING"; exit 1; fi
+        cat "/tmp/$HOST.cer"
+        "$JAVA_HOME/bin/keytool" -delete -alias "$HOST" -keystore /cacerts/cacerts -storepass changeit 2>/dev/null
+        if ! "$JAVA_HOME/bin/keytool" -trustcacerts -keystore /cacerts/cacerts -storepass changeit -noprompt -importcert -alias "$HOST" -file "/tmp/$HOST.cer"; then
+          echo "Failed to add SSL certificate for host $HOST; EXITING"; exit 1
         fi
     env:
       - name: ENABLE_INSECURE
@@ -279,7 +286,7 @@ initContainers:
           name: global
       - configMapRef:
           name: uitestrig
-    image: docker.io/openjdk:11-jre
+    image: docker.io/mosipid/openjdk-21-jre:21.0.4
     imagePullPolicy: Always
     name: cacerts
     resources: {}
@@ -558,7 +565,7 @@ uitestrig:
   volumes:
     configmaps:
       scripts:
-        defaultMode: 0777
+        defaultMode: 0755
         volumeMounts:
           ## Evaluated as a template so it follows containerUser
           mountPath: '/home/{{ .Values.containerUser }}/scripts/'
