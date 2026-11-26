@@ -1,4 +1,4 @@
-# INJI-WALLET UITESTRIG
+## INJI-WALLET UITESTRIG
 
 ## Introduction
 INJI-WALLET UITESTRIG is a UI automation test rig designed to validate end-to-end functional flows across INJI-WALLET applications.
