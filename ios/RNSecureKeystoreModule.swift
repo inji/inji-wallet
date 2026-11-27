@@ -22,7 +22,7 @@ class RNSecureKeystoreModule: NSObject,RCTBridgeModule {
   }
   
   @objc
-  func generateKeyPair(_ type: String, isAuthRequired: Bool, authTimeout: Int, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+  func generateKeyPair(_ type: String, alias: String, isAuthRequired: Bool, authTimeout: Int, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     let successLambda: (String) -> Void = { success in
       resolve(success)
     }
@@ -30,19 +30,12 @@ class RNSecureKeystoreModule: NSObject,RCTBridgeModule {
     let failureLambda: (String, String) -> Void = { code, message in
       reject(code, message, nil)
     }
-    var tag=""
-    if(type=="RS256")
-    {
-      tag="RSA"
+    if type == "RS256" {
+      secureKeystore.generateKeyPair(type: "RSA", tag: "RSA", isAuthRequired: isAuthRequired, authTimeout: Int32(authTimeout), onSuccess: successLambda, onFailure: failureLambda)
+    } else {
+      secureKeystore.generateKeyPair(type: type, tag: alias, isAuthRequired: isAuthRequired, authTimeout: Int32(authTimeout), onSuccess: successLambda, onFailure: failureLambda)
     }
-    else
-    {
-      tag="ECR1"
-
-    }
-      
-      secureKeystore.generateKeyPair(type: tag, tag: tag, isAuthRequired: isAuthRequired, authTimeout: Int32(authTimeout), onSuccess: successLambda, onFailure: failureLambda)
-      }
+  }
   
   @objc
   func deleteKeyPair(_ tag: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
@@ -91,6 +84,13 @@ class RNSecureKeystoreModule: NSObject,RCTBridgeModule {
 
     }
     secureKeystore.sign(signAlgorithm: tag,alias: tag,data: data,onSuccess: successLambda,onFailure: failureLambda)
+  }
+
+  @objc
+  func signBytes(_ signAlgorithm: String, alias: String, data: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+    secureKeystore.signBytes(signAlgorithm: signAlgorithm, alias: alias, dataBase64: data,
+                             onSuccess: { signature in resolve(signature) },
+                             onFailure: { code, message in reject(code, message, nil) })
   }
   
   @objc

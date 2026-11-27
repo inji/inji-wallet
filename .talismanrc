@@ -169,7 +169,7 @@ fileignoreconfig:
 - filename: machines/VerifiableCredential/VCItemMachine/VCItemGaurds.ts
   checksum: 797069975e6402527d506db8f4644586957b8437d9cf867eaed4b0000683c4f8
 - filename: ios/RNSecureKeystoreModule.m
-  checksum: d3f70ec17eacdfc3ed64936be1fc14b83fd1004c9f861fb0827da8df28ac3bf9
+  checksum: dc750f1ae7b7db5322d18a48a84c49e6ffef9bcb4bfd21954141c9bb32fd1563
 - filename: machines/VCItemMachine/VCItemServices.ts
   checksum: 51b4872a64abd76b124000358068c0b213d50fb131d735c122cd9a177cd8390c
 - filename: machines/VCItemMachine/VCItemActions.ts
@@ -324,7 +324,7 @@ fileignoreconfig:
 - filename: shared/CloudBackupAndRestoreUtils.ts
   checksum: dd98da030f7b4decb62ab2466604a2a28e6c5a1866eae9a5634b090b742497f6
 - filename: ios/RNSecureKeystoreModule.swift
-  checksum: 98784857098e15aca851c6eb79e48016887408ff84bb82afafdc03b38ab2e338
+  checksum: cb6948772777deb1cf4b3ba7aa57e4a69dd7abdce6b1505ffcce08b252de8fcb
 - filename: machines/Issuers/IssuersModel.ts
   checksum: fe4084d1f5dbf89e71cc3fbe9f845d3f2c9bb32901bd5b95a8addcb13257b414
 - filename: android/app/src/main/java/io/mosip/residentapp/InjiOpenId4VPModule.java
