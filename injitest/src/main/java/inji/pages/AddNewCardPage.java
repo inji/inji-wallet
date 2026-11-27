@@ -293,15 +293,21 @@ public class AddNewCardPage extends BasePage {
 	private void slowTypeInIssuerSearchBar(String text, String stepDesc) {
 		if (isElementVisible(issuerSearchBar)) {
 			issuerSearchBar.clear();
-			for (int i = 0; i < text.length(); i++) {
-				issuerSearchBar.sendKeys(String.valueOf(text.charAt(i)));
-				sleep(400);
-			}
-			logStep(stepDesc + " - Slowly entered: '" + text + "'", issuerSearchBar);
-		} else {
-			throw new RuntimeException("Element not visible: " + stepDesc);
-		}
-	}
+      issuerSearchBar.sendKeys(text);
+      sleep(1000);
+      if (driver instanceof io.appium.java_client.HidesKeyboard hidesKeyboard) {
+        try {
+          hidesKeyboard.hideKeyboard();
+        } catch (Exception e ) {
+          logStep("Keyboard dismissal failed: " + e.getClass().getSimpleName(), issuerSearchBar);
+        }
+      }
+      logStep(stepDesc + " - Entered text: '" + text + "'", issuerSearchBar);
+    } else {
+      throw new RuntimeException("Element not visible: " + stepDesc);
+    }
+
+  }
 
 	public void sendTextInIssuerSearchBar(String text) {
 		slowTypeInIssuerSearchBar(text, "Enter text in Issuer search bar: " + text);
