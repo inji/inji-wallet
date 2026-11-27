@@ -1004,13 +1004,15 @@ describe('openId4VCI Utils', () => {
   });
 
   describe('getJWK edge cases', () => {
-    it('should return JWK for ES256 key type on non-Android', async () => {
-      const publicKey = new Uint8Array(65);
-      publicKey[0] = 0x04;
-      const result = await getJWK(publicKey, 'ES256');
-      expect(result).toBeDefined();
-      expect(result.kty).toBe('EC');
-      expect(result.crv).toBe('P-256');
+    it('should read the ES256 JWK from the PEM public key', async () => {
+      const jose = jest.requireMock('node-jose');
+
+      await getJWK('es256-public-key-pem', 'ES256');
+
+      expect(jose.JWK.asKey).toHaveBeenCalledWith(
+        'es256-public-key-pem',
+        'pem',
+      );
     });
   });
 });

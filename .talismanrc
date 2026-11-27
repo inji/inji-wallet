@@ -31,9 +31,9 @@ fileignoreconfig:
 - filename: shared/fileStorage.ts
   checksum: 2ba2721d9722cd9420ae26762316230f7dab1a0be45820cbda4d0ecae0edf957
 - filename: shared/openId4VCI/Utils.ts
-  checksum: 5a93d5de806ce5bda0aab2b9f6db8e81c7ebb62e28e28e2dc66be0a27ad9c336
+  checksum: a2504213871003484fea03c1074b87bc13df5ce09dde5fa0f95337674107f3f3
 - filename: shared/cryptoutil/cryptoUtil.ts
-  checksum: a4dda242d9471efc1e7d7228121b2ed4f4fdbb47250c51244fa303dd017dafc3
+  checksum: bc8b693f1046bdb7f5f50f8268872b723c1702fedc729e99e5ad96ed95a07715
 - filename: shared/telemetry/TelemetryConstants.js
   checksum: fd8dc3a69cdef68855dc5f0531d8e634bfa2621bb4dc22f85b8247512a349c4c
 - filename: shared/telemetry/TelemetryUtils.js
@@ -426,7 +426,7 @@ fileignoreconfig:
 - filename: __mocks__/@noble/mock-secp256k1.js
   checksum: 6e933c6c1862ab9a1e8be444938917660e5ab9ae2369093a5d861fb6964362d2
 - filename: shared/cryptoutil/cryptoUtil.test.ts
-  checksum: a204d154cf1498f5f1185385bd2209d6b31c0f07c37abfc81193a5786a4a6ed3
+  checksum: 45199ef933963a5f22111be4c22bf1ed731fdc51f9a61d128bdafb813f855b50
 - filename: shared/telemetry/TelemetryUtils.test.js
   checksum: 9b1fc611937e6916cdd6fd87302013b2988d46bdbe63bf6f8d4825289344dbd3
 - filename: screens/Settings/SettingScreen.test.tsx
@@ -436,8 +436,7 @@ fileignoreconfig:
 - filename: shared/vcRenderer/VcRenderer.test.ts
   checksum: 9376788e007405923782381bd54488200c4d4953d1ced592be4243ed48d77252
 - filename: shared/openId4VCI/Utils.test.ts
-  checksum: 34bb089d61ccec0ec1d16a267bbf4d3cf1e4f53806c7168a73c3ba246ad1bf56
-  checksum: f5c4d4fbebaa2d8f3e4fb8a2eaa47dde844a8275176ff03cda73d73378288753
+  checksum: c9ccbb03f08ae65332e5dd13958206916941db849634ffdbe05684d3564b36eb
 - filename: screens/Home/ReceivedVcsTab.test.tsx
   checksum: 14a5afee28e55a5a1fdb3ea0b79512b84c4dca48f92e57037c221fc9f5ba60c3
 - filename: screens/AuthScreenController.test.ts

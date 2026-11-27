@@ -576,17 +576,15 @@ describe('cryptoUtil', () => {
       isAndroid.mockReturnValue(true);
     });
 
-    it('ES256 on iOS calls retrieveGenericKey and converts Buffer', async () => {
+    it('ES256 on iOS reads only the public key from the native keystore', async () => {
       const {isAndroid} = require('../constants');
       isAndroid.mockReturnValue(false);
-      const pubB64 = Buffer.from('testpub').toString('base64');
-      const privB64 = Buffer.from('testpriv').toString('base64');
-      RNSecureKeystoreModule.retrieveGenericKey = jest
-        .fn()
-        .mockResolvedValue([privB64, pubB64]);
+
       const result = await fetchKeyPair('ES256');
-      expect(result.publicKey).toBeDefined();
-      expect(result.privateKey).toBeDefined();
+
+      expect(RNSecureKeystoreModule.retrieveKey).toHaveBeenCalledWith('ES256');
+      expect(RNSecureKeystoreModule.retrieveGenericKey).not.toHaveBeenCalled();
+      expect(result).toEqual({publicKey: 'mockPubKey', privateKey: ''});
       isAndroid.mockReturnValue(true);
     });
 
@@ -604,13 +602,22 @@ describe('cryptoUtil', () => {
   });
 
   describe('generateKeyPairsAndStoreOrder - iOS path', () => {
-    it('stores additional RSA and ES256 keys on iOS', async () => {
+    it('stores the RSA key on iOS but leaves the ES256 key to the native keystore', async () => {
       const {isIOS} = require('../constants');
       isIOS.mockReturnValue(true);
       const spy = jest.spyOn(console, 'warn').mockImplementation();
+
       await generateKeyPairsAndStoreOrder();
-      // On iOS, storeGenericKey is called 4 times (ECK1, ED, RSA, ES256)
-      expect(RNSecureKeystoreModule.storeGenericKey).toHaveBeenCalledTimes(4);
+
+      const storedAccounts =
+        RNSecureKeystoreModule.storeGenericKey.mock.calls.map(call => call[2]);
+      expect(storedAccounts).toEqual(['ES256K', 'Ed25519', 'RS256']);
+      expect(RNSecureKeystoreModule.generateKeyPair).toHaveBeenCalledWith(
+        'ES256',
+        'ES256',
+        false,
+        0,
+      );
       spy.mockRestore();
       isIOS.mockReturnValue(false);
     });
@@ -627,14 +634,19 @@ describe('cryptoUtil', () => {
   });
 
   describe('generateKeyPairECR1 - non-Android path', () => {
-    it('uses p256 on non-Android', async () => {
+    it('creates the ES256 key in the native keystore on iOS', async () => {
       const {isAndroid} = require('../constants');
       isAndroid.mockReturnValueOnce(false);
+
       const result = await generateKeyPairECR1();
-      expect(result).toHaveProperty('publicKey');
-      expect(result).toHaveProperty('privateKey');
-      expect(result.publicKey.length).toBeGreaterThan(0);
-      expect(result.privateKey.length).toBeGreaterThan(0);
+
+      expect(RNSecureKeystoreModule.generateKeyPair).toHaveBeenCalledWith(
+        'ES256',
+        'ES256',
+        false,
+        0,
+      );
+      expect(result).toEqual({publicKey: 'mockPublicKey', privateKey: ''});
     });
   });
 });
