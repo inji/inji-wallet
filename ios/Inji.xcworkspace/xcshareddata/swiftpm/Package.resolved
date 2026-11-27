@@ -79,7 +79,7 @@
       "location" : "https://github.com/inji/inji-openid4vp-ios-swift",
       "state" : {
         "branch" : "develop",
-        "revision" : "14b7b9b0c15a62f3b61b8db0acc5e5ddf3bca478"
+        "revision" : "aec4d94aa15f975603635ca17b1808e24a8514b2"
       }
     },
     {
@@ -161,6 +161,15 @@
       "state" : {
         "revision" : "a9a5efd40eaf558a2bcd48d64b1d1646be686008",
         "version" : "1.7.1"
+      }
+    },
+    {
+      "identity" : "swift-certificates",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-certificates.git",
+      "state" : {
+        "revision" : "f4cd9e78a1ec209b27e426a5f5c693675f95e75a",
+        "version" : "1.15.0"
       }
     },
     {
