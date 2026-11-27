@@ -26,6 +26,7 @@ const mockGetAllConfigurations = jest.fn(
   (): Promise<{
     openid4vpClientValidation: string;
     openid4vpWalletConfig?: string | null;
+    openid4vpVerifierTrustAnchors?: string;
   }> =>
     Promise.resolve({
       openid4vpClientValidation: 'false',
@@ -48,7 +49,7 @@ import {
   signDataForVpPreparation,
   claimPathPointersToJsonPath,
 } from './OpenID4VPHelper';
-import {defaultWalletConfig} from "./walletConfig/WalletConfig";
+import {defaultWalletConfig} from './walletConfig/WalletConfig';
 
 describe('OpenID4VPHelper', () => {
   beforeEach(() => {
@@ -67,7 +68,10 @@ describe('OpenID4VPHelper', () => {
   describe('getWalletConfig', () => {
     it('returns null when no wallet metadata in config', async () => {
       const result = await getWalletConfig();
-      expect(result).toEqual(defaultWalletConfig);
+      expect(result).toEqual({
+        ...defaultWalletConfig,
+        verifier_trust_anchors: [],
+      });
     });
 
     it('returns parsed wallet metadata when present', async () => {
@@ -76,7 +80,12 @@ describe('OpenID4VPHelper', () => {
         openid4vpWalletConfig: '{"name":"test-wallet"}',
       });
       const result = await getWalletConfig();
-      expect(result).toEqual({name: 'test-wallet', "validate_trusted_verifier": true, "trusted_verifiers": []});
+      expect(result).toEqual({
+        name: 'test-wallet',
+        validate_trusted_verifier: true,
+        verifier_trust_anchors: [],
+        trusted_verifiers: [],
+      });
     });
 
     it('returns wallet config with populated wallet config, trusted verifiers and validate pre-registered verifier as per the config', async () => {
@@ -107,10 +116,47 @@ describe('OpenID4VPHelper', () => {
       expect(result).toEqual({
         name: 'test-wallet',
         validate_trusted_verifier: true,
+        verifier_trust_anchors: [],
         trusted_verifiers: mockVerifiers,
       });
       expect(mockFetchTrustedVerifiersList).toHaveBeenCalled();
-    })
+    });
+
+    it('reads the verifier trust anchors from the server configuration', async () => {
+      mockGetAllConfigurations.mockResolvedValue({
+        openid4vpClientValidation: 'true',
+        openid4vpVerifierTrustAnchors: '["verifier-ca-1","verifier-ca-2"]',
+      });
+
+      const result = await getWalletConfig();
+
+      expect(result.verifier_trust_anchors).toEqual([
+        'verifier-ca-1',
+        'verifier-ca-2',
+      ]);
+    });
+
+    it('uses no verifier trust anchors when the configured value is not a list', async () => {
+      mockGetAllConfigurations.mockResolvedValue({
+        openid4vpClientValidation: 'true',
+        openid4vpVerifierTrustAnchors: '"verifier-ca"',
+      });
+
+      const result = await getWalletConfig();
+
+      expect(result.verifier_trust_anchors).toEqual([]);
+    });
+
+    it('uses no verifier trust anchors when an entry is not a string', async () => {
+      mockGetAllConfigurations.mockResolvedValue({
+        openid4vpClientValidation: 'true',
+        openid4vpVerifierTrustAnchors: '["verifier-ca", 123]',
+      });
+
+      const result = await getWalletConfig();
+
+      expect(result.verifier_trust_anchors).toEqual([]);
+    });
   });
 
   describe('signDataForVpPreparation', () => {

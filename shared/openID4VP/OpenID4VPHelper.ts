@@ -27,6 +27,14 @@ export async function getWalletConfig() {
 
   walletConfig['validate_trusted_verifier'] =
     config.openid4vpClientValidation === 'true';
+  const verifierTrustAnchors = parseJSON(
+    config.openid4vpVerifierTrustAnchors ?? '[]',
+  );
+  walletConfig['verifier_trust_anchors'] =
+    Array.isArray(verifierTrustAnchors) &&
+    verifierTrustAnchors.every(trustAnchor => typeof trustAnchor === 'string')
+      ? verifierTrustAnchors
+      : [];
 
   try {
     const trustedVerifiersResponse =

@@ -71,6 +71,8 @@ The implementation of this feature involves the following steps:
 
   - **decentralized_identifier** (OR) **did** : The request must be signed with a private key linked to the DID, and the corresponding public key must be retrieved from the DID Document via DID Resolution. The specific key used must be identified using the kid in the JOSE header. All other Verifier metadata must be provided through the client_metadata parameter.
 
+  - **x509_hash** : The client ID is `x509_hash:` followed by the base64url-encoded SHA-256 hash of the DER-encoded leaf certificate of the Verifier. The request must be signed with the private key of that certificate, which is sent first in the `x5c` JOSE header. Its certificate chain must validate to one of the CA certificates configured for the wallet ([details](#4-verifier-trust-anchors-x509_hash)). All other Verifier metadata must be provided through the client_metadata parameter.
+
 ## Verifiable Credential Format Supported for Sharing:
 
 - ldp_vc
@@ -120,7 +122,6 @@ The Inji Wallet integrates the Inji OpenID4VP library to manage all OpenID4VP-re
 - Constructs the unsigned verifiable presentation token data and sends it to the Wallet for generating the signature.
 - Wallet signs on the unsigned verifiable presentation token data and sends the signature along with other details to the library.
 - The library receives the signature, generates the VP response, and submits it to the Verifier's `response_uri` endpoint via an HTTP POST request. The VP response is sent in either encrypted or unencrypted form, depending on the `response_mode`.
-
 
 ```mermaid
 sequenceDiagram
@@ -268,7 +269,29 @@ The configuration includes:
 {
   "response": {
     "openid4vpClientValidation": "true",
-    "openid4vpWalletConfig": "{\"response_types_supported\":[\"vp_token\"],\"vp_formats_supported\":{\"mso_mdoc\":{\"issuerauth_alg_values\":[-7],\"deviceauth_alg_values\":[-7]},\"ldp_vc\":{\"proof_type_values\":[\"Ed25519Signature2020\",\"JsonWebSignature2020\"]},\"dc+sd-jwt\":{\"sd-jwt_alg_values\":[\"EdDSA\",\"ES256\"],\"kb-jwt_alg_values\":[\"ES256\",\"EdDSA\"]},\"vc+sd-jwt\":{\"sd-jwt_alg_values\":[\"EdDSA\",\"ES256\"],\"kb-jwt_alg_values\":[\"ES256\",\"EdDSA\"]}},\"client_id_prefixes_supported\":[\"redirect_uri\",\"decentralized_identifier\",\"pre-registered\"],\"request_object_signing_alg_values_supported\":[\"EdDSA\"],\"authorization_encryption_alg_values_supported\":[\"ECDH-ES\"],\"authorization_encryption_enc_values_supported\":[\"A256GCM\"],\"presentation_definition_uri_supported\":true}"
+    "openid4vpWalletConfig": "{\"response_types_supported\":[\"vp_token\"],\"vp_formats_supported\":{\"mso_mdoc\":{\"issuerauth_alg_values\":[-7],\"deviceauth_alg_values\":[-7]},\"ldp_vc\":{\"proof_type_values\":[\"Ed25519Signature2020\",\"JsonWebSignature2020\"]},\"dc+sd-jwt\":{\"sd-jwt_alg_values\":[\"EdDSA\",\"ES256\"],\"kb-jwt_alg_values\":[\"ES256\",\"EdDSA\"]},\"vc+sd-jwt\":{\"sd-jwt_alg_values\":[\"EdDSA\",\"ES256\"],\"kb-jwt_alg_values\":[\"ES256\",\"EdDSA\"]}},\"client_id_prefixes_supported\":[\"redirect_uri\",\"decentralized_identifier\",\"pre-registered\",\"x509_hash\"],\"request_object_signing_alg_values_supported\":[\"EdDSA\",\"ES256\"],\"authorization_encryption_alg_values_supported\":[\"ECDH-ES\"],\"authorization_encryption_enc_values_supported\":[\"A256GCM\"],\"presentation_definition_uri_supported\":true}"
+  }
+}
+```
+
+### 4. Verifier Trust Anchors (`x509_hash`)
+
+The OpenID4VP library accepts a request from an `x509_hash` verifier only when the certificate chain in its `x5c` header validates to one of the CA certificates the wallet trusts (the trust anchors), and rejects it otherwise.
+
+The wallet retrieves the trust anchors from the Mimoto backend.
+
+- **Backend Service:** Mimoto
+- **API:** `/v1/mimoto/allProperties`
+- **Property:** `openid4vpVerifierTrustAnchors` (`mosip.inji.openid4vpVerifierTrustAnchors` in inji-config)
+
+The property is a JSON array of CA certificates, each the standard base64 encoding of the DER-encoded certificate, that is, a PEM certificate without its header, footer and line breaks (`openssl x509 -in ca.pem -outform DER | base64 -w 0`). If the property is not available, the wallet trusts no CA and rejects every `x509_hash` verifier.
+
+#### Sample Response
+
+```json
+{
+  "response": {
+    "openid4vpVerifierTrustAnchors": "[\"MIIC...\",\"MIIB...\"]"
   }
 }
 ```
