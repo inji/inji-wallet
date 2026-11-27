@@ -17,7 +17,6 @@ import {hmac} from '@noble/hashes/hmac';
 import {sha256} from '@noble/hashes/sha256';
 import {sha512} from '@noble/hashes/sha512';
 import * as secp from '@noble/secp256k1';
-import {p256} from '@noble/curves/p256';
 import * as ed from '@noble/ed25519';
 import base64 from 'react-native-base64';
 import {KeyTypes} from './KeyTypes';
@@ -72,24 +71,16 @@ export function generateKeyPairECK1() {
 }
 
 export async function generateKeyPairECR1() {
-  if (isAndroid()) {
-    const isBiometricsEnabled =
-      await RNSecureKeystoreModule.hasBiometricsEnabled();
-    return {
-      publicKey: await RNSecureKeystoreModule.generateKeyPair(
-        KeyTypes.ES256,
-        KeyTypes.ES256,
-        isBiometricsEnabled,
-        0,
-      ),
-      privateKey: '',
-    };
-  }
-  const privKey = p256.utils.randomPrivateKey();
-  const pubKey = p256.getPublicKey(privKey, false);
+  const isBiometricsEnabled =
+    await RNSecureKeystoreModule.hasBiometricsEnabled();
   return {
-    publicKey: Buffer.from(pubKey).toString('base64'),
-    privateKey: Buffer.from(privKey).toString('base64'),
+    publicKey: await RNSecureKeystoreModule.generateKeyPair(
+      KeyTypes.ES256,
+      KeyTypes.ES256,
+      isBiometricsEnabled,
+      0,
+    ),
+    privateKey: '',
   };
 }
 
@@ -142,7 +133,7 @@ export async function storeKeyPriorityOrder(keyPriorityOrder?: string) {
 export async function generateKeyPairsAndStoreOrder(keyPriorityOrder?: string) {
   const {RNSecureKeystoreModule} = NativeModules;
   const RSAKeyPair = await generateKeyPair(KeyTypes.RS256);
-  const ECR1KeyPair = await generateKeyPair(KeyTypes.ES256);
+  await generateKeyPair(KeyTypes.ES256);
   const ECK1KeyPair = await generateKeyPair(KeyTypes.ES256K);
   const EDKeyPair = await generateKeyPair(KeyTypes.ED25519);
   await storeKeyPriorityOrder(keyPriorityOrder);
@@ -162,11 +153,6 @@ export async function generateKeyPairsAndStoreOrder(keyPriorityOrder?: string) {
       RSAKeyPair.publicKey,
       RSAKeyPair.privateKey,
       KeyTypes.RS256,
-    );
-    await RNSecureKeystoreModule.storeGenericKey(
-      ECR1KeyPair.publicKey,
-      ECR1KeyPair.privateKey,
-      KeyTypes.ES256,
     );
   }
   console.warn(TelemetryConstants.FlowType.keyGeneration);
@@ -282,31 +268,18 @@ export async function createSignatureECR1(
   if (!isHardwareKeystoreExists) {
     throw Error;
   } else {
-    if (isAndroid()) {
-      let signature64 = await RNSecureKeystoreModule.signBytes(
-        KeyTypes.ES256,
-        KeyTypes.ES256,
-        Buffer.from(payload).toString('base64'),
-      );
-      const base64DeodedSignature = base64.decode(
-        signature64.replace(/\n/g, ''),
-      );
-      const derSignature = Uint8Array.from(base64DeodedSignature, char =>
-        char.charCodeAt(0),
-      );
-      signature64 = convertDerToRsFormat(derSignature);
-      return replaceCharactersInB64(signature64);
-    }
+    let signature64 = await RNSecureKeystoreModule.signBytes(
+      KeyTypes.ES256,
+      KeyTypes.ES256,
+      Buffer.from(payload).toString('base64'),
+    );
+    const base64DeodedSignature = base64.decode(signature64.replace(/\n/g, ''));
+    const derSignature = Uint8Array.from(base64DeodedSignature, char =>
+      char.charCodeAt(0),
+    );
+    signature64 = convertDerToRsFormat(derSignature);
+    return replaceCharactersInB64(signature64);
   }
-  const sha = sha256(payload);
-  const privKeyBytes = Buffer.from(privateKey, 'base64');
-
-  const sign = p256.sign(sha, privKeyBytes, {
-    lowS: false,
-  });
-  const compactSignatureBytes = sign.toCompactRawBytes();
-
-  return base64url(Buffer.from(compactSignatureBytes));
 }
 
 export function replaceCharactersInB64(encodedB64: string) {
@@ -431,7 +404,7 @@ export async function fetchKeyPair(keyType: any) {
   try {
     const {RNSecureKeystoreModule} = NativeModules;
     if (keyType == KeyTypes.RS256 || keyType == KeyTypes.ES256) {
-      if (isAndroid()) {
+      if (isAndroid() || keyType == KeyTypes.ES256) {
         const publicKey = await RNSecureKeystoreModule.retrieveKey(keyType);
         return {
           publicKey: publicKey,
@@ -441,12 +414,8 @@ export async function fetchKeyPair(keyType: any) {
         const keyPair = await RNSecureKeystoreModule.retrieveGenericKey(
           keyType,
         );
-        let publicKey = keyPair[1];
-        let privateKey = keyPair[0];
-        if (keyType == KeyTypes.ES256) {
-          publicKey = Buffer.from(publicKey, 'base64');
-          privateKey = Buffer.from(privateKey, 'base64');
-        }
+        const publicKey = keyPair[1];
+        const privateKey = keyPair[0];
         return {
           publicKey: publicKey,
           privateKey: privateKey,

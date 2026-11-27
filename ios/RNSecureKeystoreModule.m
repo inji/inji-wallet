@@ -4,6 +4,7 @@
 @interface RCT_EXTERN_MODULE(RNSecureKeystoreModule, NSObject)
 
 RCT_EXTERN_METHOD(generateKeyPair:(NSString *)type
+                  alias:(NSString *)alias
                   isAuthRequired:(BOOL)isAuthRequired
                   authTimeout:(NSInteger)authTimeout
                   resolver:(RCTPromiseResolveBlock)resolve
@@ -18,6 +19,12 @@ RCT_EXTERN_METHOD(hasAlias:(NSString *)tag
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(sign:(NSString *)signAlgorithm
+                  alias:(NSString *)alias
+                  data:(NSString *)data
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(signBytes:(NSString *)signAlgorithm
                   alias:(NSString *)alias
                   data:(NSString *)data
                   resolver:(RCTPromiseResolveBlock)resolve
